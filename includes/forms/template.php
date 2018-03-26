@@ -678,6 +678,30 @@ function give_user_info_fields( $form_id ) {
 			/>
 		</p>
 
+		<?php if ( give_is_company_field_enabled( $form_id ) ) : ?>
+			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
+			<p id="give-company-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-company">
+					<?php _e( 'Company Name', 'give' ); ?>
+					<?php if ( $give_company ) : ?>
+						<span class="give-required-indicator">*</span>
+					<?php endif; ?>
+					<?php echo Give()->tooltips->render_help( __( 'Donate on behalf of Company', 'give' ) ); ?>
+				</label>
+
+				<input
+					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
+					type="text"
+					name="give_company_name"
+					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
+					id="give-company"
+					value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
+					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
+				/>
+
+			</p>
+		<?php endif ?>
+
 		<?php
 		/**
 		 * Fire before user email field

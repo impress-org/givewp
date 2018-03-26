@@ -543,7 +543,7 @@ class Give_Cache {
 
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
-			$status = wp_cache_delete( $ids, $group, $expire );
+			$status = wp_cache_delete( $ids, $group );
 			self::$instance->get_incrementer( true );
 
 			/**
@@ -559,7 +559,7 @@ class Give_Cache {
 
 		} else {
 			foreach ( $ids as $id ) {
-				$status = wp_cache_delete( $id, $group, $expire );
+				$status = wp_cache_delete( $id, $group );
 				self::$instance->get_incrementer( true );
 
 				/**
@@ -749,7 +749,7 @@ class Give_Cache {
 		if ( ! empty( $group ) ) {
 			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
-			if ( 'give-db-queries' === $group ) {
+			if ( false !== strpos( $group, 'give-db-queries' ) ) {
 				$incrementer = self::$instance->get_incrementer();
 			}
 

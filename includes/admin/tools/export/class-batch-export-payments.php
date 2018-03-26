@@ -39,26 +39,27 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'        => __( 'ID', 'give' ), // unaltered payment ID (use for querying).
-			'seq_id'    => __( 'Payment Number', 'give' ), // sequential payment ID.
-			'email'     => __( 'Email', 'give' ),
-			'first'     => __( 'First Name', 'give' ),
-			'last'      => __( 'Last Name', 'give' ),
-			'address1'  => __( 'Address 1', 'give' ),
-			'address2'  => __( 'Address 2', 'give' ),
-			'city'      => __( 'City', 'give' ),
-			'state'     => __( 'State', 'give' ),
-			'country'   => __( 'Country', 'give' ),
-			'zip'       => __( 'Zip / Postal Code', 'give' ),
-			'form_id'   => __( 'Form ID', 'give' ),
-			'form_name' => __( 'Form Name', 'give' ),
-			'amount'    => __( 'Amount', 'give' ) . ' (' . give_currency_symbol( '', true ) . ')',
-			'gateway'   => __( 'Payment Method', 'give' ),
-			'trans_id'  => __( 'Transaction ID', 'give' ),
-			'key'       => __( 'Key', 'give' ),
-			'date'      => __( 'Date', 'give' ),
-			'user'      => __( 'User', 'give' ),
-			'status'    => __( 'Status', 'give' )
+			'id'           => __( 'ID', 'give' ), // unaltered payment ID (use for querying).
+			'seq_id'       => __( 'Payment Number', 'give' ), // sequential payment ID.
+			'email'        => __( 'Email', 'give' ),
+			'first'        => __( 'First Name', 'give' ),
+			'last'         => __( 'Last Name', 'give' ),
+			'company_name' => __( 'Company', 'give' ),
+			'address1'     => __( 'Address 1', 'give' ),
+			'address2'     => __( 'Address 2', 'give' ),
+			'city'         => __( 'City', 'give' ),
+			'state'        => __( 'State', 'give' ),
+			'country'      => __( 'Country', 'give' ),
+			'zip'          => __( 'Zip / Postal Code', 'give' ),
+			'form_id'      => __( 'Form ID', 'give' ),
+			'form_name'    => __( 'Form Name', 'give' ),
+			'amount'       => __( 'Amount', 'give' ) . ' (' . give_currency_symbol( '', true ) . ')',
+			'gateway'      => __( 'Payment Method', 'give' ),
+			'trans_id'     => __( 'Transaction ID', 'give' ),
+			'key'          => __( 'Key', 'give' ),
+			'date'         => __( 'Date', 'give' ),
+			'user'         => __( 'User', 'give' ),
+			'status'       => __( 'Status', 'give' )
 		);
 
 		if ( ! give_get_option( 'enable_sequential' ) ) {
@@ -151,26 +152,27 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				}
 
 				$data[] = array(
-					'id'        => $payment->ID,
-					'seq_id'    => give_get_payment_number( $payment->ID ),
-					'email'     => $payment_meta['email'],
-					'first'     => $user_info['first_name'],
-					'last'      => $user_info['last_name'],
-					'address1'  => isset( $user_info['address']['line1'] ) ? $user_info['address']['line1'] : '',
-					'address2'  => isset( $user_info['address']['line2'] ) ? $user_info['address']['line2'] : '',
-					'city'      => isset( $user_info['address']['city'] ) ? $user_info['address']['city'] : '',
-					'state'     => isset( $user_info['address']['state'] ) ? $user_info['address']['state'] : '',
-					'country'   => isset( $user_info['address']['country'] ) ? $user_info['address']['country'] : '',
-					'zip'       => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
-					'form_id'   => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
-					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
-					'amount'    => html_entity_decode( give_format_amount( $total, array( 'sanitize' => false ) ) ),
-					'gateway'   => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
-					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
-					'key'       => $payment_meta['key'],
-					'date'      => $payment->post_date,
-					'user'      => $user ? $user->display_name : __( 'guest', 'give' ),
-					'status'    => give_get_payment_status( $payment, true )
+					'id'           => $payment->ID,
+					'seq_id'       => give_get_payment_number( $payment->ID ),
+					'email'        => $payment_meta['email'],
+					'first'        => $user_info['first_name'],
+					'last'         => $user_info['last_name'],
+					'company_name' => $payment_meta['_give_donation_company'],
+					'address1'     => isset( $user_info['address']['line1'] ) ? $user_info['address']['line1'] : '',
+					'address2'     => isset( $user_info['address']['line2'] ) ? $user_info['address']['line2'] : '',
+					'city'         => isset( $user_info['address']['city'] ) ? $user_info['address']['city'] : '',
+					'state'        => isset( $user_info['address']['state'] ) ? $user_info['address']['state'] : '',
+					'country'      => isset( $user_info['address']['country'] ) ? $user_info['address']['country'] : '',
+					'zip'          => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
+					'form_id'      => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
+					'form_name'    => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
+					'amount'       => html_entity_decode( give_format_amount( $total, array( 'sanitize' => false ) ) ),
+					'gateway'      => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
+					'trans_id'     => give_get_payment_transaction_id( $payment->ID ),
+					'key'          => $payment_meta['key'],
+					'date'         => $payment->post_date,
+					'user'         => $user ? $user->display_name : __( 'guest', 'give' ),
+					'status'       => give_get_payment_status( $payment, true )
 				);
 
 			}
