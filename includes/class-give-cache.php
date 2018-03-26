@@ -749,7 +749,7 @@ class Give_Cache {
 		if ( ! empty( $group ) ) {
 			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
-			if ( 'give-db-queries' === $group ) {
+			if ( false !== strpos( $group, 'give-db-queries' ) ) {
 				$incrementer = self::$instance->get_incrementer();
 			}
 
