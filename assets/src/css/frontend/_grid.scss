@@ -18,43 +18,45 @@
 
 // Modern styles for browsers that support CSS Grid.
 @supports (display: grid) {
-	.give-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-gap: 1.5rem;
-		margin-bottom: 1.5rem;
-		max-width: 100%;
+	@media ( min-width: 30rem ) {
+		.give-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-gap: 1.5rem;
+			margin-bottom: 1.5rem;
+			max-width: 100%;
 
-		// Fit as many columns as possible in the available space.
-		&--best-fit {
-			grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-		}
-
-		// Limit the number of columns to an explicit user-defined number.
-		&--2,
-		&--3,
-		&--4 {
-			@media ( min-width: 640px ) {
-				grid-template-columns: repeat(2, 1fr);
+			// Fit as many columns as possible in the available space.
+			&--best-fit {
+				grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 			}
-		}
 
-		&--3,
-		&--4 {
-			@media ( min-width: 1140px ) {
-				grid-template-columns: repeat(3, 1fr);
+			// Limit the number of columns to an explicit user-defined number.
+			&--2,
+			&--3,
+			&--4 {
+				@media ( min-width: 40rem ) {
+					grid-template-columns: repeat(2, 1fr);
+				}
 			}
-		}
 
-		&--4 {
-			@media ( min-width: 1440px ) {
-				grid-template-columns: repeat(4, 1fr);
+			&--3,
+			&--4 {
+				@media ( min-width: 72rem ) {
+					grid-template-columns: repeat(3, 1fr);
+				}
 			}
-		}
 
-		&__item {
-			display: flex;
-			margin-bottom: 0;
+			&--4 {
+				@media ( min-width: 90rem ) {
+					grid-template-columns: repeat(4, 1fr);
+				}
+			}
+
+			&__item {
+				display: flex;
+				margin-bottom: 0;
+			}
 		}
 	}
 }
