@@ -782,28 +782,31 @@ function give_form_grid_shortcode( $atts ) {
 
 			wp_reset_postdata();
 
-			echo '</div>';
-		echo '</div>';
+			echo '</div><!-- .give-grid -->';
 
-		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
-		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+			remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+			remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-		if ( "false" !== $atts['paged'] ) {
-			$paginate_args = array(
-				'current'   => max( 1, get_query_var( 'paged' ) ),
-				'total'     => $form_query->max_num_pages,
-				'show_all'  => false,
-				'end_size'  => 1,
-				'mid_size'  => 2,
-				'prev_next' => true,
-				'prev_text' => __( 'Previous', 'give' ),
-				'next_text' => __( 'Next', 'give' ),
-				'type'      => 'plain',
-				'add_args'  => false,
-			);
+			if ( "false" !== $atts['paged'] ) {
+				$paginate_args = array(
+					'current'   => max( 1, get_query_var( 'paged' ) ),
+					'total'     => $form_query->max_num_pages,
+					'show_all'  => false,
+					'end_size'  => 1,
+					'mid_size'  => 2,
+					'prev_next' => true,
+					'prev_text' => __( 'Previous', 'give' ),
+					'next_text' => __( 'Next', 'give' ),
+					'type'      => 'plain',
+					'add_args'  => false,
+				);
 
-			printf( paginate_links( $paginate_args ) ); // XSS ok.
-		}
+				printf(
+					'<div class="give-page-numbers">%s</div>',
+					paginate_links( $paginate_args )
+				);
+			}
+		echo '</div><!-- .give-wrap -->';
 
 		return ob_get_clean();
 	}
