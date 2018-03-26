@@ -7,9 +7,10 @@
     "start": "npm install && npm run watch",
     "dev": "cross-env webpack",
     "production": "cross-env NODE_ENV=production webpack",
+    "build": "npm run production",
     "watch": "cross-env webpack --watch",
     "lint": "npm run lint:js & npm run lint:scss",
-    "lint:js": "eslint assets/src/**/*.js",
+    "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
     "lint:scss": "stylelint assets/src/**/*.scss"
   },
   "repository": {
@@ -25,20 +26,24 @@
   "devDependencies": {
     "autoprefixer": "^7.2.4",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.3",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "browser-sync": "^2.23.2",
     "browser-sync-webpack-plugin": "^1.2.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "latest",
-    "webpack-rtl-plugin": "latest",
+    "cross-env": "3.2.4",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "eslint": "^4.8.0",
     "eslint-config-wordpress": "^2.0.0",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "eslint-plugin-react": "^7.5.1",
     "expose-loader": "latest",
-    "cross-env": "3.2.4",
+    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "imagemin-webpack-plugin": "^1.5.2",
     "node-sass": "^4.5.3",
@@ -47,21 +52,31 @@
     "style-loader": "^0.18.2",
     "stylelint-config-wordpress": "^12.0.0",
     "url-loader": "^0.5.9",
-    "wp-pot": "latest",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "webpack-rtl-plugin": "latest",
+    "wp-pot": "latest"
   },
   "dependencies": {
     "accounting": "latest",
     "chosen-js": "latest",
+    "eslint-config-wordpress": "^2.0.0",
     "float-labels.js": "latest",
     "flot": "^0.8.0-alpha",
     "hint.css": "^2.5.0",
     "jquery-chosen": "latest",
     "jquery.payment": "latest",
+    "lodash.isempty": "^4.4.0",
+    "lodash.isundefined": "^3.0.1",
+    "lodash.pickby": "^4.6.0",
     "magnific-popup": "latest",
     "npm": "^5.7.1",
     "query-string": "^5.0.0",
+    "querystringify": "^1.0.0",
     "script-loader": "^0.7.2",
     "uiblocker": "latest"
+  },
+  "engines": {
+    "node": "8.9.1",
+    "npm": "5.5.1"
   }
 }
