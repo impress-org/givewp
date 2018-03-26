@@ -144,9 +144,9 @@ jQuery(document).ready(function ($) {
 		})
 		.done( function( response ) {
 			if ( response.success ) {
-				alert( 'Cache flushed successfully.' );
+				alert( response.data.message );
 			} else {
-				alert( 'An error occured while flushing the cache.' );
+				alert( response.data.message );
 			}
 		})
 	});

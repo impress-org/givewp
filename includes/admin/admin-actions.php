@@ -1128,9 +1128,13 @@ function give_cache_flush() {
 	$result = Give_Cache::flush_cache();
 
 	if ( $result ) {
-		wp_send_json_success();
+		wp_send_json_success( array(
+			'message' => __( 'Cache flushed successfully.', 'give' ),
+		));
 	} else {
-		wp_send_json_error();
+		wp_send_json_error( array(
+			'message' => __( 'An error occured while flushing the cache.', 'give' ),
+		));
 	}
 }
 
