@@ -333,7 +333,7 @@ class Give_Email_Setting_Field {
 			$recipient['attributes']['disabled'] = 'disabled';
 			$recipient['value']                  = $recipient['default'] = '{donor_email}';
 			$recipient['repeat']                 = false;
-			$recipient['desc']    = __( 'This email is sent to the Donor and the recipients cannot be customized.', 'give' );
+			$recipient['desc']                   = __( 'This email is sent to the Donor and the recipients cannot be customized.', 'give' );
 		}
 
 		return $recipient;
