@@ -814,20 +814,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					case 'give_ajax_button':
-						?>
-						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['name'] ) ?></label>
-							</th>
-							<td class="give-forminp">
-								<button type="button" id="<?php echo esc_attr( $value['id'] ); ?>" class="button button-secondary"><?php echo esc_html( $value['text'] ) ?></button>
-								<?php echo self::get_field_description( $value ); ?>
-							</td>
-						</tr>
-						<?php
-						break;
-
 					// Default: run an action
 					// You can add or handle your custom field action.
 					default:

@@ -31,6 +31,10 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 
 			$this->default_tab = 'advanced-options';
 
+			if ( $this->id === give_get_current_setting_tab() ) {
+				add_action( 'give_admin_field_remove_cache_button', array( $this, 'render_remove_cache_button' ), 10, 1 );
+			}
+
 			parent::__construct();
 		}
 
@@ -107,11 +111,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name' => __( 'Give Clear Cache', 'give' ),
-							'id' => 'give-clear-cache',
-							'text' => __( 'Flush', 'give' ),
-							'desc' => __( 'This will clear Give\'s cache.' ),
-							'type' => 'give_ajax_button'
+							'name' => '',
+							'id'   => 'give-clear-cache',
+							'text' => __( 'Remove Cache', 'give' ),
+							'desc' => __( 'Click this button if you want to delete Give\'s cache.' ),
+							'type' => 'remove_cache_button'
 						),
 						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
@@ -133,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			if( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
+			if ( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
 				array_splice( $settings, 1, 0, array(
 					array(
 						'name'    => __( 'Cache', 'give' ),
@@ -181,6 +185,31 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		/**
+		 *  Render remove_cache_button field type
+		 *
+		 * @since  2.1
+		 * @access public
+		 *
+		 * @param array $field
+		 */
+		public function render_remove_cache_button( $field ) {
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
+					        class="button button-secondary"><?php echo esc_html( $field['text'] ) ?></button>
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
