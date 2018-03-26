@@ -822,6 +822,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp">
 								<button type="button" id="<?php echo esc_attr( $value['id'] ); ?>" class="button button-secondary"><?php echo esc_html( $value['text'] ) ?></button>
+								<?php echo self::get_field_description( $value ); ?>
 							</td>
 						</tr>
 						<?php

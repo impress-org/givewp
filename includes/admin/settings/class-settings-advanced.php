@@ -110,6 +110,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'name' => __( 'Give Clear Cache', 'give' ),
 							'id' => 'give-clear-cache',
 							'text' => __( 'Flush', 'give' ),
+							'desc' => __( 'This will clear Give\'s cache.' ),
 							'type' => 'give_ajax_button'
 						),
 						array(
