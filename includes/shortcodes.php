@@ -828,8 +828,8 @@ function give_form_grid_shortcode( $atts ) {
 					'end_size'  => 1,
 					'mid_size'  => 2,
 					'prev_next' => true,
-					'prev_text' => __( 'Previous', 'give' ),
-					'next_text' => __( 'Next', 'give' ),
+					'prev_text' => __( '« Previous', 'give' ),
+					'next_text' => __( 'Next »', 'give' ),
 					'type'      => 'plain',
 					'add_args'  => false,
 				);
