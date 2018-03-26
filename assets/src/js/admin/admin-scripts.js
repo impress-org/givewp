@@ -1071,7 +1071,7 @@ var give_setting_edit = false;
 						self.process_step(parseInt(response.step), data, self);
 					}
 
-					if (true === reset_form) {
+					if ( true === reset_form && $( '#give-tools-recount-form' ).length > 0 ) {
 						// Reset the form for preventing multiple ajax request.
 						$('#give-tools-recount-form')[0].reset();
 						$('#give-tools-recount-form .tools-form-dropdown').hide();

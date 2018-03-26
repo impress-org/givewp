@@ -25,10 +25,7 @@ class Give_Email_Setting_Field {
 		$setting_fields = self::get_default_setting_fields( $email, $form_id );
 
 		// Recipient field.
-		if ( Give_Email_Notification_Util::has_recipient_field( $email ) ) {
-			$setting_fields[] = self::get_recipient_setting_field( $email, $form_id );
-		}
-
+		$setting_fields[] = self::get_recipient_setting_field( $email, $form_id, Give_Email_Notification_Util::has_recipient_field( $email ) );
 
 		// Add extra setting field.
 		if ( $extra_setting_field = $email->get_extra_setting_fields( $form_id ) ) {
@@ -133,10 +130,10 @@ class Give_Email_Setting_Field {
 		$settings[] = self::get_notification_status_field( $email, $form_id );
 
 		if ( ! Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
-			if( $form_id || give_is_add_new_form_page() ){
+			if ( $form_id || give_is_add_new_form_page() ) {
 				// Do not allow admin to disable notification on perform basis.
 				unset( $settings[1]['options']['disabled'] );
-			} else{
+			} else {
 				// Do not allow admin to edit notification status globally.
 				unset( $settings[1] );
 			}
@@ -145,7 +142,7 @@ class Give_Email_Setting_Field {
 		$settings[] = self::get_email_subject_field( $email, $form_id );
 		$settings[] = self::get_email_message_field( $email, $form_id );
 
-		if( Give_Email_Notification_Util::is_content_type_editable( $email ) ) {
+		if ( Give_Email_Notification_Util::is_content_type_editable( $email ) ) {
 			$settings[] = self::get_email_content_type_field( $email, $form_id );
 		}
 
@@ -182,7 +179,7 @@ class Give_Email_Setting_Field {
 			$default_value = 'global';
 		}
 
-		$description = isset($_GET['page']) && 'give-settings' === $_GET['page'] ? __('Choose whether you want this email enabled or not.', 'give') : sprintf( __( 'Global Options are set <a href="%s">in Give settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
+		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( __( 'Global Options are set <a href="%s">in Give settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
 
 		return array(
 			'name'          => esc_html__( 'Notification', 'give' ),
@@ -238,7 +235,7 @@ class Give_Email_Setting_Field {
 				$email_tag_list,
 				sprintf(
 					'<br><a href="%1$s" target="_blank">%2$s</a> %3$s',
-					esc_url('http://docs.givewp.com/meta-email-tags'),
+					esc_url( 'http://docs.givewp.com/meta-email-tags' ),
 					__( 'See our documentation', 'give' ),
 					__( 'for examples of how to use custom meta email tags to output additional donor or donation information in your Give emails.', 'give' )
 				)
@@ -285,16 +282,17 @@ class Give_Email_Setting_Field {
 	 * Get recipient setting field.
 	 *
 	 * @since  2.0
-	 * @access static
-	 * @todo check this field in form metabox setting after form api merge.
+	 * @access public
+	 * @todo   check this field in form metabox setting after form api merge.
 	 *
 	 * @param Give_Email_Notification $email
 	 * @param int                     $form_id
+	 * @param bool                    $edit_recipient
 	 *
 	 * @return array
 	 */
-	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
-		$recipient =  array(
+	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null, $edit_recipient = true ) {
+		$recipient = array(
 			'id'               => self::get_prefix( $email, $form_id ) . 'recipient',
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
 			'desc'             => __( 'Enter the email address(es) that should receive a notification.', 'give' ),
@@ -322,6 +320,20 @@ class Give_Email_Setting_Field {
 					$recipient,
 				),
 			);
+		}
+
+		// Disable field if email donor has recipient field.
+		// @see https://github.com/WordImpress/Give/issues/2657
+		if ( ! $edit_recipient ) {
+			if ( 'group' == $recipient['type'] ) {
+				$recipient         = current( $recipient['fields'] );
+				$recipient['type'] = 'text';
+			}
+
+			$recipient['attributes']['disabled'] = 'disabled';
+			$recipient['value']                  = $recipient['default'] = '{donor_email}';
+			$recipient['repeat']                 = false;
+			$recipient['desc']                   = __( 'This email is sent to the Donor and the recipients cannot be customized.', 'give' );
 		}
 
 		return $recipient;
@@ -360,10 +372,10 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return string
 	 */
-	public static function get_prefix( Give_Email_Notification $email, $form_id = null  ) {
+	public static function get_prefix( Give_Email_Notification $email, $form_id = null ) {
 		$meta_key = "{$email->config['id']}_";
 
-		if( $form_id || give_is_add_new_form_page() ) {
+		if ( $form_id || give_is_add_new_form_page() ) {
 			$meta_key = "_give_{$email->config['id']}_";
 		}
 

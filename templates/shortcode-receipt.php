@@ -17,15 +17,16 @@ if ( empty( $payment ) ) {
 	return;
 }
 
-$donation_id     = $payment->ID;
+$donation_id  = $payment->ID;
 $donation_number = Give()->seq_donation_number->get_serial_code( $payment->ID );
-$form_id         = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
-$meta            = give_get_payment_meta( $donation_id );
-$donation        = give_get_donation_form_title( $donation_id );
-$user            = give_get_payment_meta_user_info( $donation_id );
-$email           = give_get_payment_user_email( $donation_id );
-$status          = $payment->post_status;
-$status_label    = give_get_payment_status( $payment, true );
+$form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
+$meta         = give_get_payment_meta( $donation_id );
+$donation     = give_get_donation_form_title( $donation_id );
+$user         = give_get_payment_meta_user_info( $donation_id );
+$email        = give_get_payment_user_email( $donation_id );
+$status       = $payment->post_status;
+$status_label = give_get_payment_status( $payment, true );
+$company_name = give_get_payment_meta( $donation_id, '_give_donation_company', true );
 
 /**
  * Generate Donation Receipt Arguments.
@@ -39,6 +40,21 @@ $give_receipt_args['donation_receipt']['donor'] = array(
 	'name'    => __( 'Donor', 'give' ),
 	'value'   => $user['first_name'] . ' ' . $user['last_name'],
 	'display' => $give_receipt_args['donor'],
+);
+
+/**
+ * Show Company name on Donation receipt Page
+ *
+ * @since 2.0.7
+ *
+ * @param bool show/hide company name in donation receipt page.
+ *
+ * @return bool show/hide company name in donation receipt page.
+ */
+$give_receipt_args['donation_receipt']['company_name'] = array(
+	'name'    => __( 'Company Name', 'give' ),
+	'value'   => esc_attr( $company_name ),
+	'display' => $give_receipt_args['company_name'],
 );
 
 $give_receipt_args['donation_receipt']['date'] = array(
