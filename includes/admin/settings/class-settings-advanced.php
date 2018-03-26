@@ -111,10 +111,10 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name' => '',
+							'name' => 'Give Cache',
 							'id'   => 'give-clear-cache',
-							'text' => __( 'Remove Cache', 'give' ),
-							'desc' => __( 'Click this button if you want to delete Give\'s cache.' ),
+							'text' => __( 'Clear Cache', 'give' ),
+							'desc' => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
 							'type' => 'remove_cache_button'
 						),
 						array(
