@@ -116,6 +116,26 @@ function give_get_admin_page_menu_title() {
 	return $title;
 }
 
+
+/** Remove the dismissed flag for add-on's activation banners.
+ *
+ * @since 2.0.7
+ *
+ * @param string $plugin_file Plugin file name.
+ */
+function give_remove_activation_dismissed_flag( $plugin_file ) {
+	if ( strpos( $plugin_file, 'Give-' ) !== false ) {
+		// Get the current user.
+		$current_user = wp_get_current_user();
+
+		// Remove meta from the user meta.
+		delete_user_meta( $current_user->ID, 'give_addon_activation_ignore_all' );
+	}
+}
+
+add_action( 'activated_plugin', 'give_remove_activation_dismissed_flag', 10, 1 );
+
+
 /**
  * Create new menu in plugin section that include all the add-on
  *

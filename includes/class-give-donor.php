@@ -1565,4 +1565,17 @@ class Give_Donor {
 
 		return ( $last_name ) ? $last_name : '';
 	}
+
+	/**
+	 * Retrieves company name of donor
+	 *
+	 * @since   2.0.7
+	 *
+	 * @return  string $company_name Donor Company Name
+	 */
+	public function get_company_name() {
+		$company_name = $this->get_meta( '_give_donor_company' );
+
+		return $company_name;
+	}
 }

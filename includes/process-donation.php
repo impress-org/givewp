@@ -546,6 +546,31 @@ function give_get_required_fields( $form_id ) {
 		}
 	}
 
+	if ( give_is_company_field_enabled( $form_id ) ) {
+		$form_option    = give_get_meta( $form_id, '_give_company_field', true );
+		$global_setting = give_get_option( 'company_field' );
+
+		$is_company_field_required = false;
+
+		if ( ! empty( $form_option ) && give_is_setting_enabled( $form_option, array( 'required' ) ) ) {
+			$is_company_field_required = true;
+
+		} elseif ( 'global' === $form_option && give_is_setting_enabled( $global_setting, array( 'required' ) ) ) {
+			$is_company_field_required = true;
+
+		} elseif ( empty( $form_option ) && give_is_setting_enabled( $global_setting, array( 'required' ) ) ) {
+			$is_company_field_required = true;
+
+		}
+
+		if( $is_company_field_required ) {
+			$required_fields['give_company_name'] = array(
+				'error_id'      => 'invalid_company',
+				'error_message' => __( 'Please enter Company Name.', 'give' ),
+			);
+		}
+	}
+
 	/**
 	 * Filters the donation form required field.
 	 *
