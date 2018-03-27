@@ -34,6 +34,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			if( $this->id === give_get_current_setting_tab() ) {
 				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
 				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '__render_give_sequential_donation_code_preview' ), 10, 3 );
+				add_action( 'give_admin_field_give_unlock_all_settings', array( $this, '__render_give_unlock_all_settings' ), 10, 3 );
 			}
 
 			parent::__construct();
@@ -323,6 +324,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'title'
 						),
 						array(
+							'name'             => '',
+							'id'               => "give_unlock_all_settings",
+							'type'             => 'give_unlock_all_settings',
+							'desc'             => __( 'To unlock all setting at once for editing you can click below link.', 'give' ),
+							'confirmation_msg' => __( 'Changing these setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
 							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
 							'desc'                => __( 'Would you like to enable the sequential ordering feature?', 'give' ),
@@ -466,6 +474,30 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 				<td class="give-forminp">
 					<span id="<?php echo esc_attr( $field['id'] ); ?>"></span>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+				</td>
+			</tr>
+			<?php
+		}
+
+
+		/**
+		 * Render give_unlock_all_settings field type
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $field
+		 */
+		public function __render_give_unlock_all_settings( $field ) {
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+					<a href="" id="<?php echo $field['id']; ?>" data-message="<?php echo $field['confirmation_msg'] ?>"><?php echo __( 'Unlock all settings', 'give' ); ?></a>
 				</td>
 			</tr>
 			<?php

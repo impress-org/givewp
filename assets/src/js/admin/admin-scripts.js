@@ -2945,6 +2945,33 @@ var give_setting_edit = false;
 				}
 			}
 		});
+
+		$('#give_unlock_all_settings').on('click', function (e) {
+			e.preventDefault();
+
+			if ( $(this).hasClass('active') || ! window.confirm( $(this).data('message') ) ) {
+				return;
+			}
+
+			$.each($('.give-confirm'), function () {
+				var $parent = $(this).closest('.give-forminp');
+
+				if ($parent.length) {
+					$(this).addClass('dashicons-unlock');
+					$(this).removeClass('dashicons-lock');
+
+					if ($(this).closest('.give-forminp-radio_inline').length || $(this).closest('.give-forminp-radio').length) {
+						$parent.find('input[type="radio"]').each(function () {
+							$(this).removeAttr('disabled');
+						});
+					} else {
+						$(this).prev().removeAttr('readonly');
+					}
+				}
+			});
+
+			$(this).addClass('active');
+		});
 	} );
 })( jQuery );
 
