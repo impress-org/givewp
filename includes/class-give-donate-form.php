@@ -532,7 +532,7 @@ class Give_Donate_Form {
 			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
 
 			if ( ! $this->is_custom_price_mode() ) {
-				$this->minimum_price = 0;
+				$this->minimum_price = give_get_lowest_price_option( $this->ID );
 			}
 
 		}
