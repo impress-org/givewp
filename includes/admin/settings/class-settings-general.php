@@ -335,7 +335,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name'                => __( 'Starting Number', 'give' ),
+							'name'                => __( 'Next Donation Number', 'give' ),
 							'id'                  => "{$current_section}_number",
 							'type'                => 'number',
 							'confirm_before_edit' => 'forced',
