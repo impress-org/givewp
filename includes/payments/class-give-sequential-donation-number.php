@@ -15,6 +15,14 @@ class Give_Sequential_Donation_Number {
 	static private $instance;
 
 	/**
+	 * Donation tile prefix
+	 *
+	 * @since 2.1.0
+	 * @var string
+	 */
+	private $donation_title_prefix = 'give-';
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.1.0
@@ -52,6 +60,17 @@ class Give_Sequential_Donation_Number {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
 			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 		}
+
+		/**
+		 * Filter the donariton title prefix.
+		 *
+		 * This will prevent donation title from conflict from other post type slugs.
+		 * Do not mistaken this will serial code prefix.
+		 */
+		$this->donation_title_prefix = apply_filters(
+			'give_sequential_orderingl_donation_title_prefix',
+			$this->donation_title_prefix
+		);
 	}
 
 	/**
@@ -96,7 +115,7 @@ class Give_Sequential_Donation_Number {
 			$wp_error = wp_update_post(
 				array(
 					'ID'         => $donation_id,
-					'post_title' => trim( $serial_code )
+					'post_title' => $this->donation_title_prefix . trim( $serial_code )
 				)
 			);
 
@@ -208,6 +227,9 @@ class Give_Sequential_Donation_Number {
 		if ( $donation_number = $this->get_serial_number( $donation->ID ) ) {
 			$serial_code = get_the_title( $donation->ID );
 		}
+
+		// Remove donation title prefix.
+		$serial_code = preg_replace( "/{$this->donation_title_prefix}/", '', $serial_code, 1 );
 
 		$serial_code = $args['with_hash'] ? "#{$serial_code}" : $serial_code;
 
