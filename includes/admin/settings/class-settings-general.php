@@ -33,6 +33,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 			if( $this->id === give_get_current_setting_tab() ) {
 				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
+				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '__render_give_sequential_donation_code_preview' ), 10, 3 );
 			}
 
 			parent::__construct();
@@ -364,6 +365,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
+							'name' => __( 'Donation ID Preview', 'give' ),
+							'id'   => "{$current_section}_preview",
+							'type' => 'give_sequential_donation_code_preview',
+							'desc' => __( 'Your sequential order ID will look like above example ID.', 'give' ),
+						),
+						array(
 							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
 							'id'    => "{$current_section}_doc link",
 							'url'   => esc_url( 'http://docs.givewp.com/settings-sequential-ordering' ),
@@ -438,6 +445,30 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			}
 
 			return true;
+		}
+
+
+		/**
+		 * Render give_sequential_donation_code_preview field type
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $field
+		 */
+		public function __render_give_sequential_donation_code_preview( $field ) {
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<span id="<?php echo esc_attr( $field['id'] ); ?>"></span>
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 

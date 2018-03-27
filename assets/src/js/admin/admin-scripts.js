@@ -576,6 +576,7 @@ var give_setting_edit = false;
 			this.saveButtonTriggered();
 			this.changeAlert();
 			this.detectSettingsChange();
+			this.sequentialDonationIDPreview();
 		},
 
 		/**
@@ -811,8 +812,33 @@ var give_setting_edit = false;
 
 				});
 			}
-		}
+		},
 
+		/**
+		 * Render donation id for sequential ordering.
+		 *
+		 * @since 2.1.0
+		 */
+		sequentialDonationIDPreview: function(){
+			const $previewField = jQuery('#sequential-ordering_preview');
+
+			// Bailout.
+			if( ! $previewField.length ) {
+				return;
+			}
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
+				const prefix =jQuery('#sequential-ordering_number_prefix').val().trim(),
+					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
+					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
+					suffix = jQuery('#sequential-ordering_number_suffix').val().trim(),
+					$donationID = `${prefix}${startingNumber.padStart( numberPadding, '0' ) }${suffix}`;
+
+				$previewField.text($donationID);
+			});
+
+			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');
+		}
 	};
 
 	/**
