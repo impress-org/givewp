@@ -623,3 +623,22 @@ function give_ajax_pages_search() {
 }
 
 add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
+
+/**
+ * Sends the HTML rendered by give_get_donation_form() as JSON.
+ */
+function give_ajax_get_modal_form_html() {
+
+	$form_id         = give_clean( $_POST['form_id'] );
+	$rendered_output = array();
+
+	ob_start();
+	give_get_donation_form( array( 'id' => intval( $form_id ) ) );
+	$rendered_output[ 'modal_html' ] = ob_get_clean();
+	echo wp_json_encode( $rendered_output );
+
+	give_die();
+}
+
+add_action( 'wp_ajax_no_priv_get_modal_form_html', 'give_ajax_get_modal_form_html' );
+add_action( 'wp_ajax_get_modal_form_html', 'give_ajax_get_modal_form_html' );

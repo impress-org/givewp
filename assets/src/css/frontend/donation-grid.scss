@@ -153,10 +153,6 @@
 	.give-btn-modal {
 		display: none !important;
 	}
-
-	.mfp-close:hover {
-		background-color: rgba(0, 0, 0, 0);
-	}
 }
 
 // .progress {
@@ -262,4 +258,126 @@
 
 .my-mfp-slide-bottom.mfp-removing.mfp-bg {
 	opacity: 0;
+}
+
+.white-popup {
+	position: relative;
+	background: #fff;
+	font-size: 16px;
+	width: auto;
+	max-width: 600px;
+	margin: 20px auto;
+	padding: 1rem 2rem;
+	margin-top: 60px;
+	border-top: 5px solid rgba(0, 0, 0, 0);
+	line-height: 1.5;
+	box-shadow: 0px 15px 10px -5px rgba(0, 0, 0, .15);
+	max-height: 80vh;
+	overflow: auto;
+}
+
+
+.my-mfp-zoom-in .zoom-animation {
+	opacity: 0;
+
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+}
+
+.my-mfp-zoom-in.mfp-ready .zoom-animation {
+	opacity: 1;
+
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+
+.my-mfp-zoom-in.mfp-removing .zoom-animation {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+	opacity: 0;
+}
+
+.my-mfp-zoom-in.mfp-bg {
+	opacity: 0;
+	-webkit-transition: opacity 0.3s ease-out;
+	-moz-transition: opacity 0.3s ease-out;
+	-o-transition: opacity 0.3s ease-out;
+	transition: opacity 0.3s ease-out;
+}
+
+.my-mfp-zoom-in.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+
+.my-mfp-zoom-in.mfp-removing.mfp-bg {
+	opacity: 0;
+}
+
+/**
+ * Fade-move animation for second dialog
+ */
+.popup-fade-slide .zoom-animation {
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+
+	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+
+}
+
+.popup-fade-slide.mfp-ready .zoom-animation {
+	opacity: 1;
+	-webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-moz-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-ms-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-o-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	transform: translateY(0) perspective( 600px ) rotateX( 0 );
+}
+
+.popup-fade-slide.mfp-removing .zoom-animation {
+	opacity: 0;
+	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+}
+
+.popup-fade-slide.mfp-bg {
+	opacity: 0;
+	-webkit-transition: opacity 0.3s ease-out;
+	-moz-transition: opacity 0.3s ease-out;
+	-o-transition: opacity 0.3s ease-out;
+	transition: opacity 0.3s ease-out;
+}
+
+.popup-fade-slide.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+
+.popup-fade-slide.mfp-removing.mfp-bg {
+	opacity: 0;
+}
+
+.mfp-close:hover {
+	background-color: rgba(0, 0, 0, 0);
 }

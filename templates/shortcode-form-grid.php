@@ -14,9 +14,10 @@ $atts             = $args[1]; // Shortcode attributes.
 $raw_content      = ''; // Raw form content.
 $stripped_content = ''; // Form content stripped of HTML tags and shortcodes.
 $excerpt          = ''; // Trimmed form excerpt ready for display.
+$form_id_modal   = ( 'modal' === $atts['display_style'] ) ? 'data-ajax-popup="enabled" data-form-id=' . $form_id : '';
 ?>
 
-<div class="give-grid__item">
+<div class="give-grid__item" <?php echo esc_attr( $form_id_modal ); ?>>
 	<?php
 	// Print the opening anchor tag based on display style.
 	if ( 'redirect' === $atts['display_style'] ) {
@@ -108,15 +109,4 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 		}
 		?>
 	</a>
-	<?php
-	// If modal, print form in hidden container until it is time to be revealed.
-	if ( 'modal' === $atts['display_style'] ) {
-		printf(
-			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">',
-			$form_id
-		);
-		give_get_donation_form( $form_id );
-		echo '</div>';
-	}
-	?>
 </div>
