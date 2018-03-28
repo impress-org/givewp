@@ -42,26 +42,14 @@ class Give_Addon_Activation_Banner {
 		$give_addons[] = $_banner_details;
 
 		// Get the current user.
-		$current_user = wp_get_current_user();
-
-		//Get current user
+		$current_user  = wp_get_current_user();
 		$this->user_id = $current_user->ID;
 
-		// Only if single add-on activated.
-		if ( 1 === count( $give_addons ) ) {
+		// Set up hooks.
+		$this->init();
 
-			$this->plugin_activate_by   = 0;
-			$this->banner_details       = $_banner_details;
-			$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
-			$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
-			$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
-
-			// Set up hooks.
-			$this->init();
-
-			// Store user id who activated plugin.
-			$this->add_addon_activate_meta();
-		}
+		// Store user id who activated plugin.
+		$this->add_addon_activate_meta();
 
 		// Check if notice callback is already hooked.
 		if ( ! $this->is_banner_notice_hooked() ) {
@@ -79,20 +67,26 @@ class Give_Addon_Activation_Banner {
 	 * @return void
 	 */
 	public function init() {
-
-		// Testing?
-		if ( $this->test_mode ) {
-			delete_user_meta( $this->user_id, $this->nag_meta_key );
-		}
-
 		// Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 
-		// File path of addon must be included in banner detail other addon activate meta will not delete.
-		$file_name = $this->get_plugin_file_name();
+		// Get the Give add-ons.
+		$give_addons = $this->get_plugin_file_names();
 
-		if ( ! empty( $file_name ) ) {
-			add_action( 'deactivate_' . $file_name, array( $this, 'remove_addon_activate_meta' ) );
+		if ( ! empty( $give_addons ) ) {
+
+			// Go through each of the add-on and hook deactivate action.
+			foreach ( $give_addons as $addon_name => $give_addon ) {
+
+				// Testing?
+				if ( true === $give_addon['testing'] ) {
+					$nag_meta_key = 'give_addon_activation_ignore_' . $addon_name;
+					delete_user_meta( $this->user_id, $nag_meta_key );
+				}
+
+				// Add deactivate hook.
+				add_action( 'deactivate_' . $give_addon['plugin_main_file'], array( $this, 'remove_addon_activate_meta' ) );
+			}
 		}
 	}
 
@@ -103,44 +97,40 @@ class Give_Addon_Activation_Banner {
 	 * @access  private
 	 * @return mixed
 	 */
-	private function get_plugin_file_name() {
-		$active_plugins = get_option( 'active_plugins' );
-		$file_name      = '';
+	private function get_plugin_file_names() {
+		global $give_addons;
 
-		try {
+		// Get recently activated plugins.
+		$recently_activated = get_option( 'give_recently_activated_addons', array() );
+		$active_plugins     = get_option( 'active_plugins' );
 
-			// Check addon file path.
-			if ( ! empty( $this->banner_details['file'] ) ) {
-				$file_name = '';
-				if ( $file_path = explode( '/plugins/', $this->banner_details['file'] ) ) {
-					$file_path = array_pop( $file_path );
-					$file_name = current( explode( '/', $file_path ) );
-				}
+		$file_names = array();
 
-				if ( empty( $file_name ) ) {
-					return false;
-				}
+		if ( empty( $give_addons ) ) {
+			return $file_names;
+		}
 
+		// Go through each addon and get the plugin file url.
+		foreach ( $give_addons as $give_addon ) {
+			$file_name = '';
+			if ( $file_path = explode( '/plugins/', $give_addon['file'] ) ) {
+				$file_path = array_pop( $file_path );
+				$file_name = current( explode( '/', $file_path ) );
+			}
+
+			if ( ! empty( $file_name ) ) {
 				foreach ( $active_plugins as $plugin ) {
 					if ( false !== strpos( $plugin, $file_name ) ) {
-						$file_name = $plugin;
+						$add_on_key                     = sanitize_title( $give_addon['name'] );
+						$give_addon['plugin_main_file'] = $plugin; // Include plugin file.
+						$file_names[ $add_on_key ]      = $give_addon;
 						break;
 					}
 				}
-			} elseif ( WP_DEBUG ) {
-				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
 			}
-
-			// Check plugin path calculated by addon file path.
-			if ( empty( $file_name ) && WP_DEBUG ) {
-				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
-			}
-
-		} catch ( Exception $e ) {
-			echo $e->getMessage();
 		}
 
-		return $file_name;
+		return $file_names;
 	}
 
 	/**
