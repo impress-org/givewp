@@ -20,7 +20,7 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 * @var string
 	 */
-	private $donation_title_prefix = 'give-';
+	private $donation_title_prefix = 'give-donation-';
 
 	/**
 	 * Singleton pattern.
