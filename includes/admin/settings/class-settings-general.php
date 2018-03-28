@@ -333,11 +333,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
-							'desc'                => __( 'Would you like to enable the sequential ordering feature?', 'give' ),
+							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation IDs are generated from WordPress post IDs.', 'give' ),
 							'type'                => 'radio_inline',
 							'default'             => 'enabled',
 							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Toggling seqential ordering will affect new all new donation numbering. Do you still want to edit this setting?', 'give' ),
+							'confirmation_msg'    => __( 'Toggling sequential ordering will affect the numbering of future donation IDs. Do you still want to edit this setting?', 'give' ),
 							'options'             => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
@@ -347,9 +347,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name'                => __( 'Next Donation Number', 'give' ),
 							'id'                  => "{$current_section}_number",
 							'desc' => sprintf(
-								__( 'Would you like to change next donation number? %s if yes then, value must be greater than or equal to %s to avoid conflicts with existing IDs.', 'give' ),
-								'<br>',
-								Give()->seq_donation_number->get_next_number()
+								__( 'The number used to generate the next donation ID. This value must be greater than or equal to %s to avoid conflicts with existing donation IDs.', 'give' ),
+								'<code>' . Give()->seq_donation_number->get_next_number() . '</code>'
 							),
 							'type'                => 'number',
 							'confirm_before_edit' => 'forced',
@@ -361,6 +360,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
+							'desc'                => __( 'The prefix appended to all sequential donation numbers.', 'give' ),
 							'type'                => 'text',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
@@ -368,6 +368,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Number Suffix', 'give' ),
 							'id'                  => "{$current_section}_number_suffix",
+							'desc'                => __( 'The suffix appended to all sequential donation numbers.', 'give' ),
 							'type'                => 'text',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
@@ -375,6 +376,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Number Padding', 'give' ),
 							'id'                  => "{$current_section}_number_padding",
+							'desc' => sprintf(
+								__( 'The minimum number of digits in the sequential donation number. Enter %s to display %s as %s.', 'give' ),
+								'<code>4</code>',
+								'<code>1</code>',
+								'<code>0001</code>'
+							),
 							'type'                => 'number',
 							'default'             => '0',
 							'confirm_before_edit' => 'forced',
@@ -384,7 +391,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name' => __( 'Donation ID Preview', 'give' ),
 							'id'   => "{$current_section}_preview",
 							'type' => 'give_sequential_donation_code_preview',
-							'desc' => __( 'Your sequential order ID will look like above example ID.', 'give' ),
+							'desc' => __( 'A preview of the next sequential donation ID.', 'give' ),
 						),
 						array(
 							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
