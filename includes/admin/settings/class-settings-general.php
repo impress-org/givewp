@@ -349,6 +349,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'                => 'number',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+							'attributes' => array(
+								'min' => Give()->seq_donation_number->get_next_number()
+							)
 						),
 						array(
 							'name'                => __( 'Number Prefix', 'give' ),
