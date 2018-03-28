@@ -449,7 +449,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 				return false;
 			}
 
-			if ( Give()->seq_donation_number->get_max_number() >= $update_options['sequential-ordering_number'] ) {
+			if ( Give()->seq_donation_number->get_next_number() > $update_options['sequential-ordering_number'] ) {
 				give_update_option( 'sequential-ordering_number', $old_options['sequential-ordering_number'] );
 			} elseif ( $update_options['sequential-ordering_number'] !== $old_options['sequential-ordering_number'] ) {
 				update_option( '_give_reset_sequential_number', 1 );
