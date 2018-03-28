@@ -326,7 +326,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
-							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation IDs are generated from WordPress post IDs.', 'give' ),
+							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
 							'type'                => 'radio_inline',
 							'default'             => 'enabled',
 							'options'             => array(
@@ -349,13 +349,19 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
-							'desc'                => __( 'The prefix appended to all sequential donation numbers.', 'give' ),
+							'desc' => sprintf(
+								__( 'The prefix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
 							'type'                => 'text',
 						),
 						array(
 							'name'                => __( 'Number Suffix', 'give' ),
 							'id'                  => "{$current_section}_number_suffix",
-							'desc'                => __( 'The suffix appended to all sequential donation numbers.', 'give' ),
+							'desc' => sprintf(
+								__( 'The suffix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
 							'type'                => 'text',
 						),
 						array(
@@ -374,7 +380,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name' => __( 'Donation ID Preview', 'give' ),
 							'id'   => "{$current_section}_preview",
 							'type' => 'give_sequential_donation_code_preview',
-							'desc' => __( 'A preview of the next sequential donation ID.', 'give' ),
+							'desc' => __( 'A preview of the next sequential donation ID. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
 						),
 						array(
 							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
