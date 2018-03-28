@@ -140,12 +140,21 @@ class Give_Addon_Activation_Banner {
 	 * @access private
 	 */
 	private function add_addon_activate_meta() {
-		$user_id                  = get_option( $this->activate_by_meta_key );
-		$this->plugin_activate_by = (int) $user_id;
+		// Get all activated add-ons.
+		$give_addons = $this->get_plugin_file_names();
 
-		if ( ! $user_id ) {
-			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
-			$this->plugin_activate_by = (int) $this->user_id;
+		if ( ! empty( $give_addons ) ) {
+
+			// Go through rach add-ons and add meta data.
+			foreach ( $give_addons as $banner_addon_name => $addon ) {
+				// User meta key.
+				$activate_by_meta_key = "give_addon_{$banner_addon_name}_active_by_user";
+				$user_id              = get_option( $activate_by_meta_key );
+
+				if ( ! $user_id ) {
+					update_option( $activate_by_meta_key, $this->user_id, '' );
+				}
+			}
 		}
 	}
 
@@ -371,28 +380,19 @@ class Give_Addon_Activation_Banner {
 	public function give_addon_notice_ignore() {
 		global $give_addons;
 
-		// Get the notice meta key.
-		$notice_meta_key = ( 1 === count( $give_addons ) )
-			? $this->nag_meta_key
-			: 'give_addon_activation_ignore_all';
-
 		/**
 		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
 		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
 		 */
-		if ( isset( $_GET[ $notice_meta_key ] ) && '0' === $_GET[ $notice_meta_key ] ) {
+		if (
+			isset( $_GET['give_addon'], $_GET['give_addon_activation_ignore'] )
+			&& '1' === $_GET['give_addon_activation_ignore']
+		) {
+			$addon           = $_GET['give_addon'];
+			$notice_meta_key = "give_addon_activation_ignore_{$addon}";
 
-			//Get the global user
-			$current_user = wp_get_current_user();
-			$user_id      = $current_user->ID;
-
-			if ( 'give_addon_activation_ignore_all' === $notice_meta_key ) {
-				foreach ( $give_addons as $give_addon ) {
-					$meta_key = 'give_addon_activation_ignore_' . sanitize_title( $give_addon['name'] );
-					add_user_meta( $user_id, $meta_key, 'true', true );
-				}
-			}
-			add_user_meta( $user_id, $notice_meta_key, 'true', true );
+			// Record it user meta.
+			add_user_meta( $this->user_id, $notice_meta_key, 'true', true );
 		}
 	}
 
@@ -400,14 +400,65 @@ class Give_Addon_Activation_Banner {
 	 * Delete user id from option if plugin deactivated.
 	 *
 	 * @since  1.8
+	 * @since  2.0.7 Added support for multiple addons.
 	 * @access public
 	 */
 	public function remove_addon_activate_meta() {
-		$user_id = get_option( $this->activate_by_meta_key );
+		// Get the hook name and then grab the plugin file from it.
+		$plugin_file = str_replace( 'deactivate_', '', current_action() );
 
-		if ( $user_id ) {
-			delete_option( $this->activate_by_meta_key );
+		// Get all activated add-ons.
+		$give_addons = $this->get_plugin_file_names();
+
+		if ( ! empty( $give_addons ) ) {
+			foreach ( $give_addons as $banner_addon_name => $addon ) {
+				if ( $plugin_file === $addon['plugin_main_file'] ) {
+					// Get the option key.
+					$activate_by_meta_key = "give_addon_{$banner_addon_name}_active_by_user";
+
+					// Get the user meta key.
+					$user_id = get_option( $activate_by_meta_key );
+
+					if ( $user_id ) {
+						// Get user meta for this add-on.
+						$nag_meta_key = "give_addon_activation_ignore_{$banner_addon_name}";
+
+						// Delete plugin activation option key.
+						delete_option( $activate_by_meta_key );
+						// Delete user meta of plugin activation.
+						delete_user_meta( $user_id, $nag_meta_key );
+					}
+				}
+			}
 		}
+	}
+
+	/**
+	 * Get list of add-on last activated.
+	 *
+	 * @since 2.0.7
+	 * @return mixed|array
+	 */
+	public function get_recently_activated_addons() {
+		return get_option( 'give_recently_activated_addons', array() );
+	}
+
+	/**
+	 * Get the addon's folder name.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param string $main_file Plugin Main File.
+	 *
+	 * @return bool|mixed|string
+	 */
+	public function get_plugin_folder_name( $main_file ) {
+		// Remove plugin file and get the Add-on's folder name only.
+		$file_path       = explode( '/plugins/', $main_file );
+		$addon_file_path = array_pop( $file_path );
+		$addon_file_path = substr( $addon_file_path, 0, strpos( $addon_file_path, '/' ) );
+
+		return $addon_file_path;
 	}
 
 	/**
