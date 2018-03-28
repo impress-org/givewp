@@ -838,6 +838,10 @@ var give_setting_edit = false;
 			});
 
 			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number_suffix' ).on( 'blur', function(){
+				$(this).val( $(this).val().trim().replace( new RegExp( ' ', 'g' ), '-' ) );
+			});
 		}
 	};
 
