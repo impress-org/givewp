@@ -122,6 +122,8 @@ class Give_Sequential_Donation_Number {
 			if ( is_wp_error( $wp_error ) ) {
 				throw new Exception( $wp_error->get_error_message() );
 			}
+
+			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
 			error_log( "Give caught exception: {$e->getMessage()}" );
 		}
