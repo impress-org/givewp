@@ -346,6 +346,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Next Donation Number', 'give' ),
 							'id'                  => "{$current_section}_number",
+							'desc' => sprintf(
+								__( 'Would you like to change next donation number? %s if yes then, value must be greater than or equal to %s to avoid conflicts with existing IDs.', 'give' ),
+								'<br>',
+								Give()->seq_donation_number->get_next_number()
+							),
 							'type'                => 'number',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
