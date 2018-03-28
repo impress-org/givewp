@@ -114,7 +114,7 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	//Switch the gateway on gateway selection field change
-	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function( e ) {
+	$( document ).on( 'change', 'select#give-gateway, input.give-gateway', function( e ) {
 
 		e.preventDefault();
 
