@@ -316,4 +316,16 @@ class Give_Sequential_Donation_Number {
 			)
 		);
 	}
+
+	/**
+	 * Get maximum donation number
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_next_number() {
+		return ( $this->get_max_number() + 1 );
+	}
 }
