@@ -834,7 +834,7 @@ var give_setting_edit = false;
 					suffix = jQuery('#sequential-ordering_number_suffix').val(),
 					$donationID = `${prefix}${startingNumber.padStart( numberPadding, '0' ) }${suffix}`;
 
-				$previewField.text($donationID);
+				$previewField.val($donationID);
 			});
 
 			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');

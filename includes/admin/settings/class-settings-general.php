@@ -470,7 +470,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
 				</th>
 				<td class="give-forminp">
-					<span id="<?php echo esc_attr( $field['id'] ); ?>"></span>
+					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>
