@@ -170,14 +170,15 @@ class Give_Addon_Activation_Banner {
 		$notice_already_hooked = false;
 
 		if ( isset( $wp_filter['admin_notices']->callbacks[10] ) ) {
-
 			// Get all of the hooks.
 			$admin_notice_callbacks = array_keys( $wp_filter['admin_notices']->callbacks[10] );
 
-			foreach ( $admin_notice_callbacks as $key ) {
-				//If the key is found in your string, set $found to true
-				if ( false !== strpos( $key, 'addon_activation_banner_notices' ) ) {
-					$notice_already_hooked = true;
+			if ( ! empty( $admin_notice_callbacks ) ) {
+				foreach ( $admin_notice_callbacks as $key ) {
+					//If the key is found in your string, set $found to true
+					if ( false !== strpos( $key, 'addon_activation_banner_notices' ) ) {
+						$notice_already_hooked = true;
+					}
 				}
 			}
 		}
@@ -194,32 +195,48 @@ class Give_Addon_Activation_Banner {
 		global $pagenow, $give_addons;
 
 		// Bailout.
-		if ( 'plugins.php' !== $pagenow || $this->user_id !== $this->plugin_activate_by ) {
+		if ( 'plugins.php' !== $pagenow ) {
 			return false;
 		}
 
 		// Store the add-ons of which activation banner should be shown.
 		$addon_to_display = array();
 
-		// Go through each of the give add-on.
-		foreach ( $give_addons as $addon ) {
-			$add_on_state = get_user_meta( $this->user_id, 'give_addon_activation_ignore_' . sanitize_title( $addon['name'] ), true );
+		// Get recently activated add-ons.
+		$recent_activated = $this->get_recently_activated_addons();
+		$latest_addon     = array();
 
-			// If add-on were never dismissed.
-			if ( 'true' !== $add_on_state ) {
-				$addon_to_display[] = $addon;
+		// Get the plugin folder name, because many give-addon not sending proper plugin_file.
+		if ( ! empty( $recent_activated ) ) {
+			foreach ( $recent_activated as $recent_addon ) {
+				// Get the add-on folder name.
+				$latest_addon[] = substr( $recent_addon, 0, strpos( $recent_addon, '/' ) );
 			}
 		}
 
-		if ( empty( $addon_to_display ) ) {
-			return false;
+		// Go through each of the give add-on.
+		foreach ( $give_addons as $addon ) {
+			$addon_sanitized_name = sanitize_title( $addon['name'] );
+
+			// Get the add-on dismiss status.
+			$add_on_state = get_user_meta( $this->user_id, "give_addon_activation_ignore_{$addon_sanitized_name}", true );
+
+			// Get the option key.
+			$activate_by_meta_key = "give_addon_{$addon_sanitized_name}_active_by_user";
+			$activate_by_user     = (int) get_option( $activate_by_meta_key );
+
+			// Remove plugin file and get the Add-on's folder name only.
+			$file_path = $this->get_plugin_folder_name( $addon['file'] );
+
+			// If add-on were never dismissed.
+			if ( 'true' !== $add_on_state && $this->user_id === $activate_by_user ) {
+				if ( ! empty( $latest_addon ) && ( in_array( $file_path, $latest_addon, true ) || empty( $latest_addon ) ) ) {
+					$addon_to_display[] = $addon;
+				}
+			}
 		}
 
-		// If only one add-on activated.
-		$is_single = 1 === count( $addon_to_display );
-
-		// If the user hasn't already dismissed the alert, output activation banner.
-		if ( ! get_user_meta( $this->user_id, $this->get_notice_dismiss_meta_key() ) ) {
+		if ( ! empty( $addon_to_display ) ) {
 			ob_start();
 
 			// Output inline styles here because there's no reason
@@ -227,55 +244,51 @@ class Give_Addon_Activation_Banner {
 			$this->print_css_js();
 			ob_start();
 			?>
-            <div class="<?php echo ( false === $is_single ) ? 'give-alert-tab-wrapper' : ''; ?> updated give-addon-alert give-notice">
+			<div class="<?php echo ( 1 !== count( $addon_to_display ) ) ? 'give-alert-tab-wrapper' : ''; ?> updated give-addon-alert give-notice">
 				<?php
 				// If multiple add-on are activated.
-				if ( false === $is_single ) {
+				if ( 1 !== count( $addon_to_display ) ) {
 					?>
-                    <div class="give-vertical-tab">
-                        <div class="give-addon-tab-list">
-                            <ul class="give-alert-addon-list">
+					<div class="give-vertical-tab">
+						<div class="give-addon-tab-list">
+							<ul class="give-alert-addon-list">
 								<?php
 								$is_first = true;
 								foreach ( $addon_to_display as $banner ) {
 									?>
-                                    <li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
-                                        id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
-                                        <a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
-                                    </li>
+									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
+									    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+										<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
+									</li>
 									<?php
 									$is_first = false;
 								}
 								$is_first = true;
 								?>
-                            </ul>
-                        </div>
-                        <div class="give-right-side-block">
+							</ul>
+						</div>
+						<div class="give-right-side-block">
 							<?php
 							foreach ( $addon_to_display as $banner ) { ?>
-                                <div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
-                                     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+								<div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
+								     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
 									<?php
-									// Get the notice meta key.
-									$meta_key = ( 1 === count( $addon_to_display ) )
-										? $this->nag_meta_key
-										: 'give_addon_activation_ignore_all';
-
-									$this->render_single_addon_banner( $banner, $meta_key );
+									// Render single add banner.
+									$this->render_single_addon_banner( $banner );
 									?>
-                                </div>
+								</div>
 								<?php
 								$is_first = false;
 							}
 							?>
-                        </div>
-                    </div>
+						</div>
+					</div>
 					<?php
 				} else {
 					$this->render_single_addon_banner( $addon_to_display[0] );
 				}
 				?>
-            </div>
+			</div>
 			<?php
 			$notice_html = ob_get_clean();
 
@@ -290,15 +303,13 @@ class Give_Addon_Activation_Banner {
 	}
 
 	/**
-	/**
 	 * Render single banner activation
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.7
 	 *
 	 * @param array $banner_arr Banner options.
-	 * @param string $meta_key Pass meta key.
 	 */
-	private function render_single_addon_banner( $banner_arr, $meta_key = '' ) {
+	private function render_single_addon_banner( $banner_arr ) {
 		// Get all give add-on.
 		$give_addons = give_get_plugins();
 
@@ -315,9 +326,9 @@ class Give_Addon_Activation_Banner {
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
 		?>
-        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
-        <div class="give-alert-message">
-            <h3>
+		<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
+		<div class="give-alert-message">
+			<h3>
 				<?php
 				printf(
 				/* translators: %s: Add-on name */
@@ -325,31 +336,27 @@ class Give_Addon_Activation_Banner {
 					'<span>' . $banner_arr['name'] . '</span>'
 				);
 				?>
-            </h3>
-			<?php
-			$meta_key              = empty( $meta_key ) ? $this->nag_meta_key : $meta_key;
-			$nag_admin_dismiss_url = admin_url( 'plugins.php?' . $meta_key . '=0' );
-			?>
-            <a href="<?php echo $nag_admin_dismiss_url; ?>" class="dismiss">
-                <span class="dashicons dashicons-dismiss"></span>
-            </a>
-            <div class="alert-actions">
+			</h3>
+			<a href="<?php echo admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=' . sanitize_title( $banner_arr['name'] ) ); ?>" class="dismiss">
+				<span class="dashicons dashicons-dismiss"></span>
+			</a>
+			<div class="alert-actions">
 				<?php //Point them to your settings page.
 				if ( ! empty( $plugin_data['Description'] ) ) {
 					?><span class="give-addon-description">
-                    <em><?php echo strip_tags( $plugin_data['Description'] ); ?></em></span><br/>
+					<em><?php echo strip_tags( $plugin_data['Description'] ); ?></em></span><br />
 					<?php
 				}
 				if ( isset( $banner_arr['settings_url'] ) ) { ?>
-                    <a href="<?php echo $banner_arr['settings_url']; ?>"><span
-                                class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-                    </a>
+					<a href="<?php echo $banner_arr['settings_url']; ?>"><span
+								class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+					</a>
 					<?php
 				}
 				// Show them how to configure the Addon.
 				if ( isset( $banner_arr['documentation_url'] ) ) { ?>
-                    <a href="<?php echo $banner_arr['documentation_url'] ?>" target="_blank">
-                        <span class="dashicons dashicons-media-text"></span><?php
+					<a href="<?php echo $banner_arr['documentation_url'] ?>" target="_blank">
+						<span class="dashicons dashicons-media-text"></span><?php
 						printf(
 						/* translators: %s: Add-on name */
 							esc_html__( 'Documentation: %s Add-on', 'give' ),
@@ -360,12 +367,12 @@ class Give_Addon_Activation_Banner {
 				<?php
 				//Let them signup for plugin updates
 				if ( isset( $banner_arr['support_url'] ) ) { ?>
-                    <a href="<?php echo $banner_arr['support_url'] ?>" target="_blank">
-                        <span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-                    </a>
+					<a href="<?php echo $banner_arr['support_url'] ?>" target="_blank">
+						<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+					</a>
 				<?php } ?>
-            </div>
-        </div>
+			</div>
+		</div>
 		<?php
 	}
 
