@@ -318,8 +318,18 @@ class Give_Addon_Activation_Banner {
 
 		// Get the plugin main file.
 		foreach ( $give_addons as $main_file => $addon ) {
-			if ( isset( $banner_arr['name'] ) && strpos( $addon['Name'], $banner_arr['name'] ) !== false ) {
+			// Plugin should be activated.
+			if ( ! is_plugin_active( $main_file ) ) {
+				continue;
+			}
+
+			if (
+				isset( $banner_arr['name'] )
+				&& 'add-on' === $addon['Type']
+				&& $this->get_plugin_folder_name( $main_file ) === $this->get_plugin_folder_name( $plugin_file )
+			) {
 				$plugin_file = WP_PLUGIN_DIR . '/' . $main_file;
+				break;
 			}
 		}
 
