@@ -229,9 +229,6 @@ class Give_Sequential_Donation_Number {
 			$serial_code = get_the_title( $donation );
 		}
 
-		// Remove donation title prefix.
-		$serial_code = preg_replace( "/{$this->donation_title_prefix}/", '', $serial_code, 1 );
-
 		$serial_code = $args['with_hash'] ? "#{$serial_code}" : $serial_code;
 
 		/**
