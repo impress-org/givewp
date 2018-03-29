@@ -105,7 +105,7 @@ class Give_Sequential_Donation_Number {
 				array(
 					'ID'         => $donation_id,
 					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
-					'post_title' => $this->donation_title_prefix . trim( $serial_code )
+					'post_title' => trim( $serial_code )
 				)
 			);
 
