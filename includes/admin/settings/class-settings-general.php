@@ -31,7 +31,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 			$this->default_tab = 'general-settings';
 
-			if( $this->id === give_get_current_setting_tab() ) {
+			if ( $this->id === give_get_current_setting_tab() ) {
 				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
 				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '__render_give_sequential_donation_code_preview' ), 10, 3 );
 				add_action( 'give_admin_field_give_unlock_all_settings', array( $this, '__render_give_unlock_all_settings' ), 10, 3 );
@@ -324,57 +324,54 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name'                => __( 'Sequential Ordering', 'give' ),
-							'id'                  => "{$current_section}_status",
-							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
-							'type'                => 'radio_inline',
-							'default'             => 'disabled',
-							'options'             => array(
+							'name'    => __( 'Sequential Ordering', 'give' ),
+							'id'      => "{$current_section}_status",
+							'desc'    => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
 							)
 						),
 						array(
-							'name'                => __( 'Next Donation Number', 'give' ),
-							'id'                  => "{$current_section}_number",
+							'name' => __( 'Next Donation Number', 'give' ),
+							'id'   => "{$current_section}_number",
 							'desc' => sprintf(
 								__( 'The number used to generate the next donation ID. This value must be greater than or equal to %s to avoid conflicts with existing donation IDs.', 'give' ),
 								'<code>' . Give()->seq_donation_number->get_next_number() . '</code>'
 							),
-							'type'                => 'number',
-							'attributes'          => array(
-								'min' => Give()->seq_donation_number->get_next_number()
-							)
+							'type' => 'number',
 						),
 						array(
-							'name'                => __( 'Number Prefix', 'give' ),
-							'id'                  => "{$current_section}_number_prefix",
+							'name' => __( 'Number Prefix', 'give' ),
+							'id'   => "{$current_section}_number_prefix",
 							'desc' => sprintf(
 								__( 'The prefix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
 								'<code>-</code>'
 							),
-							'type'                => 'text',
+							'type' => 'text',
 						),
 						array(
-							'name'                => __( 'Number Suffix', 'give' ),
-							'id'                  => "{$current_section}_number_suffix",
+							'name' => __( 'Number Suffix', 'give' ),
+							'id'   => "{$current_section}_number_suffix",
 							'desc' => sprintf(
 								__( 'The suffix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
 								'<code>-</code>'
 							),
-							'type'                => 'text',
+							'type' => 'text',
 						),
 						array(
-							'name'                => __( 'Number Padding', 'give' ),
-							'id'                  => "{$current_section}_number_padding",
-							'desc' => sprintf(
+							'name'    => __( 'Number Padding', 'give' ),
+							'id'      => "{$current_section}_number_padding",
+							'desc'    => sprintf(
 								__( 'The minimum number of digits in the sequential donation number. Enter %s to display %s as %s.', 'give' ),
 								'<code>4</code>',
 								'<code>1</code>',
 								'<code>0001</code>'
 							),
-							'type'                => 'number',
-							'default'             => '0',
+							'type'    => 'number',
+							'default' => '0',
 						),
 						array(
 							'name' => __( 'Donation ID Preview', 'give' ),
