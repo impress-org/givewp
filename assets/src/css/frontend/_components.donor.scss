@@ -37,24 +37,25 @@ $donor-space-triple: $donor-space * 3;
   transition: all 0.2s ease-out;
   width: 100%;
 
-  &:last-child {
-	margin-bottom: 0;
-  }
-
   &__header { /* [1] */
 	align-items: center;
 	display: flex;
   }
 
   &__image { /* [2] */
+	border: 1px solid $give-card-border;
+	background: #FFF;
+	text-align: center;
 	flex-basis: $donor-space * 3;
 	flex-shrink: 0;
+	line-height: $donor-space * 3;
 	height: $donor-space * 3;
 	margin-right: $donor-space-half;
 	overflow: hidden;
 	border-radius: 50%;
 
 	img {
+	  border-radius: 50%;
 	  display: block;
 	  height: $donor-space * 3;
 	  object-fit: cover;
