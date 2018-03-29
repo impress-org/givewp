@@ -111,11 +111,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name' => 'Give Cache',
-							'id'   => 'give-clear-cache',
-							'text' => __( 'Clear Cache', 'give' ),
-							'desc' => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
-							'type' => 'remove_cache_button'
+							'name'        => 'Give Cache',
+							'id'          => 'give-clear-cache',
+							'buttonTitle' => __( 'Clear Cache', 'give' ),
+							'desc'        => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
+							'type'        => 'remove_cache_button'
 						),
 						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
@@ -205,7 +205,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				</th>
 				<td class="give-forminp">
 					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
-					        class="button button-secondary"><?php echo esc_html( $field['text'] ) ?></button>
+					        class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ) ?></button>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>
