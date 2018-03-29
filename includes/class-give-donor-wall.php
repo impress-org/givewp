@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Donor_Wall Class
  *
- * This class handles donors gravatars.
+ * This class handles donors.
  *
- * @since 1.0
+ * @since 2.1
  */
 class Give_Donor_Wall {
 
@@ -28,7 +28,7 @@ class Give_Donor_Wall {
 	 *
 	 * Set up the Give Donors Gravatars Class.
 	 *
-	 * @since  1.0
+	 * @since  2.1
 	 * @access public
 	 */
 	public function __construct() {
@@ -38,24 +38,138 @@ class Give_Donor_Wall {
 	/**
 	 * Setup the default hooks and actions
 	 *
-	 * @since  1.0
-	 * @access private
+	 * @since  2.1
 	 *
 	 * @return void
 	 */
-	private function setup_actions() {
-		//		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+	public function setup_actions() {
+
+		add_shortcode( 'give_donor_grid', array( $this, 'donor_grid_shortcode' ) );
+
 		//		add_shortcode( 'give_donors_gravatars', array( $this, 'shortcode' ) );
 		//		add_filter( 'give_settings_display', array( $this, 'settings' ) );
 		//		do_action( 'give_donors_gravatars_setup_actions' );
 	}
 
+
+	/**
+	 * Displays donors in a grid layout.
+	 *
+	 * @since  2.1.0
+	 *
+	 * @param array $atts                {
+	 *                                   Optional. Attributes of the form grid shortcode.
+	 *
+	 * @type int    $forms_per_page      Number of forms per page. Default '12'.
+	 * @type bool   $paged               Whether to paginate forms. Default 'true'.
+	 * @type string $ids                 A comma-separated list of donor IDs to display. Default empty.
+	 * @type string $columns             Maximum columns to display. Default 'best-fit'.
+	 *                                   Accepts 'best-fit', '1', '2', '3', '4'.
+	 * @type bool   $show_title          Whether to display form title. Default 'true'.
+	 * @type bool   $show_goal           Whether to display form goal. Default 'true'.
+	 * @type string $avatar_size         Avatar image size in pixels without the "px". Default "
+	 * }
+	 * @return string|bool The markup of the form grid or false.
+	 */
+	public function donor_grid_shortcode( $atts ) {
+
+		$give_settings = give_get_settings();
+
+		$atts = shortcode_atts( array(
+			'donors_per_page' => 20,
+			'form_id'         => 0,
+			'paged'           => true,
+			'ids'             => '',
+			'columns'         => 'best-fit',
+			'show_avatar'     => true,
+			'show_name'       => true,
+			'show_total'      => true,
+			'show_comments'   => true,
+			'avatar_size'     => 60,
+		), $atts );
+
+		// Validate integer attributes.
+		$atts['donors_per_page'] = intval( $atts['donors_per_page'] );
+
+		// Validate boolean attributes.
+		$boolean_attributes = array(
+			'paged',
+			'show_avatar',
+			'show_name',
+			'show_total',
+		);
+
+		foreach ( $boolean_attributes as $att ) {
+			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
+		}
+
+		// Maybe add pagination.
+		if ( true === $atts['paged'] ) {
+			$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+		}
+
+		// Set default form query args.
+		$donor_args = array(
+			'number' => $atts['donors_per_page'],
+			'offset' => $atts['donors_per_page'] * ( $paged - 1 ),
+		);
+
+		// Query to output donation forms.
+		$donor_query = new Give_Donors_Query( $donor_args );
+		$donors      = $donor_query->get_donors();
+
+		if ( $donors ) {
+
+			ob_start();
+
+			echo '<div class="give-wrap">';
+			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+
+			foreach ( $donors as $donor ) {
+
+				// Give/templates/shortcode-donor-grid.php.
+				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
+
+			}
+
+			echo '</div><!-- .give-grid -->';
+
+
+			if ( false !== $atts['paged'] ) {
+
+				$_donor_query['number'] = - 1;
+				$_donor_query['offset'] = 0;
+				$donor_count            = count( Give()->donors->get_donors( $_donor_query ) );
+
+
+				$paginate_args = array(
+					'current'   => max( 1, get_query_var( 'paged' ) ),
+					'total'     => ceil( $donor_count / $atts['donors_per_page'] ),
+					'show_all'  => false,
+					'end_size'  => 1,
+					'mid_size'  => 2,
+					'prev_next' => true,
+					'prev_text' => __( '« Previous', 'give' ),
+					'next_text' => __( 'Next »', 'give' ),
+					'type'      => 'plain',
+					'add_args'  => false,
+				);
+
+				printf( '<div class="give-page-numbers">%s</div>', paginate_links( $paginate_args ) );
+				echo '</div><!-- .give-wrap -->';
+			}
+
+			return ob_get_clean();
+		}
+	}
+
+
 	/**
 	 * Utility function to check if a gravatar exists for a given email or id
 	 *
-	 * @see: https://gist.github.com/justinph/5197810
+	 * @see    : https://gist.github.com/justinph/5197810
 	 *
-	 * @since  1.0
+	 * @since  2.1
 	 * @access public
 	 *
 	 * @param  int|string|object $id_or_email A user ID, email address, or comment object
@@ -114,235 +228,9 @@ class Give_Donor_Wall {
 	}
 
 	/**
-	 * Get an array of all the log IDs using the Give Logging Class
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  int $form_id Donation form id
-	 *
-	 * @return array        IDs if logs, false otherwise
-	 */
-	public function get_log_ids( $form_id = '' ) {
-		// get log for this form
-		$logs = Give()->logs->get_logs( $form_id );
-
-		if ( $logs ) {
-			$log_ids = array();
-
-			// make an array with all the donor IDs
-			foreach ( $logs as $log ) {
-				$log_ids[] = $log->ID;
-			}
-
-			return $log_ids;
-		}
-
-		return null;
-
-	}
-
-	/**
-	 * Get payment ID
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  int $form_id Donation form id
-	 *
-	 * @return mixed
-	 */
-	public function get_payment_ids( $form_id = '' ) {
-
-		$give_options = give_get_settings();
-
-		$log_ids = $this->get_log_ids( $form_id );
-
-		if ( $log_ids ) {
-
-			$payment_ids = array();
-
-			foreach ( $log_ids as $id ) {
-				// get the payment ID for each corresponding log ID
-				$payment_ids[] = give_get_meta( $id, '_give_log_payment_id', true );
-			}
-
-			// remove donors who have donated more than once so we can have unique avatars
-			$unique_emails = array();
-
-			foreach ( $payment_ids as $key => $id ) {
-
-				$email = give_get_meta( $id, '_give_payment_donor_email', true );
-
-				if ( isset ( $give_options['give_donors_gravatars_has_gravatar_account'] ) ) {
-					if ( ! $this->validate_gravatar( $email ) ) {
-						continue;
-					}
-				}
-
-				$unique_emails[ $id ] = give_get_meta( $id, '_give_payment_donor_email', true );
-
-			}
-
-			$unique_ids = array();
-
-			// strip duplicate emails
-			$unique_emails = array_unique( $unique_emails );
-
-			// convert the unique IDs back into simple array
-			foreach ( $unique_emails as $id => $email ) {
-				$unique_ids[] = $id;
-			}
-
-			// randomize the payment IDs if enabled
-			if ( isset( $give_options['give_donors_gravatars_random_gravatars'] ) ) {
-				shuffle( $unique_ids );
-			}
-
-			// return our unique IDs
-			return $unique_ids;
-
-		}
-
-	}
-
-	/**
-	 * Gravatars
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  int    $form_id Donation form id.
-	 * @param  string $title   Donors gravatars title.
-	 *
-	 * @return string
-	 */
-	public function gravatars( $form_id = false, $title = '' ) {
-
-		// unique $payment_ids
-		$payment_ids = $this->get_payment_ids( $form_id );
-
-		$give_options = give_get_settings();
-
-		// return if no ID
-		if ( ! $form_id ) {
-			return;
-		}
-
-		// minimum amount of donations before showing gravatars
-		// if the number of items in array is not greater or equal to the number specified, then exit
-		if ( isset( $give_options['give_donors_gravatars_min_purchases_required'] ) && '' != $give_options['give_donors_gravatars_min_purchases_required'] ) {
-			if ( ! ( count( $payment_ids ) >= $give_options['give_donors_gravatars_min_purchases_required'] ) ) {
-				return;
-			}
-		}
-
-		ob_start();
-
-		$output = '';
-		echo '<div id="give-purchase-gravatars">';
-
-
-		if ( isset ( $title ) ) {
-
-			if ( $title ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' );
-			} elseif ( isset( $give_options['give_donors_gravatars_heading'] ) ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donors_gravatars_heading'] ) . '</h2>' );
-			}
-
-		}
-		echo '<ul class="give-purchase-gravatars-list">';
-		$i = 0;
-
-		if ( $payment_ids ) {
-			foreach ( $payment_ids as $id ) {
-
-				// Give saves a blank option even when the control is turned off, hence the extra check
-				if ( isset( $give_options['give_donors_gravatars_maximum_number'] ) && '' != $give_options['give_donors_gravatars_maximum_number'] && $i == $give_options['give_donors_gravatars_maximum_number'] ) {
-					continue;
-				}
-
-				// get the payment meta
-				$payment_meta = give_get_meta( $id, '_give_payment_meta', true );
-
-				$user_info = $payment_meta['user_info'];
-
-				// get donor's first name
-				$name = $user_info['first_name'];
-
-				// get donor's email
-				$email = give_get_meta( $id, '_give_payment_donor_email', true );
-
-				// set gravatar size and provide filter
-				$size = isset( $give_options['give_donors_gravatars_gravatar_size'] ) ? apply_filters( 'give_donors_gravatars_gravatar_size', $give_options['give_donors_gravatars_gravatar_size'] ) : '';
-
-				// default image
-				$default_image = apply_filters( 'give_donors_gravatars_gravatar_default_image', false );
-
-				// assemble output
-				$output .= '<li>';
-
-				$output .= get_avatar( $email, $size, $default_image, $name );
-				$output .= '</li>';
-
-				$i ++;
-
-			} // end foreach
-		}
-
-		echo $output;
-		echo '</ul>';
-		echo '</div>';
-
-		return apply_filters( 'give_donors_gravatars', ob_get_clean() );
-	}
-
-	/**
-	 * Register widget
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function register_widget() {
-		register_widget( 'Give_Donor_Wall_Widget' );
-	}
-
-	/**
-	 * Shortcode
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  array  $atts    Shortcode attribures.
-	 * @param  string $content Shortcode content.
-	 *
-	 * @return string
-	 */
-	public function shortcode( $atts, $content = null ) {
-
-		$atts = shortcode_atts( array(
-			'id'    => '',
-			'title' => ''
-		), $atts, 'give_donors_gravatars' );
-
-		// if no ID is passed on single give_forms pages, get the correct ID
-		if ( is_singular( 'give_forms' ) ) {
-			$id = get_the_ID();
-		}
-
-		$content = $this->gravatars( $atts['id'], $atts['title'] );
-
-		return $content;
-
-	}
-
-	/**
 	 * Settings
 	 *
-	 * @since  1.0
+	 * @since  2.1
 	 * @access public
 	 *
 	 * @param  array $settings Gravatar settings.
@@ -353,46 +241,40 @@ class Give_Donor_Wall {
 
 		$give_gravatar_settings = array(
 			array(
-				'name' => esc_html__( 'Donator Gravatars', 'give' ),
+				'name' => __( 'Donator Gravatars', 'give' ),
 				'desc' => '<hr>',
 				'id'   => 'give_title',
 				'type' => 'give_title'
 			),
 			array(
-				'name' => esc_html__( 'Heading', 'give' ),
-				'desc' => esc_html__( 'The heading to display above the Gravatars.', 'give' ),
-				'type' => 'text',
-				'id'   => 'give_donors_gravatars_heading'
-			),
-			array(
-				'name'    => esc_html__( 'Gravatar Size', 'give' ),
-				'desc'    => esc_html__( 'The size of each Gravatar in pixels (512px maximum).', 'give' ),
+				'name'    => __( 'Gravatar Size', 'give' ),
+				'desc'    => __( 'The size of each Gravatar in pixels (512px maximum).', 'give' ),
 				'type'    => 'text_small',
 				'id'      => 'give_donors_gravatars_gravatar_size',
 				'default' => '64'
 			),
 			array(
-				'name' => esc_html__( 'Minimum Unique Donations Required', 'give' ),
-				'desc' => esc_html__( 'The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ),
+				'name' => __( 'Minimum Unique Donations Required', 'give' ),
+				'desc' => __( 'The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ),
 				'type' => 'text_small',
 				'id'   => 'give_donors_gravatars_min_purchases_required',
 			),
 			array(
-				'name'    => esc_html__( 'Maximum Gravatars To Show', 'give' ),
-				'desc'    => esc_html__( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
+				'name'    => __( 'Maximum Gravatars To Show', 'give' ),
+				'desc'    => __( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
 				'type'    => 'text',
 				'id'      => 'give_donors_gravatars_maximum_number',
 				'default' => '20',
 			),
 			array(
-				'name' => esc_html__( 'Gravatar Visibility', 'give' ),
-				'desc' => esc_html__( 'Show only donors with a Gravatar account.', 'give' ),
+				'name' => __( 'Gravatar Visibility', 'give' ),
+				'desc' => __( 'Show only donors with a Gravatar account.', 'give' ),
 				'id'   => 'give_donors_gravatars_has_gravatar_account',
 				'type' => 'checkbox',
 			),
 			array(
-				'name' => esc_html__( 'Randomize Gravatars', 'give' ),
-				'desc' => esc_html__( 'Randomize the Gravatars.', 'give' ),
+				'name' => __( 'Randomize Gravatars', 'give' ),
+				'desc' => __( 'Randomize the Gravatars.', 'give' ),
 				'id'   => 'give_donors_gravatars_random_gravatars',
 				'type' => 'checkbox',
 			),
@@ -404,139 +286,4 @@ class Give_Donor_Wall {
 }
 
 
-/**
- * Give_Donor_Wall_Widget Class
- *
- * This class handles donors gravatars
- *
- * @since 1.0
- */
-class Give_Donor_Wall_Widget extends WP_Widget {
-
-	/**
-	 * Widget constructor
-	 *
-	 * @since  1.0
-	 * @access public
-	 */
-	public function __construct() {
-
-		// widget settings
-		$widget_ops = array(
-			'classname'   => 'give-donors-gravatars',
-			'description' => esc_html__( 'Displays gravatars of people who have donated using your your form. Will only show on the single form page.', 'give' ),
-		);
-
-		// widget control settings
-		$control_ops = array(
-			'width'   => 250,
-			'height'  => 350,
-			'id_base' => 'give_gravatars_widget'
-		);
-
-		// create the widget
-		parent::__construct(
-			'give_donors_gravatars_widget',
-			esc_html__( 'Give Donors Gravatars', 'give' ),
-			$widget_ops,
-			$control_ops
-		);
-
-	}
-
-	/**
-	 * Donors gravatars widget content
-	 *
-	 * Outputs the content of the widget
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  array $args     Display arguments including 'before_title', 'after_title', 'before_widget', and 'after_widget'.
-	 * @param  array $instance Settings for the current Links widget instance.
-	 *
-	 * @return void
-	 */
-	public function widget( $args, $instance ) {
-
-		//@TODO: Don't extract it!!!
-		extract( $args );
-
-		if ( ! is_singular( 'give_forms' ) ) {
-			return;
-		}
-
-		// Variables from widget settings
-		$title = apply_filters( 'widget_title', $instance['title'] );
-
-		// Used by themes. Opens the widget
-		echo $before_widget;
-
-		// Display the widget title
-		if ( $title ) {
-			echo $before_title . $title . $after_title;
-		}
-
-		$gravatars = new Give_Donor_Wall();
-
-		echo $gravatars->gravatars( get_the_ID(), null ); // remove title
-
-		// Used by themes. Closes the widget
-		echo $after_widget;
-
-	}
-
-	/**
-	 * Update donors gravatars
-	 *
-	 * Processes widget options to be saved.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  array $new_instance New settings for this instance as input by the user via WP_Widget::form().
-	 * @param  array $old_instance Old settings for this instance.
-	 *
-	 * @return array Updated settings to save.
-	 */
-	public function update( $new_instance, $old_instance ) {
-
-		$instance = $old_instance;
-
-		$instance['title'] = strip_tags( $new_instance['title'] );
-
-		return $instance;
-
-	}
-
-	/**
-	 * Output donors gravatars
-	 *
-	 * Displays the actual form on the widget page.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  array $instance Current settings.
-	 *
-	 * @return void
-	 */
-	public function form( $instance ) {
-
-		// Set up some default widget settings.
-		$defaults = array(
-			'title' => '',
-		);
-
-		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
-
-		<!-- Title -->
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
-		</p>
-
-		<?php
-	}
-
-}
+new Give_Donor_Wall();
