@@ -1576,13 +1576,13 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<?php 
+		<?php
 		/**
 		 * Fires before the donation total label
-		 * 
+		 *
 		 * @since 2.0.5
 		 */
-		do_action( 'give_donation_final_total_label_before', $form_id ); 
+		do_action( 'give_donation_final_total_label_before', $form_id );
 		?>
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
@@ -1591,13 +1591,13 @@ function give_checkout_final_total( $form_id ) {
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
 		</span>
-		<?php 
+		<?php
 		/**
 		 * Fires after the donation final total label
-		 * 
+		 *
 		 * @since 2.0.5
 		 */
-		do_action( 'give_donation_final_total_label_after', $form_id ); 
+		do_action( 'give_donation_final_total_label_after', $form_id );
 		?>
 	</p>
 	<?php
@@ -1678,7 +1678,7 @@ function give_get_donation_form_submit_button( $form_id ) {
  *
  * @return mixed
  */
-function give_show_goal_progress( $form_id, $args ) {
+function give_show_goal_progress( $form_id, $args = array() ) {
 
 	ob_start();
 	give_get_template( 'shortcode-goal', array( 'form_id' => $form_id, 'args' => $args ) );
@@ -2010,3 +2010,33 @@ function __give_form_add_currency_settings( $form_html_tags, $form ) {
 }
 
 add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );
+
+/**
+ * Adds classes to progress bar container.
+ *
+ * @since 2.1
+ *
+ * @param string $class_goal
+ *
+ * @return string
+ */
+function add_give_goal_progress_class( $class_goal ) {
+	$class_goal = 'progress progress-striped active';
+
+	return $class_goal;
+}
+
+/**
+ * Adds classes to progress bar span tag.
+ *
+ * @since 2.1
+ *
+ * @param string $class_bar
+ *
+ * @return string
+ */
+function add_give_goal_progress_bar_class( $class_bar ) {
+	$class_bar = 'bar';
+
+	return $class_bar;
+}

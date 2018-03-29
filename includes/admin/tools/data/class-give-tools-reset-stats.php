@@ -212,11 +212,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			$this->delete_data( 'give_temp_reset_ids' );
 
-			// Reset the sequential order numbers
-			if ( give_get_option( 'enable_sequential' ) ) {
-				delete_option( 'give_last_payment_number' );
-			}
-
 			$this->done    = true;
 			$this->message = esc_html__( 'Donation forms, income, donations counts, and logs successfully reset.', 'give' );
 

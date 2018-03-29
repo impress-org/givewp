@@ -578,6 +578,7 @@ var give_setting_edit = false;
 			this.saveButtonTriggered();
 			this.changeAlert();
 			this.detectSettingsChange();
+			this.sequentialDonationIDPreview();
 		},
 
 		/**
@@ -698,6 +699,20 @@ var give_setting_edit = false;
 					$('#admin_notice_emails').parents('tr').hide();
 				}
 			}).change();
+
+			/**
+			 * Toggle sequential ordering settings
+			 */
+			var sequential_ordering = $('input[name="sequential-ordering_status"]', '.give-setting-tab-body-general');
+			sequential_ordering.on('change', function () {
+				var field_value = $('input[name="sequential-ordering_status"]:checked', '.give-setting-tab-body-general').val(),
+					$parent = $(this).closest('table');
+				if ('enabled' === field_value) {
+					$('input', $parent).not( 'input[name="sequential-ordering_status"]' ).parents('tr').show();
+				} else {
+					$('input', $parent).not( 'input[name="sequential-ordering_status"]' ).parents('tr').hide();
+				}
+			}).change();
 		},
 
 		main_setting_update_notice: function () {
@@ -799,8 +814,37 @@ var give_setting_edit = false;
 
 				});
 			}
-		}
+		},
 
+		/**
+		 * Render donation id for sequential ordering.
+		 *
+		 * @since 2.1.0
+		 */
+		sequentialDonationIDPreview: function(){
+			const $previewField = jQuery('#sequential-ordering_preview');
+
+			// Bailout.
+			if( ! $previewField.length ) {
+				return;
+			}
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
+				const prefix =jQuery('#sequential-ordering_number_prefix').val(),
+					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
+					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
+					suffix = jQuery('#sequential-ordering_number_suffix').val(),
+					$donationID = `${prefix}${startingNumber.padStart( numberPadding, '0' ) }${suffix}`;
+
+				$previewField.val($donationID);
+			});
+
+			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number_suffix' ).on( 'blur', function(){
+				$(this).val( $(this).val().replace( new RegExp( ' ', 'g' ), '-' ) );
+			});
+		}
 	};
 
 	/**
@@ -2915,8 +2959,8 @@ var give_setting_edit = false;
 
 		// Render setting tab.
 		give_render_responsive_tabs();
-	});
-})(jQuery);
+	} );
+})( jQuery );
 
 /**
  * Responsive js.

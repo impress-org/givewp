@@ -23,4 +23,11 @@
 @import 'tables';
 @import 'theme-compatibility';
 @import 'donation-history';
-@import 'give-popup';
+@import 'donation-grid';
+
+// Wrapper increases specificity for defensive styling against themes.
+.give-wrap {
+	@import 'grid';
+	@import 'card';
+	@import 'page-numbers';
+}

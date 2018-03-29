@@ -147,6 +147,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $donor_meta;
 
 		/**
+		 * Give Sequential Donation DB Object
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Sequential_Ordering object
+		 */
+		public $sequential_donation_db;
+
+		/**
 		 * Give API Object
 		 *
 		 * @since  1.0
@@ -230,6 +240,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $scripts;
 
 		/**
+		 * Give_Seq_Donation_Number Object.
+		 *
+		 * @var Give_Sequential_Donation_Number
+		 */
+		public $seq_donation_number;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -304,24 +321,26 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->roles           = new Give_Roles();
-			$this->api             = new Give_API();
-			$this->give_settings   = new Give_Admin_Settings();
-			$this->session         = new Give_Session();
-			$this->html            = new Give_HTML_Elements();
-			$this->emails          = new Give_Emails();
-			$this->email_tags      = new Give_Email_Template_Tags();
-			$this->donors          = new Give_DB_Donors();
-			$this->donor_meta      = new Give_DB_Donor_Meta();
-			$this->template_loader = new Give_Template_Loader();
-			$this->email_access    = new Give_Email_Access();
-			$this->tooltips        = new Give_Tooltips();
-			$this->notices         = new Give_Notices();
-			$this->payment_meta    = new Give_DB_Payment_Meta();
-			$this->logs            = new Give_Logging();
-			$this->form_meta       = new Give_DB_Form_Meta();
-			$this->async_process   = new Give_Async_Process();
-			$this->scripts         = new Give_Scripts();
+			$this->roles                  = new Give_Roles();
+			$this->api                    = new Give_API();
+			$this->give_settings          = new Give_Admin_Settings();
+			$this->session                = new Give_Session();
+			$this->html                   = new Give_HTML_Elements();
+			$this->emails                 = new Give_Emails();
+			$this->email_tags             = new Give_Email_Template_Tags();
+			$this->donors                 = new Give_DB_Donors();
+			$this->donor_meta             = new Give_DB_Donor_Meta();
+			$this->template_loader        = new Give_Template_Loader();
+			$this->email_access           = new Give_Email_Access();
+			$this->tooltips               = new Give_Tooltips();
+			$this->notices                = new Give_Notices();
+			$this->payment_meta           = new Give_DB_Payment_Meta();
+			$this->logs                   = new Give_Logging();
+			$this->form_meta              = new Give_DB_Form_Meta();
+			$this->sequential_donation_db = new Give_DB_Sequential_Ordering();
+			$this->async_process          = new Give_Async_Process();
+			$this->scripts                = new Give_Scripts();
+			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -442,6 +461,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-v2.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-translation.php';
@@ -463,6 +483,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -491,6 +512,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-payment.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-sequential-donation-number.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
@@ -509,6 +531,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
+
+			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
@@ -559,6 +583,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-login.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-grid.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-totals.php';

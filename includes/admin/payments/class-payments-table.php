@@ -454,14 +454,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
+				$serial_code = Give()->seq_donation_number->get_serial_code( $payment );
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link( array(
-						'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
-						'tag_content' => "#$payment->ID",
+						'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
+						'tag_content' => $serial_code,
 						'link'        => $single_donation_url,
 					) );
 				} else {
-					$value = "#{$payment->ID}";
+					$value = $serial_code;
 				}
 
 				$value .= sprintf(
@@ -475,7 +476,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'amount':
-				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_donation_amount( $payment, true );
 				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;

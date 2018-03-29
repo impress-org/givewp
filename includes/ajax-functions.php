@@ -598,8 +598,7 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  * @return string
  */
 function give_ajax_pages_search() {
-
-	$data = [];
+	$data = array();
 	$args = array(
 		'post_type' => 'page',
 		's'         => give_clean( $_GET['s'] ),
