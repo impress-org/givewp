@@ -104,7 +104,7 @@ class Give_Sequential_Donation_Number {
 			$wp_error = wp_update_post(
 				array(
 					'ID'         => $donation_id,
-					'post_name'  => "{$this->donation_title_prefix}-{$donation_id}",
+					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
 					'post_title' => $this->donation_title_prefix . trim( $serial_code )
 				)
 			);
