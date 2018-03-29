@@ -98,8 +98,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Company Donations', 'give' ),
-							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'name'    => __( 'Company Field', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name fields on all donation forms? You can enable this option per form as well.', 'give' ),
 							'id'      => 'company_field',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
