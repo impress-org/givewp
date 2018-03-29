@@ -872,12 +872,12 @@ function give_get_payment_meta_user_info( $payment_id ) {
 
 	if ( empty( $donor_info['last_name'] ) ) {
 		$donor_id                 = $donor_id ? $donor_id : give_get_payment_donor_id( $payment_id );
-		$donor_info['first_name'] = Give()->donor_meta->get_meta( $donor_id, '_give_donor_last_name', true );
+		$donor_info['last_name'] = Give()->donor_meta->get_meta( $donor_id, '_give_donor_last_name', true );
 	}
 
 	if ( empty( $donor_info['email'] ) ) {
 		$donor_id                 = $donor_id ? $donor_id : give_get_payment_donor_id( $payment_id );
-		$donor_info['first_name'] = Give()->donors->get_column_by( 'email', 'id', $donor_id );
+		$donor_info['email'] = Give()->donors->get_column_by( 'email', 'id', $donor_id );
 	}
 
 	return $donor_info;

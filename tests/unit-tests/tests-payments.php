@@ -283,8 +283,6 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test getting the payment number.
 	 */
 	public function test_get_payment_number() {
-		global $wpdb;
-
 		// Reset all items and start from scratch.
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
 		wp_cache_flush();

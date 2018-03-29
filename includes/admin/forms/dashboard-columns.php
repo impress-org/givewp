@@ -102,7 +102,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					);
 
 					if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
-						$html .= sprintf( '<span class="goal-achieved">%s</span>', __( 'Goal achieved', 'give' ) );
+						$html .= sprintf( '<span class="goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
 					} else {
 						$html .= sprintf( '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%s">', esc_attr( $goal_stats['progress'] ) );
 						$html .= sprintf( '<span style="width:%s%%;"></span>', esc_attr( $goal_stats['progress'] ) );
