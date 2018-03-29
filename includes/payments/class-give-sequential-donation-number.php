@@ -136,7 +136,7 @@ class Give_Sequential_Donation_Number {
 			get_option( '_give_reset_sequential_number' ) &&
 			( $number = give_get_option( 'sequential-ordering_number', 0 ) )
 		) {
-			if( Give()->sequential_donation_db->get_id_auto_increment_val() <= $number ){
+			if ( Give()->sequential_donation_db->get_id_auto_increment_val() <= $number ) {
 				delete_option( '_give_reset_sequential_number' );
 			}
 
