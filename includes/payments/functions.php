@@ -1871,3 +1871,20 @@ function give_get_payment_meta_price_id( $payment_meta ) {
 	return apply_filters( 'give_get_payment_meta_price_id', $price_id, $payment_meta );
 
 }
+
+
+/**
+ * Get payment total amount
+ *
+ * @since 2.1.0
+ *
+ * @param int $payment_id
+ *
+ * @return float
+ */
+function give_get_payment_total( $payment_id = 0 ) {
+	return round(
+		floatval( give_get_meta( $payment_id, '_give_payment_total', true ) ),
+		give_get_price_decimals( $payment_id )
+	);
+}
