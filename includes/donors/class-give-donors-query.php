@@ -76,14 +76,6 @@ class Give_Donors_Query {
 	public $meta_type = '';
 
 	/**
-	 * The number of pages.
-	 *
-	 * @since 2.1.0
-	 * @var int
-	 */
-	public $max_num_pages = 0;
-
-	/**
 	 * Default query arguments.
 	 *
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
@@ -116,7 +108,6 @@ class Give_Donors_Query {
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
-		$this->max_num_pages   = 0;
 	}
 
 	/**
@@ -223,9 +214,6 @@ class Give_Donors_Query {
 		if ( ! empty( $this->args['count'] ) ) {
 			$fields = "COUNT({$this->table_name}.id)";
 		}
-
-		// Set number of pages.
-//		$this->max_num_pages = ceil( count( $this->donors ) / $this->args['number'] );
 
 		$orderby = $this->get_order_query();
 

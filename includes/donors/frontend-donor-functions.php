@@ -20,7 +20,7 @@
  */
 function give_get_donor_avatar( $donor ) {
 
-	
+
 	?>
 	<div class="give-donor__image">
 

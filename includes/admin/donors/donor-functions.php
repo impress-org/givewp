@@ -51,11 +51,11 @@ function give_register_default_donor_tabs( $tabs ) {
 	$default_tabs = array(
 		'overview' => array(
 			'dashicon' => 'dashicons-admin-users',
-			'title' => __( 'Donor Profile', 'give' ),
+			'title'    => __( 'Donor Profile', 'give' ),
 		),
 		'notes'    => array(
 			'dashicon' => 'dashicons-admin-comments',
-			'title' => __( 'Donor Notes', 'give' ),
+			'title'    => __( 'Donor Notes', 'give' ),
 		),
 	);
 
@@ -87,7 +87,7 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 
 /**
  * Connect and Reconnect Donor with User profile.
- * @todo $address is unnecessary param because we are store address to user.
+ * @todo  $address is unnecessary param because we are store address to user.
  *
  * @param object $donor      Donor Object.
  * @param array  $donor_data Donor Post Variables.
@@ -129,7 +129,7 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 		// Check whether the disconnected user id and the reconnected user id are same or not.
 		// If both are same then delete user id store in donor meta.
-		if( $donor_data['user_id'] === $disconnected_user_id ) {
+		if ( $donor_data['user_id'] === $disconnected_user_id ) {
 			delete_user_meta( $disconnected_user_id, '_give_disconnected_donor_id' );
 			$donor->delete_meta( '_give_disconnected_user_id' );
 		}
