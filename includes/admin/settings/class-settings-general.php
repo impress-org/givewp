@@ -324,20 +324,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name'             => '',
-							'id'               => "give_unlock_all_settings",
-							'type'             => 'give_unlock_all_settings',
-							'desc'             => __( 'To unlock all setting at once for editing you can click below link.', 'give' ),
-							'confirmation_msg' => __( 'Changing these setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
-						),
-						array(
 							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
-							'desc'                => __( 'Would you like to enable the sequential ordering feature?', 'give' ),
+							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
 							'type'                => 'radio_inline',
 							'default'             => 'enabled',
-							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Toggling seqential ordering will affect new all new donation numbering. Do you still want to edit this setting?', 'give' ),
 							'options'             => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
@@ -347,44 +338,49 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name'                => __( 'Next Donation Number', 'give' ),
 							'id'                  => "{$current_section}_number",
 							'desc' => sprintf(
-								__( 'Would you like to change next donation number? %s if yes then, value must be greater than or equal to %s to avoid conflicts with existing IDs.', 'give' ),
-								'<br>',
-								Give()->seq_donation_number->get_next_number()
+								__( 'The number used to generate the next donation ID. This value must be greater than or equal to %s to avoid conflicts with existing donation IDs.', 'give' ),
+								'<code>' . Give()->seq_donation_number->get_next_number() . '</code>'
 							),
 							'type'                => 'number',
-							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
-							'attributes' => array(
+							'attributes'          => array(
 								'min' => Give()->seq_donation_number->get_next_number()
 							)
 						),
 						array(
 							'name'                => __( 'Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
+							'desc' => sprintf(
+								__( 'The prefix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
 							'type'                => 'text',
-							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name'                => __( 'Number Suffix', 'give' ),
 							'id'                  => "{$current_section}_number_suffix",
+							'desc' => sprintf(
+								__( 'The suffix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
 							'type'                => 'text',
-							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name'                => __( 'Number Padding', 'give' ),
 							'id'                  => "{$current_section}_number_padding",
+							'desc' => sprintf(
+								__( 'The minimum number of digits in the sequential donation number. Enter %s to display %s as %s.', 'give' ),
+								'<code>4</code>',
+								'<code>1</code>',
+								'<code>0001</code>'
+							),
 							'type'                => 'number',
 							'default'             => '0',
-							'confirm_before_edit' => 'forced',
-							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name' => __( 'Donation ID Preview', 'give' ),
 							'id'   => "{$current_section}_preview",
 							'type' => 'give_sequential_donation_code_preview',
-							'desc' => __( 'Your sequential order ID will look like above example ID.', 'give' ),
+							'desc' => __( 'A preview of the next sequential donation ID. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
 						),
 						array(
 							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
@@ -480,7 +476,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
 				</th>
 				<td class="give-forminp">
-					<span id="<?php echo esc_attr( $field['id'] ); ?>"></span>
+					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>

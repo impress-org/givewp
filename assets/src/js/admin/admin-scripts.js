@@ -828,19 +828,19 @@ var give_setting_edit = false;
 			}
 
 			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
-				const prefix =jQuery('#sequential-ordering_number_prefix').val().trim(),
+				const prefix =jQuery('#sequential-ordering_number_prefix').val(),
 					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
 					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
-					suffix = jQuery('#sequential-ordering_number_suffix').val().trim(),
+					suffix = jQuery('#sequential-ordering_number_suffix').val(),
 					$donationID = `${prefix}${startingNumber.padStart( numberPadding, '0' ) }${suffix}`;
 
-				$previewField.text($donationID);
+				$previewField.val($donationID);
 			});
 
 			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');
 
 			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number_suffix' ).on( 'blur', function(){
-				$(this).val( $(this).val().trim().replace( new RegExp( ' ', 'g' ), '-' ) );
+				$(this).val( $(this).val().replace( new RegExp( ' ', 'g' ), '-' ) );
 			});
 		}
 	};
