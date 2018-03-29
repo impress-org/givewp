@@ -60,17 +60,6 @@ class Give_Sequential_Donation_Number {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
 			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 		}
-
-		/**
-		 * Filter the donariton title prefix.
-		 *
-		 * This will prevent donation title from conflict from other post type slugs.
-		 * Do not mistaken this will serial code prefix.
-		 */
-		$this->donation_title_prefix = apply_filters(
-			'give_sequential_orderingl_donation_title_prefix',
-			$this->donation_title_prefix
-		);
 	}
 
 	/**
