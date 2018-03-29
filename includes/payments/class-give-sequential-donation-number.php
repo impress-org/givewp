@@ -56,7 +56,7 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ) {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
 			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 		}
@@ -202,7 +202,7 @@ class Give_Sequential_Donation_Number {
 		// Bailout.
 		if (
 			empty( $donation->ID )
-			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) )
+			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
 		) {
 			return $donation->ID;
 		}

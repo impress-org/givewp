@@ -62,7 +62,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			'status'       => __( 'Status', 'give' )
 		);
 
-		if ( ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) ) ) {
+		if ( ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ) {
 			unset( $cols['seq_id'] );
 		}
 

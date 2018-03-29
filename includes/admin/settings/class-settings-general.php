@@ -328,7 +328,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'                  => "{$current_section}_status",
 							'desc'                => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
 							'type'                => 'radio_inline',
-							'default'             => 'enabled',
+							'default'             => 'disabled',
 							'options'             => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
