@@ -84,22 +84,6 @@
 			width: 250px;
 		}
 	}
-	.give-confirm.dashicons-lock,
-	.give-confirm.dashicons-unlock {
-		padding: 3px 5px;
-		position: relative;
-		right: 32px;
-		cursor: pointer;
-	}
-
-	.give-forminp-radio .give-confirm.dashicons-lock,
-	.give-forminp-radio_inline .give-confirm.dashicons-lock,
-	.give-forminp-radio .give-confirm.dashicons-unlock,
-	.give-forminp-radio_inline .give-confirm.dashicons-unlock{
-		position: inherit;
-		right: 0;
-		padding-left: 0;
-	}
 }
 
 .give-setting-tab-header {

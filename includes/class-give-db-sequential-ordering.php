@@ -121,4 +121,28 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
+
+
+	/**
+	 * Get id auto increment next value.
+	 *
+	 * @since 2.1.0
+	 * @return null|string
+	 */
+	public function get_id_auto_increment_val() {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT AUTO_INCREMENT
+				FROM  INFORMATION_SCHEMA.TABLES
+				WHERE TABLE_SCHEMA=%s
+				AND TABLE_NAME=%s
+				",
+				DB_NAME,
+				$this->table_name
+			)
+		);
+	}
 }
