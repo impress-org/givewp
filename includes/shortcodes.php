@@ -48,12 +48,9 @@ function give_donation_history( $atts ) {
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
-			echo sprintf(
-				'<a href="%s">%s</a>',
-				esc_url( give_get_history_page_uri() ),
-				__( '&laquo; Return to All Donations', 'give' )
-			);
+			echo sprintf( '<a href="%s">%s</a>', esc_url( give_get_history_page_uri() ), __( '&laquo; Return to All Donations', 'give' ) );
 		}
+
 		return ob_get_clean();
 	}
 
@@ -65,12 +62,7 @@ function give_donation_history( $atts ) {
 	 * a. Check if a user is logged in or does a session exists
 	 * b. Does an email-access token exist?
 	 */
-	if (
-		is_user_logged_in() ||
-		false !== Give()->session->get_session_expiration() ||
-		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
-		true === give_get_history_session()
-	) {
+	if ( is_user_logged_in() || false !== Give()->session->get_session_expiration() || ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) || true === give_get_history_session() ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
@@ -191,7 +183,7 @@ function give_login_form_shortcode( $atts ) {
 
 	$atts = shortcode_atts( array(
 		// Add backward compatibility for redirect attribute.
-		'redirect' => '',
+		'redirect'        => '',
 		'login-redirect'  => '',
 		'logout-redirect' => '',
 	), $atts, 'give_login' );
@@ -359,6 +351,7 @@ function give_profile_editor_shortcode( $atts ) {
 	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
 	if ( is_user_logged_in() && $is_donor_disconnected ) {
 		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+
 		return false;
 	}
 
@@ -423,7 +416,7 @@ function give_process_profile_editor_updates( $data ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $user_id The ID of the user.
+	 * @param int   $user_id  The ID of the user.
 	 * @param array $userdata User info, including ID, first name, last name, display name and email.
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
@@ -522,7 +515,7 @@ function give_process_profile_editor_updates( $data ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $user_id The ID of the user.
+		 * @param int   $user_id  The ID of the user.
 		 * @param array $userdata User info, including ID, first name, last name, display name and email.
 		 */
 		do_action( 'give_user_profile_updated', $user_id, $userdata );
@@ -645,18 +638,10 @@ function give_totals_shortcode( $atts ) {
 	}
 
 	// Replace {total} in message.
-	$message = str_replace( '{total}', give_currency_filter(
-		give_format_amount( $total,
-			array( 'sanitize' => false )
-		)
-	), esc_html( $atts['message'] ) );
+	$message = str_replace( '{total}', give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ), esc_html( $atts['message'] ) );
 
 	// Replace {total_goal} in message.
-	$message = str_replace( '{total_goal}', give_currency_filter(
-		give_format_amount( $total_goal,
-			array( 'sanitize' => true )
-		)
-	), $message );
+	$message = str_replace( '{total_goal}', give_currency_filter( give_format_amount( $total_goal, array( 'sanitize' => true ) ) ), $message );
 
 	/**
 	 * Update Give totals shortcode output.
@@ -703,30 +688,30 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  *
  * @since  2.1.0
  *
- * @param array $atts {
- *     Optional. Attributes of the form grid shortcode.
+ * @param array $atts                {
+ *                                   Optional. Attributes of the form grid shortcode.
  *
- *     @type int    $forms_per_page      Number of forms per page. Default '12'.
- *     @type bool   $paged               Whether to paginate forms. Default 'true'.
- *     @type string $ids                 A comma-separated list of form IDs to display. Default empty.
- *     @type string $cats                A comma-separated list of form categories to display. Default empty.
- *     @type string $tags                A comma-separated list of form tags to display. Default empty.
- *     @type string $columns             Maximum columns to display. Default 'best-fit'.
+ * @type int    $forms_per_page      Number of forms per page. Default '12'.
+ * @type bool   $paged               Whether to paginate forms. Default 'true'.
+ * @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ * @type string $cats                A comma-separated list of form categories to display. Default empty.
+ * @type string $tags                A comma-separated list of form tags to display. Default empty.
+ * @type string $columns             Maximum columns to display. Default 'best-fit'.
  *                                       Accepts 'best-fit', '1', '2', '3', '4'.
- *     @type bool   $show_title          Whether to display form title. Default 'true'.
- *     @type bool   $show_goal           Whether to display form goal. Default 'true'.
- *     @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
- *     @type bool   $show_featured_image Whether to display featured image. Default 'true'.
- *     @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
- *     @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
- *     @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
- *     @type string $display_style       How the form is displayed, either in new page or modal popup.
+ * @type bool   $show_title          Whether to display form title. Default 'true'.
+ * @type bool   $show_goal           Whether to display form goal. Default 'true'.
+ * @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
+ * @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ * @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
+ * @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
+ * @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
+ * @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  * }
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
-	$form_ids = array();
+
 	$give_settings = give_get_settings();
 
 	$atts = shortcode_atts( array(
@@ -785,8 +770,8 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter by form category.
 	if ( ! empty( $atts['cats'] ) ) {
-		$cats      = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
-		$tax_query = array(
+		$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+		$tax_query                = array(
 			'taxonomy' => 'give_forms_category',
 			'terms'    => $cats,
 		);
@@ -795,8 +780,8 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter by form tag.
 	if ( ! empty( $atts['tags'] ) ) {
-		$tags      = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
-		$tax_query = array(
+		$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+		$tax_query                = array(
 			'taxonomy' => 'give_forms_tag',
 			'terms'    => $tags,
 		);
@@ -813,42 +798,39 @@ function give_form_grid_shortcode( $atts ) {
 		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
 
 		echo '<div class="give-wrap">';
-			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
-			while ( $form_query->have_posts() ) {
-				$form_query->the_post();
+		while ( $form_query->have_posts() ) {
+			$form_query->the_post();
 
-				// Give/templates/shortcode-form-grid.php.
-				give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
+			// Give/templates/shortcode-form-grid.php.
+			give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
 
-			}
+		}
 
-			wp_reset_postdata();
+		wp_reset_postdata();
 
-			echo '</div><!-- .give-grid -->';
+		echo '</div><!-- .give-grid -->';
 
-			remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
-			remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-			if ( false !== $atts['paged'] ) {
-				$paginate_args = array(
-					'current'   => max( 1, get_query_var( 'paged' ) ),
-					'total'     => $form_query->max_num_pages,
-					'show_all'  => false,
-					'end_size'  => 1,
-					'mid_size'  => 2,
-					'prev_next' => true,
-					'prev_text' => __( '« Previous', 'give' ),
-					'next_text' => __( 'Next »', 'give' ),
-					'type'      => 'plain',
-					'add_args'  => false,
-				);
+		if ( false !== $atts['paged'] ) {
+			$paginate_args = array(
+				'current'   => max( 1, get_query_var( 'paged' ) ),
+				'total'     => $form_query->max_num_pages,
+				'show_all'  => false,
+				'end_size'  => 1,
+				'mid_size'  => 2,
+				'prev_next' => true,
+				'prev_text' => __( '« Previous', 'give' ),
+				'next_text' => __( 'Next »', 'give' ),
+				'type'      => 'plain',
+				'add_args'  => false,
+			);
 
-				printf(
-					'<div class="give-page-numbers">%s</div>',
-					paginate_links( $paginate_args )
-				);
-			}
+			printf( '<div class="give-page-numbers">%s</div>', paginate_links( $paginate_args ) );
+		}
 		echo '</div><!-- .give-wrap -->';
 
 		return ob_get_clean();
@@ -856,3 +838,124 @@ function give_form_grid_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
+
+
+/**
+ * Displays donors in a grid layout.
+ *
+ * @since  2.1.0
+ *
+ * @param array $atts                {
+ *                                   Optional. Attributes of the form grid shortcode.
+ *
+ * @type int    $forms_per_page      Number of forms per page. Default '12'.
+ * @type bool   $paged               Whether to paginate forms. Default 'true'.
+ * @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ * @type string $cats                A comma-separated list of form categories to display. Default empty.
+ * @type string $tags                A comma-separated list of form tags to display. Default empty.
+ * @type string $columns             Maximum columns to display. Default 'best-fit'.
+ *                                       Accepts 'best-fit', '1', '2', '3', '4'.
+ * @type bool   $show_title          Whether to display form title. Default 'true'.
+ * @type bool   $show_goal           Whether to display form goal. Default 'true'.
+ * @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
+ * @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ * @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
+ * @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
+ * @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
+ *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
+ * }
+ * @return string|bool The markup of the form grid or false.
+ */
+function give_donor_grid_shortcode( $atts ) {
+
+	$give_settings = give_get_settings();
+
+	$atts = shortcode_atts( array(
+		'donors_per_page' => 20,
+		'form_id'         => 0,
+		'paged'           => true,
+		'ids'             => '',
+		'columns'         => 'best-fit',
+		'show_avatar'     => true,
+		'show_name'       => true,
+		'show_total'      => true,
+		'avatar_size'     => 'medium',
+		'display_style'   => 'redirect',
+	), $atts );
+
+	// Validate integer attributes.
+	$atts['donors_per_page'] = intval( $atts['donors_per_page'] );
+
+	// Validate boolean attributes.
+	$boolean_attributes = array(
+		'paged',
+		'show_avatar',
+		'show_name',
+		'show_total',
+	);
+
+	foreach ( $boolean_attributes as $att ) {
+		$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
+	}
+
+	// Maybe add pagination.
+	if ( true === $atts['paged'] ) {
+		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+	}
+
+	// Set default form query args.
+	$donor_args = array(
+		'number' => $atts['donors_per_page'],
+		'offset' => $atts['donors_per_page'] * ( $paged - 1 ),
+	);
+
+	// Query to output donation forms.
+	$donor_query = new Give_Donors_Query( $donor_args );
+	$donors      = $donor_query->get_donors();
+
+	if ( $donors ) {
+
+		ob_start();
+
+		echo '<div class="give-wrap">';
+		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+
+		foreach ( $donors as $donor ) {
+
+			// Give/templates/shortcode-donor-grid.php.
+			give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
+
+		}
+
+		echo '</div><!-- .give-grid -->';
+
+
+		if ( false !== $atts['paged'] ) {
+
+			$_donor_query['number'] = - 1;
+			$_donor_query['offset'] = 0;
+			$donor_count            = count( Give()->donors->get_donors( $_donor_query ) );
+
+
+			$paginate_args = array(
+				'current'   => max( 1, get_query_var( 'paged' ) ),
+				'total'     => ceil( $donor_count / $atts['donors_per_page'] ),
+				'show_all'  => false,
+				'end_size'  => 1,
+				'mid_size'  => 2,
+				'prev_next' => true,
+				'prev_text' => __( '« Previous', 'give' ),
+				'next_text' => __( 'Next »', 'give' ),
+				'type'      => 'plain',
+				'add_args'  => false,
+			);
+
+			printf( '<div class="give-page-numbers">%s</div>', paginate_links( $paginate_args ) );
+			echo '</div><!-- .give-wrap -->';
+		}
+
+		return ob_get_clean();
+	}
+}
+
+add_shortcode( 'give_donor_grid', 'give_donor_grid_shortcode' );

@@ -76,6 +76,14 @@ class Give_Donors_Query {
 	public $meta_type = '';
 
 	/**
+	 * The number of pages.
+	 *
+	 * @since 2.1.0
+	 * @var int
+	 */
+	public $max_num_pages = 0;
+
+	/**
 	 * Default query arguments.
 	 *
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
@@ -104,10 +112,11 @@ class Give_Donors_Query {
 			// 'form'       => array(),
 		);
 
-		$this->args = wp_parse_args( $args, $defaults );
+		$this->args            = wp_parse_args( $args, $defaults );
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
+		$this->max_num_pages   = 0;
 	}
 
 	/**
@@ -148,12 +157,12 @@ class Give_Donors_Query {
 		 */
 		do_action( 'give_pre_get_donors', $this );
 
-		$cache_key        = Give_Cache::get_key( 'give_donor', $this->get_sql(), false );
+		$cache_key = Give_Cache::get_key( 'give_donor', $this->get_sql(), false );
 
 		// Get donors from cache.
 		$this->donors = Give_Cache::get_db_query( $cache_key );
 
-		if ( is_null( $this->donors  ) ) {
+		if ( is_null( $this->donors ) ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
 			} else {
@@ -215,13 +224,12 @@ class Give_Donors_Query {
 			$fields = "COUNT({$this->table_name}.id)";
 		}
 
+		// Set number of pages.
+//		$this->max_num_pages = ceil( count( $this->donors ) / $this->args['number'] );
+
 		$orderby = $this->get_order_query();
 
-		$sql = $wpdb->prepare(
-			"SELECT {$fields} FROM {$this->table_name} LIMIT %d,%d;",
-			absint( $this->args['offset'] ),
-			absint( $this->args['number'] )
-		);
+		$sql = $wpdb->prepare( "SELECT {$fields} FROM {$this->table_name} LIMIT %d,%d;", absint( $this->args['offset'] ), absint( $this->args['number'] ) );
 
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
@@ -245,11 +253,7 @@ class Give_Donors_Query {
 		// Get sql query for meta.
 		if ( ! empty( $this->args['meta_query'] ) ) {
 			$meta_query_object = new WP_Meta_Query( $this->args['meta_query'] );
-			$meta_query        = $meta_query_object->get_sql(
-				$this->meta_type,
-				$this->table_name,
-				'id'
-			);
+			$meta_query        = $meta_query_object->get_sql( $this->meta_type, $this->table_name, 'id' );
 
 			$where = implode( '', $meta_query );
 		}
@@ -262,7 +266,7 @@ class Give_Donors_Query {
 		$where .= $this->get_where_date();
 
 		return trim( $where );
-		
+
 	}
 
 	/**
@@ -335,24 +339,17 @@ class Give_Donors_Query {
 
 		// Donors created for a specific date or in a date range
 		if ( ! empty( $this->args['date_query'] ) ) {
-			$date_query_object = new WP_Date_Query(
-				is_array( $this->args['date_query'] ) ? $this->args['date_query'] : wp_parse_args( $this->args['date_query'] ),
-				"{$this->table_name}.date_created"
-			);
+			$date_query_object = new WP_Date_Query( is_array( $this->args['date_query'] ) ? $this->args['date_query'] : wp_parse_args( $this->args['date_query'] ), "{$this->table_name}.date_created" );
 
-			$where .= str_replace(
-				array(
-					"\n",
-					'(   (',
-					'))',
-				),
-				array(
-					'',
-					'( (',
-					') )',
-				),
-				$date_query_object->get_sql()
-			);
+			$where .= str_replace( array(
+				"\n",
+				'(   (',
+				'))',
+			), array(
+				'',
+				'( (',
+				') )',
+			), $date_query_object->get_sql() );
 		}
 
 		return $where;
@@ -426,9 +423,7 @@ class Give_Donors_Query {
 	private function get_order_query() {
 		$table_columns = Give()->donors->get_columns();
 
-		$this->args['orderby'] = ! array_key_exists( $this->args['orderby'], $table_columns ) ?
-			'id' :
-			$this->args['orderby'];
+		$this->args['orderby'] = ! array_key_exists( $this->args['orderby'], $table_columns ) ? 'id' : $this->args['orderby'];
 
 		$this->args['orderby'] = esc_sql( $this->args['orderby'] );
 		$this->args['order']   = esc_sql( $this->args['order'] );

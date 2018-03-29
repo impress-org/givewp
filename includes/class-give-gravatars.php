@@ -63,7 +63,7 @@ class Give_Donors_Gravatars {
 	 * @return bool If the gravatar exists or not
 	 */
 	public function validate_gravatar( $id_or_email ) {
-		//id or email code borrowed from wp-includes/pluggable.php
+		// id or email code borrowed from wp-includes/pluggable.php
 		$email = '';
 		if ( is_numeric( $id_or_email ) ) {
 			$id   = (int) $id_or_email;
@@ -219,7 +219,7 @@ class Give_Donors_Gravatars {
 	 */
 	public function gravatars( $form_id = false, $title = '' ) {
 
-		// unique $payment_ids 
+		// unique $payment_ids
 		$payment_ids = $this->get_payment_ids( $form_id );
 
 		$give_options = give_get_settings();
