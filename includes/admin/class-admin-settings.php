@@ -325,8 +325,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				'desc'                => '',
 				'table_html'          => true,
 				'repeat'              => false,
-				'confirm_before_edit' => false,
-				'confirmation_msg'    => __( 'Do you want to change this setting?', 'give' ),
 				'repeat_btn_title'    => __( 'Add Field', 'give' ),
 			);
 
@@ -476,12 +474,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
-									<?php echo self::can_lock_field( $value, $option_value ) ? 'readonly' : ''; ?>
 								/>
-								<?php if ( self::can_lock_field( $value, $option_value ) ): ?>
-									<span class="give-confirm dashicons dashicons-lock"
-									      data-message="<?php echo $value['confirmation_msg']; ?>"></span>
-								<?php endif; ?>
 							<?php endif; ?>
 							<?php echo $description; ?>
 						</td>
@@ -596,15 +589,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 														style="<?php echo esc_attr( $value['css'] ); ?>"
 														<?php echo implode( ' ', $custom_attributes ); ?>
 														<?php checked( $key, $option_value ); ?>
-														<?php echo self::can_lock_field( $value, $option_value ) ? 'disabled' : ''; ?>
 													/> <?php echo $val ?></label>
 											</li>
 											<?php
 										}
 										?>
-										<?php if ( self::can_lock_field( $value, $option_value ) ): ?>
-											<li><span class="give-confirm dashicons dashicons-lock" data-message="<?php echo $value['confirmation_msg']; ?>"></span></li>
-										<?php endif; ?>
 										<?php echo $description; ?>
 								</fieldset>
 							</td>
@@ -1055,28 +1044,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			return $is_setting_page;
-		}
-
-		/**
-		 * Can lock setting field
-		 *
-		 * @since  2.1
-		 * @access private
-		 *
-		 * @param array $field
-		 * @param mixed $saved_value
-		 *
-		 * @return bool
-		 */
-		private static function can_lock_field( $field, $saved_value ) {
-			// Check if admin want to confirm before edit setting.
-			$is_lock_setting = $field['confirm_before_edit'] && $saved_value ? true : false;
-
-			if( 'forced' === $field['confirm_before_edit'] ) {
-				$is_lock_setting = true;
-			}
-
-			return $is_lock_setting;
 		}
 	}
 
