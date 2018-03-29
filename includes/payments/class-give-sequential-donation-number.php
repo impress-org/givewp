@@ -56,10 +56,8 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ) {
-			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
-			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
-		}
+		add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
+		add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 	}
 
 	/**
@@ -78,7 +76,8 @@ class Give_Sequential_Donation_Number {
 	public function __save_donation_title( $donation_id, $post, $existing_donation_updated ) {
 		// Bailout
 		if (
-			$existing_donation_updated
+			! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
+			|| $existing_donation_updated
 			|| 'give_payment' !== $post->post_type
 		) {
 			return;
