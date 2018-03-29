@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Donors_Gravatars Class
+ * Give_Donor_Wall Class
  *
  * This class handles donors gravatars.
  *
  * @since 1.0
  */
-class Give_Donors_Gravatars {
+class Give_Donor_Wall {
 
 	/**
 	 * Class Constructor
@@ -307,7 +307,7 @@ class Give_Donors_Gravatars {
 	 * @return void
 	 */
 	public function register_widget() {
-		register_widget( 'Give_Donors_Gravatars_Widget' );
+		register_widget( 'Give_Donor_Wall_Widget' );
 	}
 
 	/**
@@ -405,13 +405,13 @@ class Give_Donors_Gravatars {
 
 
 /**
- * Give_Donors_Gravatars_Widget Class
+ * Give_Donor_Wall_Widget Class
  *
  * This class handles donors gravatars
  *
  * @since 1.0
  */
-class Give_Donors_Gravatars_Widget extends WP_Widget {
+class Give_Donor_Wall_Widget extends WP_Widget {
 
 	/**
 	 * Widget constructor
@@ -477,7 +477,7 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 
-		$gravatars = new Give_Donors_Gravatars();
+		$gravatars = new Give_Donor_Wall();
 
 		echo $gravatars->gravatars( get_the_ID(), null ); // remove title
 
