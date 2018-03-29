@@ -1088,7 +1088,7 @@ function give_donation_amount( $donation_id, $format_args = array() ) {
 		$donation_id = $donation_id->ID;
 	}
 
-	$amount        = $formatted_amount = give_get_meta( $donation_id, '_give_payment_total', true );
+	$amount        = $formatted_amount = give_get_payment_total( $donation_id );
 	$currency_code = give_get_payment_currency_code( $donation_id );
 
 	if ( is_bool( $format_args ) ) {
