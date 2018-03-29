@@ -460,7 +460,7 @@ function give_check_for_existing_payment( $payment_id ) {
 /**
  * Get Payment Status
  *
- * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
+ * @param WP_Post|Give_Payment|int $payment_id      Payment object or payment ID.
  * @param bool                     $return_label Whether to return the translated status label instead of status value.
  *                                               Default false.
  *
@@ -468,38 +468,38 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @return bool|mixed True if payment status exists, false otherwise.
  */
-function give_get_payment_status( $payment, $return_label = false ) {
+function give_get_payment_status( $payment_id, $return_label = false ) {
 
-	if ( is_numeric( $payment ) ) {
-
-		$payment = new Give_Payment( $payment );
-
-		if ( ! $payment->ID > 0 ) {
-			return false;
+	if ( ! is_numeric( $payment_id ) ) {
+		if(
+			$payment_id instanceof  Give_Payment
+			|| $payment_id instanceof WP_Post
+		) {
+			$payment_id = $payment_id->ID;
 		}
 
 	}
 
-	if ( ! is_object( $payment ) || ! isset( $payment->post_status ) ) {
+	if ( ! $payment_id > 0 ) {
 		return false;
 	}
+
+	$payment_status = get_post_status( $payment_id );
 
 	$statuses = give_get_payment_statuses();
 
-	if ( ! is_array( $statuses ) || empty( $statuses ) ) {
+	if ( empty( $payment_status ) || ! is_array( $statuses ) || empty( $statuses ) ) {
 		return false;
 	}
 
-	// Get payment object if not already given.
-	$payment = $payment instanceof Give_Payment ? $payment : new Give_Payment( $payment->ID );
 
-	if ( array_key_exists( $payment->status, $statuses ) ) {
+	if ( array_key_exists( $payment_status, $statuses ) ) {
 		if ( true === $return_label ) {
 			// Return translated status label.
-			return $statuses[ $payment->status ];
+			return $statuses[ $payment_status ];
 		} else {
 			// Account that our 'publish' status is labeled 'Complete'
-			$post_status = 'publish' === $payment->status ? 'Complete' : $payment->post_status;
+			$post_status = 'publish' === $payment_status ? 'Complete' : $payment_status;
 
 			// Make sure we're matching cases, since they matter
 			return array_search( strtolower( $post_status ), array_map( 'strtolower', $statuses ) );
@@ -697,18 +697,18 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
  * @return bool $ret True if complete, false otherwise.
  */
 function give_is_payment_complete( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
 	$ret = false;
+	$payment_status = '';
 
-	if ( $payment->ID > 0 ) {
+	if ( $payment_id > 0 && 'give_payment' === get_post_type( $payment_id )) {
+		$payment_status = get_post_status( $payment_id );
 
-		if ( (int) $payment_id === (int) $payment->ID && 'publish' == $payment->status ) {
+		if ( 'publish' === $payment_status ) {
 			$ret = true;
 		}
 	}
 
-	return apply_filters( 'give_is_payment_complete', $ret, $payment_id, $payment->post_status );
+	return apply_filters( 'give_is_payment_complete', $ret, $payment_id, $payment_status );
 }
 
 /**
@@ -829,9 +829,7 @@ function give_decrease_total_earnings( $amount = 0 ) {
  * @return mixed $meta Payment Meta.
  */
 function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta', $single = true ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->get_meta( $meta_key, $single );
+	return give_get_meta( $payment_id, $meta_key, $single );
 }
 
 /**
@@ -860,9 +858,29 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  * @return array $user_info User Info Meta Values.
  */
 function give_get_payment_meta_user_info( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+	$donor_id   = 0;
+	$donor_info = array(
+		'first_name' => give_get_meta( $payment_id, '_give_donor_billing_first_name', true ),
+		'last_name'  => give_get_meta( $payment_id, '_give_donor_billing_last_name', true ),
+		'email'      => give_get_meta( $payment_id, '_give_donor_billing_donor_email', true ),
+	);
 
-	return $payment->user_info;
+	if ( empty( $donor_info['first_name'] ) ) {
+		$donor_id                 = give_get_payment_donor_id( $payment_id );
+		$donor_info['first_name'] = Give()->donor_meta->get_meta( $donor_id, '_give_donor_first_name', true );
+	}
+
+	if ( empty( $donor_info['last_name'] ) ) {
+		$donor_id                 = $donor_id ? $donor_id : give_get_payment_donor_id( $payment_id );
+		$donor_info['first_name'] = Give()->donor_meta->get_meta( $donor_id, '_give_donor_last_name', true );
+	}
+
+	if ( empty( $donor_info['email'] ) ) {
+		$donor_id                 = $donor_id ? $donor_id : give_get_payment_donor_id( $payment_id );
+		$donor_info['first_name'] = Give()->donors->get_column_by( 'email', 'id', $donor_id );
+	}
+
+	return $donor_info;
 }
 
 /**
@@ -877,9 +895,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
  * @return int $form_id Form ID.
  */
 function give_get_payment_form_id( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->form_id;
+	return (int) give_get_meta( $payment_id, '_give_payment_form_id', true );
 }
 
 /**
@@ -892,9 +908,7 @@ function give_get_payment_form_id( $payment_id ) {
  * @return string $email User email.
  */
 function give_get_payment_user_email( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->email;
+	return give_get_meta( $payment_id, '_give_payment_donor_email', true );
 }
 
 /**
@@ -923,9 +937,25 @@ function give_is_guest_payment( $payment_id ) {
  * @return int $user_id User ID.
  */
 function give_get_payment_user_id( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+	global $wpdb;
+	$paymentmeta_table = Give()->payment_meta->table_name;
 
-	return $payment->user_id;
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT user_id
+			FROM $wpdb->donors
+			WHERE id=(
+				SELECT meta_value
+				FROM $paymentmeta_table
+				WHERE payment_id=%s
+				AND meta_key=%s
+			)
+			",
+			$payment_id,
+			'_give_payment_donor_id'
+		)
+	);
 }
 
 /**
@@ -938,9 +968,7 @@ function give_get_payment_user_id( $payment_id ) {
  * @return int $payment->customer_id Donor ID.
  */
 function give_get_payment_donor_id( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->customer_id;
+	return give_get_meta( $payment_id, '_give_payment_donor_id' , true );
 }
 
 /**
@@ -953,9 +981,7 @@ function give_get_payment_donor_id( $payment_id ) {
  * @return string $ip User IP.
  */
 function give_get_payment_user_ip( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->ip;
+	return give_get_meta( $payment_id, '_give_payment_donor_ip', true );
 }
 
 /**
@@ -968,9 +994,7 @@ function give_get_payment_user_ip( $payment_id ) {
  * @return string $date The date the payment was completed.
  */
 function give_get_payment_completed_date( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->completed_date;
+	return give_get_meta( $payment_id, '_give_completed_date', true );
 }
 
 /**
@@ -983,9 +1007,7 @@ function give_get_payment_completed_date( $payment_id = 0 ) {
  * @return string $gateway Gateway.
  */
 function give_get_payment_gateway( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->gateway;
+	return give_get_meta( $payment_id, '_give_payment_gateway', true );
 }
 
 /**
@@ -998,9 +1020,7 @@ function give_get_payment_gateway( $payment_id ) {
  * @return string $currency The currency code.
  */
 function give_get_payment_currency_code( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->currency;
+	return give_get_meta( $payment_id, '_give_payment_currency', true );
 }
 
 /**
@@ -1028,9 +1048,7 @@ function give_get_payment_currency( $payment_id = 0 ) {
  * @return string $key Donation key.
  */
 function give_get_payment_key( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->key;
+	return give_get_meta( $payment_id, '_give_payment_purchase_key', true );
 }
 
 /**
@@ -1045,9 +1063,7 @@ function give_get_payment_key( $payment_id = 0 ) {
  * @return string $number Payment order number.
  */
 function give_get_payment_number( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->number;
+	return Give()->seq_donation_number->get_serial_code( $payment_id );
 }
 
 
@@ -1057,7 +1073,7 @@ function give_get_payment_number( $payment_id = 0 ) {
  * Get the fully formatted or unformatted donation amount which is sent through give_currency_filter()
  * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
- * @param int|Give_Payment $donation    Donation ID or Donation Object.
+ * @param int|Give_Payment $donation_id Donation ID or Donation Object.
  * @param bool|array       $format_args Currency Formatting Arguments.
  *
  * @since 1.0
@@ -1065,14 +1081,15 @@ function give_get_payment_number( $payment_id = 0 ) {
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation, $format_args = array() ) {
-	/* @var Give_Payment $donation */
-	if ( ! ( $donation instanceof Give_Payment ) ) {
-		$donation = new Give_Payment( absint( $donation ) );
+function give_donation_amount( $donation_id, $format_args = array() ) {
+	if ( ! $donation_id ) {
+		return '';
+	} elseif ( ! is_numeric( $donation_id ) && ( $donation_id instanceof Give_Payment ) ) {
+		$donation_id = $donation_id->ID;
 	}
 
-	$amount           = $donation->total;
-	$formatted_amount = $amount;
+	$amount        = $formatted_amount = give_get_meta( $donation_id, '_give_payment_total', true );
+	$currency_code = give_get_payment_currency_code( $donation_id );
 
 	if ( is_bool( $format_args ) ) {
 		$format_args = array(
@@ -1106,7 +1123,7 @@ function give_donation_amount( $donation, $format_args = array() ) {
 				! is_array( $format_args['amount'] ) ?
 					array(
 						'sanitize' => false,
-						'currency' => $donation->currency,
+						'currency' => $currency_code,
 					) :
 					$format_args['amount']
 			);
@@ -1116,7 +1133,7 @@ function give_donation_amount( $donation, $format_args = array() ) {
 			$formatted_amount = give_currency_filter(
 				$formatted_amount,
 				! is_array( $format_args['currency'] ) ?
-					array( 'currency_code' => $donation->currency ) :
+					array( 'currency_code' => $currency_code ) :
 					$format_args['currency']
 			);
 		}
@@ -1132,7 +1149,7 @@ function give_donation_amount( $donation, $format_args = array() ) {
 	 * @param int    $donation_id      Donation ID.
 	 * @param string $type             Donation amount type.
 	 */
-	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation, $format_args );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation_id, $format_args );
 }
 
 /**
@@ -1182,9 +1199,14 @@ function give_get_payment_subtotal( $payment_id = 0 ) {
  * @return string The donation ID.
  */
 function give_get_payment_transaction_id( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
+	$transaction_id = give_get_meta( $payment_id, '_give_payment_transaction_id', true );
 
-	return $payment->transaction_id;
+	if ( empty( $transaction_id ) ) {
+		$gateway        = $this->gateway;
+		$transaction_id = apply_filters( "give_get_payment_transaction_id-{$gateway}", $this->ID );
+	}
+
+	return $transaction_id;
 }
 
 /**
@@ -1599,7 +1621,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param int|Give_Payment $donation Donation Data Object.
+ * @param int|Give_Payment $donation_id Donation Data Object.
  * @param array            $args     a. only_level = If set to true will only return the level name if multi-level enabled.
  *                                   b. separator  = The separator between the Form Title and the Donation Level.
  *
@@ -1607,13 +1629,13 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
-function give_get_donation_form_title( $donation, $args = array() ) {
+function give_get_donation_form_title( $donation_id, $args = array() ) {
 
-	if ( ! $donation instanceof Give_Payment ) {
-		$donation = new Give_Payment( $donation );
+	if ( ! is_numeric( $donation_id ) && $donation_id instanceof Give_Payment ) {
+		$donation_id = $donation_id->ID;
 	}
 
-	if( ! $donation->ID ) {
+	if( ! $donation_id ) {
 		return '';
 	}
 
@@ -1624,9 +1646,9 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$form_id     = $donation->form_id;
-	$price_id    = $donation->price_id;
-	$form_title  = $donation->form_title;
+	$form_id     = give_get_payment_form_id( $donation_id );
+	$price_id    = give_get_meta( $donation_id, '_give_payment_price_id', true );
+	$form_title  = give_get_meta( $donation_id, '_give_payment_form_title', true );
 	$only_level  = $args['only_level'];
 	$separator   = $args['separator'];
 	$level_label = '';
@@ -1663,7 +1685,7 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 			}
 
 		} elseif ( give_has_variable_prices( $form_id ) ) {
-			$level_label = give_get_price_option_name( $form_id, $price_id, $donation->ID, false );
+			$level_label = give_get_price_option_name( $form_id, $price_id, $donation_id, false );
 		}
 
 		// Only add separator if there is a form title.
@@ -1683,7 +1705,7 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 	 *
 	 * @since 1.0
 	 */
-	return apply_filters( 'give_get_donation_form_title', $form_title_html, $donation->payment_meta, $donation );
+	return apply_filters( 'give_get_donation_form_title', $form_title_html, array(), $donation_id );
 }
 
 /**
