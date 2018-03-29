@@ -23,9 +23,10 @@ td.column-goal {
   .goal-achieved {
 	> .dashicons {
 	  color: $orange;
-	  font-size: 16px;
-	  height:16px;
-	  width: 16px;
+	  font-size: 13px;
+	  height: 16px;
+	  width: 13px;
+	  line-height: 18px;
 	}
   }
 }
