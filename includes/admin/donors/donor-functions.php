@@ -154,6 +154,5 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 	 */
 	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
 
-
 	return $output;
 }

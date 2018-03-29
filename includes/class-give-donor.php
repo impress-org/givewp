@@ -1249,7 +1249,7 @@ class Give_Donor {
 		}
 
 		// Bailout: do not save duplicate orders
-		if ( $this->is_address_exist( $address_type, $address ) ) {
+		if ( $this->does_address_exist( $address_type, $address ) ) {
 			return false;
 		}
 
@@ -1407,7 +1407,7 @@ class Give_Donor {
 	 *
 	 * @return bool|null
 	 */
-	public function is_address_exist( $current_address_type, $current_address ) {
+	public function does_address_exist( $current_address_type, $current_address ) {
 		$status = false;
 
 		// Bailout.
@@ -1586,10 +1586,10 @@ class Give_Donor {
 	 */
 	public function get_donor_initals() {
 
-		$first_name_initial = mb_substr($this->get_first_name(), 0, 1, 'utf-8');
-		$last_name_initial = mb_substr($this->get_last_name(), 0, 1, 'utf-8');
+		$first_name_initial = mb_substr( $this->get_first_name(), 0, 1, 'utf-8' );
+		$last_name_initial  = mb_substr( $this->get_last_name(), 0, 1, 'utf-8' );
 
-		return $first_name_initial . $last_name_initial;
+		return apply_filters( 'get_donor_initals', $first_name_initial . $last_name_initial );
 
 	}
 

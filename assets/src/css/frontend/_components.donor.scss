@@ -15,7 +15,7 @@
 --------------------------------------------------------------*/
 
 $donor-space: 20px;
-$give-donor-color: #333;
+$donor-color: #333;
 $donor-space-eighth: $donor-space * 0.125;
 $donor-space-quarter: $donor-space * 0.25;
 $donor-space-fifth: $donor-space * 0.2;
@@ -29,7 +29,7 @@ $donor-space-triple: $donor-space * 3;
 
 .give-donor {
   border: 1px solid $give-card-border;
-  //color: $give-donor-color;
+  //color: $donor-color;
   font-size: 1em;
   margin-bottom: $donor-space;
   padding: $donor-space;
@@ -71,19 +71,19 @@ $donor-space-triple: $donor-space * 3;
   &__name {
 	font-size: 1em;
 	font-weight: 400;
-	color: $give-donor-color;
+	color: $donor-color;
 	line-height: 1.3;
 	margin: 0;
   }
 
   &__timestamp {
-	color: $give-donor-color;
+	color: $donor-color;
 	display: block;
 	font-size: 75%;
   }
 
   &__content {
-	color: $give-donor-color;
+	color: $donor-color;
 	margin-top: $donor-space-half;
 
 	& :last-child {

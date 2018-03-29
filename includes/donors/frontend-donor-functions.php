@@ -17,33 +17,35 @@
  * @since 2.1
  *
  * @param Give_Donor $donor
+ * @param int        $size
+ *
+ * @return string HTML output.
  */
-function give_get_donor_avatar( $donor ) {
-
-
+function give_get_donor_avatar( $donor, $size = 60 ) {
+	ob_start();
 	?>
 	<div class="give-donor__image">
-
 		<?php
 		// Check if gravatar exists.
 		if ( give_validate_gravatar( $donor->email ) ) {
-
-			echo get_avatar( $donor->email );
-
+			// Return avatar.
+			echo get_avatar( $donor->email, $size );
 		} else {
 			// No gravatar = output initials.
-			echo $donor->get_donor_initals( $donor );
-		}
-
-		?>
-
+			echo $donor->get_donor_initals();
+		} ?>
 	</div>
-
 	<?php
+
+	return apply_filters( 'give_get_donor_avatar', ob_get_clean() );
 
 }
 
 /**
+ * Determine whether a Gravatar exists for a donor or not.
+ *
+ * @since 2.1
+ *
  * @param string|int $id_or_email
  *
  * @return bool

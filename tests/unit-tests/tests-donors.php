@@ -396,7 +396,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	 * Test total donor count.
 	 *
 	 * @cover Give_Donor::add_address
-	 * @cover Give_Donor::is_address_exist
+	 * @cover Give_Donor::does_address_exist
 	 * @cover Give_Donor::setup_address
 	 */
 	public function test_add_address() {

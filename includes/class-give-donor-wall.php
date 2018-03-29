@@ -103,10 +103,7 @@ class Give_Donor_Wall {
 			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
 		}
 
-		// Maybe add pagination.
-		if ( true === $atts['paged'] ) {
-			$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-		}
+		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 
 		// Set default form query args.
 		$donor_args = array(
@@ -126,10 +123,8 @@ class Give_Donor_Wall {
 			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
 			foreach ( $donors as $donor ) {
-
 				// Give/templates/shortcode-donor-grid.php.
 				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
-
 			}
 
 			echo '</div><!-- .give-grid -->';
