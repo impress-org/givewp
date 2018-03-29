@@ -13,4 +13,4 @@ import './admin-forms';
 import './admin-scripts';
 import './admin-settings';
 import './admin-widgets';
-import '../frontend/give-popup';
+import '../plugins/give-popup';
