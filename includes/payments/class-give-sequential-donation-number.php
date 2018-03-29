@@ -191,20 +191,27 @@ class Give_Sequential_Donation_Number {
 	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param int|Give_Payment $donation
+	 * @param int|Give_Payment|WP_Post $donation
 	 * @param array            $args
 	 *
 	 * @return string
 	 */
 	public function get_serial_code( $donation, $args = array() ) {
-		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
+		// Get id from object.
+		if( ! is_numeric( $donation ) ) {
+			if( $donation instanceof Give_Payment ) {
+				$donation = $donation->ID;
+			} elseif ( $donation instanceof WP_Post ){
+				$donation = $donation->ID;
+			}
+		}
 
 		// Bailout.
 		if (
-			empty( $donation->ID )
+			empty( $donation )
 			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
 		) {
-			return $donation->ID;
+			return $donation;
 		}
 
 		// Set default params.
@@ -216,10 +223,10 @@ class Give_Sequential_Donation_Number {
 			)
 		);
 
-		$serial_code = $args['default'] ? $donation->ID : '';
+		$serial_code = $args['default'] ? $donation : '';
 
-		if ( $donation_number = $this->get_serial_number( $donation->ID ) ) {
-			$serial_code = get_the_title( $donation->ID );
+		if ( $donation_number = $this->get_serial_number( $donation ) ) {
+			$serial_code = get_the_title( $donation );
 		}
 
 		// Remove donation title prefix.
@@ -231,6 +238,11 @@ class Give_Sequential_Donation_Number {
 		 * Filter the donation serial code
 		 *
 		 * @since 2.1.0
+		 *
+		 * @param string $serial_code
+		 * @param string $donation Donation ID
+		 * @param array $args
+		 * @param string $donation_number
 		 */
 		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $args, $donation_number );
 	}
