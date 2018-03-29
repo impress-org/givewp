@@ -15,6 +15,14 @@ class Give_Sequential_Donation_Number {
 	static private $instance;
 
 	/**
+	 * Donation tile prefix
+	 *
+	 * @since 2.1.0
+	 * @var string
+	 */
+	private $donation_title_prefix = 'give-donation-';
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.1.0
@@ -48,10 +56,8 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) ) ) {
-			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
-			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
-		}
+		add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
+		add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 	}
 
 	/**
@@ -70,7 +76,8 @@ class Give_Sequential_Donation_Number {
 	public function __save_donation_title( $donation_id, $post, $existing_donation_updated ) {
 		// Bailout
 		if (
-			$existing_donation_updated
+			! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
+			|| $existing_donation_updated
 			|| 'give_payment' !== $post->post_type
 		) {
 			return;
@@ -96,6 +103,7 @@ class Give_Sequential_Donation_Number {
 			$wp_error = wp_update_post(
 				array(
 					'ID'         => $donation_id,
+					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
 					'post_title' => trim( $serial_code )
 				)
 			);
@@ -103,6 +111,8 @@ class Give_Sequential_Donation_Number {
 			if ( is_wp_error( $wp_error ) ) {
 				throw new Exception( $wp_error->get_error_message() );
 			}
+
+			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
 			error_log( "Give caught exception: {$e->getMessage()}" );
 		}
@@ -125,7 +135,9 @@ class Give_Sequential_Donation_Number {
 			get_option( '_give_reset_sequential_number' ) &&
 			( $number = give_get_option( 'sequential-ordering_number', 0 ) )
 		) {
-			delete_option( '_give_reset_sequential_number' );
+			if ( Give()->sequential_donation_db->get_id_auto_increment_val() <= $number ) {
+				delete_option( '_give_reset_sequential_number' );
+			}
 
 			return Give()->sequential_donation_db->insert( array(
 				'id'         => $number,
@@ -178,20 +190,27 @@ class Give_Sequential_Donation_Number {
 	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param int|Give_Payment $donation
+	 * @param int|Give_Payment|WP_Post $donation
 	 * @param array            $args
 	 *
 	 * @return string
 	 */
 	public function get_serial_code( $donation, $args = array() ) {
-		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
+		// Get id from object.
+		if( ! is_numeric( $donation ) ) {
+			if( $donation instanceof Give_Payment ) {
+				$donation = $donation->ID;
+			} elseif ( $donation instanceof WP_Post ){
+				$donation = $donation->ID;
+			}
+		}
 
 		// Bailout.
 		if (
-			empty( $donation->ID )
-			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) )
+			empty( $donation )
+			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
 		) {
-			return $donation->ID;
+			return $donation;
 		}
 
 		// Set default params.
@@ -203,10 +222,10 @@ class Give_Sequential_Donation_Number {
 			)
 		);
 
-		$serial_code = $args['default'] ? $donation->ID : '';
+		$serial_code = $args['default'] ? $donation : '';
 
-		if ( $donation_number = $this->get_serial_number( $donation->ID ) ) {
-			$serial_code = get_the_title( $donation->ID );
+		if ( $donation_number = $this->get_serial_number( $donation ) ) {
+			$serial_code = get_the_title( $donation );
 		}
 
 		$serial_code = $args['with_hash'] ? "#{$serial_code}" : $serial_code;
@@ -215,6 +234,11 @@ class Give_Sequential_Donation_Number {
 		 * Filter the donation serial code
 		 *
 		 * @since 2.1.0
+		 *
+		 * @param string $serial_code
+		 * @param string $donation Donation ID
+		 * @param array $args
+		 * @param string $donation_number
 		 */
 		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $args, $donation_number );
 	}
@@ -293,5 +317,17 @@ class Give_Sequential_Donation_Number {
 				"
 			)
 		);
+	}
+
+	/**
+	 * Get maximum donation number
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_next_number() {
+		return ( $this->get_max_number() + 1 );
 	}
 }

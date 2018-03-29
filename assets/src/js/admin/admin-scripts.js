@@ -576,6 +576,7 @@ var give_setting_edit = false;
 			this.saveButtonTriggered();
 			this.changeAlert();
 			this.detectSettingsChange();
+			this.sequentialDonationIDPreview();
 		},
 
 		/**
@@ -811,8 +812,37 @@ var give_setting_edit = false;
 
 				});
 			}
-		}
+		},
 
+		/**
+		 * Render donation id for sequential ordering.
+		 *
+		 * @since 2.1.0
+		 */
+		sequentialDonationIDPreview: function(){
+			const $previewField = jQuery('#sequential-ordering_preview');
+
+			// Bailout.
+			if( ! $previewField.length ) {
+				return;
+			}
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
+				const prefix =jQuery('#sequential-ordering_number_prefix').val(),
+					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
+					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
+					suffix = jQuery('#sequential-ordering_number_suffix').val(),
+					$donationID = `${prefix}${startingNumber.padStart( numberPadding, '0' ) }${suffix}`;
+
+				$previewField.val($donationID);
+			});
+
+			jQuery( '#sequential-ordering_number_prefix' ).trigger('keyup');
+
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number_suffix' ).on( 'blur', function(){
+				$(this).val( $(this).val().replace( new RegExp( ' ', 'g' ), '-' ) );
+			});
+		}
 	};
 
 	/**
@@ -2900,25 +2930,6 @@ var give_setting_edit = false;
 
 		// Render setting tab.
 		give_render_responsive_tabs();
-
-		$('.give-confirm').on('click', function () {
-			if ($(this).hasClass('dashicons-lock') && window.confirm($(this).data('message'))) {
-				var $parent = $(this).closest('.give-forminp');
-
-				if ($parent.length) {
-					$(this).addClass('dashicons-unlock');
-					$(this).removeClass('dashicons-lock');
-
-					if( $(this).closest('.give-forminp-radio_inline').length || $(this).closest('.give-forminp-radio').length  ){
-						$parent.find('input[type="radio"]').each(function(){
-							$(this).removeAttr( 'disabled' );
-						});
-					} else{
-						$(this).prev().removeAttr('readonly');
-					}
-				}
-			}
-		});
 	} );
 })( jQuery );
 
