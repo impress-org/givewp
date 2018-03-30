@@ -78,6 +78,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</form>
 							</td>
 						</tr>
+
+						<tr class="give-export-payment-history">
+							<td scope="row" class="row-title">
+								<h3>
+									<span><?php _e( 'Export Donation History', 'give' ); ?></span>
+								</h3>
+								<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
+							</td>
+							<td>
+								<a class="button"
+								   href="<?php echo add_query_arg( array( 'type' => 'export_donations' ) ); ?>">
+									<?php _e( 'Generate CSV', 'give' ); ?>
+								</a>
+							</td>
+						</tr>
+
 						<tr class="give-export-donors">
 							<td scope="row" class="row-title">
 								<h3>
