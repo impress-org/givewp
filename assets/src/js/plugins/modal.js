@@ -54,10 +54,10 @@ class GiveModal {
 	
 				<div class="give-modal__controls">
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ('confirm' === this.config.type ? 'Cancel' : 'Close') }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ('confirm' === this.config.type ? give_vars.cancel : give_vars.close ) }
 					</button>
 					${ ('confirm' !== this.config.type) ? '' : `<button class="give-button give-button--primary give-popup-confirm-button">
-						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : 'Confirm' }
+						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : give_vars.confirm }
 					</button>`}
 				</div>
 				
