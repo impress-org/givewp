@@ -89,16 +89,13 @@ class GiveModal {
 			return;
 		}
 
-		const selector = this.config.triggerSelector.substr(1),
-			self = this;
+		jQuery( this.config.triggerSelector ).magnificPopup(this.config);
 
-		if ('#' === this.config.triggerSelector[0]) {
-			document.getElementById(selector).addEventListener('click', function (e) {
-				e.preventDefault();
-
-				self.render();
-			});
-		}
+		// window.addDynamicEventListener(document, 'click', this.config.triggerSelector, function (e) {
+		// 	e.preventDefault();
+		//
+		// 	self.render();
+		// });
 	}
 
 	/**
@@ -145,8 +142,11 @@ class GiveModal {
 	 */
 	render() {
 		switch (this.config.externalPlugin) {
+
 			case 'magnificPopup':
-				jQuery.magnificPopup.open(this.config);
+				if( ! this.config.triggerSelector ) {
+					jQuery.magnificPopup.open(this.config);
+				}
 
 				break;
 		}
@@ -241,7 +241,9 @@ class GiveConfirmModal extends GiveModal {
 	 */
 	static __confirmPopup() {
 		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
-			jQuery.magnificPopup.instance.st.successConfirm();
+			jQuery.magnificPopup.instance.st.successConfirm({
+				el: jQuery.magnificPopup.instance.st.el,
+			});
 			jQuery.magnificPopup.close();
 		}
 	}
