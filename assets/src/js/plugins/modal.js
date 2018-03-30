@@ -8,8 +8,8 @@ import './dynamicListener.js';
  */
 class GiveModal {
 	constructor(obj) {
-		if ( GiveModal === this.constructor ) {
-			throw new Error( 'Abstract classes can\'t be instantiated.' );
+		if (GiveModal === this.constructor) {
+			throw new Error('Abstract classes can\'t be instantiated.');
 		}
 
 		this.config = Object.assign(
@@ -17,20 +17,20 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: { rowAction: '' },
+				classes: {rowAction: ''},
 				modalContent: {},
 			},
 			obj
 		);
 
 		// Set main class.
-		this.config.mainClass = `${this.config.mainClass ? this.config.mainClass: '' } modal-fade-slide`.trim();
+		this.config.mainClass = `${this.config.mainClass ? this.config.mainClass : '' } modal-fade-slide`.trim();
 	}
 
 	/**
 	 * Bootstrap
 	 */
-	init(){
+	init() {
 		this.setupTemplate();
 		this.popupConfig();
 		this.__setupClickEvent();
@@ -44,7 +44,7 @@ class GiveModal {
 	get_template() {
 		let template = '<div class="give-hidden"></div>';
 
-		if ( this.config.type.length ) {
+		if (this.config.type.length) {
 			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.rowAction ? `${this.config.classes.rowAction}`.trim() : '' }">
 
 				<div class="give-modal__body">
@@ -54,9 +54,9 @@ class GiveModal {
 	
 				<div class="give-modal__controls">
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? 'Cancel' : 'Close' ) }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ('confirm' === this.config.type ? 'Cancel' : 'Close') }
 					</button>
-					${ ( 'confirm' !== this.config.type ) ? '' :  `<button class="give-button give-button--primary give-popup-confirm-button">
+					${ ('confirm' !== this.config.type) ? '' : `<button class="give-button give-button--primary give-popup-confirm-button">
 						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : 'Confirm' }
 					</button>`}
 				</div>
@@ -240,7 +240,7 @@ class GiveConfirmModal extends GiveModal {
 	 * @private
 	 */
 	static __confirmPopup() {
-		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm ) {
+		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
 			jQuery.magnificPopup.instance.st.successConfirm();
 			jQuery.magnificPopup.close();
 		}
