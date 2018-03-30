@@ -335,6 +335,7 @@ var give_setting_edit = false;
 				{
 					triggerSelector: '.delete-single-donation',
 					modalContent: {
+						title: give_vars.confirm_deletion,
 						desc: give_vars.delete_payment
 					},
 					successConfirm: function ( args ) {
@@ -345,11 +346,19 @@ var give_setting_edit = false;
 		},
 
 		resendSingleDonationReceipt: function () {
-			$('body').on('click', '.resend-single-donation-receipt', function () {
-				return confirm(give_vars.resend_receipt);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.resend-single-donation-receipt',
+					modalContent: {
+						title: give_vars.confirm_resend,
+						desc: give_vars.resend_receipt
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		}
-
 	};
 
 	/**
@@ -2701,7 +2710,7 @@ var give_setting_edit = false;
 			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
-		handleBulkActions: function () {
+		handleBulkActions: function ( e ) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
 				$payments = $('input[name="payment[]"]:checked').length,
@@ -2709,21 +2718,21 @@ var give_setting_edit = false;
 				confirmActionNotice = '',
 				status = '';
 
-			// If there is no bulk action selected then show an alert message.
-			if ( ! isStatusTypeAction ) {
+			// Set common action, if action type is status.
+			currentAction = isStatusTypeAction ?
+				'set-to-status' :
+				currentAction;
+
+			if ( '-1' === currentAction ) {
 				new GiveWarningAlert({
 					modalContent:{
-						desc: give_vars.donors_bulk_action.no_action_selected,
+						title: give_vars.donors_bulk_action.no_action_selected.title,
+						desc: give_vars.donors_bulk_action.no_donor_selected.desc,
 						cancelBtnTitle: 'Ok',
 					}
 				}).render();
 				return false;
 			}
-
-			// Set common action, if action type is status.
-			currentAction = isStatusTypeAction ?
-				'set-to-status' :
-				currentAction;
 
 			if (Object.keys(give_vars.donations_bulk_action).length) {
 				for (status in give_vars.donations_bulk_action) {
@@ -2735,11 +2744,12 @@ var give_setting_edit = false;
 							give_vars.donations_bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
-						if ( ! parseInt( $payments ) ) {
-							new GiveErrorAlert({
-								modalContent: {
+						if (!parseInt($payments)) {
+							new GiveWarningAlert({
+								modalContent:{
+									title: give_vars.donations_bulk_action.titles.zero,
 									desc: confirmActionNotice,
-									cancelBtnTitle: 'Ok'
+									cancelBtnTitle: 'Ok',
 								}
 							}).render();
 							return false;

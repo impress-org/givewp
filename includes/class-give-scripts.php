@@ -183,6 +183,8 @@ class Give_Scripts {
 			'currency_sign'                     => give_currency_filter( '' ),
 			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 			'currency_decimals'                 => give_get_price_decimals(),
+			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
+			'confirm_resend'                    => __( 'Confirm re-send', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
@@ -210,6 +212,9 @@ class Give_Scripts {
 				),
 			),
 			'donations_bulk_action'             => array(
+				'titles'         => array(
+					'zero' => __( 'No payments selected', 'give' ),
+				),
 				'delete'         => array(
 					'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 					'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
