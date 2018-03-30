@@ -17,9 +17,8 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: {
-					rowAction: '',
-				}
+				classes: { rowAction: '' },
+				modalContent: {},
 			},
 			obj
 		);
@@ -45,20 +44,20 @@ class GiveModal {
 	get_template() {
 		let template = '<div class="give-hidden"></div>';
 
-		if (this.config.type.length) {
+		if ( this.config.type.length ) {
 			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.rowAction ? `${this.config.classes.rowAction}`.trim() : '' }">
 
 				<div class="give-modal__body">
-					${ this.config.popupContent.title ? `<h2 class="give-modal__title">${this.config.popupContent.title}</h2>` : '' }
-					${ this.config.popupContent.desc ? `<p class="give-modal__description">${this.config.popupContent.desc}</p>` : '' }
+					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${this.config.modalContent.title}</h2>` : '' }
+					${ this.config.modalContent.desc ? `<p class="give-modal__description">${this.config.modalContent.desc}</p>` : '' }
 				</div>
 	
 				<div class="give-modal__controls">
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.popupContent.cancelBtnTitle ? this.config.popupContent.cancelBtnTitle : ( 'confirm' === this.config.type ? 'Cancel' : 'Close' ) }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? 'Cancel' : 'Close' ) }
 					</button>
 					${ ( 'confirm' !== this.config.type ) ? '' :  `<button class="give-button give-button--primary give-popup-confirm-button">
-						${ this.config.popupContent.confirmBtnTitle ? this.config.popupContent.confirmBtnTitle : 'Confirm' }
+						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : 'Confirm' }
 					</button>`}
 				</div>
 				
@@ -136,7 +135,7 @@ class GiveModal {
 	 */
 	static __closePopup(event) {
 		event.preventDefault();
-		$.magnificPopup.instance.close();
+		jQuery.magnificPopup.instance.close();
 	}
 
 	/**
@@ -147,7 +146,7 @@ class GiveModal {
 	render() {
 		switch (this.config.externalPlugin) {
 			case 'magnificPopup':
-				$.magnificPopup.open(this.config);
+				jQuery.magnificPopup.open(this.config);
 
 				break;
 		}
@@ -241,9 +240,9 @@ class GiveConfirmModal extends GiveModal {
 	 * @private
 	 */
 	static __confirmPopup() {
-		if ('function' === typeof $.magnificPopup.instance.st.successConfirm ) {
-			$.magnificPopup.instance.st.successConfirm();
-			$.magnificPopup.close();
+		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm ) {
+			jQuery.magnificPopup.instance.st.successConfirm();
+			jQuery.magnificPopup.close();
 		}
 	}
 }
@@ -251,7 +250,7 @@ class GiveConfirmModal extends GiveModal {
 /**
  * Add events
  */
-window.addDynamicEventListener(document.body, 'click', '.give-popup-close-button', GiveModal.__closePopup);
-window.addDynamicEventListener(document.body, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup);
+window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup);
+window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup);
 
 export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal};

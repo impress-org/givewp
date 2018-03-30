@@ -59,4 +59,4 @@
     globalSope.addDynamicEventListener = function (rootElement, eventType, selector, callback, options) {
         rootElement.addEventListener(eventType, getConditionalCallback(selector, callback), options);
     };
-})(this);
+})(window);
