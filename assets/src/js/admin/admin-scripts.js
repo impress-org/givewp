@@ -1915,7 +1915,7 @@ var give_setting_edit = false;
 					modalContent:{
 						title: selectBulkActionNotice.title,
 						desc: selectBulkActionNotice.desc,
-						cancelBtnTitle: 'Ok',
+						cancelBtnTitle: give_vars.ok,
 					}
 				}).render();
 				return false;
@@ -1927,7 +1927,7 @@ var give_setting_edit = false;
 					modalContent:{
 						title: confirmActionNotice.title,
 						desc: confirmActionNotice.desc,
-						cancelBtnTitle: 'Ok',
+						cancelBtnTitle: give_vars.ok,
 					}
 				}).render();
 
@@ -2727,8 +2727,8 @@ var give_setting_edit = false;
 				new GiveWarningAlert({
 					modalContent:{
 						title: give_vars.donors_bulk_action.no_action_selected.title,
-						desc: give_vars.donors_bulk_action.no_donor_selected.desc,
-						cancelBtnTitle: 'Ok',
+						desc: give_vars.donors_bulk_action.no_action_selected.desc,
+						cancelBtnTitle: give_vars.ok,
 					}
 				}).render();
 				return false;
@@ -2749,7 +2749,7 @@ var give_setting_edit = false;
 								modalContent:{
 									title: give_vars.donations_bulk_action.titles.zero,
 									desc: confirmActionNotice,
-									cancelBtnTitle: 'Ok',
+									cancelBtnTitle: give_vars.ok,
 								}
 							}).render();
 							return false;

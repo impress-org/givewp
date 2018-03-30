@@ -183,6 +183,7 @@ class Give_Scripts {
 			'currency_sign'                     => give_currency_filter( '' ),
 			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 			'currency_decimals'                 => give_get_price_decimals(),
+			'ok'                                => __( 'Ok', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
 			'confirm_resend'                    => __( 'Confirm re-send', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
