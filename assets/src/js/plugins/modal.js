@@ -17,7 +17,7 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: {rowAction: ''},
+				classes: {modalWrapper: ''},
 				modalContent: {},
 			},
 			obj
@@ -45,7 +45,7 @@ class GiveModal {
 		let template = '<div class="give-hidden"></div>';
 
 		if (this.config.type.length) {
-			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.rowAction ? `${this.config.classes.rowAction}`.trim() : '' }">
+			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.modalWrapper ? `${this.config.classes.modalWrapper}`.trim() : '' }">
 
 				<div class="give-modal__body">
 					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${this.config.modalContent.title}</h2>` : '' }
@@ -165,7 +165,7 @@ class GiveErrorAlert extends GiveModal {
 	constructor(obj) {
 		obj.type = 'alert';
 		super(obj);
-		this.config.classes.rowAction = 'give-modal--error';
+		this.config.classes.modalWrapper = 'give-modal--error';
 
 		this.init();
 	}
@@ -181,7 +181,7 @@ class GiveWarningAlert extends GiveModal {
 	constructor(obj) {
 		obj.type = 'alert';
 		super(obj);
-		this.config.classes.rowAction = 'give-modal--warning';
+		this.config.classes.modalWrapper = 'give-modal--warning';
 
 		this.init();
 
@@ -197,7 +197,7 @@ class GiveNoticeAlert extends GiveModal {
 	constructor(obj) {
 		obj.type = 'alert';
 		super(obj);
-		this.config.classes.rowAction = 'give-modal--notice';
+		this.config.classes.modalWrapper = 'give-modal--notice';
 
 		this.init();
 	}
@@ -212,7 +212,7 @@ class GiveSuccessAlert extends GiveModal {
 	constructor(obj) {
 		obj.type = 'alert';
 		super(obj);
-		this.config.classes.rowAction = 'give-modal--success';
+		this.config.classes.modalWrapper = 'give-modal--success';
 
 		this.init();
 	}
