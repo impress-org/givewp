@@ -24,7 +24,7 @@ class GiveModal {
 		);
 
 		// Set main class.
-		this.config.mainClass = `${this.config.mainClass} modal-fade-slide`.trim();
+		this.config.mainClass = `${this.config.mainClass ? this.config.mainClass: '' } modal-fade-slide`.trim();
 	}
 
 	/**
