@@ -200,8 +200,14 @@ class Give_Scripts {
 			'unlock_donor_fields'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 			'donors_bulk_action'                => array(
-				'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
-				'no_action_selected' => __( 'You must select a bulk action to proceed.', 'give' ),
+				'no_donor_selected'  => array(
+					'title' => __( 'No donors selected', 'give' ),
+					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' ) 
+				),
+				'no_action_selected' => array(
+					'title' => __( 'No action selected', 'give' ),
+					'desc'  => __( 'You must select a bulk action to proceed.', 'give' ),
+				),
 			),
 			'donations_bulk_action'             => array(
 				'delete'         => array(

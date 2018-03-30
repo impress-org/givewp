@@ -1904,7 +1904,8 @@ var give_setting_edit = false;
 			if ( '-1' === currentAction ) {
 				new GiveWarningAlert({
 					modalContent:{
-						desc: selectBulkActionNotice,
+						title: selectBulkActionNotice.title,
+						desc: selectBulkActionNotice.desc,
 						cancelBtnTitle: 'Ok',
 					}
 				}).render();
@@ -1913,9 +1914,10 @@ var give_setting_edit = false;
 
 			// If there is no donor selected then show an alert.
 			if ( ! parseInt( donors ) ) {
-				new GiveErrorAlert({
+				new GiveWarningAlert({
 					modalContent:{
-						desc: confirmActionNotice,
+						title: confirmActionNotice.title,
+						desc: confirmActionNotice.desc,
 						cancelBtnTitle: 'Ok',
 					}
 				}).render();
