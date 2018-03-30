@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 					</tr>
 
-					<tr class="give-export-payment-history">
+					<tr class="give-export-donations-history">
 						<td scope="row" class="row-title">
 							<h3>
 								<span><?php _e( 'Export Donation History', 'give' ); ?></span>
