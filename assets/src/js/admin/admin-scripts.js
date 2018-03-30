@@ -6,8 +6,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-
-import GiveModal from '../frontend/give-popup';
+import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 jQuery.noConflict();
 
@@ -332,9 +331,17 @@ var give_setting_edit = false;
 		},
 
 		deleteSingleDonation: function () {
-			$('body').on('click', '.delete-single-donation', function () {
-				return confirm(give_vars.delete_payment);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.delete-single-donation',
+					modalContent: {
+						desc: give_vars.delete_payment
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		},
 
 		resendSingleDonationReceipt: function () {
@@ -1395,11 +1402,6 @@ var give_setting_edit = false;
 	};
 
 	/**
-	 * Custom Alert Box.
-	 */
-	let alertBox = new GiveModal();
-
-	/**
 	 * Donor management screen JS
 	 */
 	var GiveDonor = {
@@ -1412,21 +1414,8 @@ var give_setting_edit = false;
 			this.add_note();
 			this.delete_checked();
 			this.addressesAction();
-			this.unlockDonorFields();
 			this.bulkDeleteDonor();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
-		},
-
-		unlockDonorFields: function( e ) {
-			$( 'body' ).on( 'click', '.give-lock-block', function( e ) {
-				alertBox
-					.customContent({
-						content: give_vars.unlock_donor_fields
-					})
-					.addFilter( 'cancel_text_node', text => 'Ok' )
-					.popup()
-				e.preventDefault();
-			});
 		},
 
 		editDonor: function () {
@@ -1902,7 +1891,6 @@ var give_setting_edit = false;
 		},
 
 		handleBulkActions: function (e) {
-
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
 				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
@@ -1913,25 +1901,25 @@ var give_setting_edit = false;
 			});
 
 			// If there is no bulk action selected then show an alert message.
-
 			if ( '-1' === currentAction ) {
-				alertBox
-					.customContent({
-						content: selectBulkActionNotice
-					})
-					.addFilter( 'cancel_text_node', text => 'Ok' )
-					.popup()
+				new GiveWarningAlert({
+					modalContent:{
+						desc: selectBulkActionNotice,
+						cancelBtnTitle: 'Ok',
+					}
+				}).render();
 				return false;
 			}
 
 			// If there is no donor selected then show an alert.
 			if ( ! parseInt( donors ) ) {
-				alertBox
-					.customContent({
-						content: confirmActionNotice
-					})
-					.addFilter( 'cancel_text_node', text => 'Ok' )
-					.popup()
+				new GiveErrorAlert({
+					modalContent:{
+						desc: confirmActionNotice,
+						cancelBtnTitle: 'Ok',
+					}
+				}).render();
+
 				return false;
 			}
 
@@ -2719,6 +2707,17 @@ var give_setting_edit = false;
 				confirmActionNotice = '',
 				status = '';
 
+			// If there is no bulk action selected then show an alert message.
+			if ( ! isStatusTypeAction ) {
+				new GiveWarningAlert({
+					modalContent:{
+						desc: give_vars.donors_bulk_action.no_action_selected,
+						cancelBtnTitle: 'Ok',
+					}
+				}).render();
+				return false;
+			}
+
 			// Set common action, if action type is status.
 			currentAction = isStatusTypeAction ?
 				'set-to-status' :
@@ -2734,14 +2733,13 @@ var give_setting_edit = false;
 							give_vars.donations_bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
-
 						if ( ! parseInt( $payments ) ) {
-							alertBox
-								.customContent({
-									content: confirmActionNotice
-								})
-								.addFilter( 'cancel_text_node', text => 'Ok' )
-								.popup()
+							new GiveErrorAlert({
+								modalContent: {
+									desc: confirmActionNotice,
+									cancelBtnTitle: 'Ok'
+								}
+							}).render();
 							return false;
 						}
 
