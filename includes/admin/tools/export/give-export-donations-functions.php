@@ -1,6 +1,6 @@
 <?php
 /**
- * CSV Toolbox Functions
+ * Give Export Donations Functions
  */
 
 
@@ -150,12 +150,12 @@ add_action( 'give_register_batch_exporter', 'give_register_export_donations_batc
 
 
 /**
- * Includes the CSV Toolbox Custom Exporter Class.
+ * Includes the Give Export Donations Custom Exporter Class.
  *
- * @param $class Give_CSV_Toolbox_Donations_Export
+ * @param $class Give_give_donations_Donations_Export
  */
 function give_export_donations_include_export_class( $class ) {
-	if ( 'Give_CSV_Toolbox_Donations_Export' === $class ) {
+	if ( 'Give_give_donations_Donations_Export' === $class ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-exporter.php';
 	}
 }

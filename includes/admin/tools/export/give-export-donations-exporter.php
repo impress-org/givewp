@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_CSV_Toolbox_Donations_Export Class
+ * Give_give_donations_Donations_Export Class
  *
  * @since 1.0
  */
-class Give_CSV_Toolbox_Donations_Export extends Give_Batch_Export {
+class Give_give_donations_Donations_Export extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
@@ -88,7 +88,7 @@ class Give_CSV_Toolbox_Donations_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 
-		$columns = isset( $this->data['give_csv_toolbox_export_option'] ) ? $this->data['give_csv_toolbox_export_option'] : array();
+		$columns = isset( $this->data['give_give_donations_export_option'] ) ? $this->data['give_give_donations_export_option'] : array();
 
 		// We need columns.
 		if ( empty( $columns ) ) {
@@ -367,7 +367,7 @@ class Give_CSV_Toolbox_Donations_Export extends Give_Batch_Export {
 						$taxonomy_fields,
 						$custom_fields
 						) = $ffm->get_input_fields( $payment->form_id );
-					$parents = isset( $this->data['give_csv_toolbox_export_parent'] ) ? $this->data['give_csv_toolbox_export_parent'] : array();
+					$parents = isset( $this->data['give_give_donations_export_parent'] ) ? $this->data['give_give_donations_export_parent'] : array();
 
 
 					// Loop through the fields.
