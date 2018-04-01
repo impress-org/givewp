@@ -204,14 +204,13 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
 
-			$args['date_query'] = array(
-				array(
-					'after'     => date( 'Y-n-d 00:00:00', strtotime( $this->start ) ),
-					'before'    => date( 'Y-n-d 23:59:59', strtotime( $this->end ) ),
-					'inclusive' => true,
-				),
-			);
+			if ( ! empty( $this->start ) ) {
+				$args['date_query'][0]['after'] = date( 'Y-n-d 00:00:00', strtotime( $this->start ) );
+			}
 
+			if ( ! empty( $this->end ) ) {
+				$args['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
+			}
 		}
 
 		// Check for price option

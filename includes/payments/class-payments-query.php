@@ -337,11 +337,11 @@ class Give_Payments_Query extends Give_Stats {
 		if ( $is_start_date || $is_end_date ) {
 			$date_query = array();
 
-			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
+			if ( $is_start_date && ! is_wp_error( $this->start_date ) && ! empty( $this->start_date ) ) {
 				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
 			}
 
-			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
+			if ( $is_end_date && ! is_wp_error( $this->end_date ) && ! empty( $this->end_date ) ) {
 				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
 			}
 
@@ -351,7 +351,6 @@ class Give_Payments_Query extends Give_Stats {
 			$this->__set( 'date_query', $date_query );
 
 		}
-
 	}
 
 	/**
