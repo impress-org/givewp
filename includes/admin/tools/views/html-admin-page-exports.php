@@ -24,8 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<table class="widefat export-options-table give-table striped">
 					<thead>
 					<tr>
-						<th scope="col"><?php esc_html_e( 'Export Type', 'give' ); ?></th>
-						<th scope="col"><?php esc_html_e( 'Export Options', 'give' ); ?></th>
+						<th scope="col"><?php _e( 'Export Type', 'give' ); ?></th>
+						<th scope="col"><?php _e( 'Export Options', 'give' ); ?></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -43,23 +43,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-pdf-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export PDF of Donations and Income', 'give' ); ?></span>
+								<span><?php _e( 'Export PDF of Donations and Income', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
+							<p><?php _e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
 						</td>
 						<td>
 							<a class="button"
 							   href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>">
-								<?php esc_html_e( 'Generate PDF', 'give' ); ?>
+								<?php _e( 'Generate PDF', 'give' ); ?>
 							</a>
 						</td>
 					</tr>
 					<tr class="give-export-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export Income and Donation Stats', 'give' ); ?></span>
+								<span><?php _e( 'Export Income and Donation Stats', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download a CSV of income and donations over time.', 'give' ); ?></p>
+							<p><?php _e( 'Download a CSV of income and donations over time.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post">
@@ -98,9 +98,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-donors">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export Donors in CSV', 'give' ); ?></span>
+								<span><?php _e( 'Export Donors in CSV', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
+							<p><?php _e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post" id="give_donor_export"
@@ -133,62 +133,62 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 								<div id="export-donor-options-wrap"
 								     class="give-clearfix">
-									<p><?php esc_html_e( 'Export Columns:', 'give' ); ?></p>
+									<p><?php _e( 'Export Columns:', 'give' ); ?></p>
 									<ul id="give-export-option-ul">
 										<li>
 											<label for="give-export-fullname">
 												<input type="checkbox" checked
 												       name="give_export_option[full_name]"
-												       id="give-export-fullname"><?php esc_html_e( 'Name', 'give' ); ?>
+												       id="give-export-fullname"><?php _e( 'Name', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-email">
 												<input type="checkbox" checked
 												       name="give_export_option[email]"
-												       id="give-export-email"><?php esc_html_e( 'Email', 'give' ); ?>
+												       id="give-export-email"><?php _e( 'Email', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-address">
 												<input type="checkbox" checked
 												       name="give_export_option[address]"
-												       id="give-export-address"><?php esc_html_e( 'Address', 'give' ); ?>
+												       id="give-export-address"><?php _e( 'Address', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-userid">
 												<input type="checkbox" checked
 												       name="give_export_option[userid]"
-												       id="give-export-userid"><?php esc_html_e( 'User ID', 'give' ); ?>
+												       id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-donation-form">
 												<input type="checkbox" checked
 												       name="give_export_option[donation_form]"
-												       id="give-export-donation-form"><?php esc_html_e( 'Donation Form', 'give' ); ?>
+												       id="give-export-donation-form"><?php _e( 'Donation Form', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-first-donation-date">
 												<input type="checkbox" checked
 												       name="give_export_option[date_first_donated]"
-												       id="give-export-first-donation-date"><?php esc_html_e( 'First Donation Date', 'give' ); ?>
+												       id="give-export-first-donation-date"><?php _e( 'First Donation Date', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-donation-number">
 												<input type="checkbox" checked
 												       name="give_export_option[donations]"
-												       id="give-export-donation-number"><?php esc_html_e( 'Number of Donations', 'give' ); ?>
+												       id="give-export-donation-number"><?php _e( 'Number of Donations', 'give' ); ?>
 											</label>
 										</li>
 										<li>
 											<label for="give-export-donation-sum">
 												<input type="checkbox" checked
 												       name="give_export_option[donation_sum]"
-												       id="give-export-donation-sum"><?php esc_html_e( 'Total Donated', 'give' ); ?>
+												       id="give-export-donation-sum"><?php _e( 'Total Donated', 'give' ); ?>
 											</label>
 										</li>
 									</ul>
@@ -204,9 +204,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export Give Settings', 'give' ); ?></span>
+								<span><?php _e( 'Export Give Settings', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download an export of Give\'s settings and import it in a new WordPress installation.', 'give' ); ?></p>
+							<p><?php _e( 'Download an export of Give\'s settings and import it in a new WordPress installation.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post">
