@@ -15,6 +15,7 @@ function give_export_donations_get_custom_fields() {
 
 	global $wpdb;
 	$post_type = 'give_payment';
+	$responces = array();
 
 	$form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : '';
 
@@ -62,6 +63,8 @@ function give_export_donations_get_custom_fields() {
 				$non_multicolumn_ffm_keys[]  = $field['name'];
 			}
 		}
+
+		$responces['ffm_fields'] = $ffm_field_array;
 	}// End if().
 
 	$args          = array(
@@ -89,6 +92,10 @@ function give_export_donations_get_custom_fields() {
 		if ( ( $key = array_search( $key, $meta_keys ) ) !== false ) {
 			unset( $meta_keys[ $key ] );
 		}
+	}
+
+	if ( ! empty( $meta_keys ) ) {
+		$responces['standard_fields'] = array_values( $meta_keys );
 	}
 
 	$query = "
@@ -127,11 +134,11 @@ function give_export_donations_get_custom_fields() {
 		}
 	}
 
-	wp_send_json( array(
-		'ffm_fields'      => $ffm_field_array,
-		'standard_fields' => array_values( $meta_keys ),
-		'hidden_fields'   => array_values( $hidden_meta_keys ),
-	) );
+	if ( ! empty( $hidden_meta_keys ) ) {
+		$responces['hidden_fields'] = array_values( $hidden_meta_keys );
+	}
+
+	wp_send_json( $responces );
 
 }
 

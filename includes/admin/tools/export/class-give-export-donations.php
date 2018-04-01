@@ -356,7 +356,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							<div class="give-field-wrap">
 								<label for="json">
 									<ul class=""></ul>
-									<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by Give Core, a Give Add-on, another plugin, etc. Hidden fields are generally used for programming logic, but you may contain data you would like to export.', 'give' );?></p>
+									<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by Give Core, a Give Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export.', 'give' );?></p>
 								</label>
 							</div>
 						</td>
