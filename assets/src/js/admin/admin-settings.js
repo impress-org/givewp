@@ -202,9 +202,10 @@ jQuery(document).ready(function ($) {
 		var ffm_fields = (
 			typeof response.ffm_fields !== 'undefined'
 		) ? response.ffm_fields : '';
-		var ffm_field_list = $( '.give-export-donations-ffm ul' );
 
 		if ( ffm_fields ) {
+
+			var ffm_field_list = $( '.give-export-donations-ffm ul' );
 
 			ffm_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
 

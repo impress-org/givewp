@@ -366,7 +366,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<th></th>
 						<th>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
-							<input type="hidden" name="give-export-class" value="Give_give_donations_Donations_Export"/>
+							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
 							<input type="submit" value="Generate CSV" class="button button-primary">
 						</th>
 					</tr>

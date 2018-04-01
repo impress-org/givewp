@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_give_donations_Donations_Export Class
+ * Give_Export_Donations_CSV Class
  *
  * @since 1.0
  */
-class Give_give_donations_Donations_Export extends Give_Batch_Export {
+class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
@@ -199,7 +199,6 @@ class Give_give_donations_Donations_Export extends Give_Batch_Export {
 			'number'     => 30,
 			'page'       => $this->step,
 			'status'     => $this->status,
-			'give_forms' => array( $this->form_id ),
 		);
 
 		// Date query.
@@ -223,6 +222,10 @@ class Give_give_donations_Donations_Export extends Give_Batch_Export {
 					'value' => (int) $this->price_id,
 				),
 			);
+		}
+
+		if ( ! empty( $this->form_id ) ) {
+			$args['give_forms'] = array( $this->form_id );
 		}
 
 		// Payment query.
