@@ -138,7 +138,16 @@ function give_export_donations_get_custom_fields() {
 		$responces['hidden_fields'] = array_values( $hidden_meta_keys );
 	}
 
-	wp_send_json( $responces );
+	/**
+	 * Filter to modify custom fields when select donation forms,
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $responces
+	 *
+	 * @return array $responces
+	 */
+	wp_send_json( (array) apply_filters( 'give_export_donations_get_custom_fields', $responces ) );
 
 }
 

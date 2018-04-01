@@ -158,6 +158,8 @@ jQuery(document).ready(function ($) {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 
+		jQuery(document).trigger('give_export_donations_form_change' );
+
 		var give_form_id;
 
 		// Check for form ID.
@@ -184,6 +186,8 @@ jQuery(document).ready(function ($) {
 				} else {
 					alert( 'An AJAX error occurred.' );
 				}
+
+				jQuery(document).trigger('give_export_donations_form_response', response );
 			}
 		} );
 	} );
