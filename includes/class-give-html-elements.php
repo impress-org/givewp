@@ -259,12 +259,7 @@ class Give_HTML_Elements {
 	 * @return string           Categories dropdown.
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0, $args = array() ) {
-		$terms_args = (array) apply_filters( 'give_forms_category_dropdown', array(
-			'taxonomy'   => 'give_forms_category',
-			'hide_empty' => false,
-		) );
-
-		$categories = get_terms( $terms_args );
+		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
 
 		$options = array();
 
@@ -298,12 +293,8 @@ class Give_HTML_Elements {
 	 * @return string           Tags dropdown.
 	 */
 	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
-		$terms_args = (array) apply_filters( 'give_forms_tag_dropdown', array(
-			'taxonomy'   => 'give_forms_tag',
-			'hide_empty' => false,
-		) );
+		$tags    = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
 
-		$tags    = get_terms( $terms_args );
 		$options = array();
 
 		foreach ( $tags as $tag ) {
