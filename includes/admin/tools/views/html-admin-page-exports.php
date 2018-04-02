@@ -157,9 +157,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<tr class="give-export-donors">
 							<td scope="row" class="row-title">
 								<h3>
-									<span><?php esc_html_e( 'Export Donors in CSV', 'give' ); ?></span>
+									<span><?php esc_html_e( 'Export Donors', 'give' ); ?></span>
 								</h3>
-								<p><?php esc_html_e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'Download a CSV of donors. Column values reflect totals across all donation forms by default, or a single donation form if selected.', 'give' ); ?></p>
 							</td>
 							<td>
 								<form method="post" id="give_donor_export"
