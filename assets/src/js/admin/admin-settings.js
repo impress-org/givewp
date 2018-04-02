@@ -158,16 +158,13 @@ jQuery(document).ready(function ($) {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 
-		jQuery(document).trigger('give_export_donations_form_change' );
+		jQuery( document ).trigger( 'give_export_donations_form_change' );
 
 		var give_form_id;
 
 		// Check for form ID.
-		if ( ! (
-				give_form_id = $( this ).val()
-			) ) {
+		if ( ! ( give_form_id = $( this ).val() ) ) {
 			return false;
-
 		}
 
 		// Ajax.
@@ -179,15 +176,13 @@ jQuery(document).ready(function ($) {
 				action: 'give_export_donations_get_custom_fields'
 			},
 			success: function ( response ) {
-
 				if ( response ) {
 					output_give_donations_fields( response );
-
 				} else {
-					alert( 'An AJAX error occurred.' );
+					alert( give_vars.error_message );
 				}
 
-				jQuery(document).trigger('give_export_donations_form_response', response );
+				jQuery( document ).trigger( 'give_export_donations_form_response', response );
 			}
 		} );
 	} );
