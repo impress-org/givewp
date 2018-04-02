@@ -71,7 +71,6 @@ class GiveModal {
 		return template;
 	}
 
-
 	/**
 	 * Setup template
 	 *
@@ -94,12 +93,6 @@ class GiveModal {
 		}
 
 		jQuery( this.config.triggerSelector ).magnificPopup(this.config);
-
-		// window.addDynamicEventListener(document, 'click', this.config.triggerSelector, function (e) {
-		// 	e.preventDefault();
-		//
-		// 	self.render();
-		// });
 	}
 
 	/**
