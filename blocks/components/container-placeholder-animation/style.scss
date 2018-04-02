@@ -1,0 +1,161 @@
+.timeline-item {
+	background: #fff;
+}
+
+@keyframes placeHolderShimmer {
+	0% {
+		background-position: 0 0
+	}
+
+	100% {
+		background-position: 520px 0
+	}
+}
+
+.placeholder-container-animation {
+	max-width: 650px;
+	margin: 0 auto;
+}
+
+.animated-background {
+	animation-duration: 0.85s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+	animation-name: placeHolderShimmer;
+	animation-timing-function: linear;
+	background: #f6f7f8;
+	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	background-size: 520px 100%;
+	position: relative;
+}
+
+.container {
+	margin: 0 auto;
+	width: 650px;
+	background-color: #eee;
+	border:1px solid #eee;
+}
+
+.layer {
+	display: flex;
+
+	&.h1 {
+		height: 28px;
+	}
+	
+	&.h2 {
+		height: 22px;
+	}
+	
+	&.inline-radios {
+		height: 12px;
+	}
+	
+	&.label {
+		height: 8px;
+	}
+}
+
+.layer-item {
+	&.opaque {
+		background: #fff;	
+	}
+}
+
+.layer-gap {
+	background-color: #fff;
+
+	&.large {
+		height: 40px;
+	}
+	
+	&.medium {
+		height: 20px;
+	}
+	
+	&.small {
+		height: 10px;
+	}
+}
+
+// Specifics
+
+// Layer-1
+.layer-1 {
+	.layer-item:nth-child(odd) {
+		width: 45%
+	}
+	
+	.layer-item:nth-child(even) {
+		width: 55%;
+	}
+}
+
+
+//  Layer-4
+.layer-4 {
+	.layer-item:nth-child(1) {
+		width: 30%;
+	}
+	
+	.layer-item:nth-child(2) {
+		width: 10%;
+	}
+	
+	.layer-item:nth-child(3) {
+		width: 20%;
+	}
+	
+	.layer-item:nth-child(4) {
+		width: 30%;
+	}
+	
+	.layer-item:nth-child(5) {
+		width: 10%;
+	}
+}
+
+//  Layer-5
+.layer-5 {
+	.layer-item:nth-child(1) {
+		width: 40%;
+	}
+	
+	.layer-item:nth-child(2) {
+		width: 5%;
+	}
+	
+	.layer-item:nth-child(3) {
+		width: 15%;
+	}
+	
+	.layer-item:nth-child(4) {
+		width: 40%;
+	}
+}
+
+//  Layer-6
+.layer-6 {
+	.layer-item:nth-child(odd) {
+		width: 30%;
+	}
+	
+	.layer-item:nth-child(even) {
+		width: 70%;
+	}
+}
+
+//  Layer-8
+.layer-8 {
+	.layer-item:nth-child(1) {
+		width: 40%;
+	}
+	
+	.layer-item:nth-child(2) {
+		width: 20%;
+	}
+	
+	.layer-item:nth-child(3) {
+		width: 40%;
+	}
+}

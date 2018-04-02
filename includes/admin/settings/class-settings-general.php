@@ -31,6 +31,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 			$this->default_tab = 'general-settings';
 
+			if ( $this->id === give_get_current_setting_tab() ) {
+				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
+				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '__render_give_sequential_donation_code_preview' ), 10, 3 );
+				add_action( 'give_admin_field_give_unlock_all_settings', array( $this, '__render_give_unlock_all_settings' ), 10, 3 );
+			}
+
 			parent::__construct();
 		}
 
@@ -166,7 +172,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default'    => 'before',
 							'attributes' => array(
 								'data-before-template' => sprintf( $currency_position_before, '{currency_pos}' ),
-								'data-after-template' => sprintf( $currency_position_after, '{currency_pos}' ),
+								'data-after-template'  => sprintf( $currency_position_after, '{currency_pos}' ),
 							),
 						),
 						array(
@@ -231,36 +237,48 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_1',
 						),
 						array(
-							'name'    => __( 'Success Page', 'give' ),
+							'name'       => __( 'Success Page', 'give' ),
 							/* translators: %s: [give_receipt] */
-							'desc'    => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
-							'id'      => 'success_page',
-							'type'    => 'select',
-							'options' => give_cmb2_get_post_options( array(
+							'desc'       => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
+							'id'         => 'success_page',
+							'class'      => 'give-select give-select-chosen',
+							'type'       => 'select',
+							'options'    => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => 999,
+								'numberposts' => 30,
 							) ),
+							'attributes' => array(
+								'data-search-type' => 'pages'
+							)
 						),
 						array(
-							'name'    => __( 'Failed Donation Page', 'give' ),
-							'desc'    => __( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
-							'id'      => 'failure_page',
-							'type'    => 'select',
-							'options' => give_cmb2_get_post_options( array(
+							'name'       => __( 'Failed Donation Page', 'give' ),
+							'desc'       => __( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
+							'class'      => 'give-select give-select-chosen',
+							'id'         => 'failure_page',
+							'type'       => 'select',
+							'options'    => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => 999,
+								'numberposts' => 30,
 							) ),
+							'attributes' => array(
+								'data-search-type' => 'pages'
+							)
 						),
 						array(
-							'name'    => __( 'Donation History Page', 'give' ),
+							'name'       => __( 'Donation History Page', 'give' ),
 							/* translators: %s: [donation_history] */
-							'desc'    => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
-							'id'      => 'history_page',
-							'type'    => 'select',
-							'options' => give_cmb2_get_post_options( array(
+							'desc'       => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
+							'id'         => 'history_page',
+							'class'      => 'give-select give-select-chosen',
+							'type'       => 'select',
+							'options'    => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => 999,
+								'numberposts' => 30,
 							) ),
+							'attributes' => array(
+								'data-search-type' => 'pages'
+							)
 						),
 						array(
 							'name'    => __( 'Base Country', 'give' ),
@@ -295,6 +313,84 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 					);
 					break;
+
+				case 'sequential-ordering':
+					$settings = array(
+
+						// Section 4: Sequential Ordering
+
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'title'
+						),
+						array(
+							'name'    => __( 'Sequential Ordering', 'give' ),
+							'id'      => "{$current_section}_status",
+							'desc'    => __( 'Custom donation numbering that increases sequentially to prevent gaps between donation IDs. If disabled, then donation numbers are generated from WordPress post IDs, which will result in gaps between numbers.', 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
+						),
+						array(
+							'name' => __( 'Next Donation Number', 'give' ),
+							'id'   => "{$current_section}_number",
+							'desc' => sprintf(
+								__( 'The number used to generate the next donation ID. This value must be greater than or equal to %s to avoid conflicts with existing donation IDs.', 'give' ),
+								'<code>' . Give()->seq_donation_number->get_next_number() . '</code>'
+							),
+							'type' => 'number',
+						),
+						array(
+							'name' => __( 'Number Prefix', 'give' ),
+							'id'   => "{$current_section}_number_prefix",
+							'desc' => sprintf(
+								__( 'The prefix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
+							'type' => 'text',
+						),
+						array(
+							'name' => __( 'Number Suffix', 'give' ),
+							'id'   => "{$current_section}_number_suffix",
+							'desc' => sprintf(
+								__( 'The suffix appended to all sequential donation numbers. Spaces are replaced by %s.', 'give' ),
+								'<code>-</code>'
+							),
+							'type' => 'text',
+						),
+						array(
+							'name'    => __( 'Number Padding', 'give' ),
+							'id'      => "{$current_section}_number_padding",
+							'desc'    => sprintf(
+								__( 'The minimum number of digits in the sequential donation number. Enter %s to display %s as %s.', 'give' ),
+								'<code>4</code>',
+								'<code>1</code>',
+								'<code>0001</code>'
+							),
+							'type'    => 'number',
+							'default' => '0',
+						),
+						array(
+							'name' => __( 'Donation ID Preview', 'give' ),
+							'id'   => "{$current_section}_preview",
+							'type' => 'give_sequential_donation_code_preview',
+							'desc' => __( 'A preview of the next sequential donation ID. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
+						),
+						array(
+							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
+							'id'    => "{$current_section}_doc link",
+							'url'   => esc_url( 'http://docs.givewp.com/settings-sequential-ordering' ),
+							'title' => __( 'Sequential Ordering', 'give' ),
+							'type'  => 'give_docs_link',
+						),
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'sectionend'
+						)
+					);
 			}
 
 			/**
@@ -324,12 +420,96 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general-settings'  => __( 'General', 'give' ),
-				'currency-settings' => __( 'Currency', 'give' ),
-				'access-control'    => __( 'Access Control', 'give' ),
+				'general-settings'    => __( 'General', 'give' ),
+				'currency-settings'   => __( 'Currency', 'give' ),
+				'access-control'      => __( 'Access Control', 'give' ),
+				'sequential-ordering' => __( 'Sequential Ordering', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		/**
+		 * Set flag to reset sequestion donation number starting point when "Sequential Starting Number" value changes
+		 *
+		 * @since  2.1
+		 * @access public
+		 *
+		 * @param $update_options
+		 * @param $option_name
+		 * @param $old_options
+		 *
+		 * @return bool
+		 */
+		public function __give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
+			if ( ! isset( $_POST['sequential-ordering_number'] ) ) {
+				return false;
+			}
+
+			if ( Give()->seq_donation_number->get_next_number() > $update_options['sequential-ordering_number'] ) {
+				give_update_option( 'sequential-ordering_number', $old_options['sequential-ordering_number'] );
+
+				Give_Admin_Settings::add_error(
+					'give-invalid-sequential-starting-number',
+					sprintf(
+						__( 'Next Donation Number must be equal to or larger than %s to avoid conflicts with existing donation IDs.', 'give' ),
+						Give()->seq_donation_number->get_next_number()
+					)
+				);
+			} elseif ( $update_options['sequential-ordering_number'] !== $old_options['sequential-ordering_number'] ) {
+				update_option( '_give_reset_sequential_number', 1 );
+			}
+
+			return true;
+		}
+
+
+		/**
+		 * Render give_sequential_donation_code_preview field type
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $field
+		 */
+		public function __render_give_sequential_donation_code_preview( $field ) {
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled>
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+				</td>
+			</tr>
+			<?php
+		}
+
+
+		/**
+		 * Render give_unlock_all_settings field type
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $field
+		 */
+		public function __render_give_unlock_all_settings( $field ) {
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+					<a href="" id="<?php echo $field['id']; ?>" data-message="<?php echo $field['confirmation_msg'] ?>"><?php echo __( 'Unlock all settings', 'give' ); ?></a>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 

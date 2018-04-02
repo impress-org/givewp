@@ -128,12 +128,12 @@ class Give_Addon_Activation_Banner {
 					}
 				}
 			} elseif ( WP_DEBUG ) {
-				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
+				throw new Exception( sprintf( __( 'File path must be added within the %s add-on in the banner details.' ), $this->banner_details['name'] ) );
 			}
 
 			// Check plugin path calculated by addon file path.
 			if ( empty( $file_name ) && WP_DEBUG ) {
-				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
+				throw new Exception( sprintf( __( 'Empty add-on plugin path for %s add-on' ), $this->banner_details['name'] ) );
 			}
 
 		} catch ( Exception $e ) {
@@ -610,7 +610,7 @@ class Give_Addon_Activation_Banner {
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
 		?>
-        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
+        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/give-icon-full-circle.svg" class="give-logo"/>
         <div class="give-alert-message">
             <h3>
 				<?php

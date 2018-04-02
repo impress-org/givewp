@@ -18,6 +18,7 @@ if ( empty( $payment ) ) {
 }
 
 $donation_id  = $payment->ID;
+$donation_number = Give()->seq_donation_number->get_serial_code( $payment->ID );
 $form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
 $meta         = give_get_payment_meta( $donation_id );
 $donation     = give_get_donation_form_title( $donation_id );
@@ -82,7 +83,7 @@ $give_receipt_args['donation_receipt']['donation_status'] = array(
 
 $give_receipt_args['donation_receipt']['donation_id'] = array(
 	'name'    => __( 'Donation ID', 'give' ),
-	'value'   => $donation_id,
+	'value'   => $donation_number,
 	'display' => $give_receipt_args['payment_id'],
 );
 

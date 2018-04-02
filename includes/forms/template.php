@@ -85,9 +85,11 @@ function give_get_donation_form( $args = array() ) {
 
 		<?php if ( $form->is_close_donation_form() ) {
 
+			$form_title = ! is_singular( 'give_forms' ) ? apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' ) : '';
+
 			// Get Goal thank you message.
 			$goal_achieved_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
-			$goal_achieved_message = ! empty( $goal_achieved_message ) ? apply_filters( 'the_content', $goal_achieved_message ) : '';
+			$goal_achieved_message = ! empty( $goal_achieved_message ) ? $form_title . apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
 			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form );
@@ -1386,7 +1388,11 @@ function give_payment_mode_select( $form_id ) {
 				/**
 				 * Loop through the active payment gateways.
 				 */
-				$selected_gateway  = give_get_chosen_gateway( $form_id );
+				$selected_gateway = give_get_chosen_gateway( $form_id );
+				$give_settings    = give_get_settings();
+				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
+					$give_settings['gateways_label'] :
+					array();
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
@@ -1396,9 +1402,16 @@ function give_payment_mode_select( $form_id ) {
 						<input type="radio" name="payment-mode" class="give-gateway"
 							   id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+						<?php
+						$label = $gateway['checkout_label'];
+						if ( ! empty( $gateways_label[ $gateway_id  ] ) ) {
+							$label = $gateways_label[ $gateway_id ];
+						}
+						?>
 						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
+							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
 					</li>
 					<?php
 				endforeach;
@@ -1563,13 +1576,13 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<?php 
+		<?php
 		/**
 		 * Fires before the donation total label
-		 * 
+		 *
 		 * @since 2.0.5
 		 */
-		do_action( 'give_donation_final_total_label_before', $form_id ); 
+		do_action( 'give_donation_final_total_label_before', $form_id );
 		?>
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
@@ -1578,13 +1591,13 @@ function give_checkout_final_total( $form_id ) {
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
 		</span>
-		<?php 
+		<?php
 		/**
 		 * Fires after the donation final total label
-		 * 
+		 *
 		 * @since 2.0.5
 		 */
-		do_action( 'give_donation_final_total_label_after', $form_id ); 
+		do_action( 'give_donation_final_total_label_after', $form_id );
 		?>
 	</p>
 	<?php
@@ -1665,7 +1678,7 @@ function give_get_donation_form_submit_button( $form_id ) {
  *
  * @return mixed
  */
-function give_show_goal_progress( $form_id, $args ) {
+function give_show_goal_progress( $form_id, $args = array() ) {
 
 	ob_start();
 	give_get_template( 'shortcode-goal', array( 'form_id' => $form_id, 'args' => $args ) );
@@ -1682,6 +1695,32 @@ function give_show_goal_progress( $form_id, $args ) {
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
+/**
+ * Show Give Totals Progress.
+ *
+ * @since  2.1
+ *
+ * @param  int $total      Total amount based on shortcode parameter.
+ * @param  int $total_goal Total Goal amount passed by Admin.
+ *
+ * @return mixed
+ */
+function give_show_goal_totals_progress( $total, $total_goal ) {
+
+	// Bail out if total goal is set as an array.
+	if ( isset( $total_goal ) && is_array( $total_goal ) ) {
+		return false;
+	}
+
+	ob_start();
+	give_get_template( 'shortcode-totals-progress', array( 'total' => $total, 'total_goal' => $total_goal ) );
+
+	echo apply_filters( 'give_total_progress_output', ob_get_clean() );
+
+	return true;
+}
+
+add_action( 'give_pre_form', 'give_show_goal_totals_progress', 10, 2 );
 
 /**
  * Get form content position.
@@ -1910,6 +1949,8 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 	<input type="hidden" name="give-form-minimum"
 		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
+	<input type="hidden" name="give-form-maximum"
+	       value="<?php echo give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
 	<?php
 
 	// WP nonce field.
@@ -1969,3 +2010,33 @@ function __give_form_add_currency_settings( $form_html_tags, $form ) {
 }
 
 add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );
+
+/**
+ * Adds classes to progress bar container.
+ *
+ * @since 2.1
+ *
+ * @param string $class_goal
+ *
+ * @return string
+ */
+function add_give_goal_progress_class( $class_goal ) {
+	$class_goal = 'progress progress-striped active';
+
+	return $class_goal;
+}
+
+/**
+ * Adds classes to progress bar span tag.
+ *
+ * @since 2.1
+ *
+ * @param string $class_bar
+ *
+ * @return string
+ */
+function add_give_goal_progress_bar_class( $class_bar ) {
+	$class_bar = 'bar';
+
+	return $class_bar;
+}

@@ -101,7 +101,7 @@ function give_hide_outdated_php_notice() {
 	}
 
 	// Transient key name.
-	$transient_key = "_give_hide_outdated_php_notices_shortly";
+	$transient_key = '_give_hide_outdated_php_notices_shortly';
 
 	if ( Give_Cache::get( $transient_key, true ) ) {
 		return;
@@ -197,9 +197,9 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
-			}
-		}
-	}
+			}// End switch().
+		}// End if().
+	}// End if().
 
 	// Add give message notices.
 	if ( ! empty( $_GET['give-message'] ) ) {
@@ -239,7 +239,7 @@ function _give_register_admin_notices() {
 					) );
 					break;
 			}
-		}
+		}// End if().
 
 		// Give settings notices and errors.
 		if ( current_user_can( 'manage_give_settings' ) ) {
@@ -300,8 +300,8 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
-			}
-		}
+			}// End switch().
+		}// End if().
 		// Payments errors.
 		if ( current_user_can( 'edit_give_payments' ) ) {
 			switch ( $_GET['give-message'] ) {
@@ -434,9 +434,9 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
-			}
-		}
-	}
+			}// End switch().
+		}// End if().
+	}// End if().
 }
 
 add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
@@ -467,13 +467,40 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 		'parent' => 'top-secondary',
 		'title'  => __( 'Give Test Mode Active', 'give' ),
-		'meta'   => array( 'class' => 'give-test-mode-active' ),
+		'meta'   => array(
+			'class' => 'give-test-mode-active',
+		),
 	) );
 
 	return true;
 }
 
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+/**
+ * Outputs the Give admin bar CSS.
+ */
+function _give_test_mode_notice_admin_bar_css() {
+	if ( ! give_is_test_mode() ) {
+		return;
+	}
+	?>
+	<style>
+		#wpadminbar .give-test-mode-active > .ab-item {
+			color: #fff;
+			background-color: #ffba00;
+		}
+
+		#wpadminbar .give-test-mode-active:hover > .ab-item, #wpadminbar .give-test-mode-active:hover > .ab-item {
+			background-color: rgba(203, 144, 0, 1) !important;
+			color: #fff !important;
+		}
+	</style>
+	<?php
+}
+
+add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
+
 
 /**
  * Add Link to Import page in from donation archive and donation single page
@@ -547,11 +574,11 @@ function give_donation_import_callback() {
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
-	$current_key  = $start;
+	$current_key = $start;
 	foreach ( $raw_data as $row_data ) {
-		$import_setting['donation_key']  = $current_key;
+		$import_setting['donation_key'] = $current_key;
 		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
-		$current_key++;
+		$current_key ++;
 	}
 
 	// Check if function exists or not.
@@ -792,7 +819,7 @@ function give_get_user_roles() {
 	$user_roles = array();
 
 	// Loop through User Roles.
-	foreach ( get_editable_roles() as $role_name => $role_info ):
+	foreach ( get_editable_roles() as $role_name => $role_info ) :
 		$user_roles[ $role_name ] = $role_info['name'];
 	endforeach;
 
@@ -813,7 +840,9 @@ function __give_ajax_donor_manage_addresses() {
 		empty( $_POST['form'] ) ||
 		empty( $_POST['donorID'] )
 	) {
-		wp_send_json_error( array( 'error' => 1 ) );
+		wp_send_json_error( array(
+			'error' => 1,
+		) );
 	}
 
 	$post                  = give_clean( wp_parse_args( $_POST ) );
@@ -838,7 +867,7 @@ function __give_ajax_donor_manage_addresses() {
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
 					__( 'Error: Security issue.', 'give' )
-				)
+				),
 			)
 		);
 	}
@@ -847,7 +876,9 @@ function __give_ajax_donor_manage_addresses() {
 
 	// Verify donor.
 	if ( ! $donor->id ) {
-		wp_send_json_error( array( 'error' => 3 ) );
+		wp_send_json_error( array(
+			'error' => 3,
+		) );
 	}
 
 	// Unset all data except address.
@@ -867,7 +898,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to save the address. Please check if address already exist.', 'give' )
-						)
+						),
 					)
 				);
 			}
@@ -909,7 +940,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to delete address.', 'give' )
-						)
+						),
 					)
 				);
 			}
@@ -928,7 +959,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to update address. Please check if address already exist.', 'give' )
-						)
+						),
 					)
 				);
 			}
@@ -949,7 +980,7 @@ function __give_ajax_donor_manage_addresses() {
 			);
 
 			break;
-	}
+	}// End switch().
 
 	wp_send_json_success( $response_data );
 }
@@ -1018,7 +1049,9 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		// Assign User First name and Last name to Donor.
-		Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+		Give()->donors->update( $donor->id, array(
+			'name' => $full_name,
+		) );
 		Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 		Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
@@ -1053,7 +1086,9 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
-		$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
+		$success = Give()->donors->update( $donor->id, array(
+			'email' => $user->user_email,
+		) );
 
 		if ( $success ) {
 			// Update some payment meta if we need to
@@ -1066,7 +1101,6 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 					give_update_payment_meta( $payment_id, 'email', $user->user_email );
 
 				}
-
 			}
 
 			/**
@@ -1080,9 +1114,28 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
 		}
-
 	}
 
 }
 
 add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
+
+
+/**
+ * Flushes Give's cache.
+ */
+function give_cache_flush() {
+	$result = Give_Cache::flush_cache();
+
+	if ( $result ) {
+		wp_send_json_success( array(
+			'message' => __( 'Cache flushed successfully.', 'give' ),
+		));
+	} else {
+		wp_send_json_error( array(
+			'message' => __( 'An error occured while flushing the cache.', 'give' ),
+		));
+	}
+}
+
+add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );

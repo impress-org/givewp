@@ -1,0 +1,33 @@
+/*!
+ * Give Frontend SCSS/CSS
+ *
+ * @description: The Main SCSS file for FRONTEND styles which is compiled and minified via Gulp taskrunner
+ * @package:     Give
+ * @subpackage:  SCSS/Frontend
+ * @copyright:   Copyright (c) 2016, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+@import '_variables';
+@import '_mixins';
+@import 'fonts';
+@import '../plugins/hint.min';
+@import 'receipt';
+@import '../plugins/float-labels';
+@import 'float-labels';
+@import 'forms';
+@import 'alerts';
+@import '../plugins/magnific-popup';
+@import 'layouts';
+@import 'progress-bar';
+@import 'modal';
+@import 'tables';
+@import 'theme-compatibility';
+@import 'donation-history';
+@import 'donation-grid';
+
+// Wrapper increases specificity for defensive styling against themes.
+.give-wrap {
+	@import 'grid';
+	@import 'card';
+	@import 'page-numbers';
+}

@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.7
+Stable tag: 2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,7 +130,7 @@ Give version 1.8 is a major update. Please make sure you make a backup of your d
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
-* A SSL certificate -- while this is not strictly required for PayPal Standard users, it soon will be and we highly recommend it for every website that accepts donations. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
+* An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
 
 = Automatic installation =
 

@@ -1,0 +1,70 @@
+.give-donation-history {
+  .give-table {
+	table-layout: auto;
+
+	.give-security-column {
+	  float: left;
+
+	  &.give-security-description-wrap {
+		width: 75%;
+		padding: 16px 13px;
+		font-size: 12px;
+		font-style: italic;
+	  }
+
+	  &.give-security-button-wrap {
+		width: 25%;
+		padding: 25px 5px;
+
+		span {
+		  display: none;
+		  padding: 0 20px;
+		}
+	  }
+	}
+
+	.title-for-mobile {
+		display: none;
+	}
+  }
+}
+
+@media screen and ( max-width: 480px ) {
+	#give_user_history {
+		thead {
+			display: none;
+		}
+
+		tbody {
+			border-top: 1px solid #e0e0e0;
+		}
+
+		tr {
+			padding: 0.5rem 0;
+			background: #fff;
+
+			&:nth-child( even ) {
+				background-color: #fafafa;
+			}
+		}
+
+		td {
+			border: none;
+			padding-top: 0;
+			padding-bottom: 0; 
+			background-color: rgba(0, 0, 0, 0);
+		}
+
+		tr, td {
+			display: block;
+			border-left: none;
+			text-align: left;
+		}
+
+		.title-for-mobile {
+			display: inline-block;
+			font-weight: bold;
+			min-width: 6em;
+		}
+	}
+}

@@ -768,6 +768,26 @@ function give_get_form_minimum_price( $form_id = 0 ) {
 }
 
 /**
+ * Return the maximum price amount of form.
+ *
+ * @since 2.1
+ *
+ * @param int $form_id Donate Form ID
+ *
+ * @return bool|float
+ */
+function give_get_form_maximum_price( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->get_maximum_price();
+}
+
+/**
  * Displays a formatted price for a donation form
  *
  * @since 1.0
@@ -884,6 +904,93 @@ function give_get_form_goal_format( $form_id = 0 ) {
 	}
 
 	return give_get_meta( $form_id, '_give_goal_format', true );
+
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
+ * @param int|Give_Donate_Form  $form       Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+	/**
+	 * Filter the form sales.
+	 *
+	 * @since 2.1
+	 */
+	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
+
+	/**
+	 * Filter the form income.
+	 *
+	 * @since 1.8.8
+	 */
+	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+
+	/**
+	 * Filter the form.
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
+
+
+	$actual   = 'donation' !== $goal_format ? $income : $sales;
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	$stats_array = array(
+		'raw_actual' => $actual,
+		'raw_goal'   => $total_goal
+	);
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	// Define Actual Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$actual = "{$actual}%";
+	} else if ( 'amount' === $goal_format ) {
+		$actual = give_currency_filter( give_format_amount( $actual ) );
+	}
+
+	// Define Total Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$total_goal = '';
+	} else if ( 'amount' === $goal_format ) {
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+	}
+
+	$stats_array = array_merge(
+		array(
+			'progress' => $progress,
+			'actual'   => $actual,
+			'goal'     => $total_goal,
+			'format'   => $goal_format,
+		),
+		$stats_array
+	);
+
+	/**
+	 * Filter the goal stats
+	 *
+	 * @since 2.1
+	 */
+	return apply_filters( 'give_goal_progress_stats', $stats_array );
 
 }
 

@@ -1,0 +1,75 @@
+@font-face {
+	font-family: 'give-icomoon';
+	font-weight: normal;
+	font-style: normal;
+}
+
+@mixin admin_fonts() {
+	font-family: 'give-icomoon';
+	src: url('../../fonts/icomoon.eot?kdnr3d');
+	src: url('../../fonts/icomoon.eot?kdnr3d#iefix') format('embedded-opentype'),
+	url('../../fonts/icomoon.woff?kdnr3d') format('woff'),
+	url('../../fonts/icomoon.svg?kdnr3d#icomoon') format('svg');
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	// Better Font Rendering
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+// ---------------------------------
+// Donation form vertical tab icons.
+// ---------------------------------
+.give-metabox-tabs li {
+
+	.give-icon:before {
+		@include admin_fonts();
+		font-size: 12px;
+		vertical-align: top;
+		line-height: 20px;
+		margin: 0 5px 0 0;
+	}
+
+	.give-icon-default:before {
+		content: "\e903";
+	}
+
+	//Donation options tab.
+	.give-icon-heart:before {
+		content: "\e604"; //this is a wp dashicon heart.
+	}
+	//Goal tab.
+	.give-icon-target:before {
+		content: "\e901";
+	}
+	//Form display tab.
+	.give-icon-display:before {
+		content: "\e90c";
+	}
+	//Form content tab.
+	.give-icon-edit:before {
+		content: "\e902";
+	}
+	//Form terms tab.
+	.give-icon-checklist:before {
+		position: relative;
+		top: 1px;
+		content: "\e900";
+	}
+	//Form offline donations tab.
+	.give-icon-purse:before {
+		content: "\e8df";
+	}
+
+	.dashicons {
+		font-size:14px;
+		width:14px;
+		line-height: 20px;
+	}
+
+}

@@ -256,7 +256,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		return $this->payments;
 	}
-	
+
 	/**
 	 * Get payments by group
 	 *
@@ -594,37 +594,6 @@ class Give_Payments_Query extends Give_Stats {
 
 			$this->__set( 'meta_query', $search_meta );
 
-			if ( give_get_option( 'enable_sequential' ) ) {
-
-				$search_meta = array(
-					'key'     => '_give_payment_number',
-					'value'   => $search,
-					'compare' => 'LIKE',
-				);
-
-				$this->__set( 'meta_query', $search_meta );
-
-				$this->args['meta_query']['relation'] = 'OR';
-
-			}
-
-			$this->__unset( 's' );
-
-		} elseif (
-			give_get_option( 'enable_sequential' ) &&
-			(
-				false !== strpos( $search, give_get_option( 'sequential_prefix' ) ) ||
-				false !== strpos( $search, give_get_option( 'sequential_postfix' ) )
-			)
-		) {
-
-			$search_meta = array(
-				'key'     => '_give_payment_number',
-				'value'   => $search,
-				'compare' => 'LIKE',
-			);
-
-			$this->__set( 'meta_query', $search_meta );
 			$this->__unset( 's' );
 
 		} elseif ( is_numeric( $search ) ) {

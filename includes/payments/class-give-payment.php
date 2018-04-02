@@ -925,6 +925,9 @@ final class Give_Payment {
 						break;
 
 					case 'number':
+						// @todo: remove unused meta data.
+						// Core is using post_title to store donation serial code ( fi enabled ) instead this meta key.
+						// Do not use this meta key in your logic, can be remove in future
 						$this->update_meta( '_give_payment_number', $this->number );
 						break;
 
@@ -1838,20 +1841,7 @@ final class Give_Payment {
 	 * @return int|string Integer by default, or string if sequential order numbers is enabled.
 	 */
 	private function setup_payment_number() {
-		$number = $this->ID;
-
-		if ( give_get_option( 'enable_sequential' ) ) {
-
-			$number = $this->get_meta( '_give_payment_number', true );
-
-			if ( ! $number ) {
-
-				$number = $this->ID;
-
-			}
-		}
-
-		return $number;
+		return $this->get_serial_code();
 	}
 
 	/**
@@ -2044,5 +2034,18 @@ final class Give_Payment {
 	 */
 	private function get_number() {
 		return apply_filters( 'give_payment_number', $this->number, $this->ID, $this );
+	}
+
+	/**
+	 * Get serial code
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function get_serial_code( $args = array() ) {
+		return Give()->seq_donation_number->get_serial_code( $this, $args );
 	}
 }

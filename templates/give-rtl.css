@@ -2353,3 +2353,29 @@ body.give-twentyseventeen.colors-dark form[id*="give"] fieldset {
       .give-donation-history .give-table .give-security-column.give-security-button-wrap span {
         display: none;
         padding: 0 20px; }
+  .give-donation-history .give-table .title-for-mobile {
+    display: none; }
+
+@media screen and (max-width: 480px) {
+  #give_user_history thead {
+    display: none; }
+  #give_user_history tbody {
+    border-top: 1px solid #e0e0e0; }
+  #give_user_history tr {
+    padding: 0.5rem 0;
+    background: #fff; }
+    #give_user_history tr:nth-child(even) {
+      background-color: #fafafa; }
+  #give_user_history td {
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: transparent; }
+  #give_user_history tr, #give_user_history td {
+    display: block;
+    border-right: none;
+    text-align: right; }
+  #give_user_history .title-for-mobile {
+    display: inline-block;
+    font-weight: bold;
+    min-width: 6em; } }
