@@ -56,6 +56,13 @@ $currency_code  = $payment->currency;
 $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
+$base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
+
+// Add search term string back to base URL.
+$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
+if ( ! empty( $search_terms ) ) {
+	$base_url = add_query_arg( 's', $search_terms, $base_url );
+}
 ?>
 <div class="wrap give-wrap">
 
@@ -218,7 +225,10 @@ $payment_mode   = $payment->mode;
 
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
+
+											<input type="submit" class="button button-primary right"
+											       value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
+
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
 												echo sprintf(
@@ -232,6 +242,27 @@ $payment_mode   = $payment->mode;
 														)
 													),
 													__( 'Resend Receipt', 'give' )
+												);
+											}
+											?>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div id="major-publishing-actions">
+										<div id="publishing-action" style="text-align: center;float: none;">
+											<?php
+											if ( current_user_can( 'view_give_payments' ) ) {
+												echo sprintf(
+													'<a class="delete-single-donation button-secondary button-link-delete" href="%1$s" aria-label="%2$s">%3$s</a>',
+													wp_nonce_url(
+														add_query_arg(
+															array(
+																'give-action' => 'delete_payment',
+																'purchase_id' => $payment_id,
+															), $base_url
+														), 'give_donation_nonce'
+													), sprintf( __( 'Delete Donation %s', 'give' ), $payment_id ), __( 'Delete', 'give' )
 												);
 											}
 											?>
