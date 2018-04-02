@@ -227,7 +227,7 @@ if ( ! empty( $search_terms ) ) {
 										<div id="publishing-action">
 
 											<input type="submit" class="button button-primary right"
-											       value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
+											       value="<?php _e( 'Save Donation', 'give' ); ?>"/>
 
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
