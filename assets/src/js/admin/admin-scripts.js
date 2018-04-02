@@ -2760,11 +2760,21 @@ var give_setting_edit = false;
 							give_vars.donations_bulk_action[currentAction].multiple :
 							give_vars.donations_bulk_action[currentAction].single;
 
-						// Trigger Admin Confirmation PopUp.
-						return window.confirm(confirmActionNotice
-							.replace('{payment_count}', $payments)
-							.replace('{status}', currentActionLabel.replace('Set To ', ''))
-						);
+						e.preventDefault();
+
+						new GiveConfirmModal(
+							{
+								modalContent: {
+									title: give_vars.confirm_bulk_action,
+									desc: confirmActionNotice
+										.replace('{payment_count}', $payments)
+										.replace('{status}', currentActionLabel.replace('Set To ', ''))
+								},
+								successConfirm: function ( args ) {
+									$( '#give-payments-filter' ).submit();
+								}
+							}
+						).render();
 					}
 				}
 			}

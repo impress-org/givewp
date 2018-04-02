@@ -189,6 +189,7 @@ class Give_Scripts {
 			'confirm'                           => __( 'Confirm', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
 			'confirm_resend'                    => __( 'Confirm re-send', 'give' ),
+			'confirm_bulk_action'               => __( 'Confirm bulk action', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
