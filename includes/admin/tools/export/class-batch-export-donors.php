@@ -161,8 +161,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				case 'userid' :
 					$cols['userid'] = esc_html__( 'User ID', 'give' );
 					break;
-				case 'date_first_donated' :
-					$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
+				case 'donor_created_date' :
+					$cols['donor_created_date'] = esc_html__( 'Donor Created Date', 'give' );
 					break;
 				case 'donations' :
 					$cols['donations'] = esc_html__( 'Number of Donations', 'give' );
@@ -370,8 +370,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		if ( ! empty( $columns['userid'] ) ) {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
-		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
+		if ( ! empty( $columns['donor_created_date'] ) ) {
+			$data[ $i ]['donor_created_date'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
 			$data[ $i ]['donations'] = $donor->purchase_count;

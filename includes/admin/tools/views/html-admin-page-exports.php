@@ -224,8 +224,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<li>
 											<label for="give-export-first-donation-date">
 												<input type="checkbox" checked
-												       name="give_export_option[date_first_donated]"
-												       id="give-export-first-donation-date"><?php esc_html_e( 'First Donation Date', 'give' ); ?>
+												       name="give_export_option[donor_created_date]"
+												       id="give-export-first-donation-date"><?php esc_html_e( 'Donor Created Date', 'give' ); ?>
 											</label>
 										</li>
 										<li>
