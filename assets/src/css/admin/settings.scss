@@ -116,8 +116,32 @@
 }
 
 // Tools page: fix ajax search user list hide bug
-.give-tools-setting-page .bulkactions {
-	overflow: visible;
+.give-tools-setting-page {
+	.bulkactions {
+		overflow: visible;
+	}
+
+	#give-export_donations-form {
+		table {
+			tbody{
+				td.row-title{
+					width: 30%;
+				}
+
+				ul.give-export-option-ul {
+					li {
+						width: 33%;
+						float: left;
+					}
+				}
+
+				p.give-field-description{
+					display: table;
+					width: 100%;
+				}
+			}
+		}
+	}
 }
 
 //Ugly but necessary to override WP core styles.
