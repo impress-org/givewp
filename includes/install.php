@@ -325,6 +325,7 @@ function give_get_default_settings() {
 		'thousands_separator'                         => ',',
 		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,
+		'sequential-ordering_status'                  => 'enabled',
 
 		// Display options.
 		'css'                                         => 'enabled',

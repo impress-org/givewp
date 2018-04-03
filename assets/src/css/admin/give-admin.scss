@@ -1,0 +1,37 @@
+/**
+ * Give Admin SCSS/CSS
+ *
+ * @package:     Give
+ * @subpackage:  SCSS/Admin
+ * @copyright:   Copyright (c) 2016, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+// Plugins.
+@import '~chosen-js/chosen.css';
+@import '../frontend/mixins';
+@import '../frontend/variables';
+@import '../plugins/jquery-ui-fresh';
+@import '../plugins/hint.min';
+@import '../frontend/fonts';
+
+@import 'fonts';
+@import 'grids';
+@import 'forms';
+@import 'addons';
+@import 'reports';
+@import 'welcome';
+@import 'logs';
+@import 'settings';
+@import 'payment-history';
+@import 'dashboard';
+@import 'donors';
+@import 'buttons';
+@import 'shortcodes';
+@import 'system-info';
+@import 'util';
+@import 'updates';
+@import 'blank-slate';
+@import 'chosen';
+@import 'importer';
+@import 'goals';

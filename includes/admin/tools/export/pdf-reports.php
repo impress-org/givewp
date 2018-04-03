@@ -76,7 +76,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 
 	// Image URL should have absolute path. @see https://tcpdf.org/examples/example_009/.
-	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_DIR . 'assets/images/give-logo-small.png' ), 247, 8 );
+	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_DIR . 'assets/dist/images/give-logo-small.png' ), 247, 8 );
 
 	$pdf->SetMargins( 8, 8, 8 );
 	$pdf->SetX( 8 );

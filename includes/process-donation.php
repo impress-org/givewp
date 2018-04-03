@@ -381,7 +381,7 @@ function give_donation_form_validate_gateway() {
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
 		} // End if().
-		elseif ( ! give_verify_minimum_price() ) {
+		elseif ( ! give_verify_minimum_price( 'minimum' ) ) {
 			// translators: %s: minimum donation amount.
 			give_set_error(
 				'invalid_donation_minimum',
@@ -389,6 +389,18 @@ function give_donation_form_validate_gateway() {
 				/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
+				)
+			);
+
+		} // End if().
+		elseif ( ! give_verify_minimum_price( 'maximum' ) ) {
+			// translators: %s: Maximum donation amount.
+			give_set_error(
+				'invalid_donation_maximum',
+				sprintf(
+				/* translators: %s: Maximum donation amount */
+					__( 'This form has a maximum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 
@@ -410,13 +422,17 @@ function give_donation_form_validate_gateway() {
 }
 
 /**
- * Donation Form Validate Minimum Donation Amount
+ * Donation Form Validate Minimum or Maximum Donation Amount
  *
  * @access      private
  * @since       1.3.6
+ * @since       2.1 Added support for give maximum amount.
+ *
+ * @param string $amount_range Which amount needs to verify? minimum or maximum.
+ *
  * @return      bool
  */
-function give_verify_minimum_price() {
+function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
@@ -432,8 +448,17 @@ function give_verify_minimum_price() {
 		}
 	}
 
-	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-		return false;
+	switch ( $amount_range ) {
+		case 'minimum' :
+			if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+				return false;
+			}
+			break;
+		case 'maximum' :
+			if ( give_get_form_maximum_price( $form_id ) < $amount ) {
+				return false;
+			}
+			break;
 	}
 
 	return true;
@@ -615,6 +640,8 @@ function give_donation_form_validate_logged_in_user() {
 				'user_last'  => isset( $_POST['give_last'] ) && ! empty( $_POST['give_last'] ) ? sanitize_text_field( $_POST['give_last'] ) : $user_data->last_name,
 			);
 
+			give_donation_form_validate_name_fields();
+
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
 				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			}
@@ -655,6 +682,8 @@ function give_donation_form_validate_new_user() {
 	$user_data            = wp_parse_args( give_clean( $_POST ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
+
+	give_donation_form_validate_name_fields();
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
@@ -770,6 +799,8 @@ function give_donation_form_validate_guest_user() {
 		// Set a default id for guests.
 		'user_id' => 0,
 	);
+
+	give_donation_form_validate_name_fields();
 
 	// Get the guest email.
 	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
@@ -1278,5 +1309,20 @@ function give_validate_required_form_fields( $form_id ) {
 		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $field_value ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
+	}
+}
+
+/**
+ * Validates and checks if name fields don't contain email addresses.
+ *
+ * @since 2.1
+ * @return void
+ */
+function give_donation_form_validate_name_fields() {
+	$is_first_name = is_email( $_POST['give_first'] ) ? true : false;
+	$is_last_name  = is_email( $_POST['give_last'] ) ? true : false;
+
+	if ( $is_first_name || $is_last_name ) {
+		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address.', 'give' ) );
 	}
 }

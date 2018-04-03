@@ -249,11 +249,6 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 			$this->delete_option( $this->donation_key );
 
-			// Reset the sequential order numbers
-			if ( give_get_option( 'enable_sequential' ) ) {
-				delete_option( 'give_last_payment_number' );
-			}
-
 			$this->done    = true;
 			$this->message = __( 'Test donor and transactions successfully deleted.', 'give' );
 

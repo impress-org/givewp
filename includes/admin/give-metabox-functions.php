@@ -75,6 +75,10 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_radio";
 			break;
 
+		case 'range_slider':
+			$func_name = "{$func_name_prefix}_range_slider";
+			break;
+
 		default:
 
 			if (
@@ -187,6 +191,10 @@ function give_render_field( $field ) {
 				'default' => __( 'Default' ),
 			);
 			break;
+
+		case 'range_slider':
+			$field['type']  = 'range_slider';
+			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
@@ -274,6 +282,145 @@ function give_text_input( $field ) {
 	<?php
 	echo give_get_field_description( $field );
 	echo '</p>';
+}
+
+/**
+ * Give range slider field.
+ *
+ * @since 2.1
+ *
+ * @param  array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $type          Type of input field. Default 'text'.
+ * @type string  $before_field  Text/HTML to add before input field. Default ''.
+ * @type string  $after_field   Text/HTML to add after input field. Default ''.
+ * @type string  $data_type     Define data type for value of input to filter it properly. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * }
+ *
+ * @return void
+ */
+function give_range_slider( $field ) {
+	global $thepostid, $post;
+
+	// Get Give donation form ID.
+	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
+
+	// Default arguments.
+	$default_options = array(
+		'style'         => '',
+		'wrapper_class' => '',
+		'value'         => give_get_field_value( $field, $thepostid ),
+		'data_type'     => 'decimal',
+		'before_field'  => '',
+		'after_field'   => '',
+	);
+
+	// Field options.
+	$field['options'] = ! empty( $field['options'] ) ? $field['options'] : array();
+
+	// Default field option arguments.
+	$field['options'] = wp_parse_args( $field['options'], array(
+			'display_label' => '',
+			'minimum'       => 1.00,
+			'maximum'       => 999999.99,
+		)
+	);
+
+	// Set default field options.
+	$field_options = wp_parse_args( $field, $default_options );
+
+	// Get default minimum value, if empty.
+	$field_options['value']['minimum'] = ! empty( $field_options['value']['minimum'] )
+		? $field_options['value']['minimum']
+		: $field_options['options']['minimum'];
+
+	// Get default maximum value, if empty.
+	$field_options['value']['maximum'] = ! empty( $field_options['value']['maximum'] )
+		? $field_options['value']['maximum']
+		: $field_options['options']['maximum'];
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
+	<span class="give_range_slider_display">
+		<?php
+
+		if ( ! empty( $field_options['options']['display_label'] ) ) {
+			?>
+			<span class="give_range_slider_label">
+				<?php echo esc_html( $field_options['options']['display_label'] ); ?>
+			</span>
+			<?php
+		}
+
+		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
+
+			switch ( $field_options['data_type'] ) {
+				case 'price' :
+					$currency_position = give_get_option( 'currency_position', 'before' );
+					$tooltip_label     = 'minimum' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
+
+					$tooltip_html = array(
+						'before' => Give()->tooltips->render_span( array(
+							'label'       => $tooltip_label,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-before">%s</span>', give_currency_symbol() ),
+						) ),
+						'after'  => Give()->tooltips->render_span( array(
+							'label'       => $tooltip_label,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-after">%s</span>', give_currency_symbol() ),
+						) ),
+					);
+
+					$before_html = ! empty( $field_options['before_field'] )
+						? $field_options['before_field']
+						: ( 'before' === $currency_position ? $tooltip_html['before'] : '' );
+
+					$after_html = ! empty( $field_options['after_field'] )
+						? $field_options['after_field']
+						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
+
+					$field_options['attributes']['class']    .= ' give-text_small';
+					$field_options['value'][ $amount_range ] = give_maybe_sanitize_amount( $amount_value );
+					break;
+				case 'decimal' :
+					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
+					$field_options['value'][ $amount_range ] = $amount_value;
+					break;
+			}
+
+			echo isset( $before_html ) ? $before_html : '';
+			?>
+			<input
+					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
+					type="text"
+					id="<?php echo $field_options['id']; ?> _give_range_slider_<?php echo $amount_range; ?>"
+					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
+					value="<?php echo esc_attr( $field_options['value'][ $amount_range ] ); ?>"
+					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
+				<?php echo give_get_custom_attributes( $field_options ); ?>
+			/>
+			<?php
+			echo isset( $after_html ) ? $after_html : '';
+		}
+		?>
+	</span>
+		<span
+				id="<?php echo esc_attr( $field_options['id'] ); ?>"
+				style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
+				class="<?php echo apply_filters( "give_range_slider_{$field['id']}_classes", "give-range_slider_field" ); ?>"
+		></span>
+		<?php echo give_get_field_description( $field_options ); ?>
+	</p>
+	<?php
 }
 
 /**
@@ -634,7 +781,7 @@ function give_media( $field ) {
 	global $thepostid, $post;
 
 	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
-	$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $field['type'] ? 'File' : 'Image' ) ), 'give' );
+	$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $field['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -735,6 +882,7 @@ function give_docs_link( $field ) {
  * Output preview buttons.
  *
  * @since 2.0
+ *
  * @param $field
  */
 function give_email_preview_buttons( $field ) {
@@ -792,6 +940,7 @@ function give_email_preview_buttons( $field ) {
  * Note: Use only for single post, page or custom post type.
  *
  * @since  1.8
+ * @since  2.1 Added support for range_slider.
  *
  * @param  array $field
  * @param  int   $postid
@@ -803,8 +952,25 @@ function give_get_field_value( $field, $postid ) {
 		return $field['attributes']['value'];
 	}
 
-	// Get value from db.
-	$field_value = give_get_meta( $postid, $field['id'], true );
+	// If field is range slider.
+	if ( 'range_slider' === $field['type'] ) {
+
+		// Get minimum value.
+		$minimum = give_get_meta( $postid, $field['id'] . '_minimum', true );
+
+		// Give < 2.1
+		if ( '_give_custom_amount_range' === $field['id'] && empty( $minimum ) ) {
+			$minimum = give_get_meta( $postid, '_give_custom_amount_minimum', true );
+		}
+
+		$field_value = array(
+			'minimum' => $minimum,
+			'maximum' => give_get_meta( $postid, $field['id'] . '_maximum', true ),
+		);
+	} else {
+		// Get value from db.
+		$field_value = give_get_meta( $postid, $field['id'], true );
+	}
 
 	/**
 	 * Filter the field value before apply default value.
@@ -980,7 +1146,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	$wrapper_class   = isset( $fields['wrapper_class'] ) ? $fields['wrapper_class'] : '';
 	?>
 	<div class="give-repeatable-field-section <?php echo esc_attr( $wrapper_class ); ?>" id="<?php echo "{$fields['id']}_field"; ?>"
-		 data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
+	     data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
 		<?php if ( ! empty( $fields['name'] ) ) : ?>
 			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
 		<?php endif; ?>
@@ -1007,128 +1173,128 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 			}
 			?>
 			<tbody class="container"<?php echo " data-rf-row-count=\"{$fields_count}\""; ?>>
-				<!--Repeater field group template-->
-				<tr class="give-template give-row">
-					<td class="give-repeater-field-wrap give-column" colspan="2">
-						<div class="give-row-head give-move">
-							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
-							</button>
-							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
-							<h2>
-								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
-							</h2>
-						</div>
-						<div class="give-row-body">
-							<?php foreach ( $fields['fields'] as $field ) : ?>
-								<?php
-								if ( ! give_is_field_callback_exist( $field ) ) {
-									continue;
-								}
-								?>
-								<?php
-								$field['repeat']              = true;
-								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
-								$field['id']                  = str_replace(
-									array( '[', ']' ),
-									array( '_', '', ),
-									$field['repeatable_field_id']
-								);
-								?>
-								<?php give_render_field( $field ); ?>
-							<?php endforeach; ?>
-						</div>
-					</td>
-				</tr>
+			<!--Repeater field group template-->
+			<tr class="give-template give-row">
+				<td class="give-repeater-field-wrap give-column" colspan="2">
+					<div class="give-row-head give-move">
+						<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
+						</button>
+						<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
+						<h2>
+							<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+						</h2>
+					</div>
+					<div class="give-row-body">
+						<?php foreach ( $fields['fields'] as $field ) : ?>
+							<?php
+							if ( ! give_is_field_callback_exist( $field ) ) {
+								continue;
+							}
+							?>
+							<?php
+							$field['repeat']              = true;
+							$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+							$field['id']                  = str_replace(
+								array( '[', ']' ),
+								array( '_', '', ),
+								$field['repeatable_field_id']
+							);
+							?>
+							<?php give_render_field( $field ); ?>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			</tr>
 
-				<?php if ( ! empty( $repeater_field_values ) ) : ?>
-					<!--Stored repeater field group-->
-					<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
-						<tr class="give-row">
-							<td class="give-repeater-field-wrap give-column" colspan="2">
-								<div class="give-row-head give-move">
-									<button type="button" class="handlediv button-link">
-										<span class="toggle-indicator"></span></button>
-									<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-								</span>
-									<h2>
-										<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
-									</h2>
-								</div>
-								<div class="give-row-body">
-									<?php foreach ( $fields['fields'] as $field ) : ?>
-										<?php if ( ! give_is_field_callback_exist( $field ) ) {
-											continue;
-										} ?>
-										<?php
-										$field['repeat']              = true;
-										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, $index );
-										$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
-										$field['id']                  = str_replace(
-											array( '[', ']' ),
-											array( '_', '', ),
-											$field['repeatable_field_id']
-										);
-										?>
-										<?php give_render_field( $field ); ?>
-									<?php endforeach; ?>
-								</div>
-							</td>
-						</tr>
-					<?php endforeach;; ?>
-
-				<?php elseif ( $add_default_donation_field ) : ?>
-					<!--Default repeater field group-->
+			<?php if ( ! empty( $repeater_field_values ) ) : ?>
+				<!--Stored repeater field group-->
+				<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link">
 									<span class="toggle-indicator"></span></button>
 								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-							</span>
+								</span>
 								<h2>
 									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
 							</div>
 							<div class="give-row-body">
-								<?php
-								foreach ( $fields['fields'] as $field ) :
-									if ( ! give_is_field_callback_exist( $field ) ) {
+								<?php foreach ( $fields['fields'] as $field ) : ?>
+									<?php if ( ! give_is_field_callback_exist( $field ) ) {
 										continue;
-									}
-
+									} ?>
+									<?php
 									$field['repeat']              = true;
-									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, 0 );
-									$field['attributes']['value'] = apply_filters(
-										"give_default_field_group_field_{$field['id']}_value",
-										( ! empty( $field['default'] ) ? $field['default'] : '' ),
-										$field,
-										$fields
-									);
+									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, $index );
+									$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
 									$field['id']                  = str_replace(
 										array( '[', ']' ),
 										array( '_', '', ),
 										$field['repeatable_field_id']
 									);
-									give_render_field( $field );
-
-								endforeach;
-								?>
+									?>
+									<?php give_render_field( $field ); ?>
+								<?php endforeach; ?>
 							</div>
 						</td>
 					</tr>
-				<?php endif; ?>
-			</tbody>
-			<tfoot>
-				<tr>
-					<?php
-					$add_row_btn_title = isset( $fields['options']['add_button'] )
-						? $add_row_btn_title = $fields['options']['add_button']
-						: esc_html__( 'Add Row', 'give' );
-					?>
-					<td colspan="2" class="give-add-repeater-field-section-row-wrap">
-						<button type="button" class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></button>
+				<?php endforeach;; ?>
+
+			<?php elseif ( $add_default_donation_field ) : ?>
+				<!--Default repeater field group-->
+				<tr class="give-row">
+					<td class="give-repeater-field-wrap give-column" colspan="2">
+						<div class="give-row-head give-move">
+							<button type="button" class="handlediv button-link">
+								<span class="toggle-indicator"></span></button>
+							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+							</span>
+							<h2>
+								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+							</h2>
+						</div>
+						<div class="give-row-body">
+							<?php
+							foreach ( $fields['fields'] as $field ) :
+								if ( ! give_is_field_callback_exist( $field ) ) {
+									continue;
+								}
+
+								$field['repeat']              = true;
+								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, 0 );
+								$field['attributes']['value'] = apply_filters(
+									"give_default_field_group_field_{$field['id']}_value",
+									( ! empty( $field['default'] ) ? $field['default'] : '' ),
+									$field,
+									$fields
+								);
+								$field['id']                  = str_replace(
+									array( '[', ']' ),
+									array( '_', '', ),
+									$field['repeatable_field_id']
+								);
+								give_render_field( $field );
+
+							endforeach;
+							?>
+						</div>
 					</td>
 				</tr>
+			<?php endif; ?>
+			</tbody>
+			<tfoot>
+			<tr>
+				<?php
+				$add_row_btn_title = isset( $fields['options']['add_button'] )
+					? $add_row_btn_title = $fields['options']['add_button']
+					: esc_html__( 'Add Row', 'give' );
+				?>
+				<td colspan="2" class="give-add-repeater-field-section-row-wrap">
+					<span class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></span>
+				</td>
+			</tr>
 			</tfoot>
 		</table>
 	</div>

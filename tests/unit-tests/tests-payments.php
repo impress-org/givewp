@@ -283,33 +283,83 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test getting the payment number.
 	 */
 	public function test_get_payment_number() {
-
-		$this->markTestSkipped( 'Awaiting sequential ordering enhancement.' );
-
 		// Reset all items and start from scratch.
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
 		wp_cache_flush();
 
-		$give_options                      = give_get_settings();
-		$give_options['enable_sequential'] = 1;
+
+		/**
+		 * Case 1: enable sequential donation
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+
+		$payment = new Give_Payment( $payment_id );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_number( $payment_id ), $payment->number );
+
+		/**
+		 * Case 2: enable sequential donation with prefix and suffix
+		 */
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP' );
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
-		$this->assertInternalType( 'int', give_get_next_payment_number() );
-		$this->assertInternalType( 'string', give_format_payment_number( give_get_next_payment_number() ) );
-		$this->assertEquals( 'Give-2', give_format_payment_number( give_get_next_payment_number() ) );
+		$payment = new Give_Payment( $payment_id );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code( $payment_id ), $payment->number );
 
-		$payment             = new Give_Payment( $payment_id );
-		$last_payment_number = give_remove_payment_prefix_postfix( $payment->number );
-		$this->assertEquals( 1, $last_payment_number );
-		$this->assertEquals( 'Give-1', $payment->number );
-		$this->assertEquals( 2, give_get_next_payment_number() );
+		// Reset option.
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
 
-		// Now disable sequential and ensure values come back as expected
-		$give_options['enable_sequential'] = 0;
+		/**
+		 * Case 3: enable sequential donation with prefix and suffix with date tag
+		 */
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP-{YYYY}-{MM}-{DD}' );
+
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+
+		$payment      = new Give_Payment( $payment_id );
+		$current_time = current_time( 'timestamp' );
+		$this->assertEquals(
+			'Give-' . Give()->seq_donation_number->get_serial_number( $payment_id ) . '-WP-' . date( 'Y', $current_time ) . '-' . date( 'm', $current_time ) . '-' . date( 'd', $current_time ),
+			$payment->number
+		);
+
+		// Reset option.
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
+
+		/**
+		 * Case 3: enable sequential donation with prefix, suffix and custom starting number
+		 */
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP' );
+		update_option( '_give_reset_sequential_number', 1 );
+		give_update_option( 'sequential-ordering_number', 400 );
+
+		$payment_id = Give_Helper_Payment::create_simple_payment();
 
 		$payment = new Give_Payment( $payment_id );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code( $payment_id ), $payment->number );
+
+		// Reset option.
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
+		give_update_option( 'sequential-ordering_number', 400 );
+
+
+		/**
+		 * Case 2: disable sequential donation.
+		 */
+		give_update_option( 'sequential-ordering_status', 'disabled' );
+
+		// Now disable sequential and ensure values come back as expected
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$payment    = new Give_Payment( $payment_id );
 		$this->assertEquals( $payment_id, $payment->number );
+
+		give_update_option( 'sequential-ordering_status', 'enabled' );
 	}
 
 	/**
@@ -460,8 +510,16 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$total1 = give_donation_amount( $this->_payment_id, true );
 		$total2 = give_donation_amount( $this->_payment_id, true );
-		$total3 = give_donation_amount( $this->_payment_id, array( 'currency' => true, 'amount' => true,  'type' => 'stats' ) );
-		$total4 = give_donation_amount( $this->_payment_id, array( 'currency' => true, 'amount' => true,  'type' => 'stats' ) );
+		$total3 = give_donation_amount( $this->_payment_id, array(
+			'currency' => true,
+			'amount'   => true,
+			'type'     => 'stats'
+		) );
+		$total4 = give_donation_amount( $this->_payment_id, array(
+			'currency' => true,
+			'amount'   => true,
+			'type'     => 'stats'
+		) );
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
@@ -540,10 +598,10 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		);
 
 		$amount_with_levels = array(
-			1 => give_maybe_sanitize_amount( 10 ),
-			2 => give_maybe_sanitize_amount( 25 ),
-			3 => give_maybe_sanitize_amount( 50 ),
-			4 => give_maybe_sanitize_amount( 100 ),
+			1        => give_maybe_sanitize_amount( 10 ),
+			2        => give_maybe_sanitize_amount( 25 ),
+			3        => give_maybe_sanitize_amount( 50 ),
+			4        => give_maybe_sanitize_amount( 100 ),
 			'custom' => give_maybe_sanitize_amount( 1.22 ),
 		);
 
@@ -575,11 +633,11 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$donation->currency = 'INR';
 		$donation->save();
 
-		if( is_array( $format_args ) && ( isset( $format_args['currency'] ) && is_array( $format_args['currency'] ) ) ) {
+		if ( is_array( $format_args ) && ( isset( $format_args['currency'] ) && is_array( $format_args['currency'] ) ) ) {
 			$format_args['currency']['currency_code'] = 'INR';
 		}
 
-		if( is_array( $format_args ) && ( isset( $format_args['amount'] ) && is_array( $format_args['amount'] ) ) ) {
+		if ( is_array( $format_args ) && ( isset( $format_args['amount'] ) && is_array( $format_args['amount'] ) ) ) {
 			$format_args['amount']['currency'] = 'INR';
 		}
 
