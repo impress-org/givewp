@@ -86,6 +86,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
+		global $wpdb;
 		$this->setup_dates( $start_date, $end_date );
 
 		// Make sure start date is valid
@@ -105,6 +106,7 @@ class Give_Payment_Stats extends Give_Stats {
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
+			'output'     => '',
 		);
 
 
@@ -142,9 +144,13 @@ class Give_Payment_Stats extends Give_Stats {
 			$earnings        = 0;
 
 			if ( ! empty( $payments ) ) {
-				foreach ( $payments as $payment ) {
-					$earnings += (float) give_donation_amount( $payment->ID, array( 'type' => 'stats' ) );
-				}
+				$query = "SELECT SUM(meta_value)
+					FROM {$wpdb->paymentmeta}
+					WHERE meta_key='_give_payment_total'
+					AND payment_id IN ('". implode( '\',\'', $payments ) ."')";
+
+				// @todo check compatibility with currency switcher.
+				$earnings = $wpdb->get_var($query);
 
 			}
 
