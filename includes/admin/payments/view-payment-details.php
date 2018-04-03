@@ -58,11 +58,6 @@ $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
 
-// Add search term string back to base URL.
-$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
-if ( ! empty( $search_terms ) ) {
-	$base_url = add_query_arg( 's', $search_terms, $base_url );
-}
 ?>
 <div class="wrap give-wrap">
 
