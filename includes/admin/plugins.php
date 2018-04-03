@@ -124,9 +124,10 @@ function give_get_admin_page_menu_title() {
 function give_recently_activated_addons() {
 	// Check if action is set.
 	if ( isset( $_REQUEST["action"] ) ) {
-		$plugins = array();
+		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+		$plugins       = array();
 
-		switch ( $_REQUEST["action"] ) {
+		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
 				$plugins[] = $_REQUEST["plugin"];
 				break;
