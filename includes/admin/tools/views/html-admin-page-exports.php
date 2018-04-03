@@ -40,6 +40,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 					 */
 					do_action( 'give_tools_tab_export_table_top' );
 					?>
+
+					<tr class="give-export-donations-history">
+						<td scope="row" class="row-title">
+							<h3>
+								<span><?php _e( 'Export Donation History', 'give' ); ?></span>
+							</h3>
+							<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
+						</td>
+						<td>
+							<a class="button"
+							   href="<?php echo add_query_arg( array( 'type' => 'export_donations' ) ); ?>">
+								<?php _e( 'Generate CSV', 'give' ); ?>
+							</a>
+						</td>
+					</tr>
+					
 					<tr class="give-export-pdf-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
@@ -77,21 +93,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 								       value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>"
 								       class="button-secondary"/>
 							</form>
-						</td>
-					</tr>
-
-					<tr class="give-export-donations-history">
-						<td scope="row" class="row-title">
-							<h3>
-								<span><?php _e( 'Export Donation History', 'give' ); ?></span>
-							</h3>
-							<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
-						</td>
-						<td>
-							<a class="button"
-							   href="<?php echo add_query_arg( array( 'type' => 'export_donations' ) ); ?>">
-								<?php _e( 'Generate CSV', 'give' ); ?>
-							</a>
 						</td>
 					</tr>
 
