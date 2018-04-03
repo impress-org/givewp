@@ -16,7 +16,7 @@ global $give_addons;
 /**
  * Class Give_Addon_Activation_Banner
  *
- * @since  2.0.7 Added pleasing interface when multiple add-ons are activated.
+ * @since  2.1.0 Added pleasing interface when multiple add-ons are activated.
  */
 class Give_Addon_Activation_Banner {
 
@@ -101,8 +101,7 @@ class Give_Addon_Activation_Banner {
 		global $give_addons;
 
 		// Get recently activated plugins.
-		$recently_activated = get_option( 'give_recently_activated_addons', array() );
-		$active_plugins     = get_option( 'active_plugins' );
+		$active_plugins = get_option( 'active_plugins' );
 
 		$file_names = array();
 
@@ -161,7 +160,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Check if the addon_activation_banner_notices function has already been hooked to admin_notice.
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 *
 	 * @return bool
 	 */
@@ -189,7 +188,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Get the add-on banner notices.
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 */
 	public function addon_activation_banner_notices() {
 		global $pagenow, $give_addons;
@@ -305,7 +304,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 *
 	 * @param array $banner_arr Banner options.
 	 */
@@ -417,7 +416,7 @@ class Give_Addon_Activation_Banner {
 	 * Delete user id from option if plugin deactivated.
 	 *
 	 * @since  1.8
-	 * @since  2.0.7 Added support for multiple addons.
+	 * @since  2.1.0 Added support for multiple addons.
 	 * @access public
 	 */
 	public function remove_addon_activate_meta() {
@@ -453,7 +452,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Get list of add-on last activated.
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 * @return mixed|array
 	 */
 	public function get_recently_activated_addons() {
@@ -463,7 +462,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Get the addon's folder name.
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 *
 	 * @param string $main_file Plugin Main File.
 	 *
@@ -482,7 +481,7 @@ class Give_Addon_Activation_Banner {
 	 * Add activation banner css and js .
 	 *
 	 * @since  1.8.16
-	 * @since  2.0.7 Added JS code for multiple add-on.
+	 * @since  2.1.0 Added JS code for multiple add-on.
 	 * @access private
 	 */
 	private function print_css_js() {

@@ -119,7 +119,7 @@ function give_get_admin_page_menu_title() {
 /**
  * Store recently activated Give's addons to wp options.
  *
- * @since 2.0.7
+ * @since 2.1.0
  */
 function give_recently_activated_addons() {
 	// Check if action is set.
