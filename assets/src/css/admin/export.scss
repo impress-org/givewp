@@ -1,0 +1,34 @@
+/**
+ * Give Export
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2017, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+// Tools page: fix ajax search user list hide bug
+.give-tools-setting-page {
+	#give-export_donations-form {
+		table {
+			tbody{
+				td.row-title{
+					width: 30%;
+					vertical-align: top;
+				}
+
+				ul.give-export-option-ul {
+					li {
+						width: 33%;
+						float: left;
+					}
+				}
+
+				p.give-field-description{
+					display: table;
+					width: 100%;
+				}
+			}
+		}
+	}
+}
