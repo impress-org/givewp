@@ -241,7 +241,6 @@ class Give_Addon_Activation_Banner {
 			// Output inline styles here because there's no reason
 			// to enqueued them after the alert is dismissed.
 			$this->print_css_js();
-			ob_start();
 			?>
 			<div class="<?php echo ( 1 !== count( $addon_to_display ) ) ? 'give-alert-tab-wrapper' : ''; ?> updated give-addon-alert give-notice">
 				<?php
@@ -273,7 +272,7 @@ class Give_Addon_Activation_Banner {
 								     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
 									<?php
 									// Render single add banner.
-									$this->render_single_addon_banner( $banner );
+									$this->render_single_addon_banner( $banner, false );
 									?>
 								</div>
 								<?php
@@ -284,7 +283,7 @@ class Give_Addon_Activation_Banner {
 					</div>
 					<?php
 				} else {
-					$this->render_single_addon_banner( $addon_to_display[0] );
+					$this->render_single_addon_banner( $addon_to_display[0], true );
 				}
 				?>
 			</div>
@@ -307,8 +306,9 @@ class Give_Addon_Activation_Banner {
 	 * @since 2.1.0
 	 *
 	 * @param array $banner_arr Banner options.
+	 * @param bool  $is_single  Is single.
 	 */
-	private function render_single_addon_banner( $banner_arr ) {
+	private function render_single_addon_banner( $banner_arr, $is_single ) {
 		// Get all give add-on.
 		$give_addons = give_get_plugins();
 
@@ -332,6 +332,11 @@ class Give_Addon_Activation_Banner {
 			}
 		}
 
+		// Create dismiss URL.
+		$dismiss_url = $is_single
+			? admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=' . sanitize_title( $banner_arr['name'] ) )
+			: admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=all' );
+
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
 		?>
@@ -346,7 +351,7 @@ class Give_Addon_Activation_Banner {
 				);
 				?>
 			</h3>
-			<a href="<?php echo admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=' . sanitize_title( $banner_arr['name'] ) ); ?>" class="dismiss">
+			<a href="<?php echo esc_url( $dismiss_url ); ?>" class="dismiss">
 				<span class="dashicons dashicons-dismiss"></span>
 			</a>
 			<div class="alert-actions">
@@ -394,8 +399,6 @@ class Give_Addon_Activation_Banner {
 	 * @access public
 	 */
 	public function give_addon_notice_ignore() {
-		global $give_addons;
-
 		/**
 		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
 		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
@@ -404,11 +407,28 @@ class Give_Addon_Activation_Banner {
 			isset( $_GET['give_addon'], $_GET['give_addon_activation_ignore'] )
 			&& '1' === $_GET['give_addon_activation_ignore']
 		) {
-			$addon           = $_GET['give_addon'];
-			$notice_meta_key = "give_addon_activation_ignore_{$addon}";
+			$addon_query_arg    = sanitize_text_field( $_GET['give_addon'] );
+			$deactivated_addons = array();
 
-			// Record it user meta.
-			add_user_meta( $this->user_id, $notice_meta_key, 'true', true );
+			// If All add-on requested to dismiss.
+			if ( 'all' === $addon_query_arg ) {
+				// Get all activated add-ons.
+				$give_addons = $this->get_plugin_file_names();
+
+				// Get the plugin folder name, because many give-addon not sending proper plugin_file.
+				if ( ! empty( $give_addons ) ) {
+					$deactivated_addons = array_keys( $give_addons );
+				}
+			} else {
+				$deactivated_addons[] = $addon_query_arg;
+			}
+
+			if ( ! empty( $deactivated_addons ) ) {
+				foreach ( $deactivated_addons as $addon ) {
+					// Record it user meta.
+					add_user_meta( $this->user_id, "give_addon_activation_ignore_{$addon}", 'true', true );
+				}
+			}
 		}
 	}
 
