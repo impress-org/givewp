@@ -120,7 +120,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label
-								for="give-form-for-csv-export"><?php _e( 'Select a Donation Form:', 'give' ); ?></label>
+								for="give-form-for-csv-export"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
 						</th>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
@@ -130,7 +130,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'id'          => 'give-form-for-csv-export',
 									'chosen'      => true,
 									'number'      => - 1,
-									'placeholder' => esc_attr__( 'Select a Donation Form', 'give' ),
+									'placeholder' => esc_attr__( 'All Forms', 'give' ),
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>
