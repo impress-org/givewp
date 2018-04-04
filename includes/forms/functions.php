@@ -1169,9 +1169,11 @@ function _give_get_prefill_form_field_values( $form_id ) {
  */
 function give_get_form_donor_count( $form_id, $args = array() ) {
 	global $wpdb;
-	$donor_count = 0;
 
-	if ( $form_id ) {
+	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
+	$donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+
+	if ( $form_id && ! $donor_count ) {
 		// Set arguments.
 		$args = wp_parse_args(
 			$args,
@@ -1211,6 +1213,8 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 	 * @since 2.1.0
 	 */
 	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
+
+	Give_Cache::set_db_query( $cache_key, $donor_count );
 
 	return $donor_count;
 }
