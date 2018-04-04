@@ -407,6 +407,7 @@ class Give_Addon_Activation_Banner {
 			isset( $_GET['give_addon'], $_GET['give_addon_activation_ignore'] )
 			&& '1' === $_GET['give_addon_activation_ignore']
 		) {
+			// Get the value of the 'give_addon' query string.
 			$addon_query_arg    = sanitize_text_field( $_GET['give_addon'] );
 			$deactivated_addons = array();
 
@@ -415,11 +416,11 @@ class Give_Addon_Activation_Banner {
 				// Get all activated add-ons.
 				$give_addons = $this->get_plugin_file_names();
 
-				// Get the plugin folder name, because many give-addon not sending proper plugin_file.
 				if ( ! empty( $give_addons ) ) {
 					$deactivated_addons = array_keys( $give_addons );
 				}
 			} else {
+				// Store the addon to deactivate.
 				$deactivated_addons[] = $addon_query_arg;
 			}
 
