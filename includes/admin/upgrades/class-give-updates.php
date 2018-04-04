@@ -823,7 +823,7 @@ class Give_Updates {
 
 			$response_type = 'error';
 
-		} elseif ( empty( $update_info ) ) {
+		} elseif ( empty( $update_info ) || ! $this->get_total_new_db_update_count( true ) ) {
 			$update_info   = array(
 				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
