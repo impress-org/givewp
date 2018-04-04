@@ -910,7 +910,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @param int|Give_Donate_Form  $form       Form ID or Form Object.
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
  * @since 2.1
  *
@@ -923,12 +923,6 @@ function give_goal_progress_stats( $form ) {
 	}
 
 	$goal_format = give_get_form_goal_format( $form->ID );
-
-	error_log( print_r( $goal_format, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
-	if('donors' === $goal_format) {
-
-	}
 
 
 	/**
@@ -952,8 +946,19 @@ function give_goal_progress_stats( $form ) {
 	 */
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
 
+	switch ( $goal_format ) {
+		case  'donation':
+			$actual = $donations;
+			break;
+		case 'donors':
+			$actual = give_get_form_donor_count( $form->ID );
+			break;
+		default :
+			$actual = $income;
+			break;
+	}
 
-	$actual   = 'donation' !== $goal_format ? $income : $donations;
+
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
 	$stats_array = array(
@@ -1018,7 +1023,7 @@ function give_goal( $form_id = 0, $echo = true ) {
 	}
 
 	$goal        = give_get_form_goal( $form_id );
-	$goal_format = give_get_form_goal_format($form_id);
+	$goal_format = give_get_form_goal_format( $form_id );
 
 	if ( 'donation' === $goal_format ) {
 		$goal = "{$goal} donations";
