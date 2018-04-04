@@ -1171,7 +1171,9 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 	global $wpdb;
 
 	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
-	$donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+	// @todo test caching.
+	// $donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+	$donor_count = false;
 
 	if ( $form_id && ! $donor_count ) {
 		// Set arguments.
