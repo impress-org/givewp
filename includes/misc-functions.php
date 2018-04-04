@@ -1855,9 +1855,9 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 	global $wpdb;
 	$donor_count = 0;
 
-	if( $form_id ) {
+	if ( $form_id ) {
 		// Set arguments.
-		$args                = wp_parse_args(
+		$args = wp_parse_args(
 			$args,
 			array(
 				'unique' => true,
@@ -1866,7 +1866,7 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 
 		$donation_meta_table = Give()->payment_meta->table_name;
 
-		$distinct            = $args['unique'] ?  'DISTINCT meta_value' : 'meta_value';
+		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
 
 		$query = $wpdb->prepare(
 			"
