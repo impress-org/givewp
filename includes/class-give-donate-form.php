@@ -626,7 +626,7 @@ class Give_Donate_Form {
 		}
 
 		foreach ( $levels as $level ) {
-			if( $price_id === $level['_give_id']['level_id'] ) {
+			if ( $price_id === $level['_give_id']['level_id'] ) {
 				$level_info = $level;
 				break;
 			}
@@ -648,8 +648,12 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->goal ) ) {
 
-			if ( 'donation' === give_get_form_goal_format( $this->ID ) ) {
+			$goal_format = give_get_form_goal_format( $this->ID );
+
+			if ( 'donation' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donation_goal', true );
+			} elseif ( 'donors' === $goal_format ) {
+				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
 			} else {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
@@ -687,7 +691,7 @@ class Give_Donate_Form {
 		 * @since 1.0
 		 *
 		 * @param bool       $ret Is donation form in single price mode?
-		 * @param int|string $ID The ID of the donation form.
+		 * @param int|string $ID  The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
@@ -754,7 +758,7 @@ class Give_Donate_Form {
 		 *
 		 * @param bool         $result True/False.
 		 * @param string|float $amount Donation Amount.
-		 * @param int          $this->ID Form ID.
+		 * @param int          $this   ->ID Form ID.
 		 *
 		 * @since 1.8.18
 		 */
@@ -864,7 +868,7 @@ class Give_Donate_Form {
 
 		if ( $this->is_close_donation_form() ) {
 			$custom_class[] = 'give-form-closed';
-		} else{
+		} else {
 			$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
 				? $args['display_style']
 				: give_get_meta( $this->ID, '_give_payment_display', true );
@@ -1099,35 +1103,6 @@ class Give_Donate_Form {
 	}
 
 	/**
-	 * Determine if the donation is free or if the given price ID is free
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  int $price_id Price ID. Default is false.
-	 *
-	 * @return bool
-	 */
-	public function is_free( $price_id = false ) {
-
-		$is_free          = false;
-		$variable_pricing = give_has_variable_prices( $this->ID );
-
-		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
-			$price = give_get_price_option_amount( $this->ID, $price_id );
-		} elseif ( ! $variable_pricing ) {
-			$price = give_get_meta( $this->ID, '_give_set_price', true );
-		}
-
-		if ( isset( $price ) && (float) $price == 0 ) {
-			$is_free = true;
-		}
-
-		return (bool) apply_filters( 'give_is_free_donation', $is_free, $this->ID, $price_id );
-
-	}
-
-	/**
 	 * Determine if donation form closed or not
 	 *
 	 * Form will be close if:
@@ -1144,6 +1119,18 @@ class Give_Donate_Form {
 
 		$goal_format = give_get_form_goal_format( $this->ID );
 
+		switch ( $goal_format ) {
+			case  'donation':
+				$closed = $this->get_goal() <= $this->get_sales();
+				break;
+			case 'donors':
+				$closed = $this->get_goal() <= give_get_form_donor_count( $this->ID );
+				break;
+			default :
+				$closed = $this->get_goal() <= $this->get_earnings();
+				break;
+		}
+
 		/**
 		 * Filter the close form result.
 		 *
@@ -1152,14 +1139,15 @@ class Give_Donate_Form {
 		$is_close_form = apply_filters(
 			'give_is_close_donation_form',
 			(
-				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) &&
-				give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) ) &&
-				( 'donation' === $goal_format ? $this->get_goal() <= $this->get_sales() : $this->get_goal() <= $this->get_earnings() )
+				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) )
+				&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+				&& $closed
 			),
 			$this->ID
 		);
 
 		return $is_close_form;
+
 	}
 
 	/**
@@ -1183,7 +1171,7 @@ class Give_Donate_Form {
 			return false;
 		}
 
-		if ( give_update_meta( $this->ID, $meta_key, $meta_value  ) ) {
+		if ( give_update_meta( $this->ID, $meta_key, $meta_value ) ) {
 			return true;
 		}
 
