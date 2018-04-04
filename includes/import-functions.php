@@ -652,41 +652,55 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
 		add_filter( 'give_update_donor_information', 'give_donation_import_update_donor_information', 11, 3 );
 		add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
-		$payment = give_insert_payment( $payment_data );
+
+		// if it status is other then pending then first change the donation status to pending and after adding the payment meta update the donation status.
+		if ( 'pending' !== $status ) {
+			unset( $payment_data['status'] );
+		}
+
+		$payment_id = give_insert_payment( $payment_data );
 		remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
 		remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 		remove_filter( 'give_update_donor_information', 'give_donation_import_update_donor_information', 11 );
 		remove_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11 );
 
-		if ( $payment ) {
+		if ( $payment_id ) {
+
+			$payment      = new Give_Payment( $payment_id );
 
 			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
 
-			update_post_meta( $payment, '_give_payment_import', true );
+			$payment->update_meta( '_give_payment_import', true );
 
 			if ( ! empty( $import_setting['csv'] ) ) {
-				update_post_meta( $payment, '_give_payment_import_id', $import_setting['csv'] );
+				$payment->update_meta( '_give_payment_import_id', $import_setting['csv'] );
 			}
 
 			// Insert Company Name.
 			if ( ! empty( $data['company_name'] ) ) {
-				update_post_meta( $payment, '_give_donation_company', $data['company_name'] );
+				$payment->update_meta( '_give_donation_company', $data['company_name'] );
 				$donor_data->update_meta( '_give_donor_company', $data['company_name'] );
 			}
 
 			// Insert Notes.
 			if ( ! empty( $data['notes'] ) ) {
-				give_insert_payment_note( $payment, $data['notes'] );
+				$payment->add_note( $data['notes'] );
 			}
 
 			$meta_exists = array_keys( $raw_key, 'post_meta' );
 			if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
 				foreach ( $meta_exists as $meta_exist ) {
 					if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
-						update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
+						$payment->update_meta( $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
 					}
 				}
 			}
+
+			// update the donation status if it's other then pending
+			if ( 'pending' !== $status ) {
+				$payment->update_status( $status );
+			}
+
 		} else {
 			$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 		}
