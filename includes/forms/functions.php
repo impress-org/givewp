@@ -924,12 +924,19 @@ function give_goal_progress_stats( $form ) {
 
 	$goal_format = give_get_form_goal_format( $form->ID );
 
+	error_log( print_r( $goal_format, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+	if('donors' === $goal_format) {
+
+	}
+
+
 	/**
-	 * Filter the form sales.
+	 * Filter the form donations.
 	 *
 	 * @since 2.1
 	 */
-	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
+	$donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
 
 	/**
 	 * Filter the form income.
@@ -946,7 +953,7 @@ function give_goal_progress_stats( $form ) {
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
 
 
-	$actual   = 'donation' !== $goal_format ? $income : $sales;
+	$actual   = 'donation' !== $goal_format ? $income : $donations;
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
 	$stats_array = array(

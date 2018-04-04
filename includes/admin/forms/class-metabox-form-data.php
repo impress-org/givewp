@@ -389,18 +389,26 @@ class Give_MetaBox_Form_Data {
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-
 					array(
 						'id'         => $prefix . 'number_of_donation_goal',
 						'name'       => __( 'Donation Goal', 'give' ),
-						'desc'       => __( 'Set total number of donations as a goal.', 'give' ),
+						'desc'       => __( 'Set the total number of donations as a goal.', 'give' ),
 						'type'       => 'number',
 						'default'    => 1,
 						'attributes' => array(
 							'placeholder' => 1,
 						),
 					),
-
+					array(
+						'id'         => $prefix . 'number_of_donor_goal',
+						'name'       => __( 'Donor Goal', 'give' ),
+						'desc'       => __( 'Set the total number of donors as a goal.', 'give' ),
+						'type'       => 'number',
+						'default'    => 1,
+						'attributes' => array(
+							'placeholder' => 1,
+						),
+					),
 					array(
 						'name'          => __( 'Progress Bar Color', 'give' ),
 						'desc'          => __( 'Customize the color of the goal progress bar.', 'give' ),
