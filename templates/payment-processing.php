@@ -12,8 +12,7 @@
 	), true, 'success' );
 	?>
 	<span class="give-loading-animation"></span>
-	<script type="text/javascript">
-		setTimeout(function () {
+	<script type="text/javascript">setTimeout(function () {
 			window.location = '<?php echo give_get_success_page_uri(); ?>';
 		}, 9000);
 	</script>
