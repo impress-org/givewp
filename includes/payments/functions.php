@@ -847,9 +847,7 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
  * @return mixed Meta ID if successful, false if unsuccessful.
  */
 function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value = '', $prev_value = '' ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->update_meta( $meta_key, $meta_value, $prev_value );
+	return give_update_meta( $payment_id, $meta_key, $meta_value );
 }
 
 /**
