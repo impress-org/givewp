@@ -1710,7 +1710,7 @@ function give_get_donation_form_title( $donation_id, $args = array() ) {
 	 *
 	 * @since 1.0
 	 */
-	return apply_filters( 'give_get_donation_form_title', $form_title_html, array(), $donation_id );
+	return apply_filters( 'give_get_donation_form_title', $form_title_html, $donation_id );
 }
 
 /**
