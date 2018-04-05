@@ -153,19 +153,21 @@ class Give_Payment_Stats extends Give_Stats {
 
 				if( ! empty( $payments ) ) {
 					foreach ( $payments as $payment ) {
-						$earnings += (float) apply_filters(
-							/**
-							 * Filter the donation amount
-							 * Note: this filter documented in payments/functions.php:give_donation_amount()
-							 *
-							 * @since 2.1
-							 */
+						/**
+						 * Filter the donation amount
+						 * Note: this filter documented in payments/functions.php:give_donation_amount()
+						 *
+						 * @since 2.1
+						 */
+						$formatted_amount = apply_filters(
 							'give_donation_amount',
 							give_format_amount(  $payment['total'], array( 'donation_id' =>  $payment['id'] ) ),
 							$payment['total'],
 							$payment['id'],
 							array( 'type' => 'stats' )
 						);
+
+						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount );
 					}
 				}
 
