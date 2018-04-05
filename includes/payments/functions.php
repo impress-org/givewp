@@ -1890,3 +1890,23 @@ function give_get_payment_total( $payment_id = 0 ) {
 		give_get_price_decimals( $payment_id )
 	);
 }
+
+/**
+ * Get donation address
+ *
+ * since 2.1.0
+ *
+ * @param int $donation_id
+ *
+ * @return array
+ */
+function give_get_donation_address( $donation_id ){
+	$address['line1']   = give_get_meta( $donation_id, '_give_donor_billing_address1', true, '' );
+	$address['line2']   = give_get_meta( $donation_id, '_give_donor_billing_address2', true, '' );
+	$address['city']    = give_get_meta( $donation_id, '_give_donor_billing_city', true, '' );
+	$address['state']   = give_get_meta( $donation_id, '_give_donor_billing_state', true, '' );
+	$address['zip']     = give_get_meta( $donation_id, '_give_donor_billing_zip', true, '' );
+	$address['country'] = give_get_meta( $donation_id, '_give_donor_billing_country', true, '' );
+
+	return $address;
+}
