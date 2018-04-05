@@ -511,7 +511,7 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param int $id
+	 * @param string $id
 	 *
 	 * @return mixed
 	 */

@@ -156,15 +156,18 @@ jQuery.noConflict();
 			var goal_option_val = $( '._give_goal_option_field input:radio:checked' ).val();
 
 			if ( 'donation' === goal_format_val ) {
-				$( '._give_set_goal_field' ).hide();
+				$( '._give_set_goal_field, ._give_number_of_donor_goal_field' ).hide();
 				$( '._give_number_of_donation_goal_field' ).show();
+			} else if ( 'donors' === goal_format_val ) {
+				$( '._give_set_goal_field, ._give_number_of_donation_goal_field' ).hide();
+				$( '._give_number_of_donor_goal_field' ).show();
 			} else {
 				('disabled' === goal_option_val) ? $( '._give_set_goal_field' ).hide() : $( '._give_set_goal_field' ).show();
-				$( '._give_number_of_donation_goal_field' ).hide();
+				$( '._give_number_of_donation_goal_field, ._give_number_of_donor_goal_field' ).hide();
 			}
 		} ).change();
 
-		//Offline Donations
+		// Offline Donations.
 		var offline_customization_option = $( '._give_customize_offline_donations_field input:radio' );
 		offline_customization_option.on( 'change', function() {
 			var offline_customization_option_val = $( '._give_customize_offline_donations_field input:radio:checked' ).val();

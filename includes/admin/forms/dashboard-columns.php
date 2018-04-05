@@ -93,12 +93,13 @@ function give_render_form_columns( $column_name, $post_id ) {
 
 					$html .= sprintf(
 						( 'percentage' !== $goal_stats['format'] ) ?
-							'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a></div>' :
+							'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s</div>' :
 							'<div class="give-goal-text"><a href="%3$s">%1$s</a></div>',
 						( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
 						( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 						esc_url( admin_url( "post.php?post={$post_id}&action=edit&give_tab=donation_goal_options" ) ),
-						$goal_stats['goal']
+						$goal_stats['goal'],
+						( 'donors' === $goal_stats['format'] ? __( 'Donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'Donations', 'give' ) : '' ) )
 					);
 
 					if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
@@ -108,8 +109,9 @@ function give_render_form_columns( $column_name, $post_id ) {
 						$html .= sprintf( '<span style="width:%s%%;"></span>', esc_attr( $goal_stats['progress'] ) );
 						$html .= '</div>';
 					}
-
+					// Output HTML from above.
 					echo $html;
+
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
 				}
@@ -219,12 +221,12 @@ function give_sort_forms( $vars ) {
 			$vars['meta_query'] = array(
 				'relation' => 'OR',
 				array(
-					'key'     => $multi_level_meta_key,
-					'type'    => 'NUMERIC',
+					'key'  => $multi_level_meta_key,
+					'type' => 'NUMERIC',
 				),
 				array(
-					'key'     => '_give_set_price',
-					'type'    => 'NUMERIC',
+					'key'  => '_give_set_price',
+					'type' => 'NUMERIC',
 				)
 			);
 

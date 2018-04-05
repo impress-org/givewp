@@ -538,9 +538,9 @@ class Give_Updates {
 		/**
 		 * Fix give_doing_upgrade option
 		 */
-		$fresh_new_db_count = $this->get_total_new_db_update_count( true );
-
-		update_option( 'give_db_update_count', $fresh_new_db_count );
+		if( $fresh_new_db_count = $this->get_total_new_db_update_count( true ) ) {
+			update_option( 'give_db_update_count', $fresh_new_db_count );
+		}
 
 		$doing_upgrade_args['update']           = 1;
 		$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
@@ -552,10 +552,29 @@ class Give_Updates {
 			$doing_upgrade_args['step']        = 1;
 		}
 
-		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+		// Check if dependency completed or not.
+		if ( isset( $doing_upgrade_args['update_info']['depend'] ) ) {
+			foreach ( $doing_upgrade_args['update_info']['depend'] as $depend ) {
+				if ( give_has_upgrade_completed( $depend ) ) {
+					continue;
+				}
 
-		$log_data .= 'Updated doing update:' . "\n";
-		$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+				$doing_upgrade_args['update_info']      = $all_updates[ array_search( $depend, $all_update_ids ) ];
+				$doing_upgrade_args['step']             = 1;
+				$doing_upgrade_args['percentage']       = 0;
+				$doing_upgrade_args['total_percentage'] = 0;
+
+				break;
+			}
+		}
+
+		if( ! empty( $doing_upgrade_args['update_info'] ) ) {
+			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+			$log_data .= 'Updated doing update:' . "\n";
+			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+		}
+
 		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 	}
 
@@ -804,7 +823,7 @@ class Give_Updates {
 
 			$response_type = 'error';
 
-		} elseif ( empty( $update_info ) ) {
+		} elseif ( empty( $update_info ) || ! $this->get_total_new_db_update_count( true ) ) {
 			$update_info   = array(
 				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
