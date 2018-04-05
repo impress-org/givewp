@@ -65,6 +65,18 @@ function give_on_core_settings_import_start() {
 }
 
 /**
+ * Check if admin is on step 1 and file is invalid
+ *
+ * @since 2.1
+ */
+function give_import_core_settings_json_is_valid() {
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-1 .is_json_valid';
+	if ( jQuery( import_step ).length > 0 ) {
+		window.location = jQuery( import_step ).val();
+	}
+}
+
+/**
  * Check if admin is on step 3 where we start imporing Donation from CSV via AJAX
  *
  * @since 2.1
@@ -75,7 +87,6 @@ function give_start_importing_donations() {
 		give_on_donation_import_ajax();
 	}
 }
-
 
 /**
  * Check if admin is on step 2 and CSV is invalid
@@ -186,6 +197,7 @@ function give_import_donation_onload() {
 		give_import_donation_valid_csv();
 		give_import_donation_csv_not_valid();
 		give_on_core_settings_import_start();
+		give_import_core_settings_json_is_valid();
 	};
 }
 
