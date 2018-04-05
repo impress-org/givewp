@@ -27,8 +27,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
-	$payment = new Give_Payment( $payment_id );
-
 	/**
 	 * Fire the action
 	 */
@@ -46,7 +44,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 		 * @param int   $payment_id   Payment id.
 		 * @param mixed $payment_data Payment meta data.
 		 */
-		do_action( 'give_new-donation_email_notification', $payment_id, $payment->payment_meta );
+		do_action( 'give_new-donation_email_notification', $payment_id, give_get_payment_meta( $payment_id ) );
 	}
 }
 
