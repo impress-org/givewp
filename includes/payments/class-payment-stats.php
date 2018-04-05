@@ -144,13 +144,30 @@ class Give_Payment_Stats extends Give_Stats {
 			$earnings        = 0;
 
 			if ( ! empty( $payments ) ) {
-				$query = "SELECT SUM(meta_value)
+				$query = "SELECT payment_id as id, meta_value as total
 					FROM {$wpdb->paymentmeta}
 					WHERE meta_key='_give_payment_total'
 					AND payment_id IN ('". implode( '\',\'', $payments ) ."')";
 
-				// @todo check compatibility with currency switcher.
-				$earnings = $wpdb->get_var($query);
+				$payments = $wpdb->get_results($query, ARRAY_A);
+
+				if( ! empty( $payments ) ) {
+					foreach ( $payments as $payment ) {
+						$earnings += (float) apply_filters(
+							/**
+							 * Filter the donation amount
+							 * Note: this filter documented in payments/functions.php:give_donation_amount()
+							 *
+							 * @since 2.1
+							 */
+							'give_donation_amount',
+							give_format_amount(  $payment['total'], array( 'donation_id' =>  $payment['id'] ) ),
+							$payment['total'],
+							$payment['id'],
+							array( 'type' => 'stats' )
+						);
+					}
+				}
 
 			}
 
