@@ -79,7 +79,7 @@ function give_start_importing_donations() {
  * @since 2.1
  */
 function give_import_donation_csv_not_valid() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab table.step-2 .csv_not_invalid';
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab table.step-2 .csv_not_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}

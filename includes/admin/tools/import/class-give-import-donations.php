@@ -420,7 +420,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( ! $this->is_valid_csv( $csv ) ) {
 				$url = give_import_page_url();
 				?>
-				<input type="hidden" name="csv_not_invalid" class="csv_not_invalid" value="<?php echo $url; ?>" />
+				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo $url; ?>" />
 				<?php
 			} else {
 				?>
