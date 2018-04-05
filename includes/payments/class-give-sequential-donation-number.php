@@ -320,6 +320,35 @@ class Give_Sequential_Donation_Number {
 	}
 
 	/**
+	 * Get maximum donation id
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_max_donation_id() {
+		global $wpdb;
+
+		return absint(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT ID
+					FROM {$wpdb->posts}
+					WHERE post_type=%s
+					AND post_status=%s
+					ORDER BY id DESC 
+					LIMIT 1
+					",
+					'give_payment',
+					'publish'
+				)
+			)
+		);
+	}
+
+	/**
 	 * Get maximum donation number
 	 *
 	 * @since  2.1.0
