@@ -360,7 +360,13 @@ class Give_Sequential_Donation_Number {
 	 */
 	public function get_next_number() {
 		$donation_id = $this->get_max_donation_id();
-		$next_number = $donation_id ? $donation_id : $this->get_max_number();
+		$next_number = $this->get_max_number();
+
+		if ( ! $this->get_serial_number( $donation_id ) ) {
+			$next_number = $donation_id && ( $next_number < $donation_id ) ?
+				$donation_id :
+				$this->get_max_number();
+		}
 
 		return ( $next_number + 1 );
 	}
