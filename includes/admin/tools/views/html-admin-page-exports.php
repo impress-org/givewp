@@ -103,9 +103,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php _e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
-							<form method="post" id="give_donor_export"
-							      class="give-export-form">
-
+							<form method="post" id="give_donor_export" class="give-export-form">
 								<?php
 								// Start Date form field for donors
 								echo Give()->html->date_field( array(
