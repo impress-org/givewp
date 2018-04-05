@@ -708,6 +708,11 @@ function give_is_payment_complete( $payment_id ) {
 		}
 	}
 
+	/**
+	 * Filter the flag
+	 *
+	 * @since 1.0
+	 */
 	return apply_filters( 'give_is_payment_complete', $ret, $payment_id, $payment_status );
 }
 
