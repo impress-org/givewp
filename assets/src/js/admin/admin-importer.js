@@ -31,33 +31,37 @@ jQuery.noConflict();
  * @since 1.8.17
  */
 function give_on_core_settings_import_start() {
-	var $form = jQuery( 'form.tools-setting-page-import' );
-	var progress = $form.find( '.give-progress' );
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-2';
+	if ( jQuery( import_step ).length > 0 ) {
 
-	give_setting_edit = true;
+		var $form = jQuery( 'form.tools-setting-page-import' );
+		var progress = $form.find( '.give-progress' );
 
-	jQuery.ajax( {
-		type: 'POST',
-		url: ajaxurl,
-		data: {
-			action: give_vars.core_settings_import,
-			fields: $form.serialize()
-		},
-		dataType: 'json',
-		success: function ( response ) {
-			give_setting_edit = false;
-			if ( true === response.success ) {
-				jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
-			} else {
+		give_setting_edit = true;
+
+		jQuery.ajax( {
+			type: 'POST',
+			url: ajaxurl,
+			data: {
+				action: give_vars.core_settings_import,
+				fields: $form.serialize()
+			},
+			dataType: 'json',
+			success: function ( response ) {
+				give_setting_edit = false;
+				if ( true === response.success ) {
+					jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+				} else {
+					alert( give_vars.error_message );
+				}
+				window.location = response.url;
+			},
+			error: function () {
+				give_setting_edit = false;
 				alert( give_vars.error_message );
 			}
-			window.location = response.url;
-		},
-		error: function () {
-			give_setting_edit = false;
-			alert( give_vars.error_message );
-		}
-	} );
+		} );
+	}
 }
 
 /**
@@ -66,7 +70,7 @@ function give_on_core_settings_import_start() {
  * @since 2.1
  */
 function give_start_importing_donations() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab table.step-3';
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-3';
 	if ( jQuery( import_step ).length > 0 ) {
 		give_on_donation_import_ajax();
 	}
@@ -79,7 +83,7 @@ function give_start_importing_donations() {
  * @since 2.1
  */
 function give_import_donation_csv_not_valid() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab table.step-2 .csv_not_valid';
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-2 .csv_not_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
@@ -91,7 +95,7 @@ function give_import_donation_csv_not_valid() {
  * @since 2.1
  */
 function give_import_donation_valid_csv() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab table.step-1 .is_csv_valid';
+	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-1 .is_csv_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
@@ -181,6 +185,7 @@ function give_import_donation_onload() {
 		give_start_importing_donations();
 		give_import_donation_valid_csv();
 		give_import_donation_csv_not_valid();
+		give_on_core_settings_import_start();
 	};
 }
 

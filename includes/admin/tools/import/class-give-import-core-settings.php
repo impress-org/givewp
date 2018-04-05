@@ -268,12 +268,6 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					<input type="hidden" value="<?php echo $file_name; ?>" name="file_name">
 				</th>
 			</tr>
-
-			<script type="text/javascript">
-				jQuery( document ).ready( function () {
-					give_on_core_settings_import_start();
-				} );
-			</script>
 			<?php
 		}
 
