@@ -448,7 +448,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			}
 
 			if ( ( $next_number = Give()->seq_donation_number->get_next_number() ) > $update_options['sequential-ordering_number'] ) {
-				give_update_option( 'sequential-ordering_number', $old_options['sequential-ordering_number'] );
+				give_update_option( 'sequential-ordering_number', $next_number );
 
 				Give_Admin_Settings::add_error(
 					'give-invalid-sequential-starting-number',

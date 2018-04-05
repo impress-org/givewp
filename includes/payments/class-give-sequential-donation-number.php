@@ -80,8 +80,6 @@ class Give_Sequential_Donation_Number {
 			|| $existing_donation_updated
 			|| 'give_payment' !== $post->post_type
 		) {
-			give_update_option( 'sequential-ordering_number', ( $donation_id + 1 ) );
-
 			return;
 		}
 
