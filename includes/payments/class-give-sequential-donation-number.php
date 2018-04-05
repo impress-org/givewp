@@ -205,14 +205,6 @@ class Give_Sequential_Donation_Number {
 			}
 		}
 
-		// Bailout.
-		if (
-			empty( $donation )
-			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
-		) {
-			return $donation;
-		}
-
 		// Set default params.
 		$args = wp_parse_args(
 			$args,
