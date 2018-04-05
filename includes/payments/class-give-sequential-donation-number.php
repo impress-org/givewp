@@ -357,6 +357,9 @@ class Give_Sequential_Donation_Number {
 	 * @return int
 	 */
 	public function get_next_number() {
-		return ( $this->get_max_number() + 1 );
+		$donation_id = $this->get_max_donation_id();
+		$next_number = $donation_id ? $donation_id : $this->get_max_number();
+
+		return ( $next_number + 1 );
 	}
 }
