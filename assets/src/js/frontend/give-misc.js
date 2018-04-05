@@ -10,37 +10,15 @@ jQuery( function( $ ) {
 	// Set custom validation message.
 	give_change_html5_form_field_validation_message();
 
-	// Get donation form HTML and popup using Magnific popup for [give_form_grid] shortcode.
-	doc.on( 'click', '.give-grid__item', function( e ) {
-		let ajax_popup = $( this ).data( 'ajax-popup' );
-
-		if ( ! ajax_popup ) {
-			return;
-		}
-
-		e.preventDefault();
-
-		let form_id = $( this ).data( 'form-id' );
-
-		$.ajax({
-			url: give_global_vars.ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'get_modal_form_html',
-				form_id: form_id,
-			}
-		}).done( function( response ) {
-			var html = JSON.parse( response );
-
-			$.magnificPopup.open({
-				mainClass: 'popup-fade-slide',
-				removalDelay: 300,
-				items: {
-					src: `<div class="white-popup zoom-animation">${ html.modal_html }</div>`,
-					type: 'inline',
-				}
-			});
-		});
+	// Donation grid shortcode popup.
+	$( '.js-give-grid-modal-launcher' ).magnificPopup( {
+		type: 'inline',
+		fixedContentPos: true,
+		fixedBgPos: true,
+		closeBtnInside: true,
+		midClick: true,
+		removalDelay: 300,
+		mainClass: 'my-mfp-slide-bottom',
 	});
 
 	// Disable button if it have give-disabled class init.

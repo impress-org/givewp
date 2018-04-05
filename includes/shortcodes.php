@@ -743,7 +743,7 @@ function give_form_grid_shortcode( $atts ) {
 		'image_size'          => 'medium',
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
-		'display_style'       => 'redirect',
+		'display_style'       => 'modal',
 	), $atts );
 
 	// Validate integer attributes.
