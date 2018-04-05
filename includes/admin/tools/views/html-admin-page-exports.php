@@ -157,9 +157,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<tr class="give-export-donors">
 							<td scope="row" class="row-title">
 								<h3>
-									<span><?php esc_html_e( 'Export Donors in CSV', 'give' ); ?></span>
+									<span><?php esc_html_e( 'Export Donors', 'give' ); ?></span>
 								</h3>
-								<p><?php esc_html_e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'Download a CSV of donors. Column values reflect totals across all donation forms by default, or a single donation form if selected.', 'give' ); ?></p>
 							</td>
 							<td>
 								<form method="post" id="give_donor_export"
@@ -222,17 +222,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 											</label>
 										</li>
 										<li>
-											<label for="give-export-donation-form">
-												<input type="checkbox" checked
-												       name="give_export_option[donation_form]"
-												       id="give-export-donation-form"><?php esc_html_e( 'Donation Form', 'give' ); ?>
-											</label>
-										</li>
-										<li>
 											<label for="give-export-first-donation-date">
 												<input type="checkbox" checked
-												       name="give_export_option[date_first_donated]"
-												       id="give-export-first-donation-date"><?php esc_html_e( 'First Donation Date', 'give' ); ?>
+												       name="give_export_option[donor_created_date]"
+												       id="give-export-first-donation-date"><?php esc_html_e( 'Donor Created Date', 'give' ); ?>
 											</label>
 										</li>
 										<li>
