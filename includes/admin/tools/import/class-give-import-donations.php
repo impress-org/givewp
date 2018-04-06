@@ -171,8 +171,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$this->render_progress();
 			?>
 			<section>
-				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo ( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' ); ?>  "
-				       id="<?php echo "step-{$step}"; ?>">
+				<table
+					class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' ); ?>  "
+					id="<?php echo "step-{$step}"; ?>">
 					<tbody>
 					<?php
 					switch ( $step ) {
@@ -205,7 +206,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								        *
 								        * @since 2.1
 								        */
-								       echo esc_html( apply_filters( 'give_import_donation_submit_button_text', __( 'Submit', 'give' ) ) );
+								       echo apply_filters( 'give_import_donation_submit_button_text', __( 'Submit', 'give' ) );
 								       ?>
 											"/>
 							</th>
@@ -312,7 +313,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php esc_html_e( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
+								<?php _e( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
 							</p>
 							<?php
 						}
@@ -356,8 +357,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'Your donations are now being imported...', 'give' ) ?></p>
+					<h2 id="give-import-title"><?php _e( 'Importing', 'give' ) ?></h2>
+					<p class="give-field-description"><?php _e( 'Your donations are now being imported...', 'give' ) ?></p>
 				</th>
 			</tr>
 
@@ -444,7 +445,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				?>
 				<tr valign="top" class="give-import-dropdown">
 					<th colspan="2">
-						<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ) ?></h2>
+						<h2 id="give-import-title"><?php _e( 'Map CSV fields to donations', 'give' ) ?></h2>
 
 						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields' ); ?></p>
 
@@ -492,13 +493,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 							</li>
 						</ul>
 
-						<p class="give-field-description"><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
+						<p class="give-field-description"><?php _e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
 					</th>
 				</tr>
 
 				<tr valign="top" class="give-import-dropdown">
-					<th><b><?php esc_html_e( 'Column name', 'give' ); ?></b></th>
-					<th><b><?php esc_html_e( 'Map to field', 'give' ); ?></b></th>
+					<th><b><?php _e( 'Column name', 'give' ); ?></b></th>
+					<th><b><?php _e( 'Map to field', 'give' ); ?></b></th>
 				</tr>
 
 				<?php
@@ -713,16 +714,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<ol class="give-progress-steps">
 				<li class="<?php echo( 1 === $step ? 'active' : '' ); ?>">
-					<?php esc_html_e( 'Upload CSV file', 'give' ); ?>
+					<?php _e( 'Upload CSV file', 'give' ); ?>
 				</li>
 				<li class="<?php echo( 2 === $step ? 'active' : '' ); ?>">
-					<?php esc_html_e( 'Column mapping', 'give' ); ?>
+					<?php _e( 'Column mapping', 'give' ); ?>
 				</li>
 				<li class="<?php echo( 3 === $step ? 'active' : '' ); ?>">
-					<?php esc_html_e( 'Import', 'give' ); ?>
+					<?php _e( 'Import', 'give' ); ?>
 				</li>
 				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>">
-					<?php esc_html_e( 'Done!', 'give' ); ?>
+					<?php _e( 'Done!', 'give' ); ?>
 				</li>
 			</ol>
 			<?php
@@ -771,7 +772,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<div>
 				<label for="dry_run">
-					<input type="checkbox" name="dry_run" id="dry_run" class="dry_run" value="1" <?php checked( 1, $dry_run ); ?> >
+					<input type="checkbox" name="dry_run" id="dry_run" class="dry_run"
+					       value="1" <?php checked( 1, $dry_run ); ?> >
 					<strong><?php _e( 'Dry Run', 'give' ); ?></strong>
 				</label>
 				<p class="give-field-description">
@@ -805,13 +807,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @return void
 		 */
 		public function render_media_csv() {
-			add_filter( 'give_import_donation_submit_button_text', array( $this, 'give_import_donation_submit_text_render_media_csv' ) );
-			add_action( 'give_import_donation_submit_button', array( $this, 'give_import_donation_submit_button_render_media_csv' ) );
+			add_filter( 'give_import_donation_submit_button_text', array(
+				$this,
+				'give_import_donation_submit_text_render_media_csv'
+			) );
+			add_action( 'give_import_donation_submit_button', array(
+				$this,
+				'give_import_donation_submit_button_render_media_csv'
+			) );
 			?>
 			<tr valign="top">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php esc_html_e( 'Import donations from a CSV file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import or add donation data to your give form(s) via a CSV file.', 'give' ) ?></p>
+					<h2 id="give-import-title"><?php _e( 'Import donations from a CSV file', 'give' ) ?></h2>
+					<p class="give-field-description"><?php _e( 'This tool allows you to import or add donation data to your give form(s) via a CSV file.', 'give' ) ?></p>
 				</th>
 			</tr>
 			<?php
@@ -864,8 +872,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'default'     => $delimiter,
 					'type'        => 'select',
 					'options'     => array(
-						'csv'                  => esc_html__( 'Comma', 'give' ),
-						'tab-separated-values' => esc_html__( 'Tab', 'give' ),
+						'csv'                  => __( 'Comma', 'give' ),
+						'tab-separated-values' => __( 'Tab', 'give' ),
 					),
 				),
 				array(
@@ -917,7 +925,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				Give_Admin_Settings::output_fields( $settings, 'give_settings' );
 			} else {
 				?>
-				<input type="hidden" name="is_csv_valid" class="is_csv_valid" value="<?php echo $this->is_csv_valid; ?>">
+				<input type="hidden" name="is_csv_valid" class="is_csv_valid"
+				       value="<?php echo $this->is_csv_valid; ?>">
 				<?php
 			}
 		}
