@@ -20,7 +20,6 @@ if ( empty( $payment ) ) {
 $donation_id  = $payment->ID;
 $donation_number = Give()->seq_donation_number->get_serial_code( $payment->ID );
 $form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
-$meta         = give_get_payment_meta( $donation_id );
 $donation     = give_get_donation_form_title( $donation_id );
 $user         = give_get_payment_meta_user_info( $donation_id );
 $email        = give_get_payment_user_email( $donation_id );
@@ -59,7 +58,7 @@ $give_receipt_args['donation_receipt']['company_name'] = array(
 
 $give_receipt_args['donation_receipt']['date'] = array(
 	'name'    => __( 'Date', 'give' ),
-	'value'   => date_i18n( give_date_format(), strtotime( $meta['date'] ) ),
+	'value'   => date_i18n( give_date_format(), strtotime( give_get_payment_completed_date( $donation_id ) ) ),
 	'display' => $give_receipt_args['date'],
 );
 
