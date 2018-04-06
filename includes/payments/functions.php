@@ -1910,3 +1910,44 @@ function give_get_donation_address( $donation_id ){
 
 	return $address;
 }
+
+
+/**
+ *  Check if donation completed or not
+ *
+ * @since 2.1.0
+ *
+ * @param int $donation_id
+ *
+ * @return bool
+ */
+function give_is_donation_completed( $donation_id ){
+	global $wpdb;
+
+	/**
+	 * Filter the flag
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param bool
+	 * @param int $donation_id
+	 */
+	return apply_filters( 'give_is_donation_completed', (bool) $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT meta_value
+			FROM {$wpdb->paymentmeta}
+			WHERE EXISTS (
+				SELECT ID
+				FROM {$wpdb->posts}
+				WHERE post_status=%s
+				AND ID=%d
+			)
+			AND {$wpdb->paymentmeta}.meta_key=%s
+			",
+			'publish',
+			$donation_id,
+			'_give_completed_date'
+		)
+	), $donation_id);
+}
