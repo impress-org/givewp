@@ -62,6 +62,8 @@ function give_on_core_settings_import_start() {
 							cancelBtnTitle: give_vars.ok,
 						}
 					}).render();
+
+					return;
 				}
 				window.location = response.url;
 			},
