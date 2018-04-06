@@ -1013,6 +1013,24 @@ function give_get_payment_gateway( $payment_id ) {
 }
 
 /**
+ * Check if donation have specific gateway or not
+ *
+ * @since 2.1.0
+ *
+ * @param int|Give_Payment $donation_id Donation ID
+ * @param string           $gateway_id  Gateway ID
+ *
+ * @return bool
+ */
+function give_has_payment_gateway( $donation_id, $gateway_id ) {
+	$donation_gateway = $donation_id instanceof Give_Payment ?
+		$donation_id->gateway :
+		give_get_payment_gateway( $donation_id );
+
+	return $gateway_id === $donation_gateway;
+}
+
+/**
  * Get the currency code a payment was made in
  *
  * @param int $payment_id Payment ID.
