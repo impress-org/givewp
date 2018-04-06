@@ -969,7 +969,7 @@ class Give_MetaBox_Form_Data {
 	private function get_fields_id( $setting ) {
 		$meta_keys = array();
 
-		if ( ! empty( $setting ) ) {
+		if ( ! empty( $setting ) && array_key_exists( 'fields', $setting ) ) {
 			foreach ( $setting['fields'] as $field ) {
 				if ( $field_id = $this->get_field_id( $field ) ) {
 					$meta_keys[] = $field_id;
