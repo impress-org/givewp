@@ -920,7 +920,13 @@ function give_get_payment_form_id( $payment_id ) {
  * @return string $email User email.
  */
 function give_get_payment_user_email( $payment_id ) {
-	return give_get_meta( $payment_id, '_give_payment_donor_email', true );
+	$email =  give_get_meta( $payment_id, '_give_payment_donor_email', true );
+
+	if ( empty( $email ) && ( $donor_id = give_get_payment_donor_id( $payment_id ) ) ) {
+		$email = Give()->donors->get_column( 'email', $donor_id );
+	}
+
+	return $email;
 }
 
 /**
