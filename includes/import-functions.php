@@ -615,7 +615,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				// check for duplicate donation form with form id
 				if ( ! empty( $csv_data['form_id'] ) && ! empty( $data['form_id'] ) && $csv_data['form_id'] === $data['form_id'] ) {
 					$form = new Give_Donate_Form( $data['form_id'] );
-					if ( ! empty( $form->get_ID() ) ) {
+					$form_id = $form->get_ID();
+					if ( ! empty( $form_id ) ) {
 						$dry_run_duplicate_form = true;
 					}
 				}
