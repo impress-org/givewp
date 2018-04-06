@@ -98,7 +98,9 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		}
 
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
-		$form = new Give_Donate_Form( $form->ID );
+		if ( ! empty( $form->ID ) ) {
+			$form = new Give_Donate_Form( $form->ID );
+		}
 	}
 
 	if ( ! empty( $form ) && $form->get_ID() && ! empty( $data['form_level'] ) && empty( $dry_run ) ) {
@@ -598,6 +600,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	if ( ! empty( $dry_run ) && 1 !== $donation_key ) {
 		$csv_raw_data = empty( $import_setting['csv_raw_data'] ) ? array() : $import_setting['csv_raw_data'];
+		$donors_list = empty( $import_setting['donors_list'] ) ? array() : $import_setting['donors_list'];
 		$key          = $donation_key - 1;
 		for ( $i = 0; $i < $key; $i ++ ) {
 			$csv_data           = array_combine( $raw_key, $csv_raw_data[ $i ] );
@@ -624,15 +627,16 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 				// check for duplicate donor by donor id
 				if ( ! empty( $csv_data['donor_id'] ) && ! empty( $data['donor_id'] ) && $csv_data['donor_id'] === $data['donor_id'] ) {
-					$donor = new Give_Donor( (int) $data['donor_id'] );
-					if ( ! empty( $donor->id ) ) {
+					$donor = array_search( (int) $data['donor_id'], array_column( 'id', $donors_list ) );
+					if ( ! empty( $donor ) ) {
 						$dry_run_duplicate_donor = true;
 					}
 				}
+
 				// check for duplicate donor by user id
 				if ( empty( $dry_run_duplicate_donor ) && ! empty( $csv_data['user_id'] ) && ! empty( $data['user_id'] ) && $csv_data['user_id'] === $data['user_id'] ) {
-					$donor = new Give_Donor( $csv_data['user_id'], true );
-					if ( ! empty( $donor->id ) ) {
+					$donor = array_search( (int) $data['user_id'], array_column( 'user_id', $donors_list ) );
+					if ( ! empty( $donor ) ) {
 						$dry_run_duplicate_donor = true;
 					} else {
 						$donor = get_user_by( 'id', $csv_data['user_id'] );
@@ -641,6 +645,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 						}
 					}
 				}
+
 				// check for duplicate donor by donor id
 				if ( empty( $dry_run_duplicate_donor ) && ! empty( $csv_data['email'] ) && ! empty( $data['email'] ) && $csv_data['email'] === $data['email'] ) {
 					$dry_run_duplicate_donor = true;
