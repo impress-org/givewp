@@ -194,13 +194,30 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					if ( false === $this->check_for_dropdown_or_import() ) {
 						?>
 						<tr valign="top">
-							<th></th>
 							<th>
 								<input type="submit"
-								       class=" button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+								       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
 								       id="recount-stats-submit"
-									<?php echo ( 2 === $step ) ? 'disabled' : ''; ?>
-									   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
+								       value="
+									       <?php
+								       /**
+								        * Filter to modify donation importer submit button text.
+								        *
+								        * @since 2.1
+								        */
+								       echo esc_html( apply_filters( 'give_import_donation_submit_button_text', __( 'Submit', 'give' ) ) );
+								       ?>
+											"/>
+							</th>
+							<th>
+								<?php
+								/**
+								 * Action to add submit button description.
+								 *
+								 * @since 2.1
+								 */
+								do_action( 'give_import_donation_submit_button' );
+								?>
 							</th>
 						</tr>
 						<?php
@@ -368,6 +385,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
 					       class="delete_csv">
 					<input type="hidden" value="<?php echo $delimiter; ?>" name="delimiter">
+					<input type="hidden" value="<?php echo absint( $_REQUEST['dry_run'] ); ?>" name="dry_run">
 					<input type="hidden"
 					       value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
 					       name="main_key"
@@ -744,6 +762,41 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		}
 
 		/**
+		 * Print Dry Run HTML on donation import page
+		 *
+		 * @since 2.1
+		 */
+		public function give_import_donation_submit_button_render_media_csv() {
+			$dry_run = ( isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0 );
+			?>
+			<div>
+				<label for="dry_run">
+					<input type="checkbox" name="dry_run" id="dry_run" class="dry_run" value="1" <?php checked( 1, $dry_run ); ?> >
+					<strong><?php _e( 'Dry Run', 'give' ); ?></strong>
+				</label>
+				<p class="give-field-description">
+					<?php
+					_e( 'Preview what the import would look like without making any defalut changes to your site or your database.', 'give' );
+					?>
+				</p>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Change submit button text on first step of importing donation.
+		 *
+		 * @since 2.1
+		 *
+		 * @param $text
+		 *
+		 * @return string
+		 */
+		function give_import_donation_submit_text_render_media_csv( $text ) {
+			return __( 'Being Import', 'give' );
+		}
+
+		/**
 		 * Add CSV upload HTMl
 		 *
 		 * Print the html of the file upload from which CSV will be uploaded.
@@ -752,6 +805,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @return void
 		 */
 		public function render_media_csv() {
+			add_filter( 'give_import_donation_submit_button_text', array( $this, 'give_import_donation_submit_text_render_media_csv' ) );
+			add_action( 'give_import_donation_submit_button', array( $this, 'give_import_donation_submit_button_render_media_csv' ) );
 			?>
 			<tr valign="top">
 				<th colspan="2">
@@ -897,6 +952,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 							'1' :
 							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
 						'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
+						'dry_run'        => isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0,
 					) ) );
 
 					$this->is_csv_valid = $url;

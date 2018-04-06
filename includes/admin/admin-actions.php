@@ -550,6 +550,8 @@ function give_donation_import_callback() {
 	$import_setting['delimiter']   = $delimiter;
 	$import_setting['csv']         = $csv;
 	$import_setting['delete_csv']  = $delete_csv;
+	$import_setting['dry_run']     = $dry_run;
+	$import_setting['raw_key']     = $raw_key;
 
 	// Parent key id.
 	$main_key = maybe_unserialize( $main_key );
@@ -568,6 +570,10 @@ function give_donation_import_callback() {
 	// Processing done here.
 	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
 	$raw_key  = maybe_unserialize( $mapto );
+
+	if ( ! empty( $dry_run ) ) {
+		$import_setting['csv_raw_data'] = give_get_donation_data_from_csv( $csv, 1, $end, $delimiter );
+	}
 
 	// Prevent normal emails.
 	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
