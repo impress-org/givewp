@@ -131,12 +131,14 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-forms.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-payments.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-give-export-donations.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-exporter.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export-earnings.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-functions.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
