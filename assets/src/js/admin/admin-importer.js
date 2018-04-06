@@ -55,13 +55,26 @@ function give_on_core_settings_import_start() {
 				if ( true === response.success ) {
 					jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
 				} else {
-					alert( give_vars.error_message );
+					new GiveErrorAlert({
+						modalContent:{
+							title: give_vars.import_failed,
+							desc: give_vars.error_message,
+							cancelBtnTitle: give_vars.ok,
+						}
+					}).render();
 				}
 				window.location = response.url;
 			},
 			error: function () {
 				give_setting_edit = false;
-				alert( give_vars.error_message );
+
+				new GiveErrorAlert({
+					modalContent:{
+						title: give_vars.import_failed,
+						desc: give_vars.error_message,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
 			}
 		} );
 	}
