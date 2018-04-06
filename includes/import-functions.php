@@ -935,7 +935,7 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 function give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) {
 	$return = false;
 	if ( ! empty( $data['post_date'] ) ) {
-		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
+		$post_date = mysql2date( 'Y-m-d-H-i-s', $payment_data['post_date'] );
 		$post_date = explode( '-', $post_date );
 		$args      = array(
 			'output'                 => 'post',
