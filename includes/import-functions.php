@@ -620,6 +620,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				if ( empty( $dry_run_duplicate_form ) && ! empty( $csv_data['form_title'] ) && ! empty( $data['form_title'] ) && $csv_data['form_title'] === $data['form_title'] ) {
 					$dry_run_duplicate_form = true;
 				}
+
+
 				// check for duplicate donor by donor id
 				if ( ! empty( $csv_data['donor_id'] ) && ! empty( $data['donor_id'] ) && $csv_data['donor_id'] === $data['donor_id'] ) {
 					$donor = new Give_Donor( (int) $data['donor_id'] );
@@ -744,7 +746,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	// Check for duplicate code.
 	$donation_duplicate = give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data );
-	if ( false !== $donation_duplicate ) {
+	if ( false !== $donation_duplicate || ! empty( $_dry_run_is_duplicate ) ) {
 		$report['donation_details'][ $import_setting['donation_key'] ]['duplicate'] = $donation_duplicate;
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
