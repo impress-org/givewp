@@ -153,7 +153,7 @@ class Give_API_V2 {
 	public function get_donation_grid( $request ) {
 		$parameters = $request->get_params();
 
-		return give_donation_grid_shortcode( $parameters );
+		return give_form_grid_shortcode( $parameters );
 	}
 
 	/**

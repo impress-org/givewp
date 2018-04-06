@@ -351,7 +351,6 @@ class Give_Payments_Query extends Give_Stats {
 			$this->__set( 'date_query', $date_query );
 
 		}
-
 	}
 
 	/**

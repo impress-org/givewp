@@ -365,14 +365,15 @@ class Give_MetaBox_Form_Data {
 
 					array(
 						'name'        => __( 'Goal Format', 'give' ),
-						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations".', 'give' ),
+						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give' ),
 						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio_inline',
+						'type'        => 'radio',
 						'default'     => 'amount',
 						'options'     => array(
-							'amount'     => __( 'Amount', 'give' ),
-							'percentage' => __( 'Percentage', 'give' ),
+							'amount'     => __( 'Amount Raised', 'give' ),
+							'percentage' => __( 'Percentage Raised', 'give' ),
 							'donation'   => __( 'Number of Donations', 'give' ),
+							'donors'     => __( 'Number of Donors', 'give' ),
 						),
 					),
 
@@ -388,18 +389,26 @@ class Give_MetaBox_Form_Data {
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-
 					array(
 						'id'         => $prefix . 'number_of_donation_goal',
 						'name'       => __( 'Donation Goal', 'give' ),
-						'desc'       => __( 'Set total number of donations as a goal.', 'give' ),
+						'desc'       => __( 'Set the total number of donations as a goal.', 'give' ),
 						'type'       => 'number',
 						'default'    => 1,
 						'attributes' => array(
 							'placeholder' => 1,
 						),
 					),
-
+					array(
+						'id'         => $prefix . 'number_of_donor_goal',
+						'name'       => __( 'Donor Goal', 'give' ),
+						'desc'       => __( 'Set the total number of donors as a goal.', 'give' ),
+						'type'       => 'number',
+						'default'    => 1,
+						'attributes' => array(
+							'placeholder' => 1,
+						),
+					),
 					array(
 						'name'          => __( 'Progress Bar Color', 'give' ),
 						'desc'          => __( 'Customize the color of the goal progress bar.', 'give' ),

@@ -38,12 +38,15 @@ if ( ! class_exists( 'Give_Settings_Export' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_admin_field_tools_export', array( $this, 'render_export_field' ), 10, 2 );
+			add_action( 'give_admin_field_tools_export', array( 'Give_Settings_Export', 'render_export_field' ), 10, 2 );
 
 			// Do not use main donor for this tab.
 			if( give_get_current_setting_tab() === $this->id ) {
 				add_action( 'give-tools_open_form', '__return_empty_string' );
 				add_action( 'give-tools_close_form', '__return_empty_string' );
+
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-give-export-donations.php';
 			}
 		}
 
@@ -94,7 +97,7 @@ if ( ! class_exists( 'Give_Settings_Export' ) ) :
 		 * @param $field
 		 * @param $option_value
 		 */
-		public function render_export_field( $field, $option_value ) {
+		public static function render_export_field( $field, $option_value ) {
 			include_once( 'views/html-admin-page-exports.php' );
 		}
 	}

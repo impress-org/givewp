@@ -11,5 +11,7 @@ import '../plugins/give-hint.css';
 // Give core.
 import './admin-forms';
 import './admin-settings';
+import './admin-export';
 import './admin-widgets';
 import './admin-scripts';
+import './admin-importer';

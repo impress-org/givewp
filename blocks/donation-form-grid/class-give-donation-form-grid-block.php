@@ -127,7 +127,7 @@ class Give_Donation_form_Grid_Block {
 			'display_type'        => $attributes['displayType'],
 		);
 
-		return give_donation_grid_shortcode( $parameters );
+		return give_form_grid_shortcode( $parameters );
 	}
 }
 
