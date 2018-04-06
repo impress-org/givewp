@@ -974,6 +974,19 @@ function give_get_payment_donor_id( $payment_id ) {
 }
 
 /**
+ * Get the donor email associated with a donation.
+ *
+ * @param int $payment_id Payment ID.
+ *
+ * @since 2.1.0
+ *
+ * @return string
+ */
+function give_get_donation_donor_email( $payment_id ) {
+	return give_get_meta( $payment_id, '_give_payment_donor_email' , true );
+}
+
+/**
  * Get the IP address used to make a donation
  *
  * @param int $payment_id Payment ID.
