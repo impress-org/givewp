@@ -452,14 +452,20 @@ function give_count_payments( $args = array() ) {
  * @return bool $exists True if payment exists, false otherwise.
  */
 function give_check_for_existing_payment( $payment_id ) {
-	$exists  = false;
-	$payment = new Give_Payment( $payment_id );
+	global $wpdb;
 
-	if ( $payment_id === $payment->ID && 'publish' === $payment->status ) {
-		$exists = true;
-	}
-
-	return $exists;
+	return (bool) $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT ID
+			FROM {$wpdb->posts}
+			WHERE ID=%s
+			AND post_status=%s
+			",
+			$payment_id,
+			'publish'
+		)
+	);
 }
 
 /**
