@@ -1,3 +1,7 @@
+/**
+ * This API is under development, so do not use this in production.
+ * We will open this API for use after some testing (coming releases).
+ */
 import 'magnific-popup';
 import './dynamicListener.js';
 
@@ -67,7 +71,6 @@ class GiveModal {
 		return template;
 	}
 
-
 	/**
 	 * Setup template
 	 *
@@ -90,12 +93,6 @@ class GiveModal {
 		}
 
 		jQuery( this.config.triggerSelector ).magnificPopup(this.config);
-
-		// window.addDynamicEventListener(document, 'click', this.config.triggerSelector, function (e) {
-		// 	e.preventDefault();
-		//
-		// 	self.render();
-		// });
 	}
 
 	/**
