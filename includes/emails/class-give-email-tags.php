@@ -489,7 +489,8 @@ function give_email_tag_first_name( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$firstname = Give()->donor_meta->get_meta(
 				Give()->donors->get_column_by( 'id', 'user_id', $tag_args['user_id'] ),
-				'_give_donor_first_name'
+				'_give_donor_first_name',
+				true
 			);
 			break;
 
@@ -499,7 +500,7 @@ function give_email_tag_first_name( $tag_args ) {
 		 * @since 2.0
 		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$firstname = Give()->donor_meta->get_meta( $tag_args['donor_id'], '_give_donor_first_name' );
+			$firstname = Give()->donor_meta->get_meta( $tag_args['donor_id'], '_give_donor_first_name', true );
 			break;
 	}
 
@@ -759,7 +760,7 @@ function give_email_tag_amount( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$give_amount = give_donation_amount( $tag_args['payment_id'], array( 'sanitize' => false ) );
+			$give_amount = give_donation_amount( $tag_args['payment_id'], true );
 			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 			break;
 	}
@@ -918,7 +919,7 @@ function give_email_tag_form_title( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$donation_form_title = give_get_donation_form_title( $tag_args['payment_id'] );
+			$donation_form_title = give_get_payment_meta( $tag_args['payment_id'], '_give_payment_form_title' );
 			break;
 	}
 
@@ -1033,7 +1034,7 @@ function give_email_tag_payment_total( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment_total = give_donation_amount( $tag_args['payment_id'] );
+			$payment_total = give_currency_filter( give_get_payment_total( $tag_args['payment_id'] ) );
 			break;
 	}
 
@@ -1475,7 +1476,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 						}
 					}
 
-					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name );
+					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
 					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
 						$replace[] = $meta_data;
 					} elseif ( in_array( $meta_tag_arr[1], array_keys( $meta_data ) ) ) {

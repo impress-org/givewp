@@ -882,6 +882,10 @@ function give_get_payment_meta_user_info( $payment_id ) {
 		$donor_info['email'] = Give()->donors->get_column_by( 'email', 'id', $donor_id );
 	}
 
+	$donor_info['address']  = give_get_donation_address( $payment_id );
+	$donor_info['id']       = give_get_payment_user_id( $payment_id );
+	$donor_info['donor_id'] = give_get_payment_donor_id( $payment_id );
+
 	return $donor_info;
 }
 
