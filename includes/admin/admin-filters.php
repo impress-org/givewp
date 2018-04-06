@@ -139,7 +139,7 @@ function give_import_core_settings_merge_image_size( $json_to_array, $type ) {
 		if (
 			! empty( $json_to_array['form_featured_img'] )
 			&& ! empty( $json_to_array['featured_image_size'] )
-			&& 'enabled' === $json_to_array['form_featured_img']
+			&& give_is_setting_enabled( $json_to_array['form_featured_img'] )
 		) {
 			$images_sizes = get_intermediate_image_sizes();
 
