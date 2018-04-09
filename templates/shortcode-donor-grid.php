@@ -23,7 +23,8 @@ $atts          = $args[2]; // Shortcode attributes.
 		// Maybe display the Avatar.
 		if ( true === $atts['show_avatar'] ) {
 			echo give_get_donor_avatar( $donor );
-		} ?>
+		}
+		?>
 
 		<div class="give-donor__details">
 			<h3 class="give-donor__name"><?php echo $donor->name; ?></h3>
@@ -48,7 +49,8 @@ $atts          = $args[2]; // Shortcode attributes.
 		</div>
 	</div>
 	<div class="give-donor__content">
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus, dui eu
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus, dui eu
 			posuere viverra, orci tortor congue urna, non fringilla enim tellus sed quam. Maecenas vel mattis erat.
 			Maecenas tincidunt neque a orci dapibus faucibus. Curabitur nulla ex, scelerisque vel congue in.
 		</p>
