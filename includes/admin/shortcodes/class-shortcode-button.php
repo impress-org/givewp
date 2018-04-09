@@ -33,7 +33,7 @@ final class Give_Shortcode_Button {
 	 */
 	public function __construct() {
 
-		if ( is_admin() ) {
+		if ( is_admin() && give_is_admin_page() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
