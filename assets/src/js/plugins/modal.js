@@ -225,6 +225,10 @@ class GiveConfirmModal extends GiveModal {
 		obj.type = 'confirm';
 		super(obj);
 
+		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
+			this.config.classes.modalWrapper = obj.modalWrapper;
+		}
+
 		this.init();
 	}
 
