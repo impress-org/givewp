@@ -323,13 +323,45 @@ tr.status-refunded td {
 
 //Payment View Metabox
 #give-order-update {
-  .give-donation-status {
-	display: inline-block;
-	float: none;
-	margin: 0 10px;
-	position: relative;
-	top: 3px;
-  }
+	.give-donation-status {
+		display: inline-block;
+		float: none;
+		margin: 0 10px;
+		position: relative;
+		top: 3px;
+	}
+
+	.give-order-top {
+		border-bottom: 1px solid #eee;
+		overflow-x: auto;
+		white-space: nowrap;
+		width: 100%;
+
+		h3.hndle {
+			float: left;
+			border: none;
+			display: inline-block;
+		}
+
+		.delete-donation {
+			display: inline-block;
+			float: right;
+			a {
+				width: 18px;
+				height: 16px;
+				display: block;
+				margin: 11px 15px;
+				content: "\f182";
+				font-size: 18px;
+				color: black;
+			}
+
+			a:focus {
+				color: red;
+				box-shadow: none;
+			}
+		}
+	}
 }
 
 //Donation Column
