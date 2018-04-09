@@ -356,7 +356,7 @@ tr.status-refunded td {
 				color: black;
 			}
 
-			a:focus {
+			a:focus, a:hover {
 				color: red;
 				box-shadow: none;
 			}
