@@ -634,6 +634,7 @@ function give_donation_import_callback() {
 		'total'         => $total,
 		'delete_csv'    => $import_setting['delete_csv'],
 		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+		'dry_run'       => $dry_run,
 	) );
 	$json_data['url'] = $url;
 

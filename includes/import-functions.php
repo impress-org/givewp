@@ -269,7 +269,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 					}
 				} else {
 					$dry_run_donor_create = true;
-					$donor_data = array( 'id' => 1 );
+					$donor_data           = array( 'id' => 1 );
 				}
 
 				$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
@@ -620,7 +620,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			} else {
 				// check for duplicate donation form with form id
 				if ( ! empty( $csv_data['form_id'] ) && ! empty( $data['form_id'] ) && $csv_data['form_id'] === $data['form_id'] ) {
-					$form = new Give_Donate_Form( $data['form_id'] );
+					$form    = new Give_Donate_Form( $data['form_id'] );
 					$form_id = $form->get_ID();
 					if ( ! empty( $form_id ) ) {
 						$dry_run_duplicate_form = true;

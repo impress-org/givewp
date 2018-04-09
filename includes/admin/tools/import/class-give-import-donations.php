@@ -248,26 +248,31 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$report_html = array(
 				'duplicate_donor'    => array(
 					__( '%s duplicate %s detected', 'give' ),
+					__( '%s duplicate %s will be detected', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_donor'       => array(
 					__( '%s %s created', 'give' ),
+					__( '%s %s will be going to get created', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_form'        => array(
 					__( '%s donation %s created', 'give' ),
+					__( '%s donation %s will be going to get created', 'give' ),
 					__( 'form', 'give' ),
 					__( 'forms', 'give' ),
 				),
 				'duplicate_donation' => array(
 					__( '%s duplicate %s detected', 'give' ),
+					__( '%s duplicate %s will be detected', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
 				'create_donation'    => array(
 					__( '%s %s imported', 'give' ),
+					__( '%s %s will going to get imported', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
@@ -275,6 +280,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$total       = (int) $_GET['total'];
 			-- $total;
 			$success = (bool) $_GET['success'];
+			$dry_run = empty( $_GET['dry_run'] ) ? 0 : absint( $_GET['dry_run'] );
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
@@ -313,7 +319,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php _e( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
+								<?php echo wp_sprintf( $report_html[ $key ][$dry_run], $value, _n( $report_html[ $key ][2], $report_html[ $key ][3], $value, 'give' ) ); ?>
 							</p>
 							<?php
 						}
@@ -439,7 +445,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( ! $this->is_valid_csv( $csv ) ) {
 				$url = give_import_page_url();
 				?>
-				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo $url; ?>" />
+				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo $url; ?>"/>
 				<?php
 			} else {
 				?>
@@ -702,7 +708,6 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			return $string;
 		}
-
 
 		/**
 		 * Is used to show the process when user upload the donor form.
