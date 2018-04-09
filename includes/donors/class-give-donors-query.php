@@ -88,19 +88,20 @@ class Give_Donors_Query {
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
-			'number'         => 20,
-			'offset'         => 0,
-			'paged'          => 1,
-			'orderby'        => 'id',
-			'order'          => 'DESC',
-			'user'           => null,
-			'email'          => null,
-			'donor'          => null,
-			'meta_query'     => array(),
-			'date_query'     => array(),
-			's'              => null,
-			'fields'         => 'all', // Supports donors (all fields) or valid column as string or array list.
-			'count'          => false,
+			'number'          => 20,
+			'offset'          => 0,
+			'paged'           => 1,
+			'orderby'         => 'id',
+			'order'           => 'DESC',
+			'user'            => null,
+			'email'           => null,
+			'donor'           => null,
+			'meta_query'      => array(),
+			'date_query'      => array(),
+			's'               => null,
+			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
+			'count'           => false,
+			'give_forms'      => array(),
 
 			/*
 			 * donation_amount will contain value like:
@@ -264,6 +265,7 @@ class Give_Donors_Query {
 		$where .= $this->get_where_user();
 		$where .= $this->get_where_date();
 		$where .= $this->get_where_purchase_count();
+		$where .= $this->get_where_give_forms();
 
 		return trim( $where );
 
@@ -463,6 +465,57 @@ class Give_Donors_Query {
 			}
 
 			$where .= "AND {$this->table_name}.purchase_value{$compare}{$amount}";
+		}
+
+		return $where;
+	}
+
+	/**
+	 * Set give_forms where clause.
+	 *
+	 * @todo   : add phpunit test
+	 *
+	 * @since  2.1.0
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_give_forms() {
+		global $wpdb;
+		$where = '';
+
+		if ( ! empty( $this->args['give_forms'] ) ) {
+			if ( ! is_array( $this->args['give_forms'] ) ) {
+				$this->args['give_forms'] = explode( ',', $this->args['give_forms'] );
+			}
+
+			$form_ids = implode( ',', array_map( 'intval', $this->args['give_forms'] ) );
+
+			$query = $wpdb->prepare(
+				"
+			SELECT DISTINCT meta_value as donor_id
+			FROM {$wpdb->paymentmeta}
+			WHERE meta_key=%s
+			AND payment_id IN(
+				SELECT payment_id
+				FROM {$wpdb->paymentmeta}
+				WHERE meta_key=%s
+				AND meta_value IN (%s)
+			)
+			",
+				'_give_payment_donor_id',
+				'_give_payment_form_id',
+				$form_ids
+			);
+
+			$donor_ids = $wpdb->get_results( $query, ARRAY_A );
+
+			if ( ! empty( $donor_ids ) ) {
+				$donor_ids = wp_list_pluck( $donor_ids, 'donor_id' );
+				$donor_ids = implode( ',', array_map( 'intval', $donor_ids ) );
+				$where     .= "AND {$this->table_name}.id IN ({$donor_ids})";
+			}
 		}
 
 		return $where;
