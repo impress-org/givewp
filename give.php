@@ -570,6 +570,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-functions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php';

@@ -51,6 +51,15 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		public static $per_page = 25;
 
 		/**
+		 * Importing donation per page.
+		 *
+		 * @since 2.1
+		 *
+		 * @var   int
+		 */
+		public $is_csv_valid = false;
+
+		/**
 		 * Singleton pattern.
 		 *
 		 * @since
@@ -162,11 +171,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$this->render_progress();
 			?>
 			<section>
-				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?>"
+				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo ( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' ); ?>  "
 				       id="<?php echo "step-{$step}"; ?>">
 					<tbody>
 					<?php
-					switch ( $this->get_step() ) {
+					switch ( $step ) {
 						case 1:
 							$this->render_media_csv();
 							break;
@@ -365,82 +374,6 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					       class="main_key">
 				</th>
 			</tr>
-
-			<script type="text/javascript">
-				jQuery.noConflict();
-				(function ($) {
-					$(function () {
-
-						var $form = jQuery('form.tools-setting-page-import');
-
-						/**
-						 * Do not allow user to reload the page
-						 *
-						 * @since 1.8.14
-						 */
-						give_setting_edit = true;
-
-						var progress = $form.find('.give-progress');
-
-						var total_ajax = jQuery(progress).data('total_ajax'),
-							current = jQuery(progress).data('current'),
-							start = jQuery(progress).data('start'),
-							end = jQuery(progress).data('end'),
-							next = jQuery(progress).data('next'),
-							total = jQuery(progress).data('total'),
-							per_page = jQuery(progress).data('per_page');
-
-						jQuery.ajax({
-							type: 'POST',
-							url: ajaxurl,
-							data: {
-								action: give_vars.give_donation_import,
-								total_ajax: total_ajax,
-								current: current,
-								start: start,
-								end: end,
-								next: next,
-								total: total,
-								per_page: per_page,
-								fields: $form.serialize()
-							},
-							dataType: 'json',
-							success: function (response) {
-								jQuery(progress).data('current', response.current);
-								jQuery(progress).find('div').width(response.percentage + '%');
-
-								if (response.next == true) {
-									jQuery(progress).data('start', response.start);
-									jQuery(progress).data('end', response.end);
-
-									if (response.last == true) {
-										jQuery(progress).data('next', false);
-									}
-									give_on_donation_import_ajax();
-								} else {
-									/**
-									 * Now user is allow to reload the page.
-									 *
-									 * @since 1.8.14
-									 */
-									give_setting_edit = false;
-									window.location = response.url;
-								}
-							},
-							error: function () {
-								/**
-								 * Now user is allow to reload the page.
-								 *
-								 * @since 1.8.14
-								 */
-								give_setting_edit = false;
-								alert(give_vars.error_message);
-							}
-						});
-
-					});
-				})(jQuery);
-			</script>
 			<?php
 		}
 
@@ -487,9 +420,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( ! $this->is_valid_csv( $csv ) ) {
 				$url = give_import_page_url();
 				?>
-				<script type="text/javascript">
-					window.location = "<?php echo $url; ?>";
-				</script>
+				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo $url; ?>" />
 				<?php
 			} else {
 				?>
@@ -927,7 +858,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			$settings = apply_filters( 'give_import_file_upload_html', $settings );
 
-			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+			if ( empty( $this->is_csv_valid ) ) {
+				Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+			} else {
+				?>
+				<input type="hidden" name="is_csv_valid" class="is_csv_valid" value="<?php echo $this->is_csv_valid; ?>">
+				<?php
+			}
 		}
 
 		/**
@@ -961,11 +898,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
 						'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
 					) ) );
-					?>
-					<script type="text/javascript">
-						window.location = "<?php echo $url; ?>";
-					</script>
-					<?php
+
+					$this->is_csv_valid = $url;
 				}
 			}
 		}

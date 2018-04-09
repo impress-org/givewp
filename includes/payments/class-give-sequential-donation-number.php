@@ -205,14 +205,6 @@ class Give_Sequential_Donation_Number {
 			}
 		}
 
-		// Bailout.
-		if (
-			empty( $donation )
-			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
-		) {
-			return $donation;
-		}
-
 		// Set default params.
 		$args = wp_parse_args(
 			$args,
@@ -320,6 +312,35 @@ class Give_Sequential_Donation_Number {
 	}
 
 	/**
+	 * Get maximum donation id
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_max_donation_id() {
+		global $wpdb;
+
+		return absint(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT ID
+					FROM {$wpdb->posts}
+					WHERE post_type=%s
+					AND post_status=%s
+					ORDER BY id DESC 
+					LIMIT 1
+					",
+					'give_payment',
+					'publish'
+				)
+			)
+		);
+	}
+
+	/**
 	 * Get maximum donation number
 	 *
 	 * @since  2.1.0
@@ -328,6 +349,15 @@ class Give_Sequential_Donation_Number {
 	 * @return int
 	 */
 	public function get_next_number() {
-		return ( $this->get_max_number() + 1 );
+		$donation_id = $this->get_max_donation_id();
+		$next_number = $this->get_max_number();
+
+		if ( ! $this->get_serial_number( $donation_id ) ) {
+			$next_number = $donation_id && ( $next_number < $donation_id ) ?
+				$donation_id :
+				$this->get_max_number();
+		}
+
+		return ( $next_number + 1 );
 	}
 }
