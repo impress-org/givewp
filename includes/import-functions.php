@@ -223,7 +223,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 	$report               = give_import_donation_report();
 	$dry_run              = isset( $import_setting['dry_run'] ) ? $import_setting['dry_run'] : false;
 	$dry_run_donor_create = false;
-	$donor_data           = false;
+	$donor_data           = array();
 	$donor_id             = false;
 
 	// check if donor id is not empty
@@ -310,12 +310,15 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 				$donor_args = (array) apply_filters( 'give_import_insert_user_args', $donor_args, $data, $import_setting );
 
 				if ( empty( $dry_run ) ) {
+
 					// This action was added to remove the login when using the give register function.
 					add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 					$donor_id = give_register_and_login_new_user( $donor_args );
 					remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
-					update_user_meta( $donor_id, '_give_payment_import', true );
+
 					$donor_data = new Give_Donor( $donor_id, true );
+					$donor_data->update_meta( '_give_payment_import', true );
+
 				} else {
 					$dry_run_donor_create   = true;
 					$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
@@ -324,7 +327,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 				$donor_id = ( ! empty( $donor_data->ID ) ? $donor_data->ID : false );
 			}
 
-			if ( ! empty( $donor_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) && empty( $dry_run_donor_create ) ) {
+			if ( empty( $dry_run_donor_create ) && ( ! empty( $donor_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) ) ) {
 				$donor_data = new Give_Donor( $donor_id, true );
 
 				if ( empty( $donor_data->id ) ) {
@@ -660,11 +663,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		$donor_data = give_import_get_user_from_csv( $data, $import_setting );
 		if ( empty( $dry_run ) ) {
 			if ( ! empty( $donor_data->id ) ) {
-				if ( ! empty( $donor_data->user_id ) ) {
-					$donor_id = $donor_data->user_id;
-				} elseif ( ! empty( $data['user_id'] ) ) {
-					$donor_id = $data['user_id'];
-				}
+				$donor_id = $donor_data->id;
 			} else {
 				return false;
 			}
