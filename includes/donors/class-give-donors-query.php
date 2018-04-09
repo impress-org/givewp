@@ -443,6 +443,7 @@ class Give_Donors_Query {
 
 	/**
 	 * Set purchase value where clause.
+	 * @todo: add phpunit test
 	 *
 	 * @since  2.1.0
 	 * @access private
