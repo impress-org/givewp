@@ -127,6 +127,11 @@ class Give_Donor_Wall {
 			);
 		}
 
+		// Hide donors with zero donation amount.
+		if( $atts['form_id'] ) {
+			$donor_args['give_forms'] = $atts['form_id'];
+		}
+
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
 		$donors      = $donor_query->get_donors();
