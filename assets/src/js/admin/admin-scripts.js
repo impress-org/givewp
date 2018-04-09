@@ -335,7 +335,7 @@ var give_setting_edit = false;
 				{
 					triggerSelector: '.delete-single-donation',
 					modalContent: {
-						title: give_vars.confirm_deletion,
+						title: give_vars.confirm_deletion.GiveListDonation,
 						desc: give_vars.delete_payment
 					},
 					successConfirm: function ( args ) {
