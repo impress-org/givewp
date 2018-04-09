@@ -243,28 +243,6 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										</div>
 										<div class="clear"></div>
 									</div>
-
-									<div id="major-publishing-actions">
-										<div id="publishing-action" style="text-align: center;float: none;">
-											<?php
-											if ( current_user_can( 'view_give_payments' ) ) {
-												echo sprintf(
-													'<a class="delete-single-donation button-secondary button-link-delete" href="%1$s" aria-label="%2$s">%3$s</a>',
-													wp_nonce_url(
-														add_query_arg(
-															array(
-																'give-action' => 'delete_payment',
-																'purchase_id' => $payment_id,
-															), $base_url
-														), 'give_donation_nonce'
-													), sprintf( __( 'Delete Donation %s', 'give' ), $payment_id ), __( 'Delete', 'give' )
-												);
-											}
-											?>
-										</div>
-										<div class="clear"></div>
-									</div>
-
 									<?php
 									/**
 									 * Fires in donation details page, after the sidebar update-payment metabox actions buttons.
