@@ -87,6 +87,9 @@ class Give_Donor_Wall {
 			'show_time'       => true,
 			'show_comments'   => true,
 			'avatar_size'     => 60,
+			'orderby'         => 'purchase_count',
+			'order'           => 'DESC',
+			'hide_empty'      => true
 		), $atts );
 
 		// Validate integer attributes.
@@ -98,6 +101,8 @@ class Give_Donor_Wall {
 			'show_avatar',
 			'show_name',
 			'show_total',
+			'show_time',
+			'hide_empty'
 		);
 
 		foreach ( $boolean_attributes as $att ) {
@@ -108,9 +113,19 @@ class Give_Donor_Wall {
 
 		// Set default form query args.
 		$donor_args = array(
-			'number' => $atts['donors_per_page'],
-			'offset' => $atts['donors_per_page'] * ( $paged - 1 ),
+			'number'  => $atts['donors_per_page'],
+			'offset'  => $atts['donors_per_page'] * ( $paged - 1 ),
+			'orderby' => $atts['orderby'],
+			'order'   => $atts['order']
 		);
+
+		// Hide donors with zero donation amount.
+		if( $atts['hide_empty'] ) {
+			$donor_args['donation_amount'] = array(
+				'compare' => '>=',
+				'amount'  => 1
+			);
+		}
 
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
