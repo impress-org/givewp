@@ -84,6 +84,7 @@ class Give_Donor_Wall {
 			'show_avatar'     => true,
 			'show_name'       => true,
 			'show_total'      => true,
+			'show_time'       => false,
 			'show_comments'   => true,
 			'avatar_size'     => 60,
 		), $atts );
