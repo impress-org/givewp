@@ -407,7 +407,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php
 												if ( $payment_meta['form_id'] ) :
 													printf(
-														'<a href="%1$s">#%2$s</a>',
+														'<a href="%1$s">%2$s</a>',
 														admin_url( 'post.php?action=edit&post=' . $payment_meta['form_id'] ),
 														$payment_meta['form_id']
 													);
@@ -553,7 +553,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php
 												if ( ! empty( $donor->id ) ) {
 													printf(
-														'<a href="%1$s">#%2$s</a>',
+														'<a href="%1$s">%2$s</a>',
 														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
 														$donor->id
 													);

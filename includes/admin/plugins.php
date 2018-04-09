@@ -116,24 +116,45 @@ function give_get_admin_page_menu_title() {
 	return $title;
 }
 
-
-/** Remove the dismissed flag for add-on's activation banners.
+/**
+ * Store recently activated Give's addons to wp options.
  *
- * @since 2.0.7
- *
- * @param string $plugin_file Plugin file name.
+ * @since 2.1.0
  */
-function give_remove_activation_dismissed_flag( $plugin_file ) {
-	if ( strpos( $plugin_file, 'Give-' ) !== false ) {
-		// Get the current user.
-		$current_user = wp_get_current_user();
+function give_recently_activated_addons() {
+	// Check if action is set.
+	if ( isset( $_REQUEST["action"] ) ) {
+		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+		$plugins       = array();
 
-		// Remove meta from the user meta.
-		delete_user_meta( $current_user->ID, 'give_addon_activation_ignore_all' );
+		switch ( $plugin_action ) {
+			case 'activate': // Single add-on activation.
+				$plugins[] = $_REQUEST["plugin"];
+				break;
+			case 'activate-selected': // If multiple add-ons activated.
+				$plugins = $_REQUEST["checked"];
+				break;
+		}
+
+		if ( ! empty( $plugins ) ) {
+			$give_addons = array();
+			foreach ( $plugins as $plugin ) {
+				// Get plugins which has 'Give-' as prefix.
+				if ( stripos( $plugin, 'Give-' ) !== false ) {
+					$give_addons[] = $plugin;
+				}
+			}
+
+			if ( ! empty( $give_addons ) ) {
+				// Update the Give's activated add-ons.
+				update_option( 'give_recently_activated_addons', $give_addons );
+			}
+		}
 	}
 }
 
-add_action( 'activated_plugin', 'give_remove_activation_dismissed_flag', 10, 1 );
+// Add add-on plugins to wp option table.
+add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 
 /**
  * Create new menu in plugin section that include all the add-on
