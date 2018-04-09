@@ -269,9 +269,12 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 					}
 				} else {
 					$dry_run_donor_create = true;
+					$donor_data = array( 'id' => 1 );
 				}
 
 				$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
+			} elseif ( $dry_run ) {
+				$donor_data = array();
 			}
 		} else {
 			// Add is used to ensure duplicate emails are not added
