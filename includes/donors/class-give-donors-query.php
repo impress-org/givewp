@@ -248,26 +248,27 @@ class Give_Donors_Query {
 	 * @return string
 	 */
 	private function get_where_query() {
-		$where = '';
 
 		// Get sql query for meta.
 		if ( ! empty( $this->args['meta_query'] ) ) {
 			$meta_query_object = new WP_Meta_Query( $this->args['meta_query'] );
 			$meta_query        = $meta_query_object->get_sql( $this->meta_type, $this->table_name, 'id' );
 
-			$where = implode( '', $meta_query );
+			$where[] = implode( '', $meta_query );
 		}
 
-		$where .= 'WHERE 1=1 ';
-		$where .= $this->get_where_search();
-		$where .= $this->get_where_email();
-		$where .= $this->get_where_donor();
-		$where .= $this->get_where_user();
-		$where .= $this->get_where_date();
-		$where .= $this->get_where_purchase_count();
-		$where .= $this->get_where_give_forms();
+		$where[] = 'WHERE 1=1';
+		$where[] = $this->get_where_search();
+		$where[] = $this->get_where_email();
+		$where[] = $this->get_where_donor();
+		$where[] = $this->get_where_user();
+		$where[] = $this->get_where_date();
+		$where[] = $this->get_where_purchase_count();
+		$where[] = $this->get_where_give_forms();
 
-		return trim( $where );
+		$where = array_filter( $where );
+
+		return trim( implode( ' ', array_map( 'trim', $where ) ) );
 
 	}
 
