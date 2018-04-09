@@ -172,7 +172,7 @@ class Give_Scripts {
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
-			'delete_payment'                    => __( 'Are you sure you want to delete this payment?', 'give' ),
+			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
 			'revoke_api_key'                    => __( 'Are you sure you want to revoke this API key?', 'give' ),
 			'regenerate_api_key'                => __( 'Are you sure you want to regenerate this API key?', 'give' ),
@@ -188,6 +188,7 @@ class Give_Scripts {
 			'close'                             => __( 'Close', 'give' ),
 			'confirm'                           => __( 'Confirm', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
+			'confirm_delete_donation'           => __( 'Confirm Delete Donation', 'give' ),
 			'confirm_resend'                    => __( 'Confirm re-send', 'give' ),
 			'confirm_bulk_action'               => __( 'Confirm bulk action', 'give' ),
 			'import_failed'                     => __( 'Import failed', 'give' ),
@@ -210,7 +211,7 @@ class Give_Scripts {
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
-					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' ) 
+					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' )
 				),
 				'no_action_selected' => array(
 					'title' => __( 'No action selected', 'give' ),
