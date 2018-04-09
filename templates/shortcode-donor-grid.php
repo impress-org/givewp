@@ -27,32 +27,43 @@ $atts          = $args[2]; // Shortcode attributes.
 		?>
 
 		<div class="give-donor__details">
-			<h3 class="give-donor__name"><?php echo $donor->name; ?></h3>
-			<span class="give-donor__total">
-				<?php
-				// If not filtered by form ID then display total donations
-				echo give_currency_filter( give_format_amount( $donor->purchase_value, array(
-					'sanitize' => false,
-					'decimal'  => false
-				) ) );
+			<?php if ( true === $atts['show_name'] ) : ?>
+				<h3 class="give-donor__name"><?php echo $donor->name; ?></h3>
+			<?php endif; ?>
 
-				// Else filtered by form ID, only display donations made for this form.
-				?>
-			</span>
-			<span class="give-donor__timestamp">
-				<?php
-				// If not filtered by form ID then display the "Donor Since" text.
+			<?php if ( true === $atts['show_total'] ) : ?>
+				<span class="give-donor__total">
+					<?php
+					// If not filtered by form ID then display total donations
+					echo give_currency_filter( give_format_amount( $donor->purchase_value, array(
+						'sanitize' => false,
+						'decimal'  => false
+					) ) );
 
-				// If filtered by form ID then display the last donation date.
-				echo $donor->get_last_donation_date( true ); ?>
-			</span>
+					// Else filtered by form ID, only display donations made for this form.
+					?>
+				</span>
+			<?php endif; ?>
+
+			<?php if ( true === $atts['show_time'] ) : ?>
+				<span class="give-donor__timestamp">
+					<?php
+					// If not filtered by form ID then display the "Donor Since" text.
+
+					// If filtered by form ID then display the last donation date.
+					echo $donor->get_last_donation_date( true ); ?>
+				</span>
+			<?php endif; ?>
 		</div>
 	</div>
-	<div class="give-donor__content">
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus, dui eu
-			posuere viverra, orci tortor congue urna, non fringilla enim tellus sed quam. Maecenas vel mattis erat.
-			Maecenas tincidunt neque a orci dapibus faucibus. Curabitur nulla ex, scelerisque vel congue in.
-		</p>
-	</div>
+
+	<?php if ( true === $atts['show_comments'] ) : ?>
+		<div class="give-donor__content">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus, dui eu
+				posuere viverra, orci tortor congue urna, non fringilla enim tellus sed quam. Maecenas vel mattis erat.
+				Maecenas tincidunt neque a orci dapibus faucibus. Curabitur nulla ex, scelerisque vel congue in.
+			</p>
+		</div>
+	<?php endif; ?>
 </div>
