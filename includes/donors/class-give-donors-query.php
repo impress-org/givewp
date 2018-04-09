@@ -88,19 +88,30 @@ class Give_Donors_Query {
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
-			'number'     => 20,
-			'offset'     => 0,
-			'paged'      => 1,
-			'orderby'    => 'id',
-			'order'      => 'DESC',
-			'user'       => null,
-			'email'      => null,
-			'donor'      => null,
-			'meta_query' => array(),
-			'date_query' => array(),
-			's'          => null,
-			'fields'     => 'all', // Supports donors (all fields) or valid column as string or array list.
-			'count'      => false,
+			'number'         => 20,
+			'offset'         => 0,
+			'paged'          => 1,
+			'orderby'        => 'id',
+			'order'          => 'DESC',
+			'user'           => null,
+			'email'          => null,
+			'donor'          => null,
+			'meta_query'     => array(),
+			'date_query'     => array(),
+			's'              => null,
+			'fields'         => 'all', // Supports donors (all fields) or valid column as string or array list.
+			'count'          => false,
+
+			/*
+			 * donation_amount will contain value like:
+			 * array(
+			 *     'compare' => *compare symbol* (by default set to > )
+			 *     'amount'  => *numeric_value*
+			 * )
+			 *
+			 * You can also pass number value to this param then compare symbol will auto set to >
+			 */
+			'donation_amount' => array()
 			// 'form'       => array(),
 		);
 
@@ -252,6 +263,7 @@ class Give_Donors_Query {
 		$where .= $this->get_where_donor();
 		$where .= $this->get_where_user();
 		$where .= $this->get_where_date();
+		$where .= $this->get_where_purchase_count();
 
 		return trim( $where );
 
@@ -427,5 +439,31 @@ class Give_Donors_Query {
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Set purchase value where clause.
+	 *
+	 * @since  2.1.0
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_purchase_count() {
+		$where = '';
+
+		if ( ! empty( $this->args['donation_amount'] ) ) {
+			$compare = '>';
+			$amount  = $this->args['donation_amount'];
+			if ( is_array( $this->args['donation_amount'] ) ) {
+				$compare = $this->args['donation_amount'] ['compare'];
+				$amount = $this->args['donation_amount']['amount'];
+			}
+
+			$where .= "AND {$this->table_name}.purchase_value{$compare}{$amount}";
+		}
+
+		return $where;
 	}
 }
