@@ -1,0 +1,110 @@
+.give-modal {
+	box-shadow: 0px 15px 10px -5px rgba(0, 0, 0, .15);
+	position: relative;
+	background: #fff;
+	font-family: Arial, Baskerville, monospace;
+	font-size: 16px;
+	width: auto;
+	max-width: 500px;
+	margin: 20px auto;
+	margin-top: 60px;
+	border-top: 5px solid rgba(0, 0, 0, 0);
+	line-height: 1.5;
+
+
+
+	/**
+	 * Modal colors as per type
+	 *
+	 * - Success
+	 * - Notice
+	 * - Error
+	 * - Warning
+	 */
+	&--success {
+		border-top-color: #46b450;
+	}
+
+	&--notice {
+		border-top-color: #00a0d2;
+	}
+
+	&--warning {
+		border-top-color: #ffb900;
+	}
+
+	&--error {
+		border-top-color: #dc3232;
+	}
+
+
+
+	/**
+	 * Body of the modal dialog.
+	 * Contains the title and the description text.
+	 */
+	&__body {
+		padding: 1.5rem;
+
+		> :last-child {
+			margin-bottom: 0;
+		}
+	}
+
+
+
+	/**
+	 * Children of .give-modal__body
+	 */
+	&__title {
+		margin: 0 0 0.75rem;
+		padding: 0;
+	}
+
+	&__description {
+		margin: 0 0 1.5rem;
+		padding: 0;
+	}
+
+
+
+	/**
+	 * Control section of the modal dialog.
+	 * Contains buttons of the dialog.
+	 */
+	.give-modal__controls {
+		padding: 1rem 1.5rem;
+		background-color: #fbfbfb;
+		border-top: 1px solid #d7d7d7;
+		text-align: right;
+	}
+}
+
+.modal-fade-slide .give-modal--zoom {
+	opacity: 0;
+	transition: all 0.2s ease-out;
+	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+}
+
+.modal-fade-slide.mfp-ready .give-modal--zoom {
+	opacity: 1;
+	transform: translateY(0) perspective( 600px ) rotateX( 0 );
+}
+
+.modal-fade-slide.mfp-removing .give-modal--zoom {
+	opacity: 0;
+	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+}
+
+.modal-fade-slide.mfp-bg {
+	opacity: 0;
+	transition: opacity 0.3s ease-out;
+}
+
+.modal-fade-slide.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+
+.modal-fade-slide.mfp-removing.mfp-bg {
+	opacity: 0;
+}

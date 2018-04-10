@@ -19,7 +19,6 @@
 @import '../plugins/magnific-popup';
 @import 'layouts';
 @import 'progress-bar';
-@import 'modal';
 @import 'tables';
 @import 'theme-compatibility';
 @import 'donation-history';
@@ -28,7 +27,7 @@
 
 // Wrapper increases specificity for defensive styling against themes.
 .give-wrap {
-  @import 'grid';
-  @import 'card';
-  @import 'page-numbers';
+	@import 'grid';
+	@import 'card';
+	@import 'page-numbers';
 }

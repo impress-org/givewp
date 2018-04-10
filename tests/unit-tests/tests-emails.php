@@ -220,7 +220,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 */
 	public function test_email_tags_payment_id() {
 		give_update_option( 'sequential-ordering_status', 'disabled' );
-		$this->assertEquals( $this->_payment_id, give_email_tag_payment_id( $this->_payment_id ) );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_number( $this->_payment_id ), give_email_tag_payment_id( $this->_payment_id ) );
 		give_update_option( 'sequential-ordering_status', 'enabled' );
 	}
 

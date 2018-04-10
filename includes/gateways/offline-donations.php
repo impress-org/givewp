@@ -427,28 +427,6 @@ function give_get_default_offline_donation_email_content() {
 }
 
 /**
- * Set notice for offline donation.
- *
- * @since 1.7
- *
- * @param string $notice
- * @param int    $id
- *
- * @return string
- */
-function give_offline_donation_receipt_status_notice( $notice, $id ) {
-	$payment = new Give_Payment( $id );
-
-	if ( 'offline' !== $payment->gateway || $payment->is_completed() ) {
-		return $notice;
-	}
-
-	return Give()->notices->print_frontend_notice( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
-}
-
-add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_notice', 10, 2 );
-
-/**
  * Get offline payment instructions.
  *
  * @since 1.7

@@ -252,15 +252,16 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
-	 * @param  int    $selected Category to select automatically. Default is 0.
-	 * @param  array  $args     Select box options.
+	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_categories'.
+	 * @param  int $selected Category to select automatically. Default is 0.
+	 * @param  array $args Select box options.
 	 *
 	 * @return string           Categories dropdown.
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0, $args = array() ) {
 		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
-		$options    = array();
+
+		$options = array();
 
 		foreach ( $categories as $category ) {
 			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
@@ -285,14 +286,15 @@ class Give_HTML_Elements {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_tags'.
-	 * @param  int    $selected Tag to select automatically. Default is 0.
-	 * @param  array  $args     Select box options.
+	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_tags'.
+	 * @param  int $selected Tag to select automatically. Default is 0.
+	 * @param  array $args Select box options.
 	 *
 	 * @return string           Tags dropdown.
 	 */
 	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
 		$tags    = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+
 		$options = array();
 
 		foreach ( $tags as $tag ) {
