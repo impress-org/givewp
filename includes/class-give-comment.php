@@ -86,10 +86,11 @@ class Give_Comment {
 	 * @param int    $id           Payment|Donor ID.
 	 * @param string $note         Comment Text
 	 * @param string $comment_type Value can ve donor|payment
+	 * @param array  $comment_args Comment arguments
 	 *
 	 * @return int
 	 */
-	public static function add( $id, $note, $comment_type ) {
+	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
 			return false;
@@ -105,21 +106,26 @@ class Give_Comment {
 		 */
 		do_action( "give_pre_insert_{$comment_type}_note", $id, $note );
 
-		$comment_id = wp_insert_comment( wp_filter_comment( array(
-			'comment_post_ID'      => $id,
-			'comment_content'      => $note,
-			'user_id'              => is_admin() ? get_current_user_id() : 0,
-			'comment_date'         => current_time( 'mysql' ),
-			'comment_date_gmt'     => current_time( 'mysql', 1 ),
-			'comment_approved'     => 1,
-			'comment_parent'       => 0,
-			'comment_author'       => '',
-			'comment_author_IP'    => '',
-			'comment_author_url'   => '',
-			'comment_author_email' => '',
-			'comment_type'         => "give_{$comment_type}_note",
+		$comment_args = wp_parse_args(
+			$comment_args,
+			array(
+				'comment_post_ID'      => $id,
+				'comment_content'      => $note,
+				'user_id'              => is_admin() ? get_current_user_id() : 0,
+				'comment_date'         => current_time( 'mysql' ),
+				'comment_date_gmt'     => current_time( 'mysql', 1 ),
+				'comment_approved'     => 1,
+				'comment_parent'       => 0,
+				'comment_author'       => '',
+				'comment_author_IP'    => '',
+				'comment_author_url'   => '',
+				'comment_author_email' => '',
+				'comment_type'         => "give_{$comment_type}_note",
 
-		) ) );
+			)
+		);
+
+		$comment_id = wp_insert_comment( wp_filter_comment( $comment_args ) );
 
 		update_comment_meta( $comment_id, "__give_{$comment_type}_id", $id );
 
