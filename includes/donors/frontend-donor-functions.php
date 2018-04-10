@@ -100,3 +100,51 @@ function give_validate_gravatar( $id_or_email ) {
 		return false;
 	}
 }
+
+
+/**
+ * Add a donor comment to a donation
+ *
+ * @param int    $donation_id The donation ID to store a note for.
+ * @param int    $donor       The donor ID to store a note for.
+ * @param string $note        The note to store.
+ * @param int    $approve     Default approve status of comment.
+ *
+ * @since 2.1.0
+ *
+ * @return int The new note ID
+ */
+function give_insert_donor_donation_comment( $donation_id, $donor, $note, $approve = 0 ) {
+	$comment_id = Give_Comment::add( $donation_id, $note, 'payment', array( 'comment_approved' => $approve ) );
+	update_comment_meta( $comment_id, '_give_donor_id', $donor );
+
+	return $comment_id;
+}
+
+
+/**
+ * Retrieve all donor notes attached to a donation
+ *
+ * @param int    $donation_id The donation ID to retrieve notes for.
+ * @param int    $donor_id    The donor ID to retrieve notes for.
+ * @param string $search      Search for notes that contain a search term.
+ *
+ * @since 1.0
+ *
+ * @return array $notes Donation Notes
+ */
+function give_get_donor_payment_notes( $donation_id, $donor_id, $search = '' ) {
+	return Give_Comment::get(
+		$donation_id,
+		$search,
+		'payment',
+		array(
+			'meta_query' => array(
+				array(
+					'key'   => '_give_donor_id',
+					'value' => $donor_id
+				)
+			)
+		)
+	);
+}
