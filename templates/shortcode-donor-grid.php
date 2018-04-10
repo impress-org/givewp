@@ -59,7 +59,7 @@ $atts          = $args[2]; // Shortcode attributes.
 	<?php if ( true === $atts['show_comments'] ) : ?>
 		<div class="give-donor__content">
 			<p>
-				<?php echo get_donor_latest_comment( $donor->id ); ?>
+				<?php echo get_donor_latest_comment( $donor->id, $atts['form_id'] ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
