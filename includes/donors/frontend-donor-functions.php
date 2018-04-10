@@ -142,15 +142,7 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 		$donation_id,
 		$search,
 		'payment',
-		array(
-			'meta_query' => array(
-				array(
-					'key'   => '_give_donor_id',
-					'value' => $donor_id
-				)
-			),
-			'number'     => 1
-		)
+		array( 'number' => 1 )
 	);
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
@@ -174,17 +166,7 @@ function give_get_donor_comments( $donor_id, $comment_args = array(), $search = 
 		$donor_id,
 		$search,
 		'donor',
-		array_merge(
-			$comment_args,
-			array(
-				'meta_query' => array(
-					array(
-						'key'   => '_give_donor_id',
-						'value' => $donor_id
-					)
-				),
-			)
-		)
+		$comment_args
 	);
 
 	return ( ! empty( $comments ) ? $comments : array() );
