@@ -13,8 +13,9 @@ const wpPot = require( 'wp-pot' );
 const config = {
 	entry: {
 		admin: [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
+		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
 		give: [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
-		gutenberg: [ './blocks/load.js' ]
+		gutenberg: [ './blocks/load.js' ],
 	},
 
 	// Tell webpack where to output.
