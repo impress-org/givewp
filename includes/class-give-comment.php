@@ -127,7 +127,7 @@ class Give_Comment {
 
 		$comment_id = wp_insert_comment( wp_filter_comment( $comment_args ) );
 
-		update_comment_meta( $comment_id, "__give_{$comment_type}_id", $id );
+		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
 		/**
 		 * Fires after payment|donor comment inserted.
