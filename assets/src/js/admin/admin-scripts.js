@@ -6,6 +6,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 jQuery.noConflict();
 
@@ -330,17 +331,35 @@ var give_setting_edit = false;
 		},
 
 		deleteSingleDonation: function () {
-			$('body').on('click', '.delete-single-donation', function () {
-				return confirm(give_vars.delete_payment);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.delete-single-donation',
+					modalWrapper : 'give-modal--warning',
+					modalContent: {
+						title: give_vars.confirm_delete_donation,
+						desc: give_vars.delete_payment
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		},
 
 		resendSingleDonationReceipt: function () {
-			$('body').on('click', '.resend-single-donation-receipt', function () {
-				return confirm(give_vars.resend_receipt);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.resend-single-donation-receipt',
+					modalContent: {
+						title: give_vars.confirm_resend,
+						desc: give_vars.resend_receipt
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		}
-
 	};
 
 	/**
@@ -1405,16 +1424,8 @@ var give_setting_edit = false;
 			this.add_note();
 			this.delete_checked();
 			this.addressesAction();
-			this.unlockDonorFields();
 			this.bulkDeleteDonor();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
-		},
-
-		unlockDonorFields: function (e) {
-			$('body').on('click', '.give-lock-block', function (e) {
-				alert(give_vars.unlock_donor_fields);
-				e.preventDefault();
-			});
 		},
 
 		editDonor: function () {
@@ -1890,7 +1901,6 @@ var give_setting_edit = false;
 		},
 
 		handleBulkActions: function (e) {
-
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
 				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
@@ -1901,14 +1911,27 @@ var give_setting_edit = false;
 			});
 
 			// If there is no bulk action selected then show an alert message.
-			if ('-1' === currentAction) {
-				alert(selectBulkActionNotice);
+			if ( '-1' === currentAction ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: selectBulkActionNotice.title,
+						desc: selectBulkActionNotice.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
 				return false;
 			}
 
 			// If there is no donor selected then show an alert.
-			if (!parseInt(donors)) {
-				alert(confirmActionNotice);
+			if ( ! parseInt( donors ) ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: confirmActionNotice.title,
+						desc: confirmActionNotice.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+
 				return false;
 			}
 
@@ -2688,7 +2711,7 @@ var give_setting_edit = false;
 			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
-		handleBulkActions: function () {
+		handleBulkActions: function ( e ) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
 				$payments = $('input[name="payment[]"]:checked').length,
@@ -2701,6 +2724,17 @@ var give_setting_edit = false;
 				'set-to-status' :
 				currentAction;
 
+			if ( '-1' === currentAction ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: give_vars.donors_bulk_action.no_action_selected.title,
+						desc: give_vars.donors_bulk_action.no_action_selected.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+				return false;
+			}
+
 			if (Object.keys(give_vars.donations_bulk_action).length) {
 				for (status in give_vars.donations_bulk_action) {
 					if (status === currentAction) {
@@ -2712,7 +2746,13 @@ var give_setting_edit = false;
 
 						// Check if admin selected any donations or not.
 						if (!parseInt($payments)) {
-							alert(confirmActionNotice);
+							new GiveWarningAlert({
+								modalContent:{
+									title: give_vars.donations_bulk_action.titles.zero,
+									desc: confirmActionNotice,
+									cancelBtnTitle: give_vars.ok,
+								}
+							}).render();
 							return false;
 						}
 
@@ -2721,11 +2761,21 @@ var give_setting_edit = false;
 							give_vars.donations_bulk_action[currentAction].multiple :
 							give_vars.donations_bulk_action[currentAction].single;
 
-						// Trigger Admin Confirmation PopUp.
-						return window.confirm(confirmActionNotice
-							.replace('{payment_count}', $payments)
-							.replace('{status}', currentActionLabel.replace('Set To ', ''))
-						);
+						e.preventDefault();
+
+						new GiveConfirmModal(
+							{
+								modalContent: {
+									title: give_vars.confirm_bulk_action,
+									desc: confirmActionNotice
+										.replace('{payment_count}', $payments)
+										.replace('{status}', currentActionLabel.replace('Set To ', ''))
+								},
+								successConfirm: function ( args ) {
+									$( '#give-payments-filter' ).submit();
+								}
+							}
+						).render();
 					}
 				}
 			}

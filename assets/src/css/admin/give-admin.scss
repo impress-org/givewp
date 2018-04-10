@@ -13,7 +13,10 @@
 @import '../frontend/variables';
 @import '../plugins/jquery-ui-fresh';
 @import '../plugins/hint.min';
+@import '../plugins/magnific-popup';
 @import '../frontend/fonts';
+@import '../plugins/modal';
+@import '../plugins/button';
 
 @import 'fonts';
 @import 'grids';
@@ -27,7 +30,6 @@
 @import 'dashboard';
 @import 'donors';
 @import 'buttons';
-@import 'shortcodes';
 @import 'system-info';
 @import 'util';
 @import 'updates';

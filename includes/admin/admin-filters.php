@@ -136,7 +136,11 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_p
 function give_import_core_settings_merge_image_size( $json_to_array, $type ) {
 	if ( 'merge' === $type ) {
 		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
-		if ( 'enabled' === $json_to_array['form_featured_img'] ) {
+		if (
+			! empty( $json_to_array['form_featured_img'] )
+			&& ! empty( $json_to_array['featured_image_size'] )
+			&& give_is_setting_enabled( $json_to_array['form_featured_img'] )
+		) {
 			$images_sizes = get_intermediate_image_sizes();
 
 			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
