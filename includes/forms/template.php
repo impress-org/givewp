@@ -734,6 +734,24 @@ function give_user_info_fields( $form_id ) {
 			/>
 
 		</p>
+		<p id="give-comment-wrap" class="form-row form-row-wide">
+			<label class="give-label" for="give-comment">
+				<?php _e( 'Comment', 'give' ); ?>
+				<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+					<span class="give-required-indicator">*</span>
+				<?php } ?>
+				<?php echo Give()->tooltips->render_help( __( 'We will send the donation receipt to this address.', 'give' ) ); ?>
+			</label>
+
+			<textarea
+				class="give-input required"
+				name="give_comment"
+				placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+				id="give-comment"
+				value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
+				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
+
+		</p>
 		<?php
 		/**
 		 * Fire after user email field
