@@ -1054,8 +1054,16 @@ var give_setting_edit = false;
 
 					submitButton.addClass('button-disabled');
 					$('form.give-export-form select').attr('disabled', true).trigger('chosen:updated');
-					$(this).find('.notice-wrap').remove();
-					$(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+
+					var parent_notices = $( this );
+
+					// show notices inside add-notices class
+					if ( $( this ).find( '.add-notices' ).length > 0 ) {
+						parent_notices = $( this ).find( '.add-notices' );
+					}
+
+					parent_notices.find('.notice-wrap').remove();
+					parent_notices.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
 					// start the process
 					self.process_step(1, data, self);
