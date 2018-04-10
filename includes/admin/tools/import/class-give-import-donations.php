@@ -287,10 +287,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<h2>
 						<?php
 						if ( $success ) {
-							printf(
-								_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
-								"<strong>{$total}</strong>"
-							);
+							if ( $dry_run ) {
+								printf(
+									_n( 'Dry run import complete! %s donation processed', 'Dry run import complete! %s donations processed', $total, 'give' ),
+									"<strong>{$total}</strong>"
+								);
+							} else {
+								printf(
+									_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
+									"<strong>{$total}</strong>"
+								);
+							}
 						} else {
 							printf(
 								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
@@ -319,7 +326,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php echo wp_sprintf( $report_html[ $key ][$dry_run], $value, _n( $report_html[ $key ][2], $report_html[ $key ][3], $value, 'give' ) ); ?>
+								<?php printf( $report_html[ $key ][$dry_run], $value, _n( $report_html[ $key ][2], $report_html[ $key ][3], $value, 'give' ) ); ?>
 							</p>
 							<?php
 						}

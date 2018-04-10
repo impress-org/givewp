@@ -25,7 +25,7 @@ do_action( 'give_tools_import_donations_main_before' );
 	            _e( 'Import Donations', 'give' );
 
 	            if ( ! empty( $_POST['mapto'] ) && ! empty( $_GET['dry_run'] ) ) {
-		            echo wp_sprintf(
+		            printf(
 						'<strong> %s</strong>',
 			            __( '(Dry Run)', 'give' )
 		            );
