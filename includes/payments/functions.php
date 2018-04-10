@@ -1279,24 +1279,7 @@ function give_get_purchase_id_by_transaction_id( $key ) {
  * @return array $notes Donation Notes
  */
 function give_get_payment_notes( $payment_id = 0, $search = '' ) {
-
-	if ( empty( $payment_id ) && empty( $search ) ) {
-		return false;
-	}
-
-	remove_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10 );
-
-	$notes = get_comments( array(
-		'post_id' => $payment_id,
-		'order'   => 'ASC',
-		'search'  => $search,
-	) );
-
-	add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-	add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
-
-	return $notes;
+	return Give_Comment::get( $payment_id, $search, 'payment' );
 }
 
 
@@ -1311,48 +1294,7 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
  * @return int The new note ID
  */
 function give_insert_payment_note( $payment_id = 0, $note = '' ) {
-	if ( empty( $payment_id ) ) {
-		return false;
-	}
-
-	/**
-	 * Fires before inserting payment note.
-	 *
-	 * @param int    $payment_id Payment ID.
-	 * @param string $note       The note.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_pre_insert_payment_note', $payment_id, $note );
-
-	$note_id = wp_insert_comment( wp_filter_comment( array(
-		'comment_post_ID'      => $payment_id,
-		'comment_content'      => $note,
-		'user_id'              => is_admin() ? get_current_user_id() : 0,
-		'comment_date'         => current_time( 'mysql' ),
-		'comment_date_gmt'     => current_time( 'mysql', 1 ),
-		'comment_approved'     => 1,
-		'comment_parent'       => 0,
-		'comment_author'       => '',
-		'comment_author_IP'    => '',
-		'comment_author_url'   => '',
-		'comment_author_email' => '',
-		'comment_type'         => 'give_payment_note',
-
-	) ) );
-
-	/**
-	 * Fires after payment note inserted.
-	 *
-	 * @param int    $note_id    Note ID.
-	 * @param int    $payment_id Payment ID.
-	 * @param string $note       The note.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_insert_payment_note', $note_id, $payment_id, $note );
-
-	return $note_id;
+	return Give_Comment::add( $payment_id, $note, 'payment' );
 }
 
 /**
@@ -1366,33 +1308,7 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
  * @return bool True on success, false otherwise.
  */
 function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
-	if ( empty( $comment_id ) ) {
-		return false;
-	}
-
-	/**
-	 * Fires before deleting donation note.
-	 *
-	 * @param int $comment_id Note ID.
-	 * @param int $payment_id Payment ID.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
-
-	$ret = wp_delete_comment( $comment_id, true );
-
-	/**
-	 * Fires after donation note deleted.
-	 *
-	 * @param int $comment_id Note ID.
-	 * @param int $payment_id Payment ID.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
-
-	return $ret;
+	return Give_Comment::delete( $comment_id, $payment_id, 'payment' );
 }
 
 /**
