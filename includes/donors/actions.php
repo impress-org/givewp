@@ -17,7 +17,7 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	give_insert_donor_donation_comment(
 		$donation_id,
 		$donation_data['user_info']['id'],
-		give_clean( $_POST['give_comment'] )
+		trim( give_clean( $_POST['give_comment'] ) )
 	);
 }
 
