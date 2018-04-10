@@ -247,6 +247,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $seq_donation_number;
 
 		/**
+		 * Give_Comment Object
+		 *
+		 * @var Give_Comment
+		 */
+		public $comment;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -341,6 +348,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->async_process          = new Give_Async_Process();
 			$this->scripts                = new Give_Scripts();
 			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
+			$this->comment                = Give_Comment::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -486,6 +494,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
