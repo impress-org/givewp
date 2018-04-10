@@ -209,6 +209,11 @@ class Give_Comment {
 	public static function get( $id, $search = '', $comment_type, $comment_args = array() ) {
 		$comments = array();
 
+		// Set default meta_query value.
+		if( ! isset( $comment_args['meta_query'] ) ) {
+			$comment_args['meta_query'] = array();
+		}
+
 		// Bailout
 		if ( empty( $id ) || empty( $comment_type ) ) {
 			return $comments;
@@ -219,32 +224,40 @@ class Give_Comment {
 
 		switch ( $comment_type ) {
 			case 'payment':
+				$comment_args['meta_query'] = array_merge(
+					$comment_args['meta_query'],
+					array(
+						array(
+							'key'     => '_give_donor_id',
+							'compare' => 'NOT EXISTS'
+						)
+					)
+				);
+
 				$comments = get_comments( wp_parse_args(
 					$comment_args,
 					array(
 						'post_id'    => $id,
 						'order'      => 'ASC',
 						'search'     => $search,
-						'meta_query' => array(
-							array(
-								'key'     => '_give_donor_id',
-								'compare' => 'NOT EXISTS'
-							)
-						)
 					)
 				) );
 				break;
 
 			case 'donor':
+				$comment_args['meta_query'] = array_merge(
+					$comment_args['meta_query'],
+					array(
+						array(
+							'key'   => "_give_{$comment_type}_id",
+							'value' => $id
+						)
+					)
+				);
+
 				$comments = get_comments( wp_parse_args(
 					$comment_args,
 					array(
-						'meta_query' => array(
-							array(
-								'key'   => "_give_{$comment_type}_id",
-								'value' => $id
-							)
-						),
 						'order'      => 'ASC',
 						'search'     => $search,
 					)
