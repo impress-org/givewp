@@ -202,10 +202,11 @@ class Give_Comment {
 	 * @param int    $id
 	 * @param string $search
 	 * @param string $comment_type
+	 * @param array  $comment_args
 	 *
 	 * @return array
 	 */
-	public static function get( $id, $search = '', $comment_type ) {
+	public static function get( $id, $search = '', $comment_type, $comment_args = array() ) {
 		$comments = array();
 
 		// Bailout
@@ -218,23 +219,34 @@ class Give_Comment {
 
 		switch ( $comment_type ) {
 			case 'payment':
-				$comments = get_comments( array(
-					'post_id' => $id,
-					'order'   => 'ASC',
-					'search'  => $search,
+				$comments = get_comments( wp_parse_args(
+					$comment_args,
+					array(
+						'post_id'    => $id,
+						'order'      => 'ASC',
+						'search'     => $search,
+						'meta_query' => array(
+							array(
+								'key'     => '_give_donor_id',
+								'compare' => 'NOT EXISTS'
+							)
+						)
+					)
 				) );
 				break;
 
 			case 'donor':
-				$comments = get_comments( array(
-					'meta_query' => array(
-						array(
-							'key'   => "__give_{$comment_type}_id",
-							'value' => $id
-						)
-					),
-					'order'      => 'ASC',
-					'search'     => $search,
+				$comments = get_comments( wp_parse_args(
+					array(
+						'meta_query' => array(
+							array(
+								'key'   => "_give_{$comment_type}_id",
+								'value' => $id
+							)
+						),
+						'order'      => 'ASC',
+						'search'     => $search,
+					)
 				) );
 				break;
 		}
