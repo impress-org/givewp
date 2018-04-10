@@ -850,6 +850,42 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 							do_action( 'give_view_donation_details_main_after', $payment_id );
 							?>
 
+							<div id="give-payment-donor-comment" class="postbox">
+								<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+
+								<div class="inside">
+									<div id="give-payment-donor-comment-inner">
+										<?php
+										$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
+
+										if ( ! empty( $donor_comment ) ) {
+											echo give_get_donor_donation_comment_html( $donor_comment, $payment_id );
+										}else{
+											echo sprintf(
+												'<p class="give-no-payment-notes"%s>%s</p>',
+												$no_notes_display,
+												esc_html__( 'No donation comment.', 'give' )
+											);
+										}
+										?>
+									</div>
+
+								</div>
+								<!-- /.inside -->
+							</div>
+							<!-- /#give-payment-notes -->
+
+							<?php
+							/**
+							 * Fires on the donation details page, after the main area.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_donation_details_main_after', $payment_id );
+							?>
+
 						</div>
 						<!-- /#normal-sortables -->
 					</div>

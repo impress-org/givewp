@@ -123,18 +123,20 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $appro
 
 
 /**
- * Retrieve all donor notes attached to a donation
+ * Retrieve all donor comment attached to a donation
  *
- * @param int    $donation_id The donation ID to retrieve notes for.
- * @param int    $donor_id    The donor ID to retrieve notes for.
- * @param string $search      Search for notes that contain a search term.
+ * Note: currently donor can only add one comment per donation
+ *
+ * @param int    $donation_id The donation ID to retrieve comment for.
+ * @param int    $donor_id    The donor ID to retrieve comment for.
+ * @param string $search      Search for comment that contain a search term.
  *
  * @since 1.0
  *
- * @return array $notes Donation Notes
+ * @return WP_Comment|array
  */
-function give_get_donor_payment_notes( $donation_id, $donor_id, $search = '' ) {
-	return Give_Comment::get(
+function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
+	$comments = Give_Comment::get(
 		$donation_id,
 		$search,
 		'payment',
@@ -144,7 +146,43 @@ function give_get_donor_payment_notes( $donation_id, $donor_id, $search = '' ) {
 					'key'   => '_give_donor_id',
 					'value' => $donor_id
 				)
-			)
+			),
+			'number' => 1
 		)
 	);
+
+	return ( ! empty( $comments ) ? current( $comments ) : array() );
+}
+
+
+/**
+ * Gets the donor donation comment HTML
+ *
+ * @param WP_Comment|int $comment    The comment object or ID.
+ * @param int            $payment_id The payment ID the note is connected to.
+ *
+ * @since 2.1.0
+ *
+ * @return string
+ */
+function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
+
+	if ( is_numeric( $comment ) ) {
+		$comment = get_comment( $comment );
+	}
+
+	$donor_name = Give()->donors->get_column( 'name', give_get_payment_donor_id( $payment_id ) );
+
+	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
+
+	$comment_html = sprintf(
+		'<div class="give-payment-note" id="give-payment-note-%s"><p><strong>%s</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">%s</span><br/>%s</p></div>',
+		$comment->comment_ID,
+		$donor_name,
+		date_i18n( $date_format, strtotime( $comment->comment_date ) ),
+		$comment->comment_content
+	);
+
+	return $comment_html;
+
 }
