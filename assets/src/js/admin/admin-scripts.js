@@ -1066,14 +1066,14 @@ var give_setting_edit = false;
 					parent_notices.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
 					// start the process
-					self.process_step(1, data, self);
+					self.process_step(1, data, self, this );
 
 				}
 
 			});
 		},
 
-		process_step: function (step, data, self) {
+		process_step: function (step, data, self, form) {
 			/**
 			 * Do not allow user to reload the page
 			 *
@@ -1093,6 +1093,7 @@ var give_setting_edit = false;
 				},
 				dataType: 'json',
 				success: function (response) {
+
 					if ('done' == response.step || response.error || response.success) {
 
 						/**
@@ -1105,10 +1106,13 @@ var give_setting_edit = false;
 						reset_form = true;
 
 						// We need to get the actual in progress form, not all forms on the page
-						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
-						var notice_wrap = export_form.find('.notice-wrap');
-						export_form.find('.button-disabled').removeClass('button-disabled');
-						$('form.give-export-form select').attr('disabled', false).trigger('chosen:updated');
+						var notice_wrap = $( form ).parent().find('.notice-wrap');
+						var export_form = notice_wrap.find('.give-progress');
+
+
+						$( form ).find('.button-disabled').removeClass('button-disabled');
+						$( form ).find('select').attr('disabled', false).trigger('chosen:updated');
+
 						if (response.error) {
 							var error_message = response.message;
 							notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
@@ -1125,7 +1129,7 @@ var give_setting_edit = false;
 						}, 50, function () {
 							// Animation complete.
 						});
-						self.process_step(parseInt(response.step), data, self);
+						self.process_step(parseInt(response.step), data, self, form);
 					}
 
 					if ( true === reset_form && $( '#give-tools-recount-form' ).length > 0 ) {
