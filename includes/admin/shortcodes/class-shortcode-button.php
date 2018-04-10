@@ -32,8 +32,17 @@ final class Give_Shortcode_Button {
 	 * Class constructor
 	 */
 	public function __construct() {
+		add_action( 'admin_init', array( $this, 'init'), 999 );
+	}
 
-		if ( is_admin() && give_is_admin_page() ) {
+	/**
+	 * Initialize
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 */
+	public function init(){
+		if ( $this->is_add_button() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
@@ -73,12 +82,21 @@ final class Give_Shortcode_Button {
 	 * @since 1.0
 	 */
 	public function admin_enqueue_assets() {
+		$direction = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
+
 		wp_enqueue_script(
 			'give_shortcode',
 			GIVE_PLUGIN_URL . 'includes/admin/shortcodes/admin-shortcodes.js',
 			array( 'jquery' ),
 			GIVE_VERSION,
 			true
+		);
+
+		wp_enqueue_style(
+			'give-admin-shortcode-button-style',
+			GIVE_PLUGIN_URL . 'assets/dist/css/admin-shortcode-button' . $direction . '.css',
+			array(),
+			GIVE_VERSION
 		);
 	}
 
@@ -114,82 +132,58 @@ final class Give_Shortcode_Button {
 	 */
 	public function shortcode_button() {
 
-		$screen = get_current_screen();
+		$shortcodes = array();
 
-		// If we load wp editor by ajax then $screen will be empty which generate notice if we treat $screen as WP_Screen object.
-		// For example we are loading wp editor by ajax in repeater field.
-		if ( ! ( $screen instanceof WP_Screen ) ) {
-			return false;
+		foreach ( self::$shortcodes as $shortcode => $values ) {
+
+			/**
+			 * Filters the condition for including the current shortcode
+			 *
+			 * @since 1.0
+			 */
+			if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
+
+				$shortcodes[ $shortcode ] = sprintf(
+					'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%2$s">%3$s</div>',
+					$shortcode,
+					$shortcode,
+					$values['label']
+				);
+			}
 		}
 
-		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
-			'post.php',
-			'page.php',
-			'post-new.php',
-			'post-edit.php',
-			'edit.php',
-			'edit.php?post_type=page',
-		) );
+		if ( ! empty( $shortcodes ) ) {
 
-		// Only run in admin post/page creation and edit screens
-		if ( in_array( $screen->parent_file, $shortcode_button_pages )
-		     && apply_filters( 'give_shortcode_button_condition', true )
-		     && ! empty( self::$shortcodes )
-		) {
+			// check current WP version
+			$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
+				? '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/give-media.png" />'
+				: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 
-			$shortcodes = array();
+			reset( $shortcodes );
 
-			foreach ( self::$shortcodes as $shortcode => $values ) {
+			if ( 1 === count( $shortcodes ) ) {
 
-				/**
-				 * Filters the condition for including the current shortcode
-				 *
-				 * @since 1.0
-				 */
-				if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
+				$shortcode = key( $shortcodes );
 
-					$shortcodes[ $shortcode ] = sprintf(
-						'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%2$s">%3$s</div>',
-						$shortcode,
-						$shortcode,
-						$values['label']
-					);
-				}
-			}
-
-			if ( ! empty( $shortcodes ) ) {
-
-				// check current WP version
-				$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
-					? '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/give-media.png" />'
-					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
-
-				reset( $shortcodes );
-
-				if ( 1 === count( $shortcodes ) ) {
-
-					$shortcode = key( $shortcodes );
-
-					printf(
-						'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
-						$shortcode,
-						sprintf( '%s %s %s',
-							$img,
-							__( 'Insert', 'give' ),
-							self::$shortcodes[ $shortcode ]['label']
-						)
-					);
-				} else {
-					printf(
-						'<div class="sc-wrap">' .
-						'<button class="button sc-button" type="button">%s %s</button>' .
-						'<div class="sc-menu mce-menu">%s</div>' .
-						'</div>',
+				printf(
+					'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
+					$shortcode,
+					sprintf( '%s %s %s',
 						$img,
-						__( 'Give Shortcodes', 'give' ),
-						implode( '', array_values( $shortcodes ) )
-					);
-				}
+						__( 'Insert', 'give' ),
+						self::$shortcodes[ $shortcode ]['label']
+					)
+				);
+			} else {
+				printf(
+					'<div class="sc-wrap">' .
+					'<button class="button sc-button" type="button">%s %s</button>' .
+					'<div class="sc-menu mce-menu">%s</div>' .
+					'</div>',
+					$img,
+					__( 'Give Shortcodes', 'give' ),
+					implode( '', array_values( $shortcodes ) )
+				);
 			}
 		}
 	}
@@ -227,6 +221,39 @@ final class Give_Shortcode_Button {
 		}
 
 		wp_send_json( $response );
+	}
+
+
+	/**
+	 * Flag to check add shortcode button to current screen or not
+	 *
+	 * @since  2.1.0
+	 * @access private
+	 * @return bool
+	 */
+	private function is_add_button() {
+		global $pagenow;
+
+		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
+			'post.php',
+			'page.php',
+			'post-new.php',
+			'post-edit.php',
+			'edit.php',
+			'edit.php?post_type=page',
+		) );
+
+		// Only run in admin post/page creation and edit screens
+		if (
+			! is_admin()
+			|| ! in_array( $pagenow, $shortcode_button_pages )
+			|| ! apply_filters( 'give_shortcode_button_condition', true )
+			|| empty( self::$shortcodes )
+		) {
+			return false;
+		}
+
+		return true;
 	}
 }
 
