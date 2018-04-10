@@ -965,7 +965,7 @@ var give_setting_edit = false;
 					forms.val(0);
 				}
 
-				current_forms = $('.tools-form-dropdown-' + selected_type);
+				var current_forms = $('.tools-form-dropdown-' + selected_type);
 				current_forms.show();
 				current_forms.find('.give-select-chosen').css({
 					'width': 'auto',
