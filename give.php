@@ -541,6 +541,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/actions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
