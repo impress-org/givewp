@@ -315,11 +315,24 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'tab'       => 'import',
 					);
 					if ( $success ) {
-						$query_arg = array(
-							'post_type' => 'give_forms',
-							'page'      => 'give-payment-history',
-						);
-						$text      = __( 'View Donations', 'give' );
+
+
+						if ( $dry_run ) {
+							$query_arg = array(
+								'post_type'     => 'give_forms',
+								'page'          => 'give-tools',
+								'tab'           => 'import',
+								'importer-type' => 'import_donations',
+							);
+
+							$text      = __( 'Start Import', 'give' );
+						} else {
+							$query_arg = array(
+								'post_type' => 'give_forms',
+								'page'      => 'give-payment-history',
+							);
+							$text      = __( 'View Donations', 'give' );
+						}
 					}
 
 					foreach ( $report as $key => $value ) {
