@@ -71,7 +71,7 @@ class Give_Comment {
 			array( 'payment', 'donor' )
 		);
 
-		add_action( 'pre_get_comments', array( $this, 'give_hide_comments' ), 10 );
+		add_action( 'pre_get_comments', array( $this, 'hide_comments' ), 10 );
 		add_filter( 'comments_clauses', array( $this, 'hide_comments_pre_wp_41' ), 10, 1 );
 		add_filter( 'comment_feed_where', array( $this, 'hide_comments_from_feeds' ), 10, 1 );
 		add_filter( 'wp_count_comments', array( $this, 'remove_comments_from_comment_counts' ), 10, 2 );
