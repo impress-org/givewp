@@ -773,10 +773,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 2.1
 		 */
 		public function give_import_donation_submit_button_render_media_csv() {
-			$dry_run = ( isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0 );
+			$dry_run = isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 1;
 			?>
 			<div>
 				<label for="dry_run">
+					<input type="hidden" name="dry_run" value="0"/>
 					<input type="checkbox" name="dry_run" id="dry_run" class="dry_run"
 					       value="1" <?php checked( 1, $dry_run ); ?> >
 					<strong><?php _e( 'Dry Run', 'give' ); ?></strong>
