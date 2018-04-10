@@ -13,7 +13,10 @@
 @import '../frontend/variables';
 @import '../plugins/jquery-ui-fresh';
 @import '../plugins/hint.min';
+@import '../plugins/magnific-popup';
 @import '../frontend/fonts';
+@import '../plugins/modal';
+@import '../plugins/button';
 
 @import 'fonts';
 @import 'grids';
@@ -34,4 +37,5 @@
 @import 'blank-slate';
 @import 'chosen';
 @import 'importer';
+@import 'export';
 @import 'goals';

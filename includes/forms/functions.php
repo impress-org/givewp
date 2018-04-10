@@ -910,7 +910,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @param int|Give_Donate_Form  $form       Form ID or Form Object.
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
  * @since 2.1
  *
@@ -924,12 +924,13 @@ function give_goal_progress_stats( $form ) {
 
 	$goal_format = give_get_form_goal_format( $form->ID );
 
+
 	/**
-	 * Filter the form sales.
+	 * Filter the form donations.
 	 *
 	 * @since 2.1
 	 */
-	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
+	$donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
 
 	/**
 	 * Filter the form income.
@@ -945,8 +946,19 @@ function give_goal_progress_stats( $form ) {
 	 */
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
 
+	switch ( $goal_format ) {
+		case  'donation':
+			$actual = $donations;
+			break;
+		case 'donors':
+			$actual = give_get_form_donor_count( $form->ID );
+			break;
+		default :
+			$actual = $income;
+			break;
+	}
 
-	$actual   = 'donation' !== $goal_format ? $income : $sales;
+
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
 	$stats_array = array(
@@ -1011,7 +1023,7 @@ function give_goal( $form_id = 0, $echo = true ) {
 	}
 
 	$goal        = give_get_form_goal( $form_id );
-	$goal_format = give_get_form_goal_format($form_id);
+	$goal_format = give_get_form_goal_format( $form_id );
 
 	if ( 'donation' === $goal_format ) {
 		$goal = "{$goal} donations";
@@ -1148,4 +1160,66 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Output.
 	return wp_parse_args( $give_donor_info_in_session, $logged_in_donor_info );
+}
+
+/**
+ * Get donor count of form
+ *
+ * @since 2.1.0
+ *
+ * @param int   $form_id
+ * @param array $args
+ *
+ * @return int
+ */
+function give_get_form_donor_count( $form_id, $args = array() ) {
+	global $wpdb;
+
+	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
+	$donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+
+	if ( $form_id && ! $donor_count ) {
+		// Set arguments.
+		$args = wp_parse_args(
+			$args,
+			array(
+				'unique' => true,
+			)
+		);
+
+		$donation_meta_table = Give()->payment_meta->table_name;
+
+		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
+
+		$query = $wpdb->prepare(
+			"
+			SELECT COUNT({$distinct})
+			FROM {$donation_meta_table}
+			WHERE meta_key=%s
+			AND payment_id IN(
+				SELECT payment_id
+				FROM {$donation_meta_table}
+				WHERE meta_key=%s
+				AND meta_value=%s
+			)
+			",
+			'_give_payment_donor_id',
+			'_give_payment_form_id',
+			$form_id
+		);
+
+		$donor_count = absint( $wpdb->get_var( $query ) );
+	}
+
+
+	/**
+	 * Filter the donor count
+	 *
+	 * @since 2.1.0
+	 */
+	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
+
+	Give_Cache::set_db_query( $cache_key, $donor_count );
+
+	return $donor_count;
 }
