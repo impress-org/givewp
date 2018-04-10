@@ -36,7 +36,7 @@ function give_get_currency( $donation_or_form_id = null, $args = array() ) {
 	}
 
 	/**
-	 * Filter the currency on basis of donation or form id or addtional data.
+	 * Filter the currency on basis of donation, form id, or additional data.
 	 *
 	 * @since 1.0
 	 */
