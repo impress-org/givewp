@@ -421,9 +421,9 @@ function give_count_payments( $args = array() ) {
 	}
 
 	// Extract all donations
-	$args['number']      = - 1;
-	$args['group_by']    = 'post_status';
-	$args['count']       = 'true';
+	$args['number']   = - 1;
+	$args['group_by'] = 'post_status';
+	$args['count']    = 'true';
 
 	$donations_obj   = new Give_Payments_Query( $args );
 	$donations_count = $donations_obj->get_payment_by_group();
@@ -1380,8 +1380,9 @@ function give_filter_where_older_than_week( $where = '' ) {
  * Retrieves the form title and appends the level name if present.
  *
  * @param int|Give_Payment $donation Donation Data Object.
- * @param array            $args     a. only_level = If set to true will only return the level name if multi-level enabled.
- *                                   b. separator  = The separator between the Form Title and the Donation Level.
+ * @param array            $args     a. only_level = If set to true will only return the level name if multi-level
+ *                                   enabled. b. separator  = The separator between the Form Title and the Donation
+ *                                   Level.
  *
  * @since 1.5
  *
@@ -1393,7 +1394,7 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 		$donation = new Give_Payment( $donation );
 	}
 
-	if( ! $donation->ID ) {
+	if ( ! $donation->ID ) {
 		return '';
 	}
 
@@ -1438,7 +1439,7 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 			$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 
 			// Show custom amount level only in backend otherwise hide it.
-			if( 'set' === give_get_meta( $form_id, '_give_price_option', true ) && ! is_admin()  ) {
+			if ( 'set' === give_get_meta( $form_id, '_give_price_option', true ) && ! is_admin() ) {
 				$level_label = '';
 			}
 
