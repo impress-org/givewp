@@ -116,7 +116,9 @@ function give_validate_gravatar( $id_or_email ) {
  */
 function give_insert_donor_donation_comment( $donation_id, $donor, $note, $approve = 0 ) {
 	$comment_id = Give_Comment::add( $donation_id, $note, 'payment', array( 'comment_approved' => $approve ) );
+
 	update_comment_meta( $comment_id, '_give_donor_id', $donor );
+	update_comment_meta( $comment_id, '_give_form_id', give_get_payment_form_id( $donation_id ) );
 
 	return $comment_id;
 }
