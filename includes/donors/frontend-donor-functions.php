@@ -131,7 +131,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $appro
  * @param int    $donor_id    The donor ID to retrieve comment for.
  * @param string $search      Search for comment that contain a search term.
  *
- * @since 1.0
+ * @since 2.1.0
  *
  * @return WP_Comment|array
  */
@@ -147,11 +147,45 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 					'value' => $donor_id
 				)
 			),
-			'number' => 1
+			'number'     => 1
 		)
 	);
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
+}
+
+/**
+ * Retrieve all donor comment attached to a donation
+ *
+ * Note: currently donor can only add one comment per donation
+ *
+ * @param int    $donor_id The donor ID to retrieve comment for.
+ * @param array  $comment_args
+ * @param string $search   Search for comment that contain a search term.
+ *
+ * @since 2.1.0
+ *
+ * @return array
+ */
+function give_get_donor_comments( $donor_id, $comment_args = array(), $search = '' ) {
+	$comments = Give_Comment::get(
+		$donor_id,
+		$search,
+		'donor',
+		array_merge(
+			$comment_args,
+			array(
+				'meta_query' => array(
+					array(
+						'key'   => '_give_donor_id',
+						'value' => $donor_id
+					)
+				),
+			)
+		)
+	);
+
+	return ( ! empty( $comments ) ? $comments : array() );
 }
 
 
@@ -185,4 +219,26 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
 
 	return $comment_html;
 
+}
+
+
+/**
+ * Get donor latest comment
+ *
+ * @since 2.1.0
+ *
+ * @param int $donor_id
+ *
+ * @return string
+ */
+function get_donor_latest_comment( $donor_id ) {
+	$comment_content = '';
+
+	$comment = current( give_get_donor_comments( $donor_id, array( 'orderby' => 'comment_ID', 'order' => 'DESC', 'number' => 1 ) ) );
+
+	if ( $comment instanceof WP_Comment ) {
+		$comment_content = esc_attr( $comment->comment_content );
+	}
+
+	return $comment_content;
 }

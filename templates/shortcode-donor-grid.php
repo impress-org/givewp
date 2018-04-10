@@ -14,7 +14,6 @@ $donor = new Give_Donor( $donor->id );
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
-
 ?>
 
 <div class="give-donor">
@@ -60,9 +59,7 @@ $atts          = $args[2]; // Shortcode attributes.
 	<?php if ( true === $atts['show_comments'] ) : ?>
 		<div class="give-donor__content">
 			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus, dui eu
-				posuere viverra, orci tortor congue urna, non fringilla enim tellus sed quam. Maecenas vel mattis erat.
-				Maecenas tincidunt neque a orci dapibus faucibus. Curabitur nulla ex, scelerisque vel congue in.
+				<?php echo get_donor_latest_comment( $donor->id ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
