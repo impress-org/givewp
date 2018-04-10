@@ -212,13 +212,31 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
  * @since 2.1.0
  *
  * @param int $donor_id
+ * @param int $form_id
  *
  * @return string
  */
-function get_donor_latest_comment( $donor_id ) {
+function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 	$comment_content = '';
 
-	$comment = current( give_get_donor_comments( $donor_id, array( 'orderby' => 'comment_ID', 'order' => 'DESC', 'number' => 1 ) ) );
+	$comment_args = array(
+			'orderby' => 'comment_ID',
+			'order' => 'DESC',
+			'number' => 1,
+	);
+	
+	// Get donor donation comment for specific form.
+	if( $form_id ){
+		$comment_args['meta_query'] = array(
+			'relation' => 'AND',
+			array(
+				'key'   => '_give_form_id',
+				'value' => $form_id
+			)
+		);
+	}
+
+	$comment = current( give_get_donor_comments( $donor_id, $comment_args ) );
 
 	if ( $comment instanceof WP_Comment ) {
 		$comment_content = esc_attr( $comment->comment_content );
