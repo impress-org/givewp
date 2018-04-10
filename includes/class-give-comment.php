@@ -237,6 +237,7 @@ class Give_Comment {
 
 			case 'donor':
 				$comments = get_comments( wp_parse_args(
+					$comment_args,
 					array(
 						'meta_query' => array(
 							array(
