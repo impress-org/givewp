@@ -45,7 +45,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->_transaction_id = 'FIR3SID3';
 
 		give_set_payment_transaction_id( $payment_id, $this->_transaction_id );
-		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'easy-digital-downloads' ), $this->_transaction_id ) );
+		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $this->_transaction_id ) );
 
 		// Make sure we're working off a clean object caching in WP Core.
 		// Prevents some payment_meta from not being present.
