@@ -60,6 +60,8 @@ function give_donation_history( $atts, $content = false ) {
 
 	$email_access = give_get_option( 'email_access' );
 
+	ob_start();
+
 	/**
 	 * Determine access
 	 *
@@ -72,29 +74,34 @@ function give_donation_history( $atts, $content = false ) {
 		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
 		true === give_get_history_session()
 	) {
-		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		if ( ! empty( $content ) ) {
 			echo do_shortcode( $content );
 		}
 
-		return ob_get_clean();
-
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
-		ob_start();
 		give_get_template_part( 'email', 'login-form' );
-
-		return ob_get_clean();
 
 	} else {
 
-		$output = apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
-		$output .= do_shortcode( '[give_login]' );
-
-		return $output;
+		echo apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
 	}
+
+	/**
+	 * Filter to modify donation history HTMl
+	 *
+	 * @since 2.1
+	 *
+	 * @param string HTML content
+	 * @param string $content content pass between enclose content
+	 * @param string $atts
+	 *
+	 * @return string HTML content
+	 */
+	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $content, $atts );
 }
 
 add_shortcode( 'donation_history', 'give_donation_history' );
