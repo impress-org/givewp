@@ -1223,3 +1223,55 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 
 	return $donor_count;
 }
+
+/**
+ * Verify the form status.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.1
+ *
+ * @return void
+ */
+function give_verify_form_status( $form_id ) {
+
+	// Bailout.
+	if ( empty( $form_id ) ) {
+		return;
+	}
+
+	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
+
+	// Proceed, if the form goal is enabled.
+	if ( $is_goal_enabled ) {
+
+		$close_form_when_goal_achieved = give_is_setting_enabled( give_get_meta( $form_id, '_give_close_form_when_goal_achieved', true, 'disabled' ) );
+
+		// Proceed, if close form when goal achieved option is enabled.
+		if ( $close_form_when_goal_achieved ) {
+
+			$form        = new Give_Donate_Form( $form_id );
+			$goal_format = give_get_form_goal_format( $form_id );
+
+			// Verify whether the form is closed or not after processing data based on goal format.
+			switch ( $goal_format ) {
+				case 'donation':
+					$closed = $form->get_goal() <= $form->get_sales();
+					break;
+				case 'donors':
+					$closed = $form->get_goal() <= give_get_form_donor_count( $form->ID );
+					break;
+				default :
+					$closed = $form->get_goal() <= $form->get_earnings();
+					break;
+			}
+
+			// Update form meta if verified that the form is closed.
+			if ( $closed ) {
+				give_update_meta( $form_id, '_give_form_status', 'closed' );
+			} else {
+				give_update_meta( $form_id, '_give_form_status', 'open' );
+			}
+		}
+	}
+}
