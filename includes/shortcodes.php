@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string|bool
  */
-function give_donation_history( $atts ) {
+function give_donation_history( $atts, $content = false ) {
 
 	$donation_history_args = shortcode_atts( array(
 		'id'             => true,
@@ -73,6 +73,10 @@ function give_donation_history( $atts ) {
 	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
+
+		if ( ! empty( $content ) ) {
+			echo do_shortcode( $content );
+		}
 
 		return ob_get_clean();
 
