@@ -1240,6 +1240,7 @@ function give_verify_form_status( $form_id ) {
 		return;
 	}
 
+	$open_form       = false;
 	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
 
 	// Proceed, if the form goal is enabled.
@@ -1270,8 +1271,17 @@ function give_verify_form_status( $form_id ) {
 			if ( $closed ) {
 				give_update_meta( $form_id, '_give_form_status', 'closed' );
 			} else {
-				give_update_meta( $form_id, '_give_form_status', 'open' );
+				$open_form = true;
 			}
+		} else {
+			$open_form = true;
 		}
+	} else {
+		$open_form = true;
+	}
+
+	// If $open_form is true, then update form status to open.
+	if ( $open_form ) {
+		give_update_meta( $form_id, '_give_form_status', 'open' );
 	}
 }
