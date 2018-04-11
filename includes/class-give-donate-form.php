@@ -1117,36 +1117,15 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 
-		$goal_format = give_get_form_goal_format( $this->ID );
-
-		switch ( $goal_format ) {
-			case  'donation':
-				$closed = $this->get_goal() <= $this->get_sales();
-				break;
-			case 'donors':
-				$closed = $this->get_goal() <= give_get_form_donor_count( $this->ID );
-				break;
-			default :
-				$closed = $this->get_goal() <= $this->get_earnings();
-				break;
-		}
-
 		/**
 		 * Filter the close form result.
 		 *
 		 * @since 1.8
 		 */
-		$is_close_form = apply_filters(
+		return apply_filters(
 			'give_is_close_donation_form',
-			(
-				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) )
-				&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-				&& $closed
-			),
-			$this->ID
+			( 'closed' === give_get_meta( $this->ID, '_give_form_status', true ) )
 		);
-
-		return $is_close_form;
 
 	}
 
