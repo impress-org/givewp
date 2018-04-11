@@ -68,7 +68,7 @@ class Give_Comment {
 		 */
 		$this->comment_types = apply_filters(
 			'give_comment_type',
-			array( 'payment', 'donor' )
+			self::get_comment_types( array( 'payment', 'donor' ) )
 		);
 
 		add_action( 'pre_get_comments', array( $this, 'hide_comments' ), 10 );
@@ -210,7 +210,7 @@ class Give_Comment {
 		$comments = array();
 
 		// Set default meta_query value.
-		if( ! isset( $comment_args['meta_query'] ) ) {
+		if ( ! isset( $comment_args['meta_query'] ) ) {
 			$comment_args['meta_query'] = array();
 		}
 
@@ -224,42 +224,40 @@ class Give_Comment {
 
 		switch ( $comment_type ) {
 			case 'payment':
-				$comment_args['meta_query'] = array_merge(
-					$comment_args['meta_query'],
-					array(
+				$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					? $comment_args['meta_query']
+					: array(
 						array(
 							'key'     => '_give_donor_id',
 							'compare' => 'NOT EXISTS'
 						)
-					)
-				);
+					);
 
 				$comments = get_comments( wp_parse_args(
 					$comment_args,
 					array(
-						'post_id'    => $id,
-						'order'      => 'ASC',
-						'search'     => $search,
+						'post_id' => $id,
+						'order'   => 'ASC',
+						'search'  => $search,
 					)
 				) );
 				break;
 
 			case 'donor':
-				$comment_args['meta_query'] = array_merge(
-					$comment_args['meta_query'],
-					array(
+				$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					? $comment_args['meta_query']
+					: array(
 						array(
 							'key'   => "_give_{$comment_type}_id",
 							'value' => $id
 						)
-					)
-				);
+					);
 
 				$comments = get_comments( wp_parse_args(
 					$comment_args,
 					array(
-						'order'      => 'ASC',
-						'search'     => $search,
+						'order'  => 'ASC',
+						'search' => $search,
 					)
 				) );
 				break;
@@ -289,7 +287,7 @@ class Give_Comment {
 				$types = array( $types );
 			}
 
-			$types = array_merge( $types, $this->comment_types );
+			$types = array_filter( array_merge( $types, $this->comment_types ) );
 
 			$query->query_vars['type__not_in'] = $types;
 		}
@@ -308,7 +306,7 @@ class Give_Comment {
 	public function hide_comments_pre_wp_41( $clauses ) {
 		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.1', '<' ) ) {
 			foreach ( $this->comment_types as $comment_type ) {
-				$clauses['where'] .= " AND comment_type != \"give_{$comment_type}_note\"";
+				$clauses['where'] .= " AND comment_type != \"{$comment_type}\"";
 			}
 		}
 
@@ -345,11 +343,7 @@ class Give_Comment {
 	 * @return array|object Array of comment counts.
 	 */
 	public function remove_comments_from_comment_counts( $stats, $post_id ) {
-		global $wpdb, $pagenow;
-
-		if ( 'index.php' != $pagenow ) {
-			return $stats;
-		}
+		global $wpdb;
 
 		$post_id = (int) $post_id;
 
@@ -367,7 +361,7 @@ class Give_Comment {
 		$where = 'WHERE';
 
 		foreach ( $this->comment_types as $index => $comment_type ) {
-			$where .= ( $index ? 'AND ' : ' ' ) . "comment_type != \"give_{$comment_type}_note\"";
+			$where .= ( $index ? ' AND ' : ' ' ) . "comment_type != \"{$comment_type}\"";
 		}
 
 		if ( $post_id > 0 ) {
@@ -378,7 +372,8 @@ class Give_Comment {
 			"
 				  SELECT comment_approved, COUNT( * ) AS num_comments
 				  FROM {$wpdb->comments} {$where}
-				  GROUP BY comment_approved",
+				  GROUP BY comment_approved
+				  ",
 			ARRAY_A
 		);
 
@@ -390,6 +385,7 @@ class Give_Comment {
 			'trash'        => 'trash',
 			'post-trashed' => 'post-trashed',
 		);
+
 		foreach ( (array) $count as $row ) {
 			// Don't count post-trashed toward totals.
 			if ( 'post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'] ) {
@@ -400,7 +396,7 @@ class Give_Comment {
 			}
 		}
 
-		$stats['total_comments'] = $total;
+		$stats['total_comments'] = $stats['all'] = $total;
 		foreach ( $approved as $key ) {
 			if ( empty( $stats[ $key ] ) ) {
 				$stats[ $key ] = 0;
@@ -408,8 +404,29 @@ class Give_Comment {
 		}
 
 		$stats = (object) $stats;
+
 		Give_Cache::set_group( "comments-{$post_id}", $stats, 'counts' );
 
 		return $stats;
+	}
+
+
+	/**
+	 * Get comment types
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @param array @comment_types
+	 *
+	 * @return array
+	 */
+	public static function get_comment_types( $comment_types ) {
+		$_comment_types = array();
+		foreach ( $comment_types as $comment_type ) {
+			$_comment_types[] = "give_{$comment_type}_note";
+		}
+
+		return $_comment_types;
 	}
 }
