@@ -418,17 +418,17 @@ class Give_Comment {
 	/**
 	 * Get donor name
 	 *
-	 * @since 2.1.0
+	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param string $author
-	 * @param int $comment_id
+	 * @param string     $author
+	 * @param int        $comment_id
 	 * @param WP_Comment $comment
 	 *
 	 * @return mixed
 	 */
 	public function __get_comment_author( $author, $comment_id, $comment ) {
-		if( in_array( $comment->comment_type, $this->comment_types ) ){
+		if ( in_array( $comment->comment_type, $this->comment_types ) ) {
 			switch ( $comment->comment_type ) {
 				case 'give_payment_note':
 					if ( get_comment_meta( $comment_id, '_give_donor_id', true ) ) {
