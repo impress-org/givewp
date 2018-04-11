@@ -341,9 +341,18 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v201_logs_upgrades',
 			'version'  => '2.0.1',
 			'callback' => 'give_v201_logs_upgrades_callback',
-
 		)
 	);
+
+	// v2.1 Verify Form Status Upgrade.
+	$give_updates->register(
+		array(
+			'id'       => 'v210_verify_form_status_upgrades',
+			'version'  => '2.1.0',
+			'callback' => 'give_v210_verify_form_status_upgrades_callback',
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2605,6 +2614,42 @@ function give_v203_upgrades() {
 	if ( isset( $all_options['give_completed_upgrades'] ) ) {
 		unset( $all_options['give_completed_upgrades'] );
 		wp_cache_set( 'alloptions', $all_options, 'options' );
+	}
+
+}
+
+
+function give_v210_verify_form_status_upgrades_callback() {
+
+	$give_updates = Give_Updates::get_instance();
+
+	// form query.
+	$donation_forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => 'give_forms',
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $donation_forms->have_posts() ) {
+		$give_updates->set_percentage( $donation_forms->found_posts, ( $give_updates->step * 20 ) );
+
+		while ( $donation_forms->have_posts() ) {
+			$donation_forms->the_post();
+			$form_id = get_the_ID();
+
+			give_verify_form_status( $form_id );
+		}
+
+		/* Restore original Post Data */
+		wp_reset_postdata();
+
+	} else {
+
+		// The Update Ran.
+		give_set_upgrade_complete( 'v210_verify_form_status_upgrades' );
 	}
 
 }
