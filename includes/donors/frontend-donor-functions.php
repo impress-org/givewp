@@ -176,11 +176,11 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
  *
  * @return array
  */
-function give_get_donor_comments( $donor_id, $comment_args = array(), $search = '' ) {
+function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
 	$comments = Give_Comment::get(
 		$donor_id,
 		$search,
-		'donor',
+		'payment',
 		$comment_args
 	);
 
@@ -233,9 +233,16 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 	$comment_content = '';
 
 	$comment_args = array(
-		'orderby' => 'comment_ID',
-		'order'   => 'DESC',
-		'number'  => 1,
+		'post_id'    => 0,
+		'orderby'    => 'comment_ID',
+		'order'      => 'DESC',
+		'number'     => 1,
+		'meta_query' => array(
+			array(
+				'key'   => '_give_donor_id',
+				'value' => $donor_id
+			)
+		)
 	);
 
 	// Get donor donation comment for specific form.
@@ -243,7 +250,7 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 		$comment_args['parent'] = $form_id;
 	}
 
-	$comment = current( give_get_donor_comments( $donor_id, $comment_args ) );
+	$comment = current( give_get_donor_donation_comments( $donor_id, $comment_args ) );
 
 	if ( $comment instanceof WP_Comment ) {
 		$comment_content = esc_attr( $comment->comment_content );
