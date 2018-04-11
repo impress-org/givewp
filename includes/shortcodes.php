@@ -96,12 +96,12 @@ function give_donation_history( $atts, $content = false ) {
 	 * @since 2.1
 	 *
 	 * @param string HTML content
-	 * @param string $content content pass between enclose content
 	 * @param string $atts
+	 * @param string $content content pass between enclose content
 	 *
 	 * @return string HTML content
 	 */
-	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $content, $atts );
+	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $atts, $content );
 }
 
 add_shortcode( 'donation_history', 'give_donation_history' );
