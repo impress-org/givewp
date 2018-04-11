@@ -112,7 +112,7 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
 		printf(
-			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">',
+			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
 			$form_id
 		);
 		give_get_donation_form( $form_id );
