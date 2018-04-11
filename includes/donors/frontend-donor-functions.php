@@ -204,14 +204,12 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
 		$comment = get_comment( $comment );
 	}
 
-	$donor_name = Give()->donors->get_column( 'name', give_get_payment_donor_id( $payment_id ) );
-
 	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$comment_html = sprintf(
 		'<div class="give-payment-note" id="give-payment-note-%s"><p><strong>%s</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">%s</span><br/>%s</p></div>',
 		$comment->comment_ID,
-		$donor_name,
+		get_comment_author( $comment->comment_ID ),
 		date_i18n( $date_format, strtotime( $comment->comment_date ) ),
 		$comment->comment_content
 	);
