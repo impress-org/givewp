@@ -1285,7 +1285,7 @@ function give_get_purchase_id_by_transaction_id( $key ) {
  * @return array $notes Donation Notes
  */
 function give_get_payment_notes( $payment_id = 0, $search = '' ) {
-	return Give_Comment::get( $payment_id, $search, 'payment' );
+	return Give_Comment::get( $payment_id,'payment', array(), $search );
 }
 
 

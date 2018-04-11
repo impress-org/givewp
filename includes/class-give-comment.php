@@ -201,13 +201,13 @@ class Give_Comment {
 	 * @access public
 	 *
 	 * @param int    $id
-	 * @param string $search
 	 * @param string $comment_type
 	 * @param array  $comment_args
+	 * @param string $search
 	 *
 	 * @return array
 	 */
-	public static function get( $id, $search = '', $comment_type, $comment_args = array() ) {
+	public static function get( $id, $comment_type, $comment_args = array(), $search = '' ) {
 		$comments = array();
 
 		// Set default meta_query value.

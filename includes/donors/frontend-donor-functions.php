@@ -147,7 +147,6 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
 	$comments = Give_Comment::get(
 		$donation_id,
-		$search,
 		'payment',
 		array(
 			'number'     => 1,
@@ -157,7 +156,8 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 					'value' => $donor_id
 				)
 			)
-		)
+		),
+		$search
 	);
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
@@ -179,9 +179,9 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
 	$comments = Give_Comment::get(
 		$donor_id,
-		$search,
 		'payment',
-		$comment_args
+		$comment_args,
+		$search
 	);
 
 	return ( ! empty( $comments ) ? $comments : array() );
