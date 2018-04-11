@@ -75,6 +75,7 @@ class Give_Comment {
 		add_filter( 'comments_clauses', array( $this, 'hide_comments_pre_wp_41' ), 10, 1 );
 		add_filter( 'comment_feed_where', array( $this, 'hide_comments_from_feeds' ), 10, 1 );
 		add_filter( 'wp_count_comments', array( $this, 'remove_comments_from_comment_counts' ), 10, 2 );
+		add_filter( 'get_comment_author', array( $this, '__get_comment_author' ), 10, 3 );
 	}
 
 	/**
@@ -408,6 +409,31 @@ class Give_Comment {
 		Give_Cache::set_group( "comments-{$post_id}", $stats, 'counts' );
 
 		return $stats;
+	}
+
+	/**
+	 * Get donor name
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @param string $author
+	 * @param int $comment_id
+	 * @param WP_Comment $comment
+	 *
+	 * @return mixed
+	 */
+	public function __get_comment_author( $author, $comment_id, $comment ) {
+		if( in_array( $comment->comment_type, $this->comment_types ) ){
+			switch ( $comment->comment_type ) {
+				case 'give_payment_note':
+					if ( get_comment_meta( $comment_id, '_give_donor_id', true ) ) {
+						$author = give_get_donor_name_by( $comment->comment_post_ID );
+					}
+			}
+		}
+
+		return $author;
 	}
 
 
