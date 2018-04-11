@@ -123,7 +123,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 		)
 	);
 
-	$comment_id   = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
+	$comment_id = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
 
 	update_comment_meta( $comment_id, '_give_donor_id', $donor );
 
@@ -233,9 +233,9 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 	$comment_content = '';
 
 	$comment_args = array(
-			'orderby' => 'comment_ID',
-			'order' => 'DESC',
-			'number' => 1,
+		'orderby' => 'comment_ID',
+		'order'   => 'DESC',
+		'number'  => 1,
 	);
 
 	// Get donor donation comment for specific form.
