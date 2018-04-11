@@ -105,20 +105,27 @@ function give_validate_gravatar( $id_or_email ) {
 /**
  * Add a donor comment to a donation
  *
- * @param int    $donation_id The donation ID to store a note for.
- * @param int    $donor       The donor ID to store a note for.
- * @param string $note        The note to store.
- * @param int    $approve     Default approve status of comment.
+ * @param int    $donation_id  The donation ID to store a note for.
+ * @param int    $donor        The donor ID to store a note for.
+ * @param string $note         The note to store.
+ * @param array  $comment_args Comment arguments.
  *
  * @since 2.1.0
  *
  * @return int The new note ID
  */
-function give_insert_donor_donation_comment( $donation_id, $donor, $note, $approve = 0 ) {
-	$comment_id = Give_Comment::add( $donation_id, $note, 'payment', array( 'comment_approved' => $approve ) );
+function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comment_args = array() ) {
+	$comment_args = wp_parse_args(
+		$comment_args,
+		array(
+			'comment_approved' => 0,
+			'comment_parent'   => give_get_payment_form_id( $donation_id )
+		)
+	);
+
+	$comment_id   = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
 
 	update_comment_meta( $comment_id, '_give_donor_id', $donor );
-	update_comment_meta( $comment_id, '_give_form_id', give_get_payment_form_id( $donation_id ) );
 
 	return $comment_id;
 }
@@ -235,17 +242,7 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	// Get donor donation comment for specific form.
 	if ( $form_id ) {
-		$comment_args['meta_query'] = array(
-			'relation' => 'AND',
-			array(
-				'key'   => '_give_form_id',
-				'value' => $form_id
-			),
-			array(
-				'key'   => '_give_donor_id',
-				'value' => $donor_id
-			)
-		);
+		$comment_args['comment_parent'] = $form_id;
 	}
 
 	$comment = current( give_get_donor_comments( $donor_id, $comment_args ) );
