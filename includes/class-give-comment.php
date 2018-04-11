@@ -240,6 +240,7 @@ class Give_Comment {
 						'post_id' => $id,
 						'order'   => 'ASC',
 						'search'  => $search,
+						'type'    => 'give_payment_note'
 					)
 				) );
 				break;
@@ -259,6 +260,7 @@ class Give_Comment {
 					array(
 						'order'  => 'ASC',
 						'search' => $search,
+						'type'   => 'give_donor_note'
 					)
 				) );
 				break;
