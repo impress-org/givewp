@@ -1124,7 +1124,7 @@ class Give_Donate_Form {
 		 */
 		return apply_filters(
 			'give_is_close_donation_form',
-			( 'closed' === give_get_meta( $this->ID, '_give_form_status', true ) )
+			( 'closed' === give_get_meta( $this->ID, '_give_form_status', true, 'open' ) )
 		);
 
 	}
