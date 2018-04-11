@@ -142,7 +142,15 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 		$donation_id,
 		$search,
 		'payment',
-		array( 'number' => 1 )
+		array(
+			'number'     => 1,
+			'meta_query' => array(
+				array(
+					'key'   => '_give_donor_id',
+					'value' => $donor_id
+				)
+			)
+		)
 	);
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
@@ -224,14 +232,18 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 			'order' => 'DESC',
 			'number' => 1,
 	);
-	
+
 	// Get donor donation comment for specific form.
-	if( $form_id ){
+	if ( $form_id ) {
 		$comment_args['meta_query'] = array(
 			'relation' => 'AND',
 			array(
 				'key'   => '_give_form_id',
 				'value' => $form_id
+			),
+			array(
+				'key'   => '_give_donor_id',
+				'value' => $donor_id
 			)
 		);
 	}
