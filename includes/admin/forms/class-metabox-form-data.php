@@ -925,6 +925,9 @@ class Give_MetaBox_Form_Data {
 							give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 						}
 
+						// Verify and delete form meta based on the form status.
+						give_verify_form_status( $post_id );
+
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
 					}// End if().
