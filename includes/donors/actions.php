@@ -44,3 +44,21 @@ function __give_update_donor_donation_comment_status( $donation_id, $status ) {
 }
 
 add_action( 'give_update_payment_status', '__give_update_donor_donation_comment_status', 10, 2 );
+
+/**
+ * Remove donor comment when donation delete
+ *
+ * @since 2.1.0
+ *
+ * @param $donation_id
+ */
+function __give_remove_donor_donation_comment( $donation_id ) {
+	/* @var WP_Comment $note */
+	$donor_comment = give_get_donor_donation_comment( $donation_id, give_get_payment_donor_id( $donation_id ) );
+
+	if( $donor_comment instanceof WP_Comment ) {
+		wp_delete_comment( $donor_comment->comment_ID );
+	}
+}
+
+add_action( 'give_payment_deleted', '__give_remove_donor_donation_comment', 10 );
