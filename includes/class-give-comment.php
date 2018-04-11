@@ -327,7 +327,9 @@ class Give_Comment {
 	public function hide_comments_from_feeds( $where ) {
 		global $wpdb;
 
-		$where .= $wpdb->prepare( ' AND comment_type != %s', 'give_payment_note' );
+		foreach ( $this->comment_types as $comment_type ) {
+			$where .= $wpdb->prepare( ' AND comment_type!=%s', $comment_type );
+		}
 
 		return $where;
 	}
