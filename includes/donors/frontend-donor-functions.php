@@ -240,7 +240,7 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	// Get donor donation comment for specific form.
 	if ( $form_id ) {
-		$comment_args['comment_parent'] = $form_id;
+		$comment_args['parent'] = $form_id;
 	}
 
 	$comment = current( give_get_donor_comments( $donor_id, $comment_args ) );
