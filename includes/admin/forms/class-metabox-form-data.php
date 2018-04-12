@@ -581,6 +581,16 @@ class Give_MetaBox_Form_Data {
 			'normal',
 			'high'
 		);
+
+		add_meta_box(
+			'give-form-goal-stats',
+			__( 'Goal Statistics', 'give' ),
+			array( $this, 'output_goal' ),
+			array( 'give_forms' ),
+			'side',
+			'high'
+		);
+
 	}
 
 
@@ -751,6 +761,21 @@ class Give_MetaBox_Form_Data {
 		endif; // End if().
 	}
 
+	/**
+	 * Output Goal meta-box settings.
+	 *
+	 * @param object $post Post Object.
+	 *
+	 * @access public
+	 * @since  2.1.0
+	 *
+	 * @return void
+	 */
+	public function output_goal( $post ) {
+
+		echo give_admin_form_goal_stats( $post->ID );
+
+	}
 
 	/**
 	 * Check if setting field has sub tabs/fields
