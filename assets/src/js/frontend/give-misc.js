@@ -109,7 +109,11 @@ jQuery( function( $ ) {
 		var historyTraversal = event.persisted || ( typeof 'undefined' !== window.performance && 2 === window.performance.navigation.type );
 
 		if ( historyTraversal ) {
-			$( 'body' ).find( 'form.give-form' )[0].reset();
+			let form = $( 'body' ).find( 'form.give-form' )[0];
+
+			if ( undefined !== form ) {
+				form.reset();
+			}
 		}
 	});
 });
@@ -117,10 +121,10 @@ jQuery( function( $ ) {
 /**
  * Open form modal
  *
- * @param $form_wrap
- * @param $form
+ * @param {object} $form_wrap
+ * @param {object} $form
  */
-function give_open_form_modal( $form_wrap, $form ) {
+window.give_open_form_modal = function ( $form_wrap, $form ) {
 	// Hide form children.
 	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
 
@@ -213,12 +217,13 @@ function give_open_form_modal( $form_wrap, $form ) {
 			}
 		}
 	} );
-}
+};
+
 
 /**
  * Floating Labels Custom Events
  */
-function give_fl_trigger() {
+window.give_fl_trigger = function() {
 	if ( give_float_labels instanceof FloatLabels ) {
 		give_float_labels.rebuild();
 	}
@@ -230,12 +235,12 @@ function give_fl_trigger() {
 			style: 'give',
 		} );
 	}
-}
+};
 
 /**
  * Change localize html5 form validation message
  */
-function give_change_html5_form_field_validation_message() {
+window.give_change_html5_form_field_validation_message = function() {
 	var $forms = jQuery( '.give-form' ),
 		$input_fields;
 
@@ -267,14 +272,14 @@ function give_change_html5_form_field_validation_message() {
 			}
 		} );
 	} );
-}
+};
 
 /**
  * Update state/province fields per country selection
  *
  * @since 1.8.14
  */
-function update_profile_state_field() {
+window.update_profile_state_field = function() {
 	var $this = jQuery( this ),
 		$form = $this.parents( 'form' );
 	if ( 'give_address_country' === $this.attr( 'id' ) ) {
@@ -328,4 +333,4 @@ function update_profile_state_field() {
 		} );
 	}
 	return false;
-}
+};

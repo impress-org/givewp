@@ -1116,19 +1116,13 @@ class Give_Donate_Form {
 	 * @return bool
 	 */
 	public function is_close_donation_form() {
+		$is_closed = ( 'closed' === give_get_meta( $this->ID, '_give_form_status', true, 'open' ) );
 
-		$goal_format = give_get_form_goal_format( $this->ID );
+		// If manual upgrade not completed, proceed with backward compatible code.
+		if ( ! give_has_upgrade_completed( 'v210_verify_form_status_upgrades' ) ) {
 
-		switch ( $goal_format ) {
-			case  'donation':
-				$closed = $this->get_goal() <= $this->get_sales();
-				break;
-			case 'donors':
-				$closed = $this->get_goal() <= give_get_form_donor_count( $this->ID );
-				break;
-			default :
-				$closed = $this->get_goal() <= $this->get_earnings();
-				break;
+			// Check for backward compatibility.
+			$is_closed = $this->bc_210_is_close_donation_form();
 		}
 
 		/**
@@ -1136,17 +1130,11 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.8
 		 */
-		$is_close_form = apply_filters(
+		return apply_filters(
 			'give_is_close_donation_form',
-			(
-				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) )
-				&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-				&& $closed
-			),
-			$this->ID
+			$is_closed,
+			$this
 		);
-
-		return $is_close_form;
 
 	}
 
@@ -1176,6 +1164,52 @@ class Give_Donate_Form {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Backward Compatible function for is_close_donation_form()
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return bool
+	 */
+	private function bc_210_is_close_donation_form() {
+
+		$close_form      = false;
+		$is_goal_enabled = give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true, 'disabled' ) );
+
+		// Proceed, if the form goal is enabled.
+		if ( $is_goal_enabled ) {
+
+			$close_form_when_goal_achieved = give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true, 'disabled' ) );
+
+			// Proceed, if close form when goal achieved option is enabled.
+			if ( $close_form_when_goal_achieved ) {
+
+				$form        = new Give_Donate_Form( $this->ID );
+				$goal_format = give_get_form_goal_format( $this->ID );
+
+				// Verify whether the form is closed or not after processing data based on goal format.
+				switch ( $goal_format ) {
+					case 'donation':
+						$closed = $form->get_goal() <= $form->get_sales();
+						break;
+					case 'donors':
+						$closed = $form->get_goal() <= give_get_form_donor_count( $this->ID );
+						break;
+					default :
+						$closed = $form->get_goal() <= $form->get_earnings();
+						break;
+				}
+
+				if ( $closed ) {
+					$close_form = true;
+				}
+
+			}
+		}
+
+		return $close_form;
 	}
 
 }
