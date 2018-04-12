@@ -991,6 +991,10 @@ final class Give_Payment {
 					$donor->increase_purchase_count();
 
 				}
+
+				// Verify and update form meta based on the form status.
+				give_set_form_closed_status( $this->form_id );
+
 			}
 
 			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );

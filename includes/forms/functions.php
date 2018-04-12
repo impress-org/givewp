@@ -1223,3 +1223,108 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 
 	return $donor_count;
 }
+
+/**
+ * Verify the form status.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.1
+ *
+ * @return void
+ */
+function give_set_form_closed_status( $form_id ) {
+
+	// Bailout.
+	if ( empty( $form_id ) ) {
+		return;
+	}
+
+	$open_form       = false;
+	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
+
+	// Proceed, if the form goal is enabled.
+	if ( $is_goal_enabled ) {
+
+		$close_form_when_goal_achieved = give_is_setting_enabled( give_get_meta( $form_id, '_give_close_form_when_goal_achieved', true, 'disabled' ) );
+
+		// Proceed, if close form when goal achieved option is enabled.
+		if ( $close_form_when_goal_achieved ) {
+
+			$form        = new Give_Donate_Form( $form_id );
+			$goal_format = give_get_form_goal_format( $form_id );
+
+			// Verify whether the form is closed or not after processing data based on goal format.
+			switch ( $goal_format ) {
+				case 'donation':
+					$closed = $form->get_goal() <= $form->get_sales();
+					break;
+				case 'donors':
+					$closed = $form->get_goal() <= give_get_form_donor_count( $form->ID );
+					break;
+				default :
+					$closed = $form->get_goal() <= $form->get_earnings();
+					break;
+			}
+
+			// Update form meta if verified that the form is closed.
+			if ( $closed ) {
+				give_update_meta( $form_id, '_give_form_status', 'closed' );
+			} else {
+				$open_form = true;
+			}
+		} else {
+			$open_form = true;
+		}
+	} else {
+		$open_form = true;
+	}
+
+	// If $open_form is true, then update form status to open.
+	if ( $open_form ) {
+		give_update_meta( $form_id, '_give_form_status', 'open' );
+	}
+}
+
+/**
+ * Show Form Goal Stats in Admin ( Listing and Detail page )
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.1.0
+ *
+ * @return string
+ */
+function give_admin_form_goal_stats( $form_id ) {
+
+	$html             = '';
+	$goal_stats       = give_goal_progress_stats( $form_id );
+	$percent_complete = round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100;
+
+	$html .= sprintf(
+		'<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%1$s">
+<span style="width:%1$s%%;"></span>
+</div>',
+		esc_attr( $goal_stats['progress'] )
+	);
+
+	$html .= sprintf(
+		( 'percentage' !== $goal_stats['format'] ) ?
+			'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s ' :
+			'<div class="give-goal-text"><a href="%3$s">%1$s </a>',
+		( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
+		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
+		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
+		$goal_stats['goal'],
+		( 'donors' === $goal_stats['format'] ? __( 'Donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'Donations', 'give' ) : '' ) )
+	);
+
+	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
+		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
+	}
+
+	$html .= '</div>';
+
+
+	return $html;
+}
