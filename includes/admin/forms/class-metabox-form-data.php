@@ -590,7 +590,7 @@ class Give_MetaBox_Form_Data {
 				array( $this, 'output_goal' ),
 				array( 'give_forms' ),
 				'side',
-				'high'
+				'low'
 			);
 		}
 
