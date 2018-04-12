@@ -582,14 +582,17 @@ class Give_MetaBox_Form_Data {
 			'high'
 		);
 
-		add_meta_box(
-			'give-form-goal-stats',
-			__( 'Goal Statistics', 'give' ),
-			array( $this, 'output_goal' ),
-			array( 'give_forms' ),
-			'side',
-			'high'
-		);
+		// Show Goal Metabox only if goal is enabled.
+		if ( give_is_setting_enabled( give_get_meta( give_get_admin_post_id(), '_give_goal_option', true ) ) ) {
+			add_meta_box(
+				'give-form-goal-stats',
+				__( 'Goal Statistics', 'give' ),
+				array( $this, 'output_goal' ),
+				array( 'give_forms' ),
+				'side',
+				'high'
+			);
+		}
 
 	}
 
