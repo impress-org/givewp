@@ -2618,7 +2618,11 @@ function give_v203_upgrades() {
 
 }
 
-
+/**
+ * Upgrade routine for 2.1 to set form closed status for all the donation forms.
+ *
+ * @since 2.1
+ */
 function give_v210_verify_form_status_upgrades_callback() {
 
 	$give_updates = Give_Updates::get_instance();
