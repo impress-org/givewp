@@ -1116,12 +1116,13 @@ class Give_Donate_Form {
 	 * @return bool
 	 */
 	public function is_close_donation_form() {
+		$is_closed = ( 'closed' === give_get_meta( $this->ID, '_give_form_status', true, 'open' ) );
 
 		// If manual upgrade not completed, proceed with backward compatible code.
 		if ( ! give_has_upgrade_completed( 'v210_verify_form_status_upgrades' ) ) {
 
 			// Check for backward compatibility.
-			return $this->bc_210_is_close_donation_form();
+			$is_closed = $this->bc_210_is_close_donation_form();
 		}
 
 		/**
@@ -1131,7 +1132,8 @@ class Give_Donate_Form {
 		 */
 		return apply_filters(
 			'give_is_close_donation_form',
-			( 'closed' === give_get_meta( $this->ID, '_give_form_status', true, 'open' ) )
+			$is_closed,
+			$this
 		);
 
 	}
