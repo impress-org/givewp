@@ -21,6 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
+ * @param array       $atts
+ * @param string|bool $content
+ *
  * @return string|bool
  */
 function give_donation_history( $atts, $content = false ) {
@@ -96,7 +99,7 @@ function give_donation_history( $atts, $content = false ) {
 	 * @since 2.1
 	 *
 	 * @param string HTML content
-	 * @param string $atts
+	 * @param array  $atts
 	 * @param string $content content pass between enclose content
 	 *
 	 * @return string HTML content
