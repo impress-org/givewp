@@ -2644,7 +2644,10 @@ function give_v210_verify_form_status_upgrades_callback() {
 			$donation_forms->the_post();
 			$form_id = get_the_ID();
 
-			give_verify_form_status( $form_id );
+			$form_closed_status = give_get_meta( $form_id, '_give_form_status', true );
+			if ( empty( $form_closed_status ) ) {
+				give_verify_form_status( $form_id );
+			}
 		}
 
 		/* Restore original Post Data */
