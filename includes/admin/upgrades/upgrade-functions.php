@@ -2646,7 +2646,7 @@ function give_v210_verify_form_status_upgrades_callback() {
 
 			$form_closed_status = give_get_meta( $form_id, '_give_form_status', true );
 			if ( empty( $form_closed_status ) ) {
-				give_verify_form_status( $form_id );
+				give_set_form_closed_status( $form_id );
 			}
 		}
 

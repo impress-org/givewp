@@ -1233,7 +1233,7 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
  *
  * @return void
  */
-function give_verify_form_status( $form_id ) {
+function give_set_form_closed_status( $form_id ) {
 
 	// Bailout.
 	if ( empty( $form_id ) ) {

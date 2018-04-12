@@ -926,7 +926,7 @@ class Give_MetaBox_Form_Data {
 						}
 
 						// Verify and delete form meta based on the form status.
-						give_verify_form_status( $post_id );
+						give_set_form_closed_status( $post_id );
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
