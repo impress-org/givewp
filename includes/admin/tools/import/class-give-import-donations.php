@@ -65,7 +65,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since
 		 * @access private
 		 */
-		function __construct() {
+		private function __construct() {
 			self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
 		}
 
@@ -667,7 +667,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( $file_id ) {
 				$file_dir = get_attached_file( $file_id );
 				if ( $file_dir ) {
-					$total = self::get_csv_data_from_file_dir( $file_dir );
+					$total = $this->get_csv_data_from_file_dir( $file_dir );
 				}
 			}
 
@@ -675,15 +675,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		}
 
 		/**
-		 * Get data from file dir
-		 *
-		 * @since 2.1
+		 * Get dda
 		 *
 		 * @param $file_dir
 		 *
 		 * @return bool|int
 		 */
-		public static function get_csv_data_from_file_dir( $file_dir ) {
+		public function get_csv_data_from_file_dir( $file_dir ) {
 			$total = false;
 			if ( $file_dir ) {
 				$file = new SplFileObject( $file_dir, 'r' );
