@@ -21,9 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
+ * @param array       $atts
+ * @param string|bool $content
+ *
  * @return string|bool
  */
-function give_donation_history( $atts ) {
+function give_donation_history( $atts, $content = false ) {
 
 	$donation_history_args = shortcode_atts( array(
 		'id'             => true,
@@ -48,7 +51,11 @@ function give_donation_history( $atts ) {
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
-			echo sprintf( '<a href="%s">%s</a>', esc_url( give_get_history_page_uri() ), __( '&laquo; Return to All Donations', 'give' ) );
+			echo sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( give_get_history_page_uri() ),
+				__( '&laquo; Return to All Donations', 'give' )
+			);
 		}
 
 		return ob_get_clean();
@@ -56,32 +63,48 @@ function give_donation_history( $atts ) {
 
 	$email_access = give_get_option( 'email_access' );
 
+	ob_start();
+
 	/**
 	 * Determine access
 	 *
 	 * a. Check if a user is logged in or does a session exists
 	 * b. Does an email-access token exist?
 	 */
-	if ( is_user_logged_in() || false !== Give()->session->get_session_expiration() || ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) || true === give_get_history_session() ) {
-		ob_start();
+	if (
+		is_user_logged_in()
+		|| false !== Give()->session->get_session_expiration()
+		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		|| true === give_get_history_session()
+	) {
 		give_get_template_part( 'history', 'donations' );
 
-		return ob_get_clean();
+		if ( ! empty( $content ) ) {
+			echo do_shortcode( $content );
+		}
 
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
-		ob_start();
 		give_get_template_part( 'email', 'login-form' );
-
-		return ob_get_clean();
 
 	} else {
 
-		$output = apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
-		$output .= do_shortcode( '[give_login]' );
-
-		return $output;
+		echo apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
 	}
+
+	/**
+	 * Filter to modify donation history HTMl
+	 *
+	 * @since 2.1
+	 *
+	 * @param string HTML content
+	 * @param array  $atts
+	 * @param string $content content pass between enclose content
+	 *
+	 * @return string HTML content
+	 */
+	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $atts, $content );
 }
 
 add_shortcode( 'donation_history', 'give_donation_history' );
@@ -638,10 +661,18 @@ function give_totals_shortcode( $atts ) {
 	}
 
 	// Replace {total} in message.
-	$message = str_replace( '{total}', give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ), esc_html( $atts['message'] ) );
+	$message = str_replace( '{total}', give_currency_filter(
+		give_format_amount( $total,
+			array( 'sanitize' => false )
+		)
+	), esc_html( $atts['message'] ) );
 
 	// Replace {total_goal} in message.
-	$message = str_replace( '{total_goal}', give_currency_filter( give_format_amount( $total_goal, array( 'sanitize' => true ) ) ), $message );
+	$message = str_replace( '{total_goal}', give_currency_filter(
+		give_format_amount( $total_goal,
+			array( 'sanitize' => true )
+		)
+	), $message );
 
 	/**
 	 * Update Give totals shortcode output.
@@ -729,6 +760,7 @@ function give_form_grid_shortcode( $atts ) {
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
 		'display_style'       => 'redirect',
+		'status'              => '' // open or closed
 	), $atts );
 
 	// Validate integer attributes.
@@ -757,6 +789,17 @@ function give_form_grid_shortcode( $atts ) {
 			'relation' => 'AND',
 		),
 	);
+
+	// Filter results of form grid based on form status.
+	$form_closed_status = trim( $atts['status'] );
+	if ( ! empty( $form_closed_status ) ) {
+		$form_args['meta_query'] = array(
+			array(
+				'key'   => '_give_form_status',
+				'value' => $form_closed_status,
+			),
+		);
+	}
 
 	// Maybe add pagination.
 	if ( true === $atts['paged'] ) {
@@ -829,7 +872,10 @@ function give_form_grid_shortcode( $atts ) {
 				'add_args'  => false,
 			);
 
-			printf( '<div class="give-page-numbers">%s</div>', paginate_links( $paginate_args ) );
+			printf(
+				'<div class="give-page-numbers">%s</div>',
+				paginate_links( $paginate_args )
+			);
 		}
 		echo '</div><!-- .give-wrap -->';
 
