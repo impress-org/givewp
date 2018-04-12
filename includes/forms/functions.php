@@ -1297,14 +1297,21 @@ function give_set_form_closed_status( $form_id ) {
  */
 function give_admin_form_goal_stats( $form_id ) {
 
+	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id );
 	$percent_complete = round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100;
-	$html             = '';
+
+	$html .= sprintf(
+		'<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%1$s">
+<span style="width:%1$s%%;"></span>
+</div>',
+		esc_attr( $goal_stats['progress'] )
+	);
 
 	$html .= sprintf(
 		( 'percentage' !== $goal_stats['format'] ) ?
-			'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s</div>' :
-			'<div class="give-goal-text"><a href="%3$s">%1$s</a></div>',
+			'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s ' :
+			'<div class="give-goal-text"><a href="%3$s">%1$s </a>',
 		( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
 		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
@@ -1314,11 +1321,10 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
 		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
-	} else {
-		$html .= sprintf( '<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%s">', esc_attr( $goal_stats['progress'] ) );
-		$html .= sprintf( '<span style="width:%s%%;"></span>', esc_attr( $goal_stats['progress'] ) );
-		$html .= '</div>';
 	}
+
+	$html .= '</div>';
+
 
 	return $html;
 }
