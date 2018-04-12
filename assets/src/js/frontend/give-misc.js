@@ -109,7 +109,11 @@ jQuery( function( $ ) {
 		var historyTraversal = event.persisted || ( typeof 'undefined' !== window.performance && 2 === window.performance.navigation.type );
 
 		if ( historyTraversal ) {
-			$( 'body' ).find( 'form.give-form' )[0].reset();
+			let form = $( 'body' ).find( 'form.give-form' )[0];
+
+			if ( undefined !== form ) {
+				form.reset();
+			}
 		}
 	});
 });

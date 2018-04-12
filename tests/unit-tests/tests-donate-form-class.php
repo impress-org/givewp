@@ -146,6 +146,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		// Default earning for form is 40.00, so set donation goal to less then earnings.
 		give_update_meta( $this->_simple_form->ID, '_give_set_goal', '30.00' );
 		give_update_meta( $this->_simple_form->ID, '_give_close_form_when_goal_achieved', 'enabled' );
+		give_update_meta( $this->_simple_form->ID, '_give_form_status', 'closed' );
 
 		$this->assertSame( 'give-form-wrap give-form-closed', $simple_form->get_form_wrap_classes( array() ) );
 	}

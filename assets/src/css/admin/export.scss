@@ -35,7 +35,21 @@
 					display: table;
 					width: 100%;
 				}
+
+				.add-notices {
+					margin-top: 15px;
+
+					.give-progress {
+						margin-top: 7px;
+					}
+				}
 			}
+		}
+	}
+
+	.give-export-donors {
+		.give-progress {
+			margin-top: 7px;
 		}
 	}
 }
