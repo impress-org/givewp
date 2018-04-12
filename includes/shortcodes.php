@@ -775,11 +775,12 @@ function give_form_grid_shortcode( $atts ) {
 	);
 
 	// Filter results of form grid based on form status.
-	if ( ! empty( $atts['status'] ) ) {
+	$form_closed_status = trim( $atts['status'] );
+	if ( ! empty( $form_closed_status ) ) {
 		$form_args['meta_query'] = array(
 			array(
 				'key'   => '_give_form_status',
-				'value' => $atts['status'],
+				'value' => $form_closed_status,
 			),
 		);
 	}
