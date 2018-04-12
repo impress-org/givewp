@@ -993,7 +993,7 @@ final class Give_Payment {
 				}
 
 				// Verify and update form meta based on the form status.
-				give_verify_form_status( $this->form_id );
+				give_set_form_closed_status( $this->form_id );
 
 			}
 
