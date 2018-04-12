@@ -21,9 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
+ * @param array       $atts
+ * @param string|bool $content
+ *
  * @return string|bool
  */
-function give_donation_history( $atts ) {
+function give_donation_history( $atts, $content = false ) {
 
 	$donation_history_args = shortcode_atts( array(
 		'id'             => true,
@@ -54,10 +57,13 @@ function give_donation_history( $atts ) {
 				__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
+
 		return ob_get_clean();
 	}
 
 	$email_access = give_get_option( 'email_access' );
+
+	ob_start();
 
 	/**
 	 * Determine access
@@ -71,25 +77,34 @@ function give_donation_history( $atts ) {
 		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
 		true === give_get_history_session()
 	) {
-		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
-		return ob_get_clean();
+		if ( ! empty( $content ) ) {
+			echo do_shortcode( $content );
+		}
 
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
-		ob_start();
 		give_get_template_part( 'email', 'login-form' );
-
-		return ob_get_clean();
 
 	} else {
 
-		$output = apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
-		$output .= do_shortcode( '[give_login]' );
-
-		return $output;
+		echo apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
 	}
+
+	/**
+	 * Filter to modify donation history HTMl
+	 *
+	 * @since 2.1
+	 *
+	 * @param string HTML content
+	 * @param array  $atts
+	 * @param string $content content pass between enclose content
+	 *
+	 * @return string HTML content
+	 */
+	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $atts, $content );
 }
 
 add_shortcode( 'donation_history', 'give_donation_history' );
