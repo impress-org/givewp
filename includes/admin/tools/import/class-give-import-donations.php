@@ -65,7 +65,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since
 		 * @access private
 		 */
-		private function __construct() {
+		function __construct() {
 			self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
 		}
 
@@ -667,12 +667,29 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( $file_id ) {
 				$file_dir = get_attached_file( $file_id );
 				if ( $file_dir ) {
-					$file = new SplFileObject( $file_dir, 'r' );
-					$file->seek( PHP_INT_MAX );
-					$total = $file->key() + 1;
+					$total = self::get_csv_data_from_file_dir( $file_dir );
 				}
 			}
 
+			return $total;
+		}
+
+		/**
+		 * Get data from file dir
+		 *
+		 * @since 2.1
+		 *
+		 * @param $file_dir
+		 *
+		 * @return bool|int
+		 */
+		public static function get_csv_data_from_file_dir( $file_dir ) {
+			$total = false;
+			if ( $file_dir ) {
+				$file = new SplFileObject( $file_dir, 'r' );
+				$file->seek( PHP_INT_MAX );
+				$total = $file->key() + 1;
+			}
 			return $total;
 		}
 

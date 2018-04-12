@@ -545,9 +545,9 @@ function give_donation_import_callback() {
 
 	parse_str( $fields );
 
-	$import_setting['create_user'] = $create_user;
-	$import_setting['mode']        = $mode;
 	$import_setting['delimiter']   = $delimiter;
+	$import_setting['mode']        = $mode;
+	$import_setting['create_user'] = $create_user;
 	$import_setting['csv']         = $csv;
 	$import_setting['delete_csv']  = $delete_csv;
 	$import_setting['dry_run']     = $dry_run;

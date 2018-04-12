@@ -535,17 +535,36 @@ function give_import_donation_form_options() {
  */
 function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
 	/**
-	 * Filter to modify delimiter of Import.
+	 * Filter to modify delimiter of Import
 	 *
-	 * @since
-	 * 1.8.14
+	 * @since 1.8.14
 	 *
-	 * Return string $delimiter.
+	 * @param string $delimiter
+	 *
+	 * @return string $delimiter
 	 */
 	$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
 
+	$file_dir = give_get_file_data_by_file_id( $file_id );
+
+	return give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter );
+}
+
+/**
+ * Get raw data from file data
+ *
+ * @since 2.1
+ *
+ * @param $file_dir
+ * @param $start
+ * @param $end
+ * @param $delimiter
+ *
+ * @return array
+ */
+function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
 	$raw_data = array();
-	$file_dir = get_attached_file( $file_id );
+
 	$count    = 0;
 	if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
 		while ( false !== ( $row = fgetcsv( $handle, 0, $delimiter ) ) ) {
@@ -558,6 +577,19 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 	}
 
 	return $raw_data;
+}
+
+/**
+ * Get content from the attachment id of CSV
+ *
+ * @since 2.1
+ *
+ * @param $file_id
+ *
+ * @return false|string file content
+ */
+function give_get_file_data_by_file_id( $file_id ) {
+	return get_attached_file( $file_id );
 }
 
 
