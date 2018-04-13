@@ -732,6 +732,7 @@ Give.form = {
 			var $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
 				$form = $form_wrapper.find( 'form.give-form' ),
 				display_modal = $form_wrapper.hasClass( 'give-display-modal' ),
+				display_button = $form_wrapper.hasClass( 'give-display-button' ),
 				display_reveal = $form_wrapper.hasClass( 'give-display-reveal' );
 
 			// Update payment mode radio so it's correctly checked.
@@ -752,7 +753,7 @@ Give.form = {
 			}
 
 			// This form is modal display so show the modal.
-			if ( display_modal ) {
+			if ( display_modal || display_button ) {
 				give_open_form_modal( $form_wrapper, $form );
 			} else if ( display_reveal ) {
 				// This is a reveal form, show it.
