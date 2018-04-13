@@ -470,6 +470,11 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											</p>
 
 											<p>
+												<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong><br>
+												<?php echo give_get_meta( $payment_id, '_give_anonymous_donation',true ) ? __( 'Yes', 'give' ) : __( 'No', 'give' ); ?>
+											</p>
+
+											<p>
 												<?php
 												/**
 												 * Fires in donation details page, in the donation-information metabox, before the head elements.
