@@ -33,7 +33,6 @@ function give_import_donation_report_update( $value = array() ) {
 	update_option( 'give_import_donation_report', $value );
 }
 
-
 /**
  * Delete the Import report of the donations
  *
