@@ -10,7 +10,7 @@
  */
 function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	if ( ! empty( $_POST['give_comment'] ) ) {
-		$comment_id = give_insert_donor_donation_comment(
+		give_insert_donor_donation_comment(
 			$donation_id,
 			$donation_data['user_info']['id'],
 			trim( give_clean( $_POST['give_comment'] ) ),
@@ -18,20 +18,14 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 				'comment_author_email' => $donation_data['user_info']['email']
 			)
 		);
-
-		update_comment_meta(
-			$comment_id,
-			'_give_anonymous_donation',
-			isset( $_POST['give_anonymous_donation'] )
-				? absint( $_POST['give_anonymous_donation'] )
-				: 0
-		);
 	}
 
-	if ( ! empty( $_POST['give_anonymous_donation'] ) ) {
-		give_update_meta( $donation_id, '_give_anonymous_donation', absint( $_POST['give_anonymous_donation'] ) );
-		give_update_meta( $donation_data['user_info']['id'], '_give_anonymous_donor', absint( $_POST['give_anonymous_donation'] ) );
-	}
+	$is_anonymous_donation = isset( $_POST['give_anonymous_donation'] )
+		? absint( $_POST['give_anonymous_donation'] )
+		: 0;
+
+	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
+	Give()->donor_meta->update_meta( $donation_data['user_info']['id'], '_give_anonymous_donor', $is_anonymous_donation );
 }
 
 add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );
