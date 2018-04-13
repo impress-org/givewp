@@ -141,7 +141,7 @@ class Give_Translations {
 				array_key_exists( $args['id'], self::$text_configs )
 			) {
 				/* @var WP_Error $error */
-				$error = new WP_Error( 'TEXT_ID_ALREADY_EXIST', __( 'Text ID without group already exist.', 'give' ), $args );
+				$error = new WP_Error( 'TEXT_ID_ALREADY_EXIST', __( 'Text ID without a group already exists.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'TEXT_ID_ALREADY_EXIST' ) );
 
 			} elseif (
@@ -150,7 +150,7 @@ class Give_Translations {
 				array_key_exists( $args['id'], self::$text_configs[ $args['group'] ] )
 			) {
 				/* @var WP_Error $error */
-				$error = new WP_Error( 'TEXT_ID_WITHIN_GROUP_ALREADY_EXIST', __( 'Text ID with in group already exist.', 'give' ), $args );
+				$error = new WP_Error( 'TEXT_ID_WITHIN_GROUP_ALREADY_EXIST', __( 'Text ID within a group already exists.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'TEXT_ID_WITHIN_GROUP_ALREADY_EXIST' ) );
 
 			}
