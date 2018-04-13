@@ -192,6 +192,12 @@ function give_insert_payment( $payment_data = array() ) {
 	// Save payment.
 	$payment->save();
 
+
+	// Setup donor id.
+	if( empty( $payment_data['user_info']['id'] ) ) {
+		$payment_data['user_info']['id'] = $payment->donor_id;
+	}
+
 	/**
 	 * Fires while inserting payments.
 	 *

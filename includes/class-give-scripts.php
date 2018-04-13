@@ -172,7 +172,7 @@ class Give_Scripts {
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
-			'delete_payment'                    => __( 'Are you sure you want to delete this payment?', 'give' ),
+			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
 			'revoke_api_key'                    => __( 'Are you sure you want to revoke this API key?', 'give' ),
 			'regenerate_api_key'                => __( 'Are you sure you want to regenerate this API key?', 'give' ),
@@ -183,6 +183,17 @@ class Give_Scripts {
 			'currency_sign'                     => give_currency_filter( '' ),
 			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 			'currency_decimals'                 => give_get_price_decimals(),
+			'ok'                                => __( 'Ok', 'give' ),
+			'cancel'                            => __( 'Cancel', 'give' ),
+			'close'                             => __( 'Close', 'give' ),
+			'confirm'                           => __( 'Confirm', 'give' ),
+			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
+			'confirm_delete_donation'           => __( 'Confirm Delete Donation', 'give' ),
+			'confirm_resend'                    => __( 'Confirm re-send', 'give' ),
+			'confirm_bulk_action'               => __( 'Confirm bulk action', 'give' ),
+			'import_failed'                     => __( 'Import failed', 'give' ),
+			'flush_success'                     => __( 'Flush success', 'give' ),
+			'flush_error'                       => __( 'Flush error', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
@@ -200,10 +211,19 @@ class Give_Scripts {
 			'unlock_donor_fields'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 			'donors_bulk_action'                => array(
-				'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
-				'no_action_selected' => __( 'You must select a bulk action to proceed.', 'give' ),
+				'no_donor_selected'  => array(
+					'title' => __( 'No donors selected', 'give' ),
+					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' )
+				),
+				'no_action_selected' => array(
+					'title' => __( 'No action selected', 'give' ),
+					'desc'  => __( 'You must select a bulk action to proceed.', 'give' ),
+				),
 			),
 			'donations_bulk_action'             => array(
+				'titles'         => array(
+					'zero' => __( 'No payments selected', 'give' ),
+				),
 				'delete'         => array(
 					'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 					'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),

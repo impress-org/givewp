@@ -6,6 +6,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 jQuery.noConflict();
 
@@ -330,17 +331,35 @@ var give_setting_edit = false;
 		},
 
 		deleteSingleDonation: function () {
-			$('body').on('click', '.delete-single-donation', function () {
-				return confirm(give_vars.delete_payment);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.delete-single-donation',
+					modalWrapper : 'give-modal--warning',
+					modalContent: {
+						title: give_vars.confirm_delete_donation,
+						desc: give_vars.delete_payment
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		},
 
 		resendSingleDonationReceipt: function () {
-			$('body').on('click', '.resend-single-donation-receipt', function () {
-				return confirm(give_vars.resend_receipt);
-			});
+			new GiveConfirmModal(
+				{
+					triggerSelector: '.resend-single-donation-receipt',
+					modalContent: {
+						title: give_vars.confirm_resend,
+						desc: give_vars.resend_receipt
+					},
+					successConfirm: function ( args ) {
+						window.location.assign( args.el.attr('href') );
+					}
+				}
+			);
 		}
-
 	};
 
 	/**
@@ -946,7 +965,7 @@ var give_setting_edit = false;
 					forms.val(0);
 				}
 
-				current_forms = $('.tools-form-dropdown-' + selected_type);
+				var current_forms = $('.tools-form-dropdown-' + selected_type);
 				current_forms.show();
 				current_forms.find('.give-select-chosen').css({
 					'width': 'auto',
@@ -1035,18 +1054,26 @@ var give_setting_edit = false;
 
 					submitButton.addClass('button-disabled');
 					$('form.give-export-form select').attr('disabled', true).trigger('chosen:updated');
-					$(this).find('.notice-wrap').remove();
-					$(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+
+					var parent_notices = $( this );
+
+					// show notices inside add-notices class
+					if ( $( this ).find( '.add-notices' ).length > 0 ) {
+						parent_notices = $( this ).find( '.add-notices' );
+					}
+
+					parent_notices.find('.notice-wrap').remove();
+					parent_notices.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
 					// start the process
-					self.process_step(1, data, self);
+					self.process_step(1, data, self, this );
 
 				}
 
 			});
 		},
 
-		process_step: function (step, data, self) {
+		process_step: function (step, data, self, form) {
 			/**
 			 * Do not allow user to reload the page
 			 *
@@ -1066,6 +1093,7 @@ var give_setting_edit = false;
 				},
 				dataType: 'json',
 				success: function (response) {
+
 					if ('done' == response.step || response.error || response.success) {
 
 						/**
@@ -1078,10 +1106,13 @@ var give_setting_edit = false;
 						reset_form = true;
 
 						// We need to get the actual in progress form, not all forms on the page
-						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
-						var notice_wrap = export_form.find('.notice-wrap');
-						export_form.find('.button-disabled').removeClass('button-disabled');
-						$('form.give-export-form select').attr('disabled', false).trigger('chosen:updated');
+						var notice_wrap = $( form ).parent().find('.notice-wrap');
+						var export_form = notice_wrap.find('.give-progress');
+
+
+						$( form ).find('.button-disabled').removeClass('button-disabled');
+						$( form ).find('select').attr('disabled', false).trigger('chosen:updated');
+
 						if (response.error) {
 							var error_message = response.message;
 							notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
@@ -1098,7 +1129,7 @@ var give_setting_edit = false;
 						}, 50, function () {
 							// Animation complete.
 						});
-						self.process_step(parseInt(response.step), data, self);
+						self.process_step(parseInt(response.step), data, self, form);
 					}
 
 					if ( true === reset_form && $( '#give-tools-recount-form' ).length > 0 ) {
@@ -1405,16 +1436,8 @@ var give_setting_edit = false;
 			this.add_note();
 			this.delete_checked();
 			this.addressesAction();
-			this.unlockDonorFields();
 			this.bulkDeleteDonor();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
-		},
-
-		unlockDonorFields: function (e) {
-			$('body').on('click', '.give-lock-block', function (e) {
-				alert(give_vars.unlock_donor_fields);
-				e.preventDefault();
-			});
 		},
 
 		editDonor: function () {
@@ -1890,7 +1913,6 @@ var give_setting_edit = false;
 		},
 
 		handleBulkActions: function (e) {
-
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
 				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
@@ -1901,14 +1923,27 @@ var give_setting_edit = false;
 			});
 
 			// If there is no bulk action selected then show an alert message.
-			if ('-1' === currentAction) {
-				alert(selectBulkActionNotice);
+			if ( '-1' === currentAction ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: selectBulkActionNotice.title,
+						desc: selectBulkActionNotice.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
 				return false;
 			}
 
 			// If there is no donor selected then show an alert.
-			if (!parseInt(donors)) {
-				alert(confirmActionNotice);
+			if ( ! parseInt( donors ) ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: confirmActionNotice.title,
+						desc: confirmActionNotice.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+
 				return false;
 			}
 
@@ -2688,7 +2723,7 @@ var give_setting_edit = false;
 			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
-		handleBulkActions: function () {
+		handleBulkActions: function ( e ) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
 				$payments = $('input[name="payment[]"]:checked').length,
@@ -2701,6 +2736,17 @@ var give_setting_edit = false;
 				'set-to-status' :
 				currentAction;
 
+			if ( '-1' === currentAction ) {
+				new GiveWarningAlert({
+					modalContent:{
+						title: give_vars.donors_bulk_action.no_action_selected.title,
+						desc: give_vars.donors_bulk_action.no_action_selected.desc,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+				return false;
+			}
+
 			if (Object.keys(give_vars.donations_bulk_action).length) {
 				for (status in give_vars.donations_bulk_action) {
 					if (status === currentAction) {
@@ -2712,7 +2758,13 @@ var give_setting_edit = false;
 
 						// Check if admin selected any donations or not.
 						if (!parseInt($payments)) {
-							alert(confirmActionNotice);
+							new GiveWarningAlert({
+								modalContent:{
+									title: give_vars.donations_bulk_action.titles.zero,
+									desc: confirmActionNotice,
+									cancelBtnTitle: give_vars.ok,
+								}
+							}).render();
 							return false;
 						}
 
@@ -2721,11 +2773,21 @@ var give_setting_edit = false;
 							give_vars.donations_bulk_action[currentAction].multiple :
 							give_vars.donations_bulk_action[currentAction].single;
 
-						// Trigger Admin Confirmation PopUp.
-						return window.confirm(confirmActionNotice
-							.replace('{payment_count}', $payments)
-							.replace('{status}', currentActionLabel.replace('Set To ', ''))
-						);
+						e.preventDefault();
+
+						new GiveConfirmModal(
+							{
+								modalContent: {
+									title: give_vars.confirm_bulk_action,
+									desc: confirmActionNotice
+										.replace('{payment_count}', $payments)
+										.replace('{status}', currentActionLabel.replace('Set To ', ''))
+								},
+								successConfirm: function ( args ) {
+									$( '#give-payments-filter' ).submit();
+								}
+							}
+						).render();
 					}
 				}
 			}
@@ -2741,7 +2803,6 @@ var give_setting_edit = false;
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
-		give_import_donation_onload();
 		$.giveAjaxifyFields({type: 'country_state', debug: true});
 		GiveListDonation.init();
 		Give_Edit_Donation.init();
@@ -3069,197 +3130,4 @@ function get_url_params() {
 		vars[hash[0]] = hash[1];
 	}
 	return vars;
-}
-
-/**
- * Run when user click on submit button.
- *
- * @since 1.8.17
- */
-function give_on_core_settings_import_start() {
-	var $form = jQuery('form.tools-setting-page-import');
-	var progress = $form.find('.give-progress');
-
-	give_setting_edit = true;
-
-	jQuery.ajax({
-		type: 'POST',
-		url: ajaxurl,
-		data: {
-			action: give_vars.core_settings_import,
-			fields: $form.serialize()
-		},
-		dataType: 'json',
-		success: function (response) {
-			give_setting_edit = false;
-			if (true === response.success) {
-				jQuery(progress).find('div').width(response.percentage + '%');
-			} else {
-				alert(give_vars.error_message);
-			}
-			window.location = response.url;
-		},
-		error: function () {
-			give_setting_edit = false;
-			alert(give_vars.error_message);
-		}
-	});
-}
-
-/**
- * Run when user click on upload CSV.
- *
- * @since 1.8.13
- */
-function give_on_donation_import_start() {
-	give_on_donation_import_ajax();
-}
-
-/**
- * Upload CSV ajax
- *
- * @since 1.8.13
- */
-function give_on_donation_import_ajax() {
-	var $form = jQuery('form.tools-setting-page-import');
-
-	/**
-	 * Do not allow user to reload the page
-	 *
-	 * @since 1.8.14
-	 */
-	give_setting_edit = true;
-
-	var progress = $form.find('.give-progress');
-
-	var total_ajax = jQuery(progress).data('total_ajax'),
-		current = jQuery(progress).data('current'),
-		start = jQuery(progress).data('start'),
-		end = jQuery(progress).data('end'),
-		next = jQuery(progress).data('next'),
-		total = jQuery(progress).data('total'),
-		per_page = jQuery(progress).data('per_page');
-
-	jQuery.ajax({
-		type: 'POST',
-		url: ajaxurl,
-		data: {
-			action: give_vars.give_donation_import,
-			total_ajax: total_ajax,
-			current: current,
-			start: start,
-			end: end,
-			next: next,
-			total: total,
-			per_page: per_page,
-			fields: $form.serialize()
-		},
-		dataType: 'json',
-		success: function (response) {
-			jQuery(progress).data('current', response.current);
-			jQuery(progress).find('div').width(response.percentage + '%');
-
-			if (response.next == true) {
-				jQuery(progress).data('start', response.start);
-				jQuery(progress).data('end', response.end);
-
-				if (response.last == true) {
-					jQuery(progress).data('next', false);
-				}
-				give_on_donation_import_ajax();
-			} else {
-				/**
-				 * Now user is allow to reload the page.
-				 *
-				 * @since 1.8.14
-				 */
-				give_setting_edit = false;
-				window.location = response.url;
-			}
-		},
-		error: function () {
-			/**
-			 * Now user is allow to reload the page.
-			 *
-			 * @since 1.8.14
-			 */
-			give_setting_edit = false;
-			alert(give_vars.error_message);
-		}
-	});
-}
-
-/**
- * Give Import donation run on load once page is load completed.
- */
-function give_import_donation_onload() {
-	window.onload = function () {
-		give_import_donation_required_fields_check();
-		give_import_donation_on_drop_down_change();
-	};
-}
-
-/**
- * Give import donation on change of drop down and update the required fields.
- */
-function give_import_donation_on_drop_down_change() {
-	var fields = document.querySelector('.give-tools-setting-page-import table.step-2 tbody select');
-	if (fields !== 'undefined' && fields !== null) {
-		jQuery('.give-tools-setting-page-import table.step-2 tbody').on('change', 'select', function () {
-			give_import_donation_required_fields_check();
-		});
-	}
-}
-
-/**
- * Give Import Donations check required fields
- */
-function give_import_donation_required_fields_check() {
-	var required_fields = document.querySelector('.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields');
-	if (required_fields !== 'undefined' && required_fields !== null) {
-		var submit = true,
-			email = false,
-			first_name = false,
-			amount = false,
-			form = false;
-
-		document.querySelectorAll('.give-import-donation-required-fields li').forEach(function (value) {
-			value.querySelector('.dashicons').classList.remove('dashicons-yes');
-			value.querySelector('.dashicons').classList.add('dashicons-no-alt');
-		});
-
-		var select_fields = Array.from(document.querySelectorAll('table.step-2 tbody select')).map(function (field) {
-			return field.value;
-		});
-
-		if (select_fields.includes('email')) {
-			email = true;
-			document.querySelector('.give-import-donation-required-email .dashicons').classList.remove('dashicons-no-alt');
-			document.querySelector('.give-import-donation-required-email .dashicons').classList.add('dashicons-yes');
-		}
-
-		if (select_fields.includes('first_name')) {
-			first_name = true;
-			document.querySelector('.give-import-donation-required-first .dashicons').classList.remove('dashicons-no-alt');
-			document.querySelector('.give-import-donation-required-first .dashicons').classList.add('dashicons-yes');
-		}
-
-		if (select_fields.includes('amount')) {
-			amount = true;
-			document.querySelector('.give-import-donation-required-amount .dashicons').classList.remove('dashicons-no-alt');
-			document.querySelector('.give-import-donation-required-amount .dashicons').classList.add('dashicons-yes');
-		}
-
-		if (select_fields.includes('form_id') || select_fields.includes('form_title')) {
-			form = true;
-			document.querySelector('.give-import-donation-required-form .dashicons').classList.remove('dashicons-no-alt');
-			document.querySelector('.give-import-donation-required-form .dashicons').classList.add('dashicons-yes');
-		}
-
-		if (email && first_name && amount && form) {
-			submit = false;
-		}
-
-		document.getElementById('recount-stats-submit').disabled = submit;
-	}
 }
