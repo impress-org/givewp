@@ -287,20 +287,19 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
  * @param int $payment_id
  */
 function _give_save_donor_billing_address( $payment_id ) {
-	/* @var Give_Payment $donation */
-	$donation = new Give_Payment( $payment_id );
+	$donor_id  = absint( give_get_payment_donor_id( $payment_id ));
 
 	// Bailout
-	if ( ! $donation->customer_id ) {
+	if ( ! $donor_id ) {
 		return;
 	}
 
 
 	/* @var Give_Donor $donor */
-	$donor = new Give_Donor( $donation->customer_id );
+	$donor = new Give_Donor( $donor_id );
 
 	// Save address.
-	$donor->add_address( 'billing[]', $donation->address );
+	$donor->add_address( 'billing[]', give_get_donation_address( $payment_id ) );
 }
 
 add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 );
