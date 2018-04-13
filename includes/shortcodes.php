@@ -51,7 +51,11 @@ function give_donation_history( $atts, $content = false ) {
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
-			echo sprintf( '<a href="%s">%s</a>', esc_url( give_get_history_page_uri() ), __( '&laquo; Return to All Donations', 'give' ) );
+			echo sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( give_get_history_page_uri() ),
+				__( '&laquo; Return to All Donations', 'give' )
+			);
 		}
 
 		return ob_get_clean();
@@ -68,10 +72,10 @@ function give_donation_history( $atts, $content = false ) {
 	 * b. Does an email-access token exist?
 	 */
 	if (
-		is_user_logged_in() ||
-		false !== Give()->session->get_session_expiration() ||
-		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
-		true === give_get_history_session()
+		is_user_logged_in()
+		|| false !== Give()->session->get_session_expiration()
+		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		|| true === give_get_history_session()
 	) {
 		give_get_template_part( 'history', 'donations' );
 
@@ -657,10 +661,18 @@ function give_totals_shortcode( $atts ) {
 	}
 
 	// Replace {total} in message.
-	$message = str_replace( '{total}', give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ), esc_html( $atts['message'] ) );
+	$message = str_replace( '{total}', give_currency_filter(
+		give_format_amount( $total,
+			array( 'sanitize' => false )
+		)
+	), esc_html( $atts['message'] ) );
 
 	// Replace {total_goal} in message.
-	$message = str_replace( '{total_goal}', give_currency_filter( give_format_amount( $total_goal, array( 'sanitize' => true ) ) ), $message );
+	$message = str_replace( '{total_goal}', give_currency_filter(
+		give_format_amount( $total_goal,
+			array( 'sanitize' => true )
+		)
+	), $message );
 
 	/**
 	 * Update Give totals shortcode output.
