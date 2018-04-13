@@ -870,7 +870,8 @@ Give.notice = {
 				return null;
 			}
 
-			var notice = notice_msg = formatted_amount = '';
+			var notice, notice_msg, formatted_amount;
+			notice = notice_msg = formatted_amount = '';
 
 			if ( $form.length ) {
 				switch ( error_code ) {
