@@ -734,11 +734,11 @@ function give_user_info_fields( $form_id ) {
 		<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0;?>
 		<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
 			<input
-					type="checkbox"
-					class="give-input required"
-					name="give_anonymous_donation"
-					id="give-anonymous-donation"
-					value="1"
+				type="checkbox"
+				class="give-input required"
+				name="give_anonymous_donation"
+				id="give-anonymous-donation"
+				value="1"
 				<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 				<?php checked( 1, $is_anonymous_donation ); ?>
 			>
