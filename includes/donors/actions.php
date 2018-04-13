@@ -7,22 +7,30 @@
  * @param int   $donation_id
  * @param array $donation_data
  *
- * @return bool
  */
 function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
-	switch ( true ){
-		case ! empty( $_POST['give_comment'] ):
-			give_insert_donor_donation_comment(
-				$donation_id,
-				$donation_data['user_info']['id'],
-				trim( give_clean( $_POST['give_comment'] ) ),
-				array(
-					'comment_author_email' => $donation_data['user_info']['email']
-				)
-			);
+	if ( ! empty( $_POST['give_comment'] ) ) {
+		$comment_id = give_insert_donor_donation_comment(
+			$donation_id,
+			$donation_data['user_info']['id'],
+			trim( give_clean( $_POST['give_comment'] ) ),
+			array(
+				'comment_author_email' => $donation_data['user_info']['email']
+			)
+		);
 
-		case ! empty( $_POST['give_anonymous_donation'] ):
-			give_update_meta( $donation_id, '_give_anonymous_donation', absint( $_POST['give_anonymous_donation'] ) );
+		update_comment_meta(
+			$comment_id,
+			'_give_anonymous_donation',
+			isset( $_POST['give_anonymous_donation'] )
+				? absint( $_POST['give_anonymous_donation'] )
+				: 0
+		);
+	}
+
+	if ( ! empty( $_POST['give_anonymous_donation'] ) ) {
+		give_update_meta( $donation_id, '_give_anonymous_donation', absint( $_POST['give_anonymous_donation'] ) );
+		give_update_meta( $donation_data['user_info']['id'], '_give_anonymous_donor', absint( $_POST['give_anonymous_donation'] ) );
 	}
 }
 

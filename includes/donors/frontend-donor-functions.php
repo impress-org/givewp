@@ -238,9 +238,14 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 		'order'      => 'DESC',
 		'number'     => 1,
 		'meta_query' => array(
+			'related' => 'AND',
 			array(
 				'key'   => '_give_donor_id',
 				'value' => $donor_id
+			),
+			array(
+				'key'   => '_give_anonymous_donation',
+				'value' => 0
 			)
 		)
 	);
