@@ -469,10 +469,31 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
-											<p>
-												<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong><br>
-												<?php echo give_get_meta( $payment_id, '_give_anonymous_donation',true ) ? __( 'Yes', 'give' ) : __( 'No', 'give' ); ?>
-											</p>
+											<div>
+												<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
+												<ul class="give-radio-inline">
+													<li>
+														<label>
+															<input
+																name="give_anonymous_donation"
+																value="1"
+																type="radio"
+																<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+															><?php _e( 'Yes', 'give' ); ?>
+														</label>
+													</li>
+													<li>
+														<label>
+															<input
+																name="give_anonymous_donation"
+																value="0"
+																type="radio"
+																<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+															><?php _e( 'No', 'give' ); ?>
+														</label>
+													</li>
+												</ul>
+											</div>
 
 											<p>
 												<?php

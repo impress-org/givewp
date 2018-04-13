@@ -51,6 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $parent_payment
  * @property string     $transaction_id
  * @property string     $old_status
+ * @property int         $anonymous
  *
  * @since 1.5
  */
@@ -386,6 +387,16 @@ final class Give_Payment {
 	protected $parent_payment = 0;
 
 	/**
+	 * Flag to check if donation is anonymous or not
+	 *
+	 * @since  2.1.0
+	 * @access protected
+	 *
+	 * @var    integer
+	 */
+	protected $anonymous = 0;
+
+	/**
 	 * Setup the Give Payments class
 	 *
 	 * @since  1.5
@@ -565,6 +576,7 @@ final class Give_Payment {
 			$this->price_id   = $this->setup_price_id();
 			$this->key        = $this->setup_payment_key();
 			$this->number     = $this->setup_payment_number();
+			$this->anonymous  = $this->setup_anonymous_donor();
 
 			Give_Cache::set_group( $this->ID, get_object_vars( $this ), 'give-donations' );
 		} else {
@@ -952,6 +964,11 @@ final class Give_Payment {
 						);
 
 						wp_update_post( $args );
+						break;
+
+					case 'anonymous':
+						give_update_meta( $this->ID, '_give_anonymous_donation', $this->anonymous );
+						give_update_meta( $this->donor_id, '_give_anonymous_donor', $this->anonymous );
 						break;
 
 					default:
@@ -1846,6 +1863,18 @@ final class Give_Payment {
 	 */
 	private function setup_payment_number() {
 		return $this->get_serial_code();
+	}
+
+	/**
+	 * Setup the anonymous donor.
+	 *
+	 * @since  2.1.0
+	 * @access private
+	 *
+	 * @return int
+	 */
+	private function setup_anonymous_donor(){
+		return absint( give_get_meta( $this->ID, '_give_anonymous_donation', true ) );
 	}
 
 	/**

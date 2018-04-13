@@ -79,6 +79,8 @@ function give_update_payment_details( $data ) {
 	do_action( 'give_update_edited_donation', $payment_id );
 
 	$payment->date = $date;
+	$payment->anonymous = absint( $data['give_anonymous_donation'] );
+
 	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
