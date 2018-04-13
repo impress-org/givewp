@@ -10,18 +10,20 @@
  * @return bool
  */
 function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
-	if ( empty( $_POST['give_comment'] ) ) {
-		return false;
-	}
+	switch ( true ){
+		case ! empty( $_POST['give_comment'] ):
+			give_insert_donor_donation_comment(
+				$donation_id,
+				$donation_data['user_info']['id'],
+				trim( give_clean( $_POST['give_comment'] ) ),
+				array(
+					'comment_author_email' => $donation_data['user_info']['email']
+				)
+			);
 
-	give_insert_donor_donation_comment(
-		$donation_id,
-		$donation_data['user_info']['id'],
-		trim( give_clean( $_POST['give_comment'] ) ),
-		array(
-			'comment_author_email' => $donation_data['user_info']['email']
-		)
-	);
+		case ! empty( $_POST['give_anonymous_donation'] ):
+			give_update_meta( $donation_id, '_give_anonymous_donation', absint( $_POST['give_anonymous_donation'] ) );
+	}
 }
 
 add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );

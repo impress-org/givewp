@@ -343,7 +343,7 @@ function give_show_register_login_fields( $form_id ) {
 			do_action( 'give_donation_form_register_fields', $form_id );
 			?>
 		</div>
-		<?php
+	<?php
 	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
 		?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
@@ -356,7 +356,7 @@ function give_show_register_login_fields( $form_id ) {
 			do_action( 'give_donation_form_login_fields', $form_id );
 			?>
 		</div>
-		<?php
+	<?php
 	endif;
 
 	if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
@@ -679,10 +679,6 @@ function give_user_info_fields( $form_id ) {
 		</p>
 
 		<?php if ( give_is_company_field_enabled( $form_id ) ) : ?>
-
-		<?php endif; ?>
-
-		<?php if ( give_is_company_field_enabled( $form_id ) ) : ?>
 			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
 			<p id="give-company-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-company">
@@ -694,12 +690,12 @@ function give_user_info_fields( $form_id ) {
 				</label>
 
 				<input
-					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
-					type="text"
-					name="give_company_name"
-					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
-					id="give-company"
-					value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
+						class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
+						type="text"
+						name="give_company_name"
+						placeholder="<?php _e( 'Company Name', 'give' ); ?>"
+						id="give-company"
+						value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
 					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
 				/>
 
@@ -734,22 +730,42 @@ function give_user_info_fields( $form_id ) {
 			/>
 
 		</p>
+
+		<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0;?>
+		<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
+			<input
+					type="checkbox"
+					class="give-input required"
+					name="give_anonymous_donation"
+					id="give-anonymous-donation"
+					value="1"
+				<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				<?php checked( 1, $is_anonymous_donation ); ?>
+			>
+			<label class="give-label" for="give-anonymous-donation">
+				<?php _e( 'Make this an anonymous donation', 'give' ); ?>
+				<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+					<span class="give-required-indicator">*</span>
+				<?php } ?>
+				<?php echo Give()->tooltips->render_help( __( 'Need description.', 'give' ) ); ?>
+			</label>
+		</p>
 		<p id="give-comment-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-comment">
 				<?php _e( 'Comment', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<?php echo Give()->tooltips->render_help( __( 'We will send the donation receipt to this address.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'Need description.', 'give' ) ); ?>
 			</label>
 
 			<textarea
-				class="give-input required"
-				name="give_comment"
-				placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
-				id="give-comment"
-				value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
-				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
+					class="give-input required"
+					name="give_comment"
+					placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+					id="give-comment"
+					value="<?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?>"
+				<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
 
 		</p>
 		<?php
@@ -960,29 +976,29 @@ function give_default_cc_address_fields( $form_id ) {
 		// Get the country list that does not require states.
 		$states_not_required_country_list = give_states_not_required_country_list();
 		?>
-	    <p id="give-card-country-wrap" class="form-row form-row-wide">
-		    <label for="billing_country" class="give-label">
-			    <?php esc_html_e( 'Country', 'give' ); ?>
-			    <?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
-				    <span class="give-required-indicator">*</span>
-			    <?php endif; ?>
-			    <span class="give-tooltip give-icon give-icon-question"
-			          data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
-		    </label>
+		<p id="give-card-country-wrap" class="form-row form-row-wide">
+			<label for="billing_country" class="give-label">
+				<?php esc_html_e( 'Country', 'give' ); ?>
+				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
+					<span class="give-required-indicator">*</span>
+				<?php endif; ?>
+				<span class="give-tooltip give-icon give-icon-question"
+					  data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+			</label>
 
-		    <select
-				    name="billing_country"
-				    id="billing_country"
-				    class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
-			    <?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-		    >
-			    <?php
-			    foreach ( $countries as $country_code => $country ) {
-				    echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-			    }
-			    ?>
-		    </select>
-	    </p>
+			<select
+					name="billing_country"
+					id="billing_country"
+					class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
+				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+			>
+				<?php
+				foreach ( $countries as $country_code => $country ) {
+					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+				}
+				?>
+			</select>
+		</p>
 
 		<p id="give-card-address-wrap" class="form-row form-row-wide">
 			<label for="card_address" class="give-label">
@@ -1044,36 +1060,36 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
-	    <p id="give-card-state-wrap"
-	       class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
-		    <label for="card_state" class="give-label">
-			    <span class="state-label-text"><?php echo $label; ?></span>
-			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
-				    ?>
-				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
-			    <?php endif; ?>
-			    <span class="give-tooltip give-icon give-icon-question"
-			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
-		    </label>
-		    <?php
+		<p id="give-card-state-wrap"
+		   class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
+			<label for="card_state" class="give-label">
+				<span class="state-label-text"><?php echo $label; ?></span>
+				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :
+					?>
+					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
+				<?php endif; ?>
+				<span class="give-tooltip give-icon give-icon-question"
+					  data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+			</label>
+			<?php
 
-		    if ( ! empty( $states ) ) : ?>
-			    <select
-					    name="card_state"
-					    id="card_state"
-					    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
-				    <?php
-				    foreach ( $states as $state_code => $state ) {
-					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-				    }
-				    ?>
-			    </select>
-		    <?php else : ?>
-			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
-		    <?php endif; ?>
-	    </p>
+			if ( ! empty( $states ) ) : ?>
+				<select
+						name="card_state"
+						id="card_state"
+						class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
+					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
+					<?php
+					foreach ( $states as $state_code => $state ) {
+						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+					}
+					?>
+				</select>
+			<?php else : ?>
+				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
+					   placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+			<?php endif; ?>
+		</p>
 
 		<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_zip" class="give-label">
@@ -1267,9 +1283,9 @@ function give_get_login_fields( $form_id ) {
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel"
 				   data-action="give_checkout_register">
 					<?php if ( give_logged_in_only( $form_id ) ) {
-					    _e( 'Register as a part of your donation &raquo;', 'give' );
-                    } else {
-						 _e( 'Register or donate as a guest &raquo;', 'give' );
+						_e( 'Register as a part of your donation &raquo;', 'give' );
+					} else {
+						_e( 'Register or donate as a guest &raquo;', 'give' );
 					} ?>
 				</a>
 			</p>
@@ -1435,7 +1451,7 @@ function give_payment_mode_select( $form_id ) {
 							   class="give-gateway-option"
 							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
 					</li>
-					<?php
+				<?php
 				endforeach;
 				?>
 			</ul>
@@ -1972,7 +1988,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-form-minimum"
 		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
 	<input type="hidden" name="give-form-maximum"
-	       value="<?php echo give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
+		   value="<?php echo give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
 	<?php
 
 	// WP nonce field.
