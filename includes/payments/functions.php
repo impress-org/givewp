@@ -1676,7 +1676,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param int|Give_Payment $donation_id Donation Data Object.
+ * @param int $donation_id Donation Data Object.
  * @param array            $args     a. only_level = If set to true will only return the level name if multi-level enabled.
  *                                   b. separator  = The separator between the Form Title and the Donation Level.
  *
@@ -1685,7 +1685,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
 function give_get_donation_form_title( $donation_id, $args = array() ) {
-
+	// Backward compatibility.
 	if ( ! is_numeric( $donation_id ) && $donation_id instanceof Give_Payment ) {
 		$donation_id = $donation_id->ID;
 	}
