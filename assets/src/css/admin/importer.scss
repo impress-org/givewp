@@ -94,11 +94,11 @@
 		}
 
 		.give-import-donation-required-fields {
-			white-space:nowrap;
-			overflow:hidden;
+			white-space: nowrap;
+			overflow: hidden;
 
 			li {
-				display:inline-block;
+				display: inline-block;
 				margin: 0 10% 0 0;
 
 				span.give-import-donation-required-symbol {
@@ -114,6 +114,10 @@
 				}
 			}
 		}
+	}
+
+	.give-progress {
+		margin-top: 7px;
 	}
 }
 

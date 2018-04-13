@@ -1,32 +1,31 @@
-td.column-goal {
-  .give-progress-bar {
-	height: 8px;
+.give-admin-progress-bar {
+  height: 8px;
+  position: relative;
+  background: #EEE;
+  border-radius: 25px;
+  overflow: hidden;
+  margin: 5px 0 2px;
+
+  > span {
+	display: block;
+	height: 100%;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	background-color: rgb(43, 194, 83);
 	position: relative;
-	background: #EEE;
-	border-radius: 25px;
 	overflow: hidden;
-	margin: 5px 0 0;
-
-	> span {
-	  display: block;
-	  height: 100%;
-	  border-top-right-radius: 8px;
-	  border-bottom-right-radius: 8px;
-	  border-top-left-radius: 20px;
-	  border-bottom-left-radius: 20px;
-	  background-color: rgb(43, 194, 83);
-	  position: relative;
-	  overflow: hidden;
-	}
-  }
-
-  .goal-achieved {
-	> .dashicons {
-	  color: $orange;
-	  font-size: 13px;
-	  height: 16px;
-	  width: 13px;
-	  line-height: 18px;
-	}
   }
 }
+
+.give-admin-goal-achieved {
+  > .dashicons {
+	color: $orange;
+	font-size: 13px;
+	height: 16px;
+	width: 13px;
+	line-height: 18px;
+  }
+}
+
