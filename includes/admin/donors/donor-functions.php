@@ -87,11 +87,12 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 
 /**
  * Connect and Reconnect Donor with User profile.
+ *
  * @todo  $address is unnecessary param because we are store address to user.
  *
- * @param object $donor      Donor Object.
- * @param array  $donor_data Donor Post Variables.
- * @param array  $address    Address Information.
+ * @param Give_Donor $donor      Donor Object.
+ * @param array      $donor_data Donor Post Variables.
+ * @param array      $address    Address Information.
  *
  * @since 1.8.14
  *

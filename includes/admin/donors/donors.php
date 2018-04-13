@@ -444,6 +444,42 @@ function give_donor_view( $donor ) {
 							<?php
 						}
 						?>
+
+						<?php $anonymous_donor = absint( $donor->get_meta( '_give_anonymous_donor', true ) ); ?>
+						<tr class="alternate">
+							<th scope="col">
+								<label for="tablecell"><?php _e( 'Anonymous Donor:', 'give' ); ?></label>
+							</th>
+							<td>
+								<span class="donor-anonymous-donor info-item edit-item">
+									<ul class="give-radio-inline">
+										<li>
+											<label>
+												<input
+													name="give_anonymous_donor"
+													value="1"
+													type="radio"
+													<?php checked( 1, $anonymous_donor ) ?>
+												><?php _e( 'Yes', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label>
+												<input
+														name="give_anonymous_donor"
+														value="0"
+														type="radio"
+													<?php checked( 0, $anonymous_donor ) ?>
+												><?php _e( 'No', 'give' ); ?>
+											</label>
+										</li>
+									</ul>
+								</span>
+								<span class="donor-anonymous-donor info-item editable">
+									<?php echo( $anonymous_donor ? __( 'Yes', 'give' ) : __( 'No', 'give' ) ); ?>
+								</span>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 
