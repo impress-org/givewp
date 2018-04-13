@@ -156,7 +156,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			$import_setting = $this->get_import_setting();
 		}
 
-		$raw_key        = $import_setting['raw_key'];
+		$raw_key = $import_setting['raw_key'];
 
 		$file_dir = $this->csv_file;
 
@@ -254,6 +254,9 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		$donor_data = get_user_by( 'email', 'enormansell6@youtu.be' );
 		$this->assertTrue( ! empty( $donor_data->ID ) );
+
+		$donor_data = get_user_by( 'email', 'nodonorexists@youtu.be' );
+		$this->assertTrue( empty( $donor_data->ID ) );
 	}
 
 	/**
@@ -267,7 +270,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		give_import_donation_report_reset();
 
-		$import_setting = $this->get_import_setting();
+		$import_setting                = $this->get_import_setting();
 		$import_setting['create_user'] = 0;
 
 		$this->import_donation_in_live( $import_setting );
@@ -278,5 +281,102 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		$donor_data = get_user_by( 'email', 'enormansell6@youtu.be' );
 		$this->assertTrue( empty( $donor_data->ID ) );
+	}
+
+	/**
+	 * To test to check is donor is created
+	 *
+	 * @since 2.1
+	 */
+	public function test_to_check_donor_is_created() {
+
+		parent::tearDown();
+
+		give_import_donation_report_reset();
+
+		$this->import_donation_in_live();
+
+		$donor_data = new Give_Donor( 'lgraalman4@mapquest.com' );
+
+		$this->assertTrue( ! empty( $donor_data->id ) );
+
+		$donor_data = new Give_Donor( 'echicchelli8@thetimes.co.uk' );
+		$this->assertTrue( ! empty( $donor_data->id ) );
+
+
+		$donor_data = new Give_Donor( 'nodonorexists@thetimes.co.uk' );
+		$this->assertTrue( empty( $donor_data->id ) );
+	}
+
+	/**
+	 * To test to check is donation form is created or not
+	 *
+	 * @since 2.1
+	 */
+	public function test_to_check_donation_form_is_created() {
+
+		parent::tearDown();
+
+		give_import_donation_report_reset();
+
+		$this->import_donation_in_live();
+
+		$form = get_page_by_title( 'Make a wish Foundation', OBJECT, 'give_forms' );
+		$this->assertTrue( ! empty( $form->ID ) );
+		$form = new Give_Donate_Form( $form->ID );
+		$this->assertTrue( ! empty( $form->get_ID() ) );
+
+
+		$form = get_page_by_title( 'Save the Trees', OBJECT, 'give_forms' );
+		$this->assertTrue( ! empty( $form->ID ) );
+		$form = new Give_Donate_Form( $form->ID );
+		$this->assertTrue( ! empty( $form->get_ID() ) );
+
+		$form = get_page_by_title( 'Help a Child', OBJECT, 'give_forms' );
+		$this->assertTrue( ! empty( $form->ID ) );
+		$form = new Give_Donate_Form( $form->ID );
+		$this->assertTrue( ! empty( $form->get_ID() ) );
+
+		$form = get_page_by_title( 'No Donation Form', OBJECT, 'give_forms' );
+		$this->assertTrue( empty( $form->ID ) );
+	}
+
+
+	/**
+	 * Test to check if donation form is created
+	 *
+	 * @since 2.1
+	 */
+	public function test_to_check_donation_is_created() {
+
+		parent::tearDown();
+
+		give_import_donation_report_reset();
+		$this->import_donation_in_live();
+
+		/* Give get all donation */
+		$payments = new Give_Payments_Query( array( 'number' => - 1 ) );
+		$payments = $payments->get_payments();
+		$this->assertEquals( 10, count( $payments ) );
+
+		$donor_data = new Give_Donor( 'lgodball2@hao123.com' );
+		/* Give get all donation */
+		$payments = new Give_Payments_Query( array( 'number' => - 1, 'donor' => $donor_data->id ) );
+		$payments = $payments->get_payments();
+		foreach ( $payments as $payment ) {
+			$this->assertEquals( 103, absint( $payment->total ) );
+			$this->assertEquals( 'Save the Bees', $payment->form_title );
+			$this->assertEquals( 'EUR', $payment->currency );
+			$this->assertEquals( 'Lindsay', $payment->first_name );
+			$this->assertEquals( 'Godball', $payment->last_name );
+			$this->assertEquals( 'BIG BAZAR', $payment->get_meta( '_give_donation_company' ) );
+			$this->assertEquals( 'lgodball2@hao123.com', $payment->email );
+			$this->assertEquals( 'test', $payment->mode );
+			$this->assertEquals( 'refunded', $payment->status );
+			$this->assertEquals( 'offline', $payment->gateway );
+			//$this->assertEquals( '60030 Evergreen Center', $payment->address );
+
+			var_dump( $payment->address );
+		}
 	}
 }
