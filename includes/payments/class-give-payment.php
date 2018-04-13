@@ -968,7 +968,6 @@ final class Give_Payment {
 
 					case 'anonymous':
 						give_update_meta( $this->ID, '_give_anonymous_donation', $this->anonymous );
-						Give()->donor_meta->update_meta( $this->donor_id, '_give_anonymous_donor', $this->anonymous );
 						break;
 
 					default:
