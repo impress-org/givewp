@@ -178,7 +178,7 @@ class Give_Graph {
 
 		$yaxis_count = 1;
 
-		$this->load_scripts();
+//		$this->load_scripts();
 
 		ob_start();
 		?>
