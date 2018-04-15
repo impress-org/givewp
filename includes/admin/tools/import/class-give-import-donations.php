@@ -675,7 +675,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		}
 
 		/**
-		 * Get dda
+		 * Get data from File
+		 *
+		 * @since 2.1
 		 *
 		 * @param $file_dir
 		 *

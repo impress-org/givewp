@@ -55,7 +55,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * Tear it down.
 	 */
 	public function tearDown() {
-		parent::tearDown();
+//		parent::tearDown();
 	}
 
 	/**
@@ -85,6 +85,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			'zip',
 			'state',
 			'country',
+			'post_meta',
 		);
 	}
 
@@ -166,6 +167,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		// get data from CSV
 		$raw_data = give_get_raw_data_from_file( $file_dir, 1, $total, ',' );
 		$main_key = give_get_raw_data_from_file( $file_dir, 0, 1, ',' );
+		$main_key = $main_key[0];
 
 		$current_key = 1;
 		foreach ( $raw_data as $row_data ) {
@@ -359,24 +361,31 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$payments = $payments->get_payments();
 		$this->assertEquals( 10, count( $payments ) );
 
-		$donor_data = new Give_Donor( 'lgodball2@hao123.com' );
+		$donor_data = new Give_Donor( 'mvarga3@google.es' );
 		/* Give get all donation */
 		$payments = new Give_Payments_Query( array( 'number' => - 1, 'donor' => $donor_data->id ) );
 		$payments = $payments->get_payments();
 		foreach ( $payments as $payment ) {
-			$this->assertEquals( 103, absint( $payment->total ) );
-			$this->assertEquals( 'Save the Bees', $payment->form_title );
+			$this->assertEquals( 105, absint( $payment->total ) );
+			$this->assertEquals( 'Help a Child', $payment->form_title );
 			$this->assertEquals( 'EUR', $payment->currency );
-			$this->assertEquals( 'Lindsay', $payment->first_name );
-			$this->assertEquals( 'Godball', $payment->last_name );
-			$this->assertEquals( 'BIG BAZAR', $payment->get_meta( '_give_donation_company' ) );
-			$this->assertEquals( 'lgodball2@hao123.com', $payment->email );
+			$this->assertEquals( 'Maxim', $payment->first_name );
+			$this->assertEquals( 'Varga', $payment->last_name );
+			$this->assertEquals( 'GiveWP', $payment->get_meta( '_give_donation_company' ) );
+			$this->assertEquals( 'mvarga3@google.es', $payment->email );
 			$this->assertEquals( 'test', $payment->mode );
-			$this->assertEquals( 'refunded', $payment->status );
-			$this->assertEquals( 'offline', $payment->gateway );
-			//$this->assertEquals( '60030 Evergreen Center', $payment->address );
+			$this->assertEquals( 'publish', $payment->status );
+			$this->assertEquals( 'paypal', $payment->gateway );
+			$this->assertEquals( '137 Killdeer Point', $payment->address['line1'] );
+			$this->assertEquals( 'Oklahoma City', $payment->address['city'] );
+			$this->assertEquals( '99504', $payment->address['zip'] );
+			$this->assertEquals( 'OK', $payment->address['state'] );
+			$this->assertEquals( 'US', $payment->address['country'] );
 
-			var_dump( $payment->address );
+
+			var_dump( $payment->ID );
+
+			$this->assertEquals( 'yes', give_get_meta( $payment->ID, 'donation_imported', true ) );
 		}
 	}
 }
