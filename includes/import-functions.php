@@ -181,17 +181,18 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		// If new form is created.
 		if ( ! empty( $new_form ) ) {
 			$new_form = array(
-				'_give_custom_amount_text' => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'Custom' ),
-				'_give_logged_in_only'     => 'enabled',
-				'_give_custom_amount'      => 'enabled',
-				'_give_payment_import'     => true,
-				'_give_display_style'      => 'radios',
-				'_give_payment_display'    => 'onpage',
-				'give_product_notes'       => 'Donation Notes',
-				'_give_product_type'       => 'default',
-				'_give_default_gateway'    => 'global',
-				'_give_show_register_form' => 'both',
-				'_give_price_option'       => $price_option,
+				'_give_custom_amount_text'          => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'custom' ),
+				'_give_logged_in_only'              => 'enabled',
+				'_give_custom_amount'               => 'enabled',
+				'_give_payment_import'              => true,
+				'_give_display_style'               => 'radios',
+				'_give_payment_display'             => 'onpage',
+				'give_product_notes'                => 'Donation Notes',
+				'_give_product_type'                => 'default',
+				'_give_default_gateway'             => 'global',
+				'_give_customize_offline_donations' => 'global',
+				'_give_show_register_form'          => 'both',
+				'_give_price_option'                => $price_option,
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
