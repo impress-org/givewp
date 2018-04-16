@@ -752,6 +752,26 @@ Give.form = {
 				this.autoSetMultiLevel( level_field );
 			}
 
+			let give_form_wrap = jQuery( '.give-form-wrap' ),
+			    is_form_grid   = give_form_wrap.hasClass( 'give-form-grid-wrap' );
+
+			if ( is_form_grid && 1 === jQuery( '#give-modal-form-' + form_id ).length ) {
+				jQuery.magnificPopup.open( {
+					items: {
+						type: 'inline',
+						src: '#give-modal-form-' + form_id,
+					},
+					fixedContentPos: true,
+					fixedBgPos: true,
+					closeBtnInside: true,
+					midClick: true,
+					removalDelay: 300,
+					mainClass: 'modal-fade-slide',
+				});
+
+				return;
+			}
+
 			// This form is modal display so show the modal.
 			if ( display_modal || display_button ) {
 				give_open_form_modal( $form_wrapper, $form );
