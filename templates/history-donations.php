@@ -111,7 +111,7 @@ if ( $donations ) : ?>
 
 					if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-id"><span class="title-for-mobile">%2$s</span>#%1$s</td>',
+							'<td class="give-donation-id"><span class="title-for-mobile">%2$s</span>%1$s</td>',
 							give_get_payment_number( $post->ID ), esc_html( $table_headings['id'] )
 						);
 					endif;
