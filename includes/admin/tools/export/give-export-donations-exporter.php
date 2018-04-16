@@ -118,7 +118,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				case 'donation_id' :
 					$cols['donation_id'] = __( 'Donation ID', 'give' );
 				case 'seq_id' :
-					$cols['seq_id'] = __( 'Payment Number', 'give' );
+					$cols['seq_id'] = __( 'Donation Number', 'give' );
 					break;
 				case 'first_name' :
 					$cols['first_name'] = __( 'First Name', 'give' );
