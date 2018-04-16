@@ -839,6 +839,7 @@ function give_form_grid_shortcode( $atts ) {
 		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
 		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
 		add_filter( 'give_form_wrap_classes', 'add_class_for_form_grid', 10, 3 );
+		add_action( 'give_donation_form_top', 'give_is_form_grid_page_hidden_field', 10, 3 );
 
 		echo '<div class="give-wrap">';
 		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';

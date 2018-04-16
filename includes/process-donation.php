@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_process_donation_form() {
+
 	$is_ajax = isset( $_POST['give_ajax'] );
 
 	// Verify donation form nonce.
