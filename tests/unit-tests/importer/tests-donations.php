@@ -55,7 +55,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * Tear it down.
 	 */
 	public function tearDown() {
-//		parent::tearDown();
+		parent::tearDown();
 	}
 
 	/**
@@ -381,10 +381,35 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			$this->assertEquals( '99504', $payment->address['zip'] );
 			$this->assertEquals( 'OK', $payment->address['state'] );
 			$this->assertEquals( 'US', $payment->address['country'] );
+			$this->assertEquals( 'yes', give_get_meta( $payment->ID, 'donation_imported', true ) );
+		}
 
 
-			var_dump( $payment->ID );
+		/* Give get all donation */
+		$payments = new Give_Payments_Query( array( 'number' => - 1 ) );
+		$payments = $payments->get_payments();
+		$this->assertEquals( 10, count( $payments ) );
 
+		$donor_data = new Give_Donor( 'kselwin7@bandcamp.com' );
+		/* Give get all donation */
+		$payments = new Give_Payments_Query( array( 'number' => - 1, 'donor' => $donor_data->id ) );
+		$payments = $payments->get_payments();
+		foreach ( $payments as $payment ) {
+			$this->assertEquals( 226, absint( $payment->total ) );
+			$this->assertEquals( 'Salvation Army', $payment->form_title );
+			$this->assertEquals( 'EUR', $payment->currency );
+			$this->assertEquals( 'Karine', $payment->first_name );
+			$this->assertEquals( 'Selwin', $payment->last_name );
+			$this->assertEquals( '', $payment->get_meta( '_give_donation_company' ) );
+			$this->assertEquals( 'kselwin7@bandcamp.com', $payment->email );
+			$this->assertEquals( 'live', $payment->mode );
+			$this->assertEquals( 'pending', $payment->status );
+			$this->assertEquals( 'paypal', $payment->gateway );
+			$this->assertEquals( '3050 Fisk Crossing', $payment->address['line1'] );
+			$this->assertEquals( 'Kansas City', $payment->address['city'] );
+			$this->assertEquals( '99508', $payment->address['zip'] );
+			$this->assertEquals( 'MO', $payment->address['state'] );
+			$this->assertEquals( 'US', $payment->address['country'] );
 			$this->assertEquals( 'yes', give_get_meta( $payment->ID, 'donation_imported', true ) );
 		}
 	}
