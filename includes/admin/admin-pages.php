@@ -293,9 +293,14 @@ add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 )
 function give_tools_page_pages( $settings ) {
 	include( 'abstract-admin-settings-page.php' );
 
+
 	$settings = array(
-		// System Info.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
+
+		// Export.
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
+
+		// Import
+		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
 
 		// Logs.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' ),
@@ -306,11 +311,8 @@ function give_tools_page_pages( $settings ) {
 		// Data.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' ),
 
-		// Export.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
-
-		// Import
-		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
+		// System Info.
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
 	);
 
 	// Output.
