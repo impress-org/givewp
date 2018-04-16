@@ -326,7 +326,7 @@ add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 0, 1 );
  * @return string
  */
 function give_set_default_tab_form_tools_page( $default_tab ) {
-	return 'system-info';
+	return 'export';
 }
 add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
 
