@@ -117,6 +117,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			switch ( $key ) {
 				case 'donation_id' :
 					$cols['donation_id'] = __( 'Donation ID', 'give' );
+				case 'seq_id' :
+					$cols['seq_id'] = __( 'Payment Number', 'give' );
 					break;
 				case 'first_name' :
 					$cols['first_name'] = __( 'First Name', 'give' );
@@ -249,6 +251,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				if ( ! empty( $this->cols['donation_id'] ) ) {
 					$data[ $i ]['donation_id'] = $payment->ID;
 				}
+
+				if ( ! empty( $this->cols['seq_id'] ) ) {
+					$data[ $i ]['seq_id'] = Give()->seq_donation_number->get_serial_code( $payment->ID );
+				}
+
 				if ( ! empty( $this->cols['first_name'] ) ) {
 					$data[ $i ]['first_name'] = isset( $name_array[0] ) ? $name_array[0] : '';
 				}
@@ -332,6 +339,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				// First we remove the standard included keys from above.
 				$remove_keys = array(
 					'donation_id',
+					'seq_id',
 					'first_name',
 					'last_name',
 					'email',

@@ -196,6 +196,21 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											       id="give-export-donation-id"><?php _e( 'Donation ID', 'give' ); ?>
 										</label>
 									</li>
+
+									<?php
+									if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ) {
+										?>
+										<li>
+											<label for="give-export-seq-id">
+												<input type="checkbox" checked
+												       name="give_give_donations_export_option[seq_id]"
+												       id="give-export-donation-id"><?php _e( 'Payment Number', 'give' ); ?>
+											</label>
+										</li>
+										<?php
+									}
+									?>
+
 									<li>
 										<label for="give-export-first-name">
 											<input type="checkbox" checked
@@ -314,7 +329,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						</td>
 					</tr>
 
-					<tr  class="give-hidden give-export-donations-hide give-export-donations-ffm">
+					<tr class="give-hidden give-export-donations-hide give-export-donations-ffm">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Form Field Manager Fields:', 'give' ); ?></label>
 						</th>
@@ -326,8 +341,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						</td>
 					</tr>
 
-					<tr 
-					    class="give-hidden give-export-donations-hide give-export-donations-standard-fields">
+					<tr
+						class="give-hidden give-export-donations-hide give-export-donations-standard-fields">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Custom Field Columns:', 'give' ); ?></label>
 						</th>
@@ -339,7 +354,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						</td>
 					</tr>
 
-					<tr  class="give-hidden give-export-donations-hide give-export-donations-hidden-fields">
+					<tr class="give-hidden give-export-donations-hide give-export-donations-hidden-fields">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Hidden Custom Field Columns:', 'give' ); ?></label>
 						</th>
@@ -352,7 +367,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					</tr>
 
 					<tr class="end">
-						<td></th>
+						<td>
+						</th>
 						<td>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
