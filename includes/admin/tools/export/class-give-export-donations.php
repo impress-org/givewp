@@ -114,14 +114,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td colspan="2">
 							<h2 id="give-export-title"><?php _e( 'Export Donation History and Custom Fields to CSV', 'give' ) ?></h2>
 							<p class="give-field-description"><?php _e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ) ?></p>
-						</th>
+						</td>
 					</tr>
 
 					<tr>
 						<td scope="row" class="row-title">
 							<label
 								for="give-form-for-csv-export"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
 								<?php
@@ -166,7 +166,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td scope="row" class="row-title">
 							<label
 								for="give-export-donations-status"><?php _e( 'Filter by Status:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td>
 							<div class="give-clearfix give-clearfix">
 								<select name="status" id="give-export-donations-status">
@@ -185,7 +185,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Standard Columns:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td>
 							<div class="give-clearfix give-clearfix">
 								<ul class="give-export-option-ul">
@@ -332,7 +332,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr class="give-hidden give-export-donations-hide give-export-donations-ffm">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Form Field Manager Fields:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
 								<ul class="give-export-option-ul"></ul>
@@ -345,7 +345,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						class="give-hidden give-export-donations-hide give-export-donations-standard-fields">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Custom Field Columns:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
 								<ul class="give-export-option-ul"></ul>
@@ -357,7 +357,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr class="give-hidden give-export-donations-hide give-export-donations-hidden-fields">
 						<td scope="row" class="row-title">
 							<label><?php _e( 'Hidden Custom Field Columns:', 'give' ); ?></label>
-						</th>
+						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
 								<ul class="give-export-option-ul"></ul>
@@ -368,14 +368,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 					<tr class="end">
 						<td>
-						</th>
+						</td>
 						<td>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
 							<input type="submit" value="Generate CSV" class="button button-primary">
 
 							<div class="add-notices"></div>
-						</th>
+						</td>
 					</tr>
 					</tbody>
 				</table>
