@@ -322,7 +322,12 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$this->import_donation_in_live();
 
 		/* Give get all donation */
-		$payments = new Give_Payments_Query( array( 'number' => - 1 ) );
+		$payments = new Give_Payments_Query(
+			array( 'number' => - 1,
+			'meta_key'   => 'donation_imported',
+			'meta_value' => 'yes',
+			)
+		);
 		$payments = $payments->get_payments();
 		$this->assertEquals( 10, count( $payments ) );
 
@@ -348,12 +353,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			$this->assertEquals( 'US', $payment->address['country'] );
 			$this->assertEquals( 'yes', give_get_meta( $payment->ID, 'donation_imported', true ) );
 		}
-
-
-		/* Give get all donation */
-		$payments = new Give_Payments_Query( array( 'number' => - 1 ) );
-		$payments = $payments->get_payments();
-		$this->assertEquals( 10, count( $payments ) );
 
 		$donor_data = new Give_Donor( 'kselwin7@bandcamp.com' );
 		/* Give get all donation */
