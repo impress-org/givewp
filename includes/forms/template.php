@@ -2040,3 +2040,18 @@ function add_give_goal_progress_bar_class( $class_bar ) {
 
 	return $class_bar;
 }
+
+/**
+ * Add a class to the form wrap on the grid page.
+ *
+ * @param array $class Array of form wrapper classes.
+ * @param int   $id    ID of the form.
+ * @param array $args  Additional args.
+ *
+ * @return array
+ */
+function add_class_for_form_grid( $class, $id, $args ) {
+	$class[] = 'give-form-grid-wrap';
+
+	return $class;
+}

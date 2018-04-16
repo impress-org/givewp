@@ -168,3 +168,20 @@
 .mfp-close:hover {
 	background-color: rgba(0, 0, 0, 0);
 }
+
+/**
+ * Display Style Button
+ */
+.mfp-content {
+	.give-display-button-only .give-form-title {
+		display: none;
+	}
+
+	.give-display-button-only > *:not(form) {
+		display: block;
+	}
+
+	.give-display-button-only form > *:not(.give-btn-modal) {
+		display: block;
+	}
+}
