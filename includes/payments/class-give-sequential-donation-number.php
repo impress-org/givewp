@@ -84,7 +84,7 @@ class Give_Sequential_Donation_Number {
 		}
 
 		$serial_number = $this->__set_donation_number( $donation_id );
-		$serial_code   = $this->__set_number_padding( $serial_number );
+		$serial_code   = $this->set_number_padding( $serial_number );
 
 		// Add prefix.
 		if ( $prefix = give_get_option( 'sequential-ordering_number_prefix', '' ) ) {
@@ -170,13 +170,13 @@ class Give_Sequential_Donation_Number {
 	 * Set number padding in serial code.
 	 *
 	 * @since
-	 * @access private
+	 * @access public
 	 *
 	 * @param $serial_number
 	 *
 	 * @return string
 	 */
-	private function __set_number_padding( $serial_number ) {
+	public function set_number_padding( $serial_number ) {
 		if ( $number_padding = give_get_option( 'sequential-ordering_number_padding', 0 ) ) {
 			$serial_number = str_pad( $serial_number, $number_padding, '0', STR_PAD_LEFT );
 		}
