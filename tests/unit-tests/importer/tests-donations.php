@@ -106,14 +106,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		);
 	}
 
-	/**
-	 * Get the total number of row from the CSV and count
-	 * there are total 11 row 10 donation and 1st one is Donation key name
-	 */
-	public function test_get_csv_data_from_file_dir() {
-		$this->assertEquals( 11, $this->total );
-	}
-
 	public function import_donation_in_dry_run() {
 		$import_setting = $this->import_setting;
 
@@ -177,6 +169,13 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		}
 	}
 
+	/**
+	 * Get the total number of row from the CSV and count
+	 * there are total 11 row 10 donation and 1st one is Donation key name
+	 */
+	public function test_get_csv_data_from_file_dir() {
+		$this->assertEquals( 11, $this->total );
+	}
 
 	/**
 	 * Test by uploading live donation from CSV
@@ -184,8 +183,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * @since 2.1
 	 */
 	public function test_for_live() {
-
-		parent::tearDown();
 
 		give_import_donation_report_reset();
 		$import_setting = $this->get_import_setting();
@@ -244,8 +241,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 */
 	public function test_to_check_wp_user_is_created() {
 
-		parent::tearDown();
-
 		give_import_donation_report_reset();
 
 		$this->import_donation_in_live();
@@ -262,37 +257,11 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * To test to check is WP user is not getting created
-	 *
-	 * @since 2.1
-	 */
-	public function test_to_check_wp_user_not_created() {
-
-		parent::tearDown();
-
-		give_import_donation_report_reset();
-
-		$import_setting                = $this->get_import_setting();
-		$import_setting['create_user'] = 0;
-
-		$this->import_donation_in_live( $import_setting );
-
-		$donor_data = get_user_by( 'email', 'vbranwhite0@desdev.cn' );
-
-		$this->assertTrue( empty( $donor_data->ID ) );
-
-		$donor_data = get_user_by( 'email', 'enormansell6@youtu.be' );
-		$this->assertTrue( empty( $donor_data->ID ) );
-	}
-
-	/**
 	 * To test to check is donor is created
 	 *
 	 * @since 2.1
 	 */
 	public function test_to_check_donor_is_created() {
-
-		parent::tearDown();
 
 		give_import_donation_report_reset();
 
@@ -316,8 +285,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * @since 2.1
 	 */
 	public function test_to_check_donation_form_is_created() {
-
-		parent::tearDown();
 
 		give_import_donation_report_reset();
 
@@ -350,8 +317,6 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * @since 2.1
 	 */
 	public function test_to_check_donation_is_created() {
-
-		parent::tearDown();
 
 		give_import_donation_report_reset();
 		$this->import_donation_in_live();
@@ -412,5 +377,29 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			$this->assertEquals( 'US', $payment->address['country'] );
 			$this->assertEquals( 'yes', give_get_meta( $payment->ID, 'donation_imported', true ) );
 		}
+	}
+
+	/**
+	 * To test to check is WP user is not getting created
+	 *
+	 * @since 2.1
+	 */
+	public function test_to_check_wp_user_not_created() {
+
+		parent::tearDown();
+
+		give_import_donation_report_reset();
+
+		$import_setting                = $this->get_import_setting();
+		$import_setting['create_user'] = 0;
+
+		$this->import_donation_in_live( $import_setting );
+
+		$donor_data = get_user_by( 'email', 'vbranwhite0@desdev.cn' );
+
+		$this->assertTrue( empty( $donor_data->ID ) );
+
+		$donor_data = get_user_by( 'email', 'enormansell6@youtu.be' );
+		$this->assertTrue( empty( $donor_data->ID ) );
 	}
 }
