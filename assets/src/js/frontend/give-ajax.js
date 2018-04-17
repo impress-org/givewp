@@ -115,7 +115,6 @@ jQuery( document ).ready( function( $ ) {
 
 	//Switch the gateway on gateway selection field change
 	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function( e ) {
-
 		e.preventDefault();
 
 		//Which payment gateway to load?
