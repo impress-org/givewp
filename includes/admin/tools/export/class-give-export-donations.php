@@ -117,6 +117,66 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						</td>
 					</tr>
 
+					<?php
+					if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
+						?>
+						<tr>
+							<td scope="row" class="row-title">
+								<label
+									for="give-form-for-csv-export"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
+							</td>
+							<td class="give-field-wrap">
+								<div class="give-clearfix give-clearfix">
+									<?php
+									echo Give()->html->category_dropdown(
+										'give_forms_categories[]',
+										0,
+										array(
+											'class'           => 'give_forms_categories',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
+										)
+									);
+									?>
+								</div>
+							</td>
+						</tr>
+						<?php
+					}
+
+					if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
+						?>
+						<tr>
+							<td scope="row" class="row-title">
+								<label
+									for="give-form-for-csv-export"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
+							</td>
+							<td class="give-field-wrap">
+								<div class="give-clearfix give-clearfix">
+									<?php
+									echo Give()->html->tags_dropdown(
+										'give_forms_tags[]',
+										0,
+										array(
+											'class'           => 'give_forms_tags',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
+										)
+									);
+									?>
+								</div>
+							</td>
+						</tr>
+						<?php
+					}
+					?>
+
 					<tr>
 						<td scope="row" class="row-title">
 							<label
