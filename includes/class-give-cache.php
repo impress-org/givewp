@@ -732,6 +732,13 @@ class Give_Cache {
 			self::$instance->get_incrementer( true );
 			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
 
+			/**
+			 * Fire the action when all cache deleted.
+			 *
+			 * @since 2.1.0
+			 */
+			do_action( 'give_fluched_cache' );
+
 			return true;
 		}
 

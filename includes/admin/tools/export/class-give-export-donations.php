@@ -204,7 +204,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											<label for="give-export-seq-id">
 												<input type="checkbox" checked
 												       name="give_give_donations_export_option[seq_id]"
-												       id="give-export-donation-id"><?php _e( 'Donation Number', 'give' ); ?>
+												       id="give-export-seq-id"><?php _e( 'Donation Number', 'give' ); ?>
 											</label>
 										</li>
 										<?php

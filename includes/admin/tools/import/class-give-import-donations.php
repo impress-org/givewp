@@ -667,12 +667,29 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( $file_id ) {
 				$file_dir = get_attached_file( $file_id );
 				if ( $file_dir ) {
-					$file = new SplFileObject( $file_dir, 'r' );
-					$file->seek( PHP_INT_MAX );
-					$total = $file->key() + 1;
+					$total = $this->get_csv_data_from_file_dir( $file_dir );
 				}
 			}
 
+			return $total;
+		}
+
+		/**
+		 * Get data from File
+		 *
+		 * @since 2.1
+		 *
+		 * @param $file_dir
+		 *
+		 * @return bool|int
+		 */
+		public function get_csv_data_from_file_dir( $file_dir ) {
+			$total = false;
+			if ( $file_dir ) {
+				$file = new SplFileObject( $file_dir, 'r' );
+				$file->seek( PHP_INT_MAX );
+				$total = $file->key() + 1;
+			}
 			return $total;
 		}
 
@@ -804,7 +821,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</label>
 				<p class="give-field-description">
 					<?php
-					_e( 'Preview what the import would look like without making any defalut changes to your site or your database.', 'give' );
+					_e( 'Preview what the import would look like without making any default changes to your site or your database.', 'give' );
 					?>
 				</p>
 			</div>

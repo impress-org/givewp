@@ -33,7 +33,6 @@ function give_import_donation_report_update( $value = array() ) {
 	update_option( 'give_import_donation_report', $value );
 }
 
-
 /**
  * Delete the Import report of the donations
  *
@@ -182,17 +181,18 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		// If new form is created.
 		if ( ! empty( $new_form ) ) {
 			$new_form = array(
-				'_give_custom_amount_text' => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'Custom' ),
-				'_give_logged_in_only'     => 'enabled',
-				'_give_custom_amount'      => 'enabled',
-				'_give_payment_import'     => true,
-				'_give_display_style'      => 'radios',
-				'_give_payment_display'    => 'onpage',
-				'give_product_notes'       => 'Donation Notes',
-				'_give_product_type'       => 'default',
-				'_give_default_gateway'    => 'global',
-				'_give_show_register_form' => 'both',
-				'_give_price_option'       => $price_option,
+				'_give_custom_amount_text'          => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'custom' ),
+				'_give_logged_in_only'              => 'enabled',
+				'_give_custom_amount'               => 'enabled',
+				'_give_payment_import'              => true,
+				'_give_display_style'               => 'radios',
+				'_give_payment_display'             => 'onpage',
+				'give_product_notes'                => 'Donation Notes',
+				'_give_product_type'                => 'default',
+				'_give_default_gateway'             => 'global',
+				'_give_customize_offline_donations' => 'global',
+				'_give_show_register_form'          => 'both',
+				'_give_price_option'                => $price_option,
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
@@ -535,17 +535,36 @@ function give_import_donation_form_options() {
  */
 function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
 	/**
-	 * Filter to modify delimiter of Import.
+	 * Filter to modify delimiter of Import
 	 *
-	 * @since
-	 * 1.8.14
+	 * @since 1.8.14
 	 *
-	 * Return string $delimiter.
+	 * @param string $delimiter
+	 *
+	 * @return string $delimiter
 	 */
 	$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
 
+	$file_dir = give_get_file_data_by_file_id( $file_id );
+
+	return give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter );
+}
+
+/**
+ * Get raw data from file data
+ *
+ * @since 2.1
+ *
+ * @param $file_dir
+ * @param $start
+ * @param $end
+ * @param $delimiter
+ *
+ * @return array
+ */
+function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
 	$raw_data = array();
-	$file_dir = get_attached_file( $file_id );
+
 	$count    = 0;
 	if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
 		while ( false !== ( $row = fgetcsv( $handle, 0, $delimiter ) ) ) {
@@ -558,6 +577,19 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 	}
 
 	return $raw_data;
+}
+
+/**
+ * Get content from the attachment id of CSV
+ *
+ * @since 2.1
+ *
+ * @param $file_id
+ *
+ * @return false|string file content
+ */
+function give_get_file_data_by_file_id( $file_id ) {
+	return get_attached_file( $file_id );
 }
 
 
@@ -598,6 +630,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$dry_run_duplicate_form        = false;
 	$dry_run_duplicate_donor       = false;
 	$donation_key                  = empty( $import_setting['donation_key'] ) ? 1 : (int) $import_setting['donation_key'];
+	$payment_id = false;
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -668,7 +701,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			if ( ! empty( $donor_data->id ) ) {
 				$donor_id = $donor_data->id;
 			} else {
-				return false;
+				return $payment_id;
 			}
 		}
 	} else {
@@ -683,7 +716,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		// get form data or register a form data.
 		$form = give_import_get_form_data_from_csv( $data, $import_setting );
 		if ( false == $form && empty( $dry_run ) ) {
-			return false;
+			return $payment_id;
 		} else {
 			$price_id = ( ! empty( $form->price_id ) ) ? $form->price_id : false;
 		}
@@ -815,6 +848,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
+				$payment_id = false;
 			}
 
 			/**
@@ -831,13 +865,14 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			do_action( 'give_import_after_import_payment', $payment, $payment_data, $data, $donor_data, $form );
 		} else {
 			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
+			$payment_id = true;
 		}
 	}
 
 	// update the report
 	give_import_donation_report_update( $report );
 
-	return true;
+	return $payment_id;
 }
 
 /**

@@ -18,7 +18,7 @@ jQuery( function( $ ) {
 		closeBtnInside: true,
 		midClick: true,
 		removalDelay: 300,
-		mainClass: 'my-mfp-slide-bottom',
+		mainClass: 'modal-fade-slide',
 	});
 
 	// Disable button if it have give-disabled class init.

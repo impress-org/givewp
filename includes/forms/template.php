@@ -2078,3 +2078,70 @@ function add_give_goal_progress_bar_class( $class_bar ) {
 
 	return $class_bar;
 }
+
+/**
+ * Add a class to the form wrap on the grid page.
+ *
+ * @param array $class Array of form wrapper classes.
+ * @param int   $id    ID of the form.
+ * @param array $args  Additional args.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function add_class_for_form_grid( $class, $id, $args ) {
+	$class[] = 'give-form-grid-wrap';
+
+	return $class;
+}
+
+/**
+ * Add hidden field to Form Grid page
+ *
+ * @param int              $form_id The form ID.
+ * @param array            $args    An array of form arguments.
+ * @param Give_Donate_Form $form    Form object.
+ *
+ * @since 2.1
+ */
+function give_is_form_grid_page_hidden_field( $id, $args, $form ) {
+	echo '<input type="hidden" name="is-form-grid" value="true" />';
+}
+
+/**
+ * Redirect to the same paginated URL on the Form Grid page
+ * and adds query parameters to open the popup again after
+ * redirection.
+ *
+ * @param string $redirect URL for redirection.
+ * @param array  $args     Array of additional args.
+ *
+ * @since 2.1
+ * @return string
+ */
+function give_redirect_and_popup_form( $redirect, $args ) {
+
+	// Check the page has Form Grid.
+	$is_form_grid = isset( $_POST['is-form-grid'] ) ? give_clean( $_POST['is-form-grid'] ) : '';
+
+	if ( 'true' === $is_form_grid ) {
+
+		$payment_mode = give_clean( $_POST['payment-mode'] );
+		$form_id = $args['form-id'];
+
+		// Get the URL without Query parameters.
+		$redirect = strtok( $redirect, '?' );
+
+		// Add query parameters 'form-id' and 'payment-mode'.
+		$redirect = add_query_arg( array(
+			'form-id'      => $form_id,
+			'payment-mode' => $payment_mode,
+		), $redirect );
+	}
+
+	// Return the modified URL.
+	return $redirect;
+}
+
+add_filter( 'give_send_back_to_checkout', 'give_redirect_and_popup_form', 10, 2 );
