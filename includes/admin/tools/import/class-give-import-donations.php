@@ -821,7 +821,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</label>
 				<p class="give-field-description">
 					<?php
-					_e( 'Preview what the import would look like without making any defalut changes to your site or your database.', 'give' );
+					_e( 'Preview what the import would look like without making any default changes to your site or your database.', 'give' );
 					?>
 				</p>
 			</div>
