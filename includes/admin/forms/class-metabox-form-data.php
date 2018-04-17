@@ -151,7 +151,7 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'          => __( 'Max/Min. Amount', 'give' ),
+						'name'          => __( 'Min/Max. Amount', 'give' ),
 						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
 						'id'            => $prefix . 'custom_amount_range',
 						'type'          => 'range_slider',

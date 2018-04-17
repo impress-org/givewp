@@ -196,7 +196,7 @@ $give_updates = Give_Updates::get_instance();
 			<td>
 				<?php
 				if ( ! is_wp_error( $tls_check ) ) {
-					esc_html_e( $tls_check->rating);
+					esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version );
 				}
 				?>
 			</td>
