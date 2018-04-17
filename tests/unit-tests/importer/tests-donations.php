@@ -1,30 +1,80 @@
 <?php
 /**
- * Meta
+ * Test Case to check Donation Importer functionality
+ *
+ * @since 2.1
+ *
  * @package Give\Tests\Importer
  */
 
 
+/**
+ * Class WC_Tests_Give_Import_Donations to test the donation importer functionality
+ *
+ * @since 2.1
+ */
 class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
+
 	/**
 	 * Test CSV file path.
+	 *
+	 * @since 2.1
 	 *
 	 * @var string
 	 */
 	protected $csv_file = '';
 
+	/**
+	 * Instance of Give_Import_Donations to help test the importer
+	 *
+	 * @since 2.1
+	 *
+	 * @var array
+	 */
 	protected $importer_class = '';
 
+	/**
+	 * Contain raw data from files that will be imported.
+	 *
+	 * @since 2.1
+	 *
+	 * @var string
+	 */
 	protected $raw_data = '';
 
+	/**
+	 * Contain raw data from files that will be imported.
+	 *
+	 * @since 2.1
+	 *
+	 * @var string
+	 */
 	protected $raw_key = '';
 
+
+	/**
+	 * Importer setting.
+	 *
+	 * @since 2.1
+	 *
+	 * @var string
+	 */
 	protected $import_setting = '';
 
+
+	/**
+	 * Contain total number of row in CSV.
+	 *
+	 * @since 2.1
+	 *
+	 * @var string
+	 */
 	protected $total = '';
 
 	/**
 	 * Set it up.
+	 *
+	 * @since 2.1
 	 */
 	function setUp() {
 
@@ -53,6 +103,8 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 	/**
 	 * Tear it down.
+	 *
+	 * @since 2.1
 	 */
 	public function tearDown() {
 		parent::tearDown();
@@ -62,6 +114,7 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * Get CSV mapped items.
 	 *
 	 * @since 2.1
+	 *
 	 * @return array
 	 */
 	private function get_csv_mapped_items() {
@@ -92,6 +145,8 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	/**
 	 * Get import setting
 	 *
+	 * @since 2.1
+	 *
 	 * @return array
 	 */
 	private function get_import_setting() {
@@ -106,6 +161,11 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		);
 	}
 
+	/**
+	 * Run importer in Dry run stage
+	 *
+	 * @since 2.1
+	 */
 	public function import_donation_in_dry_run() {
 		$import_setting = $this->import_setting;
 
@@ -172,6 +232,8 @@ class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	/**
 	 * Get the total number of row from the CSV and count
 	 * there are total 11 row 10 donation and 1st one is Donation key name
+	 *
+	 * @since 2.1
 	 */
 	public function test_get_csv_data_from_file_dir() {
 		$this->assertEquals( 11, $this->total );
