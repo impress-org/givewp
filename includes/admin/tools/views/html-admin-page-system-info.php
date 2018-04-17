@@ -181,11 +181,17 @@ $give_updates = Give_Updates::get_instance();
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?></td>
 			<td>
 				<?php
-				$tls_check = wp_remote_post( 'https://www.howsmyssl.com/a/check' );
-				if ( ! is_wp_error( $tls_check ) ) {
-					$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ) );
+				$tls_check = false;
+
+				// Get the SSL status.
+				if ( ini_get( 'allow_url_fopen' ) ) {
+					$tls_check = file_get_contents( 'https://www.howsmyssl.com/a/check' );
+				}
+
+				if ( false !== $tls_check ) {
+					$tls_check = json_decode( $tls_check );
 					/* translators: %s: SSL connection response */
-					printf( __('Connection uses %s', 'give'), esc_html( $tls_check->tls_version )) ;
+					printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
 				}
 				?>
 			</td>
@@ -195,7 +201,7 @@ $give_updates = Give_Updates::get_instance();
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
 			<td>
 				<?php
-				if ( ! is_wp_error( $tls_check ) ) {
+				if ( false !== $tls_check ) {
 					esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version );
 				}
 				?>
