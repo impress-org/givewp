@@ -138,7 +138,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'selected'        => array(),
 											'show_option_all' => false,
 											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
-											'data'             => array( 'search-type' => 'no_ajax' ),
+											'data'            => array( 'search-type' => 'no_ajax' ),
 										)
 									);
 									?>
@@ -168,7 +168,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'selected'        => array(),
 											'show_option_all' => false,
 											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
-											'data'             => array( 'search-type' => 'no_ajax' ),
+											'data'            => array( 'search-type' => 'no_ajax' ),
 										)
 									);
 									?>
@@ -190,6 +190,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
+									'class'       => 'give_form_for_csv_export',
 									'chosen'      => true,
 									'number'      => - 1,
 									'placeholder' => esc_attr__( 'All Forms', 'give' ),

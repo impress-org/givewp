@@ -14,7 +14,7 @@ jQuery( document ).ready( function ( $ ) {
 	/**
 	 * Ajax call to get donation fields.
 	 */
-	$( '.give-export_donations #give-export_donations-form #give_form_for_csv_export' ).chosen().change( function () {
+	$( '.give-export_donations #give-export_donations-form .give_form_for_csv_export' ).chosen().change( function () {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 
