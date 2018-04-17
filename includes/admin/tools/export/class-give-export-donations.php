@@ -107,7 +107,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 */
 		public function html() {
 			?>
-			<section>
+			<section id="give-export-donations">
 				<table class="widefat export-options-table give-table">
 					<tbody>
 					<tr class="top">
