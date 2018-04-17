@@ -84,7 +84,7 @@ class Give_Sequential_Donation_Number {
 		}
 
 		$serial_number = $this->__set_donation_number( $donation_id );
-		$serial_code   = $this->__set_number_padding( $serial_number );
+		$serial_code   = $this->set_number_padding( $serial_number );
 
 		// Add prefix.
 		if ( $prefix = give_get_option( 'sequential-ordering_number_prefix', '' ) ) {
@@ -96,7 +96,23 @@ class Give_Sequential_Donation_Number {
 			$serial_code = $serial_code . $suffix;
 		}
 
-		$serial_code = give_time_do_tags( $serial_code );
+		/**
+		 * Filter the donation number
+		 *
+		 * @since 2.1.0
+		 */
+		$serial_code = apply_filters(
+			'give_set_sequential_donation_title',
+			give_time_do_tags( $serial_code ),
+			$donation_id,
+			$post,
+			$existing_donation_updated,
+			array(
+				$serial_number,
+				$prefix,
+				$suffix
+			)
+		);
 
 		try {
 			/* @var WP_Error $wp_error */
@@ -130,6 +146,10 @@ class Give_Sequential_Donation_Number {
 	 * @return int
 	 */
 	public function __set_donation_number( $donation_id ) {
+		$table_data = array(
+			'payment_id' => $donation_id
+		);
+
 		// Customize sequential donation number starting point if needed.
 		if (
 			get_option( '_give_reset_sequential_number' ) &&
@@ -139,15 +159,20 @@ class Give_Sequential_Donation_Number {
 				delete_option( '_give_reset_sequential_number' );
 			}
 
-			return Give()->sequential_donation_db->insert( array(
-				'id'         => $number,
-				'payment_id' => $donation_id
-			) );
+			$table_data['id'] = $number;
 		}
 
-		return Give()->sequential_donation_db->insert( array(
-			'payment_id' => $donation_id
-		) );
+
+		/**
+		 * Filter the donation number
+		 *
+		 * @since 2.1
+		 */
+		return apply_filters(
+			'give_set_sequential_donation_number',
+			Give()->sequential_donation_db->insert( $table_data ),
+			$table_data
+		);
 	}
 
 
@@ -170,13 +195,13 @@ class Give_Sequential_Donation_Number {
 	 * Set number padding in serial code.
 	 *
 	 * @since
-	 * @access private
+	 * @access public
 	 *
 	 * @param $serial_number
 	 *
 	 * @return string
 	 */
-	private function __set_number_padding( $serial_number ) {
+	public function set_number_padding( $serial_number ) {
 		if ( $number_padding = give_get_option( 'sequential-ordering_number_padding', 0 ) ) {
 			$serial_number = str_pad( $serial_number, $number_padding, '0', STR_PAD_LEFT );
 		}
