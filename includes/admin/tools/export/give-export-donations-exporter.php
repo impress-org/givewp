@@ -75,8 +75,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
 		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
 		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
-		$this->categories = isset( $request['give_forms_categories'] ) ? sanitize_text_field( $request['give_forms_categories'] ) : array();
-		$this->tags       = isset( $request['give_forms_tags'] ) ? sanitize_text_field( $request['give_forms_tags'] ) : array();
 	}
 
 	/**
@@ -117,6 +115,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			switch ( $key ) {
 				case 'donation_id' :
 					$cols['donation_id'] = __( 'Donation ID', 'give' );
+					break;
 				case 'seq_id' :
 					$cols['seq_id'] = __( 'Donation Number', 'give' );
 					break;
