@@ -123,7 +123,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give-form-for-csv-export"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
+									for="give-payment-form-select"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix give-clearfix">
@@ -152,7 +152,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give-form-for-csv-export"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
+									for="give-payment-form-select"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix give-clearfix">
@@ -180,14 +180,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label
-								for="give-form-for-csv-export"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
+								for="give-payment-form-select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
 								<?php
 								$args = array(
 									'name'        => 'forms',
-									'id'          => 'give-form-for-csv-export',
+									'id'          => 'give-payment-form-select',
 									'chosen'      => true,
 									'number'      => - 1,
 									'placeholder' => esc_attr__( 'All Forms', 'give' ),
