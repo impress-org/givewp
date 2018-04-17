@@ -164,7 +164,7 @@ class Give_Payment_Stats extends Give_Stats {
 							give_format_amount(  $payment['total'], array( 'donation_id' =>  $payment['id'] ) ),
 							$payment['total'],
 							$payment['id'],
-							array( 'type' => 'stats' )
+							array( 'type' => 'stats', 'currency'=> false, 'amount' => false )
 						);
 
 						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount );
