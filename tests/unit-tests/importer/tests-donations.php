@@ -9,11 +9,11 @@
 
 
 /**
- * Class WC_Tests_Give_Import_Donations to test the donation importer functionality
+ * Class Tests_Give_Import_Donations to test the donation importer functionality
  *
  * @since 2.1
  */
-class WC_Tests_Give_Import_Donations extends Give_Unit_Test_Case {
+class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 	/**
 	 * Test CSV file path.
