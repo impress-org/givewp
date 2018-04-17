@@ -151,7 +151,7 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'          => __( 'Max/Min. Amount', 'give' ),
+						'name'          => __( 'Min/Max. Amount', 'give' ),
 						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
 						'id'            => $prefix . 'custom_amount_range',
 						'type'          => 'range_slider',
@@ -1000,7 +1000,11 @@ class Give_MetaBox_Form_Data {
 	private function get_fields_id( $setting ) {
 		$meta_keys = array();
 
-		if ( ! empty( $setting ) ) {
+		if (
+			! empty( $setting )
+			&& array_key_exists( 'fields', $setting )
+			&& ! empty( $setting['fields'] )
+		) {
 			foreach ( $setting['fields'] as $field ) {
 				if ( $field_id = $this->get_field_id( $field ) ) {
 					$meta_keys[] = $field_id;

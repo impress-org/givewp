@@ -1523,7 +1523,8 @@ class Give_API {
 				$first_name = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
 				$last_name  = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
 
-				$donations['donations'][ $i ]['ID']             = $payment->number;
+				$donations['donations'][ $i ]['ID']             = $payment->ID;
+				$donations['donations'][ $i ]['number']         = $payment->number;
 				$donations['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
 				$donations['donations'][ $i ]['key']            = $payment->key;
 				$donations['donations'][ $i ]['total']          = $payment->total;

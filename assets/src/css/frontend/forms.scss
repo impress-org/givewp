@@ -383,11 +383,11 @@ form[id*='give-form'] {
 }
 
 .give-display-button-only > *:not(form) {
-	display: none !important;
+	display: none;
 }
 
 .give-display-button-only form > *:not(.give-btn-modal) {
-	display: none !important;
+	display: none;
 }
 
 /*---------------------------------

@@ -732,6 +732,7 @@ Give.form = {
 			var $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
 				$form = $form_wrapper.find( 'form.give-form' ),
 				display_modal = $form_wrapper.hasClass( 'give-display-modal' ),
+				display_button = $form_wrapper.hasClass( 'give-display-button' ),
 				display_reveal = $form_wrapper.hasClass( 'give-display-reveal' );
 
 			// Update payment mode radio so it's correctly checked.
@@ -751,8 +752,28 @@ Give.form = {
 				this.autoSetMultiLevel( level_field );
 			}
 
+			let give_form_wrap = jQuery( '.give-form-wrap' ),
+			    is_form_grid   = give_form_wrap.hasClass( 'give-form-grid-wrap' );
+
+			if ( is_form_grid && 1 === jQuery( '#give-modal-form-' + form_id ).length ) {
+				jQuery.magnificPopup.open( {
+					items: {
+						type: 'inline',
+						src: '#give-modal-form-' + form_id,
+					},
+					fixedContentPos: true,
+					fixedBgPos: true,
+					closeBtnInside: true,
+					midClick: true,
+					removalDelay: 300,
+					mainClass: 'modal-fade-slide',
+				});
+
+				return;
+			}
+
 			// This form is modal display so show the modal.
-			if ( display_modal ) {
+			if ( display_modal || display_button ) {
 				give_open_form_modal( $form_wrapper, $form );
 			} else if ( display_reveal ) {
 				// This is a reveal form, show it.
@@ -869,7 +890,8 @@ Give.notice = {
 				return null;
 			}
 
-			var notice = notice_msg = formatted_amount = '';
+			var notice, notice_msg, formatted_amount;
+			notice = notice_msg = formatted_amount = '';
 
 			if ( $form.length ) {
 				switch ( error_code ) {
