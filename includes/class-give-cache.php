@@ -695,14 +695,14 @@ class Give_Cache {
 	 * @see    https://www.tollmanz.com/invalidation-schemes/
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access public
 	 *
 	 * @param bool   $refresh
 	 * @param string $incrementer_key
 	 *
 	 * @return string
 	 */
-	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
+	public function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
 		$incrementer_value = wp_cache_get( $incrementer_key );
 
 		if ( false === $incrementer_value || true === $refresh ) {
