@@ -241,13 +241,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				$columns      = $this->csv_cols();
 				$payment      = new Give_Payment( $payment->ID );
 				$payment_meta = $payment->payment_meta;
-				$donor     = new Give_Donor( give_get_payment_donor_id( $payment->ID ) );
-				$address      = '';
-
-				if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
-					$address = give_get_donor_address( $donor->user_id );
-				}
-				$name_array = explode( ' ', $donor->name );
+				$address      = $payment->address;
 
 				// Set columns
 				if ( ! empty( $this->cols['donation_id'] ) ) {
@@ -259,13 +253,15 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $this->cols['first_name'] ) ) {
-					$data[ $i ]['first_name'] = isset( $name_array[0] ) ? $name_array[0] : '';
+					$data[ $i ]['first_name'] = isset( $payment->first_name ) ? $payment->first_name : '';
 				}
+
 				if ( ! empty( $this->cols['last_name'] ) ) {
-					$data[ $i ]['last_name'] = ( isset( $name_array[1] ) ? $name_array[1] : '' ) . ( isset( $name_array[2] ) ? ' ' . $name_array[2] : '' ) . ( isset( $name_array[3] ) ? ' ' . $name_array[3] : '' );
+					$data[ $i ]['last_name'] = isset( $payment->last_name ) ? $payment->last_name : '';
 				}
+
 				if ( ! empty( $this->cols['email'] ) ) {
-					$data[ $i ]['email'] = $donor->email;
+					$data[ $i ]['email'] = $payment->email;
 				}
 
 				if ( ! empty( $this->cols['company'] ) ) {
