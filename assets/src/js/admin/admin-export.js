@@ -23,7 +23,11 @@ jQuery( document ).ready( function ( $ ) {
 			$container = $( $form ).find( 'tr.give-export-donation-form .give-select-chosen' ),
 			select = $container.prev(),
 			$search_field = $container.find( 'input[type="text"]' ),
-			variations = $container.hasClass( 'variations' );
+			variations = $container.hasClass( 'variations' ),
+			response = '';
+
+		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
+		$( 'li.give-export-donation-checkbox-remove' ).remove();
 
 		$.ajax( {
 			type: 'POST',
@@ -59,6 +63,8 @@ jQuery( document ).ready( function ( $ ) {
 
 				// Trigger update event.
 				$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
+
+			 	output_give_donations_fields( response );
 			}
 		} )
 	}
@@ -70,7 +76,7 @@ jQuery( document ).ready( function ( $ ) {
 	/**
 	 * Ajax call to get donation fields.
 	 */
-	$( '.give-export_donations #give-export_donations-form #give_payment_form_select1' ).chosen().change( function () {
+	$( '.give-export_donations #give-export_donations-form #give_payment_form_select' ).change( function () {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 
