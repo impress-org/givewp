@@ -11,10 +11,25 @@
 
 jQuery.noConflict();
 jQuery( document ).ready( function ( $ ) {
+
+	/**
+	 * Update Exort Donation Form
+	 *
+	 * @since 2.1
+	 */
+	function give_update_donation_form() {
+		console.log( $( '.give-export_donations #give-export_donations-form .give_forms_categories' ).val() );
+		console.log( $( '.give-export_donations #give-export_donations-form .give_forms_tags' ).val() );
+	}
+
+	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).chosen().change( function () {
+		give_update_donation_form();
+	} );
+
 	/**
 	 * Ajax call to get donation fields.
 	 */
-	$( '.give-export_donations #give-export_donations-form .give_form_for_csv_export' ).chosen().change( function () {
+	$( '.give-export_donations #give-export_donations-form #give_payment_form_select1' ).chosen().change( function () {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 

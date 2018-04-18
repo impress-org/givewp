@@ -286,39 +286,51 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
  * @return void
  */
 function give_ajax_form_search() {
-	global $wpdb;
-
-	$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
-	$excludes = ( isset( $_GET['current_id'] ) ? (array) $_GET['current_id'] : array() );
-
 	$results = array();
-	if ( current_user_can( 'edit_give_forms' ) ) {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
-	} else {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
-	}
+	$search = esc_sql( sanitize_text_field( $_GET['s'] ) );
 
-	if ( $items ) {
+	$args = array(
+		'post_type' => 'give_forms',
+		's'         => $search,
+	);
 
-		foreach ( $items as $item ) {
+	/**
+	 * Filter to modify Ajax form search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args Query argument for WP_query
+	 *
+	 * @return array $args Query argument for WP_query
+	 */
+	$args = (array) apply_filters( 'give_ajax_form_search_args', $args );
+
+	// get all the donation form.
+	$query = new WP_Query( $args );
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			global $post;
 
 			$results[] = array(
-				'id'   => $item->ID,
-				'name' => $item->post_title,
+				'id'   => $post->ID,
+				'name' => $post->post_title,
 			);
 		}
-	} else {
-
-		$items[] = array(
-			'id'   => 0,
-			'name' => __( 'No forms found.', 'give' ),
-		);
-
 	}
 
-	echo json_encode( $results );
+	/**
+	 * Filter to modify Ajax form search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the Donation Form id
+	 *
+	 * @return array $results Contain the Donation Form id
+	 */
+	$results = (array) apply_filters( 'give_ajax_form_search_responce', $results );
 
-	give_die();
+	wp_send_json( $results );
 }
 
 add_action( 'wp_ajax_give_form_search', 'give_ajax_form_search' );

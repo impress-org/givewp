@@ -123,7 +123,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give-payment-form-select"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
+									for="give_forms_categories"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix give-clearfix">
@@ -132,6 +132,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_categories[]',
 										0,
 										array(
+											'id'           => 'give_forms_categories',
 											'class'           => 'give_forms_categories',
 											'chosen'          => true,
 											'multiple'        => true,
@@ -153,7 +154,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give-payment-form-select"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
+									for="give_forms_tags"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix give-clearfix">
@@ -162,6 +163,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_tags[]',
 										0,
 										array(
+											'id'           => 'give_forms_tags',
 											'class'           => 'give_forms_tags',
 											'chosen'          => true,
 											'multiple'        => true,
@@ -182,7 +184,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label
-								for="give-payment-form-select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
+								for="give_payment_form_select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix give-clearfix">
@@ -190,10 +192,9 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
-									'class'       => 'give_form_for_csv_export',
 									'chosen'      => true,
-									'number'      => - 1,
 									'placeholder' => esc_attr__( 'All Forms', 'give' ),
+									'number' => 1,
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>
