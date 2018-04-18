@@ -101,13 +101,13 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		}
 
 		/**
-		 * Filter to modity the Taxonomy number
+		 * Filter to modity the Taxonomy args
 		 *
 		 * @since 2.1
 		 *
-		 * @param $args
+		 * @param $args args for Taxonomy
 		 *
-		 * @return int
+		 * @return int args for Taxonomy
 		 */
 		function give_forms_taxonomy_dropdown( $args ) {
 			$args['number'] = 30;
@@ -231,14 +231,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'id'          => 'give-payment-export-start',
 									'name'        => 'start',
-									'placeholder' => esc_attr__( 'Start date', 'give' ),
+									'placeholder' => __( 'Start date', 'give' ),
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<?php
 								$args = array(
 									'id'          => 'give-payment-export-end',
 									'name'        => 'end',
-									'placeholder' => esc_attr__( 'End date', 'give' ),
+									'placeholder' => __( 'End date', 'give' ),
 								);
 								echo Give()->html->date_field( $args ); ?>
 							</div>
@@ -462,7 +462,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
-							<input type="submit" value="Generate CSV" class="give-export-donation-button button button-primary">
+							<input type="submit" value="<?php _e( 'Generate CSV', 'give' ) ?>" class="give-export-donation-button button button-primary">
 							<div class="add-notices"></div>
 						</td>
 					</tr>

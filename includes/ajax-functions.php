@@ -450,7 +450,7 @@ function give_ajax_pages_search() {
 add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
 
 /**
- * Retrieve donation forms categories via AJAX for chosen dropdown search field.
+ * Retrieve Categories via AJAX for chosen dropdown search field.
  *
  * @since  2.1
  *
@@ -464,9 +464,9 @@ function give_ajax_categories_search() {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $args Query argument for get_terms
+	 * @param array $args argument for get_terms
 	 *
-	 * @return array $args Query argument for get_terms
+	 * @return array $args argument for get_terms
 	 */
 	$args = (array) apply_filters( 'give_forms_categories_dropdown_args', array(
 		'number'     => 30,
@@ -487,9 +487,9 @@ function give_ajax_categories_search() {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $results Contain the Donation Form id
+	 * @param array $results Contain the categories id and name
 	 *
-	 * @return array $results Contain the Donation Form id
+	 * @return array $results Contain the categories id and name
 	 */
 	$results = (array) apply_filters( 'give_forms_categories_dropdown_responce', $results );
 
@@ -499,7 +499,7 @@ function give_ajax_categories_search() {
 add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
 
 /**
- * Retrieve donation forms tags via AJAX for chosen dropdown search field.
+ * Retrieve Tags via AJAX for chosen dropdown search field.
  *
  * @since  2.1
  *
@@ -513,9 +513,9 @@ function give_ajax_tags_search() {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $args Query argument for get_terms
+	 * @param array $args argument for get_terms
 	 *
-	 * @return array $args Query argument for get_terms
+	 * @return array $args argument for get_terms
 	 */
 	$args = (array) apply_filters( 'give_forms_tags_dropdown_args', array(
 		'number'     => 30,
@@ -536,9 +536,9 @@ function give_ajax_tags_search() {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $results Contain the Donation Form id
+	 * @param array $results Contain the tags id and name
 	 *
-	 * @return array $results Contain the Donation Form id
+	 * @return array $results Contain the tags id and name
 	 */
 	$results = (array) apply_filters( 'give_forms_tags_dropdown_responce', $results );
 

@@ -69,6 +69,11 @@ jQuery( document ).ready( function ( $ ) {
 		} )
 	}
 
+	/**
+	 * update Exort Donation For when cat or tag are change
+	 *
+	 * @since 2.1
+	 */
 	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).change( function () {
 		give_update_donation_form();
 	} );
