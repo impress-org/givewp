@@ -101,6 +101,21 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		}
 
 		/**
+		 * Filter to modity the Taxonomy number
+		 *
+		 * @since 2.1
+		 *
+		 * @param $args
+		 *
+		 * @return int
+		 */
+		function give_forms_taxonomy_dropdown( $args ) {
+			$args['number'] = 10;
+
+			return $args;
+		}
+
+		/**
 		 * Print the HTML for core setting exporter.
 		 *
 		 * @since 2.1
@@ -119,6 +134,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 					<?php
 					if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
+						add_filter( 'give_forms_category_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
 						?>
 						<tr>
 							<td scope="row" class="row-title">
@@ -132,14 +148,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_categories[]',
 										0,
 										array(
-											'id'           => 'give_forms_categories',
+											'id'              => 'give_forms_categories',
 											'class'           => 'give_forms_categories',
 											'chosen'          => true,
 											'multiple'        => true,
 											'selected'        => array(),
 											'show_option_all' => false,
 											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
-											'data'            => array( 'search-type' => 'no_ajax' ),
+											'data'            => array( 'search-type' => 'categories' ),
 										)
 									);
 									?>
@@ -147,9 +163,11 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							</td>
 						</tr>
 						<?php
+						remove_filter( 'give_forms_category_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
 					}
 
 					if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
+						add_filter( 'give_forms_tag_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
 						?>
 						<tr>
 							<td scope="row" class="row-title">
@@ -163,14 +181,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_tags[]',
 										0,
 										array(
-											'id'           => 'give_forms_tags',
+											'id'              => 'give_forms_tags',
 											'class'           => 'give_forms_tags',
 											'chosen'          => true,
 											'multiple'        => true,
 											'selected'        => array(),
 											'show_option_all' => false,
 											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
-											'data'            => array( 'search-type' => 'no_ajax' ),
+											'data'            => array( 'search-type' => 'tags' ),
 										)
 									);
 									?>
@@ -178,6 +196,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							</td>
 						</tr>
 						<?php
+						remove_filter( 'give_forms_tag_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
 					}
 					?>
 

@@ -635,3 +635,103 @@ function give_ajax_pages_search() {
 }
 
 add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
+
+/**
+ * Retrieve donation forms via AJAX for chosen dropdown search field.
+ *
+ * @since  1.0
+ *
+ * @return void
+ */
+function give_ajax_categories_search() {
+	$results = array();
+
+	/**
+	 * Filter to modify Ajax tags search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args Query argument for get_terms
+	 *
+	 * @return array $args Query argument for get_terms
+	 */
+	$args = (array) apply_filters( 'give_forms_categories_dropdown_args', array(
+		'number' => 30,
+		's'      => esc_sql( sanitize_text_field( $_POST['s'] ) )
+	) );
+
+	$categories = get_terms( 'give_forms_category', $args );
+
+	foreach ( $categories as $category ) {
+		$results[] = array(
+			'id'   => $category->term_id,
+			'name' => $category->name,
+		);
+	}
+
+	/**
+	 * Filter to modify Ajax tags search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the Donation Form id
+	 *
+	 * @return array $results Contain the Donation Form id
+	 */
+	$results = (array) apply_filters( 'give_forms_categories_dropdown_responce', $results );
+
+	wp_send_json( $results );
+}
+
+add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
+add_action( 'wp_ajax_nopriv_give_categories_search', 'give_ajax_categories_search' );
+
+/**
+ * Retrieve donation forms via AJAX for chosen dropdown search field.
+ *
+ * @since  1.0
+ *
+ * @return void
+ */
+function give_ajax_tags_search() {
+	$results = array();
+
+	/**
+	 * Filter to modify Ajax tags search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args Query argument for get_terms
+	 *
+	 * @return array $args Query argument for get_terms
+	 */
+	$args = (array) apply_filters( 'give_forms_tags_dropdown_args', array(
+		'number' => 30,
+		's'      => esc_sql( sanitize_text_field( $_POST['s'] ) )
+	) );
+
+	$categories = get_terms( 'give_forms_tag', $args );
+
+	foreach ( $categories as $category ) {
+		$results[] = array(
+			'id'   => $category->term_id,
+			'name' => $category->name,
+		);
+	}
+
+	/**
+	 * Filter to modify Ajax tags search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the Donation Form id
+	 *
+	 * @return array $results Contain the Donation Form id
+	 */
+	$results = (array) apply_filters( 'give_forms_tags_dropdown_responce', $results );
+
+	wp_send_json( $results );
+}
+
+add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
+add_action( 'wp_ajax_nopriv_give_tags_search', 'give_ajax_tags_search' );
