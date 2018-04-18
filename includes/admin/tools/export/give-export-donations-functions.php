@@ -128,7 +128,7 @@ function give_export_donations_get_custom_fields() {
 		'_give_donation_company',
 		'_give_donor_billing_first_name',
 		'_give_donor_billing_last_name',
-		'give_payment_donor_email',
+		'_give_payment_donor_email',
 		'_give_payment_donor_id',
 		'_give_payment_date',
 	);
