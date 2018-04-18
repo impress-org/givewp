@@ -63,7 +63,7 @@ jQuery( document ).ready( function ( $ ) {
 		} )
 	}
 
-	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).chosen().change( function () {
+	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).change( function () {
 		give_update_donation_form();
 	} );
 
