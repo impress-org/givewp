@@ -110,7 +110,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 * @return int
 		 */
 		function give_forms_taxonomy_dropdown( $args ) {
-			$args['number'] = 10;
+			$args['number'] = 30;
 
 			return $args;
 		}

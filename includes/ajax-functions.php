@@ -656,8 +656,8 @@ function give_ajax_categories_search() {
 	 * @return array $args Query argument for get_terms
 	 */
 	$args = (array) apply_filters( 'give_forms_categories_dropdown_args', array(
-		'number' => 30,
-		's'      => esc_sql( sanitize_text_field( $_POST['s'] ) )
+		'number'     => 30,
+		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
 	) );
 
 	$categories = get_terms( 'give_forms_category', $args );
@@ -706,8 +706,8 @@ function give_ajax_tags_search() {
 	 * @return array $args Query argument for get_terms
 	 */
 	$args = (array) apply_filters( 'give_forms_tags_dropdown_args', array(
-		'number' => 30,
-		's'      => esc_sql( sanitize_text_field( $_POST['s'] ) )
+		'number'     => 30,
+		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
 	) );
 
 	$categories = get_terms( 'give_forms_tag', $args );
