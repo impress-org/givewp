@@ -18,8 +18,49 @@ jQuery( document ).ready( function ( $ ) {
 	 * @since 2.1
 	 */
 	function give_update_donation_form() {
-		console.log( $( '.give-export_donations #give-export_donations-form .give_forms_categories' ).val() );
-		console.log( $( '.give-export_donations #give-export_donations-form .give_forms_tags' ).val() );
+
+		var $form = $( 'form#give-export_donations-form' ),
+			$container = $( $form ).find( 'tr.give-export-donation-form .give-select-chosen' ),
+			select = $container.prev(),
+			$search_field = $container.find( 'input[type="text"]' ),
+			variations = $container.hasClass( 'variations' );
+
+		$.ajax( {
+			type: 'POST',
+			url: ajaxurl,
+			data: {
+				action: 'give_form_search',
+				s: '',
+				fields: $( $form ).serialize()
+			},
+			beforeSend: function () {
+				select.closest( 'ul.chosen-results' ).empty();
+			},
+			success: function ( data ) {
+
+				// Remove all options but those that are selected.
+				$( 'option', select ).remove();
+
+				if ( data.length ) {
+
+					$form.find( '.give-export-donation-button' ).prop('disabled', false);
+
+					select.prepend( '<option value="0">' + select.data( 'placeholder' ) + '</option>' );
+
+					$.each( data, function ( key, item ) {
+						select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
+					} );
+				} else {
+					// Trigger no result message event.
+					select.prepend( '<option value="0">' + select.data( 'no-form' ) + '</option>' );
+
+					$form.find( '.give-export-donation-button' ).prop('disabled', true);
+				}
+
+				// Trigger update event.
+				$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
+			}
+		} )
 	}
 
 	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).chosen().change( function () {

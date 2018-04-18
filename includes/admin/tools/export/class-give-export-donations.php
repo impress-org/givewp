@@ -181,7 +181,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					}
 					?>
 
-					<tr>
+					<tr class="give-export-donation-form">
 						<td scope="row" class="row-title">
 							<label
 								for="give_payment_form_select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
@@ -193,7 +193,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
 									'chosen'      => true,
-									'placeholder' => esc_attr__( 'All Forms', 'give' ),
+									'placeholder' => __( 'All Forms', 'give' ),
+									'data'            => array( 'no-form' => __( 'No donation forms found', 'give' ), ),
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>
@@ -435,8 +436,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
-							<input type="submit" value="Generate CSV" class="button button-primary">
-
+							<input type="submit" value="Generate CSV" class="give-export-donation-button button button-primary">
 							<div class="add-notices"></div>
 						</td>
 					</tr>
