@@ -187,3 +187,45 @@ function give_export_donations_include_export_class( $class ) {
 function give_export_donations_create_column_key( $string ) {
 	return sanitize_key( str_replace( ' ', '_', $string ) );
 }
+
+/**
+ * Filter to modify donation search form on donation export page
+ *
+ * @since 2.1
+ *
+ * @param $args
+ *
+ * @return  $args
+ */
+function give_export_donation_form_search_args( $args ) {
+	if ( ! empty( $_POST['fields'] ) ) {
+		$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+		parse_str( $fields );
+
+		if ( ! empty( $give_forms_categories ) && ! empty( $give_forms_tags ) ) {
+			$args['tax_query']['relation'] = 'AND';
+		}
+
+		if ( ! empty( $give_forms_categories ) ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'field'    => 'term_id',
+				'terms'    => $give_forms_categories,
+				'operator' => 'AND',
+			);
+		}
+
+		if ( ! empty( $give_forms_tags ) ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'field'    => 'term_id',
+				'terms'    => $give_forms_tags,
+				'operator' => 'AND',
+			);
+		}
+	}
+
+	return $args;
+}
+
+add_filter( 'give_ajax_form_search_args', 'give_export_donation_form_search_args' );

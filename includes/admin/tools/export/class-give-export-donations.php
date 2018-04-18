@@ -194,7 +194,6 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'id'          => 'give-payment-form-select',
 									'chosen'      => true,
 									'placeholder' => esc_attr__( 'All Forms', 'give' ),
-									'number' => 1,
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>

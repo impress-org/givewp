@@ -287,7 +287,7 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
  */
 function give_ajax_form_search() {
 	$results = array();
-	$search = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
 	$args = array(
 		'post_type' => 'give_forms',
@@ -317,6 +317,7 @@ function give_ajax_form_search() {
 				'name' => $post->post_title,
 			);
 		}
+		wp_reset_postdata();
 	}
 
 	/**
@@ -346,7 +347,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 function give_ajax_donor_search() {
 	global $wpdb;
 
-	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 	$results = array();
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
@@ -391,7 +392,7 @@ function give_ajax_search_users() {
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
-		$search = esc_sql( sanitize_text_field( $_GET['s'] ) );
+		$search = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
 		$get_users_args = array(
 			'number' => 9999,
@@ -613,7 +614,7 @@ function give_ajax_pages_search() {
 	$data = array();
 	$args = array(
 		'post_type' => 'page',
-		's'         => give_clean( $_GET['s'] ),
+		's'         => give_clean( $_POST['s'] ),
 	);
 
 	$query = new WP_Query( $args );
