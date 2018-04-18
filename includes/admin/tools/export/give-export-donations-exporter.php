@@ -128,6 +128,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				case 'email' :
 					$cols['email'] = __( 'Email Address', 'give' );
 					break;
+				case 'company' :
+					$cols['company'] = __( 'Company Name', 'give' );
+					break;
 				case 'address' :
 					$cols['address_line1']   = __( 'Address 1', 'give' );
 					$cols['address_line2']   = __( 'Address 2', 'give' );
@@ -236,8 +239,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			foreach ( $payments as $payment ) {
 
 				$columns      = $this->csv_cols();
-				$payment_meta = give_get_payment_meta( $payment->ID );
 				$payment      = new Give_Payment( $payment->ID );
+				$payment_meta = $payment->payment_meta;
 				$donor     = new Give_Donor( give_get_payment_donor_id( $payment->ID ) );
 				$address      = '';
 
@@ -264,6 +267,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				if ( ! empty( $this->cols['email'] ) ) {
 					$data[ $i ]['email'] = $donor->email;
 				}
+
+				if ( ! empty( $this->cols['company'] ) ) {
+					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? $payment_meta['_give_donation_company'] : '';
+				}
+
 				if ( ! empty( $this->cols['address_line1'] ) ) {
 					$data[ $i ]['address_line1']   = isset( $address['line1'] ) ? $address['line1'] : '';
 					$data[ $i ]['address_line2']   = isset( $address['line2'] ) ? $address['line2'] : '';

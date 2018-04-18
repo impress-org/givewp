@@ -125,6 +125,7 @@ function give_export_donations_get_custom_fields() {
 		'_give-form-fields_id',
 		'_give_completed_date',
 		'_give_payment_purchase_key',
+		'_give_donation_company',
 	);
 
 	// Unset ignored FFM keys.

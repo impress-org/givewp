@@ -316,6 +316,13 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										</label>
 									</li>
 									<li>
+										<label for="give-export-email">
+											<input type="checkbox" checked
+											       name="give_give_donations_export_option[company]"
+											       id="give-export-email"><?php _e( 'Company Name', 'give' ); ?>
+										</label>
+									</li>
+									<li>
 										<label for="give-export-address">
 											<input type="checkbox" checked
 											       name="give_give_donations_export_option[address]"
