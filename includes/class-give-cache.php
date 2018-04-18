@@ -757,24 +757,30 @@ class Give_Cache {
 	 * @return mixed
 	 */
 	private function filter_group_name( $group ) {
-		$group = "{$group}_" . get_current_blog_id();
-
-		if ( ! empty( $group ) ) {
-			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
-
-			if ( false !== strpos( $group, 'give-db-queries' ) ) {
-				$incrementer = self::$instance->get_incrementer();
-			}
-
-			$group = "{$group}_{$incrementer}";
-		}
-
 		/**
 		 * Filter the group name
 		 *
-		 * @since 2.0
+		 * @since 2.1.0
 		 */
-		return $group;
+		$filtered_group = apply_filters( 'give_cache_filter_group_name', '', $group );
+
+		if ( empty( $filtered_group ) ) {
+
+			switch ( $group ) {
+				case 'give-db-queries':
+					$incrementer = self::$instance->get_incrementer();
+					break;
+
+				default:
+					$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
+
+			}
+
+			$currenct_blog_id = get_current_blog_id();
+			$filtered_group   = "{$group}_{$currenct_blog_id}_{$incrementer}";
+		}
+
+		return $filtered_group;
 	}
 
 
