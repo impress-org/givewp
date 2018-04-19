@@ -316,10 +316,10 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										</label>
 									</li>
 									<li>
-										<label for="give-export-email">
+										<label for="give-export-company">
 											<input type="checkbox" checked
 											       name="give_give_donations_export_option[company]"
-											       id="give-export-email"><?php _e( 'Company Name', 'give' ); ?>
+											       id="give-export-company"><?php _e( 'Company Name', 'give' ); ?>
 										</label>
 									</li>
 									<li>
@@ -334,6 +334,13 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											<input type="checkbox" checked
 											       name="give_give_donations_export_option[donation_total]"
 											       id="give-export-donation-sum"><?php _e( 'Donation Total', 'give' ); ?>
+										</label>
+									</li>
+									<li>
+										<label for="give-export-donation-currencies">
+											<input type="checkbox" checked
+											       name="give_give_donations_export_option[currencies]"
+											       id="give-export-donation-currencies"><?php _e( 'Donation Currencies', 'give' ); ?>
 										</label>
 									</li>
 									<li>

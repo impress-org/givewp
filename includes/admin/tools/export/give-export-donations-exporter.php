@@ -140,7 +140,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['address_country'] = __( 'Country', 'give' );
 					break;
 				case 'donation_total' :
-					$cols['donation_total'] = sprintf( __( 'Donation Total (%s)', 'give' ), give_currency_symbol() );
+					$cols['donation_total'] = __( 'Donation Total', 'give' );
+					break;
+				case 'currencies' :
+					$cols['currencies'] = __( 'Donation Currencies', 'give' );
 					break;
 				case 'donation_status' :
 					$cols['donation_status'] = __( 'Donation Status', 'give' );
@@ -266,6 +269,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $this->cols['company'] ) ) {
 					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? $payment_meta['_give_donation_company'] : '';
+				}
+
+				if ( ! empty( $this->cols['currencies'] ) ) {
+					$data[ $i ]['currencies'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
 				}
 
 				if ( ! empty( $this->cols['address_line1'] ) ) {
