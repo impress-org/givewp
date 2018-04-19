@@ -539,6 +539,7 @@ class Give_Cache {
 			return $status;
 		}
 
+		$group_prefix = $group;
 		$group = self::$instance->filter_group_name( $group );
 
 		// Delete single or multiple cache items from cache.
@@ -555,7 +556,7 @@ class Give_Cache {
 			 * @param string $group
 			 * @param int    $expire
 			 */
-			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire, $status );
+			do_action( "give_deleted_{$group_prefix}_cache", $ids, $group, $expire, $status );
 
 		} else {
 			foreach ( $ids as $id ) {
@@ -571,7 +572,7 @@ class Give_Cache {
 				 * @param string $group
 				 * @param int    $expire
 				 */
-				do_action( "give_deleted_{$group}_cache", $id, $group, $expire, $status );
+				do_action( "give_deleted_{$group_prefix}_cache", $id, $group, $expire, $status );
 			}
 		}
 
