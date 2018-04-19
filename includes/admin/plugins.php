@@ -243,3 +243,112 @@ function give_prepare_filter_addons( $plugins ) {
 }
 
 add_filter( 'all_plugins', 'give_prepare_filter_addons' );
+
+
+/**
+ * Display the updgrade notice message.
+ *
+ * @param array $data     Array of plugin metadata.
+ * @param array $response An array of metadata about the available plugin update.
+ *
+ * @since 2.1
+ *
+ * @return @void
+ */
+function give_in_plugin_update_message( $data, $response ) {
+	$new_version           = $data['new_version'];
+
+	$current_version_parts = explode( '.', GIVE_VERSION );
+	$new_version_parts     = explode( '.', $new_version );
+
+	// If it is a minor upgrade then return.
+	if ( version_compare( $current_version_parts[0] . '.' . $current_version_parts[1], $new_version_parts[0] . '.' . $new_version_parts[1], '=' ) ) {
+
+		return;
+	}
+
+	// Get the upgrade notice from the trunk.
+	$upgrade_notice = give_get_upgrade_notice( $new_version );
+
+	// Display upgrade notice.
+	echo $upgrade_notice;
+}
+
+// Display upgrade notice.
+add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_message' );
+
+
+/**
+ * Get the upgrade notice from WordPress.org.
+ *
+ * @since 2.1
+ * @param string $new_version New verison of the plugin
+ *
+ * @return string
+ */
+function give_get_upgrade_notice( $new_version ) {
+
+	// Cache the upgrade notice.
+	$transient_name = 'give_upgrade_notice_' . $new_version;
+
+	if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+		$response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/give/trunk/readme.txt' );
+
+		if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
+			$upgrade_notice = give_parse_update_notice( $response['body'], $new_version );
+			set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
+		}
+	}
+
+	return $upgrade_notice;
+}
+
+
+/**
+ * Parse update notice from readme file.
+ *
+ * @since 2.1
+ * @param  string $content
+ * @param  string $new_version
+ *
+ * @return string
+ */
+function give_parse_update_notice( $content, $new_version ) {
+	$version_parts     = explode( '.', $new_version );
+	$check_for_notices = array(
+		$version_parts[0] . '.0',
+		$version_parts[0] . '.0.0',
+		$version_parts[0] . '.' . $version_parts[1],
+	);
+
+	// Regex to extract Upgrade notice from the readme.txt file.
+	$notice_regexp  = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( $new_version ) . '\s*=|$)~Uis';
+
+	$upgrade_notice = '';
+
+	foreach ( $check_for_notices as $check_version ) {
+		if ( version_compare( GIVE_VERSION, $check_version, '>' ) ) {
+			continue;
+		}
+
+		$matches = null;
+
+		if ( preg_match( $notice_regexp, $content, $matches ) ) {
+			$notices = (array) preg_split( '~[\r\n]+~', trim( $matches[2] ) );
+
+			if ( version_compare( trim( $matches[1] ), $check_version, '=' ) ) {
+				$upgrade_notice .= '<p class="give-plugin-upgrade-notice">';
+
+				foreach ( $notices as $index => $line ) {
+					$upgrade_notice .= preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line );
+				}
+
+				$upgrade_notice .= '</p>';
+			}
+
+			break;
+		}
+	}
+
+	return wp_kses_post( $upgrade_notice );
+}
