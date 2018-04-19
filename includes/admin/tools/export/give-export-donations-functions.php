@@ -211,7 +211,7 @@ function give_export_donations_create_column_key( $string ) {
  * @return  $args
  */
 function give_export_donation_form_search_args( $args ) {
-	if ( ! empty( $_POST['fields'] ) ) {
+	if ( empty( $_POST['fields'] ) ) {
 		return $args;
 	}
 
