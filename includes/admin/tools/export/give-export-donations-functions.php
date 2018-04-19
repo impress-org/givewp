@@ -131,6 +131,13 @@ function give_export_donations_get_custom_fields() {
 		'_give_payment_donor_email',
 		'_give_payment_donor_id',
 		'_give_payment_date',
+		'_give_donor_billing_address1',
+		'_give_donor_billing_address2',
+		'_give_donor_billing_city',
+		'_give_donor_billing_zip',
+		'_give_donor_billing_state',
+		'_give_donor_billing_country',
+		'_give_payment_import',
 	);
 
 	// Unset ignored FFM keys.
