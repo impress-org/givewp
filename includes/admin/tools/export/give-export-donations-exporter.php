@@ -271,10 +271,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? $payment_meta['_give_donation_company'] : '';
 				}
 
-				if ( ! empty( $this->cols['currencies'] ) ) {
-					$data[ $i ]['currencies'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
-				}
-
 				if ( ! empty( $this->cols['address_line1'] ) ) {
 					$data[ $i ]['address_line1']   = isset( $address['line1'] ) ? $address['line1'] : '';
 					$data[ $i ]['address_line2']   = isset( $address['line2'] ) ? $address['line2'] : '';
@@ -286,6 +282,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $this->cols['donation_total'] ) ) {
 					$data[ $i ]['donation_total'] = give_format_amount( give_get_payment_amount( $payment->ID ) );
+				}
+
+				if ( ! empty( $this->cols['currencies'] ) ) {
+					$data[ $i ]['currencies'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
 				}
 
 				if ( ! empty( $columns['donation_status'] ) ) {
