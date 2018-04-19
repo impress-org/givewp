@@ -143,7 +143,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['donation_total'] = __( 'Donation Total', 'give' );
 					break;
 				case 'currencies' :
-					$cols['currencies'] = __( 'Donation Currencies', 'give' );
+					$cols['currencies'] = __( 'Currency', 'give' );
 					break;
 				case 'donation_status' :
 					$cols['donation_status'] = __( 'Donation Status', 'give' );
