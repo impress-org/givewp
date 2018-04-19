@@ -337,13 +337,6 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										</label>
 									</li>
 									<li>
-										<label for="give-export-donation-currencies">
-											<input type="checkbox" checked
-											       name="give_give_donations_export_option[currencies]"
-											       id="give-export-donation-currencies"><?php _e( 'Currency', 'give' ); ?>
-										</label>
-									</li>
-									<li>
 										<label for="give-export-donation-status">
 											<input type="checkbox" checked
 											       name="give_give_donations_export_option[donation_status]"
