@@ -142,6 +142,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				case 'donation_total' :
 					$cols['donation_total'] = __( 'Donation Total', 'give' );
 					break;
+				case 'currency_code' :
+					$cols['currency_code'] = __( 'Currency Code', 'give' );
+					break;
 				case 'donation_status' :
 					$cols['donation_status'] = __( 'Donation Status', 'give' );
 					break;
@@ -264,7 +267,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $this->cols['company'] ) ) {
-					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? str_replace( "\'", "'", $payment_meta['_give_donation_company'] ) : '';
+					$data[ $i ]['company'] = empty( $payment_meta['_give_donation_company'] ) ? '' : str_replace( "\'", "'", $payment_meta['_give_donation_company'] );
 				}
 
 				if ( ! empty( $this->cols['address_line1'] ) ) {
@@ -277,7 +280,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $this->cols['donation_total'] ) ) {
-					$data[ $i ]['donation_total'] = give_format_amount( give_get_payment_amount( $payment->ID ) );
+					$data[ $i ]['donation_total'] = give_format_amount( give_donation_amount( $payment->ID ) );
+				}
+
+				if ( ! empty( $this->cols['currency_code'] ) ) {
+					$data[ $i ]['currency_code'] = empty( $payment_meta['_give_payment_currency'] ) ? give_get_currency() : $payment_meta['_give_payment_currency'];
 				}
 
 				if ( ! empty( $columns['donation_status'] ) ) {
