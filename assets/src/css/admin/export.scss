@@ -43,6 +43,16 @@
 						margin-top: 7px;
 					}
 				}
+
+				.chosen-container-multi{
+					.chosen-choices {
+						min-height: 30px;
+
+						li{
+							margin: 4px 4px 4px 0;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -51,5 +61,42 @@
 		.give-progress {
 			margin-top: 7px;
 		}
+	}
+}
+
+
+//-------------------------------------
+// Export Form
+// -------------------------------------
+
+#give-export-donations {
+	.give_forms_categories,
+	.give_forms_tags {
+		input {
+			color: #999;
+		}
+
+		min-width: 250px;
+		margin: 0 0 10px 0;
+		display: block;
+	}
+
+	div.chosen-container {
+		ul.chosen-choices {
+			input.chosen-search-input {
+				border: 1px solid #ddd;
+				height: 20px;
+			}
+
+			border: 1px solid #ddd;
+		}
+	}
+
+	select {
+		vertical-align: inherit;
+		margin: 0;
+		height: 26px;
+		line-height: 26px;
+		border: 1px solid #ddd;
 	}
 }
