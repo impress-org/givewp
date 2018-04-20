@@ -484,7 +484,7 @@ class Give_Payments_Query extends Give_Stats {
 		if ( ! empty( $query->query['post_type'] ) ) {
 			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
 
-			if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
+			if ( ! in_array( 'give_payment', $post_types ) || ! isset( $query->query['orderby'] ) || is_array( $query->query['orderby'] ) ) {
 				return $order;
 			}
 
