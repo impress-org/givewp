@@ -145,6 +145,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				case 'currency_code' :
 					$cols['currency_code'] = __( 'Currency Code', 'give' );
 					break;
+				case 'currency_symbol' :
+					$cols['currency_symbol'] = __( 'Currency Symbol', 'give' );
+					break;
 				case 'donation_status' :
 					$cols['donation_status'] = __( 'Donation Status', 'give' );
 					break;
@@ -285,6 +288,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $this->cols['currency_code'] ) ) {
 					$data[ $i ]['currency_code'] = empty( $payment_meta['_give_payment_currency'] ) ? give_get_currency() : $payment_meta['_give_payment_currency'];
+				}
+
+				if ( ! empty( $this->cols['currency_symbol'] ) ) {
+					$currency_code = $data[ $i ]['currency_code'];
+					$data[ $i ]['currency_symbol'] =  give_currency_symbol( $currency_code, true );
 				}
 
 				if ( ! empty( $columns['donation_status'] ) ) {
