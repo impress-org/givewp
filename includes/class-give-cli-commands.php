@@ -666,10 +666,10 @@ class GIVE_CLI_COMMAND {
 	 * : A specific date range to retrieve stats for
 	 *
 	 * [--start-date=<date>]
-	 * : The start date of a date range to retrieve stats for
+	 * : The start date of a date range to retrieve stats for. Date format is MM/DD/YYYY
 	 *
 	 * [--end-date=<date>]
-	 * : The end date of a date range to retrieve stats for
+	 * : The end date of a date range to retrieve stats for. Date format is MM/DD/YYYY
 	 *
 	 * ## EXAMPLES
 	 *
