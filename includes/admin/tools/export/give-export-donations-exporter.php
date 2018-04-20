@@ -185,7 +185,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	}
 
-
 	/**
 	 * Get the Export Data.
 	 *
@@ -200,9 +199,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$i    = 0;
 
 		$args = array(
-			'number'     => 30,
-			'page'       => $this->step,
-			'status'     => $this->status,
+			'number' => 30,
+			'page'   => $this->step,
+			'status' => $this->status,
 		);
 
 		// Date query.
@@ -265,7 +264,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $this->cols['company'] ) ) {
-					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? $payment_meta['_give_donation_company'] : '';
+					$data[ $i ]['company'] = ! empty( $payment_meta['_give_donation_company'] ) ? str_replace( "\'", "'", $payment_meta['_give_donation_company'] ) : '';
 				}
 
 				if ( ! empty( $this->cols['address_line1'] ) ) {
@@ -491,4 +490,40 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		return $percentage;
 	}
 
+	/**
+	 * Print the CSV rows for the current step.
+	 *
+	 * @access public
+	 * @since  1.5
+	 * @return string|false
+	 */
+	public function print_csv_rows() {
+
+		$row_data = '';
+		$data     = $this->get_data();
+		$cols     = $this->get_csv_cols();
+
+		if ( $data ) {
+
+			// Output each row
+			foreach ( $data as $row ) {
+				$i = 1;
+				foreach ( $row as $col_id => $column ) {
+					// Make sure the column is valid
+					if ( array_key_exists( $col_id, $cols ) ) {
+						$row_data .= '"' . preg_replace( '/"/', "'", $column ) . '"';
+						$row_data .= $i == count( $cols ) ? '' : ',';
+						$i ++;
+					}
+				}
+				$row_data .= "\r\n";
+			}
+
+			$this->stash_step_data( $row_data );
+
+			return $row_data;
+		}
+
+		return false;
+	}
 }
