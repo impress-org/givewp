@@ -98,6 +98,17 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Name Title Prefix', 'give' ),
+							'desc'    => __( 'Do you want a Name Title Prefix field to appear before First Name?', 'give' ),
+							'id'      => 'name_title_prefix',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Company Donations', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
 							'id'      => 'company_field',
