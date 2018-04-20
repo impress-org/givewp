@@ -331,6 +331,7 @@ function give_get_default_settings() {
 		'css'                                         => 'enabled',
 		'floatlabels'                                 => 'disabled',
 		'welcome'                                     => 'enabled',
+		'name_title_prefix'                           => 'disabled',
 		'forms_singular'                              => 'enabled',
 		'forms_archives'                              => 'enabled',
 		'forms_excerpt'                               => 'enabled',
