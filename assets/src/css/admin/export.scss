@@ -14,24 +14,51 @@
 
 			padding-left: 10px;
 
-			tbody{
+			tbody {
 				h2 {
-					padding: 8px 0 0 0 ;
+					padding: 8px 0 0 0;
 				}
 
-				td.row-title{
+				td.row-title {
 					width: 30%;
 					vertical-align: top;
 				}
 
-				ul.give-export-option-ul {
-					li {
+				ul.give-export-option {
+					border: 1px solid #e5e5e5;
+					display: flex;
+					margin: 0;
+
+					li.give-export-option-fields {
 						width: 33%;
-						float: left;
+
+						ul {
+							li{
+								padding-left: 25px;
+							}
+
+							li.give-export-option-label {
+								border-bottom: 1px solid #e5e5e5;
+								padding: 15px 0 15px 0;
+								span {
+									margin: 15px 15px 15px 25px;
+									font-size: 15px;
+									font-weight: 500;
+								}
+							}
+
+							li.give-export-option-start {
+								margin-top: 20px;
+							}
+
+							li:last-child {
+								margin-bottom: 20px;
+							}
+						}
 					}
 				}
 
-				p.give-field-description{
+				p.give-field-description {
 					display: table;
 					width: 100%;
 				}
@@ -44,11 +71,11 @@
 					}
 				}
 
-				.chosen-container-multi{
+				.chosen-container-multi {
 					.chosen-choices {
 						min-height: 30px;
 
-						li{
+						li {
 							margin: 4px 4px 4px 0;
 						}
 					}
@@ -63,7 +90,6 @@
 		}
 	}
 }
-
 
 //-------------------------------------
 // Export Form
