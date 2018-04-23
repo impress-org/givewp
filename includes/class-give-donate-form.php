@@ -1056,20 +1056,32 @@ class Give_Donate_Form {
 	 * Increase the earnings by the given amount
 	 *
 	 * @since  1.0
+	 * @since  2.1 Pass the donation ID.
+	 *
 	 * @access public
 	 *
-	 * @param  int $amount Amount of donation. Default is 0.
+	 * @param  int $amount     Amount of donation. Default is 0.
+	 * @param int  $payment_id Donation ID.
 	 *
 	 * @return float|false
 	 */
-	public function increase_earnings( $amount = 0 ) {
+	public function increase_earnings( $amount = 0, $payment_id = 0 ) {
 
 		$earnings   = give_get_form_earnings_stats( $this->ID );
 		$new_amount = $earnings + (float) $amount;
 
 		if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
 
-			$this->earnings = $new_amount;
+			/**
+			 * Modify the earning amount when increasing.
+			 *
+			 * @since 2.1
+			 *
+			 * @param float $amount     Earning amount.
+			 * @param int   $payment_id Donation ID.
+			 * @param int   $form_id    Donation form ID.
+			 */
+			$this->earnings = apply_filters( 'give_increase_earnings', $amount, $payment_id, $this->ID );
 
 			return $this->earnings;
 
@@ -1085,11 +1097,12 @@ class Give_Donate_Form {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $amount Amount of donation.
+	 * @param  int $amount     Amount of donation.
+	 * @param int  $payment_id Donation ID.
 	 *
 	 * @return float|false
 	 */
-	public function decrease_earnings( $amount ) {
+	public function decrease_earnings( $amount, $payment_id = 0 ) {
 
 		$earnings = give_get_form_earnings_stats( $this->ID );
 
@@ -1097,10 +1110,18 @@ class Give_Donate_Form {
 			// Only decrease if greater than zero
 			$new_amount = $earnings - (float) $amount;
 
-
 			if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
 
-				$this->earnings = $new_amount;
+				/**
+				 * Modify the earning value when decreasing it.
+				 *
+				 * @since 2.1
+				 *
+				 * @param float $amount     Earning amount.
+				 * @param int   $payment_id Donation ID.
+				 * @param int   $form_id    Donation Form ID.
+				 */
+				$this->earnings = apply_filters( 'give_decrease_earnings', $amount, $payment_id, $this->ID );
 
 				return $this->earnings;
 
