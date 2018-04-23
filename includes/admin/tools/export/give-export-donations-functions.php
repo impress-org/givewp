@@ -15,57 +15,13 @@ function give_export_donations_get_custom_fields() {
 
 	global $wpdb;
 	$post_type = 'give_payment';
-	$responces = array();
+	$responses = array();
 
 	$form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : '';
 
 	if ( empty( $form_id ) ) {
 		return false;
 	}
-
-	$ffm_field_array          = array();
-	$non_multicolumn_ffm_keys = array();
-
-	// Is FFM available? Take care of repeater fields.
-	if ( class_exists( 'Give_FFM_Render_Form' ) ) {
-
-		// Get the custom fields for the payment's form.
-		$ffm = new Give_FFM_Render_Form();
-		list( $post_fields, $taxonomy_fields, $custom_fields ) = $ffm->get_input_fields( $form_id );
-
-		foreach ( $custom_fields as $field ) {
-
-			// Assemble multi-column repeater fields.
-			if ( isset( $field['multiple'] ) && 'repeat' === $field['input_type'] ) {
-				$non_multicolumn_ffm_keys[] = $field['name'];
-
-				foreach ( $field['columns'] as $column ) {
-
-					// All other fields.
-					$ffm_field_array['repeaters'][] = array(
-						'subkey'       => 'repeater_' . give_export_donations_create_column_key( $column ),
-						'metakey'      => $field['name'],
-						'label'        => $column,
-						'multi'        => 'true',
-						'parent_meta'  => $field['name'],
-						'parent_title' => $field['label'],
-					);
-				}
-			} else {
-				// All other fields.
-				$ffm_field_array['single'][] = array(
-					'subkey'  => $field['name'],
-					'metakey' => $field['name'],
-					'label'   => $field['label'],
-					'multi'   => 'false',
-					'parent'  => '',
-				);
-				$non_multicolumn_ffm_keys[]  = $field['name'];
-			}
-		}
-
-		$responces['ffm_fields'] = $ffm_field_array;
-	}// End if().
 
 	$args          = array(
 		'give_forms'     => array( $form_id ),
@@ -87,15 +43,8 @@ function give_export_donations_get_custom_fields() {
 
 	$meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
 
-	// Unset ignored FFM keys.
-	foreach ( $non_multicolumn_ffm_keys as $key ) {
-		if ( ( $key = array_search( $key, $meta_keys ) ) !== false ) {
-			unset( $meta_keys[ $key ] );
-		}
-	}
-
 	if ( ! empty( $meta_keys ) ) {
-		$responces['standard_fields'] = array_values( $meta_keys );
+		$responses['standard_fields'] = array_values( $meta_keys );
 	}
 
 	$query = "
@@ -148,7 +97,7 @@ function give_export_donations_get_custom_fields() {
 	}
 
 	if ( ! empty( $hidden_meta_keys ) ) {
-		$responces['hidden_fields'] = array_values( $hidden_meta_keys );
+		$responses['hidden_fields'] = array_values( $hidden_meta_keys );
 	}
 
 	/**
@@ -156,11 +105,12 @@ function give_export_donations_get_custom_fields() {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $responces
+	 * @param array $responses Contain all the fields that need to be display when donation form is display
+	 * @param int $form_id Donation Form ID
 	 *
-	 * @return array $responces
+	 * @return array $responses
 	 */
-	wp_send_json( (array) apply_filters( 'give_export_donations_get_custom_fields', $responces ) );
+	wp_send_json( (array) apply_filters( 'give_export_donations_get_custom_fields', $responses, $form_id ) );
 
 }
 
@@ -472,6 +422,7 @@ function give_export_donation_standard_fields() {
 	</tr>
 	<?php
 }
+
 add_action( 'give_export_donation_fields', 'give_export_donation_standard_fields', 10 );
 
 /**
@@ -495,6 +446,7 @@ function give_export_donation_custom_fields() {
 	</tr>
 	<?php
 }
+
 add_action( 'give_export_donation_fields', 'give_export_donation_custom_fields', 30 );
 
 
@@ -519,5 +471,6 @@ function give_export_donation_hidden_fields() {
 	</tr>
 	<?php
 }
+
 add_action( 'give_export_donation_fields', 'give_export_donation_hidden_fields', 40 );
 

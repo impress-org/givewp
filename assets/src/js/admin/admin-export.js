@@ -183,9 +183,7 @@ jQuery( document ).ready( function ( $ ) {
 		/**
 		 * Standard Fields
 		 */
-		var standard_fields = (
-			typeof response.standard_fields !== 'undefined'
-		) ? response.standard_fields : '';
+		var standard_fields = 'undefined' !== typeof response.standard_fields && null !== response.standard_fields ? response.standard_fields : '';
 		var standard_field_list = $( '.give-export-donations-standard-fields ul' );
 		if ( standard_fields.length > 0 ) {
 			standard_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
@@ -198,7 +196,7 @@ jQuery( document ).ready( function ( $ ) {
 		/**
 		 * Hidden Fields
 		 */
-		var hidden_fields = response.hidden_fields ? response.hidden_fields : '';
+		var hidden_fields = 'undefined' !== typeof response.hidden_fields && null !== response.hidden_fields ? response.hidden_fields : '';
 		var hidden_field_list = $( '.give-export-donations-hidden-fields ul' );
 
 		if ( hidden_fields ) {
