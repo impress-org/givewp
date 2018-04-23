@@ -112,7 +112,8 @@ class Give_Addon_Activation_Banner {
 		// Go through each addon and get the plugin file url.
 		foreach ( $give_addons as $give_addon ) {
 			$file_name = '';
-			if ( $file_path = explode( '/plugins/', $give_addon['file'] ) ) {
+			$file_path = explode( '/plugins/', $give_addon['file'] );
+			if ( $file_path ) {
 				$file_path = array_pop( $file_path );
 				$file_name = current( explode( '/', $file_path ) );
 			}
@@ -252,10 +253,9 @@ class Give_Addon_Activation_Banner {
 							<ul class="give-alert-addon-list">
 								<?php
 								$is_first = true;
-								foreach ( $addon_to_display as $banner ) {
+								foreach ( $addon_to_display as $banner ) :
 									?>
-									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
-									    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>" id="give-addon-<?php echo esc_attr( basename( $banner['file'], '.php' ) ); ?>">
 										<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
 									</li>
 									<?php
@@ -266,19 +266,15 @@ class Give_Addon_Activation_Banner {
 							</ul>
 						</div>
 						<div class="give-right-side-block">
-							<?php
-							foreach ( $addon_to_display as $banner ) { ?>
-								<div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
-								     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+							<?php foreach ( $addon_to_display as $banner ) : ?>
+								<div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> " id="give-addon-<?php echo esc_attr( basename( $banner['file'], '.php' ) ); ?>">
 									<?php
-									// Render single add banner.
-									$this->render_single_addon_banner( $banner, false );
+										// Render single add banner.
+										$this->render_single_addon_banner( $banner, false );
+										$is_first = false;
 									?>
 								</div>
-								<?php
-								$is_first = false;
-							}
-							?>
+							<?php endforeach; ?>
 						</div>
 					</div>
 					<?php
@@ -340,14 +336,14 @@ class Give_Addon_Activation_Banner {
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
 		?>
-		<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/give-icon-full-circle.svg" class="give-logo" />
+		<img src="<?php echo esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg' ); ?>" class="give-logo" />
 		<div class="give-alert-message">
 			<h3>
 				<?php
 				printf(
-				/* translators: %s: Add-on name */
-					esc_html__( "New Give Add-on Activated: %s", 'give' ),
-					'<span>' . $banner_arr['name'] . '</span>'
+					/* translators: %s: Add-on name */
+					esc_html__( 'New Give Add-on Activated: <span>%s</span>', 'give' ),
+					esc_html( $banner_arr['name'] )
 				);
 				?>
 			</h3>
@@ -355,36 +351,43 @@ class Give_Addon_Activation_Banner {
 				<span class="dashicons dashicons-dismiss"></span>
 			</a>
 			<div class="alert-actions">
-				<?php //Point them to your settings page.
+				<?php
+				//Point them to your settings page.
 				if ( ! empty( $plugin_data['Description'] ) ) {
-					?><span class="give-addon-description">
-					<em><?php echo strip_tags( $plugin_data['Description'] ); ?></em></span><br />
+					?>
+					<span class="give-addon-description">
+					<em><?php echo esc_html( strip_tags( $plugin_data['Description'] ) ); ?></em></span><br />
 					<?php
 				}
-				if ( isset( $banner_arr['settings_url'] ) ) { ?>
-					<a href="<?php echo $banner_arr['settings_url']; ?>"><span
-								class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-					</a>
-					<?php
+				if ( isset( $banner_arr['settings_url'] ) ) {
+					printf(
+						'<a href="%s"><span class="dashicons dashicons-admin-settings"></span>%s</a>',
+						esc_url( $banner_arr['settings_url'] ),
+						esc_html__( 'Go to Settings', 'give' )
+					);
 				}
 				// Show them how to configure the Addon.
-				if ( isset( $banner_arr['documentation_url'] ) ) { ?>
-					<a href="<?php echo $banner_arr['documentation_url'] ?>" target="_blank">
-						<span class="dashicons dashicons-media-text"></span><?php
-						printf(
-						/* translators: %s: Add-on name */
+				if ( isset( $banner_arr['documentation_url'] ) ) {
+					printf(
+						'<a href="%s" target="_blank"><span class="dashicons dashicons-media-text"></span>%s</a>',
+						esc_url( $banner_arr['documentation_url'] ),
+						sprintf(
+							/* translators: %s: Add-on name */
 							esc_html__( 'Documentation: %s Add-on', 'give' ),
-							$banner_arr['name']
-						);
-						?></a>
-				<?php } ?>
-				<?php
+							esc_html( $banner_arr['name'] )
+						)
+					);
+				}
+
 				//Let them signup for plugin updates
-				if ( isset( $banner_arr['support_url'] ) ) { ?>
-					<a href="<?php echo $banner_arr['support_url'] ?>" target="_blank">
-						<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-					</a>
-				<?php } ?>
+				if ( isset( $banner_arr['support_url'] ) ) {
+					printf(
+						'<a href="%s" target="_blank"><span class="dashicons dashicons-sos"></span>%s</a>',
+						esc_url( $banner_arr['support_url'] ),
+						esc_html__( 'Get Support', 'give' )
+					);
+				}
+				?>
 			</div>
 		</div>
 		<?php
@@ -408,7 +411,7 @@ class Give_Addon_Activation_Banner {
 			&& '1' === $_GET['give_addon_activation_ignore']
 		) {
 			// Get the value of the 'give_addon' query string.
-			$addon_query_arg    = sanitize_text_field( $_GET['give_addon'] );
+			$addon_query_arg    = sanitize_text_field( wp_unslash( $_GET['give_addon'] ) );
 			$deactivated_addons = array();
 
 			// If All add-on requested to dismiss.
