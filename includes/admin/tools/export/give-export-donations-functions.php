@@ -45,7 +45,7 @@ function give_export_donations_get_custom_fields() {
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 
-	$meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
+	$meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
 
 	if ( ! empty( $meta_keys ) ) {
 		$responses['standard_fields'] = array_values( $meta_keys );
@@ -63,13 +63,10 @@ function give_export_donations_get_custom_fields() {
         FROM $wpdb->posts 
         LEFT JOIN $wpdb->paymentmeta 
         ON $wpdb->posts.ID = $wpdb->paymentmeta.payment_id 
-        WHERE $wpdb->posts.post_type = '%s' 
-        AND $wpdb->posts.ID IN (%s)
-        AND $wpdb->paymentmeta.meta_key != '' 
-        AND $wpdb->paymentmeta.meta_key NOT RegExp '^[^_]'
+        WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 
-	$hidden_meta_keys   = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
+	$hidden_meta_keys   = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
 
 	/**
 	 * Filter to modify hidden keys that are going to be ignore when displaying the hidden keys
