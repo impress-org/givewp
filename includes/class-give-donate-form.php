@@ -1039,7 +1039,7 @@ class Give_Donate_Form {
 			 * @param float   $earnings earning amount.
 			 * @param integer $form_id  Donation Form ID.
 			 */
-			$this->earnings = apply_filters( 'give_set_earnings', $earnings, $this->ID );
+			$this->earnings = apply_filters( 'give_set_form_earnings', $earnings, $this->ID );
 
 			if ( $this->earnings < 0 ) {
 				// Never let earnings be less than zero
@@ -1078,10 +1078,10 @@ class Give_Donate_Form {
 			 * @since 2.1
 			 *
 			 * @param float $amount     Earning amount.
-			 * @param int   $payment_id Donation ID.
 			 * @param int   $form_id    Donation form ID.
+			 * @param int   $payment_id Donation ID.
 			 */
-			$this->earnings = apply_filters( 'give_increase_earnings', $amount, $payment_id, $this->ID );
+			$this->earnings = apply_filters( 'give_increase_form_earnings', $amount, $this->ID, $payment_id );
 
 			return $this->earnings;
 
@@ -1118,10 +1118,10 @@ class Give_Donate_Form {
 				 * @since 2.1
 				 *
 				 * @param float $amount     Earning amount.
-				 * @param int   $payment_id Donation ID.
 				 * @param int   $form_id    Donation Form ID.
+				 * @param int   $payment_id Donation ID.
 				 */
-				$this->earnings = apply_filters( 'give_decrease_earnings', $amount, $payment_id, $this->ID );
+				$this->earnings = apply_filters( 'give_decrease_form_earnings', $amount, $this->ID, $payment_id );
 
 				return $this->earnings;
 
