@@ -240,7 +240,15 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			$settings        = $this->get_settings();
 			$current_section = give_get_current_setting_section();
 
-			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
+
+			/**
+			 * Use this filter if you want to implement your custom save logic.
+			 *
+			 * @since 2.1
+			 */
+			if ( apply_filters( "give_save_options_{$this->id}_{$current_section}", true ) ) {
+				Give_Admin_Settings::save_fields( $settings, 'give_settings' );
+			}
 
 			/**
 			 * Trigger Action
