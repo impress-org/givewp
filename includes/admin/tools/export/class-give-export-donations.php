@@ -218,6 +218,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>
+
+								<input type="hidden" name="form_ids" class="form_ids" />
 							</div>
 						</td>
 					</tr>

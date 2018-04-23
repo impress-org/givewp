@@ -44,12 +44,14 @@ jQuery( document ).ready( function ( $ ) {
 
 				// Remove all options but those that are selected.
 				$( 'option', select ).remove();
+				var form_ids = [];
 
 				if ( data.length ) {
 
 					$form.find( '.give-export-donation-button' ).prop('disabled', false);
 					$.each( data, function ( key, item ) {
 						select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
+						form_ids.push( item.id );
 					} );
 
 					select.prepend( '<option value="0" selected>' + select.data( 'placeholder' ) + '</option>' );
@@ -59,6 +61,8 @@ jQuery( document ).ready( function ( $ ) {
 
 					$form.find( '.give-export-donation-button' ).prop('disabled', true);
 				}
+
+				$form.find( '.form_ids' ).val( form_ids.join() );
 
 				// Trigger update event.
 				$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );

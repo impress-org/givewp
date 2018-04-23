@@ -44,20 +44,39 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Form submission data.
 	 *
-	 * @var array
-	 * 
 	 * @since 2.1
+	 *
+	 * @var array
 	 */
 	private $cols = array();
 
 	/**
 	 * Form ID.
 	 *
-	 * @var string
-	 * 
 	 * @since 2.1
+	 *
+	 * @var string
 	 */
 	private $form_id = '';
+
+	/**
+	 * Form tags ids.
+	 *
+	 * @since 2.1
+	 *
+	 * @var array
+	 */
+	private $tags = '';
+
+
+	/**
+	 * Form categories ids.
+	 *
+	 * @since 2.1
+	 *
+	 * @var array
+	 */
+	private $categories = '';
 
 	/**
 	 * Set the properties specific to the export.
@@ -74,11 +93,33 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		}
 
 		$this->form       = $this->data['forms'];
-		$this->form_id    = ! empty( $request['forms'] ) && 0 !== $request['forms'] ? absint( $request['forms'] ) : null;
+		$this->categories    = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
+		$this->tags    = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
+		$this->form_id    = $this->get_form_ids( $request );
 		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
 		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
 		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
 		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+	}
+
+	/**
+	 * Get donation form id list
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $request form data that need to be exported
+	 *
+	 * @return array|boolean|null $form get all the donation id that need to be exported
+	 */
+	public function get_form_ids( $request = array() ) {
+		$form = ! empty( $request['forms'] ) && 0 !== $request['forms'] ? absint( $request['forms'] ) : null;
+		$form_ids = ! empty( $request['form_ids'] ) ? sanitize_text_field( $request['form_ids'] ) : null;
+
+		if ( empty( $form ) && ! empty( $form_ids ) && ( ! empty( $this->categories ) || ! empty( $this->tags ) ) ) {
+			$form = explode( ',', $form_ids );
+		}
+
+		return $form;
 	}
 
 	/**
@@ -244,7 +285,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		}
 
 		if ( ! empty( $this->form_id ) ) {
-			$args['give_forms'] = array( $this->form_id );
+			$args['give_forms'] = is_array( $this->form_id ) ? $this->form_id : array( $this->form_id );
 		}
 
 		// Payment query.
