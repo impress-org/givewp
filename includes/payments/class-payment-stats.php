@@ -58,6 +58,7 @@ class Give_Payment_Stats extends Give_Stats {
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
+			'output'     => ''
 		);
 
 		if ( ! empty( $form_id ) ) {

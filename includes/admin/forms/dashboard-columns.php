@@ -3,7 +3,7 @@
  * Dashboard Columns
  *
  * @package     GIVE
- * @subpackage  Admin/Downloads
+ * @subpackage  Admin/Forms
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0

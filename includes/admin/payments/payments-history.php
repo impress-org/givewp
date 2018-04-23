@@ -87,7 +87,7 @@ function give_payment_history_page() {
  * @param $title
  * @return string
  */
-function give_view_order_details_title( $admin_title, $title ) {
+function give_view_donation_details_title( $admin_title, $title ) {
 
 	if ( 'give_forms_page_give-payment-history' != get_current_screen()->base ) {
 		return $admin_title;
@@ -120,7 +120,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 
 	return $title;
 }
-add_filter( 'admin_title', 'give_view_order_details_title', 10, 2 );
+add_filter( 'admin_title', 'give_view_donation_details_title', 10, 2 );
 
 /**
  * Intercept default Edit post links for Give payments and rewrite them to the View Order Details screen.
