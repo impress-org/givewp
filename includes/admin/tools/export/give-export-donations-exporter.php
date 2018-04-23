@@ -191,6 +191,52 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	}
 
+
+	/**
+	 * Get the donation argument
+	 *
+	 * @since 2.1
+	 *
+	 * @param $args
+	 *
+	 * @return array
+	 */
+	public function get_donation_argument( $args ) {
+		$defaults = array(
+			'number' => 30,
+			'page'   => $this->step,
+			'status' => $this->status,
+		);
+
+		// Date query.
+		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
+
+			if ( ! empty( $this->start ) ) {
+				$defaults['date_query'][0]['after'] = date( 'Y-n-d 00:00:00', strtotime( $this->start ) );
+			}
+
+			if ( ! empty( $this->end ) ) {
+				$defaults['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
+			}
+		}
+
+		// Check for price option
+		if ( null !== $this->price_id ) {
+			$defaults['meta_query'] = array(
+				array(
+					'key'   => '_give_payment_price_id',
+					'value' => (int) $this->price_id,
+				),
+			);
+		}
+
+		if ( ! empty( $this->form_id ) ) {
+			$defaults['give_forms'] = array( $this->form_id );
+		}
+
+		return wp_parse_args( $args, $defaults );
+	}
+
 	/**
 	 * Get the Export Data.
 	 *
@@ -204,40 +250,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$data = array();
 		$i    = 0;
 
-		$args = array(
-			'number' => 30,
-			'page'   => $this->step,
-			'status' => $this->status,
-		);
-
-		// Date query.
-		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
-
-			if ( ! empty( $this->start ) ) {
-				$args['date_query'][0]['after'] = date( 'Y-n-d 00:00:00', strtotime( $this->start ) );
-			}
-
-			if ( ! empty( $this->end ) ) {
-				$args['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
-			}
-		}
-
-		// Check for price option
-		if ( null !== $this->price_id ) {
-			$args['meta_query'] = array(
-				array(
-					'key'   => '_give_payment_price_id',
-					'value' => (int) $this->price_id,
-				),
-			);
-		}
-
-		if ( ! empty( $this->form_id ) ) {
-			$args['give_forms'] = array( $this->form_id );
-		}
 
 		// Payment query.
-		$payments = give_get_payments( $args );
+		$payments = give_get_payments( $this->get_donation_argument() );
 
 		if ( $payments ) {
 
@@ -484,26 +499,23 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	}
 
-
 	/**
 	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.0
+	 *
 	 * @return int
 	 */
 	public function get_percentage_complete() {
 
-		$status = $this->status;
-		$args   = array(
-			'start-date' => date( 'n/d/Y', strtotime( $this->start ) ),
-			'end-date'   => date( 'n/d/Y', strtotime( $this->end ) ),
-		);
-
-		if ( 'any' == $status ) {
-			$total = array_sum( (array) give_count_payments( $args ) );
-		} else {
-			$total = give_count_payments( $args )->$status;
+		$args = $this->get_donation_argument( array( 'number' => - 1 ) );
+		if ( isset( $args['page'] ) ) {
+			unset( $args['page'] );
 		}
+
+		$query = give_get_payments( $args );
+
+		$total = count( $query );
 
 		$percentage = 100;
 
