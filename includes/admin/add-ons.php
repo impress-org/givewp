@@ -52,9 +52,13 @@ function give_add_ons_feed() {
 	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
-		$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$feed = vip_safe_wp_remote_get( 'https://givewp.com/downloads/feed/', false, 3, 1, 20, array( 'sslverify' => false ) );
+		} else {
+			$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
+		}
 
-		if ( ! is_wp_error( $feed ) ) {
+		if ( ! is_wp_error( $feed ) && ! empty( $feed ) ) {
 			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
 				$cache = wp_remote_retrieve_body( $feed );
 				Give_Cache::set( 'give_add_ons_feed', $cache, HOUR_IN_SECONDS, true );
