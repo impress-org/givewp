@@ -121,64 +121,12 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	} );
 
-
 	/**
 	 * Outputs the custom field checkboxes.
 	 *
 	 * @param response
 	 */
 	function output_give_donations_fields( response ) {
-
-		/**
-		 * FFM Fields
-		 */
-		var ffm_fields = (
-			typeof response.ffm_fields !== 'undefined'
-		) ? response.ffm_fields : '';
-
-		if ( ffm_fields ) {
-
-			var ffm_field_list = $( '.give-export-donations-ffm ul' );
-
-			// Loop through FFM fields & output
-			$( ffm_fields ).each( function ( index, value ) {
-
-				// Repeater sections.
-				var repeater_sections = (
-					typeof value.repeaters !== 'undefined'
-				) ? value.repeaters : '';
-
-				if ( repeater_sections ) {
-
-					ffm_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
-
-					var parent_title = '';
-					// Repeater section field.
-					$( repeater_sections ).each( function ( index, value ) {
-						if ( parent_title !== value.parent_title ) {
-							ffm_field_list.append( '<li class="give-export-donation-checkbox-remove repeater-section-title" data-parent-meta="' + value.parent_meta + '"><label for="give-give-donations-ffm-field-' + value.parent_meta + '"><input type="checkbox" name="give_give_donations_export_parent[' + value.parent_meta + ']" id="give-give-donations-ffm-field-' + value.parent_meta + '">' + value.parent_title + '</label></li>' );
-						}
-						parent_title = value.parent_title;
-						ffm_field_list.append( '<li class="give-export-donation-checkbox-remove repeater-section repeater-section-' + value.parent_meta + '"><label for="give-give-donations-ffm-field-' + value.subkey + '"><input type="checkbox" name="give_give_donations_export_option[' + value.subkey + ']" id="give-give-donations-ffm-field-' + value.subkey + '">' + value.label + '</label></li>' );
-					} );
-				}
-				// Repeater sections.
-				var single_repeaters = (
-					typeof value.single !== 'undefined'
-				) ? value.single : '';
-
-				if ( single_repeaters ) {
-
-					ffm_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
-
-					// Repeater section field.
-					$( single_repeaters ).each( function ( index, value ) {
-						ffm_field_list.append( '<li class="give-export-donation-checkbox-remove"><label for="give-give-donations-ffm-field-' + value.subkey + '"><input type="checkbox" name="give_give_donations_export_option[' + value.metakey + ']" id="give-give-donations-ffm-field-' + value.subkey + '">' + value.label + '</label> </li>' );
-					} );
-				}
-			} );
-
-		}
 
 		/**
 		 * Standard Fields
