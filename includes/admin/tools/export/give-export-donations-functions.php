@@ -28,7 +28,14 @@ function give_export_donations_get_custom_fields() {
 		'posts_per_page' => - 1,
 		'fields'         => 'ids',
 	);
-	$donation_list = implode( '\',\'', (array) give_get_payments( $args ) );
+	$donation_list = implode( ',', (array) give_get_payments( $args ) );
+
+	$query_and = sprintf(
+		"AND $wpdb->posts.ID IN (%s) 
+		AND $wpdb->paymentmeta.meta_key != '' 
+		AND $wpdb->paymentmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
+		$donation_list
+	);
 
 	$query = "
         SELECT DISTINCT($wpdb->paymentmeta.meta_key) 
@@ -36,16 +43,20 @@ function give_export_donations_get_custom_fields() {
         LEFT JOIN $wpdb->paymentmeta 
         ON $wpdb->posts.ID = $wpdb->paymentmeta.payment_id
         WHERE $wpdb->posts.post_type = '%s'
-        AND $wpdb->posts.ID IN (%s)
-        AND $wpdb->paymentmeta.meta_key != '' 
-        AND $wpdb->paymentmeta.meta_key NOT RegExp '(^[_0-9].+$)'
-    ";
+    " . $query_and;
 
 	$meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
 
 	if ( ! empty( $meta_keys ) ) {
 		$responses['standard_fields'] = array_values( $meta_keys );
 	}
+
+	$query_and = sprintf(
+		"AND $wpdb->posts.ID IN (%s) 
+		AND $wpdb->paymentmeta.meta_key != '' 
+		AND $wpdb->paymentmeta.meta_key NOT RegExp '^[^_]'",
+		$donation_list
+	);
 
 	$query = "
         SELECT DISTINCT($wpdb->paymentmeta.meta_key) 
@@ -56,7 +67,7 @@ function give_export_donations_get_custom_fields() {
         AND $wpdb->posts.ID IN (%s)
         AND $wpdb->paymentmeta.meta_key != '' 
         AND $wpdb->paymentmeta.meta_key NOT RegExp '^[^_]'
-    ";
+    " . $query_and;
 
 	$hidden_meta_keys   = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
 
