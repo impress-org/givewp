@@ -48,12 +48,11 @@ jQuery( document ).ready( function ( $ ) {
 				if ( data.length ) {
 
 					$form.find( '.give-export-donation-button' ).prop('disabled', false);
-
-					select.prepend( '<option value="0">' + select.data( 'placeholder' ) + '</option>' );
-
 					$.each( data, function ( key, item ) {
 						select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
 					} );
+
+					select.prepend( '<option value="0" selected>' + select.data( 'placeholder' ) + '</option>' );
 				} else {
 					// Trigger no result message event.
 					select.prepend( '<option value="0">' + select.data( 'no-form' ) + '</option>' );
