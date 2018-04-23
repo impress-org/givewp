@@ -436,70 +436,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					unset( $columns[ $key ] );
 				}
 
-				// Is FFM available? Take care of repeater fields.
-				if ( class_exists( 'Give_FFM_Render_Form' ) ) {
-
-					// Get the custom fields for the payment's form.
-					$ffm = new Give_FFM_Render_Form();
-					list(
-						$post_fields,
-						$taxonomy_fields,
-						$custom_fields
-						) = $ffm->get_input_fields( $payment->form_id );
-					$parents = isset( $this->data['give_give_donations_export_parent'] ) ? $this->data['give_give_donations_export_parent'] : array();
-
-
-					// Loop through the fields.
-					foreach ( $custom_fields as $field ) {
-
-						// Check if this custom field should be exported first.
-						if ( empty( $parents[ $field['name'] ] ) ) {
-							continue;
-						}
-
-						// Check for Repeater Columns
-						if ( isset( $field['multiple'] ) ) {
-
-							$num_columns = count( $field['columns'] );
-
-							// Loop through columns
-							for ( $count = 0; $count < $num_columns; $count ++ ) {
-								$keyname = 'repeater_' . give_export_donations_create_column_key( $field['columns'][ $count ] );
-								$items   = (array) $ffm->get_meta( $payment->ID, $field['name'], 'post', false );
-
-								// Reassemble arrays.
-								if ( $items ) {
-
-									$final_vals = array();
-
-									foreach ( $items as $item_val ) {
-
-										$item_val = explode( $ffm::$separator, $item_val );
-
-										// Add relevant fields to array.
-										$final_vals[ $count ][] = $item_val[ $count ];
-
-									}
-
-									$data[ $i ][ $keyname ] = implode( '| ', $final_vals[ $count ] );
-
-								} else {
-									$data[ $i ][ $keyname ] = '';
-								}
-
-								$this->cols[ $keyname ] = '';
-
-								unset( $columns[ $keyname ] );
-
-							}
-
-							unset( $this->cols[ $field['name'] ] );
-							// Unset this to prevent field from catchall field loop below.
-							unset( $columns[ $field['name'] ] );
-						}
-					}
-				}
-
 				// Now loop through remaining meta fields.
 				foreach ( $columns as $col ) {
 					$field_data         = get_post_meta( $payment->ID, $col, true );
@@ -507,6 +443,19 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					unset( $columns[ $col ] );
 				}
 
+				/**
+				 * Filter to modify Donation CSV data when exporting donation
+				 *
+				 * @since 2.1
+				 *
+				 * @param array Donation data
+				 * @param array $payment Donation data
+				 * @param array $columns Donation data $columns that are not being merge
+				 * @param array Donation columns
+				 *
+				 * @return array Donation data
+				 */
+				$data[ $i ] = apply_filters( 'give_export_donation_data', $data[ $i ], $payment, $columns, $this );
 
 				$new_data = array();
 				$old_data = $data[ $i ];

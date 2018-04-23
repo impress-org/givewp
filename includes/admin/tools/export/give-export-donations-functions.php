@@ -59,7 +59,18 @@ function give_export_donations_get_custom_fields() {
     ";
 
 	$hidden_meta_keys   = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $donation_list ) );
-	$ignore_hidden_keys = array(
+
+	/**
+	 * Filter to modify hidden keys that are going to be ignore when displaying the hidden keys
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $ignore_hidden_keys Hidden keys that are going to be ignore
+	 * @param array $form_id Donation form id
+	 *
+	 * @return array $ignore_hidden_keys Hidden keys that are going to be ignore
+	 */
+	$ignore_hidden_keys = apply_filters( 'give_export_donations_ignore_hidden_keys', array(
 		'_give_payment_meta',
 		'_give_payment_gateway',
 		'_give_payment_form_title',
@@ -87,9 +98,11 @@ function give_export_donations_get_custom_fields() {
 		'_give_payment_currency',
 		'_give_payment_import_id',
 		'_give_payment_donor_ip',
+	),
+		$form_id
 	);
 
-	// Unset ignored FFM keys.
+	// Unset ignored hidden keys.
 	foreach ( $ignore_hidden_keys as $key ) {
 		if ( ( $key = array_search( $key, $hidden_meta_keys ) ) !== false ) {
 			unset( $hidden_meta_keys[ $key ] );
