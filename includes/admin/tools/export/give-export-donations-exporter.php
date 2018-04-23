@@ -455,6 +455,19 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					unset( $columns[ $col ] );
 				}
 
+
+				$new_data = array();
+				$old_data = $data[ $i ];
+
+				// sorting the columns bas on row
+				foreach ( $this->csv_cols() as $key => $value ) {
+					if ( array_key_exists( $key, $old_data ) ) {
+						$new_data[ $key ] = $old_data[ $key ];
+					}
+				}
+
+				$data[ $i ] = $new_data;
+
 				// Increment iterator.
 				$i ++;
 
