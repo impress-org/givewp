@@ -25,6 +25,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 * Importer type
 		 *
 		 * @since 2.1
+		 *
 		 * @var string
 		 */
 		private $exporter_type = 'export_donations';
@@ -105,9 +106,9 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 *
 		 * @since 2.1
 		 *
-		 * @param $args args for Taxonomy
+		 * @param array $args args for Taxonomy
 		 *
-		 * @return int args for Taxonomy
+		 * @return array args for Taxonomy
 		 */
 		function give_forms_taxonomy_dropdown( $args ) {
 			$args['number'] = 30;
@@ -608,6 +609,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 * Get if current page export donations page or not
 		 *
 		 * @since 2.1
+		 *
 		 * @return bool
 		 */
 		private function is_donations_export_page() {

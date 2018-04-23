@@ -8,7 +8,7 @@
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       2.1
  */
 
 // Exit if accessed directly.
@@ -19,23 +19,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Export_Donations_CSV Class
  *
- * @since 1.0
+ * @since 2.1
  */
 class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
 	 *
+	 * @since 2.1
+	 *
 	 * @var string
-	 * @since 1.0
 	 */
 	public $export_type = 'payments';
 
 	/**
 	 * Form submission data.
 	 *
+	 * @since 2.1
+	 *
 	 * @var array
-	 * @since 1.0
 	 */
 	private $data = array();
 
@@ -43,7 +45,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Form submission data.
 	 *
 	 * @var array
-	 * @since 1.0
+	 * 
+	 * @since 2.1
 	 */
 	private $cols = array();
 
@@ -51,14 +54,15 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Form ID.
 	 *
 	 * @var string
-	 * @since 1.0
+	 * 
+	 * @since 2.1
 	 */
 	private $form_id = '';
 
 	/**
 	 * Set the properties specific to the export.
 	 *
-	 * @since 1.0
+	 * @since 2.1
 	 *
 	 * @param array $request The Form Data passed into the batch processing.
 	 */
@@ -81,7 +85,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Set the CSV columns.
 	 *
 	 * @access public
-	 * @since  1.0
+	 *
+	 * @since  2.1
+	 *
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
@@ -101,6 +107,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	/**
 	 * CSV file columns.
+	 *
+	 * @since  2.1
 	 *
 	 * @param array $columns
 	 *
@@ -195,8 +203,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Get the Export Data.
 	 *
 	 * @access public
-	 * @since  1.0
+	 *
+	 * @since  2.1
+	 *
 	 * @global object $wpdb Used to query the database using the WordPress database API.
+	 *
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
@@ -488,7 +499,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 1.0
+	 * @since 2.1
+	 *
 	 * @return int
 	 */
 	public function get_percentage_complete() {
@@ -522,7 +534,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Print the CSV rows for the current step.
 	 *
 	 * @access public
-	 * @since  1.5
+	 *
+	 * @since  2.1
+	 *
 	 * @return string|false
 	 */
 	public function print_csv_rows() {
