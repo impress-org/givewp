@@ -274,7 +274,7 @@ function give_in_plugin_update_message( $data, $response ) {
 	$upgrade_notice = give_get_plugin_upgrade_notice( $new_version );
 
 	// Display upgrade notice.
-	echo $upgrade_notice;
+	echo $upgrade_notice; // XSS ok.
 }
 
 // Display upgrade notice.
@@ -288,7 +288,7 @@ add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_mes
  *
  * @since 2.1
  *
- * @param string $new_version New verison of the plugin
+ * @param string $new_version New verison of the plugin.
  *
  * @return string
  */
@@ -317,8 +317,8 @@ function give_get_plugin_upgrade_notice( $new_version ) {
  * Note: internal purpose use only
  *
  * @since 2.1
- * @param  string $content
- * @param  string $new_version
+ * @param  string $content     Content of the readme.txt file.
+ * @param  string $new_version The version with current version is compared.
  *
  * @return string
  */
