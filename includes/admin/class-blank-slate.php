@@ -150,7 +150,7 @@ class Give_Blank_Slate {
 	 *
 	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
 	 */
-	public function render( $which = 'bottom') {
+	public function render( $which = 'bottom' ) {
 		// Bail out to prevent content from rendering twice.
 		if ( 'top' === $which ) {
 			return null;
@@ -260,7 +260,8 @@ class Give_Blank_Slate {
 			'cta_text'  => __( 'Create Donation Form', 'give' ),
 			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
 			'help'      => sprintf(
-				__( 'Need help? Get started with %sGive 101%s.', 'give' ),
+				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
 				'<a href="http://docs.givewp.com/give101/" target="_blank">',
 				'</a>'
 			),
@@ -278,7 +279,8 @@ class Give_Blank_Slate {
 				'cta_text' => __( 'View All Forms', 'give' ),
 				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
 				'help'     => sprintf(
-					__( 'Need help? Learn more about %sDonations%s.', 'give' ),
+					/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+					__( 'Need help? Learn more about %1$sDonations%2$s.', 'give' ),
 					'<a href="http://docs.givewp.com/core-donations/">',
 					'</a>'
 				),
@@ -293,7 +295,8 @@ class Give_Blank_Slate {
 				'cta_text' => __( 'View All Forms', 'give' ),
 				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
 				'help'     => sprintf(
-					__( 'Need help? Learn more about %sDonors%s.', 'give' ),
+					/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+					__( 'Need help? Learn more about %1$sDonors%2$s.', 'give' ),
 					'<a href="http://docs.givewp.com/core-donors/">',
 					'</a>'
 				),
