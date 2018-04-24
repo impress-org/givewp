@@ -236,8 +236,15 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			}
 		}
 
-		return $cols;
-
+		/**
+		 * Filter to get columns name when exporting donation
+		 *
+		 * @since 2.1
+		 *
+		 * @param array $cols columns name for CSV
+		 * @param array $columns columns select by admin to export
+		 */
+		return (array) apply_filters( 'give_export_donation_get_columns_name', $cols, $columns );
 	}
 
 	/**
