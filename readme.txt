@@ -222,6 +222,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * New: There is now a Give plugin filter so you can view only Give and it's add-ons more easily. [#2953](https://github.com/WordImpress/Give/issues/2953)
 * New: You can now query donation forms that are closed status. [#2250](https://github.com/WordImpress/Give/issues/2250)
 * New: There is a new metabox on the donation form edit screen that displays goal progress. [#3027](https://github.com/WordImpress/Give/issues/3027)
+* New: There is a new "Donor" based goal so that you can set a goal based on the total number of donors. [#2986](https://github.com/WordImpress/Give/issues/2986)
 * Tweak: We've polished the activation banner for add-ons so that it's more intuitive and user friendly. [#2056](https://github.com/WordImpress/Give/issues/2056)
 * Tweak: Added hardening to further help prevent spam donations. [#2930](https://github.com/WordImpress/Give/issues/2930)
 * Tweak: Added validation to prevent donors from entering their email address into the First Name field. [#2862](https://github.com/WordImpress/Give/issues/2862)
