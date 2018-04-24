@@ -280,6 +280,18 @@ class Give_MetaBox_Form_Data {
 							'type' => 'default_gateway',
 						),
 						array(
+							'name'    => __( 'Name Title Prefix', 'give' ),
+							'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
+							'id'      => $prefix . 'name_title_prefix',
+							'type'    => 'radio_inline',
+							'options' => array(
+								'global'   => __( 'Global Option', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+							'default' => 'global',
+						),
+						array(
 							'name'    => __( 'Company Donations', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
 							'id'      => $prefix . 'company_field',
