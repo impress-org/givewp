@@ -575,7 +575,6 @@ function give_get_payment_status_keys() {
  */
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
 	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead.
-
 	global $wpdb;
 	$meta_table = __give_v20_bc_table_details( 'payment' );
 
@@ -1167,7 +1166,7 @@ function give_donation_amount( $donation_id, $format_args = array() ) {
 			// Pass as 'stats' to calculate donation report on basis of base amount for the Currency-Switcher Add-on.
 			// For Eg. In Currency-Switcher add on when donation has been made through
 			// different currency other than base currency, in that case for correct
-			//report calculation based on base currency we will need to return donation
+			// report calculation based on base currency we will need to return donation
 			// base amount and not the converted amount .
 			'type'     => '',
 		)
@@ -1292,7 +1291,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
 /**
  * Retrieve the donation ID based on the key
  *
- * @param string  $key  the key to search for.
+ * @param string $key  the key to search for.
  *
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
@@ -1329,7 +1328,7 @@ function give_get_donation_id_by_key( $key ) {
 /**
  * Retrieve the donation ID based on the transaction ID
  *
- * @param string  $key  The transaction ID to search for.
+ * @param string $key  The transaction ID to search for.
  *
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
@@ -1690,9 +1689,9 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param int $donation_id Donation Data Object.
- * @param array            $args     a. only_level = If set to true will only return the level name if multi-level enabled.
- *                                   b. separator  = The separator between the Form Title and the Donation Level.
+ * @param int   $donation_id Donation Data Object.
+ * @param array $args     a. only_level = If set to true will only return the level name if multi-level enabled.
+ *                        b. separator  = The separator between the Form Title and the Donation Level.
  *
  * @since 1.5
  *
