@@ -23,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_add_ons_page() {
-	ob_start(); ?>
+	?>
 	<div class="wrap" id="give-add-ons">
-		<h1><?php echo get_admin_page_title(); ?>
+		<h1><?php echo esc_html( get_admin_page_title() ); ?>
 			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
@@ -33,29 +33,32 @@ function give_add_ons_page() {
 		<hr class="wp-header-end">
 
 		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
-		<?php echo give_add_ons_get_feed(); ?>
+		<?php give_add_ons_feed(); ?>
 	</div>
 	<?php
-	echo ob_get_clean();
 }
 
 /**
- * Add-ons Get Feed
+ * Add-ons Render Feed
  *
- * Gets the add-ons page feed.
+ * Renders the add-ons page feed.
  *
  * @since 1.0
- * @return string $cache
+ * @return void
  */
-function give_add_ons_get_feed() {
+function give_add_ons_feed() {
 
 	$addons_debug = false; //set to true to debug
 	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
 
-	if ( $cache === false || $addons_debug === true && WP_DEBUG === true ) {
-		$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
+	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$feed = vip_safe_wp_remote_get( 'https://givewp.com/downloads/feed/', false, 3, 1, 20, array( 'sslverify' => false ) );
+		} else {
+			$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
+		}
 
-		if ( ! is_wp_error( $feed ) ) {
+		if ( ! is_wp_error( $feed ) && ! empty( $feed ) ) {
 			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
 				$cache = wp_remote_retrieve_body( $feed );
 				Give_Cache::set( 'give_add_ons_feed', $cache, HOUR_IN_SECONDS, true );
@@ -68,6 +71,5 @@ function give_add_ons_get_feed() {
 		}
 	}
 
-	return $cache;
-
+	echo wp_kses_post( $cache );
 }
