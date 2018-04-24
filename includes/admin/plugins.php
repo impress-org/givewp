@@ -56,21 +56,27 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 	$new_meta_links = array(
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
-			esc_url( add_query_arg( array(
-					'utm_source'   => 'plugins-page',
-					'utm_medium'   => 'plugin-row',
-					'utm_campaign' => 'admin',
-				), 'https://givewp.com/documentation/' )
+			esc_url(
+				add_query_arg(
+					array(
+						'utm_source'   => 'plugins-page',
+						'utm_medium'   => 'plugin-row',
+						'utm_campaign' => 'admin',
+					), 'https://givewp.com/documentation/'
+				)
 			),
 			__( 'Documentation', 'give' )
 		),
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
-			esc_url( add_query_arg( array(
-					'utm_source'   => 'plugins-page',
-					'utm_medium'   => 'plugin-row',
-					'utm_campaign' => 'admin',
-				), 'https://givewp.com/addons/' )
+			esc_url(
+				add_query_arg(
+					array(
+						'utm_source'   => 'plugins-page',
+						'utm_medium'   => 'plugin-row',
+						'utm_campaign' => 'admin',
+					), 'https://givewp.com/addons/'
+				)
 			),
 			__( 'Add-ons', 'give' )
 		),
@@ -98,12 +104,12 @@ function give_get_admin_page_menu_title() {
 	global $submenu, $plugin_page;
 
 	foreach ( array_keys( $submenu ) as $parent ) {
-		if( 'edit.php?post_type=give_forms' !== $parent ) {
+		if ( 'edit.php?post_type=give_forms' !== $parent ) {
 			continue;
 		}
 
 		foreach ( $submenu[ $parent ] as $submenu_array ) {
-			if( $plugin_page !== $submenu_array[2] ){
+			if ( $plugin_page !== $submenu_array[2] ) {
 				continue;
 			}
 
@@ -123,16 +129,16 @@ function give_get_admin_page_menu_title() {
  */
 function give_recently_activated_addons() {
 	// Check if action is set.
-	if ( isset( $_REQUEST["action"] ) ) {
+	if ( isset( $_REQUEST['action'] ) ) {
 		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
 		$plugins       = array();
 
 		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
-				$plugins[] = $_REQUEST["plugin"];
+				$plugins[] = $_REQUEST['plugin'];
 				break;
 			case 'activate-selected': // If multiple add-ons activated.
-				$plugins = $_REQUEST["checked"];
+				$plugins = $_REQUEST['checked'];
 				break;
 		}
 
@@ -180,7 +186,6 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 					$plugins['give'][ $plugin_slug ]['update'] = true;
 				}
 			}
-
 		}
 	}
 
@@ -204,7 +209,7 @@ function give_filter_addons_filter_addons( $views ) {
 	global $status, $plugins;
 
 	if ( ! empty( $plugins['give'] ) ) {
-		$class = "";
+		$class = '';
 
 		if ( $status == 'give' ) {
 			$class = 'current';
@@ -254,7 +259,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
  * @since 2.1
  */
 function give_in_plugin_update_message( $data, $response ) {
-	$new_version           = $data['new_version'];
+	$new_version = $data['new_version'];
 
 	$current_version_parts = explode( '.', GIVE_VERSION );
 	$new_version_parts     = explode( '.', $new_version );
@@ -324,7 +329,7 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 	);
 
 	// Regex to extract Upgrade notice from the readme.txt file.
-	$notice_regexp  = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( $new_version ) . '\s*=|$)~Uis';
+	$notice_regexp = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( $new_version ) . '\s*=|$)~Uis';
 
 	$upgrade_notice = '';
 
