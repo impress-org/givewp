@@ -179,7 +179,7 @@ function give_export_donations_create_column_key( $string ) {
  *
  * @param $args
  *
- * @return  $args
+ * @return array
  */
 function give_export_donation_form_search_args( $args ) {
 	if ( empty( $_POST['fields'] ) ) {
