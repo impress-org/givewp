@@ -8,7 +8,7 @@
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       2.1
  */
 
 // Exit if accessed directly.
@@ -19,46 +19,69 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Export_Donations_CSV Class
  *
- * @since 1.0
+ * @since 2.1
  */
 class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
 	 *
+	 * @since 2.1
+	 *
 	 * @var string
-	 * @since 1.0
 	 */
 	public $export_type = 'payments';
 
 	/**
 	 * Form submission data.
 	 *
+	 * @since 2.1
+	 *
 	 * @var array
-	 * @since 1.0
 	 */
 	private $data = array();
 
 	/**
 	 * Form submission data.
 	 *
+	 * @since 2.1
+	 *
 	 * @var array
-	 * @since 1.0
 	 */
 	private $cols = array();
 
 	/**
 	 * Form ID.
 	 *
+	 * @since 2.1
+	 *
 	 * @var string
-	 * @since 1.0
 	 */
 	private $form_id = '';
 
 	/**
+	 * Form tags ids.
+	 *
+	 * @since 2.1
+	 *
+	 * @var array
+	 */
+	private $tags = '';
+
+
+	/**
+	 * Form categories ids.
+	 *
+	 * @since 2.1
+	 *
+	 * @var array
+	 */
+	private $categories = '';
+
+	/**
 	 * Set the properties specific to the export.
 	 *
-	 * @since 1.0
+	 * @since 2.1
 	 *
 	 * @param array $request The Form Data passed into the batch processing.
 	 */
@@ -70,7 +93,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		}
 
 		$this->form       = $this->data['forms'];
-		$this->form_id    = ! empty( $request['forms'] ) && 0 !== $request['forms'] ? absint( $request['forms'] ) : null;
+		$this->categories    = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
+		$this->tags    = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
+		$this->form_id    = $this->get_form_ids( $request );
 		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
 		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
 		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
@@ -78,10 +103,32 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	}
 
 	/**
+	 * Get donation form id list
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $request form data that need to be exported
+	 *
+	 * @return array|boolean|null $form get all the donation id that need to be exported
+	 */
+	public function get_form_ids( $request = array() ) {
+		$form = ! empty( $request['forms'] ) && 0 !== $request['forms'] ? absint( $request['forms'] ) : null;
+		$form_ids = ! empty( $request['form_ids'] ) ? sanitize_text_field( $request['form_ids'] ) : null;
+
+		if ( empty( $form ) && ! empty( $form_ids ) && ( ! empty( $this->categories ) || ! empty( $this->tags ) ) ) {
+			$form = explode( ',', $form_ids );
+		}
+
+		return $form;
+	}
+
+	/**
 	 * Set the CSV columns.
 	 *
 	 * @access public
-	 * @since  1.0
+	 *
+	 * @since  2.1
+	 *
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
@@ -101,6 +148,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 	/**
 	 * CSV file columns.
+	 *
+	 * @since  2.1
 	 *
 	 * @param array $columns
 	 *
@@ -195,11 +244,13 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Get the donation argument
 	 *
-	 * @since 2.1
+	 * @access public
 	 *
-	 * @param $args
+	 * @since  2.1
 	 *
-	 * @return array
+	 * @global object $wpdb Used to query the database using the WordPress database API.
+	 *
+	 * @return array $data The data for the CSV file.
 	 */
 	public function get_donation_argument( $args ) {
 		$defaults = array(
@@ -231,7 +282,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		}
 
 		if ( ! empty( $this->form_id ) ) {
-			$defaults['give_forms'] = array( $this->form_id );
+			$args['give_forms'] = is_array( $this->form_id ) ? $this->form_id : array( $this->form_id );
 		}
 
 		return wp_parse_args( $args, $defaults );
@@ -399,70 +450,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					unset( $columns[ $key ] );
 				}
 
-				// Is FFM available? Take care of repeater fields.
-				if ( class_exists( 'Give_FFM_Render_Form' ) ) {
-
-					// Get the custom fields for the payment's form.
-					$ffm = new Give_FFM_Render_Form();
-					list(
-						$post_fields,
-						$taxonomy_fields,
-						$custom_fields
-						) = $ffm->get_input_fields( $payment->form_id );
-					$parents = isset( $this->data['give_give_donations_export_parent'] ) ? $this->data['give_give_donations_export_parent'] : array();
-
-
-					// Loop through the fields.
-					foreach ( $custom_fields as $field ) {
-
-						// Check if this custom field should be exported first.
-						if ( empty( $parents[ $field['name'] ] ) ) {
-							continue;
-						}
-
-						// Check for Repeater Columns
-						if ( isset( $field['multiple'] ) ) {
-
-							$num_columns = count( $field['columns'] );
-
-							// Loop through columns
-							for ( $count = 0; $count < $num_columns; $count ++ ) {
-								$keyname = 'repeater_' . give_export_donations_create_column_key( $field['columns'][ $count ] );
-								$items   = (array) $ffm->get_meta( $payment->ID, $field['name'], 'post', false );
-
-								// Reassemble arrays.
-								if ( $items ) {
-
-									$final_vals = array();
-
-									foreach ( $items as $item_val ) {
-
-										$item_val = explode( $ffm::$separator, $item_val );
-
-										// Add relevant fields to array.
-										$final_vals[ $count ][] = $item_val[ $count ];
-
-									}
-
-									$data[ $i ][ $keyname ] = implode( '| ', $final_vals[ $count ] );
-
-								} else {
-									$data[ $i ][ $keyname ] = '';
-								}
-
-								$this->cols[ $keyname ] = '';
-
-								unset( $columns[ $keyname ] );
-
-							}
-
-							unset( $this->cols[ $field['name'] ] );
-							// Unset this to prevent field from catchall field loop below.
-							unset( $columns[ $field['name'] ] );
-						}
-					}
-				}
-
 				// Now loop through remaining meta fields.
 				foreach ( $columns as $col ) {
 					$field_data         = get_post_meta( $payment->ID, $col, true );
@@ -470,6 +457,19 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					unset( $columns[ $col ] );
 				}
 
+				/**
+				 * Filter to modify Donation CSV data when exporting donation
+				 *
+				 * @since 2.1
+				 *
+				 * @param array Donation data
+				 * @param array $payment Donation data
+				 * @param array $columns Donation data $columns that are not being merge
+				 * @param array Donation columns
+				 *
+				 * @return array Donation data
+				 */
+				$data[ $i ] = apply_filters( 'give_export_donation_data', $data[ $i ], $payment, $columns, $this );
 
 				$new_data = array();
 				$old_data = $data[ $i ];
@@ -502,7 +502,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 1.0
+	 * @since 2.1
 	 *
 	 * @return int
 	 */
@@ -534,7 +534,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Print the CSV rows for the current step.
 	 *
 	 * @access public
-	 * @since  1.5
+	 *
+	 * @since  2.1
+	 *
 	 * @return string|false
 	 */
 	public function print_csv_rows() {

@@ -234,7 +234,11 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die(
+				esc_html__( 'You do not have permission to delete test transactions.', 'give' ),
+				esc_html__( 'Error', 'give' ),
+				array( 'response' => 403 )
+			);
 		}
 
 		$had_data = $this->get_data();
@@ -296,7 +300,6 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page;
 
-
 			if ( $count > $this->per_step ) {
 
 				$this->update_option( $this->step_on_key, $page );
@@ -321,7 +324,6 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			}
 			do_action( 'give_delete_log_cache' );
 		}
-
 
 		// Here we delete all the donor
 		if ( 3 === $step ) {
