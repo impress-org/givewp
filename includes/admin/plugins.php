@@ -246,7 +246,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
 
 
 /**
- * Display the updgrade notice message.
+ * Display the upgrade notice message.
  *
  * @param array $data     Array of plugin metadata.
  * @param array $response An array of metadata about the available plugin update.
