@@ -116,9 +116,11 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' );
 
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-import-donors.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-transactions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-all-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-donor-stats.php' );
@@ -127,6 +129,9 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-reset-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/tools-actions.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-core-settings.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-donations.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php' );
@@ -148,6 +153,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-exports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-system-info.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-import-core-settings.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-import-donations.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php' );

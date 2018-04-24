@@ -113,6 +113,7 @@ jQuery.noConflict();
 
 		//Goals
 		var goal_option = $( '._give_goal_option_field' );
+		var goal_format = $( '._give_goal_format_field input:radio' );
 		//Close Form when Goal Achieved
 		var close_form_when_goal_achieved_option = $( '._give_close_form_when_goal_achieved_field input:radio' );
 
@@ -135,6 +136,7 @@ jQuery.noConflict();
 				$( '._give_close_form_when_goal_achieved_field' ).hide();
 				$( '._give_form_goal_achieved_message_field' ).hide();
 				$( '._give_number_of_donation_goal_field' ).hide();
+				$( '._give_number_of_donor_goal_field' ).hide();
 			} else {
 				$( '._give_set_goal_field' ).show();
 				$( '._give_goal_format_field' ).show();
@@ -147,20 +149,25 @@ jQuery.noConflict();
 					$( '._give_form_goal_achieved_message_field' ).show();
 				}
 
+				// Trigger goal format option.
+				goal_format.change();
 			}
 		} ).change();
 
-		var goal_format = $( '._give_goal_format_field input:radio' );
 		goal_format.on( 'change', function() {
 			var goal_format_val = $( '._give_goal_format_field input:radio:checked' ).val();
 			var goal_option_val = $( '._give_goal_option_field input:radio:checked' ).val();
 
 			if ( 'donation' === goal_format_val ) {
-				$( '._give_set_goal_field, ._give_number_of_donor_goal_field' ).hide();
-				$( '._give_number_of_donation_goal_field' ).show();
+				$( '._give_set_goal_field, ._give_number_of_donor_goal_field,._give_number_of_donation_goal_field' ).hide();
+				if( 'disabled' !== goal_option_val ) {
+					$( '._give_number_of_donation_goal_field' ).show()
+				}
 			} else if ( 'donors' === goal_format_val ) {
-				$( '._give_set_goal_field, ._give_number_of_donation_goal_field' ).hide();
-				$( '._give_number_of_donor_goal_field' ).show();
+				$( '._give_set_goal_field, ._give_number_of_donation_goal_field, ._give_number_of_donor_goal_field' ).hide();
+				if ( 'disabled' !== goal_option_val ) {
+					$( '._give_number_of_donor_goal_field' ).show();
+				}
 			} else {
 				('disabled' === goal_option_val) ? $( '._give_set_goal_field' ).hide() : $( '._give_set_goal_field' ).show();
 				$( '._give_number_of_donation_goal_field, ._give_number_of_donor_goal_field' ).hide();

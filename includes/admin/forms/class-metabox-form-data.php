@@ -151,7 +151,7 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'          => __( 'Max/Min. Amount', 'give' ),
+						'name'          => __( 'Min/Max. Amount', 'give' ),
 						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
 						'id'            => $prefix . 'custom_amount_range',
 						'type'          => 'range_slider',
@@ -581,6 +581,19 @@ class Give_MetaBox_Form_Data {
 			'normal',
 			'high'
 		);
+
+		// Show Goal Metabox only if goal is enabled.
+		if ( give_is_setting_enabled( give_get_meta( give_get_admin_post_id(), '_give_goal_option', true ) ) ) {
+			add_meta_box(
+				'give-form-goal-stats',
+				__( 'Goal Statistics', 'give' ),
+				array( $this, 'output_goal' ),
+				array( 'give_forms' ),
+				'side',
+				'low'
+			);
+		}
+
 	}
 
 
@@ -751,6 +764,21 @@ class Give_MetaBox_Form_Data {
 		endif; // End if().
 	}
 
+	/**
+	 * Output Goal meta-box settings.
+	 *
+	 * @param object $post Post Object.
+	 *
+	 * @access public
+	 * @since  2.1.0
+	 *
+	 * @return void
+	 */
+	public function output_goal( $post ) {
+
+		echo give_admin_form_goal_stats( $post->ID );
+
+	}
 
 	/**
 	 * Check if setting field has sub tabs/fields
@@ -925,6 +953,9 @@ class Give_MetaBox_Form_Data {
 							give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 						}
 
+						// Verify and delete form meta based on the form status.
+						give_set_form_closed_status( $post_id );
+
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
 					}// End if().
@@ -969,7 +1000,11 @@ class Give_MetaBox_Form_Data {
 	private function get_fields_id( $setting ) {
 		$meta_keys = array();
 
-		if ( ! empty( $setting ) ) {
+		if (
+			! empty( $setting )
+			&& array_key_exists( 'fields', $setting )
+			&& ! empty( $setting['fields'] )
+		) {
 			foreach ( $setting['fields'] as $field ) {
 				if ( $field_id = $this->get_field_id( $field ) ) {
 					$meta_keys[] = $field_id;

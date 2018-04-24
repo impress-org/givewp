@@ -125,12 +125,9 @@ function give_get_default_gateway( $form_id ) {
 function give_get_gateway_admin_label( $gateway ) {
 	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['admin_label'] : $gateway;
-	$payment  = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : false;
 
-	if ( $gateway == 'manual' && $payment ) {
-		if ( give_donation_amount( $payment ) == 0 ) {
-			$label = __( 'Test Donation', 'give' );
-		}
+	if ( $gateway == 'manual' ) {
+		$label = __( 'Test Donation', 'give' );
 	}
 
 	return apply_filters( 'give_gateway_admin_label', $label, $gateway );

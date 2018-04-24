@@ -758,7 +758,8 @@ function give_form_grid_shortcode( $atts ) {
 		'image_size'          => 'medium',
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
-		'display_style'       => 'redirect',
+		'display_style'       => 'modal_reveal',
+		'status'              => '' // open or closed
 	), $atts );
 
 	// Validate integer attributes.
@@ -787,6 +788,17 @@ function give_form_grid_shortcode( $atts ) {
 			'relation' => 'AND',
 		),
 	);
+
+	// Filter results of form grid based on form status.
+	$form_closed_status = trim( $atts['status'] );
+	if ( ! empty( $form_closed_status ) ) {
+		$form_args['meta_query'] = array(
+			array(
+				'key'   => '_give_form_status',
+				'value' => $form_closed_status,
+			),
+		);
+	}
 
 	// Maybe add pagination.
 	if ( true === $atts['paged'] ) {
@@ -826,44 +838,46 @@ function give_form_grid_shortcode( $atts ) {
 
 		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
 		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
+		add_filter( 'give_form_wrap_classes', 'add_class_for_form_grid', 10, 3 );
+		add_action( 'give_donation_form_top', 'give_is_form_grid_page_hidden_field', 10, 3 );
 
 		echo '<div class="give-wrap">';
-			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
-			while ( $form_query->have_posts() ) {
-				$form_query->the_post();
+		while ( $form_query->have_posts() ) {
+			$form_query->the_post();
 
-				// Give/templates/shortcode-form-grid.php.
-				give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
+			// Give/templates/shortcode-form-grid.php.
+			give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
 
-			}
+		}
 
-			wp_reset_postdata();
+		wp_reset_postdata();
 
-			echo '</div><!-- .give-grid -->';
+		echo '</div><!-- .give-grid -->';
 
-			remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
-			remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-			if ( false !== $atts['paged'] ) {
-				$paginate_args = array(
-					'current'   => max( 1, get_query_var( 'paged' ) ),
-					'total'     => $form_query->max_num_pages,
-					'show_all'  => false,
-					'end_size'  => 1,
-					'mid_size'  => 2,
-					'prev_next' => true,
-					'prev_text' => __( '« Previous', 'give' ),
-					'next_text' => __( 'Next »', 'give' ),
-					'type'      => 'plain',
-					'add_args'  => false,
-				);
+		if ( false !== $atts['paged'] ) {
+			$paginate_args = array(
+				'current'   => max( 1, get_query_var( 'paged' ) ),
+				'total'     => $form_query->max_num_pages,
+				'show_all'  => false,
+				'end_size'  => 1,
+				'mid_size'  => 2,
+				'prev_next' => true,
+				'prev_text' => __( '« Previous', 'give' ),
+				'next_text' => __( 'Next »', 'give' ),
+				'type'      => 'plain',
+				'add_args'  => false,
+			);
 
-				printf(
-					'<div class="give-page-numbers">%s</div>',
-					paginate_links( $paginate_args )
-				);
-			}
+			printf(
+				'<div class="give-page-numbers">%s</div>',
+				paginate_links( $paginate_args )
+			);
+		}
 		echo '</div><!-- .give-wrap -->';
 
 		return ob_get_clean();

@@ -168,8 +168,9 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			$this->render_progress();
 			?>
 			<section>
-				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo ( 1 === $step && ! empty( $this->is_json_valid ) ? 'give-hidden': '' ); ?> "
-				       id="<?php echo "step-{$step}"; ?>">
+				<table
+					class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_json_valid ) ? 'give-hidden' : '' ); ?> "
+					id="<?php echo "step-{$step}"; ?>">
 					<tbody>
 					<?php
 					switch ( $step ) {
@@ -255,7 +256,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.17
 		 */
 		public function start_import() {
-			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
+			$type      = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
 			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
 
 			?>
