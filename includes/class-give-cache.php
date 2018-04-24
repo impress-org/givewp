@@ -539,6 +539,7 @@ class Give_Cache {
 			return $status;
 		}
 
+		$group_prefix = $group;
 		$group = self::$instance->filter_group_name( $group );
 
 		// Delete single or multiple cache items from cache.
@@ -555,7 +556,7 @@ class Give_Cache {
 			 * @param string $group
 			 * @param int    $expire
 			 */
-			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire, $status );
+			do_action( "give_deleted_{$group_prefix}_cache", $ids, $group, $expire, $status );
 
 		} else {
 			foreach ( $ids as $id ) {
@@ -571,7 +572,7 @@ class Give_Cache {
 				 * @param string $group
 				 * @param int    $expire
 				 */
-				do_action( "give_deleted_{$group}_cache", $id, $group, $expire, $status );
+				do_action( "give_deleted_{$group_prefix}_cache", $id, $group, $expire, $status );
 			}
 		}
 
@@ -598,6 +599,8 @@ class Give_Cache {
 			array(
 				'number'     => - 1,
 				'give_forms' => $form_id,
+				'output'     => '',
+				'fields'     => 'ids',
 			)
 		);
 
@@ -605,9 +608,9 @@ class Give_Cache {
 
 		if ( ! empty( $donations ) ) {
 			/* @var Give_Payment $donation */
-			foreach ( $donations as $donation ) {
-				wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
-				wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+			foreach ( $donations as $donation_id ) {
+				wp_cache_delete( $donation_id, $this->filter_group_name( 'give-donations' ) );
+				wp_cache_delete( give_get_payment_donor_id( $donation_id ), $this->filter_group_name( 'give-donors' ) );
 			}
 		}
 
@@ -629,14 +632,11 @@ class Give_Cache {
 			return;
 		}
 
-		/* @var Give_Payment $donation */
-		$donation = new Give_Payment( $donation_id );
-
-		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+		if ( $donation_id && ( $donor_id = give_get_payment_donor_id( $donation_id ) ) ) {
+			wp_cache_delete( $donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
-		wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
+		wp_cache_delete( $donation_id, $this->filter_group_name( 'give-donations' ) );
 
 		self::$instance->get_incrementer( true );
 	}
@@ -653,10 +653,11 @@ class Give_Cache {
 	 * @param int    $expire
 	 */
 	public function delete_donor_related_cache( $id, $group, $expire ) {
-		$donor        = new Give_Donor( $id );
-		$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+		$donation_ids = Give()->donors->get_column( 'payment_ids', $id );
 
 		if ( ! empty( $donation_ids ) ) {
+			$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donation_ids  ) ) );
+
 			foreach ( $donation_ids as $donation ) {
 				wp_cache_delete( $donation, $this->filter_group_name( 'give-donations' ) );
 			}
@@ -677,11 +678,8 @@ class Give_Cache {
 	 * @param int    $expire
 	 */
 	public function delete_donations_related_cache( $id, $group, $expire ) {
-		/* @var Give_Payment $donation */
-		$donation = new Give_Payment( $id );
-
-		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+		if ( $id && ( $donor_id = give_get_payment_donor_id( $id ) ) ) {
+			wp_cache_delete( $donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
 		self::$instance->get_incrementer( true );

@@ -666,10 +666,10 @@ class GIVE_CLI_COMMAND {
 	 * : A specific date range to retrieve stats for
 	 *
 	 * [--start-date=<date>]
-	 * : The start date of a date range to retrieve stats for
+	 * : The start date of a date range to retrieve stats for. Date format is MM/DD/YYYY
 	 *
 	 * [--end-date=<date>]
-	 * : The end date of a date range to retrieve stats for
+	 * : The end date of a date range to retrieve stats for. Date format is MM/DD/YYYY
 	 *
 	 * ## EXAMPLES
 	 *
@@ -708,7 +708,7 @@ class GIVE_CLI_COMMAND {
 		$earnings = $stats->get_earnings( $form_id, $start_date, $end_date );
 		$sales    = $stats->get_sales( $form_id, $start_date, $end_date );
 
-		WP_CLI::line( $this->color_message( __( 'Earnings', 'give' ), give_currency_filter( $earnings ) ) );
+		WP_CLI::line( $this->color_message( __( 'Earnings', 'give' ), give_currency_filter( $earnings, array( 'decode_currency' => true ) ) ) );
 		WP_CLI::line( $this->color_message( __( 'Sales', 'give' ), $sales ) );
 	}
 

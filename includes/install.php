@@ -145,7 +145,8 @@ function give_run_install() {
 			'v201_upgrades_payment_metadata',
 			'v201_add_missing_donors',
 			'v201_move_metadata_into_new_table',
-			'v201_logs_upgrades'
+			'v201_logs_upgrades',
+			'v210_verify_form_status_upgrades',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -331,6 +332,7 @@ function give_get_default_settings() {
 		'css'                                         => 'enabled',
 		'floatlabels'                                 => 'disabled',
 		'welcome'                                     => 'enabled',
+		'company_field'                               => 'disabled',
 		'name_title_prefix'                           => 'disabled',
 		'forms_singular'                              => 'enabled',
 		'forms_archives'                              => 'enabled',

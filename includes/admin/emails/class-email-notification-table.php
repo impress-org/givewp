@@ -267,7 +267,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @access public
 	 */
 	public function no_items() {
-		_e( 'No give email notification found.' );
+		_e( 'No give email notification found.', 'give' );
 	}
 
 	/**

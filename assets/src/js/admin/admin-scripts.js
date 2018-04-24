@@ -171,7 +171,9 @@ var give_setting_edit = false;
 				$search_field = $container.find('input[type="text"]'),
 				variations = $container.hasClass('variations'),
 				lastKey = e.which,
-				search_type = 'give_forms_search';
+				search_type = 'give_form_search',
+				$this = this;
+
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
 			if ($container.prev().data('search-type')) {
@@ -216,17 +218,19 @@ var give_setting_edit = false;
 			) {
 				return;
 			}
+
 			clearTimeout(typingTimer);
 			$container.addClass('give-select-chosen-ajax');
 
 			typingTimer = setTimeout(
 				function () {
 					$.ajax({
-						type: 'GET',
+						type: 'POST',
 						url: ajaxurl,
 						data: {
 							action: search_type,
-							s: val
+							s: val,
+							fields: $( $this ).closest( 'form' ).serialize()
 						},
 						dataType: 'json',
 						beforeSend: function () {

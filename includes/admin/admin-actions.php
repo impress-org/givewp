@@ -340,7 +340,7 @@ function _give_register_admin_notices() {
 					Give()->notices->register_notice( array(
 						'id'          => 'give-donor-donations-deleted',
 						'type'        => 'updated',
-						'description' => __( 'The selected donor(s) and its associated donations has been deleted.', 'give' ),
+						'description' => __( 'The selected donor(s) and the associated donation(s) has been deleted.', 'give' ),
 						'show'        => true,
 					) );
 					break;

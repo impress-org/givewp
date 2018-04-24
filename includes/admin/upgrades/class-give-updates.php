@@ -547,7 +547,10 @@ class Give_Updates {
 		$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
 
 		// Remove already completed update from info.
-		if ( give_has_upgrade_completed( $doing_upgrade_args['update_info']['id'] ) ) {
+		if (
+			empty( $doing_upgrade_args['update_info'] )
+			|| give_has_upgrade_completed( $doing_upgrade_args['update_info']['id'] )
+		) {
 			$doing_upgrade_args['update_info'] = current( array_values( $batch->data ) );
 			$doing_upgrade_args['step']        = 1;
 		}
