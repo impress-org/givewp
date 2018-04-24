@@ -302,31 +302,31 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				$address      = $payment->address;
 
 				// Set columns
-				if ( ! empty( $this->cols['donation_id'] ) ) {
+				if ( ! empty( $columns['donation_id'] ) ) {
 					$data[ $i ]['donation_id'] = $payment->ID;
 				}
 
-				if ( ! empty( $this->cols['seq_id'] ) ) {
+				if ( ! empty( $columns['seq_id'] ) ) {
 					$data[ $i ]['seq_id'] = Give()->seq_donation_number->get_serial_code( $payment->ID );
 				}
 
-				if ( ! empty( $this->cols['first_name'] ) ) {
+				if ( ! empty( $columns['first_name'] ) ) {
 					$data[ $i ]['first_name'] = isset( $payment->first_name ) ? $payment->first_name : '';
 				}
 
-				if ( ! empty( $this->cols['last_name'] ) ) {
+				if ( ! empty( $columns['last_name'] ) ) {
 					$data[ $i ]['last_name'] = isset( $payment->last_name ) ? $payment->last_name : '';
 				}
 
-				if ( ! empty( $this->cols['email'] ) ) {
+				if ( ! empty( $columns['email'] ) ) {
 					$data[ $i ]['email'] = $payment->email;
 				}
 
-				if ( ! empty( $this->cols['company'] ) ) {
+				if ( ! empty( $columns['company'] ) ) {
 					$data[ $i ]['company'] = empty( $payment_meta['_give_donation_company'] ) ? '' : str_replace( "\'", "'", $payment_meta['_give_donation_company'] );
 				}
 
-				if ( ! empty( $this->cols['address_line1'] ) ) {
+				if ( ! empty( $columns['address_line1'] ) ) {
 					$data[ $i ]['address_line1']   = isset( $address['line1'] ) ? $address['line1'] : '';
 					$data[ $i ]['address_line2']   = isset( $address['line2'] ) ? $address['line2'] : '';
 					$data[ $i ]['address_city']    = isset( $address['city'] ) ? $address['city'] : '';
@@ -335,15 +335,15 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
 				}
 
-				if ( ! empty( $this->cols['donation_total'] ) ) {
+				if ( ! empty( $columns['donation_total'] ) ) {
 					$data[ $i ]['donation_total'] = give_format_amount( give_donation_amount( $payment->ID ) );
 				}
 
-				if ( ! empty( $this->cols['currency_code'] ) ) {
+				if ( ! empty( $columns['currency_code'] ) ) {
 					$data[ $i ]['currency_code'] = empty( $payment_meta['_give_payment_currency'] ) ? give_get_currency() : $payment_meta['_give_payment_currency'];
 				}
 
-				if ( ! empty( $this->cols['currency_symbol'] ) ) {
+				if ( ! empty( $columns['currency_symbol'] ) ) {
 					$currency_code = $data[ $i ]['currency_code'];
 					$data[ $i ]['currency_symbol'] =  give_currency_symbol( $currency_code, true );
 				}
