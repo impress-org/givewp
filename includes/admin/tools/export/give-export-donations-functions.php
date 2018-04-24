@@ -234,9 +234,9 @@ function give_export_donation_standard_fields() {
 						<ul class="give-export-option-payment-fields-ul">
 
 							<li class="give-export-option-label give-export-option-donation-label">
-												<span>
-													<?php _e( 'Donation Payment Fields', 'give' ); ?>
-												</span>
+								<span>
+									<?php _e( 'Donation Payment Fields', 'give' ); ?>
+								</span>
 							</li>
 
 							<li class="give-export-option-start">
@@ -316,6 +316,15 @@ function give_export_donation_standard_fields() {
 									       id="give-export-payment-gateway"><?php _e( 'Payment Gateway', 'give' ); ?>
 								</label>
 							</li>
+
+							<?php
+							/*
+							 * Action to add extra columns in standard payment fields
+							 *
+							 * @since 2.1
+							 */
+							do_action( 'give_export_donation_standard_payment_fields' );
+							?>
 						</ul>
 					</li>
 
@@ -323,9 +332,9 @@ function give_export_donation_standard_fields() {
 						<ul class="give-export-option-form-fields-ul">
 
 							<li class="give-export-option-label give-export-option-Form-label">
-												<span>
-													<?php _e( 'Donation Form Fields', 'give' ); ?>
-												</span>
+								<span>
+									<?php _e( 'Donation Form Fields', 'give' ); ?>
+								</span>
 							</li>
 
 
@@ -360,6 +369,15 @@ function give_export_donation_standard_fields() {
 									       id="give-export-donation-form-level-title"><?php _e( 'Donation Form Level Title', 'give' ); ?>
 								</label>
 							</li>
+
+							<?php
+							/*
+							 * Action to add extra columns in standard form fields
+							 *
+							 * @since 2.1
+							 */
+							do_action( 'give_export_donation_standard_form_fields' );
+							?>
 						</ul>
 					</li>
 
@@ -367,9 +385,9 @@ function give_export_donation_standard_fields() {
 						<ul class="give-export-option-donor-fields-ul">
 
 							<li class="give-export-option-label give-export-option-donor-label">
-												<span>
-													<?php _e( 'Donor Fields', 'give' ); ?>
-												</span>
+								<span>
+									<?php _e( 'Donor Fields', 'give' ); ?>
+								</span>
 							</li>
 
 							<li class="give-export-option-start">
@@ -435,6 +453,15 @@ function give_export_donation_standard_fields() {
 									       id="give-export-donor-ip"><?php _e( 'Donor IP Address', 'give' ); ?>
 								</label>
 							</li>
+
+							<?php
+							/*
+							 * Action to add extra columns in standard donor fields
+							 *
+							 * @since 2.1
+							 */
+							do_action( 'give_export_donation_standard_donor_fields' );
+							?>
 						</ul>
 					</li>
 				</ul>
