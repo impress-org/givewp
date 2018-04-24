@@ -1029,17 +1029,7 @@ class Give_Donate_Form {
 				add_post_meta( $this->ID, '_give_form_earnings', 0 );
 			}
 
-			$earnings = give_get_meta( $this->ID, '_give_form_earnings', true );
-
-			/**
-			 * Alter earning amount.
-			 *
-			 * @since 2.1
-			 *
-			 * @param float   $earnings earning amount.
-			 * @param integer $form_id  Donation Form ID.
-			 */
-			$this->earnings = apply_filters( 'give_set_form_earnings', $earnings, $this->ID );
+			$this->earnings = give_get_meta( $this->ID, '_give_form_earnings', true );
 
 			if ( $this->earnings < 0 ) {
 				// Never let earnings be less than zero
