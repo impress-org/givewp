@@ -246,11 +246,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @since 2.1
 	 *
-	 * @param $args
+	 * @param array $args donation argument
 	 *
-	 * @return array
+	 * @return array $args donation argument
 	 */
-	public function get_donation_argument( $args ) {
+	public function get_donation_argument( $args = array() ) {
 		$defaults = array(
 			'number' => 30,
 			'page'   => $this->step,
