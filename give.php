@@ -304,6 +304,7 @@ if ( ! class_exists( 'Give' ) ) :
 			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
+
 		/**
 		 * Init Give when WordPress Initializes.
 		 *
