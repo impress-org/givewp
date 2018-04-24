@@ -13,11 +13,11 @@ jQuery.noConflict();
 jQuery( document ).ready( function ( $ ) {
 
 	/**
-	 * Update Exort Donation Form
+	 * Update Export Donation Form
 	 *
 	 * @since 2.1
 	 */
-	function give_update_donation_form() {
+	function give_export_update_donation_form() {
 
 		var $form = $( 'form#give-export_donations-form' ),
 			$container = $( $form ).find( 'tr.give-export-donation-form .give-select-chosen' ),
@@ -73,12 +73,12 @@ jQuery( document ).ready( function ( $ ) {
 	}
 
 	/**
-	 * update Exort Donation For when cat or tag are change
+	 * Update export Donation Form when cat or tag are change
 	 *
 	 * @since 2.1
 	 */
 	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).change( function () {
-		give_update_donation_form();
+		give_export_update_donation_form();
 	} );
 
 	/**

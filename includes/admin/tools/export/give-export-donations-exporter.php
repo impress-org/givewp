@@ -244,13 +244,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Get the donation argument
 	 *
-	 * @access public
+	 * @since 2.1
 	 *
-	 * @since  2.1
+	 * @param $args
 	 *
-	 * @global object $wpdb Used to query the database using the WordPress database API.
-	 *
-	 * @return array $data The data for the CSV file.
+	 * @return array
 	 */
 	public function get_donation_argument( $args ) {
 		$defaults = array(
@@ -258,19 +256,15 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			'page'   => $this->step,
 			'status' => $this->status,
 		);
-
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
-
 			if ( ! empty( $this->start ) ) {
 				$defaults['date_query'][0]['after'] = date( 'Y-n-d 00:00:00', strtotime( $this->start ) );
 			}
-
 			if ( ! empty( $this->end ) ) {
 				$defaults['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
 			}
 		}
-
 		// Check for price option
 		if ( null !== $this->price_id ) {
 			$defaults['meta_query'] = array(
@@ -280,11 +274,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				),
 			);
 		}
-
 		if ( ! empty( $this->form_id ) ) {
-			$args['give_forms'] = is_array( $this->form_id ) ? $this->form_id : array( $this->form_id );
+			$defaults['give_forms'] = array( $this->form_id );
 		}
-
 		return wp_parse_args( $args, $defaults );
 	}
 
@@ -292,15 +284,17 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * Get the Export Data.
 	 *
 	 * @access public
-	 * @since  1.0
+	 *
+	 * @since  2.1
+	 *
 	 * @global object $wpdb Used to query the database using the WordPress database API.
+	 *
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
 
 		$data = array();
 		$i    = 0;
-
 
 		// Payment query.
 		$payments = give_get_payments( $this->get_donation_argument() );
@@ -502,31 +496,24 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 *
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-
 		$args = $this->get_donation_argument( array( 'number' => - 1 ) );
 		if ( isset( $args['page'] ) ) {
 			unset( $args['page'] );
 		}
-
 		$query = give_get_payments( $args );
-
 		$total = count( $query );
-
 		$percentage = 100;
-
 		if ( $total > 0 ) {
 			$percentage = ( ( 30 * $this->step ) / $total ) * 100;
 		}
-
 		if ( $percentage > 100 ) {
 			$percentage = 100;
 		}
-
 		return $percentage;
 	}
 
