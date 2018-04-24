@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_admin_rate_us( $footer_text ) {
 	global $typenow;
 
-	if ( $typenow === 'give_forms' ) {
+	if ( 'give_forms' === $typenow ) {
 		$rate_text = sprintf(
 			/* translators: %s: Link to 5 star rating */
 			__( 'If you like <strong>Give</strong> please leave us a %s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ),
