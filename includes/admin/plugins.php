@@ -252,8 +252,6 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
  * @param array $response An array of metadata about the available plugin update.
  *
  * @since 2.1
- *
- * @return @void
  */
 function give_in_plugin_update_message( $data, $response ) {
 	$new_version           = $data['new_version'];
