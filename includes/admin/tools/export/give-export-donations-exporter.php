@@ -93,8 +93,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		}
 
 		$this->form       = $this->data['forms'];
-		$this->categories    = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
-		$this->tags    = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
+		$this->categories = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
+		$this->tags       = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
 		$this->form_id    = $this->get_form_ids( $request );
 		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
 		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
@@ -240,7 +240,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		return $cols;
 
 	}
-
 
 	/**
 	 * Get the donation argument
@@ -490,7 +489,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 1.0
+	 * @since 2.1
 	 *
 	 * @return int
 	 */
@@ -499,8 +498,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		if ( isset( $args['page'] ) ) {
 			unset( $args['page'] );
 		}
-		$query = give_get_payments( $args );
-		$total = count( $query );
+		$query      = give_get_payments( $args );
+		$total      = count( $query );
 		$percentage = 100;
 		if ( $total > 0 ) {
 			$percentage = ( ( 30 * $this->step ) / $total ) * 100;
@@ -508,6 +507,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		if ( $percentage > 100 ) {
 			$percentage = 100;
 		}
+
 		return $percentage;
 	}
 
