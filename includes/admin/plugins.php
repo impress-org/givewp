@@ -279,6 +279,8 @@ add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_mes
 /**
  * Get the upgrade notice from WordPress.org.
  *
+ * Note: internal purpose use only
+ *
  * @since 2.1
  * @param string $new_version New verison of the plugin
  *
@@ -304,6 +306,8 @@ function give_get_plugin_upgrade_notice( $new_version ) {
 
 /**
  * Parse update notice from readme file.
+ *
+ * Note: internal purpose use only
  *
  * @since 2.1
  * @param  string $content
