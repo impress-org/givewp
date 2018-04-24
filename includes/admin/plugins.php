@@ -266,7 +266,7 @@ function give_in_plugin_update_message( $data, $response ) {
 	}
 
 	// Get the upgrade notice from the trunk.
-	$upgrade_notice = give_get_upgrade_notice( $new_version );
+	$upgrade_notice = give_get_plugin_upgrade_notice( $new_version );
 
 	// Display upgrade notice.
 	echo $upgrade_notice;
@@ -284,7 +284,7 @@ add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_mes
  *
  * @return string
  */
-function give_get_upgrade_notice( $new_version ) {
+function give_get_plugin_upgrade_notice( $new_version ) {
 
 	// Cache the upgrade notice.
 	$transient_name = 'give_upgrade_notice_' . $new_version;
