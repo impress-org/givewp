@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.1
+Stable tag: 2.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,26 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.1.0: April 25th, 2018  =
+* New: Sequential ordering is here! You can now configure donation payments with a prefix, suffix, number padding and more. [#2912](https://github.com/WordImpress/Give/issues/2912)
+* New: Now you can export your donations with much more flexibility via the new advanced donation exporter. [#2875](https://github.com/WordImpress/Give/issues/2875), [#2996](https://github.com/WordImpress/Give/issues/2996)
+* New: Query performance improvements for sites with a large database of donations. [#2987](https://github.com/WordImpress/Give/issues/2987), [#3069](https://github.com/WordImpress/Give/issues/3069)
+* New: The donation form grid is here! Now you can display multiple donation forms quick and easily using the new donation form grid shortcode. [#1414](https://github.com/WordImpress/Give/issues/1414), [#2943](https://github.com/WordImpress/Give/issues/2943)
+* New: The importer has been upgraded with a new "Dry Run" feature and we've also included a sample data CSV file for you to test out. [#2419](https://github.com/WordImpress/Give/issues/2419)
+* New: You can now display goal progress from multiple donation forms using a new shortcode. For example, [give_totals total_goal="5000" ids="1,2,3"] would display the progress of 3 donation forms towards the goal of $5,000 in donations. [#2883](https://github.com/WordImpress/Give/issues/2883)
+* New: There is now a new functionality to display a "Company Name" field within your donation forms. This is useful for company matching or just general purpose information collection. [#2453](https://github.com/WordImpress/Give/issues/2453)
+* New: You can now set a maximum donation amount for donations per form.
+* New: We've replace boring JS alerts with a new modal window API that looks and functions great and other developers can utilize.
+* New: There is now a delete button on the single donation payment screen. [#2734](https://github.com/WordImpress/Give/issues/2734)
+* New: There is now a Give plugin filter so you can view only Give and it's add-ons more easily. [#2953](https://github.com/WordImpress/Give/issues/2953)
+* New: You can now query donation forms that are closed status. [#2250](https://github.com/WordImpress/Give/issues/2250)
+* New: There is a new metabox on the donation form edit screen that displays goal progress. [#3027](https://github.com/WordImpress/Give/issues/3027)
+* Tweak: We've polished the activation banner for add-ons so that it's more intuitive and user friendly. [#2056](https://github.com/WordImpress/Give/issues/2056)
+* Tweak: Added hardening to further help prevent spam donations. [#2930](https://github.com/WordImpress/Give/issues/2930)
+* Tweak: Added validation to prevent donors from entering their email address into the First Name field. [#2862](https://github.com/WordImpress/Give/issues/2862)
+* Fix: The SSL check within the System Info tool was displaying an error due to an API change by the service used. [#2998](https://github.com/WordImpress/Give/issues/2998)
+* Fix: Don't clear form fields via JS if no Give form is present on the page. [#3093](https://github.com/WordImpress/Give/issues/3093)
 
 = 2.0.6: March 7th, 2018  =
 * New: Notices and warnings on the frontend can now be dismissed if the notice has been configured to be manually or auto-dismissed. Previously all frotnend notices were static, meaning they weren't able to be removed automatically or by the user. [#2869](https://github.com/WordImpress/Give/issues/2869), [#2853](https://github.com/WordImpress/Give/issues/2853)
