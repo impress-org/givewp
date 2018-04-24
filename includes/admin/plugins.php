@@ -293,7 +293,7 @@ function give_get_plugin_upgrade_notice( $new_version ) {
 		$response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/give/trunk/readme.txt' );
 
 		if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
-			$upgrade_notice = give_parse_update_notice( $response['body'], $new_version );
+			$upgrade_notice = give_parse_plugin_update_notice( $response['body'], $new_version );
 			set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
 		}
 	}
@@ -311,7 +311,7 @@ function give_get_plugin_upgrade_notice( $new_version ) {
  *
  * @return string
  */
-function give_parse_update_notice( $content, $new_version ) {
+function give_parse_plugin_update_notice( $content, $new_version ) {
 	$version_parts     = explode( '.', $new_version );
 	$check_for_notices = array(
 		$version_parts[0] . '.0',
