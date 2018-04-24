@@ -1058,20 +1058,23 @@ class Give_Donate_Form {
 	public function increase_earnings( $amount = 0, $payment_id = 0 ) {
 
 		$earnings   = give_get_form_earnings_stats( $this->ID );
+
+		/**
+		 * Modify the earning amount when increasing.
+		 *
+		 * @since 2.1
+		 *
+		 * @param float $amount     Earning amount.
+		 * @param int   $form_id    Donation form ID.
+		 * @param int   $payment_id Donation ID.
+		 */
+		$amount = apply_filters( 'give_increase_form_earnings_amount', $amount, $this->ID, $payment_id );
+
 		$new_amount = $earnings + (float) $amount;
 
 		if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
 
-			/**
-			 * Modify the earning amount when increasing.
-			 *
-			 * @since 2.1
-			 *
-			 * @param float $amount     Earning amount.
-			 * @param int   $form_id    Donation form ID.
-			 * @param int   $payment_id Donation ID.
-			 */
-			$this->earnings = apply_filters( 'give_increase_form_earnings', $amount, $this->ID, $payment_id );
+			$this->earnings = $new_amount;
 
 			return $this->earnings;
 
@@ -1097,24 +1100,25 @@ class Give_Donate_Form {
 		$earnings = give_get_form_earnings_stats( $this->ID );
 
 		if ( $earnings > 0 ) {
+
+			/**
+			 * Modify the earning value when decreasing it.
+			 *
+			 * @since 2.1
+			 *
+			 * @param float $amount     Earning amount.
+			 * @param int   $form_id    Donation Form ID.
+			 * @param int   $payment_id Donation ID.
+			 */
+			$amount = apply_filters( 'give_decrease_form_earnings_amount', $amount, $this->ID, $payment_id );
+
 			// Only decrease if greater than zero
 			$new_amount = $earnings - (float) $amount;
 
 			if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
-
-				/**
-				 * Modify the earning value when decreasing it.
-				 *
-				 * @since 2.1
-				 *
-				 * @param float $amount     Earning amount.
-				 * @param int   $form_id    Donation Form ID.
-				 * @param int   $payment_id Donation ID.
-				 */
-				$this->earnings = apply_filters( 'give_decrease_form_earnings', $amount, $this->ID, $payment_id );
+				$this->earnings = $new_amount;
 
 				return $this->earnings;
-
 			}
 
 		}
