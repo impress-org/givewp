@@ -278,7 +278,7 @@ function give_in_plugin_update_message( $data, $response ) {
 }
 
 // Display upgrade notice.
-add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_message' );
+add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_message', 10, 2 );
 
 
 /**
