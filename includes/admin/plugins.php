@@ -287,6 +287,7 @@ add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_mes
  * Note: internal purpose use only
  *
  * @since 2.1
+ *
  * @param string $new_version New verison of the plugin
  *
  * @return string
@@ -294,9 +295,10 @@ add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_mes
 function give_get_plugin_upgrade_notice( $new_version ) {
 
 	// Cache the upgrade notice.
-	$transient_name = 'give_upgrade_notice_' . $new_version;
+	$transient_name = "give_upgrade_notice_{$new_version}";
+	$upgrade_notice = get_transient( $transient_name );
 
-	if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+	if ( false === $upgrade_notice ) {
 		$response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/give/trunk/readme.txt' );
 
 		if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
