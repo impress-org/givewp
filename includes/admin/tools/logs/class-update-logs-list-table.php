@@ -48,7 +48,7 @@ class Give_Update_Log_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
 			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false,// Does this table support ajax?
+			'ajax'     => false, // Does this table support ajax?
 		) );
 	}
 
@@ -120,16 +120,16 @@ class Give_Update_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_details( $item ) {
-		echo Give()->tooltips->render_link( array(
+		echo wp_kses_post( Give()->tooltips->render_link( array(
 			'label'       => __( 'View Update Log', 'give' ),
 			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
 			'attributes'  => array(
 				'class' => 'thickbox give-error-log-details-link button button-small',
 			),
-		) );
+		) ) );
 		?>
-		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
+		<div id="log-details-<?php echo esc_attr( $item['ID'] ); ?>" style="display:none;">
 			<?php
 
 			// Print Log Content, if not empty.
@@ -259,10 +259,9 @@ class Give_Update_Log_Table extends WP_List_Table {
 		$total_items           = Give()->logs->get_log_count( 0, 'update' );
 
 		$this->set_pagination_args( array(
-				'total_items' => $total_items,
-				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page ),
-			)
-		);
+			'total_items' => $total_items,
+			'per_page'    => $this->per_page,
+			'total_pages' => ceil( $total_items / $this->per_page ),
+		) );
 	}
 }
