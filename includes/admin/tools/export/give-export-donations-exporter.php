@@ -113,6 +113,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 */
 	public function get_form_ids( $request = array() ) {
 		$form = ! empty( $request['forms'] ) && 0 !== $request['forms'] ? absint( $request['forms'] ) : null;
+
 		$form_ids = ! empty( $request['form_ids'] ) ? sanitize_text_field( $request['form_ids'] ) : null;
 
 		if ( empty( $form ) && ! empty( $form_ids ) && ( ! empty( $this->categories ) || ! empty( $this->tags ) ) ) {
@@ -265,18 +266,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				$defaults['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
 			}
 		}
-		// Check for price option
-		if ( null !== $this->price_id ) {
-			$defaults['meta_query'] = array(
-				array(
-					'key'   => '_give_payment_price_id',
-					'value' => (int) $this->price_id,
-				),
-			);
-		}
+
 		if ( ! empty( $this->form_id ) ) {
-			$defaults['give_forms'] = array( $this->form_id );
+			$defaults['give_forms'] = is_array( $this->form_id ) ? $this->form_id : array( $this->form_id );
 		}
+
 		return wp_parse_args( $args, $defaults );
 	}
 
