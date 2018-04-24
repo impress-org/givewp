@@ -286,39 +286,52 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
  * @return void
  */
 function give_ajax_form_search() {
-	global $wpdb;
-
-	$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
-	$excludes = ( isset( $_GET['current_id'] ) ? (array) $_GET['current_id'] : array() );
-
 	$results = array();
-	if ( current_user_can( 'edit_give_forms' ) ) {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
-	} else {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
-	}
+	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
-	if ( $items ) {
+	$args = array(
+		'post_type' => 'give_forms',
+		's'         => $search,
+	);
 
-		foreach ( $items as $item ) {
+	/**
+	 * Filter to modify Ajax form search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args Query argument for WP_query
+	 *
+	 * @return array $args Query argument for WP_query
+	 */
+	$args = (array) apply_filters( 'give_ajax_form_search_args', $args );
+
+	// get all the donation form.
+	$query = new WP_Query( $args );
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			global $post;
 
 			$results[] = array(
-				'id'   => $item->ID,
-				'name' => $item->post_title,
+				'id'   => $post->ID,
+				'name' => $post->post_title,
 			);
 		}
-	} else {
-
-		$items[] = array(
-			'id'   => 0,
-			'name' => __( 'No forms found.', 'give' ),
-		);
-
+		wp_reset_postdata();
 	}
 
-	echo json_encode( $results );
+	/**
+	 * Filter to modify Ajax form search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the Donation Form id
+	 *
+	 * @return array $results Contain the Donation Form id
+	 */
+	$results = (array) apply_filters( 'give_ajax_form_search_responce', $results );
 
-	give_die();
+	wp_send_json( $results );
 }
 
 add_action( 'wp_ajax_give_form_search', 'give_ajax_form_search' );
@@ -334,7 +347,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 function give_ajax_donor_search() {
 	global $wpdb;
 
-	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 	$results = array();
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
@@ -343,7 +356,6 @@ function give_ajax_donor_search() {
 	}
 
 	if ( $donors ) {
-
 		foreach ( $donors as $donor ) {
 
 			$results[] = array(
@@ -351,18 +363,9 @@ function give_ajax_donor_search() {
 				'name' => $donor->name . ' (' . $donor->email . ')',
 			);
 		}
-	} else {
-
-		$donors[] = array(
-			'id'   => 0,
-			'name' => __( 'No donors found.', 'give' ),
-		);
-
 	}
 
-	echo json_encode( $results );
-
-	give_die();
+	wp_send_json( $results );
 }
 
 add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
@@ -376,10 +379,11 @@ add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
  * @return void
  */
 function give_ajax_search_users() {
+	$results = array();
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
-		$search = esc_sql( sanitize_text_field( $_GET['s'] ) );
+		$search = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
 		$get_users_args = array(
 			'number' => 9999,
@@ -400,25 +404,148 @@ function give_ajax_search_users() {
 					'name' => esc_html( $user->user_login . ' (' . $user->user_email . ')' ),
 				);
 			}
-		} else {
-
-			$results[] = array(
-				'id'   => 0,
-				'name' => __( 'No users found.', 'give' ),
-			);
-
 		}
-
-		echo json_encode( $results );
-
 	}// End if().
 
-	give_die();
+	wp_send_json( $results );
 
 }
 
 add_action( 'wp_ajax_give_user_search', 'give_ajax_search_users' );
 
+
+/**
+ * Queries page by title and returns page ID and title in JSON format.
+ *
+ * Note: this function in for internal use.
+ *
+ * @since 2.1
+ *
+ * @return string
+ */
+function give_ajax_pages_search() {
+	$data = array();
+	$args = array(
+		'post_type' => 'page',
+		's'         => give_clean( $_POST['s'] ),
+	);
+
+	$query = new WP_Query( $args );
+
+	// Query posts by title.
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+
+			$data[] = array(
+				'id'   => get_the_ID(),
+				'name' => get_the_title(),
+			);
+		}
+	}
+
+	wp_send_json( $data );
+}
+
+add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
+
+/**
+ * Retrieve Categories via AJAX for chosen dropdown search field.
+ *
+ * @since  2.1
+ *
+ * @return void
+ */
+function give_ajax_categories_search() {
+	$results = array();
+
+	/**
+	 * Filter to modify Ajax tags search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args argument for get_terms
+	 *
+	 * @return array $args argument for get_terms
+	 */
+	$args = (array) apply_filters( 'give_forms_categories_dropdown_args', array(
+		'number'     => 30,
+		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
+	) );
+
+	$categories = get_terms( 'give_forms_category', $args );
+
+	foreach ( $categories as $category ) {
+		$results[] = array(
+			'id'   => $category->term_id,
+			'name' => $category->name,
+		);
+	}
+
+	/**
+	 * Filter to modify Ajax tags search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the categories id and name
+	 *
+	 * @return array $results Contain the categories id and name
+	 */
+	$results = (array) apply_filters( 'give_forms_categories_dropdown_responce', $results );
+
+	wp_send_json( $results );
+}
+
+add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
+
+/**
+ * Retrieve Tags via AJAX for chosen dropdown search field.
+ *
+ * @since  2.1
+ *
+ * @return void
+ */
+function give_ajax_tags_search() {
+	$results = array();
+
+	/**
+	 * Filter to modify Ajax tags search args
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args argument for get_terms
+	 *
+	 * @return array $args argument for get_terms
+	 */
+	$args = (array) apply_filters( 'give_forms_tags_dropdown_args', array(
+		'number'     => 30,
+		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
+	) );
+
+	$categories = get_terms( 'give_forms_tag', $args );
+
+	foreach ( $categories as $category ) {
+		$results[] = array(
+			'id'   => $category->term_id,
+			'name' => $category->name,
+		);
+	}
+
+	/**
+	 * Filter to modify Ajax tags search result
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $results Contain the tags id and name
+	 *
+	 * @return array $results Contain the tags id and name
+	 */
+	$results = (array) apply_filters( 'give_forms_tags_dropdown_responce', $results );
+
+	wp_send_json( $results );
+}
+
+add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 
 /**
  * Check for Price Variations (Multi-level donation forms)
@@ -587,38 +714,3 @@ function give_confirm_email_for_donation_access() {
 }
 
 add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_confirm_email_for_donation_access' );
-
-/**
- * Queries page by title and returns page ID and title in JSON format.
- *
- * Note: this function in for internal use.
- *
- * @since 2.1
- *
- * @return string
- */
-function give_ajax_pages_search() {
-	$data = array();
-	$args = array(
-		'post_type' => 'page',
-		's'         => give_clean( $_GET['s'] ),
-	);
-
-	$query = new WP_Query( $args );
-
-	// Query posts by title.
-	if ( $query->have_posts() ) {
-		while ( $query->have_posts() ) {
-			$query->the_post();
-
-			$data[] = array(
-				'id'   => get_the_ID(),
-				'name' => get_the_title(),
-			);
-		}
-	}
-
-	wp_send_json( $data );
-}
-
-add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
