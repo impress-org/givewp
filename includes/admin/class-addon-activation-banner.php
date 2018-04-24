@@ -253,7 +253,7 @@ class Give_Addon_Activation_Banner {
 							<ul class="give-alert-addon-list">
 								<?php
 								$is_first = true;
-								foreach ( $addon_to_display as $banner ) :
+								foreach ( $addon_to_display as $banner ) {
 									?>
 									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>" id="give-addon-<?php echo esc_attr( basename( $banner['file'], '.php' ) ); ?>">
 										<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
