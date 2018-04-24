@@ -259,8 +259,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
  * @since 2.1
  */
 function give_in_plugin_update_message( $data, $response ) {
-	$new_version = $data['new_version'];
-
+	$new_version           = $data['new_version'];
 	$current_version_parts = explode( '.', GIVE_VERSION );
 	$new_version_parts     = explode( '.', $new_version );
 
@@ -274,7 +273,7 @@ function give_in_plugin_update_message( $data, $response ) {
 	$upgrade_notice = give_get_plugin_upgrade_notice( $new_version );
 
 	// Display upgrade notice.
-	echo $upgrade_notice; // XSS ok.
+	echo apply_filters( 'give_in_plugin_update_message', $upgrade_notice ? '</p>' . wp_kses_post( $upgrade_notice ) . '<p class="dummy">' : '' );
 }
 
 // Display upgrade notice.
@@ -317,6 +316,7 @@ function give_get_plugin_upgrade_notice( $new_version ) {
  * Note: internal purpose use only
  *
  * @since 2.1
+ *
  * @param  string $content     Content of the readme.txt file.
  * @param  string $new_version The version with current version is compared.
  *
@@ -361,3 +361,39 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 
 	return wp_kses_post( $upgrade_notice );
 }
+
+
+/**
+ * Add styling to the plugin upgrade notice.
+ *
+ * @since 2.1
+ */
+function give_plugin_notice_css() {
+?>
+	<style type="text/css">
+	#give-update .give-plugin-upgrade-notice {
+		font-weight: 400;
+		background: #fff8e5!important;
+		border-left: 4px solid #ffb900;
+		border-top: 1px solid #ffb900;
+		padding: 9px 0 9px 12px!important;
+		margin: 0 -12px 0 -16px!important;
+	}
+
+	#give-update .give-plugin-upgrade-notice:before {
+		content: '\f348';
+		display: inline-block;
+		font: 400 18px/1 dashicons;
+		speak: none;
+		margin: 0 8px 0 -2px;
+		vertical-align: top;
+	}
+
+	#give-update .dummy {
+		display: none;
+	}
+	</style>
+<?php
+}
+
+add_action( 'admin_head', 'give_plugin_notice_css' );
