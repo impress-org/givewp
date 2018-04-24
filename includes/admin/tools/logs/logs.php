@@ -25,7 +25,7 @@ function give_get_logs_tab() {
 	require( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
 
 	// Get current section.
-	$current_section = $_GET['section'] = give_get_current_setting_section();
+	$current_section = give_get_current_setting_section();
 
 	/**
 	 * Fires the in report page logs view.
@@ -61,7 +61,8 @@ function give_logs_view_sales() {
 		 */
 		do_action( 'give_logs_donations_top' );
 
-		$logs_table->display(); ?>
+		$logs_table->display();
+		?>
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-tools"/>
 		<input type="hidden" name="tab" value="logs"/>
@@ -105,7 +106,8 @@ function give_logs_view_updates() {
 		 */
 		do_action( 'give_logs_update_top' );
 
-		$logs_table->display(); ?>
+		$logs_table->display();
+		?>
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-tools"/>
 		<input type="hidden" name="tab" value="logs"/>
@@ -150,7 +152,8 @@ function give_logs_view_gateway_errors() {
 		 */
 		do_action( 'give_logs_payment_error_top' );
 
-		$logs_table->display(); ?>
+		$logs_table->display();
+		?>
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-tools"/>
 		<input type="hidden" name="tab" value="logs"/>
@@ -224,7 +227,7 @@ function give_log_views() {
 		return;
 	}
 	?>
-	<form id="give-logs-filter" method="get" action="<?php echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs&section=' . $current_section; ?>">
+	<form id="give-logs-filter" method="get" action="<?php echo esc_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&section=' . $current_section ); ?>">
 		<?php
 		/**
 		 * Fires after displaying the reports page views drop down.
