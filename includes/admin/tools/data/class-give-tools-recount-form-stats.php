@@ -114,7 +114,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 				 *
 				 * @since 2.1
 				 */
-				$payment_total = apply_filters(
+				$earning_amount = apply_filters(
 					'give_donation_amount',
 					give_format_amount( $payment->total, array( 'donation_id' => $payment->ID ) ),
 					$payment->total,
@@ -122,10 +122,8 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
 				);
 
-				$payment_total += (float) give_maybe_sanitize_amount( $payment_total );
-
 				$totals['sales'] ++;
-				$totals['earnings'] += $payment_total;
+				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount );
 
 			}
 

@@ -375,12 +375,10 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 							array( 'type' => 'stats', 'currency' => false, 'amount' => false )
 						);
 
-						$payment_total = (float) give_maybe_sanitize_amount( $payment_total );
-
 						$payment_items[ $payment->ID ] = array(
 							'id'         => $form_id,
 							'payment_id' => $payment->ID,
-							'price'      => $payment_total,
+							'price'      => (float) give_maybe_sanitize_amount( $payment_total ),
 						);
 					}
 				}
