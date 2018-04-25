@@ -79,6 +79,10 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_range_slider";
 			break;
 
+		case 'chosen':
+			$func_name = "{$func_name_prefix}_chosen_input";
+			break;
+
 		default:
 
 			if (
@@ -195,7 +199,7 @@ function give_render_field( $field ) {
 		case 'range_slider':
 			$field['type']  = 'range_slider';
 			break;
-	}
+	} // End switch().
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
 	// We encourage you to use description param.
@@ -285,6 +289,79 @@ function give_text_input( $field ) {
 }
 
 /**
+ * Output a chosen input box.
+ *
+ * @param array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string $id            Field ID. Default ''.
+ * @type string $style         CSS style for input field. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value         Value of input field. Default ''.
+ * @type string $name          Name of input field. Default ''.
+ * @type string $type          Type of input field. Default 'text'.
+ * @type string $before_field  Text/HTML to add before input field. Default ''.
+ * @type string $after_field   Text/HTML to add after input field. Default ''.
+ * @type string $data_type     Define data type for value of input to filter it properly. Default ''.
+ * @type string $description   Description of input field. Default ''.
+ * @type array  $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * }
+ *
+ * @since 2.1
+ *
+ * @return void
+ */
+function give_chosen_input( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['before_field']  = '';
+	$field['after_field']   = '';
+	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
+	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
+	$type                   = '';
+	$allow_new_values       = '';
+
+	// Set attributes based on multiselect datatype.
+	if ( 'multiselect' === $data_type ) {
+		$type = 'multiple';
+		$allow_new_values = 'data-allows-new-values="true"';
+	}
+
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
+			<?php echo wp_kses_post( $field['name'] ); ?>
+		</label>
+		<?php echo esc_attr( $field['before_field'] ); ?>
+		<select
+				class="give-select-chosen give-chosen-settings"
+				style="<?php echo esc_attr( $field['style'] ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
+				id="<?php echo esc_attr( $field['id'] ); ?>"
+			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
+		>
+			<?php foreach ( $field['options'] as $key => $value ) { ?>
+				<option
+						value="<?php echo esc_attr( $key ); ?>"
+					<?php echo selected( esc_attr( $field['value'] ), esc_attr( $key ), false ); ?>
+				>
+					<?php echo esc_html( $value ); ?>
+				</option>
+			<?php } ?>
+		</select>
+		<?php echo esc_attr( $field['after_field'] ); ?>
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
+}
+
+/**
  * Give range slider field.
  *
  * @since 2.1
@@ -350,8 +427,8 @@ function give_range_slider( $field ) {
 		: $field_options['options']['maximum'];
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
-	<span class="give_range_slider_display">
+		<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
+		<span class="give_range_slider_display">
 		<?php
 
 		if ( ! empty( $field_options['options']['display_label'] ) ) {
