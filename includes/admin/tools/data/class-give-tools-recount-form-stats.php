@@ -110,15 +110,19 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 				}
 
 				/**
-				 * Modify the payment total.
+				 * Filter the payment amount.
 				 *
 				 * @since 2.1
-				 *
-				 * @param float   $payment_total Donation amount.
-				 * @param integer $payment_id    Donation ID.
-				 * @param integer $form_id       Donation Form ID.
 				 */
-				$payment_total = apply_filters( 'give_tools_recount_form_stats', $payment->total, $payment->ID, $this->form_id );
+				$payment_total = apply_filters(
+					'give_donation_amount',
+					give_format_amount( $payment->total, array( 'donation_id' => $payment->ID ) ),
+					$payment->total,
+					$payment->ID,
+					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+				);
+
+				$payment_total += (float) give_maybe_sanitize_amount( $payment_total );
 
 				$totals['sales'] ++;
 				$totals['earnings'] += $payment_total;
