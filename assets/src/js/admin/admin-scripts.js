@@ -1433,6 +1433,7 @@ var give_setting_edit = false;
 	var GiveDonor = {
 
 		init: function () {
+			this.unlockDonorFields();
 			this.editDonor();
 			this.add_email();
 			this.removeUser();
@@ -1442,6 +1443,19 @@ var give_setting_edit = false;
 			this.addressesAction();
 			this.bulkDeleteDonor();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
+		},
+
+		unlockDonorFields: function (e) {
+			$('body').on('click', '.give-lock-block', function (e) {
+				new GiveErrorAlert({
+					modalContent:{
+						title: give_vars.unlock_donor_fields_title,
+						desc: give_vars.unlock_donor_fields_message,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+				e.preventDefault();
+			});
 		},
 
 		editDonor: function () {
