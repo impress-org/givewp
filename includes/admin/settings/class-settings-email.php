@@ -163,6 +163,24 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			$email_notifications_table->prepare_items();
 			$email_notifications_table->display();
 		}
+
+		/**
+		 * Output the settings.
+		 *
+		 * Note: if you want to overwrite this function then manage show/hide save button in your class.
+		 *
+		 * @since  1.8
+		 * @return void
+		 */
+		public function output() {
+			if ( $this->enable_save ) {
+				$GLOBALS['give_hide_save_button'] = apply_filters( 'hide_save_button_on_email_page', false );
+			}
+
+			$settings = $this->get_settings();
+
+			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+		}
 	}
 
 endif;
