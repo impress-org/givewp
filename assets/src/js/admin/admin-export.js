@@ -11,10 +11,80 @@
 
 jQuery.noConflict();
 jQuery( document ).ready( function ( $ ) {
+
+	/**
+	 * Update Export Donation Form
+	 *
+	 * @since 2.1
+	 */
+	function give_export_update_donation_form() {
+
+		var $form = $( 'form#give-export_donations-form' ),
+			$container = $( $form ).find( 'tr.give-export-donation-form .give-select-chosen' ),
+			select = $container.prev(),
+			$search_field = $container.find( 'input[type="text"]' ),
+			variations = $container.hasClass( 'variations' ),
+			response = '';
+
+		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
+		$( 'li.give-export-donation-checkbox-remove' ).remove();
+
+		$.ajax( {
+			type: 'POST',
+			url: ajaxurl,
+			data: {
+				action: 'give_form_search',
+				s: '',
+				fields: $( $form ).serialize()
+			},
+			beforeSend: function () {
+				select.closest( 'ul.chosen-results' ).empty();
+			},
+			success: function ( data ) {
+
+				// Remove all options but those that are selected.
+				$( 'option', select ).remove();
+				var form_ids = [];
+
+				if ( data.length ) {
+
+					$form.find( '.give-export-donation-button' ).prop('disabled', false);
+					$.each( data, function ( key, item ) {
+						select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
+						form_ids.push( item.id );
+					} );
+
+					select.prepend( '<option value="0" selected>' + select.data( 'placeholder' ) + '</option>' );
+				} else {
+					// Trigger no result message event.
+					select.prepend( '<option value="0">' + select.data( 'no-form' ) + '</option>' );
+
+					$form.find( '.give-export-donation-button' ).prop('disabled', true);
+				}
+
+				$form.find( '.form_ids' ).val( form_ids.join() );
+
+				// Trigger update event.
+				$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
+
+			 	output_give_donations_fields( response );
+			}
+		} )
+	}
+
+	/**
+	 * Update export Donation Form when cat or tag are change
+	 *
+	 * @since 2.1
+	 */
+	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).change( function () {
+		give_export_update_donation_form();
+	} );
+
 	/**
 	 * Ajax call to get donation fields.
 	 */
-	$( '.give-export_donations #give-export_donations-form #give_form_for_csv_export' ).chosen().change( function () {
+	$( '.give-export_donations #give-export_donations-form #give_payment_form_select' ).change( function () {
 
 		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
 
@@ -51,7 +121,6 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	} );
 
-
 	/**
 	 * Outputs the custom field checkboxes.
 	 *
@@ -60,62 +129,9 @@ jQuery( document ).ready( function ( $ ) {
 	function output_give_donations_fields( response ) {
 
 		/**
-		 * FFM Fields
-		 */
-		var ffm_fields = (
-			typeof response.ffm_fields !== 'undefined'
-		) ? response.ffm_fields : '';
-
-		if ( ffm_fields ) {
-
-			var ffm_field_list = $( '.give-export-donations-ffm ul' );
-
-			// Loop through FFM fields & output
-			$( ffm_fields ).each( function ( index, value ) {
-
-				// Repeater sections.
-				var repeater_sections = (
-					typeof value.repeaters !== 'undefined'
-				) ? value.repeaters : '';
-
-				if ( repeater_sections ) {
-
-					ffm_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
-
-					var parent_title = '';
-					// Repeater section field.
-					$( repeater_sections ).each( function ( index, value ) {
-						if ( parent_title !== value.parent_title ) {
-							ffm_field_list.append( '<li class="give-export-donation-checkbox-remove repeater-section-title" data-parent-meta="' + value.parent_meta + '"><label for="give-give-donations-ffm-field-' + value.parent_meta + '"><input type="checkbox" name="give_give_donations_export_parent[' + value.parent_meta + ']" id="give-give-donations-ffm-field-' + value.parent_meta + '">' + value.parent_title + '</label></li>' );
-						}
-						parent_title = value.parent_title;
-						ffm_field_list.append( '<li class="give-export-donation-checkbox-remove repeater-section repeater-section-' + value.parent_meta + '"><label for="give-give-donations-ffm-field-' + value.subkey + '"><input type="checkbox" name="give_give_donations_export_option[' + value.subkey + ']" id="give-give-donations-ffm-field-' + value.subkey + '">' + value.label + '</label></li>' );
-					} );
-				}
-				// Repeater sections.
-				var single_repeaters = (
-					typeof value.single !== 'undefined'
-				) ? value.single : '';
-
-				if ( single_repeaters ) {
-
-					ffm_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
-
-					// Repeater section field.
-					$( single_repeaters ).each( function ( index, value ) {
-						ffm_field_list.append( '<li class="give-export-donation-checkbox-remove"><label for="give-give-donations-ffm-field-' + value.subkey + '"><input type="checkbox" name="give_give_donations_export_option[' + value.metakey + ']" id="give-give-donations-ffm-field-' + value.subkey + '">' + value.label + '</label> </li>' );
-					} );
-				}
-			} );
-
-		}
-
-		/**
 		 * Standard Fields
 		 */
-		var standard_fields = (
-			typeof response.standard_fields !== 'undefined'
-		) ? response.standard_fields : '';
+		var standard_fields = 'undefined' !== typeof response.standard_fields && null !== response.standard_fields ? response.standard_fields : '';
 		var standard_field_list = $( '.give-export-donations-standard-fields ul' );
 		if ( standard_fields.length > 0 ) {
 			standard_field_list.closest( 'tr' ).removeClass( 'give-hidden' );
@@ -128,7 +144,7 @@ jQuery( document ).ready( function ( $ ) {
 		/**
 		 * Hidden Fields
 		 */
-		var hidden_fields = response.hidden_fields ? response.hidden_fields : '';
+		var hidden_fields = 'undefined' !== typeof response.hidden_fields && null !== response.hidden_fields ? response.hidden_fields : '';
 		var hidden_field_list = $( '.give-export-donations-hidden-fields ul' );
 
 		if ( hidden_fields ) {

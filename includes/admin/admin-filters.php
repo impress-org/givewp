@@ -36,13 +36,13 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 		$value_changed = true;
 	}
 
-	if ( $value_changed && ( $old_value != $value ) ) {
+	if ( $value_changed && ( $old_value !== $value ) ) {
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' is not set.', 'give' ) );
 	}
 
 	$value = absint( $value );
 
-	if( 6 <= $value ) {
+	if ( 6 <= $value ) {
 		$value = 5;
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 5 because you entered a number higher than the maximum allowed.', 'give' ) );
 	}
@@ -67,8 +67,8 @@ add_filter( 'give_admin_settings_sanitize_option_number_decimals', '__give_sanit
  * @return  mixed
  */
 function __give_validate_decimal_separator_setting_field( $value ) {
-	$thousand_separator = give_clean( $_POST['thousands_separator'] );
-	$decimal_separator  = give_clean( $_POST['decimal_separator'] );
+	$thousand_separator = isset( $_POST['thousands_separator'] ) ? give_clean( $_POST['thousands_separator'] ) : '';
+	$decimal_separator  = isset( $_POST['decimal_separator'] ) ? give_clean( $_POST['decimal_separator'] ) : '';
 
 	if ( $decimal_separator === $thousand_separator ) {
 		$value                    = '';
@@ -92,11 +92,11 @@ add_filter( 'give_admin_settings_sanitize_option_decimal_separator', '__give_val
  */
 function __give_import_delimiter_set_callback( $delimiter ) {
 	$delimite_type = array(
-		'csv'                  => ",",
+		'csv'                  => ',',
 		'tab-separated-values' => "\t",
 	);
 
-	return ( array_key_exists( $delimiter, $delimite_type ) ? $delimite_type[ $delimiter ] : "," );
+	return ( array_key_exists( $delimiter, $delimite_type ) ? $delimite_type[ $delimiter ] : ',' );
 }
 
 add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback', 10 );
@@ -143,7 +143,7 @@ function give_import_core_settings_merge_image_size( $json_to_array, $type ) {
 		) {
 			$images_sizes = get_intermediate_image_sizes();
 
-			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
+			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes, true ) ) {
 				unset( $json_to_array['featured_image_size'] );
 			}
 		}
@@ -247,7 +247,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_d
  *
  * @return mixed
  */
-function give_bc_1817_cleanup_user_roles( $caps ){
+function give_bc_1817_cleanup_user_roles( $caps ) {
 
 	if (
 		! give_has_upgrade_completed( 'v1817_cleanup_user_roles' ) &&

@@ -311,6 +311,7 @@ if ( ! class_exists( 'Give' ) ) :
 			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
+
 		/**
 		 * Init Give when WordPress Initializes.
 		 *
@@ -645,7 +646,7 @@ if ( ! class_exists( 'Give' ) ) :
 				return;
 			}
 
-			$notice_desc = '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
+			$notice_desc  = '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
 			$notice_desc .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
 			$notice_desc .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
 			$notice_desc .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
@@ -655,7 +656,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			echo sprintf(
 				'<div class="notice notice-error">%1$s</div>',
-				$notice_desc
+				wp_kses_post( $notice_desc )
 			);
 		}
 
