@@ -850,7 +850,7 @@ var give_setting_edit = false;
 				return;
 			}
 
-			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup change', function(){
 				const prefix =jQuery('#sequential-ordering_number_prefix').val(),
 					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
 					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
