@@ -56,7 +56,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
 			'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
-			'ajax'     => false,// Does this table support ajax?
+			'ajax'     => false, // Does this table support ajax?
 		) );
 
 		$this->query();
@@ -247,17 +247,20 @@ class Give_API_Keys_Table extends WP_List_Table {
 		?>
 		<input type="hidden" name="give_action" value="process_api_key"/>
 		<input type="hidden" name="give_api_process" value="generate"/>
-		<?php wp_nonce_field( 'give-api-nonce' );
+		<?php
+		wp_nonce_field( 'give-api-nonce' );
 		/**
 		 * API Key user search.
 		 */
 		$args = array(
-		  'id' => 'give-api-user-search',
-		  'name' => 'user_id',
-        );
-        echo Give()->html->ajax_user_search($args); ?>
-		<?php submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
-		<?php
+			'id'   => 'give-api-user-search',
+			'name' => 'user_id',
+		);
+
+		echo Give()->html->ajax_user_search( $args );
+
+		submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false );
+
 		$give_api_is_bottom = true;
 	}
 
@@ -311,11 +314,13 @@ class Give_API_Keys_Table extends WP_List_Table {
 	public function total_items() {
 		global $wpdb;
 
-		if ( ! ( $total_items = Give_Cache::get( 'give_total_api_keys', true ) ) ) {
+		$total_items = Give_Cache::get( 'give_total_api_keys', true );
+
+		if ( ! $total_items ) {
 			$total_items = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT count(user_id)
-					FROM {$wpdb->usermeta} WHERE meta_value='%s'",
+					FROM {$wpdb->usermeta} WHERE meta_value=%s",
 					'give_user_secret_key'
 				)
 			);
@@ -348,10 +353,9 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$this->items = $data;
 
 		$this->set_pagination_args( array(
-				'total_items' => $total_items,
-				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page ),
-			)
-		);
+			'total_items' => $total_items,
+			'per_page'    => $this->per_page,
+			'total_pages' => ceil( $total_items / $this->per_page ),
+		) );
 	}
 }

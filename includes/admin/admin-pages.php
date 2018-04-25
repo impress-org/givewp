@@ -132,14 +132,17 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'tags':
 			$has_view = in_array( $passed_view, array( 'list-table', 'edit', 'new' ), true );
 
-			if ( ! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) && 'edit-tags.php' !== $pagenow
-			     && ( $has_view ||
-			          (
-				          ( in_array( $passed_view, array( 'list-table', 'new' ), true ) && 'edit' === $query_args['action'] ) ||
-				          ( 'edit' !== $passed_view && 'edit' !== $query_args['action'] )
-				          && ! $has_view
-			          )
-			     )
+			if (
+				! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) &&
+				'edit-tags.php' !== $pagenow &&
+				(
+					$has_view ||
+					(
+						( in_array( $passed_view, array( 'list-table', 'new' ), true ) && 'edit' === $query_args['action'] ) ||
+						( 'edit' !== $passed_view && 'edit' !== $query_args['action'] ) &&
+						! $has_view
+					)
+				)
 			) {
 				$found = false;
 			}
@@ -148,11 +151,17 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'give_forms':
 			$has_view = in_array( $passed_view, array( 'new', 'list-table', 'edit' ), true );
 
-			if ( 'give_forms' !== $typenow
-			     && ( ( 'list-table' !== $passed_view && 'edit.php' !== $pagenow  ) &&
-			          ( 'edit' !== $passed_view && 'post.php' !== $pagenow ) &&
-			          ( 'new' !== $passed_view && 'post-new.php' !== $pagenow ) )
-			     || ( ! $has_view && ( 'post-new.php' !== $pagenow && 'give_forms' !== $query_args['post_type'] ) )
+			if (
+				'give_forms' !== $typenow &&
+				(
+					( 'list-table' !== $passed_view && 'edit.php' !== $pagenow ) &&
+					( 'edit' !== $passed_view && 'post.php' !== $pagenow ) &&
+					( 'new' !== $passed_view && 'post-new.php' !== $pagenow )
+				) ||
+				(
+					! $has_view &&
+					( 'post-new.php' !== $pagenow && 'give_forms' !== $query_args['post_type'] )
+				)
 			) {
 				$found = false;
 			}
@@ -162,23 +171,26 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
 
 			if (
-				( 'give-donors' !== $query_args['page'] || 'edit.php' !== $pagenow )
-			     && ( ( $passed_view !== $query_args['view'] || ! empty( $has_view ) ) ||
-			          ( false !== $query_args['view'] && 'list-table' !== $passed_view )
-			     )
+				( 'give-donors' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
+				(
+					( $passed_view !== $query_args['view'] || ! empty( $has_view ) ) ||
+					( false !== $query_args['view'] && 'list-table' !== $passed_view )
+				)
 			) {
 				$found = false;
 			}
 			break;
 		// Give Donations page.
-		case 'payments' :
-			if ( ( 'give-payment-history' !== $query_args['page'] || 'edit.php' !== $pagenow )
-			     && ( ! in_array( $passed_view, array( 'list-table', 'edit' ), true ) ||
-			          (
-				          ( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
-				          ( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] )
-			          )
-			     )
+		case 'payments':
+			if (
+				( 'give-payment-history' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
+				(
+					! in_array( $passed_view, array( 'list-table', 'edit' ), true ) ||
+					(
+						( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
+						( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] )
+					)
+				)
 			) {
 				$found = false;
 			}
@@ -191,8 +203,9 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
 
 			// Check if it's Give Setting page or not.
-			if ( ( 'edit.php' !== $pagenow || ! $give_setting_page )
-			     && ! Give_Admin_Settings::is_setting_page( $current_tab )
+			if (
+				( 'edit.php' !== $pagenow || ! $give_setting_page ) &&
+				! Give_Admin_Settings::is_setting_page( $current_tab )
 			) {
 				$found = false;
 			}
@@ -247,7 +260,7 @@ function give_settings_page_pages( $settings ) {
 		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php' ),
 
 		// Advanced settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' )
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' ),
 	);
 
 	// Output.
@@ -292,7 +305,6 @@ add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 )
  */
 function give_tools_page_pages( $settings ) {
 	include( 'abstract-admin-settings-page.php' );
-
 
 	$settings = array(
 
@@ -358,7 +370,7 @@ add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_
  */
 function give_add_display_page_states( $post_states, $post ) {
 
-	switch( $post->ID ) {
+	switch ( $post->ID ) {
 		case give_get_option( 'success_page' ):
 			$post_states['give_successfully_page'] = __( 'Donation Success Page', 'give' );
 			break;
