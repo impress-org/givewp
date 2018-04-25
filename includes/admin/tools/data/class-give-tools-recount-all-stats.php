@@ -361,10 +361,21 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					}
 
 					if ( ! array_key_exists( $payment->ID, $payment_items ) ) {
+
+						/**
+						 * Filter the amount total.
+						 *
+						 * @since 2.1
+						 *
+						 * @param float   $donation_amount Donation amount.
+						 * @param integer $payment_id      Donation ID.
+						 */
+						$payment_total = apply_filters( 'give_tools_recount_all_stats', $payment->total, $payment->ID );
+
 						$payment_items[ $payment->ID ] = array(
 							'id'         => $form_id,
 							'payment_id' => $payment->ID,
-							'price'      => $payment->total,
+							'price'      => $payment_total,
 						);
 					}
 				}

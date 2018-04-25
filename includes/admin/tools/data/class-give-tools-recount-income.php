@@ -86,9 +86,17 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 		if ( ! empty( $payments ) ) {
 
 			foreach ( $payments as $payment ) {
+				$donation_amount = (float) give_donation_amount( $payment, array( 'type' => 'stats' ) );
 
-				$total += (float) give_donation_amount( $payment, array( 'type' => 'stats' ) );
-
+				/**
+				 * Modify the donation amount.
+				 *
+				 * @since 2.1
+				 *
+				 * @param float   $donation_amount Donation amount.
+				 * @param integer $payment_id      Donation ID.
+				 */
+				$total += apply_filters( 'give_tools_recount_income', $donation_amount, $payment );
 			}
 
 			if ( $total < 0 ) {
