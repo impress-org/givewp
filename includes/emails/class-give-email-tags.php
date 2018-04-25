@@ -1477,6 +1477,11 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 					}
 
 					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
+
+					if( empty( $meta_data ) ) {
+						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
+					}
+
 					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
 						$replace[] = $meta_data;
 					} elseif ( in_array( $meta_tag_arr[1], array_keys( $meta_data ) ) ) {
