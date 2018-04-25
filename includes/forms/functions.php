@@ -440,7 +440,7 @@ function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
  *
  * @return bool|int
  */
-function give_increase_earnings( $give_form_id = 0, $amount, $payment_id ) {
+function give_increase_earnings( $give_form_id = 0, $amount, $payment_id = 0 ) {
 	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $give_form_id );
 
@@ -462,7 +462,7 @@ function give_increase_earnings( $give_form_id = 0, $amount, $payment_id ) {
  *
  * @return bool|int
  */
-function give_decrease_form_earnings( $form_id = 0, $amount, $payment_id ) {
+function give_decrease_form_earnings( $form_id = 0, $amount, $payment_id = 0 ) {
 	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $form_id );
 
