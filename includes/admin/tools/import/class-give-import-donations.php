@@ -885,7 +885,12 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			}
 			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
 
-			$sample_file_text = sprintf( 'Download the sample file <a href="%s">here</a>.', esc_url( GIVE_PLUGIN_URL . 'sample-data/sample-data.csv' ) );
+			$sample_file_text = sprintf(
+					'%s <a href="%s">%s</a>.',
+					__( 'Download the sample file', 'give' ),
+					esc_url( GIVE_PLUGIN_URL . 'sample-data/sample-data.csv' ),
+					__( 'here', 'give' )
+			);
 
 			$csv_description = sprintf(
 				'%1$s %2$s',
