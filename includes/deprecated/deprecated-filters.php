@@ -48,7 +48,7 @@ function give_deprecated_filters() {
 		'give_report_donor_columns'                        => 'give_report_customer_columns',
 		'give_report_sortable_donor_columns'               => 'give_report_sortable_customer_columns',
 		'give_undo_donation_statuses'                      => 'give_undo_purchase_statuses',
-		'give_donor_recount_should_increase_value'         => 'give_customer_recount_sholud_increasegive_payment_amount_value',
+		'give_donor_recount_should_increase_value'         => 'give_customer_recount_sholud_increase_value',
 		'give_donor_recount_should_increase_count'         => 'give_customer_recount_should_increase_count',
 		'give_donation_amount'                             => 'give_payment_amount',
 		'give_get_donation_form_title'                     => 'give_get_payment_form_title',
