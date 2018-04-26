@@ -1478,7 +1478,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 
 					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
 
-					if( empty( $meta_data ) ) {
+					if( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
 						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
 					}
 
