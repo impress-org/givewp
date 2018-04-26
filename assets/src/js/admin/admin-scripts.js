@@ -469,33 +469,40 @@ var give_setting_edit = false;
 
 				e.preventDefault();
 
-				if (confirm(give_vars.delete_payment_note)) {
+				let that = this;
 
-					var postData = {
-						action: 'give_delete_payment_note',
-						payment_id: $(this).data('payment-id'),
-						note_id: $(this).data('note-id')
-					};
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_deletion,
+							desc: give_vars.delete_payment_note
+						},
+						successConfirm: function ( args ) {
+							var postData = {
+								action: 'give_delete_payment_note',
+								payment_id: $(that).data('payment-id'),
+								note_id: $(that).data('note-id')
+							};
 
-					$.ajax({
-						type: 'POST',
-						data: postData,
-						url: ajaxurl,
-						success: function (response) {
-							$('#give-payment-note-' + postData.note_id).remove();
-							if (!$('.give-payment-note').length) {
-								$('.give-no-payment-notes').show();
-							}
-							return false;
+							$.ajax({
+								type: 'POST',
+								data: postData,
+								url: ajaxurl,
+								success: function (response) {
+									$('#give-payment-note-' + postData.note_id).remove();
+									if (!$('.give-payment-note').length) {
+										$('.give-no-payment-notes').show();
+									}
+									return false;
+								}
+							}).fail(function (data) {
+								if (window.console && window.console.log) {
+									console.log(data);
+								}
+							});
 						}
-					}).fail(function (data) {
-						if (window.console && window.console.log) {
-							console.log(data);
-						}
-					});
-					return true;
-				}
-
+					}
+				).render();
 			});
 
 		},
