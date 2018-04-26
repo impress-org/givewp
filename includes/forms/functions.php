@@ -1198,14 +1198,18 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			WHERE meta_key=%s
 			AND payment_id IN(
 				SELECT payment_id
-				FROM {$donation_meta_table}
-				WHERE meta_key=%s
-				AND meta_value=%s
+				FROM {$donation_meta_table} as pm
+				INNER JOIN {$wpdb->posts} as p
+				ON pm.payment_id=p.ID
+				WHERE pm.meta_key=%s
+				AND pm.meta_value=%s
+				AND p.post_status=%s
 			)
 			",
 			'_give_payment_donor_id',
 			'_give_payment_form_id',
-			$form_id
+			$form_id,
+			'publish'
 		);
 
 		$donor_count = absint( $wpdb->get_var( $query ) );
