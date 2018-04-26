@@ -14,24 +14,51 @@
 
 			padding-left: 10px;
 
-			tbody{
+			tbody {
 				h2 {
-					padding: 8px 0 0 0 ;
+					padding: 8px 0 0 0;
 				}
 
-				td.row-title{
+				td.row-title {
 					width: 30%;
 					vertical-align: top;
 				}
 
-				ul.give-export-option-ul {
-					li {
+				ul.give-export-option {
+					border: 1px solid #e5e5e5;
+					display: flex;
+					margin: 0;
+
+					li.give-export-option-fields {
 						width: 33%;
-						float: left;
+
+						ul {
+							li{
+								padding-left: 25px;
+							}
+
+							li.give-export-option-label {
+								border-bottom: 1px solid #e5e5e5;
+								padding: 15px 0 15px 0;
+								span {
+									margin: 15px 15px 15px 25px;
+									font-size: 15px;
+									font-weight: 500;
+								}
+							}
+
+							li.give-export-option-start {
+								margin-top: 20px;
+							}
+
+							li:last-child {
+								margin-bottom: 20px;
+							}
+						}
 					}
 				}
 
-				p.give-field-description{
+				p.give-field-description {
 					display: table;
 					width: 100%;
 				}
@@ -43,6 +70,16 @@
 						margin-top: 7px;
 					}
 				}
+
+				.chosen-container-multi {
+					.chosen-choices {
+						min-height: 30px;
+
+						li {
+							margin: 4px 4px 4px 0;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -51,5 +88,41 @@
 		.give-progress {
 			margin-top: 7px;
 		}
+	}
+}
+
+//-------------------------------------
+// Export Form
+// -------------------------------------
+
+#give-export-donations {
+	.give_forms_categories,
+	.give_forms_tags {
+		input {
+			color: #999;
+		}
+
+		min-width: 250px;
+		margin: 0 0 10px 0;
+		display: block;
+	}
+
+	div.chosen-container {
+		ul.chosen-choices {
+			input.chosen-search-input {
+				border: 1px solid #ddd;
+				height: 20px;
+			}
+
+			border: 1px solid #ddd;
+		}
+	}
+
+	select {
+		vertical-align: inherit;
+		margin: 0;
+		height: 26px;
+		line-height: 26px;
+		border: 1px solid #ddd;
 	}
 }

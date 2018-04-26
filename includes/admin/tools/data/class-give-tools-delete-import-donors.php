@@ -263,7 +263,11 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to delete Import transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die(
+				esc_html__( 'You do not have permission to delete Import transactions.', 'give' ),
+				esc_html__( 'Error', 'give' ),
+				array( 'response' => 403 )
+			);
 		}
 
 		$had_data = $this->get_data();
@@ -325,7 +329,6 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page;
 
-
 			if ( $count > $this->per_step ) {
 
 				$this->update_option( $this->step_on_key, $page );
@@ -358,7 +361,6 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$this->update_option( $this->form_key, $form_ids );
 		}
 
-
 		// Here we delete all the donor
 		if ( 3 === $step ) {
 
@@ -383,7 +385,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 					'post_status'    => 'any',
 					'posts_per_page' => 1,
-					'author'         => $donor_ids[ $page ]
+					'author'         => $donor_ids[ $page ],
 				) );
 
 				$donations = array();
@@ -397,7 +399,9 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 					 *
 					 * @since 1.8.14
 					 */
-					if ( 'on' === (string) $_REQUEST['delete-import-donors'] ) {
+					$delete_import_donors = isset( $_REQUEST['delete-import-donors'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['delete-import-donors'] ) ) : '';
+
+					if ( 'on' === (string) $delete_import_donors ) {
 						wp_delete_user( $donor_ids[ $page ] );
 					}
 				} else {
