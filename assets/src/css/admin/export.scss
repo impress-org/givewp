@@ -24,6 +24,12 @@
 					vertical-align: top;
 				}
 
+				td {
+					ul.give-export-option-ul {
+						margin-top: 5px;
+					}
+				}
+
 				ul.give-export-option {
 					border: 1px solid #e5e5e5;
 					display: flex;

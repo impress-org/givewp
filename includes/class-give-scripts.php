@@ -208,7 +208,8 @@ class Give_Scripts {
 			'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 			'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 			'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
-			'unlock_donor_fields'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
+			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
+			'unlock_donor_fields_message'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(

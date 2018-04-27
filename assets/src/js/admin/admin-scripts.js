@@ -469,33 +469,40 @@ var give_setting_edit = false;
 
 				e.preventDefault();
 
-				if (confirm(give_vars.delete_payment_note)) {
+				let that = this;
 
-					var postData = {
-						action: 'give_delete_payment_note',
-						payment_id: $(this).data('payment-id'),
-						note_id: $(this).data('note-id')
-					};
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_deletion,
+							desc: give_vars.delete_payment_note
+						},
+						successConfirm: function ( args ) {
+							var postData = {
+								action: 'give_delete_payment_note',
+								payment_id: $(that).data('payment-id'),
+								note_id: $(that).data('note-id')
+							};
 
-					$.ajax({
-						type: 'POST',
-						data: postData,
-						url: ajaxurl,
-						success: function (response) {
-							$('#give-payment-note-' + postData.note_id).remove();
-							if (!$('.give-payment-note').length) {
-								$('.give-no-payment-notes').show();
-							}
-							return false;
+							$.ajax({
+								type: 'POST',
+								data: postData,
+								url: ajaxurl,
+								success: function (response) {
+									$('#give-payment-note-' + postData.note_id).remove();
+									if (!$('.give-payment-note').length) {
+										$('.give-no-payment-notes').show();
+									}
+									return false;
+								}
+							}).fail(function (data) {
+								if (window.console && window.console.log) {
+									console.log(data);
+								}
+							});
 						}
-					}).fail(function (data) {
-						if (window.console && window.console.log) {
-							console.log(data);
-						}
-					});
-					return true;
-				}
-
+					}
+				).render();
 			});
 
 		},
@@ -850,7 +857,7 @@ var give_setting_edit = false;
 				return;
 			}
 
-			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup', function(){
+			jQuery( '#sequential-ordering_number_prefix, #sequential-ordering_number, #sequential-ordering_number_padding, #sequential-ordering_number_suffix' ).on( 'keyup change', function(){
 				const prefix =jQuery('#sequential-ordering_number_prefix').val(),
 					startingNumber =jQuery('#sequential-ordering_number').val().trim() || '1',
 					numberPadding = jQuery('#sequential-ordering_number_padding').val().trim(),
@@ -1433,6 +1440,7 @@ var give_setting_edit = false;
 	var GiveDonor = {
 
 		init: function () {
+			this.unlockDonorFields();
 			this.editDonor();
 			this.add_email();
 			this.removeUser();
@@ -1442,6 +1450,19 @@ var give_setting_edit = false;
 			this.addressesAction();
 			this.bulkDeleteDonor();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
+		},
+
+		unlockDonorFields: function (e) {
+			$('body').on('click', '.give-lock-block', function (e) {
+				new GiveErrorAlert({
+					modalContent:{
+						title: give_vars.unlock_donor_fields_title,
+						desc: give_vars.unlock_donor_fields_message,
+						cancelBtnTitle: give_vars.ok,
+					}
+				}).render();
+				e.preventDefault();
+			});
 		},
 
 		editDonor: function () {
@@ -2909,6 +2930,8 @@ var give_setting_edit = false;
 		// Format price sting of input field on focusout.
 		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
+
+			$(this).giveHintCss( 'hide', {});
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {

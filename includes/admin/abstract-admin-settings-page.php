@@ -240,7 +240,6 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			$settings        = $this->get_settings();
 			$current_section = give_get_current_setting_section();
 
-
 			/**
 			 * Use this filter if you want to implement your custom save logic.
 			 *
