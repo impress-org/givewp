@@ -174,7 +174,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		 */
 		public function output() {
 			if ( $this->enable_save ) {
-				$GLOBALS['give_hide_save_button'] = apply_filters( 'hide_save_button_on_email_page', false );
+				$GLOBALS['give_hide_save_button'] = apply_filters( 'give_hide_save_button_on_email_admin_setting_page', false );
 			}
 
 			$settings = $this->get_settings();
