@@ -1855,6 +1855,8 @@ function __give_get_active_license_info( $license_id ) {
 	$data        = array();
 
 	if ( empty( $GLOBALS['give_active_licenses_info'] ) ) {
+		$GLOBALS['give_active_licenses_info']  = array();
+
 		$licenses_info = $wpdb->get_results(
 			"
 			SELECT option_name, option_value
