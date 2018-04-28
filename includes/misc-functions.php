@@ -984,7 +984,7 @@ function give_get_plugins() {
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
 			/* @var stdClass $license_active */
-			$license_active = __give_get_active__license_info( Give_License::get_short_name( $plugin_data['Name'] ) );
+			$license_active = __give_get_active_license_info( Give_License::get_short_name( $plugin_data['Name'] ) );
 
 			// Does a valid license exist?
 			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
@@ -1849,7 +1849,7 @@ function give_is_company_field_enabled( $form_id ) {
  *
  * @return array
  */
-function __give_get_active__license_info( $license_id ) {
+function __give_get_active_license_info( $license_id ) {
 	global $wpdb;
 	$option_name = "{$license_id}_license_active";
 	$data        = array();

@@ -152,7 +152,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->item_shortname   = self::get_short_name( $this->item_name );
 			$this->version          = $_version;
 			$this->license          = isset( $give_options[ $this->item_shortname . '_license_key' ] ) ? trim( $give_options[ $this->item_shortname . '_license_key' ] ) : '';
-			$this->license_data     = __give_get_active__license_info( $this->item_shortname );
+			$this->license_data     = __give_get_active_license_info( $this->item_shortname );
 			$this->author           = $_author;
 			$this->api_url          = is_null( $_api_url ) ? $this->api_url : $_api_url;
 			$this->checkout_url     = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
