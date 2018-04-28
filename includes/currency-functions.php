@@ -24,11 +24,9 @@ function give_get_currency( $donation_or_form_id = null, $args = array() ) {
 
 	// Get currency from donation
 	if ( is_numeric( $donation_or_form_id ) && 'give_payment' === get_post_type( $donation_or_form_id ) ) {
-		$donation_meta = give_get_meta( $donation_or_form_id, '_give_payment_meta', true );
+		$currency = give_get_meta( $donation_or_form_id, '_give_payment_currency', true );
 
-		if ( ! empty( $donation_meta['currency'] ) ) {
-			$currency = $donation_meta['currency'];
-		} else {
+		if ( empty( $currency ) ) {
 			$currency = give_get_option( 'currency', 'USD' );
 		}
 	} else {
