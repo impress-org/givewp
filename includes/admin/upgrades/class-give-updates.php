@@ -240,13 +240,13 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
-		// Bailout.
-		if ( ! give_test_ajax_works() ) {
-			return;
-		}
-
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
+
+		// Bailout.
+		if ( ! $this->get_total_update_count() ) {
+			return;
+		}
 
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
