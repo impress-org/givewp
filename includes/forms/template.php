@@ -1947,11 +1947,19 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-current-url"
 		   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-	<input type="hidden" name="give-form-minimum"
-	       value="<?php echo give_format_decimal( give_get_form_minimum_price( $form_id ) ); ?>"/>
-	<input type="hidden" name="give-form-maximum"
-	       value="<?php echo give_format_decimal( give_get_form_maximum_price( $form_id ) ); ?>"/>
 	<?php
+	// Get the custom option amount.
+	$custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
+
+	// If custom amount enabled.
+	if ( give_is_setting_enabled( $custom_amount ) ) {
+		?>
+		<input type="hidden" name="give-form-minimum"
+		       value="<?php echo give_format_decimal( give_get_form_minimum_price( $form_id ) ); ?>"/>
+		<input type="hidden" name="give-form-maximum"
+		       value="<?php echo give_format_decimal( give_get_form_maximum_price( $form_id ) ); ?>"/>
+		<?php
+	}
 
 	// WP nonce field.
 	wp_nonce_field( "donation_form_nonce_{$form_id}", '_wpnonce', false );
