@@ -59,6 +59,20 @@ class Give_Addon_Activation_Banner {
 	}
 
 	/**
+	 * Get the meta key name.
+	 *
+	 * @since 2.1
+	 * @param string $addon_banner_key
+	 *
+	 * @return string
+	 */
+	public static function get_banner_user_meta_key( $addon_banner_key ) {
+		$meta_key = sanitize_text_field( $addon_banner_key );
+
+		return "give_{$meta_key}_active_by_user";
+	}
+
+	/**
 	 * Set up WordPress filters to hook into WP's update process.
 	 *
 	 * @since  1.0
@@ -152,7 +166,7 @@ class Give_Addon_Activation_Banner {
 				$user_id = __give_get_active_by_user_meta( $banner_addon_name );
 
 				if ( ! $user_id ) {
-					update_option( $activate_by_meta_key, $this->user_id, '' );
+					update_option( self::get_banner_user_meta_key( $banner_addon_name ), $this->user_id, '' );
 				}
 			}
 		}
@@ -462,7 +476,7 @@ class Give_Addon_Activation_Banner {
 						$nag_meta_key = "give_addon_activation_ignore_{$banner_addon_name}";
 
 						// Delete plugin activation option key.
-						delete_option( $activate_by_meta_key );
+						delete_option( self::get_banner_user_meta_key( $banner_addon_name ) );
 						// Delete user meta of plugin activation.
 						delete_user_meta( $user_id, $nag_meta_key );
 					}
