@@ -67,9 +67,9 @@ class Give_Addon_Activation_Banner {
 	 * @return string
 	 */
 	public static function get_banner_user_meta_key( $addon_banner_key ) {
-		$meta_key = sanitize_text_field( $addon_banner_key );
+		$addon_slug = sanitize_text_field( $addon_banner_key );
 
-		return "give_{$meta_key}_active_by_user";
+		return "give_addon_{$addon_slug}_active_by_user";
 	}
 
 	/**
