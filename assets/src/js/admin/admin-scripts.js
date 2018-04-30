@@ -1414,6 +1414,102 @@ var give_setting_edit = false;
 
 	};
 
+
+	/**
+	 * Give Upgrader
+	 */
+	var Give_Upgrades = {
+		init: function() {
+			this.restartUpgrade();
+			this.stopUpgrade();
+			this.restartUpdater();
+		},
+
+		/**
+		 * Function to restart the upgrade process.
+		 */
+		restartUpgrade: function() {
+			jQuery( '#give-restart-upgrades' ).click( 'click', function ( e ) {
+
+				let that = this;
+
+				e.preventDefault();
+
+				jQuery( '.give-doing-update-text-p' ).show();
+				jQuery( '.give-update-paused-text-p' ).hide();
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.restart_upgrade,
+						},
+						successConfirm: function () {
+							window.location.assign( jQuery( that ).data( 'redirect-url' ) );
+
+							return;
+						}
+					}
+				).render();
+			});
+		},
+
+		/**
+		 * Function to pause the upgrade process.
+		 */
+		stopUpgrade: function() {
+			jQuery( '#give-pause-upgrades' ).click( 'click', function ( e ) {
+				let that = this;
+
+				e.preventDefault();
+
+				jQuery('.give-doing-update-text-p').hide();
+				jQuery('.give-update-paused-text-p').show();
+
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.stop_upgrade,
+						},
+						successConfirm: function () {
+							window.location.assign( jQuery( that ).data( 'redirect-url' ) );
+
+							return;
+						}
+					}
+				).render();
+			});
+		},
+
+		/**
+		 * Function to restart the update process.
+		 */
+		restartUpdater: function() {
+			jQuery( '.give-restart-updater-btn' ).click( 'click', function ( e ) {
+
+				let that = this;
+
+				e.preventDefault();
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.restart_update,
+						},
+						successConfirm: function () {
+							window.location.assign( jQuery( that ).attr( 'href' ) );
+
+							return;
+						}
+					}
+				).render();
+			});
+		}
+	}
+
 	/**
 	 * Admin Status Select Field Change
 	 *
@@ -2837,6 +2933,7 @@ var give_setting_edit = false;
 		API_Screen.init();
 		Give_Export.init();
 		Give_Updates.init();
+		Give_Upgrades.init();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
 
