@@ -70,25 +70,6 @@ $give_updates = Give_Updates::get_instance();
 											<?php _e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
-
-									<script type="text/javascript">
-										jQuery('#give-pause-upgrades').click('click', function (e) {
-											e.preventDefault();
-											jQuery('.give-doing-update-text-p').hide();
-											jQuery('.give-update-paused-text-p').show();
-											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update process now?', 'give' ) ); ?>')) {
-												window.location.assign(jQuery(this).data('redirect-url'));
-											}
-										});
-										jQuery('#give-restart-upgrades').click('click', function (e) {
-											e.preventDefault();
-											jQuery('.give-doing-update-text-p').show();
-											jQuery('.give-update-paused-text-p').hide();
-											if (window.confirm('<?php echo esc_js( __( 'Do you want to restart the update process?', 'give' ) ); ?>')) {
-												window.location.assign(jQuery(this).data('redirect-url'));
-											}
-										});
-									</script>
 								</p>
 							</div>
 							<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
