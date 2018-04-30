@@ -1883,7 +1883,6 @@ function __give_get_active_license_info( $license_id ) {
 
 /**
  * Get add-on user meta value information
-
  * Note: only for internal use.
  *
  * @since 2.1.0
@@ -1904,26 +1903,25 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 
 		// Get the meta of activation banner by user.
 		$activation_banners = $wpdb->get_results(
-			$wpdb->prepare(
 				"
-						SELECT option_name, option_value
-						FROM {$wpdb->options}
-						WHERE option_name LIKE %s
-						AND option_name LIKE '%give_%'
-						",
-				'%' . $wpdb->esc_like( $option_name ) . '%'
-			),
+					SELECT option_name, option_value
+					FROM {$wpdb->options}
+					WHERE option_name LIKE '%_active_by_user%'
+					AND option_name LIKE '%give_addon%'
+					",
 			ARRAY_A
 		);
 
-		$data = $activation_banners;
-
 		if ( ! empty( $activation_banners ) ) {
-			$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array_combine(
+			$GLOBALS['give_addon_activated_by_user'] = array_combine(
 				wp_list_pluck( $activation_banners, 'option_name' ),
 				wp_list_pluck( $activation_banners, 'option_value' )
 			);
 		}
+	}
+
+	if ( in_array( $option_name, array_keys( $GLOBALS['give_addon_activated_by_user'] ) ) ) {
+		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $option_name ] );
 	}
 
 	return $data;
