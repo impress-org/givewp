@@ -70,9 +70,9 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test test_donation_form_range()
+	 * Test test_donation_form_amount_range()
 	 */
-	public function test_donation_form_range() {
+	public function test_donation_form_amount_range() {
 
 		$this->go_to( '/' );
 
