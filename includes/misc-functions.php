@@ -1838,9 +1838,8 @@ function give_is_company_field_enabled( $form_id ) {
 	}
 }
 
-
 /**
- * Get active licenses information
+ * Get add-on user meta value information
  * Note: only for internal use.
  *
  * @since 2.1.0
@@ -1854,7 +1853,7 @@ function __give_get_active_license_info( $license_id ) {
 	$option_name = "{$license_id}_license_active";
 	$data        = array();
 
-	if ( empty( $GLOBALS['give_active_licenses_info'] ) ) {
+	if ( ! isset( $GLOBALS['give_active_licenses_info'] ) ) {
 		$GLOBALS['give_active_licenses_info']  = array();
 
 		$licenses_info = $wpdb->get_results(
@@ -1877,6 +1876,52 @@ function __give_get_active_license_info( $license_id ) {
 
 	if ( in_array( $option_name, array_keys( $GLOBALS['give_active_licenses_info'] ) ) ) {
 		$data = maybe_unserialize( $GLOBALS['give_active_licenses_info'][ $option_name ] );
+	}
+
+	return $data;
+}
+
+/**
+ * Get add-on user meta value information
+ * Note: only for internal use.
+ *
+ * @since 2.1.0
+ *
+ * @param string $banner_addon_name Give add-on name.
+ *
+ * @return array
+ */
+function __give_get_active_by_user_meta( $banner_addon_name ) {
+	global $wpdb;
+
+	// Get the option key.
+	$option_name = Give_Addon_Activation_Banner::get_banner_user_meta_key( $banner_addon_name );
+	$data        = array();
+
+	if ( ! isset( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] ) ) {
+		$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array();
+
+		// Get the meta of activation banner by user.
+		$activation_banners = $wpdb->get_results(
+				"
+					SELECT option_name, option_value
+					FROM {$wpdb->options}
+					WHERE option_name LIKE '%_active_by_user%'
+					AND option_name LIKE '%give_addon%'
+					",
+			ARRAY_A
+		);
+
+		if ( ! empty( $activation_banners ) ) {
+			$GLOBALS['give_addon_activated_by_user'] = array_combine(
+				wp_list_pluck( $activation_banners, 'option_name' ),
+				wp_list_pluck( $activation_banners, 'option_value' )
+			);
+		}
+	}
+
+	if ( in_array( $option_name, array_keys( $GLOBALS['give_addon_activated_by_user'] ) ) ) {
+		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $option_name ] );
 	}
 
 	return $data;
