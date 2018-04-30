@@ -1860,7 +1860,7 @@ function __give_get_active_license_info( $license_id ) {
 		$licenses_info = $wpdb->get_results(
 			"
 			SELECT option_name, option_value
-			FROM wp_options
+			FROM {$wpdb->options}
 			WHERE option_name LIKE '%_license_active%'
 			AND option_name LIKE '%give_%'
 			",
