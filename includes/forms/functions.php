@@ -1173,24 +1173,55 @@ function _give_get_prefill_form_field_values( $form_id ) {
  * @return int
  */
 function give_get_form_donor_count( $form_id, $args = array() ) {
+	global $wpdb;
+
+	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
+	$donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+
+	if ( $form_id && ! $donor_count ) {
+		// Set arguments.
+		$args = wp_parse_args(
+			$args,
+			array(
+				'unique' => true,
+			)
+		);
+
+		$donation_meta_table = Give()->payment_meta->table_name;
+
+		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
+
+		$query = $wpdb->prepare(
+			"
+			SELECT COUNT({$distinct})
+			FROM {$donation_meta_table}
+			WHERE meta_key=%s
+			AND payment_id IN(
+				SELECT payment_id
+				FROM {$donation_meta_table} as pm
+				INNER JOIN {$wpdb->posts} as p
+				ON pm.payment_id=p.ID
+				WHERE pm.meta_key=%s
+				AND pm.meta_value=%s
+				AND p.post_status=%s
+			)
+			",
+			'_give_payment_donor_id',
+			'_give_payment_form_id',
+			$form_id,
+			'publish'
+		);
+
+		$donor_count = absint( $wpdb->get_var( $query ) );
+	}
+
+
 	/**
 	 * Filter the donor count
 	 *
 	 * @since 2.1.0
 	 */
-	$donor_count = apply_filters(
-		'give_get_form_donor_count',
-		count(
-			Give()->donors->get_donors(
-				array_merge(
-					array( 'give_forms' => $form_id ),
-					$args
-				)
-			)
-		),
-		$form_id,
-		$args
-	);
+	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
 
 	return $donor_count;
 }

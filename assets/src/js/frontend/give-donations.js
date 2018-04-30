@@ -896,11 +896,11 @@ Give.notice = {
 			if ( $form.length ) {
 				switch ( error_code ) {
 					case 'bad_minimum':
-						notice_msg = Give.fn.getGlobalVar( 'bad_minimum' );
+						notice_msg = Give.fn.getGlobalVar( error_code );
 						formatted_amount = Give.form.fn.getMinimumAmount( $form );
 						break;
 					case 'bad_maximum':
-						notice_msg = Give.fn.getGlobalVar( 'bad_minimum' );
+						notice_msg = Give.fn.getGlobalVar( error_code );
 						formatted_amount = Give.form.fn.getMaximumAmount( $form );
 						break;
 				}
