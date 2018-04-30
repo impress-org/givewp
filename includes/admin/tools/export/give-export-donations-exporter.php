@@ -39,7 +39,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @var array
 	 */
-	private $data = array();
+	public $data = array();
 
 	/**
 	 * Form submission data.
@@ -48,7 +48,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @var array
 	 */
-	private $cols = array();
+	public $cols = array();
 
 	/**
 	 * Form ID.
@@ -57,7 +57,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @var string
 	 */
-	private $form_id = '';
+	public $form_id = '';
 
 	/**
 	 * Form tags ids.
@@ -66,7 +66,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @var array
 	 */
-	private $tags = '';
+	public $tags = '';
 
 
 	/**
@@ -76,7 +76,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @var array
 	 */
-	private $categories = '';
+	public $categories = '';
 
 	/**
 	 * Set the properties specific to the export.
@@ -457,9 +457,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				 * @since 2.1
 				 *
 				 * @param array Donation data
-				 * @param array $payment Donation data
+				 * @param Give_Payment $payment Instance of Give_Payment
 				 * @param array $columns Donation data $columns that are not being merge
-				 * @param array Donation columns
+				 * @param Give_Export_Donations_CSV $this Instance of Give_Export_Donations_CSV
 				 *
 				 * @return array Donation data
 				 */
