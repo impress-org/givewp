@@ -36,25 +36,28 @@ class Give_Addon_Activation_Banner {
 	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-		global $give_addons;
+		global $give_addons, $pagenow;
 
 		// Append add-on information to the global variable.
 		$give_addons[] = $_banner_details;
 
-		// Get the current user.
-		$current_user  = wp_get_current_user();
-		$this->user_id = $current_user->ID;
+		if ( 'plugins.php' === $pagenow ) {
 
-		// Set up hooks.
-		$this->init();
+			// Get the current user.
+			$current_user  = wp_get_current_user();
+			$this->user_id = $current_user->ID;
 
-		// Store user id who activated plugin.
-		$this->add_addon_activate_meta();
+			// Set up hooks.
+			$this->init();
 
-		// Check if notice callback is already hooked.
-		if ( ! $this->is_banner_notice_hooked() ) {
-			// If multiple add-on are activated then show activation banner in tab view.
-			add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+			// Store user id who activated plugin.
+			$this->add_addon_activate_meta();
+
+			// Check if notice callback is already hooked.
+			if ( ! $this->is_banner_notice_hooked() ) {
+				// If multiple add-on are activated then show activation banner in tab view.
+				add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+			}
 		}
 	}
 
