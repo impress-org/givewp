@@ -149,10 +149,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
-			$this->item_shortname   = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $this->item_name ) ) );
+			$this->item_shortname   = self::get_short_name( $this->item_name );
 			$this->version          = $_version;
 			$this->license          = isset( $give_options[ $this->item_shortname . '_license_key' ] ) ? trim( $give_options[ $this->item_shortname . '_license_key' ] ) : '';
-			$this->license_data     = get_option( $this->item_shortname . '_license_active' );
+			$this->license_data     = __give_get_active_license_info( $this->item_shortname );
 			$this->author           = $_author;
 			$this->api_url          = is_null( $_api_url ) ? $this->api_url : $_api_url;
 			$this->checkout_url     = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
@@ -170,6 +170,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->includes();
 			$this->hooks();
 			$this->auto_updater();
+		}
+
+
+		/**
+		 * Get plugin shortname
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $plugin_name
+		 *
+		 * @return string
+		 */
+		public static function get_short_name( $plugin_name ) {
+			$plugin_name = trim( str_replace( 'Give - ', '', $plugin_name ) );
+			$plugin_name = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) );
+
+			return $plugin_name;
 		}
 
 		/**
