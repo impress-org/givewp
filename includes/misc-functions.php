@@ -1839,3 +1839,54 @@ function give_is_company_field_enabled( $form_id ) {
 		return false;
 	}
 }
+
+/**
+ * Get add-on user meta value information
+ * Note: only for internal use.
+ *
+ * @since 2.1.0
+ *
+ * @param string $banner_addon_name Give add-on name.
+ *
+ * @return array
+ */
+function __give_get_active_by_user_meta( $banner_addon_name ) {
+	global $wpdb;
+
+	// Get the option key.
+	$option_name = Give_Addon_Activation_Banner::get_banner_user_meta_key( $banner_addon_name );
+	$data        = array();
+
+	if ( ! isset( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] ) ) {
+		$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array();
+
+		// Get the meta of activation banner by user.
+		$activation_banners = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+						SELECT option_name, option_value
+						FROM {$wpdb->options}
+						WHERE option_name LIKE %s
+						AND option_name LIKE '%give_%'
+						",
+				'%' . $wpdb->esc_like( $option_name ) . '%'
+			),
+			ARRAY_A
+		);
+
+		$data = $activation_banners;
+
+		if ( ! empty( $activation_banners ) ) {
+			$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array_combine(
+				wp_list_pluck( $activation_banners, 'option_name' ),
+				wp_list_pluck( $activation_banners, 'option_value' )
+			);
+		}
+	}
+
+	if ( array_key_exists( $banner_addon_name, $GLOBALS['give_addon_activated_by_user'] ) ) {
+		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ][ $option_name ] );
+	}
+
+	return $data;
+}
