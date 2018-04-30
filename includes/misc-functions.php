@@ -1885,7 +1885,9 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 	}
 
 	if ( array_key_exists( $banner_addon_name, $GLOBALS['give_addon_activated_by_user'] ) ) {
-		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ][ $option_name ] );
+		$data = isset( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ][ $option_name ] )
+			? maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ][ $option_name ] )
+			: 0;
 	}
 
 	return $data;
