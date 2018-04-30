@@ -1487,7 +1487,7 @@ var give_setting_edit = false;
 		 * Function to restart the update process.
 		 */
 		restartUpdater: function() {
-			jQuery( '.give-restart-updater-btn' ).click( 'click', function ( e ) {
+			jQuery( '.give-restart-updater-btn,.give-run-update-now' ).click( 'click', function ( e ) {
 
 				let that = this;
 

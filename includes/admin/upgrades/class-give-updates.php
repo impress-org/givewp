@@ -678,11 +678,6 @@ class Give_Updates {
 					<?php _e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
-			<script type="text/javascript">
-				jQuery('.give-run-update-now').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-				});
-			</script>
 			<?php
 			$desc_html = ob_get_clean();
 
