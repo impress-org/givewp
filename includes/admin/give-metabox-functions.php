@@ -286,6 +286,7 @@ function give_text_input( $field ) {
 
 /**
  * Give range slider field.
+ * Note: only for internal logic
  *
  * @since 2.1
  *
