@@ -94,8 +94,8 @@ do_action( 'give_tools_recount_stats_before' );
 						 */
 						do_action( 'give_recount_tool_descriptions' );
 						?>
-						<span id="delete-test-transactions"><strong><?php echo esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'all TEST donations, donors, and related log entries.', 'give' ); ?></span>
-						<span id="reset-stats"><strong><?php echo esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
+						<span id="delete-test-transactions"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'all TEST donations, donors, and related log entries.', 'give' ); ?></span>
+						<span id="reset-stats"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>
