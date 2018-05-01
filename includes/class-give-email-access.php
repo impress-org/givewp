@@ -208,11 +208,11 @@ class Give_Email_Access {
 	 */
 	public function check_for_token() {
 
-		$token = isset( $_GET['give_nl'] ) ? $_GET['give_nl'] : '';
+		$token = isset( $_GET['give_nl'] ) ? sanitize_text_field( wp_unslash( $_GET['give_nl'] ) ) : '';
 
 		// Check for cookie.
 		if ( empty( $token ) ) {
-			$token = isset( $_COOKIE['give_nl'] ) ? $_COOKIE['give_nl'] : '';
+			$token = isset( $_COOKIE['give_nl'] ) ? sanitize_text_field( $_COOKIE['give_nl'] ) : '';
 		}
 
 		// Must have a token.
