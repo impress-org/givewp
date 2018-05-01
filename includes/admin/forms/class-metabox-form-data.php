@@ -292,13 +292,14 @@ class Give_MetaBox_Form_Data {
 							'default' => 'global',
 						),
 						array(
-							'name'      => __( 'Title Prefixes', 'give' ),
-							'desc'      => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
-							'id'        => $prefix . 'title_prefixes',
-							'type'      => 'chosen',
-							'data_type' => 'multiselect',
-							'style'     => 'width: 100%',
-							'options' => array(
+							'name'          => __( 'Title Prefixes', 'give' ),
+							'desc'          => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
+							'id'            => $prefix . 'title_prefixes',
+							'type'          => 'chosen',
+							'data_type'     => 'multiselect',
+							'style'         => 'width: 100%',
+							'wrapper_class' => 'give-hidden give-title-prefixes-wrap',
+							'options'       => array(
 								'Mr.'   => __( 'Mr.', 'give' ),
 								'Mrs.'  => __( 'Mrs.', 'give' ),
 								'Ms.'   => __( 'Ms.', 'give' ),
