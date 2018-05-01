@@ -587,13 +587,14 @@ ASIDE
 		}
 	}
 
-	.minmax-wrap {
+	.give-minmax-wrap {
 		display: block;
 		margin-bottom: .5rem;
 
 		label {
 			display: inline-block;
 			width: 120px;
+			font-size: 12px;
 		}
 
 		input {

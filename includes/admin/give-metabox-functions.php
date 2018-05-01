@@ -390,7 +390,7 @@ function give_donation_limit( $field ) {
 
 			$amount = give_format_amount( give_maybe_sanitize_amount( $field_options['value'][ $amount_range ] ), array( 'sanitize' => false ) );
 
-			echo '<span class=minmax-wrap>';
+			echo '<span class=give-minmax-wrap>';
 			printf( '<label for="%1$s_give_donation_limit_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $price_field_labels ) );
 
 			echo isset( $before_html ) ? $before_html : '';
