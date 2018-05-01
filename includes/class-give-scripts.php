@@ -270,6 +270,7 @@ class Give_Scripts {
 				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
 				'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
 			),
+			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 		) );
 	}
 

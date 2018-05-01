@@ -119,7 +119,7 @@ var give_setting_edit = false;
 
 			// Do something to chosen used in metabox or admin settings.
 			$give_chosen_containers.chosen({
-				no_results_text: "No result found. Press enter to add "
+				no_results_text: give_vars.chosen_add_title_prefix + ' '
 			}).on('chosen:no_results', function(evt, data){
 
 				$( data.chosen.container ).on( 'keydown', function( event ) {
