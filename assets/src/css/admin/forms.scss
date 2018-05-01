@@ -586,6 +586,21 @@ ASIDE
 			}
 		}
 	}
+
+	.minmax-wrap {
+		display: block;
+		margin-bottom: .5rem;
+
+		label {
+			display: inline-block;
+			width: 120px;
+		}
+
+		input {
+			margin-left: 1px;
+		}
+	}
+
 }
 
 // Hide first row remove button for multi-level.

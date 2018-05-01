@@ -109,8 +109,21 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 					continue;
 				}
 
+				/**
+				 * Filter the payment amount.
+				 *
+				 * @since 2.1
+				 */
+				$earning_amount = apply_filters(
+					'give_donation_amount',
+					give_format_amount( $payment->total, array( 'donation_id' => $payment->ID ) ),
+					$payment->total,
+					$payment->ID,
+					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+				);
+
 				$totals['sales'] ++;
-				$totals['earnings'] += $payment->total;
+				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount );
 
 			}
 

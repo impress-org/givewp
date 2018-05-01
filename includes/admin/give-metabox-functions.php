@@ -431,14 +431,6 @@ function give_range_slider( $field ) {
 		<span class="give_range_slider_display">
 		<?php
 
-		if ( ! empty( $field_options['options']['display_label'] ) ) {
-			?>
-			<span class="give_range_slider_label">
-				<?php echo esc_html( $field_options['options']['display_label'] ); ?>
-			</span>
-			<?php
-		}
-
 		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
 
 			switch ( $field_options['data_type'] ) {
@@ -474,6 +466,11 @@ function give_range_slider( $field ) {
 					break;
 			}
 
+			$amount = give_format_amount( give_maybe_sanitize_amount( $field_options['value'][ $amount_range ] ), array( 'sanitize' => false ) );
+
+			echo '<span class=minmax-wrap>';
+			printf( '<label for="%1$s_give_range_slider_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $tooltip_label ) );
+
 			echo isset( $before_html ) ? $before_html : '';
 			?>
 			<input
@@ -481,20 +478,16 @@ function give_range_slider( $field ) {
 					type="text"
 					id="<?php echo $field_options['id']; ?> _give_range_slider_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo esc_attr( $field_options['value'][ $amount_range ] ); ?>"
+					value="<?php echo esc_attr( $amount ); ?>"
 					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
 			echo isset( $after_html ) ? $after_html : '';
+			echo '</span>';
 		}
 		?>
 	</span>
-		<span
-				id="<?php echo esc_attr( $field_options['id'] ); ?>"
-				style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
-				class="<?php echo apply_filters( "give_range_slider_{$field['id']}_classes", "give-range_slider_field" ); ?>"
-		></span>
 		<?php echo give_get_field_description( $field_options ); ?>
 	</p>
 	<?php

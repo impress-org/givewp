@@ -240,13 +240,13 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
-		// Bailout.
-		if ( ! give_test_ajax_works() ) {
-			return;
-		}
-
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
+
+		// Bailout.
+		if ( ! $this->get_total_update_count() ) {
+			return;
+		}
 
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
@@ -618,11 +618,6 @@ class Give_Updates {
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
 					<?php _e( 'Restart the updater', 'give' ); ?>
 				</a>
-				<script type="text/javascript">
-					jQuery('.give-restart-updater-btn').click('click', function () {
-						return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-					});
-				</script>
 			<?php else: ?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
@@ -683,11 +678,6 @@ class Give_Updates {
 					<?php _e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
-			<script type="text/javascript">
-				jQuery('.give-run-update-now').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-				});
-			</script>
 			<?php
 			$desc_html = ob_get_clean();
 

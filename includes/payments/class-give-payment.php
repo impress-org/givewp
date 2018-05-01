@@ -824,7 +824,7 @@ final class Give_Payment {
 
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->increase_sales( $quantity );
-										$form->increase_earnings( $price );
+										$form->increase_earnings( $price, $this->ID );
 
 										$total_increase += $price;
 									}
@@ -835,7 +835,7 @@ final class Give_Payment {
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
-										$form->decrease_earnings( $item['amount'] );
+										$form->decrease_earnings( $item['amount'], $this->ID );
 
 										$total_decrease += $item['amount'];
 									}

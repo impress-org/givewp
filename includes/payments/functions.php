@@ -389,7 +389,7 @@ function give_undo_donation( $payment_id ) {
 	$maybe_decrease_earnings = apply_filters( 'give_decrease_earnings_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_earnings ) {
 		// Decrease earnings.
-		give_decrease_form_earnings( $payment->form_id, $payment->total );
+		give_decrease_form_earnings( $payment->form_id, $payment->total, $payment_id );
 	}
 
 	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
