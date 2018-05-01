@@ -1569,7 +1569,7 @@ class Give_Donor {
 	/**
 	 * Retrieves company name of donor
 	 *
-	 * @since   2.0.7
+	 * @since   2.1.0
 	 *
 	 * @return  string $company_name Donor Company Name
 	 */

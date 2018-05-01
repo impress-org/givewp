@@ -53,7 +53,7 @@ class Give_Export {
 		/**
 		 * Filter to Modify CSV file name
 		 *
-		 * @since 2.0.7
+		 * @since 2.1.0
 		 *
 		 * @param $file_name string file name
 		 * @param$export_type string export type name
