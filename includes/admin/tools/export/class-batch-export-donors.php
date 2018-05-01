@@ -66,7 +66,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 *
 	 * @param int $_step
 	 */
@@ -81,7 +81,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Function to change the filename
 	 *
-	 * @since 2.0.7
+	 * @since 2.1.0
 	 *
 	 * @param $filename
 	 * @param $export_type

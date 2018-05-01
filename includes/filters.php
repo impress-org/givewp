@@ -225,7 +225,7 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
 /**
  * Validate active gateway value before returning result.
  *
- * @since 2.0.7
+ * @since 2.1.0
  *
  * @param $value
  *
@@ -248,7 +248,7 @@ function __give_validate_active_gateways( $value ) {
 		/**
 		 * Filter the default active gateway
 		 *
-		 * @since 2.0.7
+		 * @since 2.1.0
 		 */
 		$value = apply_filters( 'give_default_active_gateways', array(
 			'manual' => 1,
