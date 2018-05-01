@@ -203,6 +203,17 @@ jQuery.noConflict();
 				$( '#email_notification_options .give-field-wrap:not(._give_email_options_field)' ).hide();
 			}
 		} ).change();
+
+		// Title Prefixes.
+		var name_title_prefix = $( 'input[name="_give_name_title_prefix"]');
+		name_title_prefix.on( 'change', function() {
+
+			if ( 'enabled' === $( 'input[name="_give_name_title_prefix"]:checked').val() ) {
+				$( '.give-title-prefixes-wrap' ).show();
+			} else {
+				$( '.give-title-prefixes-wrap' ).hide();
+			}
+		});
 	};
 
 	//Handle Repeatable Row ID
