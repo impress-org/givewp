@@ -25,7 +25,7 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 			esc_attr( $form_id ),
 			esc_attr( get_the_permalink() )
 		);
-	} elseif ( 'modal_reveal' === $atts['display_style'] ) {
+	} elseif ( 'modal' === $atts['display_style'] ) {
 		printf(
 			'<a id="give-card-%1$s" class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#give-modal-form-%1$s">',
 			esc_attr( $form_id )
@@ -110,7 +110,7 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 	</a>
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
-	if ( 'modal_reveal' === $atts['display_style'] ) {
+	if ( 'modal' === $atts['display_style'] ) {
 		printf(
 			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
 			$form_id
