@@ -126,7 +126,10 @@ var give_setting_edit = false;
 
 					var chosenText = data.chosen.get_search_text();
 
-					if( 13 === event.keyCode && ! jQuery(data.chosen.form_field).find('option[value="' + chosenText + '"]').length ){
+					if(
+						13 === event.keyCode &&
+						! jQuery(data.chosen.form_field).find('option[value="' + chosenText + '"]').length
+					){
 						$( data.chosen.form_field )
 							.append( '<option value="' + chosenText + '" selected>' + chosenText + '</option>' )
 							.trigger('chosen:updated');
