@@ -60,16 +60,14 @@ do_action( 'give_tools_recount_stats_before' );
 							'chosen'      => true,
 							'placeholder' => __( 'Select Form', 'give' ),
 						);
-						echo wp_kses_post( Give()->html->forms_dropdown( $args ) );
+						echo Give()->html->forms_dropdown( $args );
 						?>
 					</span>
 
 					<span class="tools-form-dropdown tools-form-dropdown-delete-import-donors" style="display: none">
 						<label for="delete-import-donors">
 							<?php
-							echo wp_kses_post( Give()->html->checkbox( array(
-								'name' => 'delete-import-donors',
-							) ) );
+							echo Give()->html->checkbox( array( 'name' => 'delete-import-donors' ) );
 							esc_html_e( 'Delete imported WordPress users', 'give' );
 							?>
 						</label>
