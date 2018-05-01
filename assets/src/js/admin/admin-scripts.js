@@ -2110,7 +2110,6 @@ var give_setting_edit = false;
 			this.setup_media_fields();
 			this.setup_repeatable_fields();
 			this.handle_repeater_group_events();
-			this.setup_range_slider_fields();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
@@ -2707,69 +2706,6 @@ var give_setting_edit = false;
 				$('input[type="hidden"].give-levels_id', new_row).val(++max_level_id);
 			});
 		},
-
-		/**
-		 * Initialize range slider field.
-		 *
-		 * @since 2.1
-		 */
-		setup_range_slider_fields: function () {
-			$(document).ready(function () {
-				// Get range slider field.
-				var $range_slider_fields = $('.give-range_slider_field');
-				if ($range_slider_fields.length) {
-					$range_slider_fields.each(function (index, item) {
-						var $item = $(item),
-							$field_container = $item.closest('p.give-field-wrap'),
-							$min_value = $field_container.find('input[name*=minimum]'),
-							$max_value = $field_container.find('input[name*=maximum]');
-
-						// Bailout: do not automatically initialize range slider for repeater field group template.
-						if ($item.parents('.give-template').length) {
-							return;
-						}
-
-						$item.slider({
-							range: true,
-							step: 0.1,
-							min: give_vars.give_donation_amounts.minimum,
-							max: give_vars.give_donation_amounts.maximum,
-							values: [$min_value.val(), $max_value.val()],
-							slide: function (event, ui) {
-								$min_value.val(ui.values[0].toFixed(give_vars.currency_decimals));
-								$max_value.val(ui.values[1].toFixed(give_vars.currency_decimals));
-							}
-						});
-					});
-				}
-
-				// Don't allow to enter less than or greater than value to another field.
-				$('.give-range_slider').on('focusout', function (e) {
-					var $current_value = parseFloat($(this).val()),
-						$field_parent = $(this).closest('.give-field-wrap'),
-						$type = $(this).data('range_type'),
-						$ranges = ['minimum', 'maximum'],
-						$compare_with = $field_parent.find('[data-range_type="' + $ranges.slice($ranges.indexOf($type) - 1)[0] + '"]').val();
-
-					// Check if value is not more or less than to compare field.
-					if (
-						'minimum' === $type
-						&& $current_value > $compare_with
-					) {
-						$(this).val($compare_with); // Set same as maximum amount field.
-					} else if ('maximum' === $type) {
-						if ($current_value < $compare_with) {
-							$(this).val($compare_with); // Set as minimum amount field..
-						} else if ($current_value > give_vars.give_donation_amounts.maximum) {
-							$(this).val(give_vars.give_donation_amounts.maximum); // Set to maximum amount.
-						}
-					}
-
-					// Update min and max range slider value.
-					$field_parent.find('.give-range_slider_field').slider('values', ('minimum' === $type ? 0 : 1), $(this).val());
-				});
-			});
-		}
 	};
 
 	/**
