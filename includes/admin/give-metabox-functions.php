@@ -75,8 +75,8 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_radio";
 			break;
 
-		case 'range_slider':
-			$func_name = "{$func_name_prefix}_range_slider";
+		case 'donation_limit':
+			$func_name = "{$func_name_prefix}_donation_limit";
 			break;
 
 		default:
@@ -192,8 +192,8 @@ function give_render_field( $field ) {
 			);
 			break;
 
-		case 'range_slider':
-			$field['type']  = 'range_slider';
+		case 'donation_limit':
+			$field['type']  = 'donation_limit';
 			break;
 	}
 
@@ -309,7 +309,7 @@ function give_text_input( $field ) {
  *
  * @return void
  */
-function give_range_slider( $field ) {
+function give_donation_limit( $field ) {
 	global $thepostid, $post;
 
 	// Get Give donation form ID.
@@ -351,26 +351,14 @@ function give_range_slider( $field ) {
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
-	<span class="give_range_slider_display">
+	<span class="give_donation_limit_display">
 		<?php
-
 		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
 
 			switch ( $field_options['data_type'] ) {
 				case 'price' :
 					$currency_position = give_get_option( 'currency_position', 'before' );
-					$tooltip_label     = 'minimum' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
-
-					$tooltip_html = array(
-						'before' => Give()->tooltips->render_span( array(
-							'label'       => $tooltip_label,
-							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-before">%s</span>', give_currency_symbol() ),
-						) ),
-						'after'  => Give()->tooltips->render_span( array(
-							'label'       => $tooltip_label,
-							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-after">%s</span>', give_currency_symbol() ),
-						) ),
-					);
+					$price_field_labels     = 'minimum' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
 
 					$before_html = ! empty( $field_options['before_field'] )
 						? $field_options['before_field']
@@ -392,14 +380,14 @@ function give_range_slider( $field ) {
 			$amount = give_format_amount( give_maybe_sanitize_amount( $field_options['value'][ $amount_range ] ), array( 'sanitize' => false ) );
 
 			echo '<span class=minmax-wrap>';
-			printf( '<label for="%1$s_give_range_slider_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $tooltip_label ) );
+			printf( '<label for="%1$s_give_donation_limit_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $price_field_labels ) );
 
 			echo isset( $before_html ) ? $before_html : '';
 			?>
 			<input
 					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
 					type="text"
-					id="<?php echo $field_options['id']; ?> _give_range_slider_<?php echo $amount_range; ?>"
+					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
 					value="<?php echo esc_attr( $amount ); ?>"
 					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
@@ -933,7 +921,7 @@ function give_email_preview_buttons( $field ) {
  * Note: Use only for single post, page or custom post type.
  *
  * @since  1.8
- * @since  2.1 Added support for range_slider.
+ * @since  2.1 Added support for donation_limit.
  *
  * @param  array $field
  * @param  int   $postid
@@ -946,7 +934,7 @@ function give_get_field_value( $field, $postid ) {
 	}
 
 	// If field is range slider.
-	if ( 'range_slider' === $field['type'] ) {
+	if ( 'donation_limit' === $field['type'] ) {
 
 		// Get minimum value.
 		$minimum = give_get_meta( $postid, $field['id'] . '_minimum', true );

@@ -2715,33 +2715,6 @@ var give_setting_edit = false;
 		 */
 		setup_range_slider_fields: function () {
 			$(document).ready(function () {
-				// Get range slider field.
-				var $range_slider_fields = $('.give-range_slider_field');
-				if ($range_slider_fields.length) {
-					$range_slider_fields.each(function (index, item) {
-						var $item = $(item),
-							$field_container = $item.closest('p.give-field-wrap'),
-							$min_value = $field_container.find('input[name*=minimum]'),
-							$max_value = $field_container.find('input[name*=maximum]');
-
-						// Bailout: do not automatically initialize range slider for repeater field group template.
-						if ($item.parents('.give-template').length) {
-							return;
-						}
-
-						$item.slider({
-							range: true,
-							step: 0.1,
-							min: give_vars.give_donation_amounts.minimum,
-							max: give_vars.give_donation_amounts.maximum,
-							values: [$min_value.val(), $max_value.val()],
-							slide: function (event, ui) {
-								$min_value.val(ui.values[0].toFixed(give_vars.currency_decimals));
-								$max_value.val(ui.values[1].toFixed(give_vars.currency_decimals));
-							}
-						});
-					});
-				}
 
 				// Don't allow to enter less than or greater than value to another field.
 				$('.give-range_slider').on('focusout', function (e) {
