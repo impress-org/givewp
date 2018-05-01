@@ -360,6 +360,17 @@ function give_donation_limit( $field ) {
 					$currency_position = give_get_option( 'currency_position', 'before' );
 					$price_field_labels     = 'minimum' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
 
+					$tooltip_html = array(
+						'before' => Give()->tooltips->render_span( array(
+							'label'       => $price_field_labels,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-before">%s</span>', give_currency_symbol() ),
+						) ),
+						'after'  => Give()->tooltips->render_span( array(
+							'label'       => $price_field_labels,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-after">%s</span>', give_currency_symbol() ),
+						) ),
+					);
+
 					$before_html = ! empty( $field_options['before_field'] )
 						? $field_options['before_field']
 						: ( 'before' === $currency_position ? $tooltip_html['before'] : '' );
