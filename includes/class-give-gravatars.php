@@ -246,9 +246,9 @@ class Give_Donors_Gravatars {
 		if ( isset ( $title ) ) {
 
 			if ( $title ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' );
+				echo wp_kses_post( apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' ) );
 			} elseif ( isset( $give_options['give_donors_gravatars_heading'] ) ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donors_gravatars_heading'] ) . '</h2>' );
+				echo wp_kses_post( apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donors_gravatars_heading'] ) . '</h2>' ) );
 			}
 
 		}
@@ -291,7 +291,7 @@ class Give_Donors_Gravatars {
 			} // end foreach
 		}
 
-		echo $output;
+		echo wp_kses_post( $output );
 		echo '</ul>';
 		echo '</div>';
 
@@ -459,8 +459,14 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		//@TODO: Don't extract it!!!
-		extract( $args );
+		$defaults = array(
+			'before_widget' => '',
+			'after_widget' => '',
+			'before_title' => '',
+			'after_title' => '',
+		);
+
+		$args = wp_parse_args( $args, $defaults );
 
 		if ( ! is_singular( 'give_forms' ) ) {
 			return;
@@ -469,21 +475,24 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 		// Variables from widget settings
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
+		$output = '';
+
 		// Used by themes. Opens the widget
-		echo $before_widget;
+		$output .= $args['before_widget'];
 
 		// Display the widget title
 		if ( $title ) {
-			echo $before_title . $title . $after_title;
+			$output .= $args['before_title'] . $title . $args['after_title'];
 		}
 
 		$gravatars = new Give_Donors_Gravatars();
 
-		echo $gravatars->gravatars( get_the_ID(), null ); // remove title
+		$output .= $gravatars->gravatars( get_the_ID(), null ); // remove title
 
 		// Used by themes. Closes the widget
-		echo $after_widget;
+		$output .= $args['after_widget'];
 
+		echo wp_kses_post( $output );
 	}
 
 	/**
@@ -503,7 +512,7 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 
 		$instance = $old_instance;
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 
 		return $instance;
 
@@ -532,8 +541,8 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 
 		<?php
