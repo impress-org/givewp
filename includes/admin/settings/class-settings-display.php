@@ -109,6 +109,20 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
+							'name'          => __( 'Title Prefixes', 'give' ),
+							'desc'          => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
+							'id'            => 'title_prefixes',
+							'type'          => 'chosen',
+							'data_type'     => 'multiselect',
+							'wrapper_class' => 'give-hidden give-title-prefixes-settings-wrap',
+							'style'         => 'width: 30%',
+							'options'       => array(
+								'Mr'  => __( 'Mr', 'give' ),
+								'Mrs' => __( 'Mrs', 'give' ),
+								'Ms'  => __( 'Ms', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Company Donations', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
 							'id'      => 'company_field',
