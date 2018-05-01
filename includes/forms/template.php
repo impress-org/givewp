@@ -1616,7 +1616,7 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  */
 function give_checkout_submit( $form_id ) {
 	?>
-	<fieldset id="give_purchase_submit">
+	<fieldset id="give_purchase_submit" class="give-donation-submit">
 		<?php
 		/**
 		 * Fire before donation form submit.
