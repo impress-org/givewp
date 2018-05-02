@@ -53,6 +53,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 					'3'        => esc_html__( '3', 'give' ),
 					'4'        => esc_html__( '4', 'give' ),
 				),
+				'value'   => 'best-fit'
 			),
 			array(
 				'type'    => 'listbox',
@@ -85,14 +86,11 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Display Style:', 'give' ),
-				'tooltip' => esc_attr__( 'Show form as modal window or redirect to a new page?', 'give' ),
-				'options' => array(
-					'redirect'     => esc_html__( 'Redirect', 'give' ),
-					'modal_reveal' => esc_html__( 'Modal', 'give' ),
-				),
+				'type'    => 'textbox',
+				'name'    => 'forms_per_page',
+				'label'   => esc_attr__( 'Forms Per Page:', 'give' ),
+				'tooltip' => esc_attr__( 'Sets the number of donations form per row.', 'give' ),
+				'value'   => 12,
 			),
 		);
 	}
