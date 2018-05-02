@@ -792,6 +792,12 @@ Give.form = {
 		 * @return {boolean}
 		 */
 		isValidDonationAmount: function( $form ) {
+
+			// Return true, if custom amount is not enabled.
+			if ( $form.find( 'input[name="give-form-minimum"]' ).length <= 0 ) {
+				return true;
+			}
+
 			var min_amount = this.getMinimumAmount( $form ),
 				max_amount = this.getMaximumAmount( $form ),
 				amount = this.getAmount( $form ),
