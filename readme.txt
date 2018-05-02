@@ -208,7 +208,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.1.0: April 25th, 2018  =
+= 2.1.0: May 2nd, 2018  =
 * New: Sequential ordering is here! You can now configure donation payments with a prefix, suffix, number padding and more. [#2912](https://github.com/WordImpress/Give/issues/2912)
 * New: Now you can export your donations with much more flexibility via the new advanced donation exporter. [#2875](https://github.com/WordImpress/Give/issues/2875), [#2996](https://github.com/WordImpress/Give/issues/2996)
 * New: Query performance improvements for sites with a large database of donations. [#2987](https://github.com/WordImpress/Give/issues/2987), [#3069](https://github.com/WordImpress/Give/issues/3069)
