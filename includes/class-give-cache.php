@@ -78,7 +78,7 @@ class Give_Cache {
 		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 
-		add_action( 'give_save_settings_give_settings', array( $this, 'flush_cache' ) );
+		add_action( 'give_save_settings_give_settings', array( __CLASS__, 'flush_cache' ) );
 
 		add_action( 'wp', array( __CLASS__,  'prevent_caching' ) );
 		add_action( 'admin_notices', array( $this, '__notices' ) );
@@ -511,7 +511,7 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param int $id
+	 * @param string $id
 	 *
 	 * @return mixed
 	 */
@@ -539,11 +539,12 @@ class Give_Cache {
 			return $status;
 		}
 
+		$group_prefix = $group;
 		$group = self::$instance->filter_group_name( $group );
 
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
-			$status = wp_cache_delete( $ids, $group, $expire );
+			$status = wp_cache_delete( $ids, $group );
 			self::$instance->get_incrementer( true );
 
 			/**
@@ -555,11 +556,11 @@ class Give_Cache {
 			 * @param string $group
 			 * @param int    $expire
 			 */
-			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire, $status );
+			do_action( "give_deleted_{$group_prefix}_cache", $ids, $group, $expire, $status );
 
 		} else {
 			foreach ( $ids as $id ) {
-				$status = wp_cache_delete( $id, $group, $expire );
+				$status = wp_cache_delete( $id, $group );
 				self::$instance->get_incrementer( true );
 
 				/**
@@ -571,7 +572,7 @@ class Give_Cache {
 				 * @param string $group
 				 * @param int    $expire
 				 */
-				do_action( "give_deleted_{$group}_cache", $id, $group, $expire, $status );
+				do_action( "give_deleted_{$group_prefix}_cache", $id, $group, $expire, $status );
 			}
 		}
 
@@ -598,6 +599,8 @@ class Give_Cache {
 			array(
 				'number'     => - 1,
 				'give_forms' => $form_id,
+				'output'     => '',
+				'fields'     => 'ids',
 			)
 		);
 
@@ -605,9 +608,9 @@ class Give_Cache {
 
 		if ( ! empty( $donations ) ) {
 			/* @var Give_Payment $donation */
-			foreach ( $donations as $donation ) {
-				wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
-				wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+			foreach ( $donations as $donation_id ) {
+				wp_cache_delete( $donation_id, $this->filter_group_name( 'give-donations' ) );
+				wp_cache_delete( give_get_payment_donor_id( $donation_id ), $this->filter_group_name( 'give-donors' ) );
 			}
 		}
 
@@ -629,14 +632,11 @@ class Give_Cache {
 			return;
 		}
 
-		/* @var Give_Payment $donation */
-		$donation = new Give_Payment( $donation_id );
-
-		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+		if ( $donation_id && ( $donor_id = give_get_payment_donor_id( $donation_id ) ) ) {
+			wp_cache_delete( $donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
-		wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
+		wp_cache_delete( $donation_id, $this->filter_group_name( 'give-donations' ) );
 
 		self::$instance->get_incrementer( true );
 	}
@@ -653,10 +653,11 @@ class Give_Cache {
 	 * @param int    $expire
 	 */
 	public function delete_donor_related_cache( $id, $group, $expire ) {
-		$donor        = new Give_Donor( $id );
-		$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+		$donation_ids = Give()->donors->get_column( 'payment_ids', $id );
 
 		if ( ! empty( $donation_ids ) ) {
+			$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donation_ids  ) ) );
+
 			foreach ( $donation_ids as $donation ) {
 				wp_cache_delete( $donation, $this->filter_group_name( 'give-donations' ) );
 			}
@@ -677,11 +678,8 @@ class Give_Cache {
 	 * @param int    $expire
 	 */
 	public function delete_donations_related_cache( $id, $group, $expire ) {
-		/* @var Give_Payment $donation */
-		$donation = new Give_Payment( $id );
-
-		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
+		if ( $id && ( $donor_id = give_get_payment_donor_id( $id ) ) ) {
+			wp_cache_delete( $donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
 		self::$instance->get_incrementer( true );
@@ -695,14 +693,14 @@ class Give_Cache {
 	 * @see    https://www.tollmanz.com/invalidation-schemes/
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access public
 	 *
 	 * @param bool   $refresh
 	 * @param string $incrementer_key
 	 *
 	 * @return string
 	 */
-	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
+	public function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
 		$incrementer_value = wp_cache_get( $incrementer_key );
 
 		if ( false === $incrementer_value || true === $refresh ) {
@@ -721,15 +719,28 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 */
-	public function flush_cache() {
+	public static function flush_cache() {
 		if (
-			Give_Admin_Settings::is_saving_settings() &&
-			isset( $_POST['cache'] ) &&
-			give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+			( Give_Admin_Settings::is_saving_settings()
+		       && isset( $_POST['cache'] )
+		       && give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+		     )
+			|| ( wp_doing_ajax() && 'give_cache_flush' === give_clean( $_GET['action'] ) )
 		) {
-			$this->get_incrementer( true );
-			$this->get_incrementer( true, 'give-cache-incrementer' );
+			self::$instance->get_incrementer( true );
+			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
+
+			/**
+			 * Fire the action when all cache deleted.
+			 *
+			 * @since 2.1.0
+			 */
+			do_action( 'give_fluched_cache' );
+
+			return true;
 		}
+
+		return false;
 	}
 
 
@@ -744,24 +755,30 @@ class Give_Cache {
 	 * @return mixed
 	 */
 	private function filter_group_name( $group ) {
-		$group = "{$group}_" . get_current_blog_id();
-
-		if ( ! empty( $group ) ) {
-			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
-
-			if ( 'give-db-queries' === $group ) {
-				$incrementer = self::$instance->get_incrementer();
-			}
-
-			$group = "{$group}_{$incrementer}";
-		}
-
 		/**
 		 * Filter the group name
 		 *
-		 * @since 2.0
+		 * @since 2.1.0
 		 */
-		return $group;
+		$filtered_group = apply_filters( 'give_cache_filter_group_name', '', $group );
+
+		if ( empty( $filtered_group ) ) {
+
+			switch ( $group ) {
+				case 'give-db-queries':
+					$incrementer = self::$instance->get_incrementer();
+					break;
+
+				default:
+					$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
+
+			}
+
+			$currenct_blog_id = get_current_blog_id();
+			$filtered_group   = "{$group}_{$currenct_blog_id}_{$incrementer}";
+		}
+
+		return $filtered_group;
 	}
 
 

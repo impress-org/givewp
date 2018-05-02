@@ -49,6 +49,15 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public static $per_page = 20;
 
 		/**
+		 * Is core file is valid.
+		 *
+		 * @since 2.1
+		 *
+		 * @var   int
+		 */
+		public $is_json_valid = false;
+
+		/**
 		 * Singleton pattern.
 		 *
 		 * @since 1.8.17
@@ -159,11 +168,12 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			$this->render_progress();
 			?>
 			<section>
-				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?>"
-				       id="<?php echo "step-{$step}"; ?>">
+				<table
+					class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_json_valid ) ? 'give-hidden' : '' ); ?> "
+					id="<?php echo "step-{$step}"; ?>">
 					<tbody>
 					<?php
-					switch ( $this->get_step() ) {
+					switch ( $step ) {
 						case 1:
 							$this->render_upload_html();
 							break;
@@ -246,7 +256,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.17
 		 */
 		public function start_import() {
-			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
+			$type      = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
 			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
 
 			?>
@@ -268,12 +278,6 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					<input type="hidden" value="<?php echo $file_name; ?>" name="file_name">
 				</th>
 			</tr>
-
-			<script type="text/javascript">
-				jQuery( document ).ready( function () {
-					give_on_core_settings_import_start();
-				} );
-			</script>
 			<?php
 		}
 
@@ -382,18 +386,24 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 			$settings = apply_filters( 'give_import_core_setting_html', $settings );
 
-			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
-			?>
-			<tr valign="top">
-				<th></th>
-				<th>
-					<input type="submit"
-					       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
-					       id="recount-stats-submit"
-					       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
-				</th>
-			</tr>
-			<?php
+			if ( empty( $this->is_json_valid ) ) {
+				Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+				?>
+				<tr valign="top">
+					<th></th>
+					<th>
+						<input type="submit"
+						       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+						       id="recount-stats-submit"
+						       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
+					</th>
+				</tr>
+				<?php
+			} else {
+				?>
+				<input type="hidden" name="is_json_valid" class="is_json_valid" value="<?php echo $this->is_json_valid; ?>">
+				<?php
+			}
 		}
 
 		/**
@@ -422,11 +432,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 						'file_name'     => $file_path[ $count ],
 					) ) );
 
-					?>
-					<script type="text/javascript">
-						window.location = "<?php echo $url; ?>";
-					</script>
-					<?php
+
+					$this->is_json_valid = $url;
 				}
 			}
 		}

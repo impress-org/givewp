@@ -86,9 +86,23 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 		if ( ! empty( $payments ) ) {
 
 			foreach ( $payments as $payment ) {
+				// Get the payment amount.
+				$payment_amount = give_get_meta( $payment->ID, '_give_payment_total', true );
 
-				$total += (float) give_donation_amount( $payment, array( 'type' => 'stats' ) );
+				/**
+				 * Filter the payment amount.
+				 *
+				 * @since 2.1
+				 */
+				$donation_amount = apply_filters(
+					'give_donation_amount',
+					give_format_amount( $payment_amount, array( 'donation_id' => $payment->ID ) ),
+					$payment->total,
+					$payment->ID,
+					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+				);
 
+				$total += (float) give_maybe_sanitize_amount( $donation_amount );
 			}
 
 			if ( $total < 0 ) {

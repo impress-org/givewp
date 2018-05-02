@@ -39,13 +39,13 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 		) {
 			$setting = $currencies[ $id_or_currency_code ]['setting'];
 		} elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
-			$donation_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
+			$currency = give_get_meta( $id_or_currency_code, '_give_payment_currency', true );
 
 			if (
-				! empty( $donation_meta['currency'] ) &&
-				$give_options['currency'] !== $donation_meta['currency']
+				! empty( $currency) &&
+				$give_options['currency'] !== $currency
 			) {
-				$setting = $currencies[ $donation_meta['currency'] ]['setting'];
+				$setting = $currencies[ $currency ]['setting'];
 			}
 		}
 	}
@@ -394,8 +394,7 @@ function give_format_amount( $amount, $args = array() ) {
 
 	// Set Currency based on donation id, if required.
 	if ( $args['donation_id'] && empty( $args['currency'] ) ) {
-		$donation_meta    = give_get_meta( $args['donation_id'], '_give_payment_meta', true );
-		$args['currency'] = $donation_meta['currency'];
+		$args['currency'] = give_get_meta( $args['donation_id'], '_give_payment_currency', true );
 	}
 
 	$formatted     = 0;
@@ -620,7 +619,7 @@ function give_clean( $var ) {
 	if ( is_array( $var ) ) {
 		return array_map( 'give_clean', $var );
 	} else {
-		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+		return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 	}
 }
 

@@ -745,6 +745,18 @@ final class Give_Payment {
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
+			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' );
+
+			// Check $page_url is not empty.
+			if ( $give_company ) {
+				give_update_meta( $payment_id, '_give_donation_company', $give_company );
+
+				$donor_id = absint( $donor->id );
+				if ( ! empty( $donor_id ) ) {
+					Give()->donor_meta->update_meta( $donor_id, '_give_donor_company', $give_company );
+				}
+			}
+
 			$this->new = true;
 		}// End if().
 
@@ -812,7 +824,7 @@ final class Give_Payment {
 
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->increase_sales( $quantity );
-										$form->increase_earnings( $price );
+										$form->increase_earnings( $price, $this->ID );
 
 										$total_increase += $price;
 									}
@@ -823,7 +835,7 @@ final class Give_Payment {
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
-										$form->decrease_earnings( $item['amount'] );
+										$form->decrease_earnings( $item['amount'], $this->ID );
 
 										$total_decrease += $item['amount'];
 									}
@@ -913,6 +925,9 @@ final class Give_Payment {
 						break;
 
 					case 'number':
+						// @todo: remove unused meta data.
+						// Core is using post_title to store donation serial code ( fi enabled ) instead this meta key.
+						// Do not use this meta key in your logic, can be remove in future
 						$this->update_meta( '_give_payment_number', $this->number );
 						break;
 
@@ -960,9 +975,12 @@ final class Give_Payment {
 				if ( $total_change < 0 ) {
 
 					$total_change = - ( $total_change );
+
 					// Decrease the donor's donation stats.
 					$donor->decrease_value( $total_change );
 					give_decrease_total_earnings( $total_change );
+
+					$donor->decrease_donation_count();
 
 				} elseif ( $total_change > 0 ) {
 
@@ -970,7 +988,13 @@ final class Give_Payment {
 					$donor->increase_value( $total_change );
 					give_increase_total_earnings( $total_change );
 
+					$donor->increase_purchase_count();
+
 				}
+
+				// Verify and update form meta based on the form status.
+				give_set_form_closed_status( $this->form_id );
+
 			}
 
 			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
@@ -1821,20 +1845,7 @@ final class Give_Payment {
 	 * @return int|string Integer by default, or string if sequential order numbers is enabled.
 	 */
 	private function setup_payment_number() {
-		$number = $this->ID;
-
-		if ( give_get_option( 'enable_sequential' ) ) {
-
-			$number = $this->get_meta( '_give_payment_number', true );
-
-			if ( ! $number ) {
-
-				$number = $this->ID;
-
-			}
-		}
-
-		return $number;
+		return $this->get_serial_code();
 	}
 
 	/**
@@ -2027,5 +2038,18 @@ final class Give_Payment {
 	 */
 	private function get_number() {
 		return apply_filters( 'give_payment_number', $this->number, $this->ID, $this );
+	}
+
+	/**
+	 * Get serial code
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function get_serial_code( $args = array() ) {
+		return Give()->seq_donation_number->get_serial_code( $this, $args );
 	}
 }

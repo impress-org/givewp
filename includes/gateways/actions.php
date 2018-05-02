@@ -78,6 +78,7 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
 
 /**
  * Sets an error within the donation form if no gateways are enabled.
+ * @todo: we can deprecate this function in future because gateways will not empty if get via Give API.
  *
  * @since 1.0
  *

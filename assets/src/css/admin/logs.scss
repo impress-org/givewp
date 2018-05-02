@@ -1,0 +1,35 @@
+/**
+ * Give Logs SCSS
+ *
+ * @description Payment History Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+#give_donor_export_form {
+  margin: 0 0 5px;
+}
+
+
+#give-payments-filter .give-donation-status {
+  display: inline-block;
+}
+
+#give_donor_export {
+	#give_donor_export_form_chosen {
+		display: block;
+		margin: 5px 0 1px 0;
+	}
+}
+
+.column-status {
+  .give-donation-status, .give-test-mode-transactions-label {
+    display: inline-block;
+  }
+  .give-test-mode-transactions-label {
+    margin: 0 5px;
+    vertical-align: middle;
+  }
+}

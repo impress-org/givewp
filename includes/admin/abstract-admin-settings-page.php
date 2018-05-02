@@ -181,8 +181,8 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			}
 
 			// Show section settings only if setting section exist.
-			if ( $current_section && ! in_array( $current_section, array_keys( $sections ) ) ) {
-				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+			if ( $current_section && ! in_array( $current_section, array_keys( $sections ), true ) ) {
+				echo wp_kses_post( '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>' );
 				$GLOBALS['give_hide_save_button'] = true;
 
 				return;
@@ -203,13 +203,13 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 					continue;
 				}
 
-				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a>';
+				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . $label . '</a>';
 			}
 
-			echo sprintf(
+			echo wp_kses_post( sprintf(
 				'<ul class="subsubsub">%s</ul><br class="clear" /><hr>',
 				implode( ' | </li>', $section_list )
-			);
+			) );
 		}
 
 		/**
@@ -240,7 +240,14 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			$settings        = $this->get_settings();
 			$current_section = give_get_current_setting_section();
 
-			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
+			/**
+			 * Use this filter if you want to implement your custom save logic.
+			 *
+			 * @since 2.1
+			 */
+			if ( apply_filters( "give_save_options_{$this->id}_{$current_section}", true ) ) {
+				Give_Admin_Settings::save_fields( $settings, 'give_settings' );
+			}
 
 			/**
 			 * Trigger Action

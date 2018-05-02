@@ -1,0 +1,770 @@
+/**
+ * Give Forms SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+/*------------------------------------
+Forms CPT
+--------------------------------------*/
+/* Hide conditional fields */
+.cmb2-id--give-set-price,
+.cmb2-id--give-levels-header,
+.cmb2-id--give-levels-header + .cmb-repeat-group-wrap,
+.cmb2-id--give-display-style,
+.post-type-give_forms .tablenav #post-query-submit,
+.give-hidden,
+.cmb2-id--give-form-content,
+.cmb2-id--give-reveal-label,
+.cmb2-id--give-custom-amount-minimum,
+.cmb2-id--give-custom-amount-text,
+.cmb2-id--give-offline-checkout-notes,
+.cmb-type-levels-id,
+#_give_donation_levels_repeat .cmb-group-title,
+#_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row,
+#_give_donation_levels_repeat .cmb-row > .handlediv {
+	display: none;
+}
+
+/* Donation Levels Repeating Field */
+#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
+	font-size: 12px;
+}
+
+//-----------------------------
+// Table Rows
+//-----------------------------
+div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
+	padding: 0 !important;
+	margin: 0 !important;
+	min-width: 100%;
+	max-width: 0;
+
+}
+
+//-----------------------------
+// Multilevel Repeater Header
+//-----------------------------
+.cmb2-id--give-levels-header {
+	padding: 10px 12px 0 !important;
+	margin: 0 !important;
+	background: #F7F7F7;
+	border-bottom: none !important;
+
+	.table-container {
+		display: table;
+		width: 100%;
+
+		border-top: 1px solid #e9e9e9;
+		border-bottom: 1px solid #e9e9e9;
+		border-left: 1px solid #e9e9e9;
+
+		> .table-row {
+			display: table-row;
+			background: #FCFCFC;
+
+			> .table-cell {
+				display: table-cell;
+				vertical-align: middle;
+				padding: 10px 15px;
+				border-right: 1px solid #e9e9e9;
+				&.col-id {
+					display: none;
+				}
+			}
+
+		}
+
+	}
+}
+
+#_give_donation_levels_repeat {
+	background: #F7F7F7;
+	padding: 0 1px 20px 12px;
+	box-sizing: border-box;
+
+	.cmb-row, .inside {
+		margin: 0;
+	}
+	.cmb-remove-field-row {
+		margin: 3px 0 0;
+
+		.button {
+			height: 25px;
+			padding: 0 3px;
+		}
+		span.dashicons-no {
+			line-height: 1.15em;
+		}
+
+	}
+
+	.cmbhandle {
+		display: none;
+	}
+	.cmb-add-row {
+		margin: 12px 0 0;
+	}
+
+}
+
+//---------------------------------------------------
+// Field One Offs
+//---------------------------------------------------
+.give-time-field {
+	width: 65px;
+}
+
+.give-money-field {
+	width: 75px;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.give-money-symbol {
+	border: 1px solid #DDD;
+	background: #FCFCFC;
+	margin: 0;
+	font-size: 14px;
+	padding: 5px 8px;
+}
+
+.give-money-symbol-before {
+	border-right: 0;
+	margin-right: -4px;
+}
+
+.give-money-symbol-after {
+	//border-left: 0;
+	margin-left: -5px;
+}
+
+.give_options_panel input[ type="text"],
+.give_options_panel input[ type="email"]{
+	padding: 5px;
+	width: 100%;
+}
+
+input.give-text_small,
+input.give-text-small {
+	width: 100px !important;
+}
+
+input.give-text-medium,
+input.give-text_medium {
+	width: 200px !important;
+}
+
+.give-underline {
+	text-decoration: underline;
+}
+
+.postbox-container .cmb-row {
+	margin: 0;
+
+	.cmb-th label {
+		padding-left: 8px;
+	}
+
+}
+
+// Show unnamed donors one per line.
+#give-bulk-donors div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden;
+}
+
+//---------------------------------------------------
+// Responsive
+//---------------------------------------------------
+@media only screen and (min-width: 851px) {
+
+	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list {
+		> .cmb-row {
+			float: left;
+			border-bottom: none;
+			padding-right: 10px;
+			> .cmb-th {
+				display: none;
+			}
+			> .cmb-td {
+				float: left;
+				width: 100%;
+			}
+		}
+	}
+
+	.cmb-type-give-default-radio-inline .cmb-td {
+		margin-top: 5px;
+	}
+
+}
+
+/* Smaller Resolution Desktops */
+@media only screen and (min-width: 851px) and (max-width: 1201px) {
+
+	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list {
+
+		> .cmb-remove-field-row {
+			width: 100%;
+			padding-top: 0;
+		}
+		> .cmb-type-text-money {
+			width: 105px;
+		}
+		input.cmb2-text-money {
+			width: 65px;
+		}
+
+		.give-multilevel-text-field {
+			width: 160px;
+		}
+		.cmb-type-radio-inline {
+			margin-left: 20px;
+		}
+
+	}
+	.col-amount {
+		width: 70px;
+	}
+	.col-text {
+		width: 140px;
+	}
+	.col-sort {
+		display: none !important;
+	}
+	.give-money-field {
+		width: 55px;
+	}
+}
+
+@media only screen and (min-width: 1201px) {
+
+	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list {
+
+		> .cmb-remove-field-row {
+			float: right;
+		}
+		> .cmb-row {
+			padding-right: 20px;
+		}
+		> .cmb-remove-field-row.cmb-row {
+			padding-right: 0;
+		}
+
+	}
+
+	.col-amount {
+		width: 93px;
+	}
+	.col-text {
+		width: 195px;
+	}
+	.col-sort {
+		width: 100px;
+	}
+	.give-multilevel-text-field {
+		width: 205px;
+	}
+
+}
+
+//Small Resolution Repeater
+@media only screen and (max-width: 850px) {
+	div.cmb-type-levels-repeater-header {
+		display: none !important;
+	}
+}
+
+//-------------------------------------
+// Publish Metabox
+//-------------------------------------
+
+/*Shortcode Input */
+
+.shortcode-wrap {
+	margin: 1px 14px 12px 11px;
+
+	label {
+		margin: 0 0 3px;
+		display: block;
+		cursor: default;
+	}
+
+	.shortcode-input {
+		margin: 0;
+		width: 100%;
+	}
+
+}
+
+//-------------------------------------
+// Content Options
+//-------------------------------------
+
+.cmb2-id--give-content-option,
+.cmb2-id--give-terms-option,
+.cmb2-id--give-offline-donation-enable-billing-fields-single,
+.cmb2-id--give-goal-option,
+.cmb2-id--give-customize-offline-donations {
+	border-bottom: none !important;
+	margin: 0 !important;
+}
+
+.cmb2-id--give-form-content,
+.cmb2-id--give-agree-label,
+.cmb2-id--give-offline-checkout-notes,
+.cmb2-id--give-set-goal,
+.cmb2-id--give-offline-donation-enable-billing-fields-single {
+	border-top: 1px solid #e9e9e9 !important;
+}
+
+/*-------------------------------------
+Terms and Conditions Metabox
+---------------------------------------*/
+
+.cmb2-id--give-agree-label,
+.cmb2-id--give-agree-text {
+	display: none;
+}
+
+/*-------------------------------------
+Dashboard Columns
+-------------------------------------*/
+
+input.shortcode-input {
+	width: 100%;
+}
+
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep{
+	display: inline-block;
+}
+
+/*-------------------------------------
+ASIDE
+-------------------------------------*/
+
+#side-sortables {
+
+	.cmb-th label {
+
+		&:after {
+			display: none;
+		}
+
+	}
+	.cmb2-id--give-show-register-form {
+		padding: 10px 0 0 !important;
+	}
+
+	.cmb2-wrap > .cmb-field-list > .cmb-row {
+		padding-top: 10px;
+	}
+
+	.cmb-row .cmb2-metabox-description {
+		padding-bottom: 0;
+	}
+
+}
+
+.cmb2-metabox-description {
+	font-size: 13px;
+	line-height: 1.5;
+	display: block;
+}
+
+//-------------------------------------
+// Tooltips
+//-------------------------------------
+.give-tooltip {
+	margin: 0 3px;
+	padding: 0;
+	font-size: 14px;
+	@include easing-transition();
+	color: transparentize($dark, 0.5);
+	position: relative;
+	top: 1px;
+
+	&:hover {
+		color: $dark;
+	}
+
+}
+
+//-------------------------------------
+// Metabox Form
+// -------------------------------------
+#give-metabox-form-data {
+
+	.inside {
+		margin: 0;
+		padding: 0;
+	}
+
+	.give-metabox-panel-wrap {
+		background: #fff;
+		overflow: hidden;
+	}
+
+	.give_options_panel {
+		display: none;
+		padding-left: 170px;
+
+		&.active,
+		.no-js & {
+			display: block;
+		}
+
+		.give-field-wrap {
+			padding: 1em 20px 1em 162px;
+			margin: 0;
+			border-bottom: 1px solid #eee;
+
+			> label, > span.give-field-label {
+				float: left;
+				width: 135px;
+				padding: 0;
+				margin: 2px 0 0 -150px;
+				line-height: 18px;
+				font-size: 12px;
+				font-weight: 400;
+			}
+
+			.give-field-description {
+				color: #aaaaaa;
+				font-size: 12px;
+				line-height: 18px;
+				display: block;
+				padding-top: 10px;
+				font-style: italic;
+			}
+
+			ul {
+				margin: 0;
+			}
+
+			.mce-container iframe, textarea {
+				min-height: 250px !important;
+			}
+
+			.wp-editor-wrap {
+				display: inline-block;
+				width: 100%;
+			}
+		}
+
+		.give-field-wrap:last-child {
+			border-bottom: 0;
+		}
+
+		textarea.give-field {
+			width: 100%;
+		}
+
+		.give-field-wrap:hover .give-field-row-actions {
+			display: block;
+		}
+
+		.give-field-wrap:last-child {
+			border-bottom: 0;
+		}
+
+		.give-inline-radio-fields {
+			li {
+				display: inline-block;
+				margin-right: 15px;
+			}
+		}
+
+		.give-repeatable-field-section {
+			padding: 10px;
+			background: #f5f5f5;
+
+			.give-repeatable-fields-section-wrapper {
+				width: 100%;
+				background-color: white;
+				border-collapse: collapse;
+			}
+
+			.give-row {
+				border-bottom: 15px solid #f5f5f5;
+				background-color: white;
+			}
+
+			.give-template {
+				display: none;
+			}
+
+			.give-row:last-child {
+				border-bottom: 10px solid #f5f5f5;
+			}
+
+			.give-column {
+				padding: 0;
+			}
+
+			.give-remove {
+				float: right;
+				width: 22px;
+				height: 36px;
+				padding: 0;
+				display: block;
+				text-align: center;
+				line-height: 34px;
+				font-size: 21px;
+				font-weight: 300;
+				cursor: pointer;
+			}
+
+			.give-remove:hover {
+				background-color: red;
+				color: white;
+				width: 22px;
+				height: 22px;
+				border-radius: 30px;
+				margin-top: 8px;
+				line-height: 19px;
+			}
+
+			.give-row-head {
+				border-bottom: 1px solid #eee;
+				cursor: move;
+				h2 {
+					text-align: left !important;
+				}
+			}
+
+			.give-row.closed .toggle-indicator:before {
+				content: "\f140";
+			}
+
+			.give-row .give-move .toggle-indicator:before {
+				margin-left: 7px;
+			}
+
+			.give-add-repeater-field-section-row-wrap {
+				background-color: #f5f5f5;
+			}
+
+			.give-add-repeater-field-section-row {
+				margin: 5px 5px;
+			}
+
+			.give-field-wrap:last-child {
+				border-bottom: 1px solid #eee;
+			}
+
+			.give-ui-placeholder-state-highlight {
+				background-color: #68bb6c;
+			}
+
+			.give-repeater-field-name {
+				border: 0 !important;
+				padding: 0 !important;
+			}
+
+			.give-repeater-field-description {
+				color: #aaaaaa;
+				font-size: 12px;
+				line-height: 18px;
+				display: block;
+				padding-bottom: 10px;
+				font-style: italic;
+			}
+
+			// Sortable jquery css fix.
+			.ui-sortable-helper {
+				display: table !important;
+			}
+			.give-row.ui-sortable-helper {
+				border-bottom: 0;
+			}
+		}
+	}
+
+	.give-minmax-wrap {
+		display: block;
+		margin-bottom: .5rem;
+
+		label {
+			display: inline-block;
+			width: 120px;
+			font-size: 12px;
+		}
+
+		input {
+			margin-left: 1px;
+		}
+	}
+
+}
+
+// Hide first row remove button for multi-level.
+#_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
+  display: none !important;
+}
+
+//-------------------------------------
+// Metabox Tabs
+//-------------------------------------
+#give-metabox-form-data {
+
+	.give-metabox-tabs {
+		margin: 0;
+		max-width: 170px;
+		float: left;
+		line-height: 1em;
+		padding: 0 0 10px;
+		position: relative;
+		background-color: #fafafa;
+		border-right: 1px solid #eee;
+		box-sizing: border-box;
+
+		&:after {
+			content: "";
+			display: block;
+			width: 100%;
+			height: 9999em;
+			position: absolute;
+			bottom: -9999em;
+			left: 0;
+			background-color: #fafafa;
+			border-right: 1px solid #eee;
+		}
+
+		li {
+			margin: 0;
+			padding: 0;
+			display: block;
+			position: relative;
+
+			a {
+				margin: 0;
+				padding: 10px;
+				display: block;
+				box-shadow: none;
+				text-decoration: none;
+				line-height: 20px !important;
+				border-bottom: 1px solid #eee;
+				overflow: hidden;
+
+				span.give-label {
+					width: 122px;
+					display: inline-block;
+				}
+			}
+
+		}
+
+		.give-metabox-sub-tabs li {
+			background-color: #f1f1f1;
+			a {
+				border-bottom-color: #e5e5e5;
+			}
+		}
+
+		li.active {
+			> a {
+				color: #555;
+				position: relative;
+				background-color: #eee;
+			}
+		}
+
+		li.has-sub-fields.active > a {
+			background-color: #ddd;
+		}
+
+		li.has-sub-fields:not(.active):hover {
+			ul.give-metabox-sub-tabs {
+				display: block;
+				position: absolute;
+				bottom: 0;
+				left: 166px;
+				width: 170px;
+				max-height: 250px;
+			}
+		}
+	}
+
+}
+
+// Icons only display for tight resolutions.
+@media only screen and (min-width: 851px) and (max-width: 1025px),
+(max-width: 550px) {
+
+	#give-metabox-form-data {
+		ul.give-metabox-tabs {
+			min-width: 40px;
+
+			li > a {
+				text-align: center;
+				&:before {
+					margin-right: 0;
+					font-size: 15px;
+				}
+				span.give-label {
+					display: none;
+				}
+
+				span.give-icon:before {
+					margin: 0;
+				}
+			}
+
+		}
+		.give_options_panel {
+			padding-left: 40px;
+
+			.give-field-wrap {
+				padding: 10px;
+
+				span.give-field-label, label {
+					display: block;
+					float: none;
+					margin: 0 0 10px 0;
+					font-size: 14px;
+					width: 100%;
+				}
+
+			}
+		}
+
+	}
+	//#give-metabox-form-data
+}
+
+/*-------------------------------------
+Chosen Overrides
+-------------------------------------*/
+
+.chosen-container-single a.chosen-single {
+  background: #FFF !important;
+}
+
+/*-------------------------------------
+Doc Links
+-------------------------------------*/
+
+.give-docs-link {
+	text-align: right;
+	margin-right: 15px;
+
+	a {
+		color: #999;
+		text-decoration: none;
+		font-style: italic;
+
+		&:hover {
+			color: rgb(0, 115, 170);
+		}
+		span {
+			font-style: normal;
+		}
+	}
+}

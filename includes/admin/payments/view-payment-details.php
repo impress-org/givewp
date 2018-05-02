@@ -23,7 +23,7 @@ if ( ! current_user_can( 'view_give_payments' ) ) {
 }
 
 /**
- * View Order Details Page
+ * View donation details page
  *
  * @since 1.0
  * @return void
@@ -42,8 +42,10 @@ if ( empty( $payment_exists ) ) {
 	wp_die( __( 'The specified ID does not belong to a donation. Please try again.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
-$number         = $payment->number;
-$payment_meta   = $payment->get_meta();
+$number       = $payment->number;
+$payment_meta = $payment->get_meta();
+
+$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_attr( $payment_meta['_give_donation_company'] ) : '';
 $transaction_id = esc_attr( $payment->transaction_id );
 $user_id        = $payment->user_id;
 $donor_id       = $payment->customer_id;
@@ -54,6 +56,8 @@ $currency_code  = $payment->currency;
 $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
+$base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
+
 ?>
 <div class="wrap give-wrap">
 
@@ -80,13 +84,13 @@ $payment_mode   = $payment->mode;
 
 	<?php
 	/**
-	 * Fires in order details page, before the order form.
+	 * Fires in donation details page, before the page content and after the H1 title output.
 	 *
 	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment id.
 	 */
-	do_action( 'give_view_order_details_before', $payment_id );
+	do_action( 'give_view_donation_details_before', $payment_id );
 	?>
 
 	<hr class="wp-header-end">
@@ -94,13 +98,13 @@ $payment_mode   = $payment->mode;
 	<form id="give-edit-order-form" method="post">
 		<?php
 		/**
-		 * Fires in order details page, in the form before the order details.
+		 * Fires in donation details page, in the form before the order details.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $payment_id Payment id.
 		 */
-		do_action( 'give_view_order_details_form_top', $payment_id );
+		do_action( 'give_view_donation_details_form_top', $payment_id );
 		?>
 		<div id="poststuff">
 			<div id="give-dashboard-widgets-wrap">
@@ -110,31 +114,51 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, before the sidebar.
+							 * Fires in donation details page, before the sidebar.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_sidebar_before', $payment_id );
+							do_action( 'give_view_donation_details_sidebar_before', $payment_id );
 							?>
 
 							<div id="give-order-update" class="postbox give-order-data">
 
-								<h3 class="hndle"><?php _e( 'Update Donation', 'give' ); ?></h3>
+								<div class="give-order-top">
+									<h3 class="hndle"><?php _e( 'Update Donation', 'give' ); ?></h3>
+
+									<?php
+									if ( current_user_can( 'view_give_payments' ) ) {
+										echo sprintf(
+											'<span class="delete-donation" id="delete-donation-%d"><a class="delete-single-donation delete-donation-button dashicons dashicons-trash" href="%s" aria-label="%s"></a></span>',
+											$payment_id,
+											wp_nonce_url(
+												add_query_arg(
+													array(
+														'give-action' => 'delete_payment',
+														'purchase_id' => $payment_id,
+													), $base_url
+												), 'give_donation_nonce'
+											),
+											sprintf( __( 'Delete Donation %s', 'give' ), $payment_id )
+										);
+									}
+									?>
+								</div>
 
 								<div class="inside">
 									<div class="give-admin-box">
 
 										<?php
 										/**
-										 * Fires in order details page, before the sidebar update-payment metabox.
+										 * Fires in donation details page, before the sidebar update-payment metabox.
 										 *
 										 * @since 1.0
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_totals_before', $payment_id );
+										do_action( 'give_view_donation_details_totals_before', $payment_id );
 										?>
 
 										<div class="give-admin-box-inside">
@@ -166,7 +190,7 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, in the sidebar update-payment metabox.
+										 * Fires in donation details page, in the sidebar update-payment metabox.
 										 *
 										 * Allows you to add new inner items.
 										 *
@@ -174,7 +198,7 @@ $payment_mode   = $payment->mode;
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_update_inner', $payment_id );
+										do_action( 'give_view_donation_details_update_inner', $payment_id );
 										?>
 
 										<div class="give-order-payment give-admin-box-inside">
@@ -187,13 +211,13 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, after the sidebar update-donation metabox.
+										 * Fires in donation details page, after the sidebar update-donation metabox.
 										 *
 										 * @since 1.0
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_totals_after', $payment_id );
+										do_action( 'give_view_donation_details_totals_after', $payment_id );
 										?>
 
 									</div>
@@ -205,18 +229,21 @@ $payment_mode   = $payment->mode;
 								<div class="give-order-update-box give-admin-box">
 									<?php
 									/**
-									 * Fires in order details page, before the sidebar update-peyment metabox actions buttons.
+									 * Fires in donation details page, before the sidebar update-payment metabox actions buttons.
 									 *
 									 * @since 1.0
 									 *
 									 * @param int $payment_id Payment id.
 									 */
-									do_action( 'give_view_order_details_update_before', $payment_id );
+									do_action( 'give_view_donation_details_update_before', $payment_id );
 									?>
 
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
+
+											<input type="submit" class="button button-primary right"
+											       value="<?php _e( 'Save Donation', 'give' ); ?>"/>
+
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
 												echo sprintf(
@@ -236,16 +263,15 @@ $payment_mode   = $payment->mode;
 										</div>
 										<div class="clear"></div>
 									</div>
-
 									<?php
 									/**
-									 * Fires in order details page, after the sidebar update-peyment metabox actions buttons.
+									 * Fires in donation details page, after the sidebar update-payment metabox actions buttons.
 									 *
 									 * @since 1.0
 									 *
 									 * @param int $payment_id Payment id.
 									 */
-									do_action( 'give_view_order_details_update_after', $payment_id );
+									do_action( 'give_view_donation_details_update_after', $payment_id );
 									?>
 
 								</div>
@@ -263,13 +289,13 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, before the donation-meta metabox.
+										 * Fires in donation details page, before the donation-meta metabox.
 										 *
 										 * @since 1.0
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_payment_meta_before', $payment_id );
+										do_action( 'give_view_donation_details_payment_meta_before', $payment_id );
 
 										$gateway = give_get_payment_gateway( $payment_id );
 										if ( $gateway ) :
@@ -296,10 +322,14 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 
-										<?php if ( $transaction_id ) : ?>
+										<?php
+                                        // Display the transaction ID present.
+                                        // The transaction ID is the charge ID from the gateway.
+                                        // For instance, stripe "ch_BzvwYCchqOy5Nt".
+                                        if ( $transaction_id != $payment_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Donation ID:', 'give' ); ?></strong>&nbsp;
+													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway); ?>"></span></strong>&nbsp;
 													<?php echo apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
@@ -313,13 +343,13 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, after the donation-meta metabox.
+										 * Fires in donation details page, after the donation-meta metabox.
 										 *
 										 * @since 1.0
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_payment_meta_after', $payment_id );
+										do_action( 'give_view_donation_details_payment_meta_after', $payment_id );
 										?>
 
 									</div>
@@ -333,13 +363,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, after the sidebar.
+							 * Fires in donation details page, after the sidebar.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_sidebar_after', $payment_id );
+							do_action( 'give_view_donation_details_sidebar_after', $payment_id );
 							?>
 
 						</div>
@@ -353,13 +383,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, before the main area.
+							 * Fires in donation details page, before the main area.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_main_before', $payment_id );
+							do_action( 'give_view_donation_details_main_before', $payment_id );
 							?>
 
 							<?php $column_count = 'columns-3'; ?>
@@ -375,7 +405,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												if ( $payment_meta['form_id'] ) :
 													printf(
-														'<a href="%1$s">#%2$s</a>',
+														'<a href="%1$s">%2$s</a>',
 														admin_url( 'post.php?action=edit&post=' . $payment_meta['form_id'] ),
 														$payment_meta['form_id']
 													);
@@ -438,10 +468,11 @@ $payment_mode   = $payment->mode;
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
+
 											<p>
 												<?php
 												/**
-												 * Fires in order details page, in the donation-information metabox, before the head elements.
+												 * Fires in donation details page, in the donation-information metabox, before the head elements.
 												 *
 												 * Allows you to add new TH elements at the beginning.
 												 *
@@ -453,7 +484,7 @@ $payment_mode   = $payment->mode;
 
 
 												/**
-												 * Fires in order details page, in the donation-information metabox, after the head elements.
+												 * Fires in donation details page, in the donation-information metabox, after the head elements.
 												 *
 												 * Allows you to add new TH elements at the end.
 												 *
@@ -464,7 +495,7 @@ $payment_mode   = $payment->mode;
 												do_action( 'give_donation_details_thead_after', $payment_id );
 
 												/**
-												 * Fires in order details page, in the donation-information metabox, before the body elements.
+												 * Fires in donation details page, in the donation-information metabox, before the body elements.
 												 *
 												 * Allows you to add new TD elements at the beginning.
 												 *
@@ -475,7 +506,7 @@ $payment_mode   = $payment->mode;
 												do_action( 'give_donation_details_tbody_before', $payment_id );
 
 												/**
-												 * Fires in order details page, in the donation-information metabox, after the body elements.
+												 * Fires in donation details page, in the donation-information metabox, after the body elements.
 												 *
 												 * Allows you to add new TD elements at the end.
 												 *
@@ -497,13 +528,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, after the files metabox.
+							 * Fires on the donation details page.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_files_after', $payment_id );
+							do_action( 'give_view_donation_details_donor_detail_before', $payment_id );
 							?>
 
 							<div id="give-donor-details" class="postbox">
@@ -520,12 +551,13 @@ $payment_mode   = $payment->mode;
 												<?php
 												if ( ! empty( $donor->id ) ) {
 													printf(
-														'<a href="%1$s">#%2$s</a>',
+														'<a href="%1$s">%2$s</a>',
 														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
 														$donor->id
 													);
 												}
 												?>
+												<span>(<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>)</span>
 											</p>
 											<p>
 												<strong><?php _e( 'Donor Since:', 'give' ); ?></strong><br>
@@ -565,7 +597,12 @@ $payment_mode   = $payment->mode;
 												?>
 											</p>
 											<p>
-												<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>
+												<?php if ( ! empty( $company_name ) ) {
+													?>
+													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
+													<?php
+													echo $company_name;
+												} ?>
 											</p>
 										</div>
 									</div>
@@ -599,7 +636,6 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 									</div>
-
 									<?php
 									/**
 									 * Fires on the donation details page, in the donor-details metabox.
@@ -630,13 +666,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, before the billing metabox.
+							 * Fires on the donation details page, before the billing metabox.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_billing_before', $payment_id );
+							do_action( 'give_view_donation_details_billing_before', $payment_id );
 							?>
 
 							<div id="give-billing-details" class="postbox">
@@ -744,7 +780,7 @@ $payment_mode   = $payment->mode;
 
 									<?php
 									/**
-									 * Fires in order details page, in the billing metabox, after all the fields.
+									 * Fires in donation details page, in the billing metabox, after all the fields.
 									 *
 									 * Allows you to insert new billing address fields.
 									 *
@@ -762,13 +798,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, after the billing metabox.
+							 * Fires on the donation details page, after the billing metabox.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_billing_after', $payment_id );
+							do_action( 'give_view_donation_details_billing_after', $payment_id );
 							?>
 
 							<div id="give-payment-notes" class="postbox">
@@ -805,13 +841,13 @@ $payment_mode   = $payment->mode;
 
 							<?php
 							/**
-							 * Fires in order details page, after the main area.
+							 * Fires on the donation details page, after the main area.
 							 *
 							 * @since 1.0
 							 *
 							 * @param int $payment_id Payment id.
 							 */
-							do_action( 'give_view_order_details_main_after', $payment_id );
+							do_action( 'give_view_donation_details_main_after', $payment_id );
 							?>
 
 						</div>
@@ -827,13 +863,13 @@ $payment_mode   = $payment->mode;
 
 		<?php
 		/**
-		 * Fires in order details page, in the form after the order details.
+		 * Fires in donation details page, in the form after the order details.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $payment_id Payment id.
 		 */
-		do_action( 'give_view_order_details_form_bottom', $payment_id );
+		do_action( 'give_view_donation_details_form_bottom', $payment_id );
 
 		wp_nonce_field( 'give_update_payment_details_nonce' );
 		?>
@@ -842,12 +878,12 @@ $payment_mode   = $payment->mode;
 	</form>
 	<?php
 	/**
-	 * Fires in order details page, after the order form.
+	 * Fires in donation details page, after the order form.
 	 *
 	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment id.
 	 */
-	do_action( 'give_view_order_details_after', $payment_id );
+	do_action( 'give_view_donation_details_after', $payment_id );
 	?>
 </div><!-- /.wrap -->

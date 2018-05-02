@@ -70,25 +70,6 @@ $give_updates = Give_Updates::get_instance();
 											<?php _e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
-
-									<script type="text/javascript">
-										jQuery('#give-pause-upgrades').click('click', function (e) {
-											e.preventDefault();
-											jQuery('.give-doing-update-text-p').hide();
-											jQuery('.give-update-paused-text-p').show();
-											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update process now?', 'give' ) ); ?>')) {
-												window.location.assign(jQuery(this).data('redirect-url'));
-											}
-										});
-										jQuery('#give-restart-upgrades').click('click', function (e) {
-											e.preventDefault();
-											jQuery('.give-doing-update-text-p').show();
-											jQuery('.give-update-paused-text-p').hide();
-											if (window.confirm('<?php echo esc_js( __( 'Do you want to restart the update process?', 'give' ) ); ?>')) {
-												window.location.assign(jQuery(this).data('redirect-url'));
-											}
-										});
-									</script>
 								</p>
 							</div>
 							<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
@@ -132,7 +113,7 @@ $give_updates = Give_Updates::get_instance();
 		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
 		<?php if ( ! empty( $plugin_updates ) ) : ?>
 			<?php $plugin_update_url = add_query_arg( array(
-				's' => 'Give',
+				'plugin_status' => 'give',
 			), admin_url( '/plugins.php' ) ); ?>
 			<div id="give-plugin-updates">
 				<div class="postbox-container">
@@ -140,7 +121,20 @@ $give_updates = Give_Updates::get_instance();
 						<h2 class="hndle"><?php _e( 'Add-on Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
-								<p><?php echo sprintf( __( 'There %1$s %2$s Give %3$s that %4$s to be updated. <a href="%5$s">Update now</a>', 'give' ), _n( 'is', 'are', $plugin_updates, 'give' ), $plugin_updates, _n( 'add-on', 'add-ons', $plugin_updates, 'give' ), _n( 'needs', 'need', $plugin_updates, 'give' ), $plugin_update_url ); ?></p>
+								<p>
+									<?php
+									printf(
+										_n(
+											'There is %1$d Give addon that needs to be updated. <a href="%2$s">Update now</a>',
+											'There are %1$d Give addons that need to be updated. <a href="%2$s">Update now</a>',
+											$plugin_updates,
+											'give'
+										),
+										$plugin_updates,
+										$plugin_update_url
+									);
+									?>
+								</p>
 								<?php include_once 'plugins-update-section.php'; ?>
 							</div>
 						</div>

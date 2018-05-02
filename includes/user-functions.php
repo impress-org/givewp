@@ -578,18 +578,15 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 	switch ( $from ) {
 
 		case 'donation':
-			$donation_info = new Give_Payment( $id );
-			$first_name    = $donation_info->get_meta( '_give_donor_billing_first_name', true );
-			$last_name     = $donation_info->get_meta( '_give_donor_billing_last_name', true );
+			$first_name    = give_get_meta( $id, '_give_donor_billing_first_name', true );
+			$last_name     = give_get_meta( $id, '_give_donor_billing_last_name', true );
 
 			$name = trim( "{$first_name} {$last_name}" );
 
 			break;
 
 		case 'donor':
-
-			$donor = new Give_Donor( $id );
-			$name = $donor->name;
+			$name = Give()->donors->get_column( 'name', $id );
 
 			break;
 

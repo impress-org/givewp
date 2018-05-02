@@ -21,9 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
+ * @param array       $atts
+ * @param string|bool $content
+ *
  * @return string|bool
  */
-function give_donation_history( $atts ) {
+function give_donation_history( $atts, $content = false ) {
 
 	$donation_history_args = shortcode_atts( array(
 		'id'             => true,
@@ -54,10 +57,13 @@ function give_donation_history( $atts ) {
 				__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
+
 		return ob_get_clean();
 	}
 
 	$email_access = give_get_option( 'email_access' );
+
+	ob_start();
 
 	/**
 	 * Determine access
@@ -71,25 +77,34 @@ function give_donation_history( $atts ) {
 		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
 		true === give_get_history_session()
 	) {
-		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
-		return ob_get_clean();
+		if ( ! empty( $content ) ) {
+			echo do_shortcode( $content );
+		}
 
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
-		ob_start();
 		give_get_template_part( 'email', 'login-form' );
-
-		return ob_get_clean();
 
 	} else {
 
-		$output = apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
-		$output .= do_shortcode( '[give_login]' );
-
-		return $output;
+		echo apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
 	}
+
+	/**
+	 * Filter to modify donation history HTMl
+	 *
+	 * @since 2.1
+	 *
+	 * @param string HTML content
+	 * @param array  $atts
+	 * @param string $content content pass between enclose content
+	 *
+	 * @return string HTML content
+	 */
+	return apply_filters( 'give_donation_history_shortcode_html', ob_get_clean(), $atts, $content );
 }
 
 add_shortcode( 'donation_history', 'give_donation_history' );
@@ -251,6 +266,7 @@ function give_receipt_shortcode( $atts ) {
 		'payment_method' => true,
 		'payment_id'     => true,
 		'payment_status' => false,
+		'company_name'   => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
@@ -396,11 +412,13 @@ function give_process_profile_editor_updates( $data ) {
 	$old_user_data = get_userdata( $user_id );
 
 	/* @var Give_Donor $donor */
-	$donor = new Give_Donor( $user_id, true );
+	$donor            = new Give_Donor( $user_id, true );
+	$old_company_name = $donor->get_company_name();
 
 	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
 	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
+	$company_name     = ! empty( $data['give_company_name'] ) ? sanitize_text_field( $data['give_company_name'] ) : $old_company_name;
 	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
 	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
@@ -412,6 +430,7 @@ function give_process_profile_editor_updates( $data ) {
 		'display_name' => $display_name,
 		'user_email'   => $email,
 		'user_pass'    => $password,
+		'company_name' => $company_name,
 	);
 
 	/**
@@ -466,6 +485,7 @@ function give_process_profile_editor_updates( $data ) {
 	) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_company', $company_name );
 
 	$current_user = wp_get_current_user();
 
@@ -474,6 +494,7 @@ function give_process_profile_editor_updates( $data ) {
 	$display_name_update = ( $display_name !== $current_user->display_name ) ? true : false;
 	$first_name_update   = ( $first_name !== $current_user->first_name ) ? true : false;
 	$last_name_update    = ( $last_name !== $current_user->last_name ) ? true : false;
+	$company_name_update = ( $company_name !== $old_company_name ) ? true : false;
 	$update_code         = 0;
 
 	/**
@@ -481,7 +502,7 @@ function give_process_profile_editor_updates( $data ) {
 	 *
 	 * @var boolean
 	 */
-	$profile_update  = ( $email_update || $display_name_update || $first_name_update || $last_name_update );
+	$profile_update = ( $email_update || $display_name_update || $first_name_update || $last_name_update || $company_name_update );
 
 	/**
 	 * True if password fields are filled.
@@ -543,3 +564,324 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
+
+
+/**
+ * Give totals Shortcode.
+ *
+ * Shows a donation total.
+ *
+ * @since  2.1
+ *
+ * @param  array $atts Shortcode attributes.
+ *
+ * @return string
+ */
+function give_totals_shortcode( $atts ) {
+	$total = get_option( 'give_earnings_total', false );
+
+	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
+
+	$atts = shortcode_atts( array(
+		'total_goal'   => 0, // integer
+		'ids'          => 0, // integer|array
+		'cats'         => 0, // integer|array
+		'tags'         => 0, // integer|array
+		'message'      => $message,
+		'link'         => '', // URL
+		'link_text'    => __( 'Donate Now', 'give' ), // string,
+		'progress_bar' => true, // boolean
+	), $atts, 'give_totals' );
+
+	// Total Goal.
+	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
+
+	// Build query based on cat, tag and Form ids.
+	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
+
+		$form_ids = array();
+		if ( ! empty( $atts['ids'] ) ) {
+			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+		}
+
+		$form_args = array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $form_ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => array(
+				'relation' => 'AND',
+			),
+		);
+
+		if ( ! empty( $atts['cats'] ) ) {
+			$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $cats,
+			);
+		}
+
+		if ( ! empty( $atts['tags'] ) ) {
+			$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $tags,
+			);
+		}
+
+		$forms = new WP_Query( $form_args );
+
+		if ( isset( $forms->posts ) ) {
+			$total = 0;
+			foreach ( $forms->posts as $post ) {
+				$form_earning = give_get_meta( $post, '_give_form_earnings', true );
+				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
+
+				/**
+				 * Update Form earnings.
+				 *
+				 * @since 2.1
+				 *
+				 * @param int    $post         Form ID.
+				 * @param string $form_earning Total earning of Form.
+				 */
+				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
+			}
+		}
+
+	}
+
+	// Append link with text.
+	$donate_link = '';
+	if ( ! empty( $atts['link'] ) ) {
+		$donate_link = sprintf( ' <a class="give-totals-text-link" href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
+	}
+
+	// Replace {total} in message.
+	$message = str_replace( '{total}', give_currency_filter(
+		give_format_amount( $total,
+			array( 'sanitize' => false )
+		)
+	), esc_html( $atts['message'] ) );
+
+	// Replace {total_goal} in message.
+	$message = str_replace( '{total_goal}', give_currency_filter(
+		give_format_amount( $total_goal,
+			array( 'sanitize' => true )
+		)
+	), $message );
+
+	/**
+	 * Update Give totals shortcode output.
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $message Shortcode Message.
+	 * @param array  $atts    ShortCode attributes.
+	 */
+	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
+
+	ob_start();
+	?>
+	<div class="give-totals-shortcode-wrap">
+		<?php
+		// Show Progress Bar if progress_bar set true.
+		$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+		if ( $show_progress_bar ) {
+			give_show_goal_totals_progress( $total, $total_goal );
+		}
+
+		echo sprintf( $message ) . $donate_link;
+		?>
+	</div>
+	<?php
+	$give_totals_output = ob_get_clean();
+
+	/**
+	 * Give Totals Shortcode output.
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $give_totals_output
+	 */
+	return apply_filters( 'give_totals_shortcode_output', $give_totals_output );
+
+}
+
+add_shortcode( 'give_totals', 'give_totals_shortcode' );
+
+
+/**
+ * Displays donation forms in a grid layout.
+ *
+ * @since  2.1.0
+ *
+ * @param array $atts {
+ *     Optional. Attributes of the form grid shortcode.
+ *
+ *     @type int    $forms_per_page      Number of forms per page. Default '12'.
+ *     @type bool   $paged               Whether to paginate forms. Default 'true'.
+ *     @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ *     @type string $cats                A comma-separated list of form categories to display. Default empty.
+ *     @type string $tags                A comma-separated list of form tags to display. Default empty.
+ *     @type string $columns             Maximum columns to display. Default 'best-fit'.
+ *                                       Accepts 'best-fit', '1', '2', '3', '4'.
+ *     @type bool   $show_title          Whether to display form title. Default 'true'.
+ *     @type bool   $show_goal           Whether to display form goal. Default 'true'.
+ *     @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
+ *     @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ *     @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
+ *     @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
+ *     @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
+ *     @type string $display_style       How the form is displayed, either in new page or modal popup.
+ *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
+ * }
+ * @return string|bool The markup of the form grid or false.
+ */
+function give_form_grid_shortcode( $atts ) {
+	$form_ids = array();
+	$give_settings = give_get_settings();
+
+	$atts = shortcode_atts( array(
+		'forms_per_page'      => 12,
+		'paged'               => true,
+		'ids'                 => '',
+		'cats'                => '',
+		'tags'                => '',
+		'columns'             => 'best-fit',
+		'show_title'          => true,
+		'show_goal'           => true,
+		'show_excerpt'        => true,
+		'show_featured_image' => true,
+		'image_size'          => 'medium',
+		'image_height'        => 'auto',
+		'excerpt_length'      => 16,
+		'display_style'       => 'modal_reveal',
+		'status'              => '' // open or closed
+	), $atts );
+
+	// Validate integer attributes.
+	$atts['forms_per_page'] = intval( $atts['forms_per_page'] );
+	$atts['excerpt_length'] = intval( $atts['excerpt_length'] );
+
+	// Validate boolean attributes.
+	$boolean_attributes = array(
+		'paged',
+		'show_title',
+		'show_goal',
+		'show_excerpt',
+		'show_featured_image',
+	);
+
+	foreach ( $boolean_attributes as $att ) {
+		$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
+	}
+
+	// Set default form query args.
+	$form_args = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => $atts['forms_per_page'],
+		'tax_query'      => array(
+			'relation' => 'AND',
+		),
+	);
+
+	// Filter results of form grid based on form status.
+	$form_closed_status = trim( $atts['status'] );
+	if ( ! empty( $form_closed_status ) ) {
+		$form_args['meta_query'] = array(
+			array(
+				'key'   => '_give_form_status',
+				'value' => $form_closed_status,
+			),
+		);
+	}
+
+	// Maybe add pagination.
+	if ( true === $atts['paged'] ) {
+		$form_args['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+	}
+
+	// Maybe filter forms by IDs.
+	if ( ! empty( $atts['ids'] ) ) {
+		$form_args['post__in'] = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+	}
+
+	// Maybe filter by form category.
+	if ( ! empty( $atts['cats'] ) ) {
+		$cats      = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+		$tax_query = array(
+			'taxonomy' => 'give_forms_category',
+			'terms'    => $cats,
+		);
+		$form_args['tax_query'][] = $tax_query;
+	}
+
+	// Maybe filter by form tag.
+	if ( ! empty( $atts['tags'] ) ) {
+		$tags      = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+		$tax_query = array(
+			'taxonomy' => 'give_forms_tag',
+			'terms'    => $tags,
+		);
+		$form_args['tax_query'][] = $tax_query;
+	}
+
+	// Query to output donation forms.
+	$form_query = new WP_Query( $form_args );
+
+	if ( $form_query->have_posts() ) {
+		ob_start();
+
+		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
+		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
+		add_filter( 'give_form_wrap_classes', 'add_class_for_form_grid', 10, 3 );
+		add_action( 'give_donation_form_top', 'give_is_form_grid_page_hidden_field', 10, 3 );
+
+		echo '<div class="give-wrap">';
+		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+
+		while ( $form_query->have_posts() ) {
+			$form_query->the_post();
+
+			// Give/templates/shortcode-form-grid.php.
+			give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
+
+		}
+
+		wp_reset_postdata();
+
+		echo '</div><!-- .give-grid -->';
+
+		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+
+		if ( false !== $atts['paged'] ) {
+			$paginate_args = array(
+				'current'   => max( 1, get_query_var( 'paged' ) ),
+				'total'     => $form_query->max_num_pages,
+				'show_all'  => false,
+				'end_size'  => 1,
+				'mid_size'  => 2,
+				'prev_next' => true,
+				'prev_text' => __( '« Previous', 'give' ),
+				'next_text' => __( 'Next »', 'give' ),
+				'type'      => 'plain',
+				'add_args'  => false,
+			);
+
+			printf(
+				'<div class="give-page-numbers">%s</div>',
+				paginate_links( $paginate_args )
+			);
+		}
+		echo '</div><!-- .give-wrap -->';
+
+		return ob_get_clean();
+	}
+}
+
+add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );

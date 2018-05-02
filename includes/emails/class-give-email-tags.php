@@ -409,6 +409,12 @@ function give_setup_email_tags() {
 			'context'     => 'donor',
 		),
 		array(
+			'tag'         => 'company_name',
+			'description' => esc_html__( 'Company name.', 'give' ),
+			'function'    => 'give_email_tag_company_name',
+			'context'     => 'donation',
+		),
+		array(
 			'tag'         => 'user_email',
 			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email',
@@ -474,18 +480,18 @@ function give_email_tag_first_name( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment = new Give_Payment( $tag_args['payment_id'] );
+			$donor_info  = give_get_payment_meta_user_info( $tag_args['payment_id'] );
+			$email_names = give_get_email_names( $donor_info );
+			$firstname   = $email_names['name'];
 
-			// Get firstname.
-			if ( ! empty( $payment->user_info ) ) {
-				$email_names = give_get_email_names( $payment->user_info );
-				$firstname   = $email_names['name'];
-			}
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
-			$donor = new Give_Donor( $tag_args['user_id'], true );
-			$firstname = $donor->get_first_name();
+			$firstname = Give()->donor_meta->get_meta(
+				Give()->donors->get_column_by( 'id', 'user_id', $tag_args['user_id'] ),
+				'_give_donor_first_name',
+				true
+			);
 			break;
 
 		/**
@@ -494,8 +500,7 @@ function give_email_tag_first_name( $tag_args ) {
 		 * @since 2.0
 		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$donor = new Give_Donor( $tag_args['donor_id'] );
-			$firstname = $donor->get_first_name();
+			$firstname = Give()->donor_meta->get_meta( $tag_args['donor_id'], '_give_donor_first_name', true );
 			break;
 	}
 
@@ -529,18 +534,13 @@ function give_email_tag_fullname( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment = new Give_Payment( $tag_args['payment_id'] );
-
-			// Get fullname.
-			if ( ! empty( $payment->user_info ) ) {
-				$email_names = give_get_email_names( $payment->user_info );
-				$fullname    = $email_names['fullname'];
-			}
+			$donor_info  = give_get_payment_meta_user_info( $tag_args['payment_id'] );
+			$email_names = give_get_email_names( $donor_info );
+			$fullname    = $email_names['fullname'];
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
-			$donor = new Give_Donor( $tag_args['user_id'], true );
-			$fullname  = trim( "{$donor->get_first_name()} {$donor->get_last_name()}" );
+			$fullname = Give()->donors->get_column_by( 'name', 'user_id', $tag_args['user_id'] );
 			break;
 
 		/**
@@ -549,8 +549,7 @@ function give_email_tag_fullname( $tag_args ) {
 		 * @since 2.0
 		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$donor = new Give_Donor( $tag_args['donor_id'] );
-			$fullname = $donor->name;
+			$fullname = Give()->donors->get_column( 'name', $tag_args['donor_id'] );
 			break;
 	}
 
@@ -584,13 +583,9 @@ function give_email_tag_username( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment = new Give_Payment( $tag_args['payment_id'] );
-
-			// Get username.
-			if ( ! empty( $payment->user_info ) ) {
-				$email_names = give_get_email_names( $payment->user_info );
-				$username    = $email_names['username'];
-			}
+			$donor_info  = give_get_payment_meta_user_info( $tag_args['payment_id'] );
+			$email_names = give_get_email_names( $donor_info );
+			$username    = $email_names['username'];
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
@@ -604,9 +599,8 @@ function give_email_tag_username( $tag_args ) {
 		 * @since 2.0
 		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$donor = new Give_Donor( $tag_args['donor_id'] );
-			if ( ! empty( $donor->id ) && ! empty( $donor->user_id ) ) {
-				$user_info = get_user_by( 'id', $donor->user_id );
+			if ( $user_id = Give()->donors->get_column( 'user_id', $tag_args['donor_id'] ) ) {
+				$user_info = get_user_by( 'id', $user_id );
 				$username  = $user_info->user_login;
 			}
 			break;
@@ -642,8 +636,7 @@ function give_email_tag_user_email( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment = new Give_Payment( $tag_args['payment_id'] );
-			$email   = $payment->email;
+			$email = give_get_donation_donor_email( $tag_args['payment_id'] );
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
@@ -657,8 +650,7 @@ function give_email_tag_user_email( $tag_args ) {
 		 * @since 2.0
 		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$donor = new Give_Donor( $tag_args['donor_id'] );
-			$email     = $donor->email;
+			$email = Give()->donors->get_column( 'email', $tag_args['donor_id'] );
 			break;
 	}
 
@@ -692,15 +684,15 @@ function give_email_tag_billing_address( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$donation   = new Give_Payment( $tag_args['payment_id'] );
-			$address = $donation->address['line1'] . "\n";
+			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
+			$address  = $donation_address['line1'] . "\n";
 
-			if ( ! empty( $donation->address['line2'] ) ) {
-				$address .= $donation->address['line2'] . "\n";
+			if ( ! empty( $donation_address['line2'] ) ) {
+				$address .= $donation_address['line2'] . "\n";
 			}
 
-			$address .= $donation->address['city'] . ' ' . $donation->address['zip'] . ' ' . $donation->address['state'] . "\n";
-			$address .= $donation->address['country'];
+			$address .= $donation_address['city'] . ' ' . $donation_address['zip'] . ' ' . $donation_address['state'] . "\n";
+			$address .= $donation_address['country'];
 			break;
 	}
 
@@ -734,8 +726,7 @@ function give_email_tag_date( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment = new Give_Payment( $tag_args['payment_id'] );
-			$date    = date_i18n( give_date_format(), strtotime( $payment->date ) );
+			$date = date_i18n( give_date_format(), strtotime( get_the_date( $tag_args['payment_id'] ) ) );
 			break;
 	}
 
@@ -769,8 +760,7 @@ function give_email_tag_amount( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment     = new Give_Payment( $tag_args['payment_id'] );
-			$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), array( 'currency_code' => $payment->currency ) );
+			$give_amount = give_donation_amount( $tag_args['payment_id'], true );
 			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 			break;
 	}
@@ -818,8 +808,7 @@ function give_email_tag_payment_id( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment    = new Give_Payment( $tag_args['payment_id'] );
-			$payment_id = $payment->number;
+			$payment_id = Give()->seq_donation_number->get_serial_code( $tag_args['payment_id'] );
 			break;
 	}
 
@@ -851,8 +840,7 @@ function give_email_tag_receipt_id( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment    = new Give_Payment( $tag_args['payment_id'] );
-			$receipt_id = $payment->key;
+			$receipt_id = give_get_payment_key( $tag_args['payment_id'] );
 			break;
 	}
 
@@ -884,15 +872,18 @@ function give_email_tag_donation( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment             = new Give_Payment( $tag_args['payment_id'] );
-			$level_title         = give_has_variable_prices( $payment->form_id );
+			$level_title         = give_has_variable_prices( give_get_payment_form_id( $tag_args['payment_id'] ) );
 			$separator           = $level_title ? '-' : '';
-			$donation_form_title = strip_tags( give_check_variable( give_get_donation_form_title(
-				$payment,
-				array(
-					'separator' => $separator,
+			$donation_form_title = strip_tags(
+				give_check_variable(
+					give_get_donation_form_title(
+						$tag_args['payment_id'],
+						array( 'separator' => $separator, )
+					),
+					'empty',
+					''
 				)
-			), 'empty', '' ) );
+			);
 			break;
 	}
 
@@ -928,9 +919,7 @@ function give_email_tag_form_title( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment             = new Give_Payment( $tag_args['payment_id'] );
-			$payment_meta        = $payment->payment_meta;
-			$donation_form_title = strip_tags( give_check_variable( $payment_meta, 'empty', '', 'form_title' ) );
+			$donation_form_title = give_get_payment_meta( $tag_args['payment_id'], '_give_payment_form_title' );
 			break;
 	}
 
@@ -945,6 +934,43 @@ function give_email_tag_form_title( $tag_args ) {
 	return apply_filters(
 		'give_email_tag_form_title',
 		$donation_form_title,
+		$tag_args
+	);
+}
+
+/**
+ * Email template tag: {company_name}
+ * Output the donation form company name filed.
+ *
+ * @since 2.1.0
+ *
+ * @param array $tag_args
+ *
+ * @return string $company_name
+ */
+function give_email_tag_company_name( $tag_args ) {
+	$company_name = '';
+
+	// Backward compatibility.
+	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$company_name = give_get_payment_meta( $tag_args['payment_id'], '_give_donation_company', true );
+			break;
+	}
+
+	/**
+	 * Filter the {company_name} email template tag output.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param string $company_name
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_company_name',
+		$company_name,
 		$tag_args
 	);
 }
@@ -969,8 +995,7 @@ function give_email_tag_payment_method( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment        = new Give_Payment( $tag_args['payment_id'] );
-			$payment_method = give_get_gateway_checkout_label( $payment->gateway );
+			$payment_method = give_get_gateway_checkout_label( give_get_payment_gateway( $tag_args['payment_id'] ) );
 			break;
 	}
 
@@ -1009,8 +1034,7 @@ function give_email_tag_payment_total( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment       = new Give_Payment( $tag_args['payment_id'] );
-			$payment_total = give_currency_filter( $payment->total );
+			$payment_total = give_currency_filter( give_get_payment_total( $tag_args['payment_id'] ) );
 			break;
 	}
 
@@ -1084,7 +1108,7 @@ function give_email_tag_receipt_link( $tag_args ) {
 		'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
 	), give_get_history_page_uri() ) );
 
-	$formatted   = sprintf(
+	$formatted = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
 		__( 'View it in your browser &raquo;', 'give' )
@@ -1300,8 +1324,7 @@ function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment    = new Give_Payment( $tag_args['payment_id'] );
-			$payment_id = $payment->number;
+			$payment_id = Give()->seq_donation_number->get_serial_code( $tag_args['payment_id'] );
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
@@ -1309,20 +1332,18 @@ function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			/* @var Give_Donor $donor */
-			$donor = new Give_Donor( $tag_args['user_id'], true );
-			$reset_password_url = give_get_reset_password_url( $donor->user_id );
+			$reset_password_url = give_get_reset_password_url( Give()->donors->get_column( 'user_id', $tag_args['donor_id'] ) );
 			break;
 	}
 
-	if( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
+	if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 		// Generate link, if Email content type is html.
 		$reset_password_link = sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
 			esc_url( $reset_password_url ),
 			__( 'Reset your password &raquo;', 'give' )
 		);
-	} else{
+	} else {
 		$reset_password_link = sprintf(
 			'%1$s: %2$s',
 			__( 'Reset your password', 'give' ),
@@ -1367,8 +1388,8 @@ function give_get_reset_password_url( $user_id ) {
 		// Prepare Reset Password URL.
 		$reset_password_url = esc_url( add_query_arg( array(
 			'action' => 'rp',
-			'key' => get_password_reset_key( $user ),
-			'login' => $user->user_login,
+			'key'    => get_password_reset_key( $user ),
+			'login'  => $user->user_login,
 		), wp_login_url() ) );
 	}
 
@@ -1381,7 +1402,7 @@ function give_get_reset_password_url( $user_id ) {
  * Note: meta data email tag must be in given format {meta_*}
  *
  * @since 2.0.3
- * @see https://github.com/WordImpress/Give/issues/2801#issuecomment-365136602
+ * @see   https://github.com/WordImpress/Give/issues/2801#issuecomment-365136602
  *
  * @param $content
  * @param $tag_args
@@ -1451,16 +1472,19 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 						if ( isset( $tag_args['payment_id'] ) ) {
 							$donor_id = give_get_payment_donor_id( $tag_args['payment_id'] );
 						} elseif ( isset( $tag_args['user_id'] ) ) {
-							$donor    = new Give_Donor( $tag_args['user_id'], true );
-							$donor_id = $donor->ID;
+							$donor_id = Give()->donors->get_column_by( 'id', 'user_id', $tag_args['user_id'] );
 						}
 					}
 
-					$donor     = new Give_Donor( $donor_id );
-					$meta_data = $donor->get_meta( $meta_name );
+					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
+
+					if( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
+						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
+					}
+
 					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
 						$replace[] = $meta_data;
-					} elseif ( in_array( $meta_tag_arr[1], array_keys(  $meta_data ) ) ) {
+					} elseif ( in_array( $meta_tag_arr[1], array_keys( $meta_data ) ) ) {
 						$replace[] = $meta_data[ $meta_tag_arr[1] ];
 					}
 

@@ -401,7 +401,9 @@ function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id 
  */
 function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
-	$form     = new Give_Donate_Form( $form_id );
+
+	/** @var \Give_Donate_Form $form */
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->increase_sales( $quantity );
 }
@@ -418,7 +420,9 @@ function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
  */
 function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
-	$form     = new Give_Donate_Form( $form_id );
+
+	/** @var \Give_Donate_Form $form */
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_sales( $quantity );
 }
@@ -428,15 +432,19 @@ function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
  *
  * @since 1.0
  *
+ * @since 2.1 Pass donation id.
+ *
  * @param int $give_form_id Give Form ID
  * @param int $amount       Earnings
+ * @param int $payment_id   Donation ID.
  *
  * @return bool|int
  */
-function give_increase_earnings( $give_form_id = 0, $amount ) {
+function give_increase_earnings( $give_form_id = 0, $amount, $payment_id = 0 ) {
+	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $give_form_id );
 
-	return $form->increase_earnings( $amount );
+	return $form->increase_earnings( $amount, $payment_id );
 }
 
 /**
@@ -446,16 +454,19 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $form_id Give Form ID
- * @param int $amount  Earnings
+ * @since 2.1 Pass donation id.
+ *
+ * @param int $form_id    Give Form ID
+ * @param int $amount     Earnings
+ * @param int $payment_id Donation ID.
  *
  * @return bool|int
  */
-function give_decrease_form_earnings( $form_id = 0, $amount ) {
-
+function give_decrease_form_earnings( $form_id = 0, $amount, $payment_id = 0 ) {
+	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $form_id );
 
-	return $form->decrease_earnings( $amount );
+	return $form->decrease_earnings( $amount, $payment_id );
 }
 
 
@@ -768,6 +779,26 @@ function give_get_form_minimum_price( $form_id = 0 ) {
 }
 
 /**
+ * Return the maximum price amount of form.
+ *
+ * @since 2.1
+ *
+ * @param int $form_id Donate Form ID
+ *
+ * @return bool|float
+ */
+function give_get_form_maximum_price( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->get_maximum_price();
+}
+
+/**
  * Displays a formatted price for a donation form
  *
  * @since 1.0
@@ -890,6 +921,105 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+
+	/**
+	 * Filter the form donations.
+	 *
+	 * @since 2.1
+	 */
+	$donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
+
+	/**
+	 * Filter the form income.
+	 *
+	 * @since 1.8.8
+	 */
+	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+
+	/**
+	 * Filter the form.
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
+
+	switch ( $goal_format ) {
+		case  'donation':
+			$actual = $donations;
+			break;
+		case 'donors':
+			$actual = give_get_form_donor_count( $form->ID );
+			break;
+		default :
+			$actual = $income;
+			break;
+	}
+
+
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	$stats_array = array(
+		'raw_actual' => $actual,
+		'raw_goal'   => $total_goal
+	);
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	// Define Actual Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$actual = "{$actual}%";
+	} else if ( 'amount' === $goal_format ) {
+		$actual = give_currency_filter( give_format_amount( $actual ) );
+	}
+
+	// Define Total Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$total_goal = '';
+	} else if ( 'amount' === $goal_format ) {
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+	}
+
+	$stats_array = array_merge(
+		array(
+			'progress' => $progress,
+			'actual'   => $actual,
+			'goal'     => $total_goal,
+			'format'   => $goal_format,
+		),
+		$stats_array
+	);
+
+	/**
+	 * Filter the goal stats
+	 *
+	 * @since 2.1
+	 */
+	return apply_filters( 'give_goal_progress_stats', $stats_array );
+
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -904,7 +1034,7 @@ function give_goal( $form_id = 0, $echo = true ) {
 	}
 
 	$goal        = give_get_form_goal( $form_id );
-	$goal_format = give_get_form_goal_format($form_id);
+	$goal_format = give_get_form_goal_format( $form_id );
 
 	if ( 'donation' === $goal_format ) {
 		$goal = "{$goal} donations";
@@ -985,7 +1115,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	if ( is_user_logged_in() ) :
 		$donor_data    = get_userdata( get_current_user_id() );
+		$donor         = new Give_Donor( get_current_user_id(), true );
 		$donor_address = give_get_donor_address( get_current_user_id() );
+		$company_name  = $donor->get_company_name();
 
 		$logged_in_donor_info = array(
 			// First name.
@@ -993,6 +1125,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 			// Last name.
 			'give_last'       => $donor_data->last_name,
+
+			// Company name.
+			'company_name'    => $company_name,
 
 			// Email.
 			'give_email'      => $donor_data->user_email,
@@ -1036,4 +1171,175 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Output.
 	return wp_parse_args( $give_donor_info_in_session, $logged_in_donor_info );
+}
+
+/**
+ * Get donor count of form
+ *
+ * @since 2.1.0
+ *
+ * @param int   $form_id
+ * @param array $args
+ *
+ * @return int
+ */
+function give_get_form_donor_count( $form_id, $args = array() ) {
+	global $wpdb;
+
+	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
+	$donor_count = absint( Give_Cache::get_db_query( $cache_key ) );
+
+	if ( $form_id && ! $donor_count ) {
+		// Set arguments.
+		$args = wp_parse_args(
+			$args,
+			array(
+				'unique' => true,
+			)
+		);
+
+		$donation_meta_table = Give()->payment_meta->table_name;
+
+		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
+
+		$query = $wpdb->prepare(
+			"
+			SELECT COUNT({$distinct})
+			FROM {$donation_meta_table}
+			WHERE meta_key=%s
+			AND payment_id IN(
+				SELECT payment_id
+				FROM {$donation_meta_table} as pm
+				INNER JOIN {$wpdb->posts} as p
+				ON pm.payment_id=p.ID
+				WHERE pm.meta_key=%s
+				AND pm.meta_value=%s
+				AND p.post_status=%s
+			)
+			",
+			'_give_payment_donor_id',
+			'_give_payment_form_id',
+			$form_id,
+			'publish'
+		);
+
+		$donor_count = absint( $wpdb->get_var( $query ) );
+	}
+
+
+	/**
+	 * Filter the donor count
+	 *
+	 * @since 2.1.0
+	 */
+	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
+
+	Give_Cache::set_db_query( $cache_key, $donor_count );
+
+	return $donor_count;
+}
+
+/**
+ * Verify the form status.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.1
+ *
+ * @return void
+ */
+function give_set_form_closed_status( $form_id ) {
+
+	// Bailout.
+	if ( empty( $form_id ) ) {
+		return;
+	}
+
+	$open_form       = false;
+	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
+
+	// Proceed, if the form goal is enabled.
+	if ( $is_goal_enabled ) {
+
+		$close_form_when_goal_achieved = give_is_setting_enabled( give_get_meta( $form_id, '_give_close_form_when_goal_achieved', true, 'disabled' ) );
+
+		// Proceed, if close form when goal achieved option is enabled.
+		if ( $close_form_when_goal_achieved ) {
+
+			$form        = new Give_Donate_Form( $form_id );
+			$goal_format = give_get_form_goal_format( $form_id );
+
+			// Verify whether the form is closed or not after processing data based on goal format.
+			switch ( $goal_format ) {
+				case 'donation':
+					$closed = $form->get_goal() <= $form->get_sales();
+					break;
+				case 'donors':
+					$closed = $form->get_goal() <= give_get_form_donor_count( $form->ID );
+					break;
+				default :
+					$closed = $form->get_goal() <= $form->get_earnings();
+					break;
+			}
+
+			// Update form meta if verified that the form is closed.
+			if ( $closed ) {
+				give_update_meta( $form_id, '_give_form_status', 'closed' );
+			} else {
+				$open_form = true;
+			}
+		} else {
+			$open_form = true;
+		}
+	} else {
+		$open_form = true;
+	}
+
+	// If $open_form is true, then update form status to open.
+	if ( $open_form ) {
+		give_update_meta( $form_id, '_give_form_status', 'open' );
+	}
+}
+
+/**
+ * Show Form Goal Stats in Admin ( Listing and Detail page )
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.1.0
+ *
+ * @return string
+ */
+function give_admin_form_goal_stats( $form_id ) {
+
+	$html             = '';
+	$goal_stats       = give_goal_progress_stats( $form_id );
+	$percent_complete = round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100;
+
+	$html .= sprintf(
+		'<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%1$s">
+<span style="width:%1$s%%;"></span>
+</div>',
+		esc_attr( $goal_stats['progress'] )
+	);
+
+	$html .= sprintf(
+		( 'percentage' !== $goal_stats['format'] ) ?
+			'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s ' :
+			'<div class="give-goal-text"><a href="%3$s">%1$s </a>',
+		( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
+		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
+		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
+		$goal_stats['goal'],
+		( 'donors' === $goal_stats['format'] ? __( 'Donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'Donations', 'give' ) : '' ) )
+	);
+
+	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
+		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
+	}
+
+	$html .= '</div>';
+
+
+	return $html;
 }

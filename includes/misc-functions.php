@@ -983,10 +983,8 @@ function give_get_plugins() {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
-			// Get license info from database.
-			$plugin_name    = str_replace( 'Give - ', '', $plugin_data['Name'] );
-			$db_option      = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) ) . '_license_active';
-			$license_active = get_option( $db_option );
+			/* @var stdClass $license_active */
+			$license_active = __give_get_active_license_info( Give_License::get_short_name( $plugin_data['Name'] ) );
 
 			// Does a valid license exist?
 			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
@@ -1002,7 +1000,6 @@ function give_get_plugins() {
 
 	return $plugins;
 }
-
 
 /**
  * Check if terms enabled or not for form.
@@ -1029,7 +1026,6 @@ function give_is_terms_enabled( $form_id ) {
 		return false;
 	}
 }
-
 
 /**
  * Delete donation stats cache.
@@ -1761,4 +1757,172 @@ function give_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
 		define( $name, $value );
 	}
+}
+
+/**
+ * Decode time short tag in string
+ *
+ * @since 2.1.0
+ *
+ * @param string $string
+ * @param int    $timestamp
+ *
+ * @return string
+ */
+function give_time_do_tags( $string, $timestamp = 0 ) {
+	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
+
+	$formatted_string = str_replace(
+		array(
+			'{D}',
+			'{DD}',
+			'{M}',
+			'{MM}',
+			'{YY}',
+			'{YYYY}',
+			'{H}',
+			'{HH}',
+			'{N}',
+			'{S}'
+		),
+		array(
+			date( 'j', $current_time ),
+			date( 'd', $current_time ),
+			date( 'n', $current_time ),
+			date( 'm', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'G', $current_time ),
+			date( 'H', $current_time ),
+			date( 's', $current_time )
+		),
+		$string
+	);
+
+	/**
+	 * Filter the parsed string.
+	 *
+	 * @since 2.1.0
+	 */
+	return apply_filters( 'give_time_do_tags', $formatted_string, $string, $timestamp );
+}
+
+
+/**
+ * Check if Company field enabled or not for form or globally.
+ *
+ * @since 2.1.0
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_company_field_enabled( $form_id ) {
+	$form_setting_val           = give_get_meta( $form_id, '_give_company_field', true );
+	$global_setting_val = give_get_option( 'company_field' );
+
+	if ( ! empty( $form_setting_val ) ) {
+		if( give_is_setting_enabled( $form_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} else{
+			return false;
+		}
+
+	} elseif ( give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
+		return true;
+
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Get add-on user meta value information
+ * Note: only for internal use.
+ *
+ * @since 2.1.0
+ *
+ * @param string $license_id
+ *
+ * @return array
+ */
+function __give_get_active_license_info( $license_id ) {
+	global $wpdb;
+	$option_name = "{$license_id}_license_active";
+	$data        = array();
+
+	if ( ! isset( $GLOBALS['give_active_licenses_info'] ) ) {
+		$GLOBALS['give_active_licenses_info']  = array();
+
+		$licenses_info = $wpdb->get_results(
+			"
+			SELECT option_name, option_value
+			FROM {$wpdb->options}
+			WHERE option_name LIKE '%_license_active%'
+			AND option_name LIKE '%give_%'
+			",
+			ARRAY_A
+		);
+
+		if ( ! empty( $licenses_info ) ) {
+			$GLOBALS['give_active_licenses_info'] = array_combine(
+				wp_list_pluck( $licenses_info, 'option_name' ),
+				wp_list_pluck( $licenses_info, 'option_value' )
+			);
+		}
+	}
+
+	if ( in_array( $option_name, array_keys( $GLOBALS['give_active_licenses_info'] ) ) ) {
+		$data = maybe_unserialize( $GLOBALS['give_active_licenses_info'][ $option_name ] );
+	}
+
+	return $data;
+}
+
+/**
+ * Get add-on user meta value information
+ * Note: only for internal use.
+ *
+ * @since 2.1.0
+ *
+ * @param string $banner_addon_name Give add-on name.
+ *
+ * @return array
+ */
+function __give_get_active_by_user_meta( $banner_addon_name ) {
+	global $wpdb;
+
+	// Get the option key.
+	$option_name = Give_Addon_Activation_Banner::get_banner_user_meta_key( $banner_addon_name );
+	$data        = array();
+
+	if ( ! isset( $GLOBALS['give_addon_activated_by_user'] ) ) {
+		$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array();
+
+		// Get the meta of activation banner by user.
+		$activation_banners = $wpdb->get_results(
+				"
+					SELECT option_name, option_value
+					FROM {$wpdb->options}
+					WHERE option_name LIKE '%_active_by_user%'
+					AND option_name LIKE '%give_addon%'
+					",
+			ARRAY_A
+		);
+
+		if ( ! empty( $activation_banners ) ) {
+			$GLOBALS['give_addon_activated_by_user'] = array_combine(
+				wp_list_pluck( $activation_banners, 'option_name' ),
+				wp_list_pluck( $activation_banners, 'option_value' )
+			);
+		}
+	}
+
+	if ( in_array( $option_name, array_keys( $GLOBALS['give_addon_activated_by_user'] ) ) ) {
+		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $option_name ] );
+	}
+
+	return $data;
 }

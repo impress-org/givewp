@@ -212,6 +212,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return array
 	 */
 	public function get_payments() {
+		global $post;
+
 		$cache_key      = Give_Cache::get_key( 'give_payment_query', $this->args, false );
 		$this->payments = Give_Cache::get_db_query( $cache_key );
 
@@ -237,6 +239,8 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		if ( $query->have_posts() ) {
+			$previous_post = $post;
+
 			while ( $query->have_posts() ) {
 				$query->the_post();
 
@@ -247,6 +251,12 @@ class Give_Payments_Query extends Give_Stats {
 			}
 
 			wp_reset_postdata();
+
+			// Prevent nest loop from producing unexpected results.
+			if( $previous_post instanceof WP_Post ) {
+				$post = $previous_post;
+				setup_postdata( $post );
+			}
 		}
 
 		Give_Cache::set_db_query( $cache_key, $this->payments );
@@ -256,7 +266,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		return $this->payments;
 	}
-	
+
 	/**
 	 * Get payments by group
 	 *
@@ -351,7 +361,6 @@ class Give_Payments_Query extends Give_Stats {
 			$this->__set( 'date_query', $date_query );
 
 		}
-
 	}
 
 	/**
@@ -475,7 +484,7 @@ class Give_Payments_Query extends Give_Stats {
 		if ( ! empty( $query->query['post_type'] ) ) {
 			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
 
-			if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
+			if ( ! in_array( 'give_payment', $post_types ) || ! isset( $query->query['orderby'] ) || is_array( $query->query['orderby'] ) ) {
 				return $order;
 			}
 
@@ -594,37 +603,6 @@ class Give_Payments_Query extends Give_Stats {
 
 			$this->__set( 'meta_query', $search_meta );
 
-			if ( give_get_option( 'enable_sequential' ) ) {
-
-				$search_meta = array(
-					'key'     => '_give_payment_number',
-					'value'   => $search,
-					'compare' => 'LIKE',
-				);
-
-				$this->__set( 'meta_query', $search_meta );
-
-				$this->args['meta_query']['relation'] = 'OR';
-
-			}
-
-			$this->__unset( 's' );
-
-		} elseif (
-			give_get_option( 'enable_sequential' ) &&
-			(
-				false !== strpos( $search, give_get_option( 'sequential_prefix' ) ) ||
-				false !== strpos( $search, give_get_option( 'sequential_postfix' ) )
-			)
-		) {
-
-			$search_meta = array(
-				'key'     => '_give_payment_number',
-				'value'   => $search,
-				'compare' => 'LIKE',
-			);
-
-			$this->__set( 'meta_query', $search_meta );
 			$this->__unset( 's' );
 
 		} elseif ( is_numeric( $search ) ) {

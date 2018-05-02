@@ -111,6 +111,7 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
  *  starting on `admin_menu` hook.
  *
  * @since 1.0
+ * @since 2.1 Simplified function.
  *
  * @param string $passed_page Optional. Main page's slug
  * @param string $passed_view Optional. Page view ( ex: `edit` or `delete` )
@@ -118,222 +119,99 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
  * @return bool True if Give admin page.
  */
 function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
-
 	global $pagenow, $typenow;
 
-	$found     = false;
-	$post_type = isset( $_GET['post_type'] ) ? strtolower( $_GET['post_type'] ) : false;
-	$action    = isset( $_GET['action'] ) ? strtolower( $_GET['action'] ) : false;
-	$taxonomy  = isset( $_GET['taxonomy'] ) ? strtolower( $_GET['taxonomy'] ) : false;
-	$page      = isset( $_GET['page'] ) ? strtolower( $_GET['page'] ) : false;
-	$view      = isset( $_GET['view'] ) ? strtolower( $_GET['view'] ) : false;
-	$tab       = isset( $_GET['tab'] ) ? strtolower( $_GET['tab'] ) : false;
+	$found          = true;
+	$get_query_args = ! empty( $_GET ) ? @array_map( 'strtolower', $_GET ) : array();
+
+	// Set default argument, if not passed.
+	$query_args = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
 
 	switch ( $passed_page ) {
-		case 'give_forms':
-			switch ( $passed_view ) {
-				case 'list-table':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' ) {
-						$found = true;
-					}
-					break;
-				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'post.php' ) {
-						$found = true;
-					}
-					break;
-				case 'new':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'post-new.php' ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) || 'give_forms' === $post_type || ( 'post-new.php' == $pagenow && 'give_forms' === $post_type ) ) {
-						$found = true;
-					}
-					break;
-			}
-			break;
 		case 'categories':
-			switch ( $passed_view ) {
-				case 'list-table':
-				case 'new':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'give_forms_category' === $taxonomy ) {
-						$found = true;
-					}
-					break;
-				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'give_forms_category' === $taxonomy ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'give_forms_category' === $taxonomy ) {
-						$found = true;
-					}
-					break;
-			}
-			break;
 		case 'tags':
-			switch ( $passed_view ) {
-				case 'list-table':
-				case 'new':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'give_forms_tag' === $taxonomy ) {
-						$found = true;
-					}
-					break;
-				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'give_forms_tag' === $taxonomy ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'give_forms_tag' === $taxonomy ) {
-						$found = true;
-					}
-					break;
+			$has_view = in_array( $passed_view, array( 'list-table', 'edit', 'new' ), true );
+
+			if (
+				! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) &&
+				'edit-tags.php' !== $pagenow &&
+				(
+					$has_view ||
+					(
+						( in_array( $passed_view, array( 'list-table', 'new' ), true ) && 'edit' === $query_args['action'] ) ||
+						( 'edit' !== $passed_view && 'edit' !== $query_args['action'] ) &&
+						! $has_view
+					)
+				)
+			) {
+				$found = false;
 			}
 			break;
-		case 'payments':
-			switch ( $passed_view ) {
-				case 'list-table':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-payment-history' === $page && false === $view ) {
-						$found = true;
-					}
-					break;
-				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-payment-history' === $page && 'view-payment-details' === $view ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-payment-history' === $page ) {
-						$found = true;
-					}
-					break;
+		// Give Donation form page.
+		case 'give_forms':
+			$has_view = in_array( $passed_view, array( 'new', 'list-table', 'edit' ), true );
+
+			if (
+				'give_forms' !== $typenow &&
+				(
+					( 'list-table' !== $passed_view && 'edit.php' !== $pagenow ) &&
+					( 'edit' !== $passed_view && 'post.php' !== $pagenow ) &&
+					( 'new' !== $passed_view && 'post-new.php' !== $pagenow )
+				) ||
+				(
+					! $has_view &&
+					( 'post-new.php' !== $pagenow && 'give_forms' !== $query_args['post_type'] )
+				)
+			) {
+				$found = false;
 			}
 			break;
-		case 'reports':
-			switch ( $passed_view ) {
-				// If you want to do something like enqueue a script on a particular report's duration, look at $_GET[ 'range' ]
-				case 'earnings':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && ( 'earnings' === $view || '-1' === $view || false === $view ) ) {
-						$found = true;
-					}
-					break;
-				case 'donors':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'customers' === $view ) {
-						$found = true;
-					}
-					break;
-				case 'gateways':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'gateways' === $view ) {
-						$found = true;
-					}
-					break;
-				case 'export':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'export' === $view ) {
-						$found = true;
-					}
-					break;
-				case 'logs':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'logs' === $view ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page ) {
-						$found = true;
-					}
-					break;
-			}
-			break;
-		case 'settings':
-			switch ( $passed_view ) {
-				case 'general':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && ( 'general' === $tab || false === $tab ) ) {
-						$found = true;
-					}
-					break;
-				case 'gateways':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'gateways' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'emails':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'emails' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'display':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'display' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'licenses':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'licenses' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'api':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'api' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'advanced':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'advanced' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'system_info':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'system_info' === $tab ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page ) {
-						$found = true;
-					}
-					break;
-			}
-			break;
-		case 'addons':
-			if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-addons' === $page ) {
-				$found = true;
-			}
-			break;
+		// Give Donors page.
 		case 'donors':
-			switch ( $passed_view ) {
-				case 'list-table':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && false === $view ) {
-						$found = true;
-					}
-					break;
-				case 'overview':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && 'overview' === $view ) {
-						$found = true;
-					}
-					break;
-				case 'notes':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && 'notes' === $view ) {
-						$found = true;
-					}
-					break;
-				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page ) {
-						$found = true;
-					}
-					break;
+			$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
+
+			if (
+				( 'give-donors' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
+				(
+					( $passed_view !== $query_args['view'] || ! empty( $has_view ) ) ||
+					( false !== $query_args['view'] && 'list-table' !== $passed_view )
+				)
+			) {
+				$found = false;
+			}
+			break;
+		// Give Donations page.
+		case 'payments':
+			if (
+				( 'give-payment-history' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
+				(
+					! in_array( $passed_view, array( 'list-table', 'edit' ), true ) ||
+					(
+						( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
+						( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] )
+					)
+				)
+			) {
+				$found = false;
 			}
 			break;
 		case 'reports':
-			if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page ) {
-				$found = true;
+		case 'settings':
+		case 'addons':
+			// Get current tab.
+			$current_tab       = empty( $passed_view ) ? $query_args['tab'] : $passed_view;
+			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
+
+			// Check if it's Give Setting page or not.
+			if (
+				( 'edit.php' !== $pagenow || ! $give_setting_page ) &&
+				! Give_Admin_Settings::is_setting_page( $current_tab )
+			) {
+				$found = false;
 			}
 			break;
 		default:
 			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
-
 			$admin_pages = apply_filters( 'give_admin_pages', array(
 				$give_payments_page,
 				$give_settings_page,
@@ -343,20 +221,13 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$give_settings_export,
 				$give_donors_page,
 				$give_tools_page,
-				'widgets.php'
-		) );
-			if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
-				$found = true;
-			} elseif ( in_array( $pagenow, $admin_pages ) ) {
-				$found = true;
-			}
-			break;
+				'widgets.php',
+			) );
+
+			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php' ) ), true ) ) ? true : false;
 	}
-
-	return (bool) apply_filters( 'give_is_admin_page', $found, $page, $view, $passed_page, $passed_view );
-
+	return (bool) apply_filters( 'give_is_admin_page', $found, $query_args['page'], $query_args['view'], $passed_page, $passed_view );
 }
-
 
 /**
  * Add setting tab to give-settings page
@@ -389,7 +260,7 @@ function give_settings_page_pages( $settings ) {
 		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php' ),
 
 		// Advanced settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' )
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' ),
 	);
 
 	// Output.
@@ -436,8 +307,12 @@ function give_tools_page_pages( $settings ) {
 	include( 'abstract-admin-settings-page.php' );
 
 	$settings = array(
-		// System Info.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
+
+		// Export.
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
+
+		// Import
+		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
 
 		// Logs.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' ),
@@ -448,11 +323,8 @@ function give_tools_page_pages( $settings ) {
 		// Data.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' ),
 
-		// Export.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
-
-		// Import
-		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
+		// System Info.
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
 	);
 
 	// Output.
@@ -468,7 +340,7 @@ add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 0, 1 );
  * @return string
  */
 function give_set_default_tab_form_tools_page( $default_tab ) {
-	return 'system-info';
+	return 'export';
 }
 add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
 
@@ -498,7 +370,7 @@ add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_
  */
 function give_add_display_page_states( $post_states, $post ) {
 
-	switch( $post->ID ) {
+	switch ( $post->ID ) {
 		case give_get_option( 'success_page' ):
 			$post_states['give_successfully_page'] = __( 'Donation Success Page', 'give' );
 			break;

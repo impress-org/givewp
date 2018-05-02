@@ -98,6 +98,18 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Company Donations', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'id'      => 'company_field',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'disabled' => __( 'Disabled', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+							),
+						),
+						array(
 							'name'  => __( 'Display Settings Docs Link', 'give' ),
 							'id'    => 'display_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),

@@ -21,10 +21,10 @@ if ( is_user_logged_in() ) {
 	$donor           = Give()->donors->get_donor_by( 'email', $email );
 	$donations_count = count( explode( ',', $donor->payment_ids ) );
 
-	if( $donations_count > give_get_limit_display_donations() ) {
+	if ( $donations_count > give_get_limit_display_donations() ) {
 
 		// Restrict Security Email Access option, if donation count of a donor is less than or equal to limit.
-		if( true !== Give_Cache::get( "give_cache_email_throttle_limit_exhausted_{$donor->id}" ) ) {
+		if ( true !== Give_Cache::get( "give_cache_email_throttle_limit_exhausted_{$donor->id}" ) ) {
 			add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
 		} else {
 			$value = Give()->email_access->verify_throttle / 60;
@@ -111,28 +111,29 @@ if ( $donations ) : ?>
 
 					if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-id">#%1$s</td>',
-							give_get_payment_number( $post->ID )
+							'<td class="give-donation-id"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							give_get_payment_number( $post->ID ), esc_html( $table_headings['id'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-date">%1$s</td>',
-							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) )
+							'<td class="give-donation-date"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ), esc_html( $table_headings['date'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-donor">%1$s</td>',
-							give_get_donor_name_by( $post->ID )
+							'<td class="give-donation-donor"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							give_get_donor_name_by( $post->ID ), $table_headings['donor']
 						);
 					endif;
 					?>
 
 					<?php if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 						<td class="give-donation-amount">
+						<?php printf( '<span class="title-for-mobile">%1$s</span>', esc_html( $table_headings['amount'] ) ); ?>
 						<span class="give-donation-amount">
 							<?php
 							$currency_code   = give_get_payment_currency_code( $post->ID );
@@ -157,15 +158,17 @@ if ( $donations ) : ?>
 					<?php
 					if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-status">%1$s</td>',
-							give_get_payment_status( $post, true )
+							'<td class="give-donation-status"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							give_get_payment_status( $post, true ),
+							esc_html( $table_headings['status'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-payment-method">%1$s</td>',
-							give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) )
+							'<td class="give-donation-payment-method"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ),
+							esc_html( $table_headings['payment_method'] )
 						);
 					endif;
 					?>
@@ -174,7 +177,7 @@ if ( $donations ) : ?>
 						// Display View Receipt or.
 						if ( 'publish' !== $post->post_status && 'subscription' !== $post->post_status ) :
 							echo sprintf(
-								'<a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
+								'<span class="title-for-mobile">%4$s</span><a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
 								esc_url(
 									add_query_arg(
 										'payment_key',
@@ -183,12 +186,13 @@ if ( $donations ) : ?>
 									)
 								),
 								$post->post_status,
-								__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'
+								__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;',
+								esc_html( $table_headings['details'] )
 							);
 
 						else :
 							echo sprintf(
-								'<a href="%1$s">%2$s</a>',
+								'<span class="title-for-mobile">%3$s</span><a href="%1$s">%2$s</a>',
 								esc_url(
 									add_query_arg(
 										'payment_key',
@@ -196,7 +200,8 @@ if ( $donations ) : ?>
 										give_get_history_page_uri()
 									)
 								),
-								__( 'View Receipt &raquo;', 'give' )
+								__( 'View Receipt &raquo;', 'give' ),
+								esc_html( $table_headings['details'] )
 							);
 
 						endif;
@@ -236,7 +241,7 @@ if ( $donations ) : ?>
 				'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 				'format'  => '?paged=%#%',
 				'current' => max( 1, get_query_var( 'paged' ) ),
-				'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
+				'total'   => ceil( give_count_donations_of_donor() / 20 ), // 20 items per page
 			) );
 			?>
 		</div>

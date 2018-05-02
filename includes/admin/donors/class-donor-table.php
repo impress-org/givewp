@@ -171,8 +171,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $donor ) {
-		$name     = '#' . $donor['id'] . ' ';
-		$name     .= ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+		$name     = ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 

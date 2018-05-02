@@ -141,11 +141,6 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 			$this->delete_data( 'give_temp_delete_test_ids' );
 
-			// Reset the sequential order numbers
-			if ( give_get_option( 'enable_sequential' ) ) {
-				delete_option( 'give_last_payment_number' );
-			}
-
 			$this->done    = true;
 			$this->message = __( 'Test transactions successfully deleted.', 'give' );
 
@@ -206,7 +201,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 					'type' => 'give_payment',
 				);
 			}
-			
+
 			// Allow filtering of items to remove with an unassociative array for each item.
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method.
 			$items = apply_filters( 'give_delete_test_items', $items );

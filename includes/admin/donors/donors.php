@@ -252,8 +252,7 @@ function give_render_donor_view( $view, $callbacks ) {
 			<?php
 			printf(
 			/* translators: %s: donor first name */
-				__( 'Edit Donor #%s: %s %s', 'give' ),
-				$donor->id,
+				__( 'Edit Donor: %s %s', 'give' ),
 				$donor->get_first_name(),
 				$donor->get_last_name()
 			);
@@ -335,7 +334,6 @@ function give_donor_view( $donor ) {
 					</div>
 
 					<div id="donor-name-wrap" class="left">
-						<span class="donor-id">#<?php echo $donor->id; ?></span>
 						<span class="donor-name info-item edit-item">
 							<input <?php echo $read_only; ?> size="15" data-key="first_name"
 							                                 name="customerinfo[first_name]" type="text"
@@ -372,10 +370,14 @@ function give_donor_view( $donor ) {
 
 				<div class="donor-main-wrapper">
 
-					<table class="widefat">
+					<table class="widefat striped">
 						<tbody>
-						<tr class="alternate">
-							<th scope="col"><label for="tablecell"><?php _e( 'User:', 'give' ); ?></label></th>
+						<tr>
+							<th scope="col"><label for="tablecell"><?php _e( 'Donor ID:', 'give' ); ?></label></th>
+							<td><?php echo $donor->id; ?></td>
+						</tr>
+						<tr>
+							<th scope="col"><label for="tablecell"><?php _e( 'User ID:', 'give' ); ?></label></th>
 							<td>
 									<span class="donor-user-id info-item edit-item">
 										<?php
@@ -405,7 +407,7 @@ function give_donor_view( $donor ) {
 										<?php if ( ! empty( $userdata ) ) : ?>
 											<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
 										<?php else: ?>
-											<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
+											<span data-key="user_id"><?php _e( 'Unregistered', 'give' ); ?></span>
 										<?php endif; ?>
 									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ):
 
@@ -427,6 +429,21 @@ function give_donor_view( $donor ) {
 									</span>
 							</td>
 						</tr>
+
+						<?php
+						$donor_company = $donor->get_meta( '_give_donor_company', true );
+
+						if ( ! empty( $donor_company ) ) {
+							?>
+							<tr class="alternate">
+								<th scope="col">
+									<label for="tablecell"><?php _e( 'Company Name:', 'give' ); ?></label>
+								</th>
+								<td><?php echo $donor_company; ?></td>
+							</tr>
+							<?php
+						}
+						?>
 						</tbody>
 					</table>
 
@@ -789,7 +806,7 @@ function give_donor_view( $donor ) {
 			<?php if ( ! empty( $payments ) ) { ?>
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
-						<td><?php echo $payment->ID; ?></td>
+						<td><?php echo Give()->seq_donation_number->get_serial_code( $payment->ID ); ?></td>
 						<td><?php echo give_donation_amount( $payment->ID, array( 'currency' => true, 'amount' => true, 'type' => 'donor' ) ); ?></td>
 						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>

@@ -358,8 +358,10 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @cover give_email_tag_payment_id
 	 */
 	function test_give_email_tag_payment_id() {
+		give_update_option( 'sequential-ordering_status', 'disabled' );
+
 		/*
-		 * Case 1: Payment ID from payment.
+		 * Case 1: Payment ID from payment without sequential feature.
 		 */
 		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
 		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
@@ -367,7 +369,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( $expected_payment_id, $actual_payment_id );
 
 		/*
-		 * Case 2: Payment ID with filter
+		 * Case 2: Payment ID with filter and without sequential feature.
 		 */
 		add_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10, 2 );
 
@@ -375,6 +377,17 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'GIVE-1 [Pending]', $actual_payment_id );
 
 		remove_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10 );
+
+		give_update_option( 'sequential-ordering_status', 'enabled' );
+
+
+		/*
+		 * Case 3: Payment ID from payment.
+		 */
+		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
+		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
+
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code($expected_payment_id), $actual_payment_id );
 	}
 
 	/**
@@ -723,5 +736,44 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			$link
 		);
 
+	}
+
+	/**
+	 * Test meta data email tag
+	 *
+	 * Note: this tag render donor, donation and form dynamic dynamically
+	 *
+	 * @since 2.1.0
+	 */
+	function test_give_email_tag_metadata() {
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$donor_id   = give_get_payment_donor_id( $payment_id );
+
+		/*
+		 * Case 1: donor meta data tests.
+		 */
+		$donor_tag_args = array( 'donor_id' => $donor_id );
+		$this->assertEquals( 'Admin', __give_render_metadata_email_tag( '{meta_donor__give_donor_first_name}', $donor_tag_args ) );
+		$this->assertEquals( 'User', __give_render_metadata_email_tag( '{meta_donor__give_donor_last_name}', $donor_tag_args ) );
+
+		Give()->donor_meta->update_meta( $donor_id, '_give_stripe_customer_id', 2 );
+
+		$this->assertEquals( 2, __give_render_metadata_email_tag( '{meta_donor__give_stripe_customer_id}', $donor_tag_args ) );
+		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_id}', $donor_tag_args ) );
+		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_user_id}', $donor_tag_args ) );
+		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', $donor_tag_args ) );
+		$this->assertEquals( 'admin@example.org', __give_render_metadata_email_tag( '{meta_donor_email}', $donor_tag_args ) );
+
+
+		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'user_id' => 1 ) ) );
+		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'payment_id' => $payment_id ) ) );
+
+		/*
+		 * Case 2: donation meta data tests.
+		 */
+
+		/*
+		 * Case 3: donation form meta data tests.
+		*/
 	}
 }

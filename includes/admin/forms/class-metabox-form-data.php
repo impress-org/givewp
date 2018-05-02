@@ -151,16 +151,21 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'          => __( 'Minimum Amount', 'give' ),
-						'description'   => __( 'Enter the minimum custom donation amount.', 'give' ),
-						'id'            => $prefix . 'custom_amount_minimum',
-						'type'          => 'text_small',
+						'name'          => __( 'Donation Limit', 'give' ),
+						'description'   => __( 'Set the minimum and maximum amount for all gateways.', 'give' ),
+						'id'            => $prefix . 'custom_amount_range',
+						'type'          => 'donation_limit',
+						'wrapper_class' => 'give-hidden',
 						'data_type'     => 'price',
 						'attributes'    => array(
 							'placeholder' => $price_placeholder,
 							'class'       => 'give-money-field',
 						),
-						'wrapper_class' => 'give-hidden',
+						'options'       => array(
+							'display_label' => __( 'Donation Limits: ', 'give' ),
+							'minimum'       => 1.00,
+							'maximum'       => 999999.99,
+						),
 					),
 					array(
 						'name'          => __( 'Custom Amount Text', 'give' ),
@@ -275,6 +280,20 @@ class Give_MetaBox_Form_Data {
 							'type' => 'default_gateway',
 						),
 						array(
+							'name'    => __( 'Company Donations', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'id'      => $prefix . 'company_field',
+							'type'    => 'radio_inline',
+							'default' => 'global',
+							'options' => array(
+								'global' => __( 'Global Option', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+
+							),
+						),
+						array(
 							'name'    => __( 'Guest Donations', 'give' ),
 							'desc'    => __( 'Do you want to allow non-logged-in users to make donations?', 'give' ),
 							'id'      => $prefix . 'logged_in_only',
@@ -346,14 +365,15 @@ class Give_MetaBox_Form_Data {
 
 					array(
 						'name'        => __( 'Goal Format', 'give' ),
-						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations".', 'give' ),
+						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give' ),
 						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio_inline',
+						'type'        => 'radio',
 						'default'     => 'amount',
 						'options'     => array(
-							'amount'     => __( 'Amount', 'give' ),
-							'percentage' => __( 'Percentage', 'give' ),
+							'amount'     => __( 'Amount Raised', 'give' ),
+							'percentage' => __( 'Percentage Raised', 'give' ),
 							'donation'   => __( 'Number of Donations', 'give' ),
+							'donors'     => __( 'Number of Donors', 'give' ),
 						),
 					),
 
@@ -369,18 +389,26 @@ class Give_MetaBox_Form_Data {
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-
 					array(
 						'id'         => $prefix . 'number_of_donation_goal',
 						'name'       => __( 'Donation Goal', 'give' ),
-						'desc'       => __( 'Set total number of donations as a goal.', 'give' ),
+						'desc'       => __( 'Set the total number of donations as a goal.', 'give' ),
 						'type'       => 'number',
 						'default'    => 1,
 						'attributes' => array(
 							'placeholder' => 1,
 						),
 					),
-
+					array(
+						'id'         => $prefix . 'number_of_donor_goal',
+						'name'       => __( 'Donor Goal', 'give' ),
+						'desc'       => __( 'Set the total number of donors as a goal.', 'give' ),
+						'type'       => 'number',
+						'default'    => 1,
+						'attributes' => array(
+							'placeholder' => 1,
+						),
+					),
 					array(
 						'name'          => __( 'Progress Bar Color', 'give' ),
 						'desc'          => __( 'Customize the color of the goal progress bar.', 'give' ),
@@ -553,6 +581,19 @@ class Give_MetaBox_Form_Data {
 			'normal',
 			'high'
 		);
+
+		// Show Goal Metabox only if goal is enabled.
+		if ( give_is_setting_enabled( give_get_meta( give_get_admin_post_id(), '_give_goal_option', true ) ) ) {
+			add_meta_box(
+				'give-form-goal-stats',
+				__( 'Goal Statistics', 'give' ),
+				array( $this, 'output_goal' ),
+				array( 'give_forms' ),
+				'side',
+				'low'
+			);
+		}
+
 	}
 
 
@@ -723,6 +764,21 @@ class Give_MetaBox_Form_Data {
 		endif; // End if().
 	}
 
+	/**
+	 * Output Goal meta-box settings.
+	 *
+	 * @param object $post Post Object.
+	 *
+	 * @access public
+	 * @since  2.1.0
+	 *
+	 * @return void
+	 */
+	public function output_goal( $post ) {
+
+		echo give_admin_form_goal_stats( $post->ID );
+
+	}
 
 	/**
 	 * Check if setting field has sub tabs/fields
@@ -831,6 +887,10 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								break;
 
+							case 'donation_limit' :
+								$form_meta_value = $_POST[ $form_meta_key ];
+								break;
+
 							case 'group':
 								$form_meta_value = array();
 
@@ -879,8 +939,22 @@ class Give_MetaBox_Form_Data {
 							$post_id
 						);
 
-						// Save data.
-						give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						// Range slider.
+						if ( 'donation_limit' === $setting_field['type'] ) {
+
+							// Sanitize amount for db.
+							$form_meta_value = array_map( 'give_sanitize_amount_for_db', $form_meta_value );
+
+							// Store it to form meta.
+							give_update_meta( $post_id, $form_meta_key . '_minimum', $form_meta_value['minimum'] );
+							give_update_meta( $post_id, $form_meta_key . '_maximum', $form_meta_value['maximum'] );
+						} else {
+							// Save data.
+							give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						}
+
+						// Verify and delete form meta based on the form status.
+						give_set_form_closed_status( $post_id );
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
@@ -926,7 +1000,11 @@ class Give_MetaBox_Form_Data {
 	private function get_fields_id( $setting ) {
 		$meta_keys = array();
 
-		if ( ! empty( $setting ) ) {
+		if (
+			! empty( $setting )
+			&& array_key_exists( 'fields', $setting )
+			&& ! empty( $setting['fields'] )
+		) {
 			foreach ( $setting['fields'] as $field ) {
 				if ( $field_id = $this->get_field_id( $field ) ) {
 					$meta_keys[] = $field_id;
