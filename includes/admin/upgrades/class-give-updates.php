@@ -806,7 +806,7 @@ class Give_Updates {
 		if ( self::$background_updater->is_paused_process() ) {
 			$update_info = array(
 				'message'    => __( 'The updates have been paused.', 'give' ),
-				'heading'    => __( '', 'give' ),
+				'heading'    => '',
 				'percentage' => 0,
 			);
 
