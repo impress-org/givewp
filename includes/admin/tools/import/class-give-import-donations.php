@@ -337,9 +337,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 					foreach ( $report as $key => $value ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
+							$key_name = $report_html[ $key ][2];
+							if ( $value > 1 ) {
+								$key_name = $report_html[ $key ][3];
+							}
 							?>
 							<p>
-								<?php printf( $report_html[ $key ][ $dry_run ], $value, _n( $report_html[ $key ][2], $report_html[ $key ][3], $value, 'give' ) ); ?>
+								<?php printf( $report_html[ $key ][ $dry_run ], $value, $key_name ); ?>
 							</p>
 							<?php
 						}
