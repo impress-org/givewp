@@ -1955,9 +1955,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	if ( give_is_setting_enabled( $custom_amount ) ) {
 		?>
 		<input type="hidden" name="give-form-minimum"
-		       value="<?php echo give_format_decimal( give_get_form_minimum_price( $form_id ) ); ?>"/>
+		       value="<?php echo give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ); ?>" />
 		<input type="hidden" name="give-form-maximum"
-		       value="<?php echo give_format_decimal( give_get_form_maximum_price( $form_id ) ); ?>"/>
+		       value="<?php echo give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ); ?>" />
 		<?php
 	}
 
