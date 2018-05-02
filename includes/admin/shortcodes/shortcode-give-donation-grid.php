@@ -42,16 +42,24 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'columns',
-				'label'   => esc_attr__( 'Columns:', 'give' ),
-				'tooltip' => esc_attr__( 'Sets the number of donations per row.', 'give' ),
-				'options' => array(
+				'type'    => 'textbox',
+				'name'    => 'ids',
+				'label'   => esc_attr__( 'Form IDs:', 'give' ),
+				'tooltip' => esc_attr__( 'Please enter the list of form ids to display in a comma separated format.', 'give' ),
+				'value'   => '',
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'columns',
+				'label'       => esc_attr__( 'Columns:', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the number of donations per row.', 'give' ),
+				'options'     => array(
 					'1' => esc_html__( '1', 'give' ),
 					'2' => esc_html__( '2', 'give' ),
 					'3' => esc_html__( '3', 'give' ),
 					'4' => esc_html__( '4', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Best Fit', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -92,6 +100,13 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 					'redirect'     => esc_html__( 'Redirect', 'give' ),
 					'modal_reveal' => esc_html__( 'Modal', 'give' ),
 				),
+			),
+			array(
+				'type'    => 'textbox',
+				'name'    => 'forms_per_page',
+				'label'   => esc_attr__( 'Forms Per Page:', 'give' ),
+				'tooltip' => esc_attr__( 'Sets the number of donations form per row.', 'give' ),
+				'value'   => 12,
 			),
 		);
 	}
