@@ -92,6 +92,13 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'tooltip' => esc_attr__( 'Sets the number of donations form per row.', 'give' ),
 				'value'   => 12,
 			),
+			array(
+				'type'    => 'textbox',
+				'name'    => 'forms_ids',
+				'label'   => esc_attr__( 'Form IDs:', 'give' ),
+				'tooltip' => esc_attr__( 'Enter the list of Forms IDs that you want to show by comma separated.', 'give' ),
+				'value'   => '',
+			),
 		);
 	}
 }
