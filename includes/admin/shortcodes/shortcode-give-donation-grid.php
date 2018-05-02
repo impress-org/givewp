@@ -85,12 +85,12 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'    => 'listbox',
-				'name'    => 'display_type',
-				'label'   => esc_attr__( 'Display Type:', 'give' ),
+				'name'    => 'display_style',
+				'label'   => esc_attr__( 'Display Style:', 'give' ),
 				'tooltip' => esc_attr__( 'Show form as modal window or redirect to a new page?', 'give' ),
 				'options' => array(
-					'redirect' => esc_html__( 'Redirect', 'give' ),
-					'modal'    => esc_html__( 'Modal', 'give' ),
+					'redirect'     => esc_html__( 'Redirect', 'give' ),
+					'modal_reveal' => esc_html__( 'Modal', 'give' ),
 				),
 			),
 		);
