@@ -42,6 +42,13 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
+				'type'    => 'textbox',
+				'name'    => 'ids',
+				'label'   => esc_attr__( 'Form IDs:', 'give' ),
+				'tooltip' => esc_attr__( 'Please enter the list of form ids to display in a comma separated format.', 'give' ),
+				'value'   => '',
+			),
+			array(
 				'type'        => 'listbox',
 				'name'        => 'columns',
 				'label'       => esc_attr__( 'Columns:', 'give' ),
@@ -100,13 +107,6 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Forms Per Page:', 'give' ),
 				'tooltip' => esc_attr__( 'Sets the number of donations form per row.', 'give' ),
 				'value'   => 12,
-			),
-			array(
-				'type'    => 'textbox',
-				'name'    => 'ids',
-				'label'   => esc_attr__( 'Form IDs:', 'give' ),
-				'tooltip' => esc_attr__( 'Please enter the list of form ids to display in a comma separated format.', 'give' ),
-				'value'   => '',
 			),
 		);
 	}
