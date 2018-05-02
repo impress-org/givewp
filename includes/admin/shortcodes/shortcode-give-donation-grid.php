@@ -52,7 +52,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 					'3' => esc_html__( '3', 'give' ),
 					'4' => esc_html__( '4', 'give' ),
 				),
-				'placeholder' => 'Best Fit'
+				'placeholder' => esc_html__( 'Best Fit', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
