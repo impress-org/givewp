@@ -47,10 +47,11 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Columns:', 'give' ),
 				'tooltip' => esc_attr__( 'Sets the number of donations per row.', 'give' ),
 				'options' => array(
-					'1' => esc_html__( '1', 'give' ),
-					'2' => esc_html__( '2', 'give' ),
-					'3' => esc_html__( '3', 'give' ),
-					'4' => esc_html__( '4', 'give' ),
+					'best-fit' => esc_html__( 'Best Fit', 'give' ),
+					'1'        => esc_html__( '1', 'give' ),
+					'2'        => esc_html__( '2', 'give' ),
+					'3'        => esc_html__( '3', 'give' ),
+					'4'        => esc_html__( '4', 'give' ),
 				),
 			),
 			array(
