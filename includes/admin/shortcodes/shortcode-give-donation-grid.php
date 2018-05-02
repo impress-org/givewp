@@ -105,7 +105,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'type'    => 'textbox',
 				'name'    => 'ids',
 				'label'   => esc_attr__( 'Form IDs:', 'give' ),
-				'tooltip' => esc_attr__( 'Enter the list of Forms IDs that should be display using comma as separated.', 'give' ),
+				'tooltip' => esc_attr__( 'Please enter the list of form ids to display in a comma separated format.', 'give' ),
 				'value'   => '',
 			),
 		);
