@@ -42,18 +42,17 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'columns',
-				'label'   => esc_attr__( 'Columns:', 'give' ),
-				'tooltip' => esc_attr__( 'Sets the number of donations per row.', 'give' ),
-				'options' => array(
-					'best-fit' => esc_html__( 'Best Fit', 'give' ),
-					'1'        => esc_html__( '1', 'give' ),
-					'2'        => esc_html__( '2', 'give' ),
-					'3'        => esc_html__( '3', 'give' ),
-					'4'        => esc_html__( '4', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'columns',
+				'label'       => esc_attr__( 'Columns:', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the number of donations per row.', 'give' ),
+				'options'     => array(
+					'1' => esc_html__( '1', 'give' ),
+					'2' => esc_html__( '2', 'give' ),
+					'3' => esc_html__( '3', 'give' ),
+					'4' => esc_html__( '4', 'give' ),
 				),
-				'value'   => 'best-fit'
+				'placeholder' => 'Best Fit'
 			),
 			array(
 				'type'    => 'listbox',
@@ -86,6 +85,16 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				),
 			),
 			array(
+				'type'    => 'listbox',
+				'name'    => 'display_style',
+				'label'   => esc_attr__( 'Display Style:', 'give' ),
+				'tooltip' => esc_attr__( 'Show form as modal window or redirect to a new page?', 'give' ),
+				'options' => array(
+					'redirect'     => esc_html__( 'Redirect', 'give' ),
+					'modal_reveal' => esc_html__( 'Modal', 'give' ),
+				),
+			),
+			array(
 				'type'    => 'textbox',
 				'name'    => 'forms_per_page',
 				'label'   => esc_attr__( 'Forms Per Page:', 'give' ),
@@ -94,9 +103,9 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'    => 'textbox',
-				'name'    => 'forms_ids',
+				'name'    => 'ids',
 				'label'   => esc_attr__( 'Form IDs:', 'give' ),
-				'tooltip' => esc_attr__( 'Enter the list of Forms IDs that you want to show by comma separated.', 'give' ),
+				'tooltip' => esc_attr__( 'Enter the list of Forms IDs that should be display using comma as separated.', 'give' ),
 				'value'   => '',
 			),
 		);
