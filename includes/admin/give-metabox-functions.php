@@ -402,7 +402,7 @@ function give_donation_limit( $field ) {
 					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
 					value="<?php echo esc_attr( $amount ); ?>"
-					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
+					placeholder="<?php echo $field_options['attributes']['placeholder']; ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
