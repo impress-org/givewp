@@ -313,7 +313,7 @@ msgstr ""
 msgid "Select a donation"
 msgstr ""
 
-#: includes/class-give-html-elements.php:112, includes/post-types.php:60, includes/admin/tools/export/class-give-export-donations.php:216
+#: includes/class-give-html-elements.php:112, includes/post-types.php:60, includes/admin/shortcodes/shortcode-give-donation-grid.php:49, includes/admin/tools/export/class-give-export-donations.php:216
 msgid "All Forms"
 msgstr ""
 
@@ -9659,11 +9659,11 @@ msgstr ""
 msgid "Insert Shortcode"
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:393
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:394
 msgid "Some of the shortcode options are required."
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:403
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:404
 msgid "The \"%s\" option is required."
 msgstr ""
 
@@ -9692,7 +9692,7 @@ msgid "Form IDs:"
 msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-donation-grid.php:48
-msgid "Please enter the list of form ids to display in a comma separated format."
+msgid "Enter a comma-separated list of form IDs. If empty, all published forms are displayed."
 msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-donation-grid.php:54
@@ -9983,59 +9983,59 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: includes/admin/tools/class-settings-logs.php:96, includes/admin/upgrades/class-give-updates.php:259, includes/admin/upgrades/class-give-updates.php:277
+#: includes/admin/tools/class-settings-logs.php:96, includes/admin/upgrades/class-give-updates.php:254, includes/admin/upgrades/class-give-updates.php:272
 msgid "Updates"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:258
+#: includes/admin/upgrades/class-give-updates.php:253
 msgid "Give Updates Complete"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:274
+#: includes/admin/upgrades/class-give-updates.php:269
 msgid "Give Updates"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:614, includes/admin/upgrades/class-give-updates.php:622, includes/admin/upgrades/class-give-updates.php:673
+#: includes/admin/upgrades/class-give-updates.php:611, includes/admin/upgrades/class-give-updates.php:619, includes/admin/upgrades/class-give-updates.php:670
 msgid "Database Update"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:615
+#: includes/admin/upgrades/class-give-updates.php:612
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:619
+#: includes/admin/upgrades/class-give-updates.php:616
 msgid "Restart the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:623, includes/admin/upgrades/class-give-updates.php:814, includes/admin/upgrades/views/upgrades.php:57
+#: includes/admin/upgrades/class-give-updates.php:620, includes/admin/upgrades/class-give-updates.php:811, includes/admin/upgrades/views/upgrades.php:57
 msgid "An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:647
+#: includes/admin/upgrades/class-give-updates.php:644
 msgid "Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:647
+#: includes/admin/upgrades/class-give-updates.php:644
 msgid "Read More"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:660, includes/admin/upgrades/class-give-updates.php:821
+#: includes/admin/upgrades/class-give-updates.php:657, includes/admin/upgrades/class-give-updates.php:818, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:11
 msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:674
+#: includes/admin/upgrades/class-give-updates.php:671
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a complete backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:678
+#: includes/admin/upgrades/class-give-updates.php:675
 msgid "Run the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:808, includes/admin/upgrades/views/upgrades.php:59
+#: includes/admin/upgrades/class-give-updates.php:805, includes/admin/upgrades/views/upgrades.php:59
 msgid "The updates have been paused."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:822
+#: includes/admin/upgrades/class-give-updates.php:819, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:7
 msgid "Updates Completed."
 msgstr ""
 
@@ -11330,7 +11330,7 @@ msgstr ""
 msgid "Whether cache is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:461, includes/admin/upgrades/views/upgrades.php:39
+#: includes/admin/tools/views/html-admin-page-system-info.php:461, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:4, includes/admin/upgrades/views/upgrades.php:39
 msgid "Database Updates"
 msgstr ""
 
@@ -11639,7 +11639,7 @@ msgstr ""
 msgid "Give - Updates"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:25
+#: includes/admin/upgrades/views/upgrades.php:33
 msgid "Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
 msgstr ""
 
@@ -11671,11 +11671,11 @@ msgstr ""
 msgid "Update %s of %s"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:121
+#: includes/admin/upgrades/views/upgrades.php:122
 msgid "Add-on Updates"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:127
+#: includes/admin/upgrades/views/upgrades.php:128
 msgid "There is %1$d Give addon that needs to be updated. <a href=\"%2$s\">Update now</a>"
 msgid_plural "There are %1$d Give addons that need to be updated. <a href=\"%2$s\">Update now</a>"
 msgstr[0] ""

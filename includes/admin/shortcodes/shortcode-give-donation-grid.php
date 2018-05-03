@@ -42,11 +42,11 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
-				'type'    => 'textbox',
-				'name'    => 'ids',
-				'label'   => esc_attr__( 'Form IDs:', 'give' ),
-				'tooltip' => esc_attr__( 'Please enter the list of form ids to display in a comma separated format.', 'give' ),
-				'value'   => '',
+				'type'        => 'textbox',
+				'name'        => 'ids',
+				'label'       => esc_attr__( 'Form IDs:', 'give' ),
+				'tooltip'     => esc_attr__( 'Enter a comma-separated list of form IDs. If empty, all published forms are displayed.', 'give' ),
+				'placeholder' => esc_html__( 'All Forms', 'give' )
 			),
 			array(
 				'type'        => 'listbox',
@@ -65,7 +65,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'type'    => 'listbox',
 				'name'    => 'show_goal',
 				'label'   => esc_attr__( 'Show Goal:', 'give' ),
-				'tooltip' => esc_attr__( 'Do you want to display the goal\'s progress bar?', 'give' ),
+				'tooltip' => __( 'Do you want to display the goal\'s progress bar?', 'give' ),
 				'options' => array(
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
