@@ -19,11 +19,7 @@ $give_updates = Give_Updates::get_instance();
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
 		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
-		<hr class="wp-header-end">
-
-		<div class="give-update-panel-content">
-			<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
-		</div>
+		<hr class="wp-header-end"
 
 		<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
 		<?php if ( ! empty( $db_updates ) ) : ?>
@@ -33,6 +29,10 @@ $give_updates = Give_Updates::get_instance();
 			$resume_updates   = get_option( 'give_doing_upgrade' );
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
+			<div class="give-update-panel-content">
+				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
+			</div>
+
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
 				<div class="postbox-container">
 					<div class="postbox">
@@ -108,6 +108,7 @@ $give_updates = Give_Updates::get_instance();
 					</div><!-- .postbox -->
 				</div>
 			</div>
+			<?php else: include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php';?>
 		<?php endif; ?>
 
 		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
