@@ -324,16 +324,17 @@ abstract class Give_Shortcode_Generator {
 	protected function generate_textbox( $field ) {
 
 		$textbox = shortcode_atts( array(
-			'label'     => '',
-			'maxLength' => '',
-			'minHeight' => '',
-			'minWidth'  => '',
-			'multiline' => false,
-			'name'      => false,
-			'tooltip'   => '',
-			'type'      => '',
-			'value'     => '',
-			'classes'   => ''
+			'label'       => '',
+			'maxLength'   => '',
+			'minHeight'   => '',
+			'minWidth'    => '',
+			'multiline'   => false,
+			'name'        => false,
+			'tooltip'     => '',
+			'type'        => '',
+			'value'       => '',
+			'classes'     => '',
+			'placeholder' => ''
 		), $field );
 
 		if ( $this->validate( $field ) ) {
