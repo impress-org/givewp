@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,7 +208,16 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.1.0: May 2nd, 2018  =
+= 2.1.1: May 3rd, 2018 =
+* Fix: Conflict with the new "maximum" donation amount field and existing forms using custom fields preventing donations if the form is not re-saved. [#3159](https://github.com/wordimpress/give/issues/3159)
+* Fix: Added clarification to the Donation Form Grid shortcode so admins know which options are optional and have a better description of what it does. [#3166](https://github.com/wordimpress/give/issues/3166)
+* Fix: Prevent a setting from appearing above Give's new modal window. [#3164](https://github.com/wordimpress/give/issues/3164)
+* Fix: Display a progress indicator for updates in 2.1+ and prevent an issue with receiving a blank screen if clicking on "Updates" while an update is running. [#3163](https://github.com/wordimpress/give/issues/3163)
+* Fix: Resolved JS error when editing a price type setting field in wp-admin. [#3161](https://github.com/wordimpress/give/issues/3161)
+* Fix: Correct the weekly donation total in the dashboard stats widget. [#3156](https://github.com/wordimpress/give/issues/3156)
+* Fix: Prevent the update notice from appearing while actively updating plugins. [#3155](https://github.com/wordimpress/give/issues/3155)
+
+= 2.1.0: May 2nd, 2018 =
 * New: Sequential ordering is here! You can now configure donation payments with a prefix, suffix, number padding and more. [#2912](https://github.com/WordImpress/Give/issues/2912)
 * New: Now you can export your donations with much more flexibility via the new advanced donation exporter. [#2875](https://github.com/WordImpress/Give/issues/2875), [#2996](https://github.com/WordImpress/Give/issues/2996)
 * New: Query performance improvements for sites with a large database of donations. [#2987](https://github.com/WordImpress/Give/issues/2987), [#3069](https://github.com/WordImpress/Give/issues/3069)
