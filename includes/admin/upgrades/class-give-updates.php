@@ -245,11 +245,6 @@ class Give_Updates {
 
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
-			return;
-		}
-
-		// Bailout.
-		if ( ! $this->get_total_update_count() ) {
 			// Show complete update message if still on update setting page.
 			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
 				// Upgrades
@@ -304,7 +299,7 @@ class Give_Updates {
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
 
-			wp_redirect( add_query_arg( array( 'give-db-update-completed' => 'give_db_upgrade_completed' ) ) );
+			wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
 			exit();
 		}
 	}
