@@ -627,8 +627,14 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  * @return void
  */
 function give_user_info_fields( $form_id ) {
+
 	// Get user info.
 	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$title          = ! empty( $give_user_info['give_title'] ) ? $give_user_info['give_title'] : '';
+	$first_name     = ! empty( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : '';
+	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
+	$company_name   = ! empty( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : '';
+	$email          = ! empty( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : '';
 
 	/**
 	 * Fire before user personal information fields
@@ -638,10 +644,13 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_donation_form_before_personal_info', $form_id );
 	?>
 	<fieldset id="give_checkout_user_info">
-		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ); ?></legend>
+		<legend>
+			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
+		</legend>
+
 		<p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
 			<label class="give-label" for="give-first">
-				<?php _e( 'First Name', 'give' ); ?>
+				<?php esc_attr_e( 'First Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
@@ -651,29 +660,28 @@ function give_user_info_fields( $form_id ) {
 					class="give-input required"
 					type="text"
 					name="give_first"
-					placeholder="<?php _e( 'First Name', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>"
 					id="give-first"
-					value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
+					value="<?php echo esc_html( $first_name ); ?>"
 				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
 		<p id="give-last-name-wrap" class="form-row form-row-last form-row-responsive">
 			<label class="give-label" for="give-last">
-				<?php _e( 'Last Name', 'give' ); ?>
+				<?php esc_attr_e( 'Last Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
 				<?php echo Give()->tooltips->render_help( __( 'We will use this as well to personalize your account experience.', 'give' ) ); ?>
 			</label>
-
 			<input
 					class="give-input<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>"
 					type="text"
 					name="give_last"
 					id="give-last"
-					placeholder="<?php _e( 'Last Name', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : ''; ?>"
+					placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>"
+					value="<?php echo esc_html( $last_name ); ?>"
 				<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
@@ -682,23 +690,21 @@ function give_user_info_fields( $form_id ) {
 			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
 			<p id="give-company-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-company">
-					<?php _e( 'Company Name', 'give' ); ?>
+					<?php esc_attr_e( 'Company Name', 'give' ); ?>
 					<?php if ( $give_company ) : ?>
 						<span class="give-required-indicator">*</span>
 					<?php endif; ?>
 					<?php echo Give()->tooltips->render_help( __( 'Donate on behalf of Company', 'give' ) ); ?>
 				</label>
-
 				<input
 					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
 					type="text"
 					name="give_company_name"
-					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'Company Name', 'give' ); ?>"
 					id="give-company"
-					value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
+					value="<?php echo esc_html( $company_name ); ?>"
 					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
 				/>
-
 			</p>
 		<?php endif ?>
 
@@ -712,23 +718,21 @@ function give_user_info_fields( $form_id ) {
 		?>
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
-				<?php _e( 'Email Address', 'give' ); ?>
+				<?php esc_attr_e( 'Email Address', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<?php echo Give()->tooltips->render_help( __( 'We will send the donation receipt to this address.', 'give' ) ); ?>
 			</label>
-
 			<input
 					class="give-input required"
 					type="email"
 					name="give_email"
-					placeholder="<?php _e( 'Email Address', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"
 					id="give-email"
-					value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
+					value="<?php echo esc_html( $email ); ?>"
 				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
-
 		</p>
 		<?php
 		/**
