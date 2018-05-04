@@ -519,10 +519,7 @@ Give.form = {
          * @return {string}
          */
         getMinimumAmount: function ($form) {
-            return Give.fn.unFormatCurrency(
-                parseInt($form.find('input[name="give-form-minimum"]').val()),
-                Give.form.fn.getInfo('decimal_separator', $form)
-            );
+            return $form.find('input[name="give-form-minimum"]').val();
         },
 
         /**
@@ -534,10 +531,7 @@ Give.form = {
          * @return {string}
          */
         getMaximumAmount: function ($form) {
-            return Give.fn.unFormatCurrency(
-                parseInt($form.find('input[name="give-form-maximum"]').val()),
-                Give.form.fn.getInfo('decimal_separator', $form)
-            );
+            return $form.find('input[name="give-form-maximum"]').val();
         },
 
 		/**
