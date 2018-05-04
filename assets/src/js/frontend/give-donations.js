@@ -510,35 +510,29 @@ Give.form = {
 			return price_id;
 		},
 
-		/**
-		 * Get form minimum amount
-		 *
-		 * @since 1.8.17
-		 * @param {object} $form
-		 *
-		 * @return {string}
-		 */
-		getMinimumAmount: function( $form ) {
-			return Give.fn.unFormatCurrency(
-				$form.find( 'input[name="give-form-minimum"]' ).val(),
-				Give.form.fn.getInfo( 'decimal_separator', $form )
-			);
-		},
+        /**
+         * Get form minimum amount
+         *
+         * @since 1.8.17
+         * @param {object} $form
+         *
+         * @return {string}
+         */
+        getMinimumAmount: function ($form) {
+            return $form.find('input[name="give-form-minimum"]').val();
+        },
 
-		/**
-		 * Get form maximum amount
-		 *
-		 * @since 2.1
-		 * @param {object} $form
-		 *
-		 * @return {string}
-		 */
-		getMaximumAmount: function( $form ) {
-			return Give.fn.unFormatCurrency(
-				$form.find( 'input[name="give-form-maximum"]' ).val(),
-				Give.form.fn.getInfo( 'decimal_separator', $form )
-			);
-		},
+        /**
+         * Get form maximum amount
+         *
+         * @since 2.1
+         * @param {object} $form
+         *
+         * @return {string}
+         */
+        getMaximumAmount: function ($form) {
+            return $form.find('input[name="give-form-maximum"]').val();
+        },
 
 		/**
 		 * Get form amount
