@@ -108,9 +108,10 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		 */
 		do_action( self::$setting_filter_prefix . "_settings_{$current_tab}_page" );
 
+		wp_nonce_field( 'give-save-settings', '_give-save-settings' );
+
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
-				<?php wp_nonce_field( 'give-save-settings', '_give-save-settings' ); ?>
 				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>"/>
 			</div>
 		<?php endif; ?>
