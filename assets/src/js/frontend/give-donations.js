@@ -1149,7 +1149,6 @@ jQuery( function( $ ) {
 				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
 				// Update custom value to min value.
 				$(this).val( Give.form.fn.formatAmount( value_min, parent_form, {} ));
-				value_now = value_min;
 			} else if(  value_now >= value_min ) {
 				invalid_minimum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
@@ -1159,7 +1158,6 @@ jQuery( function( $ ) {
 				Give.notice.fn.renderNotice( 'bad_maximum', parent_form );
 				// Update value to max value.
 				$(this).val( Give.form.fn.formatAmount( value_max, parent_form, {} ));
-				value_now = value_max;
 			} else if (value_now <= value_max ){
 				invalid_maximum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
@@ -1234,7 +1232,7 @@ jQuery( function( $ ) {
 	} );
 
 	/**
-	 * Show/Hide term and condition
+	 * Show/Hide terms and conditions.
 	 */
 	doc.on( 'click', '.give_terms_links', function( e ) {
 		e.preventDefault();
@@ -1245,7 +1243,7 @@ jQuery( function( $ ) {
 	} );
 
 	/**
-	 * Prevent level jump which happen due to same id.
+	 * Prevent level jump which happens due to same id.
 	 * @see https://github.com/WordImpress/Give/issues/2292
 	 */
 	$( 'label[for^="give-radio-level"]' ).on( 'click', function( e ) {
