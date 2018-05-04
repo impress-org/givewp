@@ -851,7 +851,7 @@ Give.notice = {
 		 * @return {string}
 		 */
 		renderNotice: function( notice_code, $container ) {
-			var notice_html = '',
+			let notice_html = '',
 				$notice;
 			$container = 'undefined' !== typeof $container ? $container : {};
 
@@ -1085,10 +1085,10 @@ jQuery( function( $ ) {
 
 		var parent_form = $( this ).parents( 'form' );
 
-		//Remove any invalid class
+		// Remove any invalid class
 		$( this ).removeClass( 'invalid-amount' );
 
-		//Set data amount
+		// Set data amount
 		var current_total = parent_form.find( '.give-final-total-amount' ).data( 'total' );
 		var decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form );
 		$( this ).data( 'amount', Give.fn.unFormatCurrency( current_total, decimal_separator ) );
@@ -1099,10 +1099,10 @@ jQuery( function( $ ) {
 		//Set Multi-Level to Custom Amount Field
 		parent_form.find( '.give-default-level, .give-radio-input' ).removeClass( 'give-default-level' );
 		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-default-level' );
-		parent_form.find( '.give-radio-input' ).prop( 'checked', false ); //Radio
-		parent_form.find( '.give-radio-input.give-radio-level-custom' ).prop( 'checked', true ); //Radio
-		parent_form.find( '.give-select-level' ).prop( 'selected', false ); //Select
-		parent_form.find( '.give-select-level .give-donation-level-custom' ).prop( 'selected', true ); //Select
+		parent_form.find( '.give-radio-input' ).prop( 'checked', false ); // Radio
+		parent_form.find( '.give-radio-input.give-radio-level-custom' ).prop( 'checked', true ); // Radio
+		parent_form.find( '.give-select-level' ).prop( 'selected', false ); // Select
+		parent_form.find( '.give-select-level .give-donation-level-custom' ).prop( 'selected', true ); // Select
 
 	} );
 
@@ -1112,7 +1112,8 @@ jQuery( function( $ ) {
 	 * Fires on focus end aka "blur"
 	 */
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function( e, $parent_form, donation_amount, price_id ) {
-		var parent_form = ('undefined' !== typeof $parent_form) ? $parent_form : $( this ).closest( 'form' ),
+
+		let parent_form = ('undefined' !== typeof $parent_form) ? $parent_form : $( this ).closest( 'form' ),
 			pre_focus_amount = $( this ).data( 'amount' ),
 			this_value = ('undefined' !== typeof donation_amount) ? donation_amount : $( this ).val(),
 			decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form ),
@@ -1141,17 +1142,13 @@ jQuery( function( $ ) {
 			// If no error present, create it, insert, slide down (show).
 			if ( 0 === invalid_minimum_notice.length && value_now < value_min ) {
 				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
-				// Update custom value to min value.
-				$(this).val( Give.form.fn.formatAmount( value_min, parent_form, {} ));
-			} else if(  value_now >= value_min ) {
+			} else if( value_now >= value_min ) {
 				invalid_minimum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
 			// For maximum custom amount error.
 			if ( 0 === invalid_maximum_notice.length && value_now > value_max ) {
 				Give.notice.fn.renderNotice( 'bad_maximum', parent_form );
-				// Update value to max value.
-				$(this).val( Give.form.fn.formatAmount( value_max, parent_form, {} ));
 			} else if (value_now <= value_max ){
 				invalid_maximum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
