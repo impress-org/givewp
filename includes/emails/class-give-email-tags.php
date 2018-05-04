@@ -726,7 +726,7 @@ function give_email_tag_date( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$date = date_i18n( give_date_format(), strtotime( get_the_date( '', $tag_args['payment_id'] ) ) );
+			$date = date_i18n( give_date_format(), get_the_date( 'U', $tag_args['payment_id'] ) );
 			break;
 	}
 
