@@ -110,6 +110,28 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Anonymous Donation', 'give' ),
+							'desc'    => __( 'Would you like donors to give option to mark himself/herself anonyous while donaitng.', 'give' ),
+							'id'      => 'anonymous_donation',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Donor Thought', 'give' ),
+							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
+							'id'      => 'donor_thought',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'  => __( 'Display Settings Docs Link', 'give' ),
 							'id'    => 'display_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
@@ -297,6 +319,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'sectionend',
 						),
 					);
+					break;
 					break;
 			}
 

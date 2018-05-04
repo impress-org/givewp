@@ -1796,6 +1796,63 @@ function give_is_company_field_enabled( $form_id ) {
 }
 
 /**
+ * Check if anonymous donation field enabled or not for form or globally.
+ *
+ * @since 2.1
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_anonymous_donation_field_enabled( $form_id ) {
+	$form_setting_val   = give_get_meta( $form_id, '_give_anonymous_donation', true, 'global' );
+	$global_setting_val = give_get_option( 'anonymous_donation', 'disabled' );
+
+	if ( ! empty( $form_setting_val ) ) {
+		if( give_is_setting_enabled( $form_setting_val ) ) {
+			return true;
+		}elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ){
+			return true;
+		}else{
+			return false;
+		}
+	} elseif ( give_is_setting_enabled( $global_setting_val ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if donor thought field enabled or not for form or globally.
+ *
+ * @since 2.1
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_donor_thought_field_enabled( $form_id ) {
+	$form_setting_val   = give_get_meta( $form_id, '_give_donor_thought', true, 'global' );
+	$global_setting_val = give_get_option( 'donor_thought', 'disabled' );
+
+	if ( ! empty( $form_setting_val ) ) {
+		if( give_is_setting_enabled( $form_setting_val ) ) {
+			return true;
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ){
+			return true;
+		}else{
+			return false;
+		}
+	} elseif ( give_is_setting_enabled( $global_setting_val ) ) {
+		return true;
+	}
+
+	return false;
+
+}
+
+/**
  * Get add-on user meta value information
  * Note: only for internal use.
  *

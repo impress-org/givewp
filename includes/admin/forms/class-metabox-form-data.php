@@ -294,6 +294,30 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
+							'name'    => __( 'Anonymous Donation', 'give' ),
+							'desc'    => __( 'Would you like donors to give option to mark himself/herself anonyous while donaitng.', 'give' ),
+							'id'      => "{$prefix}anonymous_donation",
+							'type'    => 'radio_inline',
+							'default' => 'global',
+							'options' => array(
+								'global'   => __( 'Global Option', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Donor Thought', 'give' ),
+							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
+							'id'      => "{$prefix}donor_thought",
+							'type'    => 'radio_inline',
+							'default' => 'global',
+							'options' => array(
+								'global'   => __( 'Global Option', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Guest Donations', 'give' ),
 							'desc'    => __( 'Do you want to allow non-logged-in users to make donations?', 'give' ),
 							'id'      => $prefix . 'logged_in_only',
