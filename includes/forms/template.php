@@ -648,6 +648,25 @@ function give_user_info_fields( $form_id ) {
 			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
 		</legend>
 
+		<p id="give-title-wrap" class="form-row form-row-title form-row-responsive">
+			<label class="give-label" for="give-title">
+				<?php esc_attr_e( 'Title', 'give' ); ?>
+				<?php if ( give_field_is_required( 'give_title', $form_id ) ) : ?>
+					<span class="give-required-indicator">*</span>
+				<?php endif ?>
+				<?php echo Give()->tooltips->render_help( __( 'We will use this to personalize your account experience.', 'give' ) ); ?>
+			</label>
+			<select
+					class="give-input required"
+					type="text"
+					name="give_title"
+					id="give-title"
+				<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+			>
+				<option><?php echo esc_html( $title ); ?></option>
+			</select>
+		</p>
+
 		<p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
 			<label class="give-label" for="give-first">
 				<?php esc_attr_e( 'First Name', 'give' ); ?>
