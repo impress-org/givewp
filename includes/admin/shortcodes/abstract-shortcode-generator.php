@@ -337,6 +337,11 @@ abstract class Give_Shortcode_Generator {
 			'placeholder' => ''
 		), $field );
 
+		// Remove empty placeholder.
+		if( empty( $textbox['placeholder'] ) ) {
+			unset( $textbox['placeholder'] );
+		}
+
 		if ( $this->validate( $field ) ) {
 			return array_filter( $textbox, array( $this, 'return_textbox_value' ) );
 		}
