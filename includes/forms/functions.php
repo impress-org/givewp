@@ -401,7 +401,9 @@ function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id 
  */
 function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
-	$form     = new Give_Donate_Form( $form_id );
+
+	/** @var \Give_Donate_Form $form */
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->increase_sales( $quantity );
 }
@@ -418,7 +420,9 @@ function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
  */
 function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
-	$form     = new Give_Donate_Form( $form_id );
+
+	/** @var \Give_Donate_Form $form */
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_sales( $quantity );
 }
@@ -428,15 +432,19 @@ function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
  *
  * @since 1.0
  *
+ * @since 2.1 Pass donation id.
+ *
  * @param int $give_form_id Give Form ID
  * @param int $amount       Earnings
+ * @param int $payment_id   Donation ID.
  *
  * @return bool|int
  */
-function give_increase_earnings( $give_form_id = 0, $amount ) {
+function give_increase_earnings( $give_form_id = 0, $amount, $payment_id = 0 ) {
+	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $give_form_id );
 
-	return $form->increase_earnings( $amount );
+	return $form->increase_earnings( $amount, $payment_id );
 }
 
 /**
@@ -446,16 +454,19 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $form_id Give Form ID
- * @param int $amount  Earnings
+ * @since 2.1 Pass donation id.
+ *
+ * @param int $form_id    Give Form ID
+ * @param int $amount     Earnings
+ * @param int $payment_id Donation ID.
  *
  * @return bool|int
  */
-function give_decrease_form_earnings( $form_id = 0, $amount ) {
-
+function give_decrease_form_earnings( $form_id = 0, $amount, $payment_id = 0 ) {
+	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $form_id );
 
-	return $form->decrease_earnings( $amount );
+	return $form->decrease_earnings( $amount, $payment_id );
 }
 
 

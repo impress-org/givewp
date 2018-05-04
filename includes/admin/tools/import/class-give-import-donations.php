@@ -337,9 +337,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 					foreach ( $report as $key => $value ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
+							$key_name = $report_html[ $key ][2];
+							if ( $value > 1 ) {
+								$key_name = $report_html[ $key ][3];
+							}
 							?>
 							<p>
-								<?php printf( $report_html[ $key ][ $dry_run ], $value, _n( $report_html[ $key ][2], $report_html[ $key ][3], $value, 'give' ) ); ?>
+								<?php printf( $report_html[ $key ][ $dry_run ], $value, $key_name ); ?>
 							</p>
 							<?php
 						}
@@ -874,7 +878,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				'disabled' :
 				( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
 			$create_user = empty( $_POST['create_user'] ) ?
-				'enabled' :
+				'disabled' :
 				( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' );
 			$delete_csv  = empty( $_POST['delete_csv'] ) ?
 				'enabled' :
@@ -928,7 +932,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'mode',
 					'name'        => __( 'Test Mode:', 'give' ),
-					'description' => __( 'Test mode allows you to preview what this import would look like without making any actual changes to your site or your database.', 'give' ),
+					'description' => __( 'Select whether you would like these donations to be marked as "test" donations within the database. By default, they will be marked as live donations.', 'give' ),
 					'default'     => $mode,
 					'type'        => 'radio_inline',
 					'options'     => array(

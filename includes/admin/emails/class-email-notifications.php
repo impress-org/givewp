@@ -123,7 +123,6 @@ class Give_Email_Notifications {
 			'fields'     => array(
 				array(
 					'name'        => __( 'Email Options', 'give' ),
-					'description' => __( '', 'give' ),
 					'id'          => '_give_email_options',
 					'type'        => 'radio_inline',
 					'default'     => 'global',

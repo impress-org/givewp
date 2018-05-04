@@ -36,26 +36,43 @@ class Give_Addon_Activation_Banner {
 	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-		global $give_addons;
+		global $give_addons, $pagenow;
 
 		// Append add-on information to the global variable.
 		$give_addons[] = $_banner_details;
 
-		// Get the current user.
-		$current_user  = wp_get_current_user();
-		$this->user_id = $current_user->ID;
+		if ( 'plugins.php' === $pagenow ) {
 
-		// Set up hooks.
-		$this->init();
+			// Get the current user.
+			$current_user  = wp_get_current_user();
+			$this->user_id = $current_user->ID;
 
-		// Store user id who activated plugin.
-		$this->add_addon_activate_meta();
+			// Set up hooks.
+			$this->init();
 
-		// Check if notice callback is already hooked.
-		if ( ! $this->is_banner_notice_hooked() ) {
-			// If multiple add-on are activated then show activation banner in tab view.
-			add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+			// Store user id who activated plugin.
+			$this->add_addon_activate_meta();
+
+			// Check if notice callback is already hooked.
+			if ( ! $this->is_banner_notice_hooked() ) {
+				// If multiple add-on are activated then show activation banner in tab view.
+				add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+			}
 		}
+	}
+
+	/**
+	 * Get the meta key name.
+	 *
+	 * @since 2.1
+	 * @param string $addon_banner_key
+	 *
+	 * @return string
+	 */
+	public static function get_banner_user_meta_key( $addon_banner_key ) {
+		$addon_slug = sanitize_text_field( $addon_banner_key );
+
+		return "give_addon_{$addon_slug}_active_by_user";
 	}
 
 	/**
@@ -147,12 +164,12 @@ class Give_Addon_Activation_Banner {
 
 			// Go through rach add-ons and add meta data.
 			foreach ( $give_addons as $banner_addon_name => $addon ) {
+
 				// User meta key.
-				$activate_by_meta_key = "give_addon_{$banner_addon_name}_active_by_user";
-				$user_id              = get_option( $activate_by_meta_key );
+				$user_id = __give_get_active_by_user_meta( $banner_addon_name );
 
 				if ( ! $user_id ) {
-					update_option( $activate_by_meta_key, $this->user_id, '' );
+					update_option( self::get_banner_user_meta_key( $banner_addon_name ), $this->user_id, '' );
 				}
 			}
 		}
@@ -222,8 +239,7 @@ class Give_Addon_Activation_Banner {
 			$add_on_state = get_user_meta( $this->user_id, "give_addon_activation_ignore_{$addon_sanitized_name}", true );
 
 			// Get the option key.
-			$activate_by_meta_key = "give_addon_{$addon_sanitized_name}_active_by_user";
-			$activate_by_user     = (int) get_option( $activate_by_meta_key );
+			$activate_by_user = (int) __give_get_active_by_user_meta( $addon_sanitized_name );
 
 			// Remove plugin file and get the Add-on's folder name only.
 			$file_path = $this->get_plugin_folder_name( $addon['file'] );
@@ -454,18 +470,16 @@ class Give_Addon_Activation_Banner {
 		if ( ! empty( $give_addons ) ) {
 			foreach ( $give_addons as $banner_addon_name => $addon ) {
 				if ( $plugin_file === $addon['plugin_main_file'] ) {
-					// Get the option key.
-					$activate_by_meta_key = "give_addon_{$banner_addon_name}_active_by_user";
 
 					// Get the user meta key.
-					$user_id = get_option( $activate_by_meta_key );
+					$user_id = (int) __give_get_active_by_user_meta( $banner_addon_name );
 
 					if ( $user_id ) {
 						// Get user meta for this add-on.
 						$nag_meta_key = "give_addon_activation_ignore_{$banner_addon_name}";
 
 						// Delete plugin activation option key.
-						delete_option( $activate_by_meta_key );
+						delete_option( self::get_banner_user_meta_key( $banner_addon_name ) );
 						// Delete user meta of plugin activation.
 						delete_user_meta( $user_id, $nag_meta_key );
 					}

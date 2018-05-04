@@ -56,7 +56,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-current-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
+		$this->assertNotContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
 		$this->assertContains( '<input id="give-form-honeypot-' . $this->_post->ID . '" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>', $form );
 
 		// The donation form we created has variable pricing, so ensure the price options render
@@ -67,6 +67,37 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		// Test a single price point as well
 
 
+	}
+
+	/**
+	 * Test test_donation_form_amount_range()
+	 */
+	public function test_donation_form_amount_range() {
+
+		$this->go_to( '/' );
+
+		$args = array(
+			'id' => $this->_post->ID,
+		);
+
+		// Enable Custom amount.
+		give_update_meta( $this->_post->ID, '_give_custom_amount', 'enabled' );
+		give_update_meta( $this->_post->ID, '_give_custom_amount_range_minimum', 1.000000 );
+		give_update_meta( $this->_post->ID, '_give_custom_amount_range_maximum', 10.000000 );
+
+		ob_start();
+
+		give_get_donation_form( $args );
+
+		$form = ob_get_clean();
+		// Remove html form whitespace.
+		$form = preg_replace( '/\s+/S', ' ', $form );
+
+		$this->assertContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
+		$this->assertContains( '<input type="hidden" name="give-form-maximum" value="' . give_format_amount( give_get_form_maximum_price( $this->_post->ID ) ) . '"/>', $form );
+
+		// Custom amount disabled.
+		give_delete_meta( $this->_post->ID, '_give_custom_amount' );
 	}
 
 	/**

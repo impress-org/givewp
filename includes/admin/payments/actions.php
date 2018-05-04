@@ -237,12 +237,12 @@ function give_update_payment_details( $data ) {
 			// Decrease sale of old give form. For other payment status.
 			$current_form = new Give_Donate_Form( $current_form_id );
 			$current_form->decrease_sales();
-			$current_form->decrease_earnings( $curr_total );
+			$current_form->decrease_earnings( $curr_total, $payment->ID );
 
 			// Increase sale of new give form.
 			$new_form = new Give_Donate_Form( $new_form_id );
 			$new_form->increase_sales();
-			$new_form->increase_earnings( $new_total );
+			$new_form->increase_earnings( $new_total, $payment->ID );
 		}
 
 		// Re setup payment to update new meta value in object.

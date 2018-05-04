@@ -240,11 +240,6 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
-		// Bailout.
-		if ( ! give_test_ajax_works() ) {
-			return;
-		}
-
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
 
@@ -304,7 +299,7 @@ class Give_Updates {
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
 
-			wp_redirect( add_query_arg( array( 'give-db-update-completed' => 'give_db_upgrade_completed' ) ) );
+			wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
 			exit();
 		}
 	}
@@ -589,6 +584,8 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __show_notice() {
+		$current_screen = get_current_screen();
+
 		// Bailout.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
@@ -601,7 +598,7 @@ class Give_Updates {
 
 
 		// Bailout.
-		if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+		if ( in_array( $current_screen->base, array( 'give_forms_page_give-updates', 'update-core' ) ) ) {
 			return;
 		}
 
@@ -618,11 +615,6 @@ class Give_Updates {
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
 					<?php _e( 'Restart the updater', 'give' ); ?>
 				</a>
-				<script type="text/javascript">
-					jQuery('.give-restart-updater-btn').click('click', function () {
-						return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-					});
-				</script>
 			<?php else: ?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
@@ -683,11 +675,6 @@ class Give_Updates {
 					<?php _e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
-			<script type="text/javascript">
-				jQuery('.give-run-update-now').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-				});
-			</script>
 			<?php
 			$desc_html = ob_get_clean();
 
@@ -816,7 +803,7 @@ class Give_Updates {
 		if ( self::$background_updater->is_paused_process() ) {
 			$update_info = array(
 				'message'    => __( 'The updates have been paused.', 'give' ),
-				'heading'    => __( '', 'give' ),
+				'heading'    => '',
 				'percentage' => 0,
 			);
 
