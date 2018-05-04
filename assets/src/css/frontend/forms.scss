@@ -765,6 +765,17 @@ Basic Button Style
 }
 
 /*---------------------------------
+Add Button Style when display type is buttons
+-----------------------------------*/
+.give-form-type-multi {
+	.give-list-inline {
+		.give-default-level {
+			background: #767676;
+		}
+	}
+}
+
+/*---------------------------------
 Profile Editor Form
 -----------------------------------*/
 #give_profile_editor_form {
