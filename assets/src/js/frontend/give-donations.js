@@ -721,7 +721,7 @@ Give.form = {
 		 */
 		__sendBackToForm: function() {
 
-			var form_id = Give.fn.getParameterByName( 'form-id' ),
+			let form_id = Give.fn.getParameterByName( 'form-id' ),
 				payment_mode = Give.fn.getParameterByName( 'payment-mode' );
 
 			// Sanity check - only proceed if query strings in place.
@@ -729,7 +729,7 @@ Give.form = {
 				return false;
 			}
 
-			var $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
+			let $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
 				$form = $form_wrapper.find( 'form.give-form' ),
 				display_modal = $form_wrapper.hasClass( 'give-display-modal' ),
 				display_button = $form_wrapper.hasClass( 'give-display-button' ),
@@ -745,7 +745,7 @@ Give.form = {
 
 			// Select the proper level for Multi-level forms.
 			// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
-			var level_id = Give.fn.getParameterByName( 'level-id' ),
+			let level_id = Give.fn.getParameterByName( 'level-id' ),
 				level_field = $form.find( '*[data-price-id="' + level_id + '"]' );
 
 			if ( level_field.length > 0 ) {
@@ -798,14 +798,19 @@ Give.form = {
 				return true;
 			}
 
-			var min_amount = this.getMinimumAmount( $form ),
+			let min_amount = this.getMinimumAmount( $form ),
 				max_amount = this.getMaximumAmount( $form ),
 				amount = this.getAmount( $form ),
 				price_id = this.getPriceID( $form, true );
 
+			// Don't allow zero donation amounts.
+			if( 0 === amount ) {
+				return false
+			}
+
 			return (
-				((- 1 < amount) && amount >= min_amount && amount <= max_amount) ||
-				(- 1 !== price_id)
+				((- 1 < amount) && amount >= min_amount && amount <= max_amount)
+				|| (- 1 !== price_id)
 			);
 		},
 
@@ -1126,7 +1131,6 @@ jQuery( function( $ ) {
 
 		// Cache donor selected price id for a amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
-
 		$( this ).val( formatted_total );
 
 		// Does this number have an accepted min/max value?
@@ -1137,20 +1141,26 @@ jQuery( function( $ ) {
 
 			// Disable submit
 			Give.form.fn.disable( parent_form, true );
-			var invalid_minimum_notice = parent_form.find( '.give-invalid-minimum' ),
+			let invalid_minimum_notice = parent_form.find( '.give-invalid-minimum' ),
 				invalid_maximum_notice = parent_form.find( '.give-invalid-maximum' );
 
-			// If no error present, create it, insert, slide down (show)
+			// If no error present, create it, insert, slide down (show).
 			if ( 0 === invalid_minimum_notice.length && value_now < value_min ) {
 				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
-			} else if(  value_now > value_min ) {
+				// Update custom value to min value.
+				$(this).val( Give.form.fn.formatAmount( value_min, parent_form, {} ));
+				value_now = value_min;
+			} else if(  value_now >= value_min ) {
 				invalid_minimum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
 			// For maximum custom amount error.
 			if ( 0 === invalid_maximum_notice.length && value_now > value_max ) {
 				Give.notice.fn.renderNotice( 'bad_maximum', parent_form );
-			} else if (value_now < value_max ){
+				// Update value to max value.
+				$(this).val( Give.form.fn.formatAmount( value_max, parent_form, {} ));
+				value_now = value_max;
+			} else if (value_now <= value_max ){
 				invalid_maximum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
