@@ -1129,38 +1129,38 @@ jQuery( function( $ ) {
 
 		$( this ).val( formatted_total );
 
-		//Does this number have an accepted minimum value?
+		// Does this number have an accepted min/max value?
 		if ( ! Give.form.fn.isValidDonationAmount( parent_form ) ) {
 
-			//It doesn't... Invalid Minimum
+			// It doesn't... add invalid class.
 			$( this ).addClass( 'give-invalid-amount' );
 
-			//Disable submit
+			// Disable submit
 			Give.form.fn.disable( parent_form, true );
-			var invalid_minimum = parent_form.find( '.give-invalid-minimum' ),
-				invalid_maximum = parent_form.find( '.give-invalid-maximum' );
+			var invalid_minimum_notice = parent_form.find( '.give-invalid-minimum' ),
+				invalid_maximum_notice = parent_form.find( '.give-invalid-maximum' );
 
-			//If no error present, create it, insert, slide down (show)
-			if ( invalid_minimum.length === 0 && value_now < value_min ) {
+			// If no error present, create it, insert, slide down (show)
+			if ( 0 === invalid_minimum_notice.length && value_now < value_min ) {
 				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
-			} else {
-				invalid_minimum.slideUp( 300, function() { $( this ).remove(); } );
+			} else if(  value_now > value_min ) {
+				invalid_minimum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
 			// For maximum custom amount error.
-			if ( invalid_maximum.length === 0 && value_now > value_max ) {
+			if ( 0 === invalid_maximum_notice.length && value_now > value_max ) {
 				Give.notice.fn.renderNotice( 'bad_maximum', parent_form );
-			} else {
-				invalid_maximum.slideUp( 300, function() { $( this ).remove(); } );
+			} else if (value_now < value_max ){
+				invalid_maximum_notice.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
 		} else {
 
-			// Remove error massage class from price field.
+			// Remove error message class from price field.
 			$( this ).removeClass( 'give-invalid-amount' );
 
 			// Minimum amount met - slide up error & remove it from DOM.
-			parent_form.find( '.give-invalid-minimum,.give-invalid-maximum' ).slideUp( 300, function() {
+			parent_form.find( '.give-invalid-minimum, .give-invalid-maximum' ).slideUp( 300, function() {
 				$( this ).remove();
 			} );
 
@@ -1168,7 +1168,7 @@ jQuery( function( $ ) {
 			Give.form.fn.disable( parent_form, false );
 		}
 
-		//If values don't match up then proceed with updating donation total value
+		// If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
 			// Update donation total (include currency symbol)
@@ -1201,7 +1201,7 @@ jQuery( function( $ ) {
 			Give.form.fn.autoSelectDonationLevel( parent_form, price_id );
 		}
 
-		//This class is used for CSS purposes
+		// This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' )
 			.removeClass( 'give-custom-amount-focus-in' );
 
