@@ -1616,7 +1616,7 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  */
 function give_checkout_submit( $form_id ) {
 	?>
-	<fieldset id="give_purchase_submit">
+	<fieldset id="give_purchase_submit" class="give-donation-submit">
 		<?php
 		/**
 		 * Fire before donation form submit.
@@ -1955,9 +1955,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	if ( give_is_setting_enabled( $custom_amount ) ) {
 		?>
 		<input type="hidden" name="give-form-minimum"
-		       value="<?php echo give_format_decimal( give_get_form_minimum_price( $form_id ) ); ?>"/>
+		       value="<?php echo give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ); ?>"/>
 		<input type="hidden" name="give-form-maximum"
-		       value="<?php echo give_format_decimal( give_get_form_maximum_price( $form_id ) ); ?>"/>
+		       value="<?php echo give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ); ?>"/>
 		<?php
 	}
 

@@ -1811,7 +1811,7 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 /**
  * Check if Company field enabled or not for form or globally.
  *
- * @since 2.0.7
+ * @since 2.1.0
  *
  * @param $form_id
  *

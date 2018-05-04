@@ -151,10 +151,10 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'          => __( 'Min/Max. Amount', 'give' ),
+						'name'          => __( 'Donation Limit', 'give' ),
 						'description'   => __( 'Set the minimum and maximum amount for all gateways.', 'give' ),
 						'id'            => $prefix . 'custom_amount_range',
-						'type'          => 'range_slider',
+						'type'          => 'donation_limit',
 						'wrapper_class' => 'give-hidden',
 						'data_type'     => 'price',
 						'attributes'    => array(
@@ -913,7 +913,7 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								break;
 
-							case 'range_slider' :
+							case 'donation_limit' :
 								$form_meta_value = $_POST[ $form_meta_key ];
 								break;
 
@@ -966,7 +966,7 @@ class Give_MetaBox_Form_Data {
 						);
 
 						// Range slider.
-						if ( 'range_slider' === $setting_field['type'] ) {
+						if ( 'donation_limit' === $setting_field['type'] ) {
 
 							// Sanitize amount for db.
 							$form_meta_value = array_map( 'give_sanitize_amount_for_db', $form_meta_value );

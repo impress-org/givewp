@@ -519,10 +519,7 @@ Give.form = {
 		 * @return {string}
 		 */
 		getMinimumAmount: function( $form ) {
-			return Give.fn.unFormatCurrency(
-				$form.find( 'input[name="give-form-minimum"]' ).val(),
-				Give.form.fn.getInfo( 'decimal_separator', $form )
-			);
+			return $form.find( 'input[name="give-form-minimum"]' ).val();
 		},
 
 		/**
@@ -534,10 +531,7 @@ Give.form = {
 		 * @return {string}
 		 */
 		getMaximumAmount: function( $form ) {
-			return Give.fn.unFormatCurrency(
-				$form.find( 'input[name="give-form-maximum"]' ).val(),
-				Give.form.fn.getInfo( 'decimal_separator', $form )
-			);
+			return $form.find( 'input[name="give-form-maximum"]' ).val();
 		},
 
 		/**
@@ -792,6 +786,12 @@ Give.form = {
 		 * @return {boolean}
 		 */
 		isValidDonationAmount: function( $form ) {
+
+			// Return true, if custom amount is not enabled.
+			if ( $form.find( 'input[name="give-form-minimum"]' ).length <= 0 ) {
+				return true;
+			}
+
 			var min_amount = this.getMinimumAmount( $form ),
 				max_amount = this.getMaximumAmount( $form ),
 				amount = this.getAmount( $form ),
