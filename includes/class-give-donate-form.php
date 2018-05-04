@@ -570,7 +570,7 @@ class Give_Donate_Form {
 			$this->maximum_price = give_get_meta( $this->ID, '_give_custom_amount_range_maximum', true, 999999.99 );
 
 			if ( ! $this->is_custom_price_mode() ) {
-				$this->maximum_price = give_get_highest_price_option();
+				$this->maximum_price = give_get_highest_price_option( $this->ID );
 			}
 		}
 
