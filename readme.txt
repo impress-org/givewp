@@ -210,6 +210,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 = 2.1.2: May 4th, 2018 =
 * Fix: We found another conflict with the new "maximum" donation amount field and existing forms. This time forms NOT using custom fields would incorrectly display a validation error about a custom amount which prevented the donor from giving. [#3159](https://github.com/wordimpress/give/issues/3159)
+* Fix: Ensure the minimum donation amount calculates properly with various international decimal separators. [#3176](https://github.com/wordimpress/give/issues/3176)
 
 = 2.1.1: May 3rd, 2018 =
 * Fix: Conflict with the new "maximum" donation amount field and existing forms using custom fields preventing donations if the form is not re-saved. [#3159](https://github.com/wordimpress/give/issues/3159)

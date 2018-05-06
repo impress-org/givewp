@@ -5836,7 +5836,7 @@ msgstr ""
 msgid "Passwords you entered do not match. Please try again."
 msgstr ""
 
-#: includes/admin/abstract-admin-settings-page.php:185, includes/admin/settings/class-settings-cmb2-backward-compatibility.php:631, includes/admin/views/html-admin-settings.php:119
+#: includes/admin/abstract-admin-settings-page.php:185, includes/admin/settings/class-settings-cmb2-backward-compatibility.php:631, includes/admin/views/html-admin-settings.php:120
 msgid "Oops, this settings page does not exist."
 msgstr ""
 
@@ -9659,11 +9659,11 @@ msgstr ""
 msgid "Insert Shortcode"
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:394
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:399
 msgid "Some of the shortcode options are required."
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:404
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:409
 msgid "The \"%s\" option is required."
 msgstr ""
 
@@ -10047,7 +10047,7 @@ msgstr ""
 msgid "View remaining setting tabs"
 msgstr ""
 
-#: includes/admin/views/html-admin-settings.php:114
+#: includes/admin/views/html-admin-settings.php:115
 msgid "Save changes"
 msgstr ""
 
