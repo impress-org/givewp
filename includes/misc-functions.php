@@ -1926,3 +1926,24 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 
 	return $data;
 }
+
+/**
+ * Get Title Prefixes values.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2
+ *
+ * @return mixed
+ */
+function give_get_title_prefixes( $form_id ) {
+
+	$title_prefixes = give_get_option( 'title_prefixes' );
+
+	// If form id exists, then fetch form specific title prefixes.
+	if ( intval( $form_id ) > 0 ) {
+		$title_prefixes = give_get_meta( $form_id, 'title_prefixes' );
+	}
+
+	return $title_prefixes;
+}
