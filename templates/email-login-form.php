@@ -87,7 +87,7 @@ Give()->notices->render_frontend_notices();
 			 *
 			 * @since 2.1.2
 			 */
-			do_action( 'give_email_access_form_login' );
+			do_action( 'give_email_access_form_end' );
 			?>
 
 			<input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
