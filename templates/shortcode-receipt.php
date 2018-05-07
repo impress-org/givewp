@@ -26,6 +26,12 @@ $email        = give_get_payment_user_email( $donation_id );
 $status       = $payment->post_status;
 $status_label = give_get_payment_status( $payment, true );
 $company_name = give_get_payment_meta( $donation_id, '_give_donation_company', true );
+$title_prefix = give_get_payment_meta( $donation_id, '_give_payment_donor_title_prefix', true );
+$full_name    = "{$user['first_name']} {$user['last_name']}";
+
+if ( $title_prefix ) {
+	$full_name    = "{$title_prefix}. {$user['first_name']} {$user['last_name']}";
+}
 
 /**
  * Generate Donation Receipt Arguments.
@@ -37,7 +43,7 @@ $company_name = give_get_payment_meta( $donation_id, '_give_donation_company', t
  */
 $give_receipt_args['donation_receipt']['donor'] = array(
 	'name'    => __( 'Donor', 'give' ),
-	'value'   => $user['first_name'] . ' ' . $user['last_name'],
+	'value'   => $full_name,
 	'display' => $give_receipt_args['donor'],
 );
 
