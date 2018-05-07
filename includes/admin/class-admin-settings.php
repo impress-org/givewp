@@ -886,15 +886,22 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: Give Docs Link field type.
 					case 'give_docs_link' :
+						$wrapper_class = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 						?>
-					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+					<tr valign="top" <?php echo esc_html( $wrapper_class ); ?>>
 						<td class="give-docs-link" colspan="2">
-							<?php
-							echo '<p class="give-docs-link"><a href="' . esc_url( $value['url'] )
-							     . '" target="_blank">'
-							     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $value['title'] )
-							     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
-							?>
+							<p class="give-docs-link">
+								<a href="<?php echo esc_url( $value['url'] ); ?>" target="_blank">
+									<?php
+									echo sprintf(
+										/* translators: %s Title */
+										esc_html__( 'Need Help? See docs on "%s"', 'give' ),
+										esc_html( $value['title'] )
+									);
+									?>
+									<span class="dashicons dashicons-editor-help"></span>
+								</a>
+							</p>
 						</td>
 						</tr><?php
 						break;
