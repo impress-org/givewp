@@ -811,6 +811,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							$name             = $name . '[]';
 						}
 
+						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
+
 						?>
 						<tr valign="top" <?php echo esc_html( $wrapper_class ); ?>>
 							<th scope="row" class="titledesc">
@@ -838,21 +840,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											<?php echo esc_html( $item_value ); ?>
 										</option>
 									<?php } ?>
-									<?php
-									// Add newly added options to the select field.
-									if ( is_array( $option_value ) ) {
-										foreach ( $option_value as $key => $item_value ) {
-											if ( ! in_array( $item_value, $value['options'], true ) ) {
-												?>
-												}
-												<option value="<?php echo esc_attr( $item_value ); ?>" selected="selected">
-													<?php echo esc_html( $item_value ); ?>
-												</option>
-												<?php
-											}
-										}
-									}
-									?>
+
 								</select>
 								<?php echo wp_kses_post( $description ); ?>
 							</td>
