@@ -796,14 +796,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						// Get option value.
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
-						$type                   = '';
-						$allow_new_values       = '';
+						$type             = '';
+						$allow_new_values = '';
+						$name             = give_get_field_name( $value );
 
 						// Set attributes based on multiselect datatype.
 						if ( 'multiselect' === $value['data_type'] ) {
 							$type = 'multiple';
 							$allow_new_values = 'data-allows-new-values="true"';
+							$name             = $name . '[]';
 						}
+
 						?>
 						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
@@ -814,14 +817,20 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								<select
 										class="give-select-chosen give-chosen-settings"
 										style="<?php echo esc_attr( $value['style'] ); ?>"
-										name="<?php echo esc_attr( give_get_field_name( $value ) ); ?>"
+										name="<?php echo esc_attr( $name ); ?>"
 										id="<?php echo esc_attr( $value['id'] ); ?>"
 									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $value['placeholder'] ); ?>
 								>
 									<?php foreach ( $value['options'] as $key => $item_value ) { ?>
 										<option
 												value="<?php echo esc_attr( $key ); ?>"
-											<?php echo selected( esc_attr( $option_value ), esc_attr( $key ), false ); ?>
+											<?php
+											if ( is_array( $option_value ) ) {
+												selected( in_array( $key, $option_value ), true );
+											} else {
+												selected( $option_value, $key );
+											}
+											?>
 										>
 											<?php echo esc_html( $item_value ); ?>
 										</option>
@@ -977,6 +986,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$value = wp_kses_post( trim( $raw_value ) );
 						break;
 					case 'multiselect' :
+					case 'chosen' :
 						$value = array_filter( array_map( 'give_clean', (array) $raw_value ) );
 						break;
 					default :
