@@ -635,6 +635,7 @@ function give_user_info_fields( $form_id ) {
 	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
 	$company_name   = ! empty( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : '';
 	$email          = ! empty( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : '';
+	$title_prefixes = give_get_title_prefixes( $form_id );
 
 	/**
 	 * Fire before user personal information fields
@@ -663,7 +664,16 @@ function give_user_info_fields( $form_id ) {
 					id="give-title"
 				<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			>
-				<option><?php echo esc_html( $title ); ?></option>
+				<option value="0"><?php echo esc_attr__( 'Title', 'give' ); ?></option>
+				<?php
+				if ( is_array( $title_prefixes ) ) {
+					foreach ( $title_prefixes as $key => $value ) {
+						?>
+						<option value="<?php echo esc_html( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+						<?php
+					}
+				}
+				?>
 			</select>
 		</p>
 
