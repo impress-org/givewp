@@ -86,7 +86,7 @@ Give()->notices->render_frontend_notices();
 			/**
 			 * Add custom fields inside Email access form.
 			 *
-			 * @since 2.1.2
+			 * @since 2.1.3
 			 */
 			do_action( 'give_email_access_before_form_end' );
 			?>
