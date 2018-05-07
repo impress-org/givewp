@@ -669,7 +669,7 @@ function give_user_info_fields( $form_id ) {
 				if ( is_array( $title_prefixes ) ) {
 					foreach ( $title_prefixes as $key => $value ) {
 						?>
-						<option value="<?php echo esc_html( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+						<option value="<?php echo esc_html( $value ); ?>"><?php echo esc_html( $value ); ?></option>
 						<?php
 					}
 				}
