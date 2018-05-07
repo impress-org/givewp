@@ -22,24 +22,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @access private
  * @since  1.0
  *
+ * @throws ReflectionException Exception type reflection.
+ *
  * @return mixed
  */
 function give_process_donation_form() {
 
-	$is_ajax = isset( $_POST['give_ajax'] );
+	// Sanitize Posted Data.
+	$post_data  = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
+
+	// Check whether the form submitted via AJAX or not.
+	$is_ajax = isset( $post_data['give_ajax'] );
 
 	// Verify donation form nonce.
-	if(  ! give_verify_donation_form_nonce() ) {
-		if( $is_ajax ) {
+	if ( ! give_verify_donation_form_nonce() ) {
+		if ( $is_ajax ) {
 			/**
 			 * Fires when AJAX sends back errors from the donation form.
 			 *
 			 * @since 1.0
 			 */
 			do_action( 'give_ajax_donation_errors' );
-			
 			give_die();
-		} else{
+		} else {
 			give_send_back_to_checkout();
 		}
 	}
@@ -64,10 +69,11 @@ function give_process_donation_form() {
 	 * @param bool|array $valid_data Validate fields.
 	 * @param array $deprecated Deprecated Since 2.0.2. Use $_POST instead.
 	 */
-	do_action( 'give_checkout_error_checks', $valid_data, $deprecated = $_POST );
+	$deprecated = $post_data;
+	do_action( 'give_checkout_error_checks', $valid_data, $deprecated );
 
 	// Process the login form.
-	if ( isset( $_POST['give_login_submit'] ) ) {
+	if ( isset( $post_data['give_login_submit'] ) ) {
 		give_process_form_login();
 	}
 
@@ -114,10 +120,15 @@ function give_process_donation_form() {
 		'address'    => $user['address'],
 	);
 
+	// Add Title Prefix to user information.
+	if ( ! empty( $post_data['give_title'] ) ) {
+		$user_info['title'] = $post_data['give_title'];
+	}
+
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price        = isset( $_POST['give-amount'] ) ?
-		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give-amount'] ) ) :
+	$price        = isset( $post_data['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'] ) ) :
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
@@ -128,7 +139,7 @@ function give_process_donation_form() {
 		'user_email'    => $user['user_email'],
 		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'     => stripslashes_deep( $user_info ),
-		'post_data'     => give_clean( $_POST ),
+		'post_data'     => $post_data,
 		'gateway'       => $valid_data['gateway'],
 		'card_info'     => $valid_data['cc_info'],
 	);
@@ -147,7 +158,7 @@ function give_process_donation_form() {
 	 * @param array $user_info Array containing basic user information.
 	 * @param bool|array $valid_data Validate fields.
 	 */
-	do_action( 'give_checkout_before_gateway', give_clean( $_POST ), $user_info, $valid_data );
+	do_action( 'give_checkout_before_gateway', $post_data, $user_info, $valid_data );
 
 	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
