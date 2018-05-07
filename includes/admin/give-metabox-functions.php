@@ -399,8 +399,8 @@ function give_donation_limit( $field ) {
 					type="text"
 					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo esc_attr( $field_options['value'][ $amount_range ] ); ?>"
-					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
+					value="<?php echo give_format_decimal( esc_attr( $field_options['value'][ $amount_range ] ) ); ?>"
+					placeholder="<?php echo give_format_decimal( $field_options['options'][ $amount_range ] ); ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
