@@ -1936,13 +1936,25 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
  *
  * @return mixed
  */
-function give_get_title_prefixes( $form_id ) {
+function give_get_title_prefixes( $form_id = 0 ) {
 
-	$title_prefixes = give_get_option( 'title_prefixes' );
+	$title_prefixes    = array();
+	$name_title_prefix = give_is_setting_enabled( give_get_option( 'name_title_prefix' ) );
+
+	if ( $name_title_prefix ) {
+		$title_prefixes = give_get_option( 'title_prefixes' );
+	}
 
 	// If form id exists, then fetch form specific title prefixes.
 	if ( intval( $form_id ) > 0 ) {
-		$title_prefixes = give_get_meta( $form_id, 'title_prefixes' );
+		$name_title_prefix = give_get_meta( $form_id, 'name_title_prefix' );
+		if ( $name_title_prefix ) {
+			$form_title_prefixes = give_get_meta( $form_id, 'title_prefixes' );
+			if ( is_array( $form_title_prefixes ) ) {
+				$title_prefixes = $form_title_prefixes;
+			}
+		}
+
 	}
 
 	return $title_prefixes;
