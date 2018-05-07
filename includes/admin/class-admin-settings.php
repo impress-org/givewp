@@ -798,9 +798,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'chosen' :
 
 						// Get option value.
-						$option_value  = self::get_option( $option_name, $value['id'], $value['default'] );
-						$wrapper_class = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
-						echo "<pre>"; print_r($option_value); echo "</pre>";
+						$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
+						$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 						$type             = '';
 						$allow_new_values = '';
 						$name             = give_get_field_name( $value );
