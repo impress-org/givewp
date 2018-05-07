@@ -78,7 +78,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		}
 
 		/**
-		 * Varify admin setting nonce
+		 * Verify admin setting nonce
 		 *
 		 * @since  1.8.14
 		 * @access public
@@ -103,14 +103,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$current_tab = give_get_current_setting_tab();
 
 			if ( ! self::verify_nonce() ) {
-				echo '<div class="notice error"><p>' . __( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
+				echo '<div class="notice error"><p>' . esc_attr__( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
 				die();
 			}
 
+			// Sanitize data.
+			$akismet_spam_protection = give_clean( $_POST['akismet_spam_protection'] ); // WPCS: input var ok.
+
 			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
-			if ( isset( $_POST['akismet_spam_protection'] )
-			     && give_is_setting_enabled( $_POST['akismet_spam_protection'] )
-			     && ! give_check_akismet_key()
+			if (
+				isset( $akismet_spam_protection ) &&
+				give_is_setting_enabled( $akismet_spam_protection ) &&
+				! give_check_akismet_key()
 			) {
 				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
 
@@ -270,9 +274,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * @since  1.8
 		 *
-		 * @param  string $option_name
-		 * @param  string $field_id
-		 * @param  mixed  $default
+		 * @param string $option_name Option Name.
+		 * @param string $field_id    Field ID.
+		 * @param mixed  $default     Default.
 		 *
 		 * @return string|bool
 		 */
@@ -308,8 +312,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @todo   : Refactor this function
 		 * @since  1.8
 		 *
-		 * @param  array  $options     Opens array to output
-		 * @param  string $option_name Opens array to output
+		 * @param  array  $options     Opens array to output.
+		 * @param  string $option_name Opens array to output.
 		 *
 		 * @return void
 		 */
@@ -359,7 +363,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Switch based on type.
 				switch ( $value['type'] ) {
 
-					// Section Titles
+					// Section Titles.
 					case 'title':
 						if ( ! empty( $value['title'] ) || ! empty( $value['desc'] ) ) {
 							?>
@@ -513,18 +517,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
 						/**
-						 * insert page in option if missing.
+						 * Insert page in option if missing.
 						 *
-						 * check success_page setting in general settings.
+						 * Check success_page setting in general settings.
 						 */
-						if(
-							isset( $value['attributes' ] ) &&
+						if (
+							isset( $value['attributes'] ) &&
 							false !== strpos( $value['class'], 'give-select-chosen' ) &&
 							in_array( 'data-search-type', array_keys( $value['attributes' ] ) ) &&
-							'pages' == $value['attributes' ]['data-search-type'] &&
+							'pages' === $value['attributes' ]['data-search-type'] &&
 							! in_array( $option_value, array_keys( $value['options'] ) )
 						) {
-							$value['options'][$option_value] = get_the_title( $option_value );
+							$value['options'][ $option_value ] = get_the_title( $option_value );
 						}
 						?>
 					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
@@ -533,12 +537,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</th>
 						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 							<select
-									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) echo '[]'; ?>"
+									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( 'multiselect' === $value['type'] ) echo '[]'; ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 								<?php echo implode( ' ', $custom_attributes ); ?>
-								<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
+								<?php echo ( 'multiselect' === $value['type'] ) ? 'multiple="multiple"' : ''; ?>
 							>
 
 								<?php
@@ -794,8 +798,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'chosen' :
 
 						// Get option value.
-						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
+						$option_value  = self::get_option( $option_name, $value['id'], $value['default'] );
+						$wrapper_class = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
+						echo "<pre>"; print_r($option_value); echo "</pre>";
 						$type             = '';
 						$allow_new_values = '';
 						$name             = give_get_field_name( $value );
@@ -808,12 +813,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						}
 
 						?>
-						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+						<tr valign="top" <?php echo esc_html( $wrapper_class ); ?>>
 							<th scope="row" class="titledesc">
-								<label
-										for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_attr( self::get_field_title( $value ) ); ?></label>
 							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ) ?>">
 								<select
 										class="give-select-chosen give-chosen-settings"
 										style="<?php echo esc_attr( $value['style'] ); ?>"
@@ -826,7 +830,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 												value="<?php echo esc_attr( $key ); ?>"
 											<?php
 											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value ), true );
+												selected( in_array( $key, $option_value, true ) );
 											} else {
 												selected( $option_value, $key );
 											}
@@ -836,7 +840,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 										</option>
 									<?php } ?>
 								</select>
-								<?php echo $description; ?>
+								<?php echo wp_kses_post( $description ); ?>
 							</td>
 						</tr>
 						<?php
