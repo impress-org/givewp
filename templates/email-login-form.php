@@ -50,34 +50,35 @@ do_action( 'give_email_access_form_login' );
 Give()->notices->render_frontend_notices();
 
 ?>
-	<div class="give-form">
-		<form method="post" id="give-email-access-form">
-			<p><?php echo apply_filters( 'give_email_access_welcome_message', __( 'Please verify your email to access your donation history.', 'give' ) ); ?></p>
+    <div class="give-form">
+        <form method="post" id="give-email-access-form">
+            <p><?php echo apply_filters( 'give_email_access_welcome_message', __( 'Please verify your email to access your donation history.', 'give' ) ); ?></p>
 
-			<label for="give-email"><?php _e( 'Donation Email:', 'give' ); ?></label>
-			<input id="give-email" type="email" name="give_email" value=""
-				   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
-			<input type="hidden" name="give_action" value="email_access_form_login"/>
+            <label for="give-email"><?php _e( 'Donation Email:', 'give' ); ?></label>
+            <input id="give-email" type="email" name="give_email" value=""
+                   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>
+            <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
+            <input type="hidden" name="give_action" value="email_access_form_login"/>
+            <input type="hidden" name="give_access_page" value="<?php the_ID(); ?>"/>
 
 			<?php
 			// Enable reCAPTCHA?
 			if ( $enable_recaptcha ) :
 				?>
-				<script>
-					// IP verify for reCAPTCHA.
-					(function ($) {
-						$(function () {
-							$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function (json) {
-								$('.give_ip').val(json.ip);
-							});
-						});
-					})(jQuery);
-				</script>
+                <script>
+                    // IP verify for reCAPTCHA.
+                    (function ($) {
+                        $(function () {
+                            $.getJSON('https://api.ipify.org?format=jsonp&callback=?', function (json) {
+                                $('.give_ip').val(json.ip);
+                            });
+                        });
+                    })(jQuery);
+                </script>
 
-				<script src='https://www.google.com/recaptcha/api.js'></script>
-				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
-				<input type="hidden" name="give_ip" class="give_ip" value=""/>
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+                <input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>
 
 
@@ -90,9 +91,9 @@ Give()->notices->render_frontend_notices();
 			do_action( 'give_email_access_form_end' );
 			?>
 
-			<input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
-		</form>
-	</div>
+            <input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
+        </form>
+    </div>
 <?php
 
 // The form has been output.
