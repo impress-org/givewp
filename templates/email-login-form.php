@@ -20,8 +20,20 @@ $enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptch
 
 // Email already sent?
 if ( isset( $_POST['email-access-sent'] ) ) {
+
+	/**
+	 * Filter to modify access mail send notice
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param string Send notice message for email access.
+	 *
+	 * @return  string $message Send notice message for email access.
+	 */
+	$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+
 	Give()->notices->print_frontend_notice(
-		apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
+		$message,
 		true,
 		'success'
 	);
@@ -31,16 +43,28 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 
 	$value = Give()->email_access->verify_throttle / 60;
 
+	/**
+	 * Filter to modify email access exceed notices message.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param string $message email access exceed notices message
+	 * @param int $value email access exceed times
+	 *
+	 * @return string $message email access exceed notices message
+	 */
+	$message = (string) apply_filters(
+		'give_email_access_requests_exceed_notice',
+		sprintf(
+			__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+			sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
+		),
+		$value
+	);
+
 	// Too many emails sent?
 	Give()->notices->print_frontend_notice(
-		apply_filters(
-			'give_email_access_requests_exceed_notice',
-			sprintf(
-				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
-			),
-			$value
-		),
+		$message,
 		true,
 		'error'
 	);

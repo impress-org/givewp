@@ -327,6 +327,17 @@ class Give_Scripts {
 	 */
 	public function public_localize_scripts() {
 
+		/**
+		 * Filter to modify access mail send notice
+		 *
+		 * @since 2.1.3
+		 *
+		 * @param string Send notice message for email access.
+		 *
+		 * @return  string $message Send notice message for email access.
+		 */
+		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+
 		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 			'ajaxurl'                    => give_get_ajax_url(),
 			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ),
@@ -363,7 +374,7 @@ class Give_Scripts {
 					'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 				)
 			),
-			'confirm_email_sent_message' => apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
+			'confirm_email_sent_message' => $message,
 			'ajax_vars'                  => apply_filters( 'give_global_ajax_vars', array(
 				'ajaxurl'         => give_get_ajax_url(),
 				'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
