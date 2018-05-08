@@ -151,7 +151,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_cb( $donor ){
+	public function column_cb( $donor ) {
 		return sprintf(
 			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
 			$this->_args['singular'],
@@ -294,7 +294,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-			<?php if ( $this->has_items() ): ?>
+			<?php if ( $this->has_items() ) : ?>
 				<div class="alignleft actions bulkactions">
 					<?php $this->bulk_actions( $which ); ?>
 				</div>
