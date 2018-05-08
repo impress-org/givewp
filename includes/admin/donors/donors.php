@@ -319,6 +319,9 @@ function give_donor_view( $donor ) {
 		$read_only = 'readonly="readonly"';
 	}
 
+	// List of title prefixes.
+	$title_prefixes = give_get_title_prefixes();
+
 	// Prepend title prefix to name if it is set.
 	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
 	if ( ! empty( $title_prefix ) ) {
@@ -334,9 +337,15 @@ function give_donor_view( $donor ) {
 					</div>
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-name info-item edit-item">
+							<select name="customerinfo[title]">
+								<option value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
+								<?php foreach ( $title_prefixes as $title ) { ?>
+									<option <?php selected( $title_prefix, $title ); ?> value="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $title ); ?></option>
+								<?php } ?>
+							</select>
 							<input <?php echo $read_only; ?> size="15" data-key="first_name"
 									name="customerinfo[first_name]" type="text"
-									value="<?php esc_html( $donor->get_first_name() ); ?>"
+									value="<?php echo esc_html( $donor->get_first_name() ); ?>"
 									placeholder="<?php esc_html_e( 'First Name', 'give' ); ?>"/>
 							<?php if ( $donor->user_id ) : ?>
 								<a href="#" class="give-lock-block">
@@ -345,7 +354,7 @@ function give_donor_view( $donor ) {
 							<?php endif; ?>
 							<input <?php echo $read_only; ?> size="15" data-key="last_name"
 									name="customerinfo[last_name]" type="text"
-									value="<?php esc_html( $donor->get_last_name() ); ?>"
+									value="<?php echo esc_html( $donor->get_last_name() ); ?>"
 									placeholder="<?php esc_html_e( 'Last Name', 'give' ); ?>"/>
 							<?php if ( $donor->user_id ) : ?>
 								<a href="#" class="give-lock-block">
