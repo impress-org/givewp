@@ -91,16 +91,6 @@ Give()->notices->render_frontend_notices();
                 <input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>
 
-
-			<?php
-			/**
-			 * Add custom fields inside Email access form.
-			 *
-			 * @since 2.1.3
-			 */
-			do_action( 'give_email_access_before_form_end' );
-			?>
-
             <input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
         </form>
     </div>
