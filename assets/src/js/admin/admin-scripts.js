@@ -2964,7 +2964,7 @@ var give_setting_edit = false;
 		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
 
-			$(this).giveHintCss( 'hide', {label: give_vars.price_format_guide.trim()});
+			$(this).giveHintCss( 'hide', { label: give_vars.price_format_guide.trim() } );
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
