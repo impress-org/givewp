@@ -901,7 +901,7 @@ class Give_API {
 	 * @since  1.1
 	 * @global WPDB $wpdb  Used to query the database using the WordPress Database API.
 	 *
-	 * @param int   $donor Donor ID
+	 * @param int $donor Donor ID.
 	 *
 	 * @return array $donors Multidimensional array of the donors.
 	 */
@@ -972,7 +972,6 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
-				/** @var $donor \Give_Donor */
 				$donor = new Give_Donor( $donor_obj->id );
 
 				// Get donor's addresses.
@@ -980,11 +979,14 @@ class Give_API {
 
 				$donor_count ++;
 
-			}
+			} // End foreach().
 		} elseif ( $donor ) {
 
-			$error['error'] = sprintf( /* translators: %s: donor */
-				__( 'Donor %s not found.', 'give' ), $donor );
+			$error['error'] = sprintf(
+				/* translators: %s: donor */
+				__( 'Donor %s not found.', 'give' ),
+				$donor
+			);
 
 			return $error;
 
@@ -994,7 +996,7 @@ class Give_API {
 
 			return $error;
 
-		}// End if().
+		} // End if().
 
 		return $donors;
 	}
