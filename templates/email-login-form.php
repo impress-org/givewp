@@ -21,7 +21,7 @@ $enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptch
 // Email already sent?
 if ( isset( $_POST['email-access-sent'] ) ) {
 	Give()->notices->print_frontend_notice(
-		apply_filters( 'give_email_access_mail_send', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
+		apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
 		true,
 		'success'
 	);
@@ -34,7 +34,7 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	// Too many emails sent?
 	Give()->notices->print_frontend_notice(
 		apply_filters(
-			'give_email_access_requests_detected',
+			'give_email_access_requests_exceed_notice',
 			sprintf(
 				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
 				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
