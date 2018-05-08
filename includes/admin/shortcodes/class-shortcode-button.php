@@ -47,7 +47,16 @@ final class Give_Shortcode_Button {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
-			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
+			
+
+			/**
+			 * Filter to enable the give shortcode button. Default is true.
+			 *
+			 * @since 2.1.3
+			 */
+			if ( apply_filters( 'give_enable_give_shortcodes_button', true ) ) {
+				add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
+			}
 		}
 
 		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
