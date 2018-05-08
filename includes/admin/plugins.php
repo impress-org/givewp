@@ -142,8 +142,9 @@ function give_recently_activated_addons() {
 				break;
 		}
 
+		$give_addons = give_get_recently_activated_addons();
+
 		if ( ! empty( $plugins ) ) {
-			$give_addons = array();
 			foreach ( $plugins as $plugin ) {
 				// Get plugins which has 'Give-' as prefix.
 				if ( stripos( $plugin, 'Give-' ) !== false ) {
@@ -399,3 +400,14 @@ function give_plugin_notice_css() {
 }
 
 add_action( 'admin_head', 'give_plugin_notice_css' );
+
+/**
+ * Get list of add-on last activated.
+ *
+ * @since 2.1.3
+ *
+ * @return mixed|array list of recently activated add-on
+ */
+function give_get_recently_activated_addons() {
+	return get_option( 'give_recently_activated_addons', array() );
+}
