@@ -942,10 +942,18 @@ class Give_API {
 					$last_name = implode( ' ', $names );
 				}
 
+				$title_prefix = Give()->donor_meta->get_meta( $donor_obj->id, '_give_donor_title_prefix', true );
+
+				// Set title prefix empty, if not available in db.
+				if ( empty( $title_prefix ) ) {
+					$title_prefix = '';
+				}
+
 				$donors['donors'][ $donor_count ]['info']['user_id']      = '';
 				$donors['donors'][ $donor_count ]['info']['username']     = '';
 				$donors['donors'][ $donor_count ]['info']['display_name'] = '';
 				$donors['donors'][ $donor_count ]['info']['donor_id']     = $donor_obj->id;
+				$donors['donors'][ $donor_count ]['info']['title_prefix'] = $title_prefix;
 				$donors['donors'][ $donor_count ]['info']['first_name']   = $first_name;
 				$donors['donors'][ $donor_count ]['info']['last_name']    = $last_name;
 				$donors['donors'][ $donor_count ]['info']['email']        = $donor_obj->email;
