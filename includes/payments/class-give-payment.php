@@ -1043,7 +1043,7 @@ final class Give_Payment {
 		$donation = new Give_Donate_Form( $form_id );
 
 		// Bail if this post isn't a give donation form.
-		if ( ! $donation || $donation->post_type !== 'give_forms' ) {
+		if ( ! $donation || 'give_forms' !== $donation->post_type ) {
 			return false;
 		}
 
@@ -1069,13 +1069,13 @@ final class Give_Payment {
 					// Find a match between price_id and level_id.
 					// First verify array keys exists THEN make the match.
 					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
-					     && $args['price_id'] == $price['_give_id']['level_id']
+					     && $args['price_id'] === $price['_give_id']['level_id']
 					) {
 						$donation_amount = $price['_give_amount'];
 					}
 				}
 				// Fallback to the lowest price point.
-				if ( $donation_amount == '' ) {
+				if ( '' === $donation_amount ) {
 					$donation_amount  = give_get_lowest_price_option( $donation->ID );
 					$args['price_id'] = give_get_lowest_price_id( $donation->ID );
 				}
@@ -1143,7 +1143,7 @@ final class Give_Payment {
 		$form = new Give_Donate_Form( $form_id );
 
 		// Bail if this post isn't a valid give donation form.
-		if ( ! $form || $form->post_type !== 'give_forms' ) {
+		if ( ! $form || 'give_forms' !== $form->post_type ) {
 			return false;
 		}
 
@@ -1244,7 +1244,7 @@ final class Give_Payment {
 	public function update_status( $status = false ) {
 
 		// standardize the 'complete(d)' status.
-		if ( $status == 'completed' || $status == 'complete' ) {
+		if ( 'completed' === $status || 'complete' === $status ) {
 			$status = 'publish';
 		}
 
@@ -1330,7 +1330,10 @@ final class Give_Payment {
 	 * @return mixed             The value from the post meta
 	 */
 	public function get_meta( $meta_key = '_give_payment_meta', $single = true ) {
-		if( ! has_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta' ) && ! doing_filter( 'get_post_metadata' ) ) {
+		if (
+			! has_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta' ) &&
+			! doing_filter( 'get_post_metadata' )
+		) {
 			add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 		}
 
@@ -1517,7 +1520,7 @@ final class Give_Payment {
 	private function setup_completed_date() {
 		$payment = get_post( $this->ID );
 
-		if ( 'pending' == $payment->post_status || 'preapproved' == $payment->post_status ) {
+		if ( 'pending' === $payment->post_status || 'preapproved' === $payment->post_status ) {
 			return false; // This payment was never completed.
 		}
 
