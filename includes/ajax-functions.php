@@ -690,7 +690,7 @@ function give_confirm_email_for_donation_access() {
 
 		$return['status']  = 'success';
 		$return['message'] = Give()->notices->print_frontend_notice(
-			__( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
+			apply_filters( 'give_email_access_mail_send', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
 			false,
 			'success'
 		);
@@ -700,9 +700,13 @@ function give_confirm_email_for_donation_access() {
 		$value             = Give()->email_access->verify_throttle / 60;
 		$return['status']  = 'error';
 		$return['message'] = Give()->notices->print_frontend_notice(
-			sprintf(
-				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
+			apply_filters(
+				'give_email_access_requests_detected',
+				sprintf(
+					__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+					sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
+				),
+				$value
 			),
 			false,
 			'error'

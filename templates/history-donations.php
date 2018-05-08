@@ -29,11 +29,16 @@ if ( is_user_logged_in() ) {
 		} else {
 			$value = Give()->email_access->verify_throttle / 60;
 
-			give_set_error( 'give-limited-throttle', sprintf(
-				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
-			) );
-
+			give_set_error( 'give-limited-throttle',
+				apply_filters(
+					'give_email_access_requests_detected',
+					sprintf(
+						__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+						sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
+					),
+					$value
+				)
+			);
 		}
 
 		$donations = give_get_users_donations( $email, give_get_limit_display_donations(), true, 'any' );
