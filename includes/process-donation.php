@@ -114,16 +114,12 @@ function give_process_donation_form() {
 	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],
+		'title'      => $user['user_title'],
 		'email'      => $user['user_email'],
 		'first_name' => $user['user_first'],
 		'last_name'  => $user['user_last'],
 		'address'    => $user['address'],
 	);
-
-	// Add Title Prefix to user information.
-	if ( ! empty( $post_data['give_title'] ) ) {
-		$user_info['title'] = $post_data['give_title'];
-	}
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
@@ -975,6 +971,11 @@ function give_get_donation_form_user( $valid_data = array() ) {
 	// Get user last name.
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
 		$user['user_last'] = isset( $_POST['give_last'] ) ? strip_tags( trim( $_POST['give_last'] ) ) : '';
+	}
+
+	// Add Title Prefix to user information.
+	if ( empty( $user['user_title'] ) || strlen( trim( $user['user_title'] ) ) < 1 ) {
+		$user['user_title'] = strip_tags( trim( $_POST['give_title'] ) );
 	}
 
 	// Get the user's billing address details.
