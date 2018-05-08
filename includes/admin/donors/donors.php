@@ -337,14 +337,14 @@ function give_donor_view( $donor ) {
 					</div>
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-name info-item edit-item">
-							<select name="customerinfo[title]">
+							<select name="donor_info[title]">
 								<option value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
 								<?php foreach ( $title_prefixes as $title ) { ?>
 									<option <?php selected( $title_prefix, $title ); ?> value="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $title ); ?></option>
 								<?php } ?>
 							</select>
 							<input <?php echo $read_only; ?> size="15" data-key="first_name"
-									name="customerinfo[first_name]" type="text"
+									name="donor_info[first_name]" type="text"
 									value="<?php echo esc_html( $donor->get_first_name() ); ?>"
 									placeholder="<?php esc_html_e( 'First Name', 'give' ); ?>"/>
 							<?php if ( $donor->user_id ) : ?>
@@ -353,7 +353,7 @@ function give_donor_view( $donor ) {
 								</a>
 							<?php endif; ?>
 							<input <?php echo $read_only; ?> size="15" data-key="last_name"
-									name="customerinfo[last_name]" type="text"
+									name="donor_info[last_name]" type="text"
 									value="<?php echo esc_html( $donor->get_last_name() ); ?>"
 									placeholder="<?php esc_html_e( 'Last Name', 'give' ); ?>"/>
 							<?php if ( $donor->user_id ) : ?>
@@ -399,7 +399,7 @@ function give_donor_view( $donor ) {
 											'search-type' => 'user',
 										);
 										$user_args = array(
-											'name'  => 'customerinfo[user_id]',
+											'name'  => 'donor_info[user_id]',
 											'class' => 'give-user-dropdown',
 											'data'  => $data_atts,
 										);
@@ -462,7 +462,7 @@ function give_donor_view( $donor ) {
 			</div>
 
 			<span id="donor-edit-actions" class="edit-item">
-				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo intval( $donor->id ); ?>"/>
+				<input type="hidden" data-key="id" name="donor_info[id]" value="<?php echo intval( $donor->id ); ?>"/>
 				<?php wp_nonce_field( 'edit-donor', '_wpnonce', false, true ); ?>
 				<input type="hidden" name="give_action" value="edit-donor"/>
 				<input type="submit" id="give-edit-donor-save" class="button-secondary"
