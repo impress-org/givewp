@@ -142,8 +142,11 @@ function give_recently_activated_addons() {
 				break;
 		}
 
+
 		if ( ! empty( $plugins ) ) {
-			$give_addons = array();
+
+			$give_addons = give_get_recently_activated_addons();
+
 			foreach ( $plugins as $plugin ) {
 				// Get plugins which has 'Give-' as prefix.
 				if ( stripos( $plugin, 'Give-' ) !== false ) {
@@ -277,7 +280,7 @@ function give_in_plugin_update_message( $data, $response ) {
 }
 
 // Display upgrade notice.
-add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_message', 10, 2 );
+add_action( 'in_plugin_update_message-' . GIVE_PLUGIN_BASENAME, 'give_in_plugin_update_message', 10, 2 );
 
 
 /**
@@ -327,7 +330,7 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 	$check_for_notices = array(
 		$version_parts[0] . '.0',
 		$version_parts[0] . '.0.0',
-		$version_parts[0] . '.' . $version_parts[1],
+		$version_parts[0] . '.' . $version_parts[1] . '.' . '0',
 	);
 
 	// Regex to extract Upgrade notice from the readme.txt file.
@@ -355,7 +358,9 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 				$upgrade_notice .= '</p>';
 			}
 
-			break;
+			if ( ! empty( $upgrade_notice ) ) {
+				break;
+			}
 		}
 	}
 
@@ -397,3 +402,14 @@ function give_plugin_notice_css() {
 }
 
 add_action( 'admin_head', 'give_plugin_notice_css' );
+
+/**
+ * Get list of add-on last activated.
+ *
+ * @since 2.1.3
+ *
+ * @return mixed|array list of recently activated add-on
+ */
+function give_get_recently_activated_addons() {
+	return get_option( 'give_recently_activated_addons', array() );
+}
