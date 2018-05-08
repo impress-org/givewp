@@ -22,7 +22,7 @@ $enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptch
 if ( isset( $_POST['email-access-sent'] ) ) {
 	Give()->notices->print_frontend_notice(
 		apply_filters( 'give_email_access_mail_send', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
-		false,
+		true,
 		'success'
 	);
 
