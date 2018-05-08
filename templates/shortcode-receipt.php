@@ -26,12 +26,11 @@ $email        = give_get_payment_user_email( $donation_id );
 $status       = $payment->post_status;
 $status_label = give_get_payment_status( $payment, true );
 $company_name = give_get_payment_meta( $donation_id, '_give_donation_company', true );
-$title_prefix = give_get_payment_meta( $donation_id, '_give_payment_donor_title_prefix', true );
 $full_name    = "{$user['first_name']} {$user['last_name']}";
 
 // Update donor name, if title prefix is set.
-if ( $title_prefix ) {
-	$full_name    = "{$title_prefix}. {$user['first_name']} {$user['last_name']}";
+if ( ! empty( $user['title'] ) ) {
+	$full_name    = "{$user['title']}. {$user['first_name']} {$user['last_name']}";
 }
 
 /**
