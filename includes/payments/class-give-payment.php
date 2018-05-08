@@ -46,6 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property array      $user_info
  * @property string     $gateway
  * @property string     $user_id
+ * @property string     $title_prefix
  * @property string     $first_name
  * @property string     $last_name
  * @property string     $parent_payment
@@ -560,15 +561,16 @@ final class Give_Payment {
 			$this->transaction_id = $this->setup_transaction_id();
 
 			// User based.
-			$this->ip          = $this->setup_ip();
-			$this->customer_id = $this->setup_donor_id(); // Backward compatibility.
-			$this->donor_id    = $this->setup_donor_id();
-			$this->user_id     = $this->setup_user_id();
-			$this->email       = $this->setup_email();
-			$this->user_info   = $this->setup_user_info();
-			$this->address     = $this->setup_address();
-			$this->first_name  = $this->user_info['first_name'];
-			$this->last_name   = $this->user_info['last_name'];
+			$this->ip           = $this->setup_ip();
+			$this->customer_id  = $this->setup_donor_id(); // Backward compatibility.
+			$this->donor_id     = $this->setup_donor_id();
+			$this->user_id      = $this->setup_user_id();
+			$this->email        = $this->setup_email();
+			$this->user_info    = $this->setup_user_info();
+			$this->address      = $this->setup_address();
+			$this->first_name   = $this->user_info['first_name'];
+			$this->last_name    = $this->user_info['last_name'];
+			$this->title_prefix = $this->user_info['title'];
 
 			// Other Identifiers.
 			$this->form_title = $this->setup_form_title();
@@ -671,6 +673,7 @@ final class Give_Payment {
 			'currency'     => $this->currency,
 			'user_info'    => array(
 				'id'         => $this->user_id,
+				'title'      => $this->title_prefix,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,

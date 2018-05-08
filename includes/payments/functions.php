@@ -173,6 +173,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->email          = $payment_data['user_email'];
 	$payment->first_name     = $payment_data['user_info']['first_name'];
 	$payment->last_name      = $payment_data['user_info']['last_name'];
+	$payment->title_prefix   = $payment_data['user_info']['title'];
 	$payment->email          = $payment_data['user_info']['email'];
 	$payment->ip             = give_get_ip();
 	$payment->key            = $payment_data['purchase_key'];
