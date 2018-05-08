@@ -154,7 +154,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
 	$price_id   = give_get_payment_meta_price_id( $payment_data );
 	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );
