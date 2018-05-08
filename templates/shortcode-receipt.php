@@ -29,6 +29,7 @@ $company_name = give_get_payment_meta( $donation_id, '_give_donation_company', t
 $title_prefix = give_get_payment_meta( $donation_id, '_give_payment_donor_title_prefix', true );
 $full_name    = "{$user['first_name']} {$user['last_name']}";
 
+// Update donor name, if title prefix is set.
 if ( $title_prefix ) {
 	$full_name    = "{$title_prefix}. {$user['first_name']} {$user['last_name']}";
 }
