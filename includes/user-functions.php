@@ -578,18 +578,25 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 	switch ( $from ) {
 
 		case 'donation':
+			$title_prefix  = give_get_meta( $id, '_give_payment_donor_title_prefix', true );
 			$first_name    = give_get_meta( $id, '_give_donor_billing_first_name', true );
 			$last_name     = give_get_meta( $id, '_give_donor_billing_last_name', true );
 
-			$name = trim( "{$first_name} {$last_name}" );
+			$name = "{$first_name} {$last_name}";
 
 			break;
 
 		case 'donor':
-			$name = Give()->donors->get_column( 'name', $id );
+			$name         = Give()->donors->get_column( 'name', $id );
+			$title_prefix = give_get_meta( $id, '_give_donor_title_prefix', true );
 
 			break;
 
+	}
+
+	// If title prefix is set then prepend it to name.
+	if ( ! empty( $title_prefix ) ) {
+		$name = "{$title_prefix}. {$name}";
 	}
 
 	return trim( $name );
