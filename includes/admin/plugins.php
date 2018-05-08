@@ -142,9 +142,11 @@ function give_recently_activated_addons() {
 				break;
 		}
 
-		$give_addons = give_get_recently_activated_addons();
 
 		if ( ! empty( $plugins ) ) {
+
+			$give_addons = give_get_recently_activated_addons();
+
 			foreach ( $plugins as $plugin ) {
 				// Get plugins which has 'Give-' as prefix.
 				if ( stripos( $plugin, 'Give-' ) !== false ) {
