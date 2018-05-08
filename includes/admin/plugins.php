@@ -277,7 +277,7 @@ function give_in_plugin_update_message( $data, $response ) {
 }
 
 // Display upgrade notice.
-add_action( 'in_plugin_update_message-Give/give.php', 'give_in_plugin_update_message', 10, 2 );
+add_action( 'in_plugin_update_message-' . GIVE_PLUGIN_BASENAME, 'give_in_plugin_update_message', 10, 2 );
 
 
 /**
@@ -327,7 +327,7 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 	$check_for_notices = array(
 		$version_parts[0] . '.0',
 		$version_parts[0] . '.0.0',
-		$version_parts[0] . '.' . $version_parts[1],
+		$version_parts[0] . '.' . $version_parts[1] . '.' . '0',
 	);
 
 	// Regex to extract Upgrade notice from the readme.txt file.
@@ -355,7 +355,9 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
 				$upgrade_notice .= '</p>';
 			}
 
-			break;
+			if ( ! empty( $upgrade_notice ) ) {
+				break;
+			}
 		}
 	}
 

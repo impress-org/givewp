@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.1.1
+Stable tag: 2.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.1.3: =
+
 
 = 2.1.2: May 4th, 2018 =
 * Fix: We found another conflict with the new "maximum" donation amount field and existing forms. This time forms NOT using custom fields would incorrectly display a validation error about a custom amount which prevented the donor from giving. [#3159](https://github.com/wordimpress/give/issues/3159)
