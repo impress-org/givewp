@@ -1098,6 +1098,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function is_setting_page( $tab = '', $section = '' ) {
 			$is_setting_page = false;
 
+			if( ! is_admin() ) {
+				return $is_setting_page;
+			}
+
 			// Check fo setting tab.
 			if ( ! empty( $tab ) ) {
 				$is_setting_page = ( $tab === give_get_current_setting_tab() );

@@ -466,8 +466,6 @@ function give_donation_limit( $field ) {
 					break;
 			}
 
-			$amount = give_format_amount( give_maybe_sanitize_amount( $field_options['value'][ $amount_range ] ), array( 'sanitize' => false ) );
-
 			echo '<span class=give-minmax-wrap>';
 			printf( '<label for="%1$s_give_donation_limit_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $price_field_labels ) );
 
@@ -478,8 +476,8 @@ function give_donation_limit( $field ) {
 					type="text"
 					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo esc_attr( $amount ); ?>"
-					placeholder="<?php echo $field_options['attributes']['placeholder']; ?>"
+					value="<?php echo give_format_decimal( esc_attr( $field_options['value'][ $amount_range ] ) ); ?>"
+					placeholder="<?php echo give_format_decimal( $field_options['options'][ $amount_range ] ); ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php

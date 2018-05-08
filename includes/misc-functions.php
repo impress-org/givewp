@@ -1898,7 +1898,10 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 	$option_name = Give_Addon_Activation_Banner::get_banner_user_meta_key( $banner_addon_name );
 	$data        = array();
 
-	if ( ! isset( $GLOBALS['give_addon_activated_by_user'] ) ) {
+	if (
+		! isset( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] )
+		|| empty( $GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] )
+	) {
 		$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array();
 
 		// Get the meta of activation banner by user.
