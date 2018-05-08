@@ -210,9 +210,11 @@ final class Give_Payment {
 	protected $status = 'pending';
 
 	/**
+	 * Donation Status.
+	 *
 	 * @var string
 	 */
-	protected $post_status = 'pending'; // Same as $status but here for backwards compat
+	protected $post_status = 'pending'; // Same as $status but here for backwards compat.
 
 	/**
 	 * When updating, the old status prior to the change
@@ -400,7 +402,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int|bool $payment_id A given payment
+	 * @param  int|bool $payment_id A given payment.
 	 *
 	 * @return mixed void|false
 	 */
@@ -446,8 +448,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key   The property name
-	 * @param  mixed  $value The value of the property
+	 * @param  string $key   The property name.
+	 * @param  mixed  $value The value of the property.
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -471,7 +473,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $name The attribute to get
+	 * @param  string $name The attribute to get.
 	 *
 	 * @return boolean|null       If the item is set or not
 	 */
@@ -489,7 +491,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  int $payment_id The payment ID
+	 * @param  int $payment_id The payment ID.
 	 *
 	 * @return bool            If the setup was successful or not
 	 */
@@ -559,7 +561,7 @@ final class Give_Payment {
 
 			// User based.
 			$this->ip          = $this->setup_ip();
-			$this->customer_id = $this->setup_donor_id(); // Backward compatibility
+			$this->customer_id = $this->setup_donor_id(); // Backward compatibility.
 			$this->donor_id    = $this->setup_donor_id();
 			$this->user_id     = $this->setup_user_id();
 			$this->email       = $this->setup_email();
@@ -581,7 +583,7 @@ final class Give_Payment {
 			foreach ( $donation_vars as $donation_var => $value ) {
 				$this->$donation_var = $value;
 			}
-		}
+		} // End if().
 
 		/**
 		 * Fires after payment setup.
@@ -643,7 +645,7 @@ final class Give_Payment {
 		if ( empty( $this->key ) ) {
 
 			$auth_key             = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-			$this->key            = strtolower( md5( $this->email . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );  // Unique key
+			$this->key            = strtolower( md5( $this->email . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );  // Unique key.
 			$this->pending['key'] = $this->key;
 		}
 
@@ -686,7 +688,7 @@ final class Give_Payment {
 			'post_parent'   => $this->parent_payment,
 		), $payment_data );
 
-		// Create a blank payment
+		// Create a blank payment.
 		$payment_id = wp_insert_post( $args );
 
 		if ( ! empty( $payment_id ) ) {
@@ -749,7 +751,7 @@ final class Give_Payment {
 				array_map( 'maybe_serialize', $payment_data )
 			);
 
-			if( ! empty( $custom_payment_meta ) ) {
+			if ( ! empty( $custom_payment_meta ) ) {
 				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key deprecated. We are not using this meta key for storing payment meta but your custom meta data will be store because we added backward compatibility. Please change your logic because in future we can remove it.', 'give' ), '2.0.0' );
 
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
@@ -768,7 +770,7 @@ final class Give_Payment {
 			}
 
 			$this->new = true;
-		}// End if().
+		} // End if().
 
 		return $this->ID;
 
@@ -879,10 +881,6 @@ final class Give_Payment {
 						$this->update_meta( '_give_payment_donor_id', $this->customer_id );
 						break;
 
-					// case 'user_id':
-					// 	$this->update_meta( '_give_payment_user_id', $this->user_id );
-					// 	break;
-
 					case 'form_title':
 						$this->update_meta( '_give_payment_form_title', $this->form_title );
 						break;
@@ -982,8 +980,8 @@ final class Give_Payment {
 						 */
 						do_action( 'give_payment_save', $this, $key );
 						break;
-				}// End switch().
-			}// End foreach().
+				} // End switch().
+			} // End foreach().
 
 			if ( 'pending' !== $this->status ) {
 
@@ -1019,7 +1017,7 @@ final class Give_Payment {
 
 			$this->pending = array();
 			$saved         = true;
-		}// End if().
+		} // End if().
 
 		if ( true === $saved ) {
 			$this->setup_payment( $this->ID );
@@ -1034,9 +1032,9 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The donation form to add
-	 * @param  array $args    Other arguments to pass to the function
-	 * @param  array $options List of donation options
+	 * @param  int   $form_id The donation form to add.
+	 * @param  array $args    Other arguments to pass to the function.
+	 * @param  array $options List of donation options.
 	 *
 	 * @return bool           True when successful, false otherwise
 	 */
@@ -1127,8 +1125,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The form ID to remove
-	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  int   $form_id The form ID to remove.
+	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id).
 	 *
 	 * @return bool           If the item was removed or not
 	 */
@@ -1170,7 +1168,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string|bool $note The note to add
+	 * @param  string|bool $note The note to add.
 	 *
 	 * @return bool           If the note was specified or not
 	 */
@@ -1298,7 +1296,7 @@ final class Give_Payment {
 			 */
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
 
-		}// End if().
+		} // End if().
 
 		return $updated;
 
@@ -1326,8 +1324,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string  $meta_key The Meta Key
-	 * @param  boolean $single   Return single item or array
+	 * @param  string  $meta_key The Meta Key.
+	 * @param  boolean $single   Return single item or array.
 	 *
 	 * @return mixed             The value from the post meta
 	 */
@@ -1367,9 +1365,9 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key   The meta key to update
-	 * @param  string $meta_value The meta value
-	 * @param  string $prev_value Previous meta value
+	 * @param  string $meta_key   The meta key to update.
+	 * @param  string $meta_value The meta value.
+	 * @param  string $prev_value Previous meta value.
 	 *
 	 * @return int|bool           Meta ID if the key didn't exist, true on successful update, false on failure
 	 */
@@ -1455,9 +1453,9 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
-	 * @param  bool $alter_customer_value          If the method should reduce the donor value
-	 * @param  bool $alter_customer_purchase_count If the method should reduce the donor's purchase count
+	 * @param  bool $alter_store_earnings          If the method should alter the store earnings.
+	 * @param  bool $alter_customer_value          If the method should reduce the donor value.
+	 * @param  bool $alter_customer_purchase_count If the method should reduce the donor's purchase count.
 	 *
 	 * @return void
 	 */
@@ -2063,7 +2061,7 @@ final class Give_Payment {
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $args
+	 * @param array $args List of arguments.
 	 *
 	 * @return string
 	 */
