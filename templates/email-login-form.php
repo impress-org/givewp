@@ -86,11 +86,24 @@ Give()->notices->render_frontend_notices();
 ?>
     <div class="give-form">
         <form method="post" id="give-email-access-form">
-            <p><?php echo apply_filters( 'give_email_access_welcome_message', __( 'Please verify your email to access your donation history.', 'give' ) ); ?></p>
+            <p>
+				<?php
+				/**
+				 * Filter to modify email access welcome message
+				 *
+				 * @since 2.1.3
+				 *
+				 * @param string $message email access welcome message
+				 *
+				 * @return string $message email access welcome message
+				 */
+				echo esc_html( apply_filters( 'give_email_access_welcome_message', __( 'Please verify your email to access your donation history.', 'give' ) ) );
+				?>
+            </p>
 
-            <label for="give-email"><?php _e( 'Donation Email:', 'give' ); ?></label>
+            <label for="give-email"><?php esc_attr_e( 'Donation Email:', 'give' ); ?></label>
             <input id="give-email" type="email" name="give_email" value=""
-                   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>
+                   placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"/>
             <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
             <input type="hidden" name="give_action" value="email_access_form_login"/>
             <input type="hidden" name="give_access_page" value="<?php the_ID(); ?>"/>
@@ -115,7 +128,7 @@ Give()->notices->render_frontend_notices();
                 <input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>
 
-            <input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
+            <input type="submit" class="give-submit" value="<?php esc_attr_e( 'Verify Email', 'give' ); ?>"/>
         </form>
     </div>
 <?php
