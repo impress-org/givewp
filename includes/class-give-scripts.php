@@ -329,7 +329,8 @@ class Give_Scripts {
 
 		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 			'ajaxurl'                    => give_get_ajax_url(),
-			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ), // Do not use this nonce. Its deprecated.
+			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ),
+			// Do not use this nonce. Its deprecated.
 			'currency'                   => give_get_currency(),
 			'currency_sign'              => give_currency_filter( '' ),
 			'currency_pos'               => give_get_currency_position(),
@@ -362,7 +363,7 @@ class Give_Scripts {
 					'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 				)
 			),
-			'confirm_email_sent_message' => __( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
+			'confirm_email_sent_message' => apply_filters( 'give_email_access_mail_send', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ),
 			'ajax_vars'                  => apply_filters( 'give_global_ajax_vars', array(
 				'ajaxurl'         => give_get_ajax_url(),
 				'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
