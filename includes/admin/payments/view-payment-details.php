@@ -62,9 +62,9 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 <div class="wrap give-wrap">
 
 	<h1 id="transaction-details-heading" class="wp-heading-inline">
-	<?php
+		<?php
 		printf(
-			/* translators: %s: donation number */
+		/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
 			$number
 		);
@@ -80,7 +80,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 			));
 		}
 		?>
-		</h1>
+	</h1>
 
 	<?php
 	/**
@@ -242,7 +242,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										<div id="publishing-action">
 
 											<input type="submit" class="button button-primary right"
-											       value="<?php _e( 'Save Donation', 'give' ); ?>"/>
+													value="<?php _e( 'Save Donation', 'give' ); ?>"/>
 
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
@@ -299,7 +299,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 										$gateway = give_get_payment_gateway( $payment_id );
 										if ( $gateway ) :
-										?>
+											?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
 													<strong><?php _e( 'Gateway:', 'give' ); ?></strong>&nbsp;
@@ -323,10 +323,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										</div>
 
 										<?php
-                                        // Display the transaction ID present.
-                                        // The transaction ID is the charge ID from the gateway.
-                                        // For instance, stripe "ch_BzvwYCchqOy5Nt".
-                                        if ( $transaction_id != $payment_id ) : ?>
+										// Display the transaction ID present.
+										// The transaction ID is the charge ID from the gateway.
+										// For instance, stripe "ch_BzvwYCchqOy5Nt".
+										if ( $transaction_id != $payment_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
 													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway); ?>"></span></strong>&nbsp;
@@ -547,46 +547,54 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<div class="column-container donor-info">
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donor ID:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>
 												<?php
 												if ( ! empty( $donor->id ) ) {
 													printf(
 														'<a href="%1$s">%2$s</a>',
-														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
-														$donor->id
+														esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ),
+														intval( $donor->id )
 													);
 												}
 												?>
-												<span>(<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>)</span>
+												<span>(<a href="#new" class="give-payment-new-donor"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>)</span>
 											</p>
 											<p>
-												<strong><?php _e( 'Donor Since:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
 												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donor Name:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
 												<?php
 												$donor_billing_name = give_get_donor_name_by( $payment_id, 'donation' );
 												$donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
 
 												// Check whether the donor name and WP_User name is same or not.
-												if ( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ) {
-													echo $donor_billing_name . ' (<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>)';
+												if ( $donor_billing_name !== $donor_name ) {
+													echo sprintf(
+														'%1$s (<a href="%2$s">%3$s</a>)',
+														esc_html( $donor_billing_name ),
+														sprintf(
+															esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=%s' ) ),
+															intval( $donor_id )
+														),
+														esc_html( $donor_name )
+													);
 												} else {
-													echo $donor_name;
+													echo esc_html( $donor_name );
 												}
 												?>
 											</p>
 											<p>
-												<strong><?php _e( 'Donor Email:', 'give' ); ?></strong><br>
-												<?php echo $donor->email; ?>
+												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
+												<?php echo esc_attr( $donor->email ); ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Change Donor:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
 												<?php
 												echo Give()->html->donor_dropdown(
 													array(
