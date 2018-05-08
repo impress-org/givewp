@@ -265,6 +265,15 @@ final class Give_Payment {
 	protected $user_id = 0;
 
 	/**
+	 * The Title Prefix/Salutation of the Donor.
+	 *
+	 * @since 2.2
+	 *
+	 * @var string
+	 */
+	protected $title_prefix = '';
+
+	/**
 	 * The first name of the payee
 	 *
 	 * @since  1.5
@@ -722,6 +731,7 @@ final class Give_Payment {
 			// Update Donor Meta once donor is created.
 			$donor->update_meta( '_give_donor_first_name', $this->first_name );
 			$donor->update_meta( '_give_donor_last_name', $this->last_name );
+			$donor->update_meta( '_give_donor_title_prefix', $this->title_prefix );
 
 			$this->customer_id            = $donor->id;
 			$this->pending['customer_id'] = $this->customer_id;
