@@ -666,7 +666,7 @@ function give_user_info_fields( $form_id ) {
 			>
 				<option value="0"><?php echo esc_attr__( 'Title', 'give' ); ?></option>
 				<?php
-				if ( is_array( $title_prefixes ) ) {
+				if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) {
 					foreach ( $title_prefixes as $key => $value ) {
 						?>
 						<option value="<?php echo esc_html( $value ); ?>"><?php echo esc_html( $value ); ?></option>
