@@ -1962,3 +1962,28 @@ function give_get_title_prefixes( $form_id = 0 ) {
 
 	return $title_prefixes;
 }
+
+/**
+ * Get Donor Name with Title Prefix
+ *
+ * @param int|Give_Donor $donor Donor Information.
+ *
+ * @since 2.2
+ *
+ * @return object
+ */
+function give_get_donor_name_with_title( $donor ) {
+
+	if ( ! is_a( $donor, 'Give_Donor' ) ) {
+		$donor = new Give_Donor( $donor );
+	}
+
+	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+
+	// Update Donor name, if non empty title prefix.
+	if ( ! empty( $title_prefix ) ) {
+		$donor->name = "{$title_prefix}. {$donor->name}";
+	}
+
+	return $donor;
+}
