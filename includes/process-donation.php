@@ -54,7 +54,7 @@ function give_process_donation_form() {
 	do_action( 'give_pre_process_donation' );
 
 	// Validate the form $_POST data.
-	$valid_data = give_donation_form_validate_fields();
+	$valid_data = give_donation_form_validate_fields( $post_data );
 
 	/**
 	 * Fires after validating donation form fields.
@@ -273,18 +273,33 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
 /**
  * Donation Form Validate Fields.
  *
- * @access      private
- * @since       1.0
- * @return      bool|array
+ * @param array $post_data List of post data received from donation form.
+ *
+ * @access private
+ * @since  1.0
+ *
+ * @return bool|array
  */
-function give_donation_form_validate_fields() {
+function give_donation_form_validate_fields( $post_data ) {
 
-	// Check if there is $_POST.
-	if ( empty( $_POST ) ) {
+	// Bail out, if not valid data.
+	if ( ! is_array( $post_data ) || ( is_array( $post_data ) && count( $post_data ) === 0 ) ) {
 		return false;
 	}
 
-	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	// Validate Honeypot First.
+	if ( ! empty( $post_data['give-honeypot'] ) ) {
+		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+	}
+
+	// Check spam detect.
+	if (
+		isset( $post_data['action'] ) &&
+		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) &&
+		give_is_spam_donation()
+	) {
+		give_set_error( 'spam_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
+	}
 
 	// Start an array to collect valid data.
 	$valid_data = array(
@@ -295,21 +310,10 @@ function give_donation_form_validate_fields() {
 		'new_user_data'    => array(),   // New user collected data.
 		'login_user_data'  => array(),   // Login user collected data.
 		'guest_user_data'  => array(),   // Guest user collected data.
-		'cc_info'          => give_donation_form_validate_cc(),// Credit card info.
+		'cc_info'          => give_donation_form_validate_cc(), // Credit card info.
 	);
 
-	// Validate Honeypot First.
-	if ( ! empty( $_POST['give-honeypot'] ) ) {
-		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
-	}
-
-	// Check spam detect.
-	if ( isset( $_POST['action'] )
-	     && give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
-	     && give_is_spam_donation()
-	) {
-		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
-	}
+	$form_id = intval( $post_data['give-form-id'] );
 
 	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
@@ -317,20 +321,32 @@ function give_donation_form_validate_fields() {
 	}
 
 	if ( is_user_logged_in() ) {
+
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
-	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' && ! empty( $_POST['give_create_account'] ) ) {
+	} elseif (
+		isset( $post_data['give-purchase-var'] ) &&
+		'needs-to-register' === $post_data['give-purchase-var'] &&
+		! empty( $post_data['give_create_account'] )
+	) {
+
 		// Set new user registration as required.
 		$valid_data['need_new_user'] = true;
+
 		// Validate new user data.
 		$valid_data['new_user_data'] = give_donation_form_validate_new_user();
-		// Check if login validation is needed.
-	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-login' ) {
+	} elseif (
+		isset( $post_data['give-purchase-var'] ) &&
+		'needs-to-login' === $post_data['give-purchase-var']
+	) {
+
 		// Set user login as required.
 		$valid_data['need_user_login'] = true;
+
 		// Validate users login info.
 		$valid_data['login_user_data'] = give_donation_form_validate_user_login();
 	} else {
+
 		// Not registering or logging in, so setup guest user data.
 		$valid_data['guest_user_data'] = give_donation_form_validate_guest_user();
 	}
