@@ -689,8 +689,20 @@ function give_confirm_email_for_donation_access() {
 		}
 
 		$return['status']  = 'success';
+
+		/**
+		 * Filter to modify access mail send notice
+		 *
+		 * @since 2.1.3
+		 *
+		 * @param string Send notice message for email access.
+		 *
+		 * @return  string $message Send notice message for email access.
+		 */
+		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+
 		$return['message'] = Give()->notices->print_frontend_notice(
-			__( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
+			$message,
 			false,
 			'success'
 		);
@@ -699,11 +711,28 @@ function give_confirm_email_for_donation_access() {
 	} else {
 		$value             = Give()->email_access->verify_throttle / 60;
 		$return['status']  = 'error';
-		$return['message'] = Give()->notices->print_frontend_notice(
+
+		/**
+		 * Filter to modify email access exceed notices message.
+		 *
+		 * @since 2.1.3
+		 *
+		 * @param string $message email access exceed notices message
+		 * @param int $value email access exceed times
+		 *
+		 * @return string $message email access exceed notices message
+		 */
+		$message = (string) apply_filters(
+			'give_email_access_requests_exceed_notice',
 			sprintf(
 				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
 				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 			),
+			$value
+		);
+
+		$return['message'] = Give()->notices->print_frontend_notice(
+			$message,
 			false,
 			'error'
 		);
