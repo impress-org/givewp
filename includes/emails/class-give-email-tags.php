@@ -1222,6 +1222,11 @@ function give_email_tag_email_access_link( $tag_args ) {
 
 		// Generate a new verify key
 		Give()->email_access->set_verify_key( $donor_id, $donor->email, $verify_key );
+		// update verify key in email tags.
+		$tag_args['verify_key'] = $verify_key;
+
+		// update donor id in email tags.
+		$tag_args['donor_id'] = $donor_id;
 
 		$access_url = add_query_arg(
 			array(
