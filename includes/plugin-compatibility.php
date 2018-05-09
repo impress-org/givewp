@@ -79,12 +79,12 @@ function give_elementor_hide_shortcodes_button() {
 	/**
 	 * Is the plugin: Elementor activated?
 	 */
-	$is_elementor_active = in_array( 'elementor/elementor.php', get_option( 'active_plugins' ), true ) ? true : false;
+	$is_elementor_active = in_array( 'elementor/elementor.php', get_option( 'active_plugins' ), true );
 
 	/**
 	 * Is this Elementor's editor page?
 	 */
-	$is_elementor_page   = ( 'elementor' === give_clean( $_GET['action'] ) ) ? true : false;
+	$is_elementor_page   = isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] );
 
 	/**
 	 * If Elementor plugin is activated and the user is
