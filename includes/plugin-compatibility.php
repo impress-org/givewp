@@ -62,7 +62,6 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 
 add_action( 'give-settings_save_display', 'give_clear_seo_sitemap_cache_on_settings_change' );
 
-
 /**
  * This is support for the plugin Elementor. This function
  * disables the Give Shortcodes button on the Elementor's
@@ -79,21 +78,14 @@ function give_elementor_hide_shortcodes_button() {
 	/**
 	 * Is the plugin: Elementor activated?
 	 */
-	$is_elementor_active = in_array( 'elementor/elementor.php', get_option( 'active_plugins' ), true );
+	if ( is_plugin_active( 'elementor/elementor.php' ) ) {
 
-	/**
-	 * Is this Elementor's editor page?
-	 */
-	$is_elementor_page   = isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] );
-
-	/**
-	 * If Elementor plugin is activated and the user is
-	 * on the Elementor's editor page, then hide
-	 * Give Shortcodes Button.
-	 */
-	if ( $is_elementor_active && $is_elementor_page ) {
-
-		return false;
+		/**
+		 * Check user is on the Elementor's editor page, then hide Give Shortcodes Button.
+		 */
+		if ( isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] ) ) {
+			return false;
+		}
 	}
 
 	return true;
