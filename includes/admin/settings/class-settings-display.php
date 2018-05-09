@@ -110,8 +110,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Anonymous Donation', 'give' ),
-							'desc'    => __( 'Would you like donors to give option to mark himself/herself anonyous while donaitng.', 'give' ),
+							'name'    => __( 'Anonymous Donations', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability mark himself/herself anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 							'id'      => 'anonymous_donation',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -121,8 +121,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Donor Thought', 'give' ),
-							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
+							'name'    => __( 'Donation Note', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability to add a note to his/her donation? The note will display publicly on the donor wall if they do not select to give anonymously.', 'give' ),
 							'id'      => 'donor_thought',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',

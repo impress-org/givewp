@@ -60,7 +60,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'type'    => 'textbox',
 				'classes' => 'give-hidden give-donors-per-page',
 				'name'    => 'donors_per_page',
-				'label'   => esc_attr__( 'Donor Per Page', 'give' ),
+				'label'   => esc_attr__( 'Donors Per Page', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',

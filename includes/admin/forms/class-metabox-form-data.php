@@ -286,7 +286,7 @@ class Give_MetaBox_Form_Data {
 							'type'    => 'radio_inline',
 							'default' => 'global',
 							'options' => array(
-								'global' => __( 'Global Option', 'give' ),
+								'global'   => __( 'Global Option', 'give' ),
 								'required' => __( 'Required', 'give' ),
 								'optional' => __( 'Optional', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
@@ -294,8 +294,8 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'    => __( 'Anonymous Donation', 'give' ),
-							'desc'    => __( 'Would you like donors to give option to mark himself/herself anonyous while donaitng.', 'give' ),
+							'name'    => __( 'Anonymous Donations', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability mark himself/herself anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 							'id'      => "{$prefix}anonymous_donation",
 							'type'    => 'radio_inline',
 							'default' => 'global',
@@ -725,7 +725,8 @@ class Give_MetaBox_Form_Data {
 						$is_active = $active_tab === $form_data_tab['id'] ? true : false;
 						?>
 						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
-							<a href="#<?php echo $form_data_tab['id']; ?>" data-tab-id="<?php echo $form_data_tab['id']; ?>">
+							<a href="#<?php echo $form_data_tab['id']; ?>"
+							   data-tab-id="<?php echo $form_data_tab['id']; ?>">
 								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
 									<?php echo $form_data_tab['icon-html']; ?>
 								<?php else : ?>
@@ -737,7 +738,8 @@ class Give_MetaBox_Form_Data {
 								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
 										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
-											<a href="#<?php echo $sub_tab['id']; ?>" data-tab-id="<?php echo $sub_tab['id']; ?>">
+											<a href="#<?php echo $sub_tab['id']; ?>"
+											   data-tab-id="<?php echo $sub_tab['id']; ?>">
 												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
 													<?php echo $sub_tab['icon-html']; ?>
 												<?php else : ?>
@@ -759,7 +761,8 @@ class Give_MetaBox_Form_Data {
 					// Determine if current panel is active.
 					$is_active = $active_tab === $setting['id'] ? true : false;
 					?>
-					<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
+					<div id="<?php echo $setting['id']; ?>"
+						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 						<?php if ( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
 								<?php give_render_field( $field ); ?>
@@ -1264,7 +1267,11 @@ class Give_MetaBox_Form_Data {
 				if ( ! empty( $setting_field['data_type'] ) && 'price' === $setting_field['data_type'] ) {
 					$meta_value = $meta_value ?
 						give_sanitize_amount_for_db( $meta_value ) :
-						( in_array( $setting_field['id'], array( '_give_set_price', '_give_custom_amount_minimum', '_give_set_goal' ) ) ?
+						( in_array( $setting_field['id'], array(
+							'_give_set_price',
+							'_give_custom_amount_minimum',
+							'_give_set_goal'
+						) ) ?
 							give_sanitize_amount_for_db( '1.00' ) :
 							0 );
 				}

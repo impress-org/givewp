@@ -734,6 +734,7 @@ function give_user_info_fields( $form_id ) {
 		<?php if ( give_is_anonymous_donation_field_enabled( $form_id ) ) : ?>
 			<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0; ?>
 			<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-anonymous-donation">
 				<input
 						type="checkbox"
 						class="give-input required"
@@ -743,7 +744,6 @@ function give_user_info_fields( $form_id ) {
 					<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 					<?php checked( 1, $is_anonymous_donation ); ?>
 				>
-				<label class="give-label" for="give-anonymous-donation">
 					<?php _e( 'Make this an anonymous donation', 'give' ); ?>
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
@@ -760,7 +760,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( __( 'Need description.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Would you like to prevent this donation from being displayed publicy? ', 'give' ) ); ?>
 				</label>
 
 				<textarea
