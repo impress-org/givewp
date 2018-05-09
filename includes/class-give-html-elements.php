@@ -113,15 +113,19 @@ class Give_HTML_Elements {
 			'data'        => array(
 				'search-type' => 'form',
 			),
+			'query_args' => array()
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$form_args = array(
-			'post_type'      => 'give_forms',
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-			'posts_per_page' => $args['number'],
+		$form_args = wp_parse_args(
+			$args['query_args'],
+			array(
+				'post_type'      => 'give_forms',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'posts_per_page' => $args['number'],
+			)
 		);
 
 		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
@@ -130,7 +134,8 @@ class Give_HTML_Elements {
 		$forms = Give_Cache::get_db_query( $cache_key );
 
 		if ( is_null( $forms ) ) {
-			$forms = get_posts( $form_args );
+			$forms = new WP_Query( $form_args );
+			$forms = $forms->posts;
 			Give_Cache::set_db_query( $cache_key, $forms );
 		}
 
@@ -141,14 +146,16 @@ class Give_HTML_Elements {
 			$options[ $args['selected'] ] = get_the_title( $args['selected'] );
 		}
 
-		if ( $forms ) {
+		$options[0] = esc_html__( 'No forms found.', 'give' );
+		if ( ! empty( $forms ) ) {
 			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
-				$form_title                     = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$form_title = empty( $form->post_title )
+					? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID )
+					: $form->post_title;
+
 				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
-		} else {
-			$options[0] = esc_html__( 'No forms found.', 'give' );
 		}
 
 		$output = $this->select( array(

@@ -492,10 +492,11 @@ class Give_Addon_Activation_Banner {
 	 * Get list of add-on last activated.
 	 *
 	 * @since 2.1.0
+	 *
 	 * @return mixed|array
 	 */
 	public function get_recently_activated_addons() {
-		return get_option( 'give_recently_activated_addons', array() );
+		return give_get_recently_activated_addons();
 	}
 
 	/**
