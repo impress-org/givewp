@@ -440,29 +440,42 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
 	$variable_prices = give_has_variable_prices( $form_id );
 
+	$verified_stat = false;
+
 	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ) ) ) {
 
 		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
 
 		if ( $price_level_amount == $amount ) {
-			return true;
+			$verified_stat =  true;
 		}
 	}
 
-	switch ( $amount_range ) {
-		case 'minimum' :
-			if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-				return false;
-			}
-			break;
-		case 'maximum' :
-			if ( give_get_form_maximum_price( $form_id ) < $amount ) {
-				return false;
-			}
-			break;
+	if ( ! $verified_stat ) {
+		switch ( $amount_range ) {
+			case 'minimum' :
+				if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+					$verified_stat = false;
+				}
+				break;
+			case 'maximum' :
+				if ( give_get_form_maximum_price( $form_id ) < $amount ) {
+					$verified_stat = false;
+				}
+				break;
+		}
 	}
 
-	return true;
+	/**
+	 * Filter the verify amount
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param bool    $verified_stat Was verification passed or not?
+	 * @param string  $amount_range  Type of the amount.
+	 * @param integer $form_id       Give Donation Form ID.
+	 */
+	return apply_filters( 'give_verify_minimum_maximum_price', $verified_stat, $amount_range, $form_id );
 }
 
 /**
