@@ -36,17 +36,18 @@ $goal = apply_filters( 'give_goal_amount_target_output', $form->goal, $form_id, 
 
 switch ( $goal_format ) {
 
-	case  'donation':
-		$donations_completed = give_get_form_sales_stats( $form_id );
+	case 'donation':
+		$donations_completed = $form->sales;
 		$donations_goal      = give_get_meta( $form_id, '_give_number_of_donation_goal', true );
 		$progress            = round( ( $donations_completed / $donations_goal ) * 100, 2 );
 		$progress_bar_value  = $donations_completed >= $donations_goal ? 100 : $progress;
 		break;
 
 	case 'donors':
-		$donor_goal = give_get_meta( $form_id, '_give_number_of_donor_goal', true );
-		$donors     = give_get_form_donor_count( $form_id );
-		$progress   = $progress_bar_value = round( ( $donors / $donor_goal ) * 100, 2 );
+		$donor_goal         = give_get_meta( $form_id, '_give_number_of_donor_goal', true );
+		$donors             = give_get_form_donor_count( $form_id );
+		$progress_bar_value = round( ( $donors / $donor_goal ) * 100, 2 );
+		$progress           = $progress_bar_value;
 		break;
 
 	case 'percentage':
@@ -54,8 +55,8 @@ switch ( $goal_format ) {
 		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
-	default :
-		$progress            = round( ( $income / $goal ) * 100, 2 );
+	default:
+		$progress           = round( ( $income / $goal ) * 100, 2 );
 		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
