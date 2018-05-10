@@ -1745,7 +1745,7 @@ function give_donation_form_goal( $field ) {
 
 
 	/**
-	 * Action to add HTML after doantion form radio button is display
+	 * Action to add HTML after donation form radio button is display
 	 *
 	 * @since 2.1.3
 	 *

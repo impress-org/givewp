@@ -14,7 +14,7 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 	return false;
 }
 
-$goal_format = give_get_meta( $form_id, '_give_goal_format', true );
+$goal_format = give_get_form_goal_format( $form_id );
 $price       = give_get_meta( $form_id, '_give_set_price', true );
 $color       = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
