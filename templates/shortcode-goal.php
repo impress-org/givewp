@@ -27,10 +27,6 @@ $show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTE
  */
 $income = apply_filters( 'give_goal_amount_raised_output', $form->get_earnings(), $form_id, $form );
 
-echo '<pre>';
-var_dump( $income );
-echo '</pre>';
-
 /**
  * Filter the form
  *
