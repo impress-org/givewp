@@ -367,7 +367,7 @@ class Give_MetaBox_Form_Data {
 						'name'        => __( 'Goal Format', 'give' ),
 						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give' ),
 						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio',
+						'type'        => 'donation_form_goal',
 						'default'     => 'amount',
 						'options'     => array(
 							'amount'     => __( 'Amount Raised', 'give' ),

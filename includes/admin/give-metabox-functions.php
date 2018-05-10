@@ -1694,3 +1694,65 @@ function give_repeater_field_set_editor_id( $field_name, $field ) {
 }
 
 add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
+
+/**
+ * Output Donation form radio input box.
+ *
+ * @since  2.1.3
+ *
+ * @param  array $field {
+ *                              Optional. Array of radio field arguments.
+ *
+ * @type string $id Field ID. Default ''.
+ * @type string $style CSS style for input field. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value Value of input field. Default ''.
+ * @type string $name Name of input field. Default ''.
+ * @type string $description Description of input field. Default ''.
+ * @type array $attributes List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array $options List of options. Default array().
+ *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' =>
+ *                                               'Disable' )
+ * }
+ * @return void
+ */
+function give_donation_form_goal( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+
+	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
+
+	foreach ( $field['options'] as $key => $value ) {
+
+		echo '<li><label><input
+                name="' . give_get_field_name( $field ) . '"
+                value="' . esc_attr( $key ) . '"
+                type="radio"
+                style="' . esc_attr( $field['style'] ) . '"
+                ' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
+		     . give_get_custom_attributes( $field ) . '
+                /> ' . esc_html( $value ) . '</label>
+        </li>';
+	}
+	echo '</ul>';
+
+
+	/**
+	 * Action to add HTML after doantion form radio button is display
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param array $field Array of radio field arguments
+	 */
+	do_action( 'give_donation_form_goal', $field );
+
+	echo give_get_field_description( $field );
+	echo '</fieldset>';
+}
