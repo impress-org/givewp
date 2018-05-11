@@ -957,29 +957,36 @@ function give_register_and_login_new_user( $user_data = array() ) {
  *
  * @access  private
  * @since   1.0
+ *
  * @return  array|bool
  */
 function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Initialize user.
-	$user    = false;
-	$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+	$user      = false;
+	$is_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX;
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	if ( $is_ajax ) {
+
 		// Do not create or login the user during the ajax submission (check for errors only).
 		return true;
 	} elseif ( is_user_logged_in() ) {
+
 		// Set the valid user as the logged in collected data.
 		$user = $valid_data['logged_in_user'];
-	} elseif ( $valid_data['need_new_user'] === true || $valid_data['need_user_login'] === true ) {
+	} elseif ( true === $valid_data['need_new_user'] || true === $valid_data['need_user_login'] ) {
+
 		// New user registration.
-		if ( $valid_data['need_new_user'] === true ) {
+		if ( true === $valid_data['need_new_user'] ) {
+
 			// Set user.
 			$user = $valid_data['new_user_data'];
+
 			// Register and login new user.
 			$user['user_id'] = give_register_and_login_new_user( $user );
-			// User login
-		} elseif ( $valid_data['need_user_login'] === true && ! $is_ajax ) {
+
+		} elseif ( true === $valid_data['need_user_login'] && ! $is_ajax ) {
 
 			/**
 			 * The login form is now processed in the give_process_donation_login() function.
@@ -988,43 +995,43 @@ function give_get_donation_form_user( $valid_data = array() ) {
 			 *
 			 * This also ensures that the donor is logged in correctly if they click "Donation" instead of submitting the login form, meaning the donor is logged in during the donation process.
 			 */
-			// Set user.
 			$user = $valid_data['login_user_data'];
+
 			// Login user.
 			give_log_user_in( $user['user_id'], $user['user_login'], $user['user_pass'] );
 		}
 	}
 
 	// Check guest checkout.
-	if ( false === $user && false === give_logged_in_only( $_POST['give-form-id'] ) ) {
-		// Set user
+	if ( false === $user && false === give_logged_in_only( $post_data['give-form-id'] ) ) {
+
+		// Set user.
 		$user = $valid_data['guest_user_data'];
 	}
 
 	// Verify we have an user.
 	if ( false === $user || empty( $user ) ) {
-		// Return false.
 		return false;
 	}
 
 	// Get user first name.
 	if ( ! isset( $user['user_first'] ) || strlen( trim( $user['user_first'] ) ) < 1 ) {
-		$user['user_first'] = isset( $_POST['give_first'] ) ? strip_tags( trim( $_POST['give_first'] ) ) : '';
+		$user['user_first'] = isset( $post_data['give_first'] ) ? strip_tags( trim( $post_data['give_first'] ) ) : '';
 	}
 
 	// Get user last name.
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
-		$user['user_last'] = isset( $_POST['give_last'] ) ? strip_tags( trim( $_POST['give_last'] ) ) : '';
+		$user['user_last'] = isset( $post_data['give_last'] ) ? strip_tags( trim( $post_data['give_last'] ) ) : '';
 	}
 
 	// Get the user's billing address details.
 	$user['address']            = array();
-	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? give_clean( $_POST['card_address'] ) : false;
-	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? give_clean( $_POST['card_address_2'] ) : false;
-	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? give_clean( $_POST['card_city'] ) : false;
-	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? give_clean( $_POST['card_state'] ) : false;
-	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? give_clean( $_POST['card_zip'] ) : false;
-	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : false;
+	$user['address']['line1']   = ! empty( $post_data['card_address'] ) ? $post_data['card_address'] : false;
+	$user['address']['line2']   = ! empty( $post_data['card_address_2'] ) ? $post_data['card_address_2'] : false;
+	$user['address']['city']    = ! empty( $post_data['card_city'] ) ? $post_data['card_city'] : false;
+	$user['address']['state']   = ! empty( $post_data['card_state'] ) ? $post_data['card_state'] : false;
+	$user['address']['zip']     = ! empty( $post_data['card_zip'] ) ? $post_data['card_zip'] : false;
+	$user['address']['country'] = ! empty( $post_data['billing_country'] ) ? $post_data['billing_country'] : false;
 
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
