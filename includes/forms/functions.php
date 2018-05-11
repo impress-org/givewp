@@ -973,7 +973,7 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @return int $donors Total number of donors that donated to the form.
 			 */
-			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form_id ), $form_id, $form );
+			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default :
 			$actual = $income;
