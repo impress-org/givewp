@@ -1283,13 +1283,49 @@ function give_set_form_closed_status( $form_id ) {
 			// Verify whether the form is closed or not after processing data based on goal format.
 			switch ( $goal_format ) {
 				case 'donation':
-					$closed = $form->get_goal() <= $form->get_sales();
+					/**
+					 * Filter to modify donation number of sales
+					 *
+					 * @since 2.1.3
+					 *
+					 * @param int $donations Total number of donations made to the form.
+					 * @param int $form_id Donation Form ID.
+					 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+					 *
+					 * @return int $donations Total number of donations made to the form.
+					 */
+					$donations_completed = apply_filters( 'give_goal_donations_raised_output', $form->get_sales(), $form_id, $form );
+					$closed              = $form->get_goal() <= $donations_completed;
 					break;
 				case 'donors':
-					$closed = $form->get_goal() <= give_get_form_donor_count( $form->ID );
+					/**
+					 * Filter to modify total number if donor for the donation form.
+					 *
+					 * @since 2.1.3
+					 *
+					 * @param int $donors Total number of donors that donated to the form.
+					 * @param int $form_id Donation Form ID.
+					 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+					 *
+					 * @return int $donors Total number of donors that donated to the form.
+					 */
+					$donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form_id ), $form_id, $form );
+					$closed = $form->get_goal() <= $donors;
 					break;
 				default :
-					$closed = $form->get_goal() <= $form->get_earnings();
+					/**
+					 * Filter the form income
+					 *
+					 * @since 2.1.3
+					 *
+					 * @param int $income Total earning for the donation form.
+					 * @param int $form_id Donation Form ID.
+					 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+					 *
+					 * @return int $income Total earning for the donation form.
+					 */
+					$income = apply_filters( 'give_goal_amount_raised_output', $form->get_earnings(), $form_id, $form );
+					$closed = $form->get_goal() <= $income;
 					break;
 			}
 
