@@ -962,7 +962,18 @@ function give_goal_progress_stats( $form ) {
 			$actual = $donations;
 			break;
 		case 'donors':
-			$actual = give_get_form_donor_count( $form->ID );
+			/**
+			 * Filter to modify total number if donor for the donation form.
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int $donors Total number of donors that donated to the form.
+			 * @param int $form_id Donation Form ID.
+			 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+			 *
+			 * @return int $donors Total number of donors that donated to the form.
+			 */
+			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form_id ), $form_id, $form );
 			break;
 		default :
 			$actual = $income;

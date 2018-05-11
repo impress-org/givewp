@@ -48,7 +48,7 @@ switch ( $goal_format ) {
 		 *
 		 * @return int $donations Total number of donations made to the form.
 		 */
-		$donations_completed = apply_filters( 'give_goal_sales_target_output', $form->sales, $form_id, $form );
+		$donations_completed = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form_id, $form );
 		$donations_goal      = give_get_meta( $form_id, '_give_number_of_donation_goal', true );
 		$progress            = round( ( $donations_completed / $donations_goal ) * 100, 2 );
 		$progress_bar_value  = $donations_completed >= $donations_goal ? 100 : $progress;
