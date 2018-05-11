@@ -279,6 +279,64 @@ class Give_Donor {
 	}
 
 	/**
+	 * Returns the saved address for a donor
+	 *
+	 * @access public
+	 *
+	 * @since  2.1.3
+	 *
+	 * @param array $args donor address.
+	 *
+	 * @return array The donor's address, if any
+	 */
+	public function get_donor_address( $args = array() ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'address_type' => 'billing',
+			)
+		);
+
+		$default_address = array(
+			'line1'   => '',
+			'line2'   => '',
+			'city'    => '',
+			'state'   => '',
+			'country' => '',
+			'zip'     => '',
+		);
+
+		// Backward compatibility.
+		if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
+			// Backward compatibility for user id param.
+			$by_user_id = get_user_by( 'id', $this->id ) ? true : false;
+
+			if ( $by_user_id ) {
+				return wp_parse_args(
+					(array) get_user_meta( $donor_id, '_give_user_address', true ),
+					$default_address
+				);
+			}
+		}
+
+		if ( ! $this->id || empty( $this->address ) || ! array_key_exists( $args['address_type'], $this->address ) ) {
+			return $default_address;
+		}
+
+		switch ( true ) {
+			case is_string( end( $this->address[ $args['address_type'] ] ) ):
+				$address = wp_parse_args( $this->address[ $args['address_type'] ], $default_address );
+				break;
+
+			case is_array( end( $this->address[ $args['address_type'] ] ) ):
+				$address = wp_parse_args( array_shift( $this->address[ $args['address_type'] ] ), $default_address );
+				break;
+		}
+
+		return $address;
+	}
+
+	/**
 	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
 	 * @since  1.0
