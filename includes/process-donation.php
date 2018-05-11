@@ -1283,49 +1283,56 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  * @return bool
  */
 function give_validate_donation_amount( $valid_data ) {
-	$data = $_POST;
+
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	/* @var Give_Donate_Form $form */
-	$form = new Give_Donate_Form( $data['give-form-id'] );
+	$form = new Give_Donate_Form( $post_data['give-form-id'] );
 
 	$donation_level_matched = false;
 
 	if ( $form->is_set_type_donation_form() ) {
+
 		// Sanitize donation amount.
-		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
+		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'] );
 
 		// Backward compatibility.
-		if ( $form->is_custom_price( $data['give-amount'] ) ) {
-			$_POST['give-price-id'] = 'custom';
+		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
+			$post_data['give-price-id'] = 'custom';
 		}
 
 		$donation_level_matched = true;
 
 	} elseif ( $form->is_multi_type_donation_form() ) {
 
+		$variable_prices = $form->get_prices();
+
 		// Bailout.
-		if ( ! ( $variable_prices = $form->get_prices() ) ) {
+		if ( ! $variable_prices ) {
 			return false;
 		}
 
 		// Sanitize donation amount.
-		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
+		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'] );
+		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ) );
 
-		if ( $data['give-amount'] === give_maybe_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ) ) ) {
+		if ( $post_data['give-amount'] === $variable_price_option_amount ) {
 			return true;
 		}
 
-		if ( $form->is_custom_price( $data['give-amount'] ) ) {
-			$_POST['give-price-id'] = 'custom';
+		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
+			$post_data['give-price-id'] = 'custom';
 		} else {
+
 			// Find correct donation level from all donation levels.
 			foreach ( $variable_prices as $variable_price ) {
+
 				// Sanitize level amount.
 				$variable_price['_give_amount'] = give_maybe_sanitize_amount( $variable_price['_give_amount'] );
 
 				// Set first match donation level ID.
-				if ( $data['give-amount'] === $variable_price['_give_amount'] ) {
-					$_POST['give-price-id'] = $variable_price['_give_id']['level_id'];
+				if ( $post_data['give-amount'] === $variable_price['_give_amount'] ) {
+					$post_data['give-price-id'] = $variable_price['_give_id']['level_id'];
 					break;
 				}
 			}
@@ -1333,10 +1340,10 @@ function give_validate_donation_amount( $valid_data ) {
 
 		// If donation amount is not find in donation levels then check if form has custom donation feature enable or not.
 		// If yes then set price id to custom if amount is greater then custom minimum amount (if any).
-		if ( ! empty( $_POST['give-price-id'] ) ) {
+		if ( ! empty( $post_data['give-price-id'] ) ) {
 			$donation_level_matched = true;
 		}
-	}// End if().
+	} // End if().
 
 	return ( $donation_level_matched ? true : false );
 }
