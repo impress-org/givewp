@@ -38,13 +38,21 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  * @return void
  */
 function give_load_ajax_gateway() {
-	if ( isset( $_POST['give_payment_mode'] ) ) {
+
+	$post_data = give_clean( $_POST ); // WPCS: input var ok.
+
+	if ( isset( $post_data['give_payment_mode'] ) ) {
+
+		$args = array(
+			'id_prefix' => $post_data['give_form_id_prefix'],
+		);
+
 		/**
 		 * Fire to render donation form.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form', $_POST['give_form_id'] );
+		do_action( 'give_donation_form', $post_data['give_form_id'], $args );
 
 		exit();
 	}
