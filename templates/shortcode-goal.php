@@ -14,11 +14,11 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 	return false;
 }
 
-$goal_format = give_get_form_goal_format( $form_id );
-$price       = give_get_meta( $form_id, '_give_set_price', true );
-$color       = give_get_meta( $form_id, '_give_goal_color', true );
-$show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
-$show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+$goal_format         = give_get_form_goal_format( $form_id );
+$price               = give_get_meta( $form_id, '_give_set_price', true );
+$color               = give_get_meta( $form_id, '_give_goal_color', true );
+$show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
+$show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 $goal_progress_stats = give_goal_progress_stats( $form );
 
 $income = $goal_progress_stats['goal_income'];
@@ -28,15 +28,13 @@ switch ( $goal_format ) {
 
 	case 'donation':
 		$donations_completed = $goal_progress_stats['goal_donations'];
-		$donations_goal      = $goal;
-		$progress            = round( ( $donations_completed / $donations_goal ) * 100, 2 );
-		$progress_bar_value  = $donations_completed >= $donations_goal ? 100 : $progress;
+		$progress            = round( ( $donations_completed / $goal ) * 100, 2 );
+		$progress_bar_value  = $donations_completed >= $goal ? 100 : $progress;
 		break;
 
 	case 'donors':
 		$donors             = $goal_progress_stats['goal_donors'];
-		$donor_goal         = $goal;
-		$progress_bar_value = round( ( $donors / $donor_goal ) * 100, 2 );
+		$progress_bar_value = round( ( $donors / $goal ) * 100, 2 );
 		$progress           = $progress_bar_value;
 		break;
 
@@ -61,7 +59,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 ?>
 <div class="give-goal-progress">
 	<?php if ( ! empty( $show_text ) ) : ?>
-		<div class="raised">
+        <div class="raised">
 			<?php
 			if ( 'amount' === $goal_format ) :
 
@@ -80,7 +78,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				$income_format_args = apply_filters( 'give_goal_income_format_args', array(
 					'sanitize' => false,
 					'currency' => $form_currency,
-					'decimal'  => false
+					'decimal'  => false,
 				), $form_id );
 
 				/**
@@ -91,7 +89,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				$goal_format_args = apply_filters( 'give_goal_amount_format_args', array(
 					'sanitize' => false,
 					'currency' => $form_currency,
-					'decimal'  => false
+					'decimal'  => false,
 				), $form_id );
 
 				// Get formatted amount.
@@ -101,34 +99,34 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: amount of income raised 2: goal target amount. */
 					__( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> raised', 'give' ), give_currency_filter( $income, array( 'form_id' => $form_id ) ), give_currency_filter( $goal, array( 'form_id' => $form_id ) ) );
 
-			elseif ( 'percentage' === $goal_format ) :
+            elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '<span class="give-percentage">%s%%</span> funded', 'give' ), round( $progress ) );
 
-			elseif ( 'donation' === $goal_format ) :
+            elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations', $donations_goal, 'give' ), $donations_completed, $donations_goal );
 
-			elseif ( 'donors' === $goal_format ) :
+            elseif ( 'donors' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors', $donor_goal, 'give' ), $donors, $donor_goal );
 
 			endif;
 			?>
-		</div>
+        </div>
 	<?php endif; ?>
 
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-			 aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
+        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+             aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
 			<span style="width: <?php echo esc_attr( $progress_bar_value ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>
-		</div><!-- /.give-progress-bar -->
+        </div><!-- /.give-progress-bar -->
 	<?php endif; ?>
 
 </div><!-- /.goal-progress -->

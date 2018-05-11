@@ -1945,6 +1945,8 @@ function give_goal_progress_stats( $form ) {
 		$form = new Give_Donate_Form( $form );
 	}
 
+	$donors = '';
+
 	$goal_format = give_get_form_goal_format( $form->ID );
 
 
@@ -1963,19 +1965,6 @@ function give_goal_progress_stats( $form ) {
 	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 
 	/**
-	 * Filter to modify total number if donor for the donation form.
-	 *
-	 * @since 2.1.3
-	 *
-	 * @param int $donors Total number of donors that donated to the form.
-	 * @param int $form_id Donation Form ID.
-	 * @param Give_Donate_Form $form instances of Give_Donate_Form.
-	 *
-	 * @return int $donors Total number of donors that donated to the form.
-	 */
-	$donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
-
-	/**
 	 * Filter the form.
 	 *
 	 * @since 1.8.8
@@ -1987,7 +1976,18 @@ function give_goal_progress_stats( $form ) {
 			$actual = $donations;
 			break;
 		case 'donors':
-			$actual = $donors;
+			/**
+			 * Filter to modify total number if donor for the donation form.
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int $donors Total number of donors that donated to the form.
+			 * @param int $form_id Donation Form ID.
+			 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+			 *
+			 * @return int $donors Total number of donors that donated to the form.
+			 */
+			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default :
 			$actual = $income;
