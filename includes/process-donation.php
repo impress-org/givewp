@@ -486,13 +486,18 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 /**
  * Donation form validate agree to "Terms and Conditions".
  *
- * @access      private
- * @since       1.0
- * @return      void
+ * @access private
+ * @since  1.0
+ *
+ * @return void
  */
 function give_donation_form_validate_agree_to_terms() {
-	// Validate agree to terms.
-	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
+
+	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+
+	// Proceed only, if donor agreed to terms.
+	if ( ! $agree_to_terms ) {
+
 		// User did not agree.
 		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', __( 'You must agree to the terms and conditions.', 'give' ) ) );
 	}
