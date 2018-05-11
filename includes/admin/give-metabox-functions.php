@@ -1727,23 +1727,41 @@ function give_donation_form_goal( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
-	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
 
-	foreach ( $field['options'] as $key => $value ) {
+	printf(
+		'<fieldset class="give-field-wrap %s_field %s">',
+		esc_attr( $field['id'] ),
+		esc_attr( $field['wrapper_class'] )
+	);
 
-		echo '<li><label><input
-                name="' . give_get_field_name( $field ) . '"
-                value="' . esc_attr( $key ) . '"
-                type="radio"
-                style="' . esc_attr( $field['style'] ) . '"
-                ' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-		     . give_get_custom_attributes( $field ) . '
-                /> ' . esc_html( $value ) . '</label>
-        </li>';
-	}
-	echo '</ul>';
+	printf(
+		'<span class="give-field-label">%s</span>',
+		esc_html( $field['name'] )
+	);
 
+	printf(
+		'<legend class="screen-reader-text">%s</legend>',
+		esc_html( $field['name'] )
+	);
+	?>
 
+    <ul class="give-radios">
+		<?php
+		foreach ( $field['options'] as $key => $value ) {
+			printf(
+				'<li><label><input name="%s" value="%s" type="radio" style="%s" %s %s /> %s </label></li>',
+				give_get_field_name( $field ),
+				esc_attr( $key ),
+				esc_attr( $field['style'] ),
+				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
+				give_get_custom_attributes( $field ),
+				esc_html( $value )
+			);
+		}
+		?>
+    </ul>
+
+	<?php
 	/**
 	 * Action to add HTML after donation form radio button is display and before description
 	 *
@@ -1754,5 +1772,6 @@ function give_donation_form_goal( $field ) {
 	do_action( 'give_donation_form_goal_before_description', $field );
 
 	echo give_get_field_description( $field );
-	echo '</fieldset>';
+
+	printf( '</fieldset>' );
 }
