@@ -827,13 +827,15 @@ function give_donation_form_validate_user_login() {
 /**
  * Donation Form Validate Guest User
  *
- * @access  private
- * @since   1.0
- * @return  array
+ * @access private
+ * @since  1.0
+ *
+ * @return array
  */
 function give_donation_form_validate_guest_user() {
 
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start an array to collect valid user data.
 	$valid_user_data = array(
@@ -841,23 +843,32 @@ function give_donation_form_validate_guest_user() {
 		'user_id' => 0,
 	);
 
-	give_donation_form_validate_name_fields();
+	// Validate name fields.
+	give_donation_form_validate_name_fields( $post_data );
+
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	// Get the guest email.
-	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
+	$guest_email = ! empty( $post_data['give_email'] ) ? $post_data['give_email'] : false;
 
 	// Check email.
 	if ( $guest_email && strlen( $guest_email ) > 0 ) {
+
 		// Validate email.
 		if ( ! is_email( $guest_email ) ) {
+
 			// Invalid email.
 			give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
+
 		} else {
+
 			// All is good to go.
 			$valid_user_data['user_email'] = $guest_email;
 
 			// Get user_id from donor if exist.
 			$donor = new Give_Donor( $guest_email );
+
 			if ( $donor->id && $donor->user_id ) {
 				$valid_user_data['user_id'] = $donor->user_id;
 			}
@@ -866,9 +877,6 @@ function give_donation_form_validate_guest_user() {
 		// No email.
 		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
-
-	// Validate Required Form Fields.
-	give_validate_required_form_fields( $form_id );
 
 	return $valid_user_data;
 }
