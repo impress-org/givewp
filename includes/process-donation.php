@@ -380,62 +380,64 @@ function give_is_spam_donation() {
  *
  * Validate the gateway and donation amount.
  *
- * @access      private
- * @since       1.0
- * @return      string
+ * @access private
+ * @since  1.0
+ *
+ * @return string
  */
 function give_donation_form_validate_gateway() {
 
-	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$amount  = isset( $_REQUEST['give-amount'] ) ? give_maybe_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
-	$gateway = give_get_default_gateway( $form_id );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
+	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
+	$gateway   = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : 0;
 
-	// Check if a gateway value is present.
-	if ( ! empty( $_REQUEST['give-gateway'] ) ) {
+	// Bailout, if payment gateway is not submitted with donation form data.
+	if ( empty( $gateway ) ) {
 
-		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
+		give_set_error( 'empty_gateway', __( 'The donation form will process with a valid payment gateway.', 'give' ) );
 
-		// Is amount being donated in LIVE mode 0.00? If so, error:
-		if ( $amount == 0 && ! give_is_test_mode() ) {
+	} elseif ( ! give_is_gateway_active( $gateway ) ) {
 
-			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
+		give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled.', 'give' ) );
 
-		} // End if().
-		elseif ( ! give_verify_minimum_price( 'minimum' ) ) {
-			// translators: %s: minimum donation amount.
-			give_set_error(
-				'invalid_donation_minimum',
-				sprintf(
+	} elseif ( empty( $amount ) ) {
+
+		give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
+
+	} elseif ( ! give_verify_minimum_price( 'minimum' ) ) {
+
+		give_set_error(
+			'invalid_donation_minimum',
+			sprintf(
 				/* translators: %s: minimum donation amount */
-					__( 'This form has a minimum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
+				__( 'This form has a minimum donation amount of %s.', 'give' ),
+				give_currency_filter(
+					give_format_amount( give_get_form_minimum_price( $form_id ),
+						array(
+							'sanitize' => false,
+						)
+					)
 				)
-			);
+			)
+		);
+	} elseif ( ! give_verify_minimum_price( 'maximum' ) ) {
 
-		} // End if().
-		elseif ( ! give_verify_minimum_price( 'maximum' ) ) {
-			// translators: %s: Maximum donation amount.
-			give_set_error(
-				'invalid_donation_maximum',
-				sprintf(
+		give_set_error(
+			'invalid_donation_maximum',
+			sprintf(
 				/* translators: %s: Maximum donation amount */
-					__( 'This form has a maximum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ) )
+				__( 'This form has a maximum donation amount of %s.', 'give' ),
+				give_currency_filter(
+					give_format_amount( give_get_form_maximum_price( $form_id ),
+						array(
+							'sanitize' => false,
+						)
+					)
 				)
-			);
-
-		} //Is this test mode zero donation? Let it through but set to manual gateway.
-		elseif ( $amount == 0 && give_is_test_mode() ) {
-
-			$gateway = 'manual';
-
-		} //Check if this gateway is active.
-		elseif ( ! give_is_gateway_active( $gateway ) ) {
-
-			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled.', 'give' ) );
-
-		}
-	}
+			)
+		);
+	} // End if().
 
 	return $gateway;
 
