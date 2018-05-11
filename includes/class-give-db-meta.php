@@ -518,4 +518,25 @@ class Give_DB_Meta extends Give_DB {
 	public function get_meta_type(){
 		return $this->meta_type;
 	}
+
+	/**
+	 * Remove all meta data matching criteria from a meta table.
+	 *
+	 * @since   2.1.3
+	 * @access  public
+	 *
+	 * @param   int $id ID.
+	 *
+	 * @return  bool  False for failure. True for success.
+	 */
+	public function delete_all_meta( $id = 0 ) {
+		global $wpdb;
+		$status = $wpdb->delete( $this->table_name, array( "{$this->meta_type}_id" => $id ), array( '%d' ) );
+
+		if ( $status ) {
+			$this->delete_cache( $id, $this->meta_type );
+		}
+
+		return $status;
+	}
 }
