@@ -1745,13 +1745,13 @@ function give_donation_form_goal( $field ) {
 
 
 	/**
-	 * Action to add HTML after donation form radio button is display
+	 * Action to add HTML after donation form radio button is display and before description
 	 *
 	 * @since 2.1.3
 	 *
 	 * @param array $field Array of radio field arguments
 	 */
-	do_action( 'give_donation_form_goal', $field );
+	do_action( 'give_donation_form_goal_before_description', $field );
 
 	echo give_get_field_description( $field );
 	echo '</fieldset>';
