@@ -221,13 +221,15 @@ add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existin
 /**
  * Process the checkout login form
  *
- * @access      private
- * @since       1.0
- * @return      void
+ * @access private
+ * @since  1.0
+ *
+ * @return void
  */
 function give_process_form_login() {
-	$is_ajax = isset( $_POST['give_ajax'] );
 
+	$is_ajax   = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+	$referrer  = wp_get_referer();
 	$user_data = give_donation_form_validate_user_login();
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
@@ -243,7 +245,7 @@ function give_process_form_login() {
 			ob_end_clean();
 			wp_send_json_error( $message );
 		} else {
-			wp_redirect( $_SERVER['HTTP_REFERER'] );
+			wp_safe_redirect( $referrer );
 			exit;
 		}
 	}
@@ -253,7 +255,7 @@ function give_process_form_login() {
 	if ( $is_ajax ) {
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
-			/* translators: %s: user first name */
+				/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
 				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
 			),
@@ -263,7 +265,7 @@ function give_process_form_login() {
 
 		wp_send_json_success( $message );
 	} else {
-		wp_redirect( $_SERVER['HTTP_REFERER'] );
+		wp_safe_redirect( $referrer );
 	}
 }
 
