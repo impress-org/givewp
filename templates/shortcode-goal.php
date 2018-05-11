@@ -28,14 +28,14 @@ switch ( $goal_format ) {
 
 	case 'donation':
 		$donations_completed = $goal_progress_stats['goal_donations'];
-		$donations_goal      = give_get_meta( $form_id, '_give_number_of_donation_goal', true );
+		$donations_goal      = $goal;
 		$progress            = round( ( $donations_completed / $donations_goal ) * 100, 2 );
 		$progress_bar_value  = $donations_completed >= $donations_goal ? 100 : $progress;
 		break;
 
 	case 'donors':
 		$donors             = $goal_progress_stats['goal_donors'];
-		$donor_goal         = give_get_meta( $form_id, '_give_number_of_donor_goal', true );
+		$donor_goal         = $goal;
 		$progress_bar_value = round( ( $donors / $donor_goal ) * 100, 2 );
 		$progress           = $progress_bar_value;
 		break;
