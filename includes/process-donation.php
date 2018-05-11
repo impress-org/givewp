@@ -1343,7 +1343,7 @@ function give_validate_required_form_fields( $form_id ) {
 }
 
 /**
- * Validates and checks if name fields don't contain email addresses.
+ * Validates and checks if name fields are valid or not.
  *
  * @param array $post_data List of post data.
  *
