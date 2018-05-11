@@ -19,54 +19,22 @@ $price       = give_get_meta( $form_id, '_give_set_price', true );
 $color       = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+$goal_progress_stats = give_goal_progress_stats( $form );
 
-/**
- * Filter the form income
- *
- * @since 1.8.8
- */
-$income = apply_filters( 'give_goal_amount_raised_output', $form->get_earnings(), $form_id, $form );
-
-/**
- * Filter the form
- *
- * @since 1.8.8
- */
-$goal = apply_filters( 'give_goal_amount_target_output', $form->goal, $form_id, $form );
+$income = $goal_progress_stats['goal_income'];
+$goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {
 
 	case 'donation':
-		/**
-		 * Filter to modify donation number of sales
-		 *
-		 * @since 2.1.3
-		 *
-		 * @param int $donations Total number of donations made to the form.
-		 * @param int $form_id Donation Form ID.
-		 * @param Give_Donate_Form $form instances of Give_Donate_Form.
-		 *
-		 * @return int $donations Total number of donations made to the form.
-		 */
-		$donations_completed = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form_id, $form );
+		$donations_completed = $goal_progress_stats['goal_donations'];
 		$donations_goal      = give_get_meta( $form_id, '_give_number_of_donation_goal', true );
 		$progress            = round( ( $donations_completed / $donations_goal ) * 100, 2 );
 		$progress_bar_value  = $donations_completed >= $donations_goal ? 100 : $progress;
 		break;
 
 	case 'donors':
-		/**
-		 * Filter to modify total number if donor for the donation form.
-		 *
-		 * @since 2.1.3
-		 *
-		 * @param int $donors Total number of donors that donated to the form.
-		 * @param int $form_id Donation Form ID.
-		 * @param Give_Donate_Form $form instances of Give_Donate_Form.
-		 *
-		 * @return int $donors Total number of donors that donated to the form.
-		 */
-		$donors             = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form_id ), $form_id, $form );
+		$donors             = $goal_progress_stats['goal_donors'];
 		$donor_goal         = give_get_meta( $form_id, '_give_number_of_donor_goal', true );
 		$progress_bar_value = round( ( $donors / $donor_goal ) * 100, 2 );
 		$progress           = $progress_bar_value;
