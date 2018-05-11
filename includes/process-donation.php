@@ -508,12 +508,12 @@ function give_donation_form_validate_agree_to_terms() {
 /**
  * Donation Form Required Fields.
  *
- * @access      private
- * @since       1.0
+ * @access private
+ * @since  1.0
  *
- * @param       $form_id
+ * @param  int $form_id Donation Form ID.
  *
- * @return      array
+ * @return array
  */
 function give_get_required_fields( $form_id ) {
 
@@ -570,7 +570,7 @@ function give_get_required_fields( $form_id ) {
 				unset( $required_fields['card_state'] );
 			}
 		}
-	}
+	} // End if().
 
 	if ( give_is_company_field_enabled( $form_id ) ) {
 		$form_option    = give_get_meta( $form_id, '_give_company_field', true );
@@ -589,7 +589,7 @@ function give_get_required_fields( $form_id ) {
 
 		}
 
-		if( $is_company_field_required ) {
+		if ( $is_company_field_required ) {
 			$required_fields['give_company_name'] = array(
 				'error_id'      => 'invalid_company',
 				'error_message' => __( 'Please enter Company Name.', 'give' ),
@@ -613,7 +613,7 @@ function give_get_required_fields( $form_id ) {
  *
  * @since  1.0.1
  *
- * @param string $payment_mode
+ * @param string $payment_mode Payment Mode.
  *
  * @return bool
  */
@@ -886,10 +886,11 @@ function give_donation_form_validate_guest_user() {
 /**
  * Register And Login New User
  *
- * @param array $user_data
+ * @param array $user_data User Data.
  *
  * @access  private
  * @since   1.0
+ *
  * @return  integer
  */
 function give_register_and_login_new_user( $user_data = array() ) {
@@ -952,7 +953,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 /**
  * Get Donation Form User
  *
- * @param array $valid_data
+ * @param array $valid_data Valid Data.
  *
  * @access  private
  * @since   1.0
@@ -1038,6 +1039,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
  *
  * @access  private
  * @since   1.0
+ *
  * @return  array
  */
 function give_donation_form_validate_cc() {
@@ -1169,7 +1171,7 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 		'ID' => '\d{5}',
 		'IE' => '((D|DUBLIN)?([1-9]|6[wW]|1[0-8]|2[024]))?',
 		'IL' => '\d{5}',
-		'IN' => '^[1-9][0-9][0-9][0-9][0-9][0-9]$', // india
+		'IN' => '^[1-9][0-9][0-9][0-9][0-9][0-9]$', // India.
 		'IO' => 'BBND 1ZZ',
 		'IQ' => '\d{5}',
 		'IS' => '\d{3}',
