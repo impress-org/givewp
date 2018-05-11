@@ -636,41 +636,47 @@ function give_require_billing_address( $payment_mode ) {
  * @return      array
  */
 function give_donation_form_validate_logged_in_user() {
-	global $user_ID;
 
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$user_id   = get_current_user_id();
+	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start empty array to collect valid user data.
 	$valid_user_data = array(
+
 		// Assume there will be errors.
 		'user_id' => - 1,
 	);
 
-	// Verify there is a user_ID.
-	if ( $user_ID > 0 ) {
+	// Proceed on;y, if valid $user_id found.
+	if ( $user_id > 0 ) {
+
 		// Get the logged in user data.
-		$user_data = get_userdata( $user_ID );
+		$user_data = get_userdata( $user_id );
 
 		// Validate Required Form Fields.
 		give_validate_required_form_fields( $form_id );
 
 		// Verify data.
-		if ( $user_data ) {
+		if ( is_object( $user_data ) && $user_data->ID > 0 ) {
+
 			// Collected logged in user data.
 			$valid_user_data = array(
-				'user_id'    => $user_ID,
-				'user_email' => isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : $user_data->user_email,
-				'user_first' => isset( $_POST['give_first'] ) && ! empty( $_POST['give_first'] ) ? sanitize_text_field( $_POST['give_first'] ) : $user_data->first_name,
-				'user_last'  => isset( $_POST['give_last'] ) && ! empty( $_POST['give_last'] ) ? sanitize_text_field( $_POST['give_last'] ) : $user_data->last_name,
+				'user_id'    => $user_id,
+				'user_email' => ! empty( $post_data['give_email'] ) ? sanitize_email( $post_data['give_email'] ) : $user_data->user_email,
+				'user_first' => ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : $user_data->first_name,
+				'user_last'  => ! empty( $post_data['give_last'] ) ? $post_data['give_last'] : $user_data->last_name,
 			);
 
-			give_donation_form_validate_name_fields();
+			// Validate essential form fields.
+			give_donation_form_validate_name_fields( $post_data );
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
 				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			}
 		} else {
-			// Set invalid user error.
+
+			// Set invalid user information error.
 			give_set_error( 'invalid_user', esc_html__( 'The user information is invalid.', 'give' ) );
 		}
 	}
