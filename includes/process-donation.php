@@ -1339,12 +1339,15 @@ function give_validate_required_form_fields( $form_id ) {
 /**
  * Validates and checks if name fields don't contain email addresses.
  *
+ * @param array $post_data List of post data.
+ *
  * @since 2.1
+ *
  * @return void
  */
-function give_donation_form_validate_name_fields() {
-	$is_first_name = is_email( $_POST['give_first'] ) ? true : false;
-	$is_last_name  = is_email( $_POST['give_last'] ) ? true : false;
+function give_donation_form_validate_name_fields( $post_data ) {
+	$is_first_name = is_email( $post_data['give_first'] ) ? true : false;
+	$is_last_name  = is_email( $post_data['give_last'] ) ? true : false;
 
 	if ( $is_first_name || $is_last_name ) {
 		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address.', 'give' ) );
