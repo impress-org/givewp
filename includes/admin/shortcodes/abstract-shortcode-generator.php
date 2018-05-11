@@ -282,22 +282,23 @@ abstract class Give_Shortcode_Generator {
 	protected function generate_post( $field ) {
 
 		$args = array(
-			'post_type'      => 'post',
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-			'posts_per_page' => 30,
+			'post_type'        => 'post',
+			'orderby'          => 'title',
+			'order'            => 'ASC',
+			'posts_per_page'   => 30,
+			'suppress_filters' => false,
 		);
 
 		$args    = wp_parse_args( (array) $field['query_args'], $args );
-		$posts   = new WP_Query( $args );
+
+		$posts   = get_posts( $args );
 		$options = array();
 
-		if ( $posts->have_posts() ) {
-			while ( $posts->have_posts() ) {
-				$posts->the_post();
-				$post_title = get_the_title();
-				$post_id = get_the_ID();
-				$options[ absint( $post_id ) ] = ( empty( $post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $post_id ) : $post_title );
+		if ( ! empty( $posts ) ) {
+			foreach ( $posts as $post ) {
+				$options[ absint( $post->ID ) ] = empty( $post->post_title )
+					? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID )
+					: apply_filters( 'the_title', $post->post_title );
 			}
 
 			$field['type']    = 'listbox';
