@@ -54,7 +54,7 @@ function give_process_donation_form() {
 	do_action( 'give_pre_process_donation' );
 
 	// Validate the form $_POST data.
-	$valid_data = give_donation_form_validate_fields( $post_data );
+	$valid_data = give_donation_form_validate_fields();
 
 	/**
 	 * Fires after validating donation form fields.
@@ -273,19 +273,14 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
 /**
  * Donation Form Validate Fields.
  *
- * @param array $post_data List of post data received from donation form.
- *
  * @access private
  * @since  1.0
  *
  * @return bool|array
  */
-function give_donation_form_validate_fields( $post_data ) {
+function give_donation_form_validate_fields() {
 
-	// Bail out, if not valid data.
-	if ( ! is_array( $post_data ) || ( is_array( $post_data ) && count( $post_data ) === 0 ) ) {
-		return false;
-	}
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Validate Honeypot First.
 	if ( ! empty( $post_data['give-honeypot'] ) ) {
