@@ -107,12 +107,12 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
             elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
-					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations', $donations_goal, 'give' ), $donations_completed, $donations_goal );
+					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations', $goal, 'give' ), $donations_completed, $goal );
 
             elseif ( 'donors' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
-					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors', $donor_goal, 'give' ), $donors, $donor_goal );
+					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors', $goal, 'give' ), $donors, $goal );
 
 			endif;
 			?>
