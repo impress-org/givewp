@@ -756,42 +756,50 @@ function give_donation_form_validate_new_user() {
  */
 function give_donation_form_validate_user_login() {
 
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+
 	// Start an array to collect valid user data.
 	$valid_user_data = array(
+
 		// Assume there will be errors.
 		'user_id' => - 1,
 	);
 
-	// Username.
-	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
+	// Bailout, if Username is empty.
+	if ( empty( $post_data['give_user_login'] ) ) {
 		give_set_error( 'must_log_in', __( 'You must register or login to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
 
 	// Get the user by login.
-	$user_data = get_user_by( 'login', strip_tags( $_POST['give_user_login'] ) );
+	$user_data = get_user_by( 'login', strip_tags( $post_data['give_user_login'] ) );
 
 	// Check if user exists.
 	if ( $user_data ) {
+
 		// Get password.
-		$user_pass = isset( $_POST['give_user_pass'] ) ? $_POST['give_user_pass'] : false;
+		$user_pass = ! empty( $post_data['give_user_pass'] ) ? $post_data['give_user_pass'] : false;
 
 		// Check user_pass.
 		if ( $user_pass ) {
+
 			// Check if password is valid.
 			if ( ! wp_check_password( $user_pass, $user_data->user_pass, $user_data->ID ) ) {
+
+				$current_page_url = site_url() . '/' . get_page_uri();
+
 				// Incorrect password.
 				give_set_error(
 					'password_incorrect',
 					sprintf(
 						'%1$s <a href="%2$s">%3$s</a>',
 						__( 'The password you entered is incorrect.', 'give' ),
-						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
+						wp_lostpassword_url( $current_page_url ),
 						__( 'Reset Password', 'give' )
 					)
 				);
-				// All is correct.
+
 			} else {
 
 				// Repopulate the valid user data array.
@@ -811,7 +819,7 @@ function give_donation_form_validate_user_login() {
 	} else {
 		// No username.
 		give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
-	}// End if().
+	} // End if().
 
 	return $valid_user_data;
 }
