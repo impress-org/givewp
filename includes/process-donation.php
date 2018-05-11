@@ -688,12 +688,14 @@ function give_donation_form_validate_logged_in_user() {
 /**
  * Donate Form Validate New User
  *
- * @access      private
- * @since       1.0
- * @return      array
+ * @access private
+ * @since  1.0
+ *
+ * @return array
  */
 function give_donation_form_validate_new_user() {
 
+	$post_data               = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$auto_generated_password = wp_generate_password();
 
 	// Default user data.
@@ -709,14 +711,15 @@ function give_donation_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data            = wp_parse_args( give_clean( $_POST ), $default_user_data );
+	$user_data            = wp_parse_args( $post_data, $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
 
-	give_donation_form_validate_name_fields();
+	give_donation_form_validate_name_fields( $user_data );
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
+
 		// Assume there will be errors.
 		'user_id'    => - 1,
 
