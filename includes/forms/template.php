@@ -1342,7 +1342,8 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  */
 function give_payment_mode_select( $form_id ) {
 
-	$gateways = give_get_enabled_payment_gateways( $form_id );
+	$gateways  = give_get_enabled_payment_gateways( $form_id );
+	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 	/**
 	 * Fires while selecting payment gateways, before the fields.
@@ -1377,7 +1378,7 @@ function give_payment_mode_select( $form_id ) {
 		<div id="give-payment-mode-wrap">
 			<?php
 			/**
-			 * Fires while selecting payment gateways, befire the gateways list.
+			 * Fires while selecting payment gateways, before the gateways list.
 			 *
 			 * @since 1.7
 			 */
@@ -1400,7 +1401,7 @@ function give_payment_mode_select( $form_id ) {
 					$checked_class = $checked ? ' class="give-gateway-option-selected"' : ''; ?>
 					<li<?php echo $checked_class ?>>
 						<input type="radio" name="payment-mode" class="give-gateway"
-							   id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
+							   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
 							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
 
 						<?php
@@ -1409,7 +1410,7 @@ function give_payment_mode_select( $form_id ) {
 							$label = $gateways_label[ $gateway_id ];
 						}
 						?>
-						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
+						<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
 							   class="give-gateway-option"
 							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
 					</li>
