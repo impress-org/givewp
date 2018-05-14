@@ -306,10 +306,11 @@ class Give_Donor {
 			'zip'     => '',
 		);
 
+		// Backward compatibility for user id param.
+		$by_user_id = get_user_by( 'id', $this->id ) ? true : false;
+
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
-			// Backward compatibility for user id param.
-			$by_user_id = get_user_by( 'id', $this->id ) ? true : false;
 
 			if ( $by_user_id ) {
 				return wp_parse_args(

@@ -491,11 +491,12 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		'zip'     => '',
 	);
 
+
+	// Backward compatibility for user id param.
+	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
+
 	// Backward compatibility.
 	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
-
-		// Backward compatibility for user id param.
-		$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 
 		if ( $by_user_id ) {
 			return wp_parse_args(
@@ -506,7 +507,6 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 	}
 
 	$donor = new Give_Donor( $donor_id, $by_user_id );
-
 
 	if (
 		! $donor->id ||
