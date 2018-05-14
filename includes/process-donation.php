@@ -205,7 +205,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data ) {
 		// If this email address is not registered with this customer, see if it belongs to any other customer.
 		if (
 			$submitted_email !== $donor->email
-			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails ) )
+			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails, true ) )
 		) {
 			$found_donor = new Give_Donor( $submitted_email );
 
