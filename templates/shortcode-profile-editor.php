@@ -15,9 +15,8 @@ if ( is_user_logged_in() ) :
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$display_name = $current_user->display_name;
-	$address      = give_get_donor_address( $user_id, array( 'address_type' => 'personal' ) );
-
 	$donor        = new Give_Donor( $user_id, true );
+	$address      = $donor->get_donor_address( array( 'address_type' => 'personal' ) );
 	$company_name = $donor->get_meta( '_give_donor_company', true );
 
 	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) :
