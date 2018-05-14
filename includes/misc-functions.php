@@ -1949,21 +1949,6 @@ function give_goal_progress_stats( $form ) {
 
 	$goal_format = give_get_form_goal_format( $form->ID );
 
-
-	/**
-	 * Filter the form donations.
-	 *
-	 * @since 2.1
-	 */
-	$donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
-
-	/**
-	 * Filter the form income.
-	 *
-	 * @since 1.8.8
-	 */
-	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
-
 	/**
 	 * Filter the form.
 	 *
@@ -1973,7 +1958,12 @@ function give_goal_progress_stats( $form ) {
 
 	switch ( $goal_format ) {
 		case  'donation':
-			$actual = $donations;
+			/**
+			 * Filter the form donations.
+			 *
+			 * @since 2.1
+			 */
+			$actual = $donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
 			break;
 		case 'donors':
 			/**
@@ -1990,7 +1980,12 @@ function give_goal_progress_stats( $form ) {
 			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default :
-			$actual = $income;
+			/**
+			 * Filter the form income.
+			 *
+			 * @since 1.8.8
+			 */
+			$actual = $income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 			break;
 	}
 
@@ -2028,9 +2023,6 @@ function give_goal_progress_stats( $form ) {
 			'actual'         => $actual,
 			'goal'           => $total_goal,
 			'format'         => $goal_format,
-			'goal_donations' => $donations,
-			'goal_income'    => $income,
-			'goal_donors'    => $donors,
 		),
 		$stats_array
 	);

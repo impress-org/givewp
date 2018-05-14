@@ -21,20 +21,18 @@ $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_tex
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 $goal_progress_stats = give_goal_progress_stats( $form );
 
-$income = $goal_progress_stats['goal_income'];
+$income = $goal_progress_stats['raw_actual'];
 $goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {
 
 	case 'donation':
-		$donations_completed = $goal_progress_stats['goal_donations'];
-		$progress            = round( ( $donations_completed / $goal ) * 100, 2 );
-		$progress_bar_value  = $donations_completed >= $goal ? 100 : $progress;
+		$progress           = round( ( $income / $goal ) * 100, 2 );
+		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
 	case 'donors':
-		$donors             = $goal_progress_stats['goal_donors'];
-		$progress_bar_value = round( ( $donors / $goal ) * 100, 2 );
+		$progress_bar_value = round( ( $income / $goal ) * 100, 2 );
 		$progress           = $progress_bar_value;
 		break;
 
