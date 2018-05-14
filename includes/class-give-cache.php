@@ -169,7 +169,8 @@ class Give_Cache {
 	public static function get_key( $action, $query_args = null, $is_prefix = true ) {
 		// Bailout.
 		if ( empty( $action ) ) {
-			return new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
+			new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
+			return $action;
 		}
 
 		// Set cache key.
