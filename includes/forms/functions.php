@@ -1168,21 +1168,10 @@ function give_set_form_closed_status( $form_id ) {
 		if ( $close_form_when_goal_achieved ) {
 
 			$form                = new Give_Donate_Form( $form_id );
-			$goal_format         = give_get_form_goal_format( $form_id );
 			$goal_progress_stats = give_goal_progress_stats( $form );
 
-			// Verify whether the form is closed or not after processing data based on goal format.
-			switch ( $goal_format ) {
-				case 'donation':
-					$closed = $goal_progress_stats['raw_goal'] <= $goal_progress_stats['raw_actual'];
-					break;
-				case 'donors':
-					$closed = $goal_progress_stats['raw_goal'] <= $goal_progress_stats['raw_actual'];
-					break;
-				default :
-					$closed = $goal_progress_stats['raw_goal'] <= $goal_progress_stats['raw_actual'];
-					break;
-			}
+			// Verify whether the form is closed or not after processing data.
+			$closed = $goal_progress_stats['raw_goal'] <= $goal_progress_stats['raw_actual'];
 
 			// Update form meta if verified that the form is closed.
 			if ( $closed ) {
