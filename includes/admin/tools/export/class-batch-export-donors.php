@@ -331,8 +331,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					continue;
 				}
 
-				$payment                    = new Give_Payment( $donor->payment_ids );
-				$data[]                     = $this->set_donor_data( $i, $data, $donor );
+				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
 		}// End if().

@@ -201,7 +201,9 @@ class Give_Cache {
 	 */
 	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
-			if ( ! $custom_key ) {
+			if( empty( $cache_key ) ) {
+				return new WP_Error( 'give_empty_cache_key', __( 'Do not pass invalid empty cache key', 'give' ) );
+			}elseif ( ! $custom_key ) {
 				return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
 			}
 
