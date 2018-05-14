@@ -496,14 +496,11 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 
 	// Backward compatibility.
-	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
-
-		if ( $by_user_id ) {
-			return wp_parse_args(
-				(array) get_user_meta( $donor_id, '_give_user_address', true ),
-				$default_address
-			);
-		}
+	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ) {
+		return wp_parse_args(
+			(array) get_user_meta( $donor_id, '_give_user_address', true ),
+			$default_address
+		);
 	}
 
 	$donor = new Give_Donor( $donor_id, $by_user_id );
