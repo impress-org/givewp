@@ -94,7 +94,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			return $filename;
 		}
 
-		$forms = empty( $_GET['forms'] ) ? false : absint( $_GET['forms'] );
+		$forms = empty( $_GET['forms'] ) ? 0 : absint( $_GET['forms'] );
 
 		if ( $forms ) {
 			$slug     = get_post_field( 'post_name', get_post( $forms ) );
