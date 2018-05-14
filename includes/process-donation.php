@@ -564,17 +564,17 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
 
+		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+
 		// Check if billing country already exists.
-		if ( ! empty( $_POST['billing_country'] ) ) {
-			// Get the value from $_POST.
-			$country = sanitize_text_field( $_POST['billing_country'] );
+		if ( $country ) {
 
 			// Get the country list that does not required any states init.
 			$states_country = give_states_not_required_country_list();
 
 			// Check if states is empty or not.
 			if ( array_key_exists( $country, $states_country ) ) {
-				// If states is empty remove the required feilds of state in billing cart.
+				// If states is empty remove the required fields of state in billing cart.
 				unset( $required_fields['card_state'] );
 			}
 		}
