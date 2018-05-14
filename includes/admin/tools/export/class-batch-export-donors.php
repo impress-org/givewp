@@ -294,7 +294,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				if ( ! empty( $this->donor_ids ) ) {
 					foreach ( $this->donor_ids as $donor_id ) {
-						$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
+						$donor                      = new Give_Donor( 'id', $donor_id );
 						$donor->purchase_count      = $this->payment_stats[ $donor_id ]['donations'];
 						$donor->purchase_value      = $this->payment_stats[ $donor_id ]['donation_sum'];
 						$data[]                     = $this->set_donor_data( $i, $data, $donor );
@@ -388,7 +388,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		// Set address variable
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
-			$address = give_get_donor_address( $donor->user_id );
+			$address = $donor->get_donor_address();
 		}
 
 		// Set columns
