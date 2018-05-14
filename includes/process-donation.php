@@ -706,7 +706,14 @@ function give_donation_form_validate_logged_in_user() {
  */
 function give_donation_form_validate_new_user() {
 
-	$post_data               = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$nonce     = ! empty( $post_data['give-form-user-register-hash'] ) ? $post_data['give-form-user-register-hash'] : '';
+
+	// Validate user creation nonce.
+	if ( ! wp_verify_nonce( $nonce, 'give_form_create_user_nonce' ) ) {
+		give_set_error( 'invalid_nonce', __( 'Nonce verification has failed.', 'give' ) );
+	}
+
 	$auto_generated_password = wp_generate_password();
 
 	// Default user data.
@@ -989,11 +996,6 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 		// New user registration.
 		if ( true === $valid_data['need_new_user'] ) {
-
-			$nonce = ! empty( $post_data['give-form-user-register-hash'] ) ? $post_data['give-form-user-register-hash'] : '';
-
-			// Validate user creation nonce.
-			give_validate_nonce( $nonce, 'give_form_create_user_nonce' );
 
 			// Set user.
 			$user = $valid_data['new_user_data'];
