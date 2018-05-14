@@ -17,8 +17,8 @@ jQuery( document ).ready( function( $ ) {
 	//Hide loading elements
 	$( '.give-loading-text' ).hide();
 
-	// Create ,update and invalidate cached nonce.
-	jQuery('.give-form').each( function( index, $form ){
+	// Update and invalidate cached nonce.
+	$('.give-form').each( function( index, $form ){
 		$form = jQuery( $form );
 		Give.form.fn.resetNonce( $form );
 	});
