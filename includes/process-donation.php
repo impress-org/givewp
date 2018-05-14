@@ -627,9 +627,10 @@ function give_get_required_fields( $form_id ) {
  */
 function give_require_billing_address( $payment_mode ) {
 
-	$return = false;
+	$return          = false;
+	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
-	if ( isset( $_POST['billing_country'] ) || did_action( "give_{$payment_mode}_cc_form" ) || did_action( 'give_cc_form' ) ) {
+	if ( $billing_country || did_action( "give_{$payment_mode}_cc_form" ) || did_action( 'give_cc_form' ) ) {
 		$return = true;
 	}
 
