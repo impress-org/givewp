@@ -1005,7 +1005,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
 			// Login user.
 			give_log_user_in( $user['user_id'], $user['user_login'], $user['user_pass'] );
 		}
-	}
+	} // End if().
 
 	// Check guest checkout.
 	if ( false === $user && false === give_logged_in_only( $post_data['give-form-id'] ) ) {
@@ -1397,7 +1397,7 @@ function give_donation_form_validate_name_fields( $post_data ) {
 	$is_alpha_first_name = ctype_alpha( $post_data['give_first'] ) ? true : false;
 	$is_alpha_last_name  = ctype_alpha( $post_data['give_last'] ) ? true : false;
 
-	if ( ! $is_alpha_first_name || ! $is_alpha_last_name ) {
+	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
 		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address, numbers or special characters.', 'give' ) );
 	}
 }
