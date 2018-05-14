@@ -210,7 +210,15 @@ function give_check_logged_in_user_for_existing_email( $valid_data ) {
 			$found_donor = new Give_Donor( $submitted_email );
 
 			if ( $found_donor->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ), $donor->email, $submitted_email ) );
+				give_set_error(
+					'give-customer-email-exists',
+					sprintf(
+						/* translators: 1. Donor Email, 2. Submitted Email */
+						__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
+						$donor->email,
+						$submitted_email
+					)
+				);
 			}
 		}
 	}
@@ -633,9 +641,10 @@ function give_require_billing_address( $payment_mode ) {
 /**
  * Donation Form Validate Logged In User.
  *
- * @access      private
- * @since       1.0
- * @return      array
+ * @access private
+ * @since  1.0
+ *
+ * @return array
  */
 function give_donation_form_validate_logged_in_user() {
 
@@ -752,9 +761,10 @@ function give_donation_form_validate_new_user() {
 /**
  * Donation Form Validate User Login
  *
- * @access      private
- * @since       1.0
- * @return      array
+ * @access private
+ * @since  1.0
+ *
+ * @return array
  */
 function give_donation_form_validate_user_login() {
 
@@ -1080,6 +1090,7 @@ function give_donation_form_validate_cc() {
  *
  * @access  private
  * @since   1.0
+ *
  * @return  array
  */
 function give_get_donation_cc_info() {
@@ -1106,8 +1117,8 @@ function give_get_donation_cc_info() {
  *
  * @since  1.0
  *
- * @param int $zip
- * @param string $country_code
+ * @param int    $zip          ZIP Code.
+ * @param string $country_code Country Code.
  *
  * @return bool|mixed
  */
