@@ -592,6 +592,10 @@ Give.form = {
 				return false;
 			}
 
+			if( ! Give.form.fn.isNonceOld( $form ) ){
+				return false;
+			}
+
 			//Post via AJAX to Give
 			jQuery.post( give_global_vars.ajaxurl, {
 					action: 'give_donation_form_nonce',
@@ -602,6 +606,22 @@ Give.form = {
 					Give.form.fn.setInfo( 'nonce', response.data, $form, '' );
 				}
 			);
+		},
+
+		/**
+		 * Check if nonce old or not
+		 *
+		 * @since 2.1.3
+		 * @param {object} $form
+		 *
+		 * @return {boolean}
+		 */
+		isNonceOld: function ($form) {
+			const $nonceField = jQuery('#_wpnonce', $form),
+				nonceTime = parseInt( $nonceField.data('time') ) + parseInt( $nonceField.data('nonce-life') ) - 600,
+				currentTime = Math.round(Date.now() / 1000);
+
+			return ( currentTime >= nonceTime );
 		},
 
 		/**
