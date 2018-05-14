@@ -251,6 +251,7 @@ function give_load_gateway( form_object, payment_mode ) {
 	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
 	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
 	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
+	var give_form_id_prefix = jQuery( form_object ).find( 'input[name="give-form-id-prefix"]' ).val();
 
 	// Show the ajax loader
 	loading_element.fadeIn();
@@ -272,6 +273,7 @@ function give_load_gateway( form_object, payment_mode ) {
 			action: 'give_load_gateway',
 			give_total: give_total,
 			give_form_id: give_form_id,
+			give_form_id_prefix: give_form_id_prefix,
 			give_payment_mode: payment_mode
 		},
 		function( response ) {
