@@ -656,9 +656,9 @@ function give_let_to_num( $size ) {
  *
  * @since 1.8
  *
- * @param        $nonce
- * @param int    $action
- * @param array  $wp_die_args
+ * @param string $nonce       Nonce Hash.
+ * @param int    $action      Nonce verification action.
+ * @param array  $wp_die_args Nonce fail arguments.
  *
  * @return bool
  */
@@ -680,7 +680,7 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 				'title'   => __( 'Error', 'give' ),
 				'args'    => array(
 					'response' => 403,
-				)
+				),
 			)
 		);
 
