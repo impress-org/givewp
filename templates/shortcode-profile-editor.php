@@ -22,10 +22,8 @@ if ( is_user_logged_in() ) :
 	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) :
 		if ( isset( $_GET['update_code'] ) ) :?>
 			<?php
-			switch ( $_GET['update_code'] ) {
-				case '1':
-					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile has been updated.', 'give' ) );
-					break;
+			if ( 1 === absint( $_GET['update_code'] ) ) {
+				printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile has been updated.', 'give' ) );
 			}
 			?>
 			</p>
