@@ -34,7 +34,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		private static $singleton = array();
 
-
 		/**
 		 * Array of notification settings.
 		 *
@@ -43,26 +42,27 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @var array
 		 */
 		public $config = array(
-			'id'                                => '',
-			'label'                             => '',
-			'description'                       => '',
-			'has_recipient_field'               => false,
-			'recipient_group_name'              => '',
-			'notification_status'               => 'disabled',
-			'notification_status_editable'      => true,
-			'notices'                           => array(),
-			'content_type_editable'             => true,
-			'has_preview'                       => true,
-			'has_preview_header'                => true,
-			'preview_email_tags_values'         => array(),
-			'email_tag_context'                 => 'all',
-			'form_metabox_setting'              => true,
-			'content_type'                      => '',
-			'email_template'                    => '',
-			'default_email_subject'             => '',
-			'default_email_message'             => '',
+			'id'                           => '',
+			'label'                        => '',
+			'description'                  => '',
+			'has_recipient_field'          => false,
+			'recipient_group_name'         => '',
+			'notification_status'          => 'disabled',
+			'notification_status_editable' => true,
+			'notices'                      => array(),
+			'content_type_editable'        => true,
+			'has_preview'                  => true,
+			'has_preview_header'           => true,
+			'preview_email_tags_values'    => array(),
+			'email_tag_context'            => 'all',
+			'form_metabox_setting'         => true,
+			'content_type'                 => '',
+			'email_template'               => '',
+			'default_email_subject'        => '',
+			'default_email_message'        => '',
 			// This setting page will appear under core setting.
-			'show_on_emails_setting_page'       => true,
+			'show_on_emails_setting_page'  => true,
+			'form_metabox_id'              => 'give_email_notification_options_metabox_fields',
 		);
 
 		/**
@@ -191,9 +191,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 			}
 
-			if ( $this->config['form_metabox_setting'] ) {
+			if ( $this->config['form_metabox_setting'] && ! empty( $this->config['form_metabox_id'] ) ) {
 				add_filter(
-					'give_email_notification_options_metabox_fields',
+					$this->config['form_metabox_id'],
 					array( $this, 'add_metabox_setting_field' ),
 					10,
 					2
