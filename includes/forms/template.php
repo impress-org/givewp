@@ -1165,6 +1165,7 @@ function give_get_register_fields( $form_id ) {
 					?>
 					<?php _e( 'Create an account', 'give' ); ?>
 					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
+					<?php wp_nonce_field( 'give_form_create_user_nonce', 'give-form-user-register-hash', false, true );?>
 				</label>
 			</div>
 

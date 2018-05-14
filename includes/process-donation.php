@@ -980,6 +980,11 @@ function give_get_donation_form_user( $valid_data = array() ) {
 		// New user registration.
 		if ( true === $valid_data['need_new_user'] ) {
 
+			$nonce = ! empty( $post_data['give-form-user-register-hash'] ) ? $post_data['give-form-user-register-hash'] : '';
+
+			// Validate user creation nonce.
+			give_validate_nonce( $nonce, 'give_form_create_user_nonce' );
+
 			// Set user.
 			$user = $valid_data['new_user_data'];
 
