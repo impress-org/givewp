@@ -921,8 +921,10 @@ function __give_ajax_donor_manage_addresses() {
 				$total_addresses - 1 :
 				$address_type;
 
+			$array_keys = array_keys( $donor->address[ $address_type ] );
+
 			$address_id = $is_multi_address_type ?
-				end( array_keys( $donor->address[ $address_type ] ) ) :
+				end( $array_keys ) :
 				$address_type;
 
 			$response_data['address_html'] = __give_get_format_address(
