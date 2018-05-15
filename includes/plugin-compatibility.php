@@ -61,3 +61,34 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 }
 
 add_action( 'give-settings_save_display', 'give_clear_seo_sitemap_cache_on_settings_change' );
+
+/**
+ * This is support for the plugin Elementor. This function
+ * disables the Give Shortcodes button on the Elementor's
+ * editor page.
+ *
+ * See link: https://github.com/WordImpress/Give/issues/3171#issuecomment-387471355
+ *
+ * @since 2.1.3
+ *
+ * @return boolean
+ */
+function give_elementor_hide_shortcodes_button() {
+
+	/**
+	 * Is the plugin: Elementor activated?
+	 */
+	if ( is_plugin_active( 'elementor/elementor.php' ) ) {
+
+		/**
+		 * Check user is on the Elementor's editor page, then hide Give Shortcodes Button.
+		 */
+		if ( isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] ) ) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+add_filter( 'give_shortcode_button_condition', 'give_elementor_hide_shortcodes_button', 11 );

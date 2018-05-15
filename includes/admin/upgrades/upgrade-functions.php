@@ -353,6 +353,16 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.1.3 Delete non attached donation mera
+	$give_updates->register(
+		array(
+			'id'       => 'v213_delete_donation_meta',
+			'version'  => '2.1.3',
+			'callback' => 'give_v213_delete_donation_meta_callback',
+			'depends'  => array( 'v201_move_metadata_into_new_table' )
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2657,6 +2667,41 @@ function give_v210_verify_form_status_upgrades_callback() {
 
 		// The Update Ran.
 		give_set_upgrade_complete( 'v210_verify_form_status_upgrades' );
+	}
+
+}
+
+/**
+ * Upgrade routine for 2.1.3 to delete meta which is not attach to any donation.
+ *
+ * @since 2.1
+ */
+function give_v213_delete_donation_meta_callback() {
+	global $wpdb;
+	$give_updates        = Give_Updates::get_instance();
+	$donation_meta_table = Give()->payment_meta->table_name;
+
+	$donations = $wpdb->get_col(
+		"
+		SELECT DISTINCT payment_id
+		FROM {$donation_meta_table}
+		LIMIT 20
+		OFFSET {$give_updates->get_offset( 20 )}
+		"
+	);
+
+	if ( ! empty( $donations ) ) {
+		foreach ( $donations as $donation ) {
+			$donation_obj = get_post( $donation );
+
+			if ( ! $donation_obj instanceof WP_Post ) {
+				Give()->payment_meta->delete_all_meta( $donation );
+			}
+		}
+	} else {
+
+		// The Update Ran.
+		give_set_upgrade_complete( 'v213_delete_donation_meta' );
 	}
 
 }
