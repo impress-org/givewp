@@ -146,7 +146,6 @@ function give_get_donation_form( $args = array() ) {
 			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
 			?>
 			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
-
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
 					<label for="give-form-honeypot-<?php echo $form_id; ?>"></label>
@@ -658,6 +657,7 @@ function give_user_info_fields( $form_id ) {
 					class="give-input required"
 					type="text"
 					name="give_first"
+					autocomplete="given-name"
 					placeholder="<?php _e( 'First Name', 'give' ); ?>"
 					id="give-first"
 					value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
@@ -678,6 +678,7 @@ function give_user_info_fields( $form_id ) {
 					class="give-input<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>"
 					type="text"
 					name="give_last"
+					autocomplete="family-name"
 					id="give-last"
 					placeholder="<?php _e( 'Last Name', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : ''; ?>"
@@ -730,6 +731,7 @@ function give_user_info_fields( $form_id ) {
 					class="give-input required"
 					type="email"
 					name="give_email"
+					autocomplete="email"
 					placeholder="<?php _e( 'Email Address', 'give' ); ?>"
 					id="give-email"
 					value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
@@ -958,6 +960,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 		    <select
 				    name="billing_country"
+				    autocomplete="country-name"
 				    id="billing_country"
 				    class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
 			    <?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
@@ -984,6 +987,7 @@ function give_default_cc_address_fields( $form_id ) {
 					type="text"
 					id="card_address"
 					name="card_address"
+					autocomplete="address-line1"
 					class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
 					placeholder="<?php _e( 'Address line 1', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['card_address'] ) ? $give_user_info['card_address'] : ''; ?>"
@@ -1004,6 +1008,7 @@ function give_default_cc_address_fields( $form_id ) {
 					type="text"
 					id="card_address_2"
 					name="card_address_2"
+					autocomplete="address-line2"
 					class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
 					placeholder="<?php _e( 'Address line 2', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['card_address_2'] ) ? $give_user_info['card_address_2'] : ''; ?>"
@@ -1023,6 +1028,7 @@ function give_default_cc_address_fields( $form_id ) {
 					type="text"
 					id="card_city"
 					name="card_city"
+					autocomplete="address-level3"
 					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
 					placeholder="<?php _e( 'City', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
@@ -1046,6 +1052,7 @@ function give_default_cc_address_fields( $form_id ) {
 		    if ( ! empty( $states ) ) : ?>
 			    <select
 					    name="card_state"
+					    autocomplete="address-level4"
 					    id="card_state"
 					    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
 				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
@@ -1075,6 +1082,7 @@ function give_default_cc_address_fields( $form_id ) {
 					size="4"
 					id="card_zip"
 					name="card_zip"
+					autocomplete="postal-code"
 					class="card-zip give-input<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required' : '' ); ?>"
 					placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"

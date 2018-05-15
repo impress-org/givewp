@@ -83,20 +83,21 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param $filename
-	 * @param $export_type
+	 * @param string $filename File name.
+	 * @param string $export_type export type.
 	 *
-	 * @return string
+	 * @return string $filename file name.
 	 */
-	function give_export_filename( $filename, $export_type ) {
-
+	public function give_export_filename( $filename, $export_type ) {
 
 		if ( $this->export_type !== $export_type ) {
 			return $filename;
 		}
 
-		if ( ! empty( (int) $_GET['forms'] ) ) {
-			$slug     = get_post_field( 'post_name', get_post( absint( $_GET['forms'] ) ) );
+		$forms = empty( $_GET['forms'] ) ? 0 : absint( $_GET['forms'] );
+
+		if ( $forms ) {
+			$slug     = get_post_field( 'post_name', get_post( $forms ) );
 			$filename = 'give-export-donors-' . $slug . '-' . date( 'm-d-Y' );
 		} else {
 			$filename = 'give-export-donors-all-forms-' . date( 'm-d-Y' );
