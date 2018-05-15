@@ -669,7 +669,6 @@ function give_user_info_fields( $form_id ) {
 					id="give-title"
 				<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			>
-				<option value="0"><?php echo esc_attr__( 'Title', 'give' ); ?></option>
 				<?php
 				if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) {
 					foreach ( $title_prefixes as $key => $value ) {
