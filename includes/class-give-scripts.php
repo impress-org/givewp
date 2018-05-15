@@ -386,6 +386,8 @@ class Give_Scripts {
 				'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 				'number_decimals' => give_get_price_decimals(),
 			) ),
+			'nonce_expire_soon'          => __( 'You have 5 minutes remaining to complete your donation.', 'give' ),
+			'nonce_expired'              => __( 'Your donation timed out, please refresh the page to donate.', 'give' ),
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
