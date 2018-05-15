@@ -115,7 +115,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'          => 'chosen',
 							'data_type'     => 'multiselect',
 							'wrapper_class' => 'give-hidden give-title-prefixes-settings-wrap',
-							'style'         => 'width: 100%',
+							'style'         => 'width: 30%',
 							'options'       => array(
 								'Mr'  => __( 'Mr', 'give' ),
 								'Mrs' => __( 'Mrs', 'give' ),
