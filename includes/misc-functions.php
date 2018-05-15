@@ -1974,7 +1974,8 @@ function give_get_title_prefixes( $form_id = 0 ) {
  */
 function give_get_donor_name_with_title( $donor ) {
 
-	if ( ! is_a( $donor, 'Give_Donor' ) ) {
+	// Prepare Give_Donor object, if $donor is numeric.
+	if ( is_numeric( $donor ) ) {
 		$donor = new Give_Donor( $donor );
 	}
 
