@@ -814,11 +814,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
 
 						?>
-						<tr valign="top" <?php echo esc_html( $wrapper_class ); ?>>
+						<tr valign="top" <?php echo $wrapper_class; ?>>
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_attr( self::get_field_title( $value ) ); ?></label>
 							</th>
-							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ) ?>">
+							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 								<select
 										class="give-select-chosen give-chosen-settings"
 										style="<?php echo esc_attr( $value['style'] ); ?>"
