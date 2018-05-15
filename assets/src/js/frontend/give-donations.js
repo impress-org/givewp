@@ -617,7 +617,7 @@ Give.form = {
 		 * @return {boolean}
 		 */
 		isNonceOld: function ($form) {
-			const $nonceField = jQuery('#_wpnonce', $form),
+			const $nonceField = jQuery('input[name="_wpnonce"]', $form),
 				nonceTime = parseInt( $nonceField.data('time') ) + parseInt( $nonceField.data('nonce-life') ) - 600,
 				currentTime = Math.round(Date.now() / 1000);
 
