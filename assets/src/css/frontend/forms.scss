@@ -219,14 +219,20 @@ form.give-form {
 
 	}
 
+  .form-row-title {
+	float: left;
+	width: 15%;
+  }
+
 	.form-row-first,
 	.form-row-last {
 		float: left;
-		width: 48.5%;
+		width: 40%;
 	}
 
-	.form-row-last {
-		float: right;
+    .form-row-title,
+	.form-row-first {
+	  margin-right: 2.5%;
 	}
 
 	.form-row-wide {
