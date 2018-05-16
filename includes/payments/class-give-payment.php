@@ -570,7 +570,7 @@ final class Give_Payment {
 			$this->address      = $this->setup_address();
 			$this->first_name   = $this->user_info['first_name'];
 			$this->last_name    = $this->user_info['last_name'];
-			$this->title_prefix = $this->user_info['title'];
+			$this->title_prefix = isset( $this->user_info['title'] ) ? $this->user_info['title'] : '';
 
 			// Other Identifiers.
 			$this->form_title = $this->setup_form_title();
