@@ -592,6 +592,8 @@ Give.form = {
 				return false;
 			}
 
+			Give.form.fn.disable( $form, true );
+
 			//Post via AJAX to Give
 			jQuery.post( give_global_vars.ajaxurl, {
 					action: 'give_donation_form_nonce',
@@ -600,6 +602,8 @@ Give.form = {
 				function( response ) {
 					// Update nonce field.
 					Give.form.fn.setInfo( 'nonce', response.data, $form, '' );
+
+					Give.form.fn.disable( $form, false );
 				}
 			);
 		},
