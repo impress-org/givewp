@@ -375,9 +375,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int        $i
-	 * @param array      $data
-	 * @param Give_Donor $donor
+	 * @param int    $i CSV line.
+	 * @param array  $data Donor CSV data.
+	 * @param object $donor Donor data.
 	 *
 	 * @return mixed
 	 */
@@ -385,7 +385,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$columns = $this->csv_cols();
 
-		// Set address variable
+		// Set address variable.
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
 			$address = give_get_donor_address( $donor->user_id );
@@ -429,7 +429,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Unset the properties specific to the donors export.
 	 *
-	 * @param array             $request
+	 * @param array $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
