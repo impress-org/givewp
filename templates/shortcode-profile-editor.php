@@ -7,7 +7,8 @@
  * @copyright    Copyright (c) 2016, WordImpress
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
-$current_user     = wp_get_current_user();
+
+$current_user = wp_get_current_user();
 
 if ( is_user_logged_in() ) :
 	$user_id = get_current_user_id();
@@ -19,20 +20,16 @@ if ( is_user_logged_in() ) :
 	$address      = $donor->get_donor_address( array( 'address_type' => 'personal' ) );
 	$company_name = $donor->get_meta( '_give_donor_company', true );
 
-	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) :
-		if ( isset( $_GET['update_code'] ) ) :?>
-			<?php
+	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) {
+		if ( isset( $_GET['update_code'] ) ) {
 			if ( 1 === absint( $_GET['update_code'] ) ) {
 				printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile has been updated.', 'give' ) );
 			}
-			?>
-			</p>
-		<?php endif; ?>
-	<?php endif; ?>
+		}
+	}
 
-	<?php Give()->notices->render_frontend_notices( 0 ); ?>
+	Give()->notices->render_frontend_notices( 0 );
 
-	<?php
 	/**
 	 * Fires in the profile editor shortcode, before the form.
 	 *
@@ -43,9 +40,7 @@ if ( is_user_logged_in() ) :
 	do_action( 'give_profile_editor_before' );
 	?>
 
-	<form id="give_profile_editor_form" class="give-form" action="<?php echo give_get_current_page_url(); ?>"
-	      method="post">
-
+	<form id="give_profile_editor_form" class="give-form" action="<?php echo give_get_current_page_url(); ?>" method="post">
 		<fieldset>
 			<legend id="give_profile_name_label"><?php _e( 'Profile', 'give' ); ?></legend>
 
