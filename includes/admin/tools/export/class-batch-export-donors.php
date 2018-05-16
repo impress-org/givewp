@@ -375,9 +375,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int   $i CSV line.
-	 * @param array $data Donor CSV data.
-	 * @param array $donor Donor data.
+	 * @param int    $i CSV line.
+	 * @param array  $data Donor CSV data.
+	 * @param object $donor Donor data.
 	 *
 	 * @return mixed
 	 */
