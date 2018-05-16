@@ -20,40 +20,19 @@ jQuery( document ).ready( function( $ ) {
 	// Update and invalidate cached nonce.
 	$('.give-form').each( function( index, $form ){
 		$form = jQuery( $form );
-		Give.form.fn.resetNonce( $form );
 
-		const nonceCheckTimer = window.setInterval(function(){
-			const $nonceField = jQuery('input[name="_wpnonce"]', $form),
-				nonceTime = parseInt( $nonceField.data('time') ) + parseInt( $nonceField.data('nonce-life') ),
-				currentTime = Math.round(Date.now() / 1000),
-				timeDiff = nonceTime - currentTime;
+		const $nonceField = jQuery('input[name="_wpnonce"]', $form),
+			nonceTime = parseInt( $nonceField.data('time') ) + parseInt( $nonceField.data('nonce-life') ),
+			currentTime = Math.round(Date.now() / 1000);
 
-			let $notice = '';
+		let timeDiff = nonceTime - currentTime;
 
-			if(  5000 >= timeDiff && 0 < timeDiff && ! $('.give-nonce-expire-soon', $form ).length ) {
-				$notice = jQuery(
-					'<div class="give_error give-nonce-expire-soon give-hidden">' +
-						give_global_vars.nonce_expire_soon +
-					'</div>'
-				);
+		timeDiff = 0 > timeDiff ? timeDiff : ( timeDiff + 100 );
 
-				$notice.insertBefore( $form.find( '.give-total-wrap' ) ).show();
-
-			}else if ( 0 >= timeDiff && ! $('.give-nonce-expired', $form ).length ){
-				$('.give-nonce-expire-soon', $form ).remove();
-
-				$notice = jQuery(
-					'<div class="give_error give-nonce-expired give-hidden">' +
-					give_global_vars.nonce_expired +
-					'</div>'
-				);
-
-				$notice.insertBefore( $form.find( '.give-total-wrap' ) ).show();
-
-				window.clearInterval( nonceCheckTimer );
-			}
-
-		}, 1000 );
+		// Update nonce in background.
+		window.setTimeout(function(){
+			Give.form.fn.resetNonce( $form );
+		}, timeDiff );
 	});
 
 	// Show the login form in the checkout when the user clicks the "Login" link
