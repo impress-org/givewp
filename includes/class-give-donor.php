@@ -313,10 +313,7 @@ class Give_Donor {
 			$by_user_id = get_user_by( 'id', $this->id ) ? true : false;
 
 			if ( $by_user_id ) {
-				return wp_parse_args(
-					(array) get_user_meta( $donor_id, '_give_user_address', true ),
-					$default_address
-				);
+				return wp_parse_args( (array) get_user_meta( $this->id, '_give_user_address', true ), $default_address );
 			}
 		}
 
