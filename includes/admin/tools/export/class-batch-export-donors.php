@@ -295,10 +295,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				if ( ! empty( $this->donor_ids ) ) {
 					foreach ( $this->donor_ids as $donor_id ) {
-						$donor                      = new Give_Donor( 'id', $donor_id );
-						$donor->purchase_count      = $this->payment_stats[ $donor_id ]['donations'];
-						$donor->purchase_value      = $this->payment_stats[ $donor_id ]['donation_sum'];
-						$data[]                     = $this->set_donor_data( $i, $data, $donor );
+						$donor                 = Give()->donors->get_donor_by( 'id', $donor_id );
+						$donor->purchase_count = $this->payment_stats[ $donor_id ]['donations'];
+						$donor->purchase_value = $this->payment_stats[ $donor_id ]['donation_sum'];
+						$data[]                = $this->set_donor_data( $i, $data, $donor );
 					}
 
 					// Cache donor ids only if admin export donor for specific form.
@@ -375,9 +375,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int        $i
-	 * @param array      $data
-	 * @param Give_Donor $donor
+	 * @param int   $i CSV line.
+	 * @param array $data Donor CSV data.
+	 * @param array $donor Donor data.
 	 *
 	 * @return mixed
 	 */
@@ -385,14 +385,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$columns = $this->csv_cols();
 
-		// Set address variable
+		// Set address variable.
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
-			if ( method_exists( $donor, 'get_donor_address' ) ) {
-				$address = $donor->get_donor_address();
-			} else {
-				$address = give_get_donor_address( $donor->user_id );
-			}
+			$address = give_get_donor_address( $donor->user_id );
 		}
 
 		// Set columns
@@ -433,7 +429,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Unset the properties specific to the donors export.
 	 *
-	 * @param array             $request
+	 * @param array $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
