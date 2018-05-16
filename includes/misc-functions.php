@@ -1929,3 +1929,39 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 
 	return $data;
 }
+
+
+/**
+ * Get time interval for which nonce is valid
+ *
+ * @since 2.1.3
+ *
+ * @return int
+ */
+function give_get_nonce_life(){
+	/**
+	 * Filters the lifespan of nonces in seconds.
+	 *
+	 * @see wp-inlucdes/pluggable.php:wp_nonce_tick
+	 */
+	return (int) apply_filters( 'nonce_life', DAY_IN_SECONDS );
+}
+
+/**
+ * Get nonce field without id
+ *
+ * @since 2.1.3
+ *
+ * @param  string $action
+ * @param  string $name
+ * @param bool    $referer
+ *
+ * @return string
+ */
+function give_get_nonce_field( $action, $name, $referer = false ) {
+	return str_replace(
+		"id=\"{$name}\"",
+		'',
+		wp_nonce_field( $action, $name, $referer, false )
+	);
+}

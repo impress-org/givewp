@@ -17,6 +17,24 @@ jQuery( document ).ready( function( $ ) {
 	//Hide loading elements
 	$( '.give-loading-text' ).hide();
 
+	// Update and invalidate cached nonce.
+	$('.give-form').each(function (index, $form) {
+		$form = jQuery($form);
+
+		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
+			nonceTime = parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life')),
+			currentTime = Math.round(Date.now() / 1000);
+
+		let timeDiff = nonceTime - currentTime;
+
+		timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
+
+		// Update nonce in background.
+		window.setTimeout(function () {
+			Give.form.fn.resetNonce($form);
+		}, timeDiff);
+	});
+
 	// Show the login form in the checkout when the user clicks the "Login" link
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
 		var $this = $( this );
