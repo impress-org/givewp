@@ -1063,16 +1063,20 @@ final class Give_Payment {
 			if ( give_has_variable_prices( $donation->ID ) ) {
 				$prices          = give_get_meta( $form_id, '_give_donation_levels', true );
 				$donation_amount = '';
+
 				// Loop through prices.
 				foreach ( $prices as $price ) {
 					// Find a match between price_id and level_id.
 					// First verify array keys exists THEN make the match.
-					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
-					     && $args['price_id'] === $price['_give_id']['level_id']
+					if (
+						isset( $args['price_id'] ) &&
+						isset( $price['_give_id']['level_id'] ) &&
+						$args['price_id'] === (int) $price['_give_id']['level_id']
 					) {
 						$donation_amount = $price['_give_amount'];
 					}
 				}
+
 				// Fallback to the lowest price point.
 				if ( '' === $donation_amount ) {
 					$donation_amount  = give_get_lowest_price_option( $donation->ID );
