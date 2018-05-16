@@ -897,8 +897,7 @@ function give_default_cc_address_fields( $form_id ) {
 	$logged_in = is_user_logged_in();
 
 	if ( $logged_in ) {
-		$donor        = new Give_Donor( get_current_user_id(), true );
-		$user_address = $donor->get_donor_address();
+		$user_address = give_get_donor_address( get_current_user_id() );
 	}
 
 	ob_start();
