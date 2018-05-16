@@ -931,12 +931,8 @@ final class Give_Payment {
 						$this->update_meta( '_give_payment_donor_email', $this->email );
 						break;
 
-					case 'user_info':
-						foreach ( $this->pending[ $key ] as $user_key => $user_value ) {
-							if ( 'title' === $user_key ) {
-								$this->update_meta( '_give_payment_donor_title_prefix', $user_value );
-							}
-						}
+					case 'title_prefix':
+						$this->update_meta( '_give_payment_donor_title_prefix', $this->title_prefix );
 						break;
 
 					case 'key':
