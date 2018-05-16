@@ -375,7 +375,7 @@ Give.form = {
 
 			switch ( type ) {
 				case 'nonce':
-					$form.find( 'input[name="_wpnonce"]' ).val( val );
+					$form.find( 'input[name="give-form-hash"]' ).val( val );
 					break;
 			}
 
@@ -569,7 +569,7 @@ Give.form = {
 				return '';
 			}
 
-			var nonce = $form.find( 'input[name="_wpnonce"]' ).val();
+			let nonce = $form.find( 'input[name="give-form-hash"]' ).val();
 
 			if ( 'undefined' === typeof nonce || ! nonce ) {
 				nonce = '';

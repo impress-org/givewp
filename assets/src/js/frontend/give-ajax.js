@@ -21,7 +21,7 @@ jQuery( document ).ready( function( $ ) {
 	$('.give-form').each(function (index, $form) {
 		$form = jQuery($form);
 
-		const $nonceField = jQuery('input[name="_wpnonce"]', $form),
+		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
 			nonceTime = parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life')),
 			currentTime = Math.round(Date.now() / 1000);
 

@@ -1982,8 +1982,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	echo str_replace(
 		'/>',
 		'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
-		wp_nonce_field( "give_donation_form_nonce_{$form_id}", 'give-form-hash', false )
-
+		give_get_nonce_field( "give_donation_form_nonce_{$form_id}", 'give-form-hash', false )
 	);
 
 	// Price ID hidden field for variable (multi-level) donation forms.
