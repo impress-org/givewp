@@ -35,7 +35,6 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 			'email'      => $user->user_email,
 			'first_name' => $user->first_name,
 			'last_name'  => $user->last_name,
-			'title'      => '',
 		);
 
 		// setup form.
@@ -84,7 +83,6 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 			'first_name' => 'Guest',
 			'last_name'  => 'User',
 			'discount'   => 'none',
-			'title'      => '',
 		);
 
 		// Setup simple donation form.
@@ -128,7 +126,6 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 			'email'      => $user->user_email,
 			'first_name' => $user->first_name,
 			'last_name'  => $user->last_name,
-			'title'      => '',
 		);
 
 		// Setup multi-level donation form
