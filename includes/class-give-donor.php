@@ -310,11 +310,8 @@ class Give_Donor {
 		if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
 
 			// Backward compatibility for user id param.
-			$by_user_id = get_user_by( 'id', $this->id ) ? true : false;
+			return wp_parse_args( (array) get_user_meta( $this->user_id, '_give_user_address', true ), $default_address );
 
-			if ( $by_user_id ) {
-				return wp_parse_args( (array) get_user_meta( $this->id, '_give_user_address', true ), $default_address );
-			}
 		}
 
 		if ( ! $this->id || empty( $this->address ) || ! array_key_exists( $args['address_type'], $this->address ) ) {
