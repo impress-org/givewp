@@ -588,7 +588,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
 		case 'donor':
 			$name         = Give()->donors->get_column( 'name', $id );
-			$title_prefix = give_get_meta( $id, '_give_donor_title_prefix', true );
+			$title_prefix = Give()->donor_meta->get_meta( $id, '_give_donor_title_prefix', true );
 
 			break;
 
