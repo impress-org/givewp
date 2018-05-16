@@ -126,7 +126,6 @@ function give_get_donation_form( $args = array() ) {
 			 */
 			do_action( 'give_pre_form', $form->ID, $args, $form );
 
-
 			// Set form html tags.
 			$form_html_tags = array(
 				'id'      => "give-form-{$args['id_prefix']}",
@@ -1174,6 +1173,7 @@ function give_get_register_fields( $form_id ) {
 					?>
 					<?php _e( 'Create an account', 'give' ); ?>
 					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
+					<?php wp_nonce_field( 'give_form_create_user_nonce', 'give-form-user-register-hash', false, true );?>
 				</label>
 			</div>
 
@@ -1959,12 +1959,11 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
 function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 	?>
-	<input type="hidden" name="give-form-id" value="<?php echo $form_id; ?>"/>
-	<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-	<input type="hidden" name="give-current-url"
-		   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 	<input type="hidden" name="give-form-id-prefix" value="<?php echo $id_prefix; ?>"/>
+	<input type="hidden" name="give-form-id" value="<?php echo intval( $form_id ); ?>"/>
+	<input type="hidden" name="give-form-title" value="<?php echo esc_html( $form->post_title ); ?>"/>
+	<input type="hidden" name="give-current-url" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-url" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
 	<?php
 	// Get the custom option amount.
 	$custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
@@ -1983,15 +1982,18 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	echo str_replace(
 		'/>',
 		'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
-		wp_nonce_field( "donation_form_nonce_{$form_id}", '_wpnonce', false, false )
+		wp_nonce_field( "give_donation_form_nonce_{$form_id}", 'give-form-hash', false )
+
 	);
 
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {
+
 		// Get default selected price ID.
 		$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 		$price_id = 0;
-		//loop through prices.
+
+		// Loop through prices.
 		foreach ( $prices as $price ) {
 			if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
 				$price_id = $price['_give_id']['level_id'];
