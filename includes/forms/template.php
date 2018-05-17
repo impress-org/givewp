@@ -1629,7 +1629,20 @@ function give_checkout_final_total( $form_id ) {
 		</span>
 		<span class="give-final-total-amount"
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
-			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
+			<?php
+
+			/**
+			 * Modify the give donation total amount.
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param string  $formatted_amount Donation formatted amount.
+			 * @param float   $total            Un-formatted donation amount.
+			 * @param integer $form_id          Donation Form ID.
+			 */
+			$donation_total = apply_filters( 'give_donation_total_amount', give_format_amount( $total, array( 'sanitize' => false ) ), $total, $form_id );
+
+			echo give_currency_filter( $donation_total, array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
 		</span>
 		<?php
 		/**
