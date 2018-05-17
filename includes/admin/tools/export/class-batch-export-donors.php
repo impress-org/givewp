@@ -83,20 +83,21 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param $filename
-	 * @param $export_type
+	 * @param string $filename File name.
+	 * @param string $export_type export type.
 	 *
-	 * @return string
+	 * @return string $filename file name.
 	 */
-	function give_export_filename( $filename, $export_type ) {
-
+	public function give_export_filename( $filename, $export_type ) {
 
 		if ( $this->export_type !== $export_type ) {
 			return $filename;
 		}
 
-		if ( ! empty( (int) $_GET['forms'] ) ) {
-			$slug     = get_post_field( 'post_name', get_post( absint( $_GET['forms'] ) ) );
+		$forms = empty( $_GET['forms'] ) ? 0 : absint( $_GET['forms'] );
+
+		if ( $forms ) {
+			$slug     = get_post_field( 'post_name', get_post( $forms ) );
 			$filename = 'give-export-donors-' . $slug . '-' . date( 'm-d-Y' );
 		} else {
 			$filename = 'give-export-donors-all-forms-' . date( 'm-d-Y' );
@@ -294,10 +295,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				if ( ! empty( $this->donor_ids ) ) {
 					foreach ( $this->donor_ids as $donor_id ) {
-						$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
-						$donor->purchase_count      = $this->payment_stats[ $donor_id ]['donations'];
-						$donor->purchase_value      = $this->payment_stats[ $donor_id ]['donation_sum'];
-						$data[]                     = $this->set_donor_data( $i, $data, $donor );
+						$donor                 = Give()->donors->get_donor_by( 'id', $donor_id );
+						$donor->purchase_count = $this->payment_stats[ $donor_id ]['donations'];
+						$donor->purchase_value = $this->payment_stats[ $donor_id ]['donation_sum'];
+						$data[]                = $this->set_donor_data( $i, $data, $donor );
 					}
 
 					// Cache donor ids only if admin export donor for specific form.
@@ -331,8 +332,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					continue;
 				}
 
-				$payment                    = new Give_Payment( $donor->payment_ids );
-				$data[]                     = $this->set_donor_data( $i, $data, $donor );
+				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
 		}// End if().
@@ -375,9 +375,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int        $i
-	 * @param array      $data
-	 * @param Give_Donor $donor
+	 * @param int    $i CSV line.
+	 * @param array  $data Donor CSV data.
+	 * @param object $donor Donor data.
 	 *
 	 * @return mixed
 	 */
@@ -385,7 +385,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$columns = $this->csv_cols();
 
-		// Set address variable
+		// Set address variable.
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
 			$address = give_get_donor_address( $donor->user_id );
@@ -429,7 +429,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Unset the properties specific to the donors export.
 	 *
-	 * @param array             $request
+	 * @param array $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {

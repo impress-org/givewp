@@ -656,9 +656,9 @@ function give_let_to_num( $size ) {
  *
  * @since 1.8
  *
- * @param        $nonce
- * @param int    $action
- * @param array  $wp_die_args
+ * @param string $nonce       Nonce Hash.
+ * @param int    $action      Nonce verification action.
+ * @param array  $wp_die_args Nonce fail arguments.
  *
  * @return bool
  */
@@ -680,7 +680,7 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 				'title'   => __( 'Error', 'give' ),
 				'args'    => array(
 					'response' => 403,
-				)
+				),
 			)
 		);
 
@@ -699,17 +699,15 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  *
  * @since 2.0
  *
- * @param string $nonce Pass nonce value.
+ * @param string $nonce   Nonce value.
+ * @param int    $form_id Donation Form ID.
  *
  * @return bool
  */
-function give_verify_donation_form_nonce( $nonce = '' ) {
-	// Get nonce key from donation.
-	$nonce   = empty( $nonce ) ? give_clean( $_POST['_wpnonce'] ) : $nonce;
-	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+function give_verify_donation_form_nonce( $nonce = '', $form_id ) {
 
 	// Form nonce action.
-	$nonce_action = "donation_form_nonce_{$form_id}";
+	$nonce_action = "give_donation_form_nonce_{$form_id}";
 
 	// Nonce validation.
 	$verify_nonce = give_validate_nonce( $nonce, $nonce_action );
