@@ -468,13 +468,13 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	$price_id  = ! empty( $post_data['give-price-id'] ) ? $post_data['give-price-id'] : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
-	$verified_stat   = false;
+	$verified_stat   = true;
 
 	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ), true ) ) {
 
 		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
 
-		if ( $price_level_amount === (float) $amount ) {
+		if ( $price_level_amount == $amount ) {
 			$verified_stat = true;
 		}
 	}
