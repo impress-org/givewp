@@ -22,13 +22,14 @@ jQuery( document ).ready( function( $ ) {
 		$form = jQuery($form);
 
 		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
-			nonceTime = parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life')),
-			currentTime = Math.round(Date.now() / 1000);
+			nonceTime = ( parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life') ) ) * 1000,
+			currentTime = Date.now();
 
+		// We need time in ms.
 		let timeDiff = nonceTime - currentTime;
 
 		timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
-
+		
 		// Update nonce in background.
 		window.setTimeout(function () {
 			Give.form.fn.resetNonce($form);
