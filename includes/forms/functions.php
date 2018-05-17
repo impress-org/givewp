@@ -1017,7 +1017,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 	if ( is_user_logged_in() ) :
 		$donor_data    = get_userdata( get_current_user_id() );
 		$donor         = new Give_Donor( get_current_user_id(), true );
-		$donor_address = give_get_donor_address( get_current_user_id() );
+		$donor_address = $donor->get_donor_address();
 		$company_name  = $donor->get_company_name();
 
 		$logged_in_donor_info = array(
