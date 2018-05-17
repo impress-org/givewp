@@ -65,7 +65,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
  * Create wp nonce using Ajax call.
- * 
+ *
  * Use give_donation_form_nonce() js fn to create nonce.
  *
  * @since 2.0
@@ -79,7 +79,7 @@ function give_donation_form_nonce() {
 		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
 
 		// Send nonce json data.
-		wp_send_json_success( wp_create_nonce( "donation_form_nonce_{$form_id}" ) );
+		wp_send_json_success( wp_create_nonce( "give_donation_form_nonce_{$form_id}" ) );
 	}
 }
 
