@@ -459,15 +459,14 @@ function give_count_total_donors() {
 	return Give()->donors->count();
 }
 
-
 /**
  * Returns the saved address for a donor
  *
  * @access public
  * @since  1.0
  *
- * @param  int   $donor_id Donor ID
- * @param  array $args
+ * @param int/null $donor_id Donor ID.
+ * @param array    $args donor args.
  *
  * @return array The donor's address, if any
  */
@@ -476,11 +475,11 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		$donor_id = get_current_user_id();
 	}
 
-	$address = array();
-	$args = wp_parse_args(
+	$address         = array();
+	$args            = wp_parse_args(
 		$args,
 		array(
-			'address_type' => 'billing'
+			'address_type' => 'billing',
 		)
 	);
 	$default_address = array(
@@ -492,11 +491,12 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		'zip'     => '',
 	);
 
+
 	// Backward compatibility for user id param.
 	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 
 	// Backward compatibility.
-	if( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ){
+	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ) {
 		return wp_parse_args(
 			(array) get_user_meta( $donor_id, '_give_user_address', true ),
 			$default_address
@@ -504,7 +504,6 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 	}
 
 	$donor = new Give_Donor( $donor_id, $by_user_id );
-
 
 	if (
 		! $donor->id ||
@@ -514,12 +513,12 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		return $default_address;
 	}
 
-	switch ( true ){
-		case is_string( end( $donor->address[ $args['address_type'] ] ) ) :
+	switch ( true ) {
+		case is_string( end( $donor->address[ $args['address_type'] ] ) ):
 			$address = wp_parse_args( $donor->address[ $args['address_type'] ], $default_address );
 			break;
 
-		case is_array( end( $donor->address[ $args['address_type'] ] ) ) :
+		case is_array( end( $donor->address[ $args['address_type'] ] ) ):
 			$address = wp_parse_args( array_shift( $donor->address[ $args['address_type'] ] ), $default_address );
 			break;
 	}

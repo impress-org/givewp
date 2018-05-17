@@ -39,12 +39,14 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  */
 function give_load_ajax_gateway() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok.
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
 	if ( isset( $post_data['give_payment_mode'] ) ) {
 
+		$form_id_prefix = ! empty( $post_data['give_form_id_prefix'] ) ? $post_data['give_form_id_prefix'] : '';
+
 		$args = array(
-			'id_prefix' => $post_data['give_form_id_prefix'],
+			'id_prefix' => $form_id_prefix,
 		);
 
 		/**
