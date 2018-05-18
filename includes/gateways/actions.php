@@ -39,12 +39,14 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  */
 function give_load_ajax_gateway() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok.
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
 	if ( isset( $post_data['give_payment_mode'] ) ) {
 
+		$form_id_prefix = ! empty( $post_data['give_form_id_prefix'] ) ? $post_data['give_form_id_prefix'] : '';
+
 		$args = array(
-			'id_prefix' => $post_data['give_form_id_prefix'],
+			'id_prefix' => $form_id_prefix,
 		);
 
 		/**
@@ -63,7 +65,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
  * Create wp nonce using Ajax call.
- * 
+ *
  * Use give_donation_form_nonce() js fn to create nonce.
  *
  * @since 2.0
@@ -77,7 +79,7 @@ function give_donation_form_nonce() {
 		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
 
 		// Send nonce json data.
-		wp_send_json_success( wp_create_nonce( "donation_form_nonce_{$form_id}" ) );
+		wp_send_json_success( wp_create_nonce( "give_donation_form_nonce_{$form_id}" ) );
 	}
 }
 
