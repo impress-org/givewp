@@ -1748,13 +1748,14 @@ function give_donation_form_goal( $field ) {
     <ul class="give-radios">
 		<?php
 		foreach ( $field['options'] as $key => $value ) {
+			$attributes = empty( $field['attributes'] ) ? '' : give_get_attribute_str( $field['attributes'] );
 			printf(
 				'<li><label><input name="%s" value="%s" type="radio" style="%s" %s %s /> %s </label></li>',
 				give_get_field_name( $field ),
 				esc_attr( $key ),
 				esc_attr( $field['style'] ),
 				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
-				give_get_attribute_str( $field['attributes'] ),
+				$attributes,
 				esc_html( $value )
 			);
 		}
