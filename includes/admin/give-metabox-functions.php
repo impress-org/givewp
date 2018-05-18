@@ -1754,7 +1754,7 @@ function give_donation_form_goal( $field ) {
 				esc_attr( $key ),
 				esc_attr( $field['style'] ),
 				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
-				give_get_custom_attributes( $field ),
+				give_get_attribute_str( $field['attributes'] ),
 				esc_html( $value )
 			);
 		}
@@ -1763,15 +1763,15 @@ function give_donation_form_goal( $field ) {
 
 	<?php
 	/**
-	 * Action to add HTML after donation form radio button is display and before description
+	 * Action to add HTML after donation form radio button is display and before description.
 	 *
 	 * @since 2.1.3
 	 *
-	 * @param array $field Array of radio field arguments
+	 * @param array $field Array of radio field arguments.
 	 */
 	do_action( 'give_donation_form_goal_before_description', $field );
 
 	echo give_get_field_description( $field );
 
-	printf( '</fieldset>' );
+	echo '</fieldset>';
 }
