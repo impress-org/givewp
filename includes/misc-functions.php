@@ -1930,7 +1930,6 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 	return $data;
 }
 
-
 /**
  * Get time interval for which nonce is valid
  *
@@ -1964,4 +1963,110 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 		'',
 		wp_nonce_field( $action, $name, $referer, false )
 	);
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$donors = '';
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+	/**
+	 * Filter the form.
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
+
+	switch ( $goal_format ) {
+		case  'donation':
+			/**
+			 * Filter the form donations.
+			 *
+			 * @since 2.1
+			 */
+			$actual = $donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
+			break;
+		case 'donors':
+			/**
+			 * Filter to modify total number if donor for the donation form.
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int $donors Total number of donors that donated to the form.
+			 * @param int $form_id Donation Form ID.
+			 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+			 *
+			 * @return int $donors Total number of donors that donated to the form.
+			 */
+			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
+			break;
+		default :
+			/**
+			 * Filter the form income.
+			 *
+			 * @since 1.8.8
+			 */
+			$actual = $income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+			break;
+	}
+
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	$stats_array = array(
+		'raw_actual' => $actual,
+		'raw_goal'   => $total_goal
+	);
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	// Define Actual Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$actual = "{$actual}%";
+	} else if ( 'amount' === $goal_format ) {
+		$actual = give_currency_filter( give_format_amount( $actual ) );
+	}
+
+	// Define Total Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$total_goal = '';
+	} else if ( 'amount' === $goal_format ) {
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+	}
+
+	$stats_array = array_merge(
+		array(
+			'progress'       => $progress,
+			'actual'         => $actual,
+			'goal'           => $total_goal,
+			'format'         => $goal_format,
+		),
+		$stats_array
+	);
+
+	/**
+	 * Filter the goal stats
+	 *
+	 * @since 2.1
+	 */
+	return apply_filters( 'give_goal_progress_stats', $stats_array );
+
 }
