@@ -703,7 +703,7 @@ function give_user_info_fields( $form_id ) {
 					<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 				>
 					<?php foreach ( $title_prefixes as $key => $value ) { ?>
-						<option value="<?php echo esc_html( $value ); ?>"><?php echo esc_html( $value ); ?></option>
+						<option value="<?php echo esc_html( $value ); ?>" <?php selected( $value, $title, true ); ?>><?php echo esc_html( $value ); ?></option>
 					<?php } ?>
 				</select>
 			</p>
