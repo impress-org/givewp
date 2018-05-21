@@ -1978,18 +1978,14 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
  */
 function give_get_title_prefixes( $form_id = 0 ) {
 
-	$title_prefixes    = array();
-
-	if ( give_is_title_prefix_enabled() ) {
-		$title_prefixes = give_get_option( 'title_prefixes' );
-	}
+	$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	$title_prefixes    = give_get_option( 'title_prefixes' );
 
 	// If form id exists, then fetch form specific title prefixes.
-	if ( intval( $form_id ) > 0 ) {
-		$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	if ( intval( $form_id ) > 0 && $name_title_prefix ) {
 
-		// Proceed only if title prefix setting for form is enabled.
-		if ( $name_title_prefix ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+		if ( 'global' !== $form_title_prefix ) {
 			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
 
 			// Check whether the form based title prefixes exists or not.
