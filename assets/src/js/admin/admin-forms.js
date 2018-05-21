@@ -205,10 +205,15 @@ jQuery.noConflict();
 		} ).change();
 
 		// Title Prefixes.
-		var name_title_prefix = $( 'input[name="_give_name_title_prefix"]');
-		name_title_prefix.on( 'change', function() {
+		var defaultNameTitlePrefixChecked = $( 'input[name="_give_name_title_prefix"]:checked').val();
+		if ( 'required' === defaultNameTitlePrefixChecked || 'optional' === defaultNameTitlePrefixChecked ) {
+			$( '.give-title-prefixes-wrap' ).show();
+		}
 
-			if ( 'enabled' === $( 'input[name="_give_name_title_prefix"]:checked').val() ) {
+		$( 'input[name="_give_name_title_prefix"]').on( 'change', function() {
+			var titlePrefixChecked = $( 'input[name="_give_name_title_prefix"]:checked').val();
+
+			if ( 'required' === titlePrefixChecked || 'optional' === titlePrefixChecked ) {
 				$( '.give-title-prefixes-wrap' ).show();
 			} else {
 				$( '.give-title-prefixes-wrap' ).hide();
