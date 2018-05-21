@@ -1979,25 +1979,55 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 function give_get_title_prefixes( $form_id = 0 ) {
 
 	$title_prefixes    = array();
-	$name_title_prefix = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), array( 'required', 'optional' ) );
 
-	if ( $name_title_prefix ) {
+	if ( give_is_title_prefix_enabled() ) {
 		$title_prefixes = give_get_option( 'title_prefixes' );
 	}
 
 	// If form id exists, then fetch form specific title prefixes.
 	if ( intval( $form_id ) > 0 ) {
-		$name_title_prefix = give_get_meta( $form_id, 'name_title_prefix' );
+		$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+
+		// Proceed only if title prefix setting for form is enabled.
 		if ( $name_title_prefix ) {
-			$form_title_prefixes = give_get_meta( $form_id, 'title_prefixes' );
-			if ( is_array( $form_title_prefixes ) ) {
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
+
+			// Check whether the form based title prefixes exists or not.
+			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
 				$title_prefixes = $form_title_prefixes;
 			}
 		}
-
 	}
 
 	return $title_prefixes;
+}
+
+/**
+ * Check whether the title prefix is enabled or not.
+ *
+ * @param int    $form_id Donation Form ID.
+ * @param string $status  Status to set status based on option value.
+ *
+ * @since 2.2
+ *
+ * @return bool
+ */
+function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
+
+	if ( empty( $status ) ) {
+		$status = array( 'required', 'optional' );
+	} else {
+		$status = array( $status );
+	}
+
+	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$title_prefix_status = give_is_setting_enabled( give_get_meta( $form_id, '_give_name_title_prefix', true ), $status );
+	}
+
+	return $title_prefix_status;
+
 }
 
 /**
