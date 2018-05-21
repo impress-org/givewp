@@ -104,8 +104,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
 							),
 						),
 						array(

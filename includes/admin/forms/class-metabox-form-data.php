@@ -285,8 +285,9 @@ class Give_MetaBox_Form_Data {
 							'id'      => $prefix . 'name_title_prefix',
 							'type'    => 'radio_inline',
 							'options' => array(
-								'global'   => __( 'Global Option', 'give' ),
-								'enabled'  => __( 'Enabled', 'give' ),
+								'global' => __( 'Global Option', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							),
 							'default' => 'global',
