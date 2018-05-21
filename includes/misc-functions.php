@@ -2019,7 +2019,13 @@ function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
 	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
 
 	if ( intval( $form_id ) > 0 ) {
-		$title_prefix_status = give_is_setting_enabled( give_get_meta( $form_id, '_give_name_title_prefix', true ), $status );
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'disabled' === $form_title_prefix ) {
+			$title_prefix_status = false;
+		} elseif ( in_array( $form_title_prefix, $status, true ) ) {
+			$title_prefix_status = give_is_setting_enabled( $form_title_prefix, $status );
+		}
 	}
 
 	return $title_prefix_status;
