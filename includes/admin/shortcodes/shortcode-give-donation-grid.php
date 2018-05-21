@@ -52,7 +52,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'type'        => 'listbox',
 				'name'        => 'columns',
 				'label'       => esc_attr__( 'Columns:', 'give' ),
-				'tooltip'     => esc_attr__( 'Sets the number of donations per row.', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the number of forms per row.', 'give' ),
 				'options'     => array(
 					'1' => esc_html__( '1', 'give' ),
 					'2' => esc_html__( '2', 'give' ),
@@ -105,7 +105,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'type'    => 'textbox',
 				'name'    => 'forms_per_page',
 				'label'   => esc_attr__( 'Forms Per Page:', 'give' ),
-				'tooltip' => esc_attr__( 'Sets the number of donations form per row.', 'give' ),
+				'tooltip' => esc_attr__( 'Sets the number of forms to display per page.', 'give' ),
 				'value'   => 12,
 			),
 		);
