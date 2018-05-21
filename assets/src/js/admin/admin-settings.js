@@ -48,12 +48,12 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Show/Hide Title Prefixes
 	 */
-	if ( 'enabled' === $('input[name="name_title_prefix"]:checked').val() ) {
+	if ( 'disabled' !== $('input[name="name_title_prefix"]:checked').val() ) {
 		$( '.give-title-prefixes-settings-wrap' ).show();
 	}
 
 	$( 'input[name="name_title_prefix"]' ).on( 'change', function() {
-		if ( 'enabled' === $(this).val() ) {
+		if ( 'disabled' !== $(this).val() ) {
 			$( '.give-title-prefixes-settings-wrap' ).show();
 		} else {
 			$( '.give-title-prefixes-settings-wrap' ).hide();
