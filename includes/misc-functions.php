@@ -1979,7 +1979,7 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 function give_get_title_prefixes( $form_id = 0 ) {
 
 	$title_prefixes    = array();
-	$name_title_prefix = give_is_setting_enabled( give_get_option( 'name_title_prefix' ) );
+	$name_title_prefix = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), array( 'required', 'optional' ) );
 
 	if ( $name_title_prefix ) {
 		$title_prefixes = give_get_option( 'title_prefixes' );
