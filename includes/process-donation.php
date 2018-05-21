@@ -555,6 +555,14 @@ function give_get_required_fields( $form_id ) {
 		),
 	);
 
+	$name_title_prefix = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), array( 'required' ) );
+	if ( $name_title_prefix ) {
+		$required_fields['give_title'] = array(
+			'error_id'      => 'invalid_title',
+			'error_message' => __( 'Please enter your title.', 'give' ),
+		);
+	}
+
 	$require_address = give_require_billing_address( $payment_mode );
 
 	if ( $require_address ) {
