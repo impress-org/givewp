@@ -41,9 +41,9 @@ export default Give = {
 			// Global currency setting.
 			var format_args = {
 				symbol: '',
-				decimal: parseInt( give_global_vars.decimal_separator ),
+				decimal: give_global_vars.decimal_separator,
 				thousand: give_global_vars.thousands_separator,
-				precision: give_global_vars.number_decimals,
+				precision: parseInt( give_global_vars.number_decimals ),
 				currency: give_global_vars.currency
 			};
 
