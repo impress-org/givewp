@@ -680,13 +680,18 @@ function give_user_info_fields( $form_id ) {
 	 * @since 1.7
 	 */
 	do_action( 'give_donation_form_before_personal_info', $form_id );
+
+	$title_prefix_classes = '';
+	if ( give_is_title_prefix_enabled( $form_id ) ) {
+		$title_prefix_classes = 'give-title-prefix-wrap';
+	}
 	?>
-	<fieldset id="give_checkout_user_info">
+	<fieldset id="give_checkout_user_info" class="<?php echo esc_html( $title_prefix_classes ); ?>">
 		<legend>
 			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
 		</legend>
 
-		<?php if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
+		<?php if ( give_is_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
 			<p id="give-title-wrap" class="form-row form-row-title form-row-responsive">
 				<label class="give-label" for="give-title">
 					<?php esc_attr_e( 'Title', 'give' ); ?>
