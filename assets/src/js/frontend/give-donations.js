@@ -588,7 +588,7 @@ Give.form = {
 		 */
 		resetNonce: function( $form ) {
 			// Return false, if form is missing.
-			if ( ! $form.length ) {
+			if ( ! $form.length || ! jQuery( 'input[name="give-form-hash"]', $form ).length ) {
 				return false;
 			}
 
