@@ -2068,5 +2068,95 @@ function give_goal_progress_stats( $form ) {
 	 * @since 2.1
 	 */
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
+}
 
+/**
+ * Get Title Prefixes values.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2
+ *
+ * @return mixed
+ */
+function give_get_title_prefixes( $form_id = 0 ) {
+
+	$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	$title_prefixes    = give_get_option( 'title_prefixes' );
+
+	// If form id exists, then fetch form specific title prefixes.
+	if ( intval( $form_id ) > 0 && $name_title_prefix ) {
+
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+		if ( 'global' !== $form_title_prefix ) {
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
+
+			// Check whether the form based title prefixes exists or not.
+			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
+				$title_prefixes = $form_title_prefixes;
+			}
+		}
+	}
+
+	return $title_prefixes;
+}
+
+/**
+ * Check whether the title prefix is enabled or not.
+ *
+ * @param int    $form_id Donation Form ID.
+ * @param string $status  Status to set status based on option value.
+ *
+ * @since 2.2
+ *
+ * @return bool
+ */
+function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
+
+	if ( empty( $status ) ) {
+		$status = array( 'required', 'optional' );
+	} else {
+		$status = array( $status );
+	}
+
+	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'disabled' === $form_title_prefix ) {
+			$title_prefix_status = false;
+		} elseif ( in_array( $form_title_prefix, $status, true ) ) {
+			$title_prefix_status = give_is_setting_enabled( $form_title_prefix, $status );
+		}
+	}
+
+	return $title_prefix_status;
+
+}
+
+/**
+ * Get Donor Name with Title Prefix
+ *
+ * @param int|Give_Donor $donor Donor Information.
+ *
+ * @since 2.2
+ *
+ * @return object
+ */
+function give_get_donor_name_with_title( $donor ) {
+
+	// Prepare Give_Donor object, if $donor is numeric.
+	if ( is_numeric( $donor ) ) {
+		$donor = new Give_Donor( $donor );
+	}
+
+	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+
+	// Update Donor name, if non empty title prefix.
+	if ( ! empty( $title_prefix ) ) {
+		$donor->name = "{$title_prefix}. {$donor->name}";
+	}
+
+	return $donor;
 }

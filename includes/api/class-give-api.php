@@ -901,7 +901,7 @@ class Give_API {
 	 * @since  1.1
 	 * @global WPDB $wpdb  Used to query the database using the WordPress Database API.
 	 *
-	 * @param int   $donor Donor ID
+	 * @param int $donor Donor ID.
 	 *
 	 * @return array $donors Multidimensional array of the donors.
 	 */
@@ -942,10 +942,18 @@ class Give_API {
 					$last_name = implode( ' ', $names );
 				}
 
+				$title_prefix = Give()->donor_meta->get_meta( $donor_obj->id, '_give_donor_title_prefix', true );
+
+				// Set title prefix empty, if not available in db.
+				if ( empty( $title_prefix ) ) {
+					$title_prefix = '';
+				}
+
 				$donors['donors'][ $donor_count ]['info']['user_id']      = '';
 				$donors['donors'][ $donor_count ]['info']['username']     = '';
 				$donors['donors'][ $donor_count ]['info']['display_name'] = '';
 				$donors['donors'][ $donor_count ]['info']['donor_id']     = $donor_obj->id;
+				$donors['donors'][ $donor_count ]['info']['title_prefix'] = $title_prefix;
 				$donors['donors'][ $donor_count ]['info']['first_name']   = $first_name;
 				$donors['donors'][ $donor_count ]['info']['last_name']    = $last_name;
 				$donors['donors'][ $donor_count ]['info']['email']        = $donor_obj->email;
@@ -964,7 +972,6 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
-				/** @var $donor \Give_Donor */
 				$donor = new Give_Donor( $donor_obj->id );
 
 				// Get donor's addresses.
@@ -972,11 +979,14 @@ class Give_API {
 
 				$donor_count ++;
 
-			}
+			} // End foreach().
 		} elseif ( $donor ) {
 
-			$error['error'] = sprintf( /* translators: %s: donor */
-				__( 'Donor %s not found.', 'give' ), $donor );
+			$error['error'] = sprintf(
+				/* translators: %s: donor */
+				__( 'Donor %s not found.', 'give' ),
+				$donor
+			);
 
 			return $error;
 
@@ -986,7 +996,7 @@ class Give_API {
 
 			return $error;
 
-		}// End if().
+		} // End if().
 
 		return $donors;
 	}
