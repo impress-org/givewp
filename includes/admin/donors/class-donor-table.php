@@ -428,6 +428,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$this->display_tablenav( 'top' );
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
+
+		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+
+		$search_keyword = ! empty( $get_data['s'] ) ? $get_data['s'] : '';
+		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
+		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'ID';
 		?>
 		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
 			<thead>
@@ -445,7 +451,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
-						<legend class="inline-edit-legend"><?php _e( 'BULK DELETE', 'give' ); ?></legend>
+						<legend class="inline-edit-legend"><?php esc_attr_e( 'BULK DELETE', 'give' ); ?></legend>
 						<div class="inline-edit-col">
 							<div id="bulk-titles">
 								<div id="give-bulk-donors" class="give-bulk-donors">
@@ -458,22 +464,22 @@ class Give_Donor_List_Table extends WP_List_Table {
 						<div class="inline-edit-col">
 							<label>
 								<input id="give-delete-donor-confirm" type="checkbox" name="give-delete-donor-confirm"/>
-								<?php _e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
+								<?php esc_attr_e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
 							</label>
 							<label>
 								<input id="give-delete-donor-records" type="checkbox" name="give-delete-donor-records"/>
-								<?php _e( 'Delete all associated donations and records?', 'give' ); ?>
+								<?php esc_attr_e( 'Delete all associated donations and records?', 'give' ); ?>
 							</label>
 						</div>
 					</fieldset>
 
 					<p class="submit inline-edit-save">
-						<input type="hidden" name="give_action" value="delete_donor"/>
-						<input type="hidden" name="s" value="<?php echo ( ! empty( $_GET['s'] ) ) ? $_GET['s'] : ''; ?>"/>
-						<input type="hidden" name="orderby" value="<?php echo ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'id'; ?>"/>
-						<input type="hidden" name="order" value="<?php echo ( ! empty( $_GET['order'] ) ) ? $_GET['order'] : 'desc'; ?>"/>
-						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft"><?php _e( 'Cancel', 'give' ); ?></button>
-						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="<?php _e( 'Delete', 'give' ); ?>">
+						<input type="hidden" name="give_action" value="delete_bulk_donor"/>
+						<input type="hidden" name="s" value="<?php echo esc_html( $search_keyword ); ?>"/>
+						<input type="hidden" name="orderby" value="<?php echo esc_html( $order_by ); ?>"/>
+						<input type="hidden" name="order" value="<?php echo esc_html( $order ); ?>"/>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft"><?php esc_attr_e( 'Cancel', 'give' ); ?></button>
+						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="<?php esc_attr_e( 'Delete', 'give' ); ?>">
 						<br class="clear">
 					</p>
 				</td>
