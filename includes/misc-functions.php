@@ -2079,7 +2079,12 @@ function give_goal_progress_stats( $form ) {
  * @return array $message admin message key.
  */
 function give_get_admin_messages_key() {
-	$message = empty( $_GET['give-messages'] ) ? array() : $_GET['give-messages'];
+	$messages = empty( $_GET['give-messages'] ) ? array() : $_GET['give-messages'];
+
+	// backward compatibility.
+	if ( ! empty( $_GET['give-message'] ) ) {
+		$messages[] = $_GET['give-message'];
+    }
 
 	/**
 	 * Filter to modify the admin messages key.
@@ -2090,5 +2095,5 @@ function give_get_admin_messages_key() {
 	 *
 	 * @return array $message admin message key.
 	 */
-	return (array) apply_filters( 'give_get_admin_messages_key', $message );
+	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
 }

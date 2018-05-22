@@ -118,7 +118,7 @@ function give_edit_donor( $args ) {
 	}
 
 	if ( $output['success'] ) {
-		wp_redirect( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}&give-message=profile-updated" ) );
+		wp_redirect( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}&give-messages[]=profile-updated" ) );
 	}
 
 	exit;
@@ -286,7 +286,7 @@ function give_donor_delete( $args ) {
 				}
 			}
 
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=donor-deleted' );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-messages[]=donor-deleted' );
 
 		} else {
 
@@ -458,7 +458,7 @@ function give_add_donor_email( $args ) {
 				);
 			}
 		} else {
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&give-message=email-added' );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&give-messages[]=email-added' );
 			$output   = array(
 				'success'  => true,
 				'message'  => __( 'Email successfully added to donor.', 'give' ),
