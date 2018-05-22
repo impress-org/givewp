@@ -25,11 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_actions() {
 
-	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
+	$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-	// Add backward compatibility to give-action param ( $_GET )
+	$_get_action = ! empty( $get_data['give_action'] ) ? $get_data['give_action'] : null;
+
+	// Add backward compatibility to give-action param ( $_GET ).
 	if ( empty( $_get_action ) ) {
-		$_get_action = ! empty( $_GET['give-action'] ) ? $_GET['give-action'] : null;
+		$_get_action = ! empty( $get_data['give-action'] ) ? $get_data['give-action'] : null;
 	}
 
 	if ( isset( $_get_action ) ) {
@@ -40,7 +42,7 @@ function give_get_actions() {
 		 *
 		 * @param array $_GET Array of HTTP GET variables.
 		 */
-		do_action( "give_{$_get_action}", $_GET );
+		do_action( "give_{$_get_action}", $get_data );
 	}
 
 }
