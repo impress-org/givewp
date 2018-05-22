@@ -1027,6 +1027,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 			// Last name.
 			'give_last'       => $donor_data->last_name,
 
+			// Title Prefix.
+			'give_title'      => $donor->get_meta( '_give_donor_title_prefix', true ),
+
 			// Company name.
 			'company_name'    => $company_name,
 

@@ -335,6 +335,7 @@ function give_get_default_settings() {
 		'floatlabels'                                 => 'disabled',
 		'welcome'                                     => 'enabled',
 		'company_field'                               => 'disabled',
+		'name_title_prefix'                           => 'disabled',
 		'forms_singular'                              => 'enabled',
 		'forms_archives'                              => 'enabled',
 		'forms_excerpt'                               => 'enabled',
