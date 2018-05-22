@@ -2725,7 +2725,8 @@ function give_v213_rename_donation_meta_type_callback(){
 	global $wpdb;
 	$give_updates = Give_Updates::get_instance();
 
-	$wpdb->query( "ALTER TABLE {$wpdb->donationmeta} CHANGE COLUMN payment_id donation_id bigint(20)" );
+	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_paymentmeta CHANGE COLUMN payment_id donation_id bigint(20)" );
+	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_paymentmeta RENAME TO {$wpdb->prefix}give_donationmeta" );
 
 	give_set_upgrade_complete('v213_rename_donation_meta_type');
 	$give_updates->set_percentage(1, 1);

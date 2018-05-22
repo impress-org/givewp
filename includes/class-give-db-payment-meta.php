@@ -51,12 +51,13 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 		global $wpdb;
 
 		// @todo: We leave $wpdb->paymentmeta for backward compatibility, use $wpdb->donationmeta instead. We can remove it after 2.1.3.
-		$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_paymentmeta';
+		$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_donationmeta';
 		$this->version     = '1.0';
 
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'v213_rename_donation_meta_type' ) ) {
 			$this->meta_type = 'payment';
+			$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_paymentmeta';
 		}
 
 		$this->register_table();
