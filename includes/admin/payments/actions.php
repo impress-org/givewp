@@ -334,7 +334,7 @@ function give_trigger_donation_delete( $data ) {
 		}
 
 		give_delete_donation( $payment_id );
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation_deleted' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation-deleted' ) );
 		give_die();
 	}
 }

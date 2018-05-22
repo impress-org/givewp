@@ -208,7 +208,7 @@ function _give_register_admin_notices() {
 			// Donation reports errors.
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $message_notice ) {
-					case 'donation_deleted' :
+					case 'donation-deleted' :
 						Give()->notices->register_notice( array(
 							'id'          => 'give-donation-deleted',
 							'type'        => 'updated',
@@ -216,9 +216,9 @@ function _give_register_admin_notices() {
 							'show'        => true,
 						) );
 						break;
-					case 'email_sent' :
+					case 'email-sent' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-payment-sent',
+							'id'          => 'give-email-sent',
 							'type'        => 'updated',
 							'description' => __( 'The donation receipt has been resent.', 'give' ),
 							'show'        => true,
