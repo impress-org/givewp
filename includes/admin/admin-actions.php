@@ -377,7 +377,7 @@ function _give_register_admin_notices() {
 
 					case 'email-added' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-email-added',
+							'id'          => 'give-email-added',
 							'type'        => 'updated',
 							'description' => __( 'Donor email added.', 'give' ),
 							'show'        => true,
@@ -386,7 +386,7 @@ function _give_register_admin_notices() {
 
 					case 'email-removed' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-email-removed',
+							'id'          => 'give-email-removed',
 							'type'        => 'updated',
 							'description' => __( 'Donor email removed.', 'give' ),
 							'show'        => true,
@@ -395,7 +395,7 @@ function _give_register_admin_notices() {
 
 					case 'email-remove-failed' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-email-remove-failed',
+							'id'          => 'give-email-remove-failed',
 							'type'        => 'updated',
 							'description' => __( 'Failed to remove donor email.', 'give' ),
 							'show'        => true,
@@ -404,7 +404,7 @@ function _give_register_admin_notices() {
 
 					case 'primary-email-updated' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-primary-email-updated',
+							'id'          => 'give-primary-email-updated',
 							'type'        => 'updated',
 							'description' => __( 'Primary email updated for donor.', 'give' ),
 							'show'        => true,
@@ -413,7 +413,7 @@ function _give_register_admin_notices() {
 
 					case 'primary-email-failed' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-primary-email-failed',
+							'id'          => 'give-primary-email-failed',
 							'type'        => 'updated',
 							'description' => __( 'Failed to set primary email.', 'give' ),
 							'show'        => true,
@@ -422,7 +422,7 @@ function _give_register_admin_notices() {
 
 					case 'reconnect-user' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-reconnect-user',
+							'id'          => 'give-reconnect-user',
 							'type'        => 'updated',
 							'description' => __( 'User has been successfully connected with Donor.', 'give' ),
 							'show'        => true,
@@ -431,7 +431,7 @@ function _give_register_admin_notices() {
 
 					case 'profile-updated' :
 						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-profile-updated',
+							'id'          => 'give-profile-updated',
 							'type'        => 'updated',
 							'description' => __( 'Donor information updated successfully.', 'give' ),
 							'show'        => true,
