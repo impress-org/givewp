@@ -240,7 +240,7 @@ function _give_register_admin_notices() {
 							'show'        => true,
 						) );
 						break;
-				}
+				}// End switch().
 			}// End if().
 
 			// Give settings notices and errors.
@@ -304,6 +304,7 @@ function _give_register_admin_notices() {
 						break;
 				}// End switch().
 			}// End if().
+
 			// Payments errors.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $message_notice ) {
@@ -323,8 +324,8 @@ function _give_register_admin_notices() {
 							'show'        => true,
 						) );
 						break;
-				}
-			}
+				}// End switch().
+			}// End if().
 
 			// Donor Notices.
 			if ( current_user_can( 'edit_give_payments' ) ) {
