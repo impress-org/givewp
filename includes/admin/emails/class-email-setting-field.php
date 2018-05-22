@@ -228,7 +228,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'id'      => self::get_prefix( $email, $form_id ) . 'email_header',
 			'name'    => esc_html__( 'Email Header', 'give' ),
-			'desc'    => esc_html__( 'Enter the email header', 'give' ),
+			'desc'    => esc_html__( 'Enter the email header that appears at the top of the email.', 'give' ),
 			'default' => $email->config['default_email_header'],
 			'type'    => 'text',
 		);

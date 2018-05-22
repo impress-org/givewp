@@ -48,12 +48,11 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 				'form_metabox_setting'  => true,
 				'default_email_subject' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
 				'default_email_message' => give_get_default_donation_notification_email(),
-
+				'default_email_header'  => __( 'New Donation!', 'give' ),
 			) );
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
 		}
-
 
 		/**
 		 * Get email subject.
@@ -215,7 +214,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', esc_html__( 'New Donation!', 'give' ) );
+			Give()->emails->__set( 'heading', $this->get_email_header() );
+
 			/**
 			 * Filters the donation notification email headers.
 			 *
