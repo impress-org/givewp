@@ -89,7 +89,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 		// Set data from form submission
 		if ( isset( $_POST['form'] ) ) {
-			parse_str( $_POST['form'], $this->data );
+			$this->data = give_clean( wp_parse_args( $_POST['form'] ) );
 		}
 
 		$this->form       = $this->data['forms'];
@@ -106,7 +106,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		 *
 		 * @since 2.1.3
 		 */
-		do_action( 'give_donations_export_form_data', $this->data );
+		do_action( 'give_export_donations_form_data', $this->data );
 	}
 
 	/**
@@ -290,7 +290,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		 *
 		 * @since 2.1.3
 		 */
-		return apply_filters( 'give_get_donation_query_args', wp_parse_args( $args, $defaults ) );
+		return apply_filters( 'give_export_donations_donation_query_args', wp_parse_args( $args, $defaults ) );
 	}
 
 	/**
