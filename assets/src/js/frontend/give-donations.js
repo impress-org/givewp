@@ -41,9 +41,9 @@ export default Give = {
 			// Global currency setting.
 			var format_args = {
 				symbol: '',
-				decimal: parseInt( give_global_vars.decimal_separator ),
+				decimal: give_global_vars.decimal_separator,
 				thousand: give_global_vars.thousands_separator,
-				precision: give_global_vars.number_decimals,
+				precision: parseInt( give_global_vars.number_decimals ),
 				currency: give_global_vars.currency
 			};
 
@@ -588,7 +588,7 @@ Give.form = {
 		 */
 		resetNonce: function( $form ) {
 			// Return false, if form is missing.
-			if ( ! $form.length ) {
+			if ( ! $form.length || ! jQuery( 'input[name="give-form-hash"]', $form ).length ) {
 				return false;
 			}
 
@@ -980,7 +980,7 @@ jQuery( function( $ ) {
 					if ( typeof (response.states_found) != undefined && true == response.states_found ) {
 						html = response.data;
 					} else {
-						html = '<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="' + states_label + '" value="' + response.default_state + '"/>';
+						html = `<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="${states_label}" value="${response.default_state}" autocomplete="address-level4"/>`;
 					}
 
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
