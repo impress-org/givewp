@@ -58,11 +58,13 @@ add_action( 'init', 'give_get_actions' );
  */
 function give_post_actions() {
 
-	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+
+	$_post_action = ! empty( $post_data['give_action'] ) ? $post_data['give_action'] : null;
 
 	// Add backward compatibility to give-action param ( $_POST ).
 	if ( empty( $_post_action ) ) {
-		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
+		$_post_action = ! empty( $post_data['give-action'] ) ? $post_data['give-action'] : null;
 	}
 
 	if ( isset( $_post_action ) ) {
@@ -73,7 +75,7 @@ function give_post_actions() {
 		 *
 		 * @param array $_POST Array of HTTP POST variables.
 		 */
-		do_action( "give_{$_post_action}", $_POST );
+		do_action( "give_{$_post_action}", $post_data );
 	}
 
 }
