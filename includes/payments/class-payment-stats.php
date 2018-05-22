@@ -145,10 +145,11 @@ class Give_Payment_Stats extends Give_Stats {
 			$earnings        = 0;
 
 			if ( ! empty( $payments ) ) {
-				$query = "SELECT payment_id as id, meta_value as total
+				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
+				$query = "SELECT {$donation_id_col} as id, meta_value as total
 					FROM {$wpdb->donationmeta}
 					WHERE meta_key='_give_payment_total'
-					AND payment_id IN ('". implode( '\',\'', $payments ) ."')";
+					AND {$donation_id_col} IN ('". implode( '\',\'', $payments ) ."')";
 
 				$payments = $wpdb->get_results($query, ARRAY_A);
 
