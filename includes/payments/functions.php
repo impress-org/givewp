@@ -2004,14 +2004,14 @@ function give_is_donation_completed( $donation_id ) {
 			$wpdb->prepare(
 				"
 				SELECT meta_value
-				FROM {$wpdb->donationtmeta}
+				FROM {$wpdb->donationmeta}
 				WHERE EXISTS (
 					SELECT ID
 					FROM {$wpdb->posts}
 					WHERE post_status=%s
 					AND ID=%d
 				)
-				AND {$wpdb->donationtmeta}.meta_key=%s
+				AND {$wpdb->donationmeta}.meta_key=%s
 				",
 				'publish',
 				$donation_id,

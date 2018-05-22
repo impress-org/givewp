@@ -1277,7 +1277,7 @@ function __give_v20_bc_table_details( $type ) {
 			break;
 
 		case 'payment':
-			$table['name']         = $wpdb->donationtmeta;
+			$table['name']         = $wpdb->donationmeta;
 			$table['column']['id'] = Give()->payment_meta->get_meta_type() . '_id';
 	}
 

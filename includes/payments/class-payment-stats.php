@@ -146,7 +146,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 			if ( ! empty( $payments ) ) {
 				$query = "SELECT payment_id as id, meta_value as total
-					FROM {$wpdb->donationtmeta}
+					FROM {$wpdb->donationmeta}
 					WHERE meta_key='_give_payment_total'
 					AND payment_id IN ('". implode( '\',\'', $payments ) ."')";
 
