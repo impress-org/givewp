@@ -241,22 +241,21 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
 
-											<input type="submit" class="button button-primary right"
-											       value="<?php _e( 'Save Donation', 'give' ); ?>"/>
-
+											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
+												$url = add_query_arg(
+													array(
+														'give-action' => 'email_links',
+														'purchase_id' => $payment_id,
+													),
+													admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment_id )
+												);
+
 												echo sprintf(
 													'<a href="%1$s" id="give-resend-receipt" class="button-secondary right">%2$s</a>',
-													esc_url(
-														add_query_arg(
-															array(
-																'give-action' => 'email_links',
-																'purchase_id' => $payment_id,
-															)
-														)
-													),
-													__( 'Resend Receipt', 'give' )
+													esc_url( $url ),
+													esc_html__( 'Resend Receipt', 'give' )
 												);
 											}
 											?>
