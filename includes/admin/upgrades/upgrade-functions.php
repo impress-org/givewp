@@ -363,6 +363,16 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.1.3 Verify Form Status Upgrade.
+	$give_updates->register(
+		array(
+			'id'       => 'v213_rename_donation_meta_type',
+			'version'  => '2.1.3',
+			'callback' => 'give_v213_rename_donation_meta_type_callback',
+			'depend'   => array( 'v20_move_metadata_into_new_table' ),
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2668,7 +2678,6 @@ function give_v210_verify_form_status_upgrades_callback() {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v210_verify_form_status_upgrades' );
 	}
-
 }
 
 /**
@@ -2703,5 +2712,21 @@ function give_v213_delete_donation_meta_callback() {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v213_delete_donation_meta' );
 	}
+}
 
+/**
+ * Rename donation meta type
+ *
+ * @see https://github.com/restrictcontentpro/restrict-content-pro/issues/1656
+ *
+ * @since 2.1.3
+ */
+function give_v213_rename_donation_meta_type_callback(){
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	$wpdb->query( "ALTER TABLE {$wpdb->donationmeta} CHANGE COLUMN payment_id donation_id bigint(20)" );
+
+	give_set_upgrade_complete('v213_rename_donation_meta_type');
+	$give_updates->set_percentage(1, 1);
 }
