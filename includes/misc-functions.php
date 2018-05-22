@@ -2070,3 +2070,25 @@ function give_goal_progress_stats( $form ) {
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
 
 }
+
+/**
+ * Get the admin messages key to show the notices.
+ *
+ * @since 2.1.3
+ *
+ * @return array $message admin message key.
+ */
+function give_get_admin_messages_key() {
+	$message = empty( $_GET['give-messages'] ) ? array() : $_GET['give-messages'];
+
+	/**
+	 * Filter to modify the admin messages key.
+	 *
+	 * @since 2.13
+	 *
+	 * @param array $message admin message key.
+	 *
+	 * @return array $message admin message key.
+	 */
+	return (array) apply_filters( 'give_get_admin_messages_key', $message );
+}
