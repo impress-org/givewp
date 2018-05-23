@@ -50,6 +50,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				),
 				'default_email_subject'        => $this->get_default_email_subject(),
 				'default_email_message'        => $this->get_default_email_message(),
+				'default_email_header'         => __( 'New Offline Donation!', 'give' ),
 				'notices' => array(
 					'non-notification-status-editable' => sprintf(
 						'%1$s <a href="%2$s">%3$s &raquo;</a>',
@@ -238,6 +239,8 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 					$this->payment->ID
 				)
 			);
+
+			Give()->emails->__set( 'heading', $this->get_email_header() );
 		}
 
 		/**

@@ -140,6 +140,7 @@ class Give_Email_Setting_Field {
 		}
 
 		$settings[] = self::get_email_subject_field( $email, $form_id );
+		$settings[] = self::get_email_header_field( $email, $form_id );
 		$settings[] = self::get_email_message_field( $email, $form_id );
 
 		if ( Give_Email_Notification_Util::is_content_type_editable( $email ) ) {
@@ -209,6 +210,26 @@ class Give_Email_Setting_Field {
 			'name'    => esc_html__( 'Email Subject', 'give' ),
 			'desc'    => esc_html__( 'Enter the email subject line.', 'give' ),
 			'default' => $email->config['default_email_subject'],
+			'type'    => 'text',
+		);
+	}
+
+	/**
+	 * Get email header setting field.
+	 *
+	 * @since  2.1.3
+	 *
+	 * @param Give_Email_Notification $email   The email object.
+	 * @param int                     $form_id The Form ID.
+	 *
+	 * @return array
+	 */
+	public static function get_email_header_field( Give_Email_Notification $email, $form_id = null ) {
+		return array(
+			'id'      => self::get_prefix( $email, $form_id ) . 'email_header',
+			'name'    => esc_html__( 'Email Header', 'give' ),
+			'desc'    => esc_html__( 'Enter the email header that appears at the top of the email.', 'give' ),
+			'default' => $email->config['default_email_header'],
 			'type'    => 'text',
 		);
 	}
