@@ -9784,6 +9784,7 @@ msgstr ""
 
 #. translators: %s: option label
 #: includes/admin/shortcodes/abstract-shortcode-generator.php:410
+
 msgid "The \"%s\" option is required."
 msgstr ""
 
