@@ -559,7 +559,23 @@ var give_setting_edit = false;
 
 		resend_receipt: function () {
 			$('body').on('click', '#give-resend-receipt', function (e) {
-				return confirm(give_vars.resend_receipt);
+				let that = this;
+
+				e.preventDefault();
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.resend_receipt,
+						},
+						successConfirm: function () {
+							window.location.assign( $( that ).attr( 'href' ) );
+
+							return;
+						}
+					}
+				).render();
 			});
 		},
 
