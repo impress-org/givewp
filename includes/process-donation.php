@@ -468,7 +468,7 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	$price_id  = ! empty( $post_data['give-price-id'] ) ? $post_data['give-price-id'] : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
-	$verified_stat   = true;
+	$verified_stat   = false;
 
 	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ), true ) ) {
 
@@ -482,14 +482,10 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	if ( ! $verified_stat ) {
 		switch ( $amount_range ) {
 			case 'minimum' :
-				if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-					$verified_stat = false;
-				}
+				$verified_stat = ( give_get_form_minimum_price( $form_id ) > $amount ) ? false : true;
 				break;
 			case 'maximum' :
-				if ( give_get_form_maximum_price( $form_id ) < $amount ) {
-					$verified_stat = false;
-				}
+				$verified_stat = ( give_get_form_maximum_price( $form_id ) < $amount ) ? false : true;
 				break;
 		}
 	}
