@@ -336,7 +336,7 @@ function give_donor_delete( $args ) {
 
 }
 
-add_action( 'give_delete-donor', 'give_donor_delete', 10, 1 );
+//add_action( 'give_delete-donor', 'give_donor_delete', 10, 1 );
 
 /**
  * Disconnect a user ID from a donor
@@ -697,4 +697,106 @@ function give_delete_donor( $args ) {
 	}
 }
 
-add_action( 'give_delete_donor', 'give_delete_donor' );
+//add_action( 'give_delete_donor', 'give_delete_donor' );
+
+/**
+ * This function will process the donor deletion.
+ *
+ * @param array $args Donor Deletion Arguments.
+ *
+ * @since 2.2
+ */
+function give_process_donor_deletion( $args ) {
+
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+
+	// Verify user capabilities to proceed for deleting donor.
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
+		wp_die(
+			esc_html__( 'You do not have permission to delete donors.', 'give' ),
+			esc_html__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
+	}
+
+	$nonce_action = '';
+	if ( 'delete_bulk_donor' ===  $args['give_action'] ) {
+		$nonce_action = 'bulk-donors';
+	} elseif ( 'delete_donor' ===  $args['give_action'] ) {
+		$nonce_action = 'give-delete-donor';
+	}
+
+	// Verify Nonce for deleting bulk donors.
+	give_validate_nonce( $args['_wpnonce'], $nonce_action );
+
+	$redirect_args    = array();
+	$donor_ids        = ( isset( $args['donor'] ) && is_array( $args['donor'] ) ) ? $args['donor'] : array( $args['donor_id'] );
+	$delete_donor     = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
+	$delete_donations = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
+
+	if ( count( $donor_ids ) > 0 ) {
+
+		// Loop through the selected donors to delete.
+		foreach ( $donor_ids as $donor_id ) {
+
+			$donor = new Give_Donor( $donor_id );
+
+			// Proceed only if valid donor id is provided.
+			if ( $donor->id > 0 ) {
+
+				// Proceed only, if user confirmed whether they need to delete the donor.
+				if ( $delete_donor ) {
+
+					// Delete Donor.
+					$donor_deleted = Give()->donors->delete( $donor->id );
+
+					// Fetch linked donations of a particular donor.
+					$donation_ids  = explode( ',', $donor->payment_ids );
+
+					// Proceed only, if user opted to delete donor related donations as well.
+					if ( $donor_deleted && $delete_donations ) {
+
+						// Remove all donations, logs, etc.
+						foreach ( $donation_ids as $donation_id ) {
+							give_delete_donation( $donation_id );
+						}
+
+						$redirect_args['give-message'] = 'donor-donations-deleted';
+					} else {
+
+						// Just set the donations to customer_id of 0.
+						foreach ( $donation_ids as $donation_id ) {
+							give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
+						}
+
+						$redirect_args['give-message'] = 'donor-deleted';
+					}
+				} else {
+					$redirect_args['give-message'] = 'confirm-delete-donor';
+				}
+			} else {
+				$redirect_args['give-message'] = 'invalid-donor-id';
+			}
+		}
+	} else {
+		$redirect_args['give-message'] = 'no-donor-found';
+	}
+
+	// Add Search Keyword on redirection, if it exists.
+	if ( ! empty( $search_keyword ) ) {
+		$redirect_args['s'] = $search_keyword;
+	}
+
+	$redirect_url = add_query_arg(
+		$redirect_args,
+		admin_url( 'edit.php?post_type=give_forms&page=give-donors' )
+	);
+
+	wp_safe_redirect( $redirect_url );
+	give_die();
+
+}
+add_action( 'give_delete_donor', 'give_process_donor_deletion' );
+add_action( 'give_delete_bulk_donor', 'give_process_donor_deletion' );
