@@ -353,7 +353,7 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v2.1.3 Delete non attached donation mera
+	// v2.1.3 Delete non attached donation meta.
 	$give_updates->register(
 		array(
 			'id'       => 'v213_delete_donation_meta',
