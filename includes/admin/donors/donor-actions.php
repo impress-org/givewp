@@ -547,10 +547,13 @@ function give_process_donor_deletion( $args ) {
 	// Verify Nonce for deleting bulk donors.
 	give_validate_nonce( $args['_wpnonce'], $nonce_action );
 
-	$redirect_args    = array();
-	$donor_ids        = ( isset( $args['donor'] ) && is_array( $args['donor'] ) ) ? $args['donor'] : array( $args['donor_id'] );
-	$delete_donor     = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
-	$delete_donations = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
+	$redirect_args            = array();
+	$donor_ids                = ( isset( $args['donor'] ) && is_array( $args['donor'] ) ) ? $args['donor'] : array( $args['donor_id'] );
+	$redirect_args['order']   = ! empty( $args['order'] ) ? $args['order'] : 'DESC';
+	$redirect_args['orderby'] = ! empty( $args['orderby'] ) ? $args['orderby'] : 'ID';
+	$redirect_args['s']       = ! empty( $args['s'] ) ? $args['s'] : '';
+	$delete_donor             = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
+	$delete_donations         = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
 
 	if ( count( $donor_ids ) > 0 ) {
 
@@ -610,11 +613,6 @@ function give_process_donor_deletion( $args ) {
 	} else {
 		$redirect_args['give-message'] = 'no-donor-found';
 	} // End if().
-
-	// Add Search Keyword on redirection, if it exists.
-	if ( ! empty( $search_keyword ) ) {
-		$redirect_args['s'] = $search_keyword;
-	}
 
 	$redirect_url = add_query_arg(
 		$redirect_args,
