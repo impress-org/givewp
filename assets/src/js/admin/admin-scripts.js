@@ -2009,19 +2009,19 @@ var give_setting_edit = false;
 			});
 
 			// CheckBox click event to confirm deletion of donor.
-			$body.on('click', '#give-delete-donor-confirm', function () {
+			$body.on('click', '#give-bulk-delete .give-donor-delete-confirm', function () {
 				if ($(this).is(':checked')) {
 					$('#give-bulk-delete-button').removeAttr('disabled');
 				} else {
 					$('#give-bulk-delete-button').attr('disabled', true);
-					$('#give-delete-donor-records').removeAttr('checked');
+					$('#give-bulk-delete .give-donor-delete-records').removeAttr('checked');
 				}
 			});
 
 			// CheckBox click event to delete records with donor.
-			$body.on('click', '#give-delete-donor-records', function () {
+			$body.on('click', '#give-bulk-delete .give-donor-delete-records', function () {
 				if ($(this).is(':checked')) {
-					$('#give-delete-donor-confirm').attr('checked', 'checked');
+					$('#give-bulk-delete .give-donor-delete-confirm').attr('checked', 'checked');
 					$('#give-bulk-delete-button').removeAttr('disabled');
 				}
 			});
