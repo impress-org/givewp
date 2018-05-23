@@ -79,6 +79,10 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_donation_limit";
 			break;
 
+		case 'chosen':
+			$func_name = "{$func_name_prefix}_chosen_input";
+			break;
+
 		default:
 
 			if (
@@ -195,7 +199,7 @@ function give_render_field( $field ) {
 		case 'donation_limit':
 			$field['type']  = 'donation_limit';
 			break;
-	}
+	} // End switch().
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
 	// We encourage you to use description param.
@@ -282,6 +286,79 @@ function give_text_input( $field ) {
 	<?php
 	echo give_get_field_description( $field );
 	echo '</p>';
+}
+
+/**
+ * Output a chosen input box.
+ *
+ * @param array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string $id            Field ID. Default ''.
+ * @type string $style         CSS style for input field. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value         Value of input field. Default ''.
+ * @type string $name          Name of input field. Default ''.
+ * @type string $type          Type of input field. Default 'text'.
+ * @type string $before_field  Text/HTML to add before input field. Default ''.
+ * @type string $after_field   Text/HTML to add after input field. Default ''.
+ * @type string $data_type     Define data type for value of input to filter it properly. Default ''.
+ * @type string $description   Description of input field. Default ''.
+ * @type array  $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * }
+ *
+ * @since 2.1
+ *
+ * @return void
+ */
+function give_chosen_input( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['before_field']  = '';
+	$field['after_field']   = '';
+	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
+	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
+	$type                   = '';
+	$allow_new_values       = '';
+
+	// Set attributes based on multiselect datatype.
+	if ( 'multiselect' === $data_type ) {
+		$type = 'multiple';
+		$allow_new_values = 'data-allows-new-values="true"';
+	}
+
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
+			<?php echo wp_kses_post( $field['name'] ); ?>
+		</label>
+		<?php echo esc_attr( $field['before_field'] ); ?>
+		<select
+				class="give-select-chosen give-chosen-settings"
+				style="<?php echo esc_attr( $field['style'] ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
+				id="<?php echo esc_attr( $field['id'] ); ?>"
+			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
+		>
+			<?php foreach ( $field['options'] as $key => $value ) { ?>
+				<option
+						value="<?php echo esc_attr( $key ); ?>"
+					<?php echo selected( esc_attr( $field['value'] ), esc_attr( $key ), false ); ?>
+				>
+					<?php echo esc_html( $value ); ?>
+				</option>
+			<?php } ?>
+		</select>
+		<?php echo esc_attr( $field['after_field'] ); ?>
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
 }
 
 /**
@@ -1694,3 +1771,85 @@ function give_repeater_field_set_editor_id( $field_name, $field ) {
 }
 
 add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
+
+/**
+ * Output Donation form radio input box.
+ *
+ * @since  2.1.3
+ *
+ * @param  array $field {
+ *                              Optional. Array of radio field arguments.
+ *
+ * @type string $id Field ID. Default ''.
+ * @type string $style CSS style for input field. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value Value of input field. Default ''.
+ * @type string $name Name of input field. Default ''.
+ * @type string $description Description of input field. Default ''.
+ * @type array $attributes List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array $options List of options. Default array().
+ *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' =>
+ *                                               'Disable' )
+ * }
+ * @return void
+ */
+function give_donation_form_goal( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+
+
+	printf(
+		'<fieldset class="give-field-wrap %s_field %s">',
+		esc_attr( $field['id'] ),
+		esc_attr( $field['wrapper_class'] )
+	);
+
+	printf(
+		'<span class="give-field-label">%s</span>',
+		esc_html( $field['name'] )
+	);
+
+	printf(
+		'<legend class="screen-reader-text">%s</legend>',
+		esc_html( $field['name'] )
+	);
+	?>
+
+    <ul class="give-radios">
+		<?php
+		foreach ( $field['options'] as $key => $value ) {
+			$attributes = empty( $field['attributes'] ) ? '' : give_get_attribute_str( $field['attributes'] );
+			printf(
+				'<li><label><input name="%s" value="%s" type="radio" style="%s" %s %s /> %s </label></li>',
+				give_get_field_name( $field ),
+				esc_attr( $key ),
+				esc_attr( $field['style'] ),
+				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
+				$attributes,
+				esc_html( $value )
+			);
+		}
+		?>
+    </ul>
+
+	<?php
+	/**
+	 * Action to add HTML after donation form radio button is display and before description.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param array $field Array of radio field arguments.
+	 */
+	do_action( 'give_donation_form_goal_before_description', $field );
+
+	echo give_get_field_description( $field );
+
+	echo '</fieldset>';
+}

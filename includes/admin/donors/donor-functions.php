@@ -121,6 +121,7 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 		// Create and Update Donor First Name and Last Name in Meta Fields.
 		$donor->update_meta( '_give_donor_first_name', $donor_data['first_name'] );
 		$donor->update_meta( '_give_donor_last_name', $donor_data['last_name'] );
+		$donor->update_meta( '_give_donor_title_prefix', $donor_data['title'] );
 
 		// Fetch disconnected user id, if exists.
 		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );

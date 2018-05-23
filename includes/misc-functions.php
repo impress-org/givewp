@@ -1944,7 +1944,6 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 	return $data;
 }
 
-
 /**
  * Get time interval for which nonce is valid
  *
@@ -1978,4 +1977,200 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 		'',
 		wp_nonce_field( $action, $name, $referer, false )
 	);
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$donors = '';
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+	/**
+	 * Filter the form.
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
+
+	switch ( $goal_format ) {
+		case  'donation':
+			/**
+			 * Filter the form donations.
+			 *
+			 * @since 2.1
+			 */
+			$actual = $donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
+			break;
+		case 'donors':
+			/**
+			 * Filter to modify total number if donor for the donation form.
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int $donors Total number of donors that donated to the form.
+			 * @param int $form_id Donation Form ID.
+			 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+			 *
+			 * @return int $donors Total number of donors that donated to the form.
+			 */
+			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
+			break;
+		default :
+			/**
+			 * Filter the form income.
+			 *
+			 * @since 1.8.8
+			 */
+			$actual = $income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+			break;
+	}
+
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	$stats_array = array(
+		'raw_actual' => $actual,
+		'raw_goal'   => $total_goal
+	);
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	// Define Actual Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$actual = "{$actual}%";
+	} else if ( 'amount' === $goal_format ) {
+		$actual = give_currency_filter( give_format_amount( $actual ) );
+	}
+
+	// Define Total Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$total_goal = '';
+	} else if ( 'amount' === $goal_format ) {
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+	}
+
+	$stats_array = array_merge(
+		array(
+			'progress'       => $progress,
+			'actual'         => $actual,
+			'goal'           => $total_goal,
+			'format'         => $goal_format,
+		),
+		$stats_array
+	);
+
+	/**
+	 * Filter the goal stats
+	 *
+	 * @since 2.1
+	 */
+	return apply_filters( 'give_goal_progress_stats', $stats_array );
+}
+
+/**
+ * Get Title Prefixes values.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2
+ *
+ * @return mixed
+ */
+function give_get_title_prefixes( $form_id = 0 ) {
+
+	$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	$title_prefixes    = give_get_option( 'title_prefixes' );
+
+	// If form id exists, then fetch form specific title prefixes.
+	if ( intval( $form_id ) > 0 && $name_title_prefix ) {
+
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+		if ( 'global' !== $form_title_prefix ) {
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
+
+			// Check whether the form based title prefixes exists or not.
+			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
+				$title_prefixes = $form_title_prefixes;
+			}
+		}
+	}
+
+	return $title_prefixes;
+}
+
+/**
+ * Check whether the title prefix is enabled or not.
+ *
+ * @param int    $form_id Donation Form ID.
+ * @param string $status  Status to set status based on option value.
+ *
+ * @since 2.2
+ *
+ * @return bool
+ */
+function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
+
+	if ( empty( $status ) ) {
+		$status = array( 'required', 'optional' );
+	} else {
+		$status = array( $status );
+	}
+
+	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'disabled' === $form_title_prefix ) {
+			$title_prefix_status = false;
+		} elseif ( in_array( $form_title_prefix, $status, true ) ) {
+			$title_prefix_status = give_is_setting_enabled( $form_title_prefix, $status );
+		}
+	}
+
+	return $title_prefix_status;
+
+}
+
+/**
+ * Get Donor Name with Title Prefix
+ *
+ * @param int|Give_Donor $donor Donor Information.
+ *
+ * @since 2.2
+ *
+ * @return object
+ */
+function give_get_donor_name_with_title( $donor ) {
+
+	// Prepare Give_Donor object, if $donor is numeric.
+	if ( is_numeric( $donor ) ) {
+		$donor = new Give_Donor( $donor );
+	}
+
+	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+
+	// Update Donor name, if non empty title prefix.
+	if ( ! empty( $title_prefix ) ) {
+		$donor->name = "{$title_prefix}. {$donor->name}";
+	}
+
+	return $donor;
 }

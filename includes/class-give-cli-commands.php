@@ -1070,4 +1070,216 @@ class GIVE_CLI_COMMAND {
 			WP_CLI::success( 'Give Test mode disabled' );
 		}
 	}
+
+
+	/**
+	 * Checks if the given path has a give repository installed
+	 * or not.
+	 *
+	 * @param string $repo_path Path to a Give Addon.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @return boolean
+	 */
+	private function is_git_repo( $repo_path ) {
+		if ( is_dir( "{$repo_path}.git" ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Gets the current branch name of a Give Addon.
+	 *
+	 * @param string $repo_path Path to a Give Addon.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @return string
+	 */
+	private function get_git_current_branch( $repo_path ) {
+
+		exec( "cd $repo_path && git branch | grep '\*'", $branch_names );
+
+		$branch_name = trim( strtolower( str_replace( '* ', '', $branch_names[0] ) ) );
+
+		return $branch_name;
+	}
+
+
+	/**
+	 * Updates the current branch of Give Addons.
+	 * Uses the remote origin to pull the latest code.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--name=<name>]
+	 * : Update a single addon.
+	 *
+	 * [--exclude=<names>]
+	 * : Names of addons that should be excluded from updating.
+	 *
+	 * ## EXAMPLES
+	 * 	wp give addon-update
+	 * 	wp give addon-update --name="Give-Stripe"
+	 * 	wp give addon-update --exclude="Give-Stripe, Give-Recurring-Donations"
+	 *
+	 * @param array $pos   Array of positional arguments.
+	 * @param array $assoc Array of associative arguments.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @subcommand addon-update
+	 */
+	public function addon_update( $pos, $assoc ) {
+
+		/**
+		 * Only 1 associative argument should be passed.
+		 * It can be either `--name` or `--exclude`
+		 */
+		if ( count( $assoc ) > 1 ) {
+			WP_CLI::error( __( 'Too many associative arguments.', 'give' ) );
+		}
+
+		/**
+		 * Update a single Give addon.
+		 */
+		if ( false !== ( $addon_name = WP_CLI\Utils\get_flag_value( $assoc, 'name', false ) ) ) {
+			$give_addon_path = glob( WP_CONTENT_DIR . "/plugins/$addon_name/" , GLOB_ONLYDIR );
+
+			/**
+			 * Display error if the plugin (addon) name entered does
+			 * not exist.
+			 */
+			if ( empty( $give_addon_path ) ) {
+				WP_CLI::error( sprintf( __( "The Give addon '%s' does not exist.", 'give' ), $addon_name ) );
+			}
+
+			/**
+			 * If the directory does not contain a Git
+			 * repository, then display error and halt.
+			 */
+			if ( ! $this->is_git_repo( $give_addon_path[0] ) ) {
+				WP_CLI::error( __( 'This is not a Git repo', 'give' ) );
+			}
+
+			/**
+			 * Get the current branch name. This branch will be updated next.
+			 */
+			$branch_name = $this->get_git_current_branch( $give_addon_path[0] );
+
+			/**
+			 * Take the latest pull of the current branch, i.e.;
+			 * sync it with origin.
+			 */
+			passthru( "cd $give_addon_path[0] && git pull origin $branch_name", $return_var );
+
+			/**
+			 * Show success/error messages depending on whether the
+			 * current branch of the addon was updated or not.
+			 */
+			if ( 0 === $return_var ) {
+				WP_CLI::success( sprintf( __( "The Give addon '%s' is up-to-date with origin." ), $addon_name ) );
+
+				return;
+			} elseif ( 1 === $return_var ) {
+				WP_CLI::error( sprintf( __( "The Give addon '%s' was not updated." ), $addon_name ) );
+			}
+		}
+
+		/**
+		 * Convert the comma-separated string of Give-addons in the
+		 * excluded list into array.
+		 */
+		$addon_names = WP_CLI\Utils\get_flag_value( $assoc, 'exclude', array() );
+		if ( ! empty( $addon_names ) ) {
+			$addon_names = array_map( 'trim', explode( ',', $addon_names ) );
+		}
+
+		/**
+		 * Get directory paths of all the addons including
+		 * Give Core.
+		 */
+		$give_addon_directories = glob( WP_CONTENT_DIR . '/plugins/[gG]ive*/' , GLOB_ONLYDIR );
+
+		foreach ( $give_addon_directories as $repo ) {
+
+			/**
+			 * Extract the plugin/addon folder name
+			 * from the absolute path.
+			 */
+			$plugin_name = basename( $repo );
+
+			/**
+			 * If the Give addon directory does not contain
+			 * a Git repo, then continue.
+			 */
+			if ( ! $this->is_git_repo( $repo ) ) {
+				WP_CLI::line(
+					sprintf(
+						__( "%s: '%s' does not contain git repo.", 'give' ),
+						WP_CLI::colorize( '%RError%n' ),
+						$plugin_name
+					)
+				);
+
+				continue;
+			}
+
+			/**
+			 * Continue if the Give addon name is in the exlusion list.
+			 */
+			if ( in_array( $plugin_name, $addon_names, true ) ) {
+				continue;
+			}
+
+			/* Get the current branch name */
+			$branch_name = $this->get_git_current_branch( $repo );
+
+			/**
+			 * Show a colorized (CYAN) title for each addon/plugin
+			 * before a pull.
+			 */
+			WP_CLI::line( WP_CLI::colorize( "> %CUpdating $plugin_name | $branch_name%n" ) );
+
+			/**
+			 * Git pull from the current branch using
+			 * remote `origin`.
+			 */
+			if ( ! empty( $branch_name ) ) {
+				passthru( "cd $repo && git pull origin $branch_name", $return_var );
+			}
+
+			$items[] = array(
+				'Give Addon' => $plugin_name,
+				'Branch'     => $branch_name,
+				'Remote'     => 'origin',
+				'Status'     => ( 0 === $return_var )
+					? __( 'Success', 'give' )
+					: __( 'Failed', 'give' ),
+			);
+
+			/**
+			 * Leave a blank line for aesthetics.
+			 */
+			WP_CLI::line();
+		}
+
+		/**
+		 * Display final results in a tabular format.
+		 */
+		WP_CLI\Utils\format_items(
+			'table',
+			$items,
+			array(
+				'Give Addon',
+				'Branch',
+				'Remote',
+				'Status',
+			)
+		);
+	}
 }

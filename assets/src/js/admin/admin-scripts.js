@@ -115,35 +115,203 @@ var give_setting_edit = false;
 		// Setup Chosen Selects.
 		var $give_chosen_containers = $('.give-select-chosen');
 
-		// Add loader with each input field.
-		$give_chosen_containers.on('chosen:ready', function () {
-			$(this).next('.chosen-container')
-				.find('input.chosen-search-input')
-				.after('<span class="spinner"></span>');
-		});
+		if ( $give_chosen_containers.hasClass( 'give-chosen-settings' ) ) {
 
-		// No results returned from search trigger.
-		$give_chosen_containers.on('chosen:no_results', function () {
-			var $container = $(this).next('.chosen-container'),
-				$no_results_li = $container.find('li.no-results'),
-				error_string = '';
+			// Do something to chosen used in metabox or admin settings.
+			$give_chosen_containers.chosen({
+				no_results_text: give_vars.chosen_add_title_prefix + ' ',
+				width: '30%'
+			}).on('chosen:no_results', function(evt, data){
 
-			if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
-				error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
-			} else {
-				error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
-			}
+				$( data.chosen.container ).on( 'keydown', function( event ) {
 
-			$no_results_li.html(error_string);
+					var chosenText = data.chosen.get_search_text();
 
-		});
+					if(
+						13 === event.keyCode &&
+						! jQuery(data.chosen.form_field).find('option[value="' + chosenText + '"]').length
+					){
+						$( data.chosen.form_field )
+							.append( '<option value="' + chosenText + '" selected>' + chosenText + '</option>' )
+							.trigger('chosen:updated');
+						data.chosen.result_highlight = data.chosen.search_results.find('li.active-result').lasteturn;
+						data.chosen.result_select(evt);
+					}
+				});
+			});
 
-		// Initiate chosen.
-		$give_chosen_containers.chosen({
-			inherit_select_classes: true,
-			placeholder_text_single: give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option
-		});
+		} else {
+
+			// Add loader with each input field.
+			$give_chosen_containers.on('chosen:ready', function () {
+				$(this).next('.chosen-container')
+					.find('input.chosen-search-input')
+					.after('<span class="spinner"></span>');
+			});
+
+			// Initiate chosen.
+			$give_chosen_containers.chosen({
+				inherit_select_classes: true,
+				placeholder_text_single: give_vars.one_option,
+				placeholder_text_multiple: give_vars.one_or_more_option
+			});
+
+			// No results returned from search trigger.
+			$give_chosen_containers.on('chosen:no_results', function () {
+				var $container = $(this).next('.chosen-container'),
+					$no_results_li = $container.find('li.no-results'),
+					error_string = '';
+
+				if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
+					error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+				} else {
+					error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+				}
+
+				$no_results_li.html(error_string);
+
+				// Variables for setting up the typing timer.
+				var typingTimer;               // Timer identifier.
+				var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
+
+				// Replace options with search results.
+				$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
+
+					var val = $(this).val(),
+						$container = $(this).closest('.give-select-chosen'),
+						select = $container.prev(),
+						$search_field = $container.find('input[type="text"]'),
+						variations = $container.hasClass('variations'),
+						lastKey = e.which,
+						search_type = 'give_form_search',
+						$this = this;
+
+
+					// Detect if we have a defined search type, otherwise default to donation forms.
+					if ($container.prev().data('search-type')) {
+
+						// Don't trigger AJAX if this select has all options loaded.
+						if ('no_ajax' === select.data('search-type')) {
+							return;
+						}
+						search_type = 'give_' + select.data('search-type') + '_search';
+					}
+
+					// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
+					if (
+						val.length <= 3 ||
+						!search_type.length ||
+						(
+							(9 === lastKey) || // Tab.
+							(13 === lastKey) || // Enter.
+							(16 === lastKey) || // Shift.
+							(17 === lastKey) || // Ctrl.
+							(18 === lastKey) || // Alt.
+							(19 === lastKey) || // Pause, Break.
+							(20 === lastKey) || // CapsLock.
+							(27 === lastKey) || // Esc.
+							(33 === lastKey) || // Page Up.
+							(34 === lastKey) || // Page Down.
+							(35 === lastKey) || // End.
+							(36 === lastKey) || // Home.
+							(37 === lastKey) || // Left arrow.
+							(38 === lastKey) || // Up arrow.
+							(39 === lastKey) || // Right arrow.
+							(40 === lastKey) || // Down arrow.
+							(44 === lastKey) || // PrntScrn.
+							(45 === lastKey) || // Insert.
+							(144 === lastKey) || // NumLock.
+							(145 === lastKey) || // ScrollLock.
+							(91 === lastKey) || // WIN Key (Start).
+							(93 === lastKey) || // WIN Menu.
+							(224 === lastKey) || // Command key.
+							(112 <= lastKey && 123 >= lastKey) // F1 to F12 lastKey.
+						)
+					) {
+						return;
+					}
+
+					clearTimeout(typingTimer);
+					$container.addClass('give-select-chosen-ajax');
+
+					typingTimer = setTimeout(
+						function () {
+							$.ajax({
+								type: 'POST',
+								url: ajaxurl,
+								data: {
+									action: search_type,
+									s: val,
+									fields: $( $this ).closest( 'form' ).serialize()
+								},
+								dataType: 'json',
+								beforeSend: function () {
+									select.closest('ul.chosen-results').empty();
+									$search_field.prop('disabled', true);
+								},
+								success: function (data) {
+
+									$container.removeClass('give-select-chosen-ajax');
+
+									// Remove all options but those that are selected.
+									$('option:not(:selected)', select).remove();
+
+									if (data.length) {
+										$.each(data, function (key, item) {
+
+											// Add any option that doesn't already exist.
+											if (!$('option[value="' + item.id + '"]', select).length) {
+												select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+											}
+										});
+
+										// Trigger update event.
+										$container.prev('select.give-select-chosen').trigger('chosen:updated');
+
+									} else {
+
+										// Trigger no result message event.
+										$container.prev('select.give-select-chosen').trigger('chosen:no_results');
+									}
+
+									// Ensure the original query is retained within the search input.
+									$search_field.prop('disabled', false);
+									$search_field.val(val).focus();
+
+								}
+							}).fail(function (response) {
+								if (window.console && window.console.log) {
+									console.log(response);
+								}
+							}).done(function (response) {
+								$search_field.prop('disabled', false);
+							});
+						},
+						doneTypingInterval
+					);
+				});
+
+				$('.give-select-chosen .chosen-search input').each(function () {
+					var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+					var placeholder = '';
+
+					if ('form' === type) {
+						placeholder = give_vars.search_placeholder;
+					} else {
+						type = 'search_placeholder_' + type;
+						if (give_vars[type]) {
+							placeholder = give_vars[type];
+						}
+					}
+					$(this).attr('placeholder', placeholder);
+
+				});
+
+			});
+		}
+
+
+
 
 		// Fix: Chosen JS - Zero Width Issue.
 		// @see https://github.com/harvesthq/chosen/issues/472#issuecomment-344414059
@@ -158,142 +326,7 @@ var give_setting_edit = false;
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
-		// Variables for setting up the typing timer.
-		var typingTimer;               // Timer identifier.
-		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
 
-		// Replace options with search results.
-		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
-
-			var val = $(this).val(),
-				$container = $(this).closest('.give-select-chosen'),
-				select = $container.prev(),
-				$search_field = $container.find('input[type="text"]'),
-				variations = $container.hasClass('variations'),
-				lastKey = e.which,
-				search_type = 'give_form_search',
-				$this = this;
-
-
-			// Detect if we have a defined search type, otherwise default to donation forms.
-			if ($container.prev().data('search-type')) {
-
-				// Don't trigger AJAX if this select has all options loaded.
-				if ('no_ajax' === select.data('search-type')) {
-					return;
-				}
-				search_type = 'give_' + select.data('search-type') + '_search';
-			}
-
-			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
-			if (
-				val.length <= 3 ||
-				!search_type.length ||
-				(
-					(9 === lastKey) || // Tab.
-					(13 === lastKey) || // Enter.
-					(16 === lastKey) || // Shift.
-					(17 === lastKey) || // Ctrl.
-					(18 === lastKey) || // Alt.
-					(19 === lastKey) || // Pause, Break.
-					(20 === lastKey) || // CapsLock.
-					(27 === lastKey) || // Esc.
-					(33 === lastKey) || // Page Up.
-					(34 === lastKey) || // Page Down.
-					(35 === lastKey) || // End.
-					(36 === lastKey) || // Home.
-					(37 === lastKey) || // Left arrow.
-					(38 === lastKey) || // Up arrow.
-					(39 === lastKey) || // Right arrow.
-					(40 === lastKey) || // Down arrow.
-					(44 === lastKey) || // PrntScrn.
-					(45 === lastKey) || // Insert.
-					(144 === lastKey) || // NumLock.
-					(145 === lastKey) || // ScrollLock.
-					(91 === lastKey) || // WIN Key (Start).
-					(93 === lastKey) || // WIN Menu.
-					(224 === lastKey) || // Command key.
-					(112 <= lastKey && 123 >= lastKey) // F1 to F12 lastKey.
-				)
-			) {
-				return;
-			}
-
-			clearTimeout(typingTimer);
-			$container.addClass('give-select-chosen-ajax');
-
-			typingTimer = setTimeout(
-				function () {
-					$.ajax({
-						type: 'POST',
-						url: ajaxurl,
-						data: {
-							action: search_type,
-							s: val,
-							fields: $( $this ).closest( 'form' ).serialize()
-						},
-						dataType: 'json',
-						beforeSend: function () {
-							select.closest('ul.chosen-results').empty();
-							$search_field.prop('disabled', true);
-						},
-						success: function (data) {
-
-							$container.removeClass('give-select-chosen-ajax');
-
-							// Remove all options but those that are selected.
-							$('option:not(:selected)', select).remove();
-
-							if (data.length) {
-								$.each(data, function (key, item) {
-
-									// Add any option that doesn't already exist.
-									if (!$('option[value="' + item.id + '"]', select).length) {
-										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
-									}
-								});
-
-								// Trigger update event.
-								$container.prev('select.give-select-chosen').trigger('chosen:updated');
-
-							} else {
-
-								// Trigger no result message event.
-								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
-							}
-
-							// Ensure the original query is retained within the search input.
-							$search_field.prop('disabled', false);
-							$search_field.val(val).focus();
-
-						}
-					}).fail(function (response) {
-						if (window.console && window.console.log) {
-							console.log(response);
-						}
-					}).done(function (response) {
-						$search_field.prop('disabled', false);
-					});
-				},
-				doneTypingInterval
-			);
-		});
-
-		$('.give-select-chosen .chosen-search input').each(function () {
-			var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-			var placeholder = '';
-
-			if ('form' === type) {
-				placeholder = give_vars.search_placeholder;
-			} else {
-				type = 'search_placeholder_' + type;
-				if (give_vars[type]) {
-					placeholder = give_vars[type];
-				}
-			}
-			$(this).attr('placeholder', placeholder);
-
-		});
 
 	};
 
@@ -526,7 +559,23 @@ var give_setting_edit = false;
 
 		resend_receipt: function () {
 			$('body').on('click', '#give-resend-receipt', function (e) {
-				return confirm(give_vars.resend_receipt);
+				let that = this;
+
+				e.preventDefault();
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.resend_receipt,
+						},
+						successConfirm: function () {
+							window.location.assign( $( that ).attr( 'href' ) );
+
+							return;
+						}
+					}
+				).render();
 			});
 		},
 

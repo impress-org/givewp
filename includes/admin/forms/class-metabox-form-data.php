@@ -280,6 +280,33 @@ class Give_MetaBox_Form_Data {
 							'type' => 'default_gateway',
 						),
 						array(
+							'name'    => __( 'Name Title Prefix', 'give' ),
+							'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
+							'id'      => $prefix . 'name_title_prefix',
+							'type'    => 'radio_inline',
+							'options' => array(
+								'global' => __( 'Global Option', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+							'default' => 'global',
+						),
+						array(
+							'name'          => __( 'Title Prefixes', 'give' ),
+							'desc'          => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
+							'id'            => $prefix . 'title_prefixes',
+							'type'          => 'chosen',
+							'data_type'     => 'multiselect',
+							'style'         => 'width: 100%',
+							'wrapper_class' => 'give-hidden give-title-prefixes-wrap',
+							'options'       => array(
+								'Mr'   => __( 'Mr', 'give' ),
+								'Mrs'  => __( 'Mrs', 'give' ),
+								'Ms'   => __( 'Ms', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Company Donations', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
 							'id'      => $prefix . 'company_field',
@@ -391,7 +418,7 @@ class Give_MetaBox_Form_Data {
 						'name'        => __( 'Goal Format', 'give' ),
 						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give' ),
 						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio',
+						'type'        => 'donation_form_goal',
 						'default'     => 'amount',
 						'options'     => array(
 							'amount'     => __( 'Amount Raised', 'give' ),

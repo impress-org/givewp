@@ -98,6 +98,32 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Name Title Prefix', 'give' ),
+							'desc'    => __( 'Do you want a Name Title Prefix field to appear before First Name?', 'give' ),
+							'id'      => 'name_title_prefix',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'disabled' => __( 'Disabled', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+							),
+						),
+						array(
+							'name'          => __( 'Title Prefixes', 'give' ),
+							'desc'          => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
+							'id'            => 'title_prefixes',
+							'type'          => 'chosen',
+							'data_type'     => 'multiselect',
+							'wrapper_class' => 'give-hidden give-title-prefixes-settings-wrap',
+							'style'         => 'width: 30%',
+							'options'       => array(
+								'Mr'  => __( 'Mr', 'give' ),
+								'Mrs' => __( 'Mrs', 'give' ),
+								'Ms'  => __( 'Ms', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Company Field', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name fields on all donation forms? You can enable this option per form as well.', 'give' ),
 							'id'      => 'company_field',
@@ -319,7 +345,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'sectionend',
 						),
 					);
-					break;
 					break;
 			}
 
