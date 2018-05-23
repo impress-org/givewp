@@ -46,6 +46,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 					get_bloginfo( 'name' )
 				),
 				'default_email_message' => $this->get_default_email_message(),
+				'default_email_header'  => __( 'New User Registration', 'give' ),
 			) );
 
 			// Setup action hook.
@@ -98,7 +99,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @since 2.0
 		 */
 		public function setup_email_data() {
-			Give()->emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
+			Give()->emails->__set( 'heading', $this->get_email_header() );
 		}
 
 		/**
