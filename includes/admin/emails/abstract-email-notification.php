@@ -34,7 +34,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		private static $singleton = array();
 
-
 		/**
 		 * Array of notification settings.
 		 *
@@ -43,26 +42,28 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @var array
 		 */
 		public $config = array(
-			'id'                                => '',
-			'label'                             => '',
-			'description'                       => '',
-			'has_recipient_field'               => false,
-			'recipient_group_name'              => '',
-			'notification_status'               => 'disabled',
-			'notification_status_editable'      => true,
-			'notices'                           => array(),
-			'content_type_editable'             => true,
-			'has_preview'                       => true,
-			'has_preview_header'                => true,
-			'preview_email_tags_values'         => array(),
-			'email_tag_context'                 => 'all',
-			'form_metabox_setting'              => true,
-			'content_type'                      => '',
-			'email_template'                    => '',
-			'default_email_subject'             => '',
-			'default_email_message'             => '',
+			'id'                           => '',
+			'label'                        => '',
+			'description'                  => '',
+			'has_recipient_field'          => false,
+			'recipient_group_name'         => '',
+			'notification_status'          => 'disabled',
+			'notification_status_editable' => true,
+			'notices'                      => array(),
+			'content_type_editable'        => true,
+			'has_preview'                  => true,
+			'has_preview_header'           => true,
+			'preview_email_tags_values'    => array(),
+			'email_tag_context'            => 'all',
+			'form_metabox_setting'         => true,
+			'content_type'                 => '',
+			'email_template'               => '',
+			'default_email_subject'        => '',
+			'default_email_message'        => '',
+			'default_email_header'         => '',
 			// This setting page will appear under core setting.
-			'show_on_emails_setting_page'       => true,
+			'show_on_emails_setting_page'  => true,
+			'form_metabox_id'              => 'give_email_notification_options_metabox_fields',
 		);
 
 		/**
@@ -191,9 +192,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 			}
 
-			if ( $this->config['form_metabox_setting'] ) {
+			if ( $this->config['form_metabox_setting'] && ! empty( $this->config['form_metabox_id'] ) ) {
 				add_filter(
-					'give_email_notification_options_metabox_fields',
+					$this->config['form_metabox_id'],
 					array( $this, 'add_metabox_setting_field' ),
 					10,
 					2
@@ -228,6 +229,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['default_email_message'] = apply_filters(
 				"give_{$this->config['id']}_get_default_email_message",
 				$this->config['default_email_message'],
+				$this
+			);
+
+			/**
+			 * Filter the default email header.
+			 *
+			 * @since 2.1.3
+			 */
+			$this->config['default_email_header'] = apply_filters(
+				"give_{$this->config['id']}_get_default_email_header",
+				$this->config['default_email_header'],
 				$this
 			);
 		}
@@ -475,6 +487,35 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			);
 		}
 
+		/**
+		 * Get email header.
+		 *
+		 * @param int $form_id The Form ID.
+		 *
+		 * @since  2.1.3
+		 *
+		 * @return string
+		 */
+		public function get_email_header( $form_id = null ) {
+			$header = Give_Email_Notification_Util::get_value(
+				$this,
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_header',
+				$form_id,
+				$this->config['default_email_header']
+			);
+
+			/**
+			 * Filter the header.
+			 *
+			 * @since 2.1.3
+			 */
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_header",
+				$header,
+				$this,
+				$form_id
+			);
+		}
 
 		/**
 		 * Get email content type.
@@ -663,6 +704,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup email template
 			Give()->emails->__set( 'template', $this->get_email_template( $form_id ) );
 
+			// Set email header.
+			Give()->emails->__set( 'heading', $this->preview_email_template_tags( $this->get_email_header( $form_id ) ) );
+
 			// Format plain content type email.
 			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
@@ -737,6 +781,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Set email template.
 			Give()->emails->__set( 'template', $this->get_email_template( $form_id ) );
+
+			// Set email header.
+			Give()->emails->__set( 'heading', give_do_email_tags( $this->get_email_header( $form_id ), $email_tag_args ) );
 
 			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );

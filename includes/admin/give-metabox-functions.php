@@ -389,8 +389,6 @@ function give_donation_limit( $field ) {
 					break;
 			}
 
-			$amount = give_format_amount( give_maybe_sanitize_amount( $field_options['value'][ $amount_range ] ), array( 'sanitize' => false ) );
-
 			echo '<span class=give-minmax-wrap>';
 			printf( '<label for="%1$s_give_donation_limit_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $price_field_labels ) );
 
@@ -401,8 +399,8 @@ function give_donation_limit( $field ) {
 					type="text"
 					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo esc_attr( $amount ); ?>"
-					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
+					value="<?php echo give_format_decimal( esc_attr( $field_options['value'][ $amount_range ] ) ); ?>"
+					placeholder="<?php echo give_format_decimal( $field_options['options'][ $amount_range ] ); ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
@@ -1696,3 +1694,85 @@ function give_repeater_field_set_editor_id( $field_name, $field ) {
 }
 
 add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
+
+/**
+ * Output Donation form radio input box.
+ *
+ * @since  2.1.3
+ *
+ * @param  array $field {
+ *                              Optional. Array of radio field arguments.
+ *
+ * @type string $id Field ID. Default ''.
+ * @type string $style CSS style for input field. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value Value of input field. Default ''.
+ * @type string $name Name of input field. Default ''.
+ * @type string $description Description of input field. Default ''.
+ * @type array $attributes List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array $options List of options. Default array().
+ *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' =>
+ *                                               'Disable' )
+ * }
+ * @return void
+ */
+function give_donation_form_goal( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+
+
+	printf(
+		'<fieldset class="give-field-wrap %s_field %s">',
+		esc_attr( $field['id'] ),
+		esc_attr( $field['wrapper_class'] )
+	);
+
+	printf(
+		'<span class="give-field-label">%s</span>',
+		esc_html( $field['name'] )
+	);
+
+	printf(
+		'<legend class="screen-reader-text">%s</legend>',
+		esc_html( $field['name'] )
+	);
+	?>
+
+    <ul class="give-radios">
+		<?php
+		foreach ( $field['options'] as $key => $value ) {
+			$attributes = empty( $field['attributes'] ) ? '' : give_get_attribute_str( $field['attributes'] );
+			printf(
+				'<li><label><input name="%s" value="%s" type="radio" style="%s" %s %s /> %s </label></li>',
+				give_get_field_name( $field ),
+				esc_attr( $key ),
+				esc_attr( $field['style'] ),
+				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
+				$attributes,
+				esc_html( $value )
+			);
+		}
+		?>
+    </ul>
+
+	<?php
+	/**
+	 * Action to add HTML after donation form radio button is display and before description.
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param array $field Array of radio field arguments.
+	 */
+	do_action( 'give_donation_form_goal_before_description', $field );
+
+	echo give_get_field_description( $field );
+
+	echo '</fieldset>';
+}

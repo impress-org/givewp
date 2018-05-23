@@ -526,7 +526,23 @@ var give_setting_edit = false;
 
 		resend_receipt: function () {
 			$('body').on('click', '#give-resend-receipt', function (e) {
-				return confirm(give_vars.resend_receipt);
+				let that = this;
+
+				e.preventDefault();
+
+				new GiveConfirmModal(
+					{
+						modalContent: {
+							title: give_vars.confirm_action,
+							desc: give_vars.resend_receipt,
+						},
+						successConfirm: function () {
+							window.location.assign( $( that ).attr( 'href' ) );
+
+							return;
+						}
+					}
+				).render();
 			});
 		},
 
@@ -599,6 +615,7 @@ var give_setting_edit = false;
 	var Give_Settings = {
 
 		init: function () {
+			this.toggle_gateways();
 			this.setting_change_country();
 			this.toggle_options();
 			this.main_setting_update_notice();
@@ -607,6 +624,47 @@ var give_setting_edit = false;
 			this.changeAlert();
 			this.detectSettingsChange();
 			this.sequentialDonationIDPreview();
+		},
+
+
+		/**
+		 * Disables the default gateway radio button if the
+		 * gateway is disabled.
+		 */
+		toggle_gateways: function() {
+			let checkbox = $( '.gateways-checkbox' );
+
+			checkbox.on( 'click', function() {
+
+				// Get the radio button object related to this checkbox.
+				let radio       = $( this ).prev( '.gateways-radio' );
+
+				// Get the checked value of the current checbox.
+				let checked     = this.checked;
+
+				// Get all the checkbox that are checked.
+				let checked_cbs = $( '.gateways-checkbox:checked' );
+
+				// Get the count of all the checked checkbox.
+				let count_cbs   = checked_cbs.length;
+
+				/**
+				 * If there is only one checked checkbox, then
+				 * make that gateway the default gateway.
+				 */
+				if ( 1 === count_cbs ) {
+					checked_cbs
+						.prev( '.gateways-radio' )
+						.attr( 'checked', 'checked' );
+				} else {
+					if ( this.checked ) {
+						radio.removeAttr( 'disabled' );
+						radio.removeAttr( 'checked' );
+					} else {
+						radio.attr( 'disabled', 'disabled' );
+					}
+				}
+			});
 		},
 
 		/**
@@ -2964,7 +3022,7 @@ var give_setting_edit = false;
 		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
 
-			$(this).giveHintCss( 'hide', {});
+			$(this).giveHintCss( 'hide', { label: give_vars.price_format_guide.trim() } );
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {

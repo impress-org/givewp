@@ -357,6 +357,8 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	// Remove the payment.
 	wp_delete_post( $payment_id, true );
 
+	Give()->payment_meta->delete_all_meta( $payment_id );
+
 	// Remove related sale log entries.
 	Give()->logs->delete_logs( $payment_id );
 

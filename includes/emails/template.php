@@ -162,22 +162,28 @@ function give_get_preview_email_header() {
 	}
 
 	//Get payments.
-	$payments = new Give_Payments_Query( array(
+	$donations = new Give_Payments_Query( array(
 		'number' => 100,
+		'output' => '',
+		'fields' => 'ids'
 	) );
-	$payments = $payments->get_payments();
+	$donations = $donations->get_payments();
 	$options  = array();
 
 	// Default option.
 	$options[0] = esc_html__( 'No donations found.', 'give' );
 
 	//Provide nice human readable options.
-	if ( $payments ) {
+	if ( $donations ) {
 		$options[0] = esc_html__( '- Select a donation -', 'give' );
-		foreach ( $payments as $payment ) {
+		foreach ( $donations as $donation_id ) {
 
-			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
-
+			$options[ $donation_id ] = sprintf(
+				'#%1$s - %2$s - %3$s',
+				$donation_id,
+				give_get_donation_donor_email( $donation_id ),
+				get_the_title( $donation_id )
+			);
 		}
 	}
 

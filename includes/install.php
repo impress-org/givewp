@@ -147,6 +147,7 @@ function give_run_install() {
 			'v201_move_metadata_into_new_table',
 			'v201_logs_upgrades',
 			'v210_verify_form_status_upgrades',
+			'v213_delete_donation_meta'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
