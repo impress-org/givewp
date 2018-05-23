@@ -463,11 +463,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 					<fieldset class="inline-edit-col-right">
 						<div class="inline-edit-col">
 							<label>
-								<input id="give-delete-donor-confirm" type="checkbox" name="give-delete-donor-confirm"/>
+								<input class="give-donor-delete-confirm" type="checkbox" name="give-donor-delete-confirm"/>
 								<?php esc_attr_e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
 							</label>
 							<label>
-								<input id="give-delete-donor-records" type="checkbox" name="give-delete-donor-records"/>
+								<input class="give-donor-delete-records" type="checkbox" name="give-donor-delete-records"/>
 								<?php esc_attr_e( 'Delete all associated donations and records?', 'give' ); ?>
 							</label>
 						</div>
