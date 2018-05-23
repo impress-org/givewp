@@ -538,9 +538,9 @@ function give_process_donor_deletion( $args ) {
 	}
 
 	$nonce_action = '';
-	if ( 'delete_bulk_donor' ===  $args['give_action'] ) {
+	if ( 'delete_bulk_donor' === $args['give_action'] ) {
 		$nonce_action = 'bulk-donors';
-	} elseif ( 'delete_donor' ===  $args['give_action'] ) {
+	} elseif ( 'delete_donor' === $args['give_action'] ) {
 		$nonce_action = 'give-delete-donor';
 	}
 
@@ -561,6 +561,17 @@ function give_process_donor_deletion( $args ) {
 
 			// Proceed only if valid donor id is provided.
 			if ( $donor->id > 0 ) {
+
+				/**
+				 * Fires before deleting donor.
+				 *
+				 * @param int  $donor_id     The ID of the donor.
+				 * @param bool $delete_donor Confirm Donor Deletion.
+				 * @param bool $remove_data  Confirm Donor related donations deletion.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_pre_delete_donor', $donor->id, $delete_donor, $delete_donations );
 
 				// Proceed only, if user confirmed whether they need to delete the donor.
 				if ( $delete_donor ) {
@@ -594,11 +605,11 @@ function give_process_donor_deletion( $args ) {
 				}
 			} else {
 				$redirect_args['give-message'] = 'invalid-donor-id';
-			}
-		}
+			} // End if().
+		} // End foreach().
 	} else {
 		$redirect_args['give-message'] = 'no-donor-found';
-	}
+	} // End if().
 
 	// Add Search Keyword on redirection, if it exists.
 	if ( ! empty( $search_keyword ) ) {
