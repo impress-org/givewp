@@ -42,6 +42,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'recipient_group_name'         => __( 'Donor', 'give' ),
 				'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
 				'default_email_message'        => $this->get_default_email_message(),
+				'default_email_header'         => __( 'Confirm Email', 'give' ),
 				'notices' => array(
 					'non-notification-status-editable' => sprintf(
 						'%1$s <a href="%2$s">%3$s &raquo;</a>',
@@ -56,7 +57,6 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 			add_filter( 'give_email_preview_header', array( $this, 'email_preview_header' ), 10, 2 );
 		}
-
 
 		/**
 		 * Get email subject.
@@ -219,8 +219,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
-
+			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', $this->get_email_header() ) );
 			/**
 			 * Filters the donation notification email headers.
 			 *
