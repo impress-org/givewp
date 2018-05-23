@@ -46,9 +46,9 @@ class Give_Donor_Wall {
 
 		add_shortcode( 'give_donor_grid', array( $this, 'donor_grid_shortcode' ) );
 
-		//		add_shortcode( 'give_donors_gravatars', array( $this, 'shortcode' ) );
-		//		add_filter( 'give_settings_display', array( $this, 'settings' ) );
-		//		do_action( 'give_donors_gravatars_setup_actions' );
+		// add_shortcode( 'give_donors_gravatars', array( $this, 'shortcode' ) );
+		// add_filter( 'give_settings_display', array( $this, 'settings' ) );
+		// do_action( 'give_donors_gravatars_setup_actions' );
 	}
 
 
@@ -60,13 +60,15 @@ class Give_Donor_Wall {
 	 * @param array $atts                {
 	 *                                   Optional. Attributes of the form grid shortcode.
 	 *
-	 * @type int    $forms_per_page      Number of forms per page. Default '12'.
-	 * @type bool   $paged               Whether to paginate forms. Default 'true'.
+	 * @type int    $donors_per_page     Number of donors per page. Default '20'.
+	 * @type int    $form_id             The donation form to filter donors by. Default is all forms (no filter).
+	 * @type bool   $paged               Whether to paginate donors. Default 'true'.
 	 * @type string $ids                 A comma-separated list of donor IDs to display. Default empty.
 	 * @type string $columns             Maximum columns to display. Default 'best-fit'.
 	 *                                   Accepts 'best-fit', '1', '2', '3', '4'.
-	 * @type bool   $show_title          Whether to display form title. Default 'true'.
-	 * @type bool   $show_goal           Whether to display form goal. Default 'true'.
+	 * @type bool   $show_total          Whether to display the donor's donation amount. Default 'true'.
+	 * @type bool   $show_time           Whether to display date of the last donation. Default 'true'.
+	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
 	 * @type string $avatar_size         Avatar image size in pixels without the "px". Default "
 	 * }
 	 * @return string|bool The markup of the form grid or false.
@@ -75,22 +77,24 @@ class Give_Donor_Wall {
 
 		$give_settings = give_get_settings();
 
-		$atts = shortcode_atts( array(
-			'donors_per_page' => 20,
-			'form_id'         => 0,
-			'paged'           => true,
-			'ids'             => '',
-			'columns'         => 'best-fit',
-			'show_avatar'     => true,
-			'show_name'       => true,
-			'show_total'      => true,
-			'show_time'       => true,
-			'show_comments'   => true,
-			'avatar_size'     => 60,
-			'orderby'         => 'purchase_count',
-			'order'           => 'DESC',
-			'hide_empty'      => true
-		), $atts );
+		$atts = shortcode_atts(
+			array(
+				'donors_per_page' => 20,
+				'form_id'         => 0,
+				'paged'           => true,
+				'ids'             => '',
+				'columns'         => 'best-fit',
+				'show_avatar'     => true,
+				'show_name'       => true,
+				'show_total'      => true,
+				'show_time'       => true,
+				'show_comments'   => true,
+				'avatar_size'     => 60,
+				'orderby'         => 'purchase_count',
+				'order'           => 'DESC',
+				'hide_empty'      => true,
+			), $atts
+		);
 
 		// Validate integer attributes.
 		$atts['donors_per_page'] = intval( $atts['donors_per_page'] );
@@ -102,7 +106,7 @@ class Give_Donor_Wall {
 			'show_name',
 			'show_total',
 			'show_time',
-			'hide_empty'
+			'hide_empty',
 		);
 
 		foreach ( $boolean_attributes as $att ) {
@@ -116,19 +120,19 @@ class Give_Donor_Wall {
 			'number'  => $atts['donors_per_page'],
 			'offset'  => $atts['donors_per_page'] * ( $paged - 1 ),
 			'orderby' => $atts['orderby'],
-			'order'   => $atts['order']
+			'order'   => $atts['order'],
 		);
 
 		// Hide donors with zero donation amount.
-		if( $atts['hide_empty'] ) {
+		if ( $atts['hide_empty'] ) {
 			$donor_args['donation_amount'] = array(
 				'compare' => '>=',
-				'amount'  => 1
+				'amount'  => 1,
 			);
 		}
 
 		// Hide donors with zero donation amount.
-		if( $atts['form_id'] ) {
+		if ( $atts['form_id'] ) {
 			$donor_args['give_forms'] = $atts['form_id'];
 		}
 
@@ -150,13 +154,11 @@ class Give_Donor_Wall {
 
 			echo '</div><!-- .give-grid -->';
 
-
 			if ( false !== $atts['paged'] ) {
 
 				$_donor_query['number'] = - 1;
 				$_donor_query['offset'] = 0;
 				$donor_count            = count( Give()->donors->get_donors( $_donor_query ) );
-
 
 				$paginate_args = array(
 					'current'   => max( 1, get_query_var( 'paged' ) ),
@@ -179,70 +181,6 @@ class Give_Donor_Wall {
 		}
 	}
 
-
-	/**
-	 * Utility function to check if a gravatar exists for a given email or id
-	 *
-	 * @see    : https://gist.github.com/justinph/5197810
-	 *
-	 * @since  2.1
-	 * @access public
-	 *
-	 * @param  int|string|object $id_or_email A user ID, email address, or comment object
-	 *
-	 * @return bool If the gravatar exists or not
-	 */
-	public function validate_gravatar( $id_or_email ) {
-		// id or email code borrowed from wp-includes/pluggable.php
-		$email = '';
-		if ( is_numeric( $id_or_email ) ) {
-			$id   = (int) $id_or_email;
-			$user = get_userdata( $id );
-			if ( $user ) {
-				$email = $user->user_email;
-			}
-		} elseif ( is_object( $id_or_email ) ) {
-			// No avatar for pingbacks or trackbacks
-			$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
-			if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) ) {
-				return false;
-			}
-
-			if ( ! empty( $id_or_email->user_id ) ) {
-				$id   = (int) $id_or_email->user_id;
-				$user = get_userdata( $id );
-				if ( $user ) {
-					$email = $user->user_email;
-				}
-			} elseif ( ! empty( $id_or_email->comment_author_email ) ) {
-				$email = $id_or_email->comment_author_email;
-			}
-		} else {
-			$email = $id_or_email;
-		}
-
-		$hashkey = md5( strtolower( trim( $email ) ) );
-		$uri     = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
-
-		$data = Give_Cache::get_group( $hashkey );
-
-		if ( is_null( $data ) ) {
-			$response = wp_remote_head( $uri );
-			if ( is_wp_error( $response ) ) {
-				$data = 'not200';
-			} else {
-				$data = $response['response']['code'];
-			}
-			Give_Cache::set_group( $hashkey, $data, $group = '', $expire = 60 * 5 );
-
-		}
-		if ( $data == '200' ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * Settings
 	 *
@@ -260,14 +198,14 @@ class Give_Donor_Wall {
 				'name' => __( 'Donator Gravatars', 'give' ),
 				'desc' => '<hr>',
 				'id'   => 'give_title',
-				'type' => 'give_title'
+				'type' => 'give_title',
 			),
 			array(
 				'name'    => __( 'Gravatar Size', 'give' ),
 				'desc'    => __( 'The size of each Gravatar in pixels (512px maximum).', 'give' ),
 				'type'    => 'text_small',
 				'id'      => 'give_donors_gravatars_gravatar_size',
-				'default' => '64'
+				'default' => '64',
 			),
 			array(
 				'name' => __( 'Minimum Unique Donations Required', 'give' ),
