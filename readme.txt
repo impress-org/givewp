@@ -208,8 +208,25 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.1.3: =
-
+= 2.1.3: May 23rd, 2018 =
+* New: Better SPAM protection through the usage of improved client and server side validation to only allow alphabet characters for first and last name, validation to ensure that the gateway field is not left empty (to compbat SPAM bot scripts), and sanitize all input fields when processing the donation. [#3035](https://github.com/WordImpress/Give/issues/3035#issuecomment-391393093)
+* New: Added new customizable "Email Heading" fields for all Core emails (coming soon to add-ons as well). [#3110](https://github.com/WordImpress/Give/issues/3110)
+* New: Added autocomplete field attributes to the applicable donation form fields for faster completion. [#3202](https://github.com/WordImpress/Give/issues/3202)
+* New: Added a Give CLI command to update all add-ons or a single add-on from GitHub. [#1390](https://github.com/WordImpress/Give/issues/1390)
+* Fix: We have refactored how we are using nonces so now the often reported issue of "Nonce verification failed" should no longer happen. The solution implemented provides for the additional security of nonces and is now compatible with various forms of caching. [#3200](https://github.com/WordImpress/Give/issues/3200)
+* Fix: The add-on plugin activation banner now displays properly without having to refresh the plugins screen to see it. [#3153](https://github.com/WordImpress/Give/issues/3153)
+* Fix: Give's shortcode picker was having an incompatibility with Elementor causing the TinyMCE to be partially blocked. [#3171](https://github.com/WordImpress/Give/issues/3171)
+* Fix: Give was conflicting with Beaver Builder preventing users from seeing the builder options within the WP-admin single page/post view. [#3207](https://github.com/WordImpress/Give/issues/3207)
+* Fix: Give's API was not repecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/WordImpress/Give/issues/3191)
+* Fix: This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed. [#3205](https://github.com/WordImpress/Give/issues/3205)
+* Fix: Resolved PHP notices when exporting donor in lower PHP versions. (#3222)[https://github.com/WordImpress/Give/issues/3222], [#3218](https://github.com/WordImpress/Give/issues/3218)
+* Fix: We've updated the donation form's <form> tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/WordImpress/Give/issues/3139)
+* Fix: Several typos on the welcome guide were corrected. [#3230](https://github.com/WordImpress/Give/issues/3230)
+* Fix: Inline plugin upgrade notices were not displaying properly in previous versions. [#2789](https://github.com/WordImpress/Give/issues/2789)
+* Tweak: Improved the logic of verifying min/max amount for the Currency Switcher add-on. [#3203](https://github.com/WordImpress/Give/issues/3203)
+* Tweak: Improved the tooltip helpers within the shortcode inserter for the Give Form Grid shortcode. [#3235](https://github.com/WordImpress/Give/issues/32350)
+* Tweak: Added logic so developers can now adjust the arguments passed to the chosen dropdowns Give uses. [#3192](https://github.com/WordImpress/Give/issues/3192)
+* Tweak: The reset email receipt donation button popup now opens the alert using Give's new modal API. [#3224](https://github.com/WordImpress/Give/issues/3244)
 
 = 2.1.2: May 4th, 2018 =
 * Fix: We found another conflict with the new "maximum" donation amount field and existing forms. This time forms NOT using custom fields would incorrectly display a validation error about a custom amount which prevented the donor from giving. [#3159](https://github.com/wordimpress/give/issues/3159)
@@ -392,6 +409,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 [See full changelog here >>](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
 
 == Upgrade Notice ==
+
+= 2.1.3 =
+This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed.
 
 = 2.1.0 =
 This new version is full of many great features and enhancements. Please ensure you have a backup in place prior to updating and be sure to update Give Core and then your Give Add-ons to the latest versions for maximum compatibility.
