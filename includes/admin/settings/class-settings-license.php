@@ -30,6 +30,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$this->label = esc_html__( 'Licenses', 'give' );
 
 			parent::__construct();
+
+			// Filter to remove the license tab.
+			add_filter( 'give-settings_tabs_array', array( $this, 'remove_license_tab' ), 9999999, 1 );
+
 		}
 
 		/**
@@ -58,6 +62,29 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			// Output.
 			return $settings;
+		}
+
+		/**
+		 * Remove the license tab if no Give addon
+		 * is activated.
+		 *
+		 * @param array $tabs Give Settings Tabs.
+		 *
+		 * @since 2.1.4
+		 *
+		 * @return array
+		 */
+		public function remove_license_tab( $tabs ) {
+
+			/**
+			 * Remove the license tab if no Give addon
+			 * is activated.
+			 */
+			if ( ! give_any_give_addon_activated() ) {
+				unset( $tabs['licenses'] );
+			}
+
+			return $tabs;
 		}
 	}
 

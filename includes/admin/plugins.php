@@ -413,3 +413,23 @@ add_action( 'admin_head', 'give_plugin_notice_css' );
 function give_get_recently_activated_addons() {
 	return get_option( 'give_recently_activated_addons', array() );
 }
+
+/**
+ * Returns if at least one Give addon is activated.
+ *
+ * @since 2.1.4
+ *
+ * @return boolean
+ */
+function give_any_give_addon_activated() {
+
+	$activated_plugins = get_option( 'active_plugins' );
+
+	foreach ( $activated_plugins as $activated_plugin ) {
+		if ( false !== stripos( $activated_plugin, 'Give-' ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
