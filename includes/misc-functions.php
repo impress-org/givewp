@@ -1277,8 +1277,8 @@ function __give_v20_bc_table_details( $type ) {
 			break;
 
 		case 'payment':
-			$table['name']         = $wpdb->paymentmeta;
-			$table['column']['id'] = 'payment_id';
+			$table['name']         = $wpdb->donationmeta;
+			$table['column']['id'] = Give()->payment_meta->get_meta_type() . '_id';
 	}
 
 	// Backward compatibility.
@@ -2112,7 +2112,6 @@ function give_get_title_prefixes( $form_id = 0 ) {
  * @return bool
  */
 function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
-
 	if ( empty( $status ) ) {
 		$status = array( 'required', 'optional' );
 	} else {
