@@ -5777,8 +5777,8 @@ msgstr ""
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
-#: includes/process-donation.php:1430
-msgid "<First Name | Last Name> cannot contain email address, numbers or special characters."
+#: includes/process-donation.php:1431
+msgid "The First Name and Last Name fields cannot contain an email address or numbers."
 msgstr ""
 
 #: includes/shortcodes.php:57
