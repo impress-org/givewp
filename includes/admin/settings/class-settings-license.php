@@ -80,7 +80,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			 * Remove the license tab if no Give addon
 			 * is activated.
 			 */
-			if ( ! give_any_give_addon_activated() ) {
+			if ( ! give_is_addon_activated() ) {
 				unset( $tabs['licenses'] );
 			}
 

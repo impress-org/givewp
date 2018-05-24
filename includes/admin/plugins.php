@@ -421,7 +421,7 @@ function give_get_recently_activated_addons() {
  *
  * @return boolean
  */
-function give_any_give_addon_activated() {
+function give_is_addon_activated() {
 
 	$activated_plugins = get_option( 'active_plugins' );
 
