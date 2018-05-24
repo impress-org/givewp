@@ -1423,10 +1423,11 @@ function give_validate_required_form_fields( $form_id ) {
  * @return void
  */
 function give_donation_form_validate_name_fields( $post_data ) {
-	$is_alpha_first_name = ctype_alpha( $post_data['give_first'] ) ? true : false;
-	$is_alpha_last_name  = ctype_alpha( $post_data['give_last'] ) ? true : false;
+
+	$is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
+	$is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
 
 	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
-		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address, numbers or special characters.', 'give' ) );
+		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address or numbers.', 'give' ) );
 	}
 }
