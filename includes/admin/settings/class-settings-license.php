@@ -75,16 +75,31 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		 * @return array
 		 */
 		public function remove_license_tab( $tabs ) {
-
 			/**
-			 * Remove the license tab if no Give addon
+			 * Remove the license tab if no Give licensed addon
 			 * is activated.
 			 */
-			if ( ! give_is_addon_activated() ) {
+			if ( ! $this->is_show_setting_page() ) {
 				unset( $tabs['licenses'] );
 			}
 
 			return $tabs;
+		}
+
+		/**
+		 * Returns if at least one Give addon is activated.
+		 * Note: note only for internal logic
+		 *
+		 * @since 2.1.4
+		 * @access private
+		 *
+		 * @return bool
+		 */
+		private function is_show_setting_page() {
+			$licensed_addons = Give_License::get_licensed_addons();
+			$activated_plugins = get_option( 'active_plugins', array() );
+
+			return (bool) count( array_intersect( $activated_plugins, $licensed_addons)  );
 		}
 	}
 
