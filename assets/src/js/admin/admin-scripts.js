@@ -2436,9 +2436,35 @@ var give_setting_edit = false;
 						sortable_options: {
 							placeholder: 'give-ui-placeholder-state-highlight',
 							start: function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
+								let $rows = $('.give-row', $this).not('.give-template');
+
+								if ($rows.length) {
+									$rows.each(function (index, item) {
+										// Set name for fields.
+										let $fields = $('input[type="radio"].give-field', $(item));
+
+										// Preserve radio button values.
+										if ($fields.length) {
+											$fields.each(function () {
+												$(this).attr('data-give-checked', $(this).is(':checked') );
+											});
+										}
+									});
+								}
+
 								$('body').trigger('repeater_field_sorting_start', [ui.item]);
 							},
 							stop: function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
 								$('body').trigger('repeater_field_sorting_stop', [ui.item]);
 							},
 							update: function (event, ui) {
@@ -2447,7 +2473,8 @@ var give_setting_edit = false;
 									ui.item.next().after(ui.item);
 								}
 
-								var $rows = $('.give-row', $this).not('.give-template');
+								var $rows = $('.give-row', $this).not('.give-template'),
+									$container = $(this).closest('.give-repeatable-fields-section-wrapper');
 
 								if ($rows.length) {
 									var row_count = 1;
@@ -2491,6 +2518,14 @@ var give_setting_edit = false;
 
 										row_count++;
 									});
+
+									window.setTimeout(function(){
+										// Reset radio button values.
+										$( 'input[data-give-checked]', $container ).each(function( index, radio ){
+											radio = $(radio);
+											radio.prop( 'checked',  'true' === radio.attr('data-give-checked') )
+										});
+									}, 100)
 
 									// Fire event.
 									$this.trigger('repeater_field_row_reordered', [ui.item]);
