@@ -96,10 +96,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		 * @return bool
 		 */
 		private function is_show_setting_page() {
-			$licensed_addons = Give_License::get_licensed_addons();
+			$licensed_addons   = Give_License::get_licensed_addons();
 			$activated_plugins = get_option( 'active_plugins', array() );
 
-			return (bool) count( array_intersect( $activated_plugins, $licensed_addons)  );
+			return (bool) count( array_intersect( $activated_plugins, $licensed_addons ) );
 		}
 	}
 
