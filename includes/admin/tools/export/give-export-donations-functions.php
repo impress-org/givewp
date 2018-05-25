@@ -464,6 +464,15 @@ function give_export_donation_standard_fields() {
 							?>
 						</ul>
 					</li>
+
+					<?php
+					/**
+					 * Action to add custom export column.
+					 *
+					 * @since 2.1.4
+					 */
+					do_action( 'give_export_donation_add_custom_column' );
+					?>
 				</ul>
 			</div>
 		</td>
