@@ -1102,7 +1102,8 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			)
 		);
 
-		$donation_meta_table = Give()->payment_meta->table_name;
+		$donation_meta_table  = Give()->payment_meta->table_name;
+		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
 
@@ -1111,11 +1112,11 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			SELECT COUNT({$distinct})
 			FROM {$donation_meta_table}
 			WHERE meta_key=%s
-			AND payment_id IN(
-				SELECT payment_id
+			AND {$donation_id_col_name} IN(
+				SELECT {$donation_id_col_name}
 				FROM {$donation_meta_table} as pm
 				INNER JOIN {$wpdb->posts} as p
-				ON pm.payment_id=p.ID
+				ON pm.{$donation_id_col_name}=p.ID
 				WHERE pm.meta_key=%s
 				AND pm.meta_value=%s
 				AND p.post_status=%s

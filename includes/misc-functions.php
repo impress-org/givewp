@@ -1239,8 +1239,8 @@ function __give_v20_bc_table_details( $type ) {
 			break;
 
 		case 'payment':
-			$table['name']         = $wpdb->paymentmeta;
-			$table['column']['id'] = 'payment_id';
+			$table['name']         = $wpdb->donationmeta;
+			$table['column']['id'] = Give()->payment_meta->get_meta_type() . '_id';
 	}
 
 	// Backward compatibility.
@@ -2085,7 +2085,7 @@ function give_goal_progress_stats( $form ) {
 }
 
 /**
- * Get Title Prefixes values.
+ * Get Name Title Prefixes (a.k.a. Salutation) value.
  *
  * @param int $form_id Donation Form ID.
  *
@@ -2093,9 +2093,9 @@ function give_goal_progress_stats( $form ) {
  *
  * @return mixed
  */
-function give_get_title_prefixes( $form_id = 0 ) {
+function give_get_name_title_prefixes( $form_id = 0 ) {
 
-	$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
 	$title_prefixes    = give_get_option( 'title_prefixes' );
 
 	// If form id exists, then fetch form specific title prefixes.
@@ -2116,7 +2116,7 @@ function give_get_title_prefixes( $form_id = 0 ) {
 }
 
 /**
- * Check whether the title prefix is enabled or not.
+ * Check whether the name title prefix is enabled or not.
  *
  * @param int    $form_id Donation Form ID.
  * @param string $status  Status to set status based on option value.
@@ -2125,8 +2125,7 @@ function give_get_title_prefixes( $form_id = 0 ) {
  *
  * @return bool
  */
-function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
-
+function give_is_name_title_prefix_enabled( $form_id = 0, $status = '' ) {
 	if ( empty( $status ) ) {
 		$status = array( 'required', 'optional' );
 	} else {
@@ -2158,7 +2157,7 @@ function give_is_title_prefix_enabled( $form_id = 0, $status = '' ) {
  *
  * @return object
  */
-function give_get_donor_name_with_title( $donor ) {
+function give_get_name_with_title_prefixes( $donor ) {
 
 	// Prepare Give_Donor object, if $donor is numeric.
 	if ( is_numeric( $donor ) ) {
@@ -2173,4 +2172,31 @@ function give_get_donor_name_with_title( $donor ) {
 	}
 
 	return $donor;
+}
+
+/**
+ * Get the admin messages key to show the notices.
+ *
+ * @since 2.1.4
+ *
+ * @return array $message admin message key.
+ */
+function give_get_admin_messages_key() {
+	$messages = empty( $_GET['give-messages'] ) ? array() : give_clean( $_GET['give-messages'] );
+
+	// backward compatibility.
+	if ( ! empty( $_GET['give-message'] ) ) {
+		$messages[] = give_clean( $_GET['give-message'] );
+	}
+
+	/**
+	 * Filter to modify the admin messages key.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $message admin message key.
+	 *
+	 * @return array $message admin message key.
+	 */
+	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
 }

@@ -10,7 +10,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( ! class_exists( 'Give_Settings_License' ) ) :
@@ -30,6 +30,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$this->label = esc_html__( 'Licenses', 'give' );
 
 			parent::__construct();
+
+			// Filter to remove the license tab.
+			add_filter( 'give-settings_tabs_array', array( $this, 'remove_license_tab' ), 9999999, 1 );
+
 		}
 
 		/**
@@ -58,6 +62,44 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			// Output.
 			return $settings;
+		}
+
+		/**
+		 * Remove the license tab if no Give addon
+		 * is activated.
+		 *
+		 * @param array $tabs Give Settings Tabs.
+		 *
+		 * @since 2.1.4
+		 *
+		 * @return array
+		 */
+		public function remove_license_tab( $tabs ) {
+			/**
+			 * Remove the license tab if no Give licensed addon
+			 * is activated.
+			 */
+			if ( ! $this->is_show_setting_page() ) {
+				unset( $tabs['licenses'] );
+			}
+
+			return $tabs;
+		}
+
+		/**
+		 * Returns if at least one Give addon is activated.
+		 * Note: note only for internal logic
+		 *
+		 * @since 2.1.4
+		 * @access private
+		 *
+		 * @return bool
+		 */
+		private function is_show_setting_page() {
+			$licensed_addons   = Give_License::get_licensed_addons();
+			$activated_plugins = get_option( 'active_plugins', array() );
+
+			return (bool) count( array_intersect( $activated_plugins, $licensed_addons ) );
 		}
 	}
 

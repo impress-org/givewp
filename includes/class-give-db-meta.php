@@ -284,29 +284,29 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @return mixed
 	 */
-	public function __rename_meta_table_name( $clause, $filter ){
+	public function __rename_meta_table_name( $clause, $filter ) {
 		global $wpdb;
 
 		$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
 		$clause = str_replace( $wpdb->postmeta, $this->table_name, $clause );
 
-		switch( $filter ) {
+		switch ( $filter ) {
 			case 'posts_join':
 				$joins = array( 'INNER JOIN', 'LEFT JOIN' );
 
 				foreach ( $joins as $join ) {
-					if( false !== strpos( $clause, $join ) ) {
+					if ( false !== strpos( $clause, $join ) ) {
 						$clause = explode( $join, $clause );
 
 						foreach ( $clause as $key => $clause_part ) {
-							if( empty( $clause_part ) ) {
+							if ( empty( $clause_part ) ) {
 								continue;
 							}
 
 							preg_match( '/' . $wpdb->prefix . 'give_' . $this->meta_type . 'meta AS (.*) ON/', $clause_part, $alias_table_name );
 
-							if( isset( $alias_table_name[1] ) ) {
-								$clause[$key] = str_replace( "{$alias_table_name[1]}.post_id", "{$alias_table_name[1]}.{$this->meta_type}_id", $clause_part );
+							if ( isset( $alias_table_name[1] ) ) {
+								$clause[ $key ] = str_replace( "{$alias_table_name[1]}.post_id", "{$alias_table_name[1]}.{$this->meta_type}_id", $clause_part );
 							}
 						}
 
@@ -316,7 +316,10 @@ class Give_DB_Meta extends Give_DB {
 				break;
 
 			case 'posts_where':
-				$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array( "mt2.{$this->meta_type}_id", "mt1.{$this->meta_type}_id" ), $clause );
+				$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array(
+					"mt2.{$this->meta_type}_id",
+					"mt1.{$this->meta_type}_id"
+				), $clause );
 				break;
 		}
 
@@ -396,11 +399,10 @@ class Give_DB_Meta extends Give_DB {
 		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
 
 		$group = array(
-			// 'form'    => 'give-forms',
-			'payment'  => 'give-donations',
+			'payment'  => 'give-donations', // Backward compatibility
+			'donation' => 'give-donations',
 			'donor'    => 'give-donors',
 			'customer' => 'give-donors', // Backward compatibility for pre upgrade in 2.0
-			// 'log'     => 'give-logs',
 		);
 
 		if ( array_key_exists( $meta_type, $group ) ) {
@@ -510,12 +512,12 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Get meta type
 	 *
-	 * @since 2.0.4
+	 * @since  2.0.4
 	 * @access public
 	 *
 	 * @return string
 	 */
-	public function get_meta_type(){
+	public function get_meta_type() {
 		return $this->meta_type;
 	}
 
