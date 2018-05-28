@@ -257,7 +257,7 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	$message .= __( 'Do you want to reconnect User and Donor profile again?', 'give' ) . "\n\n";
 	$message .= sprintf(
 		'<a href="%1$s">%2$s</a>',
-		esc_url( admin_url() . 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&user_id=' . $user_id . '&give-message=reconnect-user' ),
+		esc_url( admin_url() . 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&user_id=' . $user_id . '&give-messages[]=reconnect-user' ),
 		__( 'Reconnect User', 'give' ) . "\n\n"
 	);
 	$message .= __( 'Thank you,', 'give' ) . "\n\n";
