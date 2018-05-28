@@ -594,7 +594,7 @@ function give_process_donor_deletion( $args ) {
 							give_delete_donation( $donation_id );
 						}
 
-						$redirect_args['give-message[]'] = 'donor-donations-deleted';
+						$redirect_args['give-messages[]'] = 'donor-donations-deleted';
 					} else {
 
 						// Just set the donations to customer_id of 0.
@@ -602,17 +602,17 @@ function give_process_donor_deletion( $args ) {
 							give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
 						}
 
-						$redirect_args['give-message[]'] = 'donor-deleted';
+						$redirect_args['give-messages[]'] = 'donor-deleted';
 					}
 				} else {
-					$redirect_args['give-message[]'] = 'confirm-delete-donor';
+					$redirect_args['give-messages[]'] = 'confirm-delete-donor';
 				}
 			} else {
-				$redirect_args['give-message[]'] = 'invalid-donor-id';
+				$redirect_args['give-messages[]'] = 'invalid-donor-id';
 			} // End if().
 		} // End foreach().
 	} else {
-		$redirect_args['give-message[]'] = 'no-donor-found';
+		$redirect_args['give-messages[]'] = 'no-donor-found';
 	} // End if().
 
 	$redirect_url = add_query_arg(
