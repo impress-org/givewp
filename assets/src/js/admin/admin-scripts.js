@@ -58,36 +58,45 @@ var give_setting_edit = false;
 	 * @since 1.8.14
 	 */
 	var give_dismiss_notice = function () {
-		$('body').on('click', 'button.notice-dismiss', function () {
-			if ('give-invalid-license' !== jQuery(this).closest('div.give-notice').data('notice-id')) {
-				give_remove_give_message();
+		$( 'body' ).on( 'click', 'button.notice-dismiss', function () {
+			if ( 'give-invalid-license' !== jQuery( this ).closest( 'div.give-notice' ).data( 'notice-id' ) ) {
+				give_remove_give_message( jQuery( this ).closest( 'div.give-notice' ).attr( 'id' ) );
 			}
-		});
+		} );
 	};
 
 	/**
 	 * Remove give-message parameter from URL.
 	 *
 	 * @since 1.8.14
+	 * @since 2.1.4 Added new param key which remove the multiple message array from URL.
+	 *
+	 * @param key string to remove from url in multiple notices.
 	 */
-	var give_remove_give_message = function () {
+	var give_remove_give_message = function ( key ) {
 		var parameter = 'give-message',
 			url = document.location.href,
-			urlparts = url.split('?');
+			urlparts = url.split( '?' ),
+			key = (
+				undefined === key
+			) ? '' : key.replace( 'give-', '' );
 
-		if (urlparts.length >= 2) {
+		if ( urlparts.length >= 2 ) {
 			var urlBase = urlparts.shift();
-			var queryString = urlparts.join('?');
+			var queryString = urlparts.join( '?' );
+			var prefix = encodeURIComponent( parameter ) + '=';
 
-			var prefix = encodeURIComponent(parameter) + '=';
-			var pars = queryString.split(/[&;]/g);
-			for (var i = pars.length; i-- > 0;) {
-				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-					pars.splice(i, 1);
+			var pars = queryString.split( /[&;]/g );
+			for ( var i = pars.length; i -- > 0; ) {
+
+				if ( pars[i].lastIndexOf( prefix, 0 ) !== - 1 || (
+						'' !== key && pars[i].lastIndexOf( 'give-messages', 0 ) !== - 1 && pars[i].match( key + '$' )
+					) ) {
+					pars.splice( i, 1 );
 				}
 			}
-			url = urlBase + '?' + pars.join('&');
-			window.history.pushState('', document.title, url); // added this line to push the new url directly to url bar .
+			url = urlBase + '?' + pars.join( '&' );
+			window.history.pushState( '', document.title, url ); // added this line to push the new url directly to url bar .
 		}
 		return url;
 	};
@@ -1566,7 +1575,7 @@ var give_setting_edit = false;
 				).render();
 			});
 		}
-	}
+	};
 
 	/**
 	 * Admin Status Select Field Change
@@ -2519,13 +2528,13 @@ var give_setting_edit = false;
 										row_count++;
 									});
 
-									window.setTimeout(function(){
+									window.setTimeout( function () {
 										// Reset radio button values.
-										$( 'input[data-give-checked]', $container ).each(function( index, radio ){
-											radio = $(radio);
-											radio.prop( 'checked',  'true' === radio.attr('data-give-checked') )
-										});
-									}, 100)
+										$( 'input[data-give-checked]', $container ).each( function ( index, radio ) {
+											radio = $( radio );
+											radio.prop( 'checked', 'true' === radio.attr( 'data-give-checked' ) )
+										} );
+									}, 100 );
 
 									// Fire event.
 									$this.trigger('repeater_field_row_reordered', [ui.item]);
