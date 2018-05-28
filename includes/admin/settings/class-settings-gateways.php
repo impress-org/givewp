@@ -320,10 +320,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 				);
 
 				printf(
-					'<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s>',
+					'<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
 					'default_gateway',
 					$key,
-					checked( $key, $default_gateway, false )
+					checked( $key, $default_gateway, false ),
+					disabled( NULL, $enabled, false )
 				);
 
 				printf(

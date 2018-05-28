@@ -322,10 +322,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										</div>
 
 										<?php
-                                        // Display the transaction ID present.
-                                        // The transaction ID is the charge ID from the gateway.
-                                        // For instance, stripe "ch_BzvwYCchqOy5Nt".
-                                        if ( $transaction_id != $payment_id ) : ?>
+										// Display the transaction ID present.
+										// The transaction ID is the charge ID from the gateway.
+										// For instance, stripe "ch_BzvwYCchqOy5Nt".
+										if ( $transaction_id != $payment_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
 													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway); ?>"></span></strong>&nbsp;

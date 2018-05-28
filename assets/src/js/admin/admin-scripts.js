@@ -618,6 +618,7 @@ var give_setting_edit = false;
 	var Give_Settings = {
 
 		init: function () {
+			this.toggle_gateways();
 			this.setting_change_country();
 			this.toggle_options();
 			this.main_setting_update_notice();
@@ -626,6 +627,47 @@ var give_setting_edit = false;
 			this.changeAlert();
 			this.detectSettingsChange();
 			this.sequentialDonationIDPreview();
+		},
+
+
+		/**
+		 * Disables the default gateway radio button if the
+		 * gateway is disabled.
+		 */
+		toggle_gateways: function() {
+			let checkbox = $( '.gateways-checkbox' );
+
+			checkbox.on( 'click', function() {
+
+				// Get the radio button object related to this checkbox.
+				let radio       = $( this ).prev( '.gateways-radio' );
+
+				// Get the checked value of the current checbox.
+				let checked     = this.checked;
+
+				// Get all the checkbox that are checked.
+				let checked_cbs = $( '.gateways-checkbox:checked' );
+
+				// Get the count of all the checked checkbox.
+				let count_cbs   = checked_cbs.length;
+
+				/**
+				 * If there is only one checked checkbox, then
+				 * make that gateway the default gateway.
+				 */
+				if ( 1 === count_cbs ) {
+					checked_cbs
+						.prev( '.gateways-radio' )
+						.attr( 'checked', 'checked' );
+				} else {
+					if ( this.checked ) {
+						radio.removeAttr( 'disabled' );
+						radio.removeAttr( 'checked' );
+					} else {
+						radio.attr( 'disabled', 'disabled' );
+					}
+				}
+			});
 		},
 
 		/**
@@ -2397,9 +2439,35 @@ var give_setting_edit = false;
 						sortable_options: {
 							placeholder: 'give-ui-placeholder-state-highlight',
 							start: function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
+								let $rows = $('.give-row', $this).not('.give-template');
+
+								if ($rows.length) {
+									$rows.each(function (index, item) {
+										// Set name for fields.
+										let $fields = $('input[type="radio"].give-field', $(item));
+
+										// Preserve radio button values.
+										if ($fields.length) {
+											$fields.each(function () {
+												$(this).attr('data-give-checked', $(this).is(':checked') );
+											});
+										}
+									});
+								}
+
 								$('body').trigger('repeater_field_sorting_start', [ui.item]);
 							},
 							stop: function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
 								$('body').trigger('repeater_field_sorting_stop', [ui.item]);
 							},
 							update: function (event, ui) {
@@ -2408,7 +2476,8 @@ var give_setting_edit = false;
 									ui.item.next().after(ui.item);
 								}
 
-								var $rows = $('.give-row', $this).not('.give-template');
+								var $rows = $('.give-row', $this).not('.give-template'),
+									$container = $(this).closest('.give-repeatable-fields-section-wrapper');
 
 								if ($rows.length) {
 									var row_count = 1;
@@ -2452,6 +2521,14 @@ var give_setting_edit = false;
 
 										row_count++;
 									});
+
+									window.setTimeout(function(){
+										// Reset radio button values.
+										$( 'input[data-give-checked]', $container ).each(function( index, radio ){
+											radio = $(radio);
+											radio.prop( 'checked',  'true' === radio.attr('data-give-checked') )
+										});
+									}, 100)
 
 									// Fire event.
 									$this.trigger('repeater_field_row_reordered', [ui.item]);

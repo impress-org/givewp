@@ -468,7 +468,7 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	$price_id  = ! empty( $post_data['give-price-id'] ) ? $post_data['give-price-id'] : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
-	$verified_stat   = true;
+	$verified_stat   = false;
 
 	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ), true ) ) {
 
@@ -482,14 +482,10 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	if ( ! $verified_stat ) {
 		switch ( $amount_range ) {
 			case 'minimum' :
-				if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-					$verified_stat = false;
-				}
+				$verified_stat = ( give_get_form_minimum_price( $form_id ) > $amount ) ? false : true;
 				break;
 			case 'maximum' :
-				if ( give_get_form_maximum_price( $form_id ) < $amount ) {
-					$verified_stat = false;
-				}
+				$verified_stat = ( give_get_form_maximum_price( $form_id ) < $amount ) ? false : true;
 				break;
 		}
 	}
@@ -1427,10 +1423,11 @@ function give_validate_required_form_fields( $form_id ) {
  * @return void
  */
 function give_donation_form_validate_name_fields( $post_data ) {
-	$is_alpha_first_name = ctype_alpha( $post_data['give_first'] ) ? true : false;
-	$is_alpha_last_name  = ctype_alpha( $post_data['give_last'] ) ? true : false;
+
+	$is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
+	$is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
 
 	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
-		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address, numbers or special characters.', 'give' ) );
+		give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
 	}
 }

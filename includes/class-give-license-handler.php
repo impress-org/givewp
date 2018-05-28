@@ -107,6 +107,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $api_url = 'https://givewp.com/edd-sl-api/';
 
 		/**
+		 * array of licensed addons
+		 *
+		 * @since 2.1.4
+		 * @access private
+		 *
+		 * @var    string
+		 */
+		private static $licensed_addons = array();
+
+		/**
 		 * Account URL
 		 *
 		 * @access private
@@ -165,6 +175,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 				update_option( 'give_is_addon_activated', true );
 				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
 			}
+
+			/**
+			 * Add plugin to registered licenses list.
+			 */
+			self::$licensed_addons = array(
+				plugin_basename( $this->file )
+			);
 
 			// Setup hooks
 			$this->includes();
@@ -939,6 +956,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			return $status;
 		}
+
+		/**
+		 * Return licensed addons info
+		 *
+		 * Note: note only for internal logic
+		 *
+		 * @since 2.1.4
+		 *
+		 * @return array
+		 */
+		static function get_licensed_addons() {
+			return self::$licensed_addons;
+		}
+
 	}
 
 endif; // end class_exists check.
