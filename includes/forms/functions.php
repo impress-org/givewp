@@ -921,105 +921,6 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @param int|Give_Donate_Form $form Form ID or Form Object.
- *
- * @since 2.1
- *
- * @return array
- */
-function give_goal_progress_stats( $form ) {
-
-	if ( ! $form instanceof Give_Donate_Form ) {
-		$form = new Give_Donate_Form( $form );
-	}
-
-	$goal_format = give_get_form_goal_format( $form->ID );
-
-
-	/**
-	 * Filter the form donations.
-	 *
-	 * @since 2.1
-	 */
-	$donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
-
-	/**
-	 * Filter the form income.
-	 *
-	 * @since 1.8.8
-	 */
-	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
-
-	/**
-	 * Filter the form.
-	 *
-	 * @since 1.8.8
-	 */
-	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
-
-	switch ( $goal_format ) {
-		case  'donation':
-			$actual = $donations;
-			break;
-		case 'donors':
-			$actual = give_get_form_donor_count( $form->ID );
-			break;
-		default :
-			$actual = $income;
-			break;
-	}
-
-
-	$progress = round( ( $actual / $total_goal ) * 100, 2 );
-
-	$stats_array = array(
-		'raw_actual' => $actual,
-		'raw_goal'   => $total_goal
-	);
-
-	/**
-	 * Filter the goal progress output
-	 *
-	 * @since 1.8.8
-	 */
-	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
-
-	// Define Actual Goal based on the goal format.
-	if ( 'percentage' === $goal_format ) {
-		$actual = "{$actual}%";
-	} else if ( 'amount' === $goal_format ) {
-		$actual = give_currency_filter( give_format_amount( $actual ) );
-	}
-
-	// Define Total Goal based on the goal format.
-	if ( 'percentage' === $goal_format ) {
-		$total_goal = '';
-	} else if ( 'amount' === $goal_format ) {
-		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
-	}
-
-	$stats_array = array_merge(
-		array(
-			'progress' => $progress,
-			'actual'   => $actual,
-			'goal'     => $total_goal,
-			'format'   => $goal_format,
-		),
-		$stats_array
-	);
-
-	/**
-	 * Filter the goal stats
-	 *
-	 * @since 2.1
-	 */
-	return apply_filters( 'give_goal_progress_stats', $stats_array );
-
-}
-
-/**
- * Display/Return a formatted goal for a donation form
- *
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -1269,21 +1170,11 @@ function give_set_form_closed_status( $form_id ) {
 		// Proceed, if close form when goal achieved option is enabled.
 		if ( $close_form_when_goal_achieved ) {
 
-			$form        = new Give_Donate_Form( $form_id );
-			$goal_format = give_get_form_goal_format( $form_id );
+			$form                = new Give_Donate_Form( $form_id );
+			$goal_progress_stats = give_goal_progress_stats( $form );
 
-			// Verify whether the form is closed or not after processing data based on goal format.
-			switch ( $goal_format ) {
-				case 'donation':
-					$closed = $form->get_goal() <= $form->get_sales();
-					break;
-				case 'donors':
-					$closed = $form->get_goal() <= give_get_form_donor_count( $form->ID );
-					break;
-				default :
-					$closed = $form->get_goal() <= $form->get_earnings();
-					break;
-			}
+			// Verify whether the form is closed or not after processing data.
+			$closed = $goal_progress_stats['raw_goal'] <= $goal_progress_stats['raw_actual'];
 
 			// Update form meta if verified that the form is closed.
 			if ( $closed ) {

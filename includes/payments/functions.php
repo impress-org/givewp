@@ -971,6 +971,7 @@ function give_is_guest_payment( $payment_id ) {
 function give_get_payment_user_id( $payment_id ) {
 	global $wpdb;
 	$paymentmeta_table = Give()->payment_meta->table_name;
+	$donationmeta_primary_key = Give()->payment_meta->get_meta_type() . '_id';
 
 	return (int) $wpdb->get_var(
 		$wpdb->prepare(
@@ -980,7 +981,7 @@ function give_get_payment_user_id( $payment_id ) {
 			WHERE id=(
 				SELECT meta_value
 				FROM $paymentmeta_table
-				WHERE payment_id=%s
+				WHERE {$donationmeta_primary_key}=%s
 				AND meta_key=%s
 			)
 			",
@@ -2003,14 +2004,14 @@ function give_is_donation_completed( $donation_id ) {
 			$wpdb->prepare(
 				"
 				SELECT meta_value
-				FROM {$wpdb->paymentmeta}
+				FROM {$wpdb->donationmeta}
 				WHERE EXISTS (
 					SELECT ID
 					FROM {$wpdb->posts}
 					WHERE post_status=%s
 					AND ID=%d
 				)
-				AND {$wpdb->paymentmeta}.meta_key=%s
+				AND {$wpdb->donationmeta}.meta_key=%s
 				",
 				'publish',
 				$donation_id,

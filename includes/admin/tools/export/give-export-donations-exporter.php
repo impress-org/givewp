@@ -89,7 +89,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 		// Set data from form submission
 		if ( isset( $_POST['form'] ) ) {
-			parse_str( $_POST['form'], $this->data );
+			$this->data = give_clean( wp_parse_args( $_POST['form'] ) );
 		}
 
 		$this->form       = $this->data['forms'];
@@ -100,6 +100,13 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
 		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
 		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+
+		/**
+		 * Hook to use after setting properties.
+		 *
+		 * @since 2.1.3
+		 */
+		do_action( 'give_export_donations_form_data', $this->data );
 	}
 
 	/**
@@ -277,7 +284,13 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			$defaults['give_forms'] = is_array( $this->form_id ) ? $this->form_id : array( $this->form_id );
 		}
 
-		return wp_parse_args( $args, $defaults );
+		/**
+		 * Filter to modify Payment Query arguments for exporting
+		 * donations.
+		 *
+		 * @since 2.1.3
+		 */
+		return apply_filters( 'give_export_donations_donation_query_args', wp_parse_args( $args, $defaults ) );
 	}
 
 	/**
@@ -295,7 +308,6 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 		$data = array();
 		$i    = 0;
-
 		// Payment query.
 		$payments = give_get_payments( $this->get_donation_argument() );
 

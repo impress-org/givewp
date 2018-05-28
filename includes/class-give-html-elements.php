@@ -444,7 +444,7 @@ class Give_HTML_Elements {
 		}
 
 		$output = sprintf(
-			'<select name="%1$s" id="%2$s" class="give-select %3$s" %4$s %5$s placeholder="%6$s" data-placeholder="%6$s" %7$s>',
+			'<select name="%1$s" id="%2$s" autocomplete="address-level4" class="give-select %3$s" %4$s %5$s placeholder="%6$s" data-placeholder="%6$s" %7$s>',
 			esc_attr( $args['name'] ),
 			esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ),
 			esc_attr( $args['class'] ),

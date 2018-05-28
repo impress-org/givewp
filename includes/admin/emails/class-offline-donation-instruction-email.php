@@ -50,6 +50,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				),
 				'default_email_subject'        => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 				'default_email_message'        => give_get_default_offline_donation_email_content(),
+				'default_email_header'         => __( 'Offline Donation Instructions', 'give' ),
 				'notices' => array(
 					'non-notification-status-editable' => sprintf(
 						'%1$s <a href="%2$s">%3$s &raquo;</a>',
@@ -63,7 +64,6 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 		}
-
 
 		/**
 		 * Get email message
@@ -204,7 +204,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
+			Give()->emails->__set( 'heading', $this->get_email_header() );
 			Give()->emails->__set( 'headers', apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
 		}
 

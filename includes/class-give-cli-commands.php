@@ -1194,7 +1194,8 @@ class GIVE_CLI_COMMAND {
 		 * Convert the comma-separated string of Give-addons in the
 		 * excluded list into array.
 		 */
-		if ( ! empty( ( $addon_names = WP_CLI\Utils\get_flag_value( $assoc, 'exclude', array() ) ) ) ) {
+		$addon_names = WP_CLI\Utils\get_flag_value( $assoc, 'exclude', array() );
+		if ( ! empty( $addon_names ) ) {
 			$addon_names = array_map( 'trim', explode( ',', $addon_names ) );
 		}
 
