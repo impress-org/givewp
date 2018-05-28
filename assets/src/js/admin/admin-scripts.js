@@ -69,6 +69,7 @@ var give_setting_edit = false;
 	 * Remove give-message parameter from URL.
 	 *
 	 * @since 1.8.14
+	 * @since 2.1.4 Added new param key which remove the multiple message array from URL.
 	 *
 	 * @param string key string to remove from url in multiple notices @since 2.1.4
 	 */
