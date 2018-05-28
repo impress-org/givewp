@@ -284,7 +284,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @since  2.0
 		 * @access public
 		 *
-		 * @param array $data
+		 * @param array $data Donation details.
 		 */
 		public function resend_donation_receipt( $data ) {
 			$purchase_id = absint( $data['purchase_id'] );
@@ -312,8 +312,8 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			wp_redirect( add_query_arg( array(
 				'give-messages[]' => 'email-sent',
-				'give-action'  => false,
-				'purchase_id'  => false,
+				'give-action'     => false,
+				'purchase_id'     => false,
 			) ) );
 			exit;
 		}
