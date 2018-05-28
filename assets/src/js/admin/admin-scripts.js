@@ -1575,7 +1575,7 @@ var give_setting_edit = false;
 				).render();
 			});
 		}
-	}
+	};
 
 	/**
 	 * Admin Status Select Field Change
@@ -2528,13 +2528,13 @@ var give_setting_edit = false;
 										row_count++;
 									});
 
-									window.setTimeout(function(){
+									window.setTimeout( function () {
 										// Reset radio button values.
-										$( 'input[data-give-checked]', $container ).each(function( index, radio ){
-											radio = $(radio);
-											radio.prop( 'checked',  'true' === radio.attr('data-give-checked') )
-										});
-									}, 100)
+										$( 'input[data-give-checked]', $container ).each( function ( index, radio ) {
+											radio = $( radio );
+											radio.prop( 'checked', 'true' === radio.attr( 'data-give-checked' ) )
+										} );
+									}, 100 );
 
 									// Fire event.
 									$this.trigger('repeater_field_row_reordered', [ui.item]);
