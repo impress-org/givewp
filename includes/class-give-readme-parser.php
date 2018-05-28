@@ -33,8 +33,8 @@ class Give_Readme_Parser{
 	 * @param string $file_url
 	 */
 	function __construct( $file_url ) {
-		$this->file_url = $file_url;
-		$this->file_content = ! empty( $this->file_url ) ? file_get_contents( $this->file_url ) : '';
+		$this->file_url     = $file_url;
+		$this->file_content = wp_remote_retrieve_body( wp_remote_get( $this->file_url ) );
 	}
 
 	/**
