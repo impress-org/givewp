@@ -112,7 +112,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since 2.1.4
 		 * @access private
 		 *
-		 * @var    string
+		 * @var    array
 		 */
 		private static $licensed_addons = array();
 
@@ -176,12 +176,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
 			}
 
-			/**
-			 * Add plugin to registered licenses list.
-			 */
-			self::$licensed_addons = array(
-				plugin_basename( $this->file )
-			);
+			// Add plugin to registered licenses list.
+			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
 
 			// Setup hooks
 			$this->includes();
