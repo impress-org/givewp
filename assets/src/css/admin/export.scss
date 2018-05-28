@@ -30,40 +30,6 @@
 					}
 				}
 
-				ul.give-export-option {
-					border: 1px solid #e5e5e5;
-					display: flex;
-					margin: 0;
-
-					li.give-export-option-fields {
-						width: 33%;
-
-						ul {
-							li{
-								padding-left: 25px;
-							}
-
-							li.give-export-option-label {
-								border-bottom: 1px solid #e5e5e5;
-								padding: 15px 0 15px 0;
-								span {
-									margin: 15px 15px 15px 25px;
-									font-size: 15px;
-									font-weight: 500;
-								}
-							}
-
-							li.give-export-option-start {
-								margin-top: 20px;
-							}
-
-							li:last-child {
-								margin-bottom: 20px;
-							}
-						}
-					}
-				}
-
 				p.give-field-description {
 					display: table;
 					width: 100%;
@@ -86,6 +52,49 @@
 						}
 					}
 				}
+			}
+		}
+
+		.give-export-option {
+			display: flex;
+			flex-flow: row wrap;
+			border-top: 1px solid #e5e5e5;
+			border-left: 1px solid #e5e5e5;
+
+			ul {
+				margin-bottom: 1rem;
+
+				li {
+					position: relative;
+					margin-bottom: .70rem;
+					padding: 0 1rem;
+
+					label {
+						display: block;
+						padding-left: 22px;
+
+						input {
+							position: absolute;
+							top: 6px;
+							left: 15px;
+						}
+					}
+				}
+
+				.give-export-option-label {
+					font-size: 15px;
+					font-weight: 500;
+					border-bottom: 1px solid #e5e5e5;
+					margin-bottom: 1rem;
+					padding: 1rem;
+				}
+			}
+
+			& > li {
+				border-right: 1px solid #e5e5e5;
+				border-bottom: 1px solid #e5e5e5;
+				width: 33%;
+				margin-bottom: 0;
 			}
 		}
 	}
@@ -130,5 +139,25 @@
 		height: 26px;
 		line-height: 26px;
 		border: 1px solid #ddd;
+	}
+}
+
+@media only screen and ( max-width: 1080px ) {
+	.give-tools-setting-page #give-export_donations-form .give-export-option > li {
+		width: 49.5%;
+	}
+}
+
+@media only screen and ( max-width: 782px ) {
+	.give-tools-setting-page #give-export_donations-form .give-export-option > li {
+		width: 49.5%;
+	}
+
+	.give-tools-setting-page #give-export_donations-form .give-export-option ul li label {
+		padding-left: 32px;
+	}
+
+	.give-tools-setting-page #give-export_donations-form .give-export-option ul li label input {
+		top: 0;
 	}
 }
