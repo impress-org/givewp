@@ -202,241 +202,245 @@ function _give_register_admin_notices() {
 	}// End if().
 
 	// Add give message notices.
-	if ( ! empty( $_GET['give-message'] ) ) {
-		// Donation reports errors.
-		if ( current_user_can( 'view_give_reports' ) ) {
-			switch ( $_GET['give-message'] ) {
-				case 'donation_deleted' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donation-deleted',
-						'type'        => 'updated',
-						'description' => __( 'The donation has been deleted.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'email_sent' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-payment-sent',
-						'type'        => 'updated',
-						'description' => __( 'The donation receipt has been resent.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'refreshed-reports' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-refreshed-reports',
-						'type'        => 'updated',
-						'description' => __( 'The reports cache has been cleared.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'donation-note-deleted' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donation-note-deleted',
-						'type'        => 'updated',
-						'description' => __( 'The donation note has been deleted.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-			}
-		}// End if().
+	$message_notices = give_get_admin_messages_key();
+	if ( ! empty( $message_notices ) ) {
+		foreach ( $message_notices as $message_notice ) {
+			// Donation reports errors.
+			if ( current_user_can( 'view_give_reports' ) ) {
+				switch ( $message_notice ) {
+					case 'donation-deleted' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-donation-deleted',
+							'type'        => 'updated',
+							'description' => __( 'The donation has been deleted.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'email-sent' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-email-sent',
+							'type'        => 'updated',
+							'description' => __( 'The donation receipt has been resent.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'refreshed-reports' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-refreshed-reports',
+							'type'        => 'updated',
+							'description' => __( 'The reports cache has been cleared.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'donation-note-deleted' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-donation-note-deleted',
+							'type'        => 'updated',
+							'description' => __( 'The donation note has been deleted.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+				}// End switch().
+			}// End if().
 
-		// Give settings notices and errors.
-		if ( current_user_can( 'manage_give_settings' ) ) {
-			switch ( $_GET['give-message'] ) {
-				case 'settings-imported' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-settings-imported',
-						'type'        => 'updated',
-						'description' => __( 'The settings have been imported.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'api-key-generated' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-api-key-generated',
-						'type'        => 'updated',
-						'description' => __( 'API keys have been generated.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'api-key-exists' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-api-key-exists',
-						'type'        => 'updated',
-						'description' => __( 'The specified user already has API keys.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'api-key-regenerated' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-api-key-regenerated',
-						'type'        => 'updated',
-						'description' => __( 'API keys have been regenerated.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'api-key-revoked' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-api-key-revoked',
-						'type'        => 'updated',
-						'description' => __( 'API keys have been revoked.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'sent-test-email' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-sent-test-email',
-						'type'        => 'updated',
-						'description' => __( 'The test email has been sent.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'matched-success-failure-page':
-					Give()->notices->register_notice( array(
-						'id'          => 'give-matched-success-failure-page',
-						'type'        => 'updated',
-						'description' => __( 'You cannot set the success and failed pages to the same page', 'give' ),
-						'show'        => true,
-					) );
-					break;
-			}// End switch().
-		}// End if().
-		// Payments errors.
-		if ( current_user_can( 'edit_give_payments' ) ) {
-			switch ( $_GET['give-message'] ) {
-				case 'note-added' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-note-added',
-						'type'        => 'updated',
-						'description' => __( 'The donation note has been added.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-				case 'payment-updated' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-payment-updated',
-						'type'        => 'updated',
-						'description' => __( 'The donation has been updated.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-			}
+			// Give settings notices and errors.
+			if ( current_user_can( 'manage_give_settings' ) ) {
+				switch ( $message_notice ) {
+					case 'settings-imported' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-settings-imported',
+							'type'        => 'updated',
+							'description' => __( 'The settings have been imported.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'api-key-generated' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-api-key-generated',
+							'type'        => 'updated',
+							'description' => __( 'API keys have been generated.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'api-key-exists' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-api-key-exists',
+							'type'        => 'updated',
+							'description' => __( 'The specified user already has API keys.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'api-key-regenerated' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-api-key-regenerated',
+							'type'        => 'updated',
+							'description' => __( 'API keys have been regenerated.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'api-key-revoked' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-api-key-revoked',
+							'type'        => 'updated',
+							'description' => __( 'API keys have been revoked.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'sent-test-email' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-sent-test-email',
+							'type'        => 'updated',
+							'description' => __( 'The test email has been sent.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'matched-success-failure-page':
+						Give()->notices->register_notice( array(
+							'id'          => 'give-matched-success-failure-page',
+							'type'        => 'updated',
+							'description' => __( 'You cannot set the success and failed pages to the same page', 'give' ),
+							'show'        => true,
+						) );
+						break;
+				}// End switch().
+			}// End if().
+
+			// Payments errors.
+			if ( current_user_can( 'edit_give_payments' ) ) {
+				switch ( $message_notice ) {
+					case 'note-added' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-note-added',
+							'type'        => 'updated',
+							'description' => __( 'The donation note has been added.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+					case 'payment-updated' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-payment-updated',
+							'type'        => 'updated',
+							'description' => __( 'The donation has been updated.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+				}// End switch().
+			}// End if().
+
+			// Donor Notices.
+			if ( current_user_can( 'edit_give_payments' ) ) {
+				switch ( $message_notice ) {
+					case 'donor-deleted' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-donor-deleted',
+							'type'        => 'updated',
+							'description' => __( 'The selected donor(s) has been deleted.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'donor-donations-deleted' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-donor-donations-deleted',
+							'type'        => 'updated',
+							'description' => __( 'The selected donor(s) and the associated donation(s) has been deleted.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'confirm-delete-donor' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-confirm-delete-donor',
+							'type'        => 'updated',
+							'description' => __( 'You must confirm to delete the selected donor(s).', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'invalid-donor-id' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-invalid-donor-id',
+							'type'        => 'updated',
+							'description' => __( 'Invalid Donor ID.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'donor-delete-failed' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-donor-delete-failed',
+							'type'        => 'error',
+							'description' => __( 'Unable to delete selected donor(s).', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'email-added' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-email-added',
+							'type'        => 'updated',
+							'description' => __( 'Donor email added.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'email-removed' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-email-removed',
+							'type'        => 'updated',
+							'description' => __( 'Donor email removed.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'email-remove-failed' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-email-remove-failed',
+							'type'        => 'updated',
+							'description' => __( 'Failed to remove donor email.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'primary-email-updated' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-primary-email-updated',
+							'type'        => 'updated',
+							'description' => __( 'Primary email updated for donor.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'primary-email-failed' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-primary-email-failed',
+							'type'        => 'updated',
+							'description' => __( 'Failed to set primary email.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'reconnect-user' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-reconnect-user',
+							'type'        => 'updated',
+							'description' => __( 'User has been successfully connected with Donor.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
+					case 'profile-updated' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-profile-updated',
+							'type'        => 'updated',
+							'description' => __( 'Donor information updated successfully.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+				}// End switch().
+			}// End if().
 		}
-
-		// Donor Notices.
-		if ( current_user_can( 'edit_give_payments' ) ) {
-			switch ( $_GET['give-message'] ) {
-				case 'donor-deleted' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-deleted',
-						'type'        => 'updated',
-						'description' => __( 'The selected donor(s) has been deleted.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'donor-donations-deleted' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-donations-deleted',
-						'type'        => 'updated',
-						'description' => __( 'The selected donor(s) and the associated donation(s) has been deleted.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'confirm-delete-donor' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-confirm-delete-donor',
-						'type'        => 'updated',
-						'description' => __( 'You must confirm to delete the selected donor(s).', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'invalid-donor-id' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-invalid-donor-id',
-						'type'        => 'updated',
-						'description' => __( 'Invalid Donor ID.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'donor-delete-failed' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-delete-failed',
-						'type'        => 'error',
-						'description' => __( 'Unable to delete selected donor(s).', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'email-added' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-email-added',
-						'type'        => 'updated',
-						'description' => __( 'Donor email added.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'email-removed' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-email-removed',
-						'type'        => 'updated',
-						'description' => __( 'Donor email removed.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'email-remove-failed' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-email-remove-failed',
-						'type'        => 'updated',
-						'description' => __( 'Failed to remove donor email.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'primary-email-updated' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-primary-email-updated',
-						'type'        => 'updated',
-						'description' => __( 'Primary email updated for donor.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'primary-email-failed' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-primary-email-failed',
-						'type'        => 'updated',
-						'description' => __( 'Failed to set primary email.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'reconnect-user' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-reconnect-user',
-						'type'        => 'updated',
-						'description' => __( 'User has been successfully connected with Donor.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-
-				case 'profile-updated' :
-					Give()->notices->register_notice( array(
-						'id'          => 'give-donor-profile-updated',
-						'type'        => 'updated',
-						'description' => __( 'Donor information updated successfully.', 'give' ),
-						'show'        => true,
-					) );
-					break;
-			}// End switch().
-		}// End if().
-	}// End if().
+	}
 }
 
 add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
