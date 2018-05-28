@@ -320,7 +320,7 @@ function give_donor_view( $donor ) {
 	}
 
 	// List of title prefixes.
-	$title_prefixes = give_get_title_prefixes();
+	$title_prefixes = give_get_name_title_prefixes();
 
 	// Prepend title prefix to name if it is set.
 	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );

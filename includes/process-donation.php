@@ -551,7 +551,7 @@ function give_get_required_fields( $form_id ) {
 		),
 	);
 
-	$name_title_prefix = give_is_title_prefix_enabled( $form_id );
+	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
 	if ( $name_title_prefix ) {
 		$required_fields['give_title'] = array(
 			'error_id'      => 'invalid_title',

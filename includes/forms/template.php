@@ -672,7 +672,7 @@ function give_user_info_fields( $form_id ) {
 	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
 	$company_name   = ! empty( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : '';
 	$email          = ! empty( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : '';
-	$title_prefixes = give_get_title_prefixes( $form_id );
+	$title_prefixes = give_get_name_title_prefixes( $form_id );
 
 	/**
 	 * Fire before user personal information fields
@@ -682,7 +682,7 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_donation_form_before_personal_info', $form_id );
 
 	$title_prefix_classes = '';
-	if ( give_is_title_prefix_enabled( $form_id ) ) {
+	if ( give_is_name_title_prefix_enabled( $form_id ) ) {
 		$title_prefix_classes = 'give-title-prefix-wrap';
 	}
 	?>
@@ -691,7 +691,7 @@ function give_user_info_fields( $form_id ) {
 			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
 		</legend>
 
-		<?php if ( give_is_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
+		<?php if ( give_is_name_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
 			<p id="give-title-wrap" class="form-row form-row-title form-row-responsive">
 				<label class="give-label" for="give-title">
 					<?php esc_attr_e( 'Title', 'give' ); ?>
