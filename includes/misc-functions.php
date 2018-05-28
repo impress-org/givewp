@@ -2159,3 +2159,30 @@ function give_get_donor_name_with_title( $donor ) {
 
 	return $donor;
 }
+
+/**
+ * Get the admin messages key to show the notices.
+ *
+ * @since 2.1.4
+ *
+ * @return array $message admin message key.
+ */
+function give_get_admin_messages_key() {
+	$messages = empty( $_GET['give-messages'] ) ? array() : give_clean( $_GET['give-messages'] );
+
+	// backward compatibility.
+	if ( ! empty( $_GET['give-message'] ) ) {
+		$messages[] = give_clean( $_GET['give-message'] );
+	}
+
+	/**
+	 * Filter to modify the admin messages key.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $message admin message key.
+	 *
+	 * @return array $message admin message key.
+	 */
+	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
+}
