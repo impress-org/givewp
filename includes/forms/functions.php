@@ -1112,7 +1112,7 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			SELECT COUNT({$distinct})
 			FROM {$donation_meta_table}
 			WHERE meta_key=%s
-			AND payment_id IN(
+			AND {$donation_id_col_name} IN(
 				SELECT {$donation_id_col_name}
 				FROM {$donation_meta_table} as pm
 				INNER JOIN {$wpdb->posts} as p
