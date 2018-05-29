@@ -408,6 +408,7 @@ function give_import_donations_options() {
 			__( 'Donation Amount', 'give' ),
 			__( 'Amount', 'give' ),
 			__( 'Donation Total', 'give' ),
+			__( 'Total', 'give' ),
 		),
 		'currency'     => array(
 			__( 'Donation Currencies', 'give' ),
