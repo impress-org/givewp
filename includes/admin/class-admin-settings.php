@@ -249,7 +249,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Save settings if data has been posted.
-			if ( ! empty( $_POST ) ) {
+			if ( isset( $_POST['_give-save-settings'] ) ) {
 				self::save();
 			}
 
