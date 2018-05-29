@@ -1066,9 +1066,9 @@ function give_donor_delete_view( $donor ) {
 				</span>
 
 				<span id="donor-edit-actions">
-					<input type="hidden" name="customer_id" value="<?php echo $donor->id; ?>"/>
-					<?php wp_nonce_field( 'delete-donor', '_wpnonce', false, true ); ?>
-					<input type="hidden" name="give_action" value="delete-donor"/>
+					<input type="hidden" name="donor_id" value="<?php echo $donor->id; ?>"/>
+					<?php wp_nonce_field( 'give-delete-donor', '_wpnonce', false, true ); ?>
+					<input type="hidden" name="give_action" value="delete_donor"/>
 					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary"
 							value="<?php _e( 'Delete Donor', 'give' ); ?>"/>
 					<a id="give-delete-donor-cancel"
