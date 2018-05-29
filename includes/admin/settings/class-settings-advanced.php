@@ -237,6 +237,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 					'give-akismet-protection',
 					__( 'Please properly configure Akismet to enable SPAM protection.', 'give' )
 				);
+
+				give_update_option( 'akismet_spam_protection', 'disabled' );
 			}
 		}
 	}
