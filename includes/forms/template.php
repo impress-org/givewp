@@ -410,7 +410,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 */
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
-	//Set Price, No Custom Amount Allowed means hidden price field
+	// Set Price, No Custom Amount Allowed means hidden price field.
 	if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 		?>
 		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
@@ -427,7 +427,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		</div>
 		<?php
 	} else {
-		//Custom Amount Allowed.
+		// Custom Amount Allowed.
 		?>
 		<div class="give-total-wrap">
 			<div class="give-donation-amount form-row-wide">
@@ -454,12 +454,12 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 */
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
-	//Custom Amount Text
+	// Custom Amount Text
 	if ( ! $variable_pricing && give_is_setting_enabled( $allow_custom_amount ) && ! empty( $custom_amount_text ) ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
 	<?php }
 
-	//Output Variable Pricing Levels.
+	// Output Variable Pricing Levels.
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
 	}
@@ -488,7 +488,7 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
  */
 function give_output_levels( $form_id ) {
 
-	//Get variable pricing.
+	// Get variable pricing.
 	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
@@ -523,7 +523,7 @@ function give_output_levels( $form_id ) {
 				);
 			}
 
-			//Custom Amount.
+			// Custom Amount.
 			if (
 				give_is_setting_enabled( $custom_amount )
 				&& ! empty( $custom_amount_text )
@@ -562,7 +562,7 @@ function give_output_levels( $form_id ) {
 				);
 			}
 
-			//Custom Amount.
+			// Custom Amount.
 			if (
 				give_is_setting_enabled( $custom_amount )
 				&& ! empty( $custom_amount_text )
@@ -582,7 +582,7 @@ function give_output_levels( $form_id ) {
 			$output .= '<label for="give-donation-level-select-' . $form_id . '" class="give-hidden">' . esc_html__( 'Choose Your Donation Amount', 'give' ) . ':</label>';
 			$output .= '<select id="give-donation-level-select-' . $form_id . '" class="give-select give-select-level give-donation-levels-wrap">';
 
-			//first loop through prices.
+			// first loop through prices.
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
@@ -602,7 +602,7 @@ function give_output_levels( $form_id ) {
 				);
 			}
 
-			//Custom Amount.
+			// Custom Amount.
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= sprintf(
 					'<option data-price-id="custom" class="give-donation-level-custom" value="custom">%1$s</option>',
@@ -664,8 +664,15 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  * @return void
  */
 function give_user_info_fields( $form_id ) {
+
 	// Get user info.
 	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$title          = ! empty( $give_user_info['give_title'] ) ? $give_user_info['give_title'] : '';
+	$first_name     = ! empty( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : '';
+	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
+	$company_name   = ! empty( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : '';
+	$email          = ! empty( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : '';
+	$title_prefixes = give_get_name_title_prefixes( $form_id );
 
 	/**
 	 * Fire before user personal information fields
@@ -673,12 +680,43 @@ function give_user_info_fields( $form_id ) {
 	 * @since 1.7
 	 */
 	do_action( 'give_donation_form_before_personal_info', $form_id );
+
+	$title_prefix_classes = '';
+	if ( give_is_name_title_prefix_enabled( $form_id ) ) {
+		$title_prefix_classes = 'give-title-prefix-wrap';
+	}
 	?>
-	<fieldset id="give_checkout_user_info">
-		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ); ?></legend>
+	<fieldset id="give_checkout_user_info" class="<?php echo esc_html( $title_prefix_classes ); ?>">
+		<legend>
+			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
+		</legend>
+
+		<?php if ( give_is_name_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
+			<p id="give-title-wrap" class="form-row form-row-title form-row-responsive">
+				<label class="give-label" for="give-title">
+					<?php esc_attr_e( 'Title', 'give' ); ?>
+					<?php if ( give_field_is_required( 'give_title', $form_id ) ) : ?>
+						<span class="give-required-indicator">*</span>
+					<?php endif ?>
+					<?php echo Give()->tooltips->render_help( __( 'We will use this to personalize your account experience.', 'give' ) ); ?>
+				</label>
+				<select
+						class="give-input required"
+						type="text"
+						name="give_title"
+						id="give-title"
+					<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				>
+					<?php foreach ( $title_prefixes as $key => $value ) { ?>
+						<option value="<?php echo esc_html( $value ); ?>" <?php selected( $value, $title, true ); ?>><?php echo esc_html( $value ); ?></option>
+					<?php } ?>
+				</select>
+			</p>
+		<?php } ?>
+
 		<p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
 			<label class="give-label" for="give-first">
-				<?php _e( 'First Name', 'give' ); ?>
+				<?php esc_attr_e( 'First Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
@@ -689,16 +727,16 @@ function give_user_info_fields( $form_id ) {
 					type="text"
 					name="give_first"
 					autocomplete="given-name"
-					placeholder="<?php _e( 'First Name', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>"
 					id="give-first"
-					value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
+					value="<?php echo esc_html( $first_name ); ?>"
 				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
 		<p id="give-last-name-wrap" class="form-row form-row-last form-row-responsive">
 			<label class="give-label" for="give-last">
-				<?php _e( 'Last Name', 'give' ); ?>
+				<?php esc_attr_e( 'Last Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
@@ -711,8 +749,8 @@ function give_user_info_fields( $form_id ) {
 					name="give_last"
 					autocomplete="family-name"
 					id="give-last"
-					placeholder="<?php _e( 'Last Name', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : ''; ?>"
+					placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>"
+					value="<?php echo esc_html( $last_name ); ?>"
 				<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
@@ -721,23 +759,21 @@ function give_user_info_fields( $form_id ) {
 			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
 			<p id="give-company-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-company">
-					<?php _e( 'Company Name', 'give' ); ?>
+					<?php esc_attr_e( 'Company Name', 'give' ); ?>
 					<?php if ( $give_company ) : ?>
 						<span class="give-required-indicator">*</span>
 					<?php endif; ?>
 					<?php echo Give()->tooltips->render_help( __( 'Donate on behalf of Company', 'give' ) ); ?>
 				</label>
-
 				<input
 					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
 					type="text"
 					name="give_company_name"
-					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'Company Name', 'give' ); ?>"
 					id="give-company"
-					value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
+					value="<?php echo esc_html( $company_name ); ?>"
 					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
 				/>
-
 			</p>
 		<?php endif ?>
 
@@ -751,21 +787,20 @@ function give_user_info_fields( $form_id ) {
 		?>
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
-				<?php _e( 'Email Address', 'give' ); ?>
+				<?php esc_attr_e( 'Email Address', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<?php echo Give()->tooltips->render_help( __( 'We will send the donation receipt to this address.', 'give' ) ); ?>
 			</label>
-
 			<input
 					class="give-input required"
 					type="email"
 					name="give_email"
 					autocomplete="email"
-					placeholder="<?php _e( 'Email Address', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"
 					id="give-email"
-					value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
+					value="<?php echo esc_html( $email ); ?>"
 				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 
@@ -952,17 +987,17 @@ function give_default_cc_address_fields( $form_id ) {
 		}
 		$countries = give_get_country_list();
 
-		// For state
+		// For state.
 		$selected_state = '';
 		if ( $selected_country === give_get_country() ) {
-			// Get defalut selected state by admin.
+			// Get default selected state by admin.
 			$selected_state = give_get_state();
 		}
 		// Get the last payment made by user states.
 		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
 			$selected_state = $give_user_info['card_state'];
 		}
-		// Get the country code
+		// Get the country code.
 		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
 			$selected_country = $give_user_info['billing_country'];
 		}

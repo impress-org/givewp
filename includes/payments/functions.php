@@ -154,7 +154,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
 	$price_id   = give_get_payment_meta_price_id( $payment_data );
 	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );
@@ -173,6 +173,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->email          = $payment_data['user_email'];
 	$payment->first_name     = $payment_data['user_info']['first_name'];
 	$payment->last_name      = $payment_data['user_info']['last_name'];
+	$payment->title_prefix   = ! empty( $payment_data['user_info']['title'] ) ? $payment_data['user_info']['title'] : '';
 	$payment->email          = $payment_data['user_info']['email'];
 	$payment->ip             = give_get_ip();
 	$payment->key            = $payment_data['purchase_key'];
@@ -899,6 +900,8 @@ function give_get_payment_meta_user_info( $payment_id ) {
 		$donor_info['email'] = Give()->donors->get_column_by( 'email', 'id', $donor_id );
 	}
 
+	$donor_info['title'] = Give()->donor_meta->get_meta( $donor_id, '_give_donor_title_prefix', true );
+
 	$donor_info['address']  = give_get_donation_address( $payment_id );
 	$donor_info['id']       = give_get_payment_user_id( $payment_id );
 	$donor_info['donor_id'] = give_get_payment_donor_id( $payment_id );
@@ -968,6 +971,7 @@ function give_is_guest_payment( $payment_id ) {
 function give_get_payment_user_id( $payment_id ) {
 	global $wpdb;
 	$paymentmeta_table = Give()->payment_meta->table_name;
+	$donationmeta_primary_key = Give()->payment_meta->get_meta_type() . '_id';
 
 	return (int) $wpdb->get_var(
 		$wpdb->prepare(
@@ -977,7 +981,7 @@ function give_get_payment_user_id( $payment_id ) {
 			WHERE id=(
 				SELECT meta_value
 				FROM $paymentmeta_table
-				WHERE payment_id=%s
+				WHERE {$donationmeta_primary_key}=%s
 				AND meta_key=%s
 			)
 			",
@@ -2000,14 +2004,14 @@ function give_is_donation_completed( $donation_id ) {
 			$wpdb->prepare(
 				"
 				SELECT meta_value
-				FROM {$wpdb->paymentmeta}
+				FROM {$wpdb->donationmeta}
 				WHERE EXISTS (
 					SELECT ID
 					FROM {$wpdb->posts}
 					WHERE post_status=%s
 					AND ID=%d
 				)
-				AND {$wpdb->paymentmeta}.meta_key=%s
+				AND {$wpdb->donationmeta}.meta_key=%s
 				",
 				'publish',
 				$donation_id,
