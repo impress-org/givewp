@@ -1247,7 +1247,15 @@ class Give_API {
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
 					$donations['donations'][ $i ] = array(
-						$form_info->post_name => give_get_form_sales_stats( $form_info->ID ),
+						$form_info->post_name => $this->stats->get_sales(
+							$form_info->ID,
+							is_numeric( $args['startdate'] )
+								? strtotime( $args['startdate'] )
+								: $args['startdate'],
+							is_numeric( $args['enddate'] )
+								? strtotime( $args['enddate'] )
+								: $args['enddate']
+						),
 					);
 					$i ++;
 				}
@@ -1255,7 +1263,15 @@ class Give_API {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info                 = get_post( $args['form'] );
 					$donations['donations'][0] = array(
-						$form_info->post_name => give_get_form_sales_stats( $args['form'] ),
+						$form_info->post_name => $this->stats->get_sales(
+							$args['form'],
+							is_numeric( $args['startdate'] )
+								? strtotime( $args['startdate'] )
+								: $args['startdate'],
+							is_numeric( $args['enddate'] )
+								? strtotime( $args['enddate'] )
+								: $args['enddate']
+						),
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
