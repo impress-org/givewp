@@ -185,13 +185,23 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' error"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' updated"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s updated" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
