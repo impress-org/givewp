@@ -93,8 +93,7 @@ jQuery( function( $ ) {
 	}
 
 	// Button to close notices on front-end.
-	const give_notice_close = jQuery( '.give-notice-close' );
-	give_notice_close.on( 'click', function() {
+	jQuery(document).on( 'click', '.give-notice-close', function() {
 		$(this).hide();
 		const notice_container = $(this).closest( '.give_notices' );
 		notice_container.slideUp();
