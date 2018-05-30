@@ -218,16 +218,16 @@ window.give_open_form_modal = function ( $form_wrap, $form ) {
 	} );
 };
 
-
 /**
  * Floating Labels Custom Events
  */
+var give_float_labels;
 window.give_fl_trigger = function() {
 	if ( give_float_labels instanceof FloatLabels ) {
 		give_float_labels.rebuild();
 	}
 	else {
-		var give_float_labels = new FloatLabels( '.float-labels-enabled', {
+		give_float_labels = new FloatLabels( '.float-labels-enabled', {
 			exclude: '#give-amount, .give-select-level, [multiple]',
 			prioritize: 'placeholder',
 			prefix: 'give-fl-',
