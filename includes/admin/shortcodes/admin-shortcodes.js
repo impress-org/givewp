@@ -12,6 +12,8 @@
 
 /* global ajaxurl, jQuery, scShortcodes, tinymce */
 
+import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../../../assets/src/js/plugins/modal';
+
 var jq = jQuery.noConflict();
 
 var scShortcode, scButton;
@@ -19,7 +21,7 @@ var scShortcode, scButton;
 /**
  * Show continue button title setting field only if display style is not All Fields.
  */
-var render_continue_button_title_field = function() {
+window.render_continue_button_title_field = function() {
 	var selected_display_style = jq('.mce-txt', '.mce-give-display-style').text(),
 		expected_display_styles = [ '- Select -', 'All Fields' ];
 
@@ -30,7 +32,7 @@ var render_continue_button_title_field = function() {
 	}
 };
 
-var scForm = {
+window.scForm = {
 
 	open: function( editor_id ) {
 		var editor = tinymce.get( editor_id );
@@ -101,7 +103,12 @@ var scForm = {
 
 									valid = false;
 
-									alert( required[ id ] );
+									new GiveWarningAlert({
+										modalContent:{
+											desc: required[ id ],
+											cancelBtnTitle: give_vars.ok,
+										}
+									}).render();
 
 									break;
 								}
