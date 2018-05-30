@@ -143,7 +143,21 @@ form.give-form {
 		display: none;
 	}
 
-	.give-tooltip {
+  .give-title-prefix-wrap{
+
+	.form-row-first,
+	.form-row-last {
+	  float: left;
+	  width: 40%;
+	}
+
+	.form-row-title {
+	  float: left;
+	  width: 15%;
+	}
+  }
+
+  .give-tooltip {
 		margin: 0 3px;
 		padding: 0;
 		font-size: 14px;
@@ -219,15 +233,20 @@ form.give-form {
 
 	}
 
-	.form-row-first,
-	.form-row-last {
-		float: left;
-		width: 48.5%;
+    .form-row-title,
+	.form-row-first {
+	  margin-right: 2.5%;
 	}
 
-	.form-row-last {
-		float: right;
-	}
+  .form-row-first,
+  .form-row-last {
+	float: left;
+	width: 48.5%;
+  }
+
+  .form-row-last {
+	float: right;
+  }
 
 	.form-row-wide {
 		@include clearfix();
