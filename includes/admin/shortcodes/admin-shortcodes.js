@@ -105,7 +105,6 @@ window.scForm = {
 
 									new GiveWarningAlert({
 										modalContent:{
-											title: give_vars.no_form_selected,
 											desc: required[ id ],
 											cancelBtnTitle: give_vars.ok,
 										}
