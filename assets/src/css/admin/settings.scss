@@ -153,6 +153,10 @@ div.give-field-description,
 	display: none;
 }
 
+.tablenav {
+	height: auto;
+}
+
 // CMB2 Checkbox Revised Styles
 .cmb-type-checkbox .cmb-td {
 	width: 80%;
@@ -627,7 +631,7 @@ h2.give-nav-tab-wrapper {
 .give-sub-nav-tab-wrapper {
 	position: relative;
 	display: inline-block;
-	z-index: 9999;
+	z-index: 999;
 	float: left;
 
 	nav.give-sub-nav-tab {

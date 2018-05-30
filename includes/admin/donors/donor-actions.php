@@ -28,7 +28,7 @@ function give_edit_donor( $args ) {
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -37,23 +37,28 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
-	$donor_info = give_clean( $args['customerinfo'] );
-	$donor_id   = (int) $args['customerinfo']['id'];
-	$nonce      = $args['_wpnonce'];
+	// Sanitize Data.
+	$args = give_clean( $args );
 
-	if ( ! wp_verify_nonce( $nonce, 'edit-donor' ) ) {
-		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
+	// Verify Nonce.
+	if ( ! wp_verify_nonce( $args['_wpnonce'], 'edit-donor' ) ) {
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
 	}
 
+	$donor_info = $args['donor_info'];
+	$donor_id   = intval( $donor_info['id'] );
+
 	$donor = new Give_Donor( $donor_id );
 
+	// Bailout, if donor id doesn't exists.
 	if ( empty( $donor->id ) ) {
 		return false;
 	}
 
 	$defaults = array(
+		'title'   => '',
 		'name'    => '',
 		'user_id' => 0,
 		'line1'   => '',
@@ -70,16 +75,31 @@ function give_edit_donor( $args ) {
 
 		// Make sure we don't already have this user attached to a donor.
 		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->donors->get_donor_by( 'user_id', $donor_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-donor-user_id', sprintf( __( 'The User ID #%d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error(
+				'give-invalid-donor-user_id',
+				sprintf(
+					/* translators: %d User ID */
+					__( 'The User ID #%d is already associated with a different donor.', 'give' ),
+					$donor_info['user_id']
+				)
+			);
 		}
 
 		// Make sure it's actually a user.
 		$user = get_user_by( 'id', $donor_info['user_id'] );
 		if ( ! empty( $donor_info['user_id'] ) && false === $user ) {
-			give_set_error( 'give-invalid-user_id', sprintf( __( 'The User ID #%d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error(
+				'give-invalid-user_id',
+				sprintf(
+					/* translators: %d User ID */
+					__( 'The User ID #%d does not exist. Please assign an existing user.', 'give' ),
+					$donor_info['user_id']
+				)
+			);
 		}
 	}
 
+	// Bailout, if errors are present.
 	if ( give_get_errors() ) {
 		return false;
 	}
@@ -94,12 +114,14 @@ function give_edit_donor( $args ) {
 	$donor_data['name']       = trim( "{$donor_info['first_name']} {$donor_info['last_name']}" );
 	$donor_data['first_name'] = $donor_info['first_name'];
 	$donor_data['last_name']  = $donor_info['last_name'];
+	$donor_data['title']      = $donor_info['title'];
 	$donor_data['user_id']    = $donor_info['user_id'];
 
 	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
 
 	/**
 	 * Filter the address
+	 *
 	 * @todo unnecessary filter because we are not storing donor address to user.
 	 *
 	 * @since 1.0
@@ -113,12 +135,21 @@ function give_edit_donor( $args ) {
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );
-		echo json_encode( $output );
+		echo wp_json_encode( $output );
 		wp_die();
 	}
 
 	if ( $output['success'] ) {
-		wp_redirect( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}&give-messages[]=profile-updated" ) );
+		wp_safe_redirect( add_query_arg(
+			array(
+				'post_type'       => 'give_forms',
+				'page'            => 'give-donors',
+				'view'            => 'overview',
+				'id'              => $donor_id,
+				'give-messages[]' => 'profile-updated'
+			),
+			esc_url( admin_url( 'edit.php' ) )
+		) );
 	}
 
 	exit;
