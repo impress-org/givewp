@@ -33,6 +33,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 
 			if ( $this->id === give_get_current_setting_tab() ) {
 				add_action( 'give_admin_field_remove_cache_button', array( $this, 'render_remove_cache_button' ), 10, 1 );
+				add_action( 'give_save_settings_give_settings', array( $this, 'validate_settngs' ) );
 			}
 
 			parent::__construct();
@@ -210,6 +211,35 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				</td>
 			</tr>
 			<?php
+		}
+
+
+		/**
+		 * Validate setting
+		 *
+		 * @since  2.2.0
+		 * @access public
+		 *
+		 * @param array $options
+		 */
+		public function validate_settngs( $options ) {
+			// Sanitize data.
+			$akismet_spam_protection = isset( $options['akismet_spam_protection'] )
+				? $options['akismet_spam_protection']
+				: ( give_check_akismet_key() ? 'enabled' : 'disabled' );
+
+			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
+			if (
+				give_is_setting_enabled( $akismet_spam_protection )
+				&& ! give_check_akismet_key()
+			) {
+				Give_Admin_Settings::add_error(
+					'give-akismet-protection',
+					__( 'Please properly configure Akismet to enable SPAM protection.', 'give' )
+				);
+
+				give_update_option( 'akismet_spam_protection', 'disabled' );
+			}
 		}
 	}
 

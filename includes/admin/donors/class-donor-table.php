@@ -151,7 +151,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_cb( $donor ){
+	public function column_cb( $donor ) {
 		return sprintf(
 			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
 			$this->_args['singular'],
@@ -294,7 +294,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-			<?php if ( $this->has_items() ): ?>
+			<?php if ( $this->has_items() ) : ?>
 				<div class="alignleft actions bulkactions">
 					<?php $this->bulk_actions( $which ); ?>
 				</div>
@@ -327,7 +327,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 			foreach ( $donors as $donor ) {
 
-				$user_id = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
+				$user_id      = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
+				$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+
+				// If title prefix is set, then update the donor name.
+				if ( ! empty( $title_prefix ) ) {
+					$donor->name = "{$title_prefix}. {$donor->name}";
+				}
 
 				$data[] = array(
 					'id'            => $donor->id,
