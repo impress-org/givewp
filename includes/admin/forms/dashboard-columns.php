@@ -312,6 +312,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  * Updates price when saving post
  *
  * @since 1.0
+ * @since 2.1.4 If the donation amount is less than the Minimum amount then set the donation amount as Donation minimum amount.
  *
  * @param int $post_id Download (Post) ID
  *
@@ -330,6 +331,15 @@ function give_price_save_quick_edit( $post_id ) {
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
 		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
+	}
+
+	// Override the Donation minimum amount.
+	if (
+		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_custom_amount_range'] )
+		&& give_is_setting_enabled( $_REQUEST['_give_custom_amount'] )
+		&& $_REQUEST['_give_set_price'] < $_REQUEST['_give_custom_amount_range']['minimum']
+	) {
+		give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $_REQUEST['_give_set_price'] ) );
 	}
 }
 
