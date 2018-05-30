@@ -93,7 +93,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 				'label'    => __( 'Total Goal:', 'give' ),
 				'tooltip'  => __( 'Enter the total goal amount that you would like to display.', 'give' ),
 				'required' => array(
-					'alert' => esc_html__( 'You must first enter the total goal amount.', 'give' ),
+					'alert' => esc_html__( 'Please enter a valid total goal amount.', 'give' ),
 				),
 			),
 			array(
