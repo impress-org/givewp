@@ -107,20 +107,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die();
 			}
 
-			// Sanitize data.
-			$akismet_spam_protection = give_clean( $_POST['akismet_spam_protection'] ); // WPCS: input var ok.
-
-			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
-			if (
-				isset( $akismet_spam_protection ) &&
-				give_is_setting_enabled( $akismet_spam_protection ) &&
-				! give_check_akismet_key()
-			) {
-				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
-
-				return;
-			}
-
 			/**
 			 * Trigger Action.
 			 *
@@ -189,13 +175,23 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' error"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' updated"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s updated" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
@@ -249,7 +245,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Save settings if data has been posted.
-			if ( ! empty( $_POST ) ) {
+			if ( isset( $_POST['_give-save-settings'] ) ) {
 				self::save();
 			}
 
