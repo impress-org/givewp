@@ -337,7 +337,7 @@ function give_price_save_quick_edit( $post_id ) {
 	if (
 		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_custom_amount_range'] )
 		&& give_is_setting_enabled( $_REQUEST['_give_custom_amount'] )
-		&& $_REQUEST['_give_set_price'] < $_REQUEST['_give_custom_amount_range']['minimum']
+		&& give_maybe_sanitize_amount( $_REQUEST['_give_set_price'] ) < give_maybe_sanitize_amount( $_REQUEST['_give_custom_amount_range']['minimum'] )
 	) {
 		give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $_REQUEST['_give_set_price'] ) );
 	}
