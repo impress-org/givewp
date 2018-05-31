@@ -465,12 +465,13 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
-	$price_id  = ! empty( $post_data['give-price-id'] ) ? $post_data['give-price-id'] : '';
+	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
+	$price_ids       = array_map( 'absint', give_get_variable_price_ids( $form_id ) );
 	$verified_stat   = false;
 
-	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ), true ) ) {
+	if ( $variable_prices && in_array( $price_id, $price_ids, true ) ) {
 
 		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
 
