@@ -335,7 +335,8 @@ function give_price_save_quick_edit( $post_id ) {
 
 	// Override the Donation minimum amount.
 	if (
-		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_custom_amount_range'] )
+		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_price_option'], $_REQUEST['_give_custom_amount_range'] )
+		&& 'set' === $_REQUEST['_give_price_option']
 		&& give_is_setting_enabled( $_REQUEST['_give_custom_amount'] )
 		&& give_maybe_sanitize_amount( $_REQUEST['_give_set_price'] ) < give_maybe_sanitize_amount( $_REQUEST['_give_custom_amount_range']['minimum'] )
 	) {
