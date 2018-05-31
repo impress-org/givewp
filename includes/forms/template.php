@@ -2123,6 +2123,12 @@ function add_give_goal_progress_bar_class( $class_bar ) {
 function add_class_for_form_grid( $class, $id, $args ) {
 	$class[] = 'give-form-grid-wrap';
 
+	foreach ( $class as $index => $item ) {
+		if( false !== strpos( $item, 'give-display-' ) ) {
+			unset( $class[$index] );
+		}
+	}
+
 	return $class;
 }
 
