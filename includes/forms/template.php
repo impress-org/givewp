@@ -1402,89 +1402,89 @@ function give_payment_mode_select( $form_id, $args ) {
 	do_action( 'give_payment_mode_top', $form_id );
 	?>
 
-	<fieldset id="give-payment-mode-select" <?php if ( count( $gateways ) <= 1 ) {
-		echo 'style="display: none;"';
-	} ?>>
-		<?php
-		/**
-		 * Fires while selecting payment gateways, before the wrap div.
-		 *
-		 * @since 1.7
-		 *
-		 * @param int $form_id The form ID.
-		 */
-		do_action( 'give_payment_mode_before_gateways_wrap' );
-		?>
-		<legend
-				class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
-			<span class="give-loading-text"><span
-						class="give-loading-animation"></span>
-            </span>
-		</legend>
-
-		<div id="give-payment-mode-wrap">
+	<?php if ( count( $gateways ) > 1 ) : ?>
+		<fieldset id="give-payment-mode-select">
 			<?php
 			/**
-			 * Fires while selecting payment gateways, before the gateways list.
+			 * Fires while selecting payment gateways, before the wrap div.
 			 *
 			 * @since 1.7
+			 *
+			 * @param int $form_id The form ID.
 			 */
-			do_action( 'give_payment_mode_before_gateways' )
+			do_action( 'give_payment_mode_before_gateways_wrap' );
 			?>
-			<ul id="give-gateway-radio-list">
+			<legend
+					class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
+				<span class="give-loading-text"><span
+							class="give-loading-animation"></span>
+	            </span>
+			</legend>
+
+			<div id="give-payment-mode-wrap">
 				<?php
 				/**
-				 * Loop through the active payment gateways.
+				 * Fires while selecting payment gateways, before the gateways list.
+				 *
+				 * @since 1.7
 				 */
-				$selected_gateway = give_get_chosen_gateway( $form_id );
-				$give_settings    = give_get_settings();
-				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
-					$give_settings['gateways_label'] :
-					array();
-
-				foreach ( $gateways as $gateway_id => $gateway ) :
-					//Determine the default gateway.
-					$checked = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' class="give-gateway-option-selected"' : ''; ?>
-					<li<?php echo $checked_class ?>>
-						<input type="radio" name="payment-mode" class="give-gateway"
-							   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
-
-						<?php
-						$label = $gateway['checkout_label'];
-						if ( ! empty( $gateways_label[ $gateway_id  ] ) ) {
-							$label = $gateways_label[ $gateway_id ];
-						}
-						?>
-						<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
-					</li>
-					<?php
-				endforeach;
+				do_action( 'give_payment_mode_before_gateways' )
 				?>
-			</ul>
+				<ul id="give-gateway-radio-list">
+					<?php
+					/**
+					 * Loop through the active payment gateways.
+					 */
+					$selected_gateway = give_get_chosen_gateway( $form_id );
+					$give_settings    = give_get_settings();
+					$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
+						$give_settings['gateways_label'] :
+						array();
+
+					foreach ( $gateways as $gateway_id => $gateway ) :
+						//Determine the default gateway.
+						$checked = checked( $gateway_id, $selected_gateway, false );
+						$checked_class = $checked ? ' class="give-gateway-option-selected"' : ''; ?>
+						<li<?php echo $checked_class ?>>
+							<input type="radio" name="payment-mode" class="give-gateway"
+								   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+							<?php
+							$label = $gateway['checkout_label'];
+							if ( ! empty( $gateways_label[ $gateway_id  ] ) ) {
+								$label = $gateways_label[ $gateway_id ];
+							}
+							?>
+							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								   class="give-gateway-option"
+								   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+						</li>
+						<?php
+					endforeach;
+					?>
+				</ul>
+				<?php
+				/**
+				 * Fires while selecting payment gateways, before the gateways list.
+				 *
+				 * @since 1.7
+				 */
+				do_action( 'give_payment_mode_after_gateways' );
+				?>
+			</div>
 			<?php
 			/**
-			 * Fires while selecting payment gateways, before the gateways list.
+			 * Fires while selecting payment gateways, after the wrap div.
 			 *
 			 * @since 1.7
+			 *
+			 * @param int $form_id The form ID.
 			 */
-			do_action( 'give_payment_mode_after_gateways' );
+			do_action( 'give_payment_mode_after_gateways_wrap' );
 			?>
-		</div>
-		<?php
-		/**
-		 * Fires while selecting payment gateways, after the wrap div.
-		 *
-		 * @since 1.7
-		 *
-		 * @param int $form_id The form ID.
-		 */
-		do_action( 'give_payment_mode_after_gateways_wrap' );
-		?>
-	</fieldset>
+		</fieldset>
+	<?php endif; ?>
 
 	<?php
 	/**
