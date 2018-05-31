@@ -60,7 +60,7 @@ class GiveModal {
 					<button class="give-button give-button--secondary give-popup-close-button">
 						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ('confirm' === this.config.type ? give_vars.cancel : give_vars.close ) }
 					</button>
-					${ ('confirm' !== this.config.type) ? '' : `<button class="give-button give-button--primary give-popup-confirm-button">
+					${ ('confirm' !== this.config.type && 'form' !== this.config.type) ? '' : `<button class="give-button give-button--primary give-popup-${this.config.type}-button">
 						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : give_vars.confirm }
 					</button>`}
 				</div>
@@ -251,9 +251,44 @@ class GiveConfirmModal extends GiveModal {
 }
 
 /**
+ * This class will handle confirm modal
+ *
+ * @since 2.1.0
+ */
+class GiveFormModal extends GiveModal {
+	constructor(obj) {
+		obj.type = 'form';
+		super(obj);
+
+		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
+			this.config.classes.modalWrapper = obj.modalWrapper;
+		}
+
+		this.init();
+	}
+
+	/**
+	 * Confirm button click event handler
+	 *
+	 * Note: only for internal purpose
+	 *
+	 * @since 2.1.0
+	 * @private
+	 */
+	static __confirmPopup() {
+		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
+			jQuery.magnificPopup.instance.st.successConfirm({
+				el: jQuery.magnificPopup.instance.st.el,
+			});
+		}
+	}
+}
+
+/**
  * Add events
  */
 window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup);
 window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup);
+window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveConfirmModal.__confirmPopup);
 
-export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal};
+export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal};

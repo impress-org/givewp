@@ -53,6 +53,7 @@ class Give_Scripts {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'outside_plugin_enqueues' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -76,6 +77,14 @@ class Give_Scripts {
 		// WP-admin.
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
+		// WP-admin.
+		wp_register_style(
+			'plugin-deactivation-survey-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
+			array(),
+			GIVE_VERSION
+		);
+
 		// Frontend.
 		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
 			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
@@ -97,8 +106,27 @@ class Give_Scripts {
 			'jquery-query',
 		), GIVE_VERSION );
 
+		// WP-admin.
+		wp_register_script( 'plugin-deactivation-survey-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
+			array( 'jquery' ),
+			GIVE_VERSION,
+			true
+		);
+
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+	}
+
+	/**
+	 * Loads scripts and styles that are required to load
+	 * outside of Give's admin pages.
+	 *
+	 * @since 2.1.4
+	 */
+	public function outside_plugin_enqueues() {
+		wp_enqueue_script( 'plugin-deactivation-survey-js' );
+		wp_enqueue_style( 'plugin-deactivation-survey-css' );
 	}
 
 	/**
