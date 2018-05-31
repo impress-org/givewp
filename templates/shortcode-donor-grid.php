@@ -27,7 +27,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 		<div class="give-donor__details">
 			<?php if ( true === $atts['show_name'] ) : ?>
-				<h3 class="give-donor__name"><?php echo $donor->name; ?></h3>
+				<h3 class="give-donor__name"><?php esc_html_e( $donor->name ); ?></h3>
 			<?php endif; ?>
 
 			<?php if ( true === $atts['show_total'] ) : ?>
