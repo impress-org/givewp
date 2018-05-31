@@ -1390,7 +1390,7 @@ function give_validate_donation_amount( $valid_data ) {
 			'invalid_donation_amount',
 			sprintf(
 			/* translators: %s: invalid donation amount */
-				__( 'Donaiton amount %s is invalid.', 'give' ),
+				__( 'Donation amount %s is invalid.', 'give' ),
 				give_currency_filter(
 					give_format_amount( $post_data['give-amount'], array( 'sanitize' => false, ) )
 				)
