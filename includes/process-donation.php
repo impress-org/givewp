@@ -1354,13 +1354,14 @@ function give_validate_donation_amount( $valid_data ) {
 		// Sanitize donation amount.
 		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'] );
 		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ) );
+		$new_price_id                 = '';
 
 		if ( $post_data['give-amount'] === $variable_price_option_amount ) {
 			return true;
 		}
 
 		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
-			$post_data['give-price-id'] = 'custom';
+			$new_price_id = 'custom';
 		} else {
 
 			// Find correct donation level from all donation levels.
@@ -1371,7 +1372,7 @@ function give_validate_donation_amount( $valid_data ) {
 
 				// Set first match donation level ID.
 				if ( $post_data['give-amount'] === $variable_price['_give_amount'] ) {
-					$post_data['give-price-id'] = $variable_price['_give_id']['level_id'];
+					$new_price_id = $variable_price['_give_id']['level_id'];
 					break;
 				}
 			}
@@ -1379,10 +1380,23 @@ function give_validate_donation_amount( $valid_data ) {
 
 		// If donation amount is not find in donation levels then check if form has custom donation feature enable or not.
 		// If yes then set price id to custom if amount is greater then custom minimum amount (if any).
-		if ( ! empty( $post_data['give-price-id'] ) ) {
+		if ( $post_data['give-price-id'] === $new_price_id ) {
 			$donation_level_matched = true;
 		}
 	} // End if().
+
+	if ( ! $donation_level_matched ) {
+		give_set_error(
+			'invalid_donation_amount',
+			sprintf(
+			/* translators: %s: invalid donation amount */
+				__( 'Donaiton amount %s is invalid.', 'give' ),
+				give_currency_filter(
+					give_format_amount( $post_data['give-amount'], array( 'sanitize' => false, ) )
+				)
+			)
+		);
+	}
 
 	return ( $donation_level_matched ? true : false );
 }
