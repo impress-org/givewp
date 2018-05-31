@@ -2123,6 +2123,12 @@ function add_give_goal_progress_bar_class( $class_bar ) {
 function add_class_for_form_grid( $class, $id, $args ) {
 	$class[] = 'give-form-grid-wrap';
 
+	foreach ( $class as $index => $item ) {
+		if( false !== strpos( $item, 'give-display-' ) ) {
+			unset( $class[$index] );
+		}
+	}
+
 	return $class;
 }
 
@@ -2175,30 +2181,3 @@ function give_redirect_and_popup_form( $redirect, $args ) {
 }
 
 add_filter( 'give_send_back_to_checkout', 'give_redirect_and_popup_form', 10, 2 );
-
-
-/**
- * Removes classes for modal and reveal templates from Form Grid.
- *
- * @param array   $custom_class Array of custom classes.
- * @param integer $id           Form ID.
- * @param array   $args         Form attributes.
- *
- * @since 2.1.4
- *
- * @return array
- */
-function give_remove_form_wrap_classes_for_form_grid( $custom_class, $id, $args ) {
-
-	$index = array_search( 'give-display-reveal', $custom_class );
-	if ( false !== $index ) {
-		unset( $custom_class[ $index ] );
-	}
-
-	$index = array_search( 'give-display-modal', $custom_class );
-	if ( false !== $index ) {
-		unset( $custom_class[ $index ] );
-	}
-
-	return $custom_class;
-}
