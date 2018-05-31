@@ -11,7 +11,7 @@ $mfp-shadow:                          0 0 8px rgba(0, 0, 0, 0.6) !default; // Sh
 $mfp-popup-padding-left:              8px !default;                        // Padding from left and from right side
 $mfp-popup-padding-left-mobile:       6px !default;                        // Same as above, but is applied when width of window is less than 800px
 
-$mfp-z-index-base:                    1040 !default;                       // Base z-index of popup
+$mfp-z-index-base:                    999999 !default;                       // Base z-index of popup
 
 // controls
 $mfp-include-arrows:                  true !default;                       // Include styles for nav arrows

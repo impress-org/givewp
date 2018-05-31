@@ -332,3 +332,60 @@ function give_update_log_form_id( $args ) {
 }
 
 add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
+
+/**
+ * Verify addon dependency before addon update
+ *
+ * @since 2.1.4
+ *
+ * @param $error
+ * @param $hook_extra
+ *
+ * @return WP_Error
+ */
+function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
+	// Bailout.
+	if ( is_wp_error( $error ) ) {
+		return $error;
+	}
+
+	$plugin_base    = strtolower( $hook_extra['plugin'] );
+	$licensed_addon = array_map( 'strtolower', Give_License::get_licensed_addons() );
+
+	// Skip if not a Give addon.
+	if ( ! in_array( $plugin_base, $licensed_addon ) ) {
+		return $error;
+	}
+
+	$plugin_base = strtolower( $plugin_base );
+	$plugin_slug = str_replace( '.php', '', basename( $plugin_base ) );
+
+	/**
+	 * Filter the addon readme.txt url
+	 *
+	 * @since 2.1.4
+	 */
+	$url = apply_filters(
+		'give_addon_readme_file_url',
+		"https://givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
+		$plugin_slug
+	);
+
+	$parser           = new Give_Readme_Parser( $url );
+	$give_min_version = $parser->requires_at_least();
+
+
+	if ( version_compare( GIVE_VERSION, $give_min_version, '<' ) ) {
+		return new WP_Error(
+			'Give_Addon_Update_Error',
+			sprintf(
+				__( 'Give version %s is required to update this add-on.', 'give' ),
+				$give_min_version
+			)
+		);
+	}
+
+	return $error;
+}
+
+add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_update', 10, 2 );
