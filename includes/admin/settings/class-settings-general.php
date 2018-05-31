@@ -286,6 +286,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
+							'class'   => 'give-select give-select-chosen',
 						),
 						/**
 						 * Add base state to give setting
