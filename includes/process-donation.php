@@ -1397,8 +1397,6 @@ function give_validate_donation_amount( $valid_data ) {
 			)
 		);
 	}
-
-	return ( $donation_level_matched ? true : false );
 }
 
 add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1 );
