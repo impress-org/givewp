@@ -802,6 +802,7 @@ Give.form = {
 				price_id = this.getPriceID( $form, true );
 
 			// Don't allow zero donation amounts.
+			// https://github.com/WordImpress/Give/issues/3181
 			if( 0 === amount ) {
 				return false
 			}
