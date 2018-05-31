@@ -596,6 +596,15 @@ function give_totals_shortcode( $atts ) {
 	// Total Goal.
 	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
 
+	/**
+	 * Give Action fire before the shortcode is rendering is started.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $atts shortcode attribute.
+	 */
+	do_action( 'give_totals_goal_shortcode_start', $atts );
+
 	// Build query based on cat, tag and Form ids.
 	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
 
@@ -698,6 +707,16 @@ function give_totals_shortcode( $atts ) {
 	</div>
 	<?php
 	$give_totals_output = ob_get_clean();
+
+	/**
+	 * Give Action fire after the total goal shortcode rendering is end.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $atts shortcode attribute.
+	 * @param HTML $give_totals_output shortcode output.
+	 */
+	do_action( 'give_totals_goal_shortcode_end', $atts, $give_totals_output );
 
 	/**
 	 * Give Totals Shortcode output.
