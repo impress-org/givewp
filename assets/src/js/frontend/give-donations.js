@@ -1128,6 +1128,20 @@ jQuery( function( $ ) {
 
 		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID( parent_form, true ) : price_id;
 
+		// https://github.com/WordImpress/Give/issues/3299
+		// If we change from custom amount to donation level then
+		// this event fire twice. First on amount field blur and second time on level button/radio/select click which cause of minimum donation notice.
+		// This condition will prevent minimum donation amount notice show by set default level.
+		if( '' === value_now || 0 === value_now ) {
+			let $default_level = $( '.give-donation-levels-wrap [data-default="1"]', $parent_form );
+
+			if( $default_level.length ) {
+				price_id = $default_level.data('price-id');
+				this_value = value_now = $default_level.val();
+				formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
+			}
+		}
+
 		// Cache donor selected price id for a amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
 		$( this ).val( formatted_total );
