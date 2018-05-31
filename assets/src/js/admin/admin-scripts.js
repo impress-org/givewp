@@ -665,6 +665,12 @@ var give_setting_edit = false;
 					checked_cbs
 						.prev( '.gateways-radio' )
 						.attr( 'checked', 'checked' );
+
+					if ( this.checked ) {
+						radio.removeAttr( 'disabled' );
+					} else {
+						radio.attr( 'disabled', 'disabled' );
+					}
 				} else {
 					if ( this.checked ) {
 						radio.removeAttr( 'disabled' );
