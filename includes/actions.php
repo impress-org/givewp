@@ -389,3 +389,43 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 }
 
 add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_update', 10, 2 );
+
+/**
+ * Function to remove WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ */
+function give_remove_wpml_posts_where_filter() {
+	global $wpml_query_filter;
+	remove_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10, 2 );
+}
+
+/**
+ * Function to add WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ */
+function give_add_wpml_posts_where_filter() {
+	global $wpml_query_filter;
+	add_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10, 2 );
+}
+
+/**
+ * Action all the hook that add support for WPML.
+ *
+ * @since 2.1.4
+ */
+function give_add_support_for_wpml() {
+
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+
+	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		add_action( 'give_totals_goal_shortcode_start', 'give_remove_wpml_posts_where_filter', 0 );
+
+		add_action( 'give_totals_goal_shortcode_end', 'give_add_wpml_posts_where_filter', 0 );
+	}
+}
+
+add_action( 'give_init', 'give_add_support_for_wpml', 1000 );
