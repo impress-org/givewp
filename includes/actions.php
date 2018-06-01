@@ -406,42 +406,6 @@ function __give_wpml_total_goal_shortcode_agrs( $args ) {
 }
 
 /**
- * Alter the WP query argument for getting over write by WPML.
- *
- * @since 2.1.4
- *
- * @param WP_Query $q
- *
- * @return WP_Query
- */
-function __give_wpml_pre_parse_query( $q ) {
-
-	if ( isset( $q->query_vars['post__in'] ) ) {
-		$q->query_vars['give_post_in'] = $q->query_vars['post__in'];
-	}
-
-	return $q;
-}
-
-/**
- * Alter the WP query argument for getting over write by WPML.
- *
- * @since 2.1.4
- *
- * @param WP_Query $q
- *
- * @return WP_Query
- */
-function __give_wpml_post_parse_query( $q ) {
-	if ( isset( $q->query_vars['give_post_in'] ) ) {
-		$q->query_vars['post__in'] = $q->query_vars['give_post_in'];
-		unset( $q->query_vars['give_post_in'] );
-	}
-
-	return $q;
-}
-
-/**
  * Function to remove WPML post where filter in goal total amount shortcode.
  *
  * @since 2.1.4
