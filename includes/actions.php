@@ -400,15 +400,90 @@ add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_updat
  * @return array WP query argument for Total Goal.
  */
 function __give_wpml_total_goal_shortcode_agrs( $args ) {
-	if ( ! function_exists( 'is_plugin_active' ) ) {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	}
-
-	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$args['suppress_filters'] = true;
-	}
+	$args['suppress_filters'] = true;
 
 	return $args;
 }
 
-add_filter( 'give_totals_goal_shortcode_args', '__give_wpml_total_goal_shortcode_agrs' );
+/**
+ * Alter the WP query argument for getting over write by WPML.
+ *
+ * @since 2.1.4
+ *
+ * @param WP_Query $q
+ *
+ * @return WP_Query
+ */
+function __give_wpml_pre_parse_query( $q ) {
+
+	if ( isset( $q->query_vars['post__in'] ) ) {
+		$q->query_vars['give_post_in'] = $q->query_vars['post__in'];
+	}
+
+	return $q;
+}
+
+/**
+ * Alter the WP query argument for getting over write by WPML.
+ *
+ * @since 2.1.4
+ *
+ * @param WP_Query $q
+ *
+ * @return WP_Query
+ */
+function __give_wpml_post_parse_query( $q ) {
+	if ( isset( $q->query_vars['give_post_in'] ) ) {
+		$q->query_vars['post__in'] = $q->query_vars['give_post_in'];
+		unset( $q->query_vars['give_post_in'] );
+	}
+
+	return $q;
+}
+
+/**
+ * Function to remove WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ */
+function __give_remove_wpml_posts_where_filter() {
+
+	add_filter( 'wpml_pre_parse_query', '__give_wpml_pre_parse_query', 10, 1 );
+
+	add_filter( 'wpml_post_parse_query', '__give_wpml_post_parse_query', 10, 1 );
+}
+
+
+/**
+ * Function to add WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ */
+function __give_add_wpml_posts_where_filter() {
+
+	remove_action( 'wpml_pre_parse_query', '__give_wpml_pre_parse_query', 10 );
+
+	remove_action( 'wpml_post_parse_query', '__give_wpml_post_parse_query', 10 );
+}
+
+/**
+ * Action all the hook that add support for WPML.
+ *
+ * @since 2.1.4
+ */
+function give_add_support_for_wpml() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+
+
+	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		add_filter( 'give_totals_goal_shortcode_args', '__give_wpml_total_goal_shortcode_agrs' );
+
+		add_action( 'give_totals_goal_shortcode_before_render', '__give_remove_wpml_posts_where_filter', 0 );
+
+		add_action( 'give_totals_goal_shortcode_after_render', '__give_add_wpml_posts_where_filter', 0 );
+	}
+}
+
+add_action( 'give_init', 'give_add_support_for_wpml', 1000 );
