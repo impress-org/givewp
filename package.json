@@ -70,7 +70,7 @@
     "lodash.isundefined": "^3.0.1",
     "lodash.pickby": "^4.6.0",
     "magnific-popup": "latest",
-    "npm": "^5.7.1",
+    "npm": "^5.10.0",
     "query-string": "^5.0.0",
     "querystringify": "^1.0.0",
     "script-loader": "^0.7.2",

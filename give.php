@@ -247,6 +247,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $seq_donation_number;
 
 		/**
+		 * Give_Comment Object
+		 *
+		 * @var Give_Comment
+		 */
+		public $comment;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -342,6 +349,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->async_process          = new Give_Async_Process();
 			$this->scripts                = new Give_Scripts();
 			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
+			$this->comment                = Give_Comment::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -476,7 +484,11 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-grid.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
@@ -484,8 +496,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -531,6 +542,8 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/actions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
@@ -590,6 +603,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-totals.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donor-wall.php';
 			}// End if().
 
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';

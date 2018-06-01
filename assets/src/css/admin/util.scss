@@ -75,3 +75,14 @@
 		float: none;
 	}
 }
+
+/**
+ * Input element
+ */
+
+// 1. Inline radio button
+ul.give-radio-inline{
+	li, input{
+		display: inline-block !important;
+	}
+}

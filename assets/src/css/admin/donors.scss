@@ -119,7 +119,9 @@
 			margin: 0;
 		}
 
-		input {
+		input[type="text"],
+		input[type="email"],
+		input[type="number"]{
 			width: 200px;
 		}
 

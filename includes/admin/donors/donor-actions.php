@@ -104,6 +104,8 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
+	$donor->update_meta( '_give_anonymous_donor', absint( $args['give_anonymous_donor'] ) );
+
 	// If First name of donor is empty, then fetch the current first name of donor.
 	if ( empty( $donor_info['first_name'] ) ) {
 		$donor_info['first_name'] = $donor->get_first_name();
@@ -117,7 +119,7 @@ function give_edit_donor( $args ) {
 	$donor_data['title']      = $donor_info['title'];
 	$donor_data['user_id']    = $donor_info['user_id'];
 
-	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
+	$donor_data = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
 
 	/**
 	 * Filter the address
@@ -126,10 +128,10 @@ function give_edit_donor( $args ) {
 	 *
 	 * @since 1.0
 	 */
-	$address                = apply_filters( 'give_edit_donor_address', array(), $donor_id );
+	$address = apply_filters( 'give_edit_donor_address', array(), $donor_id );
 
-	$donor_data             = give_clean( $donor_data );
-	$address                = give_clean( $address );
+	$donor_data = give_clean( $donor_data );
+	$address    = give_clean( $address );
 
 	$output = give_connect_user_donor_profile( $donor, $donor_data, $address );
 

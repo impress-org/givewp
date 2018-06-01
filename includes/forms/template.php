@@ -805,6 +805,49 @@ function give_user_info_fields( $form_id ) {
 			/>
 
 		</p>
+
+		<?php if ( give_is_anonymous_donation_field_enabled( $form_id ) ) : ?>
+			<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0; ?>
+			<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-anonymous-donation">
+				<input
+						type="checkbox"
+						class="give-input required"
+						name="give_anonymous_donation"
+						id="give-anonymous-donation"
+						value="1"
+					<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+					<?php checked( 1, $is_anonymous_donation ); ?>
+				>
+					<?php _e( 'Make this an anonymous donation', 'give' ); ?>
+					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like to prevent this donation from being displayed publicy?', 'give' ) ); ?>
+				</label>
+			</p>
+		<?php endif; ?>
+
+		<?php if ( give_is_donor_thought_field_enabled( $form_id ) ) : ?>
+			<p id="give-comment-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-comment">
+					<?php _e( 'Comment', 'give' ); ?>
+					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+					<?php echo Give()->tooltips->render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
+				</label>
+
+				<textarea
+						class="give-input required"
+						name="give_comment"
+						placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+						id="give-comment"
+						value="<?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?>"
+					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
+
+			</p>
+		<?php endif; ?>
 		<?php
 		/**
 		 * Fire after user email field
@@ -1673,7 +1716,6 @@ function give_checkout_final_total( $form_id ) {
 		<span class="give-final-total-amount"
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php
-
 			echo give_currency_filter( give_format_amount( $total, array(
 				'sanitize' => false,
 				'currency' => give_get_currency( $form_id ),
