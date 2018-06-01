@@ -301,7 +301,7 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_cc_form', $form_id );
+		do_action( 'give_donation_form_after_cc_form', $form_id, $args );
 
 	} else {
 		/**
@@ -318,7 +318,7 @@ function give_show_purchase_form( $form_id, $args ) {
 	 *
 	 * @since 1.7
 	 */
-	do_action( 'give_payment_fields_bottom', $form_id );
+	do_action( 'give_payment_fields_bottom', $form_id, $args );
 }
 
 add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
@@ -1663,11 +1663,12 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  *
  * @since  1.0
  *
- * @param  int $form_id The form ID.
+ * @param int   $form_id The donation form ID.
+ * @param array $args    List of arguments.
  *
  * @return void
  */
-function give_checkout_submit( $form_id ) {
+function give_checkout_submit( $form_id, $args ) {
 	?>
 	<fieldset id="give_purchase_submit" class="give-donation-submit">
 		<?php
@@ -1676,7 +1677,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_submit', $form_id );
+		do_action( 'give_donation_form_before_submit', $form_id, $args );
 
 		give_checkout_hidden_fields( $form_id );
 
@@ -1687,13 +1688,13 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_submit', $form_id );
+		do_action( 'give_donation_form_after_submit', $form_id, $args );
 		?>
 	</fieldset>
 	<?php
 }
 
-add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_payment_fields_bottom', 'give_checkout_submit', 9999, 2 );
 
 /**
  * Give Donation form submit button.
