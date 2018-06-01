@@ -478,7 +478,7 @@ function give_add_support_for_wpml() {
 
 
 	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		add_filter( 'give_totals_goal_shortcode_args', '__give_wpml_total_goal_shortcode_agrs' );
+		add_filter( 'give_totals_goal_shortcode_query_args', '__give_wpml_total_goal_shortcode_agrs' );
 
 		add_action( 'give_totals_goal_shortcode_before_render', '__give_remove_wpml_posts_where_filter', 0 );
 

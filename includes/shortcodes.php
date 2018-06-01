@@ -656,7 +656,7 @@ function give_totals_shortcode( $atts ) {
 		 *
 		 * @return array $form_args WP query argument for Total Goal.
 		 */
-		$form_args = (array) apply_filters( 'give_totals_goal_shortcode_args', $form_args );
+		$form_args = (array) apply_filters( 'give_totals_goal_shortcode_query_args', $form_args );
 
 		$forms = new WP_Query( $form_args );
 
