@@ -1694,7 +1694,7 @@ function give_checkout_submit( $form_id, $args ) {
 	<?php
 }
 
-add_action( 'give_payment_fields_bottom', 'give_checkout_submit', 9999, 2 );
+add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 );
 
 /**
  * Give Donation form submit button.
