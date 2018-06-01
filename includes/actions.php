@@ -389,3 +389,64 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 }
 
 add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_update', 10, 2 );
+
+/**
+ * Function to add suppress_filters param if WPML add-on is activated.
+ *
+ * @since 2.1.4
+ *
+ * @param array WP query argument for Total Goal.
+ *
+ * @return array WP query argument for Total Goal.
+ */
+function __give_wpml_total_goal_shortcode_agrs( $args ) {
+	$args['suppress_filters'] = true;
+
+	return $args;
+}
+
+/**
+ * Function to remove WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ * @global SitePress $sitepress
+ */
+function __give_remove_wpml_parse_query_filter() {
+	global $sitepress;
+	remove_action('parse_query', array($sitepress, 'parse_query'));
+}
+
+
+/**
+ * Function to add WPML post where filter in goal total amount shortcode.
+ *
+ * @since 2.1.4
+ * @global SitePress $sitepress
+ */
+function __give_add_wpml_parse_query_filter() {
+	global $sitepress;
+	add_action('parse_query', array($sitepress, 'parse_query'));
+}
+
+/**
+ * Action all the hook that add support for WPML.
+ *
+ * @since 2.1.4
+ */
+function give_add_support_for_wpml() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+
+
+	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+
+		add_filter( 'give_totals_goal_shortcode_query_args', '__give_wpml_total_goal_shortcode_agrs' );
+
+		// @see https://wpml.org/forums/topic/problem-with-query-filter-in-get_posts-function/#post-271309
+		add_action( 'give_totals_goal_shortcode_before_render', '__give_remove_wpml_parse_query_filter', 99 );
+		add_action( 'give_totals_goal_shortcode_after_render', '__give_add_wpml_parse_query_filter', 99 );
+	}
+}
+
+add_action( 'give_init', 'give_add_support_for_wpml', 1000 );

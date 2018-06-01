@@ -52,7 +52,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $parent_payment
  * @property string     $transaction_id
  * @property string     $old_status
- * @property int         $anonymous
  *
  * @since 1.5
  */
@@ -399,16 +398,6 @@ final class Give_Payment {
 	protected $parent_payment = 0;
 
 	/**
-	 * Flag to check if donation is anonymous or not
-	 *
-	 * @since  2.1.0
-	 * @access protected
-	 *
-	 * @var    integer
-	 */
-	protected $anonymous = 0;
-
-	/**
 	 * Setup the Give Payments class
 	 *
 	 * @since  1.5
@@ -589,7 +578,6 @@ final class Give_Payment {
 			$this->price_id   = $this->setup_price_id();
 			$this->key        = $this->setup_payment_key();
 			$this->number     = $this->setup_payment_number();
-			$this->anonymous  = $this->setup_anonymous_donor();
 
 			Give_Cache::set_group( $this->ID, get_object_vars( $this ), 'give-donations' );
 		} else {
@@ -981,8 +969,8 @@ final class Give_Payment {
 						wp_update_post( $args );
 						break;
 
-					case 'anonymous':
-						give_update_meta( $this->ID, '_give_anonymous_donation', $this->anonymous );
+					case 'total':
+						$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 						break;
 
 					default:
@@ -1025,10 +1013,7 @@ final class Give_Payment {
 
 				// Verify and update form meta based on the form status.
 				give_set_form_closed_status( $this->form_id );
-
 			}
-
-			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 
 			$this->pending = array();
 			$saved         = true;
@@ -1242,12 +1227,13 @@ final class Give_Payment {
 	 * Set or update the total for a payment.
 	 *
 	 * @since  1.5
+	 * @since  2.1.4 reset total in pending property
 	 * @access private
 	 *
 	 * @return void
 	 */
 	private function recalculate_total() {
-		$this->total = $this->subtotal;
+		$this->pending['total'] = $this->total = $this->subtotal;
 	}
 
 	/**
@@ -1884,18 +1870,6 @@ final class Give_Payment {
 	 */
 	private function setup_payment_number() {
 		return $this->get_serial_code();
-	}
-
-	/**
-	 * Setup the anonymous donor.
-	 *
-	 * @since  2.1.0
-	 * @access private
-	 *
-	 * @return int
-	 */
-	private function setup_anonymous_donor(){
-		return absint( give_get_meta( $this->ID, '_give_anonymous_donation', true ) );
 	}
 
 	/**
