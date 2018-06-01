@@ -625,7 +625,6 @@ function give_totals_shortcode( $atts ) {
 			'post__in'         => $form_ids,
 			'posts_per_page'   => - 1,
 			'fields'           => 'ids',
-			'suppress_filters' => 1,
 			'tax_query'        => array(
 				'relation' => 'AND',
 			),
