@@ -212,7 +212,7 @@ window.give_open_form_modal = function ( $form_wrap, $form ) {
 				jQuery( 'body' ).removeClass( 'give-modal-open' );
 
 				//Show all fields again
-				$form.children().not( children ).not( '.give-hidden[for="give-amount-hidden"]' ).show();
+				$form.children().not( children ).show();
 			}
 		}
 	} );
