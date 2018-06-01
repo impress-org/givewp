@@ -1208,12 +1208,13 @@ final class Give_Payment {
 	 * Set or update the total for a payment.
 	 *
 	 * @since  1.5
+	 * @since  2.1.4 reset total in pending property
 	 * @access private
 	 *
 	 * @return void
 	 */
 	private function recalculate_total() {
-		$this->total = $this->subtotal;
+		$this->pending['total'] = $this->total = $this->subtotal;
 	}
 
 	/**
