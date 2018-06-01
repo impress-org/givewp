@@ -259,21 +259,21 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_register_login', $form_id );
+		do_action( 'give_donation_form_before_register_login', $form_id, $args );
 
 		/**
 		 * Fire when register/login form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_register_login_fields', $form_id );
+		do_action( 'give_donation_form_register_login_fields', $form_id, $args );
 
 		/**
 		 * Fire when credit card form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_cc_form', $form_id );
+		do_action( 'give_donation_form_before_cc_form', $form_id, $args );
 
 		// Load the credit card form and allow gateways to load their own if they wish.
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
@@ -293,7 +293,7 @@ function give_show_purchase_form( $form_id, $args ) {
 			 *
 			 * @param int $form_id The form ID.
 			 */
-			do_action( 'give_cc_form', $form_id );
+			do_action( 'give_cc_form', $form_id, $args );
 		}
 
 		/**
