@@ -823,7 +823,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( __( 'Need description.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like to prevent this donation from being displayed publicy?', 'give' ) ); ?>
 				</label>
 			</p>
 		<?php endif; ?>
@@ -835,7 +835,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( __( 'Would you like to prevent this donation from being displayed publicy? ', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
 				</label>
 
 				<textarea

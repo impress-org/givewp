@@ -103,7 +103,7 @@ class Give_Donors_Query {
 			'count'           => false,
 			'give_forms'      => array(),
 
-			/*
+			/**
 			 * donation_amount will contain value like:
 			 * array(
 			 *     'compare' => *compare symbol* (by default set to > )
@@ -235,6 +235,8 @@ class Give_Donors_Query {
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
 		$sql = str_replace( 'LIMIT', "{$where} {$orderby} {$this->args['order']} LIMIT", $sql );
 
+		error_log( print_r( $sql, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		
 		return $sql;
 	}
 
@@ -263,7 +265,8 @@ class Give_Donors_Query {
 		$where[] = $this->get_where_donor();
 		$where[] = $this->get_where_user();
 		$where[] = $this->get_where_date();
-		$where[] = $this->get_where_purchase_count();
+		$where[] = $this->get_where_donation_amount();
+		$where[] = $this->get_where_donation_count();
 		$where[] = $this->get_where_give_forms();
 
 		$where = array_filter( $where );
@@ -445,6 +448,33 @@ class Give_Donors_Query {
 	}
 
 	/**
+	 * Set donation count value where clause.
+	 * @todo: add phpunit test
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_donation_count() {
+		$where = '';
+
+		if ( ! empty( $this->args['donation_count'] ) ) {
+			$compare = '>';
+			$amount  = $this->args['donation_count'];
+			if ( is_array( $this->args['donation_count'] ) ) {
+				$compare = $this->args['donation_count'] ['compare'];
+				$amount = $this->args['donation_count']['amount'];
+			}
+
+			$where .= "AND {$this->table_name}.purchase_count{$compare}{$amount}";
+		}
+
+		return $where;
+	}
+
+	/**
 	 * Set purchase value where clause.
 	 * @todo: add phpunit test
 	 *
@@ -454,7 +484,7 @@ class Give_Donors_Query {
 	 * @global wpdb $wpdb
 	 * @return string
 	 */
-	private function get_where_purchase_count() {
+	private function get_where_donation_amount() {
 		$where = '';
 
 		if ( ! empty( $this->args['donation_amount'] ) ) {
