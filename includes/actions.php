@@ -397,7 +397,7 @@ add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_updat
  */
 function give_remove_wpml_posts_where_filter() {
 	global $wpml_query_filter;
-	remove_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10, 2 );
+	remove_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10 );
 
 	add_filter( 'wpml_pre_parse_query', 'give_wpml_pre_parse_query', 10, 1 );
 
