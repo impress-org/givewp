@@ -619,7 +619,7 @@ function give_totals_shortcode( $atts ) {
 		 *
 		 * @param array WP query argument for Total Goal.
 		 */
-		$form_args = apply_filters( 'give_totals_goal_shortcode_args', array(
+		$form_args = array(
 			'post_type'        => 'give_forms',
 			'post_status'      => 'publish',
 			'post__in'         => $form_ids,
@@ -629,7 +629,7 @@ function give_totals_shortcode( $atts ) {
 			'tax_query'        => array(
 				'relation' => 'AND',
 			),
-		) );
+		);
 
 		if ( ! empty( $atts['cats'] ) ) {
 			$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
@@ -646,6 +646,17 @@ function give_totals_shortcode( $atts ) {
 				'terms'    => $tags,
 			);
 		}
+
+		/**
+		 * Filter to modify WP Query for Total Goal.
+		 *
+		 * @since 2.1.4
+		 *
+		 * @param array $form_args WP query argument for Total Goal.
+		 *
+		 * @return array $form_args WP query argument for Total Goal.
+		 */
+		$form_args = (array) apply_filters( 'give_totals_goal_shortcode_args', $form_args );
 
 		$forms = new WP_Query( $form_args );
 
