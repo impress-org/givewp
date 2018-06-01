@@ -398,6 +398,45 @@ add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_updat
 function give_remove_wpml_posts_where_filter() {
 	global $wpml_query_filter;
 	remove_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10, 2 );
+
+	add_filter( 'wpml_pre_parse_query', 'give_wpml_pre_parse_query', 10, 1 );
+
+	add_filter( 'wpml_post_parse_query', 'give_wpml_post_parse_query', 10, 1 );
+}
+
+/**
+ * Alter the WP query argument for getting over write by WPML.
+ *
+ * @since 2.1.4
+ *
+ * @param WP_Query $q
+ *
+ * @return WP_Query
+ */
+function give_wpml_pre_parse_query( $q ) {
+
+	if ( isset( $q->query_vars['post__in'] ) ) {
+		$q->query_vars['give_post_in'] = $q->query_vars['post__in'];
+	}
+
+	return $q;
+}
+
+/**
+ * Alter the WP query argument for getting over write by WPML.
+ *
+ * @since 2.1.4
+ *
+ * @param WP_Query $q
+ *
+ * @return WP_Query
+ */
+function give_wpml_post_parse_query( $q ) {
+	if ( isset( $q->query_vars['give_post_in'] ) ) {
+		$q->query_vars['post__in'] = $q->query_vars['give_post_in'];
+	}
+
+	return $q;
 }
 
 /**
