@@ -2110,6 +2110,6 @@ function give_get_user_agent() {
 	// Get User Agent.
 	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
 
-	return apply_filters( 'give_get_user_agent', $user_agent );
+	return $user_agent;
 
 }
