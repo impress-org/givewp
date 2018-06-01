@@ -2097,3 +2097,19 @@ function give_get_admin_messages_key() {
 	 */
 	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
 }
+
+/**
+ * Get User Agent String.
+ *
+ * @since 2.1.4
+ *
+ * @return array|string
+ */
+function give_get_user_agent() {
+
+	// Get User Agent.
+	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
+
+	return apply_filters( 'give_get_user_agent', $user_agent );
+
+}
