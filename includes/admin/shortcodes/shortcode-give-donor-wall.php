@@ -92,7 +92,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_time',
-				'label'   => esc_attr__( 'Show Time', 'give' ),
+				'label'   => esc_attr__( 'Show Date', 'give' ),
 				'options' => array(
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
