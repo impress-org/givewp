@@ -969,6 +969,10 @@ final class Give_Payment {
 						wp_update_post( $args );
 						break;
 
+					case 'total':
+						$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
+						break;
+
 					default:
 						/**
 						 * Fires while saving payment.
@@ -1009,10 +1013,7 @@ final class Give_Payment {
 
 				// Verify and update form meta based on the form status.
 				give_set_form_closed_status( $this->form_id );
-
 			}
-
-			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 
 			$this->pending = array();
 			$saved         = true;
@@ -1226,12 +1227,13 @@ final class Give_Payment {
 	 * Set or update the total for a payment.
 	 *
 	 * @since  1.5
+	 * @since  2.1.4 reset total in pending property
 	 * @access private
 	 *
 	 * @return void
 	 */
 	private function recalculate_total() {
-		$this->total = $this->subtotal;
+		$this->pending['total'] = $this->total = $this->subtotal;
 	}
 
 	/**
