@@ -395,13 +395,13 @@ add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_updat
  *
  * @since 2.1.4
  */
-function give_remove_wpml_posts_where_filter() {
+function __give_remove_wpml_posts_where_filter() {
 	global $wpml_query_filter;
 	remove_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10 );
 
-	add_filter( 'wpml_pre_parse_query', 'give_wpml_pre_parse_query', 10, 1 );
+	add_filter( 'wpml_pre_parse_query', '__give_wpml_pre_parse_query', 10, 1 );
 
-	add_filter( 'wpml_post_parse_query', 'give_wpml_post_parse_query', 10, 1 );
+	add_filter( 'wpml_post_parse_query', '__give_wpml_post_parse_query', 10, 1 );
 }
 
 /**
@@ -413,7 +413,7 @@ function give_remove_wpml_posts_where_filter() {
  *
  * @return WP_Query
  */
-function give_wpml_pre_parse_query( $q ) {
+function __give_wpml_pre_parse_query( $q ) {
 
 	if ( isset( $q->query_vars['post__in'] ) ) {
 		$q->query_vars['give_post_in'] = $q->query_vars['post__in'];
@@ -431,9 +431,10 @@ function give_wpml_pre_parse_query( $q ) {
  *
  * @return WP_Query
  */
-function give_wpml_post_parse_query( $q ) {
+function __give_wpml_post_parse_query( $q ) {
 	if ( isset( $q->query_vars['give_post_in'] ) ) {
 		$q->query_vars['post__in'] = $q->query_vars['give_post_in'];
+		unset( $q->query_vars['give_post_in'] );
 	}
 
 	return $q;
@@ -444,13 +445,13 @@ function give_wpml_post_parse_query( $q ) {
  *
  * @since 2.1.4
  */
-function give_add_wpml_posts_where_filter() {
+function __give_add_wpml_posts_where_filter() {
 	global $wpml_query_filter;
 	add_filter( 'posts_where', array( $wpml_query_filter, 'posts_where_filter' ), 10, 2 );
 
-	remove_action( 'wpml_pre_parse_query', 'give_wpml_pre_parse_query', 10 );
+	remove_action( 'wpml_pre_parse_query', '__give_wpml_pre_parse_query', 10 );
 
-	remove_action( 'wpml_post_parse_query', 'give_wpml_post_parse_query', 10 );
+	remove_action( 'wpml_post_parse_query', '__give_wpml_post_parse_query', 10 );
 }
 
 /**
@@ -465,9 +466,9 @@ function give_add_support_for_wpml() {
 	}
 
 	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		add_action( 'give_totals_goal_shortcode_start', 'give_remove_wpml_posts_where_filter', 0 );
+		add_action( 'give_totals_goal_shortcode_before_render', '__give_remove_wpml_posts_where_filter', 0 );
 
-		add_action( 'give_totals_goal_shortcode_end', 'give_add_wpml_posts_where_filter', 0 );
+		add_action( 'give_totals_goal_shortcode_after_render', '__give_add_wpml_posts_where_filter', 0 );
 	}
 }
 

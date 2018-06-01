@@ -603,7 +603,7 @@ function give_totals_shortcode( $atts ) {
 	 *
 	 * @param array $atts shortcode attribute.
 	 */
-	do_action( 'give_totals_goal_shortcode_start', $atts );
+	do_action( 'give_totals_goal_shortcode_before_render', $atts );
 
 	// Build query based on cat, tag and Form ids.
 	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
@@ -716,7 +716,7 @@ function give_totals_shortcode( $atts ) {
 	 * @param array $atts shortcode attribute.
 	 * @param HTML $give_totals_output shortcode output.
 	 */
-	do_action( 'give_totals_goal_shortcode_end', $atts, $give_totals_output );
+	do_action( 'give_totals_goal_shortcode_after_render', $atts, $give_totals_output );
 
 	/**
 	 * Give Totals Shortcode output.
