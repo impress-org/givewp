@@ -731,8 +731,8 @@ function give_totals_shortcode( $atts ) {
 	 *
 	 * @since 2.1.4
 	 *
-	 * @param array $atts shortcode attribute.
-	 * @param HTML $give_totals_output shortcode output.
+	 * @param array  $atts               shortcode attribute.
+	 * @param string $give_totals_output shortcode output.
 	 */
 	do_action( 'give_totals_goal_shortcode_after_render', $atts, $give_totals_output );
 
