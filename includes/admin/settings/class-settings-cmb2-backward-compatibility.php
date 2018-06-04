@@ -231,7 +231,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			add_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
 			$en_setting_fields = $this->prev_settings->give_settings( $this->current_tab );
 			remove_filter( 'gettext', array( $this, 'en_translation' ), 10 );
-			
+
 			if ( ! empty( $setting_fields ) && ! empty( $setting_fields['fields'] ) ) {
 
 				foreach ( $setting_fields['fields'] as $index => $field ) {
@@ -639,7 +639,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				return;
 			}
 
-			echo '<ul class="subsubsub">';
+			echo '<ul class="give-subsubsub">';
 
 			$array_keys = array_keys( $sections );
 
