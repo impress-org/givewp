@@ -226,6 +226,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 					$states_label = give_get_states_label();
 					$country      = give_get_country();
+					$label        = __( 'State', 'give' );
 					// Check if $country code exists in the array key for states label.
 					if ( array_key_exists( $country, $states_label ) ) {
 						$label = $states_label[ $country ];
