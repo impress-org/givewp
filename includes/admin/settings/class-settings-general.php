@@ -216,13 +216,22 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 				case 'general-settings':
 					// Get default country code.
-					$country = give_get_country();
+					$countries = give_get_country();
 
 					// get the list of the states of which default country is selected.
-					$states = give_get_states( $country );
+					$states = give_get_states( $countries );
 
 					// Get the country list that does not have any states init.
 					$no_states_country = give_no_states_country_list();
+
+					$states_label = give_get_states_label();
+					$country      = give_get_country();
+					$label        = __( 'State', 'give' );
+					// Check if $country code exists in the array key for states label.
+					if ( array_key_exists( $country, $states_label ) ) {
+						$label = $states_label[ $country ];
+					}
+
 
 					$settings = array(
 						// Section 1: General.
@@ -281,12 +290,16 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name'    => __( 'Base Country', 'give' ),
-							'desc'    => __( 'The country your site operates from.', 'give' ),
-							'id'      => 'base_country',
-							'type'    => 'select',
-							'options' => give_get_country_list(),
-							'class'   => 'give-select give-select-chosen',
+							'name'       => __( 'Base Country', 'give' ),
+							'desc'       => __( 'The country your site operates from.', 'give' ),
+							'id'         => 'base_country',
+							'type'       => 'select',
+							'options'    => give_get_country_list(),
+							'class'      => 'give-select give-select-chosen',
+							'attributes' => array(
+								'data-search-type' => 'no_ajax'
+							),
+							'default'    => $country,
 						),
 						/**
 						 * Add base state to give setting
@@ -294,12 +307,17 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						 * @since 1.8.14
 						 */
 						array(
-							'wrapper_class' => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
+							'wrapper_class' => ( array_key_exists( $countries, $no_states_country ) ? 'give-hidden' : '' ),
 							'name'          => __( 'Base State/Province', 'give' ),
 							'desc'          => __( 'The state/province your site operates from.', 'give' ),
 							'id'            => 'base_state',
 							'type'          => ( empty( $states ) ? 'text' : 'select' ),
+							'class'         => ( empty( $states ) ? '' : 'give-select give-select-chosen' ),
 							'options'       => $states,
+							'attributes'    => array(
+								'data-search-type' => 'no_ajax',
+								'data-placeholder' => $label,
+							),
 						),
 						array(
 							'name'  => __( 'General Options Docs Link', 'give' ),
