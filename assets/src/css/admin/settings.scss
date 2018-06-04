@@ -24,6 +24,28 @@
 		overflow: visible;
 	}
 
+	.give-subsubsub {
+		list-style: none;
+		margin: 8px 0 0;
+		padding: 0;
+		font-size: 13px;
+		float: left;
+		color: #666;
+
+		li{
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+			white-space: nowrap;
+		}
+
+		a{
+			line-height: 2;
+			padding: .2em;
+			text-decoration: none;
+		}
+	}
+
 	.cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
 		display: block;
 		margin-bottom: 5px;
