@@ -732,9 +732,9 @@ var give_setting_edit = false;
 				$.post( ajaxurl, data, function ( response ) {
 					// Show the states dropdown menu.
 					$this.closest( 'tr' ).next().show();
+					$( '#base_state_chosen' ).remove();
 					if ( typeof ( response.states_found ) != undefined && true == response.states_found ) {
 						$( ':input[name="base_state"]' ).replaceWith( response.data ).addClass( 'give-select-chosen' );
-						$( '#base_state_chosen' ).remove();
 						$( ':input[name="base_state"]' ).chosen();
 					} else {
 						if ( typeof ( response.show_field ) != undefined && false == response.show_field ) {
