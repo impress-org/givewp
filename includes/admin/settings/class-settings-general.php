@@ -302,7 +302,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'desc'          => __( 'The state/province your site operates from.', 'give' ),
 							'id'            => 'base_state',
 							'type'          => ( empty( $states ) ? 'text' : 'select' ),
+							'class'         => ( empty( $states ) ? '' : 'give-select give-select-chosen' ),
 							'options'       => $states,
+							'attributes'    => array(
+								'data-search-type' => 'no_ajax'
+							),
 						),
 						array(
 							'name'  => __( 'General Options Docs Link', 'give' ),
