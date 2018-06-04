@@ -281,12 +281,15 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name'    => __( 'Base Country', 'give' ),
-							'desc'    => __( 'The country your site operates from.', 'give' ),
-							'id'      => 'base_country',
-							'type'    => 'select',
-							'options' => give_get_country_list(),
-							'class'   => 'give-select give-select-chosen',
+							'name'       => __( 'Base Country', 'give' ),
+							'desc'       => __( 'The country your site operates from.', 'give' ),
+							'id'         => 'base_country',
+							'type'       => 'select',
+							'options'    => give_get_country_list(),
+							'class'      => 'give-select give-select-chosen',
+							'attributes' => array(
+								'data-search-type' => 'no_ajax'
+							),
 						),
 						/**
 						 * Add base state to give setting
