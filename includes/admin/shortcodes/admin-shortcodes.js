@@ -103,7 +103,7 @@ window.scForm = {
 
 									valid = false;
 
-									new GiveWarningAlert({
+									new GiveErrorAlert({
 										modalContent:{
 											desc: required[ id ],
 											cancelBtnTitle: give_vars.ok,
