@@ -235,8 +235,6 @@ class Give_Donors_Query {
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
 		$sql = str_replace( 'LIMIT', "{$where} {$orderby} {$this->args['order']} LIMIT", $sql );
 
-		error_log( print_r( $sql, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		
 		return $sql;
 	}
 
