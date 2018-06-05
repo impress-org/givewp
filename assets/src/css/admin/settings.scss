@@ -44,6 +44,12 @@
 			padding: .2em;
 			text-decoration: none;
 		}
+
+		a.current {
+			color: #000;
+			font-weight: 600;
+			border: none;
+		}
 	}
 
 	.cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
