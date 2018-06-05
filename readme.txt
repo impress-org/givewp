@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,25 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.1.4: June 5th, 2018 =
+* New: Added support for multiple messages passed to Give's internal notice API. [#1936](https://github.com/wordimpress/give/issues/1936)
+* New: Added a new check for add-ons to always check the minimum Give version required prior to being able to update. This will prevent the case where an add-on is updated and requires a new version of Give Core than is currently running and deactivates itself. [#3217](https://github.com/wordimpress/give/issues/3217)
+* Tweak: Improved how a donation amount is saved within the internal Give_Payment class. [#3304](https://github.com/wordimpress/give/issues/3304)
+* Tweak: If a gateway is marked as disabled in the admin settings then disable the option to set it as the default gateway. [#3296](https://github.com/wordimpress/give/issues/3296)
+* Fix: Improved the layout of the export donations columns so that they look good on mobile devices and more. [#3266](https://github.com/wordimpress/give/issues/3266)
+* Fix: Preventing PHP notices related to AKISMET admin settings when saving. [#3260](https://github.com/wordimpress/give/issues/3260)
+* Fix: Prevent the licenses tab from displaying in settings if there are no add-ons installed. [#3254](https://github.com/wordimpress/give/issues/3254)
+* Fix: The Give API was not respecting date ranges for earnings and donations endpoints. [#3191](https://github.com/wordimpress/give/issues/3191)
+* Fix: Plugin conflict with WPML where the plugin would display language settings within Give's admin settings incorrectly. [#3314](https://github.com/wordimpress/give/issues/3314)
+* Fix: In button mode text would display incorrectly from the form if closing the modal popup. [#3301](https://github.com/wordimpress/give/issues/3301)
+* Fix: Plugin conflict where WPML would cause the give_totals shortcode to output the incorrect donation amounts. [#3291](https://github.com/wordimpress/give/issues/3291)
+* Fix: The Give notice dismiss button should work when rendering Give notices using JS. [#3278](https://github.com/wordimpress/give/issues/3278)
+* Fix: Theme conflict with Woo's Storefron theme where Give's admin footer text would overlap some elements. [#3274](https://github.com/wordimpress/give/issues/3274)
+* Fix: Ensure that Give's state field doesn't lose its style when switching countries. [#3255](https://github.com/wordimpress/give/issues/3255)
+* Fix: Don't allow the set donation amount to be less than the minimum amount when saving donation forms in wp-admin. [#3249](https://github.com/wordimpress/give/issues/3249)
+* Fix: The "total" attribute is now required for the give_totals shortcode so you don't have a blank goal displaying on the website. [#3060](https://github.com/wordimpress/give/issues/3060)
+* Fix: Resolved a form grid shortcode issue where the Payment Method field would display incorrect when only one gateway is enabled. [#3293](https://github.com/wordimpress/give/issues/3293)
+
 = 2.1.3: May 23rd, 2018 =
 * New: Better SPAM protection through the usage of improved client and server side validation to only allow alphabet characters for first and last name, validation to ensure that the gateway field is not left empty (to compbat SPAM bot scripts), and sanitize all input fields when processing the donation. [#3035](https://github.com/WordImpress/Give/issues/3035#issuecomment-391393093)
 * New: Added new customizable "Email Heading" fields for all Core emails (coming soon to add-ons as well). [#3110](https://github.com/WordImpress/Give/issues/3110)
@@ -217,7 +236,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: The add-on plugin activation banner now displays properly without having to refresh the plugins screen to see it. [#3153](https://github.com/WordImpress/Give/issues/3153)
 * Fix: Give's shortcode picker was having an incompatibility with Elementor causing the TinyMCE to be partially blocked. [#3171](https://github.com/WordImpress/Give/issues/3171)
 * Fix: Give was conflicting with Beaver Builder preventing users from seeing the builder options within the WP-admin single page/post view. [#3207](https://github.com/WordImpress/Give/issues/3207)
-* Fix: Give's API was not repecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/WordImpress/Give/issues/3191)
+* Fix: Give's API was not respecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/WordImpress/Give/issues/3191)
 * Fix: This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed. [#3205](https://github.com/WordImpress/Give/issues/3205)
 * Fix: Resolved PHP notices when exporting donor in lower PHP versions. (#3222)[https://github.com/WordImpress/Give/issues/3222], [#3218](https://github.com/WordImpress/Give/issues/3218)
 * Fix: We've updated the donation form's <form> tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/WordImpress/Give/issues/3139)

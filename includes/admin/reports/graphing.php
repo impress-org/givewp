@@ -809,7 +809,7 @@ function give_reports_refresh_button() {
 
 	$url = wp_nonce_url( add_query_arg( array(
 		'give_action'  => 'refresh_reports_transients',
-		'give-message' => 'refreshed-reports'
+		'give-messages[]' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
 	echo Give()->tooltips->render_link( array(

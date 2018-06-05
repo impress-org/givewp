@@ -2070,3 +2070,46 @@ function give_goal_progress_stats( $form ) {
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
 
 }
+
+/**
+ * Get the admin messages key to show the notices.
+ *
+ * @since 2.1.4
+ *
+ * @return array $message admin message key.
+ */
+function give_get_admin_messages_key() {
+	$messages = empty( $_GET['give-messages'] ) ? array() : give_clean( $_GET['give-messages'] );
+
+	// backward compatibility.
+	if ( ! empty( $_GET['give-message'] ) ) {
+		$messages[] = give_clean( $_GET['give-message'] );
+	}
+
+	/**
+	 * Filter to modify the admin messages key.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $message admin message key.
+	 *
+	 * @return array $message admin message key.
+	 */
+	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
+}
+
+/**
+ * Get User Agent String.
+ *
+ * @since 2.1.4
+ *
+ * @return array|string
+ */
+function give_get_user_agent() {
+
+	// Get User Agent.
+	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
+
+	return $user_agent;
+
+}

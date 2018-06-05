@@ -1247,7 +1247,15 @@ class Give_API {
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
 					$donations['donations'][ $i ] = array(
-						$form_info->post_name => give_get_form_sales_stats( $form_info->ID ),
+						$form_info->post_name => $this->stats->get_sales(
+							$form_info->ID,
+							is_numeric( $args['startdate'] )
+								? strtotime( $args['startdate'] )
+								: $args['startdate'],
+							is_numeric( $args['enddate'] )
+								? strtotime( $args['enddate'] )
+								: $args['enddate']
+						),
 					);
 					$i ++;
 				}
@@ -1255,7 +1263,15 @@ class Give_API {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info                 = get_post( $args['form'] );
 					$donations['donations'][0] = array(
-						$form_info->post_name => give_get_form_sales_stats( $args['form'] ),
+						$form_info->post_name => $this->stats->get_sales(
+							$args['form'],
+							is_numeric( $args['startdate'] )
+								? strtotime( $args['startdate'] )
+								: $args['startdate'],
+							is_numeric( $args['enddate'] )
+								? strtotime( $args['enddate'] )
+								: $args['enddate']
+						),
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
@@ -1862,23 +1878,23 @@ class Give_API {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
 					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-					wp_redirect( add_query_arg( 'give-message', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
+					wp_redirect( add_query_arg( 'give-messages[]', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 					exit();
 				} else {
-					wp_redirect( add_query_arg( 'give-message', 'api-key-failed', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
+					wp_redirect( add_query_arg( 'give-messages[]', 'api-key-failed', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 					exit();
 				}
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( add_query_arg( 'give-message', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
+				wp_redirect( add_query_arg( 'give-messages[]', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( add_query_arg( 'give-message', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
+				wp_redirect( add_query_arg( 'give-messages[]', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
 			default;

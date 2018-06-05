@@ -133,7 +133,7 @@ function give_email_preview_buttons_callback( $field ) {
 				add_query_arg( array(
 			'give_action'  => 'send_preview_email',
 			'email_type' => $field_id,
-			'give-message' => 'sent-test-email',
+			'give-messages[]' => 'sent-test-email',
 		) ), 'give-send-preview-email' ),
 		esc_attr__( 'Send Test Email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )

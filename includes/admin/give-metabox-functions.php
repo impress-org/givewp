@@ -908,7 +908,7 @@ function give_email_preview_buttons( $field ) {
 				array(
 					'give_action'  => 'send_preview_email',
 					'email_type'   => $field_id,
-					'give-message' => 'sent-test-email',
+					'give-messages[]' => 'sent-test-email',
 					'form_id'      => $post->ID,
 				)
 			), 'give-send-preview-email' ),

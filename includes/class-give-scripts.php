@@ -198,6 +198,7 @@ class Give_Scripts {
 			'import_failed'                     => __( 'Import failed', 'give' ),
 			'flush_success'                     => __( 'Flush success', 'give' ),
 			'flush_error'                       => __( 'Flush error', 'give' ),
+			'no_form_selected'                  => __( 'No form selected', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
