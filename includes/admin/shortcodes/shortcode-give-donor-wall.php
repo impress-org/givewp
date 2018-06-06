@@ -48,13 +48,9 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'query_args'  => array(
 					'post_type' => 'give_forms',
 				),
-				'name'        => 'give_forms',
+				'name'        => 'form_id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
 				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
-				'required'    => array(
-					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
-				),
 			),
 			array(
 				'type'    => 'textbox',
