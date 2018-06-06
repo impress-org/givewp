@@ -164,6 +164,27 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 }
 
 /**
+ * Retrieve donor comment id attached to a donation
+ *
+ * Note: currently donor can only add one comment per donation
+ *
+ * @param int    $donation_id The donation ID to retrieve comment for.
+ * @param int    $donor_id    The donor ID to retrieve comment for.
+ * @param string $search      Search for comment that contain a search term.
+ *
+ * @since 2.2.0
+ *
+ * @return int
+ */
+function give_get_donor_donation_comment_id( $donation_id, $donor_id, $search = '' ) {
+	/* @var WP_Comment|array $comment */
+	$comment    = give_get_donor_donation_comment( $donation_id, $donor_id, $search );
+	$comment_id = $comment instanceof WP_Comment ? $comment->comment_ID : 0;
+
+	return $comment_id;
+}
+
+/**
  * Retrieve all donor comment attached to a donation
  *
  * Note: currently donor can only add one comment per donation
