@@ -79,7 +79,7 @@ class Give_Comment {
 	}
 
 	/**
-	 * Insert comment
+	 * Insert/Update comment
 	 *
 	 * @since  2.1.0
 	 * @access public
@@ -97,15 +97,18 @@ class Give_Comment {
 			return false;
 		}
 
+		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
+		$action_type         = $is_existing_comment ? 'update' : 'insert';
+
 		/**
-		 * Fires before inserting payment|donor comment.
+		 * Fires before inserting/updating payment|donor comment.
 		 *
 		 * @param int    $id   Payment|Donor ID.
 		 * @param string $note Comment text.
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_pre_insert_{$comment_type}_note", $id, $note );
+		do_action( "give_pre_{$action_type}_{$comment_type}_note", $id, $note );
 
 		$comment_args = wp_parse_args(
 			$comment_args,
@@ -126,12 +129,15 @@ class Give_Comment {
 			)
 		);
 
-		$comment_id = wp_insert_comment( wp_filter_comment( $comment_args ) );
+		$filtered_comment = wp_filter_comment( $comment_args );
+		$comment_id = $is_existing_comment
+			? wp_update_comment( $filtered_comment )
+			: wp_insert_comment( $filtered_comment );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
 		/**
-		 * Fires after payment|donor comment inserted.
+		 * Fires after payment|donor comment inserted/updated.
 		 *
 		 * @param int    $comment_id Comment ID.
 		 * @param int    $id         Payment|Donor ID.
@@ -139,7 +145,7 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_insert_{$comment_type}_note", $comment_id, $id, $note );
+		do_action( "give_{$action_type}_{$comment_type}_note", $comment_id, $id, $note );
 
 		return $comment_id;
 	}
