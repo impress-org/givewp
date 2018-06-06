@@ -301,6 +301,31 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
+	// Update anonymous donation setting.
+	$is_anonymous_donation = isset( $data['give_anonymous_donation'] )
+		? absint( $data['give_anonymous_donation'] )
+		: 0;
+
+	if ( isset( $data['give_comment'] ) && give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
+		give_update_meta( $payment->ID, '_give_anonymous_donation', $is_anonymous_donation );
+		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $is_anonymous_donation );
+	}
+
+	// Update comment.
+	if ( isset( $data['give_comment'] ) && give_is_donor_thought_field_enabled( $payment->form_id ) ) {
+		$comment_id = give_insert_donor_donation_comment(
+			$payment->ID,
+			$payment->donor_id,
+			trim( give_clean( $data['give_comment'] ) ),
+			array(
+				'comment_ID'           => $data['give_comment_id'],
+				'comment_author_email' => $payment->email
+			)
+		);
+
+		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+	}
+
 	/**
 	 * Fires after updating edited donation.
 	 *
