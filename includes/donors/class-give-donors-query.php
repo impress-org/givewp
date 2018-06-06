@@ -545,6 +545,8 @@ class Give_Donors_Query {
 				$donor_ids = wp_list_pluck( $donor_ids, 'donor_id' );
 				$donor_ids = implode( ',', array_map( 'intval', $donor_ids ) );
 				$where     .= "AND {$this->table_name}.id IN ({$donor_ids})";
+			} else {
+				$where .= "AND {$this->table_name}.id IN ('0')";
 			}
 		}
 
