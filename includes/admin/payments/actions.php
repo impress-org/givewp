@@ -305,25 +305,35 @@ function give_update_payment_details( $data ) {
 	$is_anonymous_donation = isset( $data['give_anonymous_donation'] )
 		? absint( $data['give_anonymous_donation'] )
 		: 0;
+	$comment_id = absint( $data['give_comment_id'] );
 
 	if ( isset( $data['give_comment'] ) && give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $is_anonymous_donation );
 		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $is_anonymous_donation );
+
+		// Update comment meta if admin is not updating comment.
+		if( $comment_id && isset( $data['give_comment'] ) ) {
+			update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+		}
 	}
 
 	// Update comment.
 	if ( isset( $data['give_comment'] ) && give_is_donor_thought_field_enabled( $payment->form_id ) ) {
+		$is_update_comment_meta = ! $comment_id;
+
 		$comment_id = give_insert_donor_donation_comment(
 			$payment->ID,
 			$payment->donor_id,
 			trim( give_clean( $data['give_comment'] ) ),
 			array(
-				'comment_ID'           => $data['give_comment_id'],
+				'comment_ID'           => $comment_id,
 				'comment_author_email' => $payment->email
 			)
 		);
 
-		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+		if( $is_update_comment_meta ) {
+			update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+		}
 	}
 
 	/**
