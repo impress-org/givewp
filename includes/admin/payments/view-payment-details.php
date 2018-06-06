@@ -467,32 +467,33 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
-											<div>
-												<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
-												<ul class="give-radio-inline">
-													<li>
-														<label>
-															<input
-																name="give_anonymous_donation"
-																value="1"
-																type="radio"
-																<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
-															><?php _e( 'Yes', 'give' ); ?>
-														</label>
-													</li>
-													<li>
-														<label>
-															<input
-																name="give_anonymous_donation"
-																value="0"
-																type="radio"
-																<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
-															><?php _e( 'No', 'give' ); ?>
-														</label>
-													</li>
-												</ul>
-											</div>
-
+											<?php if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ):  ?>
+												<div>
+													<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
+													<ul class="give-radio-inline">
+														<li>
+															<label>
+																<input
+																	name="give_anonymous_donation"
+																	value="1"
+																	type="radio"
+																	<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+																><?php _e( 'Yes', 'give' ); ?>
+															</label>
+														</li>
+														<li>
+															<label>
+																<input
+																	name="give_anonymous_donation"
+																	value="0"
+																	type="radio"
+																	<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+																><?php _e( 'No', 'give' ); ?>
+															</label>
+														</li>
+													</ul>
+												</div>
+											<?php endif; ?>
 											<p>
 												<?php
 												/**
@@ -882,32 +883,34 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 							do_action( 'give_view_donation_details_main_after', $payment_id );
 							?>
 
-							<div id="give-payment-donor-comment" class="postbox">
-								<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+							<?php if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) : ?>
+								<div id="give-payment-donor-comment" class="postbox">
+									<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
 
-								<div class="inside">
-									<div id="give-payment-donor-comment-inner">
-										<p>
-											<?php
-											$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
+									<div class="inside">
+										<div id="give-payment-donor-comment-inner">
+											<p>
+												<?php
+												$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
 
-											echo sprintf(
-												'<input type="hidden" name="give_comment_id" value="%s">',
-												$donor_comment instanceof WP_Comment ? $donor_comment->comment_ID : 0
-											);
+												echo sprintf(
+													'<input type="hidden" name="give_comment_id" value="%s">',
+													$donor_comment instanceof WP_Comment ? $donor_comment->comment_ID : 0
+												);
 
-											echo sprintf(
-												'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
-												__( 'Add a comment', 'give' ),
-												$donor_comment instanceof WP_Comment ? $donor_comment->comment_content : ''
-											);
-											?>
-										</p>
+												echo sprintf(
+													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
+													__( 'Add a comment', 'give' ),
+													$donor_comment instanceof WP_Comment ? $donor_comment->comment_content : ''
+												);
+												?>
+											</p>
+										</div>
+
 									</div>
-
+									<!-- /.inside -->
 								</div>
-								<!-- /.inside -->
-							</div>
+							<?php endif; ?>
 							<!-- /#give-payment-notes -->
 
 							<?php
