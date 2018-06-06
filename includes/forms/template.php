@@ -839,12 +839,12 @@ function give_user_info_fields( $form_id ) {
 				</label>
 
 				<textarea
-						class="give-input required"
-						name="give_comment"
-						placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
-						id="give-comment"
-						value="<?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?>"
-					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
+					class="give-input required"
+					name="give_comment"
+					placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+					id="give-comment"
+					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				><?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?></textarea>
 
 			</p>
 		<?php endif; ?>
