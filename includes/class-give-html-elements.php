@@ -214,7 +214,7 @@ class Give_HTML_Elements {
 		if ( $donors ) {
 			$options[0] = esc_html__( 'No donor attached', 'give' );
 			foreach ( $donors as $donor ) {
-				$donor = give_get_donor_name_with_title( $donor );
+				$donor = give_get_name_with_title_prefixes( $donor );
 				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
@@ -229,7 +229,7 @@ class Give_HTML_Elements {
 				$donor = new Give_Donor( $args['selected'] );
 
 				if ( $donor ) {
-					$donor = give_get_donor_name_with_title( $donor );
+					$donor = give_get_name_with_title_prefixes( $donor );
 					$options[ absint( $args['selected'] ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 
 				}

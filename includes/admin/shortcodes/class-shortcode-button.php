@@ -86,7 +86,7 @@ final class Give_Shortcode_Button {
 
 		wp_enqueue_script(
 			'give_shortcode',
-			GIVE_PLUGIN_URL . 'includes/admin/shortcodes/admin-shortcodes.js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/admin-shortcodes.js',
 			array( 'jquery' ),
 			GIVE_VERSION,
 			true

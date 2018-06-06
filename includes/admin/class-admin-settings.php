@@ -107,20 +107,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die();
 			}
 
-			// Sanitize data.
-			$akismet_spam_protection = give_clean( $_POST['akismet_spam_protection'] ); // WPCS: input var ok.
-
-			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
-			if (
-				isset( $akismet_spam_protection ) &&
-				give_is_setting_enabled( $akismet_spam_protection ) &&
-				! give_check_akismet_key()
-			) {
-				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
-
-				return;
-			}
-
 			/**
 			 * Trigger Action.
 			 *
@@ -189,13 +175,23 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' error"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
-					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' updated"><p><strong>' . $message . '</strong></p></div>';
+					$notice_html .= sprintf(
+						'<div id="setting-error-%1$s" class="%2$s updated" style="display: none"><p><strong>%3$s</strong></p></div>',
+						$code,
+						$classes,
+						$message
+					);
 				}
 			}
 
@@ -249,7 +245,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Save settings if data has been posted.
-			if ( ! empty( $_POST ) ) {
+			if ( isset( $_POST['_give-save-settings'] ) ) {
 				self::save();
 			}
 
@@ -809,10 +805,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							$type = 'multiple';
 							$allow_new_values = 'data-allows-new-values="true"';
 							$name             = $name . '[]';
+
+							$option_value = empty( $option_value ) ? array() : $option_value;
 						}
 
 						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
-
 						?>
 						<tr valign="top" <?php echo $wrapper_class; ?>>
 							<th scope="row" class="titledesc">
@@ -820,15 +817,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 								<select
-										class="give-select-chosen give-chosen-settings"
-										style="<?php echo esc_attr( $value['style'] ); ?>"
-										name="<?php echo esc_attr( $name ); ?>"
-										id="<?php echo esc_attr( $value['id'] ); ?>"
-									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $value['placeholder'] ); ?>
+									class="give-select-chosen give-chosen-settings"
+									style="<?php echo esc_attr( $value['style'] ); ?>"
+									name="<?php echo esc_attr( $name ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
 								>
-									<?php foreach ( $value['options'] as $key => $item_value ) { ?>
+									<?php foreach ( $value['options'] as $key => $item_value ) : ?>
 										<option
-												value="<?php echo esc_attr( $key ); ?>"
+											value="<?php echo esc_attr( $key ); ?>"
 											<?php
 											if ( is_array( $option_value ) ) {
 												selected( in_array( $key, $option_value, true ) );
@@ -839,7 +837,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 										>
 											<?php echo esc_html( $item_value ); ?>
 										</option>
-									<?php } ?>
+									<?php endforeach; ?>
 
 								</select>
 								<?php echo wp_kses_post( $description ); ?>

@@ -207,7 +207,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			}
 
 			echo wp_kses_post( sprintf(
-				'<ul class="subsubsub">%s</ul><br class="clear" /><hr>',
+				'<ul class="give-subsubsub">%s</ul><br class="clear" /><hr>',
 				implode( ' | </li>', $section_list )
 			) );
 		}

@@ -467,6 +467,32 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
+											<div>
+												<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
+												<ul class="give-radio-inline">
+													<li>
+														<label>
+															<input
+																name="give_anonymous_donation"
+																value="1"
+																type="radio"
+																<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+															><?php _e( 'Yes', 'give' ); ?>
+														</label>
+													</li>
+													<li>
+														<label>
+															<input
+																name="give_anonymous_donation"
+																value="0"
+																type="radio"
+																<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+															><?php _e( 'No', 'give' ); ?>
+														</label>
+													</li>
+												</ul>
+											</div>
+
 											<p>
 												<?php
 												/**
@@ -838,6 +864,41 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 									<div class="give-clearfix">
 										<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+									</div>
+
+								</div>
+								<!-- /.inside -->
+							</div>
+							<!-- /#give-payment-notes -->
+
+							<?php
+							/**
+							 * Fires on the donation details page, after the main area.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_donation_details_main_after', $payment_id );
+							?>
+
+							<div id="give-payment-donor-comment" class="postbox">
+								<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+
+								<div class="inside">
+									<div id="give-payment-donor-comment-inner">
+										<?php
+										$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
+
+										if ( ! empty( $donor_comment ) ) {
+											echo give_get_donor_donation_comment_html( $donor_comment, $payment_id );
+										}else{
+											echo sprintf(
+												'<p class="give-payment-donor-comment">%s</p>',
+												esc_html__( 'No donation comment.', 'give' )
+											);
+										}
+										?>
 									</div>
 
 								</div>

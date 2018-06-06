@@ -51,11 +51,11 @@ function give_register_default_donor_tabs( $tabs ) {
 	$default_tabs = array(
 		'overview' => array(
 			'dashicon' => 'dashicons-admin-users',
-			'title' => __( 'Donor Profile', 'give' ),
+			'title'    => __( 'Donor Profile', 'give' ),
 		),
 		'notes'    => array(
 			'dashicon' => 'dashicons-admin-comments',
-			'title' => __( 'Donor Notes', 'give' ),
+			'title'    => __( 'Donor Notes', 'give' ),
 		),
 	);
 
@@ -87,11 +87,12 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 
 /**
  * Connect and Reconnect Donor with User profile.
- * @todo $address is unnecessary param because we are store address to user.
  *
- * @param object $donor      Donor Object.
- * @param array  $donor_data Donor Post Variables.
- * @param array  $address    Address Information.
+ * @todo  $address is unnecessary param because we are store address to user.
+ *
+ * @param Give_Donor $donor      Donor Object.
+ * @param array      $donor_data Donor Post Variables.
+ * @param array      $address    Address Information.
  *
  * @since 1.8.14
  *
@@ -154,7 +155,6 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 	 * @since 1.0
 	 */
 	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
-
 
 	return $output;
 }

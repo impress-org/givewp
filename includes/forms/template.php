@@ -259,21 +259,21 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_register_login', $form_id );
+		do_action( 'give_donation_form_before_register_login', $form_id, $args );
 
 		/**
 		 * Fire when register/login form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_register_login_fields', $form_id );
+		do_action( 'give_donation_form_register_login_fields', $form_id, $args );
 
 		/**
 		 * Fire when credit card form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_cc_form', $form_id );
+		do_action( 'give_donation_form_before_cc_form', $form_id, $args );
 
 		// Load the credit card form and allow gateways to load their own if they wish.
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
@@ -293,7 +293,7 @@ function give_show_purchase_form( $form_id, $args ) {
 			 *
 			 * @param int $form_id The form ID.
 			 */
-			do_action( 'give_cc_form', $form_id );
+			do_action( 'give_cc_form', $form_id, $args );
 		}
 
 		/**
@@ -301,7 +301,7 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_cc_form', $form_id );
+		do_action( 'give_donation_form_after_cc_form', $form_id, $args );
 
 	} else {
 		/**
@@ -318,7 +318,7 @@ function give_show_purchase_form( $form_id, $args ) {
 	 *
 	 * @since 1.7
 	 */
-	do_action( 'give_payment_fields_bottom', $form_id );
+	do_action( 'give_payment_fields_bottom', $form_id, $args );
 }
 
 add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
@@ -672,7 +672,7 @@ function give_user_info_fields( $form_id ) {
 	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
 	$company_name   = ! empty( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : '';
 	$email          = ! empty( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : '';
-	$title_prefixes = give_get_title_prefixes( $form_id );
+	$title_prefixes = give_get_name_title_prefixes( $form_id );
 
 	/**
 	 * Fire before user personal information fields
@@ -682,7 +682,7 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_donation_form_before_personal_info', $form_id );
 
 	$title_prefix_classes = '';
-	if ( give_is_title_prefix_enabled( $form_id ) ) {
+	if ( give_is_name_title_prefix_enabled( $form_id ) ) {
 		$title_prefix_classes = 'give-title-prefix-wrap';
 	}
 	?>
@@ -691,7 +691,7 @@ function give_user_info_fields( $form_id ) {
 			<?php echo esc_html( apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ) ); ?>
 		</legend>
 
-		<?php if ( give_is_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
+		<?php if ( give_is_name_title_prefix_enabled( $form_id ) && is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) { ?>
 			<p id="give-title-wrap" class="form-row form-row-title form-row-responsive">
 				<label class="give-label" for="give-title">
 					<?php esc_attr_e( 'Title', 'give' ); ?>
@@ -805,6 +805,49 @@ function give_user_info_fields( $form_id ) {
 			/>
 
 		</p>
+
+		<?php if ( give_is_anonymous_donation_field_enabled( $form_id ) ) : ?>
+			<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0; ?>
+			<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-anonymous-donation">
+				<input
+						type="checkbox"
+						class="give-input required"
+						name="give_anonymous_donation"
+						id="give-anonymous-donation"
+						value="1"
+					<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+					<?php checked( 1, $is_anonymous_donation ); ?>
+				>
+					<?php _e( 'Make this an anonymous donation', 'give' ); ?>
+					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like to prevent this donation from being displayed publicy?', 'give' ) ); ?>
+				</label>
+			</p>
+		<?php endif; ?>
+
+		<?php if ( give_is_donor_thought_field_enabled( $form_id ) ) : ?>
+			<p id="give-comment-wrap" class="form-row form-row-wide">
+				<label class="give-label" for="give-comment">
+					<?php _e( 'Comment', 'give' ); ?>
+					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+					<?php echo Give()->tooltips->render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
+				</label>
+
+				<textarea
+						class="give-input required"
+						name="give_comment"
+						placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+						id="give-comment"
+						value="<?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?>"
+					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>></textarea>
+
+			</p>
+		<?php endif; ?>
 		<?php
 		/**
 		 * Fire after user email field
@@ -1673,7 +1716,6 @@ function give_checkout_final_total( $form_id ) {
 		<span class="give-final-total-amount"
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php
-
 			echo give_currency_filter( give_format_amount( $total, array(
 				'sanitize' => false,
 				'currency' => give_get_currency( $form_id ),
@@ -1698,11 +1740,12 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  *
  * @since  1.0
  *
- * @param  int $form_id The form ID.
+ * @param int   $form_id The donation form ID.
+ * @param array $args    List of arguments.
  *
  * @return void
  */
-function give_checkout_submit( $form_id ) {
+function give_checkout_submit( $form_id, $args ) {
 	?>
 	<fieldset id="give_purchase_submit" class="give-donation-submit">
 		<?php
@@ -1711,7 +1754,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_submit', $form_id );
+		do_action( 'give_donation_form_before_submit', $form_id, $args );
 
 		give_checkout_hidden_fields( $form_id );
 
@@ -1722,13 +1765,13 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_submit', $form_id );
+		do_action( 'give_donation_form_after_submit', $form_id, $args );
 		?>
 	</fieldset>
 	<?php
 }
 
-add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 );
 
 /**
  * Give Donation form submit button.
@@ -2157,6 +2200,12 @@ function add_give_goal_progress_bar_class( $class_bar ) {
  */
 function add_class_for_form_grid( $class, $id, $args ) {
 	$class[] = 'give-form-grid-wrap';
+
+	foreach ( $class as $index => $item ) {
+		if( false !== strpos( $item, 'give-display-' ) ) {
+			unset( $class[$index] );
+		}
+	}
 
 	return $class;
 }

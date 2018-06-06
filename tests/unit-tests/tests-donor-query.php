@@ -44,8 +44,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 	 */
 	public function test_get_sql( $donor_query_params, $expected ) {
 		$this->db_query = new Give_Donors_Query( $donor_query_params );
-		// var_dump( $this->db_query->get_sql() );
-		$this->assertSame( $this->db_query->get_sql(), $expected );
+		$this->assertSame( $expected, $this->db_query->get_sql() );
 	}
 
 
@@ -118,7 +117,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 			),
 			array(
 				array( 'date_query' => 'year=2012&monthnum=12&day=12' ),
-				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1  AND ( ( YEAR( wptests_give_donors.date_created ) = 2012 AND MONTH( wptests_give_donors.date_created ) = 12 AND DAYOFMONTH( wptests_give_donors.date_created ) = 12 ) ) ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
+				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 AND ( ( YEAR( wptests_give_donors.date_created ) = 2012 AND MONTH( wptests_give_donors.date_created ) = 12 AND DAYOFMONTH( wptests_give_donors.date_created ) = 12 ) ) ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
 			),
 		);
 	}

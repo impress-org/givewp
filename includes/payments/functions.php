@@ -1365,26 +1365,7 @@ function give_get_purchase_id_by_transaction_id( $key ) {
  * @return array $notes Donation Notes
  */
 function give_get_payment_notes( $payment_id = 0, $search = '' ) {
-
-	if ( empty( $payment_id ) && empty( $search ) ) {
-		return false;
-	}
-
-	remove_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10 );
-
-	$notes = get_comments(
-		array(
-			'post_id' => $payment_id,
-			'order'   => 'ASC',
-			'search'  => $search,
-		)
-	);
-
-	add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-	add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
-
-	return $notes;
+	return Give_Comment::get( $payment_id,'payment', array(), $search );
 }
 
 
@@ -1399,52 +1380,7 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
  * @return int The new note ID
  */
 function give_insert_payment_note( $payment_id = 0, $note = '' ) {
-	if ( empty( $payment_id ) ) {
-		return false;
-	}
-
-	/**
-	 * Fires before inserting payment note.
-	 *
-	 * @param int    $payment_id Payment ID.
-	 * @param string $note       The note.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_pre_insert_payment_note', $payment_id, $note );
-
-	$note_id = wp_insert_comment(
-		wp_filter_comment(
-			array(
-				'comment_post_ID'      => $payment_id,
-				'comment_content'      => $note,
-				'user_id'              => is_admin() ? get_current_user_id() : 0,
-				'comment_date'         => current_time( 'mysql' ),
-				'comment_date_gmt'     => current_time( 'mysql', 1 ),
-				'comment_approved'     => 1,
-				'comment_parent'       => 0,
-				'comment_author'       => '',
-				'comment_author_IP'    => '',
-				'comment_author_url'   => '',
-				'comment_author_email' => '',
-				'comment_type'         => 'give_payment_note',
-
-			)
-		)
-	);
-
-	/**
-	 * Fires after payment note inserted.
-	 *
-	 * @param int    $note_id    Note ID.
-	 * @param int    $payment_id Payment ID.
-	 * @param string $note       The note.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_insert_payment_note', $note_id, $payment_id, $note );
-
-	return $note_id;
+	return Give_Comment::add( $payment_id, $note, 'payment' );
 }
 
 /**
@@ -1458,33 +1394,7 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
  * @return bool True on success, false otherwise.
  */
 function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
-	if ( empty( $comment_id ) ) {
-		return false;
-	}
-
-	/**
-	 * Fires before deleting donation note.
-	 *
-	 * @param int $comment_id Note ID.
-	 * @param int $payment_id Payment ID.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
-
-	$ret = wp_delete_comment( $comment_id, true );
-
-	/**
-	 * Fires after donation note deleted.
-	 *
-	 * @param int $comment_id Note ID.
-	 * @param int $payment_id Payment ID.
-	 *
-	 * @since 1.0
-	 */
-	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
-
-	return $ret;
+	return Give_Comment::delete( $comment_id, $payment_id, 'payment' );
 }
 
 /**
@@ -1534,142 +1444,6 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 
 }
 
-/**
- * Exclude notes (comments) on give_payment post type from showing in Recent
- * Comments widgets
- *
- * @param object $query WordPress Comment Query Object.
- *
- * @since 1.0
- *
- * @return void
- */
-function give_hide_payment_notes( $query ) {
-	if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.1', '>=' ) ) {
-		$types = isset( $query->query_vars['type__not_in'] ) ? $query->query_vars['type__not_in'] : array();
-		if ( ! is_array( $types ) ) {
-			$types = array( $types );
-		}
-		$types[]                           = 'give_payment_note';
-		$query->query_vars['type__not_in'] = $types;
-	}
-}
-
-add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-
-/**
- * Exclude notes (comments) on give_payment post type from showing in Recent Comments widgets
- *
- * @param array  $clauses          Comment clauses for comment query.
- * @param object $wp_comment_query WordPress Comment Query Object.
- *
- * @since 1.0
- *
- * @return array $clauses Updated comment clauses.
- */
-function give_hide_payment_notes_pre_41( $clauses, $wp_comment_query ) {
-	if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.1', '<' ) ) {
-		$clauses['where'] .= ' AND comment_type != "give_payment_note"';
-	}
-
-	return $clauses;
-}
-
-add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
-
-
-/**
- * Exclude notes (comments) on give_payment post type from showing in comment feeds
- *
- * @param string $where
- * @param object $wp_comment_query WordPress Comment Query Object.
- *
- * @since 1.0
- *
- * @return string $where
- */
-function give_hide_payment_notes_from_feeds( $where, $wp_comment_query ) {
-	global $wpdb;
-
-	$where .= $wpdb->prepare( ' AND comment_type != %s', 'give_payment_note' );
-
-	return $where;
-}
-
-add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
-
-
-/**
- * Remove Give Comments from the wp_count_comments function
- *
- * @param array $stats   (empty from core filter).
- * @param int   $post_id Post ID.
- *
- * @access public
- * @since  1.0
- *
- * @return array|object Array of comment counts.
- */
-function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
-	global $wpdb, $pagenow;
-
-	if ( 'index.php' != $pagenow ) {
-		return $stats;
-	}
-
-	$post_id = (int) $post_id;
-
-	if ( apply_filters( 'give_count_payment_notes_in_comments', false ) ) {
-		return $stats;
-	}
-
-	$stats = Give_Cache::get_group( "comments-{$post_id}", 'counts' );
-
-	if ( ! is_null( $stats ) ) {
-		return $stats;
-	}
-
-	$where = 'WHERE comment_type != "give_payment_note"';
-
-	if ( $post_id > 0 ) {
-		$where .= $wpdb->prepare( ' AND comment_post_ID = %d', $post_id );
-	}
-
-	$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
-
-	$total    = 0;
-	$approved = array(
-		'0'            => 'moderated',
-		'1'            => 'approved',
-		'spam'         => 'spam',
-		'trash'        => 'trash',
-		'post-trashed' => 'post-trashed',
-	);
-	foreach ( (array) $count as $row ) {
-		// Don't count post-trashed toward totals.
-		if ( 'post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'] ) {
-			$total += $row['num_comments'];
-		}
-		if ( isset( $approved[ $row['comment_approved'] ] ) ) {
-			$stats[ $approved[ $row['comment_approved'] ] ] = $row['num_comments'];
-		}
-	}
-
-	$stats['total_comments'] = $total;
-	foreach ( $approved as $key ) {
-		if ( empty( $stats[ $key ] ) ) {
-			$stats[ $key ] = 0;
-		}
-	}
-
-	$stats = (object) $stats;
-	Give_Cache::set_group( "comments-{$post_id}", $stats, 'counts' );
-
-	return $stats;
-}
-
-add_filter( 'wp_count_comments', 'give_remove_payment_notes_in_comment_counts', 10, 2 );
-
 
 /**
  * Filter where older than one week
@@ -1695,9 +1469,10 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param int   $donation_id Donation Data Object.
- * @param array $args     a. only_level = If set to true will only return the level name if multi-level enabled.
- *                        b. separator  = The separator between the Form Title and the Donation Level.
+ * @param int|Give_Payment $donation_id Donation Data Object.
+ * @param array            $args     a. only_level = If set to true will only return the level name if multi-level
+ *                                   enabled. b. separator  = The separator between the Form Title and the Donation
+ *                                   Level.
  *
  * @since 1.5
  *

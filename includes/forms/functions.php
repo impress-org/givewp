@@ -1139,8 +1139,6 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 	 */
 	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
 
-	Give_Cache::set_db_query( $cache_key, $donor_count );
-
 	return $donor_count;
 }
 
