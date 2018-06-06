@@ -56,10 +56,22 @@ $atts          = $args[2]; // Shortcode attributes.
 		</div>
 	</div>
 
-	<?php if ( true === $atts['show_comments'] ) : ?>
+	<?php if ( true === $atts['show_comments'] && absint( $atts['comment_length'] ) ) : ?>
 		<div class="give-donor__content">
 			<p>
-				<?php echo get_donor_latest_comment( $donor->id, $atts['form_id'] ); ?>
+				<?php $comment_content = get_donor_latest_comment( $donor->id, $atts['form_id'] ); ?>
+				<?php
+				if( $atts['comment_length'] < strlen( $comment_content ) ) {
+					echo sprintf(
+						'%s&nbsp;<a class="give-donor__read-more">%s</a><span class="give-hidden">%s</span>',
+						substr( $comment_content, 0, $atts['comment_length'] ),
+						$atts['readmore_text'],
+						substr( $comment_content, $atts['comment_length'] )
+					);
+				} else{
+					echo $comment_content;
+				}
+				?>
 			</p>
 		</div>
 	<?php endif; ?>
