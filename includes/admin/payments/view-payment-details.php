@@ -887,18 +887,22 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 								<div class="inside">
 									<div id="give-payment-donor-comment-inner">
-										<?php
-										$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
+										<p>
+											<?php
+											$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
 
-										if ( ! empty( $donor_comment ) ) {
-											echo give_get_donor_donation_comment_html( $donor_comment, $payment_id );
-										}else{
 											echo sprintf(
-												'<p class="give-payment-donor-comment">%s</p>',
-												esc_html__( 'No donation comment.', 'give' )
+												'<input type="hidden" name="give_comment_id" value="%s">',
+												$donor_comment instanceof WP_Comment ? $donor_comment->comment_ID : 0
 											);
-										}
-										?>
+
+											echo sprintf(
+												'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
+												__( 'Add a comment', 'give' ),
+												$donor_comment instanceof WP_Comment ? $donor_comment->comment_content : ''
+											);
+											?>
+										</p>
 									</div>
 
 								</div>
