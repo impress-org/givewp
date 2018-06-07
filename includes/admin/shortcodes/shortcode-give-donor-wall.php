@@ -54,9 +54,34 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'    => 'textbox',
-				'classes' => 'give-hidden give-donors-per-page',
 				'name'    => 'donors_per_page',
 				'label'   => esc_attr__( 'Donors Per Page', 'give' ),
+				'placeholder' => '20'
+			),
+			array(
+				'type'    => 'textbox',
+				'name'    => 'comment_length',
+				'label'   => esc_attr__( 'Comment Length', 'give' ),
+				'placeholder' => '20'
+			),
+			array(
+				'type'    => 'textbox',
+				'name'    => 'readmore_text',
+				'label'   => esc_attr__( 'Read More Text', 'give' ),
+				'placeholder' => esc_html__( 'Read More', 'give' )
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'columns',
+				'label'       => esc_attr__( 'Columns:', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the number of forms per row.', 'give' ),
+				'options'     => array(
+					'1' => esc_html__( '1', 'give' ),
+					'2' => esc_html__( '2', 'give' ),
+					'3' => esc_html__( '3', 'give' ),
+					'4' => esc_html__( '4', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Best Fit', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -66,6 +91,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -75,6 +101,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -84,6 +111,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -93,6 +121,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -102,7 +131,18 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
+			array(
+				'type'    => 'listbox',
+				'name'    => 'orderby',
+				'label'   => esc_attr__( 'Order By', 'give' ),
+				'options' => array(
+					'donation_amount' => esc_html__( 'Donation Amount', 'give' ),
+					'donation_count'  => esc_html__( 'Donation Count', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Donation Amount', 'give' )
+			)
 		);
 	}
 }
