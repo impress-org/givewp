@@ -76,7 +76,7 @@ class Give_Payments_Query extends Give_Stats {
 			'page'            => null,
 			'orderby'         => 'ID',
 			'order'           => 'DESC',
-			'user'            => null,
+			'user'            => null, // deprecated, use donor
 			'donor'           => null,
 			'status'          => give_get_payment_status_keys(),
 			'meta_key'        => null,
