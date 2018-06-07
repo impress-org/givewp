@@ -581,7 +581,7 @@ function give_get_newsletter() {
 		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
 		      target="_blank">
 			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'A confirmation mail is being sent to your email ID. Kindly conform your subscription over there! :)', 'give' ); ?></p>
+				<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
 			</div>
 
 			<table class="form-table give-newsletter-form">
