@@ -17,10 +17,8 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		$comment_id = give_insert_donor_donation_comment(
 			$donation_id,
 			$donation_data['user_info']['id'],
-			trim( give_clean( $_POST['give_comment'] ) ),
-			array(
-				'comment_author_email' => $donation_data['user_info']['email']
-			)
+			trim( $_POST['give_comment'] ), // We are sanitizing comment in Give_comment:add
+			array( 'comment_author_email' => $donation_data['user_info']['email'] )
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );

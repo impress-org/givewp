@@ -324,7 +324,7 @@ function give_update_payment_details( $data ) {
 		$comment_id = give_insert_donor_donation_comment(
 			$payment->ID,
 			$payment->donor_id,
-			trim( give_clean( $data['give_comment'] ) ),
+			trim( $data['give_comment'] ),
 			array(
 				'comment_ID'           => $comment_id,
 				'comment_author_email' => $payment->email
