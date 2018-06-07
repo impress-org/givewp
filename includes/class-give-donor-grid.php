@@ -136,7 +136,7 @@ class Give_Donor_Wall {
 			);
 		}
 
-		// Hide donors with zero donation amount.
+		// show donor who donated to specific form.
 		if ( $atts['form_id'] ) {
 			$donor_args['give_forms'] = $atts['form_id'];
 		}
