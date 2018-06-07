@@ -248,11 +248,9 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
  * @param int $donor_id
  * @param int $form_id
  *
- * @return string
+ * @return WP_Comment/array
  */
 function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
-	$comment_content = '';
-
 	$comment_args = array(
 		'post_id'    => 0,
 		'orderby'    => 'comment_ID',
@@ -278,9 +276,5 @@ function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	$comment = current( give_get_donor_donation_comments( $donor_id, $comment_args ) );
 
-	if ( $comment instanceof WP_Comment ) {
-		$comment_content = esc_attr( $comment->comment_content );
-	}
-
-	return $comment_content;
+	return $comment;
 }
