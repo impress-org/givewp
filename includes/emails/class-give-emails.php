@@ -309,23 +309,7 @@ class Give_Emails {
 		// Email tag.
 		$message = str_replace( '{email}', $message, $body );
 
-		// Email logo tag.
-		$header_img = give_get_meta( $this->form_id, '_give_email_logo', true );
-		$header_img = $this->form_id ? $header_img : give_get_option( 'email_logo', '' );
-
-		// Fetch correct header image for preview and sening email.
-		if ( ! $this->form_id && isset( $_GET['form_id'] ) ) {
-			$form_id       = give_clean( $_GET['form_id'] );
-			$email_options = give_get_meta( $form_id, '_give_email_options', true );
-
-			if ( 'enabled' === $email_options ) {
-				$header_img = give_get_meta( $form_id, '_give_email_logo', true );
-			}
-
-			if ( 'global' === $email_options ) {
-				$header_img = give_get_option( 'email_logo', '' );
-			}
-		}
+		$header_img = Give_Email_Notification_Util::get_email_logo( $this->form_id );
 
 		if ( ! empty( $header_img ) ) {
 			$header_img = sprintf(
@@ -335,7 +319,7 @@ class Give_Emails {
 			);
 		}
 
-		$message    = str_replace( '{email_logo}', $header_img, $message );
+		$message  = str_replace( '{email_logo}', $header_img, $message );
 
 		return apply_filters( 'give_email_message', $message, $this );
 	}
