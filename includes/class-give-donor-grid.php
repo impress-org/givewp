@@ -144,6 +144,12 @@ class Give_Donor_Wall {
 		// Replace donation with purchase because donor table has that prefix in column name.
 		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array( 'purchase', 'value' ), $atts['orderby'] );
 
+		// Add fallback orderby.
+		$donor_args['orderby'] = array(
+			$donor_args['orderby'] => $donor_args['order'],
+			'date_created'         => 'DESC'
+		);
+
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
 		$donors      = $donor_query->get_donors();
