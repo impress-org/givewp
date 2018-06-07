@@ -251,7 +251,7 @@ class GiveConfirmModal extends GiveModal {
 }
 
 /**
- * This class will handle confirm modal
+ * This class will handle Form modal
  *
  * @since 2.1.0
  */
@@ -275,7 +275,7 @@ class GiveFormModal extends GiveModal {
 	 * @since 2.1.0
 	 * @private
 	 */
-	static __confirmPopup() {
+	static __submitPopup() {
 		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
 			jQuery.magnificPopup.instance.st.successConfirm({
 				el: jQuery.magnificPopup.instance.st.el,
@@ -289,6 +289,6 @@ class GiveFormModal extends GiveModal {
  */
 window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup);
 window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup);
-window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveConfirmModal.__confirmPopup);
+window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup);
 
 export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal};

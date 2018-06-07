@@ -9,6 +9,8 @@ jQuery( document ).ready( function( $ ) {
 
 		e.preventDefault();
 
+		let deactivation_link = $( this ).attr( 'href' );
+
 		// AJAX call to render the deactivation survey form.
 		$.ajax({
 			url: ajaxurl,
@@ -24,24 +26,30 @@ jQuery( document ).ready( function( $ ) {
 
 				modalContent:{
 					desc: response,
-					cancelBtnTitle: 'Cancel',
-					confirmBtnTitle: 'Submit & Deactivate',
+					cancelBtnTitle: give_vars.cancel,
+					confirmBtnTitle: give_vars.submit_and_deactivate,
 				},
 
-				successConfirm: function ( args ) {
+				successConfirm: function( args ) {
 
 					// Deactivation Error admin notice.
 					let deactivation_error = $( '.deactivation-error' );
+					let continue_flag = true;
+
+					if ( deactivation_error.length > 0 ) {
+
+						continue_flag = false;
+					}
 
 					// If no radio button is selected then throw error.
 					if ( 0 === $( 'input[name="give-survey-radios"]:checked' ).length && 0 === deactivation_error.length ) {
 						$( '.deactivation-survey-form' ).append( `
 							<div class="notice notice-error deactivation-error">
-								<strong>Error: </strong>Please select at least one option.
+								${give_vars.deactivation_no_option_selected}
 							</div>
 						`);
 
-						return;
+						continue_flag = false;
 					}
 
 					/* If a radio button is assosciated with additional field
@@ -53,31 +61,46 @@ jQuery( document ).ready( function( $ ) {
 						.find( 'input, textarea' );
 
 					if ( 0 < user_reason_field.length && ! user_reason_field.val() && 0 === deactivation_error.length ) {
+
 						$( '.deactivation-survey-form' ).append( `
 							<div class="notice notice-error deactivation-error">
-								<strong>Error: </strong>Please fill the field.
+								${give_vars.please_fill_field}
 							</div>
 						`);
 
-						return;
+						continue_flag = false;
+
+					} else if ( 0 < user_reason_field.length && user_reason_field.val() ) {
+
+						deactivation_error.remove();
+
+						continue_flag = true;
 					}
 
 					/**
 					 * If form is properly filled, then serialize form data and
 					 * pass it to the AJAX callback for processing.
 					 */
-					let form_data = $('.deactivation-survey-form').serialize();
+					if ( continue_flag ) {
 
-					$.ajax({
-						url: ajaxurl,
-						type: 'POST',
-						data: {
-							'action': 'deactivation_form_submit',
-							'form-data': form_data,
-						}
-					}).done( function( response ) {
+						let form_data = $('.deactivation-survey-form').serialize();
 
-					});
+						$.ajax({
+							url: ajaxurl,
+							type: 'POST',
+							data: {
+								'action': 'deactivation_form_submit',
+								'form-data': form_data,
+							}
+						}).done( function( response ) {
+
+							if ( response.success ) {
+								jQuery.magnificPopup.close();
+								window.location.replace( deactivation_link );
+							}
+
+						});
+					}
 				}
 			}).render();
 		});

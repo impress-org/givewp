@@ -417,7 +417,7 @@ function give_get_recently_activated_addons() {
 /**
  * Renders the Give Deactivation Survey Form.
  *
- * @since 2.1.4
+ * @since 2.2
  */
 function give_deactivation_popup() {
 	ob_start();
@@ -514,6 +514,12 @@ function give_deactivation_popup() {
 				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
 			</div>
 		</div>
+		<?php
+		$current_user       = wp_get_current_user();
+		$current_user_email = $current_user->user_email;
+		?>
+		<input type="hidden" name="current-user-email" value="<?php echo $current_user_email; ?>">
+		<input type="hidden" name="current-site-url" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>">
 	</form>
 
 	<?php
@@ -526,24 +532,40 @@ add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
 
 /**
  * Ajax callback after the deactivation survey form has been submitted.
+ *
+ * @since 2.2
  */
 function give_deactivation_form_submit() {
-	$reasons = array(
-		'',
-		"I'm only deactivating temporarily",
-		'I no longer need the plugin',
-		'I found a better plugin',
-		'I only needed the plugin for a short period',
-		'The plugin broke my site',
-		'The plugin suddenly stopped working',
-		'Other'
-	);
 
 	$form_data   = give_clean( wp_parse_args( $_POST['form-data'] ) );
 
 	$radio_value = isset( $form_data['give-survey-radios'] ) ? $form_data['give-survey-radios'] : 0;
 
 	$user_reason = isset( $form_data['user-reason'] ) ? $form_data['user-reason'] : '';
+
+	$user_email  = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
+
+	$site_url    = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
+
+	$response    = wp_remote_post(
+		'http://give.local/wp-json/give/v1/survey/',
+		array(
+			'body' => array(
+				'radio_value'        => $radio_value,
+				'user_reason'        => $user_reason,
+				'current_user_email' => $user_email,
+				'site_url'           => $site_url,
+			)
+		)
+	);
+
+	$response = wp_remote_retrieve_body( $response );
+
+	if ( 'true' === $response ) {
+		wp_send_json_success();
+	} else {
+		wp_send_json_error();
+	}
 
 	wp_die();
 }
