@@ -313,6 +313,20 @@ class Give_Emails {
 		$header_img = give_get_meta( $this->form_id, '_give_email_logo', true );
 		$header_img = $this->form_id ? $header_img : give_get_option( 'email_logo', '' );
 
+		// Fetch correct header image for preview and sening email.
+		if ( ! $this->form_id && isset( $_GET['form_id'] ) ) {
+			$form_id       = give_clean( $_GET['form_id'] );
+			$email_options = give_get_meta( $form_id, '_give_email_options', true );
+
+			if ( 'enabled' === $email_options ) {
+				$header_img = give_get_meta( $form_id, '_give_email_logo', true );
+			}
+
+			if ( 'global' === $email_options ) {
+				$header_img = give_get_option( 'email_logo', '' );
+			}
+		}
+
 		if ( ! empty( $header_img ) ) {
 			$header_img = sprintf(
 				'<div id="template_header_image"><p style="margin-top:0;"><img style="max-width:450px;" src="%1$s" alt="%2$s" /></p></div>',
