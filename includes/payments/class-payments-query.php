@@ -512,18 +512,25 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
+
+		$args = array();
+
 		if ( is_numeric( $this->args['user'] ) ) {
-			$user_key = '_give_payment_donor_id';
-		} else {
-			$user_key = '_give_payment_donor_email';
+			// Backward compatibility: user donor param to get payment attached to donor instead of user
+			$donor_id = Give()->donors->get_column_by( 'id', is_numeric( $this->args['user'] ) ? 'user_id' : 'email', $this->args['user'] );
+
+			$args = array(
+				'key'   => '_give_payment_donor_id',
+				'value' => absint( $donor_id ),
+			);
+		} elseif ( is_email( $this->args['user'] ) ) {
+			$args = array(
+				'key'   => '_give_payment_donor_email',
+				'value' => $this->args['user'],
+			);
 		}
 
-		$this->__set(
-			'meta_query', array(
-				'key'   => $user_key,
-				'value' => $this->args['user'],
-			)
-		);
+		$this->__set( 'meta_query',$args );
 	}
 
 	/**
