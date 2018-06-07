@@ -519,15 +519,16 @@ class Give_Donors_Query {
 				$this->args['give_forms'] = explode( ',', $this->args['give_forms'] );
 			}
 
-			$form_ids = implode( ',', array_map( 'intval', $this->args['give_forms'] ) );
+			$form_ids        = implode( ',', array_map( 'intval', $this->args['give_forms'] ) );
+			$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
 			$query = $wpdb->prepare(
 				"
 			SELECT DISTINCT meta_value as donor_id
-			FROM {$wpdb->paymentmeta}
+			FROM {$wpdb->donationmeta}
 			WHERE meta_key=%s
-			AND payment_id IN(
-				SELECT payment_id
+			AND {$donation_id_col} IN(
+				SELECT {$donation_id_col}
 				FROM {$wpdb->paymentmeta}
 				WHERE meta_key=%s
 				AND meta_value IN (%s)
@@ -544,6 +545,8 @@ class Give_Donors_Query {
 				$donor_ids = wp_list_pluck( $donor_ids, 'donor_id' );
 				$donor_ids = implode( ',', array_map( 'intval', $donor_ids ) );
 				$where     .= "AND {$this->table_name}.id IN ({$donor_ids})";
+			} else {
+				$where .= "AND {$this->table_name}.id IN ('0')";
 			}
 		}
 
