@@ -2106,7 +2106,7 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
 
 		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
 		if ( 'global' !== $form_title_prefix ) {
-			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes', true );
 
 			// Check whether the form based title prefixes exists or not.
 			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
