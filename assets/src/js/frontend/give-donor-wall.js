@@ -9,17 +9,7 @@ window.addEventListener('load', function () {
 					type: 'inline'
 				},
 				mainClass: 'give-modal',
-				callbacks: {
-					open: function() {
-						let span = this.content[0].getElementsByTagName('span');
-
-						// span[0].style.display = 'none';
-						// span[1].style.display = 'inline';
-
-						console.log(this.content[0], span);
-					},
-					close: function() {}
-				}
+				closeOnBgClick: false
 			})
 		});
 	});
