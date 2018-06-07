@@ -565,7 +565,6 @@ function give_is_func_disabled( $function ) {
 	return in_array( $function, $disabled );
 }
 
-
 /**
  * Give Newsletter
  *
@@ -580,9 +579,9 @@ function give_get_newsletter() {
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
 		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-		      target="_blank" novalidate>
+		      target="_blank">
 			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+				<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
 			</div>
 
 			<table class="form-table give-newsletter-form">
@@ -592,13 +591,13 @@ function give_get_newsletter() {
 						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
 						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-						       class="required email" value="">
+						       class="required email" value="" required>
 					</td>
 					<td>
 						<label for="mce-FNAME"
 						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="" required>
 					</td>
 					<td>
 						<label for="mce-LNAME"
@@ -621,30 +620,34 @@ function give_get_newsletter() {
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ($) {
-			window.fnames = new Array();
-			window.ftypes = new Array();
-			fnames[0] = 'EMAIL';
-			ftypes[0] = 'email';
-			fnames[1] = 'FNAME';
-			ftypes[1] = 'text';
-			fnames[2] = 'LNAME';
-			ftypes[2] = 'text';
+	<script type='text/javascript'>(
+			function ( $ ) {
+				window.fnames = new Array();
+				window.ftypes = new Array();
+				fnames[0] = 'EMAIL';
+				ftypes[0] = 'email';
+				fnames[1] = 'FNAME';
+				ftypes[1] = 'text';
+				fnames[2] = 'LNAME';
+				ftypes[2] = 'text';
 
-			//Successful submission
-			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
+				$( 'form[name="mc-embedded-subscribe-form"]' ).removeAttr( 'novalidate' );
 
-				var email_field = $(this).find('#mce-EMAIL').val();
-				if (!email_field) {
-					return false;
-				}
-				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
-				$(this).find('.give-newsletter-form').hide();
+				//Successful submission
+				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function () {
 
-			});
+					var email_field = $( this ).find( '#mce-EMAIL' ).val();
+					if ( ! email_field ) {
+						return false;
+					}
+					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+					$( this ).find( '.give-newsletter-form' ).hide();
 
-		}(jQuery));
-		var $mcj = jQuery.noConflict(true);
+				} );
+
+			}( jQuery )
+		);
+		var $mcj = jQuery.noConflict( true );
 
 
 	</script>
