@@ -128,6 +128,7 @@ class Give_Roles {
 			$wp_roles->add_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->add_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_manager', 'manage_give_settings' );
+			$wp_roles->add_cap( 'give_manager', 'view_give_payments' );
 
 			$wp_roles->add_cap( 'administrator', 'view_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'view_give_sensitive_data' );
