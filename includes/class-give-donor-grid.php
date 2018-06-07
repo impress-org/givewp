@@ -136,10 +136,13 @@ class Give_Donor_Wall {
 			);
 		}
 
-		// show donor who donated to specific form.
+		// Show donor who donated to specific form.
 		if ( $atts['form_id'] ) {
 			$donor_args['give_forms'] = $atts['form_id'];
 		}
+
+		// Replace donation with purchase because donor table has that prefix in column name.
+		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array( 'purchase', 'value' ), $atts['orderby'] );
 
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
