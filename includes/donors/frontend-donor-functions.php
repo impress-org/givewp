@@ -250,7 +250,7 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
  *
  * @return WP_Comment/array
  */
-function get_donor_latest_comment( $donor_id, $form_id = 0 ) {
+function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 	$comment_args = array(
 		'post_id'    => 0,
 		'orderby'    => 'comment_ID',

@@ -57,7 +57,7 @@ $atts          = $args[2]; // Shortcode attributes.
 	</div>
 
 	<?php
-	$comment = get_donor_latest_comment( $donor->id, $atts['form_id'] );
+	$comment = give_get_donor_latest_comment( $donor->id, $atts['form_id'] );
 
 	if ( true === $atts['show_comments'] && absint( $atts['comment_length'] ) && $comment instanceof WP_Comment ) : ?>
 		<div class="give-donor__content">
