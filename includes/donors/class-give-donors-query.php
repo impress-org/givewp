@@ -454,7 +454,7 @@ class Give_Donors_Query {
 
 		// Create query.
 		foreach ( $ordersby as $orderby => $order ) {
-			switch ( $table_columns[ $this->args['orderby'] ] ) {
+			switch ( $table_columns[ $orderby ] ) {
 				case '%d':
 				case '%f':
 					$query[] = "{$this->table_name}.{$orderby}+0 {$order}";
