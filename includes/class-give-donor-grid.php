@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 2.2.0
  */
-class Give_Donor_Wall{
+class Give_Donor_Wall {
 	/**
 	 * Instance.
 	 *
@@ -104,6 +104,57 @@ class Give_Donor_Wall{
 
 		$give_settings = give_get_settings();
 
+		$atts       = $this->parse_atts( $atts );
+		$donor_args = $this->get_donor_query( $atts );
+
+		// Query to output donation forms.
+		$donor_query = new Give_Donors_Query( $donor_args );
+		$donors      = $donor_query->get_donors();
+		$html        = '';
+
+		if ( $donors ) {
+
+			ob_start();
+
+			foreach ( $donors as $donor ) {
+				// Give/templates/shortcode-donor-grid.php.
+				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
+			}
+
+			$html = ob_get_clean();
+
+			// Return only donor html.
+			if (
+				isset( $atts['only_donor_html'] )
+				&& wp_doing_ajax()
+				&& $atts['only_donor_html']
+			) {
+				return $html;
+			}
+		}
+
+		$html = $html
+			? sprintf(
+				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
+				esc_attr( $atts['columns'] ),
+				$html
+			)
+			: '';
+
+		return $html;
+	}
+
+	/**
+	 * Parse shortcode attributes
+	 *
+	 * @since 2.20
+	 * @access public
+	 *
+	 * @param $atts
+	 *
+	 * @return array
+	 */
+	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			array(
 				'donors_per_page' => 20,
@@ -143,43 +194,7 @@ class Give_Donor_Wall{
 			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
 		}
 
-		$donor_args = $this->get_donor_query( $atts );
-
-		// Query to output donation forms.
-		$donor_query = new Give_Donors_Query( $donor_args );
-		$donors      = $donor_query->get_donors();
-		$html        = '';
-
-		if ( $donors ) {
-
-			ob_start();
-
-			foreach ( $donors as $donor ) {
-				// Give/templates/shortcode-donor-grid.php.
-				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
-			}
-
-			$html = ob_get_clean();
-
-			// Return only donor html.
-			if (
-				isset( $atts['only_donor_html'] )
-				&& wp_doing_ajax()
-				&& $atts['only_donor_html']
-			) {
-				return $html;
-			}
-		}
-
-		$html = $html
-			? sprintf(
-				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
-				esc_attr( $atts['columns'] ),
-				$html
-			)
-			: '';
-
-		return $html;
+		return $atts;
 	}
 
 	/**
