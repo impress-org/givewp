@@ -11,10 +11,10 @@ window.addEventListener(
 								{
 									items: {
 										src: this.parentNode.parentNode.parentNode.parentNode.getElementsByClassName( 'give-donor__comment' )[0].innerHTML,
-										type: 'inline'
+										type: 'inline',
 									},
-									mainClass: 'give-modal',
-									closeOnBgClick: false
+									mainClass: 'give-modal give-donor-wall-modal',
+									closeOnBgClick: false,
 								}
 							)
 						}
