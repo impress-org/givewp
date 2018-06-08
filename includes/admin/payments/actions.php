@@ -318,22 +318,44 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Update comment.
-	if ( isset( $data['give_comment'] ) && give_is_donor_thought_field_enabled( $payment->form_id ) ) {
-		$is_update_comment_meta = ! $comment_id;
+	if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) {
+		$data['give_comment'] = trim( $data['give_comment'] );
 
-		$comment_id = give_insert_donor_donation_comment(
-			$payment->ID,
-			$payment->donor_id,
-			trim( $data['give_comment'] ),
-			array(
-				'comment_ID'           => $comment_id,
+		if( empty( $data['give_comment'] ) ){
+			// Delete comment if empty
+			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
+
+		}else{
+
+			// Update/Insert comment.
+			$is_update_comment_meta = ! $comment_id;
+
+			$comment_args           = array(
 				'comment_author_email' => $payment->email
-			)
-		);
+			);
 
-		if( $is_update_comment_meta ) {
-			update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			if ( $comment_id ) {
+				$comment_args['comment_ID'] = $comment_id;
+			}
+
+			$comment_id = give_insert_donor_donation_comment(
+				$payment->ID,
+				$payment->donor_id,
+				$data['give_comment'],
+				$comment_args
+			);
+
+
+			if( $is_update_comment_meta ) {
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			}
 		}
+
+		$donor_has_comment = empty( $data['give_comment'] )
+			? ( empty( give_get_donor_latest_comment( $payment->donor_id ) ) ? '0' : '1' )
+			: '1';
+
+		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
 	}
 
 	/**
