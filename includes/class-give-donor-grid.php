@@ -93,6 +93,7 @@ class Give_Donor_Wall {
 				'show_time'       => true,
 				'show_comments'   => true,
 				'comment_length'  => 20,
+				'only_comments'   => true,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
 				'avatar_size'     => 60,
 				'orderby'         => 'donation_count',
@@ -149,6 +150,16 @@ class Give_Donor_Wall {
 			$donor_args['orderby'] => $donor_args['order'],
 			'date_created'         => 'DESC'
 		);
+
+		// Set payment query.
+		if ( isset( $atts['only_comments'] ) ) {
+			$donor_args['meta_query'] = array(
+				array(
+					'key'   => '_give_has_comment',
+					'value' => '1'
+				)
+			);
+		}
 
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
