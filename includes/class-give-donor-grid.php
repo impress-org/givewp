@@ -159,7 +159,7 @@ class Give_Donor_Wall {
 			array(
 				'donors_per_page' => 20,
 				'form_id'         => 0,
-				'paged'           => true,
+				'paged'           => 1,
 				'ids'             => '',
 				'columns'         => 'best-fit',
 				'show_avatar'     => true,
@@ -208,12 +208,10 @@ class Give_Donor_Wall {
 	 * @return array
 	 */
 	public function get_donor_query( $atts ) {
-		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-
 		// Set default form query args.
 		$donor_args = array(
 			'number'  => $atts['donors_per_page'],
-			'offset'  => $atts['donors_per_page'] * ( $paged - 1 ),
+			'offset'  => $atts['donors_per_page'] * ( $atts['paged'] - 1 ),
 			'orderby' => $atts['orderby'],
 			'order'   => $atts['order'],
 		);
