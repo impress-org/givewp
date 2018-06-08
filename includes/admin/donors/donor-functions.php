@@ -203,7 +203,7 @@ function give_delete_donor_and_related_donation( $donor, $args = array() ) {
 
 		} else {
 			foreach ( $donation_ids as $donation_id ) {
-				give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
+				give_update_payment_meta( $donation_id, '_give_payment_donor_id', 0 );
 			}
 		}
 
