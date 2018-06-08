@@ -105,7 +105,8 @@ class Give_Donor_Wall {
 		$give_settings = give_get_settings();
 
 		$atts   = $this->parse_atts( $atts );
-		$donors = $this->get_donors( $atts );
+		$donor_query = $this->get_donor_query_atts( $atts );
+		$donors = $this->get_donors( $donor_query );
 		$html   = '';
 
 		if ( $donors ) {
@@ -129,11 +130,24 @@ class Give_Donor_Wall {
 			}
 		}
 
+		$next_donor_query           = $donor_query;
+		$next_donor_query['paged']  = $next_donor_query['paged'] + 1;
+		$next_donor_query['fields'] = 'id';
+
+		$more_btn_html = '';
+		if ( $this->get_donors( $next_donor_query ) ) {
+			$more_btn_html = sprintf(
+				'<button class="give-donor__load_more">%s</button>',
+				$atts['loadmore_text']
+			);
+		}
+
 		$html = $html
 			? sprintf(
-				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
+				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div>%3$s</div>',
 				esc_attr( $atts['columns'] ),
-				$html
+				$html,
+				$more_btn_html
 			)
 			: '';
 
@@ -143,7 +157,7 @@ class Give_Donor_Wall {
 	/**
 	 * Parse shortcode attributes
 	 *
-	 * @since 2.20
+	 * @since  2.20
 	 * @access public
 	 *
 	 * @param $atts
@@ -166,6 +180,7 @@ class Give_Donor_Wall {
 				'comment_length'  => 20,
 				'only_comments'   => true,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
+				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
 				'avatar_size'     => 60,
 				'orderby'         => 'donation_count',
 				'order'           => 'DESC',
@@ -207,7 +222,7 @@ class Give_Donor_Wall {
 		// Set default form query args.
 		$donor_args = array(
 			'number'  => $atts['donors_per_page'],
-			'offset'  => $atts['donors_per_page'] * ( $atts['paged'] - 1 ),
+			'paged'   => $atts['paged'],
 			'orderby' => $atts['orderby'],
 			'order'   => $atts['order'],
 		);
@@ -253,15 +268,15 @@ class Give_Donor_Wall {
 	/**
 	 * Get donors
 	 *
-	 * @since 2.2.0
+	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param array $atts
+	 * @param array $donor_query
 	 *
 	 * @return array
 	 */
-	public function get_donors( $atts ){
-		$donor_query = new Give_Donors_Query( $this->get_donor_query_atts( $atts ) );
+	public function get_donors( $donor_query ) {
+		$donor_query = new Give_Donors_Query( $donor_query );
 		$donors      = $donor_query->get_donors();
 
 		return $donors;
