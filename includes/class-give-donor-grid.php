@@ -14,31 +14,55 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 /**
  * Give_Donor_Wall Class
  *
  * This class handles donors.
  *
- * @since 2.1
+ * @since 2.2.0
  */
-class Give_Donor_Wall {
+class Give_Donor_Wall{
+	/**
+	 * Instance.
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 * @var
+	 */
+	static private $instance;
 
 	/**
-	 * Class Constructor
+	 * Singleton pattern.
 	 *
-	 * Set up the Give Donors Gravatars Class.
-	 *
-	 * @since  2.1
-	 * @access public
+	 * @since  2.2.0
+	 * @access private
 	 */
-	public function __construct() {
-		$this->setup_actions();
+	private function __construct() {
+	}
+
+
+	/**
+	 * Get instance.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 * @return Give_Donor_Wall
+	 */
+	public static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+
+			self::$instance->setup_actions();
+		}
+
+		return self::$instance;
 	}
 
 	/**
 	 * Setup the default hooks and actions
 	 *
-	 * @since  2.1
+	 * @since  2.2.0
 	 *
 	 * @return void
 	 */
@@ -52,7 +76,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
 	 *                                   Optional. Attributes of the form grid shortcode.
@@ -119,6 +143,56 @@ class Give_Donor_Wall {
 			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
 		}
 
+		$donor_args = $this->get_donor_query( $atts );
+
+		// Query to output donation forms.
+		$donor_query = new Give_Donors_Query( $donor_args );
+		$donors      = $donor_query->get_donors();
+		$html        = '';
+
+		if ( $donors ) {
+
+			ob_start();
+
+			foreach ( $donors as $donor ) {
+				// Give/templates/shortcode-donor-grid.php.
+				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
+			}
+
+			$html = ob_get_clean();
+
+			// Return only donor html.
+			if (
+				isset( $atts['only_donor_html'] )
+				&& wp_doing_ajax()
+				&& $atts['only_donor_html']
+			) {
+				return $html;
+			}
+		}
+
+		$html = $html
+			? sprintf(
+				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
+				esc_attr( $atts['columns'] ),
+				$html
+			)
+			: '';
+
+		return $html;
+	}
+
+	/**
+	 * Get donor query from shortcode attribiutes
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	public function get_donor_query( $atts ) {
 		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 
 		// Set default form query args.
@@ -143,7 +217,10 @@ class Give_Donor_Wall {
 		}
 
 		// Replace donation with purchase because donor table has that prefix in column name.
-		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array( 'purchase', 'value' ), $atts['orderby'] );
+		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array(
+			'purchase',
+			'value'
+		), $atts['orderby'] );
 
 		// Add fallback orderby.
 		$donor_args['orderby'] = array(
@@ -161,36 +238,9 @@ class Give_Donor_Wall {
 			);
 		}
 
-		// Query to output donation forms.
-		$donor_query = new Give_Donors_Query( $donor_args );
-		$donors      = $donor_query->get_donors();
-		$html = '';
-
-		if ( $donors ) {
-
-			ob_start();
-
-			foreach ( $donors as $donor ) {
-				// Give/templates/shortcode-donor-grid.php.
-				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
-			}
-
-			$html = ob_get_clean();
-		}
-
-		$html = $html
-			? sprintf(
-				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
-				esc_attr( $atts['columns'] ),
-				$html
-			)
-			: '';
-
-
-
-		return $html;
+		return $donor_args;
 	}
 }
 
-
-new Give_Donor_Wall();
+//Initialize shortcode.
+Give_Donor_Wall::get_instance();
