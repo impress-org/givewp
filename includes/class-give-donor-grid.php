@@ -104,13 +104,9 @@ class Give_Donor_Wall {
 
 		$give_settings = give_get_settings();
 
-		$atts       = $this->parse_atts( $atts );
-		$donor_args = $this->get_donor_query( $atts );
-
-		// Query to output donation forms.
-		$donor_query = new Give_Donors_Query( $donor_args );
-		$donors      = $donor_query->get_donors();
-		$html        = '';
+		$atts   = $this->parse_atts( $atts );
+		$donors = $this->get_donors( $atts );
+		$html   = '';
 
 		if ( $donors ) {
 
@@ -207,7 +203,7 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	public function get_donor_query( $atts ) {
+	public function get_donor_query_atts( $atts ) {
 		// Set default form query args.
 		$donor_args = array(
 			'number'  => $atts['donors_per_page'],
@@ -252,6 +248,23 @@ class Give_Donor_Wall {
 		}
 
 		return $donor_args;
+	}
+
+	/**
+	 * Get donors
+	 *
+	 * @since 2.2.0
+	 * @access public
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	public function get_donors( $atts ){
+		$donor_query = new Give_Donors_Query( $this->get_donor_query_atts( $atts ) );
+		$donors      = $donor_query->get_donors();
+
+		return $donors;
 	}
 }
 
