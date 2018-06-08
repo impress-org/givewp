@@ -164,49 +164,32 @@ class Give_Donor_Wall {
 		// Query to output donation forms.
 		$donor_query = new Give_Donors_Query( $donor_args );
 		$donors      = $donor_query->get_donors();
+		$html = '';
 
 		if ( $donors ) {
 
 			ob_start();
-
-			echo '<div class="give-wrap">';
-			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
 			foreach ( $donors as $donor ) {
 				// Give/templates/shortcode-donor-grid.php.
 				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
 			}
 
-			echo '</div><!-- .give-grid -->';
-
-			if ( false !== $atts['paged'] ) {
-
-				$_donor_query['number'] = - 1;
-				$_donor_query['offset'] = 0;
-				$donor_count            = count( Give()->donors->get_donors( $_donor_query ) );
-
-				$paginate_args = array(
-					'current'   => max( 1, get_query_var( 'paged' ) ),
-					'total'     => ceil( $donor_count / $atts['donors_per_page'] ),
-					'show_all'  => false,
-					'end_size'  => 1,
-					'mid_size'  => 2,
-					'prev_next' => true,
-					'prev_text' => __( '« Previous', 'give' ),
-					'next_text' => __( 'Next »', 'give' ),
-					'type'      => 'plain',
-					'add_args'  => false,
-				);
-
-				printf( '<div class="give-page-numbers">%s</div>', paginate_links( $paginate_args ) );
-				echo '</div><!-- .give-wrap -->';
-			}
-
-			return ob_get_clean();
+			$html = ob_get_clean();
 		}
+
+		$html = $html
+			? sprintf(
+				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div></div>',
+				esc_attr( $atts['columns'] ),
+				$html
+			)
+			: '';
+
+
+
+		return $html;
 	}
-
-
 }
 
 
