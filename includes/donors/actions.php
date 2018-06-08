@@ -22,6 +22,7 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+		Give()->donor_meta->update_meta( $donation_data['user_info']['id'], '_give_has_comment', '1' );
 	}
 
 	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
