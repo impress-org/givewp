@@ -514,12 +514,26 @@ function give_deactivation_popup() {
 				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
 			</div>
 		</div>
+
+		<div id="survey-and-delete-data">
+			<p>
+				<label>
+					<input type="checkbox" name="confirm_reset_store" value="1">
+					<?php esc_html_e( 'Would you like to delete all Give data?', 'give' ); ?>
+				</label>
+				<section class="give-field-description">
+					<?php esc_html_e( 'By default the custom roles, Give options, and database entries are not deleted when you deactivate Give. If you are deleting Give completely from your website and want those items removed as well check this option. Note: This will permanently delete all Give data from your database.', 'give' ); ?>
+				</section>
+			</p>
+		</div>
 		<?php
 		$current_user       = wp_get_current_user();
 		$current_user_email = $current_user->user_email;
 		?>
 		<input type="hidden" name="current-user-email" value="<?php echo $current_user_email; ?>">
 		<input type="hidden" name="current-site-url" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>">
+		<input type="hidden" name="give-export-class" value="Give_Tools_Reset_Stats">
+		<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 	</form>
 
 	<?php
@@ -539,14 +553,24 @@ function give_deactivation_form_submit() {
 
 	$form_data   = give_clean( wp_parse_args( $_POST['form-data'] ) );
 
+	// Get the selected radio value.
 	$radio_value = isset( $form_data['give-survey-radios'] ) ? $form_data['give-survey-radios'] : 0;
 
+	// Get the reason if any radio button has an optional text field.
 	$user_reason = isset( $form_data['user-reason'] ) ? $form_data['user-reason'] : '';
 
+	// Get the email of the user who deactivated the plugin.
 	$user_email  = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
 
+	// Get the URL of the website on which Give plugin is being deactivated.
 	$site_url    = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
 
+	// Get the value of the checkbox for deleting Give's data.
+	$delete_data = isset( $form_data['confirm_reset_store'] ) ? $form_data['confirm_reset_store'] : '';
+
+	/**
+	 * Make a POST request to the endpoint to send the survey data.
+	 */
 	$response    = wp_remote_post(
 		'http://give.local/wp-json/give/v1/survey/',
 		array(
@@ -559,10 +583,23 @@ function give_deactivation_form_submit() {
 		)
 	);
 
+	// Check if the data is sent and stored correctly.
 	$response = wp_remote_retrieve_body( $response );
 
 	if ( 'true' === $response ) {
-		wp_send_json_success();
+		if ( '1' === $delete_data ) {
+			wp_send_json_success(
+				array(
+					'delete_data' => true,
+				)
+			);
+		} else {
+			wp_send_json_success(
+				array(
+					'delete_data' => false,
+				)
+			);
+		}
 	} else {
 		wp_send_json_error();
 	}

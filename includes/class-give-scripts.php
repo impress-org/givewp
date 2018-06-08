@@ -240,7 +240,7 @@ class Give_Scripts {
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'deactivation_no_option_selected'   => __( 'Error: Please select at least one option.', 'give' ),
-			'submit_and_deactivate'             => __( 'Submit and Deactivate.', 'give' ),
+			'submit_and_deactivate'             => __( 'Submit and Deactivate', 'give' ),
 			'please_fill_field'                 => __( 'Error: Please fill the field.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
