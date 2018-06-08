@@ -70,6 +70,9 @@ class Give_Donor_Wall {
 
 		add_shortcode( 'give_donor_grid', array( $this, 'donor_grid_shortcode' ) );
 
+		add_action( 'wp_ajax_give_get_donor_comments', array( $this, 'ajax_handler' ) );
+		add_action( 'wp_ajax_nopriv_give_get_donor_comments', array( $this, 'ajax_handler' ) );
+
 	}
 
 
@@ -104,10 +107,10 @@ class Give_Donor_Wall {
 
 		$give_settings = give_get_settings();
 
-		$atts   = $this->parse_atts( $atts );
+		$atts        = $this->parse_atts( $atts );
 		$donor_query = $this->get_donor_query_atts( $atts );
-		$donors = $this->get_donors( $donor_query );
-		$html   = '';
+		$donors      = $this->get_donors( $donor_query );
+		$html        = '';
 
 		if ( $donors ) {
 
@@ -137,7 +140,8 @@ class Give_Donor_Wall {
 		$more_btn_html = '';
 		if ( $this->get_donors( $next_donor_query ) ) {
 			$more_btn_html = sprintf(
-				'<button class="give-donor__load_more">%s</button>',
+				'<button class="give-donor__load_more" data-shortcode="%s">%s</button>',
+				urlencode( http_build_query( $atts ) ),
 				$atts['loadmore_text']
 			);
 		}
@@ -167,7 +171,7 @@ class Give_Donor_Wall {
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'donors_per_page' => 20,
+				'donors_per_page' => 1,
 				'form_id'         => 0,
 				'paged'           => 1,
 				'ids'             => '',
@@ -185,16 +189,17 @@ class Give_Donor_Wall {
 				'orderby'         => 'donation_count',
 				'order'           => 'DESC',
 				'hide_empty'      => true,
+				'only_donor_html' => false // only for internal use
 			), $atts
 		);
 
 		// Validate integer attributes.
-		$atts['donors_per_page'] = intval( $atts['donors_per_page'] );
+		$atts['donors_per_page'] = absint( $atts['donors_per_page'] );
 
 		// Validate boolean attributes.
 		$boolean_attributes = array(
-			'paged',
 			'show_avatar',
+			'show_comments',
 			'show_name',
 			'show_total',
 			'show_time',
@@ -202,6 +207,12 @@ class Give_Donor_Wall {
 		);
 
 		foreach ( $boolean_attributes as $att ) {
+			// Convert numeric to boolean.
+			// It will prevent condition check against boolean value.
+			if ( is_numeric( $atts[ $att ] ) ) {
+				$atts[ $att ] = (bool) $atts[ $att ];
+			}
+
 			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
 		}
 
@@ -280,6 +291,34 @@ class Give_Donor_Wall {
 		$donors      = $donor_query->get_donors();
 
 		return $donors;
+	}
+
+
+	/**
+	 * Ajax handler
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 */
+	public function ajax_handler() {
+		$shortcode_atts = wp_parse_args( give_clean( urldecode( $_POST['data'] ) ) );
+
+		// Get next page donor comments.
+		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
+		$shortcode_atts['only_donor_html'] = true;
+
+		$donors_comment_html = $this->donor_grid_shortcode( $shortcode_atts );
+
+		// Check if donor comment remaining.
+		$donor_query           = $this->get_donor_query_atts( $shortcode_atts );
+		$donor_query['paged']  = $donor_query['paged'] + 1;
+		$donor_query['fields'] = 'id';
+		$has_donors            = $this->get_donors( $donor_query ) ? 1 : 0;
+
+		wp_send_json( array(
+			'html'      => $donors_comment_html,
+			'remaining' => $has_donors
+		) );
 	}
 }
 
