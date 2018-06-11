@@ -351,5 +351,14 @@
 			}
 		}
 	}
+
+	/*
+	 * Donor comments table
+	 */
+	.comments{
+		td:nth-child(3n){
+			text-align: left;
+		}
+	}
 }
 
