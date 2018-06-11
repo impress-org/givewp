@@ -199,11 +199,13 @@ class Give_Donor_Wall {
 		// Validate boolean attributes.
 		$boolean_attributes = array(
 			'show_avatar',
-			'show_comments',
 			'show_name',
 			'show_total',
 			'show_time',
+			'show_comments',
+			'show_comments',
 			'hide_empty',
+			'only_donor_html'
 		);
 
 		foreach ( $boolean_attributes as $att ) {
