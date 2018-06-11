@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_Forms_Widget extends WP_Widget{
+
 	/**
 	 * The widget class name
 	 *
@@ -62,7 +63,7 @@ class Give_Forms_Widget extends WP_Widget{
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		// Widget Script
-		if ( $hook == 'widgets.php' ) {
+		if ( 'widgets.php' === $hook ) {
 
 			wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		}
@@ -234,4 +235,4 @@ class Give_Forms_Widget extends WP_Widget{
 	}
 }
 
-new Give_Forms_Widget;
+new Give_Forms_Widget();

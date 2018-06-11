@@ -19,7 +19,7 @@ $give_updates = Give_Updates::get_instance();
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
 		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
-		<hr class="wp-header-end"
+		<hr class="wp-header-end">
 
 		<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
 		<?php if ( ! empty( $db_updates ) ) : ?>
@@ -106,7 +106,7 @@ $give_updates = Give_Updates::get_instance();
 						</div>
 						<!-- .inside -->
 					</div><!-- .postbox -->
-				</div>
+				</div> <!-- .post-container -->
 			</div>
 			<?php else: include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php';?>
 		<?php endif; ?>

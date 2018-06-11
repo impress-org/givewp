@@ -124,8 +124,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Company Donations', 'give' ),
-							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'name'    => __( 'Company Field', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name fields on all donation forms? You can enable this option per form as well.', 'give' ),
 							'id'      => 'company_field',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -133,6 +133,28 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 								'required' => __( 'Required', 'give' ),
 								'optional' => __( 'Optional', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Anonymous Donations', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability mark himself/herself anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
+							'id'      => 'anonymous_donation',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Donation Note', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability to add a note to his/her donation? The note will display publicly on the donor wall if they do not select to give anonymously.', 'give' ),
+							'id'      => 'donor_thought',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
 							),
 						),
 						array(

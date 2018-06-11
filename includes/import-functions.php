@@ -403,72 +403,82 @@ function give_import_donations_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
-		'id'          => __( 'Donation ID', 'give' ),
-		'amount'      => array(
+		'id'           => __( 'Donation ID', 'give' ),
+		'amount'       => array(
 			__( 'Donation Amount', 'give' ),
-			__( 'Amount', 'give' )
+			__( 'Amount', 'give' ),
+			__( 'Donation Total', 'give' ),
+			__( 'Total', 'give' ),
 		),
-		'currency'      => array(
+		'currency'     => array(
 			__( 'Donation Currencies', 'give' ),
-			__( 'Currencies', 'give' )
+			__( 'Currencies', 'give' ),
+			__( 'Currencies Code', 'give' ),
+			__( 'Currency Code', 'give' ),
+			__( 'Code', 'give' ),
 		),
-		'post_date'   => array(
+		'post_date'    => array(
 			__( 'Donation Date', 'give' ),
 			__( 'Date', 'give' ),
 		),
-		'first_name'  => array(
+		'first_name'   => array(
 			__( 'Donor First Name', 'give' ),
 			__( 'First Name', 'give' ),
 			__( 'Name', 'give' ),
+			__( 'First', 'give' ),
 		),
-		'last_name'   => array(
+		'last_name'    => array(
 			__( 'Donor Last Name', 'give' ),
 			__( 'Last Name', 'give' ),
+			__( 'Last', 'give' ),
 		),
-		'company_name'   => array(
+		'company_name' => array(
 			__( 'Company Name', 'give' ),
 			__( 'Donor Company Name', 'give' ),
 			__( 'Donor Company', 'give' ),
 			__( 'Company', 'give' ),
 		),
-		'line1'       => array(
+		'line1'        => array(
 			__( 'Address 1', 'give' ),
 			__( 'Address', 'give' ),
 		),
-		'line2'       => __( 'Address 2', 'give' ),
-		'city'        => __( 'City', 'give' ),
-		'state'       => array(
+		'line2'        => __( 'Address 2', 'give' ),
+		'city'         => __( 'City', 'give' ),
+		'state'        => array(
 			__( 'State', 'give' ),
 			__( 'Province', 'give' ),
 			__( 'County', 'give' ),
 			__( 'Region', 'give' ),
 		),
-		'country'     => __( 'Country', 'give' ),
-		'zip'         => array(
+		'country'      => __( 'Country', 'give' ),
+		'zip'          => array(
 			__( 'Zip Code', 'give' ),
 			__( 'Zip', 'give' ),
 			__( 'zipcode', 'give' ),
 			__( 'Postal Code', 'give' ),
 			__( 'Postal', 'give' ),
 		),
-		'email'       => array(
+		'email'        => array(
 			__( 'Donor Email', 'give' ),
-			__( 'Email', 'give' )
+			__( 'Email', 'give' ),
+			__( 'Email Address', 'give' ),
 		),
-		'post_status' => array(
+		'post_status'  => array(
 			__( 'Donation Status', 'give' ),
 			__( 'Status', 'give' ),
 		),
-		'gateway'     => array(
+		'gateway'      => array(
 			__( 'Payment Method', 'give' ),
 			__( 'Method', 'give' ),
+			__( 'Payment Gateway', 'give' ),
+			__( 'Gateway', 'give' ),
 		),
-		'notes'       => __( 'Notes', 'give' ),
-		'mode'        => array(
+		'notes'        => __( 'Notes', 'give' ),
+		'mode'         => array(
 			__( 'Test Mode', 'give' ),
 			__( 'Mode', 'give' ),
 		),
-		'post_meta'   => __( 'Import as Meta', 'give' ),
+		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
 }
 
@@ -510,14 +520,16 @@ function give_import_donation_form_options() {
 			__( 'Donation Form', 'give' ),
 			__( 'Form Name', 'give' ),
 			__( 'Title', 'give' ),
+			__( 'Form Title', 'give' ),
 		),
 		'form_id'                 => array(
 			__( 'Donation Form ID', 'give' ),
-			__( 'Form ID', 'give' )
+			__( 'Form ID', 'give' ),
 		),
 		'form_level'              => array(
 			__( 'Donation Level', 'give' ),
 			__( 'Level', 'give' ),
+			__( 'Level Title', 'give' ),
 		),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
@@ -526,7 +538,7 @@ function give_import_donation_form_options() {
 /**
  * Import CSV in DB
  *
- * @param int    $file_id   CSV id
+ * @param int    $file_id   CSV id.
  * @param int    $start     Start from which csv line.
  * @param int    $end       End from which csv line.
  * @param string $delimiter CSV delimeter.

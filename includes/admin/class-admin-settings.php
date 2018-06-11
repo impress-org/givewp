@@ -805,10 +805,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							$type = 'multiple';
 							$allow_new_values = 'data-allows-new-values="true"';
 							$name             = $name . '[]';
+
+							$option_value = empty( $option_value ) ? array() : $option_value;
 						}
 
 						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
-
 						?>
 						<tr valign="top" <?php echo $wrapper_class; ?>>
 							<th scope="row" class="titledesc">
@@ -816,15 +817,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 								<select
-										class="give-select-chosen give-chosen-settings"
-										style="<?php echo esc_attr( $value['style'] ); ?>"
-										name="<?php echo esc_attr( $name ); ?>"
-										id="<?php echo esc_attr( $value['id'] ); ?>"
-									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $value['placeholder'] ); ?>
+									class="give-select-chosen give-chosen-settings"
+									style="<?php echo esc_attr( $value['style'] ); ?>"
+									name="<?php echo esc_attr( $name ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
 								>
-									<?php foreach ( $value['options'] as $key => $item_value ) { ?>
+									<?php foreach ( $value['options'] as $key => $item_value ) : ?>
 										<option
-												value="<?php echo esc_attr( $key ); ?>"
+											value="<?php echo esc_attr( $key ); ?>"
 											<?php
 											if ( is_array( $option_value ) ) {
 												selected( in_array( $key, $option_value, true ) );
@@ -835,7 +837,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 										>
 											<?php echo esc_html( $item_value ); ?>
 										</option>
-									<?php } ?>
+									<?php endforeach; ?>
 
 								</select>
 								<?php echo wp_kses_post( $description ); ?>

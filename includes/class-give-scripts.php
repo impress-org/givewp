@@ -237,6 +237,7 @@ class Give_Scripts {
 			'import_failed'                     => __( 'Import failed', 'give' ),
 			'flush_success'                     => __( 'Flush success', 'give' ),
 			'flush_error'                       => __( 'Flush error', 'give' ),
+			'no_form_selected'                  => __( 'No form selected', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 			'deactivation_no_option_selected'   => __( 'Error: Please select at least one option.', 'give' ),

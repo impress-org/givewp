@@ -698,6 +698,12 @@ var give_setting_edit = false;
 					checked_cbs
 						.prev( '.gateways-radio' )
 						.attr( 'checked', 'checked' );
+
+					if ( this.checked ) {
+						radio.removeAttr( 'disabled' );
+					} else {
+						radio.attr( 'disabled', 'disabled' );
+					}
 				} else {
 					if ( this.checked ) {
 						radio.removeAttr( 'disabled' );
@@ -715,29 +721,31 @@ var give_setting_edit = false;
 		 * @since 1.8.14
 		 */
 		setting_change_country: function () {
-			$('select[name="base_country"]').change(function () {
-				var $this = $(this);
+			$( 'select[name="base_country"]' ).change( function () {
+				var $this = $( this );
 				var data = {
 					action: 'give_get_states',
 					country: $this.val(),
 					field_name: 'base_state',
 				};
 
-				$.post(ajaxurl, data, function (response) {
+				$.post( ajaxurl, data, function ( response ) {
 					// Show the states dropdown menu.
-					$this.closest('tr').next().show();
-					if (typeof (response.states_found) != undefined && true == response.states_found) {
-						$(':input[name="base_state"]').replaceWith(response.data);
+					$this.closest( 'tr' ).next().show();
+					$( '#base_state_chosen' ).remove();
+					if ( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+						$( ':input[name="base_state"]' ).replaceWith( response.data ).addClass( 'give-select-chosen' );
+						$( ':input[name="base_state"]' ).chosen();
 					} else {
-						if (typeof (response.show_field) != undefined && false == response.show_field) {
+						if ( typeof ( response.show_field ) != undefined && false == response.show_field ) {
 							// Hide the states dropdown menu.
-							$this.closest('tr').next().hide();
+							$this.closest( 'tr' ).next().hide();
 						}
-						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
+						$( ':input[name="base_state"]' ).replaceWith( '<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>' );
 					}
-				});
+				} );
 				return false;
-			});
+			} );
 		},
 
 		toggle_options: function () {
@@ -2076,19 +2084,19 @@ var give_setting_edit = false;
 			});
 
 			// CheckBox click event to confirm deletion of donor.
-			$body.on('click', '#give-delete-donor-confirm', function () {
+			$body.on('click', '#give-bulk-delete .give-donor-delete-confirm', function () {
 				if ($(this).is(':checked')) {
 					$('#give-bulk-delete-button').removeAttr('disabled');
 				} else {
 					$('#give-bulk-delete-button').attr('disabled', true);
-					$('#give-delete-donor-records').removeAttr('checked');
+					$('#give-bulk-delete .give-donor-delete-records').removeAttr('checked');
 				}
 			});
 
 			// CheckBox click event to delete records with donor.
-			$body.on('click', '#give-delete-donor-records', function () {
+			$body.on('click', '#give-bulk-delete .give-donor-delete-records', function () {
 				if ($(this).is(':checked')) {
-					$('#give-delete-donor-confirm').attr('checked', 'checked');
+					$('#give-bulk-delete .give-donor-delete-confirm').attr('checked', 'checked');
 					$('#give-bulk-delete-button').removeAttr('disabled');
 				}
 			});

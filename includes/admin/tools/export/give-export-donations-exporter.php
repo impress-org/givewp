@@ -170,25 +170,25 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		foreach ( $columns as $key => $value ) {
 
 			switch ( $key ) {
-				case 'donation_id' :
+				case 'donation_id':
 					$cols['donation_id'] = __( 'Donation ID', 'give' );
 					break;
-				case 'seq_id' :
+				case 'seq_id':
 					$cols['seq_id'] = __( 'Donation Number', 'give' );
 					break;
-				case 'first_name' :
+				case 'first_name':
 					$cols['first_name'] = __( 'First Name', 'give' );
 					break;
-				case 'last_name' :
+				case 'last_name':
 					$cols['last_name'] = __( 'Last Name', 'give' );
 					break;
-				case 'email' :
+				case 'email':
 					$cols['email'] = __( 'Email Address', 'give' );
 					break;
-				case 'company' :
+				case 'company':
 					$cols['company'] = __( 'Company Name', 'give' );
 					break;
-				case 'address' :
+				case 'address':
 					$cols['address_line1']   = __( 'Address 1', 'give' );
 					$cols['address_line2']   = __( 'Address 2', 'give' );
 					$cols['address_city']    = __( 'City', 'give' );
@@ -196,46 +196,46 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['address_zip']     = __( 'Zip', 'give' );
 					$cols['address_country'] = __( 'Country', 'give' );
 					break;
-				case 'donation_total' :
+				case 'donation_total':
 					$cols['donation_total'] = __( 'Donation Total', 'give' );
 					break;
-				case 'currency_code' :
+				case 'currency_code':
 					$cols['currency_code'] = __( 'Currency Code', 'give' );
 					break;
-				case 'currency_symbol' :
+				case 'currency_symbol':
 					$cols['currency_symbol'] = __( 'Currency Symbol', 'give' );
 					break;
-				case 'donation_status' :
+				case 'donation_status':
 					$cols['donation_status'] = __( 'Donation Status', 'give' );
 					break;
-				case 'payment_gateway' :
+				case 'payment_gateway':
 					$cols['payment_gateway'] = __( 'Payment Gateway', 'give' );
 					break;
-				case 'form_id' :
+				case 'form_id':
 					$cols['form_id'] = __( 'Form ID', 'give' );
 					break;
-				case 'form_title' :
+				case 'form_title':
 					$cols['form_title'] = __( 'Form Title', 'give' );
 					break;
-				case 'form_level_id' :
+				case 'form_level_id':
 					$cols['form_level_id'] = __( 'Level ID', 'give' );
 					break;
-				case 'form_level_title' :
+				case 'form_level_title':
 					$cols['form_level_title'] = __( 'Level Title', 'give' );
 					break;
-				case 'donation_date' :
+				case 'donation_date':
 					$cols['donation_date'] = __( 'Donation Date', 'give' );
 					break;
-				case 'donation_time' :
+				case 'donation_time':
 					$cols['donation_time'] = __( 'Donation Time', 'give' );
 					break;
-				case 'userid' :
+				case 'userid':
 					$cols['userid'] = __( 'User ID', 'give' );
 					break;
-				case 'donorid' :
+				case 'donorid':
 					$cols['donorid'] = __( 'Donor ID', 'give' );
 					break;
-				case 'donor_ip' :
+				case 'donor_ip':
 					$cols['donor_ip'] = __( 'Donor IP Address', 'give' );
 					break;
 				default:
@@ -363,8 +363,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['currency_symbol'] ) ) {
-					$currency_code = $data[ $i ]['currency_code'];
-					$data[ $i ]['currency_symbol'] =  give_currency_symbol( $currency_code, true );
+					$currency_code                 = $data[ $i ]['currency_code'];
+					$data[ $i ]['currency_symbol'] = give_currency_symbol( $currency_code, true );
 				}
 
 				if ( ! empty( $columns['donation_status'] ) ) {
@@ -388,12 +388,12 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['form_level_title'] ) ) {
-					$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
+					$var_prices = give_has_variable_prices( $payment->form_id );
 					if ( empty( $var_prices ) ) {
 						$data[ $i ]['form_level_title'] = '';
 					} else {
 						$prices_atts = '';
-						if ( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
+						if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
 							foreach ( $variable_prices as $variable_price ) {
 								$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'] );
 							}
