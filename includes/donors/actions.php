@@ -33,6 +33,25 @@ add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2
 
 
 /**
+ * Validate donor comment
+ *
+ * @since 2.2.0
+ */
+function __give_validate_donor_comment() {
+	// Check wp_check_comment_data_max_lengths for comment length validation.
+	if ( ! empty( $_POST['give_comment'] ) ) {
+		$max_lengths = wp_get_comment_fields_max_lengths();
+		$comment     = give_clean( $_POST['give_comment'] );
+
+		if ( mb_strlen( $comment, '8bit' ) > $max_lengths['comment_content'] ) {
+			give_set_error( 'comment_content_column_length', __( 'Your comment is too long.', 'give' ) );
+		}
+	}
+}
+add_action( 'give_checkout_error_checks', '__give_validate_donor_comment', 10, 1 );
+
+
+/**
  * Update donor comment status when donation status update
  *
  * @since 2.1.0
