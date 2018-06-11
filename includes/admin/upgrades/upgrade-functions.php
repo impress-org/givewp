@@ -382,6 +382,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.1.5 Add additional capability to the give_manager role.
+	$give_updates->register(
+		array(
+			'id'       => 'v215_update_donor_user_roles',
+			'version'  => '2.1.5',
+			'callback' => 'give_v215_update_donor_user_roles_callback',
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
