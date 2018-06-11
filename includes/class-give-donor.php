@@ -1617,16 +1617,20 @@ class Give_Donor {
 	 * @return string The date of the last donation.
 	 */
 	public function get_last_donation_date( $formatted = false ) {
+		$completed_data = '';
 
-		$last_donation = $this->get_last_donation();
-
-		$payment = new Give_Payment( $last_donation );
-
-		if ( $formatted ) {
-			return date_i18n( give_date_format(), strtotime( $payment->completed_date ) );
+		// Return if donation id is invalid.
+		if( ! ( $last_donation = absint( $this->get_last_donation() ) ) ) {
+			return $completed_data;
 		}
 
-		return $payment->completed_date;
+		$completed_data = give_get_payment_completed_date( $last_donation );
+
+		if ( $formatted ) {
+			return date_i18n( give_date_format(), strtotime( $completed_data ) );
+		}
+
+		return $completed_data;
 
 	}
 
