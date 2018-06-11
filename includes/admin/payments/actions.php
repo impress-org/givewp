@@ -321,16 +321,16 @@ function give_update_payment_details( $data ) {
 	if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) {
 		$data['give_comment'] = trim( $data['give_comment'] );
 
-		if( empty( $data['give_comment'] ) ){
+		if ( empty( $data['give_comment'] ) ) {
 			// Delete comment if empty
 			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
 
-		}else{
+		} else {
 
 			// Update/Insert comment.
 			$is_update_comment_meta = ! $comment_id;
 
-			$comment_args           = array(
+			$comment_args = array(
 				'comment_author_email' => $payment->email
 			);
 
@@ -345,8 +345,7 @@ function give_update_payment_details( $data ) {
 				$comment_args
 			);
 
-
-			if( $is_update_comment_meta ) {
+			if ( $is_update_comment_meta ) {
 				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
 			}
 		}
