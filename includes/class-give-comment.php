@@ -136,14 +136,9 @@ class Give_Comment {
 			return $error;
 		}
 
-		// wp_insert_comment does not filter comment.
-		if( 'insert' === $action_type ) {
-			$comment_args = wp_filter_comment( $comment_args );
-		}
-
 		$comment_id = $is_existing_comment
 			? wp_update_comment( $comment_args )
-			: wp_insert_comment( $comment_args );
+			: wp_new_comment( $comment_args, true );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
