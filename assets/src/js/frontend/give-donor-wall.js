@@ -78,14 +78,24 @@ class GiveDonorWall {
 			data: {
 				action: 'give_get_donor_comments',
 				data: evt.target.getAttribute('data-shortcode')
+			},
+			beforeSend(){
+				evt.target.className += ' give-active';
+				evt.target.setAttribute('disabled', 'disabled' );
 			}
 		}).done(function (res) {
+			evt.target.classList.remove('give-active');
+			evt.target.removeAttribute('disabled', 'disabled' );
+
 			if (res.html.length) {
-				evt.target.parentNode.getElementsByClassName('give-grid')[0].insertAdjacentHTML('beforeend', res.html);
+				evt.target
+					.parentNode
+					.getElementsByClassName('give-grid')[0]
+					.insertAdjacentHTML('beforeend', res.html);
 			}
 
 			if (!res.remaining) {
-				evt.target.remove()
+				evt.target.remove();
 			}
 		});
 

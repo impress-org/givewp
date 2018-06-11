@@ -140,7 +140,7 @@ class Give_Donor_Wall {
 		$more_btn_html = '';
 		if ( $this->get_donors( $next_donor_query ) ) {
 			$more_btn_html = sprintf(
-				'<button class="give-donor__load_more" data-shortcode="%s">%s</button>',
+				'<button class="give-donor__load_more give-button-with-loader" data-shortcode="%1$s"><span class="give-loading-animation"></span>%2$s</button>',
 				urlencode( http_build_query( $atts ) ),
 				$atts['loadmore_text']
 			);
@@ -171,7 +171,7 @@ class Give_Donor_Wall {
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'donors_per_page' => 1,
+				'donors_per_page' => 20,
 				'form_id'         => 0,
 				'paged'           => 1,
 				'ids'             => '',
