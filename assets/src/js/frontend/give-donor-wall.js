@@ -18,22 +18,7 @@ class GiveDonorWall {
 				 */
 				window.addDynamicEventListener(document, 'click', '.give-donor__read-more', GiveDonorWall.readMoreBtnEvent);
 				window.addDynamicEventListener(document, 'click', '.give-donor__load_more', GiveDonorWall.loadMoreBtnEvent);
-
-				// if( readMoreLinks.length ) {
-				// 	Array.from( readMoreLinks ).forEach(
-				// 		function (el) {
-				// 			GiveDonorWall.readMoreBtnEvent( el );
-				// 		}
-				// 	);
-				// }
-				//
-				// if( loadMoreBtn.length ) {
-				// 	Array.from( loadMoreBtn ).forEach(
-				// 		function (el) {
-				// 			GiveDonorWall.loadMoreBtnEvent( el );
-				// 		}
-				// 	);
-				// }
+				
 			}, false
 		);
 	}
