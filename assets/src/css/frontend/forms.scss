@@ -824,3 +824,51 @@ Form validation style
 		border-color: red !important;
 	}
 }
+
+/*---------------------------------
+Button with Loader
+-----------------------------------*/
+.give-button-with-loader {
+	position: relative;
+	padding: 1rem 2rem;
+   
+   .give-btl-spinner {
+		position: absolute;
+		top: 13px;
+		left: 20px;
+		display: inline-block;
+		opacity: 0;
+		border-radius: 50%;
+		height: 18px;
+		width: 18px;
+		border: 2px solid;
+		border-top-color: transparent;
+		animation: spinner 1.5s linear infinite;
+		transform: rotate(0deg);
+   }
+
+   .give-button-inner-text {
+		display: inline-block;
+		left: 0;
+   }
+}
+
+.give-active {
+   .give-button-inner-text {
+		position: relative;
+		left: 20px;
+		transition: all 0.3s ease;
+   }
+   
+   .give-btl-spinner {
+		opacity: 1;
+		transition: all 0.3s ease;
+		transition-delay: 0.2s;
+   }
+}
+
+@keyframes spinner {
+  to {
+		transform: rotate(360deg);
+	}
+}
