@@ -829,46 +829,31 @@ Form validation style
 Button with Loader
 -----------------------------------*/
 .give-button-with-loader {
-	position: relative;
-	padding: 1rem 2rem;
-   
-   .give-btl-spinner {
-		position: absolute;
-		top: 13px;
-		left: 20px;
-		display: inline-block;
-		opacity: 0;
-		border-radius: 50%;
-		height: 18px;
-		width: 18px;
-		border: 2px solid;
-		border-top-color: transparent;
-		animation: spinner 1.5s linear infinite;
-		transform: rotate(0deg);
-   }
+	span.give-loading-animation {
+		display: none;
 
-   .give-button-inner-text {
-		display: inline-block;
-		left: 0;
-   }
-}
-
-.give-active {
-   .give-button-inner-text {
+		// Align loading icon with button text.
 		position: relative;
-		left: 20px;
-		transition: all 0.3s ease;
-   }
-   
-   .give-btl-spinner {
-		opacity: 1;
-		transition: all 0.3s ease;
-		transition-delay: 0.2s;
-   }
+		top: 3px;
+		float: left;
+
+		@include iconstyle();
+		height: 16px;
+		width: 16px;
+		line-height: 1;
+		font-size: 16px;
+		margin: 0 5px 0 0;
+		background-size: 20px 20px;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		@extend .give-icon-spinner2;
+		@extend .fa-spin;
+	}
 }
 
-@keyframes spinner {
-  to {
-		transform: rotate(360deg);
+
+.give-active{
+	span.give-loading-animation {
+		display: inline;
 	}
 }
