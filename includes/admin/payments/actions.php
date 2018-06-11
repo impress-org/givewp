@@ -319,7 +319,8 @@ function give_update_payment_details( $data ) {
 
 	// Update comment.
 	if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) {
-		$data['give_comment'] = trim( $data['give_comment'] );
+		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
+		$data['give_comment'] = trim( $_POST['give_comment'] );
 
 		if ( empty( $data['give_comment'] ) ) {
 			// Delete comment if empty
