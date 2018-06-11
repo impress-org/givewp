@@ -89,12 +89,12 @@ class Give_Comment {
 	 * @param string $comment_type Value can ve donor|payment
 	 * @param array  $comment_args Comment arguments
 	 *
-	 * @return int
+	 * @return int|WP_Error
 	 */
 	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
-			return false;
+			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or cooment type', 'give' ) );
 		}
 
 		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
@@ -129,10 +129,21 @@ class Give_Comment {
 			)
 		);
 
-		$filtered_comment = wp_filter_comment( $comment_args );
+
+		// Check comment max length.
+		$error = wp_check_comment_data_max_lengths( $comment_args );
+		if( is_wp_error( $error ) ) {
+			return $error;
+		}
+
+		// wp_insert_comment does not filter comment.
+		if( 'insert' === $action_type ) {
+			$comment_args = wp_filter_comment( $comment_args );
+		}
+
 		$comment_id = $is_existing_comment
-			? wp_update_comment( $filtered_comment )
-			: wp_insert_comment( $filtered_comment );
+			? wp_update_comment( $comment_args )
+			: wp_insert_comment( $comment_args );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
