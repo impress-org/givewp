@@ -72,6 +72,7 @@ class GiveDonorWall {
 			evt.target.classList.remove('give-active');
 			evt.target.removeAttribute('disabled', 'disabled' );
 
+			// Add donor comment.
 			if (res.html.length) {
 				evt.target
 					.parentNode
@@ -79,6 +80,13 @@ class GiveDonorWall {
 					.insertAdjacentHTML('beforeend', res.html);
 			}
 
+			// Update data-shortcode attribute.
+			if( res.shortcode.length ){
+				evt.target.setAttribute('data-shortcode', res.shortcode );
+				console.log(res.shortcode);
+			}
+
+			// Remove load more button if not any donor comment exist.
 			if (!res.remaining) {
 				evt.target.remove();
 			}

@@ -315,7 +315,11 @@ class Give_Donor_Wall {
 		$donor_query['fields'] = 'id';
 		$has_donors            = $this->get_donors( $donor_query ) ? 1 : 0;
 
+		// Remove internal shortcode param.
+		unset( $shortcode_atts['only_donor_html'] );
+
 		wp_send_json( array(
+			'shortcode' => urlencode( http_build_query( $shortcode_atts ) ),
 			'html'      => $donors_comment_html,
 			'remaining' => $has_donors
 		) );
