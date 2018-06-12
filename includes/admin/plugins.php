@@ -231,6 +231,7 @@ function give_filter_addons_filter_addons( $views ) {
 }
 
 add_filter( 'views_plugins', 'give_filter_addons_filter_addons' );
+add_filter( 'views_plugins-network', 'give_filter_addons_filter_addons' );
 
 /**
  * Set the Give as the Main menu when admin click on the Give Menu in Plugin section.
