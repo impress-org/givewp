@@ -161,7 +161,7 @@ class Give_Donor_Wall {
 	/**
 	 * Parse shortcode attributes
 	 *
-	 * @since  2.20
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param $atts
