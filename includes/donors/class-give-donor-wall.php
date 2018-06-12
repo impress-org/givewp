@@ -96,10 +96,14 @@ class Give_Donor_Wall {
 	 * @type bool   $show_time           Whether to display date of the last donation. Default 'true'.
 	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
 	 * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
-	 *       displays. Default '20'.
+	 *                                   displays. Default '20'.
+	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
+	 * @type string $loadmore_text       Button label which will load more donor comments.
 	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "60"
-	 * @type string $orderby             The order in which you want the donors to appear. Accepts "donation_amount",
-	 *       "donation_count", "". Default "donation_count".
+	 * @type string $orderby             The order in which you want the donors to appear. Accepts "donation_amount", "donation_count",
+	 *                                   if donor donated same value for orderby attribute then they will short by created date (fallback)
+	 * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".
+	 *
 	 * }
 	 * @return string|bool The markup of the form grid or false.
 	 */
