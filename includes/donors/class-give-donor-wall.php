@@ -68,7 +68,7 @@ class Give_Donor_Wall {
 	 */
 	public function setup_actions() {
 
-		add_shortcode( 'give_donor_grid', array( $this, 'donor_grid_shortcode' ) );
+		add_shortcode( 'give_donor_wall', array( $this, 'render_shortcode' ) );
 
 		add_action( 'wp_ajax_give_get_donor_comments', array( $this, 'ajax_handler' ) );
 		add_action( 'wp_ajax_nopriv_give_get_donor_comments', array( $this, 'ajax_handler' ) );
@@ -82,7 +82,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
-	 *                                   Optional. Attributes of the form grid shortcode.
+	 *                                   Optional. Attributes of the donor wall shortcode.
 	 *
 	 * @type int    $donors_per_page     Number of donors per page. Default '20'.
 	 * @type int    $form_id             The donation form to filter donors by. Default is all forms (no filter).
@@ -103,7 +103,7 @@ class Give_Donor_Wall {
 	 * }
 	 * @return string|bool The markup of the form grid or false.
 	 */
-	public function donor_grid_shortcode( $atts ) {
+	public function render_shortcode( $atts ) {
 
 		$give_settings = give_get_settings();
 
@@ -117,8 +117,8 @@ class Give_Donor_Wall {
 			ob_start();
 
 			foreach ( $donors as $donor ) {
-				// Give/templates/shortcode-donor-grid.php.
-				give_get_template( 'shortcode-donor-grid', array( $donor, $give_settings, $atts ) );
+				// Give/templates/shortcode-donor-wall.php.
+				give_get_template( 'shortcode-donor-wall', array( $donor, $give_settings, $atts ) );
 			}
 
 			$html = ob_get_clean();
@@ -314,7 +314,7 @@ class Give_Donor_Wall {
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
 		$shortcode_atts['only_donor_html'] = true;
 
-		$donors_comment_html = $this->donor_grid_shortcode( $shortcode_atts );
+		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
 
 		// Check if donor comment remaining.
 		$donor_query           = $this->get_donor_query_atts( $shortcode_atts );

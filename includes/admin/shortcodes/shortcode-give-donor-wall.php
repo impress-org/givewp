@@ -27,7 +27,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 		$this->shortcode['title'] = esc_html__( 'Donor Wall', 'give' );
 		$this->shortcode['label'] = esc_html__( 'Donor Wall', 'give' );
 
-		parent::__construct( 'give_donor_grid' );
+		parent::__construct( 'give_donor_wall' );
 	}
 
 	/**
