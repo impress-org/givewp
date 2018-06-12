@@ -634,7 +634,7 @@ class Give_Notices {
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
 			'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d" data-dismiss-type="%4$s">
+						<p class="give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d" data-dismiss-type="%4$s">
 							%5$s
 						</p>
 						%6$s
