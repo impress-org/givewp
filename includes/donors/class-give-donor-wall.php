@@ -314,7 +314,7 @@ class Give_Donor_Wall {
 	 * @access public
 	 */
 	public function ajax_handler() {
-		$shortcode_atts = wp_parse_args( give_clean( urldecode( $_POST['data'] ) ) );
+		$shortcode_atts = wp_parse_args( give_clean( urldecode( $_POST['data'] ) ) ); // @codingStandardsIgnoreLine
 
 		// Get next page donor comments.
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
