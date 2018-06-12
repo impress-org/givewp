@@ -111,6 +111,8 @@ function give_deprecated_actions() {
 		'give_view_donation_details_payment_meta_before' => 'give_view_order_details_payment_meta_before',
 		'give_view_donation_details_payment_meta_after'  => 'give_view_order_details_payment_meta_after',
 		'give_view_donation_details_update_inner'        => 'give_view_order_details_update_inner',
+		'give_donor_delete'                              => 'give_process_donor_deletion',
+		'give_delete_donor'                              => 'give_process_donor_deletion',
 	);
 
 	return $give_deprecated_actions;

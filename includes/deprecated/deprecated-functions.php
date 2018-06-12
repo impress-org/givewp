@@ -826,3 +826,39 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
 
 	return give_get_donation_form_title( $donation, $args );
 }
+
+/**
+ * This function is used to delete donor for bulk actions on donor listing page.
+ *
+ * @param array $args List of arguments to delete donor.
+ *
+ * @since 2.2
+ */
+function give_delete_donor( $args ) {
+
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.2',
+		'give_process_donor_deletion'
+	);
+
+	give_process_donor_deletion( $args );
+}
+
+/**
+ * This function is used to delete single donor from donor detail page.
+ *
+ * @param array $args List of arguments to delete donor.
+ *
+ * @since 2.2
+ */
+function give_donor_delete( $args ) {
+
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.2',
+		'give_process_donor_deletion'
+	);
+
+	give_process_donor_deletion( $args );
+}

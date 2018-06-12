@@ -373,6 +373,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.1.5 Add additional capability to the give_manager role.
+	$give_updates->register(
+		array(
+			'id'       => 'v215_update_donor_user_roles',
+			'version'  => '2.1.5',
+			'callback' => 'give_v215_update_donor_user_roles_callback',
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2730,4 +2739,17 @@ function give_v213_rename_donation_meta_type_callback(){
 
 	give_set_upgrade_complete('v213_rename_donation_meta_type');
 	$give_updates->set_percentage(1, 1);
+}
+
+/**
+ * Adds 'view_give_payments' capability to 'give_manager' user role.
+ *
+ * @since 2.1.5
+ */
+function give_v215_update_donor_user_roles_callback() {
+
+	$role = get_role( 'give_manager' );
+	$role->add_cap( 'view_give_payments' );
+
+	give_set_upgrade_complete( 'v215_update_donor_user_roles' );
 }
