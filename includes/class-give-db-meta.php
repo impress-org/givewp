@@ -86,7 +86,7 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		if ( in_array( 'get_post_metadata', $this->supports ) ) {
-			add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
+			add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 10, 4 );
 		}
 
 		if ( in_array( 'update_post_metadata', $this->supports ) ) {
