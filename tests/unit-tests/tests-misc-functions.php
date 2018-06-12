@@ -222,6 +222,20 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
 
+		// Set Global Admin Setting to required.
+		give_update_option( 'name_title_prefix', 'required' );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
+
+		// Set Global Admin Setting to optional.
+		give_update_option( 'name_title_prefix', 'optional' );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
+
 		// Create Simple Donation Form with required as option.
 		$donation_form_2 = Give_Helper_Form::create_simple_form( array(
 			'meta' => array(
