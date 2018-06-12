@@ -99,6 +99,14 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$licensed_addons   = Give_License::get_licensed_addons();
 			$activated_plugins = get_option( 'active_plugins', array() );
 
+			// Get list of network enabled plugin.
+			if ( is_multisite() ) {
+				$sitewide_activated_plugins = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
+				$activated_plugins = ! empty( $activated_plugins )
+					? array_merge( $sitewide_activated_plugins, $activated_plugins )
+					: $sitewide_activated_plugins;
+			}
+
 			return (bool) count( array_intersect( $activated_plugins, $licensed_addons ) );
 		}
 	}
