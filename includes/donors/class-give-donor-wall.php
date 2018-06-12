@@ -28,7 +28,7 @@ class Give_Donor_Wall {
 	 *
 	 * @since  2.2.0
 	 * @access private
-	 * @var
+	 * @var Give_Donor_Wall
 	 */
 	static private $instance;
 
@@ -145,7 +145,7 @@ class Give_Donor_Wall {
 		if ( $this->get_donors( $next_donor_query ) ) {
 			$more_btn_html = sprintf(
 				'<button class="give-donor__load_more give-button-with-loader" data-shortcode="%1$s"><span class="give-loading-animation"></span>%2$s</button>',
-				urlencode( http_build_query( $atts ) ),
+				rawurlencode( http_build_query( $atts ) ),
 				$atts['loadmore_text']
 			);
 		}
@@ -168,7 +168,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param $atts
+	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return array
 	 */
@@ -193,7 +193,7 @@ class Give_Donor_Wall {
 				'orderby'         => 'donation_count',
 				'order'           => 'DESC',
 				'hide_empty'      => true,
-				'only_donor_html' => false, // only for internal use
+				'only_donor_html' => false, // Only for internal use.
 			), $atts
 		);
 
@@ -231,7 +231,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param array $atts
+	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return array
 	 */
@@ -277,6 +277,7 @@ class Give_Donor_Wall {
 		);
 
 		// Set payment query.
+		// @codingStandardsIgnoreStart
 		if ( isset( $atts['only_comments'] ) ) {
 			$donor_args['meta_query'] = array(
 				array(
@@ -285,6 +286,7 @@ class Give_Donor_Wall {
 				),
 			);
 		}
+		// @codingStandardsIgnoreEnd
 
 		return $donor_args;
 	}
@@ -295,7 +297,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param array $donor_query
+	 * @param array $donor_query Dorno query.
 	 *
 	 * @return array
 	 */
@@ -314,7 +316,7 @@ class Give_Donor_Wall {
 	 * @access public
 	 */
 	public function ajax_handler() {
-		$shortcode_atts = wp_parse_args( give_clean( urldecode( $_POST['data'] ) ) ); // @codingStandardsIgnoreLine
+		$shortcode_atts = wp_parse_args( give_clean( rawurldecode( $_POST['data'] ) ) ); // @codingStandardsIgnoreLine
 
 		// Get next page donor comments.
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
@@ -333,7 +335,7 @@ class Give_Donor_Wall {
 
 		wp_send_json(
 			array(
-				'shortcode' => urlencode( http_build_query( $shortcode_atts ) ),
+				'shortcode' => rawurlencode( http_build_query( $shortcode_atts ) ),
 				'html'      => $donors_comment_html,
 				'remaining' => $has_donors,
 			)
