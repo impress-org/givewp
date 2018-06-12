@@ -315,4 +315,26 @@ class Give_Email_Notification_Util {
 		 */
 		return apply_filters( 'give_email_setting_value', $option_value, $option_name, $email, $form_id, $default );
 	}
+
+
+	/**
+	 * Get email logo.
+	 *
+	 * @since  2.1.5
+	 *
+	 * @access public
+	 *
+	 * @param integer $form_id FOrm ID.
+	 *
+	 * @return string
+	 */
+	public static function get_email_logo( $form_id ) {
+
+		// Email logo tag.
+		$header_img = $form_id && give_is_setting_enabled( give_get_meta( $form_id, '_give_email_options', true ) )
+			? give_get_meta( $form_id, '_give_email_logo', true )
+			: give_get_option( 'email_logo', '' );
+
+		return $header_img;
+	}
 }
