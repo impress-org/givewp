@@ -193,7 +193,7 @@ class Give_Donor_Wall {
 				'orderby'         => 'donation_count',
 				'order'           => 'DESC',
 				'hide_empty'      => true,
-				'only_donor_html' => false // only for internal use
+				'only_donor_html' => false, // only for internal use
 			), $atts
 		);
 
@@ -209,7 +209,7 @@ class Give_Donor_Wall {
 			'show_comments',
 			'show_comments',
 			'hide_empty',
-			'only_donor_html'
+			'only_donor_html',
 		);
 
 		foreach ( $boolean_attributes as $att ) {
@@ -263,15 +263,17 @@ class Give_Donor_Wall {
 		}
 
 		// Replace donation with purchase because donor table has that prefix in column name.
-		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array(
-			'purchase',
-			'value'
-		), $atts['orderby'] );
+		$donor_args['orderby'] = str_replace(
+			array( 'donation', 'amount' ), array(
+				'purchase',
+				'value',
+			), $atts['orderby']
+		);
 
 		// Add fallback orderby.
 		$donor_args['orderby'] = array(
 			$donor_args['orderby'] => $donor_args['order'],
-			'date_created'         => 'DESC'
+			'date_created'         => 'DESC',
 		);
 
 		// Set payment query.
@@ -279,8 +281,8 @@ class Give_Donor_Wall {
 			$donor_args['meta_query'] = array(
 				array(
 					'key'   => '_give_has_comment',
-					'value' => '1'
-				)
+					'value' => '1',
+				),
 			);
 		}
 
@@ -329,13 +331,15 @@ class Give_Donor_Wall {
 		// Remove internal shortcode param.
 		unset( $shortcode_atts['only_donor_html'] );
 
-		wp_send_json( array(
-			'shortcode' => urlencode( http_build_query( $shortcode_atts ) ),
-			'html'      => $donors_comment_html,
-			'remaining' => $has_donors
-		) );
+		wp_send_json(
+			array(
+				'shortcode' => urlencode( http_build_query( $shortcode_atts ) ),
+				'html'      => $donors_comment_html,
+				'remaining' => $has_donors,
+			)
+		);
 	}
 }
 
-//Initialize shortcode.
+// Initialize shortcode.
 Give_Donor_Wall::get_instance();
