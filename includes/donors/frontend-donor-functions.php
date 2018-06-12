@@ -6,7 +6,7 @@
  * @subpackage Donors
  * @copyright  Copyright (c) 2018, WordImpress
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
- * @since      2.1
+ * @since      2.2.0
  */
 
 /**
@@ -14,7 +14,7 @@
  *
  * The fallback uses the donor's
  *
- * @since 2.1
+ * @since 2.2.0
  *
  * @param Give_Donor $donor
  * @param int        $size
@@ -44,7 +44,7 @@ function give_get_donor_avatar( $donor, $size = 60 ) {
 /**
  * Determine whether a Gravatar exists for a donor or not.
  *
- * @since 2.1
+ * @since 2.2.0
  *
  * @param string|int $id_or_email
  *
@@ -110,7 +110,7 @@ function give_validate_gravatar( $id_or_email ) {
  * @param string $note         The note to store.
  * @param array  $comment_args Comment arguments.
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @return int The new note ID
  */
@@ -140,7 +140,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  * @param int    $donor_id    The donor ID to retrieve comment for.
  * @param string $search      Search for comment that contain a search term.
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @return WP_Comment|array
  */
@@ -193,7 +193,7 @@ function give_get_donor_donation_comment_id( $donation_id, $donor_id, $search = 
  * @param array  $comment_args
  * @param string $search   Search for comment that contain a search term.
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @return array
  */
@@ -215,7 +215,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $
  * @param WP_Comment|int $comment    The comment object or ID.
  * @param int            $payment_id The payment ID the note is connected to.
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @return string
  */
@@ -243,7 +243,7 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
 /**
  * Get donor latest comment
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @param int $donor_id
  * @param int $form_id

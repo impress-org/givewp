@@ -2,7 +2,7 @@
 /**
  * Insert donor comment to donation.
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @param int   $donation_id
  * @param array $donation_data
@@ -54,7 +54,7 @@ add_action( 'give_checkout_error_checks', '__give_validate_donor_comment', 10, 1
 /**
  * Update donor comment status when donation status update
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @param $donation_id
  * @param $status
@@ -75,7 +75,7 @@ add_action( 'give_update_payment_status', '__give_update_donor_donation_comment_
 /**
  * Remove donor comment when donation delete
  *
- * @since 2.1.0
+ * @since 2.2.0
  *
  * @param $donation_id
  */
