@@ -290,8 +290,13 @@ function give_ajax_form_search() {
 	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
 	$args = array(
-		'post_type' => 'give_forms',
-		's'         => $search,
+		'post_type'              => 'give_forms',
+		's'                      => $search,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+		'cache_results'          => false,
+		'no_found_rows'          => true,
+		'post_status'            => 'publish',
 	);
 
 	/**
