@@ -253,6 +253,11 @@ class Give_Donor_Wall {
 			$donor_args['give_forms'] = $atts['form_id'];
 		}
 
+		// Show donor by id.
+		if ( $atts['ids'] ) {
+			$donor_args['donor'] = $atts['ids'];
+		}
+
 		// Replace donation with purchase because donor table has that prefix in column name.
 		$donor_args['orderby'] = str_replace( array( 'donation', 'amount' ), array(
 			'purchase',
