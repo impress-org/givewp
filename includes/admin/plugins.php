@@ -197,6 +197,7 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 }
 
 add_filter( 'show_advanced_plugins', 'give_filter_addons_do_filter_addons' );
+add_filter( 'show_network_active_plugins', 'give_filter_addons_do_filter_addons' );
 
 /**
  * Make the Give Menu as an default menu and update the Menu Name
