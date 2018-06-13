@@ -209,6 +209,7 @@ class Give_Donor_Wall {
 			'show_comments',
 			'show_comments',
 			'hide_empty',
+			'only_comments',
 			'only_donor_html',
 		);
 
@@ -276,9 +277,11 @@ class Give_Donor_Wall {
 			'date_created'         => 'DESC',
 		);
 
+		unset( $donor_args['order'] );
+
 		// Set payment query.
 		// @codingStandardsIgnoreStart
-		if ( isset( $atts['only_comments'] ) ) {
+		if ( true === $atts['only_comments'] ) {
 			$donor_args['meta_query'] = array(
 				array(
 					'key'   => '_give_has_comment',
