@@ -88,7 +88,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'show_avatar',
 				'label'       => esc_attr__( 'Show Avatar', 'give' ),
 				'options'     => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
@@ -98,7 +97,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'show_name',
 				'label'       => esc_attr__( 'Show Name', 'give' ),
 				'options'     => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
@@ -108,7 +106,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'show_total',
 				'label'       => esc_attr__( 'Show Total', 'give' ),
 				'options'     => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
@@ -118,7 +115,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'show_time',
 				'label'       => esc_attr__( 'Show Date', 'give' ),
 				'options'     => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
@@ -128,7 +124,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'show_comments',
 				'label'       => esc_attr__( 'Show Comments', 'give' ),
 				'options'     => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
@@ -138,7 +133,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'orderby',
 				'label'       => esc_attr__( 'Order By', 'give' ),
 				'options'     => array(
-					'donation_amount' => esc_html__( 'Donation Amount', 'give' ),
 					'donation_count'  => esc_html__( 'Donation Count', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Donation Amount', 'give' ),
