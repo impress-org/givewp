@@ -332,7 +332,6 @@ function give_chosen_input( $field ) {
 		$type = 'multiple';
 		$allow_new_values = 'data-allows-new-values="true"';
 	}
-
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
@@ -342,14 +341,19 @@ function give_chosen_input( $field ) {
 		<select
 				class="give-select-chosen give-chosen-settings"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
 			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
 		>
 			<?php foreach ( $field['options'] as $key => $value ) { ?>
-				<option
-						value="<?php echo esc_attr( $key ); ?>"
-					<?php echo selected( esc_attr( $field['value'] ), esc_attr( $key ), false ); ?>
+				<option value="<?php echo esc_attr( $key ); ?>"
+					<?php
+					if ( is_array( $field['value'] ) ) {
+						selected( in_array( $key, $field['value'], true ) );
+					} else {
+						selected( $field['value'], $key, true );
+					}
+					?>
 				>
 					<?php echo esc_html( $value ); ?>
 				</option>
