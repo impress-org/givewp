@@ -16,17 +16,17 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$comment_id = give_insert_donor_donation_comment(
 			$donation_id,
-			$donation_data['user_info']['id'],
+			$donation_data['user_info']['donor_id'],
 			trim( $_POST['give_comment'] ), // We are sanitizing comment in Give_comment:add
 			array( 'comment_author_email' => $donation_data['user_info']['email'] )
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
-		Give()->donor_meta->update_meta( $donation_data['user_info']['id'], '_give_has_comment', '1' );
+		Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_has_comment', '1' );
 	}
 
 	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
-	Give()->donor_meta->update_meta( $donation_data['user_info']['id'], '_give_anonymous_donor', $is_anonymous_donation );
+	Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor', $is_anonymous_donation );
 }
 
 add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );
