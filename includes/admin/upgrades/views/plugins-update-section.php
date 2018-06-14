@@ -35,11 +35,20 @@ foreach ( $plugins as $plugin_data ) {
 		);
 	}
 	?>
-	<tr <?php echo( true !== $plugin_data['License'] ? 'data-tooltip="' . __( 'Unlicensed add-ons cannot be updated. Please purchase or renew a valid license.', 'give' ) . '"' : '' ); ?>>
+	<tr>
 		<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 		<td>
 			<?php
-			echo ( true === $plugin_data['License'] ) ? '<span class="dashicons dashicons-yes"></span>' . __( 'Licensed', 'give' ) : '<span class="dashicons dashicons-no-alt"></span>' . __( 'Unlicensed', 'give' );
+			echo true === $plugin_data['License']
+				? sprintf(
+					'<span class="dashicons dashicons-yes"></span>%s',
+					__( 'Licensed', 'give' )
+				)
+				: sprintf(
+					'<span data-tooltip="%s"><span class="dashicons dashicons-no-alt"></span>%s</span>',
+					__( 'Unlicensed add-ons cannot be updated. Please purchase or renew a valid license.', 'give' ),
+					__( 'Unlicensed', 'give' )
+				);
 
 			echo sprintf(
 				' &ndash; %s &ndash; %s',
