@@ -47,9 +47,9 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				'name'    => 'price',
 				'label'   => esc_html__( 'Show Donation Amount:', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -59,15 +59,16 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'date',
 				'label'   => esc_html__( 'Show Date:', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',
@@ -75,26 +76,35 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				'label'   => esc_html__( 'Show Payment Key:', 'give' ),
 				'options' => array(
 					'true'  => esc_html__( 'Show', 'give' ),
-					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Hide', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'payment_method',
 				'label'   => esc_html__( 'Show Payment Method:', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'payment_id',
 				'label'   => esc_html__( 'Show Payment ID:', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
+			),
+			array(
+				'type'    => 'listbox',
+				'name'    => 'company_name',
+				'label'   => esc_html__( 'Company Name:', 'give' ),
+				'options' => array(
+					'true' => esc_html__( 'Show', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Hide', 'give' )
 			),
 		);
 	}
