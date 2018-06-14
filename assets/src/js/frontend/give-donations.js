@@ -1118,7 +1118,7 @@ jQuery( function( $ ) {
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function( e, $parent_form, donation_amount, price_id ) {
 
 		let parent_form = ('undefined' !== typeof $parent_form) ? $parent_form : $( this ).closest( 'form' ),
-			pre_focus_amount = $( this ).data( 'amount' ),
+			pre_focus_amount = $( this ).attr( 'data-amount' ),
 			this_value = ('undefined' !== typeof donation_amount) ? donation_amount : $( this ).val(),
 			decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form ),
 			value_min = Give.form.fn.getMinimumAmount( parent_form ),
