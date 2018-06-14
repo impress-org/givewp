@@ -1553,6 +1553,7 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
+
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
@@ -1561,6 +1562,13 @@ function give_terms_agreement( $form_id ) {
 
 		return false;
 	}
+
+	/**
+	 * Filter the form term content
+	 *
+	 * @since  2.1.5
+	 */
+	$terms = apply_filters( 'give_the_term_content',  wpautop( do_shortcode( $terms ) ), $terms, $form_id );
 
 	?>
 	<fieldset id="give_terms_agreement">
@@ -1574,7 +1582,7 @@ function give_terms_agreement( $form_id ) {
 			 */
 			do_action( 'give_before_terms' );
 
-			echo wpautop( stripslashes( $terms ) );
+			echo $terms;
 			/**
 			 * Fires while rendering terms of agreement, after the fields.
 			 *
@@ -1852,17 +1860,32 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * @return void
  */
 function give_form_display_content( $form_id, $args ) {
-
-	$content      = wpautop( give_get_meta( $form_id, '_give_form_content', true ) );
+	$content      = give_get_meta( $form_id, '_give_form_content', true );
 	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_is_setting_enabled( give_get_option( 'the_content_filter' ) ) ) {
 		$content = apply_filters( 'the_content', $content );
+	} else{
+		$content = wpautop( do_shortcode( $content ) );
 	}
 
-	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap ' . $show_content . '-content">' . $content . '</div>';
+	$output = sprintf(
+		'<div id="give-form-content-%s" class="give-form-content-wrap %s-content">%s</div>',
+		$form_id,
+		$show_content,
+		$content
+	);
 
-	echo apply_filters( 'give_form_content_output', $output );
+	/**
+	 * Filter form content html
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $output
+	 * @param int    $form_id
+	 * @param array  $args
+	 */
+	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
 	// remove action to prevent content output on addition forms on page.
 	// @see: https://github.com/WordImpress/Give/issues/634.
