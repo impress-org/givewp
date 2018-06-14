@@ -259,21 +259,21 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_register_login', $form_id );
+		do_action( 'give_donation_form_before_register_login', $form_id, $args );
 
 		/**
 		 * Fire when register/login form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_register_login_fields', $form_id );
+		do_action( 'give_donation_form_register_login_fields', $form_id, $args );
 
 		/**
 		 * Fire when credit card form fields render.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_cc_form', $form_id );
+		do_action( 'give_donation_form_before_cc_form', $form_id, $args );
 
 		// Load the credit card form and allow gateways to load their own if they wish.
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
@@ -293,7 +293,7 @@ function give_show_purchase_form( $form_id, $args ) {
 			 *
 			 * @param int $form_id The form ID.
 			 */
-			do_action( 'give_cc_form', $form_id );
+			do_action( 'give_cc_form', $form_id, $args );
 		}
 
 		/**
@@ -301,7 +301,7 @@ function give_show_purchase_form( $form_id, $args ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_cc_form', $form_id );
+		do_action( 'give_donation_form_after_cc_form', $form_id, $args );
 
 	} else {
 		/**
@@ -318,7 +318,7 @@ function give_show_purchase_form( $form_id, $args ) {
 	 *
 	 * @since 1.7
 	 */
-	do_action( 'give_payment_fields_bottom', $form_id );
+	do_action( 'give_payment_fields_bottom', $form_id, $args );
 }
 
 add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
@@ -1184,8 +1184,10 @@ function give_get_register_fields( $form_id ) {
 			 * @param int $form_id The form ID.
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
+
+			$class = ( 'registration' === $show_register_form) ? 'form-row-wide' : 'form-row-first';
 			?>
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
+			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
 					// Add attributes to checkbox, if Guest Checkout is disabled.
@@ -1556,6 +1558,7 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
+
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
@@ -1564,6 +1567,13 @@ function give_terms_agreement( $form_id ) {
 
 		return false;
 	}
+
+	/**
+	 * Filter the form term content
+	 *
+	 * @since  2.1.5
+	 */
+	$terms = apply_filters( 'give_the_term_content',  wpautop( do_shortcode( $terms ) ), $terms, $form_id );
 
 	?>
 	<fieldset id="give_terms_agreement">
@@ -1577,7 +1587,7 @@ function give_terms_agreement( $form_id ) {
 			 */
 			do_action( 'give_before_terms' );
 
-			echo wpautop( stripslashes( $terms ) );
+			echo $terms;
 			/**
 			 * Fires while rendering terms of agreement, after the fields.
 			 *
@@ -1666,11 +1676,12 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  *
  * @since  1.0
  *
- * @param  int $form_id The form ID.
+ * @param int   $form_id The donation form ID.
+ * @param array $args    List of arguments.
  *
  * @return void
  */
-function give_checkout_submit( $form_id ) {
+function give_checkout_submit( $form_id, $args ) {
 	?>
 	<fieldset id="give_purchase_submit" class="give-donation-submit">
 		<?php
@@ -1679,7 +1690,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_before_submit', $form_id );
+		do_action( 'give_donation_form_before_submit', $form_id, $args );
 
 		give_checkout_hidden_fields( $form_id );
 
@@ -1690,13 +1701,13 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form_after_submit', $form_id );
+		do_action( 'give_donation_form_after_submit', $form_id, $args );
 		?>
 	</fieldset>
 	<?php
 }
 
-add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 );
 
 /**
  * Give Donation form submit button.
@@ -1854,17 +1865,32 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * @return void
  */
 function give_form_display_content( $form_id, $args ) {
-
-	$content      = wpautop( give_get_meta( $form_id, '_give_form_content', true ) );
+	$content      = give_get_meta( $form_id, '_give_form_content', true );
 	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_is_setting_enabled( give_get_option( 'the_content_filter' ) ) ) {
 		$content = apply_filters( 'the_content', $content );
+	} else{
+		$content = wpautop( do_shortcode( $content ) );
 	}
 
-	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap ' . $show_content . '-content">' . $content . '</div>';
+	$output = sprintf(
+		'<div id="give-form-content-%s" class="give-form-content-wrap %s-content">%s</div>',
+		$form_id,
+		$show_content,
+		$content
+	);
 
-	echo apply_filters( 'give_form_content_output', $output );
+	/**
+	 * Filter form content html
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $output
+	 * @param int    $form_id
+	 * @param array  $args
+	 */
+	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
 	// remove action to prevent content output on addition forms on page.
 	// @see: https://github.com/WordImpress/Give/issues/634.

@@ -565,7 +565,6 @@ function give_process_profile_editor_updates( $data ) {
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
 
-
 /**
  * Give totals Shortcode.
  *
@@ -596,6 +595,15 @@ function give_totals_shortcode( $atts ) {
 	// Total Goal.
 	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
 
+	/**
+	 * Give Action fire before the shortcode is rendering is started.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $atts shortcode attribute.
+	 */
+	do_action( 'give_totals_goal_shortcode_before_render', $atts );
+
 	// Build query based on cat, tag and Form ids.
 	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
 
@@ -604,13 +612,20 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
+		/**
+		 * Filter to modify WP Query for Total Goal.
+		 *
+		 * @since 2.1.4
+		 *
+		 * @param array WP query argument for Total Goal.
+		 */
 		$form_args = array(
-			'post_type'      => 'give_forms',
-			'post_status'    => 'publish',
-			'post__in'       => $form_ids,
-			'posts_per_page' => - 1,
-			'fields'         => 'ids',
-			'tax_query'      => array(
+			'post_type'        => 'give_forms',
+			'post_status'      => 'publish',
+			'post__in'         => $form_ids,
+			'posts_per_page'   => - 1,
+			'fields'           => 'ids',
+			'tax_query'        => array(
 				'relation' => 'AND',
 			),
 		);
@@ -631,6 +646,17 @@ function give_totals_shortcode( $atts ) {
 			);
 		}
 
+		/**
+		 * Filter to modify WP Query for Total Goal.
+		 *
+		 * @since 2.1.4
+		 *
+		 * @param array $form_args WP query argument for Total Goal.
+		 *
+		 * @return array $form_args WP query argument for Total Goal.
+		 */
+		$form_args = (array) apply_filters( 'give_totals_goal_shortcode_query_args', $form_args );
+
 		$forms = new WP_Query( $form_args );
 
 		if ( isset( $forms->posts ) ) {
@@ -644,7 +670,7 @@ function give_totals_shortcode( $atts ) {
 				 *
 				 * @since 2.1
 				 *
-				 * @param int    $post         Form ID.
+				 * @param int $post Form ID.
 				 * @param string $form_earning Total earning of Form.
 				 */
 				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
@@ -679,7 +705,7 @@ function give_totals_shortcode( $atts ) {
 	 * @since 2.1
 	 *
 	 * @param string $message Shortcode Message.
-	 * @param array  $atts    ShortCode attributes.
+	 * @param array $atts ShortCode attributes.
 	 */
 	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
 
@@ -698,6 +724,17 @@ function give_totals_shortcode( $atts ) {
 	</div>
 	<?php
 	$give_totals_output = ob_get_clean();
+
+
+	/**
+	 * Give Action fire after the total goal shortcode rendering is end.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array  $atts               shortcode attribute.
+	 * @param string $give_totals_output shortcode output.
+	 */
+	do_action( 'give_totals_goal_shortcode_after_render', $atts, $give_totals_output );
 
 	/**
 	 * Give Totals Shortcode output.

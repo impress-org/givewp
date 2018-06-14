@@ -824,3 +824,36 @@ Form validation style
 		border-color: red !important;
 	}
 }
+
+/*---------------------------------
+Button with Loader
+-----------------------------------*/
+.give-button-with-loader {
+	span.give-loading-animation {
+		display: none;
+
+		// Align loading icon with button text.
+		position: relative;
+		top: 3px;
+		float: right;
+
+		@include iconstyle();
+		height: 16px;
+		width: 16px;
+		line-height: 1;
+		font-size: 16px;
+		margin: 0 0 0 5px;
+		background-size: 20px 20px;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		@extend .give-icon-spinner2;
+		@extend .fa-spin;
+	}
+}
+
+
+.give-active{
+	span.give-loading-animation {
+		display: inline;
+	}
+}

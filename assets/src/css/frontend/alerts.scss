@@ -2,93 +2,102 @@
 Notices, Warnings & Errors
 -----------------------------------*/
 .give_notices {
-  position: relative;
+	position: relative;
 }
 
-.notice-dismiss {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
-  border: none;
-  margin: 0;
-  padding: 5px;
-  background: 0 0;
-  color: #72777c;
-  cursor: pointer;
-  max-width: 28px;
+.give_notice .notice-dismiss {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translate(0, -50%);
+	border: none;
+	margin: 0;
+	padding: 5px;
+	background: 0 0;
+	color: #72777c;
+	cursor: pointer;
+	max-width: 28px !important;
 
-  &:before {
-    background: 0 0;
-    color: #72777c;
-    content: "\f153";
-    display: block;
-    font: 400 16px/20px dashicons;
-    speak: none;
-    height: 20px;
-    text-align: center;
-    width: 20px;
-    -webkit-font-smoothing: antialiased;
-  }
+	&:before {
+		background: 0 0;
+		color: #72777c;
+		content: "\f153";
+		display: block;
+		font: 400 16px/20px dashicons;
+		speak: none;
+		height: 20px;
+		text-align: center;
+		width: 20px;
+		-webkit-font-smoothing: antialiased;
+	}
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0);
+	&:hover {
+		background-color: rgba(0, 0, 0, 0);
 
-    &:before {
-      color: #dc3232;
-    }
-  }
+		&:before {
+			color: #dc3232;
+		}
+	}
 }
 
-.give_error, .give_success {
-  position: relative;
-  margin: 15px 0;
-  background: #F9F9F9;
-  padding: 1em 1em 1em 2em;
-  border-left: 4px solid $red;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  clear: both;
+.give {
+	&_error,
+	&_success,
+	&_warning {
+		position: relative;
+		margin: 15px 0;
+		background: #F9F9F9;
+		padding: 1em 1em 1em 2em;
+		border-left: 4px solid;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+		clear: both;
 
-  > p {
-    margin: 0 !important;
-    color: $dark;
-  }
+		> p {
+			margin: 0 !important;
+			color: $dark;
+		}
 
-  &:before {
-    @include iconstyle();
-    position: absolute;
-    top: 50%;
-    font-size: 16px;
-    margin-top: -15px;
-    left: -17px;
-    background-color: $red;
-    color: #FFF;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 30px;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-    content: '\f02d';
-  }
+		&:before {
+			@include iconstyle();
+			position: absolute;
+			top: 50%;
+			font-size: 16px;
+			margin-top: -15px;
+			left: -17px;
+			color: #FFF;
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			text-align: center;
+			line-height: 30px;
+			text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+		}
+	}
 
-  &.give_warning {
-    border-color: $orange;
+	&_error {
+		border-color: $red;
 
-    &:before {
-      background-color: $orange;
-      text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
-    }
-  }
-}
+		&:before {
+			content: '\f02d';
+			background-color: $red;
+		}
+	}
 
-.give_success {
-  border-color: $green;
+	&_success {
+		border-color: $green;
 
-  &:before {
-    background-color: $green;
-    content: '\e601';
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-  }
+		&:before {
+			background-color: $green;
+			content: '\e601';
+		}
+	}
 
+	&_warning {
+		border-color: $orange;
+
+		&:before {
+			background-color: $orange;
+			content: '\f02d';
+		}
+	}
 }
