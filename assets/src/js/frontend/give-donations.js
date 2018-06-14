@@ -1095,7 +1095,7 @@ jQuery( function( $ ) {
 		// Set data amount
 		var current_total = parent_form.find( '.give-final-total-amount' ).attr( 'data-total' );
 		var decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form );
-		$( this ).data( 'amount', Give.fn.unFormatCurrency( current_total, decimal_separator ) );
+		$( this ).attr( 'data-amount', Give.fn.unFormatCurrency( current_total, decimal_separator ) );
 
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
