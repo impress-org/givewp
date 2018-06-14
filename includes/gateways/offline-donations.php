@@ -460,11 +460,25 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 			$settings_url
 		);
 
-	$offline_instructions = $wpautop
+	$formmated_offline_instructions = $wpautop
 		? wpautop( do_shortcode( $offline_instructions ) )
 		: $offline_instructions;
 
-	return $offline_instructions;
+	/**
+	 * Filter the offline instruction content
+	 *
+	 * @since 2.2.0
+	 *
+	 */
+	$formmated_offline_instructions = apply_filters(
+		'give_the_offline_instructions_content',
+		$formmated_offline_instructions,
+		$offline_instructions,
+		$form_id,
+		$wpautop
+	);
+
+	return $formmated_offline_instructions;
 }
 
 
