@@ -30,7 +30,6 @@ function give_offline_register_gateway( $gateways ) {
 
 add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
 
-
 /**
  * Add our payment instructions to the checkout
  *
@@ -454,9 +453,32 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
 
 	/* translators: %s: form settings url */
-	$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( __( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
+	$offline_instructions = ! empty( $offline_instructions )
+		? $offline_instructions
+		: sprintf(
+			__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ),
+			$settings_url
+		);
 
-	return ( $wpautop ? wpautop( $offline_instructions ) : $offline_instructions );
+	$formmated_offline_instructions = $wpautop
+		? wpautop( do_shortcode( $offline_instructions ) )
+		: $offline_instructions;
+
+	/**
+	 * Filter the offline instruction content
+	 *
+	 * @since 2.2.0
+	 *
+	 */
+	$formmated_offline_instructions = apply_filters(
+		'give_the_offline_instructions_content',
+		$formmated_offline_instructions,
+		$offline_instructions,
+		$form_id,
+		$wpautop
+	);
+
+	return $formmated_offline_instructions;
 }
 
 
