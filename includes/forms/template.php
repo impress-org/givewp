@@ -1553,8 +1553,6 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
-	// Format term and decode shortcodes.
-	$terms = wpautop( do_shortcode( $terms ) );
 
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
@@ -1564,6 +1562,13 @@ function give_terms_agreement( $form_id ) {
 
 		return false;
 	}
+
+	/**
+	 * Filter the form term content
+	 *
+	 * @since  2.1.5
+	 */
+	$terms = apply_filters( 'give_the_term_content',  wpautop( do_shortcode( $terms ) ), $terms, $form_id );
 
 	?>
 	<fieldset id="give_terms_agreement">
@@ -1577,7 +1582,7 @@ function give_terms_agreement( $form_id ) {
 			 */
 			do_action( 'give_before_terms' );
 
-			echo wpautop( stripslashes( $terms ) );
+			echo $terms;
 			/**
 			 * Fires while rendering terms of agreement, after the fields.
 			 *
