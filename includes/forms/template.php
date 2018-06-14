@@ -1181,8 +1181,12 @@ function give_get_register_fields( $form_id ) {
 			 * @param int $form_id The form ID.
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
+
+			$registration = give_get_meta( $form_id, '_give_show_register_form', true );
+
+			$class = ( 'registration' === $registration ) ? 'form-row-wide' : 'form-row-first';
 			?>
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
+			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
 					// Add attributes to checkbox, if Guest Checkout is disabled.
