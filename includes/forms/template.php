@@ -1553,6 +1553,9 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
+	// Format term and decode shortcodes.
+	$terms = wpautop( do_shortcode( $terms ) );
+
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
