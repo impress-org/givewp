@@ -692,10 +692,10 @@ Give.form = {
 
 			// Cache previous amount and set data amount.
 			jQuery( '.give-donation-amount .give-text-input', $form )
-				.data(
-					'amount',
+				.attr(
+					'data-amount',
 					Give.fn.unFormatCurrency(
-						$form.find( '.give-final-total-amount' ).data( 'total' ),
+						$form.find( '.give-final-total-amount' ).attr( 'data-total' ),
 						decimal_separator
 					)
 				);
@@ -1093,7 +1093,7 @@ jQuery( function( $ ) {
 		$( this ).removeClass( 'invalid-amount' );
 
 		// Set data amount
-		var current_total = parent_form.find( '.give-final-total-amount' ).data( 'total' );
+		var current_total = parent_form.find( '.give-final-total-amount' ).attr( 'data-total' );
 		var decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form );
 		$( this ).data( 'amount', Give.fn.unFormatCurrency( current_total, decimal_separator ) );
 
@@ -1176,7 +1176,7 @@ jQuery( function( $ ) {
 
 			// Update donation total (include currency symbol)
 			parent_form.find( '.give-final-total-amount' )
-				.data( 'total', value_now )
+				.attr( 'data-total', value_now )
 				.text( Give.fn.formatCurrency(
 					value_now,
 					{

@@ -552,7 +552,7 @@ function give_get_required_fields( $form_id ) {
 		),
 	);
 
-	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
+	$name_title_prefix = give_is_name_title_prefix_required( $form_id );
 	if ( $name_title_prefix ) {
 		$required_fields['give_title'] = array(
 			'error_id'      => 'invalid_title',
@@ -1066,7 +1066,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Add Title Prefix to user information.
 	if ( empty( $user['user_title'] ) || strlen( trim( $user['user_title'] ) ) < 1 ) {
-		$user['user_title'] = strip_tags( trim( $_POST['give_title'] ) );
+		$user['user_title'] = ! empty( $post_data['give_title'] ) ? strip_tags( trim( $post_data['give_title'] ) ) : '';
 	}
 
 	// Get the user's billing address details.

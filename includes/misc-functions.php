@@ -2092,7 +2092,7 @@ function give_goal_progress_stats( $form ) {
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.2
+ * @since 2.2.0
  *
  * @return mixed
  */
@@ -2106,7 +2106,7 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
 
 		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
 		if ( 'global' !== $form_title_prefix ) {
-			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes' );
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes', true );
 
 			// Check whether the form based title prefixes exists or not.
 			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
@@ -2124,7 +2124,7 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
  * @param int    $form_id Donation Form ID.
  * @param string $status  Status to set status based on option value.
  *
- * @since 2.2
+ * @since 2.2.0
  *
  * @return bool
  */
@@ -2156,7 +2156,7 @@ function give_is_name_title_prefix_enabled( $form_id = 0, $status = '' ) {
  *
  * @param int|Give_Donor $donor Donor Information.
  *
- * @since 2.2
+ * @since 2.2.0
  *
  * @return object
  */
@@ -2175,6 +2175,38 @@ function give_get_name_with_title_prefixes( $donor ) {
 	}
 
 	return $donor;
+}
+
+/**
+ * This function will check whether the name title prefix field is required or not.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2.0
+ *
+ * @return bool
+ */
+function give_is_name_title_prefix_required( $form_id = 0 ) {
+
+	// Bail out, if name title prefix is not enabled.
+	if ( ! give_is_name_title_prefix_enabled( $form_id ) ) {
+		return false;
+	}
+
+	$status      = array( 'optional' );
+	$is_optional = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'required' === $form_title_prefix ) {
+			$is_optional = false;
+		} elseif ( 'optional' === $form_title_prefix ) {
+			$is_optional = true;
+		}
+	}
+
+	return ( ! $is_optional );
 }
 
 /**
