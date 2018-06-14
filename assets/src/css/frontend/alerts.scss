@@ -5,7 +5,7 @@ Notices, Warnings & Errors
 	position: relative;
 }
 
-.give_notice .notice-dismiss {
+.give_notices .notice-dismiss {
 	position: absolute;
 	top: 50%;
 	right: 0;
@@ -47,7 +47,7 @@ Notices, Warnings & Errors
 		position: relative;
 		margin: 15px 0;
 		background: #F9F9F9;
-		padding: 1em 1em 1em 2em;
+		padding: 1em 1.5em 1em 2em;
 		border-left: 4px solid;
 		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
 		clear: both;
