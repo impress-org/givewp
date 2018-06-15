@@ -1135,7 +1135,7 @@ jQuery( function( $ ) {
 
 			if( $default_level.length ) {
 				price_id = $default_level.data('price-id');
-				this_value = value_now = $default_level.val();
+				this_value = value_now = Give.fn.unFormatCurrency( $default_level.val(), decimal_separator );
 				formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
 			}
 		}
