@@ -678,7 +678,7 @@ Give.form = {
 			}
 
 			// Is this a custom amount selection?
-			if ( 'custom' === level_amount ) {
+			if ( 'custom' === level_price_id ) {
 				// It is, so focus on the custom amount input.
 				$form.find( '.give-amount-top' ).val( '' ).focus();
 				return false; // Bounce out
