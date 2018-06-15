@@ -706,9 +706,6 @@ Give.form = {
 			// (c) donation amount
 			$form.find( '.give-donation-amount .give-text-input' )
 				.trigger( 'blur', [ $form, level_amount, level_price_id ] );
-
-			// trigger an event for hooks
-			jQuery( document ).trigger( 'give_donation_value_updated', [ $form, level_amount, level_price_id ] );
 		},
 
 		/**
@@ -1222,6 +1219,9 @@ jQuery( function( $ ) {
 		// This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' )
 			.removeClass( 'give-custom-amount-focus-in' );
+
+		// trigger an event for hooks
+		jQuery( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
 
 	} );
 
