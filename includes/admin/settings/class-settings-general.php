@@ -410,6 +410,45 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'sectionend'
 						)
 					);
+
+				case 'contact':
+					$settings = array(
+
+						// Section 5: Contact
+
+						array(
+							'id'   => 'give_title_general_settings_5',
+							'type' => 'title'
+						),
+						array(
+							'name'    => __( 'Custom Admin Email', 'give' ),
+							'id'      => "contact_custom_admin_email",
+							'desc'    => __( "The 'disabled' mode uses the admin email address set in WordPress Settings > General. Enable this to set custom admin email address.", 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Admin Email Address', 'give' ),
+							'id'      => "contact_admin_email",
+							'desc'    => __( 'Use the {admin_email} tag to use this custom admin email address in the email templates.', 'give' ),
+							'type'    => 'text',
+						),
+						array(
+							'name'    => __( 'Offline Mailing Address', 'give' ),
+							'id'      => "contact_offline_mailing_address",
+							'desc'    => __( 'Set the Offline Mailing Address. Use the {offline_mailing_address} tag to use this in the email templates.', 'give' ),
+							'type'    => 'wysiwyg',
+							'default' => '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>',
+						),
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'sectionend'
+						)
+					);
 			}
 
 			/**
@@ -443,6 +482,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 				'currency-settings'   => __( 'Currency', 'give' ),
 				'access-control'      => __( 'Access Control', 'give' ),
 				'sequential-ordering' => __( 'Sequential Ordering', 'give' ),
+				'contact'             => __( 'Contact', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

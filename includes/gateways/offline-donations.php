@@ -361,21 +361,18 @@ function give_get_default_offline_donation_content() {
 	$default_text = '<p>' . __( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
-	$default_text .= sprintf(
+	$default_text .= give_do_email_tags( sprintf(
 	/* translators: %s: site name */
-		__( 'Make a check payable to "{sitename}"', 'give' ) );
+		__( 'Make a check payable to "{sitename}"', 'give' ) ), null );
 	$default_text .= '</li>';
 	$default_text .= '<li>';
-	$default_text .= sprintf(
+	$default_text .= give_do_email_tags( sprintf(
 	/* translators: %s: site name */
-		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' ) );
+		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' ) ), null );
 	$default_text .= '</li>';
 	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;{offline_mailing_address}<br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>';
+	$default_text .= give_do_email_tags( '{offline_mailing_address}<br>', null );
 	$default_text .= '<p>' . __( 'All contributions will be gratefully acknowledged and are tax deductible.', 'give' ) . '</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
@@ -408,10 +405,7 @@ function give_get_default_offline_donation_email_content() {
 	$default_text .= '</li>';
 	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;{offline_mailing_address}<br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>';
-	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>';
+	$default_text .= '{offline_mailing_address}<br>';
 	$default_text .= '<p>' . __( 'Once your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!', 'give' ) . '</p>';
 	$default_text .= '<p>' . __( 'Sincerely,', 'give' ) . '</p>';
 	$default_text .= '<p>{sitename}</p>';

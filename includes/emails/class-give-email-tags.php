@@ -442,6 +442,27 @@ function give_setup_email_tags() {
 			'context'     => 'general',
 		),
 
+		array(
+			'tag'         => 'admin_email',
+			'description' => esc_html__( 'The admin email.', 'give' ),
+			'function'    => 'give_email_admin_email',
+			'context'     => 'general',
+		),
+
+		array(
+			'tag'         => 'site_url',
+			'description' => esc_html__( 'The website URL.', 'give' ),
+			'function'    => 'give_email_site_url',
+			'context'     => 'general',
+		),
+
+		array(
+			'tag'         => 'offline_mailing_address',
+			'description' => esc_html__( 'Offline Mailing Address.', 'give' ),
+			'function'    => 'give_email_offline_mailing_address',
+			'context'     => 'general',
+		),
+
 	);
 
 	// Apply give_email_tags filter
@@ -1401,6 +1422,50 @@ function give_get_reset_password_url( $user_id ) {
 	return $reset_password_url;
 }
 
+/**
+ * Get custom admin email.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_admin_email() {
+	$custom_admin_email = give_is_setting_enabled( give_get_option( 'contact_custom_admin_email' ) );
+	$admin_email        = give_get_option( 'contact_admin_email' );
+
+	return ( true === $custom_admin_email && ! empty( $admin_email ) )
+		? $admin_email
+		: get_bloginfo( 'admin_email' );
+}
+
+/**
+ * Get site URL.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_site_url() {
+	return get_bloginfo( 'url' );
+}
+
+
+/**
+ * Get custom offline mailing address.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_offline_mailing_address() {
+	$offline_address = give_get_option( 'contact_offline_mailing_address' );
+
+	if ( false === $offline_address ) {
+		return '<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>';
+	}
+
+	return $offline_address;
+}
 
 /**
  * This function helps to render meta data with from dynamic meta data email tag.
