@@ -175,9 +175,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 */
 		public function get_default_email_message() {
 			$message = sprintf(
-				           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
-				           get_bloginfo( 'url' ),
-				           get_bloginfo( 'admin_email' )
+				           __( 'Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}.', 'give' )
 			           ) . "\n\n";
 			$message .= '{email_access_link}' . "\n\n";
 			$message .= "\n\n";
