@@ -679,6 +679,17 @@ function give_totals_shortcode( $atts ) {
 
 	}
 
+	/**
+	 * Update Form earnings.
+	 *
+	 * @since 2.1.5
+	 *
+	 * @param string $form_earning Total earning of Form.
+	 *
+	 * @return string $form_earning Total earning of Form.
+	 */
+	$total = apply_filters( 'give_totals_goal_earning', $total );
+
 	// Append link with text.
 	$donate_link = '';
 	if ( ! empty( $atts['link'] ) ) {
