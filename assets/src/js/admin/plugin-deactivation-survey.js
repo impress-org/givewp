@@ -110,6 +110,10 @@ class Deactivation_Survey {
 							data: {
 								'action': 'deactivation_form_submit',
 								'form-data': form_data,
+							},
+							beforeSend: function() {
+								let spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
+								spinner[0].style.visibility = 'visible';
 							}
 						}).done( function( response ) {
 
@@ -117,9 +121,6 @@ class Deactivation_Survey {
 								if ( response.data.delete_data ) {
 									Deactivation_Survey.delete_all_data( 1, form_data );
 								}
-
-								jQuery.magnificPopup.close();
-								window.location.replace( deactivation_link );
 							}
 						});
 					}
@@ -144,6 +145,9 @@ class Deactivation_Survey {
 		}).done( function( response ) {
 			if ( true !== response.success && ! response.error ) {
 				Deactivation_Survey.delete_all_data( parseInt( response.step ), form_data );
+			} else if ( true === response.success ) {
+				jQuery.magnificPopup.close();
+				window.location.replace( deactivation_link );
 			}
 		});
 	}
