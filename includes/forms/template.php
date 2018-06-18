@@ -515,10 +515,11 @@ function give_output_levels( $form_id ) {
 				) );
 
 				$output .= sprintf(
-					'<li><button type="button" data-price-id="%1$s" class="%2$s" value="%3$s">%4$s</button></li>',
+					'<li><button type="button" data-price-id="%1$s" class="%2$s" value="%3$s" data-default="%4$s">%5$s</button></li>',
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
+					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
 			}
@@ -553,11 +554,12 @@ function give_output_levels( $form_id ) {
 				) );
 
 				$output .= sprintf(
-					'<li><input type="radio" data-price-id="%1$s" class="%2$s" value="%3$s" name="give-radio-donation-level" id="give-radio-level-%1$s" %4$s ><label for="give-radio-level-%1$s">%5$s</label></li>',
+					'<li><input type="radio" data-price-id="%1$s" class="%2$s" value="%3$s" name="give-radio-donation-level" id="give-radio-level-%1$s" %4$s data-default="%5$s"><label for="give-radio-level-%1$s">%6$s</label></li>',
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
 					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ),
+					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
 			}
@@ -593,11 +595,12 @@ function give_output_levels( $form_id ) {
 				) );
 
 				$output .= sprintf(
-					'<option data-price-id="%1$s" class="%2$s" value="%3$s" %4$s >%5$s</option>',
+					'<option data-price-id="%1$s" class="%2$s" value="%3$s" %4$s data-default="%5$s">%6$s</option>',
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
 					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ),
+					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
 			}

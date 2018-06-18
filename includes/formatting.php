@@ -232,8 +232,6 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 		&& 2 === count( $number_parts )
 		&& ( $number_decimals >= strlen( $number_parts[1] ) )
 	){
-		// Remove thousand separator from number.
-		$number = str_replace( $thousand_separator, '', $number );
 		return number_format( $number, $number_decimals, '.', '' );
 	}
 
