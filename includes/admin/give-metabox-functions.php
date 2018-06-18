@@ -332,8 +332,8 @@ function give_donation_limit( $field ) {
 	// Default field option arguments.
 	$field['options'] = wp_parse_args( $field['options'], array(
 			'display_label' => '',
-			'minimum'       => 1.00,
-			'maximum'       => 999999.99,
+			'minimum'       => give_format_decimal( '1.00', false, false ),
+			'maximum'       => give_format_decimal( '999999.99', false, false ),
 		)
 	);
 
@@ -381,8 +381,9 @@ function give_donation_limit( $field ) {
 						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
 
 					$field_options['attributes']['class']    .= ' give-text_small';
-					$field_options['value'][ $amount_range ] = give_maybe_sanitize_amount( $amount_value );
+					$field_options['value'][ $amount_range ] = $amount_value;
 					break;
+
 				case 'decimal' :
 					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
 					$field_options['value'][ $amount_range ] = $amount_value;
