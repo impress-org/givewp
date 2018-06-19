@@ -144,7 +144,7 @@ if ( ! class_exists( 'Give_Clone_Forms' ) ) {
 
 					foreach ( $post_meta_data as $meta_data ) {
 						$meta_key             = $meta_data->meta_key;
-						$meta_value           = addslashes( $meta_data->meta_value );
+						$meta_value           = $meta_data->meta_value;
 						$clone_query_select[] = $wpdb->prepare( 'SELECT %s, %s, %s', $clone_form_id, $meta_key, $meta_value );
 					}
 
