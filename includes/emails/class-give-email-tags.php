@@ -1461,7 +1461,7 @@ function give_email_offline_mailing_address() {
 	$offline_address = give_get_option( 'contact_offline_mailing_address' );
 
 	if ( false === $offline_address ) {
-		return '<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>';
+		return sprintf( '&nbsp;&nbsp;&nbsp;&nbsp;<em>%s</em></em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>', get_bloginfo( 'sitename' ) );
 	}
 
 	return $offline_address;

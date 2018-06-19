@@ -442,7 +442,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => "contact_offline_mailing_address",
 							'desc'    => __( 'Set the Offline Mailing Address. Use the {offline_mailing_address} tag to use this in the email templates.', 'give' ),
 							'type'    => 'wysiwyg',
-							'default' => '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>',
+							'default' => give_email_offline_mailing_address(),
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',
