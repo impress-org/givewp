@@ -1328,12 +1328,15 @@ function give_validate_donation_amount( $valid_data ) {
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $post_data['give-form-id'] );
 
+	// Get the form currency.
+	$form_currency = give_get_currency( $post_data['give-form-id'] );
+
 	$donation_level_matched = false;
 
 	if ( $form->is_set_type_donation_form() ) {
 
 		// Sanitize donation amount.
-		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'] );
+		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
 
 		// Backward compatibility.
 		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
@@ -1352,8 +1355,8 @@ function give_validate_donation_amount( $valid_data ) {
 		}
 
 		// Sanitize donation amount.
-		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'] );
-		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ) );
+		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
+		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ), array( 'currency' => $form_currency ) );
 		$new_price_id                 = '';
 
 		if ( $post_data['give-amount'] === $variable_price_option_amount ) {

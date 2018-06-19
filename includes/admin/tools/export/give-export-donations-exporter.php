@@ -388,12 +388,12 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['form_level_title'] ) ) {
-					$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
+					$var_prices = give_has_variable_prices( $payment->form_id );
 					if ( empty( $var_prices ) ) {
 						$data[ $i ]['form_level_title'] = '';
 					} else {
 						$prices_atts = '';
-						if ( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
+						if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
 							foreach ( $variable_prices as $variable_price ) {
 								$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'] );
 							}

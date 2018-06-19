@@ -251,7 +251,7 @@ function give_text_input( $field ) {
 
 	switch ( $data_type ) {
 		case 'price' :
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( give_maybe_sanitize_amount( $field['value'] ), array( 'sanitize' => false ) ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( give_maybe_sanitize_amount( $field['value'] ), false, false ) : $field['value'] );
 
 			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
 			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
@@ -332,8 +332,8 @@ function give_donation_limit( $field ) {
 	// Default field option arguments.
 	$field['options'] = wp_parse_args( $field['options'], array(
 			'display_label' => '',
-			'minimum'       => 1.00,
-			'maximum'       => 999999.99,
+			'minimum'       => give_format_decimal( '1.00', false, false ),
+			'maximum'       => give_format_decimal( '999999.99', false, false ),
 		)
 	);
 
@@ -381,8 +381,9 @@ function give_donation_limit( $field ) {
 						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
 
 					$field_options['attributes']['class']    .= ' give-text_small';
-					$field_options['value'][ $amount_range ] = give_maybe_sanitize_amount( $amount_value );
+					$field_options['value'][ $amount_range ] = $amount_value;
 					break;
+
 				case 'decimal' :
 					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
 					$field_options['value'][ $amount_range ] = $amount_value;
