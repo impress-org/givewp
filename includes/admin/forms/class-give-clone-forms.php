@@ -9,12 +9,12 @@
  * @since       2.2.0
  */
 
-if ( ! class_exists( 'Give_Clone_Forms' ) ) {
+if ( ! class_exists( 'Give_Clone_Form' ) ) {
 
 	/**
-	 * Give_Clone_Forms class
+	 * Give_Clone_Form class
 	 */
-	class Give_Clone_Forms {
+	class Give_Clone_Form {
 
 		/**
 		 * Constructor Function
@@ -213,5 +213,5 @@ if ( ! class_exists( 'Give_Clone_Forms' ) ) {
 		}
 	}
 
-	new Give_Clone_Forms();
+	new Give_Clone_Form();
 }
