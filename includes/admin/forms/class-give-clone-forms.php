@@ -134,13 +134,13 @@ if ( ! class_exists( 'Give_Clone_Forms' ) ) {
 				}
 
 				// Clone the metadata of the form.
-				$post_meta_query = $wpdb->prepare( 'SELECT meta_key, meta_value FROM wp_give_formmeta WHERE form_id=%s', $form_id );
+				$post_meta_query = $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->formmeta} WHERE form_id=%s", $form_id );
 
 				$post_meta_data = $wpdb->get_results( $post_meta_query ); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
 
 				if ( ! empty( $post_meta_data ) ) {
 
-					$clone_query = 'INSERT INTO wp_give_formmeta (form_id, meta_key, meta_value) ';
+					$clone_query = "INSERT INTO {$wpdb->formmeta} (form_id, meta_key, meta_value) ";
 
 					foreach ( $post_meta_data as $meta_data ) {
 						$meta_key             = $meta_data->meta_key;
