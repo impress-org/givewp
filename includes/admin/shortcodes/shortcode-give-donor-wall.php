@@ -71,6 +71,12 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'placeholder' => esc_html__( 'Read More', 'give' ),
 			),
 			array(
+				'type'        => 'textbox',
+				'name'        => 'loadmore_text',
+				'label'       => esc_attr__( 'Load More Text', 'give' ),
+				'placeholder' => esc_html__( 'Load More', 'give' ),
+			),
+			array(
 				'type'        => 'listbox',
 				'name'        => 'columns',
 				'label'       => esc_attr__( 'Columns:', 'give' ),
@@ -127,16 +133,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
-			),
-			array(
-				'type'        => 'listbox',
-				'name'        => 'orderby',
-				'label'       => esc_attr__( 'Order By', 'give' ),
-				'options'     => array(
-					'donation_count'  => esc_html__( 'Donation Count', 'give' ),
-				),
-				'placeholder' => esc_html__( 'Donation Amount', 'give' ),
-			),
+			)
 		);
 	}
 }
