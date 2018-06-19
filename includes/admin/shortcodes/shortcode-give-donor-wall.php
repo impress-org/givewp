@@ -27,7 +27,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 		$this->shortcode['title'] = esc_html__( 'Donor Wall', 'give' );
 		$this->shortcode['label'] = esc_html__( 'Donor Wall', 'give' );
 
-		parent::__construct( 'give_donor_grid' );
+		parent::__construct( 'give_donor_wall' );
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 	 */
 	public function define_fields() {
 		$create_form_link = sprintf(
-		/* translators: %s: create new form URL */
+			/* translators: %s: create new form URL */
 			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
 			admin_url( 'post-new.php?post_type=give_forms' )
 		);
@@ -48,65 +48,92 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'query_args'  => array(
 					'post_type' => 'give_forms',
 				),
-				'name'        => 'give_forms',
+				'name'        => 'form_id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
 				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
-				'required'    => array(
-					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
+			),
+			array(
+				'type'        => 'textbox',
+				'name'        => 'donors_per_page',
+				'label'       => esc_attr__( 'Donors Per Page', 'give' ),
+				'placeholder' => '20',
+			),
+			array(
+				'type'        => 'textbox',
+				'name'        => 'comment_length',
+				'label'       => esc_attr__( 'Comment Length', 'give' ),
+				'placeholder' => '20',
+			),
+			array(
+				'type'        => 'textbox',
+				'name'        => 'readmore_text',
+				'label'       => esc_attr__( 'Read More Text', 'give' ),
+				'placeholder' => esc_html__( 'Read More', 'give' ),
+			),
+			array(
+				'type'        => 'textbox',
+				'name'        => 'loadmore_text',
+				'label'       => esc_attr__( 'Load More Text', 'give' ),
+				'placeholder' => esc_html__( 'Load More', 'give' ),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'columns',
+				'label'       => esc_attr__( 'Columns:', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the number of forms per row.', 'give' ),
+				'options'     => array(
+					'1' => esc_html__( '1', 'give' ),
+					'2' => esc_html__( '2', 'give' ),
+					'3' => esc_html__( '3', 'give' ),
+					'4' => esc_html__( '4', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Best Fit', 'give' ),
 			),
 			array(
-				'type'    => 'textbox',
-				'classes' => 'give-hidden give-donors-per-page',
-				'name'    => 'donors_per_page',
-				'label'   => esc_attr__( 'Donors Per Page', 'give' ),
-			),
-			array(
-				'type'    => 'listbox',
-				'name'    => 'show_avatar',
-				'label'   => esc_attr__( 'Show Avatar', 'give' ),
-				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'show_avatar',
+				'label'       => esc_attr__( 'Show Avatar', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_name',
-				'label'   => esc_attr__( 'Show Name', 'give' ),
-				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'show_name',
+				'label'       => esc_attr__( 'Show Name', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_total',
-				'label'   => esc_attr__( 'Show Total', 'give' ),
-				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'show_total',
+				'label'       => esc_attr__( 'Show Total', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_time',
-				'label'   => esc_attr__( 'Show Date', 'give' ),
-				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'show_time',
+				'label'       => esc_attr__( 'Show Date', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_comments',
-				'label'   => esc_attr__( 'Show Comments', 'give' ),
-				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'show_comments',
+				'label'       => esc_attr__( 'Show Comments', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
-			),
+				'placeholder' => esc_html__( 'Show', 'give' ),
+			)
 		);
 	}
 }

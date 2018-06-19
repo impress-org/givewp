@@ -7,13 +7,13 @@
  * @subpackage  Classes/Give_Cache
  * @copyright   Copyright (c) 2018, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.1.0
+ * @since       2.2.0
  */
 class Give_Comment {
 	/**
 	 * Instance.
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access private
 	 * @var
 	 */
@@ -22,7 +22,7 @@ class Give_Comment {
 	/**
 	 * Comment Types.
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access private
 	 * @var array
 	 */
@@ -31,7 +31,7 @@ class Give_Comment {
 	/**
 	 * Singleton pattern.
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access private
 	 */
 	private function __construct() {
@@ -41,7 +41,7 @@ class Give_Comment {
 	/**
 	 * Get instance.
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access pu
 	 * @return Give_Comment
 	 */
@@ -57,14 +57,14 @@ class Give_Comment {
 	/**
 	 * Initialize
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access private
 	 */
 	private function init() {
 		/**
 		 * Filter the comment type
 		 *
-		 * @since 2.1.0
+		 * @since 2.2.0
 		 */
 		$this->comment_types = apply_filters(
 			'give_comment_type',
@@ -79,9 +79,9 @@ class Give_Comment {
 	}
 
 	/**
-	 * Insert comment
+	 * Insert/Update comment
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param int    $id           Payment|Donor ID.
@@ -89,23 +89,26 @@ class Give_Comment {
 	 * @param string $comment_type Value can ve donor|payment
 	 * @param array  $comment_args Comment arguments
 	 *
-	 * @return int
+	 * @return int|WP_Error
 	 */
 	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
-			return false;
+			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or cooment type', 'give' ) );
 		}
 
+		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
+		$action_type         = $is_existing_comment ? 'update' : 'insert';
+
 		/**
-		 * Fires before inserting payment|donor comment.
+		 * Fires before inserting/updating payment|donor comment.
 		 *
 		 * @param int    $id   Payment|Donor ID.
 		 * @param string $note Comment text.
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_pre_insert_{$comment_type}_note", $id, $note );
+		do_action( "give_pre_{$action_type}_{$comment_type}_note", $id, $note );
 
 		$comment_args = wp_parse_args(
 			$comment_args,
@@ -126,12 +129,21 @@ class Give_Comment {
 			)
 		);
 
-		$comment_id = wp_insert_comment( wp_filter_comment( $comment_args ) );
+
+		// Check comment max length.
+		$error = wp_check_comment_data_max_lengths( $comment_args );
+		if( is_wp_error( $error ) ) {
+			return $error;
+		}
+
+		$comment_id = $is_existing_comment
+			? wp_update_comment( $comment_args )
+			: wp_new_comment( $comment_args, true );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
 		/**
-		 * Fires after payment|donor comment inserted.
+		 * Fires after payment|donor comment inserted/updated.
 		 *
 		 * @param int    $comment_id Comment ID.
 		 * @param int    $id         Payment|Donor ID.
@@ -139,7 +151,7 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_insert_{$comment_type}_note", $comment_id, $id, $note );
+		do_action( "give_{$action_type}_{$comment_type}_note", $comment_id, $id, $note );
 
 		return $comment_id;
 	}
@@ -148,7 +160,7 @@ class Give_Comment {
 	/**
 	 * Delete comment
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param int    $comment_id   The comment ID to delete.
@@ -197,7 +209,7 @@ class Give_Comment {
 	/**
 	 * Get comments
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param int    $id
@@ -276,7 +288,7 @@ class Give_Comment {
 	 * Exclude comments from showing in Recent
 	 * Comments widgets
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param object $query WordPress Comment Query Object.
@@ -299,7 +311,7 @@ class Give_Comment {
 	/**
 	 * Exclude notes (comments) from showing in Recent Comments widgets
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param array $clauses Comment clauses for comment query.
@@ -319,7 +331,7 @@ class Give_Comment {
 	/**
 	 * Exclude notes (comments) from showing in comment feeds
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param string $where
@@ -339,7 +351,7 @@ class Give_Comment {
 	/**
 	 * Remove Give Comments from the wp_count_comments function
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param array $stats   (empty from core filter).
@@ -418,7 +430,7 @@ class Give_Comment {
 	/**
 	 * Get donor name
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param string     $author
@@ -444,7 +456,7 @@ class Give_Comment {
 	/**
 	 * Get comment types
 	 *
-	 * @since  2.1.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param array @comment_types
