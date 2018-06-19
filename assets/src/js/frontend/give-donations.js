@@ -678,7 +678,7 @@ Give.form = {
 			}
 
 			// Is this a custom amount selection?
-			if ( 'custom' === level_amount ) {
+			if ( 'custom' === level_price_id ) {
 				// It is, so focus on the custom amount input.
 				$form.find( '.give-amount-top' ).val( '' ).focus();
 				return false; // Bounce out
@@ -706,9 +706,6 @@ Give.form = {
 			// (c) donation amount
 			$form.find( '.give-donation-amount .give-text-input' )
 				.trigger( 'blur', [ $form, level_amount, level_price_id ] );
-
-			// trigger an event for hooks
-			jQuery( document ).trigger( 'give_donation_value_updated', [ $form, level_amount, level_price_id ] );
 		},
 
 		/**
@@ -802,6 +799,7 @@ Give.form = {
 				price_id = this.getPriceID( $form, true );
 
 			// Don't allow zero donation amounts.
+			// https://github.com/WordImpress/Give/issues/3181
 			if( 0 === amount ) {
 				return false
 			}
@@ -1118,7 +1116,7 @@ jQuery( function( $ ) {
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function( e, $parent_form, donation_amount, price_id ) {
 
 		let parent_form = ('undefined' !== typeof $parent_form) ? $parent_form : $( this ).closest( 'form' ),
-			pre_focus_amount = $( this ).data( 'amount' ),
+			pre_focus_amount = $( this ).attr( 'data-amount' ),
 			this_value = ('undefined' !== typeof donation_amount) ? donation_amount : $( this ).val(),
 			decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form ),
 			value_min = Give.form.fn.getMinimumAmount( parent_form ),
@@ -1127,6 +1125,20 @@ jQuery( function( $ ) {
 			formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
 
 		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID( parent_form, true ) : price_id;
+
+		// https://github.com/WordImpress/Give/issues/3299
+		// If we change from custom amount to donation level then
+		// this event fire twice. First on amount field blur and second time on level button/radio/select click which cause of minimum donation notice.
+		// This condition will prevent minimum donation amount notice show by set default level.
+		if( '' === value_now || 0 === value_now ) {
+			let $default_level = $( '.give-donation-levels-wrap [data-default="1"]', $parent_form );
+
+			if( $default_level.length ) {
+				price_id = $default_level.data('price-id');
+				this_value = value_now = Give.fn.unFormatCurrency( $default_level.val(), decimal_separator );
+				formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
+			}
+		}
 
 		// Cache donor selected price id for a amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
@@ -1207,6 +1219,9 @@ jQuery( function( $ ) {
 		// This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' )
 			.removeClass( 'give-custom-amount-focus-in' );
+
+		// trigger an event for hooks
+		jQuery( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
 
 	} );
 

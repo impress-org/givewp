@@ -216,24 +216,22 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 
 	if (
 		// Non formatted number.
-		(
-			( false === strpos( $number, $thousand_separator ) ) &&
-			( false === strpos( $number, $decimal_separator ) )
-		) ||
-
+		false === strpos( $number, $thousand_separator )
+		&& false === strpos( $number, $decimal_separator )
+	) {
+		return number_format( $number, $number_decimals, '.', '' );
+	} elseif (
 		// Decimal formatted number.
 		// If number of decimal place set to non zero and
 		// number only contains `.` as separator, precision set to less then or equal to number of decimal
 		// then number will be consider as decimal formatted which means number is already sanitized.
-		(
-			$number_decimals &&
-			'.' === $thousand_separator &&
-			false !== strpos( $number, $thousand_separator ) &&
-			false === strpos( $number, $decimal_separator ) &&
-			2 === count( $number_parts ) &&
-			( $number_decimals >= strlen( $number_parts[1] ) )
-		)
-	) {
+		$number_decimals
+		&& '.' === $thousand_separator
+		&& false !== strpos( $number, $thousand_separator )
+		&& false === strpos( $number, $decimal_separator )
+		&& 2 === count( $number_parts )
+		&& ( $number_decimals >= strlen( $number_parts[1] ) )
+	){
 		return number_format( $number, $number_decimals, '.', '' );
 	}
 
