@@ -42,7 +42,7 @@ class Give_Session {
 	 *
 	 * @var    string
 	 */
-	private $_session_data_changed = false;
+	private $session_data_changed = false;
 
 	/**
 	 * Whether to use PHP $_SESSION or WP_Session
@@ -62,7 +62,7 @@ class Give_Session {
 	 *
 	 * @var    string
 	 */
-	private $_cookie_name = '';
+	private $cookie_name = '';
 
 	/**
 	 * Donor Unique ID
@@ -72,7 +72,7 @@ class Give_Session {
 	 *
 	 * @var    string
 	 */
-	private $_donor_id = '';
+	private $donor_id = '';
 
 	/**
 	 * session expiring time
@@ -82,7 +82,7 @@ class Give_Session {
 	 *
 	 * @var    string
 	 */
-	private $_session_expiring;
+	private $session_expiring;
 
 	/**
 	 * session expiration time
@@ -92,7 +92,7 @@ class Give_Session {
 	 *
 	 * @var    string
 	 */
-	private $_session_expiration;
+	private $session_expiration;
 
 	/**
 	 * Flag to check if donor has cookie or not
@@ -102,7 +102,7 @@ class Give_Session {
 	 *
 	 * @var    bool
 	 */
-	private $_has_cookie = false;
+	private $has_cookie = false;
 
 	/**
 	 * Singleton pattern.
@@ -142,18 +142,18 @@ class Give_Session {
 		$this->exp_option       = give_get_option( 'session_lifetime' ); // @todo: check this option
 
 
-		$this->_cookie_name = $this->get_cookie_name();
+		$this->cookie_name = $this->get_cookie_name();
 
 		if ( $cookie = $this->get_session_cookie() ) {
-			$this->_donor_id           = $cookie[0];
-			$this->_session_expiration = $cookie[1];
-			$this->_session_expiring   = $cookie[2];
-			$this->_has_cookie         = true;
+			$this->donor_id           = $cookie[0];
+			$this->session_expiration = $cookie[1];
+			$this->session_expiring   = $cookie[2];
+			$this->has_cookie         = true;
 
 			// Update session if its close to expiring.
-			if ( time() > $this->_session_expiring ) {
+			if ( time() > $this->session_expiring ) {
 				$this->set_expiration_time();
-				Give()->session_db->update_session_timestamp( $this->_donor_id, $this->_session_expiration );
+				Give()->session_db->update_session_timestamp( $this->donor_id, $this->session_expiration );
 			}
 
 			$this->load_donor_session();
@@ -191,7 +191,7 @@ class Give_Session {
 	 * @return array
 	 */
 	public function get_session_data() {
-		return $this->has_session() ? (array) Give()->session_db->get_session( $this->_donor_id, array() ) : array();
+		return $this->has_session() ? (array) Give()->session_db->get_session( $this->donor_id, array() ) : array();
 	}
 
 
@@ -206,7 +206,7 @@ class Give_Session {
 	 */
 	public function get_session_cookie() {
 		$session      = array();
-		$cookie_value = isset( $_COOKIE[ $this->_cookie_name ] ) ? wp_unslash( $_COOKIE[ $this->_cookie_name ] ) : false; // @codingStandardsIgnoreLine.
+		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : false; // @codingStandardsIgnoreLine.
 
 		if ( empty( $cookie_value ) || ! is_string( $cookie_value ) ) {
 			return $session;
@@ -241,7 +241,7 @@ class Give_Session {
 	 * @return bool
 	 */
 	private function has_session() {
-		return $this->_has_cookie;
+		return $this->has_cookie;
 	}
 
 	/**
@@ -311,7 +311,7 @@ class Give_Session {
 	public function set( $key, $value ) {
 		if ( $value !== $this->get( $key ) ) {
 			$this->session[ sanitize_key( $key ) ] = maybe_serialize( $value );
-			$this->_session_data_changed           = true;
+			$this->session_data_changed           = true;
 		}
 
 		return $this->session[ $key ];
@@ -335,12 +335,12 @@ class Give_Session {
 		if ( $set ) {
 			$this->set_expiration_time();
 
-			$to_hash           = $this->_donor_id . '|' . $this->_session_expiration;
+			$to_hash           = $this->donor_id . '|' . $this->session_expiration;
 			$cookie_hash       = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
-			$cookie_value      = $this->_donor_id . '||' . $this->_session_expiration . '||' . $this->_session_expiring . '||' . $cookie_hash;
-			$this->_has_cookie = true;
+			$cookie_value      = $this->donor_id . '||' . $this->session_expiration . '||' . $this->session_expiring . '||' . $cookie_hash;
+			$this->has_cookie = true;
 
-			give_setcookie( $this->_cookie_name, $cookie_value, $this->_session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
+			give_setcookie( $this->cookie_name, $cookie_value, $this->session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
 		}
 	}
 
@@ -371,10 +371,10 @@ class Give_Session {
 	 * @return int
 	 */
 	public function set_expiration_time() {
-		$this->_session_expiring   = time() + intval( apply_filters( 'give_session_expiring', 60 * 60 * 23 ) ); // 23 Hours.
-		$this->_session_expiration = time() + intval( apply_filters( 'give_session_expiration', 60 * 60 * 24 ) ); // 24 Hours.
+		$this->session_expiring   = time() + intval( apply_filters( 'give_session_expiring', 60 * 60 * 23 ) ); // 23 Hours.
+		$this->session_expiration = time() + intval( apply_filters( 'give_session_expiration', 60 * 60 * 24 ) ); // 24 Hours.
 
-		return $this->_session_expiration;
+		return $this->session_expiration;
 	}
 
 	/**
@@ -518,7 +518,7 @@ class Give_Session {
 		if (
 			! headers_sent()
 			&& empty( $this->session )
-			&& ! $this->_has_cookie
+			&& ! $this->has_cookie
 		) {
 			$this->set_session_cookies( true );
 		}
@@ -529,13 +529,16 @@ class Give_Session {
 	 *
 	 * Uses Portable PHP password hashing framework to generate a unique cryptographically strong ID.
 	 *
+	 * @since 2.2.0
+	 * @access public
+	 *
 	 * @return string
 	 */
 	public function generate_donor_id() {
 		require_once ABSPATH . 'wp-includes/class-phpass.php';
 
 		$hasher          = new PasswordHash( 8, false );
-		$this->_donor_id = md5( $hasher->get_random_bytes( 32 ) );
+		$this->donor_id = md5( $hasher->get_random_bytes( 32 ) );
 	}
 
 	/**
@@ -549,15 +552,15 @@ class Give_Session {
 	 */
 	public function save_data() {
 		// Dirty if something changed - prevents saving nothing new.
-		if ( $this->_session_data_changed && $this->has_session() ) {
+		if ( $this->session_data_changed && $this->has_session() ) {
 			global $wpdb;
 
 			Give()->session_db->__replace(
 				Give()->session_db->table_name,
 				array(
-					'session_key'    => $this->_donor_id,
+					'session_key'    => $this->donor_id,
 					'session_value'  => maybe_serialize( $this->session ),
-					'session_expiry' => $this->_session_expiration,
+					'session_expiry' => $this->session_expiration,
 				),
 				array(
 					'%s',
@@ -566,7 +569,7 @@ class Give_Session {
 				)
 			);
 
-			$this->_session_data_changed = false;
+			$this->session_data_changed = false;
 		}
 	}
 
@@ -577,13 +580,13 @@ class Give_Session {
 	 * @access public
 	 */
 	public function destroy_session() {
-		give_setcookie( $this->_cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
+		give_setcookie( $this->cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 
-		Give()->session_db->delete_session( $this->_donor_id );
+		Give()->session_db->delete_session( $this->donor_id );
 
 		$this->session               = array();
-		$this->_session_data_changed = false;
-		$this->_donor_id             = $this->generate_donor_id();
+		$this->session_data_changed = false;
+		$this->donor_id             = $this->generate_donor_id();
 	}
 
 	/**
@@ -596,7 +599,7 @@ class Give_Session {
 	 * @return string
 	 */
 	public function nonce_user_logged_out( $uid ) {
-		return $this->has_session() && $this->_donor_id ? $this->_donor_id : $uid;
+		return $this->has_session() && $this->donor_id ? $this->donor_id : $uid;
 	}
 
 
