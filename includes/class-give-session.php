@@ -108,6 +108,16 @@ class Give_Session {
 	private $has_cookie = false;
 
 	/**
+	 * Expiration Time
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    int
+	 */
+	private $exp_option = false;
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.2.0
@@ -142,7 +152,11 @@ class Give_Session {
 	private function __setup() {  // @codingStandardsIgnoreLine
 		// deprecated
 		$this->use_php_sessions = $this->use_php_sessions(); // @todo: check this option.
-		$this->exp_option       = give_get_option( 'session_lifetime' ); // @todo: check this option.
+
+		$this->exp_option       = give_get_option( 'session_lifetime' );
+		$this->exp_option = ! empty( $this->exp_option )
+			? $this->exp_option
+			: 30 * 60 * 24; // Default expiration time is 12 hours
 
 		$this->cookie_name = $this->get_cookie_name();
 		$cookie            = $this->get_session_cookie();
@@ -366,8 +380,8 @@ class Give_Session {
 	 * @return int
 	 */
 	public function set_expiration_time() {
-		$this->session_expiring   = time() + intval( apply_filters( 'give_session_expiring', 60 * 60 * 23 ) ); // 23 Hours.
-		$this->session_expiration = time() + intval( apply_filters( 'give_session_expiration', 60 * 60 * 24 ) ); // 24 Hours.
+		$this->session_expiring   = time() + intval( apply_filters( 'give_session_expiring', ( $this->exp_option - 3600 ) ) ); // Default 11 Hours.
+		$this->session_expiration = time() + intval( apply_filters( 'give_session_expiration', $this->exp_option ) ); // Default 12 Hours.
 
 		return $this->session_expiration;
 	}
