@@ -26,7 +26,17 @@ class Give_DB_Sessions extends Give_DB {
 	 *
 	 * @var string
 	 */
-	private $cache_group = '';
+	private $cache_group = 'give_sessions';
+
+	/**
+	 * Cache incrementer name
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var string
+	 */
+	private $incrementer_name = 'give_sessions';
 
 
 	/**
@@ -41,9 +51,12 @@ class Give_DB_Sessions extends Give_DB {
 		$this->primary_key = 'session_key';
 		$this->version     = '1.0';
 
-		$incrementer_value = wp_cache_get( 'give-cache-incrementer-sessions' );
-		$incrementer_value = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
-		$this->cache_group = "{$this->cache_group}_{$incrementer_value}";
+		// Set cache group id.
+		$current_blog_id        = get_current_blog_id();
+		$this->incrementer_name = "give-cache-incrementer-sessions-{$current_blog_id}";
+		$incrementer_value      = wp_cache_get( $this->incrementer_name );
+		$incrementer_value      = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
+		$this->cache_group      = "{$this->cache_group}_{$current_blog_id}_{$incrementer_value}";
 
 		$this->register_table();
 
@@ -198,7 +211,7 @@ class Give_DB_Sessions extends Give_DB {
 	public function delete_expired_sessions() {
 		global $wpdb;
 
-		wp_cache_set( 'give-cache-incrementer-sessions', microtime( true ) );
+		wp_cache_set( $this->incrementer_name, microtime( true ) );
 
 		// @codingStandardsIgnoreStart
 		$wpdb->query(
@@ -218,8 +231,8 @@ class Give_DB_Sessions extends Give_DB {
 	 * @access public
 	 *
 	 * @param string $table_name Table name.
-	 * @param array  $data Data.
-	 * @param array  $format Array for data format of each key:value in data.
+	 * @param array  $data       Data.
+	 * @param array  $format     Array for data format of each key:value in data.
 	 */
 	public function __replace( $table_name, $data, $format = null ) {
 		global $wpdb;
