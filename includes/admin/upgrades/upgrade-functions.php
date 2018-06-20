@@ -372,15 +372,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'depend'   => array( 'v20_move_metadata_into_new_table' ),
 		)
 	);
-	
-	// v2.1.5 Add additional capability to the give_manager role.
-	$give_updates->register(
-		array(
-			'id'       => 'v215_update_donor_user_roles',
-			'version'  => '2.1.5',
-			'callback' => 'give_v215_update_donor_user_roles_callback',
-		)
-	);
 
 	// v2.1.5 Add additional capability to the give_manager role.
 	$give_updates->register(
@@ -390,7 +381,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v215_update_donor_user_roles_callback',
 		)
 	);
-
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
