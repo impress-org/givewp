@@ -405,7 +405,7 @@ form[id*='give-form'] {
 	display: none;
 }
 
-.give-display-button-only form > *:not(.give-btn-modal) {
+.give-display-button-only form[id*=give-form] > *:not(.give-btn-modal) {
 	display: none;
 }
 
