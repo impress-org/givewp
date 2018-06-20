@@ -552,7 +552,7 @@ class Give_Session {
 		if ( $this->_session_data_changed && $this->has_session() ) {
 			global $wpdb;
 
-			$wpdb->replace( // @codingStandardsIgnoreLine.
+			Give()->session_db->__replace(
 				Give()->session_db->table_name,
 				array(
 					'session_key'    => $this->_donor_id,

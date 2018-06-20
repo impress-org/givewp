@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Give_DB_Sessions extends Give_DB {
+	/**
+	 * Cache group name
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var string
+	 */
+	private $cache_group = '';
 
 
 	/**
@@ -28,6 +37,11 @@ class Give_DB_Sessions extends Give_DB {
 		$this->table_name  = "{$wpdb->prefix}give_sessions";
 		$this->primary_key = 'session_key';
 		$this->version     = '1.0';
+
+		$incrementer_value = wp_cache_get( 'give-cache-incrementer-sessions' );
+		$incrementer_value = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
+		$this->cache_group = "{$this->cache_group}_{$incrementer_value}";
+
 
 		$this->register_table();
 
@@ -96,20 +110,23 @@ class Give_DB_Sessions extends Give_DB {
 			return false;
 		}
 
-		$value = $wpdb->get_var( $wpdb->prepare(
-			"
+		if ( $value = wp_cache_get( $donor_id, $this->cache_group ) ) {
+			$value = $wpdb->get_var( $wpdb->prepare(
+				"
 					SELECT session_value
 					FROM $this->table_name
 					WHERE session_key = %s
 					",
-			$donor_id
-		)
-		);
+				$donor_id
+				)
+			);
 
-		if ( is_null( $value ) ) {
-			$value = $default;
+			if ( is_null( $value ) ) {
+				$value = $default;
+			}
+
+			wp_cache_add( $donor_id, $value, $this->cache_group );
 		}
-
 
 		return maybe_unserialize( $value );
 	}
@@ -122,6 +139,8 @@ class Give_DB_Sessions extends Give_DB {
 	 */
 	public function update_session_timestamp( $donor_id, $timestamp ) {
 		global $wpdb;
+
+		wp_cache_delete( $donor_id, $this->cache_group );
 
 		// @codingStandardsIgnoreStart.
 		$wpdb->update(
@@ -150,6 +169,8 @@ class Give_DB_Sessions extends Give_DB {
 	public function delete_session( $donor_id ) {
 		global $wpdb;
 
+		wp_cache_delete( $donor_id, $this->cache_group );
+
 		$wpdb->delete(
 			$this->table_name,
 			array(
@@ -170,11 +191,36 @@ class Give_DB_Sessions extends Give_DB {
 	public function delete_expired_sessions() {
 		global $wpdb;
 
+		wp_cache_set( 'give-cache-incrementer-sessions', microtime( true ) );
+
 		$wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $this->table_name WHERE session_expiry < %d",
 				time()
 			)
+		);
+	}
+
+	/**
+	 * Replace table data
+	 * Note: only for internal use
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @param $table_name
+	 * @param $data
+	 * @param $format
+	 */
+	public function __replace( $table_name, $data, $format = null ) {
+		global $wpdb;
+
+		wp_cache_delete( $data['session_key'], $this->cache_group );
+
+		$wpdb->replace(
+			$table_name,
+			$data,
+			$format
 		);
 	}
 }
