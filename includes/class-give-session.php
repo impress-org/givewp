@@ -14,14 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Give_Session Class
- *
- * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions.
- *
- * @since 1.0
- */
 class Give_Session {
+	/**
+	 * Instance.
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 * @var
+	 */
+	static private $instance;
 
 	/**
 	 * Holds our session data
@@ -29,9 +30,19 @@ class Give_Session {
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @var    WP_Session/array
+	 * @var    array
 	 */
-	private $session;
+	private $session = array();
+
+	/**
+	 * Holds our session data
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    string
+	 */
+	private $_session_data_changed = false;
 
 	/**
 	 * Whether to use PHP $_SESSION or WP_Session
@@ -44,110 +55,193 @@ class Give_Session {
 	private $use_php_sessions = false;
 
 	/**
-	 * Expiration Time
-	 *
-	 * @since  1.0
-	 * @access private
-	 *
-	 * @var    int
-	 */
-	private $exp_option = false;
-
-	/**
-	 * Session index prefix
+	 * Cookie Name
 	 *
 	 * @since  1.0
 	 * @access private
 	 *
 	 * @var    string
 	 */
-	private $prefix = '';
+	private $_cookie_name = '';
 
 	/**
-	 * Class Constructor
-	 *
-	 * Defines our session constants, includes the necessary libraries and retrieves the session instance.
+	 * Donor Unique ID
 	 *
 	 * @since  1.0
-	 * @access public
+	 * @access private
+	 *
+	 * @var    string
 	 */
-	public function __construct() {
+	private $_donor_id = '';
 
-		$this->use_php_sessions = $this->use_php_sessions();
-		$this->exp_option       = give_get_option( 'session_lifetime' );
+	/**
+	 * session expiring time
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var    string
+	 */
+	private $_session_expiring;
 
-		// PHP Sessions.
-		if ( $this->use_php_sessions ) {
+	/**
+	 * session expiration time
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var    string
+	 */
+	private $_session_expiration;
 
-			if ( is_multisite() ) {
+	/**
+	 * Flag to check if donor has cookie or not
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var    bool
+	 */
+	private $_has_cookie = false;
 
-				$this->prefix = '_' . get_current_blog_id();
+	/**
+	 * Singleton pattern.
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 */
+	private function __construct() {
+	}
 
-			}
 
-			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
-
-		} else {
-
-			if ( ! $this->should_start_session() ) {
-				return;
-			}
-
-			// Use WP_Session.
-			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
-				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
-			}
-
-			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
-			}
-
-			// Include utilities class
-			if ( ! class_exists( 'WP_Session_Utils' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session-utils.php';
-			}
-			if ( ! class_exists( 'WP_Session' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';
-			}
-
-			add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
-			add_filter( 'wp_session_expiration', array( $this, 'set_expiration_time' ), 99999 );
-
+	/**
+	 * Get instance.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 * @return Give_Session
+	 */
+	public static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+			self::$instance->__setup();
 		}
 
-		// Init Session.
-		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), 9999 );
-		} else {
-			add_action( 'init', array( $this, 'init' ), - 1 );
-		}
-
-		// Set cookie on Donation Completion page.
-		add_action( 'give_pre_process_donation', array( $this, 'set_session_cookies' ) );
-
+		return self::$instance;
 	}
 
 	/**
-	 * Session Init
+	 * Setup
 	 *
-	 * Setup the Session instance.
-	 *
-	 * @since  1.0
+	 * @since  2.2.0
 	 * @access public
-	 *
-	 * @return array Session instance
 	 */
-	public function init() {
+	private function __setup() {
+		// deprecated
+		$this->use_php_sessions = $this->use_php_sessions(); // @todo: check this option
+		$this->exp_option       = give_get_option( 'session_lifetime' ); // @todo: check this option
 
-		if ( $this->use_php_sessions ) {
-			$this->session = isset( $_SESSION[ 'give' . $this->prefix ] ) && is_array( $_SESSION[ 'give' . $this->prefix ] ) ? $_SESSION[ 'give' . $this->prefix ] : array();
+
+		$this->_cookie_name = $this->get_cookie_name();
+
+		if ( $cookie = $this->get_session_cookie() ) {
+			$this->_donor_id           = $cookie[0];
+			$this->_session_expiration = $cookie[1];
+			$this->_session_expiring   = $cookie[2];
+			$this->_has_cookie         = true;
+
+			// Update session if its close to expiring.
+			if ( time() > $this->_session_expiring ) {
+				$this->set_expiration_time();
+				Give()->session_db->update_session_timestamp( $this->_donor_id, $this->_session_expiration );
+			}
+
+			$this->load_donor_session();
 		} else {
-			$this->session = WP_Session::get_instance();
+			$this->generate_donor_id();
 		}
 
-		return $this->session;
+		add_action( 'give_pre_process_donation', array( $this, '__setup_donor_session' ) );
 
+		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
+		add_action( 'wp_logout', array( $this, 'destroy_session' ) );
+
+		if ( ! is_user_logged_in() ) {
+			add_filter( 'nonce_user_logged_out', array( $this, 'nonce_user_logged_out' ) );
+		}
+
+		// Remove old sessions.
+		Give_Cron::add_daily_event( array( $this, '__cleanup_sessions' ) );
+	}
+
+	/**
+	 * Load donor session
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 */
+	private function load_donor_session() {
+		$this->session = $this->get_session_data();
+	}
+
+	/**
+	 * Get session data.
+	 *
+	 * @return array
+	 */
+	public function get_session_data() {
+		return $this->has_session() ? (array) Give()->session_db->get_session( $this->_donor_id, array() ) : array();
+	}
+
+
+	/**
+	 * Get session by session id
+	 *
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_session_cookie() {
+		$session      = array();
+		$cookie_value = isset( $_COOKIE[ $this->_cookie_name ] ) ? wp_unslash( $_COOKIE[ $this->_cookie_name ] ) : false; // @codingStandardsIgnoreLine.
+
+		if ( empty( $cookie_value ) || ! is_string( $cookie_value ) ) {
+			return $session;
+		}
+
+		list( $donor_id, $session_expiration, $session_expiring, $cookie_hash ) = explode( '||', $cookie_value );
+
+		if ( empty( $donor_id ) ) {
+			return $session;
+		}
+
+		// Validate hash.
+		$to_hash = $donor_id . '|' . $session_expiration;
+		$hash    = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
+
+		if ( empty( $cookie_hash ) || ! hash_equals( $hash, $cookie_hash ) ) {
+			return $session;
+		}
+
+		return array( $donor_id, $session_expiration, $session_expiring, $cookie_hash );
+	}
+
+
+	/**
+	 * Check if session exist for specific session id
+	 *
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 *
+	 * @return bool
+	 */
+	private function has_session() {
+		return $this->_has_cookie;
 	}
 
 	/**
@@ -155,13 +249,33 @@ class Give_Session {
 	 *
 	 * Retrieve session ID.
 	 *
-	 * @since  1.0
-	 * @access public
+	 * @since      1.0
+	 * @deprecated 2.2.0
+	 * @access     public
 	 *
 	 * @return string Session ID.
 	 */
 	public function get_id() {
-		return $this->session->session_id;
+		return $this->get_cookie_name();
+	}
+
+	/**
+	 * Get Session name
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @return string Cookie name.
+	 */
+	private function get_cookie_name() {
+
+		/**
+		 * Filter the cookie name
+		 *
+		 * @since  2.2.0
+		 *
+		 */
+		return apply_filters( 'give_cookie', 'wp_give_session_' . COOKIEHASH );
 	}
 
 	/**
@@ -172,54 +286,19 @@ class Give_Session {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $key Session key.
+	 * @param  string $key     Session key.
+	 * @param mixed   $default default value.
 	 *
 	 * @return string|array      Session variable.
 	 */
-	public function get( $key ) {
-		$key    = sanitize_key( $key );
-		$return = false;
+	public function get( $key, $default = null ) {
+		$key = sanitize_key( $key );
 
-		if ( isset( $this->session[ $key ] ) && ! empty( $this->session[ $key ] ) ) {
-
-			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $this->session[ $key ], $matches );
-			if ( ! empty( $matches ) ) {
-				$this->set( $key, null );
-
-				return false;
-			}
-
-			if ( is_numeric( $this->session[ $key ] ) ) {
-				$return = $this->session[ $key ];
-			} else {
-
-				$maybe_json = json_decode( $this->session[ $key ] );
-
-				// Since json_last_error is PHP 5.3+, we have to rely on a `null` value for failing to parse JSON.
-				if ( is_null( $maybe_json ) ) {
-					$is_serialized = is_serialized( $this->session[ $key ] );
-					if ( $is_serialized ) {
-						$value = @unserialize( $this->session[ $key ] );
-						$this->set( $key, (array) $value );
-						$return = $value;
-					} else {
-						$return = $this->session[ $key ];
-					}
-				} else {
-					$return = json_decode( $this->session[ $key ], true );
-				}
-
-			}
-		}
-
-		return $return;
-
+		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : $default;
 	}
 
 	/**
 	 * Set Session
-	 *
-	 * Create a new session.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -230,17 +309,9 @@ class Give_Session {
 	 * @return string        Session variable.
 	 */
 	public function set( $key, $value ) {
-
-		$key = sanitize_key( $key );
-
-		if ( is_array( $value ) ) {
-			$this->session[ $key ] = wp_json_encode( $value );
-		} else {
-			$this->session[ $key ] = esc_attr( $value );
-		}
-
-		if ( $this->use_php_sessions ) {
-			$_SESSION[ 'give' . $this->prefix ] = $this->session;
+		if ( $value !== $this->get( $key ) ) {
+			$this->session[ sanitize_key( $key ) ] = maybe_serialize( $value );
+			$this->_session_data_changed           = true;
 		}
 
 		return $this->session[ $key ];
@@ -249,26 +320,35 @@ class Give_Session {
 	/**
 	 * Set Session Cookies
 	 *
-	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes their browser after making a donation and comes back to the
-	 * site.
+	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes
+	 * their browser after making a donation and comes back to the site.
 	 *
 	 * @since  1.4
 	 * @access public
 	 *
+	 *
+	 * @param bool $set
+	 *
 	 * @hook
 	 */
-	public function set_session_cookies() {
-		if ( ! headers_sent() ) {
-			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
-			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
-			@setcookie( session_name() . '_expiration', $lifetime, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+	public function set_session_cookies( $set ) {
+		if ( $set ) {
+			$this->set_expiration_time();
+
+			$to_hash           = $this->_donor_id . '|' . $this->_session_expiration;
+			$cookie_hash       = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
+			$cookie_value      = $this->_donor_id . '||' . $this->_session_expiration . '||' . $this->_session_expiring . '||' . $cookie_hash;
+			$this->_has_cookie = true;
+
+			give_setcookie( $this->_cookie_name, $cookie_value, $this->_session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
 		}
 	}
 
 	/**
 	 * Set Cookie Variant Time
 	 *
-	 * Force the cookie expiration variant time to custom expiration option, less and hour. defaults to 23 hours (set_expiration_variant_time used in WP_Session).
+	 * Force the cookie expiration variant time to custom expiration option, less and hour. defaults to 23 hours
+	 * (set_expiration_variant_time used in WP_Session).
 	 *
 	 * @since  1.0
 	 * @access public
@@ -291,8 +371,10 @@ class Give_Session {
 	 * @return int
 	 */
 	public function set_expiration_time() {
+		$this->_session_expiring   = time() + intval( apply_filters( 'give_session_expiring', 60 * 60 * 23 ) ); // 23 Hours.
+		$this->_session_expiration = time() + intval( apply_filters( 'give_session_expiration', 60 * 60 * 24 ) ); // 24 Hours.
 
-		return ( ! empty( $this->exp_option ) ? intval( $this->exp_option ) : 30 * 60 * 24 );
+		return $this->_session_expiration;
 	}
 
 	/**
@@ -385,32 +467,11 @@ class Give_Session {
 	}
 
 	/**
-	 * Maybe Start Session
-	 *
-	 * Starts a new session if one hasn't started yet.
-	 *
-	 * @access public
-	 *
-	 * @see    http://php.net/manual/en/function.session-set-cookie-params.php
-	 *
-	 * @return void
-	 */
-	public function maybe_start_session() {
-
-		if ( ! $this->should_start_session() ) {
-			return;
-		}
-
-		if ( ! session_id() && ! headers_sent() ) {
-			session_start();
-		}
-
-	}
-
-	/**
 	 * Get Session Expiration
 	 *
 	 * Looks at the session cookies and returns the expiration date for this session if applicable
+	 *
+	 * @todo Review this
 	 *
 	 * @access public
 	 *
@@ -421,13 +482,133 @@ class Give_Session {
 		$expiration = false;
 
 		if ( session_id() && isset( $_COOKIE[ session_name() . '_expiration' ] ) ) {
-
 			$expiration = date( 'D, d M Y h:i:s', intval( $_COOKIE[ session_name() . '_expiration' ] ) );
-
 		}
 
 		return $expiration;
 
 	}
 
+	/**
+	 * Start donor session when donation processing starts
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function __setup_donor_session() {
+		// Processing donation instead of just validating donation data
+		if ( ! isset( $_POST['give_ajax'] ) ) {
+			$this->maybe_start_session();
+		}
+	}
+
+	/**
+	 * Maybe Start Session
+	 *
+	 * Starts a new session if one hasn't started yet.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function maybe_start_session() {
+		if (
+			! headers_sent()
+			&& empty( $this->session )
+			&& ! $this->_has_cookie
+		) {
+			$this->set_session_cookies( true );
+		}
+	}
+
+	/**
+	 * Generate a unique donor ID.
+	 *
+	 * Uses Portable PHP password hashing framework to generate a unique cryptographically strong ID.
+	 *
+	 * @return string
+	 */
+	public function generate_donor_id() {
+		require_once ABSPATH . 'wp-includes/class-phpass.php';
+
+		$hasher          = new PasswordHash( 8, false );
+		$this->_donor_id = md5( $hasher->get_random_bytes( 32 ) );
+	}
+
+	/**
+	 * Save donor session data
+	 *
+	 * @todo   use session db
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 */
+	public function save_data() {
+		// Dirty if something changed - prevents saving nothing new.
+		if ( $this->_session_data_changed && $this->has_session() ) {
+			global $wpdb;
+
+			$wpdb->replace( // @codingStandardsIgnoreLine.
+				Give()->session_db->table_name,
+				array(
+					'session_key'    => $this->_donor_id,
+					'session_value'  => maybe_serialize( $this->session ),
+					'session_expiry' => $this->_session_expiration,
+				),
+				array(
+					'%s',
+					'%s',
+					'%d',
+				)
+			);
+
+			$this->_session_data_changed = false;
+		}
+	}
+
+	/**
+	 * Destroy all session data.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 */
+	public function destroy_session() {
+		give_setcookie( $this->_cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
+
+		Give()->session_db->delete_session( $this->_donor_id );
+
+		$this->session               = array();
+		$this->_session_data_changed = false;
+		$this->_donor_id             = $this->generate_donor_id();
+	}
+
+	/**
+	 * When a user is logged out, ensure they have a unique nonce by using the donor/session ID.
+	 *
+	 * @todo: review this
+	 *
+	 * @param int $uid User ID.
+	 *
+	 * @return string
+	 */
+	public function nonce_user_logged_out( $uid ) {
+		return $this->has_session() && $this->_donor_id ? $this->_donor_id : $uid;
+	}
+
+
+	/**
+	 * Cleanup session data from the database and clear caches.
+	 * Note: for internal logic only.
+	 *
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 */
+	public function __cleanup_sessions() {
+		Give()->session_db->delete_expired_sessions();
+	}
 }
