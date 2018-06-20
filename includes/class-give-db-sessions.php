@@ -110,7 +110,7 @@ class Give_DB_Sessions extends Give_DB {
 			return false;
 		}
 
-		if ( $value = wp_cache_get( $donor_id, $this->cache_group ) ) {
+		if ( ! ( $value = wp_cache_get( $donor_id, $this->cache_group ) ) ) {
 			$value = $wpdb->get_var( $wpdb->prepare(
 				"
 					SELECT session_value
