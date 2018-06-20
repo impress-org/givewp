@@ -372,15 +372,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'depend'   => array( 'v20_move_metadata_into_new_table' ),
 		)
 	);
-	
-	// v2.1.5 Add additional capability to the give_manager role.
-	$give_updates->register(
-		array(
-			'id'       => 'v215_update_donor_user_roles',
-			'version'  => '2.1.5',
-			'callback' => 'give_v215_update_donor_user_roles_callback',
-		)
-	);
 
 	// v2.1.5 Add additional capability to the give_manager role.
 	$give_updates->register(
@@ -391,6 +382,23 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.1.5 Add additional capability to the give_manager role.
+	$give_updates->register(
+		array(
+			'id'       => 'v215_update_donor_user_roles',
+			'version'  => '2.1.5',
+			'callback' => 'give_v215_update_donor_user_roles_callback',
+		)
+	);
+
+	// v2.2.0 delete wp session library data
+	$give_updates->register(
+		array(
+			'id'       => 'v220_delete_wp_session_data',
+			'version'  => '2.2.0',
+			'callback' => 'give_v220_delete_wp_session_data',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2761,4 +2769,21 @@ function give_v215_update_donor_user_roles_callback() {
 	$role->add_cap( 'view_give_payments' );
 
 	give_set_upgrade_complete( 'v215_update_donor_user_roles' );
+}
+
+
+
+/**
+ * Remove all wp session data from the options table, regardless of expiration.
+ *
+ * @global wpdb $wpdb
+ */
+function give_v220_delete_wp_session_data(){
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '_wp_session_%'" );
+
+	$give_updates->percentage = 100;
+	give_set_upgrade_complete( 'v220_delete_wp_session_data' );
 }
