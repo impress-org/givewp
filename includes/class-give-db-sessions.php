@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Give_DB_Sessions
+ */
 class Give_DB_Sessions extends Give_DB {
 	/**
 	 * Cache group name
@@ -41,7 +44,6 @@ class Give_DB_Sessions extends Give_DB {
 		$incrementer_value = wp_cache_get( 'give-cache-incrementer-sessions' );
 		$incrementer_value = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
 		$this->cache_group = "{$this->cache_group}_{$incrementer_value}";
-
 
 		$this->register_table();
 
@@ -86,7 +88,7 @@ class Give_DB_Sessions extends Give_DB {
   				UNIQUE KEY session_id (session_id)
 			) {$charset_collate};";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
@@ -101,7 +103,7 @@ class Give_DB_Sessions extends Give_DB {
 	 * @param string $donor_id Donor ID.
 	 * @param mixed  $default  Default session value.
 	 *
-	 * @return string|array
+	 * @return mixed
 	 */
 	public function get_session( $donor_id, $default = false ) {
 		global $wpdb;
@@ -110,16 +112,20 @@ class Give_DB_Sessions extends Give_DB {
 			return false;
 		}
 
-		if ( ! ( $value = wp_cache_get( $donor_id, $this->cache_group ) ) ) {
-			$value = $wpdb->get_var( $wpdb->prepare(
-				"
+		if ( ! ( $value = wp_cache_get( $donor_id, $this->cache_group ) ) ) { // @codingStandardsIgnoreLine
+
+			// @codingStandardsIgnoreStart
+			$value = $wpdb->get_var(
+				$wpdb->prepare(
+					"
 					SELECT session_value
 					FROM $this->table_name
 					WHERE session_key = %s
 					",
-				$donor_id
+					$donor_id
 				)
 			);
+			// @codingStandardsIgnoreEnd
 
 			if ( is_null( $value ) ) {
 				$value = $default;
@@ -171,19 +177,20 @@ class Give_DB_Sessions extends Give_DB {
 
 		wp_cache_delete( $donor_id, $this->cache_group );
 
+		// @codingStandardsIgnoreStart
 		$wpdb->delete(
 			$this->table_name,
 			array(
 				'session_key' => $donor_id,
 			)
 		);
+		// @codingStandardsIgnoreEnd
 	}
 
 
 	/**
 	 * Cleanup session data from the database and clear caches.
 	 * Note: for internal logic only.
-	 *
 	 *
 	 * @since  2.2.0
 	 * @access public
@@ -193,12 +200,14 @@ class Give_DB_Sessions extends Give_DB {
 
 		wp_cache_set( 'give-cache-incrementer-sessions', microtime( true ) );
 
+		// @codingStandardsIgnoreStart
 		$wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $this->table_name WHERE session_expiry < %d",
 				time()
 			)
 		);
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -208,19 +217,21 @@ class Give_DB_Sessions extends Give_DB {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param $table_name
-	 * @param $data
-	 * @param $format
+	 * @param string $table_name Table name.
+	 * @param array  $data Data.
+	 * @param array  $format Array for data format of each key:value in data.
 	 */
 	public function __replace( $table_name, $data, $format = null ) {
 		global $wpdb;
 
 		wp_cache_delete( $data['session_key'], $this->cache_group );
 
+		// @codingStandardsIgnoreStart
 		$wpdb->replace(
 			$table_name,
 			$data,
 			$format
 		);
+		// @codingStandardsIgnoreEnd
 	}
 }

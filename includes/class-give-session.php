@@ -14,13 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Give_Session
+ */
 class Give_Session {
 	/**
 	 * Instance.
 	 *
 	 * @since  2.2.0
 	 * @access private
-	 * @var
+	 * @var Give_Session
 	 */
 	static private $instance;
 
@@ -75,7 +78,7 @@ class Give_Session {
 	private $donor_id = '';
 
 	/**
-	 * session expiring time
+	 * Session expiring time
 	 *
 	 * @since  2.2.0
 	 * @access private
@@ -85,7 +88,7 @@ class Give_Session {
 	private $session_expiring;
 
 	/**
-	 * session expiration time
+	 * Session expiration time
 	 *
 	 * @since  2.2.0
 	 * @access private
@@ -136,15 +139,15 @@ class Give_Session {
 	 * @since  2.2.0
 	 * @access public
 	 */
-	private function __setup() {
+	private function __setup() {  // @codingStandardsIgnoreLine
 		// deprecated
-		$this->use_php_sessions = $this->use_php_sessions(); // @todo: check this option
-		$this->exp_option       = give_get_option( 'session_lifetime' ); // @todo: check this option
-
+		$this->use_php_sessions = $this->use_php_sessions(); // @todo: check this option.
+		$this->exp_option       = give_get_option( 'session_lifetime' ); // @todo: check this option.
 
 		$this->cookie_name = $this->get_cookie_name();
+		$cookie            = $this->get_session_cookie();
 
-		if ( $cookie = $this->get_session_cookie() ) {
+		if ( ! empty( $cookie ) ) {
 			$this->donor_id           = $cookie[0];
 			$this->session_expiration = $cookie[1];
 			$this->session_expiring   = $cookie[2];
@@ -179,7 +182,6 @@ class Give_Session {
 	 *
 	 * @since  2.2.0
 	 * @access public
-	 *
 	 */
 	private function load_donor_session() {
 		$this->session = $this->get_session_data();
@@ -197,7 +199,6 @@ class Give_Session {
 
 	/**
 	 * Get session by session id
-	 *
 	 *
 	 * @since  2.2.0
 	 * @access public
@@ -233,10 +234,8 @@ class Give_Session {
 	/**
 	 * Check if session exist for specific session id
 	 *
-	 *
 	 * @since  2.2.0
 	 * @access public
-	 *
 	 *
 	 * @return bool
 	 */
@@ -273,7 +272,6 @@ class Give_Session {
 		 * Filter the cookie name
 		 *
 		 * @since  2.2.0
-		 *
 		 */
 		return apply_filters( 'give_cookie', 'wp_give_session_' . COOKIEHASH );
 	}
@@ -287,7 +285,7 @@ class Give_Session {
 	 * @access public
 	 *
 	 * @param  string $key     Session key.
-	 * @param mixed   $default default value.
+	 * @param mixed  $default default value.
 	 *
 	 * @return string|array      Session variable.
 	 */
@@ -311,7 +309,7 @@ class Give_Session {
 	public function set( $key, $value ) {
 		if ( $value !== $this->get( $key ) ) {
 			$this->session[ sanitize_key( $key ) ] = maybe_serialize( $value );
-			$this->session_data_changed           = true;
+			$this->session_data_changed            = true;
 		}
 
 		return $this->session[ $key ];
@@ -326,18 +324,15 @@ class Give_Session {
 	 * @since  1.4
 	 * @access public
 	 *
-	 *
-	 * @param bool $set
-	 *
-	 * @hook
+	 * @param bool $set Flag to check if set cookie or not.
 	 */
 	public function set_session_cookies( $set ) {
 		if ( $set ) {
 			$this->set_expiration_time();
 
-			$to_hash           = $this->donor_id . '|' . $this->session_expiration;
-			$cookie_hash       = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
-			$cookie_value      = $this->donor_id . '||' . $this->session_expiration . '||' . $this->session_expiring . '||' . $cookie_hash;
+			$to_hash          = $this->donor_id . '|' . $this->session_expiration;
+			$cookie_hash      = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
+			$cookie_value     = $this->donor_id . '||' . $this->session_expiration . '||' . $this->session_expiring . '||' . $cookie_hash;
 			$this->has_cookie = true;
 
 			give_setcookie( $this->cookie_name, $cookie_value, $this->session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
@@ -439,20 +434,22 @@ class Give_Session {
 
 		$start_session = true;
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {  // @codingStandardsIgnoreLine
 
-			$blacklist = apply_filters( 'give_session_start_uri_blacklist', array(
-				'feed',
-				'feed',
-				'feed/rss',
-				'feed/rss2',
-				'feed/rdf',
-				'feed/atom',
-				'comments/feed/',
-			) );
-			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' );
+			$blacklist = apply_filters(
+				'give_session_start_uri_blacklist', array(
+					'feed',
+					'feed',
+					'feed/rss',
+					'feed/rss2',
+					'feed/rdf',
+					'feed/atom',
+					'comments/feed/',
+				)
+			);
+			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' ); // // @codingStandardsIgnoreLine
 			$uri       = untrailingslashit( $uri );
-			if ( in_array( $uri, $blacklist ) ) {
+			if ( in_array( $uri, $blacklist, true ) ) {
 				$start_session = false;
 			}
 			if ( false !== strpos( $uri, 'feed=' ) ) {
@@ -471,7 +468,7 @@ class Give_Session {
 	 *
 	 * Looks at the session cookies and returns the expiration date for this session if applicable
 	 *
-	 * @todo Review this
+	 * @todo   Review this
 	 *
 	 * @access public
 	 *
@@ -497,9 +494,9 @@ class Give_Session {
 	 *
 	 * @return void
 	 */
-	public function __setup_donor_session() {
+	public function __setup_donor_session() { // @codingStandardsIgnoreLine
 		// Processing donation instead of just validating donation data
-		if ( ! isset( $_POST['give_ajax'] ) ) {
+		if ( ! isset( $_POST['give_ajax'] ) ) { //// @codingStandardsIgnoreLine
 			$this->maybe_start_session();
 		}
 	}
@@ -529,15 +526,13 @@ class Give_Session {
 	 *
 	 * Uses Portable PHP password hashing framework to generate a unique cryptographically strong ID.
 	 *
-	 * @since 2.2.0
+	 * @since  2.2.0
 	 * @access public
-	 *
-	 * @return string
 	 */
 	public function generate_donor_id() {
 		require_once ABSPATH . 'wp-includes/class-phpass.php';
 
-		$hasher          = new PasswordHash( 8, false );
+		$hasher         = new PasswordHash( 8, false );
 		$this->donor_id = md5( $hasher->get_random_bytes( 32 ) );
 	}
 
@@ -548,7 +543,6 @@ class Give_Session {
 	 *
 	 * @since  2.2.0
 	 * @access public
-	 *
 	 */
 	public function save_data() {
 		// Dirty if something changed - prevents saving nothing new.
@@ -584,7 +578,7 @@ class Give_Session {
 
 		Give()->session_db->delete_session( $this->donor_id );
 
-		$this->session               = array();
+		$this->session              = array();
 		$this->session_data_changed = false;
 		$this->donor_id             = $this->generate_donor_id();
 	}
@@ -607,11 +601,10 @@ class Give_Session {
 	 * Cleanup session data from the database and clear caches.
 	 * Note: for internal logic only.
 	 *
-	 *
 	 * @since  2.2.0
 	 * @access public
 	 */
-	public function __cleanup_sessions() {
+	public function __cleanup_sessions() { // @codingStandardsIgnoreLine
 		Give()->session_db->delete_expired_sessions();
 	}
 }
