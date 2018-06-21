@@ -41,16 +41,27 @@ $give_updates = Give_Updates::get_instance();
 							<div class="panel-content">
 								<p class="give-update-button">
 									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : '';  ?>>
-										<?php echo sprintf(
-										__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
-										$is_doing_updates ?
-											__( 'Give is currently updating the database in the background.', 'give' ) :
-											__( 'Give needs to update the database.', 'give' ),
-										$db_update_url,
-										( $is_doing_updates ? 'give-hidden' : '' ),
-										__( 'Update now', 'give' )
-									);
-									?>
+										<?php
+										if ( ! give_test_ajax_works() ) {
+											echo sprintf(
+												'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+												__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
+												esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
+												__( 'Read More', 'give' ) . ' &raquo;'
+											);
+
+										} else {
+											echo sprintf(
+												__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
+												$is_doing_updates ?
+													__( 'Give is currently updating the database in the background.', 'give' ) :
+													__( 'Give needs to update the database.', 'give' ),
+												$db_update_url,
+												( $is_doing_updates ? 'give-hidden' : '' ),
+												__( 'Update now', 'give' )
+											);
+										}
+										?>
 									</span>
 									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process()  ? 'style="display:none;"' : '';  ?>>
 										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
