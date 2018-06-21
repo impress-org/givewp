@@ -1001,6 +1001,9 @@ final class Give_Payment {
 
 					$donor->decrease_donation_count();
 
+					// Decrease form earnings.
+					give_decrease_form_earnings( $this->form_id, $total_change, $this->ID );
+
 				} elseif ( $total_change > 0 ) {
 
 					// Increase the donor's donation stats.
@@ -1009,6 +1012,8 @@ final class Give_Payment {
 
 					$donor->increase_purchase_count();
 
+					// Increase form earnings.
+					give_increase_earnings( $this->form_id, $total_change, $this->ID );
 				}
 
 				// Verify and update form meta based on the form status.
