@@ -299,11 +299,11 @@ class Give_Session {
 	 * @access public
 	 *
 	 * @param  string $key     Session key.
-	 * @param mixed  $default default value.
+	 * @param mixed   $default default value.
 	 *
 	 * @return string|array      Session variable.
 	 */
-	public function get( $key, $default = null ) {
+	public function get( $key, $default = false ) {
 		$key = sanitize_key( $key );
 
 		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : $default;
