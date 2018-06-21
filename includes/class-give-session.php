@@ -594,7 +594,8 @@ class Give_Session {
 
 		$this->session              = array();
 		$this->session_data_changed = false;
-		$this->donor_id             = $this->generate_donor_id();
+
+		$this->generate_donor_id();
 	}
 
 	/**
