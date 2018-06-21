@@ -813,7 +813,6 @@ final class Give_Payment {
 
 			$total_increase = 0;
 			$total_decrease = 0;
-			$old_amount     = 0;
 
 			foreach ( $this->pending as $key => $value ) {
 
@@ -971,7 +970,6 @@ final class Give_Payment {
 						break;
 
 					case 'total':
-						$old_amount = $this->get_meta( '_give_payment_total', true );
 						$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 						break;
 
@@ -1011,8 +1009,6 @@ final class Give_Payment {
 
 					$donor->increase_purchase_count();
 
-				} elseif ( $old_amount > 0 ) {
-					give_update_form_income_donation( $this->ID, $this->total, $old_amount, $this->form_id );
 				}
 
 				// Verify and update form meta based on the form status.

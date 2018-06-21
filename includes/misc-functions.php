@@ -2251,34 +2251,3 @@ function give_get_user_agent() {
 	return $user_agent;
 
 }
-
-/**
- * Give update income and donation of the donation from ID
- *
- * @since 2.2
- *
- * @param int $payment_id Payment id of of which amount is being updated.
- * @param int $total Total total amount that is being update
- * @param int $donation_old_total Donation total amount
- * @param int $form_id Form id of which recalculation needs to be done.
- *
- * @return void
- */
-function give_update_form_income_donation( $payment_id, $total = 0, $donation_old_total = 0, $form_id = 0 ) {
-
-	// Check if payment id is not empty.
-	if ( ! empty( $payment_id ) && ! empty( $total ) && ! empty( $form_id ) ) {
-
-		$total = (float) $total;
-
-		// form old total
-		$form_old_total = (float) give_get_meta( $form_id, '_give_form_earnings', true );
-
-		if ( $donation_old_total < $total ) {
-			$form_new_total = $form_old_total - ( $donation_old_total - $total );
-		} else {
-			$form_new_total = $form_old_total + ( $total - $donation_old_total );
-		}
-		give_update_meta( $form_id, '_give_form_earnings', give_sanitize_amount_for_db( $form_new_total ) );
-	}// End if().
-}
