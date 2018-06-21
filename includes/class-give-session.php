@@ -153,7 +153,7 @@ class Give_Session {
 		// deprecated
 		$this->use_php_sessions = $this->use_php_sessions(); // @todo: check this option.
 
-		$this->exp_option       = give_get_option( 'session_lifetime' );
+		$this->exp_option = give_get_option( 'session_lifetime' );
 		$this->exp_option = ! empty( $this->exp_option )
 			? $this->exp_option
 			: 30 * 60 * 24; // Default expiration time is 12 hours
