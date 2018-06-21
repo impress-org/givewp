@@ -5295,23 +5295,23 @@ msgstr ""
 msgid "This donation was imported by %s"
 msgstr ""
 
-#: includes/install.php:350, includes/forms/template.php:1548, includes/forms/template.php:1553, includes/admin/forms/class-metabox-form-data.php:535, includes/admin/settings/class-settings-display.php:278, tests/unit-tests/tests-install.php:100
+#: includes/install.php:351, includes/forms/template.php:1548, includes/forms/template.php:1553, includes/admin/forms/class-metabox-form-data.php:535, includes/admin/settings/class-settings-display.php:278, tests/unit-tests/tests-install.php:100
 msgid "Agree to Terms?"
 msgstr ""
 
-#: includes/install.php:425
+#: includes/install.php:426
 msgid "Donation Confirmation"
 msgstr ""
 
-#: includes/install.php:444
+#: includes/install.php:445
 msgid "Donation Failed"
 msgstr ""
 
-#: includes/install.php:445
+#: includes/install.php:446
 msgid "We're sorry, your donation failed to process. Please try again or contact site support."
 msgstr ""
 
-#: includes/install.php:461, includes/admin/shortcodes/shortcode-give-donation-history.php:24
+#: includes/install.php:462, includes/admin/shortcodes/shortcode-give-donation-history.php:24
 msgid "Donation History"
 msgstr ""
 
@@ -9366,7 +9366,7 @@ msgstr ""
 msgid "Average monthly donations:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:498
+#: includes/admin/reports/graphing.php:498, includes/admin/tools/export/give-export-donations-exporter.php:399
 msgid "Custom"
 msgstr ""
 
@@ -10145,15 +10145,15 @@ msgstr ""
 msgid "Restart the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:620, includes/admin/upgrades/class-give-updates.php:817, includes/admin/upgrades/views/upgrades.php:57
+#: includes/admin/upgrades/class-give-updates.php:620, includes/admin/upgrades/class-give-updates.php:817, includes/admin/upgrades/views/upgrades.php:68
 msgid "An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:621, includes/admin/upgrades/class-give-updates.php:649
+#: includes/admin/upgrades/class-give-updates.php:621, includes/admin/upgrades/class-give-updates.php:649, includes/admin/upgrades/views/upgrades.php:50
 msgid "Read More"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:647
+#: includes/admin/upgrades/class-give-updates.php:647, includes/admin/upgrades/views/upgrades.php:48
 msgid "Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access."
 msgstr ""
 
@@ -10169,7 +10169,7 @@ msgstr ""
 msgid "Run the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:811, includes/admin/upgrades/views/upgrades.php:59
+#: includes/admin/upgrades/class-give-updates.php:811, includes/admin/upgrades/views/upgrades.php:70
 msgid "The updates have been paused."
 msgstr ""
 
@@ -11784,39 +11784,39 @@ msgstr ""
 msgid "Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:45
+#: includes/admin/upgrades/views/upgrades.php:55
 msgid "%1$s <a href=\"%2$s\" class=\"give-update-now %3$s\">%4$s</a>"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:47
+#: includes/admin/upgrades/views/upgrades.php:57
 msgid "Give is currently updating the database in the background."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:48
+#: includes/admin/upgrades/views/upgrades.php:58
 msgid "Give needs to update the database."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:51
+#: includes/admin/upgrades/views/upgrades.php:61
 msgid "Update now"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:66
+#: includes/admin/upgrades/views/upgrades.php:77
 msgid "Restart Upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:70
+#: includes/admin/upgrades/views/upgrades.php:81
 msgid "Pause Upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:80
+#: includes/admin/upgrades/views/upgrades.php:91
 msgid "Update %s of %s"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:122
+#: includes/admin/upgrades/views/upgrades.php:133
 msgid "Add-on Updates"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:128
+#: includes/admin/upgrades/views/upgrades.php:139
 msgid "There is %1$d Give addon that needs to be updated. <a href=\"%2$s\">Update now</a>"
 msgid_plural "There are %1$d Give addons that need to be updated. <a href=\"%2$s\">Update now</a>"
 msgstr[0] ""

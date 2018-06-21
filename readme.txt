@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.1.6: June 20th, 2018 =
+* Fix: DB Update incorrectly appears on fresh installs. [#3390](https://github.com/wordimpress/give/issues/3390)
+* Fix: Ensure the level title in the exported CSV reads custom on custom donations. [#3380](https://github.com/wordimpress/give/issues/3380)
+* Fix: Don't allow db updates to display if AJAX is inaccessible. [#3393](https://github.com/WordImpress/Give/issues/3393)
 
 = 2.1.5: June 18th, 2018 =
 * New: Added a "Give" filter for the plugin menu section on WP multisites. [#3355](https://github.com/wordimpress/give/issues/3355)
