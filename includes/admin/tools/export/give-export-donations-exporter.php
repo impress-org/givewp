@@ -363,8 +363,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['currency_symbol'] ) ) {
-					$currency_code = $data[ $i ]['currency_code'];
-					$data[ $i ]['currency_symbol'] =  give_currency_symbol( $currency_code, true );
+					$currency_code                 = $data[ $i ]['currency_code'];
+					$data[ $i ]['currency_symbol'] = give_currency_symbol( $currency_code, true );
 				}
 
 				if ( ! empty( $columns['donation_status'] ) ) {
@@ -392,13 +392,16 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					if ( empty( $var_prices ) ) {
 						$data[ $i ]['form_level_title'] = '';
 					} else {
-						$prices_atts = '';
-						if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
-							foreach ( $variable_prices as $variable_price ) {
-								$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'] );
+						if ( 'custom' === $payment->price_id ) {
+							$custom_amount_text = give_get_meta( $payment->form_id, '_give_custom_amount_text', true );
+
+							if ( empty( $custom_amount_text ) ) {
+								$custom_amount_text = esc_html__( 'Custom', 'give' );
 							}
+							$data[ $i ]['form_level_title'] = $custom_amount_text;
+						} else {
+							$data[ $i ]['form_level_title'] = give_get_price_option_name( $payment->form_id, $payment->price_id );
 						}
-						$data[ $i ]['form_level_title'] = give_get_price_option_name( $payment->form_id, $payment->price_id );
 					}
 				}
 
