@@ -262,7 +262,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Give's API was not respecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/WordImpress/Give/issues/3191)
 * Fix: This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed. [#3205](https://github.com/WordImpress/Give/issues/3205)
 * Fix: Resolved PHP notices when exporting donor in lower PHP versions. (#3222)[https://github.com/WordImpress/Give/issues/3222], [#3218](https://github.com/WordImpress/Give/issues/3218)
-* Fix: We've updated the donation form's <form> tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/WordImpress/Give/issues/3139)
+* Fix: We've updated the donation form's form HTML tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/WordImpress/Give/issues/3139)
 * Fix: Several typos on the welcome guide were corrected. [#3230](https://github.com/WordImpress/Give/issues/3230)
 * Fix: Inline plugin upgrade notices were not displaying properly in previous versions. [#2789](https://github.com/WordImpress/Give/issues/2789)
 * Tweak: Improved the logic of verifying min/max amount for the Currency Switcher add-on. [#3203](https://github.com/WordImpress/Give/issues/3203)
