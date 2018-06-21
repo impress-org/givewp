@@ -80,12 +80,16 @@
 		text-align: right;
 
 		.spinner {
-			position: absolute;
-			left: 1.5rem;
-			top: 50%;
-			transform: translate(0, -50%);
-			margin: 0;
+			display: none;
+			visibility: visible;
+			margin-left: 0;
+			float: left;
 		}
+	}
+
+	&--additional-link {
+		float: left;
+		line-height: 26px;
 	}
 }
 

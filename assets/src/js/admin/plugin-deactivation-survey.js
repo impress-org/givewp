@@ -18,7 +18,7 @@ class Deactivation_Survey {
 
 		e.preventDefault();
 
-		let deactivation_link = e.target.href;
+		window.deactivation_link = e.target.href;
 
 		jQuery.ajax({
 			url: ajaxurl,
@@ -36,6 +36,8 @@ class Deactivation_Survey {
 					desc: response,
 					cancelBtnTitle: give_vars.cancel,
 					confirmBtnTitle: give_vars.submit_and_deactivate,
+					link: window.deactivation_link,
+					link_text: give_vars.skip_and_deactivate,
 				},
 
 				successConfirm: function( args ) {
@@ -110,16 +112,20 @@ class Deactivation_Survey {
 							data: {
 								'action': 'deactivation_form_submit',
 								'form-data': form_data,
+								'nonce': deactivation_survey_nonce,
 							},
 							beforeSend: function() {
 								let spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
-								spinner[0].style.visibility = 'visible';
+								spinner[0].style.display = 'block';
 							}
 						}).done( function( response ) {
 
 							if ( response.success ) {
 								if ( response.data.delete_data ) {
 									Deactivation_Survey.delete_all_data( 1, form_data );
+								} else {
+									jQuery.magnificPopup.close();
+									window.location.replace( window.deactivation_link );
 								}
 							}
 						});
@@ -147,7 +153,7 @@ class Deactivation_Survey {
 				Deactivation_Survey.delete_all_data( parseInt( response.step ), form_data );
 			} else if ( true === response.success ) {
 				jQuery.magnificPopup.close();
-				window.location.replace( deactivation_link );
+				window.location.replace( window.deactivation_link );
 			}
 		});
 	}

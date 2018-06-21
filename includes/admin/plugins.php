@@ -551,6 +551,11 @@ add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
  */
 function give_deactivation_form_submit() {
 
+	if ( ! check_ajax_referer( 'deactivation_survey_nonce', 'nonce', false ) ) {
+		wp_send_json_error();
+		wp_die();
+	}
+
 	$form_data   = give_clean( wp_parse_args( $_POST['form-data'] ) );
 
 	// Get the selected radio value.
@@ -572,7 +577,7 @@ function give_deactivation_form_submit() {
 	 * Make a POST request to the endpoint to send the survey data.
 	 */
 	$response    = wp_remote_post(
-		'http://give.local/wp-json/give/v1/survey/',
+		'http://give.survey/wp-json/give/v2/survey/',
 		array(
 			'body' => array(
 				'radio_value'        => $radio_value,
