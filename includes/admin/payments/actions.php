@@ -79,7 +79,8 @@ function give_update_payment_details( $data ) {
 	do_action( 'give_update_edited_donation', $payment_id );
 
 	$payment->date = $date;
-	$payment->anonymous = absint( $data['give_anonymous_donation'] );
+	$payment->anonymous = isset( $data['give_anonymous_donation'] ) ? absint( $data['give_anonymous_donation'] ) : 0;
+
 
 	$updated       = $payment->save();
 
@@ -301,19 +302,15 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
-	// Update anonymous donation setting.
-	$is_anonymous_donation = isset( $data['give_anonymous_donation'] )
-		? absint( $data['give_anonymous_donation'] )
-		: 0;
-	$comment_id = absint( $data['give_comment_id'] );
+	$comment_id = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
 
 	if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
-		give_update_meta( $payment->ID, '_give_anonymous_donation', $is_anonymous_donation );
-		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $is_anonymous_donation );
+		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
+		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
 
 		// Update comment meta if admin is not updating comment.
 		if( $comment_id ) {
-			update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
 		}
 	}
 
