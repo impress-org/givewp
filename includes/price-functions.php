@@ -91,18 +91,15 @@ function give_get_variable_price_ids( $form_id = 0 ) {
  */
 function give_get_default_multilevel_amount( $form_id ) {
 	$default_price = '1.00';
-	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 
-	foreach ( $prices as $price ) {
+	// Get default level price data.
+	$default_level = give_form_get_form_level( $form_id );
 
-		if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-			$default_price = $price['_give_amount'];
-		}
-
+	if ( is_array( $default_level ) ) {
+		$default_price = $default_level['_give_amount'];
 	}
 
 	return $default_price;
-
 }
 
 
@@ -164,24 +161,24 @@ function give_is_custom_price_mode( $form_id = 0 ) {
  *
  * @param integer $form_id Donation Form ID.
  *
- * @return integer|string|bool
+ * @return null | array
  */
-function give_form_get_form_level_id( $form_id ) {
+function give_form_get_form_level( $form_id ) {
 	$default_level = null;
 
 	// If donation form has variable prices.
 	if ( give_has_variable_prices( $form_id ) ) {
 
 		// Get the form's variable prices.
-		$prices = give_get_variable_prices( $form_id );
+		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 
 		// Go through each of the level and get the default level id.
-		foreach ( $prices as $price ) {
+		foreach ( $prices as $level ) {
 			if (
-				isset( $price['_give_default'] )
-				&& $price['_give_default'] === 'default'
+				isset( $level['_give_default'] )
+				&& $level['_give_default'] === 'default'
 			) {
-				$default_level = $price['_give_id']['level_id'];
+				$default_level = $level;
 			}
 		}
 	}
@@ -191,8 +188,8 @@ function give_form_get_form_level_id( $form_id ) {
 	 *
 	 * @since 2.1.7
 	 *
-	 * @param integer | string $default_level Default level ID.
-	 * @param integer          $form_id       Donation form ID.
+	 * @param array   $default_level Default level price data.
+	 * @param integer $form_id       Donation form ID.
 	 */
 	return apply_filters( 'give_form_default_level_id', $default_level, $form_id );
 }
