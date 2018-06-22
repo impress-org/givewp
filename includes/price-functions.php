@@ -166,7 +166,7 @@ function give_is_custom_price_mode( $form_id = 0 ) {
  *
  * @return integer|string|bool
  */
-function give_form_get_form_default_level_id( $form_id ) {
+function give_form_get_form_level_id( $form_id ) {
 	$default_level = null;
 
 	// If donation form has variable prices.
@@ -194,5 +194,5 @@ function give_form_get_form_default_level_id( $form_id ) {
 	 * @param integer | string $default_level Default level ID.
 	 * @param integer          $form_id       Donation form ID.
 	 */
-	return apply_filters( 'give_form_get_form_default_level_id', $default_level, $form_id );
+	return apply_filters( 'give_form_default_level_id', $default_level, $form_id );
 }
