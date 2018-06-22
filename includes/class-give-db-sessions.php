@@ -158,9 +158,7 @@ class Give_DB_Sessions extends Give_DB {
 	 */
 	public function update_session_timestamp( $donor_id, $timestamp ) {
 		global $wpdb;
-
-		wp_cache_delete( $donor_id, $this->cache_group );
-
+		
 		// @codingStandardsIgnoreStart.
 		$wpdb->update(
 			$this->table_name,
