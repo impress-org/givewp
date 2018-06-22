@@ -650,53 +650,6 @@ $give_updates = Give_Updates::get_instance();
 
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
-		<tr>
-			<th colspan="3" data-export-label="Session Configuration"><h2><?php _e( 'Session Configuration', 'give' ); ?></h2></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td data-export-label="Give Use Sessions"><?php _e( 'Give Use Sessions', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether PHP sessions are enforced, enabled, or disabled.', 'give' ) ); ?></td>
-			<td><?php echo defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ? __( 'Enforced', 'give' ) : ( Give()->session->use_php_sessions() ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ) ); ?></td>
-		</tr>
-		<tr>
-			<td data-export-label="Session"><?php _e( 'Session', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether a PHP session is currently set.', 'give' ) ); ?></td>
-			<td><?php echo isset( $_SESSION ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
-		</tr>
-		<?php if ( isset( $_SESSION ) ) { ?>
-			<tr>
-				<td data-export-label="Session Name"><?php _e( 'Session Name', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The name of the current PHP session.', 'give' ) ); ?></td>
-				<td><?php echo esc_html( ini_get( 'session.name' ) ); ?></td>
-			</tr>
-			<tr>
-				<td data-export-label="Cookie Path"><?php _e( 'Cookie Path', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The cookie path of the current PHP session.', 'give' ) ); ?></td>
-				<td><?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?></td>
-			</tr>
-			<tr>
-				<td data-export-label="Save Path"><?php _e( 'Save Path', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The save path of the current PHP session.', 'give' ) ); ?></td>
-				<td><?php echo esc_html( ini_get( 'session.save_path' ) ); ?></td>
-			</tr>
-			<tr>
-				<td data-export-label="Use Cookies"><?php _e( 'Use Cookies', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current PHP session is set to use cookies.', 'give' ) ); ?></td>
-				<td><?php echo ini_get( 'session.use_cookies' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
-			</tr>
-			<tr>
-				<td data-export-label="Use Only Cookies"><?php _e( 'Use Only Cookies', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current PHP session is set to use only cookies.', 'give' ) ); ?></td>
-				<td><?php echo ini_get( 'session.use_only_cookies' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
-			</tr>
-		<?php } ?>
-	</tbody>
-</table>
-
-<table class="give-status-table widefat" cellspacing="0">
-	<thead>
 	<tr>
 		<th colspan="3" data-export-label="Active Give Add-ons"><h2><?php _e( 'Active Give Add-ons', 'give' ); ?></h2></th>
 	</tr>
