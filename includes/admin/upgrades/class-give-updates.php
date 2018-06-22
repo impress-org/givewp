@@ -602,6 +602,26 @@ class Give_Updates {
 			return;
 		}
 
+
+		// Show notice if ajax is not working.
+		if ( ! give_test_ajax_works() ) {
+			Give()->notices->register_notice(
+				array(
+					'id'          => 'give_db_upgrade_ajax_inaccessible',
+					'type'        => 'error',
+					'description' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
+						esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
+						__( 'Read More', 'give' ) . ' &raquo;'
+					),
+					'show'        => true,
+				)
+			);
+
+			return;
+		}
+
 		// Show notice if upgrade paused.
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
@@ -633,25 +653,6 @@ class Give_Updates {
 
 		// Bailout if doing upgrades.
 		if ( $this->is_doing_updates() ) {
-			return;
-		}
-
-		// Show notice if ajax is not working.
-		if ( ! give_test_ajax_works() ) {
-			Give()->notices->register_notice(
-				array(
-					'id'          => 'give_db_upgrade_ajax_inaccessible',
-					'type'        => 'error',
-					'description' => sprintf(
-						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
-						__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
-						esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
-						__( 'Read More', 'give' ) . ' &raquo;'
-					),
-					'show'        => true,
-				)
-			);
-
 			return;
 		}
 
