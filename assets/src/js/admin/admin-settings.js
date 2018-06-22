@@ -10,7 +10,6 @@
  */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
-jQuery.noConflict();
 jQuery(document).ready(function ($) {
 
 	/**

@@ -8,8 +8,6 @@
  */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
-jQuery.noConflict();
-
 // Provided access to global level.
 var give_setting_edit = false;
 
