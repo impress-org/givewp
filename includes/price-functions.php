@@ -156,3 +156,35 @@ function give_is_custom_price_mode( $form_id = 0 ) {
 
 	return $form->is_custom_price_mode();
 }
+
+/**
+ * Get the default donation form's level id.
+ *
+ * @since 2.1.7
+ *
+ * @param integer $form_id Donation Form ID.
+ *
+ * @return integer|string|bool
+ */
+function give_form_get_form_default_level_id( $form_id ) {
+	$default_level = null;
+
+	// If donation form has variable prices.
+	if ( give_has_variable_prices( $form_id ) ) {
+
+		// Get the form's variable prices.
+		$prices = give_get_variable_prices( $form_id );
+
+		// Go through each of the level and get the default level id.
+		foreach ( $prices as $price ) {
+			if (
+				isset( $price['_give_default'] )
+				&& $price['_give_default'] === 'default'
+			) {
+				$default_level = $price['_give_id']['level_id'];
+			}
+		}
+	}
+
+	return $default_level;
+}
