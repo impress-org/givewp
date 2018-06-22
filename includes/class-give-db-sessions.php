@@ -237,7 +237,8 @@ class Give_DB_Sessions extends Give_DB {
 	public function __replace( $table_name, $data, $format = null ) {
 		global $wpdb;
 
-		wp_cache_delete( $data['session_key'], $this->cache_group );
+		wp_cache_set( $data['session_key'], $data, $this->cache_group, $data['session_expiry'] - time() );
+
 
 		// @codingStandardsIgnoreStart
 		$wpdb->replace(
