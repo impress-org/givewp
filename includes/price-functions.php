@@ -186,5 +186,13 @@ function give_form_get_form_default_level_id( $form_id ) {
 		}
 	}
 
-	return $default_level;
+	/**
+	 * Filter the default donation level id.
+	 *
+	 * @since 2.1.7
+	 *
+	 * @param integer | string $default_level Default level ID.
+	 * @param integer          $form_id       Donation form ID.
+	 */
+	return apply_filters( 'give_form_get_form_default_level_id', $default_level, $form_id );
 }
