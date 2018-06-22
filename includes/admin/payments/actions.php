@@ -201,11 +201,15 @@ function give_update_payment_details( $data ) {
 			$difference = $new_total - $curr_total;
 			give_increase_total_earnings( $difference );
 
+			// Increase form earnings.
+			give_increase_earnings( $payment->form_id, $difference, $payment->ID );
 		} elseif ( $curr_total > $new_total ) {
 			// Decrease if our new total is lower.
 			$difference = $curr_total - $new_total;
 			give_decrease_total_earnings( $difference );
 
+			// Decrease form earnings.
+			give_decrease_form_earnings( $payment->form_id, $difference, $payment->ID );
 		}
 	}
 
