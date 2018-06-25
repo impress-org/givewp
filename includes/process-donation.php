@@ -123,8 +123,11 @@ function give_process_donation_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price    = isset( $post_data['give-amount'] ) ?
-		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'] ) ) :
+	// Donation form ID.
+	$form_id = isset( $post_data['give-form-id'] ) ? absint( $post_data['give-form-id'] ) : 0;
+
+	$price = isset( $post_data['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
