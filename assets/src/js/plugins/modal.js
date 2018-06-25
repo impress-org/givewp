@@ -265,9 +265,9 @@ class GiveConfirmModal extends GiveModal {
  * @since 2.2.0
  */
 class GiveFormModal extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'form';
-		super(obj);
+		super( obj );
 
 		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
@@ -285,10 +285,10 @@ class GiveFormModal extends GiveModal {
 	 * @private
 	 */
 	static __submitPopup() {
-		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
-			jQuery.magnificPopup.instance.st.successConfirm({
+		if ( 'function' === typeof jQuery.magnificPopup.instance.st.successConfirm ) {
+			jQuery.magnificPopup.instance.st.successConfirm( {
 				el: jQuery.magnificPopup.instance.st.el,
-			});
+			} );
 		}
 	}
 }
@@ -296,8 +296,8 @@ class GiveFormModal extends GiveModal {
 /**
  * Add events
  */
-window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup, {});
-window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup,{});
-window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup, {});
+window.addDynamicEventListener( document, 'click', '.give-popup-close-button', GiveModal.__closePopup, {} );
+window.addDynamicEventListener( document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup, {} );
+window.addDynamicEventListener( document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup, {} );
 
-export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal};
+export { GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal };
