@@ -470,8 +470,8 @@ function give_donation_form_validate_gateway() {
 function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
-	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
+	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) : 0;
 	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
