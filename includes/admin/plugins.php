@@ -197,6 +197,7 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 }
 
 add_filter( 'show_advanced_plugins', 'give_filter_addons_do_filter_addons' );
+add_filter( 'show_network_active_plugins', 'give_filter_addons_do_filter_addons' );
 
 /**
  * Make the Give Menu as an default menu and update the Menu Name
@@ -230,6 +231,7 @@ function give_filter_addons_filter_addons( $views ) {
 }
 
 add_filter( 'views_plugins', 'give_filter_addons_filter_addons' );
+add_filter( 'views_plugins-network', 'give_filter_addons_filter_addons' );
 
 /**
  * Set the Give as the Main menu when admin click on the Give Menu in Plugin section.

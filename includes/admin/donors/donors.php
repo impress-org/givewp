@@ -935,6 +935,69 @@ function give_donor_view( $donor ) {
 			</tbody>
 		</table>
 
+		<h3><?php _e( 'Comments', 'give' ); ?></h3>
+		<?php
+		// @todo load comment by ajax to improve performance.
+		$donations = give_get_users_donations( $donor->email );
+		?>
+		<table class="wp-list-table widefat striped comments">
+			<thead>
+			<tr>
+				<th scope="col"><?php _e( 'Donation', 'give' ); ?></th>
+				<th scope="col"><?php _e( 'Anonymous', 'give' ); ?></th>
+				<th scope="col" colspan="3"><?php _e( 'Comment', 'give' ); ?></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php if ( ! empty( $donations ) ) : ?>
+				<?php foreach ( $donations as $donation ) : ?>
+					<?php
+					$comment = give_get_donor_donation_comment( $donation->ID, give_get_payment_donor_id( $donation->ID ) );
+
+					if ( ! $comment instanceof WP_Comment ) {
+						continue;
+					}
+					?>
+					<tr>
+						<td>
+							<?php
+							$donation_number = Give()->seq_donation_number->get_serial_code( $donation );
+							echo $donation_number;
+							?>
+						</td>
+						<td>
+							<?php
+							echo absint( give_get_payment_meta( $donation->ID, '_give_anonymous_donation' ) )
+								? __( 'Yes', 'give' )
+								: __( 'No', 'give' );
+							?>
+						</td>
+						<td>
+							<?php
+							echo apply_filters( 'the_content', $comment->comment_content );
+
+							echo sprintf(
+								'<a href="%1$s" aria-label="%2$s" target="_blank">%3$s</a>',
+								admin_url( "edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id={$donation->ID}#give-payment-donor-comment" ),
+								sprintf(
+									/* translators: %s: Comment ID */
+									esc_attr__( 'Edit Comment %s.', 'give' ),
+									$comment->comment_ID
+								),
+								__( 'Edit Comment', 'give' )
+							);
+							?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php else: ?>
+				<tr>
+					<td colspan="5"><?php _e( 'No comment found.', 'give' ); ?></td>
+				</tr>
+			<?php endif ?>
+			</tbody>
+		</table>
+
 		<?php
 		/**
 		 * Fires in donor profile screen, below the tables.

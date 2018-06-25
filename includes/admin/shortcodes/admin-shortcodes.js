@@ -14,159 +14,161 @@
 
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../../../assets/src/js/plugins/modal';
 
-var jq = jQuery.noConflict();
-
 var scShortcode, scButton;
 
-/**
- * Show continue button title setting field only if display style is not All Fields.
- */
-window.render_continue_button_title_field = function() {
-	var selected_display_style = jq('.mce-txt', '.mce-give-display-style').text(),
-		expected_display_styles = [ '- Select -', 'All Fields' ];
 
-	if( -1 !== jq.inArray( selected_display_style, expected_display_styles ) ) {
-		jq('.mce-give-continue-button-title').closest('.mce-container' ).hide()
-	} else {
-		jq('.mce-give-continue-button-title').closest('.mce-container' ).show()
-	}
-};
+jQuery( function( $ ) {
 
-window.scForm = {
+	let doc = $( this );
 
-	open: function( editor_id ) {
-		var editor = tinymce.get( editor_id );
+	/**
+	 * Show continue button title setting field only if display style is not All Fields.
+	 */
+	window.render_continue_button_title_field = function() {
+		var selected_display_style = $('.mce-txt', '.mce-give-display-style').text(),
+			expected_display_styles = [ '- Select -', 'All Fields' ];
 
-		if ( ! editor ) {
-			return;
+		if( -1 !== $.inArray( selected_display_style, expected_display_styles ) ) {
+			$('.mce-give-continue-button-title').closest('.mce-container' ).hide()
+		} else {
+			$('.mce-give-continue-button-title').closest('.mce-container' ).show()
 		}
+	};
 
-		var data, field, required, valid, win;
+	window.scForm = {
 
-		data = {
-			action    : 'give_shortcode',
-			shortcode : scShortcode
-		};
+		open: function( editor_id ) {
+			var editor = tinymce.get( editor_id );
 
-		jq.post( ajaxurl, data, function( response ) {
-
-			// what happens if response === false?
-			if ( ! response.body ) {
-				console.error( 'Bad AJAX response!' );
+			if ( ! editor ) {
 				return;
 			}
 
-			if ( response.body.length === 0 ) {
-				window.send_to_editor( '[' + response.shortcode + ']' );
+			var data, field, required, valid, win;
 
-				scForm.destroy();
+			data = {
+				action    : 'give_shortcode',
+				shortcode : scShortcode
+			};
 
-				return;
-			}
+			$.post( ajaxurl, data, function( response ) {
 
-			/**
-			 * Render continue button title setting field on basis of display style value.
-			 */
-			jq.each( response.body, function( index, item ){
-
-				if( 'display_style' === item.name ) {
-					response.body[index].onselect = function(){
-						render_continue_button_title_field();
-					};
+				// what happens if response === false?
+				if ( ! response.body ) {
+					console.error( 'Bad AJAX response!' );
+					return;
 				}
-			});
 
-			var popup = {
-				title   : response.title,
-				body    : response.body,
-				classes: 'sc-popup',
-				minWidth: 320,
-				buttons : [ {
-					text    : response.ok,
-					classes : 'primary sc-primary',
-					onclick : function() {
-						// Get the top most window object
-						win = editor.windowManager.getWindows()[0];
+				if ( response.body.length === 0 ) {
+					window.send_to_editor( '[' + response.shortcode + ']' );
 
-						// Get the shortcode required attributes
-						required = scShortcodes[ scShortcode ];
+					scForm.destroy();
 
-						valid = true;
+					return;
+				}
 
-						// Do some validation voodoo
-						for ( var id in required ) {
-							if ( required.hasOwnProperty( id ) ) {
+				/**
+				 * Render continue button title setting field on basis of display style value.
+				 */
+				$.each( response.body, function( index, item ){
 
-								field = win.find( '#' + id )[0];
+					if( 'display_style' === item.name ) {
+						response.body[index].onselect = function(){
+							render_continue_button_title_field();
+						};
+					}
+				});
 
-								if ( typeof field !== 'undefined' && field.state.data.value === '' ) {
+				var popup = {
+					title   : response.title,
+					body    : response.body,
+					classes: 'sc-popup',
+					minWidth: 320,
+					buttons : [ {
+						text    : response.ok,
+						classes : 'primary sc-primary',
+						onclick : function() {
+							// Get the top most window object
+							win = editor.windowManager.getWindows()[0];
 
-									valid = false;
+							// Get the shortcode required attributes
+							required = scShortcodes[ scShortcode ];
 
-									new GiveErrorAlert({
-										modalContent:{
-											desc: required[ id ],
-											cancelBtnTitle: give_vars.ok,
-										}
-									}).render();
+							valid = true;
 
-									break;
+							// Do some validation voodoo
+							for ( var id in required ) {
+								if ( required.hasOwnProperty( id ) ) {
+
+									field = win.find( '#' + id )[0];
+
+									if ( typeof field !== 'undefined' && field.state.data.value === '' ) {
+
+										valid = false;
+
+										new GiveErrorAlert({
+											modalContent:{
+												desc: required[ id ],
+												cancelBtnTitle: give_vars.ok,
+											}
+										}).render();
+
+										break;
+									}
 								}
+							}
+
+							if ( valid ) {
+								win.submit();
+							}
+						}
+					},
+						{
+							text    : response.close,
+							onclick : 'close'
+					}, ],
+					onsubmit: function( e ) {
+						var attributes = '';
+
+						for ( var key in e.data ) {
+							if ( e.data.hasOwnProperty( key ) && e.data[ key ] !== '' ) {
+								attributes += ' ' + key + '="' + e.data[ key ] + '"';
 							}
 						}
 
-						if ( valid ) {
-							win.submit();
-						}
+						// Insert shortcode into the WP_Editor
+						window.send_to_editor( '[' + response.shortcode + attributes + ']' );
+					},
+					onclose: function() {
+						scForm.destroy();
+					},
+					onopen: function() {
+						// Conditional fields.
+						render_continue_button_title_field();
 					}
-				},
-					{
-						text    : response.close,
-						onclick : 'close'
-				}, ],
-				onsubmit: function( e ) {
-					var attributes = '';
+				};
 
-					for ( var key in e.data ) {
-						if ( e.data.hasOwnProperty( key ) && e.data[ key ] !== '' ) {
-							attributes += ' ' + key + '="' + e.data[ key ] + '"';
-						}
-					}
-
-					// Insert shortcode into the WP_Editor
-					window.send_to_editor( '[' + response.shortcode + attributes + ']' );
-				},
-				onclose: function() {
-					scForm.destroy();
-				},
-				onopen: function() {
-					// Conditional fields.
-					render_continue_button_title_field();
+				// Change the buttons if server-side validation failed
+				if ( response.ok.constructor === Array ) {
+					popup.buttons[0].text    = response.ok[0];
+					popup.buttons[0].onclick = 'close';
+					delete popup.buttons[1];
 				}
-			};
 
-			// Change the buttons if server-side validation failed
-			if ( response.ok.constructor === Array ) {
-				popup.buttons[0].text    = response.ok[0];
-				popup.buttons[0].onclick = 'close';
-				delete popup.buttons[1];
+				editor.windowManager.open( popup );
+			});
+		},
+
+		destroy: function() {
+			var tmp = $( '#scTemp' );
+
+			if ( tmp.length ) {
+				tinymce.get( 'scTemp' ).remove();
+				tmp.remove();
 			}
-
-			editor.windowManager.open( popup );
-		});
-	},
-
-	destroy: function() {
-		var tmp = jq( '#scTemp' );
-
-		if ( tmp.length ) {
-			tinymce.get( 'scTemp' ).remove();
-			tmp.remove();
 		}
-	}
-};
+	};
 
-jq( function( $ ) {
 	var scOpen = function() {
 		scButton.addClass( 'active' ).parent().find( '.sc-menu' ).show();
 	};
@@ -177,13 +179,13 @@ jq( function( $ ) {
 		}
 	};
 
-	$( document ).on( 'click', function( e ) {
+	doc.on( 'click', function( e ) {
 		if ( ! $( e.target ).closest( '.sc-wrap' ).length ) {
 			scClose();
 		}
 	});
 
-	$( document ).on( 'click', '.sc-button', function( e ) {
+	doc.on( 'click', '.sc-button', function( e ) {
 		e.preventDefault();
 
 		scButton = $( this );
@@ -195,7 +197,7 @@ jq( function( $ ) {
 		}
 	});
 
-	$( document ).on( 'click', '.sc-shortcode', function( e ) {
+	doc.on( 'click', '.sc-shortcode', function( e ) {
 		e.preventDefault();
 
 		// scShortcode is used by scForm to trigger the correct popup

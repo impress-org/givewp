@@ -59,7 +59,8 @@ $give_receipt_args['donation_receipt']['donor'] = array(
 $give_receipt_args['donation_receipt']['company_name'] = array(
 	'name'    => __( 'Company Name', 'give' ),
 	'value'   => esc_attr( $company_name ),
-	'display' => $give_receipt_args['company_name'],
+	// Do not show company field if empty
+	'display' => empty( $company_name ) ? false : $give_receipt_args['company_name'],
 );
 
 $give_receipt_args['donation_receipt']['date'] = array(

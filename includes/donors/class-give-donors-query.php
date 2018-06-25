@@ -233,7 +233,7 @@ class Give_Donors_Query {
 
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
-		$sql = str_replace( 'LIMIT', "{$where} {$orderby} {$this->args['order']} LIMIT", $sql );
+		$sql = str_replace( 'LIMIT', "{$where} {$orderby} LIMIT", $sql );
 
 		return $sql;
 	}
@@ -427,22 +427,45 @@ class Give_Donors_Query {
 	private function get_order_query() {
 		$table_columns = Give()->donors->get_columns();
 
-		$this->args['orderby'] = ! array_key_exists( $this->args['orderby'], $table_columns ) ? 'id' : $this->args['orderby'];
+		$query = array();
+		$ordersby = $this->args['orderby'];
 
-		$this->args['orderby'] = esc_sql( $this->args['orderby'] );
-		$this->args['order']   = esc_sql( $this->args['order'] );
-
-		switch ( $table_columns[ $this->args['orderby'] ] ) {
-			case '%d':
-			case '%f':
-				$query = "ORDER BY {$this->table_name}.{$this->args['orderby']}+0";
-				break;
-
-			default:
-				$query = "ORDER BY {$this->table_name}.{$this->args['orderby']}";
+		if( ! is_array( $ordersby ) ) {
+			$ordersby = array(
+				$this->args['orderby'] => $this->args['order']
+			);
 		}
 
-		return $query;
+		// Remove non existing column.
+		// Filter orderby values.
+		foreach ( $ordersby as $orderby => $order ) {
+			if( ! array_key_exists( $orderby, $table_columns ) ) {
+				unset( $ordersby[$orderby] );
+			}
+
+			$ordersby[ esc_sql( $orderby ) ] = esc_sql( $this->args['order'] );
+		}
+
+		if( empty( $ordersby ) ) {
+			$ordersby = array(
+				'id' => $this->args['order']
+			);
+		}
+
+		// Create query.
+		foreach ( $ordersby as $orderby => $order ) {
+			switch ( $table_columns[ $orderby ] ) {
+				case '%d':
+				case '%f':
+					$query[] = "{$this->table_name}.{$orderby}+0 {$order}";
+					break;
+
+				default:
+					$query[] = "{$this->table_name}.{$orderby} {$order}";
+			}
+		}
+
+		return ! empty( $query ) ? 'ORDER BY ' . implode( ', ', $query ) : '';
 	}
 
 	/**

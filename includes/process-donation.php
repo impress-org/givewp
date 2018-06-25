@@ -552,7 +552,7 @@ function give_get_required_fields( $form_id ) {
 		),
 	);
 
-	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
+	$name_title_prefix = give_is_name_title_prefix_required( $form_id );
 	if ( $name_title_prefix ) {
 		$required_fields['give_title'] = array(
 			'error_id'      => 'invalid_title',
@@ -1066,7 +1066,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Add Title Prefix to user information.
 	if ( empty( $user['user_title'] ) || strlen( trim( $user['user_title'] ) ) < 1 ) {
-		$user['user_title'] = strip_tags( trim( $_POST['give_title'] ) );
+		$user['user_title'] = ! empty( $post_data['give_title'] ) ? strip_tags( trim( $post_data['give_title'] ) ) : '';
 	}
 
 	// Get the user's billing address details.
@@ -1345,12 +1345,15 @@ function give_validate_donation_amount( $valid_data ) {
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $post_data['give-form-id'] );
 
+	// Get the form currency.
+	$form_currency = give_get_currency( $post_data['give-form-id'] );
+
 	$donation_level_matched = false;
 
 	if ( $form->is_set_type_donation_form() ) {
 
 		// Sanitize donation amount.
-		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'] );
+		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
 
 		// Backward compatibility.
 		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
@@ -1369,8 +1372,8 @@ function give_validate_donation_amount( $valid_data ) {
 		}
 
 		// Sanitize donation amount.
-		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'] );
-		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ) );
+		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
+		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ), array( 'currency' => $form_currency ) );
 		$new_price_id                 = '';
 
 		if ( $post_data['give-amount'] === $variable_price_option_amount ) {

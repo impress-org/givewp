@@ -57,7 +57,7 @@ class Give_Notices {
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 
 		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
-		add_action( 'give_pre_form', array( $this, 'render_frontend_notices' ), 11 );
+		add_action( 'give_pre_form_output', array( $this, 'render_frontend_form_notices' ), 10, 1 );
 		add_action( 'give_ajax_donation_errors', array( $this, 'render_frontend_notices' ) );
 
 		/**
@@ -281,6 +281,27 @@ class Give_Notices {
 			self::print_frontend_errors( $errors );
 
 			give_clear_errors();
+		}
+	}
+
+	/**
+	 * Renders notices for different actions depending on
+	 * the type of form display option.
+	 *
+	 * @since 2.2
+	 * @access public
+	 *
+	 * @param int $form_id Form ID.
+	 *
+	 * @return void
+	 */
+	public function render_frontend_form_notices( $form_id ) {
+		$display_option = give_get_meta( $form_id, '_give_payment_display', true );
+
+		if ( 'modal' === $display_option ) {
+			add_action( 'give_payment_mode_top', array( $this, 'render_frontend_notices' ) );
+		} else {
+			add_action( 'give_pre_form', array( $this, 'render_frontend_notices' ), 11 );
 		}
 	}
 
@@ -634,7 +655,7 @@ class Give_Notices {
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
 			'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d" data-dismiss-type="%4$s">
+						<p class="give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d" data-dismiss-type="%4$s">
 							%5$s
 						</p>
 						%6$s

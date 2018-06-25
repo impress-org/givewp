@@ -2,6 +2,7 @@
  * This API is under development, so do not use this in production.
  * We will open this API for use after some testing (coming releases).
  */
+/* globals give_vars, jQuery */
 import 'magnific-popup';
 import './dynamicListener.js';
 
@@ -11,9 +12,9 @@ import './dynamicListener.js';
  * @since 2.1.0
  */
 class GiveModal {
-	constructor(obj) {
-		if (GiveModal === this.constructor) {
-			throw new Error('Abstract classes can\'t be instantiated.');
+	constructor( obj ) {
+		if ( GiveModal === this.constructor ) {
+			throw new Error( 'Abstract classes can\'t be instantiated.' );
 		}
 
 		this.config = Object.assign(
@@ -21,14 +22,14 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: {modalWrapper: ''},
+				classes: { modalWrapper: '' },
 				modalContent: {},
 			},
 			obj
 		);
 
 		// Set main class.
-		this.config.mainClass = `${this.config.mainClass ? this.config.mainClass : '' } modal-fade-slide`.trim();
+		this.config.mainClass = `${ this.config.mainClass ? this.config.mainClass : '' } modal-fade-slide`.trim();
 	}
 
 	/**
@@ -44,27 +45,33 @@ class GiveModal {
 	 * Get template
 	 *
 	 * @since 2.1.0
+	 *
+	 * @return {string} Template HTML.
 	 */
-	get_template() {
+	getTemplate() {
 		let template = '<div class="give-hidden"></div>';
 
-		if (this.config.type.length) {
-			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.modalWrapper ? `${this.config.classes.modalWrapper}`.trim() : '' }">
+		if ( this.config.type.length ) {
+			template = `<div class="give-modal give-modal--zoom ${ this.config.classes.modalWrapper ? `${ this.config.classes.modalWrapper }`.trim() : '' }">
 
 				<div class="give-modal__body">
-					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${this.config.modalContent.title}</h2>` : '' }
-					${ this.config.modalContent.desc ? `<p class="give-modal__description">${this.config.modalContent.desc}</p>` : '' }
+					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${ this.config.modalContent.title }</h2>` : '' }
+					${ this.config.modalContent.desc ? `<p class="give-modal__description">${ this.config.modalContent.desc }</p>` : '' }
 				</div>
 	
 				<div class="give-modal__controls">
-					${ ('form' === this.config.type) ? `<div class="spinner"></div>` : '' }
-					${ ('form' === this.config.type) ? `<a class="give-modal--additional-link" href="${this.config.modalContent.link}">${this.config.modalContent.link_text}</a>` : '' }
+
+					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
+					${ ( 'form' === this.config.type ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }">${ this.config.modalContent.link_text }</a>` : '' }
+
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ('confirm' === this.config.type ? give_vars.cancel : give_vars.close ) }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? give_vars.cancel : give_vars.close ) }
 					</button>
-					${ ('confirm' !== this.config.type && 'form' !== this.config.type) ? '' : `<button class="give-button give-button--primary give-popup-${this.config.type}-button">
+
+					${ ( 'confirm' !== this.config.type && 'form' !== this.config.type ) ? '' : `<button class="give-button give-button--primary give-popup-${ this.config.type }-button">
+
 						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : give_vars.confirm }
-					</button>`}
+					</button>` }
 				</div>
 				
 			</div>`;
@@ -79,7 +86,7 @@ class GiveModal {
 	 * @since 2.1.0
 	 */
 	setupTemplate() {
-		this.config.template = this.get_template();
+		this.config.template = this.getTemplate();
 	}
 
 	/**
@@ -90,11 +97,11 @@ class GiveModal {
 	 */
 	__setupClickEvent() {
 		// Bailout.
-		if (!this.config.triggerSelector.length) {
+		if ( ! this.config.triggerSelector.length ) {
 			return;
 		}
 
-		jQuery( this.config.triggerSelector ).magnificPopup(this.config);
+		jQuery( this.config.triggerSelector ).magnificPopup( this.config );
 	}
 
 	/**
@@ -106,10 +113,10 @@ class GiveModal {
 	 * @private
 	 */
 	popupConfig() {
-		if ('magnificPopup' === this.config.externalPlugin) {
+		if ( 'magnificPopup' === this.config.externalPlugin ) {
 			this.config.items = this.config.items || {
 				src: this.config.template,
-				type: 'inline'
+				type: 'inline',
 			};
 
 			this.config.removalDelay = 300;
@@ -128,8 +135,10 @@ class GiveModal {
 	 *
 	 * @since 2.1.0
 	 * @private
+	 *
+	 * @param {object} event Event object.
 	 */
-	static __closePopup(event) {
+	static __closePopup( event ) {
 		event.preventDefault();
 		jQuery.magnificPopup.instance.close();
 	}
@@ -138,13 +147,14 @@ class GiveModal {
 	 * Give's Notice Popup
 	 *
 	 * @since 2.1.0
+	 *
+	 * @return {object} GiveModal class object.
 	 */
 	render() {
-		switch (this.config.externalPlugin) {
-
+		switch ( this.config.externalPlugin ) {
 			case 'magnificPopup':
-				if( ! this.config.triggerSelector ) {
-					jQuery.magnificPopup.open(this.config);
+				if ( ! this.config.triggerSelector ) {
+					jQuery.magnificPopup.open( this.config );
 				}
 
 				break;
@@ -152,7 +162,6 @@ class GiveModal {
 
 		return this;
 	}
-
 }
 
 /**
@@ -161,15 +170,14 @@ class GiveModal {
  * @since 2.1.0
  */
 class GiveErrorAlert extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'alert';
-		super(obj);
+		super( obj );
 		this.config.classes.modalWrapper = 'give-modal--error';
 
 		this.init();
 	}
 }
-
 
 /**
  * This class will handle warning alert modal
@@ -177,13 +185,12 @@ class GiveErrorAlert extends GiveModal {
  * @since 2.1.0
  */
 class GiveWarningAlert extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'alert';
-		super(obj);
+		super( obj );
 		this.config.classes.modalWrapper = 'give-modal--warning';
 
 		this.init();
-
 	}
 }
 
@@ -193,9 +200,9 @@ class GiveWarningAlert extends GiveModal {
  * @since 2.1.0
  */
 class GiveNoticeAlert extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'alert';
-		super(obj);
+		super( obj );
 		this.config.classes.modalWrapper = 'give-modal--notice';
 
 		this.init();
@@ -208,9 +215,9 @@ class GiveNoticeAlert extends GiveModal {
  * @since 2.1.0
  */
 class GiveSuccessAlert extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'alert';
-		super(obj);
+		super( obj );
 		this.config.classes.modalWrapper = 'give-modal--success';
 
 		this.init();
@@ -223,9 +230,9 @@ class GiveSuccessAlert extends GiveModal {
  * @since 2.1.0
  */
 class GiveConfirmModal extends GiveModal {
-	constructor(obj) {
+	constructor( obj ) {
 		obj.type = 'confirm';
-		super(obj);
+		super( obj );
 
 		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
@@ -243,10 +250,10 @@ class GiveConfirmModal extends GiveModal {
 	 * @private
 	 */
 	static __confirmPopup() {
-		if ('function' === typeof jQuery.magnificPopup.instance.st.successConfirm) {
-			jQuery.magnificPopup.instance.st.successConfirm({
+		if ( 'function' === typeof jQuery.magnificPopup.instance.st.successConfirm ) {
+			jQuery.magnificPopup.instance.st.successConfirm( {
 				el: jQuery.magnificPopup.instance.st.el,
-			});
+			} );
 			jQuery.magnificPopup.close();
 		}
 	}

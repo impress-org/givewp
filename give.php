@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 2.1.4
+ * Version: 2.2.0
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -403,7 +403,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.1.4' );
+				define( 'GIVE_VERSION', '2.2.0' );
 			}
 
 			// Plugin Root File
@@ -487,7 +487,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-grid.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
@@ -541,6 +540,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-wall.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/actions.php';
@@ -575,6 +576,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-clone-forms.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 

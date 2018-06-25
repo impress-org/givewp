@@ -255,7 +255,7 @@ function give_text_input( $field ) {
 
 	switch ( $data_type ) {
 		case 'price' :
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( give_maybe_sanitize_amount( $field['value'] ), array( 'sanitize' => false ) ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( give_maybe_sanitize_amount( $field['value'] ), false, false ) : $field['value'] );
 
 			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
 			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
@@ -332,7 +332,6 @@ function give_chosen_input( $field ) {
 		$type = 'multiple';
 		$allow_new_values = 'data-allows-new-values="true"';
 	}
-
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
@@ -342,14 +341,19 @@ function give_chosen_input( $field ) {
 		<select
 				class="give-select-chosen give-chosen-settings"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
 			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
 		>
 			<?php foreach ( $field['options'] as $key => $value ) { ?>
-				<option
-						value="<?php echo esc_attr( $key ); ?>"
-					<?php echo selected( esc_attr( $field['value'] ), esc_attr( $key ), false ); ?>
+				<option value="<?php echo esc_attr( $key ); ?>"
+					<?php
+					if ( is_array( $field['value'] ) ) {
+						selected( in_array( $key, $field['value'], true ) );
+					} else {
+						selected( $field['value'], $key, true );
+					}
+					?>
 				>
 					<?php echo esc_html( $value ); ?>
 				</option>
@@ -409,8 +413,8 @@ function give_donation_limit( $field ) {
 	// Default field option arguments.
 	$field['options'] = wp_parse_args( $field['options'], array(
 			'display_label' => '',
-			'minimum'       => 1.00,
-			'maximum'       => 999999.99,
+			'minimum'       => give_format_decimal( '1.00', false, false ),
+			'maximum'       => give_format_decimal( '999999.99', false, false ),
 		)
 	);
 
@@ -458,8 +462,9 @@ function give_donation_limit( $field ) {
 						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
 
 					$field_options['attributes']['class']    .= ' give-text_small';
-					$field_options['value'][ $amount_range ] = give_maybe_sanitize_amount( $amount_value );
+					$field_options['value'][ $amount_range ] = $amount_value;
 					break;
+
 				case 'decimal' :
 					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
 					$field_options['value'][ $amount_range ] = $amount_value;
