@@ -132,7 +132,7 @@ class Give_Scripts {
 			wp_enqueue_style( 'plugin-deactivation-survey-css' );
 			wp_localize_script(
 				'plugin-deactivation-survey-js',
-				'deactivation_survey_nonce',
+				'deactivationSurveyNonce',
 				wp_create_nonce( 'deactivation_survey_nonce' )
 			);
 		}

@@ -1,99 +1,92 @@
-import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert, GiveFormModal} from '../plugins/modal';
+/*global give_vars*/
+/*global ajaxurl*/
+/*global deactivationSurveyNonce*/
 
-jQuery.noConflict();
+import { GiveFormModal } from '../plugins/modal';
 
-class Deactivation_Survey {
-
+class GiveDeactivationSurvey {
 	constructor() {
 		window.addEventListener(
 			'load',
 			function() {
-				window.addDynamicEventListener( document, 'click', 'tr[data-slug="give"] .deactivate a', Deactivation_Survey.deactivate_give );
-				window.addDynamicEventListener( document, 'click', 'input[name="give-survey-radios"]', Deactivation_Survey.toggle_additional_fields );
+				window.addDynamicEventListener( document, 'click', 'tr[data-slug="give"] .deactivate a', GiveDeactivationSurvey.deactivateGive );
+				window.addDynamicEventListener( document, 'click', 'input[name="give-survey-radios"]', GiveDeactivationSurvey.toggleAdditionalFields );
 			}
 		);
 	}
 
-	static deactivate_give( e ) {
-
+	static deactivateGive( e ) {
 		e.preventDefault();
 
-		window.deactivation_link = e.target.href;
+		window.deactivationLink = e.target.href;
 
-		jQuery.ajax({
+		jQuery.ajax( {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
-				'action': 'deactivation_popup',
-			}
-		}).done( function( response ) {
-			new GiveFormModal({
+				action: 'deactivation_popup',
+			},
+		} ).done( function( response ) {
+			new GiveFormModal( {
 				classes: {
 					modalWrapper: 'deactivation-survey-wrap',
 				},
 
-				modalContent:{
+				modalContent: {
 					desc: response,
 					cancelBtnTitle: give_vars.cancel,
 					confirmBtnTitle: give_vars.submit_and_deactivate,
-					link: window.deactivation_link,
+					link: window.deactivationLink,
 					link_text: give_vars.skip_and_deactivate,
 				},
 
-				successConfirm: function( args ) {
-
+				successConfirm: function() {
 					// Deactivation Error admin notice.
-					let deactivation_error = document.querySelectorAll( '.deactivation-error' );
-					let checked_radio      = document.querySelectorAll( 'input[name="give-survey-radios"]:checked' );
-					let survey_form        = document.querySelectorAll( '.deactivation-survey-form' );
-					let continue_flag      = true;
+					const deactivationError = document.querySelectorAll( '.deactivation-error' );
+					const checkedRadio = document.querySelectorAll( 'input[name="give-survey-radios"]:checked' );
+					const surveyForm = document.querySelectorAll( '.deactivation-survey-form' );
+					let continueFlag = true;
 
-					if ( deactivation_error.length > 0 ) {
-
-						continue_flag = false;
-
+					if ( deactivationError.length > 0 ) {
+						continueFlag = false;
 					}
 
 					// If no radio button is selected then throw error.
-					if ( 0 === checked_radio.length && 0 === deactivation_error.length ) {
-
-						survey_form[0].innerHTML += `
+					if ( 0 === checkedRadio.length && 0 === deactivationError.length ) {
+						surveyForm[ 0 ].innerHTML += `
 							<div class="notice notice-error deactivation-error">
-								${give_vars.deactivation_no_option_selected}
+								${ give_vars.deactivation_no_option_selected }
 							</div>
 						`;
 
-						continue_flag = false;
+						continueFlag = false;
 					}
 
 					/* If a radio button is assosciated with additional field
 					 * and if that field is empty, then throw error.
 					 */
-					let user_reason_field = '';
+					let userReasonField = '';
 
-					if ( checked_radio.length > 0 && null !== checked_radio[0].parentNode.nextElementSibling ) {
-						user_reason_field = checked_radio[0]
+					if ( checkedRadio.length > 0 && null !== checkedRadio[ 0 ].parentNode.nextElementSibling ) {
+						userReasonField = checkedRadio[ 0 ]
 							.parentNode
 							.nextElementSibling
 							.querySelectorAll( 'input, textarea' );
 
-						if ( 0 < user_reason_field.length && ! user_reason_field[0].value && 0 === deactivation_error.length ) {
+						if ( 0 < userReasonField.length && ! userReasonField[ 0 ].value && 0 === deactivationError.length ) {
+							const errorNode = document.createElement( 'div' );
+							errorNode.setAttribute( 'class', 'notice notice-error deactivation-error' );
 
-							let error_node = document.createElement( 'div' );
-							error_node.setAttribute( 'class', 'notice notice-error deactivation-error' );
+							const textNode = document.createTextNode( give_vars.please_fill_field );
 
-							let text_node = document.createTextNode( give_vars.please_fill_field );
+							errorNode.appendChild( textNode );
+							surveyForm[ 0 ].appendChild( errorNode );
 
-							error_node.appendChild( text_node );
-							survey_form[0].appendChild( error_node );
-
-							continue_flag = false;
-
-						} else if ( 0 < user_reason_field.length && user_reason_field[0].value ) {
-
-							if ( 0 !== deactivation_error.length ) {
-								deactivation_error[0].parentNode.removeChild( deactivation_error[0] );
-								continue_flag = true;
+							continueFlag = false;
+						} else if ( 0 < userReasonField.length && userReasonField[ 0 ].value ) {
+							if ( 0 !== deactivationError.length ) {
+								deactivationError[ 0 ].parentNode.removeChild( deactivationError[ 0 ] );
+								continueFlag = true;
 							}
 						}
 					}
@@ -102,83 +95,84 @@ class Deactivation_Survey {
 					 * If form is properly filled, then serialize form data and
 					 * pass it to the AJAX callback for processing.
 					 */
-					if ( continue_flag ) {
+					if ( continueFlag ) {
+						const formData = jQuery( '.deactivation-survey-form' ).serialize();
 
-						let form_data = jQuery('.deactivation-survey-form').serialize();
-
-						jQuery.ajax({
+						jQuery.ajax( {
 							url: ajaxurl,
 							type: 'POST',
 							data: {
-								'action': 'deactivation_form_submit',
-								'form-data': form_data,
-								'nonce': deactivation_survey_nonce,
+								action: 'deactivation_form_submit',
+								'form-data': formData,
+								nonce: deactivationSurveyNonce,
 							},
 							beforeSend: function() {
-								let spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
-								spinner[0].style.display = 'block';
-							}
-						}).done( function( response ) {
-
-							if ( response.success ) {
-								if ( response.data.delete_data ) {
-									Deactivation_Survey.delete_all_data( 1, form_data );
+								const spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
+								spinner[ 0 ].style.display = 'block';
+							},
+						} ).done( function( responseFromSubmit ) {
+							if ( responseFromSubmit.success ) {
+								if ( responseFromSubmit.data.delete_data ) {
+									GiveDeactivationSurvey.deleteAllData( 1, formData );
 								} else {
 									jQuery.magnificPopup.close();
-									window.location.replace( window.deactivation_link );
+									window.location.replace( window.deactivationLink );
 								}
 							}
-						});
+						} );
 					}
-				}
-			}).render();
-		});
+				},
+			} ).render();
+		} );
 	}
 
 	/**
 	 * Deletes all the data generated by Give plugin.
+	 *
+	 * @param {number} step The current iteration of the batch process.
+	 * @param {string} formData The Form Data.
 	 */
-	static delete_all_data( step, form_data ) {
-		jQuery.ajax({
+	static deleteAllData( step, formData ) {
+		jQuery.ajax( {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
-				'form': form_data,
-				'action': 'give_do_ajax_export',
-				'step': step,
+				form: formData,
+				action: 'give_do_ajax_export',
+				step: step,
 			},
 			dataType: 'json',
-		}).done( function( response ) {
+		} ).done( function( response ) {
 			if ( true !== response.success && ! response.error ) {
-				Deactivation_Survey.delete_all_data( parseInt( response.step ), form_data );
+				GiveDeactivationSurvey.deleteAllData( parseInt( response.step ), formData );
 			} else if ( true === response.success ) {
 				jQuery.magnificPopup.close();
-				window.location.replace( window.deactivation_link );
+				window.location.replace( window.deactivationLink );
 			}
-		});
+		} );
 	}
 
-	static toggle_additional_fields( e ) {
-		let deactivation_error = document.querySelectorAll( '.deactivation-error' );
-		let extra_field        = document.querySelectorAll( '.give-survey-extra-field' );
-		let ef                 = '';
+	static toggleAdditionalFields( e ) {
+		const deactivationError = document.querySelectorAll( '.deactivation-error' );
+		const extraField = document.querySelectorAll( '.give-survey-extra-field' );
+		let ef = '';
 
-		if ( deactivation_error.length > 0 ) {
-			deactivation_error[0].parentNode.removeChild( deactivation_error[0] );
+		if ( deactivationError.length > 0 ) {
+			deactivationError[ 0 ].parentNode.removeChild( deactivationError[ 0 ] );
 		}
 
-		extra_field.forEach( function( element ) {
+		extraField.forEach( function( element ) {
 			element.style.display = 'none';
-			ef                    = element.querySelectorAll( 'input, textarea' );
-			ef[0].setAttribute( 'disabled', 'disabled' );
-		});
+			ef = element.querySelectorAll( 'input, textarea' );
+			ef[ 0 ].setAttribute( 'disabled', 'disabled' );
+		} );
 
 		if ( null !== e.target.parentNode.nextElementSibling ) {
 			e.target.parentNode.nextElementSibling.style.display = 'block';
-			let ip = e.target.parentNode.nextElementSibling.querySelectorAll( 'input, textarea' );
-			ip[0].removeAttribute( 'disabled' );
+			const ip = e.target.parentNode.nextElementSibling.querySelectorAll( 'input, textarea' );
+			ip[ 0 ].removeAttribute( 'disabled' );
 		}
 	}
 }
 
-let deactivation_survey = new Deactivation_Survey();
+new GiveDeactivationSurvey();
