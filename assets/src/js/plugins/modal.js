@@ -277,11 +277,11 @@ class GiveFormModal extends GiveModal {
 	}
 
 	/**
-	 * Confirm button click event handler
+	 * Submit button click event handler
 	 *
 	 * Note: only for internal purpose
 	 *
-	 * @since 2.1.0
+	 * @since 2.2.0
 	 * @private
 	 */
 	static __submitPopup() {

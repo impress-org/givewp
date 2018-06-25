@@ -15,6 +15,11 @@ class GiveDeactivationSurvey {
 		);
 	}
 
+	/**
+	 * Displays popup form and submits data on form submission.
+	 *
+	 * @param {object} e Event object.
+	 */
 	static deactivateGive( e ) {
 		e.preventDefault();
 
@@ -152,6 +157,11 @@ class GiveDeactivationSurvey {
 		} );
 	}
 
+	/**
+	 * Show/Hides extra input fields corresponding to the radio buttons
+	 *
+	 * @param {object} e Event object.
+	 */
 	static toggleAdditionalFields( e ) {
 		const deactivationError = document.querySelectorAll( '.deactivation-error' );
 		const extraField = document.querySelectorAll( '.give-survey-extra-field' );
