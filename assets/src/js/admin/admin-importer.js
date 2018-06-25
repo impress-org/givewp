@@ -17,16 +17,14 @@ import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/mod
 
 var give_setting_edit = true;
 
-jQuery.noConflict();
-(
-	function ( $ ) {
+( function ( $ ) {
 
 		// On DOM Ready.
 		$( function () {
 			give_import_donation_onload();
 		} );
 	}
-)( jQuery );
+) ( jQuery );
 
 /**
  * Run when user click on submit button.

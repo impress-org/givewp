@@ -8,7 +8,6 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-jQuery.noConflict();
 (function( $ ) {
 	/**
 	 * Default Radio Button
