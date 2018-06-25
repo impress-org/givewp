@@ -1,6 +1,4 @@
-/*global give_vars*/
-/*global ajaxurl*/
-/*global deactivationSurveyNonce*/
+/* globals give_vars, ajaxurl, deactivationSurveyNonce */
 
 import { GiveFormModal } from '../plugins/modal';
 
