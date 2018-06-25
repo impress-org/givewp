@@ -296,8 +296,8 @@ class GiveFormModal extends GiveModal {
 /**
  * Add events
  */
-window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup);
-window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup);
-window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup);
+window.addDynamicEventListener(document, 'click', '.give-popup-close-button', GiveModal.__closePopup, {});
+window.addDynamicEventListener(document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup,{});
+window.addDynamicEventListener(document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup, {});
 
 export {GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal};
