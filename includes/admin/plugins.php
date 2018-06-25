@@ -418,6 +418,7 @@ function give_get_recently_activated_addons() {
 
 /**
  * Renders the Give Deactivation Survey Form.
+ * Note: only for internal use
  *
  * @since 2.2
  */
@@ -548,6 +549,7 @@ add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
 
 /**
  * Ajax callback after the deactivation survey form has been submitted.
+ * Note: only for internal use
  *
  * @since 2.2
  */
