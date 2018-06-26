@@ -1236,3 +1236,65 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	return $html;
 }
+
+/**
+ * Get the default donation form's level id.
+ *
+ * @since 2.1.7
+ *
+ * @param integer $form_id Donation Form ID.
+ *
+ * @return null | array
+ */
+function give_form_get_form_level( $form_id ) {
+	$default_level = null;
+
+	// If donation form has variable prices.
+	if ( give_has_variable_prices( $form_id ) ) {
+
+		// Get the form's variable prices.
+		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+
+		// Go through each of the level and get the default level id.
+		foreach ( $prices as $level ) {
+			if (
+				isset( $level['_give_default'] )
+				&& $level['_give_default'] === 'default'
+			) {
+				$default_level = $level;
+			}
+		}
+	}
+
+	/**
+	 * Filter the default donation level id.
+	 *
+	 * @since 2.1.7
+	 *
+	 * @param array   $default_level Default level price data.
+	 * @param integer $form_id       Donation form ID.
+	 */
+	return apply_filters( 'give_form_default_level_id', $default_level, $form_id );
+}
+
+/**
+ * Get the default level id.
+ *
+ * @since 2.1.7
+ *
+ * @param array $price Price level data.
+ *
+ * @return boolean
+ */
+function give_is_default_level_id( $price ) {
+
+	/**
+	 * Allow developers to modify the default level id checks.
+	 *
+	 * @since 2.1.7
+	 *
+	 * @param bool  $is_default True if it is default price level id otherwise false.
+	 * @param array $price      Price Data.
+	 */
+	return apply_filters( 'give_is_default_level_id', ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ), $price );
+}
