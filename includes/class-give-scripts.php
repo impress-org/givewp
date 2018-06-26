@@ -53,8 +53,6 @@ class Give_Scripts {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'outside_plugin_enqueues' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_localized_scripts' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -78,7 +76,7 @@ class Give_Scripts {
 		// WP-admin.
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
-		// WP-admin.
+		// WP-admin: plugin page.
 		wp_register_style(
 			'plugin-deactivation-survey-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
@@ -107,7 +105,7 @@ class Give_Scripts {
 			'jquery-query',
 		), GIVE_VERSION );
 
-		// WP-admin.
+		// WP-admin: plugin page.
 		wp_register_script( 'plugin-deactivation-survey-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
 			array( 'jquery' ),
@@ -120,25 +118,6 @@ class Give_Scripts {
 	}
 
 	/**
-	 * Loads scripts and styles that are required to load
-	 * outside of Give's admin pages.
-	 *
-	 * @since 2.1.4
-	 */
-	public function outside_plugin_enqueues( $hook_suffix ) {
-
-		if ( 'plugins.php' === $hook_suffix ) {
-			wp_enqueue_script( 'plugin-deactivation-survey-js' );
-			wp_enqueue_style( 'plugin-deactivation-survey-css' );
-			wp_localize_script(
-				'plugin-deactivation-survey-js',
-				'deactivationSurveyNonce',
-				wp_create_nonce( 'deactivation_survey_nonce' )
-			);
-		}
-	}
-
-	/**
 	 * Enqueues admin styles.
 	 *
 	 * @since 2.1.0
@@ -146,7 +125,6 @@ class Give_Scripts {
 	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_styles( $hook ) {
-
 		// Give Admin Only.
 		if ( ! apply_filters( 'give_load_admin_styles', give_is_admin_page(), $hook ) ) {
 			return;
@@ -170,6 +148,12 @@ class Give_Scripts {
 	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
+		global $pagenow;
+
+		// Plugin page script
+		if ( 'plugins.php' === $pagenow ) {
+			$this->plugin_equeue_scripts();
+		}
 
 		// Give Admin Only.
 		if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
@@ -184,17 +168,34 @@ class Give_Scripts {
 
 		// Give admin scripts.
 		wp_enqueue_script( 'give-admin-scripts' );
-	}
-
-	public function load_localized_scripts( $hook ) {
-		if (
-			! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook )
-			&& 'plugins.php' !== $hook ) {
-			return;
-		}
 
 		// Localize admin scripts
 		$this->admin_localize_scripts();
+	}
+
+
+	/**
+	 * Load admin plugin page related scripts, styles andd localize param
+	 *
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 */
+	private function plugin_equeue_scripts() {
+		wp_enqueue_style( 'plugin-deactivation-survey-css' );
+		wp_enqueue_script( 'plugin-deactivation-survey-js' );
+
+		$localized_data = array(
+			'nonce'                           => wp_create_nonce( 'deactivation_survey_nonce' ),
+			'cancel'                          => __( 'Cancel', 'give' ),
+			'deactivation_no_option_selected' => __( 'Error: Please select at least one option.', 'give' ),
+			'submit_and_deactivate'           => __( 'Submit and Deactivate', 'give' ),
+			'skip_and_deactivate'             => __( 'Skip & Deactivate', 'give' ),
+			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
+
+		);
+		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
 	/**
@@ -202,7 +203,7 @@ class Give_Scripts {
 	 */
 	public function admin_localize_scripts() {
 
-		global $post;
+		global $post, $pagenow;
 		$give_options = give_get_settings();
 
 		// Price Separators.
@@ -245,10 +246,6 @@ class Give_Scripts {
 			'no_form_selected'                  => __( 'No form selected', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
-			'deactivation_no_option_selected'   => __( 'Error: Please select at least one option.', 'give' ),
-			'submit_and_deactivate'             => __( 'Submit and Deactivate', 'give' ),
-			'skip_and_deactivate'               => __( 'Skip & Deactivate', 'give' ),
-			'please_fill_field'                 => __( 'Error: Please fill the field.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
@@ -262,7 +259,7 @@ class Give_Scripts {
 			'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 			'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
-			'unlock_donor_fields_message'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
+			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
@@ -323,7 +320,6 @@ class Give_Scripts {
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
-		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
 	/**

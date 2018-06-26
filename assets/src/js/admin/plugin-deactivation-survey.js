@@ -1,4 +1,4 @@
-/* globals give_vars, ajaxurl, deactivationSurveyNonce */
+/* globals give_vars, ajaxurl */
 
 import { GiveFormModal } from '../plugins/modal';
 
@@ -107,7 +107,7 @@ class GiveDeactivationSurvey {
 							data: {
 								action: 'deactivation_form_submit',
 								'form-data': formData,
-								nonce: deactivationSurveyNonce,
+								nonce: give_vars.nonce,
 							},
 							beforeSend: function() {
 								const spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
