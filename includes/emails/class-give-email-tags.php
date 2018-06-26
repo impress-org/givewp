@@ -444,7 +444,7 @@ function give_setup_email_tags() {
 
 		array(
 			'tag'         => 'admin_email',
-			'description' => esc_html__( 'The admin email.', 'give' ),
+			'description' => esc_html__( 'The custom admin email which is set inside Emails > Contact Information. By default this tag will use your WordPress admin email.', 'give' ),
 			'function'    => 'give_email_admin_email',
 			'context'     => 'general',
 		),
@@ -458,7 +458,7 @@ function give_setup_email_tags() {
 
 		array(
 			'tag'         => 'offline_mailing_address',
-			'description' => esc_html__( 'Offline Mailing Address.', 'give' ),
+			'description' => esc_html__( 'The Offline Mailing Address which is used for the Offline Donations Payment Gateway.', 'give' ),
 			'function'    => 'give_email_offline_mailing_address',
 			'context'     => 'general',
 		),
@@ -1430,10 +1430,14 @@ function give_get_reset_password_url( $user_id ) {
  * @return string
  */
 function give_email_admin_email() {
-	$custom_admin_email = give_is_setting_enabled( give_get_option( 'contact_custom_admin_email' ) );
-	$admin_email        = give_get_option( 'contact_admin_email' );
 
-	return ( true === $custom_admin_email && ! empty( $admin_email ) )
+	$admin_email = give_get_option( 'contact_admin_email' );
+
+	if ( empty( $admin_email ) ) {
+		give_delete_option( 'contact_admin_email' );
+	}
+
+	return ( ! empty( $admin_email ) )
 		? $admin_email
 		: get_bloginfo( 'admin_email' );
 }

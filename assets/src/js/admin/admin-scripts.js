@@ -849,20 +849,6 @@ var give_setting_edit = false;
 					$('input', $parent).not( 'input[name="sequential-ordering_status"]' ).parents('tr').hide();
 				}
 			}).change();
-
-			/**
-			 * Toggle custom email address
-			 */
-			var offline_contact = $('input[name="contact_custom_admin_email"]');
-			offline_contact.on('change', function () {
-				var field_value = $('input[name="contact_custom_admin_email"]:checked').val(),
-					$parent = $(this).closest('tr');
-				if ('enabled' === field_value) {
-					$parent.next('tr').show();
-				} else {
-					$parent.next('tr').hide();
-				}
-			}).change();
 		},
 
 		main_setting_update_notice: function () {
