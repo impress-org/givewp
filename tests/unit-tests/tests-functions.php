@@ -71,6 +71,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 
 		// Test it by level id.
 		$this->assertTrue( give_is_default_level_id( 2, $this->_multi_form->ID ) );
+		$this->assertFalse( give_is_default_level_id( 2 ) );
 	}
 
 	/**
