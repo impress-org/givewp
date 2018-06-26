@@ -94,10 +94,7 @@ function give_get_default_multilevel_amount( $form_id ) {
 
 	// Get default level price data.
 	$default_level = give_form_get_form_level( $form_id );
-
-	if ( is_array( $default_level ) ) {
-		$default_price = $default_level['_give_amount'];
-	}
+	$default_price = isset( $default_level['_give_amount'] ) ? $default_level['_give_amount'] : $default_price;
 
 	return $default_price;
 }
