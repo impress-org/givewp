@@ -1251,8 +1251,17 @@ function give_form_get_default_level( $form_id ) {
 
 	// If donation form has variable prices.
 	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Get the form's variable prices.
+		/**
+		 * Filter the variable pricing
+		 *
+		 *
+		 * @since      1.0
+		 * @deprecated 2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
+		 *                 Check Give_Donate_Form::get_prices().
+		 *
+		 * @param array $prices Array of variable prices.
+		 * @param int   $form   Form ID.
+		 */
 		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 
 		// Go through each of the level and get the default level id.

@@ -488,8 +488,20 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
  */
 function give_output_levels( $form_id ) {
 
-	// Get variable pricing.
-	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+	/**
+	 * Filter the variable pricing
+	 *
+	 *
+	 * @since      1.0
+	 * @deprecated 2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
+	 *                 Check Give_Donate_Form::get_prices().
+	 *
+	 * @param array $prices Array of variable prices.
+	 * @param int   $form   Form ID.
+	 */
+	$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+
+
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
