@@ -376,31 +376,31 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
  * @since 2.1
  */
 function give_plugin_notice_css() {
-?>
+	?>
 	<style type="text/css">
-	#give-update .give-plugin-upgrade-notice {
-		font-weight: 400;
-		background: #fff8e5!important;
-		border-left: 4px solid #ffb900;
-		border-top: 1px solid #ffb900;
-		padding: 9px 0 9px 12px!important;
-		margin: 0 -12px 0 -16px!important;
-	}
+		#give-update .give-plugin-upgrade-notice {
+			font-weight: 400;
+			background: #fff8e5 !important;
+			border-left: 4px solid #ffb900;
+			border-top: 1px solid #ffb900;
+			padding: 9px 0 9px 12px !important;
+			margin: 0 -12px 0 -16px !important;
+		}
 
-	#give-update .give-plugin-upgrade-notice:before {
-		content: '\f348';
-		display: inline-block;
-		font: 400 18px/1 dashicons;
-		speak: none;
-		margin: 0 8px 0 -2px;
-		vertical-align: top;
-	}
+		#give-update .give-plugin-upgrade-notice:before {
+			content: '\f348';
+			display: inline-block;
+			font: 400 18px/1 dashicons;
+			speak: none;
+			margin: 0 8px 0 -2px;
+			vertical-align: top;
+		}
 
-	#give-update .dummy {
-		display: none;
-	}
+		#give-update .dummy {
+			display: none;
+		}
 	</style>
-<?php
+	<?php
 }
 
 add_action( 'admin_head', 'give_plugin_notice_css' );
@@ -560,7 +560,7 @@ function give_deactivation_form_submit() {
 		wp_die();
 	}
 
-	$form_data   = give_clean( wp_parse_args( $_POST['form-data'] ) );
+	$form_data = give_clean( wp_parse_args( $_POST['form-data'] ) );
 
 	// Get the selected radio value.
 	$radio_value = isset( $form_data['give-survey-radios'] ) ? $form_data['give-survey-radios'] : 0;
@@ -569,10 +569,10 @@ function give_deactivation_form_submit() {
 	$user_reason = isset( $form_data['user-reason'] ) ? $form_data['user-reason'] : '';
 
 	// Get the email of the user who deactivated the plugin.
-	$user_email  = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
+	$user_email = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
 
 	// Get the URL of the website on which Give plugin is being deactivated.
-	$site_url    = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
+	$site_url = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
 
 	// Get the value of the checkbox for deleting Give's data.
 	$delete_data = isset( $form_data['confirm_reset_store'] ) ? $form_data['confirm_reset_store'] : '';
@@ -580,15 +580,15 @@ function give_deactivation_form_submit() {
 	/**
 	 * Make a POST request to the endpoint to send the survey data.
 	 */
-	$response    = wp_remote_post(
-		'http://give.survey/wp-json/give/v2/survey/',
+	$response = wp_remote_post(
+		'http://survey.givewp.com/wp-json/give/v2/survey/',
 		array(
 			'body' => array(
 				'radio_value'        => $radio_value,
 				'user_reason'        => $user_reason,
 				'current_user_email' => $user_email,
 				'site_url'           => $site_url,
-			)
+			),
 		)
 	);
 
