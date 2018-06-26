@@ -1306,15 +1306,10 @@ function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
 		// Get default level id.
 		$form_price_data = give_form_get_default_level( $form_id );
 
-		if (
-			null !== $form_price_data
-			&& $price_or_level_id === absint( $form_price_data['_give_id']['level_id'] )
-		) {
-			$is_default = true;
-		}
+		$is_default = ! is_null( $form_price_data ) && ( $price_or_level_id === absint( $form_price_data['_give_id']['level_id'] ) );
 	}
 
-	$is_default = false === $is_default ?
+	$is_default = false === $is_default && is_array( $price_or_level_id ) ?
 		( isset( $price_or_level_id['_give_default'] ) && $price_or_level_id['_give_default'] === 'default' )
 		: $is_default;
 
