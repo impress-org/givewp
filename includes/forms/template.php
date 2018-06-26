@@ -2132,7 +2132,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {
 		// Get the default price ID.
-		$default_price = give_form_get_form_level( $form_id );
+		$default_price = give_form_get_default_level( $form_id );
 		$price_id      = isset( $default_price['_give_id']['level_id'] ) ? $default_price['_give_id']['level_id'] : 0;
 
 		echo sprintf(

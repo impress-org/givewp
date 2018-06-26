@@ -1246,7 +1246,7 @@ function give_admin_form_goal_stats( $form_id ) {
  *
  * @return null | array
  */
-function give_form_get_form_level( $form_id ) {
+function give_form_get_default_level( $form_id ) {
 	$default_level = null;
 
 	// If donation form has variable prices.
