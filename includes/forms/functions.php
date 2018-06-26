@@ -1240,7 +1240,7 @@ function give_admin_form_goal_stats( $form_id ) {
 /**
  * Get the default donation form's level id.
  *
- * @since 2.1.7
+ * @since 2.2.0
  *
  * @param integer $form_id Donation Form ID.
  *
@@ -1269,7 +1269,7 @@ function give_form_get_form_level( $form_id ) {
 	/**
 	 * Filter the default donation level id.
 	 *
-	 * @since 2.1.7
+	 * @since 2.2.0
 	 *
 	 * @param array   $default_level Default level price data.
 	 * @param integer $form_id       Donation form ID.
@@ -1280,7 +1280,7 @@ function give_form_get_form_level( $form_id ) {
 /**
  * Get the default level id.
  *
- * @since 2.1.7
+ * @since 2.2.0
  *
  * @param array $price Price level data.
  *
@@ -1291,7 +1291,7 @@ function give_is_default_level_id( $price ) {
 	/**
 	 * Allow developers to modify the default level id checks.
 	 *
-	 * @since 2.1.7
+	 * @since 2.2.0
 	 *
 	 * @param bool  $is_default True if it is default price level id otherwise false.
 	 * @param array $price      Price Data.

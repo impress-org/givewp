@@ -62,7 +62,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	/**
 	 * Function to test give_is_default_level_id()
 	 *
-	 * @since 2.1.7
+	 * @since 2.2.0
 	 */
 	public function test_give_is_default_level_id() {
 		$this->assertFalse( give_is_default_level_id( $this->_multi_form->prices[0] ) );
@@ -72,7 +72,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	/**
 	 * Function to test give_form_get_form_level()
 	 *
-	 * @since 2.1.7
+	 * @since 2.2.0
 	 */
 	public function test_give_form_get_form_level() {
 		// Should return default price ID array.
