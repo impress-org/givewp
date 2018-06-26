@@ -193,3 +193,25 @@ function give_form_get_form_level( $form_id ) {
 	 */
 	return apply_filters( 'give_form_default_level_id', $default_level, $form_id );
 }
+
+/**
+ * Get the default level id.
+ *
+ * @since 2.1.7
+ *
+ * @param array $price Price level data.
+ *
+ * @return boolean
+ */
+function give_is_default_level_id( $price ) {
+
+	/**
+	 * Allow developers to modify the default level id checks.
+	 *
+	 * @since 2.1.7
+	 *
+	 * @param bool  $is_default True if it is default price level id otherwise false.
+	 * @param array $price      Price Data.
+	 */
+	return apply_filters( 'give_is_default_level_id', ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ), $price );
+}
