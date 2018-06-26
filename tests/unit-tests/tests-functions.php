@@ -65,8 +65,12 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	 * @since 2.2.0
 	 */
 	public function test_give_is_default_level_id() {
+		// Test it by price array.
 		$this->assertFalse( give_is_default_level_id( $this->_multi_form->prices[0] ) );
 		$this->assertTrue( give_is_default_level_id( $this->_multi_form->prices[1] ) );
+
+		// Test it by level id.
+		$this->assertTrue( give_is_default_level_id( 2, $this->_multi_form->ID ) );
 	}
 
 	/**
