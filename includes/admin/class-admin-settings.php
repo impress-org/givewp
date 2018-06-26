@@ -791,6 +791,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Note: only for internal use.
 					case 'chosen' :
 
 						// Get option value.
