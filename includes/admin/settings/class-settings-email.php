@@ -115,8 +115,6 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 				case 'contact':
 					$settings = array(
 
-						// Section 5: Contact
-
 						array(
 							'id'   => 'give_title_general_settings_5',
 							'type' => 'title'
@@ -141,6 +139,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type' => 'sectionend'
 						)
 					);
+
+					break;
 			}// End switch().
 
 			/**

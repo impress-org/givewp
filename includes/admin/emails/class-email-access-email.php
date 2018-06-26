@@ -174,9 +174,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_message() {
-			$message = sprintf(
-				           __( 'Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}.', 'give' )
-			           ) . "\n\n";
+			$message = __( 'Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}.', 'give' ) . "\n\n";
 			$message .= '{email_access_link}' . "\n\n";
 			$message .= "\n\n";
 			$message .= __( 'Sincerely,', 'give' ) . "\n";
