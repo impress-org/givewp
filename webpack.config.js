@@ -16,6 +16,7 @@ const config = {
 		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
 		give: [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
 		gutenberg: [ './blocks/load.js' ],
+		'plugin-deactivation-survey': [ './assets/src/js/admin/plugin-deactivation-survey.js', './assets/src/css/admin/plugin-deactivation-survey.scss' ],
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 	},
 

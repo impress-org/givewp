@@ -53,6 +53,8 @@ class Give_Scripts {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'outside_plugin_enqueues' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_localized_scripts' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -76,6 +78,14 @@ class Give_Scripts {
 		// WP-admin.
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
+		// WP-admin.
+		wp_register_style(
+			'plugin-deactivation-survey-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
+			array(),
+			GIVE_VERSION
+		);
+
 		// Frontend.
 		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
 			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
@@ -97,8 +107,35 @@ class Give_Scripts {
 			'jquery-query',
 		), GIVE_VERSION );
 
+		// WP-admin.
+		wp_register_script( 'plugin-deactivation-survey-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
+			array( 'jquery' ),
+			GIVE_VERSION,
+			true
+		);
+
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+	}
+
+	/**
+	 * Loads scripts and styles that are required to load
+	 * outside of Give's admin pages.
+	 *
+	 * @since 2.1.4
+	 */
+	public function outside_plugin_enqueues( $hook_suffix ) {
+
+		if ( 'plugins.php' === $hook_suffix ) {
+			wp_enqueue_script( 'plugin-deactivation-survey-js' );
+			wp_enqueue_style( 'plugin-deactivation-survey-css' );
+			wp_localize_script(
+				'plugin-deactivation-survey-js',
+				'deactivationSurveyNonce',
+				wp_create_nonce( 'deactivation_survey_nonce' )
+			);
+		}
 	}
 
 	/**
@@ -147,10 +184,17 @@ class Give_Scripts {
 
 		// Give admin scripts.
 		wp_enqueue_script( 'give-admin-scripts' );
+	}
+
+	public function load_localized_scripts( $hook ) {
+		if (
+			! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook )
+			&& 'plugins.php' !== $hook ) {
+			return;
+		}
 
 		// Localize admin scripts
 		$this->admin_localize_scripts();
-
 	}
 
 	/**
@@ -166,7 +210,7 @@ class Give_Scripts {
 		$decimal_separator  = give_get_price_decimal_separator();
 
 		// Localize strings & variables for JS.
-		wp_localize_script( 'give-admin-scripts', 'give_vars', array(
+		$localized_data = array(
 			'post_id'                           => isset( $post->ID ) ? $post->ID : null,
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
@@ -201,6 +245,10 @@ class Give_Scripts {
 			'no_form_selected'                  => __( 'No form selected', 'give' ),
 			'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 			'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
+			'deactivation_no_option_selected'   => __( 'Error: Please select at least one option.', 'give' ),
+			'submit_and_deactivate'             => __( 'Submit and Deactivate', 'give' ),
+			'skip_and_deactivate'               => __( 'Skip & Deactivate', 'give' ),
+			'please_fill_field'                 => __( 'Error: Please fill the field.', 'give' ),
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
@@ -272,7 +320,10 @@ class Give_Scripts {
 				'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
 			),
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
-		) );
+		);
+
+		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
+		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
 	/**
