@@ -507,7 +507,7 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( give_is_default_level_id( $price ) ? 'give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -546,7 +546,7 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -558,7 +558,7 @@ function give_output_levels( $form_id ) {
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
-					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ),
+					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
@@ -587,7 +587,8 @@ function give_output_levels( $form_id ) {
 			// first loop through prices.
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id,
+				$price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -599,7 +600,7 @@ function give_output_levels( $form_id ) {
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
-					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ),
+					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
@@ -2130,18 +2131,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Get default selected price ID.
-		$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-		$price_id = 0;
-
-		// Loop through prices.
-		foreach ( $prices as $price ) {
-			if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-				$price_id = $price['_give_id']['level_id'];
-			};
-		}
-
+		// Get the default price ID.
+		$default_price = give_form_get_default_level( $form_id );
+		$price_id      = isset( $default_price['_give_id']['level_id'] ) ? $default_price['_give_id']['level_id'] : 0;
 
 		echo sprintf(
 			'<input type="hidden" name="give-price-id" value="%s"/>',

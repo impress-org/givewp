@@ -59,4 +59,30 @@ class Tests_Functions extends Give_Unit_Test_Case {
 		$this->assertTrue( is_double( $goal_stats['progress'] ) );
 	}
 
+	/**
+	 * Function to test give_is_default_level_id()
+	 *
+	 * @since 2.2.0
+	 */
+	public function test_give_is_default_level_id() {
+		// Test it by price array.
+		$this->assertFalse( give_is_default_level_id( $this->_multi_form->prices[0] ) );
+		$this->assertTrue( give_is_default_level_id( $this->_multi_form->prices[1] ) );
+
+		// Test it by level id.
+		$this->assertTrue( give_is_default_level_id( 2, $this->_multi_form->ID ) );
+	}
+
+	/**
+	 * Function to test give_form_get_default_level()
+	 *
+	 * @since 2.2.0
+	 */
+	public function test_give_form_get_default_level() {
+		// Should return default price ID array.
+		$this->assertEquals( give_form_get_default_level( $this->_multi_form->ID ), $this->_multi_form->prices[1] );
+
+		// When passing invalid form id, it should return null.
+		$this->assertEquals( give_form_get_default_level( 123 ), null );
+	}
 }
