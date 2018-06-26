@@ -100,17 +100,6 @@ function give_process_donation_form() {
 		give_die();
 	}
 
-	/*// After AJAX: Setup session if not using php_sessions.
-	if ( ! Give()->session->use_php_sessions() ) {
-		// Double-check that set_cookie is publicly accessible.
-		// we're using a slightly modified class-wp-sessions.php.
-		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
-		if ( $session_reflection->isPublic() ) {
-			// Manually set the cookie.
-			Give()->session->init()->set_cookie();
-		}
-	}*/
-
 	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],

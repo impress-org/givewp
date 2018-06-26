@@ -108,10 +108,6 @@ function give_run_install() {
 	$donor_meta = new Give_DB_Donor_Meta();
 	$donor_meta->create_table();
 
-//	// Check for PHP Session support, and enable if available.
-//	$give_sessions = new Give_Session();
-//	$give_sessions->use_php_sessions();
-
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
 
