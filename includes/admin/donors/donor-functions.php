@@ -51,11 +51,11 @@ function give_register_default_donor_tabs( $tabs ) {
 	$default_tabs = array(
 		'overview' => array(
 			'dashicon' => 'dashicons-admin-users',
-			'title' => __( 'Donor Profile', 'give' ),
+			'title'    => __( 'Donor Profile', 'give' ),
 		),
 		'notes'    => array(
 			'dashicon' => 'dashicons-admin-comments',
-			'title' => __( 'Donor Notes', 'give' ),
+			'title'    => __( 'Donor Notes', 'give' ),
 		),
 	);
 
@@ -87,11 +87,12 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 
 /**
  * Connect and Reconnect Donor with User profile.
- * @todo $address is unnecessary param because we are store address to user.
  *
- * @param object $donor      Donor Object.
- * @param array  $donor_data Donor Post Variables.
- * @param array  $address    Address Information.
+ * @todo  $address is unnecessary param because we are store address to user.
+ *
+ * @param Give_Donor $donor      Donor Object.
+ * @param array      $donor_data Donor Post Variables.
+ * @param array      $address    Address Information.
  *
  * @since 1.8.14
  *
@@ -120,6 +121,7 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 		// Create and Update Donor First Name and Last Name in Meta Fields.
 		$donor->update_meta( '_give_donor_first_name', $donor_data['first_name'] );
 		$donor->update_meta( '_give_donor_last_name', $donor_data['last_name'] );
+		$donor->update_meta( '_give_donor_title_prefix', $donor_data['title'] );
 
 		// Fetch disconnected user id, if exists.
 		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
@@ -129,7 +131,7 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 		// Check whether the disconnected user id and the reconnected user id are same or not.
 		// If both are same then delete user id store in donor meta.
-		if( $donor_data['user_id'] === $disconnected_user_id ) {
+		if ( $donor_data['user_id'] === $disconnected_user_id ) {
 			delete_user_meta( $disconnected_user_id, '_give_disconnected_donor_id' );
 			$donor->delete_meta( '_give_disconnected_user_id' );
 		}
@@ -153,7 +155,6 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 	 * @since 1.0
 	 */
 	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
-
 
 	return $output;
 }

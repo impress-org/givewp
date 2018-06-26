@@ -10,7 +10,6 @@
  */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
-jQuery.noConflict();
 jQuery(document).ready(function ($) {
 
 	/**
@@ -44,6 +43,21 @@ jQuery(document).ready(function ($) {
 		$( give_settings_position + ' option[value="after"]' ).text( after_text );
 
 	} );
+
+	/**
+	 * Show/Hide Title Prefixes
+	 */
+	if ( 'disabled' !== $('input[name="name_title_prefix"]:checked').val() ) {
+		$( '.give-title-prefixes-settings-wrap' ).show();
+	}
+
+	$( 'input[name="name_title_prefix"]' ).on( 'change', function() {
+		if ( 'disabled' !== $(this).val() ) {
+			$( '.give-title-prefixes-settings-wrap' ).show();
+		} else {
+			$( '.give-title-prefixes-settings-wrap' ).hide();
+		}
+	});
 
 	/**
 	 * Repeater setting field event.

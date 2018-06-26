@@ -8,7 +8,6 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-jQuery.noConflict();
 (function( $ ) {
 	/**
 	 * Default Radio Button
@@ -203,6 +202,22 @@ jQuery.noConflict();
 				$( '#email_notification_options .give-field-wrap:not(._give_email_options_field)' ).hide();
 			}
 		} ).change();
+
+		// Title Prefixes.
+		var defaultNameTitlePrefixChecked = $( 'input[name="_give_name_title_prefix"]:checked').val();
+		if ( 'required' === defaultNameTitlePrefixChecked || 'optional' === defaultNameTitlePrefixChecked ) {
+			$( '.give-title-prefixes-wrap' ).show();
+		}
+
+		$( 'input[name="_give_name_title_prefix"]').on( 'change', function() {
+			var titlePrefixChecked = $( 'input[name="_give_name_title_prefix"]:checked').val();
+
+			if ( 'required' === titlePrefixChecked || 'optional' === titlePrefixChecked ) {
+				$( '.give-title-prefixes-wrap' ).show();
+			} else {
+				$( '.give-title-prefixes-wrap' ).hide();
+			}
+		});
 	};
 
 	//Handle Repeatable Row ID

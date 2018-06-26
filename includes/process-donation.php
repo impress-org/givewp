@@ -28,8 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_donation_form() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
-	$is_ajax   = isset( $post_data['give_ajax'] );
+	// Sanitize Posted Data.
+	$post_data  = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
+
+	// Check whether the form submitted via AJAX or not.
+	$is_ajax = isset( $post_data['give_ajax'] );
 
 	// Verify donation form nonce.
 	if ( ! give_verify_donation_form_nonce( $post_data['give-form-hash'], $post_data['give-form-id'] ) ) {
@@ -97,20 +100,10 @@ function give_process_donation_form() {
 		give_die();
 	}
 
-	// After AJAX: Setup session if not using php_sessions.
-	if ( ! Give()->session->use_php_sessions() ) {
-		// Double-check that set_cookie is publicly accessible.
-		// we're using a slightly modified class-wp-sessions.php.
-		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
-		if ( $session_reflection->isPublic() ) {
-			// Manually set the cookie.
-			Give()->session->init()->set_cookie();
-		}
-	}
-
 	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],
+		'title'      => $user['user_title'],
 		'email'      => $user['user_email'],
 		'first_name' => $user['user_first'],
 		'last_name'  => $user['user_last'],
@@ -550,6 +543,14 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your first name.', 'give' ),
 		),
 	);
+
+	$name_title_prefix = give_is_name_title_prefix_required( $form_id );
+	if ( $name_title_prefix ) {
+		$required_fields['give_title'] = array(
+			'error_id'      => 'invalid_title',
+			'error_message' => __( 'Please enter your title.', 'give' ),
+		);
+	}
 
 	$require_address = give_require_billing_address( $payment_mode );
 
@@ -1053,6 +1054,11 @@ function give_get_donation_form_user( $valid_data = array() ) {
 	// Get user last name.
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
 		$user['user_last'] = isset( $post_data['give_last'] ) ? strip_tags( trim( $post_data['give_last'] ) ) : '';
+	}
+
+	// Add Title Prefix to user information.
+	if ( empty( $user['user_title'] ) || strlen( trim( $user['user_title'] ) ) < 1 ) {
+		$user['user_title'] = ! empty( $post_data['give_title'] ) ? strip_tags( trim( $post_data['give_title'] ) ) : '';
 	}
 
 	// Get the user's billing address details.

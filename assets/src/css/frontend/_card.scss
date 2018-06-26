@@ -9,7 +9,7 @@
 
 .give-card {
 	background-color: white;
-	border:  1px solid #e5e5e5;
+	border:  1px solid $give-card-border;
 	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
 	color: inherit;
 	display: flex;

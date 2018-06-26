@@ -376,31 +376,31 @@ function give_parse_plugin_update_notice( $content, $new_version ) {
  * @since 2.1
  */
 function give_plugin_notice_css() {
-?>
+	?>
 	<style type="text/css">
-	#give-update .give-plugin-upgrade-notice {
-		font-weight: 400;
-		background: #fff8e5!important;
-		border-left: 4px solid #ffb900;
-		border-top: 1px solid #ffb900;
-		padding: 9px 0 9px 12px!important;
-		margin: 0 -12px 0 -16px!important;
-	}
+		#give-update .give-plugin-upgrade-notice {
+			font-weight: 400;
+			background: #fff8e5 !important;
+			border-left: 4px solid #ffb900;
+			border-top: 1px solid #ffb900;
+			padding: 9px 0 9px 12px !important;
+			margin: 0 -12px 0 -16px !important;
+		}
 
-	#give-update .give-plugin-upgrade-notice:before {
-		content: '\f348';
-		display: inline-block;
-		font: 400 18px/1 dashicons;
-		speak: none;
-		margin: 0 8px 0 -2px;
-		vertical-align: top;
-	}
+		#give-update .give-plugin-upgrade-notice:before {
+			content: '\f348';
+			display: inline-block;
+			font: 400 18px/1 dashicons;
+			speak: none;
+			margin: 0 8px 0 -2px;
+			vertical-align: top;
+		}
 
-	#give-update .dummy {
-		display: none;
-	}
+		#give-update .dummy {
+			display: none;
+		}
 	</style>
-<?php
+	<?php
 }
 
 add_action( 'admin_head', 'give_plugin_notice_css' );
@@ -415,3 +415,205 @@ add_action( 'admin_head', 'give_plugin_notice_css' );
 function give_get_recently_activated_addons() {
 	return get_option( 'give_recently_activated_addons', array() );
 }
+
+/**
+ * Renders the Give Deactivation Survey Form.
+ * Note: only for internal use
+ *
+ * @since 2.2
+ */
+function give_deactivation_popup() {
+	ob_start();
+	?>
+
+	<h2 id="deactivation-survey-title">
+		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ) ?>/assets/dist/images/give-icon-full-circle.svg">
+		<span><?php esc_html_e( 'Give Deactivation', 'give' ); ?></span>
+	</h2>
+	<form class="deactivation-survey-form" method="POST">
+		<p><?php esc_html_e( 'If you have a moment, please let us know why you are deactivating Give. All submissions are anonymous and we only use this feedback to improve this plugin.', 'give' ); ?></p>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="1">
+				<?php esc_html_e( "I'm only deactivating temporarily", 'give' ); ?>
+			</label>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="2">
+				<?php esc_html_e( 'I no longer need the plugin', 'give' ); ?>
+			</label>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="3" data-has-field="true">
+				<?php esc_html_e( 'I found a better plugin', 'give' ); ?>
+			</label>
+
+			<div class="give-survey-extra-field">
+				<p><?php esc_html_e( 'What is the name of the plugin?', 'give' ); ?></p>
+				<input type="text" name="user-reason" class="widefat">
+			</div>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="4">
+				<?php esc_html_e( 'I only needed the plugin for a short period', 'give' ); ?>
+			</label>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="5" data-has-field="true">
+				<?php esc_html_e( 'The plugin broke my site', 'give' ); ?>
+			</label>
+
+			<div class="give-survey-extra-field">
+				<p><?php
+					printf(
+						'%1$s %2$s %3$s',
+						__( "We're sorry to hear that, check", 'give' ),
+						'<a href="https://wordpress.org/support/plugin/give">Give Support</a>.',
+						__( 'Can you describe the issue?', 'give' )
+					);
+					?>
+				</p>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+			</div>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="6" data-has-field="true">
+				<?php esc_html_e( 'The plugin suddenly stopped working', 'give' ); ?>
+			</label>
+
+			<div class="give-survey-extra-field">
+				<p><?php
+					printf(
+						'%1$s %2$s %3$s',
+						__( "We're sorry to hear that, check", 'give' ),
+						'<a href="https://wordpress.org/support/plugin/give">Give Support</a>.',
+						__( 'Can you describe the issue?', 'give' )
+					);
+					?>
+				</p>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+			</div>
+		</div>
+
+		<div>
+			<label class="give-field-description">
+				<input type="radio" name="give-survey-radios" value="7" data-has-field="true">
+				<?php esc_html_e( 'Other', 'give' ); ?>
+			</label>
+
+			<div class="give-survey-extra-field">
+				<p><?php esc_html_e( "Please describe why you're deactivating Give", 'give' ); ?></p>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+			</div>
+		</div>
+
+		<div id="survey-and-delete-data">
+			<p>
+				<label>
+					<input type="checkbox" name="confirm_reset_store" value="1">
+					<?php esc_html_e( 'Would you like to delete all Give data?', 'give' ); ?>
+				</label>
+				<section class="give-field-description">
+					<?php esc_html_e( 'By default the custom roles, Give options, and database entries are not deleted when you deactivate Give. If you are deleting Give completely from your website and want those items removed as well check this option. Note: This will permanently delete all Give data from your database.', 'give' ); ?>
+				</section>
+			</p>
+		</div>
+		<?php
+		$current_user       = wp_get_current_user();
+		$current_user_email = $current_user->user_email;
+		?>
+		<input type="hidden" name="current-user-email" value="<?php echo $current_user_email; ?>">
+		<input type="hidden" name="current-site-url" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>">
+		<input type="hidden" name="give-export-class" value="Give_Tools_Reset_Stats">
+		<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+	</form>
+
+	<?php
+	echo ob_get_clean();
+
+	wp_die();
+}
+
+add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
+
+/**
+ * Ajax callback after the deactivation survey form has been submitted.
+ * Note: only for internal use
+ *
+ * @since 2.2
+ */
+function give_deactivation_form_submit() {
+
+	if ( ! check_ajax_referer( 'deactivation_survey_nonce', 'nonce', false ) ) {
+		wp_send_json_error();
+		wp_die();
+	}
+
+	$form_data = give_clean( wp_parse_args( $_POST['form-data'] ) );
+
+	// Get the selected radio value.
+	$radio_value = isset( $form_data['give-survey-radios'] ) ? $form_data['give-survey-radios'] : 0;
+
+	// Get the reason if any radio button has an optional text field.
+	$user_reason = isset( $form_data['user-reason'] ) ? $form_data['user-reason'] : '';
+
+	// Get the email of the user who deactivated the plugin.
+	$user_email = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
+
+	// Get the URL of the website on which Give plugin is being deactivated.
+	$site_url = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
+
+	// Get the value of the checkbox for deleting Give's data.
+	$delete_data = isset( $form_data['confirm_reset_store'] ) ? $form_data['confirm_reset_store'] : '';
+
+	/**
+	 * Make a POST request to the endpoint to send the survey data.
+	 */
+	$response = wp_remote_post(
+		'http://survey.givewp.com/wp-json/give/v2/survey/',
+		array(
+			'body' => array(
+				'radio_value'        => $radio_value,
+				'user_reason'        => $user_reason,
+				'current_user_email' => $user_email,
+				'site_url'           => $site_url,
+			),
+		)
+	);
+
+	// Check if the data is sent and stored correctly.
+	$response = wp_remote_retrieve_body( $response );
+
+	if ( 'true' === $response ) {
+		if ( '1' === $delete_data ) {
+			wp_send_json_success(
+				array(
+					'delete_data' => true,
+				)
+			);
+		} else {
+			wp_send_json_success(
+				array(
+					'delete_data' => false,
+				)
+			);
+		}
+	} else {
+		wp_send_json_error();
+	}
+
+	wp_die();
+}
+
+add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );

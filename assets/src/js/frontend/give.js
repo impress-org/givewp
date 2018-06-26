@@ -11,3 +11,4 @@ import '../plugins/give-hint.css';
 import './give-ajax';
 import './give-donations';
 import './give-misc';
+import './give-donor-wall';

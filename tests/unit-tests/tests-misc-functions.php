@@ -105,8 +105,8 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$status = give_delete_meta( $form_or_donation_id, 'testing_meta' );
 		$this->assertEquals( true, $status );
 	}
-	
-	
+
+
 	/**
 	 * Data provider for test_give_meta_helpers
 	 *
@@ -199,5 +199,133 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		// Admin-ajax.
 		$GLOBALS['pagenow'] = 'admin-ajax.php';
 		$this->assertFalse( give_is_admin_page() );
+	}
+
+	/**
+	 * Check if name title prefix option is enabled or not.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @cover give_is_name_title_prefix_enabled
+	 */
+	public function test_give_is_name_title_prefix_enabled() {
+
+		// Create Simple Donation Form with global as option.
+		$donation_form_1 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'global',
+			),
+		) );
+
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
+
+		// Set Global Admin Setting to required.
+		give_update_option( 'name_title_prefix', 'required' );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
+
+		// Set Global Admin Setting to optional.
+		give_update_option( 'name_title_prefix', 'optional' );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
+
+		// Create Simple Donation Form with required as option.
+		$donation_form_2 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'required',
+			),
+		) );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ), 'optional' );
+
+		// Create Simple Donation Form with optional as option.
+		$donation_form_3 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'optional',
+			),
+		) );
+
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ) );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ), 'required' );
+		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ), 'optional' );
+
+		// Create Simple Donation Form with disabled as option.
+		$donation_form_4 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'disabled',
+			),
+		) );
+
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_4->id ) );
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_4->id ), 'required' );
+		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_4->id ), 'optional' );
+
+	}
+
+	/**
+	 * Check if name title prefix option is required or not.
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @cover give_is_name_title_prefix_required
+	 */
+	public function test_give_is_name_title_prefix_required() {
+
+		// Create Simple Donation Form with global as option.
+		$donation_form_1 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'global',
+			),
+		) );
+
+		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_1->id ) );
+
+		// Set Global Admin Setting to required.
+		give_update_option( 'name_title_prefix', 'required' );
+
+		$this->assertTrue( give_is_name_title_prefix_required( $donation_form_1->id ) );
+
+		// Set Global Admin Setting to optional.
+		give_update_option( 'name_title_prefix', 'optional' );
+
+		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_1->id ) );
+
+		// Create Simple Donation Form with required as option.
+		$donation_form_2 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'required',
+			),
+		) );
+
+		$this->assertTrue( give_is_name_title_prefix_required( $donation_form_2->id ) );
+
+		// Create Simple Donation Form with optional as option.
+		$donation_form_3 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'optional',
+			),
+		) );
+
+		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_3->id ) );
+
+		// Create Simple Donation Form with disabled as option.
+		$donation_form_4 = Give_Helper_Form::create_simple_form( array(
+			'meta' => array(
+				'_give_name_title_prefix' => 'disabled',
+			),
+		) );
+
+		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_4->id ) );
+
 	}
 }

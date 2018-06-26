@@ -522,14 +522,22 @@ input.give-price-field {
 //Payment Notes Section
 //------------------------------------------
 
-#give-payment-notes {
+#give-payment-notes{
   textarea {
 	min-height: 150px;
   }
+
   #give-add-payment-note {
 	margin: 6px 0 15px;
   }
+}
 
+//------------------------------------------
+//Payment Comment Section
+//------------------------------------------
+
+#give_comment {
+	min-height: 150px;
 }
 
 //------------------------------------------

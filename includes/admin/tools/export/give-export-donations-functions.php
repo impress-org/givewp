@@ -16,6 +16,7 @@ function give_export_donations_get_custom_fields() {
 	global $wpdb;
 	$post_type = 'give_payment';
 	$responses = array();
+	$donationmeta_table_key = Give()->payment_meta->get_meta_type() . '_id';
 
 	$form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : '';
 
@@ -32,16 +33,16 @@ function give_export_donations_get_custom_fields() {
 
 	$query_and = sprintf(
 		"AND $wpdb->posts.ID IN (%s) 
-		AND $wpdb->paymentmeta.meta_key != '' 
-		AND $wpdb->paymentmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
+		AND $wpdb->donationmeta.meta_key != '' 
+		AND $wpdb->donationmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
 		$donation_list
 	);
 
 	$query = "
-        SELECT DISTINCT($wpdb->paymentmeta.meta_key) 
+        SELECT DISTINCT($wpdb->donationmeta.meta_key) 
         FROM $wpdb->posts 
-        LEFT JOIN $wpdb->paymentmeta 
-        ON $wpdb->posts.ID = $wpdb->paymentmeta.payment_id
+        LEFT JOIN $wpdb->donationmeta 
+        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key}
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 
@@ -53,16 +54,16 @@ function give_export_donations_get_custom_fields() {
 
 	$query_and = sprintf(
 		"AND $wpdb->posts.ID IN (%s) 
-		AND $wpdb->paymentmeta.meta_key != '' 
-		AND $wpdb->paymentmeta.meta_key NOT RegExp '^[^_]'",
+		AND $wpdb->donationmeta.meta_key != '' 
+		AND $wpdb->donationmeta.meta_key NOT RegExp '^[^_]'",
 		$donation_list
 	);
 
 	$query = "
-        SELECT DISTINCT($wpdb->paymentmeta.meta_key) 
+        SELECT DISTINCT($wpdb->donationmeta.meta_key) 
         FROM $wpdb->posts 
-        LEFT JOIN $wpdb->paymentmeta 
-        ON $wpdb->posts.ID = $wpdb->paymentmeta.payment_id 
+        LEFT JOIN $wpdb->donationmeta 
+        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key} 
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 

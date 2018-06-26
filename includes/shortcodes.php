@@ -72,10 +72,10 @@ function give_donation_history( $atts, $content = false ) {
 	 * b. Does an email-access token exist?
 	 */
 	if (
-		is_user_logged_in() ||
-		false !== Give()->session->get_session_expiration() ||
-		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
-		true === give_get_history_session()
+		is_user_logged_in()
+		|| false !== Give()->session->get_session_expiration()
+		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		|| true === give_get_history_session()
 	) {
 		give_get_template_part( 'history', 'donations' );
 
@@ -206,7 +206,7 @@ function give_login_form_shortcode( $atts ) {
 
 	$atts = shortcode_atts( array(
 		// Add backward compatibility for redirect attribute.
-		'redirect' => '',
+		'redirect'        => '',
 		'login-redirect'  => '',
 		'logout-redirect' => '',
 	), $atts, 'give_login' );
@@ -374,6 +374,7 @@ function give_profile_editor_shortcode( $atts ) {
 	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
 	if ( is_user_logged_in() && $is_donor_disconnected ) {
 		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+
 		return false;
 	}
 
@@ -438,7 +439,7 @@ function give_process_profile_editor_updates( $data ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $user_id The ID of the user.
+	 * @param int   $user_id  The ID of the user.
 	 * @param array $userdata User info, including ID, first name, last name, display name and email.
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
@@ -537,7 +538,7 @@ function give_process_profile_editor_updates( $data ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $user_id The ID of the user.
+		 * @param int   $user_id  The ID of the user.
 		 * @param array $userdata User info, including ID, first name, last name, display name and email.
 		 */
 		do_action( 'give_user_profile_updated', $user_id, $userdata );
@@ -755,30 +756,30 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  *
  * @since  2.1.0
  *
- * @param array $atts {
- *     Optional. Attributes of the form grid shortcode.
+ * @param array $atts                {
+ *                                   Optional. Attributes of the form grid shortcode.
  *
- *     @type int    $forms_per_page      Number of forms per page. Default '12'.
- *     @type bool   $paged               Whether to paginate forms. Default 'true'.
- *     @type string $ids                 A comma-separated list of form IDs to display. Default empty.
- *     @type string $cats                A comma-separated list of form categories to display. Default empty.
- *     @type string $tags                A comma-separated list of form tags to display. Default empty.
- *     @type string $columns             Maximum columns to display. Default 'best-fit'.
+ * @type int    $forms_per_page      Number of forms per page. Default '12'.
+ * @type bool   $paged               Whether to paginate forms. Default 'true'.
+ * @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ * @type string $cats                A comma-separated list of form categories to display. Default empty.
+ * @type string $tags                A comma-separated list of form tags to display. Default empty.
+ * @type string $columns             Maximum columns to display. Default 'best-fit'.
  *                                       Accepts 'best-fit', '1', '2', '3', '4'.
- *     @type bool   $show_title          Whether to display form title. Default 'true'.
- *     @type bool   $show_goal           Whether to display form goal. Default 'true'.
- *     @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
- *     @type bool   $show_featured_image Whether to display featured image. Default 'true'.
- *     @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
- *     @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
- *     @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
- *     @type string $display_style       How the form is displayed, either in new page or modal popup.
+ * @type bool   $show_title          Whether to display form title. Default 'true'.
+ * @type bool   $show_goal           Whether to display form goal. Default 'true'.
+ * @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
+ * @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ * @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
+ * @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
+ * @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
+ * @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  * }
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
-	$form_ids = array();
+
 	$give_settings = give_get_settings();
 
 	$atts = shortcode_atts( array(
@@ -796,7 +797,7 @@ function give_form_grid_shortcode( $atts ) {
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
 		'display_style'       => 'modal_reveal',
-		'status'              => '' // open or closed
+		'status'              => '', // open or closed
 	), $atts );
 
 	// Validate integer attributes.
@@ -849,8 +850,8 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter by form category.
 	if ( ! empty( $atts['cats'] ) ) {
-		$cats      = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
-		$tax_query = array(
+		$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+		$tax_query                = array(
 			'taxonomy' => 'give_forms_category',
 			'terms'    => $cats,
 		);
@@ -859,8 +860,8 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter by form tag.
 	if ( ! empty( $atts['tags'] ) ) {
-		$tags      = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
-		$tax_query = array(
+		$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+		$tax_query                = array(
 			'taxonomy' => 'give_forms_tag',
 			'terms'    => $tags,
 		);

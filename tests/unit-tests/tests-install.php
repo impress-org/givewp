@@ -102,6 +102,9 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'agreement_text', $give_options );
 		$this->assertEquals( $give_options['agreement_text'], give_get_default_agreement_text() );
 
+		$this->assertArrayHasKey( 'name_title_prefix', $give_options );
+		$this->assertEquals( 'disabled', $give_options['name_title_prefix'] );
+
 	}
 
 	/**

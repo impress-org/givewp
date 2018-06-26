@@ -1027,6 +1027,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 			// Last name.
 			'give_last'       => $donor_data->last_name,
 
+			// Title Prefix.
+			'give_title'      => $donor->get_meta( '_give_donor_title_prefix', true ),
+
 			// Company name.
 			'company_name'    => $company_name,
 
@@ -1099,7 +1102,8 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			)
 		);
 
-		$donation_meta_table = Give()->payment_meta->table_name;
+		$donation_meta_table  = Give()->payment_meta->table_name;
+		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
 
@@ -1108,11 +1112,11 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 			SELECT COUNT({$distinct})
 			FROM {$donation_meta_table}
 			WHERE meta_key=%s
-			AND payment_id IN(
-				SELECT payment_id
+			AND {$donation_id_col_name} IN(
+				SELECT {$donation_id_col_name}
 				FROM {$donation_meta_table} as pm
 				INNER JOIN {$wpdb->posts} as p
-				ON pm.payment_id=p.ID
+				ON pm.{$donation_id_col_name}=p.ID
 				WHERE pm.meta_key=%s
 				AND pm.meta_value=%s
 				AND p.post_status=%s
@@ -1134,8 +1138,6 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 	 * @since 2.1.0
 	 */
 	$donor_count = apply_filters( 'give_get_form_donor_count', $donor_count, $form_id, $args );
-
-	Give_Cache::set_db_query( $cache_key, $donor_count );
 
 	return $donor_count;
 }

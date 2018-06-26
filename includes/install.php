@@ -108,10 +108,6 @@ function give_run_install() {
 	$donor_meta = new Give_DB_Donor_Meta();
 	$donor_meta->create_table();
 
-	// Check for PHP Session support, and enable if available.
-	$give_sessions = new Give_Session();
-	$give_sessions->use_php_sessions();
-
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
 
@@ -148,7 +144,9 @@ function give_run_install() {
 			'v201_logs_upgrades',
 			'v210_verify_form_status_upgrades',
 			'v213_delete_donation_meta',
-			'v215_update_donor_user_roles'
+			'v213_rename_donation_meta_type',
+			'v215_update_donor_user_roles',
+			'v220_delete_wp_session_data'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -335,6 +333,7 @@ function give_get_default_settings() {
 		'floatlabels'                                 => 'disabled',
 		'welcome'                                     => 'enabled',
 		'company_field'                               => 'disabled',
+		'name_title_prefix'                           => 'disabled',
 		'forms_singular'                              => 'enabled',
 		'forms_archives'                              => 'enabled',
 		'forms_excerpt'                               => 'enabled',

@@ -62,9 +62,9 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 <div class="wrap give-wrap">
 
 	<h1 id="transaction-details-heading" class="wp-heading-inline">
-	<?php
+		<?php
 		printf(
-			/* translators: %s: donation number */
+		/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
 			$number
 		);
@@ -80,7 +80,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 			));
 		}
 		?>
-		</h1>
+	</h1>
 
 	<?php
 	/**
@@ -240,7 +240,6 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-
 											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
 											<?php
 											if ( give_is_payment_complete( $payment_id ) ) {
@@ -298,7 +297,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 										$gateway = give_get_payment_gateway( $payment_id );
 										if ( $gateway ) :
-										?>
+											?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
 													<strong><?php _e( 'Gateway:', 'give' ); ?></strong>&nbsp;
@@ -468,6 +467,33 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
+											<?php if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ):  ?>
+												<div>
+													<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
+													<ul class="give-radio-inline">
+														<li>
+															<label>
+																<input
+																	name="give_anonymous_donation"
+																	value="1"
+																	type="radio"
+																	<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+																><?php _e( 'Yes', 'give' ); ?>
+															</label>
+														</li>
+														<li>
+															<label>
+																<input
+																	name="give_anonymous_donation"
+																	value="0"
+																	type="radio"
+																	<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ) ?>
+																><?php _e( 'No', 'give' ); ?>
+															</label>
+														</li>
+													</ul>
+												</div>
+											<?php endif; ?>
 											<p>
 												<?php
 												/**
@@ -546,46 +572,54 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<div class="column-container donor-info">
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donor ID:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>
 												<?php
 												if ( ! empty( $donor->id ) ) {
 													printf(
 														'<a href="%1$s">%2$s</a>',
-														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
-														$donor->id
+														esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ),
+														intval( $donor->id )
 													);
 												}
 												?>
-												<span>(<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>)</span>
+												<span>(<a href="#new" class="give-payment-new-donor"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>)</span>
 											</p>
 											<p>
-												<strong><?php _e( 'Donor Since:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
 												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donor Name:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
 												<?php
 												$donor_billing_name = give_get_donor_name_by( $payment_id, 'donation' );
 												$donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
 
 												// Check whether the donor name and WP_User name is same or not.
-												if ( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ) {
-													echo $donor_billing_name . ' (<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>)';
+												if ( $donor_billing_name !== $donor_name ) {
+													echo sprintf(
+														'%1$s (<a href="%2$s">%3$s</a>)',
+														esc_html( $donor_billing_name ),
+														sprintf(
+															esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=%s' ) ),
+															intval( $donor_id )
+														),
+														esc_html( $donor_name )
+													);
 												} else {
-													echo $donor_name;
+													echo esc_html( $donor_name );
 												}
 												?>
 											</p>
 											<p>
-												<strong><?php _e( 'Donor Email:', 'give' ); ?></strong><br>
-												<?php echo $donor->email; ?>
+												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
+												<?php echo esc_attr( $donor->email ); ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Change Donor:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
 												<?php
 												echo Give()->html->donor_dropdown(
 													array(
@@ -836,6 +870,47 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 								</div>
 								<!-- /.inside -->
 							</div>
+							<!-- /#give-payment-notes -->
+
+							<?php
+							/**
+							 * Fires on the donation details page, after the main area.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_donation_details_main_after', $payment_id );
+							?>
+
+							<?php if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) : ?>
+								<div id="give-payment-donor-comment" class="postbox">
+									<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+
+									<div class="inside">
+										<div id="give-payment-donor-comment-inner">
+											<p>
+												<?php
+												$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
+
+												echo sprintf(
+													'<input type="hidden" name="give_comment_id" value="%s">',
+													$donor_comment instanceof WP_Comment ? $donor_comment->comment_ID : 0
+												);
+
+												echo sprintf(
+													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
+													__( 'Add a comment', 'give' ),
+													$donor_comment instanceof WP_Comment ? $donor_comment->comment_content : ''
+												);
+												?>
+											</p>
+										</div>
+
+									</div>
+									<!-- /.inside -->
+								</div>
+							<?php endif; ?>
 							<!-- /#give-payment-notes -->
 
 							<?php

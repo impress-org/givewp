@@ -75,6 +75,12 @@ Layout
 		margin: 20px 0 0 0;
 	}
 
+	&.give-display-modal {
+		form .give_notices {
+			display: none;
+		}
+	}
+
 	&.give-display-reveal, &.give-display-modal {
 		.give-btn {
 			margin: 0 0 15px;
@@ -143,7 +149,21 @@ form.give-form {
 		display: none;
 	}
 
-	.give-tooltip {
+  .give-title-prefix-wrap{
+
+	.form-row-first,
+	.form-row-last {
+	  float: left;
+	  width: 40%;
+	}
+
+	.form-row-title {
+	  float: left;
+	  width: 15%;
+	}
+  }
+
+  .give-tooltip {
 		margin: 0 3px;
 		padding: 0;
 		font-size: 14px;
@@ -219,15 +239,20 @@ form.give-form {
 
 	}
 
-	.form-row-first,
-	.form-row-last {
-		float: left;
-		width: 48.5%;
+    .form-row-title,
+	.form-row-first {
+	  margin-right: 2.5%;
 	}
 
-	.form-row-last {
-		float: right;
-	}
+  .form-row-first,
+  .form-row-last {
+	float: left;
+	width: 48.5%;
+  }
+
+  .form-row-last {
+	float: right;
+  }
 
 	.form-row-wide {
 		@include clearfix();
@@ -386,7 +411,7 @@ form[id*='give-form'] {
 	display: none;
 }
 
-.give-display-button-only form > *:not(.give-btn-modal) {
+.give-display-button-only form[id*=give-form] > *:not(.give-btn-modal) {
 	display: none;
 }
 
@@ -743,6 +768,9 @@ div.mfp-content {
 		}
 	}
 
+	form[id*='give-form'] .give_notices {
+		display: block !important;
+	}
 }
 
 /*---------------------------------

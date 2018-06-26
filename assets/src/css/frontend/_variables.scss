@@ -17,23 +17,26 @@ $status-refunded: $status-default;
 $status-subscription: #5bc0de;
 $status-revoked: #d9534f;
 
+// Borders.
+$give-card-border: #e5e5e5;
+
 //Font sizes
 $font-size-medium: 18px;
 
 $primary: #007ba4;
-// Primary colour for buttons (alt)
+// Primary color for buttons (alt)
 $primarytext: desaturate(lighten($primary, 50%), 18%);
-// Text on primary colour bg
+// Text on primary color bg
 
 $secondary: desaturate(lighten($primary, 40%), 21%);
 // Secondary buttons
 $secondarytext: desaturate(darken($secondary, 60%), 21%);
-// Text on secondary colour bg
+// Text on secondary color bg
 
 $highlight: adjust-hue($primary, 150deg);
 // Prices, In stock labels, sales flash
 $highlightext: desaturate(lighten($highlight, 50%), 18%);
-// Text on highlight colour bg
+// Text on highlight color bg
 
 $contentbg: #fff;
 // Content BG - Tabs (active state)
@@ -41,17 +44,17 @@ $subtext: #777;
 // small, breadcrumbs etc
 
 $float-labels: (
-	base-height             : 30px,
-	border-radius           : 0,
-	margin-bottom           : 0,
-	color-background        : inherit,
-	color-background-active : inherit,
-	color-background-focus  : inherit,
-	color-border            : #ccc,
-	color-border-active     : #ccc,
-	color-border-focus      : #ccc,
-	color-text              : #333,
-	line-height             : normal,
-	font-weight             : 700,
-	parent                  : '[id*="give-form"]',
+		base-height : 30px,
+		border-radius : 0,
+		margin-bottom : 0,
+		color-background : inherit,
+		color-background-active : inherit,
+		color-background-focus : inherit,
+		color-border : #ccc,
+		color-border-active : #ccc,
+		color-border-focus : #ccc,
+		color-text : #333,
+		line-height : normal,
+		font-weight : 700,
+		parent : '[id*="give-form"]',
 );

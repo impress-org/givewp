@@ -10,7 +10,6 @@ class Tests_Session extends Give_Unit_Test_Case {
 	 */
 	public function setUp() {
 		parent::setUp();
-		new Give_Session();
 	}
 
 	/**

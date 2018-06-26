@@ -119,7 +119,9 @@
 			margin: 0;
 		}
 
-		input {
+		input[type="text"],
+		input[type="email"],
+		input[type="number"]{
 			width: 200px;
 		}
 
@@ -347,6 +349,15 @@
 					text-decoration: none;
 				}
 			}
+		}
+	}
+
+	/*
+	 * Donor comments table
+	 */
+	.comments{
+		td:nth-child(3n){
+			text-align: left;
 		}
 	}
 }

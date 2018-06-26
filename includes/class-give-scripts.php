@@ -76,6 +76,14 @@ class Give_Scripts {
 		// WP-admin.
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
+		// WP-admin: plugin page.
+		wp_register_style(
+			'plugin-deactivation-survey-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
+			array(),
+			GIVE_VERSION
+		);
+
 		// Frontend.
 		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
 			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
@@ -97,6 +105,14 @@ class Give_Scripts {
 			'jquery-query',
 		), GIVE_VERSION );
 
+		// WP-admin: plugin page.
+		wp_register_script( 'plugin-deactivation-survey-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
+			array( 'jquery' ),
+			GIVE_VERSION,
+			true
+		);
+
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
@@ -109,7 +125,6 @@ class Give_Scripts {
 	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_styles( $hook ) {
-
 		// Give Admin Only.
 		if ( ! apply_filters( 'give_load_admin_styles', give_is_admin_page(), $hook ) ) {
 			return;
@@ -133,6 +148,12 @@ class Give_Scripts {
 	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
+		global $pagenow;
+
+		// Plugin page script
+		if ( 'plugins.php' === $pagenow ) {
+			$this->plugin_equeue_scripts();
+		}
 
 		// Give Admin Only.
 		if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
@@ -150,7 +171,31 @@ class Give_Scripts {
 
 		// Localize admin scripts
 		$this->admin_localize_scripts();
+	}
 
+
+	/**
+	 * Load admin plugin page related scripts, styles andd localize param
+	 *
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 */
+	private function plugin_equeue_scripts() {
+		wp_enqueue_style( 'plugin-deactivation-survey-css' );
+		wp_enqueue_script( 'plugin-deactivation-survey-js' );
+
+		$localized_data = array(
+			'nonce'                           => wp_create_nonce( 'deactivation_survey_nonce' ),
+			'cancel'                          => __( 'Cancel', 'give' ),
+			'deactivation_no_option_selected' => __( 'Error: Please select at least one option.', 'give' ),
+			'submit_and_deactivate'           => __( 'Submit and Deactivate', 'give' ),
+			'skip_and_deactivate'             => __( 'Skip & Deactivate', 'give' ),
+			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
+
+		);
+		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
 	/**
@@ -158,7 +203,7 @@ class Give_Scripts {
 	 */
 	public function admin_localize_scripts() {
 
-		global $post;
+		global $post, $pagenow;
 		$give_options = give_get_settings();
 
 		// Price Separators.
@@ -166,7 +211,7 @@ class Give_Scripts {
 		$decimal_separator  = give_get_price_decimal_separator();
 
 		// Localize strings & variables for JS.
-		wp_localize_script( 'give-admin-scripts', 'give_vars', array(
+		$localized_data = array(
 			'post_id'                           => isset( $post->ID ) ? $post->ID : null,
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
@@ -214,7 +259,7 @@ class Give_Scripts {
 			'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 			'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
-			'unlock_donor_fields_message'               => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
+			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
@@ -271,7 +316,10 @@ class Give_Scripts {
 				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
 				'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
 			),
-		) );
+			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
+		);
+
+		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
 	}
 
 	/**
