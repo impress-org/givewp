@@ -1274,7 +1274,7 @@ function give_form_get_default_level( $form_id ) {
 	 * @param array   $default_level Default level price data.
 	 * @param integer $form_id       Donation form ID.
 	 */
-	return apply_filters( 'give_form_default_level_id', $default_level, $form_id );
+	return apply_filters( 'give_form_get_default_level', $default_level, $form_id );
 }
 
 /**
