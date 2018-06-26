@@ -118,6 +118,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.0.3', '<' ) :
 			give_v203_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.2.0', '<' ) :
+			give_v220_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -379,15 +383,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v215_update_donor_user_roles',
 			'version'  => '2.1.5',
 			'callback' => 'give_v215_update_donor_user_roles_callback',
-		)
-	);
-
-	// v2.2.0 delete wp session library data
-	$give_updates->register(
-		array(
-			'id'       => 'v220_delete_wp_session_data',
-			'version'  => '2.2.0',
-			'callback' => 'give_v220_delete_wp_session_data',
 		)
 	);
 }
@@ -2655,6 +2650,16 @@ function give_v203_upgrades() {
 
 }
 
+
+/**
+ * Version 2.2.0 automatic updates
+ *
+ * @since 2.2.0
+ */
+function give_v220_upgrades(){
+	give_v220_delete_wp_session_data();
+}
+
 /**
  * Upgrade routine for 2.1 to set form closed status for all the donation forms.
  *
@@ -2767,14 +2772,12 @@ function give_v215_update_donor_user_roles_callback() {
 /**
  * Remove all wp session data from the options table, regardless of expiration.
  *
+ * @since 2.2.0
+ *
  * @global wpdb $wpdb
  */
 function give_v220_delete_wp_session_data(){
 	global $wpdb;
-	$give_updates = Give_Updates::get_instance();
 
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '_wp_session_%'" );
-
-	$give_updates->percentage = 100;
-	give_set_upgrade_complete( 'v220_delete_wp_session_data' );
 }
