@@ -556,7 +556,7 @@ function give_process_donor_deletion( $args ) {
 	$redirect_args['orderby'] = ! empty( $args['orderby'] ) ? $args['orderby'] : 'ID';
 	$redirect_args['s']       = ! empty( $args['s'] ) ? $args['s'] : '';
 	$delete_donor             = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
-	$delete_donations         = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
+	$delete_donation          = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
 
 	if ( count( $donor_ids ) > 0 ) {
 
@@ -573,38 +573,24 @@ function give_process_donor_deletion( $args ) {
 				 *
 				 * @param int  $donor_id     The ID of the donor.
 				 * @param bool $delete_donor Confirm Donor Deletion.
-				 * @param bool $remove_data  Confirm Donor related donations deletion.
+				 * @param bool $delete_donation  Confirm Donor related donations deletion.
 				 *
 				 * @since 1.0
 				 */
-				do_action( 'give_pre_delete_donor', $donor->id, $delete_donor, $delete_donations );
+				do_action( 'give_pre_delete_donor', $donor->id, $delete_donor, $delete_donation );
 
 				// Proceed only, if user confirmed whether they need to delete the donor.
 				if ( $delete_donor ) {
 
-					// Delete Donor.
-					$donor_deleted = Give()->donors->delete( $donor->id );
+					// Delete donor and linked donations.
+					$donor_delete_status = give_delete_donor_and_related_donation( $donor, array(
+						'delete_donation' => $delete_donation,
+					) );
 
-					// Fetch linked donations of a particular donor.
-					$donation_ids  = explode( ',', $donor->payment_ids );
-
-					// Proceed only, if user opted to delete donor related donations as well.
-					if ( $donor_deleted && $delete_donations ) {
-
-						// Remove all donations, logs, etc.
-						foreach ( $donation_ids as $donation_id ) {
-							give_delete_donation( $donation_id );
-						}
-
-						$redirect_args['give-messages[]'] = 'donor-donations-deleted';
-					} else {
-
-						// Just set the donations to customer_id of 0.
-						foreach ( $donation_ids as $donation_id ) {
-							give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
-						}
-
+					if ( 1 === $donor_delete_status ) {
 						$redirect_args['give-messages[]'] = 'donor-deleted';
+					} elseif ( 2 === $donor_delete_status ) {
+						$redirect_args['give-messages[]'] = 'donor-donations-deleted';
 					}
 				} else {
 					$redirect_args['give-messages[]'] = 'confirm-delete-donor';
