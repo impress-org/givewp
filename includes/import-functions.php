@@ -475,9 +475,9 @@ function give_import_donations_options() {
 		),
 		'notes'        => __( 'Notes', 'give' ),
 		'mode'         => array(
+			__( 'Payment Mode', 'give' ),
 			__( 'Mode', 'give' ),
 			__( 'Test Mode', 'give' ),
-			__( 'Payment Mode', 'give' ),
 		),
 		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
@@ -643,7 +643,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$dry_run_duplicate_form        = false;
 	$dry_run_duplicate_donor       = false;
 	$donation_key                  = empty( $import_setting['donation_key'] ) ? 1 : (int) $import_setting['donation_key'];
-	$payment_id = false;
+	$payment_id                    = false;
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -758,7 +758,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'country' => $country,
 	);
 
-	$mode = (string) $data['mode'];
+	$test_mode = array( 'test', 'true', );
 
 	//Create payment_data array
 	$payment_data = array(
@@ -780,17 +780,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
 		'post_date'       => ( ! empty( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
-		'mode'            => ( ! empty( $data['mode'] ) ? is_array( $mode, array(
-			'test',
-			'TEST',
-			'true',
-			'TRUE'
-		) ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
+		'mode'            => ( ! empty( $data['mode'] ) ? ( in_array( strtolower( $data['mode'] ), $test_mode ) ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
-
-
-	error_log( print_r( $payment_data, true ) . '\n', 3, WP_CONTENT_DIR . '/debug_new.log' );
-	error_log( print_r( $data, true ) . '\n', 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	/**
 	 * Filter to modify payment Data before getting imported.
@@ -872,7 +863,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
-				$payment_id = false;
+				$payment_id                = false;
 			}
 
 			/**
@@ -889,7 +880,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			do_action( 'give_import_after_import_payment', $payment, $payment_data, $data, $donor_data, $form );
 		} else {
 			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
-			$payment_id = true;
+			$payment_id                = true;
 		}
 	}
 
