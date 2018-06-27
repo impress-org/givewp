@@ -388,29 +388,29 @@ class Give_Scripts {
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
 		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
-			'ajaxurl'                    => give_get_ajax_url(),
-			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ),
+			'ajaxurl'                     => give_get_ajax_url(),
+			'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
 			// Do not use this nonce. Its deprecated.
-			'currency'                   => give_get_currency(),
-			'currency_sign'              => give_currency_filter( '' ),
-			'currency_pos'               => give_get_currency_position(),
-			'thousands_separator'        => give_get_price_thousand_separator(),
-			'decimal_separator'          => give_get_price_decimal_separator(),
-			'no_gateway'                 => __( 'Please select a payment method.', 'give' ),
-			'bad_minimum'                => __( 'The minimum custom donation amount for this form is', 'give' ),
-			'bad_maximum'                => __( 'The maximum custom donation amount for this form is', 'give' ),
-			'general_loading'            => __( 'Loading...', 'give' ),
-			'purchase_loading'           => __( 'Please Wait...', 'give' ),
-			'number_decimals'            => give_get_price_decimals(),
-			'give_version'               => GIVE_VERSION,
-			'magnific_options'           => apply_filters(
+			'currency'                    => give_get_currency(),
+			'currency_sign'               => give_currency_filter( '' ),
+			'currency_pos'                => give_get_currency_position(),
+			'thousands_separator'         => give_get_price_thousand_separator(),
+			'decimal_separator'           => give_get_price_decimal_separator(),
+			'no_gateway'                  => __( 'Please select a payment method.', 'give' ),
+			'bad_minimum'                 => __( 'The minimum custom donation amount for this form is', 'give' ),
+			'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
+			'general_loading'             => __( 'Loading...', 'give' ),
+			'purchase_loading'            => __( 'Please Wait...', 'give' ),
+			'number_decimals'             => give_get_price_decimals(),
+			'give_version'                => GIVE_VERSION,
+			'magnific_options'            => apply_filters(
 				'give_magnific_options',
 				array(
 					'main_class'        => 'give-modal',
 					'close_on_bg_click' => false,
 				)
 			),
-			'form_translation'           => apply_filters(
+			'form_translation'            => apply_filters(
 				'give_form_translation_js',
 				array(
 					// Field name               Validation message.
@@ -423,8 +423,8 @@ class Give_Scripts {
 					'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 				)
 			),
-			'confirm_email_sent_message' => $message,
-			'ajax_vars'                  => apply_filters( 'give_global_ajax_vars', array(
+			'confirm_email_sent_message'  => $message,
+			'ajax_vars'                   => apply_filters( 'give_global_ajax_vars', array(
 				'ajaxurl'         => give_get_ajax_url(),
 				'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
 				'loading'         => __( 'Loading', 'give' ),
@@ -435,6 +435,8 @@ class Give_Scripts {
 				'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 				'number_decimals' => give_get_price_decimals(),
 			) ),
+			'cookie_hash'                 => COOKIEHASH,
+			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() )
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );

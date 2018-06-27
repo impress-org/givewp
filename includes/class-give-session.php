@@ -108,6 +108,16 @@ class Give_Session {
 	private $exp_option = false;
 
 	/**
+	 * Expiration Time
+	 *
+	 * @since  2.2.0
+	 * @access private
+	 *
+	 * @var    string
+	 */
+	private $nonce_cookie_name = '';
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.2.0
@@ -145,7 +155,8 @@ class Give_Session {
 			? $this->exp_option
 			: 30 * 60 * 24; // Default expiration time is 12 hours
 
-		$this->cookie_name = $this->get_cookie_name();
+		$this->set_cookie_name();
+		$this->cookie_name = $this->get_cookie_name( 'session' );
 		$cookie            = $this->get_session_cookie();
 
 		if ( ! empty( $cookie ) ) {
@@ -183,7 +194,7 @@ class Give_Session {
 	/**
 	 * Get session data
 	 *
-	 * @since 2.2.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @return array
@@ -235,26 +246,21 @@ class Give_Session {
 	 *
 	 * @return bool
 	 */
-	private function has_session() {
+	public function has_session() {
 		return $this->has_cookie;
 	}
 
 	/**
-	 * Get Session name
+	 * Set cookie name
 	 *
 	 * @since  2.2.0
 	 * @access private
 	 *
 	 * @return string Cookie name.
 	 */
-	private function get_cookie_name() {
-
-		/**
-		 * Filter the cookie name
-		 *
-		 * @since  2.2.0
-		 */
-		return apply_filters( 'give_cookie', 'wp_give_session_' . COOKIEHASH );
+	private function set_cookie_name() {
+		$this->cookie_name       = apply_filters( 'give_session_cookie', 'wp_give_session_' . COOKIEHASH );
+		$this->nonce_cookie_name = 'wp_give_session_reset_nonce_' . COOKIEHASH;
 	}
 
 	/**
@@ -317,6 +323,7 @@ class Give_Session {
 			$this->has_cookie = true;
 
 			give_setcookie( $this->cookie_name, $cookie_value, $this->session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
+			give_setcookie( $this->nonce_cookie_name, '1', $this->session_expiration, apply_filters( 'give_session_use_secure_cookie', false ) );
 		}
 	}
 
@@ -433,6 +440,50 @@ class Give_Session {
 	}
 
 	/**
+	 * Delete nonce cookie if generating fresh form html.
+	 *
+	 * @since 2.2.0
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function is_delete_nonce_cookie(){
+		$value = false;
+
+		if ( Give()->session->has_session() ) {
+			$value = true;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Get cookie names
+	 *
+	 * @since  2.2.0
+	 * @access public
+	 *
+	 * @param string $type Nonce type.
+	 *
+	 * @return string Cookie name
+	 */
+	public function get_cookie_name( $type = '' ) {
+		$name = '';
+
+		switch ( $type ) {
+			case 'nonce':
+				$name = $this->nonce_cookie_name;
+				break;
+
+			case 'session':
+				$name = $this->cookie_name;
+				break;
+		}
+
+		return $name;
+	}
+
+	/**
 	 * Start donor session when donation processing starts
 	 * Note: for internal logic only.
 	 *
@@ -452,7 +503,7 @@ class Give_Session {
 	 * When a user is logged out, ensure they have a unique nonce by using the donor/session ID.
 	 * Note: for internal logic only.
 	 *
-	 * @since 2.2.0
+	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param int $uid User ID.
@@ -488,7 +539,7 @@ class Give_Session {
 	 * @return string Session ID.
 	 */
 	public function get_id() {
-		return $this->get_cookie_name();
+		return $this->get_cookie_name('session');
 	}
 
 	/**
