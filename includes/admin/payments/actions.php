@@ -79,7 +79,8 @@ function give_update_payment_details( $data ) {
 	do_action( 'give_update_edited_donation', $payment_id );
 
 	$payment->date = $date;
-	$payment->anonymous = absint( $data['give_anonymous_donation'] );
+	$payment->anonymous = isset( $data['give_anonymous_donation'] ) ? absint( $data['give_anonymous_donation'] ) : 0;
+
 
 	$updated       = $payment->save();
 
@@ -200,11 +201,15 @@ function give_update_payment_details( $data ) {
 			$difference = $new_total - $curr_total;
 			give_increase_total_earnings( $difference );
 
+			// Increase form earnings.
+			give_increase_earnings( $payment->form_id, $difference, $payment->ID );
 		} elseif ( $curr_total > $new_total ) {
 			// Decrease if our new total is lower.
 			$difference = $curr_total - $new_total;
 			give_decrease_total_earnings( $difference );
 
+			// Decrease form earnings.
+			give_decrease_form_earnings( $payment->form_id, $difference, $payment->ID );
 		}
 	}
 
@@ -299,6 +304,59 @@ function give_update_payment_details( $data ) {
 
 		// Re setup payment to update new meta value in object.
 		$payment->update_payment_setup( $payment->ID );
+	}
+
+	$comment_id = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+
+	if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
+		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
+		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
+
+		// Update comment meta if admin is not updating comment.
+		if( $comment_id ) {
+			update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+		}
+	}
+
+	// Update comment.
+	if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) {
+		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
+		$data['give_comment'] = trim( $_POST['give_comment'] );
+
+		if ( empty( $data['give_comment'] ) ) {
+			// Delete comment if empty
+			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
+
+		} else {
+
+			// Update/Insert comment.
+			$is_update_comment_meta = ! $comment_id;
+
+			$comment_args = array(
+				'comment_author_email' => $payment->email
+			);
+
+			if ( $comment_id ) {
+				$comment_args['comment_ID'] = $comment_id;
+			}
+
+			$comment_id = give_insert_donor_donation_comment(
+				$payment->ID,
+				$payment->donor_id,
+				$data['give_comment'],
+				$comment_args
+			);
+
+			if ( $is_update_comment_meta ) {
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			}
+		}
+
+		$donor_has_comment = empty( $data['give_comment'] )
+			? ( empty( give_get_donor_latest_comment( $payment->donor_id ) ) ? '0' : '1' )
+			: '1';
+
+		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
 	}
 
 	/**

@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 2.1.4
+ * Version: 2.2.0
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -95,6 +95,18 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_Session object
 		 */
 		public $session;
+
+		/**
+		 * Give Session DB Object
+		 *
+		 * This holds donation data for user's session.
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Sessions object
+		 */
+		public $session_db;
 
 		/**
 		 * Give HTML Element Helper Object
@@ -332,7 +344,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->roles                  = new Give_Roles();
 			$this->api                    = new Give_API();
 			$this->give_settings          = new Give_Admin_Settings();
-			$this->session                = new Give_Session();
 			$this->html                   = new Give_HTML_Elements();
 			$this->emails                 = new Give_Emails();
 			$this->email_tags             = new Give_Email_Template_Tags();
@@ -350,6 +361,8 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->scripts                = new Give_Scripts();
 			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
 			$this->comment                = Give_Comment::get_instance();
+			$this->session_db             = new Give_DB_Sessions();
+			$this->session                = Give_Session::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -403,7 +416,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.1.4' );
+				define( 'GIVE_VERSION', '2.2.0' );
 			}
 
 			// Plugin Root File
@@ -487,9 +500,9 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-grid.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
@@ -541,6 +554,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-wall.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/actions.php';
@@ -575,6 +590,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-clone-forms.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 

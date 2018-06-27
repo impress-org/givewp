@@ -602,6 +602,26 @@ class Give_Updates {
 			return;
 		}
 
+
+		// Show notice if ajax is not working.
+		if ( ! give_test_ajax_works() ) {
+			Give()->notices->register_notice(
+				array(
+					'id'          => 'give_db_upgrade_ajax_inaccessible',
+					'type'        => 'error',
+					'description' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
+						esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
+						__( 'Read More', 'give' ) . ' &raquo;'
+					),
+					'show'        => true,
+				)
+			);
+
+			return;
+		}
+
 		// Show notice if upgrade paused.
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
@@ -618,6 +638,7 @@ class Give_Updates {
 			<?php else: ?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+				<a href="<?php echo esc_url('http://docs.givewp.com/troubleshooting-db-updates')?>" target="_blank"><?php _e( 'Read More', 'give' ); ?> &raquo;</a>
 			<?php
 			endif;
 			$desc_html = ob_get_clean();
@@ -632,20 +653,6 @@ class Give_Updates {
 
 		// Bailout if doing upgrades.
 		if ( $this->is_doing_updates() ) {
-			return;
-		}
-
-		// Show notice if ajax is not working.
-		if ( ! give_test_ajax_works() ) {
-			Give()->notices->register_notice(
-				array(
-					'id'          => 'give_db_upgrade_ajax_inaccessible',
-					'type'        => 'error',
-					'description' => sprintf( '%1$s <a href="%2$s" target="_blank">%3$s</a>', __( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ), 'http://docs.givewp.com/admin-ajax-error', __( 'Read More', 'give' ) . ' &raquo;' ),
-					'show'        => true,
-				)
-			);
-
 			return;
 		}
 
