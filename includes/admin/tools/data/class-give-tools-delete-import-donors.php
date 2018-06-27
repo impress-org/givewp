@@ -240,7 +240,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 							$add_author = false;
 							$count      = (int) count( $donor->payment_ids );
 							if ( 1 === $count ) {
-								Give()->donors->delete( $donor->id );
+								give_delete_donor_and_related_donation( $donor );
 							} else {
 								$donor->remove_payment( $post->ID );
 								$donor->decrease_donation_count();
