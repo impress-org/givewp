@@ -765,9 +765,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$test_mode = array( 'test', 'true', );
 	$post_date = current_time( 'mysql' );
 	if ( ! empty( $data['post_date'] ) ) {
-		$post_date = mysql2date( 'Y-m-d', $data['post_date'] );
 		if ( ! empty( $data['post_time'] ) ) {
+			$post_date = mysql2date( 'Y-m-d', $data['post_date'] );
 			$post_date = mysql2date( 'Y-m-d H:i:s', $post_date . ' ' . $data['post_time'] );
+		} else {
+			$post_date = mysql2date( 'Y-m-d H:i:s', $data['post_date'] );
 		}
 	}
 
