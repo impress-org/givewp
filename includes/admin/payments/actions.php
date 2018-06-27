@@ -353,7 +353,7 @@ function give_update_payment_details( $data ) {
 		}
 
 		$donor_has_comment = empty( $data['give_comment'] )
-			? ( empty( give_get_donor_latest_comment( $payment->donor_id ) ) ? '0' : '1' )
+			? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
 			: '1';
 
 		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
