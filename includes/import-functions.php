@@ -784,7 +784,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			'last_name'  => ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $donor_id ) && ( $last_name = get_user_meta( $donor_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
 		),
-		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
+		'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : ( method_exists( $form, 'get_name' ) ? $form->get_name() : '' ) ),
 		'give_form_id'    => method_exists( $form, 'get_ID' ) ? $form->get_ID() : '',
 		'give_price_id'   => $price_id,
