@@ -475,8 +475,9 @@ function give_import_donations_options() {
 		),
 		'notes'        => __( 'Notes', 'give' ),
 		'mode'         => array(
-			__( 'Test Mode', 'give' ),
 			__( 'Mode', 'give' ),
+			__( 'Test Mode', 'give' ),
+			__( 'Payment Mode', 'give' ),
 		),
 		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
@@ -757,6 +758,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'country' => $country,
 	);
 
+	$mode = (string) $data['mode'];
+
 	//Create payment_data array
 	$payment_data = array(
 		'donor_id'        => $donor_id,
@@ -777,8 +780,17 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
 		'post_date'       => ( ! empty( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
-		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
+		'mode'            => ( ! empty( $data['mode'] ) ? is_array( $mode, array(
+			'test',
+			'TEST',
+			'true',
+			'TRUE'
+		) ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
+
+
+	error_log( print_r( $payment_data, true ) . '\n', 3, WP_CONTENT_DIR . '/debug_new.log' );
+	error_log( print_r( $data, true ) . '\n', 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	/**
 	 * Filter to modify payment Data before getting imported.
