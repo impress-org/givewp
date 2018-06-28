@@ -119,13 +119,10 @@ function give_generate_pdf( $data ) {
 	// Object for getting stats.
 	$donation_stats = new Give_Payment_Stats();
 
-	// This Year.
-	$year       = date( 'Y' );
 	$give_forms = get_posts( array(
-		'post_type'      => 'give_forms',
-		'year'           => $year,
-		'posts_per_page' => - 1,
 		'supply_filter'  => false,
+		'post_type'        => 'give_forms',
+		'posts_per_page'   => - 1,
 	) );
 
 	if ( $give_forms ) {
