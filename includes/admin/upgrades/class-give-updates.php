@@ -807,6 +807,11 @@ class Give_Updates {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
+		// Start update if ajax is not working.
+		if( ! give_test_ajax_works() ){
+			self::$background_updater->maybe_handle();
+		}
+
 		if ( self::$background_updater->is_paused_process() ) {
 			$update_info = array(
 				'message'    => __( 'The updates have been paused.', 'give' ),

@@ -6,6 +6,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+/* globals give_vars */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 // Provided access to global level.
@@ -1361,6 +1362,7 @@ var give_setting_edit = false;
 				url: ajaxurl,
 				data: {
 					action: 'give_db_updates_info',
+					nonce: give_vars.db_update_nonce
 				},
 				dataType: 'json',
 				success: function (response) {
