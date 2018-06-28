@@ -120,9 +120,9 @@ function give_generate_pdf( $data ) {
 	$donation_stats = new Give_Payment_Stats();
 
 	$give_forms = get_posts( array(
-		'supply_filter'  => false,
 		'post_type'        => 'give_forms',
 		'posts_per_page'   => - 1,
+		'suppress_filters' => false,
 	) );
 
 	if ( $give_forms ) {
