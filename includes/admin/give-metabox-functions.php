@@ -290,6 +290,7 @@ function give_text_input( $field ) {
 
 /**
  * Output a chosen input box.
+ * Note: only for internal use.
  *
  * @param array $field         {
  *                              Optional. Array of text input field arguments.

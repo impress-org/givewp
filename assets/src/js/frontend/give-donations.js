@@ -236,6 +236,29 @@ export default Give = {
 		},
 
 		/**
+		 * Get cookie
+		 * Note: only for internal use
+		 *
+		 * @since 2.2.20
+		 * @private
+		 *
+		 * @param {string} name Cookie name
+		 * @return {string}
+		 */
+		__getCookie: function( name ) {
+			const value = '; ' + document.cookie,
+				parts = value.split( '; ' + name + '=' );
+
+			let cookie = '';
+
+			if ( 2 === parts.length ) {
+				cookie = parts.pop().split(';').shift();
+			}
+
+			return cookie;
+		},
+
+		/**
 		 * Initialize cache.
 		 *
 		 * @since 1.8.17

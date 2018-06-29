@@ -1,0 +1,75 @@
+@import '../plugins/button';
+@import '../plugins/magnific-popup';
+@import '../plugins/modal';
+
+#deactivation-survey-title {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	margin: 0;
+	padding: .85rem 1rem;
+	background-color: #f0f1f1;
+	border-bottom: 1px solid #cdcdcd;
+
+	img {
+		max-width: 45px;
+	}
+
+	span {
+		margin-left: 12px;
+	}
+}
+
+.give-survey-extra-field {
+	display: none;
+	margin-bottom: 15px;
+}
+
+.deactivation-survey-form {
+	padding: 1rem 1.5rem;
+
+	label {
+		display: block;
+		font-size: 13px;
+		margin-top: 8px;
+	}
+
+	.give-field-description {
+		color: #888;
+		font-style: italic;
+	}
+}
+
+.deactivation-error {
+    margin: 0;
+    margin-top: 25px;
+    padding: 1rem;
+}
+
+.deactivation-survey-wrap {
+	max-width: 650px;
+	border-top: 0;
+
+	.give-modal__body {
+		padding: 0;
+	}
+
+	.give-modal__description {
+		display: none;
+	}
+}
+
+#survey-and-delete-data {
+	background-color: #fefcf1;
+	border: 1px solid #f3eed6;
+	margin-top: 20px;
+	padding: 0 1rem;
+}
+
+#survey-and-delete-data label {
+	font-size: 15px;
+}
+
+#survey-and-delete-data .give-field-description {
+	font-size: 13px;
+}

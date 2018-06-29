@@ -158,3 +158,58 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 	return $output;
 }
+
+/**
+ * This function is used to delete donor and related donation without redirection.
+ *
+ * @param int|Give_Donor $donor Donor ID or List of Donor IDs.
+ * @param array          $args  List of arguments to handle donor and related donation deletion process.
+ *
+ * @type bool delete_donation Delete donor linked donations if set to true. Default is false.
+ *
+ * @since 2.2
+ *
+ * @return int
+ */
+function give_delete_donor_and_related_donation( $donor, $args = array() ) {
+
+	// Default Arguments.
+	$default_args = array(
+		'delete_donation' => false,
+	);
+
+	$args = wp_parse_args( $args, $default_args );
+
+	// If $donor not an instance of Give_Donor then create one.
+	if ( ! $donor instanceof Give_Donor ) {
+		$donor = new Give_Donor( $donor );
+	}
+
+	if ( $donor->id > 0 ) {
+
+		// Delete Donor.
+		$donor_deleted = Give()->donors->delete( $donor->id );
+
+		// Fetch linked donations of a particular donor.
+		$donation_ids  = explode( ',', $donor->payment_ids );
+
+		// Proceed to delete related donation, if user opted and donor is deleted successfully.
+		if ( $donor_deleted && $args['delete_donation'] ) {
+			foreach ( $donation_ids as $donation_id ) {
+				give_delete_donation( $donation_id );
+			}
+
+			return 2; // Donor and linked Donations deleted.
+
+		} else {
+			foreach ( $donation_ids as $donation_id ) {
+				give_update_payment_meta( $donation_id, '_give_payment_donor_id', 0 );
+			}
+		}
+
+		return 1; // Donor deleted but not linked donations.
+	}
+
+	return 0; // Incorrect donor id or donor not exists.
+
+}

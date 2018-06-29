@@ -1,4 +1,7 @@
 import FloatLabels from 'float-labels.js';
+import Give from './give-donations';
+
+/* global jQuery, give_global_vars */
 
 jQuery( function( $ ) {
 
@@ -108,10 +111,11 @@ jQuery( function( $ ) {
 		var historyTraversal = event.persisted || ( typeof 'undefined' !== window.performance && 2 === window.performance.navigation.type );
 
 		if ( historyTraversal ) {
-			let form = $( 'body' ).find( 'form.give-form' )[0];
+			let form = $( 'body' ).find( 'form.give-form' );
 
-			if ( undefined !== form ) {
-				form.reset();
+			if ( form.length ) {
+				form[0].reset();
+				Give.form.fn.resetNonce(form);
 			}
 		}
 	});
