@@ -421,6 +421,10 @@ function give_import_donations_options() {
 			__( 'Donation Date', 'give' ),
 			__( 'Date', 'give' ),
 		),
+		'post_time'    => array(
+			__( 'Donation Time', 'give' ),
+			__( 'Time', 'give' ),
+		),
 		'first_name'   => array(
 			__( 'Donor First Name', 'give' ),
 			__( 'First Name', 'give' ),
@@ -475,8 +479,9 @@ function give_import_donations_options() {
 		),
 		'notes'        => __( 'Notes', 'give' ),
 		'mode'         => array(
-			__( 'Test Mode', 'give' ),
+			__( 'Payment Mode', 'give' ),
 			__( 'Mode', 'give' ),
+			__( 'Test Mode', 'give' ),
 		),
 		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
@@ -642,7 +647,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$dry_run_duplicate_form        = false;
 	$dry_run_duplicate_donor       = false;
 	$donation_key                  = empty( $import_setting['donation_key'] ) ? 1 : (int) $import_setting['donation_key'];
-	$payment_id = false;
+	$payment_id                    = false;
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -757,6 +762,17 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'country' => $country,
 	);
 
+	$test_mode = array( 'test', 'true', );
+	$post_date = current_time( 'mysql' );
+	if ( ! empty( $data['post_date'] ) ) {
+		if ( ! empty( $data['post_time'] ) ) {
+			$post_date = mysql2date( 'Y-m-d', $data['post_date'] );
+			$post_date = mysql2date( 'Y-m-d H:i:s', $post_date . ' ' . $data['post_time'] );
+		} else {
+			$post_date = mysql2date( 'Y-m-d H:i:s', $data['post_date'] );
+		}
+	}
+
 	//Create payment_data array
 	$payment_data = array(
 		'donor_id'        => $donor_id,
@@ -770,14 +786,14 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			'last_name'  => ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $donor_id ) && ( $last_name = get_user_meta( $donor_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
 		),
-		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
+		'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : ( method_exists( $form, 'get_name' ) ? $form->get_name() : '' ) ),
 		'give_form_id'    => method_exists( $form, 'get_ID' ) ? $form->get_ID() : '',
 		'give_price_id'   => $price_id,
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
-		'post_date'       => ( ! empty( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
-		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
+		'post_date'       => $post_date,
+		'mode'            => ( ! empty( $data['mode'] ) ? ( in_array( strtolower( $data['mode'] ), $test_mode ) ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
 
 	/**
@@ -860,7 +876,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
-				$payment_id = false;
+				$payment_id                = false;
 			}
 
 			/**
@@ -877,7 +893,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			do_action( 'give_import_after_import_payment', $payment, $payment_data, $data, $donor_data, $form );
 		} else {
 			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
-			$payment_id = true;
+			$payment_id                = true;
 		}
 	}
 
@@ -1023,6 +1039,11 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 				array(
 					'key'     => '_give_payment_donor_id',
 					'value'   => isset( $donor_data->id ) ? $donor_data->id : '',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_give_payment_mode',
+					'value'   => $payment_data['mode'],
 					'compare' => '=',
 				),
 			),

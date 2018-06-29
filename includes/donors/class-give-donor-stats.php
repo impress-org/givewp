@@ -100,10 +100,6 @@ class Give_Donor_Stats {
 					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
 				);
 
-				if( ! is_numeric( $formatted_amount ) ) {
-					error_log( print_r( $formatted_amount, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-				}
-
 				$donated_amount = (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code  ) );
 				$donated_amount += $donated_amount;
 			}
