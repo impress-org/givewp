@@ -7,6 +7,7 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
+import {ShortcodeButton} from './shortcode-button.js';
 
 // Provided access to global level.
 var give_setting_edit = false;
@@ -2994,6 +2995,19 @@ var give_setting_edit = false;
 		}
 	};
 
+	var GiveShortcodeButton = {
+		init: function() {
+			// Run scripts for shortcode buttons.
+			const shorcodeButtonEls = document.querySelectorAll( '.js-give-shortcode-button' );
+			if ( shorcodeButtonEls ) {
+				for ( const buttonEl of shorcodeButtonEls ) {
+					const shortcodeButton = new ShortcodeButton( buttonEl );
+					shortcodeButton.init();
+				}
+			}
+		}
+	};
+
 	// On DOM Ready.
 	$(function () {
 
@@ -3013,6 +3027,7 @@ var give_setting_edit = false;
 		Give_Upgrades.init();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
+		GiveShortcodeButton.init();
 
 		// Footer.
 		$('a.give-rating-link').click(function () {
