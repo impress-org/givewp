@@ -70,3 +70,24 @@ function give_decode_email_tags( $message, $email_obj ) {
 }
 
 add_filter( 'give_email_message', 'give_decode_email_tags', 10, 2 );
+
+/**
+ * This removes the shortcode button from the emails settings page.
+ *
+ * @since 2.2
+ *
+ * @return boolean
+ */
+function give_remove_shortcode_button_on_email_settings_page() {
+
+	$page = give_get_current_setting_page();
+	$tab  = give_get_current_setting_tab();
+
+	if ( 'give-settings' === $page && 'emails' === $tab ) {
+		return false;
+	}
+
+	return true;
+}
+
+add_filter( 'give_enable_shortcode_button', 'give_remove_shortcode_button_on_email_settings_page' );
