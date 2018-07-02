@@ -147,7 +147,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Donation Note', 'give' ),
+							'name'    => __( 'Donation Comment', 'give' ),
 							'desc'    => __( 'Do you want to provide donors the ability to add a note to his/her donation? The note will display publicly on the donor wall if they do not select to give anonymously.', 'give' ),
 							'id'      => 'donor_thought',
 							'type'    => 'radio_inline',
