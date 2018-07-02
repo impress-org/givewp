@@ -23,9 +23,11 @@ before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - bash tests/bin/install.sh give_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
+  - git clone git://github.com/wimg/PHPCompatibility.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/PHPCompatibility
 
 script:
   - phpunit -c phpunit.xml
+  - phpcs --standard=PHPCompatibility --runtime-set testVersion 5.3-5.5 $(find ./tests/acceptance -name '*.php')
 
 after_script:
   - bash tests/bin/travis.sh after
