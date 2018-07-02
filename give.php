@@ -700,8 +700,3 @@ function Give() {
 }
 
 Give();
-
-
-if ( ! empty( function_exists( 'Give' ) ) ) {
-
-}
