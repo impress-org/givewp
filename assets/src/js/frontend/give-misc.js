@@ -21,7 +21,7 @@ jQuery( function( $ ) {
 		closeBtnInside: true,
 		midClick: true,
 		removalDelay: 300,
-		mainClass: 'modal-fade-slide',
+		mainClass: 'modal-fade-slide give-modal',
 	});
 
 	// Disable button if it have give-disabled class init.
