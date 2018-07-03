@@ -324,7 +324,7 @@ class Give_Scripts {
 			wp_enqueue_script(
 				'babel-polyfill',
 				GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js',
-				array(),
+				array( 'jquery' ),
 				GIVE_VERSION,
 				false
 			);
