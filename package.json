@@ -59,6 +59,7 @@
   "dependencies": {
     "accounting": "latest",
     "chosen-js": "latest",
+    "clipboard": "^2.0.1",
     "eslint-config-wordpress": "^2.0.0",
     "float-labels.js": "latest",
     "flot": "^0.8.0-alpha",
