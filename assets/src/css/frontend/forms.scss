@@ -736,6 +736,14 @@ User Login
 	}
 }
 
+.give-user-login-fields-container {
+	&:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+}
+
 /* Login Shortcode Form */
 #give-login-form,
 #give-register-form {
