@@ -355,9 +355,6 @@ add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_set
  * @return string
  */
 function give_get_default_offline_donation_content() {
-
-	$sitename = get_bloginfo( 'sitename' );
-
 	$default_text = '<p>' . __( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
