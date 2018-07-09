@@ -358,18 +358,18 @@ function give_get_default_offline_donation_content() {
 	$default_text = '<p>' . __( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
-	$default_text .= give_do_email_tags( sprintf(
+	$default_text .= sprintf(
 	/* translators: %s: site name */
-		__( 'Make a check payable to "{sitename}"', 'give' ) ), null );
+		__( 'Make a check payable to "{sitename}"', 'give' ) );
 	$default_text .= '</li>';
 	$default_text .= '<li>';
-	$default_text .= give_do_email_tags( sprintf(
+	$default_text .= sprintf(
 	/* translators: %s: site name */
-		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' ) ), null );
+		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' ) );
 	$default_text .= '</li>';
 	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
-	$default_text .= give_do_email_tags( '{offline_mailing_address}<br>', null );
+	$default_text .= '{offline_mailing_address}<br>';
 	$default_text .= '<p>' . __( 'All contributions will be gratefully acknowledged and are tax deductible.', 'give' ) . '</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
