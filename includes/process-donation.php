@@ -100,6 +100,13 @@ function give_process_donation_form() {
 		give_die();
 	}
 
+	/**
+	 * Fires action after donation form field validated.
+	 *
+	 * @since 2.2.0
+	 */
+	do_action( 'give_process_donation_after_validation' );
+
 	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],
