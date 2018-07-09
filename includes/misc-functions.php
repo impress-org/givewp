@@ -1836,8 +1836,8 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
  * @return bool
  */
 function give_is_donor_comment_field_enabled( $form_id ) {
-	$form_setting_val   = give_get_meta( $form_id, '_give_donor_thought', true, 'global' );
-	$global_setting_val = give_get_option( 'donor_thought', 'disabled' );
+	$form_setting_val   = give_get_meta( $form_id, '_give_donor_comment', true, 'global' );
+	$global_setting_val = give_get_option( 'donor_comment', 'disabled' );
 
 	if ( ! empty( $form_setting_val ) ) {
 		if( give_is_setting_enabled( $form_setting_val ) ) {
