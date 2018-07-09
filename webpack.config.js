@@ -12,6 +12,7 @@ const wpPot = require( 'wp-pot' );
 // Webpack config.
 const config = {
 	entry: {
+		'babel-polyfill': 'babel-polyfill',
 		admin: [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
 		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
 		give: [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],

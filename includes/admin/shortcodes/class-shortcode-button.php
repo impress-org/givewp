@@ -47,10 +47,7 @@ final class Give_Shortcode_Button {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
-
-			if ( true === apply_filters( 'give_enable_shortcode_button', true ) ) {
-				add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
-			}
+			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
 		}
 
 		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
@@ -246,10 +243,21 @@ final class Give_Shortcode_Button {
 			'edit.php?post_type=page',
 		) );
 
+		$setting_page = give_get_current_setting_page();
+
 		// Only run in admin post/page creation and edit screens
 		if (
 			! is_admin()
 			|| ! in_array( $pagenow, $shortcode_button_pages )
+			|| ( 'give-settings' === $setting_page )
+
+			/**
+			 * Fire the filter
+			 * Use this filter to show Give Shortcode button on custom pages
+			 *
+			 * @since 1.0
+			 *
+			 */
 			|| ! apply_filters( 'give_shortcode_button_condition', true )
 			|| empty( self::$shortcodes )
 		) {
