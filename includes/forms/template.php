@@ -844,7 +844,7 @@ function give_user_info_fields( $form_id ) {
 			</p>
 		<?php endif; ?>
 
-		<?php if ( give_is_donor_thought_field_enabled( $form_id ) ) : ?>
+		<?php if ( give_is_donor_comment_field_enabled( $form_id ) ) : ?>
 			<p id="give-comment-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-comment">
 					<?php _e( 'Comment', 'give' ); ?>
@@ -1406,41 +1406,44 @@ function give_get_login_fields( $form_id ) {
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_checkout_login_fields_before', $form_id );
+		// do_action( 'give_checkout_login_fields_before', $form_id );
 		?>
-		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
-			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
-				<?php _e( 'Username', 'give' ); ?>
-				<?php if ( give_logged_in_only( $form_id ) ) { ?>
-					<span class="give-required-indicator">*</span>
-				<?php } ?>
-			</label>
+		<div class="give-user-login-fields-container">
+			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
+				<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
+					<?php _e( 'Username', 'give' ); ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+				</label>
 
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text"
-				   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-				   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text"
+					   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
+					   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+			</div>
+
+			<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
+				 class="give_login_password form-row form-row-last form-row-responsive">
+				<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
+					<?php _e( 'Password', 'give' ); ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+				</label>
+				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
+					   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
+					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+				<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+			</div>
+
+			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
+				 <span class="give-forgot-password ">
+					 <a href="<?php echo wp_lostpassword_url() ?>"
+						target="_blank"><?php _e( 'Reset Password', 'give' ) ?></a>
+				 </span>
+			</div>
 		</div>
 
-		<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
-			 class="give_login_password form-row form-row-last form-row-responsive">
-			<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
-				<?php _e( 'Password', 'give' ); ?>
-				<?php if ( give_logged_in_only( $form_id ) ) { ?>
-					<span class="give-required-indicator">*</span>
-				<?php } ?>
-			</label>
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
-				   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
-				   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
-			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
-		</div>
-
-		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
-			 <span class="give-forgot-password ">
-				 <a href="<?php echo wp_lostpassword_url() ?>"
-					target="_blank"><?php _e( 'Reset Password', 'give' ) ?></a>
-			 </span>
-		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit"

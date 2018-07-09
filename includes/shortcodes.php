@@ -762,6 +762,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type int    $forms_per_page      Number of forms per page. Default '12'.
  * @type bool   $paged               Whether to paginate forms. Default 'true'.
  * @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ * @type string exclude              A comma-separated list of form IDs to exclude from display. Default empty.
  * @type string $cats                A comma-separated list of form categories to display. Default empty.
  * @type string $tags                A comma-separated list of form tags to display. Default empty.
  * @type string $columns             Maximum columns to display. Default 'best-fit'.
@@ -786,6 +787,7 @@ function give_form_grid_shortcode( $atts ) {
 		'forms_per_page'      => 12,
 		'paged'               => true,
 		'ids'                 => '',
+		'exclude'             => '',
 		'cats'                => '',
 		'tags'                => '',
 		'columns'             => 'best-fit',
@@ -829,6 +831,7 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Filter results of form grid based on form status.
 	$form_closed_status = trim( $atts['status'] );
+
 	if ( ! empty( $form_closed_status ) ) {
 		$form_args['meta_query'] = array(
 			array(
@@ -846,6 +849,13 @@ function give_form_grid_shortcode( $atts ) {
 	// Maybe filter forms by IDs.
 	if ( ! empty( $atts['ids'] ) ) {
 		$form_args['post__in'] = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+	}
+
+	// Convert comma-separated form IDs into array.
+	if ( ! empty( $atts['exclude'] ) ) {
+		$form_args['post__not_in'] = array_filter( array_map( function( $item ) {
+			return intval( trim( $item ) );
+		}, explode( ',', $atts['exclude'] ) ) );
 	}
 
 	// Maybe filter by form category.
