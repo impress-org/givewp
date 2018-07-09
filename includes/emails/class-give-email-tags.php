@@ -270,8 +270,12 @@ function give_do_email_tags( $content, $tag_args ) {
 		$tag_args = array( 'payment_id' => $tag_args );
 	}
 
+	$email_tags = Give()->email_tags instanceof Give_Email_Template_Tags
+		? Give()->email_tags
+		: new Give_Email_Template_Tags();
+
 	// Replace all tags
-	$content = Give()->email_tags->do_tags( $content, $tag_args );
+	$content = $email_tags->do_tags( $content, $tag_args );
 
 	/**
 	 * Filter the filtered content text.
