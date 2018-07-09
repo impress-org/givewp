@@ -844,7 +844,7 @@ function give_user_info_fields( $form_id ) {
 			</p>
 		<?php endif; ?>
 
-		<?php if ( give_is_donor_thought_field_enabled( $form_id ) ) : ?>
+		<?php if ( give_is_donor_comment_field_enabled( $form_id ) ) : ?>
 			<p id="give-comment-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-comment">
 					<?php _e( 'Comment', 'give' ); ?>
