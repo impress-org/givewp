@@ -269,7 +269,6 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 
 /**
->>>>>>> release/2.0
  * Register gateway settings.
  *
  * @param $settings
