@@ -178,7 +178,7 @@ class Give_Session {
 			$this->generate_donor_id();
 		}
 
-		add_action( 'give_pre_process_donation', array( $this, '__setup_donor_session' ) );
+		add_action( 'give_process_donation_after_validation', array( $this, 'maybe_start_session' ) );
 
 		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
 		add_action( 'wp_logout', array( $this, 'destroy_session' ) );
@@ -482,22 +482,6 @@ class Give_Session {
 		}
 
 		return $name;
-	}
-
-	/**
-	 * Start donor session when donation processing starts
-	 * Note: for internal logic only.
-	 *
-	 * @since  2.2.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function __setup_donor_session() { // @codingStandardsIgnoreLine
-		// Processing donation instead of just validating donation data
-		if ( ! isset( $_POST['give_ajax'] ) ) { //// @codingStandardsIgnoreLine
-			$this->maybe_start_session();
-		}
 	}
 
 	/**

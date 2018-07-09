@@ -335,7 +335,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'    => __( 'Donor Comment', 'give' ),
 							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
-							'id'      => "{$prefix}donor_thought",
+							'id'      => "{$prefix}donor_comment",
 							'type'    => 'radio_inline',
 							'default' => 'global',
 							'options' => array(

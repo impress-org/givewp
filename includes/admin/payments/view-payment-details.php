@@ -883,7 +883,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 							do_action( 'give_view_donation_details_main_after', $payment_id );
 							?>
 
-							<?php if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) : ?>
+							<?php if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) : ?>
 								<div id="give-payment-donor-comment" class="postbox">
 									<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
 
