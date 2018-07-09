@@ -73,10 +73,23 @@
 	 * Contains buttons of the dialog.
 	 */
 	.give-modal__controls {
+		position: relative;
 		padding: 1rem 1.5rem;
 		background-color: #fbfbfb;
 		border-top: 1px solid #d7d7d7;
 		text-align: right;
+
+		.spinner {
+			display: none;
+			visibility: visible;
+			margin-left: 0;
+			float: left;
+		}
+	}
+
+	&--additional-link {
+		float: left;
+		line-height: 26px;
 	}
 }
 

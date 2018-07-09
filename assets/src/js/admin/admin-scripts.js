@@ -9,8 +9,6 @@
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 import {GiveShortcodeButton} from './shortcode-button.js';
 
-jQuery.noConflict();
-
 // Provided access to global level.
 var give_setting_edit = false;
 

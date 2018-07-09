@@ -210,6 +210,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					break;
 				case 'payment_gateway':
 					$cols['payment_gateway'] = __( 'Payment Gateway', 'give' );
+				case 'payment_mode':
+					$cols['payment_mode'] = __( 'Payment Mode', 'give' );
 					break;
 				case 'form_id':
 					$cols['form_id'] = __( 'Form ID', 'give' );
@@ -375,6 +377,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$data[ $i ]['payment_gateway'] = $payment->gateway;
 				}
 
+				if ( ! empty( $columns['payment_mode'] ) ) {
+					$data[ $i ]['payment_mode'] = $payment->mode;
+				}
+
 				if ( ! empty( $columns['form_id'] ) ) {
 					$data[ $i ]['form_id'] = $payment->form_id;
 				}
@@ -443,6 +449,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					'address_country',
 					'donation_total',
 					'payment_gateway',
+					'payment_mode',
 					'form_id',
 					'form_title',
 					'form_level_id',

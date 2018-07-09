@@ -1236,3 +1236,90 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	return $html;
 }
+
+/**
+ * Get the default donation form's level id.
+ *
+ * @since 2.2.0
+ *
+ * @param integer $form_id Donation Form ID.
+ *
+ * @return null | array
+ */
+function give_form_get_default_level( $form_id ) {
+	$default_level = null;
+
+	// If donation form has variable prices.
+	if ( give_has_variable_prices( $form_id ) ) {
+		/**
+		 * Filter the variable pricing
+		 *
+		 *
+		 * @since      1.0
+		 * @deprecated 2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
+		 *                 Check Give_Donate_Form::get_prices().
+		 *
+		 * @param array $prices Array of variable prices.
+		 * @param int   $form   Form ID.
+		 */
+		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+
+		// Go through each of the level and get the default level id.
+		foreach ( $prices as $level ) {
+			if (
+				isset( $level['_give_default'] )
+				&& $level['_give_default'] === 'default'
+			) {
+				$default_level = $level;
+			}
+		}
+	}
+
+	/**
+	 * Filter the default donation level id.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array   $default_level Default level price data.
+	 * @param integer $form_id       Donation form ID.
+	 */
+	return apply_filters( 'give_form_get_default_level', $default_level, $form_id );
+}
+
+/**
+ * Get the default level id.
+ *
+ * @since 2.2.0
+ *
+ * @param array|integer   $price_or_level_id Price level data.
+ * @param boolean|integer $form_id           Donation Form ID.
+ *
+ * @return boolean
+ */
+function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
+	$is_default = false;
+
+	if (
+		! empty( $form_id )
+		&& is_numeric( $price_or_level_id )
+	) {
+		// Get default level id.
+		$form_price_data = give_form_get_default_level( $form_id );
+
+		$is_default = ! is_null( $form_price_data ) && ( $price_or_level_id === absint( $form_price_data['_give_id']['level_id'] ) );
+	}
+
+	$is_default = false === $is_default && is_array( $price_or_level_id ) ?
+		( isset( $price_or_level_id['_give_default'] ) && $price_or_level_id['_give_default'] === 'default' )
+		: $is_default;
+
+	/**
+	 * Allow developers to modify the default level id checks.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param bool          $is_default        True if it is default price level id otherwise false.
+	 * @param array|integer $price_or_level_id Price Data.
+	 */
+	return apply_filters( 'give_is_default_level_id', $is_default, $price_or_level_id );
+}

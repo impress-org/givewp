@@ -85,7 +85,7 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
 function give_get_default_donation_notification_email() {
 
 	$default_email_body = __( 'Hi there,', 'give' ) . "\n\n";
-	$default_email_body .= __( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
+	$default_email_body .= __( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' {site_url}' . ".\n\n";
 	$default_email_body .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n";

@@ -49,6 +49,13 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'placeholder' => esc_html__( 'All Forms', 'give' )
 			),
 			array(
+				'type'        => 'textbox',
+				'name'        => 'exclude',
+				'label'       => esc_attr__( 'Excluded Form IDs:', 'give' ),
+				'tooltip'     => esc_attr__( 'Enter a comma-separated list of form IDs to exclude those from the grid.', 'give' ),
+				'placeholder' => esc_html__( 'Excluded Forms', 'give' )
+			),
+			array(
 				'type'        => 'listbox',
 				'name'        => 'columns',
 				'label'       => esc_attr__( 'Columns:', 'give' ),

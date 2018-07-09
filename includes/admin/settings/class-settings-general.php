@@ -443,6 +443,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 				'currency-settings'   => __( 'Currency', 'give' ),
 				'access-control'      => __( 'Access Control', 'give' ),
 				'sequential-ordering' => __( 'Sequential Ordering', 'give' ),
+				'contact'             => __( 'Contact Information', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

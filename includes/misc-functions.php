@@ -2249,5 +2249,23 @@ function give_get_user_agent() {
 	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
 
 	return $user_agent;
+}
 
+/**
+ * Set a cookie - wrapper for setcookie using WP constants.
+ *
+ * @since 2.2.0
+ *
+ * @param  string  $name   Name of the cookie being set.
+ * @param  string  $value  Value of the cookie.
+ * @param  integer $expire Expiry of the cookie.
+ * @param  bool    $secure Whether the cookie should be served only over https.
+ */
+function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
+	if ( ! headers_sent() ) {
+		setcookie(
+			$name,$value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure,
+			apply_filters( 'give_cookie_httponly', false, $name, $value, $expire, $secure )
+		);
+	}
 }

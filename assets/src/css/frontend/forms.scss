@@ -75,6 +75,12 @@ Layout
 		margin: 20px 0 0 0;
 	}
 
+	&.give-display-modal {
+		form .give_notices {
+			display: none;
+		}
+	}
+
 	&.give-display-reveal, &.give-display-modal {
 		.give-btn {
 			margin: 0 0 15px;
@@ -730,6 +736,14 @@ User Login
 	}
 }
 
+.give-user-login-fields-container {
+	&:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+}
+
 /* Login Shortcode Form */
 #give-login-form,
 #give-register-form {
@@ -762,6 +776,9 @@ div.mfp-content {
 		}
 	}
 
+	form[id*='give-form'] .give_notices {
+		display: block !important;
+	}
 }
 
 /*---------------------------------

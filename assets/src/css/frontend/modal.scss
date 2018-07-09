@@ -141,6 +141,13 @@
 	}
 }
 
+.modal-fade-slide.give-modal {
+	.mfp-content {
+		padding: 0;
+		max-width: 100%;
+	}
+}
+
 .modal-fade-slide .give-modal--slide {
 	opacity: 0;
 	transition: all 0.2s ease-out;
