@@ -266,7 +266,7 @@ function give_get_emails_tags_list() {
  */
 function give_do_email_tags( $content, $tag_args ) {
 	// Backward compatibility < 2.0
-	if ( ! is_array( $tag_args ) ) {
+	if ( ! is_array( $tag_args ) && is_numeric( $tag_args ) ) {
 		$tag_args = array( 'payment_id' => $tag_args );
 	}
 
