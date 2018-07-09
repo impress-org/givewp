@@ -306,9 +306,10 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
-	$comment_id = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$comment_id            = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$is_anonymous_donation = give_is_anonymous_donation_field_enabled( $payment->form_id );
 
-	if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
+	if ( $is_anonymous_donation ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
 		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
 
