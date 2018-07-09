@@ -71,7 +71,7 @@ msgstr ""
 msgid "Unable to send email. Please try again."
 msgstr ""
 
-#: includes/ajax-functions.php:707, includes/class-give-scripts.php:340, templates/email-login-form.php:33
+#: includes/ajax-functions.php:707, includes/class-give-scripts.php:352, templates/email-login-form.php:33
 msgid "Please check your email and click on the link to access your complete donation history."
 msgstr ""
 
@@ -691,59 +691,59 @@ msgstr ""
 msgid "Changes you made may not be saved."
 msgstr ""
 
-#: includes/class-give-scripts.php:351
+#: includes/class-give-scripts.php:363
 msgid "Please select a payment method."
 msgstr ""
 
-#: includes/class-give-scripts.php:352
+#: includes/class-give-scripts.php:364
 msgid "The minimum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:353
+#: includes/class-give-scripts.php:365
 msgid "The maximum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:354
+#: includes/class-give-scripts.php:366
 msgid "Loading..."
 msgstr ""
 
-#: includes/class-give-scripts.php:355
+#: includes/class-give-scripts.php:367
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/class-give-scripts.php:369
+#: includes/class-give-scripts.php:381
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:370, includes/process-donation.php:547, includes/shortcodes.php:449, includes/admin/admin-actions.php:786
+#: includes/class-give-scripts.php:382, includes/process-donation.php:550, includes/shortcodes.php:449, includes/admin/admin-actions.php:786
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:371, includes/process-donation.php:543
+#: includes/class-give-scripts.php:383, includes/process-donation.php:546
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-give-scripts.php:372, includes/user-functions.php:305
+#: includes/class-give-scripts.php:384, includes/user-functions.php:305
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed."
 msgstr ""
 
-#: includes/class-give-scripts.php:373, includes/process-donation.php:847, includes/user-functions.php:410
+#: includes/class-give-scripts.php:385, includes/process-donation.php:850, includes/user-functions.php:410
 msgid "Enter a password."
 msgstr ""
 
-#: includes/class-give-scripts.php:374, includes/user-functions.php:414
+#: includes/class-give-scripts.php:386, includes/user-functions.php:414
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:375, includes/process-donation.php:522
+#: includes/class-give-scripts.php:387, includes/process-donation.php:525
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
-#: includes/class-give-scripts.php:382
+#: includes/class-give-scripts.php:394
 msgid "Loading"
 msgstr ""
 
-#: includes/class-give-scripts.php:384, includes/admin/tools/views/html-admin-page-data.php:33
+#: includes/class-give-scripts.php:396, includes/admin/tools/views/html-admin-page-data.php:33
 msgid "Please select an option"
 msgstr ""
 
@@ -5087,7 +5087,7 @@ msgstr ""
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:677, includes/formatting.php:714, includes/process-donation.php:725
+#: includes/formatting.php:677, includes/formatting.php:714, includes/process-donation.php:728
 msgid "Nonce verification has failed."
 msgstr ""
 
@@ -5315,11 +5315,11 @@ msgstr ""
 msgid "Donation History"
 msgstr ""
 
-#: includes/login-register.php:118, includes/process-donation.php:827
+#: includes/login-register.php:118, includes/process-donation.php:830
 msgid "The password you entered is incorrect."
 msgstr ""
 
-#: includes/login-register.php:121, includes/process-donation.php:851
+#: includes/login-register.php:121, includes/process-donation.php:854
 msgid "The username you entered does not exist."
 msgstr ""
 
@@ -5335,7 +5335,7 @@ msgstr ""
 msgid "Email address already taken."
 msgstr ""
 
-#: includes/login-register.php:261, includes/process-donation.php:697, includes/process-donation.php:892, includes/user-functions.php:364, includes/admin/donors/donor-actions.php:441
+#: includes/login-register.php:261, includes/process-donation.php:700, includes/process-donation.php:895, includes/user-functions.php:364, includes/admin/donors/donor-actions.php:441
 msgid "Invalid email."
 msgstr ""
 
@@ -5702,95 +5702,95 @@ msgid "Widgets in this area will be shown on the single Give forms aside area. T
 msgstr ""
 
 #. translators: 1. Donor Email, 2. Submitted Email
-#: includes/process-donation.php:217
+#: includes/process-donation.php:220
 msgid "You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address."
 msgstr ""
 
 #. translators: %s: user first name
-#: includes/process-donation.php:267
+#: includes/process-donation.php:270
 msgid "Welcome %s! You have successfully logged into your account."
 msgstr ""
 
-#: includes/process-donation.php:297
+#: includes/process-donation.php:300
 msgid "Honeypot field detected. Go away bad bot!"
 msgstr ""
 
-#: includes/process-donation.php:306
+#: includes/process-donation.php:309
 msgid "This donation has been flagged as spam. Please try again."
 msgstr ""
 
-#: includes/process-donation.php:403
+#: includes/process-donation.php:406
 msgid "The donation form will process with a valid payment gateway."
 msgstr ""
 
-#: includes/process-donation.php:407
+#: includes/process-donation.php:410
 msgid "The selected payment gateway is not enabled."
 msgstr ""
 
-#: includes/process-donation.php:411
+#: includes/process-donation.php:414
 msgid "Please insert a valid donation amount."
 msgstr ""
 
 #. translators: %s: minimum donation amount
-#: includes/process-donation.php:419
+#: includes/process-donation.php:422
 msgid "This form has a minimum donation amount of %s."
 msgstr ""
 
 #. translators: %s: Maximum donation amount
-#: includes/process-donation.php:435
+#: includes/process-donation.php:438
 msgid "This form has a maximum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:556
+#: includes/process-donation.php:559
 msgid "Please enter your primary billing address."
 msgstr ""
 
-#: includes/process-donation.php:560
+#: includes/process-donation.php:563
 msgid "Please enter your zip / postal code."
 msgstr ""
 
-#: includes/process-donation.php:564
+#: includes/process-donation.php:567
 msgid "Please enter your billing city."
 msgstr ""
 
-#: includes/process-donation.php:568
+#: includes/process-donation.php:571
 msgid "Please select your billing country."
 msgstr ""
 
-#: includes/process-donation.php:574
+#: includes/process-donation.php:577
 msgid "Please enter billing state / province / County."
 msgstr ""
 
-#: includes/process-donation.php:613
+#: includes/process-donation.php:616
 msgid "Please enter Company Name."
 msgstr ""
 
-#: includes/process-donation.php:702
+#: includes/process-donation.php:705
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:800, includes/user-functions.php:319
+#: includes/process-donation.php:803, includes/user-functions.php:319
 msgid "You must register or login to complete your donation."
 msgstr ""
 
-#: includes/process-donation.php:829, includes/forms/template.php:1350, templates/shortcode-login.php:46
+#: includes/process-donation.php:832, includes/forms/template.php:1350, templates/shortcode-login.php:46
 msgid "Reset Password"
 msgstr ""
 
-#: includes/process-donation.php:908, includes/user-functions.php:354
+#: includes/process-donation.php:911, includes/user-functions.php:354
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:1087
+#: includes/process-donation.php:1090
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
 #. translators: %s: invalid donation amount
-#: includes/process-donation.php:1396
+#: includes/process-donation.php:1399
 msgid "Donation amount %s is invalid."
 msgstr ""
 
-#: includes/process-donation.php:1447
+#: includes/process-donation.php:1450
 msgid "The First Name and Last Name fields cannot contain an email address or numbers."
 msgstr ""
 
@@ -10133,47 +10133,47 @@ msgstr ""
 msgid "Give Updates"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:611, includes/admin/upgrades/class-give-updates.php:619, includes/admin/upgrades/class-give-updates.php:676
-msgid "Database Update"
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:612
-msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a backup before proceeding."
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:616
-msgid "Restart the updater"
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:620, includes/admin/upgrades/class-give-updates.php:817, includes/admin/upgrades/views/upgrades.php:68
-msgid "An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance."
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:621, includes/admin/upgrades/class-give-updates.php:649, includes/admin/upgrades/views/upgrades.php:50
-msgid "Read More"
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:647, includes/admin/upgrades/views/upgrades.php:48
+#: includes/admin/upgrades/class-give-updates.php:614, includes/admin/upgrades/views/upgrades.php:46
 msgid "Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:663, includes/admin/upgrades/class-give-updates.php:824, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:11
+#: includes/admin/upgrades/class-give-updates.php:616, includes/admin/upgrades/class-give-updates.php:641, includes/admin/upgrades/views/upgrades.php:48
+msgid "Read More"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:631, includes/admin/upgrades/class-give-updates.php:639, includes/admin/upgrades/class-give-updates.php:677
+msgid "Database Update"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:632
+msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a backup before proceeding."
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:636
+msgid "Restart the updater"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:640, includes/admin/upgrades/class-give-updates.php:818, includes/admin/upgrades/views/upgrades.php:69
+msgid "An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance."
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:664, includes/admin/upgrades/class-give-updates.php:825, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:11
 msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:677
+#: includes/admin/upgrades/class-give-updates.php:678
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a complete backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:681
+#: includes/admin/upgrades/class-give-updates.php:682
 msgid "Run the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:811, includes/admin/upgrades/views/upgrades.php:70
+#: includes/admin/upgrades/class-give-updates.php:812, includes/admin/upgrades/views/upgrades.php:71
 msgid "The updates have been paused."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:825, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:7
+#: includes/admin/upgrades/class-give-updates.php:826, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:7
 msgid "Updates Completed."
 msgstr ""
 
@@ -11784,39 +11784,39 @@ msgstr ""
 msgid "Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:55
+#: includes/admin/upgrades/views/upgrades.php:57
 msgid "%1$s <a href=\"%2$s\" class=\"give-update-now %3$s\">%4$s</a>"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:57
+#: includes/admin/upgrades/views/upgrades.php:59
 msgid "Give is currently updating the database in the background."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:58
+#: includes/admin/upgrades/views/upgrades.php:60
 msgid "Give needs to update the database."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:61
+#: includes/admin/upgrades/views/upgrades.php:63
 msgid "Update now"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:77
+#: includes/admin/upgrades/views/upgrades.php:78
 msgid "Restart Upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:81
+#: includes/admin/upgrades/views/upgrades.php:82
 msgid "Pause Upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:91
+#: includes/admin/upgrades/views/upgrades.php:92
 msgid "Update %s of %s"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:133
+#: includes/admin/upgrades/views/upgrades.php:134
 msgid "Add-on Updates"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:139
+#: includes/admin/upgrades/views/upgrades.php:140
 msgid "There is %1$d Give addon that needs to be updated. <a href=\"%2$s\">Update now</a>"
 msgid_plural "There are %1$d Give addons that need to be updated. <a href=\"%2$s\">Update now</a>"
 msgstr[0] ""

@@ -208,6 +208,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.1.7: July 5th, 2018 =
+* Fix: We have moved "babel-polyfill" to Give Core for better browser compatibility so our various add-ons can use it and it's not enqueued multiple times which can cause errors. [#3433](https://github.com/WordImpress/Give/issues/3433)
+
 = 2.1.6: June 20th, 2018 =
 * Fix: DB Update incorrectly appears on fresh installs. [#3390](https://github.com/wordimpress/give/issues/3390)
 * Fix: Ensure the level title in the exported CSV reads custom on custom donations. [#3380](https://github.com/wordimpress/give/issues/3380)
