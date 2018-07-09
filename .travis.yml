@@ -2,18 +2,11 @@ language: php
 
 sudo: false
 
-php:
-  - 5.6
-  - 7.0
-  - 7.1
-
 env:
   - WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
 
 matrix:
   include:
-  - php: 5.6
-    env: WP_VERSION=latest WP_MULTISITE=1 PHP_LATEST_STABLE=7.1
   - php: 5.3
     env: WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
     dist: precise
@@ -23,9 +16,10 @@ before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - bash tests/bin/install.sh give_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
+  - git clone git://github.com/wimg/PHPCompatibility.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/PHPCompatibility
 
 script:
-  - phpunit -c phpunit.xml
+  - phpcs --standard=PHPCompatibility -d date.timezone=Europe/Amsterdam  --extensions=php,inc,module,install --runtime-set testVersion 5.2-7.2 -pvs .
 
 after_script:
   - bash tests/bin/travis.sh after
