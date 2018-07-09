@@ -1827,7 +1827,7 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
 }
 
 /**
- * Check if donor thought field enabled or not for form or globally.
+ * Check if donor comment field enabled or not for form or globally.
  *
  * @since 2.1
  *
