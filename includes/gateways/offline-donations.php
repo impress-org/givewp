@@ -383,8 +383,6 @@ function give_get_default_offline_donation_content() {
  * @return string
  */
 function give_get_default_offline_donation_email_content() {
-
-	$sitename     = get_bloginfo( 'sitename' );
 	$default_text = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . __( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
