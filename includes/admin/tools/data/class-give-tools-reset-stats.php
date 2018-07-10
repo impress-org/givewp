@@ -133,9 +133,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 							WHERE $wpdb->terms.term_id IN
 							(SELECT $wpdb->term_taxonomy.term_id
 							FROM $wpdb->term_taxonomy
-							WHERE $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_category'
-							OR $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_tag')";
-						$sql[] = "DELETE FROM $wpdb->term_taxonomy WHERE $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_category' OR $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_tag'";
+							WHERE $wpdb->term_taxonomy.taxonomy = 'give_forms_category'
+							OR $wpdb->term_taxonomy.taxonomy = 'give_forms_tag')";
+						$sql[] = "DELETE FROM $wpdb->term_taxonomy WHERE $wpdb->term_taxonomy.taxonomy = 'give_forms_category' OR $wpdb->term_taxonomy.taxonomy = 'give_forms_tag'";
 						break;
 				}
 
