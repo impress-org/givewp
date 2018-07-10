@@ -1298,10 +1298,15 @@ function give_get_register_fields( $form_id ) {
 						<input type="checkbox" name="give_create_account" value="on" id="<?php echo $id; ?>" class="give-input" />
 						<?php
 					}
+
+					_e( 'Create an account', 'give' );
+					echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
+					echo str_replace(
+						'/>',
+						'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
+						give_get_nonce_field( "give_form_create_user_nonce_{$form_id}", 'give-form-user-register-hash', false )
+					);
 					?>
-					<?php _e( 'Create an account', 'give' ); ?>
-					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
-					<?php wp_nonce_field( 'give_form_create_user_nonce', 'give-form-user-register-hash', false, true );?>
 				</label>
 			</div>
 
