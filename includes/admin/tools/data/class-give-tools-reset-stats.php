@@ -128,14 +128,27 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
-						$sql[] = "DELETE
-							FROM $wpdb->terms
+						$sql[] = $wpdb->prepare(
+							"
+							DELETE FROM $wpdb->terms
 							WHERE $wpdb->terms.term_id IN
-							(SELECT $wpdb->term_taxonomy.term_id
-							FROM $wpdb->term_taxonomy
-							WHERE $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_category'
-							OR $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_tag')";
-						$sql[] = "DELETE FROM $wpdb->term_taxonomy WHERE $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_category' OR $wpdb->term_taxonomy.taxonomy LIKE 'give_forms_tag'";
+							(
+								SELECT $wpdb->term_taxonomy.term_id
+								FROM $wpdb->term_taxonomy
+								WHERE $wpdb->term_taxonomy.taxonomy = %s
+								OR $wpdb->term_taxonomy.taxonomy = %s
+							)
+							",
+							array( 'give_forms_category', 'give_forms_tag' )
+						);
+						$sql[] = $wpdb->prepare(
+							"
+							DELETE FROM $wpdb->term_taxonomy
+							WHERE $wpdb->term_taxonomy.taxonomy = %s
+							OR $wpdb->term_taxonomy.taxonomy = %s
+							",
+							array( 'give_forms_category', 'give_forms_tag' )
+						);
 						break;
 				}
 
