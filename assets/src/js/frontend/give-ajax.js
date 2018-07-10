@@ -25,7 +25,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// Reset nonce if session started and page loaded from html cache.
 		if( resetNonce ) {
-			Give.form.fn.resetNonce($form);
+			Give.form.fn.resetAllNonce($form);
 		}
 
 		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
@@ -36,10 +36,10 @@ jQuery( document ).ready( function( $ ) {
 		let timeDiff = nonceTime - currentTime;
 
 		timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
-		
+
 		// Update nonce in background.
 		window.setTimeout(function () {
-			Give.form.fn.resetNonce($form);
+			Give.form.fn.resetAllNonce($form);
 		}, timeDiff);
 	});
 
@@ -124,7 +124,7 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
 				// Create and update nonce.
-				Give.form.fn.resetNonce( this_form );
+				Give.form.fn.resetAllNonce( this_form );
 
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );

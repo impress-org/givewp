@@ -115,7 +115,7 @@ jQuery( function( $ ) {
 
 			if ( form.length ) {
 				form[0].reset();
-				Give.form.fn.resetNonce(form);
+				Give.form.fn.resetAllNonce(form);
 			}
 		}
 	});
