@@ -86,6 +86,42 @@ function give_donation_form_nonce() {
 add_action( 'wp_ajax_give_donation_form_nonce', 'give_donation_form_nonce' );
 add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce' );
 
+
+/**
+ * Create all nonce of donation form using Ajax call.
+ * Note: only for internal use
+ *
+ * @since 2.2.0
+ *
+ * @return void
+ */
+function __give_donation_form_reset_all_nonce() {
+	if ( isset( $_POST['give_form_id'] ) ) {
+
+		// Get donation form id.
+		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+
+		$data = array(
+			'give_form_hash'               => wp_create_nonce( "give_donation_form_nonce_{$form_id}" ),
+			'give_form_user_register_hash' => wp_create_nonce( 'give_form_create_user_nonce' )
+		);
+
+		/**
+		 * Filter the ajax request data
+		 *
+		 * @since  2.2.0
+		 *
+		 */
+		$data = apply_filters( 'give_donation_form_reset_all_nonce_data', $data );
+
+		// Send nonce json data.
+		wp_send_json_success( $data );
+	}
+}
+
+add_action( 'wp_ajax_give_donation_form_reset_all_nonce', '__give_donation_form_reset_all_nonce' );
+add_action( 'wp_ajax_nopriv_give_donation_form_reset_all_nonce', '__give_donation_form_reset_all_nonce' );
+
 /**
  * Sets an error within the donation form if no gateways are enabled.
  * @todo: we can deprecate this function in future because gateways will not empty if get via Give API.
