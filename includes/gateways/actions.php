@@ -103,7 +103,7 @@ function __give_donation_form_reset_all_nonce() {
 
 		$data = array(
 			'give_form_hash'               => wp_create_nonce( "give_donation_form_nonce_{$form_id}" ),
-			'give_form_user_register_hash' => wp_create_nonce( 'give_form_create_user_nonce' )
+			'give_form_user_register_hash' => wp_create_nonce( "give_form_create_user_nonce_{$form_id}" )
 		);
 
 		/**
