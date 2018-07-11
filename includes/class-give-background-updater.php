@@ -324,8 +324,10 @@ class Give_Background_Updater extends WP_Background_Process {
 	 *
 	 * Checks whether data exists within the queue and that
 	 * the process is not already running.
+	 *
+	 * @param bool $die Run wp_die when update process completes.
 	 */
-	public function maybe_handle() {
+	public function maybe_handle( $die = true ) {
 		// Don't lock up other requests while processing
 		session_write_close();
 
@@ -341,9 +343,62 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		check_ajax_referer( $this->identifier, 'nonce' );
 
-		$this->handle();
+		$this->handle( $die );
 
-		wp_die();
+		if( $die ) {
+			wp_die();
+		}
+	}
+
+	/**
+	 * Handle
+	 *
+	 * Pass each queue item to the task handler, while remaining
+	 * within server memory and time limit constraints.
+	 *
+	 * @param bool $die Run wp_die when update process completes.
+	 */
+	protected function handle( $die = true ) {
+		$this->lock_process();
+
+		do {
+			$batch = $this->get_batch();
+
+			foreach ( $batch->data as $key => $value ) {
+				$task = $this->task( $value );
+
+				if ( false !== $task ) {
+					$batch->data[ $key ] = $task;
+				} else {
+					unset( $batch->data[ $key ] );
+				}
+
+				if ( $this->time_exceeded() || $this->memory_exceeded() ) {
+					// Batch limits reached.
+					break;
+				}
+			}
+
+			// Update or delete current batch.
+			if ( ! empty( $batch->data ) ) {
+				$this->update( $batch->key, $batch->data );
+			} else {
+				$this->delete( $batch->key );
+			}
+		} while ( ! $this->time_exceeded() && ! $this->memory_exceeded() && ! $this->is_queue_empty() );
+
+		$this->unlock_process();
+
+		// Start next batch or complete process.
+		if ( ! $this->is_queue_empty() ) {
+			$this->dispatch();
+		} else {
+			$this->complete();
+		}
+
+		if( $die ) {
+			wp_die();
+		}
 	}
 
 
