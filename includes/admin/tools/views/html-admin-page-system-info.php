@@ -619,8 +619,12 @@ $give_updates = Give_Updates::get_instance();
 			<td>
 				<?php
 				$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
-				if ( is_array( $last_paypal_ipn_received ) && count( $last_paypal_ipn_received ) > 0 ) {
-					$donation_id     = $last_paypal_ipn_received['payment_id'];
+				$donation_id              = $last_paypal_ipn_received['payment_id'];
+				if (
+					is_array( $last_paypal_ipn_received )
+					&& count( $last_paypal_ipn_received ) > 0
+					&& get_post( $donation_id ) instanceof WP_Post
+				) {
 					$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
 					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
 					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
