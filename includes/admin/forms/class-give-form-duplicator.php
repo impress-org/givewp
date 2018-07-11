@@ -89,7 +89,7 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 			// @codingStandardsIgnoreEnd
 
 			$form_id      = give_clean( $_REQUEST['form_id'] ); // @codingStandardsIgnoreLine
-			$post_data         = get_post( $form_id );
+			$post_data    = get_post( $form_id );
 			$current_user = wp_get_current_user();
 			$error_notice = sprintf(
 				/* translators: %s: Form ID */
@@ -120,6 +120,17 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 				$this->duplicate_taxonomies( $duplicate_form_id, $post_data );
 				$this->duplicate_meta_data( $duplicate_form_id, $post_data );
+				$this->reset_stats( $duplicate_form_id );
+
+				/**
+				 * Fire the action
+				 *
+				 * @since 2.2.0
+				 *
+				 * @param int $duplicate_form_id Duplicated form ID.
+				 * @param int $form_id           Form ID.
+				 */
+				do_action( 'give_form_duplicated', $duplicate_form_id, $form_id );
 
 				if ( ! is_wp_error( $duplicate_form_id ) ) {
 					// Redirect to the cloned form editor page.
@@ -201,8 +212,8 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 				$duplicate_query_select = array();
 
 				foreach ( $post_meta_data as $meta_data ) {
-					$meta_key             = $meta_data->meta_key;
-					$meta_value           = $meta_data->meta_value;
+					$meta_key                 = $meta_data->meta_key;
+					$meta_value               = $meta_data->meta_value;
 					$duplicate_query_select[] = $wpdb->prepare( 'SELECT %s, %s, %s', $new_form_id, $meta_key, $meta_value );
 				}
 
@@ -210,6 +221,40 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 				$wpdb->query( $duplicate_query ); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
 			}
+		}
+
+		/**
+		 * Reset stats for cloned form
+		 *
+		 * @since  2.2.0
+		 * @access private
+		 *
+		 * @param int $new_form_id New Form ID.
+		 */
+		private function reset_stats( $new_form_id ) {
+			global $wpdb;
+
+			$meta_keys = array( '_give_form_sales', '_give_form_earnings' );
+
+			/**
+			 * Fire the filter
+			 *
+			 * @since  2.2.0
+			 */
+			$meta_keys = apply_filters( 'give_duplicate_form_reset_stat_meta_keys', $meta_keys );
+			$meta_keys = 'meta_key=\'' . implode( '\' OR meta_key=\'', $meta_keys ) . '\'';
+
+			$wpdb->query(
+				$wpdb->prepare(
+					"
+					UPDATE $wpdb->formmeta
+					SET meta_value=0
+					WHERE form_id=%d
+					AND ({$meta_keys})
+					",
+					$new_form_id
+				)
+			);
 		}
 	}
 
