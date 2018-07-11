@@ -120,6 +120,17 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 				$this->duplicate_taxonomies( $duplicate_form_id, $post_data );
 				$this->duplicate_meta_data( $duplicate_form_id, $post_data );
+				$this->reset_stats( $duplicate_form_id );
+
+				/**
+				 * Fire the action
+				 *
+				 * @since 2.2.0
+				 *
+				 * @param int $duplicate_form_id Duplicated form ID.
+				 * @param int $form_id           Form ID.
+				 */
+				do_action( 'give_form_duplicated', $duplicate_form_id, $form_id );
 
 				if ( ! is_wp_error( $duplicate_form_id ) ) {
 					// Redirect to the cloned form editor page.
@@ -210,6 +221,40 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 				$wpdb->query( $duplicate_query ); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
 			}
+		}
+
+		/**
+		 * Reset stats for cloned form
+		 *
+		 * @since  2.2.0
+		 * @access private
+		 *
+		 * @param int $new_form_id New Form ID.
+		 */
+		private function reset_stats( $new_form_id ) {
+			global $wpdb;
+
+			$meta_keys = array( '_give_form_sales', '_give_form_earnings' );
+
+			/**
+			 * Fire the filter
+			 *
+			 * @since  2.2.0
+			 */
+			$meta_keys = apply_filters( 'give_clone_form_reset_stat_meta_keys', $meta_keys );
+			$meta_keys = 'meta_key=\'' . implode( '\' OR meta_key=\'', $meta_keys ) . '\'';
+
+			$wpdb->query(
+				$wpdb->prepare(
+					"
+					UPDATE $wpdb->formmeta
+					SET meta_value=0
+					WHERE form_id=%d
+					AND ({$meta_keys})
+					",
+					$new_form_id
+				)
+			);
 		}
 	}
 
