@@ -89,7 +89,7 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 			// @codingStandardsIgnoreEnd
 
 			$form_id      = give_clean( $_REQUEST['form_id'] ); // @codingStandardsIgnoreLine
-			$post_data         = get_post( $form_id );
+			$post_data    = get_post( $form_id );
 			$current_user = wp_get_current_user();
 			$error_notice = sprintf(
 				/* translators: %s: Form ID */
@@ -212,8 +212,8 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 				$duplicate_query_select = array();
 
 				foreach ( $post_meta_data as $meta_data ) {
-					$meta_key             = $meta_data->meta_key;
-					$meta_value           = $meta_data->meta_value;
+					$meta_key                 = $meta_data->meta_key;
+					$meta_value               = $meta_data->meta_value;
 					$duplicate_query_select[] = $wpdb->prepare( 'SELECT %s, %s, %s', $new_form_id, $meta_key, $meta_value );
 				}
 
