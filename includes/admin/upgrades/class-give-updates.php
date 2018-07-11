@@ -808,9 +808,7 @@ class Give_Updates {
 		$response_type = '';
 
 		// Start update if ajax is not working.
-		if( ! give_test_ajax_works() ){
-			self::$background_updater->maybe_handle();
-		}
+		self::$background_updater->maybe_handle( false );
 
 		if ( self::$background_updater->is_paused_process() ) {
 			$update_info = array(
