@@ -106,6 +106,9 @@ function give_edit_donor( $args ) {
 
 	$donor->update_meta( '_give_anonymous_donor', absint( $args['give_anonymous_donor'] ) );
 
+	// Save company name in when admin update donor company name from dashboard.
+	$donor->update_meta( '_give_donor_company', sanitize_text_field( $args['give_donor_company'] ) );
+
 	// If First name of donor is empty, then fetch the current first name of donor.
 	if ( empty( $donor_info['first_name'] ) ) {
 		$donor_info['first_name'] = $donor->get_first_name();
