@@ -727,7 +727,7 @@ class Give_Cache {
 		       && isset( $_POST['cache'] )
 		       && give_is_setting_enabled( give_clean( $_POST['cache'] ) )
 		     )
-			|| ( wp_doing_ajax() && 'give_cache_flush' === give_clean( $_GET['action'] ) )
+			|| ( wp_doing_ajax() &&  isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) )
 		) {
 			self::$instance->get_incrementer( true );
 			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
