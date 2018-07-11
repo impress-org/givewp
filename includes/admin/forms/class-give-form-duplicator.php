@@ -241,7 +241,7 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 			 *
 			 * @since  2.2.0
 			 */
-			$meta_keys = apply_filters( 'give_clone_form_reset_stat_meta_keys', $meta_keys );
+			$meta_keys = apply_filters( 'give_duplicate_form_reset_stat_meta_keys', $meta_keys );
 			$meta_keys = 'meta_key=\'' . implode( '\' OR meta_key=\'', $meta_keys ) . '\'';
 
 			$wpdb->query(
