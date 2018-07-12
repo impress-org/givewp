@@ -749,14 +749,19 @@ function give_confirm_email_for_donation_access() {
 
 add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_confirm_email_for_donation_access' );
 
-
+/**
+ * Render receipt by ajax
+ * Note: only for internal use
+ *
+ * @since 2.2.0
+ */
 function __give_get_receipt(){
-	$data = array();
-
-	if( isset( $_POST['shortcode_atts'] ) ) {
-		$atts = urldecode_deep( give_clean( $_POST['shortcode_atts'] ) );
-		$data['html'] = give_receipt_shortcode( $atts );
+	if( ! isset( $_POST['shortcode_atts'] ) ) {
+		give_die();
 	}
+
+	$atts = urldecode_deep( give_clean( $_POST['shortcode_atts'] ) );
+	$data = give_receipt_shortcode( $atts );
 
 	wp_send_json( $data );
 }
