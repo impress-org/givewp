@@ -347,7 +347,7 @@ class Give_Updates {
 		// Do not stop background process immediately if task running.
 		// @see Give_Background_Updater::lock_process
 		if ( ! $force && self::$background_updater->is_process_running() ) {
-			update_option( 'give_pause_upgrade', 1 );
+			update_option( 'give_pause_upgrade', 1, 'no' );
 
 			return true;
 		}
@@ -780,6 +780,8 @@ class Give_Updates {
 			! current_user_can( 'manage_give_settings' ) ||
 			$this->is_doing_updates()
 		) {
+			self::$background_updater->dispatch();
+
 			wp_send_json_error();
 		}
 
@@ -806,9 +808,6 @@ class Give_Updates {
 	public function __give_db_updates_info() {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
-
-		// Start update if ajax is not working.
-		self::$background_updater->maybe_handle( false );
 
 		if ( self::$background_updater->is_paused_process() ) {
 			$update_info = array(

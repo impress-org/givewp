@@ -31,8 +31,11 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Updater will still run via cron job if this fails for any reason.
 	 */
 	public function dispatch() {
-		/* @var WP_Background_Process $dispatched */
-		parent::dispatch();
+		if ( give_test_ajax_works() ) {
+			parent::dispatch();
+		} elseif ( wp_doing_ajax() ) {
+			$this->maybe_handle();
+		}
 	}
 
 
@@ -209,7 +212,7 @@ class Give_Background_Updater extends WP_Background_Process {
 				$give_updates->__pause_db_update(true);
 			}
 
-			update_option( 'give_upgrade_error', 1 );
+			update_option( 'give_upgrade_error', 1, 'no' );
 
 			$log_data = 'Update Task' . "\n";
 			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
@@ -324,10 +327,8 @@ class Give_Background_Updater extends WP_Background_Process {
 	 *
 	 * Checks whether data exists within the queue and that
 	 * the process is not already running.
-	 *
-	 * @param bool $die Run wp_die when update process completes.
 	 */
-	public function maybe_handle( $die = true ) {
+	public function maybe_handle() {
 		// Don't lock up other requests while processing
 		session_write_close();
 
@@ -343,11 +344,9 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		check_ajax_referer( $this->identifier, 'nonce' );
 
-		$this->handle( $die );
+		$this->handle();
 
-		if( $die ) {
-			wp_die();
-		}
+		wp_die();
 	}
 
 	/**
@@ -355,10 +354,8 @@ class Give_Background_Updater extends WP_Background_Process {
 	 *
 	 * Pass each queue item to the task handler, while remaining
 	 * within server memory and time limit constraints.
-	 *
-	 * @param bool $die Run wp_die when update process completes.
 	 */
-	protected function handle( $die = true ) {
+	protected function handle() {
 		$this->lock_process();
 
 		do {
@@ -391,14 +388,16 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		// Start next batch or complete process.
 		if ( ! $this->is_queue_empty() ) {
-			$this->dispatch();
+
+			// Dispatch only if ajax works.
+			if( give_test_ajax_works() ) {
+				$this->dispatch();
+			}
 		} else {
 			$this->complete();
 		}
 
-		if( $die ) {
-			wp_die();
-		}
+		wp_die();
 	}
 
 
