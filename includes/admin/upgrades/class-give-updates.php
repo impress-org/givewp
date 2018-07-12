@@ -780,6 +780,7 @@ class Give_Updates {
 			! current_user_can( 'manage_give_settings' ) ||
 			$this->is_doing_updates()
 		) {
+			// Run update via ajax
 			self::$background_updater->dispatch();
 
 			wp_send_json_error();
