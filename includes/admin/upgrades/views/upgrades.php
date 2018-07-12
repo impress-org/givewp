@@ -52,9 +52,13 @@ $give_updates = Give_Updates::get_instance();
 										<?php
 										echo sprintf(
 											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
-											$is_doing_updates ?
-												__( 'Give is currently updating the database in the background.', 'give' ) :
-												__( 'Give needs to update the database.', 'give' ),
+											$is_doing_updates
+												? sprintf(
+													'%s%s',
+													__( 'Give is currently updating the database', 'give' ),
+													give_test_ajax_works() ?  ' ' . __( 'in the background.', 'give' ) : '.'
+												)
+												: __( 'Give needs to update the database.', 'give' ),
 											$db_update_url,
 											( $is_doing_updates ? 'give-hidden' : '' ),
 											__( 'Update now', 'give' )
