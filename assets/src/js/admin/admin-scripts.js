@@ -1306,6 +1306,7 @@ var give_setting_edit = false;
 				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
 
 				if (!$('#give-restart-upgrades').length) {
+					// Start update by ajax if background update does not work.
 					if ( ! give_vars.ajax.length ) {
 						window.setTimeout(Give_Updates.start_db_update, 1000);
 					}
@@ -1361,7 +1362,8 @@ var give_setting_edit = false;
 				dataType: 'json',
 				success: function success(response) {}
 			}).always(function(){
-				if ( ! give_vars.ajax.length ) {
+				// Start update by ajax if background update does not work.
+				if ( ! give_vars.ajax.length) {
 					window.setTimeout(Give_Updates.start_db_update, 1000);
 				}
 			});
