@@ -257,6 +257,22 @@ jQuery( document ).ready( function( $ ) {
 
 	} );
 
+	const recieptContainer = $('#give-receipt');
+	console.log(recieptContainer);
+	if(recieptContainer.length){
+		$.ajax({
+			url: ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'get_receipt',
+				shortcode_atts: recieptContainer.attr('data-shortcode')
+			},
+			success: function(response){
+				recieptContainer.html( response.html );
+				console.log(response);
+			}
+		});
+	}
 } );
 
 /**
