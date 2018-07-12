@@ -257,19 +257,23 @@ jQuery( document ).ready( function( $ ) {
 
 	} );
 
-	const recieptContainer = $('#give-receipt');
-	console.log(recieptContainer);
-	if(recieptContainer.length){
+	/**
+	 * Render receipt by Ajax
+	 *
+	 * @since 2.2.0
+	 */
+	const recieptContainer = document.getElementById('give-receipt');
+
+	if(recieptContainer){
 		$.ajax({
 			url: ajaxurl,
 			method: 'POST',
 			data: {
 				action: 'get_receipt',
-				shortcode_atts: recieptContainer.attr('data-shortcode')
+				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
 			},
 			success: function(response){
-				recieptContainer.html( response.html );
-				console.log(response);
+				recieptContainer.innerHTML =  response ;
 			}
 		});
 	}
