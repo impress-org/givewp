@@ -270,6 +270,13 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
+	if( ! wp_doing_ajax() ) {
+		return sprintf(
+			'<div id="give-receipt" data-shortcode="%s">Ajax Receipt</div>',
+			urlencode_deep( wp_json_encode( $atts ) )
+		);
+	}
+
 	// set $session var
 	$session = give_get_purchase_session();
 
