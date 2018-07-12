@@ -271,9 +271,14 @@ function give_receipt_shortcode( $atts ) {
 	), $atts, 'give_receipt' );
 
 	if( ! wp_doing_ajax() ) {
+		ob_start();
+		give_get_template_part( 'receipt/placeholder' );
+		$placeholder = ob_get_clean();
+
 		return sprintf(
-			'<div id="give-receipt" data-shortcode="%s">Ajax Receipt</div>',
-			urlencode_deep( wp_json_encode( $atts ) )
+			'<div id="give-receipt" data-shortcode="%s">%s</div>',
+			urlencode_deep( wp_json_encode( $atts ) ),
+			$placeholder
 		);
 	}
 
