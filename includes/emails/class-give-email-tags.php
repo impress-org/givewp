@@ -710,14 +710,22 @@ function give_email_tag_billing_address( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
-			$address  = $donation_address['line1'] . "\n";
+
+			$billing_address                   = array();
+			$billing_address['street_address'] = '';
+			$billing_address['street_address'] .= $donation_address['line1'];
 
 			if ( ! empty( $donation_address['line2'] ) ) {
-				$address .= $donation_address['line2'] . "\n";
+				$billing_address['street_address'] .= "\n" . $donation_address['line2'];
 			}
 
-			$address .= $donation_address['city'] . ' ' . $donation_address['zip'] . ' ' . $donation_address['state'] . "\n";
-			$address .= $donation_address['country'];
+			$billing_address['city']        = $donation_address['city'];
+			$billing_address['state']       = $donation_address['state'];
+			$billing_address['postal_code'] = $donation_address['zip'];
+			$billing_address['country']     = $donation_address['country'];
+
+			$address = give_get_formatted_address( $billing_address );
+
 			break;
 	}
 
