@@ -444,6 +444,11 @@ function give_get_recently_activated_addons() {
  * @since 2.2
  */
 function give_deactivation_popup() {
+
+	// Clean previous data in the output buffer.
+	ob_end_clean();
+
+	// Start output bufering.
 	ob_start();
 	?>
 
@@ -561,7 +566,12 @@ function give_deactivation_popup() {
 	</form>
 
 	<?php
+
+	// Echo content (deactivation form) from the output buffer.
 	echo ob_get_clean();
+
+	// Erase and stop output buffer.
+	ob_end_clean();
 
 	wp_die();
 }

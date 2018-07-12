@@ -633,7 +633,6 @@ class Give_Addon_Activation_Banner {
 				display: inline-block;
 				float: left;
 				background: #fff;
-				height: 100%;
 				position: relative;
 			}
 
