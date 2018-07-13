@@ -2280,25 +2280,28 @@ function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
  * @return string Formatted address.
  */
 function give_get_formatted_address( $address = array() ) {
+	$formatted_address = '';
+
 	/**
 	 * Address format.
 	 *
 	 * @since 2.2.0
 	 */
 	$address_format = apply_filters( 'give_address_format_template', "{street_address}\n{city}, {state} {postal_code}\n{country}" );
+	preg_match_all( "/{([A-z0-9\-\_\ ]+)}/s", $address_format, $matches );
 
-	$address_tag_keys = array_keys( $address );
+	if( ! empty( $matches ) && ! empty( $address ) ) {
+		$address_values = array();
 
-	$address_tags = array();
-	foreach ( $address_tag_keys as $key => $address_tag ) {
-		$address_tags[ $key ] = '{' . trim( $address_tag, '"' ) . '}';
-	}
+		foreach ($matches[1] as $address_tag ) {
+			$address_values[ $address_tag ] = '';
 
-	$address_tag_values = array_filter( array_values( $address ) );
+			if( isset( $address[$address_tag] ) ) {
+				$address_values[ $address_tag ] = $address[$address_tag];
+			}
+		}
 
-	$formatted_address = '';
-	if ( ! empty( $address_tag_values ) ) {
-		$formatted_address  = str_ireplace( $address_tags, $address_tag_values, $address_format );
+		$formatted_address  = str_ireplace( $matches[0], $address_values, $address_format );
 	}
 
 	/**
