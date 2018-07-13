@@ -339,6 +339,7 @@ function give_chosen_input( $field ) {
 			<?php echo wp_kses_post( $field['name'] ); ?>
 		</label>
 		<?php echo esc_attr( $field['before_field'] ); ?>
+		<input type="hidden" name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>" value="">
 		<select
 				class="give-select-chosen give-chosen-settings"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
