@@ -2269,3 +2269,50 @@ function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
 		);
 	}
 }
+
+/**
+ * Get formatted billing address.
+ *
+ * @since 2.2.0
+ *
+ * @param array $address
+ *
+ * @return string Formatted address.
+ */
+function give_get_formatted_address( $address = array() ) {
+	$formatted_address = '';
+
+	/**
+	 * Address format.
+	 *
+	 * @since 2.2.0
+	 */
+	$address_format = apply_filters( 'give_address_format_template', "{street_address}\n{city}, {state} {postal_code}\n{country}" );
+	preg_match_all( "/{([A-z0-9\-\_\ ]+)}/s", $address_format, $matches );
+
+	if( ! empty( $matches ) && ! empty( $address ) ) {
+		$address_values = array();
+
+		foreach ($matches[1] as $address_tag ) {
+			$address_values[ $address_tag ] = '';
+
+			if( isset( $address[$address_tag] ) ) {
+				$address_values[ $address_tag ] = $address[$address_tag];
+			}
+		}
+
+		$formatted_address  = str_ireplace( $matches[0], $address_values, $address_format );
+	}
+
+	/**
+	 * Give get formatted address.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string $formatted_address Formatted address.
+	 * @param string $address_format    Format of the address.
+	 */
+	$formatted_address = apply_filters( 'give_get_formatted_address', $formatted_address, $address_format, $address );
+
+	return $formatted_address;
+}
