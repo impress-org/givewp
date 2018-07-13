@@ -822,7 +822,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									style="<?php echo esc_attr( $value['style'] ); ?>"
 									name="<?php echo esc_attr( $name ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
-									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ); ?>
+									<?php echo esc_attr( $type ) . ' ' . $allow_new_values; ?>
 									<?php echo implode( ' ', $custom_attributes ); ?>
 								>
 									<?php foreach ( $value['options'] as $key => $item_value ) : ?>
