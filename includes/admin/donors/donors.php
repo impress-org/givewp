@@ -341,10 +341,17 @@ function give_donor_view( $donor ) {
 						<span class="donor-name info-item edit-item">
 							<select name="donor_info[title]">
 								<option value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
-								<?php foreach ( $title_prefixes as $title ) { ?>
-									<option <?php selected( $title_prefix, $title ); ?>
-										value="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $title ); ?></option>
-								<?php } ?>
+								<?php
+								if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) {
+									foreach ( $title_prefixes as $title ) {
+										echo sprintf(
+											'<option %1$s value="%2$s">%2$s</option>',
+											selected( $title_prefix, $title, false ),
+											esc_html( $title )
+										);
+									}
+								}
+								?>
 							</select>
 							<input <?php echo $read_only; ?> size="15" data-key="first_name"
 							                                 name="donor_info[first_name]" type="text"
