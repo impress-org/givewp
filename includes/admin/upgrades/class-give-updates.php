@@ -604,7 +604,7 @@ class Give_Updates {
 
 
 		// Show notice if ajax is not working.
-		if ( ! give_test_ajax_works() ) {
+		if ( ! give_test_ajax_works() && $this->get_total_new_db_update_count() ) {
 			Give()->notices->register_notice(
 				array(
 					'id'          => 'give_db_upgrade_ajax_inaccessible',
