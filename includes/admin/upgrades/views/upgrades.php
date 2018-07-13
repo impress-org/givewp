@@ -44,7 +44,7 @@ $give_updates = Give_Updates::get_instance();
 									if( ! give_test_ajax_works() ) {
 										echo sprintf(
 											'<div class="notice notice-warning inline"><p>%s</p></div>',
-											__( 'Admin ajax is inaccesible. We will update database with Ajax request instead of backgroud, so do not leave this page after starting database updates.', 'give' )
+											__( 'Give is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
 										);
 									}
 									?>
