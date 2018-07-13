@@ -266,7 +266,7 @@ jQuery( document ).ready( function( $ ) {
 
 	if(recieptContainer){
 		$.ajax({
-			url: ajaxurl,
+			url: give_global_vars.ajax_vars.ajaxurl,
 			method: 'POST',
 			data: {
 				action: 'get_receipt',
