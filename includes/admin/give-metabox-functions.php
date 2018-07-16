@@ -337,6 +337,7 @@ function give_chosen_input( $field ) {
 		$type = 'multiple';
 		$allow_new_values = 'data-allows-new-values="true"';
 	}
+
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
@@ -348,20 +349,16 @@ function give_chosen_input( $field ) {
 				style="<?php echo esc_attr( $field['style'] ); ?>"
 				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo esc_attr( $type ) . ' ' . $allow_new_values . ' ' . $placeholder; ?>
+			<?php echo "{$type} {$allow_new_values} {$placeholder}"; ?>
 		>
 			<?php
 			if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
 				foreach ( $title_prefixes_value as $key => $value ) {
-					$selected_title_prefix = '';
-					if ( 'selected' === $value ) {
-						$selected_title_prefix = 'selected="selected"';
-					}
-					?>
-					<option value="<?php echo esc_attr( $key ); ?>" <?php echo $selected_title_prefix; ?>>
-						<?php echo esc_html( $key ); ?>
-					</option>
-					<?php
+					echo sprintf(
+						'<option %1$s value="%2$s">%2$s</option>',
+						( 'selected' === $value ) ? 'selected="selected"' : '',
+						esc_attr( $key )
+					);
 				}
 			}
 			?>
