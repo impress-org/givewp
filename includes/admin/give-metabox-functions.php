@@ -320,24 +320,19 @@ function give_chosen_input( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = array_filter( give_get_field_value( $field, $thepostid ) );
-	$field['value']         = array_fill_keys( $field['value'], 'selected' );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['before_field']  = '';
 	$field['after_field']   = '';
 	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
 	$allow_new_values       = '';
-	$title_prefixes_value   = ( is_array( $field['value'] ) && count( $field['value'] ) > 0 ) ?
-		array_merge( $field['options'], $field['value'] ) :
-		$field['options'];
 
 	// Set attributes based on multiselect datatype.
 	if ( 'multiselect' === $data_type ) {
 		$type = 'multiple';
 		$allow_new_values = 'data-allows-new-values="true"';
 	}
-
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
@@ -349,19 +344,21 @@ function give_chosen_input( $field ) {
 				style="<?php echo esc_attr( $field['style'] ); ?>"
 				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo "{$type} {$allow_new_values} {$placeholder}"; ?>
+			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
 		>
-			<?php
-			if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
-				foreach ( $title_prefixes_value as $key => $value ) {
-					echo sprintf(
-						'<option %1$s value="%2$s">%2$s</option>',
-						( 'selected' === $value ) ? 'selected="selected"' : '',
-						esc_attr( $key )
-					);
-				}
-			}
-			?>
+			<?php foreach ( $field['options'] as $key => $value ) { ?>
+				<option value="<?php echo esc_attr( $key ); ?>"
+					<?php
+					if ( is_array( $field['value'] ) ) {
+						selected( in_array( $key, $field['value'], true ) );
+					} else {
+						selected( $field['value'], $key, true );
+					}
+					?>
+				>
+					<?php echo esc_html( $value ); ?>
+				</option>
+			<?php } ?>
 		</select>
 		<?php echo esc_attr( $field['after_field'] ); ?>
 		<?php echo give_get_field_description( $field ); ?>
