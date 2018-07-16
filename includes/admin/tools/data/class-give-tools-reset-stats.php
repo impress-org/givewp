@@ -335,7 +335,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$value = json_decode( $value, true );
 		}
 
-		return $value;
+		return (array) $value;
 	}
 
 	/**

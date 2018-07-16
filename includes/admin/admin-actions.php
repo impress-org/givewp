@@ -547,17 +547,17 @@ function give_donation_import_callback() {
 	$import_setting = array();
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
-	parse_str( $fields );
+	parse_str( $fields, $output );
 
-	$import_setting['create_user'] = $create_user;
-	$import_setting['mode']        = $mode;
-	$import_setting['delimiter']   = $delimiter;
-	$import_setting['csv']         = $csv;
-	$import_setting['delete_csv']  = $delete_csv;
-	$import_setting['dry_run']     = $dry_run;
+	$import_setting['create_user'] = $output['create_user'];
+	$import_setting['mode']        = $output['mode'];
+	$import_setting['delimiter']   = $output['delimiter'];
+	$import_setting['csv']         = $output['csv'];
+	$import_setting['delete_csv']  = $output['delete_csv'];
+	$import_setting['dry_run']     = $output['dry_run'];
 
 	// Parent key id.
-	$main_key = maybe_unserialize( $main_key );
+	$main_key = maybe_unserialize( $output['main_key'] );
 
 	$current    = absint( $_REQUEST['current'] );
 	$total_ajax = absint( $_REQUEST['total_ajax'] );
@@ -566,17 +566,19 @@ function give_donation_import_callback() {
 	$next       = absint( $_REQUEST['next'] );
 	$total      = absint( $_REQUEST['total'] );
 	$per_page   = absint( $_REQUEST['per_page'] );
-	if ( empty( $delimiter ) ) {
+	if ( empty( $output['delimiter'] ) ) {
 		$delimiter = ',';
+	} else {
+		$delimiter = $output['delimiter'];
 	}
 
 	// Processing done here.
-	$raw_data                  = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
-	$raw_key                   = maybe_unserialize( $mapto );
+	$raw_data                  = give_get_donation_data_from_csv( $output['csv'], $start, $end, $delimiter );
+	$raw_key                   = maybe_unserialize( $output['mapto'] );
 	$import_setting['raw_key'] = $raw_key;
 
-	if ( ! empty( $dry_run ) ) {
-		$import_setting['csv_raw_data'] = give_get_donation_data_from_csv( $csv, 1, $end, $delimiter );
+	if ( ! empty( $output['dry_run'] ) ) {
+		$import_setting['csv_raw_data'] = give_get_donation_data_from_csv( $output['csv'], 1, $end, $delimiter );
 
 		$import_setting['donors_list'] = Give()->donors->get_donors( array(
 			'number' => - 1,
@@ -634,11 +636,11 @@ function give_donation_import_callback() {
 	$url              = give_import_page_url( array(
 		'step'          => '4',
 		'importer-type' => 'import_donations',
-		'csv'           => $csv,
+		'csv'           => $output['csv'],
 		'total'         => $total,
 		'delete_csv'    => $import_setting['delete_csv'],
 		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
-		'dry_run'       => $dry_run,
+		'dry_run'       => $output['dry_run'],
 	) );
 	$json_data['url'] = $url;
 

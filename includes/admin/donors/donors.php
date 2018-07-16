@@ -340,7 +340,7 @@ function give_donor_view( $donor ) {
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-name info-item edit-item">
 							<select name="donor_info[title]">
-								<option value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
+								<option disabled value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
 								<?php
 								if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) {
 									foreach ( $title_prefixes as $title ) {
