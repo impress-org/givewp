@@ -926,8 +926,8 @@ class Give_MetaBox_Form_Data {
 
 				// Set default value for checkbox fields.
 				if (
-					! isset( $_POST[ $form_meta_key ] ) &&
-					in_array( $this->get_field_type( $form_meta_key ), array( 'checkbox', 'chosen' ) )
+					! isset( $_POST[ $form_meta_key ] )
+					&& ( 'checkbox' === $this->get_field_type( $form_meta_key ) )
 				) {
 					$_POST[ $form_meta_key ] = '';
 				}
