@@ -2688,7 +2688,9 @@ function give_v230_upgrades(){
 		'give_recently_activated_addons',
 		'give_is_addon_activated',
 		'give_last_paypal_ipn_received',
-		'give_use_php_sessions'
+		'give_use_php_sessions',
+		'give_subscriptions',
+		'_give_subscriptions_edit_last'
 	);
 
 	// Add all table version option name
@@ -2698,7 +2700,11 @@ function give_v230_upgrades(){
 		SELECT option_name
 		FROM $wpdb->options
 		WHERE option_name like '%give%'
-		AND ( option_name like '%_db_version%' OR option_name like '%_active_by_user%' )
+		AND (
+			option_name like '%_db_version%'
+			OR option_name like '%_active_by_user%'
+			OR option_name like '%_license_active%'
+		)
 		"
 	);
 
