@@ -27,22 +27,22 @@ $goal   = $goal_progress_stats['raw_goal'];
 switch ( $goal_format ) {
 
 	case 'donation':
-		$progress           = round( ( $income / $goal ) * 100, 2 );
+		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
 		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
 	case 'donors':
-		$progress_bar_value = round( ( $income / $goal ) * 100, 2 );
+		$progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
 		$progress           = $progress_bar_value;
 		break;
 
 	case 'percentage':
-		$progress           = round( ( $income / $goal ) * 100, 2 );
+		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
 		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
 	default:
-		$progress           = round( ( $income / $goal ) * 100, 2 );
+		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
 		$progress_bar_value = $income >= $goal ? 100 : $progress;
 		break;
 
