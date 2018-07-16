@@ -164,7 +164,7 @@ function give_validate_license_when_site_migrated() {
 		wp_schedule_single_event( time(), 'give_validate_license_when_site_migrated' );
 
 		// Update site address.
-		update_option( 'give_site_address_before_migrate', $home_url );
+		update_option( 'give_site_address_before_migrate', $home_url, 'no' );
 	}
 
 }

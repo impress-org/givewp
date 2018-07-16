@@ -471,7 +471,7 @@ function give_create_pages() {
 	}
 
 	if ( ! empty( $options ) ) {
-		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
+		update_option( 'give_settings', array_merge( give_get_settings(), $options ), 'no' );
 	}
 
 	add_option( 'give_install_pages_created', 1, '', 'no' );

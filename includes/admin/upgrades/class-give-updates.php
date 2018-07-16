@@ -394,7 +394,7 @@ class Give_Updates {
 
 		if ( ! empty( $batch ) ) {
 			wp_cache_delete( $batch->key, 'options' );
-			update_option( $batch->key, $batch->data );
+			update_option( $batch->key, $batch->data, 'no' );
 
 			delete_option( 'give_paused_batches' );
 
@@ -491,7 +491,7 @@ class Give_Updates {
 				$log_data .= print_r( $new_updates, true ) . "\n";
 
 				$batch->data = array_merge( (array) $batch->data, $new_updates );
-				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
+				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ), 'no' );
 			}
 		}
 
@@ -518,7 +518,7 @@ class Give_Updates {
 
 			if ( ! empty( $batch->key ) ) {
 				wp_cache_delete( $batch->key, 'options' );
-				update_option( $batch->key, $batch->data );
+				update_option( $batch->key, $batch->data, 'no' );
 			} else {
 
 				foreach ( $batch->data as $data ) {
@@ -534,7 +534,7 @@ class Give_Updates {
 		 * Fix give_doing_upgrade option
 		 */
 		if( $fresh_new_db_count = $this->get_total_new_db_update_count( true ) ) {
-			update_option( 'give_db_update_count', $fresh_new_db_count );
+			update_option( 'give_db_update_count', $fresh_new_db_count, 'no' );
 		}
 
 		$doing_upgrade_args['update']           = 1;
@@ -567,7 +567,7 @@ class Give_Updates {
 		}
 
 		if( ! empty( $doing_upgrade_args['update_info'] ) ) {
-			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+			update_option( 'give_doing_upgrade', $doing_upgrade_args, 'no' );
 
 			$log_data .= 'Updated doing update:' . "\n";
 			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
@@ -735,7 +735,7 @@ class Give_Updates {
 	 */
 	public function __flush_resume_updates() {
 		//delete_option( 'give_doing_upgrade' );
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), 'no' );
 
 		// Reset counter.
 		$this->step = $this->percentage = 0;

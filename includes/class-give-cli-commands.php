@@ -1040,7 +1040,7 @@ class GIVE_CLI_COMMAND {
 
 
 			// Set `Test Donation` as default gateway.
-			add_option( 'give_test_mode_default_gateway', $default_gateway );
+			add_option( 'give_test_mode_default_gateway', $default_gateway, '','no' );
 			give_update_option( 'default_gateway', 'manual' );
 
 

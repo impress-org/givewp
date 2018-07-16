@@ -812,7 +812,7 @@ function give_get_total_earnings( $recalculate = false ) {
 function give_increase_total_earnings( $amount = 0 ) {
 	$total  = give_get_total_earnings();
 	$total += $amount;
-	update_option( 'give_earnings_total', $total );
+	update_option( 'give_earnings_total', $total, 'no' );
 
 	return $total;
 }
@@ -832,7 +832,7 @@ function give_decrease_total_earnings( $amount = 0 ) {
 	if ( $total < 0 ) {
 		$total = 0;
 	}
-	update_option( 'give_earnings_total', $total );
+	update_option( 'give_earnings_total', $total, 'no' );
 
 	return $total;
 }

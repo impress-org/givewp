@@ -245,7 +245,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			$log_data .= "Error\n {$e->getMessage()}";
 
 			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
-			update_option( 'give_upgrade_error', 1 );
+			update_option( 'give_upgrade_error', 1, 'no' );
 
 			wp_die();
 		}
@@ -261,7 +261,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Cache upgrade.
-		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+		update_option( 'give_doing_upgrade', $doing_upgrade_args, 'no' );
 
 		// Enable cache.
 		Give_Cache::enable();

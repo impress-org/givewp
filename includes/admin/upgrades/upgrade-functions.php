@@ -104,7 +104,7 @@ function give_do_automatic_upgrades() {
 				}
 			}
 
-			update_option( 'give_completed_upgrades', $completed_upgrades );
+			update_option( 'give_completed_upgrades', $completed_upgrades, 'no' );
 
 			// Do nothing on fresh install.
 			if ( ! doing_action( 'give_upgrades' ) ) {
@@ -129,7 +129,7 @@ function give_do_automatic_upgrades() {
 	}
 
 	if ( $did_upgrade ) {
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), 'no' );
 	}
 }
 
@@ -414,10 +414,10 @@ function give_trigger_upgrades() {
 	if ( ! $give_version ) {
 		// 1.0 is the first version to use this option so we must add it.
 		$give_version = '1.0';
-		add_option( 'give_version', $give_version );
+		add_option( 'give_version', $give_version, '', 'no' );
 	}
 
-	update_option( 'give_version', GIVE_VERSION );
+	update_option( 'give_version', GIVE_VERSION, 'no' );
 	delete_option( 'give_doing_upgrade' );
 
 	if ( DOING_AJAX ) {
@@ -569,7 +569,7 @@ function give_v152_cleanup_users() {
 		$roles->add_caps();
 
 		// The Update Ran.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), 'no' );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
 		delete_option( 'give_doing_upgrade' );
 
@@ -691,7 +691,7 @@ function give_v17_upgrade_addon_license_data() {
 
 		// Decode license data.
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-		update_option( $addon_license_option_name, $license_data );
+		update_option( $addon_license_option_name, $license_data, 'no' );
 	}// End foreach().
 }
 
@@ -806,7 +806,7 @@ function give_v18_upgrades_core_setting() {
 
 		// Update setting only if they changed.
 		if ( $setting_changed ) {
-			update_option( 'give_settings', $give_settings );
+			update_option( 'give_settings', $give_settings, 'no' );
 		}
 	}// End if().
 
@@ -1278,7 +1278,7 @@ function give_v1812_upgrades() {
 	}
 
 	if ( $give_setting_updated ) {
-		update_option( 'give_settings', $give_settings );
+		update_option( 'give_settings', $give_settings, 'no' );
 	}
 }
 
@@ -1528,7 +1528,7 @@ function give_v1817_upgrades() {
 
 	if ( 'RIAL' === $give_settings['currency'] ) {
 		$give_settings['currency'] = 'IRR';
-		update_option( 'give_settings', $give_settings );
+		update_option( 'give_settings', $give_settings, 'no' );
 	}
 }
 
