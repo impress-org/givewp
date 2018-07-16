@@ -577,7 +577,7 @@ function give_deactivation_popup() {
 	wp_send_json( $results );
 }
 
-add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
+add_action( 'wp_ajax_give_deactivation_popup', 'give_deactivation_popup' );
 
 /**
  * Ajax callback after the deactivation survey form has been submitted.

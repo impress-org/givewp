@@ -27,7 +27,7 @@ class GiveDeactivationSurvey {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
-				action: 'deactivation_popup',
+				action: 'give_deactivation_popup',
 			},
 		} ).done( function( response ) {
 			new GiveFormModal( {
