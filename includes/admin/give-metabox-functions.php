@@ -320,14 +320,16 @@ function give_chosen_input( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = array_filter( give_get_field_value( $field, $thepostid ) );
-	$field['value']         = array_fill_keys( $field['value'], 'selected' );
 	$field['before_field']  = '';
 	$field['after_field']   = '';
 	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
 	$allow_new_values       = '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['value']         = is_array( $field['value'] ) ?
+		array_fill_keys( array_filter( $field['value'] ), 'selected' ) :
+		$field['value'];
 	$title_prefixes_value   = ( is_array( $field['value'] ) && count( $field['value'] ) > 0 ) ?
 		array_merge( $field['options'], $field['value'] ) :
 		$field['options'];
