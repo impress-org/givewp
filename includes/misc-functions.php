@@ -2041,7 +2041,7 @@ function give_goal_progress_stats( $form ) {
 			break;
 	}
 
-	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+	$progress = $total_goal ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
 
 	$stats_array = array(
 		'raw_actual' => $actual,
