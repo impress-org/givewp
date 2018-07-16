@@ -796,7 +796,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						// Get option value.
 						$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
-						$option_value     = array_fill_keys( $option_value, 'selected' );
+						$option_value     = is_array( $option_value ) ? array_fill_keys( $option_value, 'selected' ) : $option_value;
 						$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 						$type             = '';
 						$allow_new_values = '';
