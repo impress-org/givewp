@@ -122,6 +122,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.2.0', '<' ) :
 			give_v220_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.3.0', '<' ) :
+			give_v230_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -2658,6 +2662,59 @@ function give_v203_upgrades() {
  */
 function give_v220_upgrades(){
 	give_v220_delete_wp_session_data();
+}
+
+/**
+ * Version 2.3.0 automatic updates
+ *
+ * @since 2.3.0
+ */
+function give_v230_upgrades(){
+	global $wpdb;
+
+	/**
+	 * Update 1
+	 *
+	 * Set autoload to no to reduce result weight from WordPress query
+	 */
+
+	$options = array(
+		'give_settings',
+		'give_version',
+		'give_version_upgraded_from',
+		'give_default_api_version',
+		'give_site_address_before_migrate',
+		'_give_table_check',
+		'give_recently_activated_addons',
+		'give_is_addon_activated',
+		'give_last_paypal_ipn_received',
+		'give_use_php_sessions'
+	);
+
+	// Add all table version option name
+	// Add banner option *_active_by_user
+	$option_like = $wpdb->get_col(
+		"
+		SELECT option_name
+		FROM $wpdb->options
+		WHERE option_name like '%give%'
+		AND ( option_name like '%_db_version%' OR option_name like '%_active_by_user%' )
+		"
+	);
+
+	if( ! empty( $option_like ) ) {
+		$options = array_merge( $options, $option_like );
+	}
+
+	$options_str =  '\'' . implode( "','", $options ) . '\'';
+
+	$wpdb->query(
+		"
+		UPDATE $wpdb->options
+		SET autoload = 'no'
+		WHERE option_name IN ( {$options_str} )
+		"
+	);
 }
 
 /**
