@@ -172,7 +172,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Add Setting for Give Add-on activation status.
 			$is_addon_activated = get_option( 'give_is_addon_activated' );
 			if ( ! $is_addon_activated && is_object( $this ) ) {
-				update_option( 'give_is_addon_activated', true );
+				update_option( 'give_is_addon_activated', true, 'no' );
 				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
 			}
 
