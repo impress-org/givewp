@@ -796,6 +796,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						// Get option value.
 						$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value     = array_fill_keys( $option_value, 'selected' );
 						$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 						$type             = '';
 						$allow_new_values = '';
@@ -803,14 +804,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						// Set attributes based on multiselect datatype.
 						if ( 'multiselect' === $value['data_type'] ) {
-							$type = 'multiple';
+							$type             = 'multiple';
 							$allow_new_values = 'data-allows-new-values="true"';
 							$name             = $name . '[]';
-
-							$option_value = empty( $option_value ) ? array() : $option_value;
+							$option_value     = empty( $option_value ) ? array() : $option_value;
 						}
 
-						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
+						$title_prefixes_value = ( is_array( $option_value ) && count( $option_value ) > 0 ) ?
+							array_merge( $value['options'], $option_value ) :
+							$value['options'];
+
 						?>
 						<tr valign="top" <?php echo $wrapper_class; ?>>
 							<th scope="row" class="titledesc">
@@ -818,28 +821,26 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 								<select
-									class="give-select-chosen give-chosen-settings"
-									style="<?php echo esc_attr( $value['style'] ); ?>"
-									name="<?php echo esc_attr( $name ); ?>"
-									id="<?php echo esc_attr( $value['id'] ); ?>"
-									<?php echo esc_attr( $type ) . ' ' . $allow_new_values; ?>
-									<?php echo implode( ' ', $custom_attributes ); ?>
+										class="give-select-chosen give-chosen-settings"
+										style="<?php echo esc_attr( $value['style'] ); ?>"
+										name="<?php echo esc_attr( $name ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+									<?php
+									echo "{$type} {$allow_new_values}";
+									echo implode( ' ', $custom_attributes );
+									?>
 								>
-									<?php foreach ( $value['options'] as $key => $item_value ) : ?>
-										<option
-											value="<?php echo esc_attr( $key ); ?>"
-											<?php
-											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value, true ) );
-											} else {
-												selected( $option_value, $key );
-											}
-											?>
-										>
-											<?php echo esc_html( $item_value ); ?>
-										</option>
-									<?php endforeach; ?>
-
+									<?php
+									if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
+										foreach ( $title_prefixes_value as $key => $item_value ) {
+											echo sprintf(
+												'<option %1$s value="%2$s">%2$s</option>',
+												( 'selected' === $item_value ) ? 'selected="selected"' : '',
+												esc_attr( $key )
+											);
+										}
+									}
+									?>
 								</select>
 								<?php echo wp_kses_post( $description ); ?>
 							</td>
