@@ -347,7 +347,7 @@ class Give_Updates {
 		// Do not stop background process immediately if task running.
 		// @see Give_Background_Updater::lock_process
 		if ( ! $force && self::$background_updater->is_process_running() ) {
-			update_option( 'give_pause_upgrade', 1 );
+			update_option( 'give_pause_upgrade', 1, 'no' );
 
 			return true;
 		}
@@ -602,26 +602,6 @@ class Give_Updates {
 			return;
 		}
 
-
-		// Show notice if ajax is not working.
-		if ( ! give_test_ajax_works() ) {
-			Give()->notices->register_notice(
-				array(
-					'id'          => 'give_db_upgrade_ajax_inaccessible',
-					'type'        => 'error',
-					'description' => sprintf(
-						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
-						__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
-						esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
-						__( 'Read More', 'give' ) . ' &raquo;'
-					),
-					'show'        => true,
-				)
-			);
-
-			return;
-		}
-
 		// Show notice if upgrade paused.
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
@@ -780,6 +760,9 @@ class Give_Updates {
 			! current_user_can( 'manage_give_settings' ) ||
 			$this->is_doing_updates()
 		) {
+			// Run update via ajax
+			self::$background_updater->dispatch();
+
 			wp_send_json_error();
 		}
 

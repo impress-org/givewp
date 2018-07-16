@@ -112,6 +112,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-form-duplicator.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php' );

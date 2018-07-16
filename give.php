@@ -590,7 +590,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-clone-forms.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-form-duplicator.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 

@@ -39,81 +39,82 @@ $give_updates = Give_Updates::get_instance();
 						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
-								<?php
-								if ( ! give_test_ajax_works() ) :
-									echo sprintf(
-										'%1$s <a href="%2$s" target="_blank">%3$s</a>',
-										__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
-										esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
-										__( 'Read More', 'give' ) . ' &raquo;'
-									);
-
-								else:
-								?>
-									<p class="give-update-button">
-											<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
-												<?php
-												echo sprintf(
-													__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
-													$is_doing_updates ?
-														__( 'Give is currently updating the database in the background.', 'give' ) :
-														__( 'Give needs to update the database.', 'give' ),
-													$db_update_url,
-													( $is_doing_updates ? 'give-hidden' : '' ),
-													__( 'Update now', 'give' )
-												);
-												?>
-											</span>
-										<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
-												<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
-													&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
-												<?php else : ?>
-													<?php _e( 'The updates have been paused.', 'give' ); ?>
-
-												<?php endif; ?>
-											</span>
-
-										<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
-											<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
-											<button id="give-restart-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
-										<?php elseif ( $give_updates->is_doing_updates() ): ?>
-											<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
-											<button id="give-pause-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
-												<?php _e( 'Pause Upgrades', 'give' ); ?>
-											</button>
+								<p class="give-update-button">
+									<?php
+									if( ! give_test_ajax_works() ) {
+										echo sprintf(
+											'<div class="notice notice-warning inline"><p>%s</p></div>',
+											__( 'Give is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
+										);
+									}
+									?>
+									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
+										<?php
+										echo sprintf(
+											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
+											$is_doing_updates
+												? sprintf(
+													'%s%s',
+													__( 'Give is currently updating the database', 'give' ),
+													give_test_ajax_works() ?  ' ' . __( 'in the background.', 'give' ) : '.'
+												)
+												: __( 'Give needs to update the database.', 'give' ),
+											$db_update_url,
+											( $is_doing_updates ? 'give-hidden' : '' ),
+											__( 'Update now', 'give' )
+										);
+										?>
+									</span>
+									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
+										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
+											&nbsp<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+										<?php else : ?>
+											<?php _e( 'The updates have been paused.', 'give' ); ?>
 										<?php endif; ?>
-									</p>
-								</div>
-								<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
-									<p class="update-message">
-										<strong>
-											<?php
-											echo sprintf(
-												__( 'Update %s of %s', 'give' ),
-												$give_updates->get_running_db_update(),
-												$give_updates->get_total_new_db_update_count()
-											);
-											?>
-										</strong>
-									</p>
-									<div class="progress-content">
-										<?php if ( $is_doing_updates ) : ?>
-											<div class="notice-wrap give-clearfix">
+									</span>
 
-												<?php if ( ! Give_Updates::$background_updater->is_paused_process() ) : ?>
-													<span class="spinner is-active"></span>
-												<?php endif; ?>
+									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
+										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<button id="give-restart-upgrades" class="button button-primary alignright"
+										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+									<?php elseif ( $give_updates->is_doing_updates() ): ?>
+										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<button id="give-pause-upgrades" class="button button-primary alignright"
+										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
+											<?php _e( 'Pause Upgrades', 'give' ); ?>
+										</button>
+									<?php endif; ?>
+								</p>
+							</div>
+							<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
+								<p class="update-message">
+									<strong>
+										<?php
+										echo sprintf(
+											__( 'Update %s of %s', 'give' ),
+											$give_updates->get_running_db_update(),
+											$give_updates->get_total_new_db_update_count()
+										);
+										?>
+									</strong>
+								</p>
+								<div class="progress-content">
+									<?php if ( $is_doing_updates ) : ?>
+										<div class="notice-wrap give-clearfix">
 
-												<div class="give-progress">
-													<div style="width: <?php echo $width ?>%;"></div>
-												</div>
+											<?php if ( ! Give_Updates::$background_updater->is_paused_process() ) : ?>
+												<span class="spinner is-active"></span>
+											<?php endif; ?>
+
+											<div class="give-progress">
+												<div style="width: <?php echo $width ?>%;"></div>
 											</div>
-										<?php endif; ?>
-									</div>
+										</div>
+									<?php endif; ?>
 								</div>
-								<?php if ( ! $is_doing_updates ) : ?>
-									<div class="give-run-database-update"></div>
-								<?php endif; ?>
+							</div>
+							<?php if ( ! $is_doing_updates ) : ?>
+								<div class="give-run-database-update"></div>
 							<?php endif; ?>
 						</div>
 						<!-- .inside -->

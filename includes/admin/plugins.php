@@ -43,7 +43,7 @@ add_filter( 'plugin_action_links_' . GIVE_PLUGIN_BASENAME, 'give_plugin_action_l
  *
  * @since 1.4
  *
- * @param array  $plugin_meta An array of the plugin's metadata.
+ * @param array $plugin_meta An array of the plugin's metadata.
  * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
  *
  * @return array
@@ -94,7 +94,7 @@ add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
  *
  * @since 1.8.17
  *
- * @global array  $submenu
+ * @global array $submenu
  * @global string $plugin_page
  *
  * @return string $title Page title
@@ -200,6 +200,27 @@ add_filter( 'show_advanced_plugins', 'give_filter_addons_do_filter_addons' );
 add_filter( 'show_network_active_plugins', 'give_filter_addons_do_filter_addons' );
 
 /**
+ * Keep activating the same add-on when admin activate or deactivate from Give Menu
+ *
+ * @since 2.2.0
+ *
+ * @param $action
+ * @param $result
+ */
+function give_prepare_filter_addons_referer( $action, $result ) {
+	if ( ! function_exists( 'get_current_screen' ) ) {
+		return;
+	}
+	$screen = get_current_screen();
+	if ( is_object( $screen ) && $screen->base === 'plugins' && ! empty( $_REQUEST['plugin_status'] ) && $_REQUEST['plugin_status'] === 'give' ) {
+		global $status;
+		$status = 'give';
+	}
+}
+
+add_action( 'check_admin_referer', 'give_prepare_filter_addons_referer', 10, 2 );
+
+/**
  * Make the Give Menu as an default menu and update the Menu Name
  *
  * @since 2.1.0
@@ -258,7 +279,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
 /**
  * Display the upgrade notice message.
  *
- * @param array $data     Array of plugin metadata.
+ * @param array $data Array of plugin metadata.
  * @param array $response An array of metadata about the available plugin update.
  *
  * @since 2.1
@@ -322,7 +343,7 @@ function give_get_plugin_upgrade_notice( $new_version ) {
  *
  * @since 2.1
  *
- * @param  string $content     Content of the readme.txt file.
+ * @param  string $content Content of the readme.txt file.
  * @param  string $new_version The version with current version is compared.
  *
  * @return string
@@ -423,6 +444,11 @@ function give_get_recently_activated_addons() {
  * @since 2.2
  */
 function give_deactivation_popup() {
+
+	// Clean previous data in the output buffer.
+	ob_end_clean();
+
+	// Start output bufering.
 	ob_start();
 	?>
 
@@ -540,7 +566,12 @@ function give_deactivation_popup() {
 	</form>
 
 	<?php
+
+	// Echo content (deactivation form) from the output buffer.
 	echo ob_get_clean();
+
+	// Erase and stop output buffer.
+	ob_end_clean();
 
 	wp_die();
 }
