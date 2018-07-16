@@ -36,7 +36,7 @@ class GiveDeactivationSurvey {
 				},
 
 				modalContent: {
-					desc: response,
+					desc: response.html,
 					cancelBtnTitle: give_vars.cancel,
 					confirmBtnTitle: give_vars.submit_and_deactivate,
 					link: window.deactivationLink,
