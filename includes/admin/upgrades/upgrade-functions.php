@@ -122,10 +122,6 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.2.0', '<' ) :
 			give_v220_upgrades();
 			$did_upgrade = true;
-
-		case version_compare( $give_version, '2.3.0', '<' ) :
-			give_v230_upgrades();
-			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -2661,19 +2657,17 @@ function give_v203_upgrades() {
  * @since 2.2.0
  */
 function give_v220_upgrades(){
-	give_v220_delete_wp_session_data();
-}
-
-/**
- * Version 2.3.0 automatic updates
- *
- * @since 2.3.0
- */
-function give_v230_upgrades(){
 	global $wpdb;
 
 	/**
 	 * Update 1
+	 *
+	 * Delete wp session data
+	 */
+	give_v220_delete_wp_session_data();
+
+	/**
+	 * Update 2
 	 *
 	 * Set autoload to no to reduce result weight from WordPress query
 	 */
