@@ -212,7 +212,7 @@ function give_process_paypal_ipn() {
 		'transaction_id' => isset( $encoded_data_array['txn_id'] ) ? $encoded_data_array['txn_id'] : 'N/A',
 		'payment_id'     => $payment_id,
 	);
-	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars );
+	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars, false );
 	give_insert_payment_note( $payment_id, sprintf(
 			__( 'IPN received on %s at %s', 'give' ),
 			date_i18n( 'm/d/Y', $current_timestamp ),

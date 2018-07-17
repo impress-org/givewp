@@ -156,7 +156,7 @@ function give_recently_activated_addons() {
 
 			if ( ! empty( $give_addons ) ) {
 				// Update the Give's activated add-ons.
-				update_option( 'give_recently_activated_addons', $give_addons );
+				update_option( 'give_recently_activated_addons', $give_addons, false );
 			}
 		}
 	}

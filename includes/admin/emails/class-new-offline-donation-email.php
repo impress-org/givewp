@@ -288,7 +288,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				|| $notification_status !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
 				$update_options[ "{$this->config['id']}_notification" ] = $notification_status;
-				update_option( $option_name, $update_options );
+				update_option( $option_name, $update_options, false );
 			}
 		}
 

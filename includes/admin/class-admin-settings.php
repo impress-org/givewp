@@ -1042,7 +1042,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			// Save all options in our array or there own option name i.e. option id.
 			if ( empty( $option_name ) ) {
 				foreach ( $update_options as $name => $value ) {
-					update_option( $name, $value );
+					update_option( $name, $value, false );
 
 					/**
 					 * Trigger action.
@@ -1057,7 +1057,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
 				$update_options = array_merge( $old_options, $update_options );
 
-				update_option( $option_name, $update_options );
+				update_option( $option_name, $update_options, false );
 
 				/**
 				 * Trigger action.

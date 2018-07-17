@@ -700,7 +700,7 @@ function give_core_settings_import_callback() {
 		$host_give_options = get_option( 'give_settings', array() );
 
 		// Save old settins for backup.
-		update_option( 'give_settings_old', $host_give_options );
+		update_option( 'give_settings_old', $host_give_options, false );
 
 		/**
 		 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
@@ -718,7 +718,7 @@ function give_core_settings_import_callback() {
 		 */
 		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
-		update_option( 'give_settings', $json_to_array );
+		update_option( 'give_settings', $json_to_array, false );
 
 		$json_data['success'] = true;
 	}
