@@ -447,7 +447,7 @@ function give_deactivation_popup() {
 
 	$results = array();
 
-	// Start output bufering.
+	// Start output buffering.
 	ob_start();
 	?>
 
