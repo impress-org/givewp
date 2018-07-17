@@ -324,8 +324,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'id'         => 'agree_to_terms_label',
 							'attributes' => array(
 								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
+								'rows'        => 1
 							),
-							'type'       => 'text',
+							'type'       => 'textarea',
 						),
 						array(
 							'name' => __( 'Agreement Text', 'give' ),
