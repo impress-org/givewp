@@ -10,6 +10,11 @@
  */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
+window.GiveWarningAlert = GiveWarningAlert;
+window.GiveErrorAlert   = GiveErrorAlert;
+window.GiveConfirmModal = GiveConfirmModal;
+window.GiveSuccessAlert = GiveSuccessAlert;
+
 jQuery(document).ready(function ($) {
 
 	/**

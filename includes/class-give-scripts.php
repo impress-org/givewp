@@ -230,6 +230,8 @@ class Give_Scripts {
 			'currency_decimals'                 => give_get_price_decimals(),
 			'ok'                                => __( 'Ok', 'give' ),
 			'cancel'                            => __( 'Cancel', 'give' ),
+			'success'                           => __( 'Success', 'give' ),
+			'error'                             => __( 'Error', 'give' ),
 			'close'                             => __( 'Close', 'give' ),
 			'confirm'                           => __( 'Confirm', 'give' ),
 			'confirm_action'                    => __( 'Confirm Action', 'give' ),
