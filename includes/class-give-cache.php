@@ -258,7 +258,7 @@ class Give_Cache {
 				: null,
 		);
 
-		$result = update_option( $cache_key, $option_value, 'no' );
+		$result = update_option( $cache_key, $option_value, false );
 
 		return $result;
 	}

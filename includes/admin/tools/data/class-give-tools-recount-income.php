@@ -117,7 +117,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 
 		}
 
-		update_option( 'give_earnings_total', $total );
+		update_option( 'give_earnings_total', $total, false );
 
 		return false;
 

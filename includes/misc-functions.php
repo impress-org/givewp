@@ -1200,7 +1200,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	 */
 	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
 
-	return update_option( 'give_completed_upgrades', $completed_upgrades, 'no' );
+	return update_option( 'give_completed_upgrades', $completed_upgrades, false );
 }
 
 /**
