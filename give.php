@@ -457,13 +457,6 @@ if ( ! class_exists( 'Give' ) ) :
 			global $give_options;
 
 			/**
-			 * Composer's autoload.php.
-			 */
-			if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-			}
-
-			/**
 			 * Load libraries.
 			 */
 			if ( ! class_exists( 'WP_Async_Request' ) ) {
