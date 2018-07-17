@@ -60,6 +60,12 @@ Give relies on several npm commands to get you started:
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
 
+### Composer Commands
+
+Give relies on a composer command to get Give ready for production.
+
+* `composer install --no-dev --no-scripts` - Installs only the PHP dependencies which are necessary for the production version of Give.
+
 ### Development Notes
 
 * Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
