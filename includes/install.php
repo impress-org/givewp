@@ -65,7 +65,7 @@ function give_run_install() {
 	// Add Upgraded From Option.
 	$current_version = get_option( 'give_version' );
 	if ( $current_version ) {
-		update_option( 'give_version_upgraded_from', $current_version );
+		update_option( 'give_version_upgraded_from', $current_version, false );
 	}
 
 	// Setup some default options.
@@ -77,7 +77,7 @@ function give_run_install() {
 	}
 
 	// Populate the default values.
-	update_option( 'give_settings', array_merge( $give_options, $options ) );
+	update_option( 'give_settings', array_merge( $give_options, $options ), false );
 
 	/**
 	 * Run plugin upgrades.
@@ -87,7 +87,7 @@ function give_run_install() {
 	do_action( 'give_upgrades' );
 
 	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
-		update_option( 'give_version', GIVE_VERSION );
+		update_option( 'give_version', GIVE_VERSION, false );
 	}
 
 	// Create Give roles.
@@ -98,7 +98,7 @@ function give_run_install() {
 	// Set api version, end point and refresh permalink.
 	$api = new Give_API();
 	$api->add_endpoint();
-	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+	update_option( 'give_default_api_version', 'v' . $api->get_version(), false );
 
 	flush_rewrite_rules();
 
@@ -263,7 +263,7 @@ function give_after_install() {
 			do_action( 'give_after_install', $give_options );
 		}
 
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ) );
+		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
 
 	}
 
@@ -471,10 +471,10 @@ function give_create_pages() {
 	}
 
 	if ( ! empty( $options ) ) {
-		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
+		update_option( 'give_settings', array_merge( give_get_settings(), $options ), false );
 	}
 
-	add_option( 'give_install_pages_created', 1, '', 'no' );
+	add_option( 'give_install_pages_created', 1, '', false );
 }
 
 add_action( 'admin_init', 'give_create_pages', - 1 );

@@ -192,7 +192,7 @@ class Give_DB_Logs extends Give_DB {
 	public function get_logs( $args = array() ) {
 		global $wpdb;
 		$sql_query = $this->get_sql( $args );
-		
+
 		// Get log.
 		if ( ! ( $logs = Give_Cache::get( 'give_logs', true, $sql_query ) ) ) {
 			$logs = $wpdb->get_results( $sql_query );
@@ -226,7 +226,7 @@ class Give_DB_Logs extends Give_DB {
 			$count = $wpdb->get_var( $sql_query );
 			Give_Cache::set( 'give_logs_count', $count, 3600, true, $args );
 		}
-		
+
 		return absint( $count );
 	}
 
@@ -256,7 +256,7 @@ class Give_DB_Logs extends Give_DB {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option( $this->table_name . '_db_version', $this->version, false );
 	}
 
 

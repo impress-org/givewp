@@ -212,7 +212,7 @@ class Give_Background_Updater extends WP_Background_Process {
 				$give_updates->__pause_db_update(true);
 			}
 
-			update_option( 'give_upgrade_error', 1, 'no' );
+			update_option( 'give_upgrade_error', 1, false );
 
 			$log_data = 'Update Task' . "\n";
 			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
@@ -245,7 +245,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			$log_data .= "Error\n {$e->getMessage()}";
 
 			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
-			update_option( 'give_upgrade_error', 1 );
+			update_option( 'give_upgrade_error', 1, false );
 
 			wp_die();
 		}
@@ -261,7 +261,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Cache upgrade.
-		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+		update_option( 'give_doing_upgrade', $doing_upgrade_args, false );
 
 		// Enable cache.
 		Give_Cache::enable();
@@ -291,7 +291,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		delete_option( 'give_upgrade_error' );
 		delete_option( 'give_db_update_count' );
 		delete_option( 'give_doing_upgrade' );
-		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
+		add_option( 'give_show_db_upgrade_complete_notice', 1, '', false );
 
 		// Flush cache.
 		Give_Cache::flush_cache( true );

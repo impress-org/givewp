@@ -229,7 +229,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			} else {
 				if ( $undo ) {
 					$host_give_options = get_option( 'give_settings_old', array() );
-					update_option( 'give_settings', $host_give_options );
+					update_option( 'give_settings', $host_give_options, false );
 					$title = __( 'Undo of Setting Imported Completed!', 'give' );
 				} else {
 					$title = __( 'Failed to import', 'give' );

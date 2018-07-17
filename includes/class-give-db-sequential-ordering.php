@@ -119,7 +119,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 			give_update_option( 'sequential-ordering_number', 1 );
 		}
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option( $this->table_name . '_db_version', $this->version, false );
 	}
 
 

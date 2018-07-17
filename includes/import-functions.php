@@ -30,7 +30,7 @@ function give_import_donation_report() {
  * @since 1.8.13
  */
 function give_import_donation_report_update( $value = array() ) {
-	update_option( 'give_import_donation_report', $value );
+	update_option( 'give_import_donation_report', $value, false );
 }
 
 /**
@@ -39,7 +39,7 @@ function give_import_donation_report_update( $value = array() ) {
  * @since 1.8.13
  */
 function give_import_donation_report_reset() {
-	update_option( 'give_import_donation_report', array() );
+	update_option( 'give_import_donation_report', array(), false );
 }
 
 /**

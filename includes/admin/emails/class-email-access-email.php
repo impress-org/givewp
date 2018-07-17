@@ -273,7 +273,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				&& $update_options['email_access'] !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
 				$update_options[ "{$this->config['id']}_notification" ] = $update_options['email_access'];
-				update_option( $option_name, $update_options );
+				update_option( $option_name, $update_options, false );
 			}
 		}
 
