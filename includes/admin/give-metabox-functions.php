@@ -576,7 +576,10 @@ function give_textarea_input( $field ) {
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
-
+	$default_attributes = array(
+		'cols' => 20,
+		'rows' => 10
+	);
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
@@ -584,9 +587,7 @@ function give_textarea_input( $field ) {
 			style="<?php echo esc_attr( $field['style'] ); ?>"
 			name="<?php echo give_get_field_name( $field ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
-			rows="10"
-			cols="20"
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field, $default_attributes ); ?>
 	><?php echo esc_textarea( $field['value'] ); ?></textarea>
 	<?php
 	echo give_get_field_description( $field );
