@@ -1544,11 +1544,20 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @since 1.8.17
  *
  * @param array $attributes
+ * @param array $default_attributes
  *
  * @return string
  */
-function give_get_attribute_str( $attributes ) {
+function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	$attribute_str = '';
+
+	if( isset( $attributes['attributes'] ) ) {
+		$attributes = $attributes['attributes'];
+	}
+
+	if( ! empty( $default_attributes ) ) {
+		$attributes = wp_parse_args( $attributes, $default_attributes );
+	}
 
 	if ( empty( $attributes ) ) {
 		return $attribute_str;
