@@ -10,6 +10,7 @@ import '../plugins/give-ajaxify-fields';
 import '../plugins/selector-cache';
 import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
+import * as Modals from '../plugins/modal.js';
 
 // Give core.
 import './admin-forms';
@@ -18,3 +19,5 @@ import './admin-export';
 import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
+
+export const modal = Modals;

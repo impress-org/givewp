@@ -1,7 +1,5 @@
 import accounting from 'accounting';
 
-let Give = {};
-
 /**
  *  This API is under development.
  *
@@ -997,7 +995,7 @@ Give.notice = {
 	}
 };
 
-window.Give = Give;
+export const { init, fn, form, notice, cache } = Give;
 
 jQuery( function( $ ) {
 
