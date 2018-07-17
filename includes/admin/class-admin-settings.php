@@ -485,7 +485,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'textarea':
 
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
+						$default_attributes = array(
+							'rows' => 10,
+							'cols' => 60
+						);
+						$textarea_attributes = isset( $value['attributes'] ) ? $value['attributes'] : array();
 						?>
 						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
@@ -494,13 +498,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 										<textarea
-												name="<?php echo esc_attr( $value['id'] ); ?>"
-												id="<?php echo esc_attr( $value['id'] ); ?>"
-												style="<?php echo esc_attr( $value['css'] ); ?>"
-												class="<?php echo esc_attr( $value['class'] ); ?>"
-												rows="10"
-												cols="60"
-											<?php echo implode( ' ', $custom_attributes ); ?>
+											name="<?php echo esc_attr( $value['id'] ); ?>"
+											id="<?php echo esc_attr( $value['id'] ); ?>"
+											style="<?php echo esc_attr( $value['css'] ); ?>"
+											class="<?php echo esc_attr( $value['class'] ); ?>"
+											<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
 										><?php echo esc_textarea( $option_value ); ?></textarea>
 								<?php echo $description; ?>
 							</td>
