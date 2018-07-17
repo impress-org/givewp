@@ -104,7 +104,7 @@ function give_do_automatic_upgrades() {
 				}
 			}
 
-			update_option( 'give_completed_upgrades', $completed_upgrades );
+			update_option( 'give_completed_upgrades', $completed_upgrades, false );
 
 			// Do nothing on fresh install.
 			if ( ! doing_action( 'give_upgrades' ) ) {
@@ -122,10 +122,14 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.2.0', '<' ) :
 			give_v220_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.3.0', '<' ) :
+			give_v230_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
 	}
 }
 
@@ -410,10 +414,10 @@ function give_trigger_upgrades() {
 	if ( ! $give_version ) {
 		// 1.0 is the first version to use this option so we must add it.
 		$give_version = '1.0';
-		add_option( 'give_version', $give_version );
+		add_option( 'give_version', $give_version, '', false );
 	}
 
-	update_option( 'give_version', GIVE_VERSION );
+	update_option( 'give_version', GIVE_VERSION, false );
 	delete_option( 'give_doing_upgrade' );
 
 	if ( DOING_AJAX ) {
@@ -565,7 +569,7 @@ function give_v152_cleanup_users() {
 		$roles->add_caps();
 
 		// The Update Ran.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
 		delete_option( 'give_doing_upgrade' );
 
@@ -687,7 +691,7 @@ function give_v17_upgrade_addon_license_data() {
 
 		// Decode license data.
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-		update_option( $addon_license_option_name, $license_data );
+		update_option( $addon_license_option_name, $license_data, false );
 	}// End foreach().
 }
 
@@ -802,7 +806,7 @@ function give_v18_upgrades_core_setting() {
 
 		// Update setting only if they changed.
 		if ( $setting_changed ) {
-			update_option( 'give_settings', $give_settings );
+			update_option( 'give_settings', $give_settings, false );
 		}
 	}// End if().
 
@@ -1274,7 +1278,7 @@ function give_v1812_upgrades() {
 	}
 
 	if ( $give_setting_updated ) {
-		update_option( 'give_settings', $give_settings );
+		update_option( 'give_settings', $give_settings, false );
 	}
 }
 
@@ -1524,7 +1528,7 @@ function give_v1817_upgrades() {
 
 	if ( 'RIAL' === $give_settings['currency'] ) {
 		$give_settings['currency'] = 'IRR';
-		update_option( 'give_settings', $give_settings );
+		update_option( 'give_settings', $give_settings, false );
 	}
 }
 
@@ -2658,6 +2662,65 @@ function give_v203_upgrades() {
  */
 function give_v220_upgrades(){
 	give_v220_delete_wp_session_data();
+}
+
+/**
+ * Version 2.3.0 automatic updates
+ *
+ * @since 2.3.0
+ */
+function give_v230_upgrades(){
+	global $wpdb;
+
+	/**
+	 * Update 1
+	 *
+	 * Set autoload to no to reduce result weight from WordPress query
+	 */
+
+	$options = array(
+		'give_settings',
+		'give_version',
+		'give_version_upgraded_from',
+		'give_default_api_version',
+		'give_site_address_before_migrate',
+		'_give_table_check',
+		'give_recently_activated_addons',
+		'give_is_addon_activated',
+		'give_last_paypal_ipn_received',
+		'give_use_php_sessions',
+		'give_subscriptions',
+		'_give_subscriptions_edit_last'
+	);
+
+	// Add all table version option name
+	// Add banner option *_active_by_user
+	$option_like = $wpdb->get_col(
+		"
+		SELECT option_name
+		FROM $wpdb->options
+		WHERE option_name like '%give%'
+		AND (
+			option_name like '%_db_version%'
+			OR option_name like '%_active_by_user%'
+			OR option_name like '%_license_active%'
+		)
+		"
+	);
+
+	if( ! empty( $option_like ) ) {
+		$options = array_merge( $options, $option_like );
+	}
+
+	$options_str =  '\'' . implode( "','", $options ) . '\'';
+
+	$wpdb->query(
+		"
+		UPDATE $wpdb->options
+		SET autoload = 'no'
+		WHERE option_name IN ( {$options_str} )
+		"
+	);
 }
 
 /**
