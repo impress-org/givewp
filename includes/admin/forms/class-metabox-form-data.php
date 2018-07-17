@@ -580,10 +580,10 @@ class Give_MetaBox_Form_Data {
 						'id'            => $prefix . 'agree_label',
 						'name'          => __( 'Agreement Label', 'give' ),
 						'desc'          => __( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
-						'type'          => 'text',
-						'size'          => 'regular',
+						'type'          => 'textarea',
 						'attributes'    => array(
 							'placeholder' => __( 'Agree to Terms?', 'give' ),
+							'rows'        => 1
 						),
 						'wrapper_class' => 'give-hidden',
 					),
