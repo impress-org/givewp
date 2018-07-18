@@ -193,12 +193,12 @@ function give_get_email_names( $user_info, $payment = false ) {
 
 	// Set title prefix to name, if non empty.
 	if ( ! empty( $user_info['title'] ) && ! empty( $user_info['last_name'] ) ) {
-		$email_names['name'] = "{$user_info['title']}. {$user_info['last_name']}";
+		$email_names['name'] = "{$user_info['title']} {$user_info['last_name']}";
 	}
 
 	// Set title prefix to fullname, if non empty.
 	if ( ! empty( $user_info['title'] ) && ! empty( $email_names['fullname'] ) ) {
-		$email_names['fullname'] = "{$user_info['title']}. {$email_names['fullname']}";
+		$email_names['fullname'] = "{$user_info['title']} {$email_names['fullname']}";
 	}
 
 	return $email_names;
