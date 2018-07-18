@@ -326,7 +326,7 @@ function give_donor_view( $donor ) {
 	// Prepend title prefix to name if it is set.
 	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
 	if ( ! empty( $title_prefix ) ) {
-		$donor->name = "{$title_prefix}. {$donor->name}";
+		$donor->name = "{$title_prefix} {$donor->name}";
 	}
 	?>
 	<div id="donor-summary" class="info-wrapper donor-section postbox">
