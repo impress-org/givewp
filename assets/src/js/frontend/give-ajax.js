@@ -10,7 +10,7 @@
 
 /* global jQuery, give_global_vars */
 
-import Give from './give-donations';
+import Give from './give-api';
 
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce if session start. It will prevent nonce failed issue for cached pages.

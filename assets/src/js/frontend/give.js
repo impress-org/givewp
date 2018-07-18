@@ -8,7 +8,8 @@ import 'magnific-popup';
 import '../plugins/give-hint.css';
 
 // Give core.
-import * as GiveApi from './give-donations';
+import * as GiveApi from './give-api';
+import './give-donations';
 import './give-ajax';
 import './give-misc';
 import './give-donor-wall';

@@ -1,5 +1,5 @@
 import FloatLabels from 'float-labels.js';
-import Give from './give-donations';
+import Give from './give-api';
 
 /* global jQuery, give_global_vars */
 
