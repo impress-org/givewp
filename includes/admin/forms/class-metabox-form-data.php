@@ -301,9 +301,9 @@ class Give_MetaBox_Form_Data {
 							'style'         => 'width: 100%',
 							'wrapper_class' => 'give-hidden give-title-prefixes-wrap',
 							'options'       => array(
-								'Mr'   => __( 'Mr', 'give' ),
-								'Mrs'  => __( 'Mrs', 'give' ),
-								'Ms'   => __( 'Ms', 'give' ),
+								'Mr.'   => __( 'Mr.', 'give' ),
+								'Mrs.'  => __( 'Mrs.', 'give' ),
+								'Ms.'   => __( 'Ms.', 'give' ),
 							),
 						),
 						array(
