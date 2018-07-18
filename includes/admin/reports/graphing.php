@@ -221,6 +221,18 @@ function give_reports_graph() {
 						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
+
+				<?php
+				/**
+				 * Fires in report graphs widget table.
+				 *
+				 * Allows you to add additional rows to the table.
+				 *
+				 * @since 2.3
+				 */
+				do_action( 'give_reports_graph_additional_rows' );
+				?>
+
 			</table>
 
 			<?php
