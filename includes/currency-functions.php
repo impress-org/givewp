@@ -1967,6 +1967,7 @@ function give_currency_filter( $price = '', $args = array() ) {
  * Zero Decimal based Currency.
  *
  * @since 1.8.14
+ * @since 2.2.0 Modified list.
  * @see   https://github.com/WordImpress/Give/issues/2191
  *
  * @param string $currency Currency code
@@ -1975,21 +1976,21 @@ function give_currency_filter( $price = '', $args = array() ) {
  */
 function give_is_zero_based_currency( $currency = '' ) {
 	$zero_based_currency = array(
-		'PYG', // Paraguayan Guarani.
-		'GNF', // Guinean Franc.
-		'RWF', // Rwandan Franc.
 		'JPY', // Japanese Yen.
-		'BIF', // Burundian Franc.
 		'KRW', // South Korean Won.
-		'MGA', // Malagasy Ariary.
-		'XAF', // Central African Cfa Franc.
-		'XPF', // Cfp Franc.
-		'CLP', // Chilean Peso.
-		'KMF', // Comorian Franc.
-		'DJF', // Djiboutian Franc.
-		'VUV', // Vanuatu Vatu.
-		'VND', // Vietnamese Dong.
-		'XOF', // West African Cfa Franc.
+		'CLP', // Chilean peso.
+		'ISK', // Icelandic króna.
+		'BIF', // Burundian franc.
+		'DJF', // Djiboutian franc.
+		'GNF', // Guinean franc.
+		'KHR', // Cambodian riel.
+		'KPW', // North Korean won.
+		'LAK', // Lao kip.
+		'LKR', // Sri Lankan rupee.
+		'MGA', // Malagasy ariary.
+		'MGA', // Malagasy ariary.
+		'MZN', // Mozambican metical.
+		'VUV', // Vanuatu vatu.
 	);
 
 	// Set default currency.
