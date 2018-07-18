@@ -2198,13 +2198,13 @@ function give_get_name_with_title_prefixes( $donor ) {
  */
 function give_get_donor_name_with_title_prefixes( $title_prefix, $name ) {
 
-	$donor_name = trim( $name );
+	$donor_name = $name;
 
-	if ( ! empty( $title_prefix ) ) {
-		$donor_name = trim( "{$title_prefix} {$name}" );
+	if ( ! empty( $title_prefix ) && ! empty( $name ) ) {
+		$donor_name = "{$title_prefix} {$name}";
 	}
 
-	return $donor_name;
+	return trim( $donor_name );
 }
 
 /**
