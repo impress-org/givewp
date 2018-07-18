@@ -300,11 +300,7 @@ class Give_MetaBox_Form_Data {
 							'data_type'     => 'multiselect',
 							'style'         => 'width: 100%',
 							'wrapper_class' => 'give-hidden give-title-prefixes-wrap',
-							'options'       => array(
-								'Mr.'   => __( 'Mr.', 'give' ),
-								'Mrs.'  => __( 'Mrs.', 'give' ),
-								'Ms.'   => __( 'Ms.', 'give' ),
-							),
+							'options'       => give_get_default_title_prefixes(),
 						),
 						array(
 							'name'    => __( 'Company Donations', 'give' ),
