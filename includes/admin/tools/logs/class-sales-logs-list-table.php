@@ -100,31 +100,34 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			case 'donation' :
 				$serial_code = Give()->seq_donation_number->get_serial_code( $payment );
 				$value = Give()->tooltips->render_link( array(
+					/* translators: %s Sequential Donation ID. */
 					'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
 					'tag_content' => $serial_code,
 					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
 				) );
 
 				if ( ! empty( $item['donor_id'] ) ) {
+					$title_prefix = Give()->donor_meta->get_meta( $item['donor_id'], '_give_donor_title_prefix', true );
+
 					$value .= sprintf(
 						'&nbsp;%1$s&nbsp;<a href="%2$s">%3$s</a><br>',
 						esc_html__( 'by', 'give' ),
 						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . $item['donor_id'] ),
-						$item['donor_name']
+						give_get_donor_name_with_title_prefixes( $title_prefix, $item['donor_name'] )
 					);
 				} else {
 					$value .= sprintf(
 						'&nbsp;%1$s&nbsp;%2$s<br>',
 						esc_html__( 'by', 'give' ),
 						__( 'No donor attached', 'give' )
-					);;
+					);
 				}
 
 				return $value;
 
 			default:
 				return $item[ $column_name ];
-		}
+		} // End switch().
 	}
 
 	/**
