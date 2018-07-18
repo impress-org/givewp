@@ -2208,6 +2208,21 @@ function give_get_donor_name_with_title_prefixes( $title_prefix, $name ) {
 }
 
 /**
+ * This function will fetch the default list of title prefixes.
+ *
+ * @since 2.2.0
+ *
+ * @return array
+ */
+function give_get_default_title_prefixes() {
+	return array(
+		'Mr.'  => __( 'Mr.', 'give' ),
+		'Mrs.' => __( 'Mrs.', 'give' ),
+		'Ms.'  => __( 'Ms.', 'give' ),
+	);
+}
+
+/**
  * This function will check whether the name title prefix field is required or not.
  *
  * @param int $form_id Donation Form ID.
