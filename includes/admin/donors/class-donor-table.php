@@ -331,9 +331,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
 
 				// If title prefix is set, then update the donor name.
-				if ( ! empty( $title_prefix ) ) {
-					$donor->name = "{$title_prefix} {$donor->name}";
-				}
+				$donor->name = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
 
 				$data[] = array(
 					'id'            => $donor->id,
