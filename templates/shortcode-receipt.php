@@ -30,7 +30,7 @@ $full_name    = "{$user['first_name']} {$user['last_name']}";
 
 // Update donor name, if title prefix is set.
 if ( ! empty( $user['title'] ) ) {
-	$full_name    = "{$user['title']}. {$user['first_name']} {$user['last_name']}";
+	$full_name    = "{$user['title']} {$user['first_name']} {$user['last_name']}";
 }
 
 /**
