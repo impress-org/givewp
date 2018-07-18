@@ -118,9 +118,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'wrapper_class' => 'give-hidden give-title-prefixes-settings-wrap',
 							'style'         => 'width: 30%',
 							'options'       => array(
-								'Mr'  => __( 'Mr', 'give' ),
-								'Mrs' => __( 'Mrs', 'give' ),
-								'Ms'  => __( 'Ms', 'give' ),
+								'Mr.'  => __( 'Mr.', 'give' ),
+								'Mrs.' => __( 'Mrs.', 'give' ),
+								'Ms.'  => __( 'Ms.', 'give' ),
 							),
 						),
 						array(
