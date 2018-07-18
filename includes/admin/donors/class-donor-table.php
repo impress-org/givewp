@@ -332,7 +332,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 				// If title prefix is set, then update the donor name.
 				if ( ! empty( $title_prefix ) ) {
-					$donor->name = "{$title_prefix}. {$donor->name}";
+					$donor->name = "{$title_prefix} {$donor->name}";
 				}
 
 				$data[] = array(
