@@ -834,6 +834,856 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'AFN' => array(
+			'admin_label' => sprintf( __('Afghan afghani (%1$s)', 'give'), '&#x60b;'),
+			'symbol'      => '&#x60b;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'ALL' => array(
+			'admin_label' => sprintf( __('Albanian lek (%1$s)', 'give'), 'L'),
+			'symbol'      => 'L',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'AOA' => array(
+			'admin_label' => sprintf( __('Angolan kwanza (%1$s)', 'give'), 'Kz'),
+			'symbol'      => 'Kz',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'AZN' => array(
+			'admin_label' => sprintf( __('Azerbaijani manat (%1$s)', 'give'), 'AZN'),
+			'symbol'      => 'AZN',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BBD' => array(
+			'admin_label' => sprintf( __('Barbadian dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'BGN' => array(
+			'admin_label' => sprintf( __('Bulgarian lev (%1$s)', 'give'), '&#1083;&#1074;.'),
+			'symbol'      => '&#1083;&#1074;.',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BIF' => array(
+			'admin_label' => sprintf( __('Burundian franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'BTC' => array(
+			'admin_label' => sprintf( __('Bitcoin (%1$s)', 'give'), '&#3647;'),
+			'symbol'      => '&#3647;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 8,
+			),
+		),
+		'BTN' => array(
+			'admin_label' => sprintf( __('Bhutanese ngultrum (%1$s)', 'give'), 'Nu.'),
+			'symbol'      => 'Nu.',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 1,
+			),
+		),
+		'BYR' => array(
+			'admin_label' => sprintf( __('Belarusian ruble (old) (%1$s)', 'give'), 'Br'),
+			'symbol'      => 'Br',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BYN' => array(
+			'admin_label' => sprintf( __('Belarusian ruble (%1$s)', 'give'), 'Br'),
+			'symbol'      => 'Br',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CDF' => array(
+			'admin_label' => sprintf( __('Congolese franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'CVE' => array(
+			'admin_label' => sprintf( __('Cape Verdean escudo (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'DJF' => array(
+			'admin_label' => sprintf( __('Djiboutian franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'DZD' => array(
+			'admin_label' => sprintf( __('Algerian dinar (%1$s)', 'give'), '&#x62f;.&#x62c;'),
+			'symbol'      => '&#x62f;.&#x62c;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'ERN' => array(
+			'admin_label' => sprintf( __('Eritrean nakfa (%1$s)', 'give'), 'Nfk'),
+			'symbol'      => 'Nfk',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'ETB' => array(
+			'admin_label' => sprintf( __('Ethiopian birr (%1$s)', 'give'), 'Br'),
+			'symbol'      => 'Br',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'FJD' => array(
+			'admin_label' => sprintf( __('Fijian dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'FKP' => array(
+			'admin_label' => sprintf( __('Falkland Islands pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'GEL' => array(
+			'admin_label' => sprintf( __('Georgian lari (%1$s)', 'give'), '&#x20be;'),
+			'symbol'      => '&#x20be;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GGP' => array(
+			'admin_label' => sprintf( __('Guernsey pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'GHS' => array(
+			'admin_label' => sprintf( __('Ghana cedi (%1$s)', 'give'), '&#x20b5;'),
+			'symbol'      => '&#x20b5;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'GMD' => array(
+			'admin_label' => sprintf( __('Gambian dalasi (%1$s)', 'give'), 'D'),
+			'symbol'      => 'D',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'GNF' => array(
+			'admin_label' => sprintf( __('Guinean franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'GYD' => array(
+			'admin_label' => sprintf( __('Guyanese dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'HTG' => array(
+			'admin_label' => sprintf( __('Haitian gourde (%1$s)', 'give'), 'G'),
+			'symbol'      => 'G',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'IMP' => array(
+			'admin_label' => sprintf( __('Manx pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'IQD' => array(
+			'admin_label' => sprintf( __('Iraqi dinar (%1$s)', 'give'), '&#x639;.&#x62f;'),
+			'symbol'      => '&#x639;.&#x62f;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'IRT' => array(
+			'admin_label' => sprintf( __('Iranian toman (%1$s)', 'give'), '&#x062A;&#x0648;&#x0645;&#x0627;&#x0646;'),
+			'symbol'      => '&#x062A;&#x0648;&#x0645;&#x0627;&#x0646;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'JEP' => array(
+			'admin_label' => sprintf( __('Jersey pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'KGS' => array(
+			'admin_label' => sprintf( __('Kyrgyzstani som (%1$s)', 'give'), '&#x441;&#x43e;&#x43c;'),
+			'symbol'      => '&#x441;&#x43e;&#x43c;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => '-',
+				'number_decimals'     => 2,
+			),
+		),
+		'KHR' => array(
+			'admin_label' => sprintf( __('Cambodian riel (%1$s)', 'give'), '&#x17db;'),
+			'symbol'      => '&#x17db;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'KMF' => array(
+			'admin_label' => sprintf( __('Comorian franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'KPW' => array(
+			'admin_label' => sprintf( __('North Korean won (%1$s)', 'give'), '&#x20a9;'),
+			'symbol'      => '&#x20a9;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'KZT' => array(
+			'admin_label' => sprintf( __('Kazakhstani tenge (%1$s)', 'give'), 'KZT'),
+			'symbol'      => 'KZT',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => '-',
+				'number_decimals'     => 2,
+			),
+		),
+		'LAK' => array(
+			'admin_label' => sprintf( __('Lao kip (%1$s)', 'give'), '&#8365;'),
+			'symbol'      => '&#8365;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'LBP' => array(
+			'admin_label' => sprintf( __('Lebanese pound (%1$s)', 'give'), '&#x644;.&#x644;'),
+			'symbol'      => '&#x644;.&#x644;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'LKR' => array(
+			'admin_label' => sprintf( __('Sri Lankan rupee (%1$s)', 'give'), '&#xdbb;&#xdd4;'),
+			'symbol'      => '&#xdbb;&#xdd4;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'LRD' => array(
+			'admin_label' => sprintf( __('Liberian dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'LSL' => array(
+			'admin_label' => sprintf( __('Lesotho loti (%1$s)', 'give'), 'L'),
+			'symbol'      => 'L',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'LYD' => array(
+			'admin_label' => sprintf( __('Libyan dinar (%1$s)', 'give'), '&#x644;.&#x62f;'),
+			'symbol'      => '&#x644;.&#x62f;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 3,
+			),
+		),
+		'MDL' => array(
+			'admin_label' => sprintf( __('Moldovan leu (%1$s)', 'give'), 'MDL'),
+			'symbol'      => 'MDL',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MGA' => array(
+			'admin_label' => sprintf( __('Malagasy ariary (%1$s)', 'give'), 'Ar'),
+			'symbol'      => 'Ar',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'MMK' => array(
+			'admin_label' => sprintf( __('Burmese kyat (%1$s)', 'give'), 'Ks'),
+			'symbol'      => 'Ks',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MNT' => array(
+			'admin_label' => sprintf( __('Mongolian tögrög (%1$s)', 'give'), '&#x20ae;'),
+			'symbol'      => '&#x20ae;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'MOP' => array(
+			'admin_label' => sprintf( __('Macanese pataca (%1$s)', 'give'), 'P'),
+			'symbol'      => 'P',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MRO' => array(
+			'admin_label' => sprintf( __('Mauritanian ouguiya (%1$s)', 'give'), 'UM'),
+			'symbol'      => 'UM',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MUR' => array(
+			'admin_label' => sprintf( __('Mauritian rupee (%1$s)', 'give'), '&#x20a8;'),
+			'symbol'      => '&#x20a8;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MVR' => array(
+			'admin_label' => sprintf( __('Maldivian rufiyaa (%1$s)', 'give'), '.&#x783;'),
+			'symbol'      => '.&#x783;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 1,
+			),
+		),
+		'MWK' => array(
+			'admin_label' => sprintf( __('Malawian kwacha (%1$s)', 'give'), 'MK'),
+			'symbol'      => 'MK',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MZN' => array(
+			'admin_label' => sprintf( __('Mozambican metical (%1$s)', 'give'), 'MT'),
+			'symbol'      => 'MT',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'NAD' => array(
+			'admin_label' => sprintf( __('Namibian dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'NGN' => array(
+			'admin_label' => sprintf( __('Nigerian naira (%1$s)', 'give'), '&#8358;'),
+			'symbol'      => '&#8358;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'NIO' => array(
+			'admin_label' => sprintf( __('Nicaraguan córdoba (%1$s)', 'give'), 'C&#36;'),
+			'symbol'      => 'C&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'PAB' => array(
+			'admin_label' => sprintf( __('Panamanian balboa (%1$s)', 'give'), 'B/.'),
+			'symbol'      => 'B/.',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'PGK' => array(
+			'admin_label' => sprintf( __('Papua New Guinean kina (%1$s)', 'give'), 'K'),
+			'symbol'      => 'K',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'PRB' => array(
+			'admin_label' => sprintf( __('Transnistrian ruble (%1$s)', 'give'), '&#x440;.'),
+			'symbol'      => '&#x440;.',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'PYG' => array(
+			'admin_label' => sprintf( __('Paraguayan guaraní (%1$s)', 'give'), '&#8370;'),
+			'symbol'      => '&#8370;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'QAR' => array(
+			'admin_label' => sprintf( __('Qatari riyal (%1$s)', 'give'), '&#x631;.&#x642;'),
+			'symbol'      => '&#x631;.&#x642;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'RSD' => array(
+			'admin_label' => sprintf( __('Serbian dinar (%1$s)', 'give'), '&#x434;&#x438;&#x43d;.'),
+			'symbol'      => '&#x434;&#x438;&#x43d;.',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'RWF' => array(
+			'admin_label' => sprintf( __('Rwandan franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'SBD' => array(
+			'admin_label' => sprintf( __('Solomon Islands dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SCR' => array(
+			'admin_label' => sprintf( __('Seychellois rupee (%1$s)', 'give'), '&#x20a8;'),
+			'symbol'      => '&#x20a8;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SDG' => array(
+			'admin_label' => sprintf( __('Sudanese pound (%1$s)', 'give'), '&#x62c;.&#x633;.'),
+			'symbol'      => '&#x62c;.&#x633;.',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SHP' => array(
+			'admin_label' => sprintf( __('Saint Helena pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SLL' => array(
+			'admin_label' => sprintf( __('Sierra Leonean leone (%1$s)', 'give'), 'Le'),
+			'symbol'      => 'Le',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SOS' => array(
+			'admin_label' => sprintf( __('Somali shilling (%1$s)', 'give'), 'Sh'),
+			'symbol'      => 'Sh',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SRD' => array(
+			'admin_label' => sprintf( __('Surinamese dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SSP' => array(
+			'admin_label' => sprintf( __('South Sudanese pound (%1$s)', 'give'), '&pound;'),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'STD' => array(
+			'admin_label' => sprintf( __('São Tomé and Príncipe dobra (%1$s)', 'give'), 'Db'),
+			'symbol'      => 'Db',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SYP' => array(
+			'admin_label' => sprintf( __('Syrian pound (%1$s)', 'give'), '&#x644;.&#x633;'),
+			'symbol'      => '&#x644;.&#x633;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'TJS' => array(
+			'admin_label' => sprintf( __('Tajikistani somoni (%1$s)', 'give'), '&#x405;&#x41c;'),
+			'symbol'      => '&#x405;&#x41c;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ';',
+				'number_decimals'     => 2,
+			),
+		),
+		'TMT' => array(
+			'admin_label' => sprintf( __('Turkmenistan manat (%1$s)', 'give'), 'm'),
+			'symbol'      => 'm',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'TND' => array(
+			'admin_label' => sprintf( __('Turkmenistan manat (%1$s)', 'give'), '&#x62f;.&#x62a;'),
+			'symbol'      => '&#x62f;.&#x62a;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 3,
+			),
+		),
+		'TTD' => array(
+			'admin_label' => sprintf( __('Trinidad and Tobago dollar (%1$s)', 'give'), '&#36;'),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'UGX' => array(
+			'admin_label' => sprintf( __('Ugandan shilling (%1$s)', 'give'), 'UGX'),
+			'symbol'      => 'UGX',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'UZS' => array(
+			'admin_label' => sprintf( __('Uzbekistani som (%1$s)', 'give'), 'UZS'),
+			'symbol'      => 'UZS',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'VND' => array(
+			'admin_label' => sprintf( __('Vietnamese đồng (%1$s)', 'give'), '&#8363;'),
+			'symbol'      => '&#8363;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 1,
+			),
+		),
+		'VUV' => array(
+			'admin_label' => sprintf( __('Vanuatu vatu (%1$s)', 'give'), 'Vt'),
+			'symbol'      => 'Vt',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'WST' => array(
+			'admin_label' => sprintf( __('Samoan tālā (%1$s)', 'give'), 'T'),
+			'symbol'      => 'T',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'XAF' => array(
+			'admin_label' => sprintf( __('Central African CFA franc (%1$s)', 'give'), 'CFA'),
+			'symbol'      => 'CFA',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'XOF' => array(
+			'admin_label' => sprintf( __('West African CFA franc (%1$s)', 'give'), 'CFA'),
+			'symbol'      => 'CFA',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'XPF' => array(
+			'admin_label' => sprintf( __('CFP franc (%1$s)', 'give'), 'Fr'),
+			'symbol'      => 'Fr',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'YER' => array(
+			'admin_label' => sprintf( __('Yemeni rial (%1$s)', 'give'), '&#xfdfc;'),
+			'symbol'      => '&#xfdfc;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'ZMW' => array(
+			'admin_label' => sprintf( __('Zambian kwacha (%1$s)', 'give'), 'ZK'),
+			'symbol'      => 'ZK',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
 	/**
