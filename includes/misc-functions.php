@@ -2180,7 +2180,7 @@ function give_get_name_with_title_prefixes( $donor ) {
 
 	// Update Donor name, if non empty title prefix.
 	if ( ! empty( $title_prefix ) ) {
-		$donor->name = "{$title_prefix}. {$donor->name}";
+		$donor->name = "{$title_prefix} {$donor->name}";
 	}
 
 	return $donor;
