@@ -2026,6 +2026,14 @@ function give_is_right_to_left_supported_currency( $currency = '' ) {
 			'KWD',
 			'OMR',
 			'SAR',
+			'TND', //https://en.wikipedia.org/wiki/Tunisian_dinar
+			'QAR', //https://en.wikipedia.org/wiki/Qatari_riyal
+			'LYD', //https://en.wikipedia.org/wiki/Libyan_dinar
+			'LBP', //https://en.wikipedia.org/wiki/Lebanese_pound
+			'IRT', //https://en.wikipedia.org/wiki/Iranian_toman
+			'IQD', //https://en.wikipedia.org/wiki/Iraqi_dinar
+			'DZD', //https://en.wikipedia.org/wiki/Algerian_dinar
+			'AFN', //https://en.wikipedia.org/wiki/Afghan_afghani
 		)
 	);
 
