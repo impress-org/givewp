@@ -2363,3 +2363,15 @@ function give_convert_php_date_format_to_js( $php_format ) {
 
 	return $js_format;
 }
+
+/**
+ * Get localized date format.
+ *
+ * @since 2.2.0
+ *
+ * @return string.
+ */
+function give_get_localized_date_format() {
+
+	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
+}
