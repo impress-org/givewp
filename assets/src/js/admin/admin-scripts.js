@@ -108,19 +108,10 @@ var give_setting_edit = false;
 		let datepicker = $('.give_datepicker'),
 		    dateFormat = '';
 
-		switch( give_vars.wp_site_language ) {
-			case 'en_GB':
-				dateFormat = 'dd/mm/yy';
-				break;
-
-			default:
-				dateFormat = 'mm/dd/yy';
-		}
-
 		// Date picker.
 		if ( datepicker.length > 0) {
 			datepicker.datepicker({
-				dateFormat: dateFormat
+				dateFormat: give_vars.date_format
 			});
 		}
 	};
