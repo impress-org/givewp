@@ -159,6 +159,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
 		$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$localized_date_format = give_get_localized_date_format();
 		?>
 		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
@@ -167,12 +168,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 					<label for="start-date"
 					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
 					<input type="text" id="start-date" name="start-date" class="give_datepicker"
-					       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
+					       value="<?php echo $start_date; ?>" placeholder="<?php echo $localized_date_format; ?>"/>
 				</div>
 				<div class="give-filter give-filter-half">
 					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
 					<input type="text" id="end-date" name="end-date" class="give_datepicker"
-					       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
+					       value="<?php echo $end_date; ?>" placeholder="<?php echo $localized_date_format; ?>"/>
 				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
