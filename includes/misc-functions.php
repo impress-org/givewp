@@ -2336,6 +2336,8 @@ function give_get_formatted_address( $address = array() ) {
  * @return string The JS date format.
  */
 function give_convert_php_date_format_to_js( $php_format ) {
+	$js_format = $php_format;
+
 	switch ( $php_format ) {
 		case 'F j, Y':
 			$js_format = 'MM dd, yy';
