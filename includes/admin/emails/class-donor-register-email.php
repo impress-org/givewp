@@ -117,6 +117,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			$this->setup_email_data();
 
 			$this->recipient_email = $user_data['user_email'];
+
 			$this->send_email_notification( array(
 				'user_id' => $user_id,
 			) );
