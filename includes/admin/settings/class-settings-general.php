@@ -32,9 +32,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			$this->default_tab = 'general-settings';
 
 			if ( $this->id === give_get_current_setting_tab() ) {
-				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
-				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '__render_give_sequential_donation_code_preview' ), 10, 3 );
-				add_action( 'give_admin_field_give_unlock_all_settings', array( $this, '__render_give_unlock_all_settings' ), 10, 3 );
+				add_action( 'give_save_settings_give_settings', array( $this, '_give_change_donation_stating_number' ), 10, 3 );
+				add_action( 'give_admin_field_give_sequential_donation_code_preview', array( $this, '_render_give_sequential_donation_code_preview' ), 10, 3 );
+				add_action( 'give_admin_field_give_currency_preview', array( $this, '_render_give_currency_preview' ), 10, 2 );
+				add_action( 'give_admin_field_give_unlock_all_settings', array( $this, '_render_give_unlock_all_settings' ), 10, 3 );
 			}
 
 			parent::__construct();
@@ -197,6 +198,19 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'number_decimals',
 							'type'    => 'text',
 							'default' => 2,
+							'css'     => 'width:12em;',
+						),
+						array(
+							'name'    => __( 'Currency Preview', 'give' ),
+							'desc'    => __( 'A preview of the formatted currency. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
+							'id'      => 'currency_preview',
+							'type'    => 'give_currency_preview',
+							'default' => give_format_amount( 4562.57,
+								array(
+									'sanitize' => false,
+									'currency' => give_get_option( 'currency' ),
+								)
+							),
 							'css'     => 'width:12em;',
 						),
 						array(
@@ -461,7 +475,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 *
 		 * @return bool
 		 */
-		public function __give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
+		public function _give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
 			if ( ! isset( $_POST['sequential-ordering_number'] ) ) {
 				return false;
 			}
@@ -483,7 +497,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			return true;
 		}
 
-
 		/**
 		 * Render give_sequential_donation_code_preview field type
 		 *
@@ -492,7 +505,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 *
 		 * @param $field
 		 */
-		public function __render_give_sequential_donation_code_preview( $field ) {
+		public function _render_give_sequential_donation_code_preview( $field ) {
 			?>
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
 				<th scope="row" class="titledesc">
@@ -507,6 +520,36 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			<?php
 		}
 
+		/**
+		 * Render give_currency_code_preview field type
+		 *
+		 * @since  2.3.0
+		 * @access public
+		 *
+		 * @param array $field Field Attributes array.
+		 *
+		 * @return void
+		 */
+		public function _render_give_currency_preview( $field, $value ) {
+			$currency          = give_get_currency();
+			$currency_position = give_get_currency_position();
+			$currency_symbol   = give_currency_symbol( $currency, false );
+			$formatted_currency = ( 'before' === $currency_position )
+				? sprintf( '%1$s%2$s', esc_html( $currency_symbol ), esc_html( $field['default'] ) )
+				: sprintf( '%1$s%2$s', esc_html( $field['default'] ), esc_html( $currency_symbol ) );
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+				<th scope="row" class="titledesc">
+					<label
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+				</th>
+				<td class="give-forminp">
+					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled value="<?php echo esc_attr( $formatted_currency ); ?>">
+					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+				</td>
+			</tr>
+			<?php
+		}
 
 		/**
 		 * Render give_unlock_all_settings field type
@@ -516,7 +559,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 *
 		 * @param $field
 		 */
-		public function __render_give_unlock_all_settings( $field ) {
+		public function _render_give_unlock_all_settings( $field ) {
 			?>
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
 				<th scope="row" class="titledesc">
