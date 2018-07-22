@@ -553,8 +553,8 @@ function give_new_user_notification( $donation_id = 0, $donation_data = array() 
 	// For backward compatibility
 	$user = get_user_by( 'ID', $donation_data['user_info']['id'] );
 
-	$donation_data = array_merge(
-		$donation_data,
+	$donation_data['user_info'] = array_merge(
+		$donation_data['user_info'],
 		array(
 			'user_id'    => $donation_data['user_info']['id'],
 			'user_first' => $donation_data['user_info']['first_name'],
