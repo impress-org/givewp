@@ -2215,11 +2215,19 @@ function give_get_donor_name_with_title_prefixes( $title_prefix, $name ) {
  * @return array
  */
 function give_get_default_title_prefixes() {
-	return array(
-		'Mr.'  => __( 'Mr.', 'give' ),
-		'Mrs.' => __( 'Mrs.', 'give' ),
-		'Ms.'  => __( 'Ms.', 'give' ),
-	);
+	/**
+	 * Filter the data
+	 * Set default title prefixes.
+	 * 
+	 * @since 2.2.0
+	 */
+	return apply_filters(
+		'give_get_default_title_prefixes',
+		array(
+			'Mr.'  => __( 'Mr.', 'give' ),
+			'Mrs.' => __( 'Mrs.', 'give' ),
+			'Ms.'  => __( 'Ms.', 'give' ),
+		) );
 }
 
 /**
