@@ -156,7 +156,7 @@ function give_recently_activated_addons() {
 
 			if ( ! empty( $give_addons ) ) {
 				// Update the Give's activated add-ons.
-				update_option( 'give_recently_activated_addons', $give_addons );
+				update_option( 'give_recently_activated_addons', $give_addons, false );
 			}
 		}
 	}
@@ -445,10 +445,9 @@ function give_get_recently_activated_addons() {
  */
 function give_deactivation_popup() {
 
-	// Clean previous data in the output buffer.
-	ob_end_clean();
+	$results = array();
 
-	// Start output bufering.
+	// Start output buffering.
 	ob_start();
 	?>
 
@@ -568,15 +567,17 @@ function give_deactivation_popup() {
 	<?php
 
 	// Echo content (deactivation form) from the output buffer.
-	echo ob_get_clean();
+	$output = ob_get_contents();
 
 	// Erase and stop output buffer.
 	ob_end_clean();
 
-	wp_die();
+	$results['html'] = $output;
+
+	wp_send_json( $results );
 }
 
-add_action( 'wp_ajax_deactivation_popup', 'give_deactivation_popup' );
+add_action( 'wp_ajax_give_deactivation_popup', 'give_deactivation_popup' );
 
 /**
  * Ajax callback after the deactivation survey form has been submitted.

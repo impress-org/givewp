@@ -228,7 +228,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			return true;
 		} else {
-			update_option( 'give_earnings_total', 0 );
+			update_option( 'give_earnings_total', 0, false );
 			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_data( 'give_temp_reset_ids' );
@@ -335,7 +335,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$value = json_decode( $value, true );
 		}
 
-		return $value;
+		return (array) $value;
 	}
 
 	/**

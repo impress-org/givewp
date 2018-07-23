@@ -136,9 +136,17 @@ class Give_Comment {
 			return $error;
 		}
 
+		// Remove moderation emails when comment posted.
+		remove_action( 'comment_post', 'wp_new_comment_notify_moderator' );
+		remove_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
+
 		$comment_id = $is_existing_comment
 			? wp_update_comment( $comment_args )
 			: wp_new_comment( $comment_args, true );
+
+		// Add moderation emails when comment posted.
+		add_action( 'comment_post', 'wp_new_comment_notify_moderator' );
+		add_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 

@@ -1200,7 +1200,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	 */
 	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
 
-	return update_option( 'give_completed_upgrades', $completed_upgrades, 'no' );
+	return update_option( 'give_completed_upgrades', $completed_upgrades, false );
 }
 
 /**
@@ -1544,11 +1544,20 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @since 1.8.17
  *
  * @param array $attributes
+ * @param array $default_attributes
  *
  * @return string
  */
-function give_get_attribute_str( $attributes ) {
+function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	$attribute_str = '';
+
+	if( isset( $attributes['attributes'] ) ) {
+		$attributes = $attributes['attributes'];
+	}
+
+	if( ! empty( $default_attributes ) ) {
+		$attributes = wp_parse_args( $attributes, $default_attributes );
+	}
 
 	if ( empty( $attributes ) ) {
 		return $attribute_str;
@@ -2041,7 +2050,7 @@ function give_goal_progress_stats( $form ) {
 			break;
 	}
 
-	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+	$progress = $total_goal ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
 
 	$stats_array = array(
 		'raw_actual' => $actual,
@@ -2315,4 +2324,56 @@ function give_get_formatted_address( $address = array() ) {
 	$formatted_address = apply_filters( 'give_get_formatted_address', $formatted_address, $address_format, $address );
 
 	return $formatted_address;
+}
+
+/**
+ * Converts a PHP date format for use in JavaScript.
+ *
+ * @since 2.2.0
+ *
+ * @param string $php_format The PHP date format.
+ *
+ * @return string The JS date format.
+ */
+function give_convert_php_date_format_to_js( $php_format ) {
+	$js_format = $php_format;
+
+	switch ( $php_format ) {
+		case 'F j, Y':
+			$js_format = 'MM dd, yy';
+			break;
+		case 'Y-m-d':
+			$js_format = 'yy-mm-dd';
+			break;
+		case 'm/d/Y':
+			$js_format = 'mm/dd/yy';
+			break;
+		case 'd/m/Y':
+			$js_format = 'dd/mm/yy';
+			break;
+	}
+
+	/**
+	 * Filters the date format for use in JavaScript.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string $js_format  The JS date format.
+	 * @param string $php_format The PHP date format.
+	 */
+	$js_format = apply_filters( 'give_js_date_format', $js_format, $php_format );
+
+	return $js_format;
+}
+
+/**
+ * Get localized date format for use in JavaScript.
+ *
+ * @since 2.2.0
+ *
+ * @return string.
+ */
+function give_get_localized_date_format_to_js() {
+
+	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
 }

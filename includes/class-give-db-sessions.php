@@ -104,7 +104,7 @@ class Give_DB_Sessions extends Give_DB {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option( $this->table_name . '_db_version', $this->version, false );
 	}
 
 
@@ -158,7 +158,7 @@ class Give_DB_Sessions extends Give_DB {
 	 */
 	public function update_session_timestamp( $donor_id, $timestamp ) {
 		global $wpdb;
-		
+
 		// @codingStandardsIgnoreStart.
 		$wpdb->update(
 			$this->table_name,

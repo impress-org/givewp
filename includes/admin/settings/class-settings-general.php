@@ -477,7 +477,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					)
 				);
 			} elseif ( $update_options['sequential-ordering_number'] !== $old_options['sequential-ordering_number'] ) {
-				update_option( '_give_reset_sequential_number', 1 );
+				update_option( '_give_reset_sequential_number', 1, false );
 			}
 
 			return true;

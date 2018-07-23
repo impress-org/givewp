@@ -568,7 +568,7 @@ class Give_DB_Donors extends Give_DB {
 
 		dbDelta( $sql );
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option( $this->table_name . '_db_version', $this->version, false );
 	}
 
 	/**

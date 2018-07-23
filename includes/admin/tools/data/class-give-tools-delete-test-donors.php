@@ -248,7 +248,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 			return true;
 		} else {
-			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
+			update_option( 'give_earnings_total', give_get_total_earnings( true ), false );
 			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_option( $this->donation_key );
