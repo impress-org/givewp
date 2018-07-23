@@ -1,7 +1,6 @@
-import FloatLabels from 'float-labels.js';
-import Give from './give-api';
+/* global jQuery, give_global_vars, Give*/
 
-/* global jQuery, give_global_vars */
+import FloatLabels from 'float-labels.js';
 
 jQuery( function( $ ) {
 

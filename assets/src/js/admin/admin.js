@@ -10,6 +10,9 @@ import '../plugins/give-ajaxify-fields';
 import '../plugins/selector-cache';
 import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
+import GiveAPI from '../plugins/give-api/api';
+const Give = GiveAPI;
+
 import * as Modals from '../plugins/modal.js';
 
 // Give core.
@@ -20,4 +23,5 @@ import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
 
-export const modal = Modals;
+Give.modal = Modals;
+export const { init, fn, cache, modal } = Give;
