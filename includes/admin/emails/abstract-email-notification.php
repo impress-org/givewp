@@ -894,7 +894,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 						get_bloginfo( 'url' )
 					),
 					'admin_email'             => give_email_admin_email(),
-					'site_url'                => give_email_site_url(),
 					'offline_mailing_address' => give_email_offline_mailing_address(),
 				)
 			);
