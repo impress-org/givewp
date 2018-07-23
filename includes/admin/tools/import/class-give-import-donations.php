@@ -627,23 +627,32 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since  1.8.15
 		 * @access public
 		 *
-		 * @param  array  $options
+		 * @param  array $options
 		 * @param  string $current_mapto
-		 * @param bool    $value
+		 * @param bool $value
 		 *
 		 * @return void
 		 */
 		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
+
 			foreach ( $options as $option => $option_value ) {
+				$ignore = array();
+				if ( isset( $option_value['ignore'] ) ) {
+					$ignore = $option_value['ignore'];
+					unset( $option_value['ignore'] );
+				}
+
 				$option_value_texts = (array) $option_value;
 				$option_text        = $option_value_texts[0];
 
 				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
 				if ( empty( $checked ) ) {
 					foreach ( $option_value_texts as $option_value_text ) {
-						$checked = $this->selected( $option_value_text, $value );
-						if ( $checked ) {
-							break;
+						if ( ! in_array( $value, $ignore ) ) {
+							$checked = $this->selected( $option_value_text, $value );
+							if ( $checked ) {
+								break;
+							}
 						}
 					}
 				}
