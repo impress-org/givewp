@@ -405,6 +405,14 @@ function give_export_donation_standard_fields() {
 							</li>
 
 							<li class="give-export-option-start">
+								<label for="give-export-title-prefix">
+									<input type="checkbox" checked
+											name="give_give_donations_export_option[title_prefix]"
+											id="give-export-title-prefix"><?php esc_html_e( 'Donor\'s Title Prefix', 'give' ); ?>
+								</label>
+							</li>
+
+							<li class="give-export-option-start">
 								<label for="give-export-first-name">
 									<input type="checkbox" checked
 									       name="give_give_donations_export_option[first_name]"
