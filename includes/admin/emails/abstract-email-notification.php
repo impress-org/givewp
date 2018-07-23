@@ -876,10 +876,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'donation'                 => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
 					'form_title'               => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
 					'sitename'                 => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
-					'pdf_receipt'              => sprintf(
-						'<a href="#">%s</a>',
-						__( 'Download Receipt', 'give' )
-					),
 					'billing_address'         => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
 					'email_access_link'       => sprintf(
 						'<a href="%1$s">%2$s</a>',
@@ -898,7 +894,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 						get_bloginfo( 'url' )
 					),
 					'admin_email'             => give_email_admin_email(),
-					'site_url'                => give_email_site_url(),
 					'offline_mailing_address' => give_email_offline_mailing_address(),
 				)
 			);

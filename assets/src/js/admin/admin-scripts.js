@@ -105,12 +105,12 @@ var give_setting_edit = false;
 	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
+		let datepicker = $('.give_datepicker');
 
 		// Date picker.
-		if ($('.give_datepicker').length > 0) {
-			var dateFormat = 'mm/dd/yy';
-			$('.give_datepicker').datepicker({
-				dateFormat: dateFormat
+		if ( datepicker.length > 0) {
+			datepicker.datepicker({
+				dateFormat: give_vars.date_format
 			});
 		}
 	};
