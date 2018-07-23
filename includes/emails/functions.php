@@ -192,10 +192,14 @@ function give_get_email_names( $user_info, $payment = false ) {
 	} // End if().
 
 	// Set title prefix to name, if non empty.
-	$email_names['name'] = give_get_donor_name_with_title_prefixes( $user_info['title'], $user_info['last_name'] );
+	if ( ! empty( $user_info['title'] ) && ! empty( $user_info['last_name'] ) ) {
+		$email_names['name'] = give_get_donor_name_with_title_prefixes( $user_info['title'], $user_info['last_name'] );
+	}
 
 	// Set title prefix to fullname, if non empty.
-	$email_names['fullname'] = give_get_donor_name_with_title_prefixes( $user_info['title'], $email_names['fullname'] );
+	if ( ! empty( $user_info['title'] ) && ! empty( $email_names['fullname'] ) ) {
+		$email_names['fullname'] = give_get_donor_name_with_title_prefixes( $user_info['title'], $email_names['fullname'] );
+	}
 
 	return $email_names;
 }
