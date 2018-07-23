@@ -425,6 +425,10 @@ function give_import_donations_options() {
 			__( 'Donation Time', 'give' ),
 			__( 'Time', 'give' ),
 		),
+		'title_prefix' => array(
+			__( 'Title Prefix', 'give' ),
+			__( 'Prefix', 'give' ),
+		),
 		'first_name'   => array(
 			__( 'Donor First Name', 'give' ),
 			__( 'First Name', 'give' ),
@@ -526,6 +530,10 @@ function give_import_donation_form_options() {
 			__( 'Form Name', 'give' ),
 			__( 'Title', 'give' ),
 			__( 'Form Title', 'give' ),
+			'ignore' => array(
+				__( 'Title Prefix', 'give' ),
+				__( 'Prefix', 'give' ),
+			),
 		),
 		'form_id'                 => array(
 			__( 'Donation Form ID', 'give' ),
