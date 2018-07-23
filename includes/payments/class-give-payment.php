@@ -1725,6 +1725,7 @@ final class Give_Payment {
 	 */
 	private function setup_user_info() {
 		$defaults = array(
+			'title'      => $this->title_prefix,
 			'first_name' => $this->first_name,
 			'last_name'  => $this->last_name,
 		);
@@ -1763,6 +1764,10 @@ final class Give_Payment {
 					}
 
 					switch ( $key ) {
+						case 'title':
+							$user_info[ $key ] = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+							break;
+
 						case 'first_name':
 							$user_info[ $key ] = $donor->get_first_name();
 							break;
