@@ -325,13 +325,17 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				$payment_meta = $payment->payment_meta;
 				$address      = $payment->address;
 
-				// Set columns
+				// Set columns.
 				if ( ! empty( $columns['donation_id'] ) ) {
 					$data[ $i ]['donation_id'] = $payment->ID;
 				}
 
 				if ( ! empty( $columns['seq_id'] ) ) {
 					$data[ $i ]['seq_id'] = Give()->seq_donation_number->get_serial_code( $payment->ID );
+				}
+
+				if ( ! empty( $columns['title_prefix'] ) ) {
+					$data[ $i ]['title_prefix'] = ! empty( $payment->title_prefix ) ? $payment->title_prefix : '';
 				}
 
 				if ( ! empty( $columns['first_name'] ) ) {
