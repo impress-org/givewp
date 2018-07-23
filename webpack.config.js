@@ -127,7 +127,6 @@ const config = {
 module.exports = [
 	Object.assign({
 		entry: {
-			'babel-polyfill': 'babel-polyfill',
 			'give': ['./assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js'],
 			'admin': ['./assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js'],
 		},
