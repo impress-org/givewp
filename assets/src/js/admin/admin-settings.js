@@ -296,6 +296,6 @@ jQuery(document).ready(function ($) {
 			formatterArgs.symbol = matched[1];
 		}
 
-		preview.val( Give.fn.formatCurrency( 4562.57, formatterArgs ) );
+		preview.val( Give.fn.formatCurrency( 12345678.12345678, formatterArgs ) );
 	});
 });
