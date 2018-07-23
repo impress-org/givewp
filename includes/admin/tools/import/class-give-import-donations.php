@@ -646,13 +646,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				$option_text        = $option_value_texts[0];
 
 				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-				if ( empty( $checked ) ) {
+				if ( empty( $checked ) && ! in_array( $value, $ignore ) ) {
 					foreach ( $option_value_texts as $option_value_text ) {
-						if ( ! in_array( $value, $ignore ) ) {
-							$checked = $this->selected( $option_value_text, $value );
-							if ( $checked ) {
-								break;
-							}
+						$checked = $this->selected( $option_value_text, $value );
+						if ( $checked ) {
+							break;
 						}
 					}
 				}
