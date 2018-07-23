@@ -11,7 +11,6 @@ import '../plugins/selector-cache';
 import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
 import GiveAPI from '../plugins/give-api/api';
-const Give = GiveAPI;
 
 import * as Modals from '../plugins/modal.js';
 
@@ -23,3 +22,6 @@ import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
+
+GiveAPI.modal = Modals;
+export const { init, fn, cache, modal } = GiveAPI;
