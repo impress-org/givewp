@@ -7,7 +7,6 @@ import GiveForm from './form';
  *  Currently used only for internal purpose.
  */
 let Give = {
-	// @todo remove init method.
 	init: function() {
 		let subHelperObjs = [ 'form' ],
 			counter = 0;
