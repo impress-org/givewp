@@ -531,25 +531,47 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
  *
  * Sends the new user notification email when a user registers within the donation form
  *
- * @param int   $user_id   User ID.
- * @param array $user_data An Array of User Data.
+ * @param int   $donation_id   Donation ID.
+ * @param array $donation_data An Array of Donation Data.
  *
  * @access public
  * @since  1.0
  *
  * @return void
  */
-function give_new_user_notification( $user_id = 0, $user_data = array() ) {
+function give_new_user_notification( $donation_id = 0, $donation_data = array() ) {
 	// Bailout.
-	if ( empty( $user_id ) || empty( $user_data ) ) {
+	if (
+		empty( $donation_id )
+		|| empty( $donation_data )
+		|| ! isset( $_POST['give_create_account'] )
+		|| 'on' !== give_clean( $_POST['give_create_account'] )
+	) {
 		return;
 	}
 
-	do_action( 'give_new-donor-register_email_notification', $user_id, $user_data );
-	do_action( 'give_donor-register_email_notification', $user_id, $user_data );
+	// For backward compatibility
+	$user = get_user_by( 'ID', $donation_data['user_info']['id'] );
+
+	$donation_data['user_info'] = array_merge(
+		$donation_data['user_info'],
+		array(
+			'user_id'    => $donation_data['user_info']['id'],
+			'user_first' => $donation_data['user_info']['first_name'],
+			'user_last'  => $donation_data['user_info']['last_name'],
+			'user_email' => $donation_data['user_info']['email'],
+			'user_login' => $user->user_login,
+		)
+	);
+
+	// @todo add user data for backward compatibility in $donation_data['user_info']
+	// @todo for example previous array contains user_email but current contains email.
+
+	do_action( 'give_new-donor-register_email_notification', $donation_data['user_info']['id'], $donation_data['user_info'] );
+	do_action( 'give_donor-register_email_notification', $donation_data['user_info']['id'], $donation_data['user_info'] );
 }
 
-add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+add_action( 'give_insert_payment', 'give_new_user_notification', 10, 2 );
 
 
 /**
