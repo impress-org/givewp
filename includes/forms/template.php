@@ -488,8 +488,20 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
  */
 function give_output_levels( $form_id ) {
 
-	// Get variable pricing.
-	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+	/**
+	 * Filter the variable pricing
+	 *
+	 *
+	 * @since      1.0
+	 * @deprecated 2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
+	 *                 Check Give_Donate_Form::get_prices().
+	 *
+	 * @param array $prices Array of variable prices.
+	 * @param int   $form   Form ID.
+	 */
+	$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+
+
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
@@ -506,8 +518,8 @@ function give_output_levels( $form_id ) {
 			$output .= '<ul id="give-donation-level-button-wrap" class="give-donation-levels-wrap give-list-inline">';
 
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( give_is_default_level_id( $price ) ? 'give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -545,8 +557,8 @@ function give_output_levels( $form_id ) {
 			$output .= '<ul id="give-donation-level-radio-list" class="give-donation-levels-wrap">';
 
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -558,7 +570,7 @@ function give_output_levels( $form_id ) {
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
-					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ),
+					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
@@ -586,8 +598,9 @@ function give_output_levels( $form_id ) {
 
 			// first loop through prices.
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id,
+				$price );
 
 				$formatted_amount = give_format_amount( $price['_give_amount'], array(
 					'sanitize' => false,
@@ -599,7 +612,7 @@ function give_output_levels( $form_id ) {
 					$price['_give_id']['level_id'],
 					$level_classes,
 					$formatted_amount,
-					( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ),
+					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
 					$level_text
 				);
@@ -831,7 +844,7 @@ function give_user_info_fields( $form_id ) {
 			</p>
 		<?php endif; ?>
 
-		<?php if ( give_is_donor_thought_field_enabled( $form_id ) ) : ?>
+		<?php if ( give_is_donor_comment_field_enabled( $form_id ) ) : ?>
 			<p id="give-comment-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-comment">
 					<?php _e( 'Comment', 'give' ); ?>
@@ -1285,10 +1298,15 @@ function give_get_register_fields( $form_id ) {
 						<input type="checkbox" name="give_create_account" value="on" id="<?php echo $id; ?>" class="give-input" />
 						<?php
 					}
+
+					_e( 'Create an account', 'give' );
+					echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
+					echo str_replace(
+						'/>',
+						'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
+						give_get_nonce_field( "give_form_create_user_nonce_{$form_id}", 'give-form-user-register-hash', false )
+					);
 					?>
-					<?php _e( 'Create an account', 'give' ); ?>
-					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
-					<?php wp_nonce_field( 'give_form_create_user_nonce', 'give-form-user-register-hash', false, true );?>
 				</label>
 			</div>
 
@@ -1393,41 +1411,44 @@ function give_get_login_fields( $form_id ) {
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_checkout_login_fields_before', $form_id );
+		// do_action( 'give_checkout_login_fields_before', $form_id );
 		?>
-		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
-			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
-				<?php _e( 'Username', 'give' ); ?>
-				<?php if ( give_logged_in_only( $form_id ) ) { ?>
-					<span class="give-required-indicator">*</span>
-				<?php } ?>
-			</label>
+		<div class="give-user-login-fields-container">
+			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
+				<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
+					<?php _e( 'Username', 'give' ); ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+				</label>
 
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text"
-				   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-				   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text"
+					   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
+					   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+			</div>
+
+			<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
+				 class="give_login_password form-row form-row-last form-row-responsive">
+				<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
+					<?php _e( 'Password', 'give' ); ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
+						<span class="give-required-indicator">*</span>
+					<?php } ?>
+				</label>
+				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
+					   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
+					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+				<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+			</div>
+
+			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
+				 <span class="give-forgot-password ">
+					 <a href="<?php echo wp_lostpassword_url() ?>"
+						target="_blank"><?php _e( 'Reset Password', 'give' ) ?></a>
+				 </span>
+			</div>
 		</div>
 
-		<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
-			 class="give_login_password form-row form-row-last form-row-responsive">
-			<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
-				<?php _e( 'Password', 'give' ); ?>
-				<?php if ( give_logged_in_only( $form_id ) ) { ?>
-					<span class="give-required-indicator">*</span>
-				<?php } ?>
-			</label>
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
-				   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
-				   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
-			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
-		</div>
-
-		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
-			 <span class="give-forgot-password ">
-				 <a href="<?php echo wp_lostpassword_url() ?>"
-					target="_blank"><?php _e( 'Reset Password', 'give' ) ?></a>
-			 </span>
-		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit"
@@ -2130,18 +2151,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Get default selected price ID.
-		$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-		$price_id = 0;
-
-		// Loop through prices.
-		foreach ( $prices as $price ) {
-			if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-				$price_id = $price['_give_id']['level_id'];
-			};
-		}
-
+		// Get the default price ID.
+		$default_price = give_form_get_default_level( $form_id );
+		$price_id      = isset( $default_price['_give_id']['level_id'] ) ? $default_price['_give_id']['level_id'] : 0;
 
 		echo sprintf(
 			'<input type="hidden" name="give-price-id" value="%s"/>',

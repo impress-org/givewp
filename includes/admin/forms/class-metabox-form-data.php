@@ -333,9 +333,9 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'    => __( 'Donor Thought', 'give' ),
+							'name'    => __( 'Donor Comment', 'give' ),
 							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
-							'id'      => "{$prefix}donor_thought",
+							'id'      => "{$prefix}donor_comment",
 							'type'    => 'radio_inline',
 							'default' => 'global',
 							'options' => array(
@@ -580,10 +580,10 @@ class Give_MetaBox_Form_Data {
 						'id'            => $prefix . 'agree_label',
 						'name'          => __( 'Agreement Label', 'give' ),
 						'desc'          => __( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
-						'type'          => 'text',
-						'size'          => 'regular',
+						'type'          => 'textarea',
 						'attributes'    => array(
 							'placeholder' => __( 'Agree to Terms?', 'give' ),
+							'rows'        => 1
 						),
 						'wrapper_class' => 'give-hidden',
 					),
@@ -926,8 +926,8 @@ class Give_MetaBox_Form_Data {
 
 				// Set default value for checkbox fields.
 				if (
-					! isset( $_POST[ $form_meta_key ] )
-					&& ( 'checkbox' === $this->get_field_type( $form_meta_key ) )
+					! isset( $_POST[ $form_meta_key ] ) &&
+					in_array( $this->get_field_type( $form_meta_key ), array( 'checkbox', 'chosen' ) )
 				) {
 					$_POST[ $form_meta_key ] = '';
 				}

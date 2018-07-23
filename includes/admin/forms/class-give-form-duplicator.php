@@ -9,12 +9,12 @@
  * @since       2.2.0
  */
 
-if ( ! class_exists( 'Give_Clone_Form' ) ) {
+if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 	/**
-	 * Give_Clone_Form class
+	 * Give_Form_Duplicator class
 	 */
-	class Give_Clone_Form {
+	class Give_Form_Duplicator {
 
 		/**
 		 * Constructor Function
@@ -25,7 +25,7 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 			add_filter( 'post_row_actions', array( $this, 'row_action' ), 10, 2 );
 
 			// Run admin_action hook.
-			add_action( 'admin_action_give_clone_form', array( $this, 'handler' ) );
+			add_action( 'admin_action_give_duplicate_form', array( $this, 'handler' ) );
 		}
 
 
@@ -45,16 +45,16 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 
 			if ( isset( $_GET['post_type'] ) && 'give_forms' === give_clean( $_GET['post_type'] ) ) { // WPCS: input var ok.
 				if ( current_user_can( 'edit_posts' ) ) {
-					$actions['clone_form'] = sprintf(
+					$actions['duplicate_form'] = sprintf(
 						'<a href="%1$s">%2$s</a>',
 						wp_nonce_url( add_query_arg(
 							array(
-								'action'  => 'give_clone_form',
+								'action'  => 'give_duplicate_form',
 								'form_id' => $post->ID,
 							),
 							admin_url( 'admin.php' )
-						), 'give-clone-form' ),
-						__( 'Clone Form', 'give' )
+						), 'give-duplicate-form' ),
+						__( 'Duplicate', 'give' )
 					);
 				}
 			}
@@ -78,18 +78,18 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 			if (
 				! isset( $_REQUEST['form_id'] )
 				|| ! isset( $_REQUEST['action'] )
-				|| ( 'give_clone_form' !== $_REQUEST['action'] )
+				|| ( 'give_duplicate_form' !== $_REQUEST['action'] )
 			) {
 				wp_die( esc_html__( 'Form ID not found in the query string', 'give' ) );
 
-			} elseif ( ! wp_verify_nonce( give_clean( $_REQUEST['_wpnonce'] ), 'give-clone-form' ) ) {
+			} elseif ( ! wp_verify_nonce( give_clean( $_REQUEST['_wpnonce'] ), 'give-duplicate-form' ) ) {
 
 				wp_die( esc_html__( 'Nonce verification failed', 'give' ) );
 			}
 			// @codingStandardsIgnoreEnd
 
 			$form_id      = give_clean( $_REQUEST['form_id'] ); // @codingStandardsIgnoreLine
-			$post_data         = get_post( $form_id );
+			$post_data    = get_post( $form_id );
 			$current_user = wp_get_current_user();
 			$error_notice = sprintf(
 				/* translators: %s: Form ID */
@@ -116,18 +116,29 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 				);
 
 				// Get the ID of the cloned post.
-				$clone_form_id = wp_insert_post( $args );
+				$duplicate_form_id = wp_insert_post( $args );
 
-				$this->clone_taxonomies( $clone_form_id, $post_data );
-				$this->clone_meta_data( $clone_form_id, $post_data );
+				$this->duplicate_taxonomies( $duplicate_form_id, $post_data );
+				$this->duplicate_meta_data( $duplicate_form_id, $post_data );
+				$this->reset_stats( $duplicate_form_id );
 
-				if ( ! is_wp_error( $clone_form_id ) ) {
+				/**
+				 * Fire the action
+				 *
+				 * @since 2.2.0
+				 *
+				 * @param int $duplicate_form_id Duplicated form ID.
+				 * @param int $form_id           Form ID.
+				 */
+				do_action( 'give_form_duplicated', $duplicate_form_id, $form_id );
+
+				if ( ! is_wp_error( $duplicate_form_id ) ) {
 					// Redirect to the cloned form editor page.
 					wp_safe_redirect(
 						add_query_arg(
 							array(
 								'action' => 'edit',
-								'post'   => $clone_form_id,
+								'post'   => $duplicate_form_id,
 							),
 							admin_url( 'post.php' )
 						)
@@ -154,7 +165,7 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 		 * @param int     $new_form_id New form ID.
 		 * @param WP_Post $old_form    Old form object.
 		 */
-		private function clone_taxonomies( $new_form_id, $old_form ) {
+		private function duplicate_taxonomies( $new_form_id, $old_form ) {
 			// Get the taxonomies of the post type `give_forms`.
 			$taxonomies = get_object_taxonomies( $old_form->post_type );
 
@@ -187,7 +198,7 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 		 * @param int     $new_form_id New Form ID.
 		 * @param WP_Post $old_form    Old form object.
 		 */
-		private function clone_meta_data( $new_form_id, $old_form ) {
+		private function duplicate_meta_data( $new_form_id, $old_form ) {
 			global $wpdb;
 
 			// Clone the metadata of the form.
@@ -197,21 +208,55 @@ if ( ! class_exists( 'Give_Clone_Form' ) ) {
 
 			if ( ! empty( $post_meta_data ) ) {
 
-				$clone_query        = "INSERT INTO {$wpdb->formmeta} (form_id, meta_key, meta_value) ";
-				$clone_query_select = array();
+				$duplicate_query        = "INSERT INTO {$wpdb->formmeta} (form_id, meta_key, meta_value) ";
+				$duplicate_query_select = array();
 
 				foreach ( $post_meta_data as $meta_data ) {
-					$meta_key             = $meta_data->meta_key;
-					$meta_value           = $meta_data->meta_value;
-					$clone_query_select[] = $wpdb->prepare( 'SELECT %s, %s, %s', $new_form_id, $meta_key, $meta_value );
+					$meta_key                 = $meta_data->meta_key;
+					$meta_value               = $meta_data->meta_value;
+					$duplicate_query_select[] = $wpdb->prepare( 'SELECT %s, %s, %s', $new_form_id, $meta_key, $meta_value );
 				}
 
-				$clone_query .= implode( ' UNION ALL ', $clone_query_select );
+				$duplicate_query .= implode( ' UNION ALL ', $duplicate_query_select );
 
-				$wpdb->query( $clone_query ); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
+				$wpdb->query( $duplicate_query ); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
 			}
+		}
+
+		/**
+		 * Reset stats for cloned form
+		 *
+		 * @since  2.2.0
+		 * @access private
+		 *
+		 * @param int $new_form_id New Form ID.
+		 */
+		private function reset_stats( $new_form_id ) {
+			global $wpdb;
+
+			$meta_keys = array( '_give_form_sales', '_give_form_earnings' );
+
+			/**
+			 * Fire the filter
+			 *
+			 * @since  2.2.0
+			 */
+			$meta_keys = apply_filters( 'give_duplicate_form_reset_stat_meta_keys', $meta_keys );
+			$meta_keys = 'meta_key=\'' . implode( '\' OR meta_key=\'', $meta_keys ) . '\'';
+
+			$wpdb->query(
+				$wpdb->prepare(
+					"
+					UPDATE $wpdb->formmeta
+					SET meta_value=0
+					WHERE form_id=%d
+					AND ({$meta_keys})
+					",
+					$new_form_id
+				)
+			);
 		}
 	}
 
-	new Give_Clone_Form();
+	new Give_Form_Duplicator();
 }

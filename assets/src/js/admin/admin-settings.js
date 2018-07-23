@@ -11,7 +11,6 @@
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 import Give from '../frontend/give-donations';
 
-jQuery.noConflict();
 jQuery(document).ready(function ($) {
 
 	/**

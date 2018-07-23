@@ -82,6 +82,7 @@ function give_export_donations_get_custom_fields() {
 	$ignore_hidden_keys = apply_filters( 'give_export_donations_ignore_hidden_keys', array(
 		'_give_payment_meta',
 		'_give_payment_gateway',
+		'_give_payment_mode',
 		'_give_payment_form_title',
 		'_give_payment_form_id',
 		'_give_payment_price_id',
@@ -319,6 +320,14 @@ function give_export_donation_standard_fields() {
 									<input type="checkbox" checked
 									       name="give_give_donations_export_option[payment_gateway]"
 									       id="give-export-payment-gateway"><?php _e( 'Payment Gateway', 'give' ); ?>
+								</label>
+							</li>
+
+							<li>
+								<label for="give-export-payment-mode">
+									<input type="checkbox" checked
+									       name="give_give_donations_export_option[payment_mode]"
+									       id="give-export-payment-mode"><?php _e( 'Payment Mode', 'give' ); ?>
 								</label>
 							</li>
 

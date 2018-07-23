@@ -65,7 +65,7 @@ function give_run_install() {
 	// Add Upgraded From Option.
 	$current_version = get_option( 'give_version' );
 	if ( $current_version ) {
-		update_option( 'give_version_upgraded_from', $current_version );
+		update_option( 'give_version_upgraded_from', $current_version, false );
 	}
 
 	// Setup some default options.
@@ -77,7 +77,7 @@ function give_run_install() {
 	}
 
 	// Populate the default values.
-	update_option( 'give_settings', array_merge( $give_options, $options ) );
+	update_option( 'give_settings', array_merge( $give_options, $options ), false );
 
 	/**
 	 * Run plugin upgrades.
@@ -87,7 +87,7 @@ function give_run_install() {
 	do_action( 'give_upgrades' );
 
 	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
-		update_option( 'give_version', GIVE_VERSION );
+		update_option( 'give_version', GIVE_VERSION, false );
 	}
 
 	// Create Give roles.
@@ -98,7 +98,7 @@ function give_run_install() {
 	// Set api version, end point and refresh permalink.
 	$api = new Give_API();
 	$api->add_endpoint();
-	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+	update_option( 'give_default_api_version', 'v' . $api->get_version(), false );
 
 	flush_rewrite_rules();
 
@@ -107,10 +107,6 @@ function give_run_install() {
 	$donors_db->create_table();
 	$donor_meta = new Give_DB_Donor_Meta();
 	$donor_meta->create_table();
-
-	// Check for PHP Session support, and enable if available.
-	$give_sessions = new Give_Session();
-	$give_sessions->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
@@ -149,7 +145,8 @@ function give_run_install() {
 			'v210_verify_form_status_upgrades',
 			'v213_delete_donation_meta',
 			'v213_rename_donation_meta_type',
-			'v215_update_donor_user_roles'
+			'v215_update_donor_user_roles',
+			'v220_delete_wp_session_data'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -266,7 +263,7 @@ function give_after_install() {
 			do_action( 'give_after_install', $give_options );
 		}
 
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ) );
+		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
 
 	}
 
@@ -474,10 +471,10 @@ function give_create_pages() {
 	}
 
 	if ( ! empty( $options ) ) {
-		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
+		update_option( 'give_settings', array_merge( give_get_settings(), $options ), false );
 	}
 
-	add_option( 'give_install_pages_created', 1, '', 'no' );
+	add_option( 'give_install_pages_created', 1, '', false );
 }
 
 add_action( 'admin_init', 'give_create_pages', - 1 );

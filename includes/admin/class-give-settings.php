@@ -859,7 +859,7 @@ function give_update_option( $key = '', $value = false ) {
 
 	// Next let's try to update the value
 	$options[ $key ] = $value;
-	$did_update      = update_option( 'give_settings', $options );
+	$did_update      = update_option( 'give_settings', $options, false );
 
 	// If it updated, let's update the global variable
 	if ( $did_update ) {
@@ -898,7 +898,7 @@ function give_delete_option( $key = '' ) {
 		unset( $options[ $key ] );
 	}
 
-	$did_update = update_option( 'give_settings', $options );
+	$did_update = update_option( 'give_settings', $options, false );
 
 	// If it updated, let's update the global variable
 	if ( $did_update ) {

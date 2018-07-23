@@ -97,6 +97,18 @@ if ( ! class_exists( 'Give' ) ) :
 		public $session;
 
 		/**
+		 * Give Session DB Object
+		 *
+		 * This holds donation data for user's session.
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Sessions object
+		 */
+		public $session_db;
+
+		/**
 		 * Give HTML Element Helper Object
 		 *
 		 * @since  1.0
@@ -332,7 +344,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->roles                  = new Give_Roles();
 			$this->api                    = new Give_API();
 			$this->give_settings          = new Give_Admin_Settings();
-			$this->session                = new Give_Session();
 			$this->html                   = new Give_HTML_Elements();
 			$this->emails                 = new Give_Emails();
 			$this->email_tags             = new Give_Email_Template_Tags();
@@ -350,6 +361,8 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->scripts                = new Give_Scripts();
 			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
 			$this->comment                = Give_Comment::get_instance();
+			$this->session_db             = new Give_DB_Sessions();
+			$this->session                = Give_Session::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -489,6 +502,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
@@ -576,7 +590,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-clone-forms.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-form-duplicator.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 

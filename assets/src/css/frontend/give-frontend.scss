@@ -7,11 +7,11 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
+@import '_variables';
+@import '_mixins';
 @import '../plugins/hint.min';
 @import '../plugins/float-labels';
 @import '../plugins/magnific-popup';
-@import '_variables';
-@import '_mixins';
 @import 'fonts';
 @import 'receipt';
 @import 'float-labels';
@@ -30,4 +30,9 @@
 	@import 'grid';
 	@import 'card';
 	@import 'page-numbers';
+}
+
+// Import placeholder style from gutenberg placeholder.
+#give-receipt{
+	@import '../../../../blocks/components/container-placeholder-animation/style';
 }

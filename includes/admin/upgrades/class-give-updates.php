@@ -347,12 +347,12 @@ class Give_Updates {
 		// Do not stop background process immediately if task running.
 		// @see Give_Background_Updater::lock_process
 		if ( ! $force && self::$background_updater->is_process_running() ) {
-			update_option( 'give_pause_upgrade', 1 );
+			update_option( 'give_pause_upgrade', 1, false );
 
 			return true;
 		}
 
-		update_option( 'give_paused_batches', $batch, 'no' );
+		update_option( 'give_paused_batches', $batch, false );
 		delete_option( $batch->key );
 		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
@@ -394,7 +394,7 @@ class Give_Updates {
 
 		if ( ! empty( $batch ) ) {
 			wp_cache_delete( $batch->key, 'options' );
-			update_option( $batch->key, $batch->data );
+			update_option( $batch->key, $batch->data, false );
 
 			delete_option( 'give_paused_batches' );
 
@@ -491,7 +491,7 @@ class Give_Updates {
 				$log_data .= print_r( $new_updates, true ) . "\n";
 
 				$batch->data = array_merge( (array) $batch->data, $new_updates );
-				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
+				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ), false );
 			}
 		}
 
@@ -518,7 +518,7 @@ class Give_Updates {
 
 			if ( ! empty( $batch->key ) ) {
 				wp_cache_delete( $batch->key, 'options' );
-				update_option( $batch->key, $batch->data );
+				update_option( $batch->key, $batch->data, false );
 			} else {
 
 				foreach ( $batch->data as $data ) {
@@ -534,7 +534,7 @@ class Give_Updates {
 		 * Fix give_doing_upgrade option
 		 */
 		if( $fresh_new_db_count = $this->get_total_new_db_update_count( true ) ) {
-			update_option( 'give_db_update_count', $fresh_new_db_count );
+			update_option( 'give_db_update_count', $fresh_new_db_count, false );
 		}
 
 		$doing_upgrade_args['update']           = 1;
@@ -567,7 +567,7 @@ class Give_Updates {
 		}
 
 		if( ! empty( $doing_upgrade_args['update_info'] ) ) {
-			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+			update_option( 'give_doing_upgrade', $doing_upgrade_args, false );
 
 			$log_data .= 'Updated doing update:' . "\n";
 			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
@@ -633,25 +633,6 @@ class Give_Updates {
 
 		// Bailout if doing upgrades.
 		if ( $this->is_doing_updates() ) {
-			return;
-		}
-
-		// Show notice if ajax is not working.
-		if ( ! give_test_ajax_works() ) {
-			Give()->notices->register_notice(
-				array(
-					'id'          => 'give_db_upgrade_ajax_inaccessible',
-					'type'        => 'error',
-					'description' => sprintf(
-						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
-						__( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ),
-						esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ),
-						__( 'Read More', 'give' ) . ' &raquo;'
-					),
-					'show'        => true,
-				)
-			);
-
 			return;
 		}
 
@@ -731,7 +712,7 @@ class Give_Updates {
 			self::$background_updater->push_to_queue( $update );
 		}
 
-		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
+		add_option( 'give_db_update_count', count( $updates ), '', false );
 
 		add_option( 'give_doing_upgrade', array(
 			'update_info'      => $updates[0],
@@ -740,7 +721,7 @@ class Give_Updates {
 			'heading'          => sprintf( 'Update %s of %s', 1, count( $updates ) ),
 			'percentage'       => 0,
 			'total_percentage' => 0,
-		), '', 'no' );
+		), '', false );
 
 		self::$background_updater->save()->dispatch();
 	}
@@ -754,7 +735,7 @@ class Give_Updates {
 	 */
 	public function __flush_resume_updates() {
 		//delete_option( 'give_doing_upgrade' );
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
 
 		// Reset counter.
 		$this->step = $this->percentage = 0;
@@ -779,6 +760,9 @@ class Give_Updates {
 			! current_user_can( 'manage_give_settings' ) ||
 			$this->is_doing_updates()
 		) {
+			// Run update via ajax
+			self::$background_updater->dispatch();
+
 			wp_send_json_error();
 		}
 

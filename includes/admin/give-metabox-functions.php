@@ -290,6 +290,7 @@ function give_text_input( $field ) {
 
 /**
  * Output a chosen input box.
+ * Note: only for internal use.
  *
  * @param array $field         {
  *                              Optional. Array of text input field arguments.
@@ -319,19 +320,26 @@ function give_chosen_input( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['before_field']  = '';
 	$field['after_field']   = '';
 	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
 	$allow_new_values       = '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['value']         = is_array( $field['value'] ) ?
+		array_fill_keys( array_filter( $field['value'] ), 'selected' ) :
+		$field['value'];
+	$title_prefixes_value   = ( is_array( $field['value'] ) && count( $field['value'] ) > 0 ) ?
+		array_merge( $field['options'], $field['value'] ) :
+		$field['options'];
 
 	// Set attributes based on multiselect datatype.
 	if ( 'multiselect' === $data_type ) {
 		$type = 'multiple';
 		$allow_new_values = 'data-allows-new-values="true"';
 	}
+
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
@@ -343,21 +351,19 @@ function give_chosen_input( $field ) {
 				style="<?php echo esc_attr( $field['style'] ); ?>"
 				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ) . ' ' . esc_attr( $placeholder ); ?>
+			<?php echo "{$type} {$allow_new_values} {$placeholder}"; ?>
 		>
-			<?php foreach ( $field['options'] as $key => $value ) { ?>
-				<option value="<?php echo esc_attr( $key ); ?>"
-					<?php
-					if ( is_array( $field['value'] ) ) {
-						selected( in_array( $key, $field['value'], true ) );
-					} else {
-						selected( $field['value'], $key, true );
-					}
-					?>
-				>
-					<?php echo esc_html( $value ); ?>
-				</option>
-			<?php } ?>
+			<?php
+			if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
+				foreach ( $title_prefixes_value as $key => $value ) {
+					echo sprintf(
+						'<option %1$s value="%2$s">%2$s</option>',
+						( 'selected' === $value ) ? 'selected="selected"' : '',
+						esc_attr( $key )
+					);
+				}
+			}
+			?>
 		</select>
 		<?php echo esc_attr( $field['after_field'] ); ?>
 		<?php echo give_get_field_description( $field ); ?>
@@ -569,7 +575,10 @@ function give_textarea_input( $field ) {
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
-
+	$default_attributes = array(
+		'cols' => 20,
+		'rows' => 10
+	);
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
@@ -577,9 +586,7 @@ function give_textarea_input( $field ) {
 			style="<?php echo esc_attr( $field['style'] ); ?>"
 			name="<?php echo give_get_field_name( $field ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
-			rows="10"
-			cols="20"
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field, $default_attributes ); ?>
 	><?php echo esc_textarea( $field['value'] ); ?></textarea>
 	<?php
 	echo give_get_field_description( $field );

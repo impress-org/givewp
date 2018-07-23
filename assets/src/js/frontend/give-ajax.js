@@ -8,11 +8,10 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-import Give from './give-donations';
-
-/* global jQuery, Give */
-
+/* global jQuery, give_global_vars, Give */
 jQuery( document ).ready( function( $ ) {
+	// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
+	const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + give_global_vars.cookie_hash ) && '1' !== give_global_vars.delete_session_nonce_cookie;
 
 	//Hide loading elements
 	$( '.give-loading-text' ).hide();
@@ -20,6 +19,11 @@ jQuery( document ).ready( function( $ ) {
 	// Update and invalidate cached nonce.
 	$('.give-form').each(function (index, $form) {
 		$form = jQuery($form);
+
+		// Reset nonce if session started and page loaded from html cache.
+		if( resetNonce ) {
+			Give.form.fn.resetAllNonce($form);
+		}
 
 		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
 			nonceTime = ( parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life') ) ) * 1000,
@@ -29,10 +33,10 @@ jQuery( document ).ready( function( $ ) {
 		let timeDiff = nonceTime - currentTime;
 
 		timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
-		
+
 		// Update nonce in background.
 		window.setTimeout(function () {
-			Give.form.fn.resetNonce($form);
+			Give.form.fn.resetAllNonce($form);
 		}, timeDiff);
 	});
 
@@ -117,7 +121,7 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
 				// Create and update nonce.
-				Give.form.fn.resetNonce( this_form );
+				Give.form.fn.resetAllNonce( this_form );
 
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
@@ -250,6 +254,26 @@ jQuery( document ).ready( function( $ ) {
 
 	} );
 
+	/**
+	 * Render receipt by Ajax
+	 *
+	 * @since 2.2.0
+	 */
+	const recieptContainer = document.getElementById('give-receipt');
+
+	if(recieptContainer){
+		$.ajax({
+			url: give_global_vars.ajax_vars.ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'get_receipt',
+				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
+			},
+			success: function(response){
+				recieptContainer.innerHTML =  response ;
+			}
+		});
+	}
 } );
 
 /**

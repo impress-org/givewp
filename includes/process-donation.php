@@ -100,16 +100,12 @@ function give_process_donation_form() {
 		give_die();
 	}
 
-	// After AJAX: Setup session if not using php_sessions.
-	if ( ! Give()->session->use_php_sessions() ) {
-		// Double-check that set_cookie is publicly accessible.
-		// we're using a slightly modified class-wp-sessions.php.
-		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
-		if ( $session_reflection->isPublic() ) {
-			// Manually set the cookie.
-			Give()->session->init()->set_cookie();
-		}
-	}
+	/**
+	 * Fires action after donation form field validated.
+	 *
+	 * @since 2.2.0
+	 */
+	do_action( 'give_process_donation_after_validation' );
 
 	// Setup user information.
 	$user_info = array(
@@ -123,8 +119,11 @@ function give_process_donation_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price    = isset( $post_data['give-amount'] ) ?
-		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'] ) ) :
+	// Donation form ID.
+	$form_id = isset( $post_data['give-form-id'] ) ? absint( $post_data['give-form-id'] ) : 0;
+
+	$price = isset( $post_data['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
@@ -467,8 +466,8 @@ function give_donation_form_validate_gateway() {
 function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
-	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
+	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) : 0;
 	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
@@ -728,19 +727,9 @@ function give_donation_form_validate_logged_in_user() {
  * @return array
  */
 function give_donation_form_validate_new_user() {
-
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
-	$nonce     = ! empty( $post_data['give-form-user-register-hash'] ) ? $post_data['give-form-user-register-hash'] : '';
-
-	// Validate user creation nonce.
-	if ( ! wp_verify_nonce( $nonce, 'give_form_create_user_nonce' ) ) {
-		give_set_error( 'invalid_nonce', __( 'Nonce verification has failed.', 'give' ) );
-	}
-
-	$auto_generated_password = wp_generate_password();
-
 	// Default user data.
-	$default_user_data = array(
+	$auto_generated_password = wp_generate_password();
+	$default_user_data       = array(
 		'give-form-id'           => '',
 		'user_id'                => - 1, // Assume there will be errors.
 		'user_first'             => '',
@@ -751,10 +740,19 @@ function give_donation_form_validate_new_user() {
 		'give_user_pass_confirm' => $auto_generated_password,
 	);
 
-	// Get user data.
-	$user_data            = wp_parse_args( $post_data, $default_user_data );
+	// Get data.
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$user_data = wp_parse_args( $post_data, $default_user_data );
+
+	$form_id = absint( $user_data['give-form-id'] );
+	$nonce   = ! empty( $post_data['give-form-user-register-hash'] ) ? $post_data['give-form-user-register-hash'] : '';
+
+	// Validate user creation nonce.
+	if ( ! wp_verify_nonce( $nonce, "give_form_create_user_nonce_{$form_id}" ) ) {
+		give_set_error( 'invalid_nonce', __( 'Nonce verification has failed.', 'give' ) );
+	}
+
 	$registering_new_user = false;
-	$form_id              = absint( $user_data['give-form-id'] );
 
 	give_donation_form_validate_name_fields( $user_data );
 

@@ -42,3 +42,18 @@ body.give-twentyseventeen.colors-dark {
   }
 
 }
+
+// Enfold Compatibility
+html[class*="avia"] body#top form[id*=give-form] input.give-amount-top {
+  width: unset;
+  border: 1px solid #ccc;
+  border-left: none;
+}
+
+html[class*="avia"] body#top [id*=give-form].give-fl-form.give-fl-style-give label.give-fl-label {
+  left: 7px;
+}
+
+html[class*="avia"] body#top [id*=give-form].give-fl-form div.give-fl-is-active input {
+  padding: 8px 6px 0px;
+}

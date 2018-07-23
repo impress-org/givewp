@@ -848,40 +848,36 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['preview_email_tags_values'] = wp_parse_args(
 				$this->config['preview_email_tags_values'],
 				array(
-					'name'              => give_email_tag_first_name( array(
+					'name'                     => give_email_tag_first_name( array(
 						'payment_id' => $payment_id,
 						'user_id'    => $user_id,
 					) ),
-					'fullname'          => give_email_tag_fullname( array(
+					'fullname'                 => give_email_tag_fullname( array(
 						'payment_id' => $payment_id,
 						'user_id'    => $user_id,
 					) ),
-					'username'          => give_email_tag_username( array(
+					'username'                 => give_email_tag_username( array(
 						'payment_id' => $payment_id,
 						'user_id'    => $user_id,
 					) ),
-					'user_email'        => give_email_tag_user_email( array(
+					'user_email'               => give_email_tag_user_email( array(
 						'payment_id' => $payment_id,
 						'user_id'    => $user_id,
 					) ),
-					'payment_total'     => $payment_id ? give_email_tag_payment_total( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'amount'            => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'price'             => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'payment_method'    => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
-					'receipt_id'        => $receipt_id,
-					'payment_id'        => $payment_id ? $payment_id : rand( 2000, 2050 ),
-					'receipt_link_url'  => $receipt_link_url,
-					'receipt_link'      => $receipt_link,
-					'date'              => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
-					'donation'          => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
-					'form_title'        => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
-					'sitename'          => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
-					'pdf_receipt'       => sprintf(
-						'<a href="#">%s</a>',
-						__( 'Download Receipt', 'give' )
-					),
-					'billing_address'   => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
-					'email_access_link' => sprintf(
+					'payment_total'            => $payment_id ? give_email_tag_payment_total( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'amount'                   => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'price'                    => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'payment_method'           => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
+					'receipt_id'               => $receipt_id,
+					'payment_id'               => $payment_id ? $payment_id : rand( 2000, 2050 ),
+					'receipt_link_url'         => $receipt_link_url,
+					'receipt_link'             => $receipt_link,
+					'date'                     => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
+					'donation'                 => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
+					'form_title'               => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
+					'sitename'                 => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
+					'billing_address'         => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
+					'email_access_link'       => sprintf(
 						'<a href="%1$s">%2$s</a>',
 						add_query_arg(
 							array(
@@ -891,7 +887,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 						),
 						__( 'View your donation history &raquo;', 'give' )
 					),
-					'reset_password_link' => $user_id ? give_email_tag_reset_password_link( array( 'user_id' => $user_id ), $payment_id ) : '',
+					'reset_password_link'     => $user_id ? give_email_tag_reset_password_link( array( 'user_id' => $user_id ), $payment_id ) : '',
+					'site_url'                => sprintf(
+						'<a href="%1$s">%2$s</a>',
+						get_bloginfo( 'url' ),
+						get_bloginfo( 'url' )
+					),
+					'admin_email'             => give_email_admin_email(),
+					'offline_mailing_address' => give_email_offline_mailing_address(),
 				)
 			);
 

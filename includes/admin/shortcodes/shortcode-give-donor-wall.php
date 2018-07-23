@@ -36,12 +36,6 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 	 * @return array
 	 */
 	public function define_fields() {
-		$create_form_link = sprintf(
-			/* translators: %s: create new form URL */
-			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
-			admin_url( 'post-new.php?post_type=give_forms' )
-		);
-
 		return array(
 			array(
 				'type'        => 'post',

@@ -231,7 +231,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment_id      = Give_Helper_Payment::create_simple_payment();
 		$billing_address = give_email_tag_billing_address( array( 'payment_id' => $payment_id ) );
 
-		$this->assertEquals( '', trim( str_replace( "\n", '', $billing_address ) ) );
+		$this->assertEquals( ',', trim( str_replace( "\n", '', $billing_address ) ) );
 
 		/*
 		 * Case 2: Billing Address with filter

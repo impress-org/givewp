@@ -111,6 +111,36 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						),
 					);
 					break;
+
+				case 'contact':
+					$settings = array(
+
+						array(
+							'id'   => 'give_title_general_settings_5',
+							'type' => 'title'
+						),
+						array(
+							'name'    => __( 'Admin Email Address', 'give' ),
+							'id'      => "contact_admin_email",
+							'desc'    => sprintf( '%1$s <code>{admin_email}</code> %2$s', __( 'By default, the', 'give' ), __( 'tag will use your WordPress admin email. If you would like to customize this address you can do so in the field above.', 'give' ) ),
+							'type'    => 'text',
+							'default' => give_email_admin_email(),
+
+						),
+						array(
+							'name'    => __( 'Offline Mailing Address', 'give' ),
+							'id'      => "contact_offline_mailing_address",
+							'desc'    => sprintf( '%1$s <code>{offline_mailing_address}</code> %2$s', __( 'Set the mailing address to where you would like your donors to send their offline donations. This will customize the', 'give' ), __( 'email tag for the Offline Donations payment gateway.', 'give' ) ),
+							'type'    => 'wysiwyg',
+							'default' => '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>',
+						),
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'sectionend'
+						)
+					);
+
+					break;
 			}// End switch().
 
 			/**
@@ -141,6 +171,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		public function get_sections() {
 			$sections = array(
 				'email-settings' => esc_html__( 'Email Settings', 'give' ),
+				'contact'        => esc_html__( 'Contact Information', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

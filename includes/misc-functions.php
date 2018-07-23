@@ -1200,7 +1200,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	 */
 	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
 
-	return update_option( 'give_completed_upgrades', $completed_upgrades, 'no' );
+	return update_option( 'give_completed_upgrades', $completed_upgrades, false );
 }
 
 /**
@@ -1544,11 +1544,20 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @since 1.8.17
  *
  * @param array $attributes
+ * @param array $default_attributes
  *
  * @return string
  */
-function give_get_attribute_str( $attributes ) {
+function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	$attribute_str = '';
+
+	if( isset( $attributes['attributes'] ) ) {
+		$attributes = $attributes['attributes'];
+	}
+
+	if( ! empty( $default_attributes ) ) {
+		$attributes = wp_parse_args( $attributes, $default_attributes );
+	}
 
 	if ( empty( $attributes ) ) {
 		return $attribute_str;
@@ -1827,7 +1836,7 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
 }
 
 /**
- * Check if donor thought field enabled or not for form or globally.
+ * Check if donor comment field enabled or not for form or globally.
  *
  * @since 2.1
  *
@@ -1835,9 +1844,9 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
  *
  * @return bool
  */
-function give_is_donor_thought_field_enabled( $form_id ) {
-	$form_setting_val   = give_get_meta( $form_id, '_give_donor_thought', true, 'global' );
-	$global_setting_val = give_get_option( 'donor_thought', 'disabled' );
+function give_is_donor_comment_field_enabled( $form_id ) {
+	$form_setting_val   = give_get_meta( $form_id, '_give_donor_comment', true, 'global' );
+	$global_setting_val = give_get_option( 'donor_comment', 'disabled' );
 
 	if ( ! empty( $form_setting_val ) ) {
 		if( give_is_setting_enabled( $form_setting_val ) ) {
@@ -2041,7 +2050,7 @@ function give_goal_progress_stats( $form ) {
 			break;
 	}
 
-	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+	$progress = $total_goal ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
 
 	$stats_array = array(
 		'raw_actual' => $actual,
@@ -2249,5 +2258,122 @@ function give_get_user_agent() {
 	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
 
 	return $user_agent;
+}
 
+/**
+ * Set a cookie - wrapper for setcookie using WP constants.
+ *
+ * @since 2.2.0
+ *
+ * @param  string  $name   Name of the cookie being set.
+ * @param  string  $value  Value of the cookie.
+ * @param  integer $expire Expiry of the cookie.
+ * @param  bool    $secure Whether the cookie should be served only over https.
+ */
+function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
+	if ( ! headers_sent() ) {
+		setcookie(
+			$name,$value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure,
+			apply_filters( 'give_cookie_httponly', false, $name, $value, $expire, $secure )
+		);
+	}
+}
+
+/**
+ * Get formatted billing address.
+ *
+ * @since 2.2.0
+ *
+ * @param array $address
+ *
+ * @return string Formatted address.
+ */
+function give_get_formatted_address( $address = array() ) {
+	$formatted_address = '';
+
+	/**
+	 * Address format.
+	 *
+	 * @since 2.2.0
+	 */
+	$address_format = apply_filters( 'give_address_format_template', "{street_address}\n{city}, {state} {postal_code}\n{country}" );
+	preg_match_all( "/{([A-z0-9\-\_\ ]+)}/s", $address_format, $matches );
+
+	if( ! empty( $matches ) && ! empty( $address ) ) {
+		$address_values = array();
+
+		foreach ($matches[1] as $address_tag ) {
+			$address_values[ $address_tag ] = '';
+
+			if( isset( $address[$address_tag] ) ) {
+				$address_values[ $address_tag ] = $address[$address_tag];
+			}
+		}
+
+		$formatted_address  = str_ireplace( $matches[0], $address_values, $address_format );
+	}
+
+	/**
+	 * Give get formatted address.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string $formatted_address Formatted address.
+	 * @param string $address_format    Format of the address.
+	 */
+	$formatted_address = apply_filters( 'give_get_formatted_address', $formatted_address, $address_format, $address );
+
+	return $formatted_address;
+}
+
+/**
+ * Converts a PHP date format for use in JavaScript.
+ *
+ * @since 2.2.0
+ *
+ * @param string $php_format The PHP date format.
+ *
+ * @return string The JS date format.
+ */
+function give_convert_php_date_format_to_js( $php_format ) {
+	$js_format = $php_format;
+
+	switch ( $php_format ) {
+		case 'F j, Y':
+			$js_format = 'MM dd, yy';
+			break;
+		case 'Y-m-d':
+			$js_format = 'yy-mm-dd';
+			break;
+		case 'm/d/Y':
+			$js_format = 'mm/dd/yy';
+			break;
+		case 'd/m/Y':
+			$js_format = 'dd/mm/yy';
+			break;
+	}
+
+	/**
+	 * Filters the date format for use in JavaScript.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string $js_format  The JS date format.
+	 * @param string $php_format The PHP date format.
+	 */
+	$js_format = apply_filters( 'give_js_date_format', $js_format, $php_format );
+
+	return $js_format;
+}
+
+/**
+ * Get localized date format for use in JavaScript.
+ *
+ * @since 2.2.0
+ *
+ * @return string.
+ */
+function give_get_localized_date_format_to_js() {
+
+	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
 }

@@ -6,9 +6,8 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+/* globals give_vars */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
-
-jQuery.noConflict();
 
 // Provided access to global level.
 var give_setting_edit = false;
@@ -106,12 +105,12 @@ var give_setting_edit = false;
 	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
+		let datepicker = $('.give_datepicker');
 
 		// Date picker.
-		if ($('.give_datepicker').length > 0) {
-			var dateFormat = 'mm/dd/yy';
-			$('.give_datepicker').datepicker({
-				dateFormat: dateFormat
+		if ( datepicker.length > 0) {
+			datepicker.datepicker({
+				dateFormat: give_vars.date_format
 			});
 		}
 	};
@@ -1307,6 +1306,11 @@ var give_setting_edit = false;
 				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
 
 				if (!$('#give-restart-upgrades').length) {
+					// Start update by ajax if background update does not work.
+					if ( ! give_vars.ajax.length ) {
+						window.setTimeout(Give_Updates.start_db_update, 1000);
+					}
+
 					window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self);
 				}
 			}
@@ -1338,22 +1342,30 @@ var give_setting_edit = false;
 				$self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				$self.el.progress_main_container.removeClass('give-hidden');
 
-				$.ajax({
-					type: 'POST',
-					url: ajaxurl,
-					data: {
-						action: 'give_run_db_updates',
-						run_db_update: 1
-					},
-					dataType: 'json',
-					success: function (response) {
-
-					}
-				});
+				Give_Updates.start_db_update();
 
 				window.setTimeout(Give_Updates.get_db_updates_info, 500, $self);
 
 				return false;
+			});
+		},
+
+		start_db_update: function start_db_update() {
+			$.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				data: {
+					action: 'give_run_db_updates',
+					run_db_update: 1,
+					nonce: give_vars.db_update_nonce
+				},
+				dataType: 'json',
+				success: function success(response) {}
+			}).always(function(){
+				// Start update by ajax if background update does not work.
+				if ( ! give_vars.ajax.length) {
+					window.setTimeout(Give_Updates.start_db_update, 1000);
+				}
 			});
 		},
 
@@ -1362,7 +1374,7 @@ var give_setting_edit = false;
 				type: 'POST',
 				url: ajaxurl,
 				data: {
-					action: 'give_db_updates_info',
+					action: 'give_db_updates_info'
 				},
 				dataType: 'json',
 				success: function (response) {

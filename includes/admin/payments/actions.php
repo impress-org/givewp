@@ -201,11 +201,15 @@ function give_update_payment_details( $data ) {
 			$difference = $new_total - $curr_total;
 			give_increase_total_earnings( $difference );
 
+			// Increase form earnings.
+			give_increase_earnings( $payment->form_id, $difference, $payment->ID );
 		} elseif ( $curr_total > $new_total ) {
 			// Decrease if our new total is lower.
 			$difference = $curr_total - $new_total;
 			give_decrease_total_earnings( $difference );
 
+			// Decrease form earnings.
+			give_decrease_form_earnings( $payment->form_id, $difference, $payment->ID );
 		}
 	}
 
@@ -302,9 +306,10 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
-	$comment_id = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$comment_id            = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$is_anonymous_donation = give_is_anonymous_donation_field_enabled( $payment->form_id );
 
-	if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ) {
+	if ( $is_anonymous_donation ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
 		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
 
@@ -315,7 +320,7 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Update comment.
-	if ( give_is_donor_thought_field_enabled( $payment->form_id ) ) {
+	if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) {
 		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
 		$data['give_comment'] = trim( $_POST['give_comment'] );
 
@@ -349,7 +354,7 @@ function give_update_payment_details( $data ) {
 		}
 
 		$donor_has_comment = empty( $data['give_comment'] )
-			? ( empty( give_get_donor_latest_comment( $payment->donor_id ) ) ? '0' : '1' )
+			? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
 			: '1';
 
 		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );

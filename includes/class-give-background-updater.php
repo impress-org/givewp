@@ -31,8 +31,11 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Updater will still run via cron job if this fails for any reason.
 	 */
 	public function dispatch() {
-		/* @var WP_Background_Process $dispatched */
-		parent::dispatch();
+		if ( give_test_ajax_works() ) {
+			parent::dispatch();
+		} elseif ( wp_doing_ajax() ) {
+			$this->maybe_handle();
+		}
 	}
 
 
@@ -209,7 +212,7 @@ class Give_Background_Updater extends WP_Background_Process {
 				$give_updates->__pause_db_update(true);
 			}
 
-			update_option( 'give_upgrade_error', 1 );
+			update_option( 'give_upgrade_error', 1, false );
 
 			$log_data = 'Update Task' . "\n";
 			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
@@ -242,7 +245,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			$log_data .= "Error\n {$e->getMessage()}";
 
 			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
-			update_option( 'give_upgrade_error', 1 );
+			update_option( 'give_upgrade_error', 1, false );
 
 			wp_die();
 		}
@@ -258,7 +261,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Cache upgrade.
-		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+		update_option( 'give_doing_upgrade', $doing_upgrade_args, false );
 
 		// Enable cache.
 		Give_Cache::enable();
@@ -288,10 +291,10 @@ class Give_Background_Updater extends WP_Background_Process {
 		delete_option( 'give_upgrade_error' );
 		delete_option( 'give_db_update_count' );
 		delete_option( 'give_doing_upgrade' );
-		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
+		add_option( 'give_show_db_upgrade_complete_notice', 1, '', false );
 
 		// Flush cache.
-		Give_Cache::get_instance()->flush_cache();
+		Give_Cache::flush_cache( true );
 
 		if ( $cache_keys = Give_Cache::get_options_like( '' ) ) {
 			Give_Cache::delete( $cache_keys );
@@ -342,6 +345,57 @@ class Give_Background_Updater extends WP_Background_Process {
 		check_ajax_referer( $this->identifier, 'nonce' );
 
 		$this->handle();
+
+		wp_die();
+	}
+
+	/**
+	 * Handle
+	 *
+	 * Pass each queue item to the task handler, while remaining
+	 * within server memory and time limit constraints.
+	 */
+	protected function handle() {
+		$this->lock_process();
+
+		do {
+			$batch = $this->get_batch();
+
+			foreach ( $batch->data as $key => $value ) {
+				$task = $this->task( $value );
+
+				if ( false !== $task ) {
+					$batch->data[ $key ] = $task;
+				} else {
+					unset( $batch->data[ $key ] );
+				}
+
+				if ( $this->time_exceeded() || $this->memory_exceeded() ) {
+					// Batch limits reached.
+					break;
+				}
+			}
+
+			// Update or delete current batch.
+			if ( ! empty( $batch->data ) ) {
+				$this->update( $batch->key, $batch->data );
+			} else {
+				$this->delete( $batch->key );
+			}
+		} while ( ! $this->time_exceeded() && ! $this->memory_exceeded() && ! $this->is_queue_empty() );
+
+		$this->unlock_process();
+
+		// Start next batch or complete process.
+		if ( ! $this->is_queue_empty() ) {
+
+			// Dispatch only if ajax works.
+			if( give_test_ajax_works() ) {
+				$this->dispatch();
+			}
+		} else {
+			$this->complete();
+		}
 
 		wp_die();
 	}

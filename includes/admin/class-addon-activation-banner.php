@@ -169,7 +169,7 @@ class Give_Addon_Activation_Banner {
 				$user_id = __give_get_active_by_user_meta( $banner_addon_name );
 
 				if ( ! $user_id ) {
-					update_option( self::get_banner_user_meta_key( $banner_addon_name ), $this->user_id, '' );
+					update_option( self::get_banner_user_meta_key( $banner_addon_name ), $this->user_id, false );
 				}
 			}
 		}
@@ -633,7 +633,6 @@ class Give_Addon_Activation_Banner {
 				display: inline-block;
 				float: left;
 				background: #fff;
-				height: 100%;
 				position: relative;
 			}
 

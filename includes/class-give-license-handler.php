@@ -172,7 +172,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Add Setting for Give Add-on activation status.
 			$is_addon_activated = get_option( 'give_is_addon_activated' );
 			if ( ! $is_addon_activated && is_object( $this ) ) {
-				update_option( 'give_is_addon_activated', true );
+				update_option( 'give_is_addon_activated', true, false );
 				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
 			}
 
@@ -247,11 +247,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Check license weekly.
 			Give_Cron::add_weekly_event( array( $this, 'weekly_license_check' ) );
-			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_license_check' ) );
 
 			// Check subscription weekly.
 			Give_Cron::add_weekly_event( array( $this, 'weekly_subscription_check' ) );
-			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_subscription_check' ) );
 
 			// Show addon notice on plugin page.
 			$plugin_name = explode( 'plugins/', $this->file );
@@ -409,7 +407,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			set_site_transient( 'update_plugins', null );
 
 			// Add license data.
-			update_option( "{$this->item_shortname}_license_active", $license_data );
+			update_option( "{$this->item_shortname}_license_active", $license_data, false );
 
 			// Add license key.
 			give_update_option( "{$this->item_shortname}_license_key", $this->license );
@@ -481,7 +479,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			update_option( $this->item_shortname . '_license_active', $license_data );
+			update_option( $this->item_shortname . '_license_active', $license_data, false );
 
 			return;
 		}
@@ -506,7 +504,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Remove old subscription data.
 			if ( absint( get_option( '_give_subscriptions_edit_last', true ) ) < current_time( 'timestamp', 1 ) ) {
 				delete_option( 'give_subscriptions' );
-				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp', 1 ) ) );
+				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp', 1 ) ), false );
 			}
 
 			// Allow third party add-on developers to handle their subscription check.
@@ -558,7 +556,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
 				}
 
-				update_option( 'give_subscriptions', $subscriptions );
+				update_option( 'give_subscriptions', $subscriptions, false );
 			}
 		}
 
@@ -787,7 +785,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						$subscriptions[ $subscription_id ]['licenses'] = array_values( $subscriptions[ $subscription_id ]['licenses'] );
 
 						// Update subscription information.
-						update_option( 'give_subscriptions', $subscriptions );
+						update_option( 'give_subscriptions', $subscriptions, false );
 						break;
 					}
 				}

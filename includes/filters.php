@@ -62,7 +62,7 @@ function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
 
 	// Update setting if any old setting set.
 	if ( $update_setting ) {
-		update_option( 'give_settings', $settings );
+		update_option( 'give_settings', $settings, false );
 	}
 }
 

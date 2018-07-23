@@ -128,6 +128,27 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
+						$sql[] = $wpdb->prepare(
+							"
+							DELETE FROM $wpdb->terms
+							WHERE $wpdb->terms.term_id IN
+							(
+								SELECT $wpdb->term_taxonomy.term_id
+								FROM $wpdb->term_taxonomy
+								WHERE $wpdb->term_taxonomy.taxonomy = %s
+								OR $wpdb->term_taxonomy.taxonomy = %s
+							)
+							",
+							array( 'give_forms_category', 'give_forms_tag' )
+						);
+						$sql[] = $wpdb->prepare(
+							"
+							DELETE FROM $wpdb->term_taxonomy
+							WHERE $wpdb->term_taxonomy.taxonomy = %s
+							OR $wpdb->term_taxonomy.taxonomy = %s
+							",
+							array( 'give_forms_category', 'give_forms_tag' )
+						);
 						break;
 				}
 
@@ -207,7 +228,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			return true;
 		} else {
-			update_option( 'give_earnings_total', 0 );
+			update_option( 'give_earnings_total', 0, false );
 			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_data( 'give_temp_reset_ids' );
@@ -303,7 +324,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	private function get_stored_data( $key ) {
 		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $key ) );
 
 		if ( empty( $value ) ) {
 			return false;
@@ -314,7 +335,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$value = json_decode( $value, true );
 		}
 
-		return $value;
+		return (array) $value;
 	}
 
 	/**

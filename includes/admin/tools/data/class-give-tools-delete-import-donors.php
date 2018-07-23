@@ -23,87 +23,116 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Give_Tools_Import_Donors extends Give_Batch_Export {
 
+	/**
+	 * Form Data passed in batch processing.
+	 *
+	 * @var $request
+	 */
 	var $request;
 
 	/**
 	 * Used to store form id's that are going to get recount.
-	 * @var array.
+	 *
+	 * @var $form_key
+	 *
 	 * @since 1.8.13
 	 */
 	var $form_key = 'give_temp_delete_form_ids';
 
 	/**
 	 * Used to store donation id's that are going to get deleted.
-	 * @var array.
+	 *
+	 * @var $donation_key
+	 *
 	 * @since 1.8.12
 	 */
 	var $donation_key = 'give_temp_delete_donation_ids';
 
 	/**
-	 * Used to store donors id's that are going to get deleted.
-	 * @var array.
-	 * @since 1.8.12
-	 */
-	var $donor_key = 'give_temp_delete_donor_ids';
-
-	/**
 	 * Used to store the step where the step will be. ( 'count', 'donations', 'donors' ).
-	 * @var array.
+	 *
+	 * @var $step_key
+	 *
 	 * @since 1.8.12
 	 */
 	var $step_key = 'give_temp_delete_step';
 
 	/**
+	 * Used to store donors id's that are going to get deleted.
+	 *
+	 * @var $donor_key
+	 *
+	 * @since 1.8.12
+	 */
+	var $donor_key = 'give_temp_delete_donor_ids';
+
+	/**
 	 * Used to store to get the page count in the loop.
-	 * @var array.
+	 *
+	 * @var $step_on_key
+	 *
 	 * @since 1.8.12
 	 */
 	var $step_on_key = 'give_temp_delete_step_on';
 
 	/**
-	 * Contain total number of step .
-	 * @var array.
+	 * Contain total number of step.
+	 *
+	 * @var $total_step
+	 *
 	 * @since 1.8.12
 	 */
 	var $total_step;
 
 	/**
 	 * Counting contain total number of step that completed.
-	 * @var array.
+	 *
+	 * @var $step_completed
+	 *
 	 * @since 1.8.12
 	 */
 	var $step_completed;
 
 	/**
-	 * Our export type. Used for export-type specific filters/actions
-	 * @var string
+	 * Our export type. Used for export-type specific filters/actions.
+	 *
+	 * @var $export_type
+	 *
 	 * @since 1.8.12
 	 */
 	public $export_type = '';
 
 	/**
 	 * Allows for a non-form batch processing to be run.
-	 * @since  1.8.12
-	 * @var boolean
+	 *
+	 * @var $is_void
+	 *
+	 * @since 1.8.12
 	 */
 	public $is_void = true;
 
 	/**
 	 * Sets the number of items to pull on each step
-	 * @since  1.8.12
-	 * @var integer
+	 *
+	 * @var $per_step
+	 *
+	 * @since 1.8.12
 	 */
 	public $per_step = 10;
 
 	/**
 	 * Set's all the donors id's
-	 * @since  1.8.12
-	 * @var array
+	 *
+	 * @var $donor_ids
+	 *
+	 * @since 1.8.12
 	 */
 	public $donor_ids = array();
 
 	/**
-	 * Constructor.
+	 * Give_Tools_Import_Donors constructor.
+	 *
+	 * @param int $_step Steps.
 	 */
 	public function __construct( $_step = 1 ) {
 		parent::__construct( $_step );
@@ -118,7 +147,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	 * @since 1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
-	 * @return array|bool $data The data for the CSV file
+	 * @return void
 	 */
 	public function pre_fetch() {
 		$donation_ids = array();
@@ -126,10 +155,13 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 
 		// Check if the ajax request if running for the first time.
 		if ( 1 === (int) $this->step ) {
+
 			// Delete all the form ids.
 			$this->delete_option( $this->form_key );
+
 			// Delete all the donation ids.
 			$this->delete_option( $this->donation_key );
+
 			// Delete all the donor ids.
 			$this->delete_option( $this->donor_key );
 
@@ -139,6 +171,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			// Delete tha page count of the step.
 			$this->update_option( $this->step_on_key, '0' );
 		} else {
+
 			// Get the old donors list.
 			$donor_ids = $this->get_option( $this->donor_key );
 
@@ -159,15 +192,16 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	/**
 	 * Will Update or Add the donation and donors ids in the with option table for there respected key.
 	 *
-	 * @param string $step On which the current ajax is running.
-	 * @param array $donation_ids Contain the list of all the donation id's that has being add before this
-	 * @param array $donor_ids Contain the list of all the donors id's that has being add before this
+	 * @param string $step         On which the current ajax is running.
+	 * @param array  $donation_ids Contain the list of all the donation id's that has being add before this.
+	 * @param array  $donor_ids    Contain the list of all the donors id's that has being add before this.
 	 */
 	private function count( $step, $donation_ids = array(), $donor_ids = array() ) {
 
 		// Get the Page count by default it's zero.
 		$paged = (int) $this->get_step_page();
-		// Incresed the page count by one.
+
+		// Increased the page count by one.
 		++ $paged;
 
 		/**
@@ -185,6 +219,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 
 		// Reset the post data.
 		wp_reset_postdata();
+
 		// Getting the new donation.
 		$donation_posts = new WP_Query( $args );
 
@@ -205,7 +240,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 							$add_author = false;
 							$count      = (int) count( $donor->payment_ids );
 							if ( 1 === $count ) {
-								Give()->donors->delete( $donor->id );
+								give_delete_donor_and_related_donation( $donor );
 							} else {
 								$donor->remove_payment( $post->ID );
 								$donor->decrease_donation_count();
@@ -219,18 +254,18 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 					$donor_ids[] = (int) $post->post_author;
 				}
 			}
-			/* Restore original Post Data */
 		}
 
 		// Get the total number of post found.
 		$total_donation = (int) $donation_posts->found_posts;
 
-		// Maximum number of page can be display
+		// Maximum number of page can be display.
 		$max_num_pages = (int) $donation_posts->max_num_pages;
 
-		// Check current page is less then max number of page or not
+		// Check current page is less then max number of page or not.
 		if ( $paged < $max_num_pages ) {
-			// Update the curretn page virable for the next step
+
+			// Update the current page variable for the next step.
 			$this->update_option( $this->step_on_key, $paged );
 
 			// Calculating percentage.
@@ -254,19 +289,27 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.8.12
+	 *
 	 * @return int
 	 */
 	public function get_percentage_complete() {
 		return ceil( ( 100 * $this->step_completed ) / $this->total_step );
 	}
 
+	/**
+	 * Process Steps
+	 *
+	 * @return bool
+	 */
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
 			wp_die(
 				esc_html__( 'You do not have permission to delete Import transactions.', 'give' ),
 				esc_html__( 'Error', 'give' ),
-				array( 'response' => 403 )
+				array(
+					'response' => 403,
+				)
 			);
 		}
 
@@ -277,7 +320,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 
 			return true;
 		} else {
-			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
+			update_option( 'give_earnings_total', give_get_total_earnings( true ), false );
 			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_option( $this->donation_key );
@@ -316,10 +359,10 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 		// Get the current step.
 		$step = (int) $this->get_step();
 
-		// get teh donor ids.
+		// Get the donor ids.
 		$donor_ids = $this->get_option( $this->donor_key );
 
-		// In step to we delete all the donation in loop.
+		// Delete all the imported donations.
 		if ( 2 === $step ) {
 			$pass_to_donor = false;
 			$page          = (int) $this->get_step_page();
@@ -357,11 +400,11 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				give_delete_donation( absint( $item ) );
 			}
 
-			// update the new form list.
+			// Update the new form list.
 			$this->update_option( $this->form_key, $form_ids );
-		}
+		} // End if().
 
-		// Here we delete all the donor
+		// Delete all the donors.
 		if ( 3 === $step ) {
 
 			// Get the old form list.
@@ -416,7 +459,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 					);
 					$donor->update( $data_to_update );
 				}
-			}
+			} // End if().
 
 			$page ++;
 			$this->update_option( $this->step_on_key, $page );
@@ -427,11 +470,19 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			}
 
 			return true;
-		}
+		} // End if().
 
 		return true;
 	}
 
+	/**
+	 * This function will get list of donation ids ready for deletion.
+	 *
+	 * @param array  $donation_ids List of donation ids.
+	 * @param string $page         Ajax on Page.
+	 *
+	 * @return mixed
+	 */
 	public function get_delete_ids( $donation_ids, $page ) {
 		$index            = $page --;
 		$count            = count( $donation_ids );
@@ -455,23 +506,24 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  1.8.12
+	 * @since 1.8.12
 	 *
-	 * @param  string $key The option_name
+	 * @param string $key           Option Key.
+	 * @param bool   $default_value True, if default value, else false.
 	 *
-	 * @return mixed       Returns the data from the database
+	 * @return mixed Returns the data from the database
 	 */
-	public function get_option( $key, $defalut_value = false ) {
-		return get_option( $key, $defalut_value );
+	public function get_option( $key, $default_value = false ) {
+		return get_option( $key, $default_value );
 	}
 
 	/**
 	 * Give a key, store the value
 	 *
-	 * @since  1.8.12s
+	 * @since 1.8.12
 	 *
-	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param string $key   Option Key.
+	 * @param mixed  $value Option Value.
 	 *
 	 * @return void
 	 */
@@ -482,9 +534,9 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	/**
 	 * Delete an option
 	 *
-	 * @since  1.8.12
+	 * @since 1.8.12
 	 *
-	 * @param  string $key The option_name to delete
+	 * @param string $key Option Key.
 	 *
 	 * @return void
 	 */

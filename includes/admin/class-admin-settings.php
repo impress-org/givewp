@@ -485,26 +485,29 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'textarea':
 
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
+						$default_attributes = array(
+							'rows' => 10,
+							'cols' => 60
+						);
+						$textarea_attributes = isset( $value['attributes'] ) ? $value['attributes'] : array();
 						?>
-					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-						<th scope="row" class="titledesc">
-							<label
-									for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-						</th>
-						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-									<textarea
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label
+										for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+										<textarea
 											name="<?php echo esc_attr( $value['id'] ); ?>"
 											id="<?php echo esc_attr( $value['id'] ); ?>"
 											style="<?php echo esc_attr( $value['css'] ); ?>"
 											class="<?php echo esc_attr( $value['class'] ); ?>"
-											rows="10"
-											cols="60"
-										<?php echo implode( ' ', $custom_attributes ); ?>
-									><?php echo esc_textarea( $option_value ); ?></textarea>
-							<?php echo $description; ?>
-						</td>
-						</tr><?php
+											<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+										><?php echo esc_textarea( $option_value ); ?></textarea>
+								<?php echo $description; ?>
+							</td>
+						</tr>
+						<?php
 						break;
 
 					// Select boxes.
@@ -791,10 +794,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Note: only for internal use.
 					case 'chosen' :
 
 						// Get option value.
 						$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value     = is_array( $option_value ) ? array_fill_keys( $option_value, 'selected' ) : $option_value;
 						$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 						$type             = '';
 						$allow_new_values = '';
@@ -802,14 +807,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						// Set attributes based on multiselect datatype.
 						if ( 'multiselect' === $value['data_type'] ) {
-							$type = 'multiple';
+							$type             = 'multiple';
 							$allow_new_values = 'data-allows-new-values="true"';
 							$name             = $name . '[]';
-
-							$option_value = empty( $option_value ) ? array() : $option_value;
+							$option_value     = empty( $option_value ) ? array() : $option_value;
 						}
 
-						$value['options'] = array_merge( $value['options'], array_combine( array_values( $option_value ), array_values( $option_value ) ) );
+						$title_prefixes_value = ( is_array( $option_value ) && count( $option_value ) > 0 ) ?
+							array_merge( $value['options'], $option_value ) :
+							$value['options'];
+
 						?>
 						<tr valign="top" <?php echo $wrapper_class; ?>>
 							<th scope="row" class="titledesc">
@@ -817,28 +824,26 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 								<select
-									class="give-select-chosen give-chosen-settings"
-									style="<?php echo esc_attr( $value['style'] ); ?>"
-									name="<?php echo esc_attr( $name ); ?>"
-									id="<?php echo esc_attr( $value['id'] ); ?>"
-									<?php echo esc_attr( $type ) . ' ' . esc_attr( $allow_new_values ); ?>
-									<?php echo implode( ' ', $custom_attributes ); ?>
+										class="give-select-chosen give-chosen-settings"
+										style="<?php echo esc_attr( $value['style'] ); ?>"
+										name="<?php echo esc_attr( $name ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+									<?php
+									echo "{$type} {$allow_new_values}";
+									echo implode( ' ', $custom_attributes );
+									?>
 								>
-									<?php foreach ( $value['options'] as $key => $item_value ) : ?>
-										<option
-											value="<?php echo esc_attr( $key ); ?>"
-											<?php
-											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value, true ) );
-											} else {
-												selected( $option_value, $key );
-											}
-											?>
-										>
-											<?php echo esc_html( $item_value ); ?>
-										</option>
-									<?php endforeach; ?>
-
+									<?php
+									if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
+										foreach ( $title_prefixes_value as $key => $item_value ) {
+											echo sprintf(
+												'<option %1$s value="%2$s">%2$s</option>',
+												( 'selected' === $item_value ) ? 'selected="selected"' : '',
+												esc_attr( $key )
+											);
+										}
+									}
+									?>
 								</select>
 								<?php echo wp_kses_post( $description ); ?>
 							</td>
@@ -1040,7 +1045,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			// Save all options in our array or there own option name i.e. option id.
 			if ( empty( $option_name ) ) {
 				foreach ( $update_options as $name => $value ) {
-					update_option( $name, $value );
+					update_option( $name, $value, false );
 
 					/**
 					 * Trigger action.
@@ -1055,7 +1060,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
 				$update_options = array_merge( $old_options, $update_options );
 
-				update_option( $option_name, $update_options );
+				update_option( $option_name, $update_options, false );
 
 				/**
 				 * Trigger action.

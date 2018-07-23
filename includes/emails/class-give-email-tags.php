@@ -266,12 +266,16 @@ function give_get_emails_tags_list() {
  */
 function give_do_email_tags( $content, $tag_args ) {
 	// Backward compatibility < 2.0
-	if ( ! is_array( $tag_args ) ) {
+	if ( ! is_array( $tag_args ) && is_numeric( $tag_args ) ) {
 		$tag_args = array( 'payment_id' => $tag_args );
 	}
 
+	$email_tags = Give()->email_tags instanceof Give_Email_Template_Tags
+		? Give()->email_tags
+		: new Give_Email_Template_Tags();
+
 	// Replace all tags
-	$content = Give()->email_tags->do_tags( $content, $tag_args );
+	$content = $email_tags->do_tags( $content, $tag_args );
 
 	/**
 	 * Filter the filtered content text.
@@ -439,6 +443,27 @@ function give_setup_email_tags() {
 			'tag'         => 'reset_password_link',
 			'description' => esc_html__( 'The reset password link for user.', 'give' ),
 			'function'    => 'give_email_tag_reset_password_link',
+			'context'     => 'general',
+		),
+
+		array(
+			'tag'         => 'admin_email',
+			'description' => esc_html__( 'The custom admin email which is set inside Emails > Contact Information. By default this tag will use your WordPress admin email.', 'give' ),
+			'function'    => 'give_email_admin_email',
+			'context'     => 'general',
+		),
+
+		array(
+			'tag'         => 'site_url',
+			'description' => esc_html__( 'The website URL.', 'give' ),
+			'function'    => 'give_email_site_url',
+			'context'     => 'general',
+		),
+
+		array(
+			'tag'         => 'offline_mailing_address',
+			'description' => esc_html__( 'The Offline Mailing Address which is used for the Offline Donations Payment Gateway.', 'give' ),
+			'function'    => 'give_email_offline_mailing_address',
 			'context'     => 'general',
 		),
 
@@ -685,14 +710,22 @@ function give_email_tag_billing_address( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
-			$address  = $donation_address['line1'] . "\n";
+
+			$billing_address                   = array();
+			$billing_address['street_address'] = '';
+			$billing_address['street_address'] .= $donation_address['line1'];
 
 			if ( ! empty( $donation_address['line2'] ) ) {
-				$address .= $donation_address['line2'] . "\n";
+				$billing_address['street_address'] .= "\n" . $donation_address['line2'];
 			}
 
-			$address .= $donation_address['city'] . ' ' . $donation_address['zip'] . ' ' . $donation_address['state'] . "\n";
-			$address .= $donation_address['country'];
+			$billing_address['city']        = $donation_address['city'];
+			$billing_address['state']       = $donation_address['state'];
+			$billing_address['postal_code'] = $donation_address['zip'];
+			$billing_address['country']     = $donation_address['country'];
+
+			$address = give_get_formatted_address( $billing_address );
+
 			break;
 	}
 
@@ -1401,6 +1434,54 @@ function give_get_reset_password_url( $user_id ) {
 	return $reset_password_url;
 }
 
+/**
+ * Get custom admin email.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_admin_email() {
+
+	$admin_email = give_get_option( 'contact_admin_email' );
+
+	if ( empty( $admin_email ) ) {
+		give_delete_option( 'contact_admin_email' );
+	}
+
+	return ( ! empty( $admin_email ) )
+		? $admin_email
+		: get_bloginfo( 'admin_email' );
+}
+
+/**
+ * Get site URL.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_site_url() {
+	return get_bloginfo( 'url' );
+}
+
+
+/**
+ * Get custom offline mailing address.
+ *
+ * @since 2.2
+ *
+ * @return string
+ */
+function give_email_offline_mailing_address() {
+	$offline_address = give_get_option( 'contact_offline_mailing_address' );
+
+	if ( false === $offline_address ) {
+		return sprintf( '&nbsp;&nbsp;&nbsp;&nbsp;<em>%s</em></em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>', get_bloginfo( 'sitename' ) );
+	}
+
+	return $offline_address;
+}
 
 /**
  * This function helps to render meta data with from dynamic meta data email tag.
