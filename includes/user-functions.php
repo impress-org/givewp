@@ -564,9 +564,6 @@ function give_new_user_notification( $donation_id = 0, $donation_data = array() 
 		)
 	);
 
-	// @todo add user data for backward compatibility in $donation_data['user_info']
-	// @todo for example previous array contains user_email but current contains email.
-
 	do_action( 'give_new-donor-register_email_notification', $donation_data['user_info']['id'], $donation_data['user_info'] );
 	do_action( 'give_donor-register_email_notification', $donation_data['user_info']['id'], $donation_data['user_info'] );
 }
