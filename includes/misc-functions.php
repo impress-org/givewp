@@ -2218,7 +2218,7 @@ function give_get_default_title_prefixes() {
 	/**
 	 * Filter the data
 	 * Set default title prefixes.
-	 * 
+	 *
 	 * @since 2.2.0
 	 */
 	return apply_filters(
@@ -2227,7 +2227,8 @@ function give_get_default_title_prefixes() {
 			'Mr.'  => __( 'Mr.', 'give' ),
 			'Mrs.' => __( 'Mrs.', 'give' ),
 			'Ms.'  => __( 'Ms.', 'give' ),
-		) );
+		)
+	);
 }
 
 /**
