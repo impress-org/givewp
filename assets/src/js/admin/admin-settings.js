@@ -8,8 +8,8 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+/* globals Give*/
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
-import Give from '../frontend/give-donations';
 
 jQuery(document).ready(function ($) {
 
