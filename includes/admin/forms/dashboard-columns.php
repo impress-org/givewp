@@ -123,7 +123,13 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'shortcode':
-				printf( '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give_form id=&#34;%s&#34;]"', absint( $post_id ) );
+				$shortcode = sprintf( '[give_form id="%s"]', absint( $post_id ) );
+				printf(
+					'<button type="button" class="button give-shortcode-tooltip give-shortcode-tooltip--top js-give-shortcode-button" aria-label="%1$s" data-give-shortcode="%2$s"><span class="dashicons dashicons-admin-page"></span>%3$s</button>',
+					esc_attr( $shortcode ),
+					esc_attr( $shortcode ),
+					esc_html__( 'Copy Shortcode', 'give' )
+				);
 				break;
 		}// End switch().
 	}// End if().

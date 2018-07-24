@@ -181,9 +181,9 @@ jQuery(document).ready(function ($) {
 
 
 	let dTemp         = give_global_vars.decimal_separator, // Temporary variable to store decimal separator.
-		tTemp         = give_global_vars.thousands_separator, // Temporary variable to store thousand separator.
-		symbolRegex   = /\(([^)]+)\)/, // Regex to extract currency symbol.
-		formatterArgs = {
+	    tTemp         = give_global_vars.thousands_separator, // Temporary variable to store thousand separator.
+	    symbolRegex   = /\(([^)]+)\)/, // Regex to extract currency symbol.
+	    formatterArgs = {
 			position: give_global_vars.currency_pos,
 			symbol: give_global_vars.currency_sign,
 			precision: give_global_vars.number_decimals,
@@ -198,10 +198,10 @@ jQuery(document).ready(function ($) {
 	 */
 	$( '#number_decimals, #decimal_separator, #thousands_separator, #currency_position, #currency' ).on( 'input blur change', function( e ) {
 		let preview     = $( '#currency_preview' ),
-			dSeparator  = $( '#decimal_separator' ),
-			tSeparator  = $( '#thousands_separator' ),
-			targetName  = e.target.name,
-			targetValue = e.target.value;
+		    dSeparator  = $( '#decimal_separator' ),
+		    tSeparator  = $( '#thousands_separator' ),
+		    targetName  = e.target.name,
+		    targetValue = e.target.value;
 
 		/**
 		 * Sets the precision (number of decimals) for the formatted amount.
@@ -296,6 +296,6 @@ jQuery(document).ready(function ($) {
 			formatterArgs.symbol = matched[1];
 		}
 
-		preview.val( Give.fn.formatCurrency( 12345678.12345678, formatterArgs ) );
+		preview.val( Give.fn.formatCurrency( 123456.12345, formatterArgs ) );
 	});
 });

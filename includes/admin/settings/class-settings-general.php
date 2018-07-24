@@ -205,7 +205,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'desc'    => __( 'A preview of the formatted currency. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
 							'id'      => 'currency_preview',
 							'type'    => 'give_currency_preview',
-							'default' => give_format_amount( 4562.57,
+							'default' => give_format_amount( 123456.12345,
 								array(
 									'sanitize' => false,
 									'currency' => give_get_option( 'currency' ),

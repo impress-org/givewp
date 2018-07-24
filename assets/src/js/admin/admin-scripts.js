@@ -8,6 +8,7 @@
  */
 /* globals give_vars */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
+import {GiveShortcodeButton} from './shortcode-button.js';
 
 // Provided access to global level.
 var give_setting_edit = false;
@@ -3008,6 +3009,19 @@ var give_setting_edit = false;
 		}
 	};
 
+	var GiveShortcodeButtonObj = {
+		init: function() {
+			// Run scripts for shortcode buttons.
+			const shorcodeButtonEls = document.querySelectorAll( '.js-give-shortcode-button' );
+			if ( shorcodeButtonEls ) {
+				for ( const buttonEl of shorcodeButtonEls ) {
+					const shortcodeButton = new GiveShortcodeButton( buttonEl );
+					shortcodeButton.init();
+				}
+			}
+		}
+	};
+
 	// On DOM Ready.
 	$(function () {
 
@@ -3027,6 +3041,7 @@ var give_setting_edit = false;
 		Give_Upgrades.init();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
+		GiveShortcodeButtonObj.init();
 
 		// Footer.
 		$('a.give-rating-link').click(function () {

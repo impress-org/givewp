@@ -235,6 +235,8 @@ class Give_Scripts {
 			'error'                             => __( 'Error', 'give' ),
 			'close'                             => __( 'Close', 'give' ),
 			'confirm'                           => __( 'Confirm', 'give' ),
+			'copied'                            => __( 'Copied!', 'give' ),
+			'shortcode_not_copy'                => __( 'Shortcode could not be copied.', 'give' ),
 			'confirm_action'                    => __( 'Confirm Action', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
 			'confirm_delete_donation'           => __( 'Confirm Delete Donation', 'give' ),
