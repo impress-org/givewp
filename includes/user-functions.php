@@ -591,7 +591,8 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 		return '';
 	}
 
-	$name = '';
+	$name         = '';
+	$title_prefix = '';
 
 	switch ( $from ) {
 
@@ -613,11 +614,9 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 	}
 
 	// If title prefix is set then prepend it to name.
-	if ( ! empty( $title_prefix ) ) {
-		$name = "{$title_prefix}. {$name}";
-	}
+	$name = give_get_donor_name_with_title_prefixes( $title_prefix, $name );
 
-	return trim( $name );
+	return $name;
 
 }
 

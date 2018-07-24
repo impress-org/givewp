@@ -108,6 +108,7 @@ function give_export_donations_get_custom_fields() {
 		'_give_payment_currency',
 		'_give_payment_import_id',
 		'_give_payment_donor_ip',
+		'_give_payment_donor_title_prefix',
 	),
 		$form_id
 	);
@@ -402,6 +403,14 @@ function give_export_donation_standard_fields() {
 								<span>
 									<?php _e( 'Donor Fields', 'give' ); ?>
 								</span>
+							</li>
+
+							<li class="give-export-option-start">
+								<label for="give-export-title-prefix">
+									<input type="checkbox" checked
+											name="give_give_donations_export_option[title_prefix]"
+											id="give-export-title-prefix"><?php esc_html_e( 'Donor\'s Title Prefix', 'give' ); ?>
+								</label>
 							</li>
 
 							<li class="give-export-option-start">

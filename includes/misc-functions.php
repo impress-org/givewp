@@ -2180,10 +2180,55 @@ function give_get_name_with_title_prefixes( $donor ) {
 
 	// Update Donor name, if non empty title prefix.
 	if ( ! empty( $title_prefix ) ) {
-		$donor->name = "{$title_prefix}. {$donor->name}";
+		$donor->name = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
 	}
 
 	return $donor;
+}
+
+/**
+ * This function will generate donor name with title prefix if it is required.
+ *
+ * @param string $title_prefix Title Prefix of Donor
+ * @param string $name         Donor Name.
+ *
+ * @since 2.2.0
+ *
+ * @return string
+ */
+function give_get_donor_name_with_title_prefixes( $title_prefix, $name ) {
+
+	$donor_name = $name;
+
+	if ( ! empty( $title_prefix ) && ! empty( $name ) ) {
+		$donor_name = "{$title_prefix} {$name}";
+	}
+
+	return trim( $donor_name );
+}
+
+/**
+ * This function will fetch the default list of title prefixes.
+ *
+ * @since 2.2.0
+ *
+ * @return array
+ */
+function give_get_default_title_prefixes() {
+	/**
+	 * Filter the data
+	 * Set default title prefixes.
+	 *
+	 * @since 2.2.0
+	 */
+	return apply_filters(
+		'give_get_default_title_prefixes',
+		array(
+			'Mr.'  => __( 'Mr.', 'give' ),
+			'Mrs.' => __( 'Mrs.', 'give' ),
+			'Ms.'  => __( 'Ms.', 'give' ),
+		)
+	);
 }
 
 /**

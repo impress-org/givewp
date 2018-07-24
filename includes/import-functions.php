@@ -365,6 +365,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
+
 	// update the report
 	give_import_donation_report_update( $report );
 
@@ -424,6 +425,10 @@ function give_import_donations_options() {
 		'post_time'    => array(
 			__( 'Donation Time', 'give' ),
 			__( 'Time', 'give' ),
+		),
+		'title_prefix' => array(
+			__( 'Title Prefix', 'give' ),
+			__( 'Prefix', 'give' ),
 		),
 		'first_name'   => array(
 			__( 'Donor First Name', 'give' ),
@@ -526,6 +531,10 @@ function give_import_donation_form_options() {
 			__( 'Form Name', 'give' ),
 			__( 'Title', 'give' ),
 			__( 'Form Title', 'give' ),
+			'ignore' => array(
+				__( 'Title Prefix', 'give' ),
+				__( 'Prefix', 'give' ),
+			),
 		),
 		'form_id'                 => array(
 			__( 'Donation Form ID', 'give' ),
@@ -785,6 +794,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			'first_name' => ( ! empty( $data['first_name'] ) ? $data['first_name'] : ( ! empty( $donor_id ) && ( $first_name = get_user_meta( $donor_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
 			'last_name'  => ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $donor_id ) && ( $last_name = get_user_meta( $donor_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
+			'title'      => ! empty( $data['title_prefix'] ) ? $data['title_prefix'] : '',
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : ( method_exists( $form, 'get_name' ) ? $form->get_name() : '' ) ),
