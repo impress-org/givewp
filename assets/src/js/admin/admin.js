@@ -22,6 +22,4 @@ import './admin-export';
 import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
-
-Give.modal = Modals;
-export const { init, fn, cache, modal } = Give;
+import './shortcode-button';
