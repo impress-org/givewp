@@ -203,24 +203,36 @@ function give_reports_graph() {
 			</div>
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
-				<tr>
+				<tr class="total-income">
 					<th scope="row"><strong><?php _e( 'Total income for period:', 'give' ); ?></strong></th>
 					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, array( 'sanitize' => false ) ) ); ?></td>
 				</tr>
-				<tr class="alternate">
+				<tr class="total-donations alternate">
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' === $dates['range'] ) : ?>
-					<tr>
+					<tr class="estimated-monthly-income">
 						<th scope="row"><strong><?php _e( 'Estimated monthly income:', 'give' ); ?></strong></th>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], array( 'sanitize' => false ) ) ); ?></td>
 					</tr>
-					<tr class="alternate">
+					<tr class="estimated-monthly-donations alternate">
 						<th scope="row"><strong><?php _e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
 						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
+
+				<?php
+				/**
+				 * Fires in report graphs widget table.
+				 *
+				 * Allows you to add additional rows to the table.
+				 *
+				 * @since 2.3
+				 */
+				do_action( 'give_reports_graph_additional_rows' );
+				?>
+
 			</table>
 
 			<?php
