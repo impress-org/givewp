@@ -684,8 +684,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param bool $send Flag to check if send email or not.
+		 *
+		 * @return bool
 		 */
-		public function send_preview_email() {
+		public function send_preview_email( $send = true) {
 			// Get form id
 			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
@@ -720,7 +724,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
 			}
 
-			return Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
+			return $send
+				? Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments )
+				: false;
 		}
 
 
