@@ -375,8 +375,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int    $i CSV line.
-	 * @param array  $data Donor CSV data.
+	 * @param int $i CSV line.
+	 * @param array $data Donor CSV data.
 	 * @param object $donor Donor data.
 	 *
 	 * @return mixed
@@ -393,7 +393,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		// Set columns
 		if ( ! empty( $columns['full_name'] ) ) {
-			$data[ $i ]['full_name'] = $donor->name;
+			$donor_name              = give_get_donor_name_by( $donor->id, 'donor' );
+			$data[ $i ]['full_name'] = $donor_name;
 		}
 		if ( ! empty( $columns['email'] ) ) {
 			$data[ $i ]['email'] = $donor->email;

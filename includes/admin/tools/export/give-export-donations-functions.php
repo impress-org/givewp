@@ -108,6 +108,7 @@ function give_export_donations_get_custom_fields() {
 		'_give_payment_currency',
 		'_give_payment_import_id',
 		'_give_payment_donor_ip',
+		'_give_payment_donor_title_prefix',
 	),
 		$form_id
 	);
