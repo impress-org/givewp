@@ -239,8 +239,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 					$this->payment->ID
 				)
 			);
-
-			Give()->emails->__set( 'heading', $this->get_email_header() );
 		}
 
 		/**

@@ -192,6 +192,30 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 
 		/**
+		 * Get email header
+		 *
+		 * @since 2.2.1
+		 * @access public
+		 *
+		 * @param null $form_id
+		 *
+		 * @return string
+		 */
+		public function get_email_header( $form_id = null ) {
+			$subject = parent::get_email_header( $form_id );
+
+			/**
+			 * Filter the email header
+			 *
+			 * @since 1.0
+			 */
+			$subject  =  apply_filters( 'give_email_access_token_heading', $subject );
+
+			return  $subject;
+		}
+
+
+		/**
 		 * Set email data
 		 *
 		 * @since 2.0
@@ -215,7 +239,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', $this->get_email_header() ) );
+
 			/**
 			 * Filters the donation notification email headers.
 			 *

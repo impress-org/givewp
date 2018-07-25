@@ -91,16 +91,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		}
 
 		/**
-		 * Setup email data
-		 *
-		 * @since 2.0
-		 */
-		public function setup_email_data() {
-			Give()->emails->__set( 'heading', $this->get_email_header() );
-		}
-
-
-		/**
 		 * Send new donor register notifications.
 		 *
 		 * @since  2.0
