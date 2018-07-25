@@ -65,44 +65,32 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price = accounting.unformat( price, '.' ).toString();
+				let actual_price    = parseFloat( price ).toFixed( format_args.precision ),
+				    afterPoint      = '',
+				    lastThree       = '',
+				    otherNumbers    = '',
+				    result          = '',
+				    lastDotPosition = '';
 
-				let decimal_amount = '',
-					result,
-					amount,
-					decimal_index = actual_price.indexOf( '.' );
+				actual_price = accounting.unformat( actual_price, '.' ).toString();
+			    actual_price = actual_price.toString();
 
-				if ( (- 1 !== decimal_index) && args.precision ) {
-					decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) )
-						.toFixed( args.precision )
-						.toString()
-						.substr( 1 );
-					actual_price = actual_price.substr( 0, parseInt( decimal_index ) );
-
-					if ( ! decimal_amount.length ) {
-						decimal_amount = '.0000000000'.substr( 0, (parseInt( decimal_index ) + 1) );
-					} else if ( (args.precision + 1) > decimal_amount.length ) {
-						decimal_amount = (decimal_amount + '000000000').substr( 0, args.precision + 1 );
-					}
-				} else {
-					decimal_amount = '.000000000'.substr( 0, args.precision + 1 );
+				if ( actual_price.indexOf( '.' ) > 0 ) {
+				   afterPoint = actual_price.substring( actual_price.indexOf( '.' ), actual_price.length );
 				}
+				
+				actual_price = Math.floor( actual_price ).toString();
+				lastThree    = actual_price.substring( actual_price.length - 3 );
+				otherNumbers = actual_price.substring( 0, actual_price.length - 3 );
 
-				// Extract last 3 from amount
-				result = actual_price.substr( - 3 );
-				amount = actual_price.substr( 0, parseInt( actual_price.length ) - 3 );
-
-				// Apply digits 2 by 2
-				while ( amount.length > 0 ) {
-					result = amount.substr( - 2 ) + args.thousand + result;
-					amount = amount.substr( 0, parseInt( amount.length ) - 2 );
+				if ( '' !== otherNumbers ) {
+				    lastThree = format_args.thousand + lastThree;
 				}
-
-				if ( decimal_amount.length ) {
-					result = result + decimal_amount;
-				}
-
-				price = result;
+				
+				result          = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
+				lastDotPosition = result.lastIndexOf( '.' );
+				result          = result.slice( 0, lastDotPosition ) + result.slice( lastDotPosition ).replace( '.', format_args.decimal );
+				price           = result;
 
 				if ( undefined !== args.symbol && args.symbol.length ) {
 					if ( 'after' === args.position ) {
@@ -112,7 +100,7 @@ let Give = {
 					}
 				}
 			} else {
-				//Properly position symbol after if selected
+				// Properly position symbol after if selected.
 				if ( 'after' === args.position ) {
 					args.format = '%v%s';
 				}
