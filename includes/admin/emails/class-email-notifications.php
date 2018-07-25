@@ -255,7 +255,7 @@ class Give_Email_Notifications {
 			$form_id = empty( $_GET['form_id']  ) ? null : absint( $_GET['form_id'] );
 
 			// Call setup email data to apply filter and other thing to email.
-			$email->setup_email_data();
+			$email->send_preview_email( false );
 
 			// Decode message.
 			$email_message = $email->preview_email_template_tags( $email->get_email_message( $form_id ) );

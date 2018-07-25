@@ -238,7 +238,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', $this->get_email_header() );
 
 			/**
 			 * Filters the donation receipt's email headers.

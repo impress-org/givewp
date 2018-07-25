@@ -214,7 +214,6 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', $this->get_email_header() );
 
 			/**
 			 * Filters the donation notification email headers.
