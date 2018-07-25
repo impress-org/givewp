@@ -9,24 +9,7 @@ const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const wpPot = require( 'wp-pot' );
 
-// Webpack config.
 const config = {
-	entry: {
-		'babel-polyfill': 'babel-polyfill',
-		admin: [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
-		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
-		give: [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
-		gutenberg: [ './blocks/load.js' ],
-		'plugin-deactivation-survey': [ './assets/src/js/admin/plugin-deactivation-survey.js', './assets/src/css/admin/plugin-deactivation-survey.scss' ],
-		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
-	},
-
-	// Tell webpack where to output.
-	output: {
-		path: path.resolve( __dirname, './assets/dist/' ),
-		filename: 'js/[name].js'
-	},
-
 	// Ensure modules like magnific know jQuery is external (loaded via WP).
 	externals: {
 		$: 'jQuery',
@@ -141,6 +124,36 @@ const config = {
 	]
 };
 
+module.exports = [
+	Object.assign({
+		entry: {
+			'give': ['./assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js'],
+			'admin': ['./assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js'],
+		},
+		output: {
+			path: path.join( __dirname, './assets/dist/' ),
+			filename: 'js/[name].js',
+			library: 'Give',
+			libraryTarget: 'umd',
+		},
+	}, config),
+	Object.assign({
+		entry: {
+			'babel-polyfill': 'babel-polyfill',
+			'gutenberg': './blocks/load.js',
+			'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
+			'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
+			'plugin-deactivation-survey': ['./assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js'],
+		},
+
+		// Tell webpack where to output.
+		output: {
+			path: path.resolve( __dirname, './assets/dist/' ),
+			filename: 'js/[name].js'
+		},
+	}, config)
+];
+
 // inProd?
 if ( inProduction ) {
 
@@ -160,5 +173,3 @@ if ( inProduction ) {
 	// Minify CSS.
 	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
 }
-
-module.exports = config;

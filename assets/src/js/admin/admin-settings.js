@@ -8,14 +8,14 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
+/* globals Give */
 jQuery(document).ready(function ($) {
 
 	/**
 	 *  Sortable payment gateways.
 	 */
-	var $payment_gateways = jQuery( 'ul.give-payment-gatways-list' );
+	let $payment_gateways = jQuery( 'ul.give-payment-gatways-list' );
 	if( $payment_gateways.length ){
 		$payment_gateways.sortable();
 	}
@@ -23,22 +23,22 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Change currency position symbol on changing the currency
 	 */
-	var give_settings_currency = '#give-mainform #currency';
-	var give_settings_position = '#give-mainform #currency_position';
+	let give_settings_currency = '#give-mainform #currency';
+	let give_settings_position = '#give-mainform #currency_position';
 	$( 'body' ).on( 'change', give_settings_currency, function () {
-		var currency_text = $( give_settings_currency + ' option:selected' ).text(),
+		let currency_text = $( give_settings_currency + ' option:selected' ).text(),
 			currency_sign = currency_text.split( '(' ).pop().split( ')' ).shift();
 
 		if ( '' === currency_sign ) {
 			currency_sign = give_vars.currency_sign;
 		}
 
-		var before_text = $( give_settings_position ).data( 'before-template' );
+		let before_text = $( give_settings_position ).data( 'before-template' );
 		before_text = before_text.replace( '{currency_pos}', currency_sign );
 		$( give_settings_position + ' option[value="before"]' ).text( before_text );
 
 
-		var after_text = $( give_settings_position ).data( 'after-template' );
+		let after_text = $( give_settings_position ).data( 'after-template' );
 		after_text = after_text.replace( '{currency_pos}', currency_sign );
 		$( give_settings_position + ' option[value="after"]' ).text( after_text );
 
@@ -64,7 +64,7 @@ jQuery(document).ready(function ($) {
 	 */
 	$( 'a.give-repeat-setting-field' ).on( 'click', function(e){
 		e.preventDefault();
-		var $parent = $(this).parents('td'),
+		let $parent = $(this).parents('td'),
 			$first_setting_field_group = $( 'p:first-child', $parent ),
 			$new_setting_field_group = $first_setting_field_group.clone(),
 			setting_field_count = $( 'p', $parent ).not('.give-field-description').length,
@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
 	 * Enabled & disable email notification event.
 	 */
 	$( '.give-email-notification-status', 'table.giveemailnotifications' ).on( 'click', function(){
-		var $this = $(this),
+		let $this = $(this),
 			$icon_container = $('i', $this),
 			$loader = $(this).next(),
 			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
@@ -159,7 +159,7 @@ jQuery(document).ready(function ($) {
 		})
 		.done( function( response ) {
 			if ( response.success ) {
-				new GiveSuccessAlert({
+				new Give.modal.GiveSuccessAlert({
 					modalContent:{
 						title: give_vars.flush_success,
 						desc: response.data.message,
@@ -167,7 +167,7 @@ jQuery(document).ready(function ($) {
 					}
 				}).render();
 			} else {
-				new GiveErrorAlert({
+				new Give.modal.GiveErrorAlert({
 					modalContent:{
 						title: give_vars.flush_error,
 						desc: response.data.message,
