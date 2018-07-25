@@ -689,7 +689,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return bool
 		 */
-		public function send_preview_email( $send = true) {
+		public function send_preview_email( $send = true ) {
 			// Get form id
 			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
