@@ -2444,5 +2444,10 @@ function give_get_safe_asset_url( $url ) {
 	$schema_length = strlen( $schema ) + 1;
 	$url = substr( $url, $schema_length );
 
-	return $url;
+	/**
+	 * Fire the filter
+	 *
+	 * @since 2.2.0
+	 */
+	return apply_filters( 'give_get_safe_asset_url', $url );
 }
