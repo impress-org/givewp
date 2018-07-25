@@ -249,7 +249,6 @@ function give_payment_gateway_item_title( $payment_data ) {
 	$item_name = isset( $payment_data['post_data']['give-form-title'] ) ? $payment_data['post_data']['give-form-title'] : '';
 	$price_id  = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
 
-
 	// Verify has variable prices.
 	if ( give_has_variable_prices( $form_id ) && ! empty( $price_id ) ) {
 
@@ -578,8 +577,8 @@ function give_get_newsletter() {
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-		      target="_blank">
+			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+			  target="_blank">
 			<div class="give-newsletter-confirmation">
 				<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
 			</div>
@@ -588,26 +587,26 @@ function give_get_newsletter() {
 				<tr valign="middle">
 					<td>
 						<label for="mce-EMAIL"
-						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
-						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-						       class="required email" value="" required>
+							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+							   class="required email" value="" required>
 					</td>
 					<td>
 						<label for="mce-FNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="" required>
+							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="" required>
 					</td>
 					<td>
 						<label for="mce-LNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 						<input type="text" name="LNAME" id="mce-LNAME"
-						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
@@ -1149,7 +1148,6 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 		return true;
 	}
 
-
 	$completed_upgrades = give_get_completed_upgrades();
 
 	return in_array( $upgrade_action, $completed_upgrades );
@@ -1252,7 +1250,6 @@ function __give_v20_bc_table_details( $type ) {
 		$table['column']['id'] = 'post_id';
 	}
 
-
 	return $table;
 }
 
@@ -1270,10 +1267,12 @@ function give_remove_pages_from_search( $query ) {
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
 
-		$args = apply_filters( 'give_remove_pages_from_search', array(
-			$transaction_failed,
-			$success_page,
-		), $query );
+		$args = apply_filters(
+			'give_remove_pages_from_search', array(
+				$transaction_failed,
+				$success_page,
+			), $query
+		);
 		$query->set( 'post__not_in', $args );
 	}
 }
@@ -1500,12 +1499,14 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 		 *
 		 * @since 1.8.13
 		 */
-		$args = apply_filters( 'give_recount_form_stats_args', array(
+		$args = apply_filters(
+			'give_recount_form_stats_args', array(
 				'give_forms'     => $form_id,
 				'status'         => $accepted_statuses,
 				'posts_per_page' => - 1,
 				'fields'         => 'ids',
-			) );
+			)
+		);
 
 		$totals = array(
 			'sales'    => 0,
@@ -1551,11 +1552,11 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	$attribute_str = '';
 
-	if( isset( $attributes['attributes'] ) ) {
+	if ( isset( $attributes['attributes'] ) ) {
 		$attributes = $attributes['attributes'];
 	}
 
-	if( ! empty( $default_attributes ) ) {
+	if ( ! empty( $default_attributes ) ) {
 		$attributes = wp_parse_args( $attributes, $default_attributes );
 	}
 
@@ -1742,18 +1743,19 @@ function give_maybe_define_constant( $name, $value ) {
 function give_time_do_tags( $string, $timestamp = 0 ) {
 	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
 
-	$formatted_string = str_replace( array(
-		'{D}',
-		'{DD}',
-		'{M}',
-		'{MM}',
-		'{YY}',
-		'{YYYY}',
-		'{H}',
-		'{HH}',
-		'{N}',
-		'{S}'
-	), array(
+	$formatted_string = str_replace(
+		array(
+			'{D}',
+			'{DD}',
+			'{M}',
+			'{MM}',
+			'{YY}',
+			'{YYYY}',
+			'{H}',
+			'{HH}',
+			'{N}',
+			'{S}',
+		), array(
 			date( 'j', $current_time ),
 			date( 'd', $current_time ),
 			date( 'n', $current_time ),
@@ -1762,8 +1764,9 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 			date( 'Y', $current_time ),
 			date( 'G', $current_time ),
 			date( 'H', $current_time ),
-			date( 's', $current_time )
-		), $string );
+			date( 's', $current_time ),
+		), $string
+	);
 
 	/**
 	 * Filter the parsed string.
@@ -1790,15 +1793,16 @@ function give_is_company_field_enabled( $form_id ) {
 	if ( ! empty( $form_setting_val ) ) {
 		if ( give_is_setting_enabled( $form_setting_val, array( 'required', 'optional' ) ) ) {
 			return true;
-		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val, array(
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled(
+			$global_setting_val, array(
 				'required',
-				'optional'
-			) ) ) {
+				'optional',
+			)
+		) ) {
 			return true;
 		} else {
 			return false;
 		}
-
 	} elseif ( give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
 		return true;
 
@@ -1821,11 +1825,11 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
 	$global_setting_val = give_get_option( 'anonymous_donation', 'disabled' );
 
 	if ( ! empty( $form_setting_val ) ) {
-		if( give_is_setting_enabled( $form_setting_val ) ) {
+		if ( give_is_setting_enabled( $form_setting_val ) ) {
 			return true;
-		}elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ){
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	} elseif ( give_is_setting_enabled( $global_setting_val ) ) {
@@ -1849,11 +1853,11 @@ function give_is_donor_comment_field_enabled( $form_id ) {
 	$global_setting_val = give_get_option( 'donor_comment', 'disabled' );
 
 	if ( ! empty( $form_setting_val ) ) {
-		if( give_is_setting_enabled( $form_setting_val ) ) {
+		if ( give_is_setting_enabled( $form_setting_val ) ) {
 			return true;
-		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ){
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val ) ) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	} elseif ( give_is_setting_enabled( $global_setting_val ) ) {
@@ -1880,7 +1884,7 @@ function __give_get_active_license_info( $license_id ) {
 	$data        = array();
 
 	if ( ! isset( $GLOBALS['give_active_licenses_info'] ) ) {
-		$GLOBALS['give_active_licenses_info']  = array();
+		$GLOBALS['give_active_licenses_info'] = array();
 
 		$licenses_info = $wpdb->get_results(
 			"
@@ -1932,7 +1936,7 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 
 		// Get the meta of activation banner by user.
 		$activation_banners = $wpdb->get_results(
-				"
+			"
 					SELECT option_name, option_value
 					FROM {$wpdb->options}
 					WHERE option_name LIKE '%_active_by_user%'
@@ -1963,7 +1967,7 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
  *
  * @return int
  */
-function give_get_nonce_life(){
+function give_get_nonce_life() {
 	/**
 	 * Filters the lifespan of nonces in seconds.
 	 *
@@ -1979,7 +1983,7 @@ function give_get_nonce_life(){
  *
  * @param  string $action
  * @param  string $name
- * @param bool    $referer
+ * @param bool   $referer
  *
  * @return string
  */
@@ -2018,7 +2022,7 @@ function give_goal_progress_stats( $form ) {
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
 
 	switch ( $goal_format ) {
-		case  'donation':
+		case 'donation':
 			/**
 			 * Filter the form donations.
 			 *
@@ -2040,7 +2044,7 @@ function give_goal_progress_stats( $form ) {
 			 */
 			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
-		default :
+		default:
 			/**
 			 * Filter the form income.
 			 *
@@ -2054,7 +2058,7 @@ function give_goal_progress_stats( $form ) {
 
 	$stats_array = array(
 		'raw_actual' => $actual,
-		'raw_goal'   => $total_goal
+		'raw_goal'   => $total_goal,
 	);
 
 	/**
@@ -2067,23 +2071,23 @@ function give_goal_progress_stats( $form ) {
 	// Define Actual Goal based on the goal format.
 	if ( 'percentage' === $goal_format ) {
 		$actual = "{$actual}%";
-	} else if ( 'amount' === $goal_format ) {
+	} elseif ( 'amount' === $goal_format ) {
 		$actual = give_currency_filter( give_format_amount( $actual ) );
 	}
 
 	// Define Total Goal based on the goal format.
 	if ( 'percentage' === $goal_format ) {
 		$total_goal = '';
-	} else if ( 'amount' === $goal_format ) {
+	} elseif ( 'amount' === $goal_format ) {
 		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 	}
 
 	$stats_array = array_merge(
 		array(
-			'progress'       => $progress,
-			'actual'         => $actual,
-			'goal'           => $total_goal,
-			'format'         => $goal_format,
+			'progress' => $progress,
+			'actual'   => $actual,
+			'goal'     => $total_goal,
+			'format'   => $goal_format,
 		),
 		$stats_array
 	);
@@ -2318,7 +2322,7 @@ function give_get_user_agent() {
 function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
 		setcookie(
-			$name,$value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure,
+			$name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure,
 			apply_filters( 'give_cookie_httponly', false, $name, $value, $expire, $secure )
 		);
 	}
@@ -2342,20 +2346,20 @@ function give_get_formatted_address( $address = array() ) {
 	 * @since 2.2.0
 	 */
 	$address_format = apply_filters( 'give_address_format_template', "{street_address}\n{city}, {state} {postal_code}\n{country}" );
-	preg_match_all( "/{([A-z0-9\-\_\ ]+)}/s", $address_format, $matches );
+	preg_match_all( '/{([A-z0-9\-\_\ ]+)}/s', $address_format, $matches );
 
-	if( ! empty( $matches ) && ! empty( $address ) ) {
+	if ( ! empty( $matches ) && ! empty( $address ) ) {
 		$address_values = array();
 
-		foreach ($matches[1] as $address_tag ) {
+		foreach ( $matches[1] as $address_tag ) {
 			$address_values[ $address_tag ] = '';
 
-			if( isset( $address[$address_tag] ) ) {
-				$address_values[ $address_tag ] = $address[$address_tag];
+			if ( isset( $address[ $address_tag ] ) ) {
+				$address_values[ $address_tag ] = $address[ $address_tag ];
 			}
 		}
 
-		$formatted_address  = str_ireplace( $matches[0], $address_values, $address_format );
+		$formatted_address = str_ireplace( $matches[0], $address_values, $address_format );
 	}
 
 	/**
@@ -2440,9 +2444,9 @@ function give_get_safe_asset_url( $url ) {
 		return $url;
 	}
 
-	$schema = parse_url( $url, PHP_URL_SCHEME );
+	$schema        = parse_url( $url, PHP_URL_SCHEME );
 	$schema_length = strlen( $schema ) + 1;
-	$url = substr( $url, $schema_length );
+	$url           = substr( $url, $schema_length );
 
 	/**
 	 * Fire the filter
