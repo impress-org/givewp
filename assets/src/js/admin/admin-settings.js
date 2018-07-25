@@ -8,8 +8,8 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
+/* globals Give */
 jQuery(document).ready(function ($) {
 
 	/**
@@ -159,7 +159,7 @@ jQuery(document).ready(function ($) {
 		})
 		.done( function( response ) {
 			if ( response.success ) {
-				new GiveSuccessAlert({
+				new Give.modal.GiveSuccessAlert({
 					modalContent:{
 						title: give_vars.flush_success,
 						desc: response.data.message,
@@ -167,7 +167,7 @@ jQuery(document).ready(function ($) {
 					}
 				}).render();
 			} else {
-				new GiveErrorAlert({
+				new Give.modal.GiveErrorAlert({
 					modalContent:{
 						title: give_vars.flush_error,
 						desc: response.data.message,
