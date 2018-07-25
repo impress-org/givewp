@@ -8,7 +8,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-/* globals Give*/
+/* globals Give, give_global_vars */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal, GiveSuccessAlert} from '../plugins/modal';
 
 jQuery(document).ready(function ($) {
@@ -224,7 +224,7 @@ jQuery(document).ready(function ($) {
 		 * The next 2 sections are for the decimal separator and thousand separator.
 		 * if the decimal separator === thousand separator, then the values are swapped.
 		 */
-		if ( 'decimal_separator' == targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
+		if ( 'decimal_separator' === targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
 
 			if ( ! targetValue && 'blur' === e.type ) {
 				e.target.value = dTemp;
@@ -252,7 +252,7 @@ jQuery(document).ready(function ($) {
 			}
 		}
 
-		if ( 'thousands_separator' == targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
+		if ( 'thousands_separator' === targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
 
 			if ( ! targetValue && 'blur' === e.type ) {
 				e.target.value = tTemp;
@@ -283,7 +283,7 @@ jQuery(document).ready(function ($) {
 		/**
 		 * Sets the currency position: Before | After
 		 */
-		if ( 'currency_position' == targetName && 'change' === e.type ) {
+		if ( 'currency_position' === targetName && 'change' === e.type ) {
 			formatterArgs.position = targetValue;
 		}
 
@@ -296,6 +296,6 @@ jQuery(document).ready(function ($) {
 			formatterArgs.symbol = matched[1];
 		}
 
-		preview.val( Give.fn.formatCurrency( 123456.12345, formatterArgs ) );
+		preview.val( Give.fn.formatCurrency( '123456.12345', formatterArgs, {} ) );
 	});
 });
