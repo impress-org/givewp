@@ -2422,3 +2422,32 @@ function give_get_localized_date_format_to_js() {
 
 	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
 }
+
+/**
+ * Get safe url for assets
+ * Note: this function will return url without http protocol
+ *
+ * @since 2.2.0
+ *
+ * @param string $url URL
+ *
+ * @return string
+ */
+function give_get_safe_asset_url( $url ) {
+
+	// Bailout, if empty URL passed.
+	if ( empty( $url ) ) {
+		return $url;
+	}
+
+	$schema = parse_url( $url, PHP_URL_SCHEME );
+	$schema_length = strlen( $schema ) + 1;
+	$url = substr( $url, $schema_length );
+
+	/**
+	 * Fire the filter
+	 *
+	 * @since 2.2.0
+	 */
+	return apply_filters( 'give_get_safe_asset_url', $url );
+}
