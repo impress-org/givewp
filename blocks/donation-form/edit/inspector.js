@@ -10,8 +10,7 @@ import giveFormOptions from '../data/options';
  * Internal dependencies
  */
 const { __ } = wp.i18n;
-const {InspectorControls} = wp.blocks;
-const {TextControl} = wp.components;
+const {InspectorControls} = wp.editor;
 const {PanelBody} = wp.components;
 const {Component} = wp.element;
 
