@@ -1,9 +1,10 @@
 /**
  * Internal dependencies
  */
-const {withInstanceId, BaseControl} = wp.components,
-	  {Component} = wp.element,
-	  {isEmpty} = _;
+const {BaseControl} = wp.components,
+	{withInstanceId} = wp.compose,
+	{Component} = wp.element,
+	{isEmpty} = _;
 
 class GiveSelectControl extends Component{
 	constructor(props){

@@ -1,8 +1,10 @@
 /**
  * Internal dependencies
  */
-const {withInstanceId, BaseControl} = wp.components,
-	  {Component} = wp.element;
+
+const {Component} = wp.element,
+	{BaseControl} = wp.components,
+	{withInstanceId} = wp.compose;
 
 class GiveTextControl extends Component {
 	constructor(props){
