@@ -1,8 +1,9 @@
 /**
  * Internal dependencies
  */
-const {withInstanceId, BaseControl, FormToggle} = wp.components,
-	  {Component} = wp.element;
+const {BaseControl, FormToggle} = wp.components,
+	{withInstanceId} = wp.compose,
+	{Component} = wp.element;
 
 class GiveToggleControl extends Component {
 	constructor(props) {
