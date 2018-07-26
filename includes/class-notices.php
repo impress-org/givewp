@@ -434,9 +434,9 @@ class Give_Notices {
 		/**
 		 * Fire the action when notice dismissed
 		 *
-		 * @since 2.0
+		 * @since 2.2.0
 		 */
-		do_action( 'give_dismiss_notices', $_post );
+		do_action( 'give_notice_dismissed', $_post );
 
 		wp_send_json_success();
 	}

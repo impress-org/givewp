@@ -36,7 +36,6 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 				'label'                 => __( 'User Registration Information', 'give' ),
 				'description'           => __( 'Sent to the donor when they register for an account on the site.', 'give' ),
 				'notification_status'   => 'enabled',
-				'email_tag_contex'      => 'donor',
 				'form_metabox_setting'  => false,
 				'recipient_group_name'  => __( 'Donor', 'give' ),
 				'email_tag_context'     => array( 'donor', 'general' ),
