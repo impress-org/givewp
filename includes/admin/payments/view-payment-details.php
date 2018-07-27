@@ -616,12 +616,15 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
 												<?php
-												$donor_primary_email  = $donor->email;
-												$donor_donation_email = give_get_payment_user_email( $payment_id );
-
 												// Show Donor donation email first and Primary email on parenthesis if not match both email.
-												echo ( hash_equals( $donor_primary_email, $donor_donation_email ) ) ? $donor_donation_email :
-													give_get_payment_user_email( $payment_id ) . ' (' . $donor_primary_email . ')';
+												echo hash_equals( $donor->email, $payment->email )
+													? $payment->email
+													: sprintf(
+														'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
+														$payment->email,
+														esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
+														$donor->email
+													);
 												?>
 											</p>
 										</div>
