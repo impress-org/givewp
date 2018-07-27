@@ -600,12 +600,9 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												// Check whether the donor name and WP_User name is same or not.
 												if ( $donor_billing_name !== $donor_name ) {
 													echo sprintf(
-														'%1$s (<a href="%2$s">%3$s</a>)',
+														'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
 														esc_html( $donor_billing_name ),
-														sprintf(
-															esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=%s' ) ),
-															intval( $donor_id )
-														),
+														esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
 														esc_html( $donor_name )
 													);
 												} else {
