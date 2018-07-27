@@ -122,6 +122,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.2.0', '<' ) :
 			give_v220_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.2.1', '<' ) :
+			give_v221_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -2712,6 +2716,22 @@ function give_v220_upgrades(){
 		WHERE option_name IN ( {$options_str} )
 		"
 	);
+}
+
+/**
+ * Version 2.2.1 automatic updates
+ *
+ * @since 2.2.1
+ */
+function give_v221_upgrades() {
+	global $wpdb;
+
+	/**
+	 * Update  1
+	 *
+	 * Change column length
+	 */
+	$wpdb->query( "ALTER TABLE $wpdb->donors MODIFY email varchar(255) NOT NULL" );
 }
 
 /**
