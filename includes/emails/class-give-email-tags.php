@@ -55,14 +55,16 @@ class Give_Email_Template_Tags {
 	 * @param string   $description Email tag description text
 	 * @param callable $func        Hook to run when email tag is found
 	 * @param string   $context     Email tag category
+	 * @param boolean  $is_admin    Set true to show the tag only for admin context.
 	 */
-	public function add( $tag, $description, $func, $context = '' ) {
+	public function add( $tag, $description, $func, $context = '', $is_admin = false ) {
 		if ( is_callable( $func ) ) {
 			$this->tags[ $tag ] = array(
 				'tag'         => $tag,
 				'description' => $description,
 				'func'        => $func,
 				'context'     => give_check_variable( $context, 'empty', 'general' ),
+				'is_admin'    => $is_admin, // Introduced in 2.2.1
 			);
 		}
 	}
@@ -186,8 +188,31 @@ class Give_Email_Template_Tags {
  * @param callable $func        Hook to run when email tag is found
  * @param string   $context     Email tag category
  */
-function give_add_email_tag( $tag, $description, $func, $context = '' ) {
-	Give()->email_tags->add( $tag, $description, $func, $context );
+function give_add_email_tag( $args ) {
+
+	/**
+	 * This is for backward compatibility. Instead of passing arguments
+	 * as string, now it accepts 1 argument as array.
+	 */
+	$func_args = func_get_args();
+
+	if ( isset( $func_args[0] ) && is_string( $func_args[0] ) ) {
+		$args = array(
+			'tag'      => isset( $func_args[0] ) ? $func_args[0] : '',
+			'desc'     => isset( $func_args[1] ) ? $func_args[1] : '',
+			'func'     => isset( $func_args[2] ) ? $func_args[2] : '',
+			'context'  => isset( $func_args[3] ) ? $func_args[3] : '',
+			'is_admin' => false,
+		);
+	} else if ( is_array( $args ) ) {
+		$args['tag']      = isset( $args['tag'] ) ? $args['tag'] : '';
+		$args['desc']     = isset( $args['desc'] ) ? $args['desc'] : '';
+		$args['func']     = isset( $args['func'] ) ? $args['func'] : '';
+		$args['context']  = isset( $args['context'] ) ? $args['context'] : '';
+		$args['is_admin'] = isset( $args['is_admin'] ) ? $args['is_admin'] : false;
+	}
+
+	Give()->email_tags->add( $args['tag'], $args['desc'], $args['func'], $args['context'], $args['is_admin'] );
 }
 
 /**

@@ -618,6 +618,18 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				}
 			}
 
+			/**
+			 * Disallow tags on Email Notifications which don't have a
+			 * recipient and if the tag's is_admin property is set to true.
+			 */
+			if ( false === $this->config['has_recipient_field'] ) {
+				foreach ( $email_tags as $index => $email_tag ) {
+					if ( true === $email_tag['is_admin'] ) {
+						unset( $email_tags[ $index ] );
+					}
+				}
+			}
+
 			if ( count( $email_tags ) && $formatted ) : ob_start() ?>
 				<ul class="give-email-tags-wrap">
 					<?php foreach ( $email_tags as $email_tag ) : ?>
