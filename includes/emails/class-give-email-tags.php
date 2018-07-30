@@ -50,33 +50,18 @@ class Give_Email_Template_Tags {
 	 * Add an email tag.
 	 *
 	 * @since 1.0
-	 *
-	 * @param string   $tag         Email tag to be replace in email
-	 * @param string   $description Email tag description text
-	 * @param callable $func        Hook to run when email tag is found
-	 * @param string   $context     Email tag category
 	 */
 	public function add( $args ) {
-		if ( ! is_array( $args ) ) {
-			$func_args = func_get_args();
-
-			$func_args[0] = isset( $func_args[0] ) ? $func_args[0] : '';
-			$func_args[1] = isset( $func_args[1] ) ? $func_args[1] : '';
-			$func_args[2] = isset( $func_args[2] ) ? $func_args[2] : '';
-			$func_args[3] = isset( $func_args[3] ) ? $func_args[3] : '';
-
-			$args = __give_211_bc_str_type_email_tag_param( $func_args[0], $func_args[1], $func_args[2], $func_args[3] );
-		} else {
-			$args = __give_211_bc_str_type_email_tag_param( $args );
-		}
+		__give_211_bc_email_template_tag_param( $args, func_get_args() );
 
 		if ( is_callable( $args['func'] ) ) {
 			$this->tags[ $args['tag'] ] = array(
 				'tag'         => $args['tag'],
-				'description' => $args['desc'],
+				'desc' => $args['desc'],
 				'func'        => $args['func'],
 				'context'     => give_check_variable( $args['context'], 'empty', 'general' ),
-				'is_admin'    => $args['is_admin'], // Introduced in 2.2.1
+				'is_admin'    => (bool) $args['is_admin'], // Introduced in 2.2.1
+				'description' => $args['desc'], // deprecated in 2.2.1
 			);
 		}
 	}
@@ -194,30 +179,9 @@ class Give_Email_Template_Tags {
  * Add an email tag.
  *
  * @since 1.0
- *
- * @param string   $tag         Email tag to be replace in email
- * @param string   $description Description of the email tag added
- * @param callable $func        Hook to run when email tag is found
- * @param string   $context     Email tag category
  */
 function give_add_email_tag( $args ) {
-
-	/**
-	 * This is for backward compatibility. Instead of passing arguments
-	 * as string, now it accepts 1 argument as array.
-	 */
-	if ( ! is_array( $args ) ) {
-		$func_args = func_get_args();
-
-		$func_args[0] = isset( $func_args[0] ) ? $func_args[0] : '';
-		$func_args[1] = isset( $func_args[1] ) ? $func_args[1] : '';
-		$func_args[2] = isset( $func_args[2] ) ? $func_args[2] : '';
-		$func_args[3] = isset( $func_args[3] ) ? $func_args[3] : '';
-
-		$args = __give_211_bc_str_type_email_tag_param( $func_args[0], $func_args[1], $func_args[2], $func_args[3] );
-	} else {
-		$args = __give_211_bc_str_type_email_tag_param( $args );
-	}
+	__give_211_bc_email_template_tag_param( $args, func_get_args() );
 
 	Give()->email_tags->add( $args );
 }
@@ -274,7 +238,7 @@ function give_get_emails_tags_list() {
 		<div class="give-email-tags-wrap">
 			<?php foreach ( $email_tags as $email_tag ) : ?>
 				<span class="give_<?php echo $email_tag['tag']; ?>_tag">
-					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
+					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
 				</span>
 			<?php endforeach; ?>
 		</div>
@@ -351,152 +315,152 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		/*	Donation Payment */
 		array(
-			'tag'         => 'donation',
-			'description' => esc_html__( 'The donation form name, and the donation level (if applicable).', 'give' ),
-			'function'    => 'give_email_tag_donation',
-			'context'     => 'donation',
+			'tag'     => 'donation',
+			'desc'    => esc_html__( 'The donation form name, and the donation level (if applicable).', 'give' ),
+			'func'    => 'give_email_tag_donation',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'amount',
-			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
-			'function'    => 'give_email_tag_amount',
-			'context'     => 'donation',
+			'tag'     => 'amount',
+			'desc'    => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'func'    => 'give_email_tag_amount',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'price',
-			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
-			'function'    => 'give_email_tag_price',
-			'context'     => 'donation',
+			'tag'     => 'price',
+			'desc'    => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'func'    => 'give_email_tag_price',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'billing_address',
-			'description' => esc_html__( 'The donor\'s billing address.', 'give' ),
-			'function'    => 'give_email_tag_billing_address',
-			'context'     => 'donation',
+			'tag'     => 'billing_address',
+			'desc'    => esc_html__( 'The donor\'s billing address.', 'give' ),
+			'func'    => 'give_email_tag_billing_address',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'date',
-			'description' => esc_html__( 'The date of the donation.', 'give' ),
-			'function'    => 'give_email_tag_date',
-			'context'     => 'donation',
+			'tag'     => 'date',
+			'desc'    => esc_html__( 'The date of the donation.', 'give' ),
+			'func'    => 'give_email_tag_date',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'payment_id',
-			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
-			'function'    => 'give_email_tag_payment_id',
-			'context'     => 'donation',
+			'tag'     => 'payment_id',
+			'desc'    => esc_html__( 'The unique ID number for this donation.', 'give' ),
+			'func'    => 'give_email_tag_payment_id',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'payment_method',
-			'description' => esc_html__( 'The method of payment used for this donation.', 'give' ),
-			'function'    => 'give_email_tag_payment_method',
-			'context'     => 'donation',
+			'tag'     => 'payment_method',
+			'desc'    => esc_html__( 'The method of payment used for this donation.', 'give' ),
+			'func'    => 'give_email_tag_payment_method',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'payment_total',
-			'description' => esc_html__( 'The payment total for this donation.', 'give' ),
-			'function'    => 'give_email_tag_payment_total',
-			'context'     => 'donation',
+			'tag'     => 'payment_total',
+			'desc'    => esc_html__( 'The payment total for this donation.', 'give' ),
+			'func'    => 'give_email_tag_payment_total',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'receipt_id',
-			'description' => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
-			'function'    => 'give_email_tag_receipt_id',
-			'context'     => 'donation',
+			'tag'     => 'receipt_id',
+			'desc'    => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
+			'func'    => 'give_email_tag_receipt_id',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'receipt_link',
-			'description' => esc_html__( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
-			'function'    => 'give_email_tag_receipt_link',
-			'context'     => 'donation',
+			'tag'     => 'receipt_link',
+			'desc'    => esc_html__( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
+			'func'    => 'give_email_tag_receipt_link',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'receipt_link_url',
-			'description' => esc_html__( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
-			'function'    => 'give_email_tag_receipt_link_url',
-			'context'     => 'donation',
+			'tag'     => 'receipt_link_url',
+			'desc'    => esc_html__( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
+			'func'    => 'give_email_tag_receipt_link_url',
+			'context' => 'donation',
 		),
 
 		/* Donation Form */
 		array(
-			'tag'         => 'form_title',
-			'description' => esc_html__( 'The donation form name.', 'give' ),
-			'function'    => 'give_email_tag_form_title',
-			'context'     => 'form',
+			'tag'     => 'form_title',
+			'desc'    => esc_html__( 'The donation form name.', 'give' ),
+			'func'    => 'give_email_tag_form_title',
+			'context' => 'form',
 		),
 
 		/* Donor */
 		array(
-			'tag'         => 'name',
-			'description' => esc_html__( 'The donor\'s first name.', 'give' ),
-			'function'    => 'give_email_tag_first_name',
-			'context'     => 'donor',
+			'tag'     => 'name',
+			'desc'    => esc_html__( 'The donor\'s first name.', 'give' ),
+			'func'    => 'give_email_tag_first_name',
+			'context' => 'donor',
 		),
 		array(
-			'tag'         => 'fullname',
-			'description' => esc_html__( 'The donor\'s full name, first and last.', 'give' ),
-			'function'    => 'give_email_tag_fullname',
-			'context'     => 'donor',
+			'tag'     => 'fullname',
+			'desc'    => esc_html__( 'The donor\'s full name, first and last.', 'give' ),
+			'func'    => 'give_email_tag_fullname',
+			'context' => 'donor',
 		),
 		array(
-			'tag'         => 'username',
-			'description' => esc_html__( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
-			'function'    => 'give_email_tag_username',
-			'context'     => 'donor',
+			'tag'     => 'username',
+			'desc'    => esc_html__( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
+			'func'    => 'give_email_tag_username',
+			'context' => 'donor',
 		),
 		array(
-			'tag'         => 'company_name',
-			'description' => esc_html__( 'Company name.', 'give' ),
-			'function'    => 'give_email_tag_company_name',
-			'context'     => 'donation',
+			'tag'     => 'company_name',
+			'desc'    => esc_html__( 'Company name.', 'give' ),
+			'func'    => 'give_email_tag_company_name',
+			'context' => 'donation',
 		),
 		array(
-			'tag'         => 'user_email',
-			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
-			'function'    => 'give_email_tag_user_email',
-			'context'     => 'donor',
+			'tag'     => 'user_email',
+			'desc'    => esc_html__( 'The donor\'s email address.', 'give' ),
+			'func'    => 'give_email_tag_user_email',
+			'context' => 'donor',
 		),
 		array(
-			'tag'         => 'email_access_link',
-			'description' => esc_html__( 'The donor\'s email access link.', 'give' ),
-			'function'    => 'give_email_tag_email_access_link',
-			'context'     => 'donor',
+			'tag'     => 'email_access_link',
+			'desc'    => esc_html__( 'The donor\'s email access link.', 'give' ),
+			'func'    => 'give_email_tag_email_access_link',
+			'context' => 'donor',
 		),
 
 		/* General */
 		array(
-			'tag'         => 'sitename',
-			'description' => esc_html__( 'The name of your site.', 'give' ),
-			'function'    => 'give_email_tag_sitename',
-			'context'     => 'general',
+			'tag'     => 'sitename',
+			'desc'    => esc_html__( 'The name of your site.', 'give' ),
+			'func'    => 'give_email_tag_sitename',
+			'context' => 'general',
 		),
 
 		array(
-			'tag'         => 'reset_password_link',
-			'description' => esc_html__( 'The reset password link for user.', 'give' ),
-			'function'    => 'give_email_tag_reset_password_link',
-			'context'     => 'general',
+			'tag'     => 'reset_password_link',
+			'desc'    => esc_html__( 'The reset password link for user.', 'give' ),
+			'func'    => 'give_email_tag_reset_password_link',
+			'context' => 'general',
 		),
 
 		array(
-			'tag'         => 'admin_email',
-			'description' => esc_html__( 'The custom admin email which is set inside Emails > Contact Information. By default this tag will use your WordPress admin email.', 'give' ),
-			'function'    => 'give_email_admin_email',
-			'context'     => 'general',
+			'tag'     => 'admin_email',
+			'desc'    => esc_html__( 'The custom admin email which is set inside Emails > Contact Information. By default this tag will use your WordPress admin email.', 'give' ),
+			'func'    => 'give_email_admin_email',
+			'context' => 'general',
 		),
 
 		array(
-			'tag'         => 'site_url',
-			'description' => esc_html__( 'The website URL.', 'give' ),
-			'function'    => 'give_email_site_url',
-			'context'     => 'general',
+			'tag'      => 'site_url',
+			'desc'     => esc_html__( 'The website URL.', 'give' ),
+			'func'     => 'give_email_site_url',
+			'context'  => 'general',
 		),
 
 		array(
-			'tag'         => 'offline_mailing_address',
-			'description' => esc_html__( 'The Offline Mailing Address which is used for the Offline Donations Payment Gateway.', 'give' ),
-			'function'    => 'give_email_offline_mailing_address',
-			'context'     => 'general',
+			'tag'     => 'offline_mailing_address',
+			'desc'    => esc_html__( 'The Offline Mailing Address which is used for the Offline Donations Payment Gateway.', 'give' ),
+			'func'    => 'give_email_offline_mailing_address',
+			'context' => 'general',
 		),
 
 	);
@@ -506,12 +470,7 @@ function give_setup_email_tags() {
 
 	// Add email tags
 	foreach ( $email_tags as $email_tag ) {
-		give_add_email_tag(
-			$email_tag['tag'],
-			$email_tag['description'],
-			$email_tag['function'],
-			( ! empty( $email_tag['context'] ) ? $email_tag['context'] : '' )
-		);
+		give_add_email_tag( $email_tag );
 	}
 
 }
@@ -1381,23 +1340,20 @@ function __give_20_bc_str_type_email_tag_param( $tag_args ) {
 /**
  * This function converts a list of function arguments and converts
  * them into a single array.
+ * Note: only for internal logic
  *
- * @param string|array $args Function arguments.
+ * @param string|array $args      Function arguments.
+ * @param array        $func_args Deprecated argument list.
  *
- * @since 2.1.1
- *
- * @return array
+ * @since 2.2.1
  */
-function __give_211_bc_str_type_email_tag_param( $args ) {
+function __give_211_bc_email_template_tag_param( &$args, $func_args = array() ) {
 
 	/**
 	 * This is for backward-compatibility, i.e.; if the parameters are
 	 * still passed as 4 separate arguments instead of 1 single array.
 	 */
 	if ( ! is_array( $args ) ) {
-
-		$func_args = func_get_args();
-
 		$args = array(
 			'tag'      => isset( $func_args[0] ) ? $func_args[0] : '',
 			'desc'     => isset( $func_args[1] ) ? $func_args[1] : '',
@@ -1406,14 +1362,17 @@ function __give_211_bc_str_type_email_tag_param( $args ) {
 			'is_admin' => false,
 		);
 	} else {
-		$args['tag']      = isset( $args['tag'] ) ? $args['tag'] : '';
-		$args['desc']     = isset( $args['desc'] ) ? $args['desc'] : '';
-		$args['func']     = isset( $args['func'] ) ? $args['func'] : '';
-		$args['context']  = isset( $args['context'] ) ? $args['context'] : '';
-		$args['is_admin'] = isset( $args['is_admin'] ) ? $args['is_admin'] : false;
+		$args = wp_parse_args(
+			$args,
+			array(
+				'tag'      => '',
+				'desc'     => '',
+				'func'     => '',
+				'context'  => '',
+				'is_admin' => false,
+			)
+		);
 	}
-
-	return $args;
 }
 
 /**
