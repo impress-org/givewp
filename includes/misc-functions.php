@@ -2443,7 +2443,7 @@ function give_get_safe_asset_url( $url ) {
 	if ( empty( $url ) ) {
 		return $url;
 	}
-	
+
 	$schema        = parse_url( $url, PHP_URL_SCHEME );
 	$schema_length = strlen( $schema ) + 1;
 	$url           = substr( $url, $schema_length );

@@ -2,6 +2,7 @@
  * Block dependencies
  */
 import GiveBlankSlate from '../blank-slate/index';
+import isUndefined from 'lodash.isundefined';
 
 /**
  * Internal dependencies
@@ -18,15 +19,19 @@ const FormSelect = (props) => {
 	// Event(s)
 	const getFormOptions = () => {
 		// Add API Data To Select Options
-		const formOptions = props.forms.data.map(
-			(form) => {
-				return {
-					value: form.id,
-					label: form.title.rendered === '' ? `${ form.id } : ${__( 'No form title' ) }` : form.title.rendered,
-				};
-			}
-		);
 
+		let formOptions = [];
+
+		if( ! isUndefined( props.forms.data ) ) {
+			formOptions = props.forms.data.map(
+				(form) => {
+					return {
+						value: form.id,
+						label: form.title.rendered === '' ? `${ form.id } : ${__( 'No form title' ) }` : form.title.rendered,
+					};
+				}
+			);
+		}
 		// Add Default option
 		formOptions.unshift( giveFormOptionsDefault );
 

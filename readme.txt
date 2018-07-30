@@ -208,7 +208,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.2.0: July 24th, 2018 =
+= 2.2.0: July 30th, 2018 =
 * Important: This release requires a number of updates to our add-ons for full compatiblity due to the optimization of how we handle donor session data and additional refactoring of the database schema. Please ensure you update all your add-ons after updating for full compatibility. If you have any issues with the update feel free to reach out to our support. [GiveWP Plugin Support](https://givewp.com/support/)
 * New: The Donor Wall is here. Now you can display your donors, their comment, and the amount they donated in a customizable shortcode. [#2900](https://github.com/WordImpress/Give/issues/2900), [#3312](https://github.com/WordImpress/Give/issues/3312)
 * New: You can now enable Title Prefixes, or also commonly called "Honorifics" (Mr., Mrs., Dr.), for donors in a flexible and customizable way. [#3011](https://github.com/WordImpress/Give/issues/3011)
@@ -227,6 +227,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: Refactored the multiple methods to delete donors so now there is a singular method for donor deletion that is extensible. For more info see [this developers blog post](https://developers.givewp.com/2018/07/24/give-2-2-0-singular-method-for-donor-deletion-process/). [#2347](https://github.com/WordImpress/Give/issues/2347)
 * Tweak: The "Terms and Conditions" label now accepts HTML so you can insert links to more info and content. This is particularly useful for improved GDPR compliance. [#3225](https://github.com/WordImpress/Give/issues/3225)
 * Tweak: Core now uses the form's currency in the process of donation creation. [#3401](https://github.com/WordImpress/Give/issues/3401)
+* Fix: Gutenberg blocks are now fully functional in anticipation of WP 5.0 release. [#3518](https://github.com/wordimpress/give/issues/3518)
 * Fix: The address email tag is now appropriately formatted so the address fields appear in the correct order. [#2790](https://github.com/wordimpress/give/issues/2790)
 * Fix: Exporting and Importing donations is now in sync without any errors to make migrating data between environments easier. [#2135](https://github.com/wordimpress/give/issues/2135)
 * Fix: Resolved issues with the newsletter sign up on the Give activation welcome screen. [#2322](https://github.com/wordimpress/give/issues/2322)
