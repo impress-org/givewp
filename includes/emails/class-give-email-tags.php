@@ -50,6 +50,17 @@ class Give_Email_Template_Tags {
 	 * Add an email tag.
 	 *
 	 * @since 1.0
+	 * @since 2.2.1 Deprecated function argument and accept them as array
+	 *
+	 * @param array $args     {
+	 *
+	 * @type string $tag      Email template tag name.
+	 * @type string $desc     Email template tag description.
+	 * @type string $func     Email template tag render function name.
+	 * @type string $context  Email template tag context.
+	 * @type bool   $is_admin Flag to check to show email template tag on email edit screen or not.
+	 *
+	 * }
 	 */
 	public function add( $args ) {
 		__give_211_bc_email_template_tag_param( $args, func_get_args() );
@@ -179,6 +190,10 @@ class Give_Email_Template_Tags {
  * Add an email tag.
  *
  * @since 1.0
+ * @since 2.2.1 Deprecate function argument and accept them as array
+ *
+ * @param array $args Email template tag argument
+ *                    Check Give_Email_Template_Tags::add function description for more information
  */
 function give_add_email_tag( $args ) {
 	__give_211_bc_email_template_tag_param( $args, func_get_args() );
