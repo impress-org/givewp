@@ -55,16 +55,28 @@ class Give_Email_Template_Tags {
 	 * @param string   $description Email tag description text
 	 * @param callable $func        Hook to run when email tag is found
 	 * @param string   $context     Email tag category
-	 * @param boolean  $is_admin    Set true to show the tag only for admin context.
 	 */
-	public function add( $tag, $description, $func, $context = '', $is_admin = false ) {
-		if ( is_callable( $func ) ) {
-			$this->tags[ $tag ] = array(
-				'tag'         => $tag,
-				'description' => $description,
-				'func'        => $func,
-				'context'     => give_check_variable( $context, 'empty', 'general' ),
-				'is_admin'    => $is_admin, // Introduced in 2.2.1
+	public function add( $args ) {
+		if ( ! is_array( $args ) ) {
+			$func_args = func_get_args();
+
+			$func_args[0] = isset( $func_args[0] ) ? $func_args[0] : '';
+			$func_args[1] = isset( $func_args[1] ) ? $func_args[1] : '';
+			$func_args[2] = isset( $func_args[2] ) ? $func_args[2] : '';
+			$func_args[3] = isset( $func_args[3] ) ? $func_args[3] : '';
+
+			$args = __give_211_bc_str_type_email_tag_param( $func_args[0], $func_args[1], $func_args[2], $func_args[3] );
+		} else {
+			$args = __give_211_bc_str_type_email_tag_param( $args );
+		}
+
+		if ( is_callable( $args['func'] ) ) {
+			$this->tags[ $args['tag'] ] = array(
+				'tag'         => $args['tag'],
+				'description' => $args['desc'],
+				'func'        => $args['func'],
+				'context'     => give_check_variable( $args['context'], 'empty', 'general' ),
+				'is_admin'    => $args['is_admin'], // Introduced in 2.2.1
 			);
 		}
 	}
@@ -194,25 +206,20 @@ function give_add_email_tag( $args ) {
 	 * This is for backward compatibility. Instead of passing arguments
 	 * as string, now it accepts 1 argument as array.
 	 */
-	$func_args = func_get_args();
+	if ( ! is_array( $args ) ) {
+		$func_args = func_get_args();
 
-	if ( isset( $func_args[0] ) && is_string( $func_args[0] ) ) {
-		$args = array(
-			'tag'      => isset( $func_args[0] ) ? $func_args[0] : '',
-			'desc'     => isset( $func_args[1] ) ? $func_args[1] : '',
-			'func'     => isset( $func_args[2] ) ? $func_args[2] : '',
-			'context'  => isset( $func_args[3] ) ? $func_args[3] : '',
-			'is_admin' => false,
-		);
-	} else if ( is_array( $args ) ) {
-		$args['tag']      = isset( $args['tag'] ) ? $args['tag'] : '';
-		$args['desc']     = isset( $args['desc'] ) ? $args['desc'] : '';
-		$args['func']     = isset( $args['func'] ) ? $args['func'] : '';
-		$args['context']  = isset( $args['context'] ) ? $args['context'] : '';
-		$args['is_admin'] = isset( $args['is_admin'] ) ? $args['is_admin'] : false;
+		$func_args[0] = isset( $func_args[0] ) ? $func_args[0] : '';
+		$func_args[1] = isset( $func_args[1] ) ? $func_args[1] : '';
+		$func_args[2] = isset( $func_args[2] ) ? $func_args[2] : '';
+		$func_args[3] = isset( $func_args[3] ) ? $func_args[3] : '';
+
+		$args = __give_211_bc_str_type_email_tag_param( $func_args[0], $func_args[1], $func_args[2], $func_args[3] );
+	} else {
+		$args = __give_211_bc_str_type_email_tag_param( $args );
 	}
 
-	Give()->email_tags->add( $args['tag'], $args['desc'], $args['func'], $args['context'], $args['is_admin'] );
+	Give()->email_tags->add( $args );
 }
 
 /**
@@ -1369,6 +1376,44 @@ function __give_20_bc_str_type_email_tag_param( $tag_args ) {
 	}
 
 	return $tag_args;
+}
+
+/**
+ * This function converts a list of function arguments and converts
+ * them into a single array.
+ *
+ * @param string|array $args Function arguments.
+ *
+ * @since 2.1.1
+ *
+ * @return array
+ */
+function __give_211_bc_str_type_email_tag_param( $args ) {
+
+	/**
+	 * This is for backward-compatibility, i.e.; if the parameters are
+	 * still passed as 4 separate arguments instead of 1 single array.
+	 */
+	if ( ! is_array( $args ) ) {
+
+		$func_args = func_get_args();
+
+		$args = array(
+			'tag'      => isset( $func_args[0] ) ? $func_args[0] : '',
+			'desc'     => isset( $func_args[1] ) ? $func_args[1] : '',
+			'func'     => isset( $func_args[2] ) ? $func_args[2] : '',
+			'context'  => isset( $func_args[3] ) ? $func_args[3] : '',
+			'is_admin' => false,
+		);
+	} else {
+		$args['tag']      = isset( $args['tag'] ) ? $args['tag'] : '';
+		$args['desc']     = isset( $args['desc'] ) ? $args['desc'] : '';
+		$args['func']     = isset( $args['func'] ) ? $args['func'] : '';
+		$args['context']  = isset( $args['context'] ) ? $args['context'] : '';
+		$args['is_admin'] = isset( $args['is_admin'] ) ? $args['is_admin'] : false;
+	}
+
+	return $args;
 }
 
 /**
