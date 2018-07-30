@@ -208,7 +208,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.2.0: July 24th, 2018 =
+= 2.2.0: July 30th, 2018 =
 * Important: This release requires a number of updates to our add-ons for full compatiblity due to the optimization of how we handle donor session data and additional refactoring of the database schema. Please ensure you update all your add-ons after updating for full compatibility. If you have any issues with the update feel free to reach out to our support. [GiveWP Plugin Support](https://givewp.com/support/)
 * New: The Donor Wall is here. Now you can display your donors, their comment, and the amount they donated in a customizable shortcode. [#2900](https://github.com/WordImpress/Give/issues/2900), [#3312](https://github.com/WordImpress/Give/issues/3312)
 * New: You can now enable Title Prefixes, or also commonly called "Honorifics" (Mr., Mrs., Dr.), for donors in a flexible and customizable way. [#3011](https://github.com/WordImpress/Give/issues/3011)
