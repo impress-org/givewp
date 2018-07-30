@@ -68,7 +68,7 @@ class Give_Email_Template_Tags {
 		if ( is_callable( $args['func'] ) ) {
 			$this->tags[ $args['tag'] ] = array(
 				'tag'         => $args['tag'],
-				'desc' => $args['desc'],
+				'desc'        => $args['desc'],
 				'func'        => $args['func'],
 				'context'     => give_check_variable( $args['context'], 'empty', 'general' ),
 				'is_admin'    => (bool) $args['is_admin'], // Introduced in 2.2.1
