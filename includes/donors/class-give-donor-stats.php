@@ -85,6 +85,11 @@ class Give_Donor_Stats {
 
 		if ( ! empty( $donated_amounts ) ) {
 			foreach ( $donated_amounts as $donation ) {
+				// Do not include anonymous donation in calculation.
+				if( give_is_anonymous_donation( $donation['id']) ){
+					continue;
+				}
+
 				$currency_code = give_get_payment_currency_code( $donation['id'] );
 
 				/**
