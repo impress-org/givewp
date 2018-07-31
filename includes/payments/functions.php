@@ -1793,3 +1793,21 @@ function give_is_donation_completed( $donation_id ) {
 		), $donation_id
 	);
 }
+
+/**
+ * Verify if donation anonymous or not
+ *
+ * @since 2.2.1
+ * @param $donation_id
+ *
+ * @return bool
+ */
+function give_is_anonymous_donation( $donation_id ) {
+	$value = false;
+
+	if( (int) give_get_meta( $donation_id, '_give_anonymous_donation', true ) ){
+		$value = true;
+	}
+
+	return $value;
+}
