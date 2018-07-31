@@ -469,6 +469,18 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				</tr>
 				</tbody>
 			</table>
+
+			<?php
+			/**
+			 * Fires on report graphs widget.
+			 *
+			 * Allows you to add additional stats to the widget.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_reports_graph_additional_stats' );
+			?>
+
 		</div>
 	</div>
 	<?php
