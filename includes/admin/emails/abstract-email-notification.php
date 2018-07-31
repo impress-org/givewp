@@ -599,28 +599,34 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Skip if all email template tags context setup exit.
 			if ( $this->config['email_tag_context'] && 'all' !== $this->config['email_tag_context'] ) {
-				$email_context = is_array( $this->config['email_tag_context'] )
-					? $this->config['email_tag_context']
-					: (array) $this->config['email_tag_context'];
-
-				foreach ( $email_tags as $index => $email_tag ) {
-					if ( in_array( $email_tag['context'], $email_context ) ) {
-						/**
-						 * Disallow tags on Email Notifications which don't have a
-						 * recipient and if the tag's is_admin property is set to true.
-						 */
-						if (
-							! $this->config['has_recipient_field']
-							&& $email_tag['is_admin']
-						) {
-							unset( $email_tags[ $index ] );
+				if ( is_array( $this->config['email_tag_context'] ) ) {
+					foreach ( $email_tags as $index => $email_tag ) {
+						if ( in_array( $email_tag['context'], $this->config['email_tag_context'] ) ) {
 							continue;
 						}
 
-						continue;
+						unset( $email_tags[ $index ] );
 					}
+				} else {
+					foreach ( $email_tags as $index => $email_tag ) {
+						if ( $this->config['email_tag_context'] === $email_tag['context'] ) {
+							continue;
+						}
 
-					unset( $email_tags[ $index ] );
+						unset( $email_tags[ $index ] );
+					}
+				}
+			}
+
+			/**
+			 * Disallow tags on Email Notifications which don't have a
+			 * recipient and if the tag's is_admin property is set to true.
+			 */
+			if ( false === $this->config['has_recipient_field'] ) {
+				foreach ( $email_tags as $index => $email_tag ) {
+					if ( true === $email_tag['is_admin'] ) {
+						unset( $email_tags[ $index ] );
+					}
 				}
 			}
 
