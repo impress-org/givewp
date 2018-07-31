@@ -77,17 +77,20 @@ class Give_Forms_Widget extends WP_Widget{
 	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	public function widget( $args, $instance ){
-		$title = !empty( $instance['title'] ) ? $instance['title'] : '';
-		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$title   = !empty( $instance['title'] ) ? $instance['title'] : '';
+		$title   = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$form_id = (int) $instance['id'];
 
 		echo $args['before_widget'];
 
 		/**
 		 * Fires before widget settings form in the admin area.
 		 *
+		 * @param integer $form_id Form ID.
+		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_before_forms_widget' );
+		do_action( 'give_before_forms_widget', $form_id );
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : '';
 
@@ -98,9 +101,11 @@ class Give_Forms_Widget extends WP_Widget{
 		/**
 		 * Fires after widget settings form in the admin area.
 		 *
+		 * @param integer $form_id Form ID.
+		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_after_forms_widget' );
+		do_action( 'give_after_forms_widget', $form_id );
 	}
 
 	/**
