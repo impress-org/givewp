@@ -86,6 +86,7 @@ class Give_Donor_Stats {
 		if ( ! empty( $donated_amounts ) ) {
 			foreach ( $donated_amounts as $donation ) {
 				$currency_code = give_get_payment_currency_code( $donation['id'] );
+
 				/**
 				 * Filter the donation amount
 				 * Note: this filter documented in payments/functions.php:give_donation_amount()
@@ -100,8 +101,7 @@ class Give_Donor_Stats {
 					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
 				);
 
-				$donated_amount = (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code  ) );
-				$donated_amount += $donated_amount;
+				$donated_amount += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code  ) );
 			}
 		}
 
