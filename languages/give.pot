@@ -5820,18 +5820,6 @@ msgstr ""
 msgid "Email Sent!"
 msgstr ""
 
-#: includes/misc-functions.php:2231
-msgid "Mr."
-msgstr ""
-
-#: includes/misc-functions.php:2232
-msgid "Mrs."
-msgstr ""
-
-#: includes/misc-functions.php:2233
-msgid "Ms."
-msgstr ""
-
 #: includes/post-types.php:55, includes/post-types.php:259, includes/admin/donors/donors.php:925, includes/admin/payments/class-payments-table.php:181, includes/admin/reports/class-form-reports-table.php:120, includes/admin/tools/logs/class-sales-logs-list-table.php:144
 msgid "Form"
 msgstr ""
@@ -7962,6 +7950,18 @@ msgstr ""
 
 #: includes/forms/functions.php:1231
 msgid "Goal achieved"
+msgstr ""
+
+#: includes/forms/functions.php:1456
+msgid "Mr."
+msgstr ""
+
+#: includes/forms/functions.php:1457
+msgid "Mrs."
+msgstr ""
+
+#: includes/forms/functions.php:1458
+msgid "Ms."
 msgstr ""
 
 #: includes/forms/template.php:416, includes/forms/template.php:437
