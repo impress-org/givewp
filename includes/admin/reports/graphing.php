@@ -476,7 +476,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			 *
 			 * Allows you to add additional stats to the widget.
 			 *
-			 * @since 1.0
+			 * @since 2.2.1
 			 */
 			do_action( 'give_reports_graph_additional_stats' );
 			?>
