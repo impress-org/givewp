@@ -637,7 +637,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			foreach ( $options as $option => $option_value ) {
 				$ignore = array();
-				if ( isset( $option_value['ignore'] ) ) {
+				if ( isset( $option_value['ignore'] ) && is_array( $option_value['ignore'] ) ) {
 					$ignore = $option_value['ignore'];
 					unset( $option_value['ignore'] );
 				}
