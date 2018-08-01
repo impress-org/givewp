@@ -1323,3 +1323,171 @@ function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
 	 */
 	return apply_filters( 'give_is_default_level_id', $is_default, $price_or_level_id );
 }
+
+
+/**
+ * Get Name Title Prefixes (a.k.a. Salutation) value.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2.0
+ *
+ * @return mixed
+ */
+function give_get_name_title_prefixes( $form_id = 0 ) {
+
+	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
+	$title_prefixes    = give_get_option( 'title_prefixes' );
+
+	// If form id exists, then fetch form specific title prefixes.
+	if ( intval( $form_id ) > 0 && $name_title_prefix ) {
+
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+		if ( 'global' !== $form_title_prefix ) {
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes', true );
+
+			// Check whether the form based title prefixes exists or not.
+			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
+				$title_prefixes = $form_title_prefixes;
+			}
+		}
+	}
+
+	return $title_prefixes;
+}
+
+/**
+ * Check whether the name title prefix is enabled or not.
+ *
+ * @param int    $form_id Donation Form ID.
+ * @param string $status  Status to set status based on option value.
+ *
+ * @since 2.2.0
+ *
+ * @return bool
+ */
+function give_is_name_title_prefix_enabled( $form_id = 0, $status = '' ) {
+	if ( empty( $status ) ) {
+		$status = array( 'required', 'optional' );
+	} else {
+		$status = array( $status );
+	}
+
+	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'disabled' === $form_title_prefix ) {
+			$title_prefix_status = false;
+		} elseif ( in_array( $form_title_prefix, $status, true ) ) {
+			$title_prefix_status = give_is_setting_enabled( $form_title_prefix, $status );
+		}
+	}
+
+	return $title_prefix_status;
+
+}
+
+/**
+ * Get Donor Name with Title Prefix
+ *
+ * @param int|Give_Donor $donor Donor Information.
+ *
+ * @since 2.2.0
+ *
+ * @return object
+ */
+function give_get_name_with_title_prefixes( $donor ) {
+
+	// Prepare Give_Donor object, if $donor is numeric.
+	if ( is_numeric( $donor ) ) {
+		$donor = new Give_Donor( $donor );
+	}
+
+	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+
+	// Update Donor name, if non empty title prefix.
+	if ( ! empty( $title_prefix ) ) {
+		$donor->name = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
+	}
+
+	return $donor;
+}
+
+/**
+ * This function will generate donor name with title prefix if it is required.
+ *
+ * @param string $title_prefix Title Prefix of Donor
+ * @param string $name         Donor Name.
+ *
+ * @since 2.2.0
+ *
+ * @return string
+ */
+function give_get_donor_name_with_title_prefixes( $title_prefix, $name ) {
+
+	$donor_name = $name;
+
+	if ( ! empty( $title_prefix ) && ! empty( $name ) ) {
+		$donor_name = "{$title_prefix} {$name}";
+	}
+
+	return trim( $donor_name );
+}
+
+/**
+ * This function will fetch the default list of title prefixes.
+ *
+ * @since 2.2.0
+ *
+ * @return array
+ */
+function give_get_default_title_prefixes() {
+	/**
+	 * Filter the data
+	 * Set default title prefixes.
+	 *
+	 * @since 2.2.0
+	 */
+	return apply_filters(
+		'give_get_default_title_prefixes',
+		array(
+			'Mr.'  => __( 'Mr.', 'give' ),
+			'Mrs.' => __( 'Mrs.', 'give' ),
+			'Ms.'  => __( 'Ms.', 'give' ),
+		)
+	);
+}
+
+/**
+ * This function will check whether the name title prefix field is required or not.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.2.0
+ *
+ * @return bool
+ */
+function give_is_name_title_prefix_required( $form_id = 0 ) {
+
+	// Bail out, if name title prefix is not enabled.
+	if ( ! give_is_name_title_prefix_enabled( $form_id ) ) {
+		return false;
+	}
+
+	$status      = array( 'optional' );
+	$is_optional = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
+
+	if ( intval( $form_id ) > 0 ) {
+		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
+
+		if ( 'required' === $form_title_prefix ) {
+			$is_optional = false;
+		} elseif ( 'optional' === $form_title_prefix ) {
+			$is_optional = true;
+		}
+	}
+
+	return ( ! $is_optional );
+}
