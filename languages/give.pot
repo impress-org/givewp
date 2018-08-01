@@ -724,43 +724,43 @@ msgstr ""
 msgid "We are using database session logic instead of PHP session"
 msgstr ""
 
-#: includes/class-give-stats.php:96, includes/admin/reports/graphing.php:488
+#: includes/class-give-stats.php:96, includes/admin/reports/graphing.php:505
 msgid "Today"
 msgstr ""
 
-#: includes/class-give-stats.php:97, includes/admin/reports/graphing.php:489
+#: includes/class-give-stats.php:97, includes/admin/reports/graphing.php:506
 msgid "Yesterday"
 msgstr ""
 
-#: includes/class-give-stats.php:98, includes/admin/dashboard-widgets.php:79, includes/admin/dashboard-widgets.php:89, includes/admin/reports/graphing.php:490
+#: includes/class-give-stats.php:98, includes/admin/dashboard-widgets.php:79, includes/admin/dashboard-widgets.php:89, includes/admin/reports/graphing.php:507
 msgid "This Week"
 msgstr ""
 
-#: includes/class-give-stats.php:99, includes/admin/reports/graphing.php:491
+#: includes/class-give-stats.php:99, includes/admin/reports/graphing.php:508
 msgid "Last Week"
 msgstr ""
 
-#: includes/class-give-stats.php:100, includes/admin/dashboard-widgets.php:80, includes/admin/dashboard-widgets.php:94, includes/admin/reports/graphing.php:492
+#: includes/class-give-stats.php:100, includes/admin/dashboard-widgets.php:80, includes/admin/dashboard-widgets.php:94, includes/admin/reports/graphing.php:509
 msgid "This Month"
 msgstr ""
 
-#: includes/class-give-stats.php:101, includes/admin/dashboard-widgets.php:101, includes/admin/reports/graphing.php:493
+#: includes/class-give-stats.php:101, includes/admin/dashboard-widgets.php:101, includes/admin/reports/graphing.php:510
 msgid "Last Month"
 msgstr ""
 
-#: includes/class-give-stats.php:102, includes/admin/dashboard-widgets.php:106, includes/admin/reports/graphing.php:494
+#: includes/class-give-stats.php:102, includes/admin/dashboard-widgets.php:106, includes/admin/reports/graphing.php:511
 msgid "This Quarter"
 msgstr ""
 
-#: includes/class-give-stats.php:103, includes/admin/reports/graphing.php:495
+#: includes/class-give-stats.php:103, includes/admin/reports/graphing.php:512
 msgid "Last Quarter"
 msgstr ""
 
-#: includes/class-give-stats.php:104, includes/admin/reports/graphing.php:496
+#: includes/class-give-stats.php:104, includes/admin/reports/graphing.php:513
 msgid "This Year"
 msgstr ""
 
-#: includes/class-give-stats.php:105, includes/admin/reports/graphing.php:497
+#: includes/class-give-stats.php:105, includes/admin/reports/graphing.php:514
 msgid "Last Year"
 msgstr ""
 
@@ -5860,7 +5860,7 @@ msgstr ""
 msgid "No forms found in Trash."
 msgstr ""
 
-#: includes/post-types.php:66, includes/post-types.php:121, includes/deprecated/deprecated-functions.php:68, includes/forms/functions.php:1227, includes/admin/donors/class-donor-table.php:194, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:180, includes/admin/reports/graphing.php:427, includes/admin/tools/class-settings-logs.php:93, includes/admin/upgrades/class-give-updates.php:225, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:61, includes/admin/tools/export/pdf-reports.php:305, includes/admin/tools/import/class-give-import-donations.php:593
+#: includes/post-types.php:66, includes/post-types.php:121, includes/deprecated/deprecated-functions.php:68, includes/forms/functions.php:1227, includes/admin/donors/class-donor-table.php:194, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:180, includes/admin/reports/graphing.php:429, includes/admin/tools/class-settings-logs.php:93, includes/admin/upgrades/class-give-updates.php:225, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:61, includes/admin/tools/export/pdf-reports.php:305, includes/admin/tools/import/class-give-import-donations.php:593
 msgid "Donations"
 msgstr ""
 
@@ -9527,7 +9527,7 @@ msgstr ""
 msgid "Goal"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:41, includes/admin/reports/class-earnings-report.php:38, includes/admin/reports/class-earnings-report.php:76, includes/admin/reports/class-form-reports-table.php:122, includes/admin/reports/graphing.php:179, includes/admin/reports/graphing.php:426, includes/admin/reports/reports.php:103, includes/admin/tools/export/class-batch-export-forms.php:57, includes/admin/tools/export/pdf-reports.php:275
+#: includes/admin/forms/dashboard-columns.php:41, includes/admin/reports/class-earnings-report.php:38, includes/admin/reports/class-earnings-report.php:76, includes/admin/reports/class-form-reports-table.php:122, includes/admin/reports/graphing.php:179, includes/admin/reports/graphing.php:428, includes/admin/reports/reports.php:103, includes/admin/tools/export/class-batch-export-forms.php:57, includes/admin/tools/export/pdf-reports.php:275
 msgid "Income"
 msgstr ""
 
@@ -9895,11 +9895,11 @@ msgstr ""
 msgid "Donation Methods Report"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:207, includes/admin/reports/graphing.php:455
+#: includes/admin/reports/graphing.php:207, includes/admin/reports/graphing.php:459
 msgid "Total income for period:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:211, includes/admin/reports/graphing.php:459
+#: includes/admin/reports/graphing.php:211, includes/admin/reports/graphing.php:463
 msgid "Total donations for period:"
 msgstr ""
 
@@ -9912,39 +9912,39 @@ msgid "Estimated monthly donations:"
 msgstr ""
 
 #. translators: %s: form title
-#: includes/admin/reports/graphing.php:434
+#: includes/admin/reports/graphing.php:437
 msgid "Income Report for %s"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:463
+#: includes/admin/reports/graphing.php:467
 msgid "Average monthly income:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:467
+#: includes/admin/reports/graphing.php:471
 msgid "Average monthly donations:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:498, includes/admin/tools/export/give-export-donations-exporter.php:412
+#: includes/admin/reports/graphing.php:515, includes/admin/tools/export/give-export-donations-exporter.php:412
 msgid "Custom"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:536
+#: includes/admin/reports/graphing.php:554
 msgid "From"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:552
+#: includes/admin/reports/graphing.php:570
 msgid "To"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:571
+#: includes/admin/reports/graphing.php:589
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:816
+#: includes/admin/reports/graphing.php:838
 msgid "Clicking this will clear the reports cache."
 msgstr ""
 
-#: includes/admin/reports/graphing.php:817
+#: includes/admin/reports/graphing.php:839
 msgid "Refresh Report Data"
 msgstr ""
 
