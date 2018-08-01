@@ -54,11 +54,20 @@ class Give_Email_Template_Tags {
 	 *
 	 * @param array $args     {
 	 *
-	 * @type string $tag      Email template tag name.
-	 * @type string $desc     Email template tag description.
-	 * @type string $func     Email template tag render function name.
-	 * @type string $context  Email template tag context.
-	 * @type bool   $is_admin Flag to check to show email template tag on email edit screen or not.
+	 * @type string $tag      Email template tag name. The name of the tag to register, such as “engraving_message” as
+	 *       in our code example below. In the Give email settings, tags are wrapped with {} but not when they are
+	 *       registered.
+	 * @type string $desc     Email template tag description. A description of what the tag displays. This is
+	 *       informational for admins so they know what to expect the tag outputs in the notification.
+	 * @type string $func     Email template tag render function name. The callback function to render the tag’s
+	 *       output.
+	 * @type string $context  Email template tag context. The emails that this tag should appear as functional
+	 *       underneath the content editor. Options include:
+	 *               donation – appears on donation related emails
+	 *               form – information related to the donation form
+	 *               donor – information related to the donor such as first name or last name.
+	 *               general – appears on all emails
+	 * @type bool   $is_admin Flag to check to show email template tag on email edit screen or not. Whether this tag should only be available to admins. Usually reserved for tags with sensitive information. Default is false.
 	 *
 	 * }
 	 */
@@ -718,8 +727,8 @@ function give_email_tag_billing_address( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
 
-			$billing_address                    = array();
-			$billing_address['street_address']  = '';
+			$billing_address                   = array();
+			$billing_address['street_address'] = '';
 			$billing_address['street_address'] .= $donation_address['line1'];
 
 			if ( ! empty( $donation_address['line2'] ) ) {
@@ -776,7 +785,7 @@ function give_email_tag_date( $tag_args ) {
 	 * @since 2.0
 	 *
 	 * @param string $date
-	 * @param array $tag_args
+	 * @param array  $tag_args
 	 */
 	$date = apply_filters( 'give_email_tag_date', $date, $tag_args );
 
