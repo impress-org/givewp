@@ -167,9 +167,61 @@ if ( inProduction ) {
 		team: 'WordImpress <info@wordimpress.com>'
 	} );
 
+	/**
+	 * Files to delete/preserve to optimize the size of
+	 * TCPDF library included under vendor/ folder.
+	 */
+	$composerTcpdf = new CleanWebpackPlugin(
+		[ 'vendor/tecnickcom/tcpdf/fonts' ],
+		{
+			root: __dirname,
+			// dry: true, // Uncomment to make a dry run to see what files are deleted.
+			verbose: true,
+			exclude: [
+				'helvetica.php',
+				'pdfahelvetica.php',
+				'pdfahelvetica.z',
+				'dejavusans.php',
+				'dejavusans.z',
+				'dejavusans.ctg.z',
+			],
+		}
+	);
+
+	/**
+	 * Files to delete/preserve to optimize the size of
+	 * TCPDF library included under libraries/ folder.
+	 */
+	$giveTcpdf = new CleanWebpackPlugin(
+		[ 'includes/libraries/tcpdf/fonts' ],
+		{
+			root: __dirname,
+			// dry: true, // Uncomment to make a dry run to see what files are deleted.
+			verbose: true,
+			exclude: [
+				'CODE2000.TTF',
+				'code2000.ctg.z',
+				'code2000.php',
+				'code2000.z',
+				'code2000.z.cpgz',
+				'dejavusans.ctg.z',
+				'dejavusans.php',
+				'dejavusans.z',
+				'helvetica.php',
+			],
+		}
+	);
+
 	// Uglify JS.
 	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) );
 
 	// Minify CSS.
 	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
+
+	// Delete unneccesary fonts for TCPDF (composer version).
+	config.plugins.push( $composerTcpdf );
+
+	// Delete unneccesary fonts for TCPDF (Give version).
+	config.plugins.push( $giveTcpdf );
+
 }
