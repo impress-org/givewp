@@ -155,7 +155,7 @@ class Give_Email_Template_Tags {
 
 		$this->tag_args = $tag_args;
 
-		$new_content = preg_replace_callback( "/{([A-z0-9\-\_]+)}/s", array( $this, 'do_tag' ), $content );
+		$new_content = preg_replace_callback( '/{([A-z0-9\-\_]+)}/s', array( $this, 'do_tag' ), $content );
 
 		$this->tag_args = null;
 
@@ -257,7 +257,8 @@ function give_get_emails_tags_list() {
 				</span>
 			<?php endforeach; ?>
 		</div>
-	<?php endif;
+	<?php
+	endif;
 
 	// Return the list.
 	return ob_get_clean();
@@ -465,10 +466,10 @@ function give_setup_email_tags() {
 		),
 
 		array(
-			'tag'      => 'site_url',
-			'desc'     => esc_html__( 'The website URL.', 'give' ),
-			'func'     => 'give_email_site_url',
-			'context'  => 'general',
+			'tag'     => 'site_url',
+			'desc'    => esc_html__( 'The website URL.', 'give' ),
+			'func'    => 'give_email_site_url',
+			'context' => 'general',
 		),
 
 		array(
@@ -717,8 +718,8 @@ function give_email_tag_billing_address( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
 
-			$billing_address                   = array();
-			$billing_address['street_address'] = '';
+			$billing_address                    = array();
+			$billing_address['street_address']  = '';
 			$billing_address['street_address'] .= $donation_address['line1'];
 
 			if ( ! empty( $donation_address['line2'] ) ) {
@@ -917,7 +918,7 @@ function give_email_tag_donation( $tag_args ) {
 				give_check_variable(
 					give_get_donation_form_title(
 						$tag_args['payment_id'],
-						array( 'separator' => $separator, )
+						array( 'separator' => $separator )
 					),
 					'empty',
 					''
@@ -1142,10 +1143,13 @@ function give_email_tag_receipt_link( $tag_args ) {
 		return $receipt_url;
 	}
 
-
-	$receipt_url = esc_url( add_query_arg( array(
-		'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
-	), give_get_history_page_uri() ) );
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
+			), give_get_history_page_uri()
+		)
+	);
 
 	$formatted = sprintf(
 		'<a href="%1$s">%2$s</a>',
@@ -1214,9 +1218,13 @@ function give_get_receipt_url( $payment_id ) {
 	$receipt_url = '';
 
 	if ( $payment_id ) {
-		$receipt_url = esc_url( add_query_arg( array(
-			'payment_key' => give_get_payment_key( $payment_id ),
-		), give_get_history_page_uri() ) );
+		$receipt_url = esc_url(
+			add_query_arg(
+				array(
+					'payment_key' => give_get_payment_key( $payment_id ),
+				), give_get_history_page_uri()
+			)
+		);
 	}
 
 	return $receipt_url;
@@ -1468,11 +1476,15 @@ function give_get_reset_password_url( $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		// Prepare Reset Password URL.
-		$reset_password_url = esc_url( add_query_arg( array(
-			'action' => 'rp',
-			'key'    => get_password_reset_key( $user ),
-			'login'  => $user->user_login,
-		), wp_login_url() ) );
+		$reset_password_url = esc_url(
+			add_query_arg(
+				array(
+					'action' => 'rp',
+					'key'    => get_password_reset_key( $user ),
+					'login'  => $user->user_login,
+				), wp_login_url()
+			)
+		);
 	}
 
 	return $reset_password_url;
@@ -1540,7 +1552,7 @@ function give_email_offline_mailing_address() {
  * @return mixed
  */
 function __give_render_metadata_email_tag( $content, $tag_args ) {
-	preg_match_all( "/{meta_([A-z0-9\-\_\ ]+)}/s", $content, $matches );
+	preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
 
 	if ( ! empty( $matches[0] ) ) {
 		$search = $replace = array();
@@ -1561,8 +1573,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 
 			switch ( $type ) {
 				case 'donation':
-
-					//Bailout.
+					// Bailout.
 					if ( ! isset( $tag_args['payment_id'] ) ) {
 						$replace[] = '';
 						continue;
@@ -1608,7 +1619,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 
 					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
 
-					if( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
+					if ( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
 						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
 					}
 
@@ -1629,7 +1640,6 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 			$content = str_replace( $search, $replace, $content );
 		}
 	}
-
 
 	return $content;
 }
