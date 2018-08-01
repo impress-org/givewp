@@ -551,7 +551,7 @@ class Give_DB_Donors extends Give_DB {
 		$sql = "CREATE TABLE " . $this->table_name . " (
 		id bigint(20) NOT NULL AUTO_INCREMENT,
 		user_id bigint(20) NOT NULL,
-		email varchar(50) NOT NULL,
+		email varchar(255) NOT NULL,
 		name mediumtext NOT NULL,
 		purchase_value mediumtext NOT NULL,
 		purchase_count bigint(20) NOT NULL,

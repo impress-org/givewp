@@ -140,6 +140,9 @@ class Give_Comment {
 		remove_action( 'comment_post', 'wp_new_comment_notify_moderator' );
 		remove_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
 
+		// Remove comment flood check.
+		remove_action( 'check_comment_flood', 'check_comment_flood_db', 10 );
+
 		$comment_id = $is_existing_comment
 			? wp_update_comment( $comment_args )
 			: wp_new_comment( $comment_args, true );
@@ -147,6 +150,9 @@ class Give_Comment {
 		// Add moderation emails when comment posted.
 		add_action( 'comment_post', 'wp_new_comment_notify_moderator' );
 		add_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
+
+		// Add comment flood check.
+		add_action( 'check_comment_flood', 'check_comment_flood_db', 10, 4 );
 
 		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
