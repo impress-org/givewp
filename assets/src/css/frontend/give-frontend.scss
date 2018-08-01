@@ -36,3 +36,13 @@
 #give-receipt{
 	@import '../../../../blocks/components/container-placeholder-animation/style';
 }
+
+.give-grid-ie-utility {
+	margin: 0 -12px;
+}
+
+@supports (display: grid) {
+	.give-grid-ie-utility {
+		margin: 0;
+	}
+}
