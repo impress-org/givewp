@@ -105,7 +105,7 @@ class Give_Email_Template_Tags {
 	 * Returns a list of all email tags
 	 *
 	 * @since 1.0
-	 * @since 2.0 Add $context_type param to get specific  contect email tags.
+	 * @since 2.0 Add $context_type param to get specific context email tags.
 	 *
 	 * @param string $context_type
 	 * @param string $field
