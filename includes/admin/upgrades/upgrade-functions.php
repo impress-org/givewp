@@ -2820,6 +2820,14 @@ function give_v213_delete_donation_meta_callback() {
 function give_v220_rename_donation_meta_type_callback(){
 	global $wpdb;
 
+	// Check upgrade before running.
+	if(
+		give_has_upgrade_completed( 'v220_rename_donation_meta_type' )
+		|| ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_paymentmeta" ) )
+	) {
+		return;
+	}
+
 	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_paymentmeta CHANGE COLUMN payment_id donation_id bigint(20)" );
 	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_paymentmeta RENAME TO {$wpdb->prefix}give_donationmeta" );
 
