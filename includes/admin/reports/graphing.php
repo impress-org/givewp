@@ -27,17 +27,17 @@ function give_reports_graph() {
 
 	// Determine graph options.
 	switch ( $dates['range'] ) :
-		case 'today' :
-		case 'yesterday' :
+		case 'today':
+		case 'yesterday':
 			$day_by_day = true;
 			break;
-		case 'last_year' :
-		case 'this_year' :
-		case 'last_quarter' :
-		case 'this_quarter' :
+		case 'last_year':
+		case 'this_year':
+		case 'last_quarter':
+		case 'this_quarter':
 			$day_by_day = false;
 			break;
-		case 'other' :
+		case 'other':
 			if ( $dates['m_end'] - $dates['m_start'] >= 2 || $dates['year_end'] > $dates['year'] && ( $dates['m_start'] != '12' && $dates['m_end'] != '1' ) ) {
 				$day_by_day = false;
 			} else {
@@ -177,7 +177,7 @@ function give_reports_graph() {
 
 	$data = array(
 		__( 'Income', 'give' )    => $earnings_data,
-		__( 'Donations', 'give' ) => $sales_data
+		__( 'Donations', 'give' ) => $sales_data,
 	);
 
 	// start our own output buffer.
@@ -257,23 +257,23 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	// Determine graph options.
 	switch ( $dates['range'] ) :
-		case 'today' :
-		case 'yesterday' :
+		case 'today':
+		case 'yesterday':
 			$day_by_day = true;
 			break;
-		case 'last_year' :
+		case 'last_year':
 			$day_by_day = false;
 			break;
-		case 'this_year' :
+		case 'this_year':
 			$day_by_day = false;
 			break;
-		case 'last_quarter' :
+		case 'last_quarter':
 			$day_by_day = false;
 			break;
-		case 'this_quarter' :
+		case 'this_quarter':
 			$day_by_day = false;
 			break;
-		case 'other' :
+		case 'other':
 			if ( $dates['m_end'] - $dates['m_start'] >= 2 || $dates['year_end'] > $dates['year'] ) {
 				$day_by_day = false;
 			} else {
@@ -290,7 +290,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	$earnings_data = array();
 	$sales_data    = array();
-	$stats         = new Give_Payment_Stats;
+	$stats         = new Give_Payment_Stats();
 
 	if ( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
 
@@ -308,10 +308,10 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			$date     = mktime( $hour, $minute, $second, $month, $dates['day'], $dates['year'] );
 			$date_end = mktime( $hour + 1, $minute, $second, $month, $dates['day'], $dates['year'] );
 
-			$sales = $stats->get_sales( $form_id, $date, $date_end );
+			$sales         = $stats->get_sales( $form_id, $date, $date_end );
 			$sales_totals += $sales;
 
-			$earnings = $stats->get_earnings( $form_id, $date, $date_end );
+			$earnings         = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
 			$sales_data[]    = array( $date * 1000, $sales );
@@ -322,18 +322,18 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	} elseif ( $dates['range'] == 'this_week' || $dates['range'] == 'last_week' ) {
 
-		//Day by day.
+		// Day by day.
 		$day     = $dates['day'];
 		$day_end = $dates['day_end'];
 		$month   = $dates['m_start'];
 		while ( $day <= $day_end ) :
 
-			$date     = mktime( 0, 0, 0, $month, $day, $dates['year'] );
-			$date_end = mktime( 0, 0, 0, $month, $day + 1, $dates['year'] );
-			$sales    = $stats->get_sales( $form_id, $date, $date_end );
+			$date          = mktime( 0, 0, 0, $month, $day, $dates['year'] );
+			$date_end      = mktime( 0, 0, 0, $month, $day + 1, $dates['year'] );
+			$sales         = $stats->get_sales( $form_id, $date, $date_end );
 			$sales_totals += $sales;
 
-			$earnings = $stats->get_earnings( $form_id, $date, $date_end );
+			$earnings         = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
 			$sales_data[]    = array( $date * 1000, $sales );
@@ -383,10 +383,10 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 						$date     = mktime( 0, 0, 0, $i, $d, $y );
 						$end_date = mktime( 23, 59, 59, $i, $d, $y );
 
-						$sales = $stats->get_sales( $form_id, $date, $end_date );
+						$sales         = $stats->get_sales( $form_id, $date, $end_date );
 						$sales_totals += $sales;
 
-						$earnings = $stats->get_earnings( $form_id, $date, $end_date );
+						$earnings         = $stats->get_earnings( $form_id, $date, $end_date );
 						$earnings_totals += $earnings;
 
 						$sales_data[]    = array( $date * 1000, $sales );
@@ -402,10 +402,10 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 					$date     = mktime( 0, 0, 0, $i, 1, $y );
 					$end_date = mktime( 23, 59, 59, $i, $num_of_days, $y );
 
-					$sales = $stats->get_sales( $form_id, $date, $end_date );
+					$sales         = $stats->get_sales( $form_id, $date, $end_date );
 					$sales_totals += $sales;
 
-					$earnings = $stats->get_earnings( $form_id, $date, $end_date );
+					$earnings         = $stats->get_earnings( $form_id, $date, $end_date );
 					$earnings_totals += $earnings;
 
 					$sales_data[]    = array( $date * 1000, $sales );
@@ -424,17 +424,19 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	$data = array(
 		__( 'Income', 'give' )    => $earnings_data,
-		__( 'Donations', 'give' ) => $sales_data
+		__( 'Donations', 'give' ) => $sales_data,
 	);
 
 	?>
-	<h3><span><?php
+	<h3><span>
+	<?php
 			printf(
-			/* translators: %s: form title */
+				/* translators: %s: form title */
 				esc_html__( 'Income Report for %s', 'give' ),
 				get_the_title( $form_id )
 			);
-			?></span></h3>
+			?>
+			</span></h3>
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
@@ -484,19 +486,21 @@ function give_reports_graph_of_form( $form_id = 0 ) {
  * @return void
  */
 function give_reports_graph_controls() {
-	$date_options = apply_filters( 'give_report_date_options', array(
-		'today'        => __( 'Today', 'give' ),
-		'yesterday'    => __( 'Yesterday', 'give' ),
-		'this_week'    => __( 'This Week', 'give' ),
-		'last_week'    => __( 'Last Week', 'give' ),
-		'this_month'   => __( 'This Month', 'give' ),
-		'last_month'   => __( 'Last Month', 'give' ),
-		'this_quarter' => __( 'This Quarter', 'give' ),
-		'last_quarter' => __( 'Last Quarter', 'give' ),
-		'this_year'    => __( 'This Year', 'give' ),
-		'last_year'    => __( 'Last Year', 'give' ),
-		'other'        => __( 'Custom', 'give' )
-	) );
+	$date_options = apply_filters(
+		'give_report_date_options', array(
+			'today'        => __( 'Today', 'give' ),
+			'yesterday'    => __( 'Yesterday', 'give' ),
+			'this_week'    => __( 'This Week', 'give' ),
+			'last_week'    => __( 'Last Week', 'give' ),
+			'this_month'   => __( 'This Month', 'give' ),
+			'last_month'   => __( 'Last Month', 'give' ),
+			'this_quarter' => __( 'This Quarter', 'give' ),
+			'last_quarter' => __( 'Last Quarter', 'give' ),
+			'this_year'    => __( 'This Year', 'give' ),
+			'last_year'    => __( 'Last Year', 'give' ),
+			'other'        => __( 'Custom', 'give' ),
+		)
+	);
 
 	$dates   = give_get_report_dates();
 	$display = $dates['range'] == 'other' ? '' : 'display: none;';
@@ -610,7 +614,7 @@ function give_get_report_dates() {
 	// Modify dates based on predefined ranges.
 	switch ( $dates['range'] ) :
 
-		case 'this_month' :
+		case 'this_month':
 			$dates['m_start']  = date( 'n', $current_time );
 			$dates['m_end']    = date( 'n', $current_time );
 			$dates['day']      = 1;
@@ -619,7 +623,7 @@ function give_get_report_dates() {
 			$dates['year_end'] = date( 'Y' );
 			break;
 
-		case 'last_month' :
+		case 'last_month':
 			if ( date( 'n' ) == 1 ) {
 				$dates['m_start']  = 12;
 				$dates['m_end']    = 12;
@@ -633,7 +637,7 @@ function give_get_report_dates() {
 			$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
 			break;
 
-		case 'today' :
+		case 'today':
 			$dates['day']      = date( 'd', $current_time );
 			$dates['day_end']  = date( 'd', $current_time );
 			$dates['m_start']  = date( 'n', $current_time );
@@ -642,8 +646,7 @@ function give_get_report_dates() {
 			$dates['year_end'] = date( 'Y', $current_time );
 			break;
 
-		case 'yesterday' :
-
+		case 'yesterday':
 			$year  = date( 'Y', $current_time );
 			$month = date( 'n', $current_time );
 			$day   = date( 'd', $current_time );
@@ -657,7 +660,7 @@ function give_get_report_dates() {
 			} elseif ( $month > 1 && $day == 1 ) {
 
 				$month -= 1;
-				$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+				$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 			} else {
 
@@ -672,18 +675,18 @@ function give_get_report_dates() {
 			$dates['year_end'] = $year;
 			break;
 
-		case 'this_week' :
-			$dates['day'] = date( 'd', $current_time - ( date( 'w', $current_time ) - 1 ) * 60 * 60 * 24 ) - 1;
-			$dates['day'] += get_option( 'start_of_week' );
+		case 'this_week':
+			$dates['day']     = date( 'd', $current_time - ( date( 'w', $current_time ) - 1 ) * 60 * 60 * 24 ) - 1;
+			$dates['day']    += get_option( 'start_of_week' );
 			$dates['day_end'] = $dates['day'] + 6;
 			$dates['m_start'] = date( 'n', $current_time );
 			$dates['m_end']   = date( 'n', $current_time );
 			$dates['year']    = date( 'Y', $current_time );
 			break;
 
-		case 'last_week' :
-			$dates['day'] = date( 'd', $current_time - ( date( 'w' ) - 1 ) * 60 * 60 * 24 ) - 8;
-			$dates['day'] += get_option( 'start_of_week' );
+		case 'last_week':
+			$dates['day']     = date( 'd', $current_time - ( date( 'w' ) - 1 ) * 60 * 60 * 24 ) - 8;
+			$dates['day']    += get_option( 'start_of_week' );
 			$dates['day_end'] = $dates['day'] + 6;
 			$dates['year']    = date( 'Y' );
 
@@ -700,7 +703,7 @@ function give_get_report_dates() {
 			}
 			break;
 
-		case 'this_quarter' :
+		case 'this_quarter':
 			$month_now     = date( 'n', $current_time );
 			$dates['year'] = date( 'Y', $current_time );
 
@@ -709,12 +712,12 @@ function give_get_report_dates() {
 				$dates['m_start'] = 1;
 				$dates['m_end']   = 4;
 
-			} else if ( $month_now <= 6 ) {
+			} elseif ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 4;
 				$dates['m_end']   = 7;
 
-			} else if ( $month_now <= 9 ) {
+			} elseif ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 7;
 				$dates['m_end']   = 10;
@@ -728,7 +731,7 @@ function give_get_report_dates() {
 			}
 			break;
 
-		case 'last_quarter' :
+		case 'last_quarter':
 			$month_now         = date( 'n', $current_time );
 			$dates['year']     = date( 'Y', $current_time );
 			$dates['year_end'] = date( 'Y', $current_time );
@@ -739,12 +742,12 @@ function give_get_report_dates() {
 				$dates['m_end']   = 1;
 				$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year.
 
-			} else if ( $month_now <= 6 ) {
+			} elseif ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 1;
 				$dates['m_end']   = 4;
 
-			} else if ( $month_now <= 9 ) {
+			} elseif ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 4;
 				$dates['m_end']   = 7;
@@ -757,14 +760,14 @@ function give_get_report_dates() {
 			}
 			break;
 
-		case 'this_year' :
+		case 'this_year':
 			$dates['m_start']  = 1;
 			$dates['m_end']    = 12;
 			$dates['year']     = date( 'Y', $current_time );
 			$dates['year_end'] = date( 'Y', $current_time );
 			break;
 
-		case 'last_year' :
+		case 'last_year':
 			$dates['m_start']  = 1;
 			$dates['m_end']    = 12;
 			$dates['year']     = date( 'Y', $current_time ) - 1;
@@ -807,20 +810,26 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  */
 function give_reports_refresh_button() {
 
-	$url = wp_nonce_url( add_query_arg( array(
-		'give_action'  => 'refresh_reports_transients',
-		'give-messages[]' => 'refreshed-reports'
-	) ), 'give-refresh-reports' );
+	$url = wp_nonce_url(
+		add_query_arg(
+			array(
+				'give_action'     => 'refresh_reports_transients',
+				'give-messages[]' => 'refreshed-reports',
+			)
+		), 'give-refresh-reports'
+	);
 
-	echo Give()->tooltips->render_link( array(
-		'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
-		'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
-		'link'        => $url,
-		'position'    => 'left',
-		'attributes'  => array(
-			'class' => 'button alignright give-admin-button'
+	echo Give()->tooltips->render_link(
+		array(
+			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
+			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
+			'link'        => $url,
+			'position'    => 'left',
+			'attributes'  => array(
+				'class' => 'button alignright give-admin-button',
+			),
 		)
-	) );
+	);
 }
 
 add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
