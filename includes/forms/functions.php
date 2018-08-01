@@ -1337,14 +1337,14 @@ function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
 function give_get_name_title_prefixes( $form_id = 0 ) {
 
 	$name_title_prefix = give_is_name_title_prefix_enabled( $form_id );
-	$title_prefixes    = give_get_option( 'title_prefixes' );
+	$title_prefixes    = give_get_option( 'title_prefixes', give_get_default_title_prefixes() );
 
 	// If form id exists, then fetch form specific title prefixes.
 	if ( intval( $form_id ) > 0 && $name_title_prefix ) {
 
 		$form_title_prefix = give_get_meta( $form_id, '_give_name_title_prefix', true );
 		if ( 'global' !== $form_title_prefix ) {
-			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes', true );
+			$form_title_prefixes = give_get_meta( $form_id, '_give_title_prefixes', true, give_get_default_title_prefixes() );
 
 			// Check whether the form based title prefixes exists or not.
 			if ( is_array( $form_title_prefixes ) && count( $form_title_prefixes ) > 0 ) {
