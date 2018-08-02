@@ -11,6 +11,7 @@
     "watch": "cross-env webpack --watch",
     "lint": "npm run lint:js & npm run lint:scss",
     "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
+    "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
     "lint:scss": "stylelint assets/src/**/*.scss"
   },
   "repository": {
