@@ -1,7 +1,11 @@
 /**
-* Internal dependencies
+* WordPress dependencies
 */
 const { __ } = wp.i18n;
+
+/**
+* Internal dependencies
+*/
 import './scss/controls.scss';
 
 /**

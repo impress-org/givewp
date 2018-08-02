@@ -1,13 +1,13 @@
 /**
- * Block dependencies
+ * WordPress dependencies
  */
-import GiveBlankSlate from '../blank-slate/index';
+const { __ } = wp.i18n;
+const { Button } = wp.components;
 
 /**
  * Internal dependencies
  */
-const { __ } = wp.i18n;
-const { Button } = wp.components;
+import GiveBlankSlate from '../blank-slate';
 
 /**
  * Render No forms Found UI

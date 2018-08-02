@@ -1,14 +1,14 @@
 /**
-* Block dependencies
+* WordPress dependencies
 */
-import GiveHelpLink from '../help-link/index';
-import PlaceholderContainerAnimation from '../container-placeholder-animation/index';
-import './style.scss';
+const { __ } = wp.i18n;
 
 /**
 * Internal dependencies
 */
-const { __ } = wp.i18n;
+import GiveHelpLink from '../help-link';
+import PlaceholderContainerAnimation from '../container-placeholder-animation';
+import './style.scss';
 
 const GiveBlankSlate = ( props ) => {
 	const {

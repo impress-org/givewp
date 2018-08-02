@@ -1,5 +1,5 @@
 /**
- * Block dependencies
+ * Internal dependencies
  */
 import Inspector from '../inspector';
 
