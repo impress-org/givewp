@@ -23,10 +23,14 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+      "[ -f vendor/bin/phpcs ] && \"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
+      "rm -rf ./vendor/tecnickcom/tcpdf/fonts/*",
+      "cp ./assets/src/tcpdf-fonts/* ./vendor/tecnickcom/tcpdf/fonts/"
     ],
     "post-update-cmd": [
-      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+      "[ -f vendor/bin/phpcs ] && \"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
+      "rm -rf ./vendor/tecnickcom/tcpdf/fonts/*",
+      "cp ./assets/src/tcpdf-fonts/* ./vendor/tecnickcom/tcpdf/fonts/"
     ]
   }
 }
