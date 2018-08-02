@@ -6,7 +6,7 @@ Welcome to the GiveWP GitHub repository. This is the code source and the center 
  
 ## Getting Started 
 
-If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/WordImpress/Give/tree/issue/339#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
+If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/WordImpress/Give/#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
 
 ### Minimum Requirements
 

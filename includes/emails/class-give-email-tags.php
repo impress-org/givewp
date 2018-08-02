@@ -54,11 +54,20 @@ class Give_Email_Template_Tags {
 	 *
 	 * @param array $args     {
 	 *
-	 * @type string $tag      Email template tag name.
-	 * @type string $desc     Email template tag description.
-	 * @type string $func     Email template tag render function name.
-	 * @type string $context  Email template tag context.
-	 * @type bool   $is_admin Flag to check to show email template tag on email edit screen or not.
+	 * @type string $tag      Email template tag name. The name of the tag to register, such as “engraving_message” as
+	 *       in our code example below. In the Give email settings, tags are wrapped with {} but not when they are
+	 *       registered.
+	 * @type string $desc     Email template tag description. A description of what the tag displays. This is
+	 *       informational for admins so they know what to expect the tag outputs in the notification.
+	 * @type string $func     Email template tag render function name. The callback function to render the tag’s
+	 *       output.
+	 * @type string $context  Email template tag context. The emails that this tag should appear as functional
+	 *       underneath the content editor. Options include:
+	 *               donation – appears on donation related emails
+	 *               form – information related to the donation form
+	 *               donor – information related to the donor such as first name or last name.
+	 *               general – appears on all emails
+	 * @type bool   $is_admin Flag to check to show email template tag on email edit screen or not. Whether this tag should only be available to admins. Usually reserved for tags with sensitive information. Default is false.
 	 *
 	 * }
 	 */
@@ -105,7 +114,7 @@ class Give_Email_Template_Tags {
 	 * Returns a list of all email tags
 	 *
 	 * @since 1.0
-	 * @since 2.0 Add $context_type param to get specific  contect email tags.
+	 * @since 2.0 Add $context_type param to get specific context email tags.
 	 *
 	 * @param string $context_type
 	 * @param string $field
@@ -155,7 +164,7 @@ class Give_Email_Template_Tags {
 
 		$this->tag_args = $tag_args;
 
-		$new_content = preg_replace_callback( "/{([A-z0-9\-\_]+)}/s", array( $this, 'do_tag' ), $content );
+		$new_content = preg_replace_callback( '/{([A-z0-9\-\_]+)}/s', array( $this, 'do_tag' ), $content );
 
 		$this->tag_args = null;
 
@@ -257,7 +266,8 @@ function give_get_emails_tags_list() {
 				</span>
 			<?php endforeach; ?>
 		</div>
-	<?php endif;
+	<?php
+	endif;
 
 	// Return the list.
 	return ob_get_clean();
@@ -465,10 +475,10 @@ function give_setup_email_tags() {
 		),
 
 		array(
-			'tag'      => 'site_url',
-			'desc'     => esc_html__( 'The website URL.', 'give' ),
-			'func'     => 'give_email_site_url',
-			'context'  => 'general',
+			'tag'     => 'site_url',
+			'desc'    => esc_html__( 'The website URL.', 'give' ),
+			'func'    => 'give_email_site_url',
+			'context' => 'general',
 		),
 
 		array(
@@ -775,7 +785,7 @@ function give_email_tag_date( $tag_args ) {
 	 * @since 2.0
 	 *
 	 * @param string $date
-	 * @param array $tag_args
+	 * @param array  $tag_args
 	 */
 	$date = apply_filters( 'give_email_tag_date', $date, $tag_args );
 
@@ -917,7 +927,7 @@ function give_email_tag_donation( $tag_args ) {
 				give_check_variable(
 					give_get_donation_form_title(
 						$tag_args['payment_id'],
-						array( 'separator' => $separator, )
+						array( 'separator' => $separator )
 					),
 					'empty',
 					''
@@ -1142,10 +1152,13 @@ function give_email_tag_receipt_link( $tag_args ) {
 		return $receipt_url;
 	}
 
-
-	$receipt_url = esc_url( add_query_arg( array(
-		'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
-	), give_get_history_page_uri() ) );
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
+			), give_get_history_page_uri()
+		)
+	);
 
 	$formatted = sprintf(
 		'<a href="%1$s">%2$s</a>',
@@ -1214,9 +1227,13 @@ function give_get_receipt_url( $payment_id ) {
 	$receipt_url = '';
 
 	if ( $payment_id ) {
-		$receipt_url = esc_url( add_query_arg( array(
-			'payment_key' => give_get_payment_key( $payment_id ),
-		), give_get_history_page_uri() ) );
+		$receipt_url = esc_url(
+			add_query_arg(
+				array(
+					'payment_key' => give_get_payment_key( $payment_id ),
+				), give_get_history_page_uri()
+			)
+		);
 	}
 
 	return $receipt_url;
@@ -1468,11 +1485,15 @@ function give_get_reset_password_url( $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		// Prepare Reset Password URL.
-		$reset_password_url = esc_url( add_query_arg( array(
-			'action' => 'rp',
-			'key'    => get_password_reset_key( $user ),
-			'login'  => $user->user_login,
-		), wp_login_url() ) );
+		$reset_password_url = esc_url(
+			add_query_arg(
+				array(
+					'action' => 'rp',
+					'key'    => get_password_reset_key( $user ),
+					'login'  => $user->user_login,
+				), wp_login_url()
+			)
+		);
 	}
 
 	return $reset_password_url;
@@ -1540,7 +1561,7 @@ function give_email_offline_mailing_address() {
  * @return mixed
  */
 function __give_render_metadata_email_tag( $content, $tag_args ) {
-	preg_match_all( "/{meta_([A-z0-9\-\_\ ]+)}/s", $content, $matches );
+	preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
 
 	if ( ! empty( $matches[0] ) ) {
 		$search = $replace = array();
@@ -1561,8 +1582,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 
 			switch ( $type ) {
 				case 'donation':
-
-					//Bailout.
+					// Bailout.
 					if ( ! isset( $tag_args['payment_id'] ) ) {
 						$replace[] = '';
 						continue;
@@ -1608,7 +1628,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 
 					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
 
-					if( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
+					if ( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
 						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
 					}
 
@@ -1629,7 +1649,6 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 			$content = str_replace( $search, $replace, $content );
 		}
 	}
-
 
 	return $content;
 }

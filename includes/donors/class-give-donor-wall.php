@@ -152,7 +152,7 @@ class Give_Donor_Wall {
 
 		$html = $html
 			? sprintf(
-				'<div class="give-wrap"><div class="give-grid give-grid--%1$s">%2$s</div>%3$s</div>',
+				'<div class="give-wrap give-grid-ie-utility"><div class="give-grid give-grid--%1$s">%2$s</div>%3$s</div>',
 				esc_attr( $atts['columns'] ),
 				$html,
 				$more_btn_html

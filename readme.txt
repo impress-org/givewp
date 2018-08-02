@@ -208,17 +208,17 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.2.1: July 31st, 2018 =
+= 2.2.1: August 1st, 2018 =
+* Fix: Resolve an issue with the donor wall displaying incorrect amounts when a donor has given multiple times. [#3532](https://github.com/wordimpress/give/issues/3532)
+* Fix: Confirm system generated notes insert as comments for donations and aren't blocked by WP's spam protections. [#3537](https://github.com/wordimpress/give/issues/3537)
+* Fix: Render settings textarea field type within a div instead of a p tag for better compatibility with tabs.
 * Fix: Updating donor information does not update display on donations admin page. [#2985](https://github.com/wordimpress/give/issues/2985)
-* Fix: pass widget arguments to action hook [#3245](https://github.com/wordimpress/give/issues/3245)
-* Fix: Extend emails functionality to support admin context. [#3516](https://github.com/wordimpress/give/issues/3516)
-* Fix: Donors display incorrect amounts when giving multiple times [#3532](https://github.com/wordimpress/give/issues/3532)
-* Fix: Confirm every system generated note will insert as comment for donation [#3537](https://github.com/wordimpress/give/issues/3537)
-* Fix: Deleting all data doesn't remove form categories or tags [3145](https://github.com/wordimpress/give/issues/3145)
-* Fix: Don't block login form after first failed login [3423](https://github.com/wordimpress/give/issues/3423)
-* Tweak: Use send_preview_email function to setup email data for preview email [#3517](https://github.com/wordimpress/give/issues/3517)
-* Tweak: Increase donors table email column length. [#3525](https://github.com/wordimpress/give/issues/3525)
-
+* Fix: Pass widget arguments to action hook for developers to more easily extend. [#3245](https://github.com/wordimpress/give/issues/3245)
+* Fix: Extend email notification functionality to support admin context. [#3516](https://github.com/wordimpress/give/issues/3516)
+* Fix: Deleting all data doesn't remove form categories or tags. [3145](https://github.com/wordimpress/give/issues/3145)
+* Fix: Don't block login form after first failed login. [3423](https://github.com/wordimpress/give/issues/3423)
+* Tweak: Use send_preview_email function to setup email data for previewing emails. [#3517](https://github.com/wordimpress/give/issues/3517)
+* Tweak: Increase donors table email column length to support longer emails. [#3525](https://github.com/wordimpress/give/issues/3525)
 
 = 2.2.0: July 30th, 2018 =
 * Important: This release requires a number of updates to our add-ons for full compatiblity due to the optimization of how we handle donor session data and additional refactoring of the database schema. Please ensure you update all your add-ons after updating for full compatibility. If you have any issues with the update feel free to reach out to our support. [GiveWP Plugin Support](https://givewp.com/support/)
@@ -254,7 +254,6 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Resolved modal background scrolling on iOS. [#3424](https://github.com/wordimpress/give/issues/3424)
 * Fix: When activating an add-on from the Give menu within the plugin page it incorrectly redirected the admin back to the All menu tab. [#3438](https://github.com/wordimpress/give/issues/3438)
 * Fix: Format dates to WordPress `date_format` in the donation admin screens. [#3502](https://github.com/wordimpress/give/issues/3502)
-
 
 = 2.1.7: July 5th, 2018 =
 * Fix: We have moved "babel-polyfill" to Give Core for better browser compatibility so our various add-ons can use it and it's not enqueued multiple times which can cause errors. [#3433](https://github.com/WordImpress/Give/issues/3433)
