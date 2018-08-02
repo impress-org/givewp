@@ -1,15 +1,15 @@
 /**
- * Block dependencies
+ * WordPress dependencies
  */
-import blockAttributes from './data/attributes';
-import giveLogo from './data/icon';
-import GiveDonationFormGrid from './edit/block';
+const { __ } = wp.i18n;
+const { registerBlockType } = wp.blocks;
 
 /**
  * Internal dependencies
  */
-const { __ } = wp.i18n,
-	{ registerBlockType } = wp.blocks;
+import blockAttributes from './data/attributes';
+import giveLogo from './data/icon';
+import GiveDonationFormGrid from './edit/block';
 
 /**
  * Register Block

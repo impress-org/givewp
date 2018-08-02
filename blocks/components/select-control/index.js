@@ -1,10 +1,14 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-const { BaseControl } = wp.components,
-	{ withInstanceId } = wp.compose,
-	{ Component } = wp.element,
-	{ isEmpty } = _;
+import { isEmpty } from 'lodash';
+
+/**
+ * WordPress dependencies
+ */
+const { BaseControl } = wp.components;
+const { withInstanceId } = wp.compose;
+const { Component } = wp.element;
 
 class GiveSelectControl extends Component {
 	constructor( props ) {
