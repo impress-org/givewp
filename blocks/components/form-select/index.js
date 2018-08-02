@@ -1,19 +1,23 @@
 /**
- * Block dependencies
+ * External dependencies
  */
-import GiveBlankSlate from '../blank-slate/index';
 import { isUndefined } from 'lodash';
+
+/**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+const { SelectControl, Button } = wp.components;
 
 /**
  * Internal dependencies
  */
-const { __ } = wp.i18n;
-const { SelectControl, Button } = wp.components;
-const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
+import GiveBlankSlate from '../blank-slate';
 
 /**
  * Render form select UI
  */
+const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
 
 const FormSelect = ( props ) => {
 	// Event(s)

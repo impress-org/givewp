@@ -1,18 +1,18 @@
 /**
- * Block dependencies
- */
-import GiveTextControl from '../../components/text-control/index';
-import GiveToggleControl from '../../components/toggle-control/index';
-import GiveSelectControl from '../../components/select-control/index';
-import giveFormOptions from '../data/options';
-
-/**
- * Internal dependencies
+ * Wordpress dependencies
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
 const { PanelBody } = wp.components;
 const { Component } = wp.element;
+
+/**
+ * Internal dependencies
+ */
+import GiveTextControl from '../../components/text-control';
+import GiveToggleControl from '../../components/toggle-control';
+import GiveSelectControl from '../../components/select-control';
+import giveFormOptions from '../data/options';
 
 /**
  * Render Inspector Controls
