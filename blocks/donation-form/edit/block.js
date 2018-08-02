@@ -1,9 +1,7 @@
 /**
  * Block dependencies
  */
-import isEmpty from 'lodash.isempty';
-import pickBy from 'lodash.pickby';
-import isUndefined from 'lodash.isundefined';
+import { isEmpty, pickBy, isUndefined } from 'lodash';
 import GiveBlankSlate from '../../components/blank-slate/index';
 import NoForms from '../../components/no-form/index';
 import EditForm from '../../components/edit-form/index';
