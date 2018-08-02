@@ -12,8 +12,6 @@
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
 	if( Give.form.fn.isFormExist() ) {
-		console.log('form exist');
-
 		// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
 		const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + give_global_vars.cookie_hash ) && '1' !== give_global_vars.delete_session_nonce_cookie;
 
