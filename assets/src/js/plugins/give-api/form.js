@@ -370,6 +370,11 @@ export default {
 					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
 				},
 				function( response ) {
+					// Process only if get response successfully.
+					if( ! response.success ) {
+						return;
+					}
+
 					const createUserNonceField = $form.find( 'input[name="give-form-user-register-hash"]' );
 
 					// Update nonce field.
@@ -390,7 +395,9 @@ export default {
 					 */
 					jQuery(document).trigger( 'give_reset_all_nonce', [response.data] );
 				}
-			);
+			).done(function(){
+				Give.form.fn.disable( $form, false );
+			});
 		},
 
 		/**
