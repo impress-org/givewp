@@ -5,7 +5,7 @@
 const blockAttributes = {
 	columns: {
 		type: 'string',
-		default:'4',
+		default: '4',
 	},
 	showExcerpt: {
 		type: 'boolean',
@@ -22,7 +22,7 @@ const blockAttributes = {
 	displayType: {
 		type: 'string',
 		default: 'redirect',
-	}
+	},
 };
 
 export default blockAttributes;
