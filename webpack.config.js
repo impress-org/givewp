@@ -1,19 +1,21 @@
+const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const path = require( 'path' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
-const inProduction = ('production' === process.env.NODE_ENV);
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const wpPot = require( 'wp-pot' );
 
+const inProduction = ( 'production' === process.env.NODE_ENV );
+
 const config = {
 	// Ensure modules like magnific know jQuery is external (loaded via WP).
 	externals: {
 		$: 'jQuery',
-		jquery: 'jQuery'
+		jquery: 'jQuery',
+		lodash: 'lodash',
 	},
 	devtool: 'source-map',
 	module: {
@@ -24,20 +26,20 @@ const config = {
 				test: /\.js$/,
 				exclude: /node_modules/,
 				loaders: [
-					'babel-loader'
-				]
+					'babel-loader',
+				],
 			},
 
 			// Expose accounting.js for plugin usage.
 			{
 				test: require.resolve( 'accounting' ),
-				loader: 'expose-loader?accounting'
+				loader: 'expose-loader?accounting',
 			},
 
 			// Create RTL styles.
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract( 'style-loader' )
+				loader: ExtractTextPlugin.extract( 'style-loader' ),
 			},
 
 			// SASS to CSS.
@@ -47,21 +49,21 @@ const config = {
 					use: [ {
 						loader: 'css-loader',
 						options: {
-							sourceMap: true
-						}
+							sourceMap: true,
+						},
 					}, {
 						loader: 'postcss-loader',
 						options: {
-							sourceMap: true
-						}
+							sourceMap: true,
+						},
 					}, {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							outputStyle: (inProduction ? 'compressed' : 'nested')
-						}
-					} ]
-				} )
+							outputStyle: ( inProduction ? 'compressed' : 'nested' ),
+						},
+					} ],
+				} ),
 			},
 
 			// Font files.
@@ -72,10 +74,10 @@ const config = {
 						loader: 'file-loader',
 						options: {
 							name: 'fonts/[name].[ext]',
-							publicPath: '../'
-						}
-					}
-				]
+							publicPath: '../',
+						},
+					},
+				],
 			},
 
 			// Image files.
@@ -86,12 +88,12 @@ const config = {
 						loader: 'file-loader',
 						options: {
 							name: 'images/[name].[ext]',
-							publicPath: '../'
-						}
-					}
-				]
-			}
-		]
+							publicPath: '../',
+						},
+					},
+				],
+			},
+		],
 	},
 
 	// Plugins. Gotta have em'.
@@ -115,20 +117,20 @@ const config = {
 		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
 		new BrowserSyncPlugin( {
 			files: [
-				'**/*.php'
+				'**/*.php',
 			],
 			host: 'localhost',
 			port: 3000,
-			proxy: 'give.test'
-		} )
-	]
+			proxy: 'give.test',
+		} ),
+	],
 };
 
 module.exports = [
-	Object.assign({
+	Object.assign( {
 		entry: {
-			'give': ['./assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js'],
-			'admin': ['./assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js'],
+			give: [ './assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js' ],
+			admin: [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
 		},
 		output: {
 			path: path.join( __dirname, './assets/dist/' ),
@@ -136,27 +138,26 @@ module.exports = [
 			library: 'Give',
 			libraryTarget: 'umd',
 		},
-	}, config),
-	Object.assign({
+	}, config ),
+	Object.assign( {
 		entry: {
 			'babel-polyfill': 'babel-polyfill',
-			'gutenberg': './blocks/load.js',
+			gutenberg: './blocks/load.js',
 			'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
 			'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
-			'plugin-deactivation-survey': ['./assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js'],
+			'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		},
 
 		// Tell webpack where to output.
 		output: {
 			path: path.resolve( __dirname, './assets/dist/' ),
-			filename: 'js/[name].js'
+			filename: 'js/[name].js',
 		},
-	}, config)
+	}, config ),
 ];
 
 // inProd?
 if ( inProduction ) {
-
 	// POT file.
 	wpPot( {
 		package: 'Give',
@@ -164,7 +165,7 @@ if ( inProduction ) {
 		destFile: 'languages/give.pot',
 		relativeTo: './',
 		bugReport: 'https://github.com/WordImpress/Give/issues/new',
-		team: 'WordImpress <info@wordimpress.com>'
+		team: 'WordImpress <info@wordimpress.com>',
 	} );
 
 	// Uglify JS.
