@@ -1,12 +1,12 @@
 /**
  * Internal dependencies
  */
-const {BaseControl, FormToggle} = wp.components,
-	{withInstanceId} = wp.compose,
-	{Component} = wp.element;
+const { BaseControl, FormToggle } = wp.components,
+	{ withInstanceId } = wp.compose,
+	{ Component } = wp.element;
 
 class GiveToggleControl extends Component {
-	constructor(props) {
+	constructor( props ) {
 		super( ...props );
 
 		this.onChange = this.onChange.bind( this );
@@ -14,7 +14,7 @@ class GiveToggleControl extends Component {
 
 	onChange( event ) {
 		if ( this.props.onChange ) {
-			this.props.onChange(event);
+			this.props.onChange( event );
 		}
 	}
 

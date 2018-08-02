@@ -1,29 +1,28 @@
 /**
  * Internal dependencies
  */
-const {BaseControl} = wp.components,
-	{withInstanceId} = wp.compose,
-	{Component} = wp.element,
-	{isEmpty} = _;
+const { BaseControl } = wp.components,
+	{ withInstanceId } = wp.compose,
+	{ Component } = wp.element,
+	{ isEmpty } = _;
 
-class GiveSelectControl extends Component{
-	constructor(props){
-		super(props);
+class GiveSelectControl extends Component {
+	constructor( props ) {
+		super( props );
 
 		this.onChangeHandler = this.onChangeHandler.bind( this );
 	}
 
-	onChangeHandler(event){
+	onChangeHandler( event ) {
 		if ( this.props.onChange ) {
-			this.props.onChange(event);
+			this.props.onChange( event );
 		}
 	}
 
-
 	// Disable reason: A select with an onchange throws a warning
 
-	render(){
-		const {label, help, instanceId, options = [], name, ...props } = this.props;
+	render() {
+		const { label, help, instanceId, options = [], name, ...props } = this.props;
 		const id = `give-inspector-select-control-${ instanceId }`;
 
 		/* eslint-disable jsx-a11y/no-onchange */
@@ -35,7 +34,7 @@ class GiveSelectControl extends Component{
 					className="blocks-select-control__input"
 					onChange={ this.onChangeHandler }
 					aria-describedby={ !! help ? id + '__help' : undefined }
-					{...props}
+					{ ...props }
 				>
 					{ options.map( ( option ) =>
 						<option

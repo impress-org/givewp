@@ -14,7 +14,7 @@ const { Component } = wp.element;
  */
 
 class FormPreview extends Component {
-	render(){
+	render() {
 		return (
 			<div id="donation-form-preview-block">
 				{ !! this.props.isSelected && <Inspector { ... { ...this.props } } /> }
@@ -23,6 +23,6 @@ class FormPreview extends Component {
 			</div>
 		);
 	}
-};
+}
 
 export default FormPreview;

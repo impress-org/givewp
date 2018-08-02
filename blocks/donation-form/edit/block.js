@@ -9,7 +9,7 @@ import NoForms from '../../components/no-form/index';
 import EditForm from '../../components/edit-form/index';
 import FormPreview from './form/preview';
 import FormSelect from '../../components/form-select/index';
-import {stringify} from "querystringify";
+import { stringify } from 'querystringify';
 
 /**
  * Internal dependencies
@@ -25,7 +25,7 @@ const { Component } = wp.element;
  * @extends {Component}
  */
 class GiveForm extends Component {
-	constructor(props) {
+	constructor( props ) {
 		super( ...props );
 	}
 
@@ -36,36 +36,34 @@ class GiveForm extends Component {
 	 * @memberof GiveForm
 	 */
 	render() {
-		const props       = this.props,
-			  attributes  = props.attributes,
-			  {isLoading} = props.form;
+		const props = this.props,
+			attributes = props.attributes,
+			{ isLoading } = props.form;
 
 		// Render block UI
 		let blockUI;
 
-		if (!attributes.id) {
-			if (isLoading || isUndefined(props.form.data)) {
-				blockUI = <GiveBlankSlate title={__('Loading...')} isLoader={true}/>;
-			} else if (isEmpty(props.form.data)) {
-				blockUI = <NoForms/>;
+		if ( ! attributes.id ) {
+			if ( isLoading || isUndefined( props.form.data ) ) {
+				blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
+			} else if ( isEmpty( props.form.data ) ) {
+				blockUI = <NoForms />;
 			} else {
-				blockUI = <FormSelect {... {...props}} />;
+				blockUI = <FormSelect { ... { ...props } } />;
 			}
+		} else if ( isEmpty( props.form.data ) ) {
+			blockUI = isLoading ?
+				<GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } /> :
+				<EditForm formId={ attributes.id } { ... { ...props } } />;
 		} else {
-			if (isEmpty(props.form.data)) {
-				blockUI = isLoading ?
-					<GiveBlankSlate title={__('Loading...')} isLoader={true}/> :
-					<EditForm formId={attributes.id} {... {...props}}/>;
-			} else {
-				blockUI = <FormPreview
-					html={props.form.data}
-					{... {...props}} />;
-			}
+			blockUI = <FormPreview
+				html={ props.form.data }
+				{ ... { ...props } } />;
 		}
 
 		return (
-			<div className={!!props.isSelected ? `${props.className} isSelected` : props.className} key="GiveBlockUI">
-				{blockUI}
+			<div className={ !! props.isSelected ? `${ props.className } isSelected` : props.className } key="GiveBlockUI">
+				{ blockUI }
 			</div>
 		);
 	}
@@ -74,24 +72,24 @@ class GiveForm extends Component {
 /**
  * Export component attaching withAPIdata
  */
-export default withAPIData((props) => {
-	const {showTitle, showGoal, showContent, displayStyle, continueButtonTitle, id } = props.attributes;
+export default withAPIData( ( props ) => {
+	const { showTitle, showGoal, showContent, displayStyle, continueButtonTitle, id } = props.attributes;
 
 	let parameters = {
 		show_title: showTitle,
 		show_goal: showGoal,
 		show_content: showContent,
-		display_style: displayStyle
+		display_style: displayStyle,
 	};
 
-	if ('reveal' === displayStyle) {
+	if ( 'reveal' === displayStyle ) {
 		parameters.continue_button_title = continueButtonTitle;
 	}
 
-	parameters = stringify(pickBy(parameters, value => !isUndefined(value)));
+	parameters = stringify( pickBy( parameters, value => ! isUndefined( value ) ) );
 
 	return {
-		form: `/${giveApiSettings.rest_base}/form/${ id }/?${ parameters }`,
+		form: `/${ giveApiSettings.rest_base }/form/${ id }/?${ parameters }`,
 		forms: '/wp/v2/give_forms',
 	};
-})(GiveForm);
+} )( GiveForm );
