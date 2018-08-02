@@ -121,6 +121,8 @@ function __give_donation_form_reset_all_nonce() {
 		// Send nonce json data.
 		wp_send_json_success( $data );
 	}
+
+	wp_send_json_error();
 }
 
 add_action( 'wp_ajax_give_donation_form_reset_all_nonce', '__give_donation_form_reset_all_nonce' );
