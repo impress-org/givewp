@@ -1,18 +1,22 @@
 /**
- * Block dependencies
+ * External dependencies
  */
 import { isEmpty, pickBy, isUndefined } from 'lodash';
-import GiveBlankSlate from '../../components/blank-slate/index';
-import NoForms from '../../components/no-form/index';
-import FormGridPreview from './components/preview';
 import { stringify } from 'querystringify';
+
+/**
+ * Wordpress dependencies
+ */
+const { __ } = wp.i18n;
+const { withAPIData } = wp.components;
+const { Component } = wp.element;
 
 /**
  * Internal dependencies
  */
-const { __ } = wp.i18n,
-	{ withAPIData } = wp.components,
-	{ Component } = wp.element;
+import GiveBlankSlate from '../../components/blank-slate';
+import NoForms from '../../components/no-form';
+import FormGridPreview from './components/preview';
 
 /**
  * Render Block UI For Editor

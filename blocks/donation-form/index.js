@@ -1,16 +1,16 @@
 /**
- * Block dependencies
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+const { registerBlockType } = wp.blocks;
+
+/**
+ * Internal dependencies
  */
 import './style.scss';
 import giveLogo from './data/icon';
 import blockAttributes from './data/attributes';
 import GiveForm from './edit/block';
-
-/**
- * Internal dependencies
- */
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
 
 /**
  * Register Block

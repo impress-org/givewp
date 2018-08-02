@@ -1,13 +1,13 @@
 /**
- * Block dependencies
-*/
-import Inspector from '../inspector';
-import Controls from '../controls';
+ * WordPress dependencies
+ */
+const { Component } = wp.element;
 
 /**
  * Internal dependencies
- */
-const { Component } = wp.element;
+*/
+import Inspector from '../inspector';
+import Controls from '../controls';
 
 /**
  * Render Form Preview
