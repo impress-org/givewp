@@ -17,8 +17,8 @@ class FormPreview extends Component {
 	render() {
 		return (
 			<div id="donation-form-preview-block">
-				{ !! this.props.isSelected && <Inspector { ... { ...this.props } } /> }
-				{ !! this.props.isSelected && <Controls { ... { ...this.props } } /> }
+				<Inspector { ... { ...this.props } } />
+				<Controls { ... { ...this.props } } />
 				<div dangerouslySetInnerHTML={ { __html: this.props.html } }></div>
 			</div>
 		);
