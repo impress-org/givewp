@@ -178,12 +178,17 @@ if ( inProduction ) {
 			// dry: true, // Uncomment to make a dry run to see what files are deleted.
 			verbose: true,
 			exclude: [
-				'helvetica.php',
-				'pdfahelvetica.php',
-				'pdfahelvetica.z',
+				'CODE2000.TTF',
+				'code2000.ctg.z',
+				'code2000.php',
+				'code2000.z',
+				'code2000.z.cpgz',
 				'dejavusans.php',
 				'dejavusans.z',
 				'dejavusans.ctg.z',
+				'helvetica.php',
+				'pdfahelvetica.php',
+				'pdfahelvetica.z',
 			],
 		}
 	);
@@ -208,6 +213,9 @@ if ( inProduction ) {
 				'dejavusans.php',
 				'dejavusans.z',
 				'helvetica.php',
+				'helveticab.php',
+				'helveticabi.php',
+				'helveticai.php',
 			],
 		}
 	);
