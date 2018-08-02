@@ -463,7 +463,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 			} else {
 				// Load autoloader.
-				require_once GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/tcpdf.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/tcpdf/tcpdf.php';
 			}
 
 			/**

@@ -57,14 +57,21 @@ function give_generate_pdf( $data ) {
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
 	$custom_font  = 'dejavusans';
 	$font_style   = '';
+	$font_path    = '';
+
+	if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+		$font_path = GIVE_PLUGIN_DIR . '/vendor/tecnickcom/tcpdf/fonts/CODE2000.TTF';
+	} else {
+		$font_path = GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF';
+	}
 
 	if (
-		file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF' ) &&
+		file_exists( $font_path ) &&
 
 		// RIAL exist for backward compatibility.
 		in_array( give_get_currency(), array( 'RIAL', 'RUB', 'IRR' ) )
 	) {
-		TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
+		TCPDF_FONTS::addTTFfont( $font_path, '' );
 		$custom_font = 'CODE2000';
 		$font_style  = 'B';
 	}
