@@ -2,12 +2,13 @@
 * Internal dependencies
 */
 const { __ } = wp.i18n;
-const {	BlockControls } = wp.blocks;
 import './scss/controls.scss';
-
 
 /**
  * Render Block Controls
+ *
+ * @param {object} props component props
+ * @returns {object} JSX Object
 */
 const Controls = ( props ) => {
 	// Event(s)
@@ -33,6 +34,7 @@ const Controls = ( props ) => {
 					className="control-button edit-form"
 					href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
 					target="_blank"
+					rel="noopener noreferrer"
 					tooltip={ __( 'Edit donation form' ) }
 				>
 					<div>
