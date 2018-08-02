@@ -531,7 +531,7 @@ class Give_Scripts {
 		wp_enqueue_style(
 			'give-blocks-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			array( 'wp-blocks' ),
+			array( ),
 			GIVE_VERSION
 		);
 
