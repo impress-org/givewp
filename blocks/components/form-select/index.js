@@ -2,7 +2,7 @@
  * Block dependencies
  */
 import GiveBlankSlate from '../blank-slate/index';
-import isUndefined from 'lodash.isundefined';
+import { isUndefined } from 'lodash';
 
 /**
  * Internal dependencies
