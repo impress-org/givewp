@@ -11,6 +11,17 @@ export default {
 	fn: {
 
 		/**
+		 * Check if donation form exist on page or not
+		 *
+		 * @since 2.2.2
+		 *
+		 * @return {boolean}
+		 */
+		isFormExist: function(){
+			return !! document.getElementsByName('give-form-hash').length;
+		},
+
+		/**
 		 * Disable donation form.
 		 *
 		 * @param {object} $form
