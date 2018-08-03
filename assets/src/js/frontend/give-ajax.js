@@ -10,35 +10,38 @@
 
 /* global jQuery, give_global_vars, Give */
 jQuery( document ).ready( function( $ ) {
-	// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
-	const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + give_global_vars.cookie_hash ) && '1' !== give_global_vars.delete_session_nonce_cookie;
+	// Reset nonce only if form exists.
+	if( Give.form.fn.isFormExist() ) {
+		// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
+		const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + give_global_vars.cookie_hash ) && '1' !== give_global_vars.delete_session_nonce_cookie;
 
-	//Hide loading elements
-	$( '.give-loading-text' ).hide();
+		//Hide loading elements
+		$( '.give-loading-text' ).hide();
 
-	// Update and invalidate cached nonce.
-	$('.give-form').each(function (index, $form) {
-		$form = jQuery($form);
+		// Update and invalidate cached nonce.
+		$('.give-form').each(function (index, $form) {
+			$form = jQuery($form);
 
-		// Reset nonce if session started and page loaded from html cache.
-		if( resetNonce ) {
-			Give.form.fn.resetAllNonce($form);
-		}
+			// Reset nonce if session started and page loaded from html cache.
+			if( resetNonce ) {
+				Give.form.fn.resetAllNonce($form);
+			}
 
-		const $nonceField = jQuery('input[name="give-form-hash"]', $form),
-			nonceTime = ( parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life') ) ) * 1000,
-			currentTime = Date.now();
+			const $nonceField = jQuery('input[name="give-form-hash"]', $form),
+				  nonceTime = ( parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life') ) ) * 1000,
+				  currentTime = Date.now();
 
-		// We need time in ms.
-		let timeDiff = nonceTime - currentTime;
+			// We need time in ms.
+			let timeDiff = nonceTime - currentTime;
 
-		timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
+			timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
 
-		// Update nonce in background.
-		window.setTimeout(function () {
-			Give.form.fn.resetAllNonce($form);
-		}, timeDiff);
-	});
+			// Update nonce in background.
+			window.setTimeout(function () {
+				Give.form.fn.resetAllNonce($form);
+			}, timeDiff);
+		});
+	}
 
 	// Show the login form in the checkout when the user clicks the "Login" link
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
