@@ -208,7 +208,7 @@ var give_setting_edit = false;
 
 					// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
 					if (
-						val.length <= 3 ||
+						( val.length > 0 && val.length <= 3 ) ||
 						!search_type.length ||
 						(
 							(9 === lastKey) || // Tab.
@@ -267,10 +267,13 @@ var give_setting_edit = false;
 
 									if (data.length) {
 										$.each(data, function (key, item) {
-
 											// Add any option that doesn't already exist.
 											if (!$('option[value="' + item.id + '"]', select).length) {
-												select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+												if ( 0 === val.length ) {
+													select.append(`<option value="${item.id}">${item.name}</option>`);
+												} else {
+													select.prepend(`<option value="${item.id}">${item.name}</option>`);
+												}
 											}
 										});
 
