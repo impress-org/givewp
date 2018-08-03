@@ -8285,7 +8285,7 @@ msgstr ""
 msgid "Override the display content setting for this Give form."
 msgstr ""
 
-#: includes/gateways/actions.php:137
+#: includes/gateways/actions.php:139
 msgid "You must enable a payment gateway to use Give."
 msgstr ""
 
