@@ -210,6 +210,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 = 2.2.2: August 2nd, 2018 =
 * Fix: Fixed email access issue with the donation history page preventing donors from using the submit button once they entered their email. [#3553](https://github.com/wordimpress/give/issues/3553)
+* Fix: Resolved PHP notices when accessing donation history via email in PHP version 7.2. [#3565](https://github.com/wordimpress/give/issues/3565)
 
 = 2.2.1: August 1st, 2018 =
 * Fix: Resolve an issue with the donor wall displaying incorrect amounts when a donor has given multiple times. [#3532](https://github.com/wordimpress/give/issues/3532)
