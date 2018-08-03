@@ -195,10 +195,11 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @description: Process the donation submit
 	 */
-	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
+	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function ( e ) {
 
 		//this form object
-		var this_form = $( this ).parents( 'form.give-form' );
+		var $this = $( this );
+		var this_form = $this.parents( 'form.give-form' );
 
 		//loading animation
 		var loading_animation = this_form.find( 'input[type="submit"].give-submit + .give-loading-animation' );
@@ -214,7 +215,9 @@ jQuery( document ).ready( function( $ ) {
 			loading_animation.fadeOut();
 
 			//Check for Safari (doesn't support HTML5 required)
-			if ( (navigator.userAgent.indexOf( 'Safari' ) != - 1 && navigator.userAgent.indexOf( 'Chrome' ) == - 1) === false ) {
+			if ( (
+				     navigator.userAgent.indexOf( 'Safari' ) != - 1 && navigator.userAgent.indexOf( 'Chrome' ) == - 1
+			     ) === false ) {
 				//Not safari: Support HTML5 "required" so skip the rest of this function
 				return;
 			}
@@ -234,7 +237,7 @@ jQuery( document ).ready( function( $ ) {
 		Give.form.fn.disable( this_form, true );
 
 		//Submit form via AJAX
-		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_donation&give_ajax=true', function( data ) {
+		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_donation&give_ajax=true', function ( data ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
@@ -245,7 +248,7 @@ jQuery( document ).ready( function( $ ) {
 				this_form.trigger( 'give_form_validation_passed' );
 			} else {
 				//There was an error / remove old errors and prepend new ones
-				this_form.find( 'input[type="submit"].give-submit' ).val( complete_purchase_val );
+				$this.val( complete_purchase_val );
 				loading_animation.fadeOut();
 				this_form.find( '.give_errors' ).remove();
 				this_form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( data );
