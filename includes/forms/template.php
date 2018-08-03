@@ -1411,7 +1411,7 @@ function give_get_login_fields( $form_id ) {
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		// do_action( 'give_checkout_login_fields_before', $form_id );
+		do_action( 'give_checkout_login_fields_before', $form_id );
 		?>
 		<div class="give-user-login-fields-container">
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
