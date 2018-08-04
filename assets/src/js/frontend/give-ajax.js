@@ -265,16 +265,17 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	const recieptContainer = document.getElementById('give-receipt');
 
-	if(recieptContainer){
+	if (recieptContainer) {
 		$.ajax({
 			url: give_global_vars.ajax_vars.ajaxurl,
-			method: 'POST',
+			method: 'GET',
 			data: {
 				action: 'get_receipt',
-				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
+				shortcode_atts: recieptContainer.getAttribute('data-shortcode'),
+				payment_key: recieptContainer.getAttribute('data-donation-key')
 			},
-			success: function(response){
-				recieptContainer.innerHTML =  response ;
+			success: function (response) {
+				recieptContainer.innerHTML = response;
 			}
 		});
 	}
