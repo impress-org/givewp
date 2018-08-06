@@ -66,9 +66,8 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price = accounting.unformat( price, '.' ).toString();
-
-				let decimal_amount = '',
+				let actual_price = accounting.unformat( price, '.' ).toString(),
+					decimal_amount = '',
 					result,
 					amount,
 					decimal_index = actual_price.indexOf( '.' );
