@@ -65,18 +65,29 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price    = parseFloat( price ).toFixed( format_args.precision ),
-				    afterPoint      = '',
-				    lastThree       = '',
-				    otherNumbers    = '',
-				    result          = '',
-				    lastDotPosition = '';
+				let actual_price = accounting.unformat( price, '.' ).toString();
 
-				actual_price = accounting.unformat( actual_price, '.' ).toString();
-			    actual_price = actual_price.toString();
+				let decimal_amount = '',
+					result,
+					amount,
+					decimal_index = actual_price.indexOf( '.' );
 
-				if ( actual_price.indexOf( '.' ) > 0 ) {
-				   afterPoint = actual_price.substring( actual_price.indexOf( '.' ), actual_price.length );
+				if( args.precision  ) {
+					decimal_amount = '.000000000'.substr( 0, args.precision + 1 );
+
+					if ( - 1 !== decimal_index ) {
+						decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) )
+							.toFixed( args.precision )
+							.toString()
+							.substr( 1 );
+						actual_price = actual_price.substr( 0, parseInt( decimal_index ) );
+
+						if ( ! decimal_amount.length ) {
+							decimal_amount = '.0000000000'.substr( 0, (parseInt( decimal_index ) + 1) );
+						} else if ( (args.precision + 1) > decimal_amount.length ) {
+							decimal_amount = (decimal_amount + '000000000').substr( 0, args.precision + 1 );
+						}
+					}
 				}
 				
 				actual_price = Math.floor( actual_price ).toString();
