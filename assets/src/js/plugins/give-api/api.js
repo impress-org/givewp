@@ -1,3 +1,4 @@
+/* global accounting, give_global_vars, jQuery */
 import GiveNotice from './notice';
 import GiveForm from './form';
 
@@ -72,22 +73,17 @@ let Give = {
 					amount,
 					decimal_index = actual_price.indexOf( '.' );
 
-				if( args.precision  ) {
-					decimal_amount = '.000000000'.substr( 0, args.precision + 1 );
+				if (-1 !== decimal_index) {
+					if (args.precision) {
+						decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) ).toFixed( args.precision ).toString().substr( 1 );
+						decimal_amount = decimal_amount.length ? decimal_amount : '.0000000000'.substr(0, parseInt(decimal_index) + 1);
 
-					if ( - 1 !== decimal_index ) {
-						decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) )
-							.toFixed( args.precision )
-							.toString()
-							.substr( 1 );
-						actual_price = actual_price.substr( 0, parseInt( decimal_index ) );
-
-						if ( ! decimal_amount.length ) {
-							decimal_amount = '.0000000000'.substr( 0, (parseInt( decimal_index ) + 1) );
-						} else if ( (args.precision + 1) > decimal_amount.length ) {
-							decimal_amount = (decimal_amount + '000000000').substr( 0, args.precision + 1 );
+						if (args.precision + 1 > decimal_amount.length) {
+							decimal_amount = (decimal_amount + '000000000').substr(0, args.precision + 1);
 						}
 					}
+
+					actual_price = actual_price.substr(0, parseInt(decimal_index));
 				}
 
 				// Extract last 3 from amount
