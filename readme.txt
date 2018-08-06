@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.6
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,10 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.2.2: August 2nd, 2018 =
+* Fix: Fixed email access issue with the donation history page preventing donors from using the submit button once they entered their email. [#3553](https://github.com/wordimpress/give/issues/3553)
+* Fix: Resolved PHP notices when accessing donation history via email in PHP version 7.2. [#3565](https://github.com/wordimpress/give/issues/3565)
 
 = 2.2.1: August 1st, 2018 =
 * Fix: Resolve an issue with the donor wall displaying incorrect amounts when a donor has given multiple times. [#3532](https://github.com/wordimpress/give/issues/3532)
