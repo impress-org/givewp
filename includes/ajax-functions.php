@@ -289,16 +289,6 @@ function give_ajax_form_search() {
 	$results = array();
 	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
-	/**
-	 * If the search term is empty, then return 30 posts,
-	 * else return all posts matching the search term.
-	 */
-	if ( empty( $search ) ) {
-		$posts_per_page = 30;
-	} else {
-		$posts_per_page = -1;
-	}
-
 	$args = array(
 		'post_type'              => 'give_forms',
 		's'                      => $search,
@@ -309,7 +299,7 @@ function give_ajax_form_search() {
 		'post_status'            => 'publish',
 		'orderby'                => 'title',
 		'order'                  => 'ASC',
-		'posts_per_page'         => $posts_per_page,
+		'posts_per_page'         => empty( $search ) ? 30 : -1,
 	);
 
 	/**
