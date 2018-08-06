@@ -1,5 +1,4 @@
-import accounting from 'accounting';
-
+/* globals jQuery, Give, give_global_vars */
 jQuery( function( $ ) {
 
 	var $forms = jQuery( 'form.give-form' ),
