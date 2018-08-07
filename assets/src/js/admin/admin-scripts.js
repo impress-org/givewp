@@ -473,10 +473,13 @@ var give_setting_edit = false;
 
 			$('#give-add-payment-note').on('click', function (e) {
 				e.preventDefault();
-				var postData = {
+				let noteContainer = $('#give-payment-note'),
+					noteTypeContainer = $('#donation_note_type'),
+					postData = {
 					action: 'give_insert_payment_note',
 					payment_id: $(this).data('payment-id'),
-					note: $('#give-payment-note').val()
+					note: noteContainer.val(),
+					type: noteTypeContainer.val()
 				};
 
 				if (postData.note) {
@@ -497,10 +500,11 @@ var give_setting_edit = false;
 					});
 
 				} else {
-					var border_color = $('#give-payment-note').css('border-color');
-					$('#give-payment-note').css('border-color', 'red');
+					let border_color = noteContainer.css('border-color');
+					noteContainer.css('border-color', 'red');
+
 					setTimeout(function () {
-						$('#give-payment-note').css('border-color', border_color);
+						noteContainer.css('border-color', border_color);
 					}, 500);
 				}
 

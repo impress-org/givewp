@@ -404,6 +404,12 @@ function give_setup_email_tags() {
 			'func'    => 'give_email_tag_receipt_link_url',
 			'context' => 'donation',
 		),
+		array(
+			'tag'     => 'donor_note',
+			'desc'    => esc_html__( 'The donor note.', 'give' ),
+			'func'    => 'give_email_tag_donor_note',
+			'context' => 'donation',
+		),
 
 		/* Donation Form */
 		array(
@@ -1472,6 +1478,39 @@ function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
 		'give_email_tag_reset_password_link',
 		$reset_password_link,
 		$payment_id,
+		$tag_args
+	);
+}
+
+
+/**
+ * Email template tag: {donor_note}
+ *
+ * @param array $tag_args Array of arguments for email tags.
+ *
+ * @since 2.0
+ *
+ * @return array
+ */
+function give_email_tag_donor_note( $tag_args ) {
+	$donor_note = '';
+
+	if ( array_key_exists( 'note_id', $tag_args ) ) {
+		$comment    = get_comment( absint( $tag_args['note_id'] ) );
+		$donor_note = $comment->comment_content;
+	}
+
+	/**
+	 * Filter the {donor_note} email template tag output.
+	 *
+	 * @param string $donor_note Tag output.
+	 * @param array  $tag_args   Email Tag arguments.
+	 *
+	 * @since 2.0
+	 */
+	return apply_filters(
+		'give_email_tag_donor_note',
+		$donor_note,
 		$tag_args
 	);
 }
