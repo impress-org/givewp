@@ -3,13 +3,11 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
-const { PanelBody } = wp.components;
+const { PanelBody, SelectControl, ToggleControl } = wp.components;
 
 /**
  * Internal dependencies
  */
-import GiveToggleControl from '../../components/toggle-control/index';
-import GiveSelectControl from '../../components/select-control/index';
 import giveFormOptions from '../data/options';
 
 /**
@@ -18,46 +16,42 @@ import giveFormOptions from '../data/options';
 
 const Inspector = ( { attributes, setAttributes } ) => {
 	const { columns, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
-	const saveSetting = ( event ) => {
-		const name = event.target.name;
-
-		setAttributes(
-			'checkbox' === event.target.type ?
-				{ [ name ]: ! attributes[ name ] } :
-				{ [ name ]: event.target.value }
-		);
+	const saveSetting = ( name, value ) => {
+		setAttributes( {
+			[ name ]: value,
+		} );
 	};
 
 	return (
 		<InspectorControls key="inspector">
 			<PanelBody title={ __( 'Settings' ) }>
-				<GiveSelectControl
+				<SelectControl
 					label={ __( 'Columns' ) }
 					name="columns"
 					value={ columns }
 					options={ giveFormOptions.columns }
-					onChange={ saveSetting } />
-				<GiveToggleControl
+					onChange={ ( value ) => saveSetting( 'columns', value ) } />
+				<ToggleControl
 					name="showExcerpt"
 					label={ __( 'Show Excerpt' ) }
 					checked={ !! showExcerpt }
-					onChange={ saveSetting } />
-				<GiveToggleControl
+					onChange={ ( value ) => saveSetting( 'showExcerpt', value ) } />
+				<ToggleControl
 					name="showGoal"
 					label={ __( 'Show Goal' ) }
 					checked={ !! showGoal }
-					onChange={ saveSetting } />
-				<GiveToggleControl
+					onChange={ ( value ) => saveSetting( 'showGoal', value ) } />
+				<ToggleControl
 					name="showFeaturedImage"
 					label={ __( 'Show Featured Image' ) }
 					checked={ !! showFeaturedImage }
-					onChange={ saveSetting } />
-				<GiveSelectControl
+					onChange={ ( value ) => saveSetting( 'showFeaturedImage', value ) } />
+				<SelectControl
 					label={ __( 'Display Type' ) }
 					name="displayType"
 					value={ displayType }
 					options={ giveFormOptions.displayType }
-					onChange={ saveSetting } />
+					onChange={ ( value ) => saveSetting( 'displayType', value ) } />
 			</PanelBody>
 		</InspectorControls>
 	);

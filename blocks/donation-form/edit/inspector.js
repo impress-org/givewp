@@ -3,15 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
-const { PanelBody } = wp.components;
+const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
 const { Component } = wp.element;
 
 /**
  * Internal dependencies
  */
-import GiveTextControl from '../../components/text-control';
-import GiveToggleControl from '../../components/toggle-control';
-import GiveSelectControl from '../../components/select-control';
 import giveFormOptions from '../data/options';
 
 /**
@@ -30,60 +27,65 @@ class Inspector extends Component {
 		this.saveState = this.saveState.bind( this );
 	}
 
-	saveSetting( event ) {
-		const name = event.target.name;
-
-		this.props.setAttributes(
-			'checkbox' === event.target.type ?
-				{ [ name ]: ! this.props.attributes[ name ] } :
-				{ [ name ]: event.target.value }
-		);
+	saveSetting( name, value ) {
+		this.props.setAttributes( {
+			[ name ]: value,
+		} );
 	}
 
-	saveState( event ) {
-		this.setState( { [ event.target.name ]: event.target.value } );
+	saveState( name, value ) {
+		this.setState( {
+			[ name ]: value,
+		} );
 	}
 
 	render() {
+		const {
+			displayStyle,
+			showGoal,
+			showContent,
+			contentDisplay,
+		} = this.props.attributes;
+
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Display' ) }>
-					<GiveSelectControl
+					<SelectControl
 						label={ __( 'Form Format' ) }
 						name="displayStyle"
-						value={ this.props.attributes.displayStyle }
+						value={ displayStyle }
 						options={ giveFormOptions.displayStyles }
-						onChange={ this.saveSetting } />
+						onChange={ ( value ) => this.saveSetting( 'displayStyle', value ) } />
 					{
-						'reveal' === this.props.attributes.displayStyle && (
-							<GiveTextControl
+						'reveal' === displayStyle && (
+							<TextControl
 								name="continueButtonTitle"
 								label={ __( 'Continue Button Title' ) }
 								value={ this.state.continueButtonTitle }
-								onChange={ this.saveState }
-								onBlur={ this.saveSetting } />
+								onChange={ ( value ) => this.saveState( 'continueButtonTitle', value ) }
+								onBlur={ ( event ) => this.saveSetting( 'continueButtonTitle', event.target.value ) } />
 						)
 					}
 				</PanelBody>
 				<PanelBody title={ __( 'Settings' ) }>
-					<GiveToggleControl
+					<ToggleControl
 						label={ __( 'Goal' ) }
 						name="showGoal"
-						checked={ !! this.props.attributes.showGoal }
-						onChange={ this.saveSetting } />
-					<GiveToggleControl
+						checked={ !! showGoal }
+						onChange={ ( value ) => this.saveSetting( 'showGoal', value ) } />
+					<ToggleControl
 						label={ __( 'Content' ) }
 						name="contentDisplay"
-						checked={ !! this.props.attributes.contentDisplay }
-						onChange={ this.saveSetting } />
+						checked={ !! contentDisplay }
+						onChange={ ( value ) => this.saveSetting( 'contentDisplay', value ) } />
 					{
-						this.props.attributes.contentDisplay && (
-							<GiveSelectControl
+						contentDisplay && (
+							<SelectControl
 								label={ __( 'Content Position' ) }
 								name="showContent"
-								value={ this.props.attributes.showContent }
+								value={ showContent }
 								options={ giveFormOptions.contentPosition }
-								onChange={ this.saveSetting } />
+								onChange={ ( value ) => this.saveSetting( 'showContent', value ) } />
 						)
 					}
 				</PanelBody>
