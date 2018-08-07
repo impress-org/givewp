@@ -260,9 +260,9 @@ class Give_Email_Notifications {
 			// Decode message.
 			$email_message = $email->preview_email_template_tags( $email->get_email_message( $form_id ) );
 
-			// Set email template.
-			Give()->emails->html    = true;
-			Give()->emails->__set( 'template', $email->get_email_template( $form_id ) );
+			// Show formatted text in browser even text/plain content type set for an email.
+			Give()->emails->html = true;
+
 			Give()->emails->form_id = $form_id;
 
 			if ( 'text/plain' === $email->config['content_type'] ) {
