@@ -252,7 +252,7 @@ class Give_Email_Notifications {
 			}
 
 			// Set form id.
-			$form_id = empty( $_GET['form_id']  ) ? null : absint( $_GET['form_id'] );
+			$form_id = empty( $_GET['form_id'] ) ? null : absint( $_GET['form_id'] );
 
 			// Call setup email data to apply filter and other thing to email.
 			$email->send_preview_email( false );
