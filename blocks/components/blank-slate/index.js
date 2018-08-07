@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 * Internal dependencies
 */
 import GiveHelpLink from '../help-link';
-import PlaceholderContainerAnimation from '../container-placeholder-animation';
+import PlaceholderAnimation from '../placeholder-animation';
 import './style.scss';
 
 const GiveBlankSlate = ( props ) => {
@@ -24,7 +24,7 @@ const GiveBlankSlate = ( props ) => {
 	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
 
 	const blockLoading = (
-		<PlaceholderContainerAnimation />
+		<PlaceholderAnimation />
 	);
 
 	const blockLoaded = (
