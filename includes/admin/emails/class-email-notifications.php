@@ -192,6 +192,7 @@ class Give_Email_Notifications {
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-offline-donation-instruction-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donor-register-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donor-register-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donor-note-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-access-email.php',
 		);
 

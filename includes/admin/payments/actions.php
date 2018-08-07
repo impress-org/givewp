@@ -409,6 +409,7 @@ function give_ajax_store_payment_note() {
 
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
+	$note_type  = give_clean( $_POST['note_type'] );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
@@ -423,6 +424,18 @@ function give_ajax_store_payment_note() {
 	}
 
 	$note_id = give_insert_payment_note( $payment_id, $note );
+
+	if( $note_id && $note_type ) {
+		add_comment_meta( $note_id, 'note_type', $note_type, true );
+
+		/**
+		 * Fire the action
+		 *
+		 * @since 2.2.3
+		 */
+		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
+	}
+
 	die( give_get_payment_note_html( $note_id ) );
 }
 
