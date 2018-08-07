@@ -9,7 +9,6 @@ import { stringify } from 'querystringify';
  */
 const { __ } = wp.i18n;
 const { withAPIData } = wp.components;
-const { Component } = wp.element;
 
 /**
  * Internal dependencies
@@ -22,54 +21,40 @@ import FormSelect from '../../components/form-select';
 
 /**
  * Render Block UI For Editor
- *
- * @class GiveForm
- * @extends {Component}
  */
-class GiveForm extends Component {
-	constructor( props ) {
-		super( ...props );
-	}
 
-	/**
-	 * Render block UI
-	 *
-	 * @returns {object} JSX Object
-	 * @memberof GiveForm
-	 */
-	render() {
-		const props = this.props,
-			attributes = props.attributes,
-			{ isLoading } = props.form;
+const GiveForm = ( props ) => {
+	const { attributes, form } = props;
+	const { id } = attributes;
+	const { isLoading, data } = form;
 
-		// Render block UI
-		let blockUI;
+	// Render block UI
+	let blockUI;
 
-		if ( ! attributes.id ) {
-			if ( isLoading || isUndefined( props.form.data ) ) {
-				blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
-			} else if ( isEmpty( props.form.data ) ) {
-				blockUI = <NoForms />;
-			} else {
-				blockUI = <FormSelect { ... { ...props } } />;
-			}
-		} else if ( isEmpty( props.form.data ) ) {
-			blockUI = isLoading ?
-				<GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } /> :
-				<EditForm formId={ attributes.id } { ... { ...props } } />;
+	if ( ! id ) {
+		if ( isLoading || isUndefined( data ) ) {
+			blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
+		} else if ( isEmpty( data ) ) {
+			blockUI = <NoForms />;
 		} else {
-			blockUI = <FormPreview
-				html={ props.form.data }
-				{ ... { ...props } } />;
+			blockUI = <FormSelect { ... { ...props } } />;
 		}
-
-		return (
-			<div className={ !! props.isSelected ? `${ props.className } isSelected` : props.className } key="GiveBlockUI">
-				{ blockUI }
-			</div>
-		);
+	} else if ( isEmpty( data ) ) {
+		blockUI = isLoading ?
+			<GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } /> :
+			<EditForm formId={ id } { ... { ...props } } />;
+	} else {
+		blockUI = <FormPreview
+			html={ data }
+			{ ... { ...props } } />;
 	}
-}
+
+	return (
+		<div className={ !! props.isSelected ? `${ props.className } isSelected` : props.className } key="GiveBlockUI">
+			{ blockUI }
+		</div>
+	);
+};
 
 /**
  * Export component attaching withAPIdata
