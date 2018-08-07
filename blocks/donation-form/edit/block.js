@@ -17,7 +17,7 @@ import GiveBlankSlate from '../../components/blank-slate';
 import NoForms from '../../components/no-form';
 import EditForm from '../../components/edit-form';
 import FormPreview from './form/preview';
-import FormSelect from '../../components/form-select';
+import SelectForm from '../../components/select-form';
 
 /**
  * Render Block UI For Editor
@@ -37,7 +37,7 @@ const GiveForm = ( props ) => {
 		} else if ( isEmpty( data ) ) {
 			blockUI = <NoForms />;
 		} else {
-			blockUI = <FormSelect { ... { ...props } } />;
+			blockUI = <SelectForm { ... { ...props } } />;
 		}
 	} else if ( isEmpty( data ) ) {
 		blockUI = isLoading ?
