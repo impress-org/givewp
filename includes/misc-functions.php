@@ -2288,3 +2288,58 @@ function give_get_safe_asset_url( $url ) {
 	 */
 	return apply_filters( 'give_get_safe_asset_url', $url );
 }
+
+/**
+ * Returns if you are on the new|edit post|page.
+ *
+ * string $post_action Check specifically for new or edit screen.
+ *
+ * @since 2.2.3
+ *
+ * @return boolean
+ */
+function give_is_editor_screen( $post_action = null ) {
+
+	global $pagenow;
+
+	// Make sure we are on the backend.
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	if ( 'edit' === $post_action ) {
+		return in_array( $pagenow, array( 'post.php' ) );
+	} elseif ( 'new' === $post_action ) {
+		return in_array( $pagenow, array( 'post-new.php' ) );
+	} else {
+		return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
+	}
+}
+
+/**
+ * Returns if the editor page is a Gutenberg editor.
+ *
+ * @since 2.2.3
+ *
+ * @return boolean
+ */
+function give_is_gutenberg_editor() {
+
+	// Check if Gutenberg is active.
+	$is_gutenberg_active = is_plugin_active( 'gutenberg/gutenberg.php' );
+
+	// Check if we're on the editors screen.
+	$is_edit_screen = give_is_editor_screen( 'new' ) || give_is_editor_screen( 'edit' );
+
+	if ( isset( $_GET['classic-editor'] ) && $is_edit_screen && $is_gutenberg_active ) {
+		return false;
+	}
+
+	if ( $is_edit_screen && ! $is_gutenberg_active ) {
+		return false;
+	}
+
+	if ( ! isset( $_GET['classic-editor'] ) && $is_edit_screen && $is_gutenberg_active ) {
+		return true;
+	}
+}

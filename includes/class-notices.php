@@ -209,6 +209,10 @@ class Give_Notices {
 			return;
 		}
 
+		if ( give_is_gutenberg_editor() ) {
+			return;
+		}
+
 		$output = '';
 
 		foreach ( self::$notices as $notice_id => $notice ) {
