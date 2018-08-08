@@ -1,33 +1,37 @@
 /**
- * Block dependencies
+ * External dependencies
  */
-import GiveBlankSlate from '../blank-slate/index';
-import isUndefined from 'lodash.isundefined';
+import { isUndefined } from 'lodash';
+
+/**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+const { SelectControl, Button } = wp.components;
 
 /**
  * Internal dependencies
  */
-const {__}                    = wp.i18n;
-const {SelectControl, Button} = wp.components;
-const giveFormOptionsDefault  = { value: '0', label: __( '-- Select Form --' ) };
+import GiveBlankSlate from '../blank-slate';
 
 /**
  * Render form select UI
  */
+const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
 
-const FormSelect = (props) => {
+const FormSelect = ( props ) => {
 	// Event(s)
 	const getFormOptions = () => {
 		// Add API Data To Select Options
 
 		let formOptions = [];
 
-		if( ! isUndefined( props.forms.data ) ) {
+		if ( ! isUndefined( props.forms.data ) ) {
 			formOptions = props.forms.data.map(
-				(form) => {
+				( form ) => {
 					return {
 						value: form.id,
-						label: form.title.rendered === '' ? `${ form.id } : ${__( 'No form title' ) }` : form.title.rendered,
+						label: form.title.rendered === '' ? `${ form.id } : ${ __( 'No form title' ) }` : form.title.rendered,
 					};
 				}
 			);
@@ -39,34 +43,34 @@ const FormSelect = (props) => {
 	};
 
 	const setFormIdTo = id => {
-		props.setAttributes( {id} );
+		props.setAttributes( { id } );
 	};
 
 	const resetFormIdTo = () => {
-		props.setAttributes( {id: props.attributes.prevId} );
-		props.setAttributes( {prevId: 0} );
+		props.setAttributes( { id: props.attributes.prevId } );
+		props.setAttributes( { prevId: 0 } );
 	};
 
 	return (
-		<GiveBlankSlate title = {__( 'Give Donation form' )}>
+		<GiveBlankSlate title={ __( 'Give Donation form' ) }>
 			<SelectControl
-				options = {getFormOptions()}
-				onChange = {setFormIdTo}
+				options={ getFormOptions() }
+				onChange={ setFormIdTo }
 			/>
 
 			<Button isPrimary
-					isLarge href = {`${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms`}>
-				{__( 'Add New Form' )}
-			</ Button>&nbsp;&nbsp;
+				isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+				{ __( 'Add New Form' ) }
+			</Button>&nbsp;&nbsp;
 
 			{
 				props.attributes.prevId &&
 				<Button isLarge
-						onClick = {resetFormIdTo}>
-					{__( 'Cancel' )}
-				</ Button>
+					onClick={ resetFormIdTo }>
+					{ __( 'Cancel' ) }
+				</Button>
 			}
-		</ GiveBlankSlate>
+		</GiveBlankSlate>
 	);
 };
 

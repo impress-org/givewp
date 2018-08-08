@@ -22,7 +22,7 @@
     "wpApiSettings": true,
     "window": true,
 		"document": true,
-		"give_blocks_vars": true
+		"giveApiSettings": true
   },
   "plugins": ["react"],
   "settings": {

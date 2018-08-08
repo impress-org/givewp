@@ -224,7 +224,7 @@ window.give_open_form_modal = function ( $form_wrap, $form ) {
 /**
  * Floating Labels Custom Events
  */
-window.give_fl_trigger = function() {
+window.give_fl_trigger = function () {
 	window.give_float_labels = 'undefined' === typeof window.give_float_labels ? {} : window.give_float_labels;
 
 	if ( window.give_float_labels instanceof FloatLabels ) {
@@ -232,7 +232,7 @@ window.give_fl_trigger = function() {
 	}
 	else {
 		window.give_float_labels = new FloatLabels( '.float-labels-enabled', {
-			exclude: '#give-amount, .give-select-level, [multiple]',
+			exclude: '#give-amount, .give-select-level, [multiple], .give-honeypot',
 			prioritize: 'placeholder',
 			prefix: 'give-fl-',
 			style: 'give',

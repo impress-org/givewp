@@ -1,28 +1,28 @@
 /**
- * Block dependencies
-*/
-import Inspector from '../inspector';
-import Controls from '../controls';
+ * WordPress dependencies
+ */
+const { Component } = wp.element;
 
 /**
  * Internal dependencies
- */
-const { Component } = wp.element;
+*/
+import Inspector from '../inspector';
+import Controls from '../controls';
 
 /**
  * Render Form Preview
  */
 
 class FormPreview extends Component {
-	render(){
+	render() {
 		return (
 			<div id="donation-form-preview-block">
-				{ !! this.props.isSelected && <Inspector { ... { ...this.props } } /> }
-				{ !! this.props.isSelected && <Controls { ... { ...this.props } } /> }
+				<Inspector { ... { ...this.props } } />
+				<Controls { ... { ...this.props } } />
 				<div dangerouslySetInnerHTML={ { __html: this.props.html } }></div>
 			</div>
 		);
 	}
-};
+}
 
 export default FormPreview;

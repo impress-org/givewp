@@ -297,6 +297,9 @@ function give_ajax_form_search() {
 		'cache_results'          => false,
 		'no_found_rows'          => true,
 		'post_status'            => 'publish',
+		'orderby'                => 'title',
+		'order'                  => 'ASC',
+		'posts_per_page'         => empty( $search ) ? 30 : -1,
 	);
 
 	/**

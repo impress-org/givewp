@@ -297,7 +297,10 @@ add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
  */
 function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	// Bailout.
-	if ( is_wp_error( $error ) ) {
+	if (
+		is_wp_error( $error )
+		|| ! array_key_exists( 'plugin', $hook_extra )
+	) {
 		return $error;
 	}
 

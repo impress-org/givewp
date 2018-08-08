@@ -144,9 +144,8 @@ function give_run_install() {
 			'v201_logs_upgrades',
 			'v210_verify_form_status_upgrades',
 			'v213_delete_donation_meta',
-			'v220_rename_donation_meta_type',
 			'v215_update_donor_user_roles',
-			'v220_delete_wp_session_data'
+			'v220_rename_donation_meta_type',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
