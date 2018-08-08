@@ -2325,8 +2325,18 @@ function give_is_editor_screen( $post_action = null ) {
  */
 function give_is_gutenberg_editor() {
 
-	// Check if Gutenberg is active.
-	$is_gutenberg_active = is_plugin_active( 'gutenberg/gutenberg.php' );
+	// Get current WordPress version.
+	$wp_version = get_bloginfo( 'version' );
+
+	if ( version_compare( $wp_version, '5', '>=' ) ) {
+
+		// Here Gutenberg will be part of Core.
+		$is_gutenberg_active = true;
+	} else if ( version_compare( $wp_version, '5', '<' ) ) {
+
+		// Check if Gutenberg is active as a plugin.
+		$is_gutenberg_active = is_plugin_active( 'gutenberg/gutenberg.php' );
+	}
 
 	// Check if we're on the editors screen.
 	$is_edit_screen = give_is_editor_screen( 'new' ) || give_is_editor_screen( 'edit' );
