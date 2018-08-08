@@ -186,7 +186,7 @@ class Give_Donor_Wall {
 				'show_time'       => true,
 				'show_comments'   => true,
 				'comment_length'  => 20,
-				'only_comments'   => true,
+				'only_comments'   => false,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
 				'avatar_size'     => 60,
