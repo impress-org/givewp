@@ -81,7 +81,6 @@ class Give_Email_Template_Tags {
 				'func'        => $args['func'],
 				'context'     => give_check_variable( $args['context'], 'empty', 'general' ),
 				'is_admin'    => (bool) $args['is_admin'], // Introduced in 2.2.1
-				'description' => $args['desc'], // deprecated in 2.2.1
 			);
 		}
 	}
@@ -1394,6 +1393,17 @@ function __give_211_bc_email_template_tag_param( &$args, $func_args = array() ) 
 			'is_admin' => false,
 		);
 	} else {
+
+		// This is for backward compatibility. Use 'desc' instead of 'description'.
+		if ( array_key_exists( 'description', $args ) ) {
+			$args['desc'] = $args['description'];
+		}
+
+		// This is for backward compatibility. Use 'func' instead of 'function'.
+		if ( array_key_exists( 'function', $args ) ) {
+			$args['func'] = $args['function'];
+		}
+
 		$args = wp_parse_args(
 			$args,
 			array(
