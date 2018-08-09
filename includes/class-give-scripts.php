@@ -59,6 +59,7 @@ class Give_Scripts {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_admin_scripts' ) );
 			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
 
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
@@ -234,6 +235,8 @@ class Give_Scripts {
 			'error'                             => __( 'Error', 'give' ),
 			'close'                             => __( 'Close', 'give' ),
 			'confirm'                           => __( 'Confirm', 'give' ),
+			'copied'                            => __( 'Copied!', 'give' ),
+			'shortcode_not_copy'                => __( 'Shortcode could not be copied.', 'give' ),
 			'confirm_action'                    => __( 'Confirm Action', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
 			'confirm_delete_donation'           => __( 'Confirm Delete Donation', 'give' ),
@@ -457,6 +460,7 @@ class Give_Scripts {
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
+		wp_localize_script( 'give-admin-scripts', 'give_global_vars', $localize_give_vars );
 
 	}
 

@@ -21,6 +21,7 @@ import './admin-export';
 import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
+import './shortcode-button';
 
 GiveAPI.modal = Modals;
 export const { init, fn, cache, modal } = GiveAPI;

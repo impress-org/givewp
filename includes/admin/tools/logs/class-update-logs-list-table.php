@@ -120,14 +120,14 @@ class Give_Update_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_details( $item ) {
-		echo wp_kses_post( Give()->tooltips->render_link( array(
+		echo Give()->tooltips->render_link( array(
 			'label'       => __( 'View Update Log', 'give' ),
 			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
 			'attributes'  => array(
 				'class' => 'thickbox give-error-log-details-link button button-small',
 			),
-		) ) );
+		) );
 		?>
 		<div id="log-details-<?php echo esc_attr( $item['ID'] ); ?>" style="display:none;">
 			<?php
