@@ -470,21 +470,11 @@ var give_setting_edit = false;
 		},
 
 		add_note: function () {
-
 			$('#give-add-payment-note').on('click', function (e) {
 				e.preventDefault();
-				let $this = $(this),
-					noteContainer = $('#give-payment-note'),
-					noteTypeContainer = $('#donation_note_type'),
-					postData = {
-						action: 'give_insert_payment_note',
-						payment_id: $(this).data('payment-id'),
-						note: noteContainer.val(),
-						type: noteTypeContainer.val()
-					};
 
-				if (postData.note) {
-
+				// ajax function to save donation note
+				function save_note(){
 					$.ajax({
 						type: 'POST',
 						data: postData,
@@ -506,7 +496,32 @@ var give_setting_edit = false;
 						noteContainer.prop( 'disabled', false );
 						$this.prop( 'disabled', false );
 					});
+				}
 
+				let $this = $(this),
+					noteContainer = $('#give-payment-note'),
+					noteTypeContainer = $('#donation_note_type'),
+					postData = {
+						action: 'give_insert_payment_note',
+						payment_id: $(this).data('payment-id'),
+						note: noteContainer.val(),
+						type: noteTypeContainer.val()
+					};
+
+				if (postData.note) {
+					if( 'donor' === postData.type && give_vars.email_notification.donor_note.status ){
+						// Confirm and save note.
+						new Give.modal.GiveConfirmModal({
+							successConfirm: function(){
+								save_note();
+							},
+							modalContent:{
+								desc: give_vars.donor_note_confirm_msg,
+							}
+						}).render();
+					} else{
+						save_note();
+					}
 				} else {
 					let border_color = noteContainer.css('border-color');
 					noteContainer.css('border-color', 'red');

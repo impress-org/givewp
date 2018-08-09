@@ -270,7 +270,7 @@ class Give_Scripts {
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
-					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' )
+					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
 				),
 				'no_action_selected' => array(
 					'title' => __( 'No action selected', 'give' ),
@@ -326,6 +326,12 @@ class Give_Scripts {
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
 			'date_format'                       => give_get_localized_date_format_to_js(),
+			'donor_note_confirm_msg'            => __( 'You are adding a donor note , so an email notification will be send to donor. If you do not want to send email notification to donor then either create private note or disable donor note email.', 'give' ),
+			'email_notification'            => array(
+				'donor_note' => array(
+					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
+				)
+			),
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
