@@ -406,10 +406,9 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
  * AJAX Store Donation Note
  */
 function give_ajax_store_payment_note() {
-
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
-	$note_type  = give_clean( $_POST['note_type'] );
+	$note_type  = give_clean( $_POST['type'] );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
