@@ -59,7 +59,6 @@ class Give_Scripts {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_admin_scripts' ) );
 			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
 
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
