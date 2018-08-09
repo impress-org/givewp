@@ -1498,7 +1498,8 @@ function give_email_tag_donor_note( $tag_args ) {
 	$donor_note = '';
 
 	if ( array_key_exists( 'note_id', $tag_args ) ) {
-		$comment    = get_comment( absint( $tag_args['note_id'] ) );
+		$note_id    = absint( $tag_args['note_id'] );
+		$comment    = get_comment( $note_id );
 		$donor_note = $comment->comment_content;
 	}
 
