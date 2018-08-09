@@ -430,7 +430,7 @@ function give_ajax_store_payment_note() {
 		/**
 		 * Fire the action
 		 *
-		 * @since 2.2.3
+		 * @since 2.3.0
 		 */
 		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
 	}
