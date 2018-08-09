@@ -7,7 +7,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2018, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.2.3
+ * @since       2.3.0
  */
 
 // Exit if access directly.
@@ -21,7 +21,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 	 * Give_Donor_Note_Email
 	 *
 	 * @abstract
-	 * @since       2.2.3
+	 * @since       2.3.0
 	 */
 	class Give_Donor_Note_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment */
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access  public
-		 * @since   2.2.3
+		 * @since   2.3.0
 		 */
 		public function init() {
 			// Initialize empty payment.
@@ -62,7 +62,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 		/**
 		 * Send donor note
 		 *
-		 * @since  2.2.3
+		 * @since  2.3.0
 		 * @access public
 		 *
 		 * @param int $donation_id Donation ID.
