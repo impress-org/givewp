@@ -739,7 +739,7 @@ class Give_Cache {
 			 *
 			 * @since 2.1.0
 			 */
-			do_action( 'give_fluched_cache' );
+			do_action( 'give_flushed_cache' );
 
 			return true;
 		}
