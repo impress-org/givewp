@@ -488,6 +488,10 @@ var give_setting_edit = false;
 						type: 'POST',
 						data: postData,
 						url: ajaxurl,
+						beforeSend: function(){
+							noteContainer.prop( 'disabled', true );
+							$this.prop( 'disabled', true );
+						},
 						success: function (response) {
 							$('#give-payment-notes-inner').append(response);
 							$('.give-no-payment-notes').hide();
@@ -497,6 +501,9 @@ var give_setting_edit = false;
 						if (window.console && window.console.log) {
 							console.log(data);
 						}
+					}).always(function(){
+						noteContainer.prop( 'disabled', false );
+						$this.prop( 'disabled', false );
 					});
 
 				} else {
