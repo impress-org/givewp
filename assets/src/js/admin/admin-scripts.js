@@ -473,14 +473,15 @@ var give_setting_edit = false;
 
 			$('#give-add-payment-note').on('click', function (e) {
 				e.preventDefault();
-				let noteContainer = $('#give-payment-note'),
+				let $this = $(this),
+					noteContainer = $('#give-payment-note'),
 					noteTypeContainer = $('#donation_note_type'),
 					postData = {
-					action: 'give_insert_payment_note',
-					payment_id: $(this).data('payment-id'),
-					note: noteContainer.val(),
-					type: noteTypeContainer.val()
-				};
+						action: 'give_insert_payment_note',
+						payment_id: $(this).data('payment-id'),
+						note: noteContainer.val(),
+						type: noteTypeContainer.val()
+					};
 
 				if (postData.note) {
 
