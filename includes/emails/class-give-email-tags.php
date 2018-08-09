@@ -81,6 +81,8 @@ class Give_Email_Template_Tags {
 				'func'        => $args['func'],
 				'context'     => give_check_variable( $args['context'], 'empty', 'general' ),
 				'is_admin'    => (bool) $args['is_admin'], // Introduced in 2.2.1
+				'description' => $args['desc'], // deprecated in 2.2.1
+				'function'    => $args['func'], // deprecated in 2.2.1
 			);
 		}
 	}
