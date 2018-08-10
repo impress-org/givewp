@@ -208,6 +208,18 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.2.3: August 10th, 2018 =
+* Fix: Added backwards compatibility for email tag "description" and "function" options that were modified in the previous version. [#3584](https://github.com/WordImpress/Give/issues/3584)
+* Fix: Refactored the settings API to have custom save logic for individual setting sections. Developers can now easily create a custom setting page and option name which will store data in its own option rather than increasing the size of the give_settings option. [#3541](https://github.com/WordImpress/Give/issues/3541)
+* Fix: Exclude the honeypot field from floating labels js. [#2230](https://github.com/WordImpress/Give/issues/2230)
+* Fix: All donation forms are now listed on Export screen in wp-admin. [#1970](https://github.com/WordImpress/Give/issues/1970)
+* Fix: Increased the contrast for the floating labels for inactive placeholders. [#2179](https://github.com/WordImpress/Give/issues/2179)
+* Fix: Resolve error with email access when the "View Receipt" link is clicked the donor would receive a permissions error. [#3571](https://github.com/WordImpress/Give/issues/3571)
+* Fix: Prevent login button text from updating with wrong text. [#3562](https://github.com/WordImpress/Give/issues/3562)
+* Fix: Uncomment the give_checkout_login_fields_before hook so developers can use it accordingly. [#3566](https://github.com/WordImpress/Give/issues/3566)
+* Fix: Prevent emails from being sent when importing donations. [#3592](https://github.com/WordImpress/Give/issues/3592)
+* Tweak: The donor wall shortcode has been modified so that donors who give without leaving a comment will display by default. [#3581](https://github.com/WordImpress/Give/issues/3581)
+
 = 2.2.2: August 2nd, 2018 =
 * Fix: Fixed email access issue with the donation history page preventing donors from using the submit button once they entered their email. [#3553](https://github.com/wordimpress/give/issues/3553)
 * Fix: Resolved PHP notices when accessing donation history via email in PHP version 7.2. [#3565](https://github.com/wordimpress/give/issues/3565)
