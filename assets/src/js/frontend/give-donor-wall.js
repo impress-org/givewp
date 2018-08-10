@@ -81,7 +81,6 @@ class GiveDonorWall {
 			// Update data-shortcode attribute.
 			if( res.shortcode.length ){
 				evt.target.setAttribute('data-shortcode', res.shortcode );
-				console.log(res.shortcode);
 			}
 
 			// Remove load more button if not any donor comment exist.
