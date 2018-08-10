@@ -1,3 +1,4 @@
+/* globals jQuery, give_global_vars */
 import '../plugins/dynamicListener.js';
 
 /**
@@ -10,9 +11,6 @@ class GiveDonorWall {
 	constructor() {
 		window.addEventListener(
 			'load', function () {
-				let readMoreLinks = document.querySelectorAll('.give-donor__read-more'),
-					loadMoreBtn = document.querySelectorAll('.give-donor__load_more');
-
 				/**
 				 * Add events
 				 */
@@ -58,7 +56,7 @@ class GiveDonorWall {
 		evt.preventDefault();
 
 		jQuery.ajax({
-			url: ajaxurl,
+			url: give_global_vars.ajaxurl,
 			method: 'POST',
 			data: {
 				action: 'give_get_donor_comments',
