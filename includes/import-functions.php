@@ -835,6 +835,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
 			add_filter( 'give_update_donor_information', 'give_donation_import_update_donor_information', 11, 3 );
 			add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
+			add_filter( 'give_is_stop_email_notification', '__return_true' );
 
 			// if it status is other then pending then first change the donation status to pending and after adding the payment meta update the donation status.
 			if ( 'pending' !== $status ) {
@@ -846,6 +847,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 			remove_filter( 'give_update_donor_information', 'give_donation_import_update_donor_information', 11 );
 			remove_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11 );
+			remove_filter( 'give_is_stop_email_notification', '__return_true' );
 
 			if ( $payment_id ) {
 
