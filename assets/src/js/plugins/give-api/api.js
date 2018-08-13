@@ -178,16 +178,14 @@ let Give = {
 		 * Get information from global var
 		 *
 		 * @since 1.8.17
-		 * @param {string} str
+		 * @param {string} str Variable in global param.
 		 *
 		 * @return {string}
 		 */
 		getGlobalVar: function( str ) {
-			if ( 'undefined' === typeof give_global_vars[ str ] ) {
-				return '';
-			}
+			const giveGlobals = ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
 
-			return give_global_vars[ str ];
+			return ( 'undefined' === typeof giveGlobals[ str ] ? '' : giveGlobals[ str ] );
 		},
 
 		/**
