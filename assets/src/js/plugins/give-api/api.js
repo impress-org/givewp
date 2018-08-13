@@ -39,10 +39,10 @@ let Give = {
 			// Global currency setting.
 			let format_args = {
 				symbol: '',
-				decimal: give_global_vars.decimal_separator,
-				thousand: give_global_vars.thousands_separator,
-				precision: parseInt( give_global_vars.number_decimals ),
-				currency: give_global_vars.currency
+				decimal: this.getGlobalVar( 'decimal_separator' ),
+				thousand: this.getGlobalVar( 'thousands_separator' ),
+				precision: parseInt( this.getGlobalVar( 'number_decimals' ) ),
+				currency: this.getGlobalVar( 'currency' )
 			};
 
 			price = price.toString().trim();
@@ -183,9 +183,20 @@ let Give = {
 		 * @return {string}
 		 */
 		getGlobalVar: function( str ) {
-			const giveGlobals = ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
+			const giveGlobals = this.getGlobal();
 
 			return ( 'undefined' === typeof giveGlobals[ str ] ? '' : giveGlobals[ str ] );
+		},
+
+		/**
+		 * Get global param
+		 *
+		 * @since 2.2.4
+		 *
+		 * @return {object} WordPress localized global param.
+		 */
+		getGlobal: function() {
+			return ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
 		},
 
 		/**
