@@ -177,4 +177,113 @@ jQuery(document).ready(function ($) {
 			}
 		})
 	});
+
+	let dTemp         = Give.fn.getGlobalVar( 'decimal_separator' ), // Temporary variable to store decimal separator.
+	    tTemp         = Give.fn.getGlobalVar( 'thousands_separator' ), // Temporary variable to store thousand separator.
+	    symbolRegex   = /\(([^)]+)\)/, // Regex to extract currency symbol.
+	    formatterArgs = {
+			position: Give.fn.getGlobalVar( 'currency_pos' ),
+			symbol: Give.fn.getGlobalVar( 'currency_sign' ),
+			precision: Give.fn.getGlobalVar( 'number_decimals' ),
+			decimal: Give.fn.getGlobalVar( 'decimal_separator' ),
+			thousand: Give.fn.getGlobalVar( 'thousands_separator' ),
+		}; // Object argument required to format the amount.
+
+	/**
+	 * Logic to show Currency Preview.
+	 *
+	 * The variables above are part of the below code which should lie outside the code below.
+	 */
+	$( '#number_decimals, #decimal_separator, #thousands_separator, #currency_position, #currency' ).on( 'input blur change', function( e ) {
+		let preview     = $( '#currency_preview' ),
+		    dSeparator  = $( '#decimal_separator' ),
+		    tSeparator  = $( '#thousands_separator' ),
+		    targetName  = e.target.name,
+		    targetValue = e.target.value;
+
+		/**
+		 * Sets the precision (number of decimals) for the formatted amount.
+		 *
+		 */
+		if ( 'number_decimals' === targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
+			if ( ( ! targetValue || isNaN( targetValue ) ) && 'blur' === e.type ) {
+				e.target.value = Give.fn.getGlobalVar( 'number_decimals' );
+			}
+			/**
+			 * Checks if the input is a number, will set to '0' if otherwise or
+			 * if the input is left empty.
+			 */
+			formatterArgs.precision = isNaN( parseInt( targetValue ) ) ? Give.fn.getGlobalVar( 'number_decimals' ) : parseInt( targetValue );
+		}
+
+		/**
+		 * The next 2 sections are for the decimal separator and thousand separator.
+		 * if the decimal separator === thousand separator, then the values are swapped.
+		 */
+		if ( 'decimal_separator' === targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
+			if ( ! targetValue && 'blur' === e.type ) {
+				e.target.value = dTemp;
+			}
+			formatterArgs.decimal = targetValue;
+			/**
+			 * Logic for swapping decimal separator with thousand separator if both
+			 * are the same value.
+			 */
+			if ( formatterArgs.hasOwnProperty( 'thousand' ) && 'input' === e.type ) {
+				if ( formatterArgs.decimal === formatterArgs.thousand ) {
+					formatterArgs.thousand = dTemp;
+					tSeparator.val( dTemp );
+					dTemp = targetValue;
+					tTemp = tSeparator.val();
+				}
+			} else if ( formatterArgs.decimal === Give.fn.getGlobalVar( 'thousands_separator' ) && 'input' === e.type ) {
+				formatterArgs.thousand = dTemp;
+				tSeparator.val( dTemp );
+				dTemp = targetValue;
+				tTemp = tSeparator.val();
+			}
+		}
+
+		if ( 'thousands_separator' === targetName && ( 'input' === e.type || 'blur' === e.type ) ) {
+			if ( ! targetValue && 'blur' === e.type ) {
+				e.target.value = tTemp;
+			}
+			formatterArgs.thousand = targetValue;
+			/**
+			 * Logic for swapping decimal separator with thousand separator if both
+			 * are the same value.
+			 */
+			if ( formatterArgs.hasOwnProperty( 'decimal' ) && 'input' === e.type ) {
+				if ( formatterArgs.decimal === formatterArgs.thousand ) {
+					formatterArgs.decimal = tTemp;
+					dSeparator.val( tTemp );
+					tTemp = targetValue;
+					dTemp = dSeparator.val();
+				}
+			} else if ( formatterArgs.thousand === Give.fn.getGlobalVar( 'decimal_separator' ) && 'input' === e.type ) {
+				formatterArgs.decimal = tTemp;
+				dSeparator.val( tTemp );
+				tTemp = targetValue;
+				dTemp = dSeparator.val();
+			}
+		}
+
+		/**
+		 * Sets the currency position: Before | After
+		 */
+		if ( 'currency_position' === targetName && 'change' === e.type ) {
+			formatterArgs.position = targetValue;
+		}
+
+		/**
+		 * Sets the currency and the symbol.
+		 */
+		if ( 'currency' === targetName && 'change' === e.type ) {
+			formatterArgs.currency = targetValue;
+			let matched = symbolRegex.exec( e.target[ e.target.selectedIndex ].text );
+			formatterArgs.symbol = matched[1];
+		}
+
+		preview.val( Give.fn.formatCurrency( '123456.12345', formatterArgs, {} ) );
+	});
 });

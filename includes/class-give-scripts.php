@@ -59,8 +59,6 @@ class Give_Scripts {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_admin_scripts' ) );
 			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
-
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
@@ -210,6 +208,7 @@ class Give_Scripts {
 		// Price Separators.
 		$thousand_separator = give_get_price_thousand_separator();
 		$decimal_separator  = give_get_price_decimal_separator();
+		$number_decimals    = give_get_price_decimals();
 
 		// Localize strings & variables for JS.
 		$localized_data = array(
@@ -217,6 +216,7 @@ class Give_Scripts {
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
+			'number_decimals'                   => $number_decimals,
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
 			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
@@ -460,8 +460,6 @@ class Give_Scripts {
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
-		wp_localize_script( 'give-admin-scripts', 'give_global_vars', $localize_give_vars );
-
 	}
 
 	/**
