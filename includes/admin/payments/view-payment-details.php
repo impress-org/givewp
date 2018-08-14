@@ -872,7 +872,14 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 
 									<div class="give-clearfix">
-										<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										<p>
+											<label for="donation_note_type" class="screen-reader-text"><?php _e( 'Note type', 'give' ); ?></label>
+											<select name="donation_note_type" id="donation_note_type">
+												<option value=""><?php _e( 'Private note', 'give' ); ?></option>
+												<option value="donor"><?php _e( 'Note to donor', 'give' ); ?></option>
+											</select>
+											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										</p>
 									</div>
 
 								</div>
