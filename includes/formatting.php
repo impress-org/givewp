@@ -153,19 +153,18 @@ function give_get_price_decimal_separator( $id_or_currency_code = null ) {
 	return apply_filters( 'give_get_price_decimal_separator', $setting['decimal_separator'], $id_or_currency_code );
 }
 
-
 /**
  * Sanitize Amount before saving to database
  *
  * @since      1.8.12
  *
  * @param  int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
- * @param  array|bool       $args   It accepts 'number_decimals', 'trim_zeros', 'currency'.
+ * @param  array|bool $args It accepts 'number_decimals', 'trim_zeros', 'currency'.
  *
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount_for_db( $number, $args = array() ) {
-	$args['number_decimals'] = 6;
+	$args['number_decimals'] = 8;
 
 	return give_maybe_sanitize_amount( $number, $args );
 }

@@ -42,9 +42,9 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 
 	$value = absint( $value );
 
-	if ( 6 <= $value ) {
-		$value = 5;
-		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 5 because you entered a number higher than the maximum allowed.', 'give' ) );
+	if ( 8 <= $value ) {
+		$value = 8;
+		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 8 because you entered a number higher than the maximum allowed.', 'give' ) );
 	}
 
 	return absint( $value );
