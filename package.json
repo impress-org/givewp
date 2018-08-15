@@ -11,7 +11,9 @@
     "watch": "cross-env webpack --watch",
     "lint": "npm run lint:js & npm run lint:scss",
     "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
-    "lint:scss": "stylelint assets/src/**/*.scss"
+    "lint:scss": "stylelint assets/src/**/*.scss",
+    "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
+    "test": "jest -c jest.config.js"
   },
   "repository": {
     "type": "git",
@@ -47,8 +49,11 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.11",
     "imagemin-webpack-plugin": "^1.6.1",
+    "jest": "^23.5.0",
+    "jest-puppeteer": "^3.2.1",
     "node-sass": "^4.9.1",
     "postcss-loader": "^2.1.6",
+    "puppeteer": "^1.7.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.18.2",
     "stylelint-config-wordpress": "^12.0.0",

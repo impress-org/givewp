@@ -19,6 +19,7 @@ matrix:
     dist: precise
 
 before_install:
+  - npm i npm@latest -g
   - echo $TRAVIS_PHP_VERSION
   - chmod +x docker-compose.yml
   - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then docker-compose up -d; fi
@@ -40,6 +41,8 @@ script:
       cd ~/wordpress_data/wp-content/plugins/Give/
       composer install
       npm install
+      npm run dev
+      npm run test
       docker exec give_wordpress_1 wp plugin activate Give
     fi
 
