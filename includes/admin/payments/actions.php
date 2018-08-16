@@ -63,7 +63,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = date( get_option( 'date_format' ), strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
