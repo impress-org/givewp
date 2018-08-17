@@ -379,6 +379,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v215_update_donor_user_roles_callback',
 		)
 	);
+
+	// v2.1.5 Add additional capability to the give_manager role.
+	$give_updates->register(
+		array(
+			'id'       => 'v224_update_donor_meta',
+			'version'  => '2.2.4',
+			'callback' => 'give_v224_update_donor_meta_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2860,4 +2869,39 @@ function give_v220_delete_wp_session_data(){
 	global $wpdb;
 
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '_wp_session_%'" );
+}
+
+
+/**
+ * Update donor meta
+ * Set "_give_anonymous_donor" meta key to "0" if not exist
+ *
+ *
+ * @since 2.2.4
+ */
+function give_v224_update_donor_meta_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
+
+	if ( $donors ) {
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+			$anonymous_metadata = Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor', true );
+
+			// If first name meta of donor is not created, then create it.
+			if ( ! in_array( $anonymous_metadata, array( '0', '1' ) ) ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_anonymous_donor', '0' );
+			}
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v224_update_donor_meta' );
+	}
 }
