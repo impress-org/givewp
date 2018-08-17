@@ -48,7 +48,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @since  1.5
 	 * @var integer
 	 */
-	protected $form_id = null;
+	protected $form_id = 0;
 
 	/**
 	 * Constructor.
