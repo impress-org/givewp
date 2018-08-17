@@ -8,7 +8,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-
+/* globals Give, jQuery */
 jQuery( document ).ready( function ( $ ) {
 
 	/**
@@ -112,7 +112,7 @@ jQuery( document ).ready( function ( $ ) {
 				if ( response ) {
 					output_give_donations_fields( response );
 				} else {
-					alert( give_vars.error_message );
+					alert( Give.fn.getGlobalVar('error_message') );
 				}
 
 				jQuery( document ).trigger( 'give_export_donations_form_response', response );

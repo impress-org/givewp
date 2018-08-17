@@ -6,7 +6,7 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-/* globals give_vars */
+/* globals Give, jQuery */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 // Provided access to global level.
@@ -110,7 +110,7 @@ var give_setting_edit = false;
 		// Date picker.
 		if ( datepicker.length > 0) {
 			datepicker.datepicker({
-				dateFormat: give_vars.date_format
+				dateFormat: Give.fn.getGlobalVar('date_format')
 			});
 		}
 	};
@@ -127,7 +127,7 @@ var give_setting_edit = false;
 
 			// Do something to chosen used in metabox or admin settings.
 			$give_chosen_containers.chosen({
-				no_results_text: give_vars.chosen_add_title_prefix + ' ',
+				no_results_text: Give.fn.getGlobalVar('chosen_add_title_prefix') + ' ',
 				width: '30%'
 			}).on('chosen:no_results', function(evt, data){
 
@@ -160,8 +160,8 @@ var give_setting_edit = false;
 			// Initiate chosen.
 			$give_chosen_containers.chosen({
 				inherit_select_classes: true,
-				placeholder_text_single: give_vars.one_option,
-				placeholder_text_multiple: give_vars.one_or_more_option
+				placeholder_text_single: Give.fn.getGlobalVar('one_option'),
+				placeholder_text_multiple: Give.fn.getGlobalVar('one_or_more_option')
 			});
 
 			// No results returned from search trigger.
@@ -171,9 +171,9 @@ var give_setting_edit = false;
 					error_string = '';
 
 				if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
-					error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+					error_string = Give.fn.getGlobal.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
 				} else {
-					error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+					error_string = Give.fn.getGlobal.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
 				}
 
 				$no_results_li.html(error_string);
@@ -307,11 +307,11 @@ var give_setting_edit = false;
 					var placeholder = '';
 
 					if ('form' === type) {
-						placeholder = give_vars.search_placeholder;
+						placeholder = Give.fn.getGlobalVar('search_placeholder');
 					} else {
 						type = 'search_placeholder_' + type;
-						if (give_vars[type]) {
-							placeholder = give_vars[type];
+						if ( Give.fn.getGlobalVar(type) ) {
+							placeholder = Give.fn.getGlobalVar(type);
 						}
 					}
 					$(this).attr('placeholder', placeholder);
@@ -344,15 +344,13 @@ var give_setting_edit = false;
 	/**
 	 * Unformat Currency
 	 *
-	 * @use string give_vars.currency_decimals Number of decimals
-	 *
 	 * @param   {string}      price Price
 	 * @param   {number|bool} dp    Number of decimals
 	 *
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		price = accounting.unformat( price, Give.fn.getGlobalVar('decimal_separator') ).toString();
 		dp = ('undefined' === dp ? false : dp);
 
 		// Set default value for number of decimals.
@@ -361,7 +359,7 @@ var give_setting_edit = false;
 		} else {
 
 			// If price do not have decimal value then set default number of decimals.
-			price = parseFloat(price).toFixed(give_vars.currency_decimals);
+			price = parseFloat(price).toFixed(Give.fn.getGlobalVar('currency_decimals') );
 		}
 
 		return price;
@@ -384,8 +382,8 @@ var give_setting_edit = false;
 					triggerSelector: '.delete-single-donation',
 					modalWrapper : 'give-modal--warning',
 					modalContent: {
-						title: give_vars.confirm_delete_donation,
-						desc: give_vars.delete_payment
+						title: Give.fn.getGlobalVar('confirm_delete_donation'),
+						desc: Give.fn.getGlobalVar('delete_payment')
 					},
 					successConfirm: function ( args ) {
 						window.location.assign( args.el.attr('href') );
@@ -399,8 +397,8 @@ var give_setting_edit = false;
 				{
 					triggerSelector: '.resend-single-donation-receipt',
 					modalContent: {
-						title: give_vars.confirm_resend,
-						desc: give_vars.resend_receipt
+						title: Give.fn.getGlobalVar('confirm_resend'),
+						desc: Give.fn.getGlobalVar('resend_receipt')
 					},
 					successConfirm: function ( args ) {
 						window.location.assign( args.el.attr('href') );
@@ -518,8 +516,8 @@ var give_setting_edit = false;
 				new GiveConfirmModal(
 					{
 						modalContent: {
-							title: give_vars.confirm_deletion,
-							desc: give_vars.delete_payment_note
+							title: Give.fn.getGlobalVar('confirm_deletion'),
+							desc: Give.fn.getGlobalVar('delete_payment_note')
 						},
 						successConfirm: function ( args ) {
 							var postData = {
@@ -577,8 +575,8 @@ var give_setting_edit = false;
 				new GiveConfirmModal(
 					{
 						modalContent: {
-							title: give_vars.confirm_action,
-							desc: give_vars.resend_receipt,
+							title: Give.fn.getGlobalVar('confirm_action'),
+							desc: Give.fn.getGlobalVar('resend_receipt'),
 						},
 						successConfirm: function () {
 							window.location.assign( $( that ).attr( 'href' ) );
@@ -876,7 +874,7 @@ var give_setting_edit = false;
 			 */
 			success_setting.add(failure_setting).change(function () {
 				if (success_setting.val() === failure_setting.val()) {
-					var notice_html = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
+					var notice_html = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + Give.fn.getGlobalVar('matched_success_failure_page') + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + Give.fn.getGlobalVar('dismiss_notice_text') + '</span></button> </div>',
 						$notice_container = $('#setting-error-give-matched-success-failure-page');
 
 					// Unset setting field.
@@ -914,7 +912,7 @@ var give_setting_edit = false;
 
 			$(window).bind('beforeunload', function (e) {
 
-				var confirmationMessage = give_vars.setting_not_save_message;
+				var confirmationMessage = Give.fn.getGlobalVar('setting_not_save_message');
 
 				if (give_setting_edit) {
 					(e || window.event).returnValue = confirmationMessage; //Gecko + IE.
@@ -1065,21 +1063,21 @@ var give_setting_edit = false;
 				if ('reset-stats' === selected_type) {
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
-					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('reset_stats_warn') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 
 					// Add check when admin try to delete all the test donors.
 				} else if ('delete-test-donors' === selected_type) {
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
-					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_test_donor + '</label></p></div>');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_test_donor') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 					// Add check when admin try to delete all the imported donations.
 				} else if ('delete-import-donors' === selected_type) {
 
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
-					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_import_donor + '</label></p></div>');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_import_donor') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 				} else {
 					forms.hide();
@@ -1126,7 +1124,7 @@ var give_setting_edit = false;
 
 				if (null === selection || 0 === selection) {
 					// Needs to pick a method give_vars.batch_export_no_class.
-					notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_class + '</p></div>');
+					notice_wrap.html('<div class="updated error"><p>' + Give.fn.getGlobalVar('batch_export_no_class') + '</p></div>');
 					has_errors = true;
 				}
 
@@ -1135,7 +1133,7 @@ var give_setting_edit = false;
 					var selected_form = $('select[name="form_id"]').val();
 					if (selected_form == 0) {
 						// Needs to pick give_vars.batch_export_no_reqs.
-						notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_reqs + '</p></div>');
+						notice_wrap.html('<div class="updated error"><p>' + Give.fn.getGlobalVar('batch_export_no_reqs') + '</p></div>');
 						has_errors = true;
 					}
 
@@ -1310,7 +1308,7 @@ var give_setting_edit = false;
 
 				if (!$('#give-restart-upgrades').length) {
 					// Start update by ajax if background update does not work.
-					if ( ! give_vars.ajax.length ) {
+					if ( ! Give.fn.getGlobalVar('ajax').length ) {
 						window.setTimeout(Give_Updates.start_db_update, 1000);
 					}
 
@@ -1327,7 +1325,7 @@ var give_setting_edit = false;
 				e.preventDefault();
 
 				$self.el.run_upload_container.find('.notice').remove();
-				$self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
+				$self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + Give.fn.getGlobalVar('db_update_confirmation_msg_button') + '</a> ' + Give.fn.getGlobalVar('db_update_confirmation_msg') + '</p></div>');
 			});
 
 			$('#give-db-updates').on('click', 'a.give-run-update-button', function (e) {
@@ -1360,13 +1358,13 @@ var give_setting_edit = false;
 				data: {
 					action: 'give_run_db_updates',
 					run_db_update: 1,
-					nonce: give_vars.db_update_nonce
+					nonce: Give.fn.getGlobalVar('db_update_nonce')
 				},
 				dataType: 'json',
 				success: function success(response) {}
 			}).always(function(){
 				// Start update by ajax if background update does not work.
-				if ( ! give_vars.ajax.length) {
+				if ( ! Give.fn.getGlobalVar('ajax').length) {
 					window.setTimeout(Give_Updates.start_db_update, 1000);
 				}
 			});
@@ -1434,7 +1432,7 @@ var give_setting_edit = false;
 
 							window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self);
 						} else {
-							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+							notice_wrap.html('<div class="notice notice-error"><p>' + Give.fn.getGlobal().updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
 								$self.el.update_link.removeClass('active').show();
@@ -1504,7 +1502,7 @@ var give_setting_edit = false;
 
 							$self.process_step(parseInt(response.data.step), response.data.update, $self);
 						} else {
-							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+							notice_wrap.html('<div class="notice notice-error"><p>' + Give.fn.getGlobal().updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
 								$self.el.update_link.removeClass('active').show();
@@ -1564,8 +1562,8 @@ var give_setting_edit = false;
 				new GiveConfirmModal(
 					{
 						modalContent: {
-							title: give_vars.confirm_action,
-							desc: give_vars.restart_upgrade,
+							title: Give.fn.getGlobalVar('confirm_action'),
+							desc: Give.fn.getGlobalVar('restart_upgrade'),
 						},
 						successConfirm: function () {
 							window.location.assign( jQuery( that ).data( 'redirect-url' ) );
@@ -1593,8 +1591,8 @@ var give_setting_edit = false;
 				new GiveConfirmModal(
 					{
 						modalContent: {
-							title: give_vars.confirm_action,
-							desc: give_vars.stop_upgrade,
+							title: Give.fn.getGlobalVar('confirm_action'),
+							desc: Give.fn.getGlobalVar('stop_upgrade'),
 						},
 						successConfirm: function () {
 							window.location.assign( jQuery( that ).data( 'redirect-url' ) );
@@ -1619,8 +1617,8 @@ var give_setting_edit = false;
 				new GiveConfirmModal(
 					{
 						modalContent: {
-							title: give_vars.confirm_action,
-							desc: give_vars.restart_update,
+							title: Give.fn.getGlobalVar('confirm_action'),
+							desc: Give.fn.getGlobalVar('restart_update'),
 						},
 						successConfirm: function () {
 							window.location.assign( jQuery( that ).attr( 'href' ) );
@@ -1677,9 +1675,9 @@ var give_setting_edit = false;
 			$('body').on('click', '.give-lock-block', function (e) {
 				new GiveErrorAlert({
 					modalContent:{
-						title: give_vars.unlock_donor_fields_title,
-						desc: give_vars.unlock_donor_fields_message,
-						cancelBtnTitle: give_vars.ok,
+						title: Give.fn.getGlobalVar('unlock_donor_fields_title'),
+						desc: Give.fn.getGlobalVar('unlock_donor_fields_message'),
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 				e.preventDefault();
@@ -1698,7 +1696,7 @@ var give_setting_edit = false;
 			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
-				if (!confirm(give_vars.disconnect_user)) {
+				if (!confirm(Give.fn.getGlobalVar('disconnect_user'))) {
 					return false;
 				}
 
@@ -2074,7 +2072,7 @@ var give_setting_edit = false;
 					var donorId = $(this).val(),
 						donorName = $(this).data('name'),
 						donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
-							'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+							'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar('remove_from_bulk_delete') + '">X</a>' +
 							donorName + '</div>';
 
 					if (selectAll.is(':checked') && !$(this).is(':checked')) {
@@ -2090,7 +2088,7 @@ var give_setting_edit = false;
 				var donorId = $(this).val(),
 					donorName = $(this).data('name'),
 					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
-						'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+						'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar('remove_from_bulk_delete') + '">X</a>' +
 						donorName + '</div>';
 
 				if ($(this).is(':checked')) {
@@ -2133,7 +2131,7 @@ var give_setting_edit = false;
 					bulkDeleteList = $('#give-bulk-donors'),
 					donorName = donorSelector.data('name'),
 					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
-						'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+						'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar('remove_from_bulk_delete') + '">X</a>' +
 						donorName + '</div>';
 
 				// Reset Donors List.
@@ -2161,10 +2159,10 @@ var give_setting_edit = false;
 		handleBulkActions: function (e) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
-				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
-				confirmActionNotice = give_vars.donors_bulk_action.no_donor_selected,
 				paged = $( '#current-page-selector' ).val(),
 				changedPage = ( GiveDonor.onLoadPageNumber === paged ) ? false : true;
+				selectBulkActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_action_selected'),
+				confirmActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_donor_selected');
 
 			$.each($('.donor-selector:checked'), function () {
 				donors.push($(this).val());
@@ -2176,7 +2174,7 @@ var give_setting_edit = false;
 					modalContent:{
 						title: selectBulkActionNotice.title,
 						desc: selectBulkActionNotice.desc,
-						cancelBtnTitle: give_vars.ok,
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 				return false;
@@ -2188,7 +2186,7 @@ var give_setting_edit = false;
 					modalContent:{
 						title: confirmActionNotice.title,
 						desc: confirmActionNotice.desc,
-						cancelBtnTitle: give_vars.ok,
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 
@@ -2215,12 +2213,12 @@ var give_setting_edit = false;
 
 		revoke_api_key: function () {
 			$('body').on('click', '.give-revoke-api-key', function (e) {
-				return confirm(give_vars.revoke_api_key);
+				return confirm(Give.fn.getGlobalVar('revoke_api_key'));
 			});
 		},
 		regenerate_api_key: function () {
 			$('body').on('click', '.give-regenerate-api-key', function (e) {
-				return confirm(give_vars.regenerate_api_key);
+				return confirm(Give.fn.getGlobalVar('regenerate_api_key'));
 			});
 		}
 	};
@@ -2375,8 +2373,8 @@ var give_setting_edit = false;
 				switch ($(this).data('field-type')) {
 					case 'media':
 						$media_modal_config = {
-							title: give_vars.metabox_fields.media.button_title,
-							button: {text: give_vars.metabox_fields.media.button_title},
+							title: Give.fn.getGlobal().metabox_fields.media.button_title,
+							button: {text: Give.fn.getGlobal().metabox_fields.media.button_title},
 							multiple: false, // Set to true to allow multiple files to be selected.
 							library: {type: 'image'}
 						};
@@ -2384,8 +2382,8 @@ var give_setting_edit = false;
 
 					default:
 						$media_modal_config = {
-							title: give_vars.metabox_fields.file.button_title,
-							button: {text: give_vars.metabox_fields.file.button_title},
+							title: Give.fn.getGlobal().metabox_fields.file.button_title,
+							button: {text: Give.fn.getGlobal().metabox_fields.file.button_title},
 							multiple: false
 						};
 				}
@@ -2495,7 +2493,7 @@ var give_setting_edit = false;
 						move: '.give-move',
 						template: '.give-template',
 						confirm_before_remove_row: true,
-						confirm_before_remove_row_text: give_vars.confirm_before_remove_row_text,
+						confirm_before_remove_row_text: Give.fn.getGlobalVar('confirm_before_remove_row_text'),
 						is_sortable: true,
 						before_add: null,
 						after_add: handle_metabox_repeater_field_row_count,
@@ -2964,30 +2962,30 @@ var give_setting_edit = false;
 			if ( '-1' === currentAction && ! changedPage ) {
 				new GiveWarningAlert({
 					modalContent:{
-						title: give_vars.donors_bulk_action.no_action_selected.title,
-						desc: give_vars.donors_bulk_action.no_action_selected.desc,
-						cancelBtnTitle: give_vars.ok,
+						title: Give.fn.getGlobal().donors_bulk_action.no_action_selected.title,
+						desc: Give.fn.getGlobal().donors_bulk_action.no_action_selected.desc,
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 				return false;
 			}
 
-			if (Object.keys(give_vars.donations_bulk_action).length) {
-				for (status in give_vars.donations_bulk_action) {
+			if (Object.keys(Give.fn.getGlobalVar('donations_bulk_action') ).length) {
+				for (status in Give.fn.getGlobalVar('donations_bulk_action')) {
 					if (status === currentAction) {
 
 						// Get status text if current action types is status.
 						confirmActionNotice = isStatusTypeAction ?
-							give_vars.donations_bulk_action[currentAction].zero.replace('{status}', currentActionLabel.replace('Set To ', '')) :
-							give_vars.donations_bulk_action[currentAction].zero;
+							Give.fn.getGlobal().donations_bulk_action[currentAction].zero.replace('{status}', currentActionLabel.replace('Set To ', '')) :
+							Give.fn.getGlobal().donations_bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
 						if (!parseInt($payments)) {
 							new GiveWarningAlert({
 								modalContent:{
-									title: give_vars.donations_bulk_action.titles.zero,
+									title: Give.fn.getGlobal().donations_bulk_action.titles.zero,
 									desc: confirmActionNotice,
-									cancelBtnTitle: give_vars.ok,
+									cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 								}
 							}).render();
 							return false;
@@ -2995,15 +2993,15 @@ var give_setting_edit = false;
 
 						// Get message on basis of payment count.
 						confirmActionNotice = (1 < $payments) ?
-							give_vars.donations_bulk_action[currentAction].multiple :
-							give_vars.donations_bulk_action[currentAction].single;
+							Give.fn.getGlobal().donations_bulk_action[currentAction].multiple :
+							Give.fn.getGlobal().donations_bulk_action[currentAction].single;
 
 						e.preventDefault();
 
 						new GiveConfirmModal(
 							{
 								modalContent: {
-									title: give_vars.confirm_bulk_action,
+									title: Give.fn.getGlobalVar('confirm_bulk_action'),
 									desc: confirmActionNotice
 										.replace('{payment_count}', $payments)
 										.replace('{status}', currentActionLabel.replace('Set To ', ''))
@@ -3095,8 +3093,8 @@ var give_setting_edit = false;
 		});
 
 		var $poststuff = $('#poststuff'),
-			thousand_separator = give_vars.thousands_separator,
-			decimal_separator = give_vars.decimal_separator,
+			thousand_separator = Give.fn.getGlobalVar('thousands_separator'),
+			decimal_separator = Give.fn.getGlobalVar('decimal_separator'),
 			thousand_separator_count = '',
 			alphabet_count = '',
 			price_string = '',
@@ -3108,7 +3106,7 @@ var give_setting_edit = false;
 		// Check & show message on keyup event.
 		$poststuff.on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			var tootltip_setting = {
-				label: give_vars.price_format_guide.trim()
+				label: Give.fn.getGlobalVar('price_format_guide').trim()
 			};
 
 			// Count thousand separator in price string.
@@ -3132,7 +3130,7 @@ var give_setting_edit = false;
 		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
 
-			$(this).giveHintCss( 'hide', { label: give_vars.price_format_guide.trim() } );
+			$(this).giveHintCss( 'hide', { label: Give.fn.getGlobalVar('price_format_guide').trim() } );
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
