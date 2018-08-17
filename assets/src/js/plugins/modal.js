@@ -2,7 +2,7 @@
  * This API is under development, so do not use this in production.
  * We will open this API for use after some testing (coming releases).
  */
-/* globals give_vars, jQuery */
+/* globals Give, jQuery */
 import 'magnific-popup';
 import './dynamicListener.js';
 
@@ -65,12 +65,12 @@ class GiveModal {
 					${ ( 'form' === this.config.type ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }">${ this.config.modalContent.link_text }</a>` : '' }
 
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? give_vars.cancel : give_vars.close ) }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar('cancel') : Give.fn.getGlobalVar('close') ) }
 					</button>
 
 					${ ( 'confirm' !== this.config.type && 'form' !== this.config.type ) ? '' : `<button class="give-button give-button--primary give-popup-${ this.config.type }-button">
 
-						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : give_vars.confirm }
+						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : Give.fn.getGlobalVar('confirm') }
 					</button>` }
 				</div>
 				

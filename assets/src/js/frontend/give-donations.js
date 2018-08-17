@@ -1,4 +1,4 @@
-/* globals jQuery, Give, give_global_vars */
+/* globals jQuery, Give */
 jQuery( function( $ ) {
 
 	var $forms = jQuery( 'form.give-form' ),
@@ -24,7 +24,7 @@ jQuery( function( $ ) {
 		if ( 'card_state' !== $this.attr( 'id' ) ) {
 
 			//Disable the State field until updated
-			$form.find( '#card_state' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
+			$form.find( '#card_state' ).empty().append( '<option value="1">' + Give.fn.getGlobalVar('general_loading') + '</option>' ).prop( 'disabled', true );
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
@@ -36,7 +36,7 @@ jQuery( function( $ ) {
 			$.ajax( {
 				type: 'POST',
 				data: postData,
-				url: give_global_vars.ajaxurl,
+				url: Give.fn.getGlobalVar('ajaxurl'),
 				xhrFields: {
 					withCredentials: true
 				},
