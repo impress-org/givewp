@@ -1695,7 +1695,7 @@ var give_setting_edit = false;
 			this.delete_checked();
 			this.addressesAction();
 			this.bulkDeleteDonor();
-			GiveDonor.onLoadPageNumber = $( '#current-page-selector' ).val(),
+			GiveDonor.onLoadPageNumber = $( '#current-page-selector' ).val();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
 		},
 
@@ -2190,14 +2190,21 @@ var give_setting_edit = false;
 				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
 				confirmActionNotice = give_vars.donors_bulk_action.no_donor_selected,
 				paged = $( '#current-page-selector' ).val(),
-				changedPage = ( GiveDonor.onLoadPageNumber === paged ) ? false : true;
+				changedPage = ( GiveDonor.onLoadPageNumber !== paged ),
+				selectBulkActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_action_selected'),
+				confirmActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_donor_selected');
+
+			// Bailout.
+			if( changedPage ){
+				return true;
+			}
 
 			$.each($('.donor-selector:checked'), function () {
 				donors.push($(this).val());
 			});
 
 			// If there is no bulk action selected then show an alert message.
-			if ( '-1' === currentAction && ! changedPage ) {
+			if ( '-1' === currentAction ) {
 				new GiveWarningAlert({
 					modalContent:{
 						title: selectBulkActionNotice.title,
@@ -2209,7 +2216,7 @@ var give_setting_edit = false;
 			}
 
 			// If there is no donor selected then show an alert.
-			if ( ! parseInt( donors ) && ! changedPage ) {
+			if ( ! parseInt( donors ) ) {
 				new GiveWarningAlert({
 					modalContent:{
 						title: confirmActionNotice.title,
@@ -2968,7 +2975,7 @@ var give_setting_edit = false;
 		onLoadPageNumber: '',
 
 		init: function () {
-			GivePaymentHistory.onLoadPageNumber = $( '#current-page-selector' ).val(),
+			GivePaymentHistory.onLoadPageNumber = $( '#current-page-selector' ).val();
 			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
@@ -2980,14 +2987,19 @@ var give_setting_edit = false;
 				confirmActionNotice = '',
 				status = '',
 				paged = $( '#current-page-selector' ).val(),
-				changedPage = ( GivePaymentHistory.onLoadPageNumber === paged ) ? false : true;
+				changedPage = ( GivePaymentHistory.onLoadPageNumber !== paged );
+
+			// Bailout.
+			if( changedPage ) {
+				return true;
+			}
 
 			// Set common action, if action type is status.
 			currentAction = isStatusTypeAction ?
 				'set-to-status' :
 				currentAction;
 
-			if ( '-1' === currentAction && ! changedPage ) {
+			if ( '-1' === currentAction ) {
 				new GiveWarningAlert({
 					modalContent:{
 						title: Give.fn.getGlobal().donors_bulk_action.no_action_selected.title,
