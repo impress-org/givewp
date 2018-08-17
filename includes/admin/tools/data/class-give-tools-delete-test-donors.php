@@ -448,7 +448,6 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		return $this->get_option( $this->step_on_key, false );
 	}
 
-
 	/**
 	 * Unset the properties specific to the donors export.
 	 *
@@ -465,10 +464,10 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->delete_option( $this->donor_key );
 
 			// Delete all the step and set to 'count' which if the first step in the process of deleting the donors.
-			$this->delete_option( $this->step_key, 'count' );
+			$this->delete_option( $this->step_key );
 
 			// Delete tha page count of the step.
-			$this->delete_option( $this->step_on_key, '0' );
+			$this->delete_option( $this->step_on_key );
 		}
 	}
 }
