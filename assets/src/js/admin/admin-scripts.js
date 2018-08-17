@@ -1655,6 +1655,7 @@ var give_setting_edit = false;
 	 * Donor management screen JS
 	 */
 	var GiveDonor = {
+		onLoadPageNumber: '',
 
 		init: function () {
 			this.unlockDonorFields();
@@ -1666,6 +1667,7 @@ var give_setting_edit = false;
 			this.delete_checked();
 			this.addressesAction();
 			this.bulkDeleteDonor();
+			GiveDonor.onLoadPageNumber = $( '#current-page-selector' ).val();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
 		},
 
@@ -2157,8 +2159,15 @@ var give_setting_edit = false;
 		handleBulkActions: function (e) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
+				paged = $( '#current-page-selector' ).val(),
+				changedPage = ( GiveDonor.onLoadPageNumber !== paged ),
 				selectBulkActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_action_selected'),
 				confirmActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_donor_selected');
+
+			// Bailout.
+			if( changedPage ){
+				return true;
+			}
 
 			$.each($('.donor-selector:checked'), function () {
 				donors.push($(this).val());
@@ -2932,7 +2941,11 @@ var give_setting_edit = false;
 	 * Payment history listing page js
 	 */
 	var GivePaymentHistory = {
+
+		onLoadPageNumber: '',
+
 		init: function () {
+			GivePaymentHistory.onLoadPageNumber = $( '#current-page-selector' ).val();
 			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
@@ -2942,7 +2955,14 @@ var give_setting_edit = false;
 				$payments = $('input[name="payment[]"]:checked').length,
 				isStatusTypeAction = (-1 !== currentAction.indexOf('set-status-')),
 				confirmActionNotice = '',
-				status = '';
+				status = '',
+				paged = $( '#current-page-selector' ).val(),
+				changedPage = ( GivePaymentHistory.onLoadPageNumber !== paged );
+
+			// Bailout.
+			if( changedPage ) {
+				return true;
+			}
 
 			// Set common action, if action type is status.
 			currentAction = isStatusTypeAction ?
