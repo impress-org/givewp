@@ -2883,13 +2883,17 @@ function give_v224_update_donor_meta_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
+	$donor_count = Give()->donors->get_donors( array(
+		'number' => -1,
+	) );
+
 	$donors = Give()->donors->get_donors( array(
 		'paged'  => $give_updates->step,
 		'number' => 100,
 	) );
 
 	if ( $donors ) {
-		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
+		$give_updates->set_percentage( $donor_count, $give_updates->step * 100 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
 			$anonymous_metadata = Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor', true );
