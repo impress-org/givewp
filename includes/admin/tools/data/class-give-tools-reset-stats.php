@@ -384,4 +384,19 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		) );
 	}
 
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if ( $export->done ) {
+			// Delete all the donation ids.
+			$this->delete_data( 'give_temp_reset_ids' );
+		}
+	}
+
 }
