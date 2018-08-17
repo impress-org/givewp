@@ -2883,7 +2883,7 @@ function give_v224_update_donor_meta_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$donor_count = Give()->donors->get_donors( array(
+	$donor_count = Give()->donors->count( array(
 		'number' => -1,
 	) );
 
