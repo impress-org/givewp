@@ -1,4 +1,4 @@
-/* globals give_vars, ajaxurl */
+/* globals Give */
 
 import { GiveFormModal } from '../plugins/modal';
 
@@ -24,7 +24,7 @@ class GiveDeactivationSurvey {
 		window.deactivationLink = e.target.href;
 
 		jQuery.ajax( {
-			url: ajaxurl,
+			url: Give.fn.getGlobalVar('ajaxurl'),
 			type: 'POST',
 			data: {
 				action: 'give_deactivation_popup',
@@ -37,10 +37,10 @@ class GiveDeactivationSurvey {
 
 				modalContent: {
 					desc: response.html,
-					cancelBtnTitle: give_vars.cancel,
-					confirmBtnTitle: give_vars.submit_and_deactivate,
+					cancelBtnTitle: Give.fn.getGlobalVar('cancel'),
+					confirmBtnTitle: Give.fn.getGlobalVar('submit_and_deactivate'),
 					link: window.deactivationLink,
-					link_text: give_vars.skip_and_deactivate,
+					link_text: Give.fn.getGlobalVar('skip_and_deactivate'),
 				},
 
 				successConfirm: function() {
@@ -58,7 +58,7 @@ class GiveDeactivationSurvey {
 					if ( 0 === checkedRadio.length && 0 === deactivationError.length ) {
 						surveyForm[ 0 ].innerHTML += `
 							<div class="notice notice-error deactivation-error">
-								${ give_vars.deactivation_no_option_selected }
+								${ Give.fn.getGlobalVar('deactivation_no_option_selected') }
 							</div>
 						`;
 
@@ -80,7 +80,7 @@ class GiveDeactivationSurvey {
 							const errorNode = document.createElement( 'div' );
 							errorNode.setAttribute( 'class', 'notice notice-error deactivation-error' );
 
-							const textNode = document.createTextNode( give_vars.please_fill_field );
+							const textNode = document.createTextNode( Give.fn.getGlobalVar('please_fill_field') );
 
 							errorNode.appendChild( textNode );
 							surveyForm[ 0 ].appendChild( errorNode );
@@ -107,7 +107,7 @@ class GiveDeactivationSurvey {
 							data: {
 								action: 'deactivation_form_submit',
 								'form-data': formData,
-								nonce: give_vars.nonce,
+								nonce: Give.fn.getGlobalVar('nonce'),
 							},
 							beforeSend: function() {
 								const spinner = document.querySelectorAll( '.give-modal__controls .spinner' );

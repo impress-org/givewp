@@ -9,7 +9,7 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* globals Give */
+/* globals Give, jQuery */
 jQuery(document).ready(function ($) {
 
 	/**
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 			currency_sign = currency_text.split( '(' ).pop().split( ')' ).shift();
 
 		if ( '' === currency_sign ) {
-			currency_sign = give_vars.currency_sign;
+			currency_sign = Give.fn.getGlobalVar('currency_sign');
 		}
 
 		let before_text = $( give_settings_position ).data( 'before-template' );
@@ -161,17 +161,17 @@ jQuery(document).ready(function ($) {
 			if ( response.success ) {
 				new Give.modal.GiveSuccessAlert({
 					modalContent:{
-						title: give_vars.flush_success,
+						title: Give.fn.getGlobalVar('flush_success'),
 						desc: response.data.message,
-						cancelBtnTitle: give_vars.ok,
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 			} else {
 				new Give.modal.GiveErrorAlert({
 					modalContent:{
-						title: give_vars.flush_error,
+						title: Give.fn.getGlobalVar('flush_error'),
 						desc: response.data.message,
-						cancelBtnTitle: give_vars.ok,
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 			}
