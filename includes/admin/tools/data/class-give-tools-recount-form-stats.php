@@ -90,7 +90,6 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			'number'     => $this->per_step,
 			'status'     => $accepted_statuses,
 			'paged'      => $this->step,
-			'fields'     => 'ids',
 		) );
 
 		$payments = new Give_Payments_Query( $args );
