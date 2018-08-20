@@ -190,7 +190,6 @@ class Give_Scripts {
 			'submit_and_deactivate'           => __( 'Submit and Deactivate', 'give' ),
 			'skip_and_deactivate'             => __( 'Skip & Deactivate', 'give' ),
 			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
-			'ajaxurl'                         => give_get_ajax_url(),
 
 		);
 
