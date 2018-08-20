@@ -209,7 +209,11 @@ class Give_Notices {
 			return;
 		}
 
-		if ( give_is_gutenberg_editor() ) {
+		// Do not render notice on Gutenberg editor page.
+		if (
+			function_exists('is_gutenberg_page')
+			&& is_gutenberg_page()
+		) {
 			return;
 		}
 
