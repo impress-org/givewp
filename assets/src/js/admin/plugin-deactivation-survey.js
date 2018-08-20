@@ -24,12 +24,12 @@ class GiveDeactivationSurvey {
 		window.deactivationLink = e.target.href;
 
 		jQuery.ajax( {
-			url: Give.fn.getGlobalVar('ajaxurl'),
+			url: give_vars.ajaxurl,
 			type: 'POST',
 			data: {
 				action: 'give_deactivation_popup',
 			},
-		} ).done( function( response ) {
+		} ).done( function ( response ) {
 			new GiveFormModal( {
 				classes: {
 					modalWrapper: 'deactivation-survey-wrap',
@@ -37,13 +37,13 @@ class GiveDeactivationSurvey {
 
 				modalContent: {
 					desc: response.html,
-					cancelBtnTitle: Give.fn.getGlobalVar('cancel'),
-					confirmBtnTitle: Give.fn.getGlobalVar('submit_and_deactivate'),
+					cancelBtnTitle: give_vars.cancel,
+					confirmBtnTitle: give_vars.submit_and_deactivate,
 					link: window.deactivationLink,
-					link_text: Give.fn.getGlobalVar('skip_and_deactivate'),
+					link_text: give_vars.skip_and_deactivate,
 				},
 
-				successConfirm: function() {
+				successConfirm: function () {
 					// Deactivation Error admin notice.
 					const deactivationError = document.querySelectorAll( '.deactivation-error' );
 					const checkedRadio = document.querySelectorAll( 'input[name="give-survey-radios"]:checked' );
@@ -56,9 +56,9 @@ class GiveDeactivationSurvey {
 
 					// If no radio button is selected then throw error.
 					if ( 0 === checkedRadio.length && 0 === deactivationError.length ) {
-						surveyForm[ 0 ].innerHTML += `
+						surveyForm[0].innerHTML += `
 							<div class="notice notice-error deactivation-error">
-								${ Give.fn.getGlobalVar('deactivation_no_option_selected') }
+								${ Give.fn.getGlobalVar( 'deactivation_no_option_selected' ) }
 							</div>
 						`;
 
@@ -70,25 +70,25 @@ class GiveDeactivationSurvey {
 					 */
 					let userReasonField = '';
 
-					if ( checkedRadio.length > 0 && null !== checkedRadio[ 0 ].parentNode.nextElementSibling ) {
-						userReasonField = checkedRadio[ 0 ]
+					if ( checkedRadio.length > 0 && null !== checkedRadio[0].parentNode.nextElementSibling ) {
+						userReasonField = checkedRadio[0]
 							.parentNode
 							.nextElementSibling
 							.querySelectorAll( 'input, textarea' );
 
-						if ( 0 < userReasonField.length && ! userReasonField[ 0 ].value && 0 === deactivationError.length ) {
+						if ( 0 < userReasonField.length && ! userReasonField[0].value && 0 === deactivationError.length ) {
 							const errorNode = document.createElement( 'div' );
 							errorNode.setAttribute( 'class', 'notice notice-error deactivation-error' );
 
-							const textNode = document.createTextNode( Give.fn.getGlobalVar('please_fill_field') );
+							const textNode = document.createTextNode( give_vars.please_fill_field );
 
 							errorNode.appendChild( textNode );
-							surveyForm[ 0 ].appendChild( errorNode );
+							surveyForm[0].appendChild( errorNode );
 
 							continueFlag = false;
-						} else if ( 0 < userReasonField.length && userReasonField[ 0 ].value ) {
+						} else if ( 0 < userReasonField.length && userReasonField[0].value ) {
 							if ( 0 !== deactivationError.length ) {
-								deactivationError[ 0 ].parentNode.removeChild( deactivationError[ 0 ] );
+								deactivationError[0].parentNode.removeChild( deactivationError[0] );
 								continueFlag = true;
 							}
 						}
@@ -107,13 +107,13 @@ class GiveDeactivationSurvey {
 							data: {
 								action: 'deactivation_form_submit',
 								'form-data': formData,
-								nonce: Give.fn.getGlobalVar('nonce'),
+								nonce: give_vars.nonce,
 							},
-							beforeSend: function() {
+							beforeSend: function () {
 								const spinner = document.querySelectorAll( '.give-modal__controls .spinner' );
-								spinner[ 0 ].style.display = 'block';
+								spinner[0].style.display = 'block';
 							},
-						} ).done( function( responseFromSubmit ) {
+						} ).done( function ( responseFromSubmit ) {
 							if ( responseFromSubmit.success ) {
 								if ( responseFromSubmit.data.delete_data ) {
 									GiveDeactivationSurvey.deleteAllData( 1, formData );

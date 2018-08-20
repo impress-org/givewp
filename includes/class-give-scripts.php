@@ -193,6 +193,7 @@ class Give_Scripts {
 			'ajaxurl'                         => give_get_ajax_url(),
 
 		);
+
 		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
