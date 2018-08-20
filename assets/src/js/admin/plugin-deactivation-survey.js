@@ -24,7 +24,7 @@ class GiveDeactivationSurvey {
 		window.deactivationLink = e.target.href;
 
 		jQuery.ajax( {
-			url: give_vars.ajaxurl,
+			url: ajaxurl,
 			type: 'POST',
 			data: {
 				action: 'give_deactivation_popup',
@@ -58,7 +58,7 @@ class GiveDeactivationSurvey {
 					if ( 0 === checkedRadio.length && 0 === deactivationError.length ) {
 						surveyForm[0].innerHTML += `
 							<div class="notice notice-error deactivation-error">
-								${ Give.fn.getGlobalVar( 'deactivation_no_option_selected' ) }
+								${ give_vars.deactivation_no_option_selected }
 							</div>
 						`;
 
