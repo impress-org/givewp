@@ -451,9 +451,9 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
-															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' ) : '' ),
+															'show_option_none' => ( '' === $payment->price_id ? __( 'None', 'give' ) : '' ),
 															'select_atts'      => 'data-prices=' . esc_attr( wp_json_encode( $prices_atts ) ),
-															'selected'         => $payment_meta['price_id'],
+															'selected'         => $payment->price_id,
 														);
 														// Render variable prices select tag html.
 														give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
