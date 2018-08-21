@@ -2187,8 +2187,6 @@ var give_setting_edit = false;
 		handleBulkActions: function (e) {
 			var currentAction = $(this).closest('.tablenav').find('select').val(),
 				donors = [],
-				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
-				confirmActionNotice = give_vars.donors_bulk_action.no_donor_selected,
 				paged = $( '#current-page-selector' ).val(),
 				changedPage = ( GiveDonor.onLoadPageNumber !== paged ),
 				selectBulkActionNotice = Give.fn.getGlobalVar('donors_bulk_action.no_action_selected'),
