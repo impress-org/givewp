@@ -173,14 +173,11 @@ class Give_Scripts {
 		$this->admin_localize_scripts();
 	}
 
-
 	/**
 	 * Load admin plugin page related scripts, styles andd localize param
 	 *
-	 *
 	 * @since  2.2.0
 	 * @access private
-	 *
 	 */
 	private function plugin_equeue_scripts() {
 		wp_enqueue_style( 'plugin-deactivation-survey-css' );
@@ -195,6 +192,7 @@ class Give_Scripts {
 			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
 
 		);
+
 		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
