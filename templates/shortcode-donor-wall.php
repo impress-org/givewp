@@ -14,21 +14,34 @@ $donor = new Give_Donor( $donor->id );
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
+$is_anonymous  = false;
 ?>
 
 <div class="give-grid__item">
 	<div class="give-donor">
 		<div class="give-donor__header">
 			<?php
+			if ( 0 != $atts['form_id'] ) {
+				$form_list = Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor_forms', true );
+
+				if ( is_string( $form_list ) && empty( $form_list ) ) {
+					$form_list = array();
+				}
+
+				if ( in_array( $atts['form_id'], $form_list ) ) {
+					$is_anonymous = true;
+				}
+			}
+
 			// Maybe display the Avatar.
 			if ( true === $atts['show_avatar'] ) {
-				echo give_get_donor_avatar( $donor );
+				echo $is_anonymous ? sprintf( '<div class="give-donor__image">%s</div>', get_avatar( 'user@example.com' ) ) : give_get_donor_avatar( $donor );
 			}
 			?>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
-					<h3 class="give-donor__name"><?php esc_html_e( $donor->name ); ?></h3>
+					<h3 class="give-donor__name"><?php $is_anonymous ? esc_html_e( 'Anonymous', 'give' ) : esc_html_e( $donor->name ); ?></h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
@@ -41,8 +54,9 @@ $atts          = $args[2]; // Shortcode attributes.
 						if ( ! empty( $atts['form_id'] ) ) {
 							$donated_amount = Give_Donor_Stats::donated(
 								array(
-									'donor'      => $donor->id,
-									'give_forms' => $atts['form_id']
+									'donor'          => $donor->id,
+									'give_forms'     => $atts['form_id'],
+									'show_anonymous' => true,
 								)
 							);
 						}

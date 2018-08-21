@@ -243,15 +243,18 @@ class Give_Donor_Wall {
 			'paged'      => $atts['paged'],
 			'orderby'    => $atts['orderby'],
 			'order'      => $atts['order'],
-			'meta_query' => array(
+		);
+
+		if ( 0 == $atts['form_id'] ) {
+			$donor_args['meta_query'] = array(
 				// Hide anonymous donor.
 				array(
-					'key'   => '_give_anonymous_donor',
-					'value' => '1',
+					'key'     => '_give_anonymous_donor',
+					'value'   => '1',
 					'compare' => '!='
 				)
-			),
-		);
+			);
+		}
 
 		// Hide donors with zero donation amount.
 		if ( $atts['hide_empty'] ) {
