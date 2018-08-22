@@ -26,4 +26,22 @@ class Tests_Upgrades extends Give_Unit_Test_Case {
 
 	}
 
+
+	/**
+	 * Test: all db upgrade must be auto complete on fresh install
+	 *
+	 * @since 2.2.4
+	 */
+	public function test_auto_complete_update_on_fresh_install(){
+		$give_updates = Give_Updates::get_instance();
+
+		// Fire action to register db updates.
+		do_action('give_register_updates', $give_updates );
+
+
+		$completed_updates = array_unique( get_option('give_completed_upgrades') );
+		$registered_updates = Give_Updates::get_instance()->get_update_ids();
+
+		$this->assertFalse( (bool) count( array_diff( $registered_updates, $completed_updates ) ) );
+	}
 }
