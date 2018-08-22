@@ -21,7 +21,7 @@ $is_anonymous  = false;
 	<div class="give-donor">
 		<div class="give-donor__header">
 			<?php
-			if ( 0 != $atts['form_id'] ) {
+			if ( '0' !== $atts['form_id'] ) {
 				$form_list = Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor_forms', true );
 
 				if ( is_string( $form_list ) && empty( $form_list ) ) {

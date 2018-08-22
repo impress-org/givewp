@@ -388,6 +388,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v224_update_donor_meta_callback',
 		)
 	);
+
+	// v2.2.4 Associate form IDs with donor meta of anonymous donations.
+	$give_updates->register(
+		array(
+			'id'       => 'v224_update_donor_meta_forms_id',
+			'version'  => '2.2.4',
+			'callback' => 'give_v224_update_donor_meta_forms_id_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2908,4 +2917,49 @@ function give_v224_update_donor_meta_callback() {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v224_update_donor_meta' );
 	}
+}
+
+function give_v224_update_donor_meta_forms_id_callback() {
+	$give_updates = Give_Updates::get_instance();
+
+	$donations = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $donations->have_posts() ) {
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
+
+		while ( $donations->have_posts() ) {
+			$donations->the_post();
+
+			$form_id    = give_get_meta( get_the_ID(), '_give_payment_form_id', true );
+			$donor_id   = give_get_meta( get_the_ID(), '_give_payment_donor_id', true );
+			$anon       = give_get_meta( get_the_ID(), '_give_anonymous_donation', true );
+			$donor_meta = Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
+
+			if ( '1' === $anon ) {
+				if ( is_string( $donor_meta ) && empty( $donor_meta ) ) {
+					$donor_meta = array();
+				}
+
+				if ( ! in_array( $form_id, $donor_meta ) ) {
+					$donor_meta[] = $form_id;
+					Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
+				}
+			} else {
+				if ( is_string( $donor_meta ) && empty( $donor_meta ) ) {
+					Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', array() );
+				}
+			}
+		}
+
+		wp_reset_postdata();
+	}
+
+	give_set_upgrade_complete( 'v224_update_donor_meta_forms_id' );
 }
