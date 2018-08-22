@@ -1,3 +1,4 @@
+/* globals Give, jQuery */
 export default {
 	fn: {
 		/**

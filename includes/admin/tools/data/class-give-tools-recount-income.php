@@ -78,7 +78,6 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			'number' => $this->per_step,
 			'page'   => $this->step,
 			'status' => $accepted_statuses,
-			'fields' => 'ids'
 		) );
 
 		$payments = give_get_payments( $args );

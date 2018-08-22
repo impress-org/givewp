@@ -451,9 +451,9 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
-															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' ) : '' ),
+															'show_option_none' => ( '' === $payment->price_id ? __( 'None', 'give' ) : '' ),
 															'select_atts'      => 'data-prices=' . esc_attr( wp_json_encode( $prices_atts ) ),
-															'selected'         => $payment_meta['price_id'],
+															'selected'         => $payment->price_id,
 														);
 														// Render variable prices select tag html.
 														give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
@@ -872,7 +872,14 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 
 									<div class="give-clearfix">
-										<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										<p>
+											<label for="donation_note_type" class="screen-reader-text"><?php _e( 'Note type', 'give' ); ?></label>
+											<select name="donation_note_type" id="donation_note_type">
+												<option value=""><?php _e( 'Private note', 'give' ); ?></option>
+												<option value="donor"><?php _e( 'Note to donor', 'give' ); ?></option>
+											</select>
+											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										</p>
 									</div>
 
 								</div>

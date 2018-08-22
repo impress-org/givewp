@@ -146,6 +146,7 @@ function give_run_install() {
 			'v213_delete_donation_meta',
 			'v215_update_donor_user_roles',
 			'v220_rename_donation_meta_type',
+			'v224_update_donor_meta'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
