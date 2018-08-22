@@ -29,11 +29,7 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor', $is_anonymous_donation );
 
 	if ( $is_anonymous_donation ) {
-		$donor_meta = Give()->donor_meta->get_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor_forms', true );
-
-		if ( is_string( $donor_meta ) && empty( $donor_meta ) ) {
-			$donor_meta = array();
-		}
+		$donor_meta = (array) Give()->donor_meta->get_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor_forms', true );
 
 		if ( ! in_array( $donation_data['give_form_id'], $donor_meta ) ) {
 			$donor_meta[] = $donation_data['give_form_id'];
