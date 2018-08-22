@@ -505,7 +505,6 @@ var give_setting_edit = false;
 						note: noteContainer.val(),
 						type: noteTypeContainer.val()
 					};
-
 				if (postData.note) {
 					if( 'donor' === postData.type && give_vars.email_notification.donor_note.status ){
 						// Confirm and save note.
