@@ -2946,30 +2946,20 @@ function give_v224_update_donor_meta_forms_id_callback() {
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
 
-			$form_id    = give_get_meta( get_the_ID(), '_give_payment_form_id', true );
-			$donor_id   = give_get_meta( get_the_ID(), '_give_payment_donor_id', true );
-			$anon       = give_get_meta( get_the_ID(), '_give_anonymous_donation', true );
-			$donor_meta = Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
-
-			if ( '1' === $anon ) {
-				if ( is_string( $donor_meta ) && empty( $donor_meta ) ) {
-					$donor_meta = array();
-				}
+			if ( give_is_anonymous_donation( get_the_ID() ) ) {
+				$form_id    = give_get_meta( get_the_ID(), '_give_payment_form_id', true );
+				$donor_id   = give_get_meta( get_the_ID(), '_give_payment_donor_id', true );
+				$donor_meta = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
 
 				if ( ! in_array( $form_id, $donor_meta ) ) {
 					$donor_meta[] = $form_id;
 					Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
 				}
-			} else {
-				if ( is_string( $donor_meta ) && empty( $donor_meta ) ) {
-					Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', array() );
-				}
 			}
 		}
 
 		wp_reset_postdata();
-	} else{
+	} else {
 		give_set_upgrade_complete( 'v224_update_donor_meta_forms_id' );
 	}
-
 }
