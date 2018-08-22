@@ -2936,7 +2936,7 @@ function give_v224_update_donor_meta_forms_id_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_payment' ),
-			'posts_per_page' => 100,
+			'posts_per_page' => 20,
 		)
 	);
 
