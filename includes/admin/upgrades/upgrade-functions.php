@@ -2968,7 +2968,8 @@ function give_v224_update_donor_meta_forms_id_callback() {
 		}
 
 		wp_reset_postdata();
+	} else{
+		give_set_upgrade_complete( 'v224_update_donor_meta_forms_id' );
 	}
 
-	give_set_upgrade_complete( 'v224_update_donor_meta_forms_id' );
 }
