@@ -395,6 +395,7 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v224_update_donor_meta_forms_id',
 			'version'  => '2.2.4',
 			'callback' => 'give_v224_update_donor_meta_forms_id_callback',
+			'depend'   => 'v224_update_donor_meta',
 		)
 	);
 }
@@ -2919,6 +2920,14 @@ function give_v224_update_donor_meta_callback() {
 	}
 }
 
+
+/**
+ * Update donor meta
+ * Set "_give_anonymous_donor_forms" meta key if not exist
+ *
+ *
+ * @since 2.2.4
+ */
 function give_v224_update_donor_meta_forms_id_callback() {
 	$give_updates = Give_Updates::get_instance();
 
