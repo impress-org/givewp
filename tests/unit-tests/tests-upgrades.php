@@ -39,7 +39,20 @@ class Tests_Upgrades extends Give_Unit_Test_Case {
 		do_action('give_register_updates', $give_updates );
 
 
-		$completed_updates = array_unique( get_option('give_completed_upgrades') );
+		$completed_updates = get_option( 'give_completed_upgrades' );
+
+		// Test_Activation cause of fire 'give_upgrades' action hook multiple time which cause of remove few default updates
+		// add these missing updates to completed updates.
+		$completed_updates = array_unique( array_merge( $completed_updates,
+				array(
+					'v201_upgrades_payment_metadata',
+					'v201_add_missing_donors',
+					'v201_move_metadata_into_new_table',
+					'v201_logs_upgrades',
+				)
+			)
+		);
+
 		$registered_updates = Give_Updates::get_instance()->get_update_ids();
 
 		$this->assertFalse( (bool) count( array_diff( $registered_updates, $completed_updates ) ) );
