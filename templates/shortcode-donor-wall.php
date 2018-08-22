@@ -21,27 +21,38 @@ $is_anonymous  = false;
 	<div class="give-donor">
 		<div class="give-donor__header">
 			<?php
-			if ( '0' !== $atts['form_id'] ) {
-				$form_list = Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor_forms', true );
+			if( true === $atts['show_anonymous'] ) {
+				$is_anonymous = (bool) Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor', true ) ;
 
-				if ( is_string( $form_list ) && empty( $form_list ) ) {
-					$form_list = array();
-				}
+				// Check if donor is anonymous for specific form or not.
+				if ( 0 !== absint( $atts['form_id'] ) ) {
+					// Default value.
+					$is_anonymous  = false;
+					$form_list = (array) Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor_forms', true );
 
-				if ( in_array( $atts['form_id'], $form_list ) ) {
-					$is_anonymous = true;
+					if ( ! empty( $form_list ) && in_array( $atts['form_id'], $form_list ) ) {
+						$is_anonymous = true;
+					}
 				}
 			}
 
 			// Maybe display the Avatar.
 			if ( true === $atts['show_avatar'] ) {
-				echo $is_anonymous ? sprintf( '<div class="give-donor__image">%s</div>', get_avatar( 'user@example.com' ) ) : give_get_donor_avatar( $donor );
+				echo $is_anonymous ?
+					sprintf( '<div class="give-donor__image">%s</div>', get_avatar( 'user@example.com' ) ) :
+					give_get_donor_avatar( $donor );
 			}
 			?>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
-					<h3 class="give-donor__name"><?php $is_anonymous ? esc_html_e( 'Anonymous', 'give' ) : esc_html_e( $donor->name ); ?></h3>
+					<h3 class="give-donor__name">
+						<?php
+						$is_anonymous ?
+							esc_html_e( 'Anonymous', 'give' ) :
+							esc_html_e( $donor->name );
+						?>
+					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
@@ -56,11 +67,11 @@ $is_anonymous  = false;
 								array(
 									'donor'          => $donor->id,
 									'give_forms'     => $atts['form_id'],
-									'show_anonymous' => true,
+									'show_anonymous' => $atts['show_anonymous'],
+									'is_anonymous'   => $is_anonymous,
 								)
 							);
 						}
-
 						echo give_currency_filter( give_format_amount( $donated_amount, array( 'sanitize' => false ) ) );
 						?>
 					</span>
