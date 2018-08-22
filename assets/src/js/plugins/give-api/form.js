@@ -1,3 +1,4 @@
+/* globals Give, jQuery */
 export default {
 	init: function() {
 		this.fn.field.formatCreditCard( jQuery( 'form.give-form' ) );
@@ -346,7 +347,7 @@ export default {
 			Give.form.fn.disable( $form, true );
 
 			//Post via AJAX to Give
-			jQuery.post( give_global_vars.ajaxurl, {
+			jQuery.post( Give.fn.getGlobalVar('ajaxurl'), {
 					action: 'give_donation_form_nonce',
 					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
 				},
@@ -376,7 +377,7 @@ export default {
 			Give.form.fn.disable( $form, true );
 
 			//Post via AJAX to Give
-			jQuery.post( give_global_vars.ajaxurl, {
+			jQuery.post( Give.fn.getGlobalVar('ajaxurl'), {
 					action: 'give_donation_form_reset_all_nonce',
 					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
 				},

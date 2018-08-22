@@ -8,12 +8,12 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* global jQuery, give_global_vars, Give */
+/* globals jQuery, Give */
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
 	if( Give.form.fn.isFormExist() ) {
 		// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
-		const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + give_global_vars.cookie_hash ) && '1' !== give_global_vars.delete_session_nonce_cookie;
+		const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash') ) && '1' !== Give.fn.getGlobalVar('delete_session_nonce_cookie');
 
 		//Hide loading elements
 		$( '.give-loading-text' ).hide();
@@ -56,7 +56,7 @@ jQuery( document ).ready( function( $ ) {
 		// Show the ajax loader
 		loading_animation.show();
 
-		$.post( give_global_vars.ajaxurl, data, function( checkout_response ) {
+		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( checkout_response ) {
 
 			//Clear form HTML and add AJAX response containing fields
 			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
@@ -82,7 +82,7 @@ jQuery( document ).ready( function( $ ) {
 			form_id: $( this_form ).find( '[name="give-form-id"]' ).val()
 		};
 		// AJAX get the payment fields.
-		$.post( give_global_vars.ajaxurl, data, function( checkout_response ) {
+		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( checkout_response ) {
 			//Show fields
 			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
@@ -100,7 +100,7 @@ jQuery( document ).ready( function( $ ) {
 		var complete_purchase_val = $( this ).val();
 		var this_form = $( this ).parents( 'form' );
 
-		$( this ).val( give_global_vars.purchase_loading );
+		$( this ).val( Give.fn.getGlobalVar('purchase_loading') );
 
 		this_form.find( '[id^=give-login-fields] .give-loading-animation' ).fadeIn();
 
@@ -112,7 +112,7 @@ jQuery( document ).ready( function( $ ) {
 			give_form_id: this_form.find( '[name=give-form-id]' ).val()
 		};
 
-		$.post( give_global_vars.ajaxurl, data, function( response ) {
+		$.post( Give.fn.getGlobal('ajaxurl'), data, function( response ) {
 			//user is logged in
 			if ( $.trim( typeof (response.success) ) != undefined && response.success == true && typeof (response.data) != undefined ) {
 
@@ -169,13 +169,13 @@ jQuery( document ).ready( function( $ ) {
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
-			nonce: give_global_vars.ajaxNonce
+			nonce: Give.fn.getGlobalVar('ajaxNonce')
 		};
 
-		$this.text( give_global_vars.loading );
+		$this.text( Give.fn.getGlobalVar('loading') );
 		$this.attr( 'disabled', 'disabled' );
 
-		$.post( give_global_vars.ajaxurl, data, function( response ) {
+		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( response ) {
 			response = JSON.parse( response );
 			if ( 'error' === response.status ) {
 				$this.closest( '#give_user_history tfoot' ).hide();
@@ -229,13 +229,13 @@ jQuery( document ).ready( function( $ ) {
 		var complete_purchase_val = $( this ).val();
 
 		//Update submit button text
-		$( this ).val( give_global_vars.purchase_loading );
+		$( this ).val( Give.fn.getGlobalVar('purchase_loading') );
 
 		// Disable the form donation button.
 		Give.form.fn.disable( this_form, true );
 
 		//Submit form via AJAX
-		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_donation&give_ajax=true', function ( data ) {
+		$.post( Give.fn.getGlobalVar('ajaxurl'), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function ( data ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
@@ -267,7 +267,7 @@ jQuery( document ).ready( function( $ ) {
 
 	if (recieptContainer) {
 		$.ajax({
-			url: give_global_vars.ajax_vars.ajaxurl,
+			url: Give.fn.getGlobalVar('ajaxurl'),
 			method: 'GET',
 			data: {
 				action: 'get_receipt',
@@ -311,7 +311,7 @@ function give_load_gateway( form_object, payment_mode ) {
 	}
 
 	//Post via AJAX to Give
-	jQuery.post( give_global_vars.ajaxurl + '?payment-mode=' + payment_mode, {
+	jQuery.post( Give.fn.getGlobalVar('ajaxurl') + '?payment-mode=' + payment_mode, {
 			action: 'give_load_gateway',
 			give_total: give_total,
 			give_form_id: give_form_id,

@@ -107,7 +107,7 @@ jQuery( function( $ ) {
 										new Give.modal.GiveErrorAlert({
 											modalContent:{
 												desc: required[ id ],
-												cancelBtnTitle: give_vars.ok,
+												cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 											}
 										}).render();
 

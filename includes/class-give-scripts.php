@@ -173,14 +173,11 @@ class Give_Scripts {
 		$this->admin_localize_scripts();
 	}
 
-
 	/**
 	 * Load admin plugin page related scripts, styles andd localize param
 	 *
-	 *
 	 * @since  2.2.0
 	 * @access private
-	 *
 	 */
 	private function plugin_equeue_scripts() {
 		wp_enqueue_style( 'plugin-deactivation-survey-css' );
@@ -195,6 +192,7 @@ class Give_Scripts {
 			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
 
 		);
+
 		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
 
@@ -209,6 +207,7 @@ class Give_Scripts {
 		// Price Separators.
 		$thousand_separator = give_get_price_thousand_separator();
 		$decimal_separator  = give_get_price_decimal_separator();
+		$number_decimals    = give_get_price_decimals();
 
 		// Localize strings & variables for JS.
 		$localized_data = array(
@@ -216,6 +215,7 @@ class Give_Scripts {
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
+			'number_decimals'                   => $number_decimals,
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
 			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
@@ -465,8 +465,6 @@ class Give_Scripts {
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
-		wp_localize_script( 'give-admin-scripts', 'give_global_vars', $localize_give_vars );
-
 	}
 
 	/**
