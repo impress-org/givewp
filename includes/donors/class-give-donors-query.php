@@ -443,7 +443,7 @@ class Give_Donors_Query {
 				unset( $ordersby[$orderby] );
 			}
 
-			$ordersby[ esc_sql( $orderby ) ] = esc_sql( $this->args['order'] );
+			$ordersby[ esc_sql( $orderby ) ] = esc_sql( $order );
 		}
 
 		if( empty( $ordersby ) ) {
