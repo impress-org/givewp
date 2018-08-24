@@ -1,5 +1,5 @@
 /**
- * Block dependencies
+ * Internal dependencies
  */
 import Inspector from '../inspector';
 
@@ -10,7 +10,7 @@ import Inspector from '../inspector';
 const FormGridPreview = ( props ) => {
 	return (
 		<div id="donation-form-grid-preview-block">
-			{ !! props.isSelected && ( <Inspector { ... { ...props } } /> ) }
+			<Inspector { ... { ...props } } />
 			<div dangerouslySetInnerHTML={ { __html: props.html } }></div>
 		</div>
 	);

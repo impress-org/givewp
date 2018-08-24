@@ -256,6 +256,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
 function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args;
+	$payment_key = '';
 
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
@@ -270,18 +271,6 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	if( ! wp_doing_ajax() ) {
-		ob_start();
-		give_get_template_part( 'receipt/placeholder' );
-		$placeholder = ob_get_clean();
-
-		return sprintf(
-			'<div id="give-receipt" data-shortcode="%s">%s</div>',
-			urlencode_deep( wp_json_encode( $atts ) ),
-			$placeholder
-		);
-	}
-
 	// set $session var
 	$session = give_get_purchase_session();
 
@@ -292,6 +281,19 @@ function give_receipt_shortcode( $atts ) {
 		$payment_key = $session['purchase_key'];
 	} elseif ( $give_receipt_args['payment_key'] ) {
 		$payment_key = $give_receipt_args['payment_key'];
+	}
+
+	if( ! wp_doing_ajax() ) {
+		ob_start();
+		give_get_template_part( 'receipt/placeholder' );
+		$placeholder = ob_get_clean();
+
+		return sprintf(
+			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
+			urlencode_deep( wp_json_encode( $atts ) ),
+			$payment_key,
+			$placeholder
+		);
 	}
 
 	$email_access = give_get_option( 'email_access' );

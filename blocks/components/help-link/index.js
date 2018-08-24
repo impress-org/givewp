@@ -1,5 +1,5 @@
 /**
-* Internal dependencies
+* WordPress dependencies
 */
 const { __ } = wp.i18n;
 

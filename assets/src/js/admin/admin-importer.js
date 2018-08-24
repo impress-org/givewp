@@ -7,12 +7,13 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
+/* globals Give, jQuery*/
+
 /**
  * Do not allow user to reload the page
  *
  * @since 1.8.14
  */
-
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
 
 var give_setting_edit = true;
@@ -44,7 +45,7 @@ function give_on_core_settings_import_start() {
 			type: 'POST',
 			url: ajaxurl,
 			data: {
-				action: give_vars.core_settings_import,
+				action: Give.fn.getGlobalVar('core_settings_import'),
 				fields: $form.serialize()
 			},
 			dataType: 'json',
@@ -55,9 +56,9 @@ function give_on_core_settings_import_start() {
 				} else {
 					new GiveErrorAlert({
 						modalContent:{
-							title: give_vars.import_failed,
-							desc: give_vars.error_message,
-							cancelBtnTitle: give_vars.ok,
+							title: Give.fn.getGlobalVar('import_failed'),
+							desc: Give.fn.getGlobalVar('error_message'),
+							cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 						}
 					}).render();
 
@@ -70,9 +71,9 @@ function give_on_core_settings_import_start() {
 
 				new GiveErrorAlert({
 					modalContent:{
-						title: give_vars.import_failed,
-						desc: give_vars.error_message,
-						cancelBtnTitle: give_vars.ok,
+						title: Give.fn.getGlobalVar('import_failed'),
+						desc: Give.fn.getGlobalVar('error_message'),
+						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 					}
 				}).render();
 			}
@@ -157,7 +158,7 @@ function give_on_donation_import_ajax() {
 		type: 'POST',
 		url: ajaxurl,
 		data: {
-			action: give_vars.give_donation_import,
+			action: Give.fn.getGlobalVar('give_donation_import'),
 			total_ajax: total_ajax,
 			current: current,
 			start: start,
@@ -200,9 +201,9 @@ function give_on_donation_import_ajax() {
 
 			new GiveErrorAlert({
 				modalContent:{
-					title: give_vars.import_failed,
-					desc: give_vars.error_message,
-					cancelBtnTitle: give_vars.ok,
+					title: Give.fn.getGlobalVar('import_failed'),
+					desc: Give.fn.getGlobalVar('error_message'),
+					cancelBtnTitle: Give.fn.getGlobalVar('ok'),
 				}
 			}).render();
 		}
