@@ -186,7 +186,7 @@ class Give_Donor_Wall {
 				'show_time'       => true,
 				'show_comments'   => true,
 				'comment_length'  => 20,
-				'only_comments'   => true,
+				'only_comments'   => false,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
 				'avatar_size'     => 60,
@@ -239,10 +239,18 @@ class Give_Donor_Wall {
 	public function get_donor_query_atts( $atts ) {
 		// Set default form query args.
 		$donor_args = array(
-			'number'  => $atts['donors_per_page'],
-			'paged'   => $atts['paged'],
-			'orderby' => $atts['orderby'],
-			'order'   => $atts['order'],
+			'number'     => $atts['donors_per_page'],
+			'paged'      => $atts['paged'],
+			'orderby'    => $atts['orderby'],
+			'order'      => $atts['order'],
+			'meta_query' => array(
+				// Hide anonymous donor.
+				array(
+					'key'   => '_give_anonymous_donor',
+					'value' => '1',
+					'compare' => '!='
+				)
+			),
 		);
 
 		// Hide donors with zero donation amount.
@@ -282,7 +290,8 @@ class Give_Donor_Wall {
 		// Set payment query.
 		// @codingStandardsIgnoreStart
 		if ( true === $atts['only_comments'] ) {
-			$donor_args['meta_query'] = array(
+			$donor_args['meta_query']['relation'] = 'AND';
+			$donor_args['meta_query'][] = array(
 				array(
 					'key'   => '_give_has_comment',
 					'value' => '1',

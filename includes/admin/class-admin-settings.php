@@ -297,7 +297,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$option_value = get_option( $option_name, $default );
 			}
 
-			return $option_value;
+			/**
+			 * Filter the option value
+			 *
+			 * @since 2.2.3
+			 *
+			 * @param mixed  $option_value
+			 * @param string $option_name
+			 * @param string $field_id
+			 * @param mixed  $default
+			 */
+			return apply_filters( 'give_admin_field_get_value', $option_value, $option_name, $field_id, $default );
 		}
 
 		/**

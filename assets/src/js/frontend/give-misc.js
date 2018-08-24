@@ -1,4 +1,4 @@
-/* global jQuery, give_global_vars, Give*/
+/* globals jQuery, Give*/
 
 import FloatLabels from 'float-labels.js';
 
@@ -132,8 +132,8 @@ window.give_open_form_modal = function ( $form_wrap, $form ) {
 
 	//Alls well, open popup!
 	jQuery.magnificPopup.open( {
-		mainClass: give_global_vars.magnific_options.main_class,
-		closeOnBgClick: give_global_vars.magnific_options.close_on_bg_click,
+		mainClass: Give.fn.getGlobal().magnific_options.main_class,
+		closeOnBgClick: Give.fn.getGlobal().magnific_options.close_on_bg_click,
 		fixedContentPos: true,
 		fixedBgPos: true,
 		removalDelay: 250, //delay removal by X to allow out-animation
@@ -224,7 +224,7 @@ window.give_open_form_modal = function ( $form_wrap, $form ) {
 /**
  * Floating Labels Custom Events
  */
-window.give_fl_trigger = function() {
+window.give_fl_trigger = function () {
 	window.give_float_labels = 'undefined' === typeof window.give_float_labels ? {} : window.give_float_labels;
 
 	if ( window.give_float_labels instanceof FloatLabels ) {
@@ -232,7 +232,7 @@ window.give_fl_trigger = function() {
 	}
 	else {
 		window.give_float_labels = new FloatLabels( '.float-labels-enabled', {
-			exclude: '#give-amount, .give-select-level, [multiple]',
+			exclude: '#give-amount, .give-select-level, [multiple], .give-honeypot',
 			prioritize: 'placeholder',
 			prefix: 'give-fl-',
 			style: 'give',
@@ -265,11 +265,11 @@ window.give_change_html5_form_field_validation_message = function() {
 			item = jQuery( item ).get( 0 );
 
 			// Set custom message only if translation exit in give global object.
-			if ( give_global_vars.form_translation.hasOwnProperty( item.name ) ) {
+			if ( Give.fn.getGlobal().form_translation.hasOwnProperty( item.name ) ) {
 				item.oninvalid = function( e ) {
 					e.target.setCustomValidity( '' );
 					if ( ! e.target.validity.valid ) {
-						e.target.setCustomValidity( give_global_vars.form_translation[ item.name ] );
+						e.target.setCustomValidity( Give.fn.getGlobal().form_translation[ item.name ] );
 					}
 				};
 			}
@@ -288,7 +288,7 @@ window.update_profile_state_field = function() {
 	if ( 'give_address_country' === $this.attr( 'id' ) ) {
 
 		//Disable the State field until updated
-		$form.find( '#give_address_state' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
+		$form.find( '#give_address_state' ).empty().append( '<option value="1">' + Give.fn.getGlobalVar('general_loading') + '</option>' ).prop( 'disabled', true );
 
 		// If the country field has changed, we need to update the state/province field
 		var postData = {
@@ -300,7 +300,7 @@ window.update_profile_state_field = function() {
 		jQuery.ajax( {
 			type: 'POST',
 			data: postData,
-			url: give_global_vars.ajaxurl,
+			url: Give.fn.getGlobalVar('ajaxurl'),
 			xhrFields: {
 				withCredentials: true
 			},

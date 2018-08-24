@@ -63,7 +63,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = date( get_option( 'date_format' ), strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
@@ -406,9 +406,9 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
  * AJAX Store Donation Note
  */
 function give_ajax_store_payment_note() {
-
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
+	$note_type  = give_clean( $_POST['type'] );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
@@ -423,6 +423,18 @@ function give_ajax_store_payment_note() {
 	}
 
 	$note_id = give_insert_payment_note( $payment_id, $note );
+
+	if( $note_id && $note_type ) {
+		add_comment_meta( $note_id, 'note_type', $note_type, true );
+
+		/**
+		 * Fire the action
+		 *
+		 * @since 2.3.0
+		 */
+		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
+	}
+
 	die( give_get_payment_note_html( $note_id ) );
 }
 

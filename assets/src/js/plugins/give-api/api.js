@@ -1,3 +1,4 @@
+/* global accounting, give_global_vars, jQuery */
 import GiveNotice from './notice';
 import GiveForm from './form';
 
@@ -38,10 +39,10 @@ let Give = {
 			// Global currency setting.
 			let format_args = {
 				symbol: '',
-				decimal: give_global_vars.decimal_separator,
-				thousand: give_global_vars.thousands_separator,
-				precision: parseInt( give_global_vars.number_decimals ),
-				currency: give_global_vars.currency
+				decimal: this.getGlobalVar( 'decimal_separator' ),
+				thousand: this.getGlobalVar( 'thousands_separator' ),
+				precision: parseInt( this.getGlobalVar( 'number_decimals' ) ),
+				currency: this.getGlobalVar( 'currency' )
 			};
 
 			price = price.toString().trim();
@@ -65,18 +66,23 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price    = parseFloat( price ).toFixed( format_args.precision ),
-				    afterPoint      = '',
-				    lastThree       = '',
-				    otherNumbers    = '',
-				    result          = '',
-				    lastDotPosition = '';
+				let actual_price = accounting.unformat( price, '.' ).toString(),
+					decimal_amount = '',
+					result,
+					amount,
+					decimal_index = actual_price.indexOf( '.' );
 
-				actual_price = accounting.unformat( actual_price, '.' ).toString();
-			    actual_price = actual_price.toString();
+				if (-1 !== decimal_index) {
+					if (args.precision) {
+						decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) ).toFixed( args.precision ).toString().substr( 1 );
+						decimal_amount = decimal_amount.length ? decimal_amount : '.0000000000'.substr(0, parseInt(decimal_index) + 1);
 
-				if ( actual_price.indexOf( '.' ) > 0 ) {
-				   afterPoint = actual_price.substring( actual_price.indexOf( '.' ), actual_price.length );
+						if (args.precision + 1 > decimal_amount.length) {
+							decimal_amount = (decimal_amount + '000000000').substr(0, args.precision + 1);
+						}
+					}
+
+					actual_price = actual_price.substr(0, parseInt(decimal_index));
 				}
 				
 				actual_price = Math.floor( actual_price ).toString();
@@ -169,16 +175,25 @@ let Give = {
 		 * Get information from global var
 		 *
 		 * @since 1.8.17
-		 * @param {string} str
+		 * @param {string} str Variable in global param.
 		 *
 		 * @return {string}
 		 */
 		getGlobalVar: function( str ) {
-			if ( 'undefined' === typeof give_global_vars[ str ] ) {
-				return '';
-			}
+			const giveGlobals = this.getGlobal();
 
-			return give_global_vars[ str ];
+			return ( 'undefined' === typeof giveGlobals[ str ] ? '' : giveGlobals[ str ] );
+		},
+
+		/**
+		 * Get global param
+		 *
+		 * @since 2.2.4
+		 *
+		 * @return {object} WordPress localized global param.
+		 */
+		getGlobal: function() {
+			return ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
 		},
 
 		/**
