@@ -34,18 +34,12 @@ $atts          = $args[2]; // Shortcode attributes.
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
 						<?php
-						// If not filtered by form ID then display total donations
-						// Else filtered by form ID, only display donations made for this form.
-						$donated_amount = $donor->purchase_value;
-
-						if ( ! empty( $atts['form_id'] ) ) {
-							$donated_amount = Give_Donor_Stats::donated(
-								array(
-									'donor'      => $donor->id,
-									'give_forms' => $atts['form_id']
-								)
-							);
-						}
+						$donated_amount = Give_Donor_Stats::donated(
+							array(
+								'donor'      => $donor->id,
+								'give_forms' => $atts['form_id']
+							)
+						);
 
 						echo give_currency_filter( give_format_amount( $donated_amount, array( 'sanitize' => false ) ) );
 						?>
@@ -71,19 +65,21 @@ $atts          = $args[2]; // Shortcode attributes.
 		?>
 			<div class="give-donor__content">
 					<?php
+					$comment_content = apply_filters( 'the_content', $comment->comment_content );
+
 					if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
 						echo sprintf(
 							'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
-							substr( $comment->comment_content, 0, $atts['comment_length'] ),
+							substr( $comment_content, 0, $atts['comment_length'] ),
 							$atts['readmore_text']
 						);
 
 						echo sprintf(
 							'<div class="give-donor__comment" style="display: none">%s</div>',
-							apply_filters( 'the_content', $comment->comment_content )
+							$comment_content
 						);
 					} else {
-						echo apply_filters( 'the_content', $comment->comment_content );
+						echo $comment_content;
 					}
 					?>
 			</div>
