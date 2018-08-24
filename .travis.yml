@@ -39,11 +39,11 @@ script:
       cd ~/wordpress_data/wp-content/plugins
       git clone -b $TRAVIS_BRANCH --single-branch https://github.com/WordImpress/Give.git
       cd ~/wordpress_data/wp-content/plugins/Give/
+      docker exec give_wordpress_1 wp plugin activate Give
       composer install
       npm install
       npm run dev
       npm run test
-      docker exec give_wordpress_1 wp plugin activate Give
     fi
 
 after_script:

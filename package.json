@@ -13,7 +13,7 @@
     "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
     "lint:scss": "stylelint assets/src/**/*.scss",
     "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
-    "test": "jest -c jest.config.js"
+    "test": "jest -c tests/e2e/jest.config.js --runInBand"
   },
   "repository": {
     "type": "git",
