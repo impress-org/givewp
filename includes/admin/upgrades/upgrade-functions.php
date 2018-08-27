@@ -380,7 +380,7 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v2.1.5 Add additional capability to the give_manager role.
+	// v2.2.4 set each donor to anonymous by default.
 	$give_updates->register(
 		array(
 			'id'       => 'v224_update_donor_meta',
