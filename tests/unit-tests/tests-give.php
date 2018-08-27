@@ -53,6 +53,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-comments.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-comments-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php' );
