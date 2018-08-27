@@ -33,18 +33,18 @@ class Give_Comment {
 	 *
 	 * @since  2.3.0
 	 * @access public
-	 * @var array
+	 * @var Give_DB_Comments
 	 */
-	private $db;
+	public $db;
 
 	/**
 	 * Comment Meta Table.
 	 *
 	 * @since  2.3.0
 	 * @access public
-	 * @var array
+	 * @var Give_DB_Comment_Meta
 	 */
-	private $db_meta;
+	public $db_meta;
 
 	/**
 	 * Singleton pattern.
