@@ -990,8 +990,21 @@ class Give_Donor {
 	 * @return string The Notes for the donor, non-parsed.
 	 */
 	private function get_raw_notes() {
+		$all_notes = '';
+		$comments = Give()->comment->db->get_results_by( 'comment_parent', "donor_{$this->id}" );
 
-		$all_notes = $this->db->get_column( 'notes', $this->id );
+		// Generate notes output as we are doing before 2.3.0.
+		if( ! empty( $comments ) ) {
+			/* @var stdClass $comment */
+			foreach ( $comments  as $comment ) {
+				$all_notes .= date_i18n( 'F j, Y H:i:s', strtotime( $comment->comment_date ) ) . " - {$comment->comment_content}\n\n";
+			}
+		}
+
+		// Backward compatibility.
+		if( ! give_has_upgrade_completed('v230_move_donor_note') ) {
+			$all_notes = $this->db->get_column( 'notes', $this->id );
+		}
 
 		return $all_notes;
 
