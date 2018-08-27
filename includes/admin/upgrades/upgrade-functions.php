@@ -388,6 +388,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v224_update_donor_meta_callback',
 		)
 	);
+
+	// v2.3.0 Move donor notes to custom comment table.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_move_donor_note',
+			'version'  => '2.3.0',
+			'callback' => 'give_v230_move_donor_note_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2907,5 +2916,56 @@ function give_v224_update_donor_meta_callback() {
 	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v224_update_donor_meta' );
+	}
+}
+
+
+/**
+ * Move donor notes to comment table
+ *
+ * @since 2.3.0
+ */
+function give_v230_move_donor_note_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donor_count = Give()->donors->count( array(
+		'number' => - 1,
+	) );
+
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
+
+	if ( $donors ) {
+		$give_updates->set_percentage( $donor_count, $give_updates->step * 100 );
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+			$notes = trim( Give()->donors->get_column( 'notes', $donor->id ) );
+
+			// If first name meta of donor is not created, then create it.
+			if ( ! empty( $notes ) ) {
+				$notes = array_values( array_filter( array_map( 'trim', explode( "\n", $notes ) ), 'strlen' ) );
+
+				foreach ( $notes as $note ) {
+					$note      = array_map( 'trim', explode( '-', $note ) );
+					$timestamp = strtotime( $note[0] );
+
+					Give()->comment->db->add(
+						array(
+							'comment_content'  => $note[1],
+							'comment_date'     => date( 'Y-m-d H:i:s', $timestamp ),
+							'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', $timestamp ) ),
+							'comment_parent'   => "donor_{$donor->id}",
+						)
+					);
+				}
+			}
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v230_move_donor_note' );
 	}
 }
