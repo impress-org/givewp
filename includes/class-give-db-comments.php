@@ -57,7 +57,7 @@ class Give_DB_Comments extends Give_DB {
 		return array(
 			'ID'               => '%d',
 			'comment_content'  => '%s',
-			'comment_parent'   => '%d',
+			'comment_parent'   => '%s',
 			'comment_type'     => '%s',
 			'comment_date'     => '%s',
 			'comment_date_gmt' => '%s',
@@ -246,7 +246,7 @@ class Give_DB_Comments extends Give_DB {
         ID bigint(20) NOT NULL AUTO_INCREMENT,
         comment_title longtext NOT NULL,
         comment_content longtext NOT NULL,
-      	comment_parent bigint(20) NOT NULL,
+      	comment_parent mediumtext NOT NULL,
         comment_type mediumtext NOT NULL,
         comment_date datetime NOT NULL,
         comment_date_gmt datetime NOT NULL,
