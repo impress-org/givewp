@@ -13,7 +13,7 @@
     "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
     "lint:scss": "stylelint assets/src/**/*.scss",
     "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
-    "test": "jest -c tests/e2e/jest.config.js --runInBand"
+    "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "autoprefixer": "^7.2.6",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
@@ -54,6 +55,7 @@
     "node-sass": "^4.9.1",
     "postcss-loader": "^2.1.6",
     "puppeteer": "^1.7.0",
+    "regenerator-runtime": "^0.12.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.18.2",
     "stylelint-config-wordpress": "^12.0.0",

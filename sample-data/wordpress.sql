@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Aug 25, 2018 at 05:50 AM
+-- Generation Time: Aug 27, 2018 at 01:47 AM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.6
 
@@ -35,6 +35,20 @@ CREATE TABLE `wp_commentmeta` (
   `meta_value` longtext COLLATE utf8mb4_unicode_520_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+--
+-- Dumping data for table `wp_commentmeta`
+--
+
+INSERT INTO `wp_commentmeta` (`meta_id`, `comment_id`, `meta_key`, `meta_value`) VALUES
+(1, 2, '_give_payment_id', '19'),
+(2, 2, '_give_donor_id', '1'),
+(3, 2, '_give_anonymous_donation', '0'),
+(4, 3, '_give_payment_id', '19'),
+(5, 4, '_give_payment_id', '20'),
+(6, 4, '_give_donor_id', '1'),
+(7, 4, '_give_anonymous_donation', '0'),
+(8, 5, '_give_payment_id', '20');
+
 -- --------------------------------------------------------
 
 --
@@ -64,7 +78,11 @@ CREATE TABLE `wp_comments` (
 --
 
 INSERT INTO `wp_comments` (`comment_ID`, `comment_post_ID`, `comment_author`, `comment_author_email`, `comment_author_url`, `comment_author_IP`, `comment_date`, `comment_date_gmt`, `comment_content`, `comment_karma`, `comment_approved`, `comment_agent`, `comment_type`, `comment_parent`, `user_id`) VALUES
-(1, 1, 'A WordPress Commenter', 'wapuu@wordpress.example', 'https://wordpress.org/', '', '2018-08-25 05:28:36', '2018-08-25 05:28:36', 'Hi, this is a comment.\nTo get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.\nCommenter avatars come from <a href=\"https://gravatar.com\">Gravatar</a>.', 0, '1', '', '', 0, 0);
+(1, 1, 'A WordPress Commenter', 'wapuu@wordpress.example', 'https://wordpress.org/', '', '2018-08-25 05:28:36', '2018-08-25 05:28:36', 'Hi, this is a comment.\nTo get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.\nCommenter avatars come from <a href=\"https://gravatar.com\">Gravatar</a>.', 0, '1', '', '', 0, 0),
+(2, 19, '', 'devin.walker@gmail.com', '', '', '2018-08-25 16:17:46', '2018-08-25 16:17:46', 'Glad to be a part!', 0, '1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36', 'give_payment_note', 0, 0),
+(3, 19, '', '', '', '', '2018-08-25 16:17:48', '2018-08-25 16:17:48', 'Status changed from Pending to Complete.', 0, '0', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36', 'give_payment_note', 0, 0),
+(4, 20, '', 'devin.walker@gmail.com', '', '', '2018-08-25 16:18:28', '2018-08-25 16:18:28', 'Glad to be a part!', 0, '1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36', 'give_payment_note', 0, 0),
+(5, 20, '', '', '', '', '2018-08-25 16:18:29', '2018-08-25 16:18:29', 'Status changed from Pending to Complete.', 0, '0', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36', 'give_payment_note', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -79,6 +97,50 @@ CREATE TABLE `wp_give_donationmeta` (
   `meta_value` longtext COLLATE utf8mb4_unicode_520_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+--
+-- Dumping data for table `wp_give_donationmeta`
+--
+
+INSERT INTO `wp_give_donationmeta` (`meta_id`, `donation_id`, `meta_key`, `meta_value`) VALUES
+(1, 19, '_give_donation_company', 'WordImpress'),
+(2, 19, '_give_payment_total', '35.450000'),
+(3, 19, '_give_payment_currency', 'USD'),
+(4, 19, '_give_donor_billing_first_name', 'Devin'),
+(5, 19, '_give_donor_billing_last_name', 'Walker'),
+(6, 19, '_give_payment_gateway', 'manual'),
+(7, 19, '_give_payment_form_title', 'Simple Donation Form'),
+(8, 19, '_give_payment_form_id', '8'),
+(9, 19, '_give_payment_price_id', 'custom'),
+(10, 19, '_give_payment_donor_email', 'devin.walker@gmail.com'),
+(11, 19, '_give_payment_donor_title_prefix', 'Mr.'),
+(12, 19, '_give_payment_donor_ip', '172.21.0.1'),
+(13, 19, '_give_payment_purchase_key', 'd73b97f7611afc902b2966dc776d567a'),
+(14, 19, '_give_payment_mode', 'test'),
+(15, 19, '_give_payment_donor_id', '1'),
+(16, 19, '_give_current_url', 'http://localhost:8004/donations/simple-donation-form/'),
+(17, 19, '_give_current_page_id', '8'),
+(18, 19, '_give_anonymous_donation', '0'),
+(19, 19, '_give_completed_date', '2018-08-25 16:17:47'),
+(20, 20, '_give_donation_company', 'WordImpress'),
+(21, 20, '_give_payment_total', '35.450000'),
+(22, 20, '_give_payment_currency', 'USD'),
+(23, 20, '_give_donor_billing_first_name', 'Devin'),
+(24, 20, '_give_donor_billing_last_name', 'Walker'),
+(25, 20, '_give_payment_gateway', 'manual'),
+(26, 20, '_give_payment_form_title', 'Simple Donation Form'),
+(27, 20, '_give_payment_form_id', '8'),
+(28, 20, '_give_payment_price_id', 'custom'),
+(29, 20, '_give_payment_donor_email', 'devin.walker@gmail.com'),
+(30, 20, '_give_payment_donor_title_prefix', 'Mr.'),
+(31, 20, '_give_payment_donor_ip', '172.21.0.1'),
+(32, 20, '_give_payment_purchase_key', 'b311a976aa8824c8894d44784039c395'),
+(33, 20, '_give_payment_mode', 'test'),
+(34, 20, '_give_payment_donor_id', '1'),
+(35, 20, '_give_current_url', 'http://localhost:8004/donations/simple-donation-form/'),
+(36, 20, '_give_current_page_id', '8'),
+(37, 20, '_give_anonymous_donation', '0'),
+(38, 20, '_give_completed_date', '2018-08-25 16:18:29');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +153,18 @@ CREATE TABLE `wp_give_donormeta` (
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `meta_value` longtext COLLATE utf8mb4_unicode_520_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `wp_give_donormeta`
+--
+
+INSERT INTO `wp_give_donormeta` (`meta_id`, `donor_id`, `meta_key`, `meta_value`) VALUES
+(1, 1, '_give_donor_first_name', 'Devin'),
+(2, 1, '_give_donor_last_name', 'Walker'),
+(3, 1, '_give_donor_title_prefix', 'Mr.'),
+(4, 1, '_give_donor_company', 'WordImpress'),
+(5, 1, '_give_has_comment', '1'),
+(6, 1, '_give_anonymous_donor', '0');
 
 -- --------------------------------------------------------
 
@@ -113,6 +187,13 @@ CREATE TABLE `wp_give_donors` (
   `verify_throttle` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `wp_give_donors`
+--
+
+INSERT INTO `wp_give_donors` (`id`, `user_id`, `email`, `name`, `purchase_value`, `purchase_count`, `payment_ids`, `notes`, `date_created`, `token`, `verify_key`, `verify_throttle`) VALUES
+(1, 0, 'devin.walker@gmail.com', 'Devin Walker', '70.900000', 2, '19,20', '', '2018-08-25 16:17:44', '', '', '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -132,7 +213,7 @@ CREATE TABLE `wp_give_formmeta` (
 
 INSERT INTO `wp_give_formmeta` (`meta_id`, `form_id`, `meta_key`, `meta_value`) VALUES
 (1, 8, '_edit_last', '1'),
-(2, 8, '_edit_lock', '1535176012:1'),
+(2, 8, '_edit_lock', '1535188163:1'),
 (3, 8, '_give_levels_minimum_amount', '10.000000'),
 (4, 8, '_give_levels_maximum_amount', '30.000000'),
 (5, 8, '_give_price_option', 'multi'),
@@ -149,24 +230,24 @@ INSERT INTO `wp_give_formmeta` (`meta_id`, `form_id`, `meta_key`, `meta_value`) 
 (16, 8, '_give_checkout_label', 'Make a Donation'),
 (17, 8, '_give_default_gateway', 'global'),
 (18, 8, '_give_name_title_prefix', 'optional'),
-(19, 8, '_give_title_prefixes', 'a:5:{i:0;s:3:\"Mr.\";i:1;s:4:\"Mrs.\";i:2;s:3:\"Ms.\";i:3;s:3:\"Dr.\";i:4;s:0:\"\";}'),
+(19, 8, '_give_title_prefixes', 'a:4:{i:0;s:3:\"Mr.\";i:1;s:4:\"Mrs.\";i:2;s:3:\"Ms.\";i:3;s:3:\"Dr.\";}'),
 (20, 8, '_give_company_field', 'optional'),
 (21, 8, '_give_anonymous_donation', 'enabled'),
 (22, 8, '_give_donor_comment', 'enabled'),
 (23, 8, '_give_logged_in_only', 'enabled'),
 (24, 8, '_give_show_register_form', 'both'),
 (25, 8, '_give_form_floating_labels', 'global'),
-(26, 8, '_give_goal_option', 'disabled'),
+(26, 8, '_give_goal_option', 'enabled'),
 (27, 8, '_give_goal_format', 'amount'),
-(28, 8, '_give_set_goal', '1.000000'),
+(28, 8, '_give_set_goal', '150.000000'),
 (29, 8, '_give_number_of_donation_goal', '1'),
 (30, 8, '_give_number_of_donor_goal', '1'),
 (31, 8, '_give_goal_color', '#2bc253'),
 (32, 8, '_give_close_form_when_goal_achieved', 'disabled'),
 (33, 8, '_give_form_goal_achieved_message', 'Thank you to all our donors, we have met our fundraising goal.'),
-(34, 8, '_give_display_content', 'disabled'),
+(34, 8, '_give_display_content', 'enabled'),
 (35, 8, '_give_content_placement', 'give_pre_form'),
-(36, 8, '_give_form_content', ''),
+(36, 8, '_give_form_content', 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army\'s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God\'s saving purposes.'),
 (37, 8, '_give_terms_option', 'global'),
 (38, 8, '_give_agree_label', ''),
 (39, 8, '_give_agree_text', 'Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.'),
@@ -194,8 +275,253 @@ INSERT INTO `wp_give_formmeta` (`meta_id`, `form_id`, `meta_key`, `meta_value`) 
 (61, 8, '_give_donor-note_email_header', 'Donor Note'),
 (62, 8, '_give_donor-note_email_message', 'Hello, a note has just been added to your donation:\r\n{donor_note}\r\n\r\nFor your reference, your donation details are below:\r\n{receipt_link}'),
 (63, 8, '_give_donor-note_email_content_type', 'text/html'),
-(64, 8, '_give_form_sales', '0'),
-(65, 8, '_give_form_earnings', '0');
+(64, 8, '_give_form_sales', '2'),
+(65, 8, '_give_form_earnings', '70.9'),
+(66, 8, '_give_new-offline-donation_notification', 'global'),
+(67, 8, '_give_new-offline-donation_email_subject', 'New Pending Donation'),
+(68, 8, '_give_new-offline-donation_email_header', 'New Offline Donation!'),
+(69, 8, '_give_new-offline-donation_email_message', 'Dear Admin,\r\n\r\nAn offline donation has been made on your website: Give Automation Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Amount:</strong> {amount}\r\n\r\n<a href=\"http://localhost:8004/wp-admin/edit.php?post_type=give_forms&amp;page=give-payment-history&amp;view=view-order-details&amp;id=0\">Click Here to View and/or Update Donation Details</a>'),
+(70, 8, '_give_new-offline-donation_email_content_type', 'text/html'),
+(71, 8, '_give_new-offline-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(72, 8, '_give_offline-donation-instruction_notification', 'global'),
+(73, 8, '_give_offline-donation-instruction_email_subject', '{donation} - Offline Donation Instructions'),
+(74, 8, '_give_offline-donation-instruction_email_header', 'Offline Donation Instructions'),
+(75, 8, '_give_offline-donation-instruction_email_message', 'Dear {name},\r\n\r\nThank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nOnce your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!\r\n\r\nSincerely,\r\n\r\n{sitename}'),
+(76, 8, '_give_offline-donation-instruction_email_content_type', 'text/html'),
+(77, 11, '_edit_last', '1'),
+(78, 11, '_edit_lock', '1535204432:1'),
+(79, 11, '_give_levels_minimum_amount', '10.000000'),
+(80, 11, '_give_levels_maximum_amount', '30.000000'),
+(81, 11, '_give_price_option', 'multi'),
+(82, 11, '_give_form_status', 'open'),
+(83, 11, '_give_set_price', '1.000000'),
+(84, 11, '_give_display_style', 'buttons'),
+(85, 11, '_give_custom_amount', 'enabled'),
+(86, 11, '_give_custom_amount_range_minimum', '5.000000'),
+(87, 11, '_give_custom_amount_range_maximum', '40.000000'),
+(88, 11, '_give_custom_amount_text', 'or donate what you like!'),
+(89, 11, '_give_donation_levels', 'a:3:{i:0;a:4:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"0\";}s:12:\"_give_amount\";s:9:\"10.000000\";s:10:\"_give_text\";s:6:\"Bronze\";s:13:\"_give_default\";s:7:\"default\";}i:1;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"1\";}s:12:\"_give_amount\";s:9:\"20.000000\";s:10:\"_give_text\";s:6:\"Silver\";}i:2;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"2\";}s:12:\"_give_amount\";s:9:\"30.000000\";s:10:\"_give_text\";s:4:\"Gold\";}}'),
+(90, 11, '_give_payment_display', 'modal'),
+(91, 11, '_give_reveal_label', ''),
+(92, 11, '_give_checkout_label', 'Make a Donation'),
+(93, 11, '_give_default_gateway', 'global'),
+(94, 11, '_give_name_title_prefix', 'optional'),
+(95, 11, '_give_title_prefixes', 'a:4:{i:0;s:3:\"Mr.\";i:1;s:4:\"Mrs.\";i:2;s:3:\"Ms.\";i:3;s:3:\"Dr.\";}'),
+(96, 11, '_give_company_field', 'optional'),
+(97, 11, '_give_anonymous_donation', 'enabled'),
+(98, 11, '_give_donor_comment', 'enabled'),
+(99, 11, '_give_logged_in_only', 'enabled'),
+(100, 11, '_give_show_register_form', 'both'),
+(101, 11, '_give_form_floating_labels', 'global'),
+(102, 11, '_give_goal_option', 'enabled'),
+(103, 11, '_give_goal_format', 'amount'),
+(104, 11, '_give_set_goal', '150.000000'),
+(105, 11, '_give_number_of_donation_goal', '1'),
+(106, 11, '_give_number_of_donor_goal', '1'),
+(107, 11, '_give_goal_color', '#2bc253'),
+(108, 11, '_give_close_form_when_goal_achieved', 'disabled'),
+(109, 11, '_give_form_goal_achieved_message', 'Thank you to all our donors, we have met our fundraising goal.'),
+(110, 11, '_give_display_content', 'enabled'),
+(111, 11, '_give_content_placement', 'give_pre_form'),
+(112, 11, '_give_form_content', 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army\'s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God\'s saving purposes.'),
+(113, 11, '_give_terms_option', 'global'),
+(114, 11, '_give_agree_label', ''),
+(115, 11, '_give_agree_text', 'Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.'),
+(116, 11, '_give_customize_offline_donations', 'global'),
+(117, 11, '_give_offline_donation_enable_billing_fields_single', 'disabled'),
+(118, 11, '_give_offline_checkout_notes', 'In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nAll contributions will be gratefully acknowledged and are tax deductible.'),
+(119, 11, '_give_email_options', 'global'),
+(120, 11, '_give_email_template', 'default'),
+(121, 11, '_give_email_logo', ''),
+(122, 11, '_give_from_name', 'Give Automation'),
+(123, 11, '_give_from_email', 'user@example.com'),
+(124, 11, '_give_new-donation_notification', 'global'),
+(125, 11, '_give_new-donation_email_subject', 'New Donation - #{payment_id}'),
+(126, 11, '_give_new-donation_email_header', 'New Donation!'),
+(127, 11, '_give_new-donation_email_message', 'Hi there,\r\n\r\nThis email is to inform you that a new donation has been made on your website: {site_url}.\r\n\r\n<strong>Donor:</strong> {name}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n\r\nThank you,\r\n\r\n{sitename}'),
+(128, 11, '_give_new-donation_email_content_type', 'text/html'),
+(129, 11, '_give_new-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(130, 11, '_give_donation-receipt_notification', 'global'),
+(131, 11, '_give_donation-receipt_email_subject', 'Donation Receipt'),
+(132, 11, '_give_donation-receipt_email_header', 'Donation Receipt'),
+(133, 11, '_give_donation-receipt_email_message', 'Dear {name},\r\n\r\nThank you for your donation. Your generosity is appreciated! Here are the details of your donation:\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Donation Date:</strong> {date}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n<strong>Payment ID:</strong> {payment_id}\r\n<strong>Receipt ID:</strong> {receipt_id}\r\n\r\n{receipt_link}\r\n\r\nSincerely,\r\n{sitename}'),
+(134, 11, '_give_donation-receipt_email_content_type', 'text/html'),
+(135, 11, '_give_donor-note_notification', 'global'),
+(136, 11, '_give_donor-note_email_subject', 'Note added to your {donation} donation from {date}'),
+(137, 11, '_give_donor-note_email_header', 'Donor Note'),
+(138, 11, '_give_donor-note_email_message', 'Hello, a note has just been added to your donation:\r\n{donor_note}\r\n\r\nFor your reference, your donation details are below:\r\n{receipt_link}'),
+(139, 11, '_give_donor-note_email_content_type', 'text/html'),
+(140, 11, '_give_form_sales', '0'),
+(141, 11, '_give_form_earnings', '0'),
+(142, 11, '_give_new-offline-donation_notification', 'global'),
+(143, 11, '_give_new-offline-donation_email_subject', 'New Pending Donation'),
+(144, 11, '_give_new-offline-donation_email_header', 'New Offline Donation!'),
+(145, 11, '_give_new-offline-donation_email_message', 'Dear Admin,\r\n\r\nAn offline donation has been made on your website: Give Automation Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Amount:</strong> {amount}\r\n\r\n<a href=\"http://localhost:8004/wp-admin/edit.php?post_type=give_forms&amp;page=give-payment-history&amp;view=view-order-details&amp;id=0\">Click Here to View and/or Update Donation Details</a>'),
+(146, 11, '_give_new-offline-donation_email_content_type', 'text/html'),
+(147, 11, '_give_new-offline-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(148, 11, '_give_offline-donation-instruction_notification', 'global'),
+(149, 11, '_give_offline-donation-instruction_email_subject', '{donation} - Offline Donation Instructions'),
+(150, 11, '_give_offline-donation-instruction_email_header', 'Offline Donation Instructions'),
+(151, 11, '_give_offline-donation-instruction_email_message', 'Dear {name},\r\n\r\nThank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nOnce your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!\r\n\r\nSincerely,\r\n\r\n{sitename}'),
+(152, 11, '_give_offline-donation-instruction_email_content_type', 'text/html'),
+(204, 11, '_wp_old_slug', 'simple-donation-form'),
+(205, 15, '_edit_last', '1'),
+(206, 15, '_edit_lock', '1535206209:1'),
+(207, 15, '_give_levels_minimum_amount', '10.000000'),
+(208, 15, '_give_levels_maximum_amount', '30.000000'),
+(209, 15, '_give_price_option', 'multi'),
+(210, 15, '_give_form_status', 'open'),
+(211, 15, '_give_set_price', '1.000000'),
+(212, 15, '_give_display_style', 'buttons'),
+(213, 15, '_give_custom_amount', 'enabled'),
+(214, 15, '_give_custom_amount_range_minimum', '5.000000'),
+(215, 15, '_give_custom_amount_range_maximum', '40.000000'),
+(216, 15, '_give_custom_amount_text', 'or donate what you like!'),
+(217, 15, '_give_donation_levels', 'a:3:{i:0;a:4:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"0\";}s:12:\"_give_amount\";s:9:\"10.000000\";s:10:\"_give_text\";s:6:\"Bronze\";s:13:\"_give_default\";s:7:\"default\";}i:1;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"1\";}s:12:\"_give_amount\";s:9:\"20.000000\";s:10:\"_give_text\";s:6:\"Silver\";}i:2;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"2\";}s:12:\"_give_amount\";s:9:\"30.000000\";s:10:\"_give_text\";s:4:\"Gold\";}}'),
+(218, 15, '_give_payment_display', 'reveal'),
+(219, 15, '_give_reveal_label', ''),
+(220, 15, '_give_checkout_label', 'Make a Donation'),
+(221, 15, '_give_default_gateway', 'global'),
+(222, 15, '_give_name_title_prefix', 'optional'),
+(223, 15, '_give_title_prefixes', 'a:4:{i:0;s:3:\"Mr.\";i:1;s:4:\"Mrs.\";i:2;s:3:\"Ms.\";i:3;s:3:\"Dr.\";}'),
+(224, 15, '_give_company_field', 'optional'),
+(225, 15, '_give_anonymous_donation', 'enabled'),
+(226, 15, '_give_donor_comment', 'enabled'),
+(227, 15, '_give_logged_in_only', 'enabled'),
+(228, 15, '_give_show_register_form', 'both'),
+(229, 15, '_give_form_floating_labels', 'global'),
+(230, 15, '_give_goal_option', 'enabled'),
+(231, 15, '_give_goal_format', 'amount'),
+(232, 15, '_give_set_goal', '150.000000'),
+(233, 15, '_give_number_of_donation_goal', '1'),
+(234, 15, '_give_number_of_donor_goal', '1'),
+(235, 15, '_give_goal_color', '#2bc253'),
+(236, 15, '_give_close_form_when_goal_achieved', 'disabled'),
+(237, 15, '_give_form_goal_achieved_message', 'Thank you to all our donors, we have met our fundraising goal.'),
+(238, 15, '_give_display_content', 'enabled'),
+(239, 15, '_give_content_placement', 'give_pre_form'),
+(240, 15, '_give_form_content', 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army\'s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God\'s saving purposes.'),
+(241, 15, '_give_terms_option', 'global'),
+(242, 15, '_give_agree_label', ''),
+(243, 15, '_give_agree_text', 'Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.'),
+(244, 15, '_give_customize_offline_donations', 'global'),
+(245, 15, '_give_offline_donation_enable_billing_fields_single', 'disabled'),
+(246, 15, '_give_offline_checkout_notes', 'In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nAll contributions will be gratefully acknowledged and are tax deductible.'),
+(247, 15, '_give_email_options', 'global'),
+(248, 15, '_give_email_template', 'default'),
+(249, 15, '_give_email_logo', ''),
+(250, 15, '_give_from_name', 'Give Automation'),
+(251, 15, '_give_from_email', 'user@example.com'),
+(252, 15, '_give_new-donation_notification', 'global'),
+(253, 15, '_give_new-donation_email_subject', 'New Donation - #{payment_id}'),
+(254, 15, '_give_new-donation_email_header', 'New Donation!'),
+(255, 15, '_give_new-donation_email_message', 'Hi there,\r\n\r\nThis email is to inform you that a new donation has been made on your website: {site_url}.\r\n\r\n<strong>Donor:</strong> {name}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n\r\nThank you,\r\n\r\n{sitename}'),
+(256, 15, '_give_new-donation_email_content_type', 'text/html'),
+(257, 15, '_give_new-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(258, 15, '_give_donation-receipt_notification', 'global'),
+(259, 15, '_give_donation-receipt_email_subject', 'Donation Receipt'),
+(260, 15, '_give_donation-receipt_email_header', 'Donation Receipt'),
+(261, 15, '_give_donation-receipt_email_message', 'Dear {name},\r\n\r\nThank you for your donation. Your generosity is appreciated! Here are the details of your donation:\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Donation Date:</strong> {date}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n<strong>Payment ID:</strong> {payment_id}\r\n<strong>Receipt ID:</strong> {receipt_id}\r\n\r\n{receipt_link}\r\n\r\nSincerely,\r\n{sitename}'),
+(262, 15, '_give_donation-receipt_email_content_type', 'text/html'),
+(263, 15, '_give_donor-note_notification', 'global'),
+(264, 15, '_give_donor-note_email_subject', 'Note added to your {donation} donation from {date}'),
+(265, 15, '_give_donor-note_email_header', 'Donor Note'),
+(266, 15, '_give_donor-note_email_message', 'Hello, a note has just been added to your donation:\r\n{donor_note}\r\n\r\nFor your reference, your donation details are below:\r\n{receipt_link}'),
+(267, 15, '_give_donor-note_email_content_type', 'text/html'),
+(268, 15, '_give_form_sales', '0'),
+(269, 15, '_give_form_earnings', '0'),
+(270, 15, '_give_new-offline-donation_notification', 'global'),
+(271, 15, '_give_new-offline-donation_email_subject', 'New Pending Donation'),
+(272, 15, '_give_new-offline-donation_email_header', 'New Offline Donation!'),
+(273, 15, '_give_new-offline-donation_email_message', 'Dear Admin,\r\n\r\nAn offline donation has been made on your website: Give Automation Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Amount:</strong> {amount}\r\n\r\n<a href=\"http://localhost:8004/wp-admin/edit.php?post_type=give_forms&amp;page=give-payment-history&amp;view=view-order-details&amp;id=0\">Click Here to View and/or Update Donation Details</a>'),
+(274, 15, '_give_new-offline-donation_email_content_type', 'text/html'),
+(275, 15, '_give_new-offline-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(276, 15, '_give_offline-donation-instruction_notification', 'global'),
+(277, 15, '_give_offline-donation-instruction_email_subject', '{donation} - Offline Donation Instructions'),
+(278, 15, '_give_offline-donation-instruction_email_header', 'Offline Donation Instructions'),
+(279, 15, '_give_offline-donation-instruction_email_message', 'Dear {name},\r\n\r\nThank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nOnce your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!\r\n\r\nSincerely,\r\n\r\n{sitename}'),
+(280, 15, '_give_offline-donation-instruction_email_content_type', 'text/html'),
+(281, 15, '_wp_old_slug', 'simple-donation-form'),
+(332, 15, '_wp_old_slug', 'modal-form'),
+(333, 17, '_edit_last', '1'),
+(334, 17, '_edit_lock', '1535212935:1'),
+(335, 17, '_give_levels_minimum_amount', '10.000000'),
+(336, 17, '_give_levels_maximum_amount', '30.000000'),
+(337, 17, '_give_price_option', 'multi'),
+(338, 17, '_give_form_status', 'open'),
+(339, 17, '_give_set_price', '1.000000'),
+(340, 17, '_give_display_style', 'buttons'),
+(341, 17, '_give_custom_amount', 'enabled'),
+(342, 17, '_give_custom_amount_range_minimum', '5.000000'),
+(343, 17, '_give_custom_amount_range_maximum', '40.000000'),
+(344, 17, '_give_custom_amount_text', 'or donate what you like!'),
+(345, 17, '_give_donation_levels', 'a:3:{i:0;a:4:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"0\";}s:12:\"_give_amount\";s:9:\"10.000000\";s:10:\"_give_text\";s:6:\"Bronze\";s:13:\"_give_default\";s:7:\"default\";}i:1;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"1\";}s:12:\"_give_amount\";s:9:\"20.000000\";s:10:\"_give_text\";s:6:\"Silver\";}i:2;a:3:{s:8:\"_give_id\";a:1:{s:8:\"level_id\";s:1:\"2\";}s:12:\"_give_amount\";s:9:\"30.000000\";s:10:\"_give_text\";s:4:\"Gold\";}}'),
+(346, 17, '_give_payment_display', 'reveal'),
+(347, 17, '_give_reveal_label', ''),
+(348, 17, '_give_checkout_label', 'Make a Donation'),
+(349, 17, '_give_default_gateway', 'global'),
+(350, 17, '_give_name_title_prefix', 'optional'),
+(351, 17, '_give_title_prefixes', 'a:4:{i:0;s:3:\"Mr.\";i:1;s:4:\"Mrs.\";i:2;s:3:\"Ms.\";i:3;s:3:\"Dr.\";}'),
+(352, 17, '_give_company_field', 'optional'),
+(353, 17, '_give_anonymous_donation', 'enabled'),
+(354, 17, '_give_donor_comment', 'enabled'),
+(355, 17, '_give_logged_in_only', 'enabled'),
+(356, 17, '_give_show_register_form', 'both'),
+(357, 17, '_give_form_floating_labels', 'global'),
+(358, 17, '_give_goal_option', 'enabled'),
+(359, 17, '_give_goal_format', 'amount'),
+(360, 17, '_give_set_goal', '150.000000'),
+(361, 17, '_give_number_of_donation_goal', '1'),
+(362, 17, '_give_number_of_donor_goal', '1'),
+(363, 17, '_give_goal_color', '#2bc253'),
+(364, 17, '_give_close_form_when_goal_achieved', 'disabled'),
+(365, 17, '_give_form_goal_achieved_message', 'Thank you to all our donors, we have met our fundraising goal.'),
+(366, 17, '_give_display_content', 'enabled'),
+(367, 17, '_give_content_placement', 'give_pre_form'),
+(368, 17, '_give_form_content', 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army\'s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God\'s saving purposes.'),
+(369, 17, '_give_terms_option', 'global'),
+(370, 17, '_give_agree_label', ''),
+(371, 17, '_give_agree_text', 'Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.'),
+(372, 17, '_give_customize_offline_donations', 'global'),
+(373, 17, '_give_offline_donation_enable_billing_fields_single', 'disabled'),
+(374, 17, '_give_offline_checkout_notes', 'In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nAll contributions will be gratefully acknowledged and are tax deductible.'),
+(375, 17, '_give_email_options', 'global'),
+(376, 17, '_give_email_template', 'default'),
+(377, 17, '_give_email_logo', ''),
+(378, 17, '_give_from_name', 'Give Automation'),
+(379, 17, '_give_from_email', 'user@example.com'),
+(380, 17, '_give_new-donation_notification', 'global'),
+(381, 17, '_give_new-donation_email_subject', 'New Donation - #{payment_id}'),
+(382, 17, '_give_new-donation_email_header', 'New Donation!'),
+(383, 17, '_give_new-donation_email_message', 'Hi there,\r\n\r\nThis email is to inform you that a new donation has been made on your website: {site_url}.\r\n\r\n<strong>Donor:</strong> {name}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n\r\nThank you,\r\n\r\n{sitename}'),
+(384, 17, '_give_new-donation_email_content_type', 'text/html'),
+(385, 17, '_give_new-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(386, 17, '_give_donation-receipt_notification', 'global'),
+(387, 17, '_give_donation-receipt_email_subject', 'Donation Receipt'),
+(388, 17, '_give_donation-receipt_email_header', 'Donation Receipt'),
+(389, 17, '_give_donation-receipt_email_message', 'Dear {name},\r\n\r\nThank you for your donation. Your generosity is appreciated! Here are the details of your donation:\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Donation:</strong> {donation}\r\n<strong>Donation Date:</strong> {date}\r\n<strong>Amount:</strong> {amount}\r\n<strong>Payment Method:</strong> {payment_method}\r\n<strong>Payment ID:</strong> {payment_id}\r\n<strong>Receipt ID:</strong> {receipt_id}\r\n\r\n{receipt_link}\r\n\r\nSincerely,\r\n{sitename}'),
+(390, 17, '_give_donation-receipt_email_content_type', 'text/html'),
+(391, 17, '_give_donor-note_notification', 'global'),
+(392, 17, '_give_donor-note_email_subject', 'Note added to your {donation} donation from {date}'),
+(393, 17, '_give_donor-note_email_header', 'Donor Note'),
+(394, 17, '_give_donor-note_email_message', 'Hello, a note has just been added to your donation:\r\n{donor_note}\r\n\r\nFor your reference, your donation details are below:\r\n{receipt_link}'),
+(395, 17, '_give_donor-note_email_content_type', 'text/html'),
+(396, 17, '_give_form_sales', '0'),
+(397, 17, '_give_form_earnings', '0'),
+(398, 17, '_give_new-offline-donation_notification', 'global'),
+(399, 17, '_give_new-offline-donation_email_subject', 'New Pending Donation'),
+(400, 17, '_give_new-offline-donation_email_header', 'New Offline Donation!'),
+(401, 17, '_give_new-offline-donation_email_message', 'Dear Admin,\r\n\r\nAn offline donation has been made on your website: Give Automation Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.\r\n\r\n<strong>Donor:</strong> {fullname}\r\n<strong>Amount:</strong> {amount}\r\n\r\n<a href=\"http://localhost:8004/wp-admin/edit.php?post_type=give_forms&amp;page=give-payment-history&amp;view=view-order-details&amp;id=0\">Click Here to View and/or Update Donation Details</a>'),
+(402, 17, '_give_new-offline-donation_email_content_type', 'text/html'),
+(403, 17, '_give_new-offline-donation_recipient', 'a:1:{i:0;a:1:{s:5:\"email\";s:16:\"user@example.com\";}}'),
+(404, 17, '_give_offline-donation-instruction_notification', 'global'),
+(405, 17, '_give_offline-donation-instruction_email_subject', '{donation} - Offline Donation Instructions'),
+(406, 17, '_give_offline-donation-instruction_email_header', 'Offline Donation Instructions'),
+(407, 17, '_give_offline-donation-instruction_email_message', 'Dear {name},\r\n\r\nThank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:\r\n<ol>\r\n 	<li>Make a check payable to \"{sitename}\"</li>\r\n 	<li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li>\r\n 	<li>Please mail your check to:</li>\r\n</ol>\r\n{offline_mailing_address}\r\n\r\nOnce your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!\r\n\r\nSincerely,\r\n\r\n{sitename}'),
+(408, 17, '_give_offline-donation-instruction_email_content_type', 'text/html'),
+(409, 17, '_wp_old_slug', 'simple-donation-form'),
+(410, 17, '_wp_old_slug', 'modal-form'),
+(460, 17, '_wp_old_slug', 'reveal-form');
 
 -- --------------------------------------------------------
 
@@ -209,6 +535,16 @@ CREATE TABLE `wp_give_logmeta` (
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `meta_value` longtext COLLATE utf8mb4_unicode_520_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `wp_give_logmeta`
+--
+
+INSERT INTO `wp_give_logmeta` (`meta_id`, `log_id`, `meta_key`, `meta_value`) VALUES
+(1, 1, '_give_log_form_id', '8'),
+(2, 1, '_give_log_price_id', '0'),
+(3, 2, '_give_log_form_id', '8'),
+(4, 2, '_give_log_price_id', '0');
 
 -- --------------------------------------------------------
 
@@ -226,6 +562,14 @@ CREATE TABLE `wp_give_logs` (
   `log_date_gmt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+--
+-- Dumping data for table `wp_give_logs`
+--
+
+INSERT INTO `wp_give_logs` (`ID`, `log_title`, `log_content`, `log_parent`, `log_type`, `log_date`, `log_date_gmt`) VALUES
+(1, '', '', 19, 'sale', '2018-08-25 16:17:46', '2018-08-25 16:17:46'),
+(2, '', '', 20, 'sale', '2018-08-25 16:18:27', '2018-08-25 16:18:27');
+
 -- --------------------------------------------------------
 
 --
@@ -236,6 +580,14 @@ CREATE TABLE `wp_give_sequential_ordering` (
   `id` bigint(20) NOT NULL,
   `payment_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `wp_give_sequential_ordering`
+--
+
+INSERT INTO `wp_give_sequential_ordering` (`id`, `payment_id`) VALUES
+(1, 19),
+(2, 20);
 
 -- --------------------------------------------------------
 
@@ -249,6 +601,14 @@ CREATE TABLE `wp_give_sessions` (
   `session_value` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `session_expiry` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `wp_give_sessions`
+--
+
+INSERT INTO `wp_give_sessions` (`session_id`, `session_key`, `session_value`, `session_expiry`) VALUES
+(1, '099076173e87dd6c50cc4ac3e277d5b4', 'a:2:{s:13:\"give_purchase\";s:1594:\"a:8:{s:5:\"price\";d:35.45;s:12:\"purchase_key\";s:32:\"d73b97f7611afc902b2966dc776d567a\";s:10:\"user_email\";s:22:\"devin.walker@gmail.com\";s:4:\"date\";s:19:\"2018-08-25 16:17:44\";s:9:\"user_info\";a:6:{s:2:\"id\";i:0;s:5:\"title\";s:3:\"Mr.\";s:5:\"email\";s:22:\"devin.walker@gmail.com\";s:10:\"first_name\";s:5:\"Devin\";s:9:\"last_name\";s:6:\"Walker\";s:7:\"address\";b:0;}s:9:\"post_data\";a:22:{s:13:\"give-honeypot\";s:0:\"\";s:19:\"give-form-id-prefix\";s:3:\"8-1\";s:12:\"give-form-id\";s:1:\"8\";s:15:\"give-form-title\";s:20:\"Simple Donation Form\";s:16:\"give-current-url\";s:53:\"http://localhost:8004/donations/simple-donation-form/\";s:13:\"give-form-url\";s:53:\"http://localhost:8004/donations/simple-donation-form/\";s:17:\"give-form-minimum\";s:4:\"5.00\";s:17:\"give-form-maximum\";s:5:\"40.00\";s:14:\"give-form-hash\";s:10:\"2da26bbda1\";s:13:\"give-price-id\";s:6:\"custom\";s:11:\"give-amount\";s:5:\"35.45\";s:12:\"payment-mode\";s:6:\"manual\";s:10:\"give_title\";s:3:\"Mr.\";s:10:\"give_first\";s:5:\"Devin\";s:9:\"give_last\";s:6:\"Walker\";s:17:\"give_company_name\";s:11:\"WordImpress\";s:10:\"give_email\";s:22:\"devin.walker@gmail.com\";s:12:\"give_comment\";s:18:\"Glad to be a part!\";s:28:\"give-form-user-register-hash\";s:10:\"fd76aff704\";s:17:\"give-purchase-var\";s:17:\"needs-to-register\";s:11:\"give_action\";s:8:\"purchase\";s:12:\"give-gateway\";s:6:\"manual\";}s:7:\"gateway\";s:6:\"manual\";s:9:\"card_info\";a:10:{s:9:\"card_name\";s:0:\"\";s:8:\"card_cvc\";s:0:\"\";s:14:\"card_exp_month\";s:0:\"\";s:13:\"card_exp_year\";s:0:\"\";s:12:\"card_address\";s:0:\"\";s:14:\"card_address_2\";s:0:\"\";s:9:\"card_city\";s:0:\"\";s:10:\"card_state\";s:0:\"\";s:12:\"card_country\";s:0:\"\";s:8:\"card_zip\";s:0:\"\";}}\";s:10:\"give_email\";s:22:\"devin.walker@gmail.com\";}', 1535818664),
+(2, '9a2de37e4740094f7f973436530a32c1', 'a:2:{s:13:\"give_purchase\";s:1594:\"a:8:{s:5:\"price\";d:35.45;s:12:\"purchase_key\";s:32:\"b311a976aa8824c8894d44784039c395\";s:10:\"user_email\";s:22:\"devin.walker@gmail.com\";s:4:\"date\";s:19:\"2018-08-25 16:18:26\";s:9:\"user_info\";a:6:{s:2:\"id\";i:0;s:5:\"title\";s:3:\"Mr.\";s:5:\"email\";s:22:\"devin.walker@gmail.com\";s:10:\"first_name\";s:5:\"Devin\";s:9:\"last_name\";s:6:\"Walker\";s:7:\"address\";b:0;}s:9:\"post_data\";a:22:{s:13:\"give-honeypot\";s:0:\"\";s:19:\"give-form-id-prefix\";s:3:\"8-1\";s:12:\"give-form-id\";s:1:\"8\";s:15:\"give-form-title\";s:20:\"Simple Donation Form\";s:16:\"give-current-url\";s:53:\"http://localhost:8004/donations/simple-donation-form/\";s:13:\"give-form-url\";s:53:\"http://localhost:8004/donations/simple-donation-form/\";s:17:\"give-form-minimum\";s:4:\"5.00\";s:17:\"give-form-maximum\";s:5:\"40.00\";s:14:\"give-form-hash\";s:10:\"2da26bbda1\";s:13:\"give-price-id\";s:6:\"custom\";s:11:\"give-amount\";s:5:\"35.45\";s:12:\"payment-mode\";s:6:\"manual\";s:10:\"give_title\";s:3:\"Mr.\";s:10:\"give_first\";s:5:\"Devin\";s:9:\"give_last\";s:6:\"Walker\";s:17:\"give_company_name\";s:11:\"WordImpress\";s:10:\"give_email\";s:22:\"devin.walker@gmail.com\";s:12:\"give_comment\";s:18:\"Glad to be a part!\";s:28:\"give-form-user-register-hash\";s:10:\"fd76aff704\";s:17:\"give-purchase-var\";s:17:\"needs-to-register\";s:11:\"give_action\";s:8:\"purchase\";s:12:\"give-gateway\";s:6:\"manual\";}s:7:\"gateway\";s:6:\"manual\";s:9:\"card_info\";a:10:{s:9:\"card_name\";s:0:\"\";s:8:\"card_cvc\";s:0:\"\";s:14:\"card_exp_month\";s:0:\"\";s:13:\"card_exp_year\";s:0:\"\";s:12:\"card_address\";s:0:\"\";s:14:\"card_address_2\";s:0:\"\";s:9:\"card_city\";s:0:\"\";s:10:\"card_state\";s:0:\"\";s:12:\"card_country\";s:0:\"\";s:8:\"card_zip\";s:0:\"\";}}\";s:10:\"give_email\";s:22:\"devin.walker@gmail.com\";}', 1535818706);
 
 -- --------------------------------------------------------
 
@@ -399,8 +759,8 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (107, 'widget_tag_cloud', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (108, 'widget_nav_menu', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (109, 'widget_custom_html', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
-(110, 'cron', 'a:6:{i:1535174921;a:4:{s:34:\"wp_privacy_delete_old_export_files\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"hourly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1535174925;a:2:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}s:25:\"delete_expired_transients\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1535175020;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535175025;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1535175184;a:2:{s:28:\"give_weekly_scheduled_events\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}s:27:\"give_daily_scheduled_events\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}s:7:\"version\";i:2;}', 'yes'),
-(111, '_transient_doing_cron', '1535176155.7939229011535644531250', 'yes'),
+(110, 'cron', 'a:23:{i:1535174921;a:4:{s:34:\"wp_privacy_delete_old_export_files\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"hourly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1535174925;a:2:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}s:25:\"delete_expired_transients\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1535175020;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535175025;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1535175184;a:2:{s:28:\"give_weekly_scheduled_events\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}s:27:\"give_daily_scheduled_events\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1535184484;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535184503;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535188306;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535188327;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535188586;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206195;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206196;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206202;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206224;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206352;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535206368;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213859;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213861;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213862;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213901;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213902;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}i:1535213903;a:1:{s:21:\"give_delete_log_cache\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:2:{s:8:\"schedule\";b:0;s:4:\"args\";a:0:{}}}}s:7:\"version\";i:2;}', 'yes'),
+(111, '_transient_doing_cron', '1535213905.2669889926910400390625', 'yes'),
 (112, '_site_transient_update_core', 'O:8:\"stdClass\":4:{s:7:\"updates\";a:3:{i:0;O:8:\"stdClass\":10:{s:8:\"response\";s:7:\"upgrade\";s:8:\"download\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.8.zip\";s:6:\"locale\";s:5:\"en_US\";s:8:\"packages\";O:8:\"stdClass\":5:{s:4:\"full\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.8.zip\";s:10:\"no_content\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.9.8-no-content.zip\";s:11:\"new_bundled\";s:71:\"https://downloads.wordpress.org/release/wordpress-4.9.8-new-bundled.zip\";s:7:\"partial\";s:69:\"https://downloads.wordpress.org/release/wordpress-4.9.8-partial-6.zip\";s:8:\"rollback\";b:0;}s:7:\"current\";s:5:\"4.9.8\";s:7:\"version\";s:5:\"4.9.8\";s:11:\"php_version\";s:5:\"5.2.4\";s:13:\"mysql_version\";s:3:\"5.0\";s:11:\"new_bundled\";s:3:\"4.7\";s:15:\"partial_version\";s:5:\"4.9.6\";}i:1;O:8:\"stdClass\":11:{s:8:\"response\";s:10:\"autoupdate\";s:8:\"download\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.8.zip\";s:6:\"locale\";s:5:\"en_US\";s:8:\"packages\";O:8:\"stdClass\":5:{s:4:\"full\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.8.zip\";s:10:\"no_content\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.9.8-no-content.zip\";s:11:\"new_bundled\";s:71:\"https://downloads.wordpress.org/release/wordpress-4.9.8-new-bundled.zip\";s:7:\"partial\";s:69:\"https://downloads.wordpress.org/release/wordpress-4.9.8-partial-6.zip\";s:8:\"rollback\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.9.8-rollback-6.zip\";}s:7:\"current\";s:5:\"4.9.8\";s:7:\"version\";s:5:\"4.9.8\";s:11:\"php_version\";s:5:\"5.2.4\";s:13:\"mysql_version\";s:3:\"5.0\";s:11:\"new_bundled\";s:3:\"4.7\";s:15:\"partial_version\";s:5:\"4.9.6\";s:9:\"new_files\";s:0:\"\";}i:2;O:8:\"stdClass\":11:{s:8:\"response\";s:10:\"autoupdate\";s:8:\"download\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.7.zip\";s:6:\"locale\";s:5:\"en_US\";s:8:\"packages\";O:8:\"stdClass\":5:{s:4:\"full\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.9.7.zip\";s:10:\"no_content\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.9.7-no-content.zip\";s:11:\"new_bundled\";s:71:\"https://downloads.wordpress.org/release/wordpress-4.9.7-new-bundled.zip\";s:7:\"partial\";s:69:\"https://downloads.wordpress.org/release/wordpress-4.9.7-partial-6.zip\";s:8:\"rollback\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.9.7-rollback-6.zip\";}s:7:\"current\";s:5:\"4.9.7\";s:7:\"version\";s:5:\"4.9.7\";s:11:\"php_version\";s:5:\"5.2.4\";s:13:\"mysql_version\";s:3:\"5.0\";s:11:\"new_bundled\";s:3:\"4.7\";s:15:\"partial_version\";s:5:\"4.9.6\";s:9:\"new_files\";s:0:\"\";}}s:12:\"last_checked\";i:1535174926;s:15:\"version_checked\";s:5:\"4.9.6\";s:12:\"translations\";a:0:{}}', 'no'),
 (113, '_site_transient_update_plugins', 'O:8:\"stdClass\":5:{s:12:\"last_checked\";i:1535174935;s:7:\"checked\";a:3:{s:19:\"akismet/akismet.php\";s:5:\"4.0.3\";s:13:\"Give/give.php\";s:5:\"2.2.3\";s:9:\"hello.php\";s:3:\"1.7\";}s:8:\"response\";a:1:{s:19:\"akismet/akismet.php\";O:8:\"stdClass\":12:{s:2:\"id\";s:21:\"w.org/plugins/akismet\";s:4:\"slug\";s:7:\"akismet\";s:6:\"plugin\";s:19:\"akismet/akismet.php\";s:11:\"new_version\";s:5:\"4.0.8\";s:3:\"url\";s:38:\"https://wordpress.org/plugins/akismet/\";s:7:\"package\";s:56:\"https://downloads.wordpress.org/plugin/akismet.4.0.8.zip\";s:5:\"icons\";a:2:{s:2:\"2x\";s:59:\"https://ps.w.org/akismet/assets/icon-256x256.png?rev=969272\";s:2:\"1x\";s:59:\"https://ps.w.org/akismet/assets/icon-128x128.png?rev=969272\";}s:7:\"banners\";a:1:{s:2:\"1x\";s:61:\"https://ps.w.org/akismet/assets/banner-772x250.jpg?rev=479904\";}s:11:\"banners_rtl\";a:0:{}s:6:\"tested\";s:5:\"4.9.8\";s:12:\"requires_php\";b:0;s:13:\"compatibility\";O:8:\"stdClass\":0:{}}}s:12:\"translations\";a:0:{}s:9:\"no_update\";a:2:{s:13:\"Give/give.php\";O:8:\"stdClass\":9:{s:2:\"id\";s:18:\"w.org/plugins/give\";s:4:\"slug\";s:4:\"give\";s:6:\"plugin\";s:13:\"Give/give.php\";s:11:\"new_version\";s:5:\"2.2.3\";s:3:\"url\";s:35:\"https://wordpress.org/plugins/give/\";s:7:\"package\";s:53:\"https://downloads.wordpress.org/plugin/give.2.2.3.zip\";s:5:\"icons\";a:2:{s:2:\"2x\";s:57:\"https://ps.w.org/give/assets/icon-256x256.jpg?rev=1130051\";s:2:\"1x\";s:57:\"https://ps.w.org/give/assets/icon-128x128.jpg?rev=1130051\";}s:7:\"banners\";a:2:{s:2:\"2x\";s:60:\"https://ps.w.org/give/assets/banner-1544x500.jpg?rev=1634841\";s:2:\"1x\";s:59:\"https://ps.w.org/give/assets/banner-772x250.jpg?rev=1634841\";}s:11:\"banners_rtl\";a:0:{}}s:9:\"hello.php\";O:8:\"stdClass\":9:{s:2:\"id\";s:25:\"w.org/plugins/hello-dolly\";s:4:\"slug\";s:11:\"hello-dolly\";s:6:\"plugin\";s:9:\"hello.php\";s:11:\"new_version\";s:3:\"1.6\";s:3:\"url\";s:42:\"https://wordpress.org/plugins/hello-dolly/\";s:7:\"package\";s:58:\"https://downloads.wordpress.org/plugin/hello-dolly.1.6.zip\";s:5:\"icons\";a:2:{s:2:\"2x\";s:63:\"https://ps.w.org/hello-dolly/assets/icon-256x256.jpg?rev=969907\";s:2:\"1x\";s:63:\"https://ps.w.org/hello-dolly/assets/icon-128x128.jpg?rev=969907\";}s:7:\"banners\";a:1:{s:2:\"1x\";s:65:\"https://ps.w.org/hello-dolly/assets/banner-772x250.png?rev=478342\";}s:11:\"banners_rtl\";a:0:{}}}}', 'no'),
 (114, '_site_transient_timeout_theme_roots', '1535176727', 'no'),
@@ -428,7 +788,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (132, 'recently_activated', 'a:0:{}', 'yes'),
 (133, '_transient_timeout_dash_v2_88ae138922fe95674369b1cb3d215a2b', '1535218137', 'no'),
 (134, '_transient_dash_v2_88ae138922fe95674369b1cb3d215a2b', '<div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wordpress.org/news/2018/08/wordpress-4-9-8-maintenance-release/\'>WordPress 4.9.8 Maintenance Release</a></li></ul></div><div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wptavern.com/wpcampus-2018-videos-are-now-available-to-watch\'>WPTavern: WPCampus 2018 Videos Are Now Available to Watch</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/gutenberg-and-classic-editor-plugins-pass-200000-active-installations-wordpress-4-9-9-planning-underway\'>WPTavern: Gutenberg and Classic Editor Plugins Pass 200,000 Active Installations, WordPress 4.9.9 Planning Underway</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/wordcamp-kochi-is-postponed-to-november-3rd-due-to-extensive-flooding\'>WPTavern: WordCamp Kochi is Postponed to November 3rd Due to Extensive Flooding</a></li></ul></div>', 'no'),
-(135, 'give_settings', 'a:53:{i:0;b:0;s:12:\"base_country\";s:2:\"US\";s:9:\"test_mode\";s:7:\"enabled\";s:8:\"currency\";s:3:\"USD\";s:17:\"currency_position\";s:6:\"before\";s:16:\"session_lifetime\";s:6:\"604800\";s:12:\"email_access\";s:7:\"enabled\";s:19:\"thousands_separator\";s:1:\",\";s:17:\"decimal_separator\";s:1:\".\";s:15:\"number_decimals\";i:2;s:26:\"sequential-ordering_status\";s:7:\"enabled\";s:3:\"css\";s:7:\"enabled\";s:11:\"floatlabels\";s:8:\"disabled\";s:7:\"welcome\";s:7:\"enabled\";s:13:\"company_field\";s:8:\"disabled\";s:17:\"name_title_prefix\";s:8:\"disabled\";s:14:\"forms_singular\";s:7:\"enabled\";s:14:\"forms_archives\";s:7:\"enabled\";s:13:\"forms_excerpt\";s:7:\"enabled\";s:17:\"form_featured_img\";s:7:\"enabled\";s:12:\"form_sidebar\";s:7:\"enabled\";s:10:\"categories\";s:7:\"enabled\";s:4:\"tags\";s:7:\"enabled\";s:5:\"terms\";s:8:\"disabled\";s:13:\"admin_notices\";s:7:\"enabled\";s:5:\"cache\";s:7:\"enabled\";s:19:\"uninstall_on_delete\";s:8:\"disabled\";s:18:\"the_content_filter\";s:7:\"enabled\";s:14:\"scripts_footer\";s:8:\"disabled\";s:20:\"agree_to_terms_label\";s:15:\"Agree to Terms?\";s:14:\"agreement_text\";s:1938:\"Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.\";s:19:\"paypal_verification\";s:7:\"enabled\";s:8:\"gateways\";a:3:{s:6:\"manual\";s:1:\"1\";s:7:\"offline\";s:1:\"1\";s:6:\"paypal\";s:1:\"1\";}s:15:\"default_gateway\";s:6:\"manual\";s:31:\"global_offline_donation_content\";s:385:\"<p>In order to make an offline donation we ask that you please follow these instructions: </p><ol><li>Make a check payable to \"{sitename}\"</li><li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li><li>Please mail your check to:</li></ol>{offline_mailing_address}<br><p>All contributions will be gratefully acknowledged and are tax deductible.</p>\";s:43:\"give_offline_donation_enable_billing_fields\";s:8:\"disabled\";s:23:\"donor_default_user_role\";s:10:\"give_donor\";s:42:\"offline-donation-instruction_email_message\";s:385:\"<p>In order to make an offline donation we ask that you please follow these instructions: </p><ol><li>Make a check payable to \"{sitename}\"</li><li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li><li>Please mail your check to:</li></ol>{offline_mailing_address}<br><p>All contributions will be gratefully acknowledged and are tax deductible.</p>\";s:30:\"donation-receipt_email_message\";s:436:\"Dear {name},\n\nThank you for your donation. Your generosity is appreciated! Here are the details of your donation:\n\n<strong>Donor:</strong> {fullname}\n<strong>Donation:</strong> {donation}\n<strong>Donation Date:</strong> {date}\n<strong>Amount:</strong> {amount}\n<strong>Payment Method:</strong> {payment_method}\n<strong>Payment ID:</strong> {payment_id}\n<strong>Receipt ID:</strong> {receipt_id}\n\n{receipt_link}\n\n\n\nSincerely,\n{sitename}\n\";s:26:\"new-donation_email_message\";s:280:\"Hi there,\n\nThis email is to inform you that a new donation has been made on your website: {site_url}.\n\n<strong>Donor:</strong> {name}\n<strong>Donation:</strong> {donation}\n<strong>Amount:</strong> {amount}\n<strong>Payment Method:</strong> {payment_method}\n\nThank you,\n\n{sitename}\n\";s:22:\"new-donation_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:30:\"new-offline-donation_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:28:\"new-donor-register_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:25:\"new-donation_notification\";s:7:\"enabled\";s:26:\"sequential-ordering_number\";i:1;s:12:\"success_page\";i:5;s:12:\"failure_page\";i:6;s:12:\"history_page\";i:7;s:14:\"gateways_label\";a:3:{s:6:\"manual\";s:0:\"\";s:7:\"offline\";s:0:\"\";s:6:\"paypal\";s:0:\"\";}s:33:\"new-offline-donation_notification\";s:7:\"enabled\";s:41:\"offline-donation-instruction_notification\";s:7:\"enabled\";s:17:\"enable_categories\";s:2:\"on\";s:11:\"enable_tags\";s:2:\"on\";}', 'no'),
+(135, 'give_settings', 'a:53:{i:0;b:0;s:12:\"base_country\";s:2:\"US\";s:9:\"test_mode\";s:7:\"enabled\";s:8:\"currency\";s:3:\"USD\";s:17:\"currency_position\";s:6:\"before\";s:16:\"session_lifetime\";s:6:\"604800\";s:12:\"email_access\";s:7:\"enabled\";s:19:\"thousands_separator\";s:1:\",\";s:17:\"decimal_separator\";s:1:\".\";s:15:\"number_decimals\";i:2;s:26:\"sequential-ordering_status\";s:7:\"enabled\";s:3:\"css\";s:7:\"enabled\";s:11:\"floatlabels\";s:8:\"disabled\";s:7:\"welcome\";s:7:\"enabled\";s:13:\"company_field\";s:8:\"disabled\";s:17:\"name_title_prefix\";s:8:\"disabled\";s:14:\"forms_singular\";s:7:\"enabled\";s:14:\"forms_archives\";s:7:\"enabled\";s:13:\"forms_excerpt\";s:7:\"enabled\";s:17:\"form_featured_img\";s:7:\"enabled\";s:12:\"form_sidebar\";s:7:\"enabled\";s:10:\"categories\";s:7:\"enabled\";s:4:\"tags\";s:7:\"enabled\";s:5:\"terms\";s:8:\"disabled\";s:13:\"admin_notices\";s:7:\"enabled\";s:5:\"cache\";s:7:\"enabled\";s:19:\"uninstall_on_delete\";s:8:\"disabled\";s:18:\"the_content_filter\";s:7:\"enabled\";s:14:\"scripts_footer\";s:8:\"disabled\";s:20:\"agree_to_terms_label\";s:15:\"Agree to Terms?\";s:14:\"agreement_text\";s:1938:\"Acceptance of any contribution, gift or grant is at the discretion of the Give Automation. The Give Automation will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Give Automation.\r\n\r\nNo irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.\r\n\r\nThe Give Automation will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.\r\n\r\nThe Give Automation will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the Give Automation.\r\n\r\nCertain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for Give Automation.\r\n\r\nThe Give Automation will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by Give Automation.\r\n\r\nThe Give Automation will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the Give Automation will restrict information about the donor to only those staff members with a need to know.\r\n\r\nThe Give Automation will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the Give Automation.\";s:19:\"paypal_verification\";s:7:\"enabled\";s:8:\"gateways\";a:3:{s:6:\"manual\";s:1:\"1\";s:7:\"offline\";s:1:\"1\";s:6:\"paypal\";s:1:\"1\";}s:15:\"default_gateway\";s:6:\"manual\";s:31:\"global_offline_donation_content\";s:385:\"<p>In order to make an offline donation we ask that you please follow these instructions: </p><ol><li>Make a check payable to \"{sitename}\"</li><li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li><li>Please mail your check to:</li></ol>{offline_mailing_address}<br><p>All contributions will be gratefully acknowledged and are tax deductible.</p>\";s:43:\"give_offline_donation_enable_billing_fields\";s:8:\"disabled\";s:23:\"donor_default_user_role\";s:10:\"give_donor\";s:42:\"offline-donation-instruction_email_message\";s:385:\"<p>In order to make an offline donation we ask that you please follow these instructions: </p><ol><li>Make a check payable to \"{sitename}\"</li><li>On the memo line of the check, please indicate that the donation is for \"{sitename}\"</li><li>Please mail your check to:</li></ol>{offline_mailing_address}<br><p>All contributions will be gratefully acknowledged and are tax deductible.</p>\";s:30:\"donation-receipt_email_message\";s:436:\"Dear {name},\n\nThank you for your donation. Your generosity is appreciated! Here are the details of your donation:\n\n<strong>Donor:</strong> {fullname}\n<strong>Donation:</strong> {donation}\n<strong>Donation Date:</strong> {date}\n<strong>Amount:</strong> {amount}\n<strong>Payment Method:</strong> {payment_method}\n<strong>Payment ID:</strong> {payment_id}\n<strong>Receipt ID:</strong> {receipt_id}\n\n{receipt_link}\n\n\n\nSincerely,\n{sitename}\n\";s:26:\"new-donation_email_message\";s:280:\"Hi there,\n\nThis email is to inform you that a new donation has been made on your website: {site_url}.\n\n<strong>Donor:</strong> {name}\n<strong>Donation:</strong> {donation}\n<strong>Amount:</strong> {amount}\n<strong>Payment Method:</strong> {payment_method}\n\nThank you,\n\n{sitename}\n\";s:22:\"new-donation_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:30:\"new-offline-donation_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:28:\"new-donor-register_recipient\";a:1:{i:0;s:16:\"user@example.com\";}s:25:\"new-donation_notification\";s:7:\"enabled\";s:26:\"sequential-ordering_number\";i:3;s:12:\"success_page\";i:5;s:12:\"failure_page\";i:6;s:12:\"history_page\";i:7;s:14:\"gateways_label\";a:3:{s:6:\"manual\";s:0:\"\";s:7:\"offline\";s:0:\"\";s:6:\"paypal\";s:0:\"\";}s:33:\"new-offline-donation_notification\";s:7:\"enabled\";s:41:\"offline-donation-instruction_notification\";s:7:\"enabled\";s:17:\"enable_categories\";s:2:\"on\";s:11:\"enable_tags\";s:2:\"on\";}', 'no'),
 (136, 'wp_give_donors_db_version', '1.0', 'no'),
 (137, 'wp_give_donormeta_db_version', '1.0', 'no'),
 (138, 'give_version', '2.2.3', 'no'),
@@ -444,12 +804,11 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (150, 'give_install_pages_created', '1', 'no'),
 (151, '_give_table_check', '1535779754', 'no'),
 (152, 'theme_mods_twentyseventeen', 'a:1:{s:18:\"custom_css_post_id\";i:-1;}', 'yes'),
-(153, '_transient_is_multi_author', '0', 'yes'),
-(154, 'give_cache_give_stats_26a68e33d392dea', 'a:2:{s:4:\"data\";i:0;s:10:\"expiration\";i:1535179766;}', 'no'),
-(155, 'give_cache_give_stats_55209883bbb8acf', 'a:2:{s:4:\"data\";i:0;s:10:\"expiration\";i:1535179766;}', 'no'),
-(156, 'give_cache_give_stats_fdaa9d2c0b07fda', 'a:2:{s:4:\"data\";i:0;s:10:\"expiration\";i:1535179766;}', 'no'),
-(157, 'give_cache_give_stats_fb7cd39fd0463eb', 'a:2:{s:4:\"data\";i:0;s:10:\"expiration\";i:1535179766;}', 'no'),
-(158, 'give_cache_give_stats_7ca44666856c66a', 'a:2:{s:4:\"data\";i:0;s:10:\"expiration\";i:1535179767;}', 'no');
+(161, '_site_transient_timeout_browser_b122c48aa921436497a21608920e6526', '1535787433', 'no'),
+(162, '_site_transient_browser_b122c48aa921436497a21608920e6526', 'a:10:{s:4:\"name\";s:6:\"Chrome\";s:7:\"version\";s:11:\"70.0.3508.0\";s:8:\"platform\";s:5:\"Linux\";s:10:\"update_url\";s:29:\"https://www.google.com/chrome\";s:7:\"img_src\";s:43:\"http://s.w.org/images/browsers/chrome.png?1\";s:11:\"img_src_ssl\";s:44:\"https://s.w.org/images/browsers/chrome.png?1\";s:15:\"current_version\";s:2:\"18\";s:7:\"upgrade\";b:0;s:8:\"insecure\";b:0;s:6:\"mobile\";b:0;}', 'no'),
+(168, 'give_earnings_total', '70.9', 'no'),
+(170, '_transient_is_multi_author', '0', 'yes'),
+(171, 'give_cache_email_throttle_limit_exhausted_1', 'a:2:{s:4:\"data\";b:1;s:10:\"expiration\";i:1535214254;}', 'no');
 
 -- --------------------------------------------------------
 
@@ -470,7 +829,8 @@ CREATE TABLE `wp_postmeta` (
 
 INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUES
 (1, 2, '_wp_page_template', 'default'),
-(2, 3, '_wp_page_template', 'default');
+(2, 3, '_wp_page_template', 'default'),
+(3, 1, '_give_email_throttle_count', '0');
 
 -- --------------------------------------------------------
 
@@ -516,9 +876,19 @@ INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post
 (5, 1, '2018-08-25 05:29:13', '2018-08-25 05:29:13', '[give_receipt]', 'Donation Confirmation', '', 'publish', 'closed', 'closed', '', 'donation-confirmation', '', '', '2018-08-25 05:29:13', '2018-08-25 05:29:13', '', 0, 'http://localhost:8004/?page_id=5', 0, 'page', '', 0),
 (6, 1, '2018-08-25 05:29:13', '2018-08-25 05:29:13', 'We&#039;re sorry, your donation failed to process. Please try again or contact site support.', 'Donation Failed', '', 'publish', 'closed', 'closed', '', 'donation-failed', '', '', '2018-08-25 05:29:13', '2018-08-25 05:29:13', '', 0, 'http://localhost:8004/?page_id=6', 0, 'page', '', 0),
 (7, 1, '2018-08-25 05:29:13', '2018-08-25 05:29:13', '[donation_history]', 'Donation History', '', 'publish', 'closed', 'closed', '', 'donation-history', '', '', '2018-08-25 05:29:13', '2018-08-25 05:29:13', '', 0, 'http://localhost:8004/?page_id=7', 0, 'page', '', 0),
-(8, 1, '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 'Simple Donation Form', '', 'publish', 'closed', 'closed', '', 'simple-donation-form', '', '', '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 0, 'http://localhost:8004/?post_type=give_forms&#038;p=8', 0, 'give_forms', '', 0),
+(8, 1, '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 'Simple Donation Form', '', 'publish', 'closed', 'closed', '', 'simple-donation-form', '', '', '2018-08-25 08:08:28', '2018-08-25 08:08:28', '', 0, 'http://localhost:8004/?post_type=give_forms&#038;p=8', 0, 'give_forms', '', 0),
 (9, 1, '2018-08-25 05:30:26', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'closed', 'closed', '', '', '', '', '2018-08-25 05:30:26', '0000-00-00 00:00:00', '', 0, 'http://localhost:8004/?post_type=give_forms&p=9', 0, 'give_forms', '', 0),
-(10, 1, '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 'Simple Donation Form', '', 'inherit', 'closed', 'closed', '', '8-revision-v1', '', '', '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 8, 'http://localhost:8004/?p=10', 0, 'revision', '', 0);
+(10, 1, '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 'Simple Donation Form', '', 'inherit', 'closed', 'closed', '', '8-revision-v1', '', '', '2018-08-25 05:32:37', '2018-08-25 05:32:37', '', 8, 'http://localhost:8004/?p=10', 0, 'revision', '', 0),
+(11, 1, '2018-08-25 09:12:12', '2018-08-25 09:12:12', '', 'Modal Form', '', 'publish', 'closed', 'closed', '', 'modal-form', '', '', '2018-08-25 09:16:30', '2018-08-25 09:16:30', '', 0, 'http://localhost:8004/?post_type=give_forms&#038;p=11', 0, 'give_forms', '', 0),
+(12, 1, '2018-08-25 09:12:12', '2018-08-25 09:12:12', '', 'Modal Form', '', 'inherit', 'closed', 'closed', '', '11-revision-v1', '', '', '2018-08-25 09:12:12', '2018-08-25 09:12:12', '', 11, 'http://localhost:8004/11-revision-v1/', 0, 'revision', '', 0),
+(13, 1, '2018-08-25 14:10:00', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'closed', 'closed', '', '', '', '', '2018-08-25 14:10:00', '0000-00-00 00:00:00', '', 0, 'http://localhost:8004/?post_type=give_forms&p=13', 0, 'give_forms', '', 0),
+(14, 1, '2018-08-25 14:10:01', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'closed', 'closed', '', '', '', '', '2018-08-25 14:10:01', '0000-00-00 00:00:00', '', 0, 'http://localhost:8004/?post_type=give_forms&p=14', 0, 'give_forms', '', 0),
+(15, 1, '2018-08-25 14:10:29', '2018-08-25 14:10:29', '', 'Reveal Form', '', 'publish', 'closed', 'closed', '', 'reveal-form', '', '', '2018-08-25 14:10:29', '2018-08-25 14:10:29', '', 0, 'http://localhost:8004/?post_type=give_forms&#038;p=15', 0, 'give_forms', '', 0),
+(16, 1, '2018-08-25 14:10:29', '2018-08-25 14:10:29', '', 'Reveal Form', '', 'inherit', 'closed', 'closed', '', '15-revision-v1', '', '', '2018-08-25 14:10:29', '2018-08-25 14:10:29', '', 15, 'http://localhost:8004/15-revision-v1/', 0, 'revision', '', 0),
+(17, 1, '2018-08-25 14:12:53', '2018-08-25 14:12:53', '', 'Button Form', '', 'publish', 'closed', 'closed', '', 'button-form', '', '', '2018-08-25 14:12:53', '2018-08-25 14:12:53', '', 0, 'http://localhost:8004/?post_type=give_forms&#038;p=17', 0, 'give_forms', '', 0),
+(18, 1, '2018-08-25 14:12:53', '2018-08-25 14:12:53', '', 'Button Form', '', 'inherit', 'closed', 'closed', '', '17-revision-v1', '', '', '2018-08-25 14:12:53', '2018-08-25 14:12:53', '', 17, 'http://localhost:8004/17-revision-v1/', 0, 'revision', '', 0),
+(19, 0, '2018-08-25 16:17:46', '2018-08-25 16:17:46', '', '1', '', 'publish', 'closed', 'closed', '', '1', '', '', '2018-08-25 16:17:46', '2018-08-25 16:17:46', '', 0, 'http://localhost:8004/?post_type=give_payment&#038;p=19', 0, 'give_payment', '', 1),
+(20, 0, '2018-08-25 16:18:27', '2018-08-25 16:18:27', '', '2', '', 'publish', 'closed', 'closed', '', '2', '', '', '2018-08-25 16:18:28', '2018-08-25 16:18:28', '', 0, 'http://localhost:8004/?post_type=give_payment&#038;p=20', 0, 'give_payment', '', 1);
 
 -- --------------------------------------------------------
 
@@ -627,7 +997,7 @@ INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALU
 (13, 1, 'wp_user_level', '10'),
 (14, 1, 'dismissed_wp_pointers', 'wp496_privacy'),
 (15, 1, 'show_welcome_panel', '1'),
-(16, 1, 'session_tokens', 'a:1:{s:64:\"c3223c759ce53acaebe9261edf2d226c855cb8e55860b5bb1c0e43ca32dc81c3\";a:4:{s:10:\"expiration\";i:1535347725;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:105:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36\";s:5:\"login\";i:1535174925;}}'),
+(16, 1, 'session_tokens', 'a:6:{s:64:\"c3223c759ce53acaebe9261edf2d226c855cb8e55860b5bb1c0e43ca32dc81c3\";a:4:{s:10:\"expiration\";i:1535347725;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:105:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36\";s:5:\"login\";i:1535174925;}s:64:\"948086693b0c5a2aec276cb46669b23a5ec49560df137123c3929f020e0fa26c\";a:4:{s:10:\"expiration\";i:1535355432;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:111:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36\";s:5:\"login\";i:1535182632;}s:64:\"d4925831d8dcc30f373435caa8e508dec1bd86821d8a62e01fc6298505ad2cda\";a:4:{s:10:\"expiration\";i:1535355466;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:111:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36\";s:5:\"login\";i:1535182666;}s:64:\"c306e046805416e8ce25b905f333a816b688565536d1fb271ca2a6bd7ed715cf\";a:4:{s:10:\"expiration\";i:1535355649;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:111:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36\";s:5:\"login\";i:1535182849;}s:64:\"93f5eb2e9e0259d16d3216bf0d3dc91795133e9877962b7496cd5ecb9e040805\";a:4:{s:10:\"expiration\";i:1535355700;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:111:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36\";s:5:\"login\";i:1535182900;}s:64:\"b50c8a3236d50544e929540de9d7c3775c96b0a6ea4c7880ed01ec6b60dfc89b\";a:4:{s:10:\"expiration\";i:1535355728;s:2:\"ip\";s:10:\"172.21.0.1\";s:2:\"ua\";s:111:\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/70.0.3508.0 Safari/537.36\";s:5:\"login\";i:1535182928;}}'),
 (17, 1, 'wp_dashboard_quick_press_last_post_id', '4'),
 (18, 1, 'community-events-location', 'a:1:{s:2:\"ip\";s:10:\"172.21.0.0\";}');
 
@@ -827,61 +1197,61 @@ ALTER TABLE `wp_users`
 -- AUTO_INCREMENT for table `wp_commentmeta`
 --
 ALTER TABLE `wp_commentmeta`
-  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `wp_comments`
 --
 ALTER TABLE `wp_comments`
-  MODIFY `comment_ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `comment_ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `wp_give_donationmeta`
 --
 ALTER TABLE `wp_give_donationmeta`
-  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `wp_give_donormeta`
 --
 ALTER TABLE `wp_give_donormeta`
-  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `wp_give_donors`
 --
 ALTER TABLE `wp_give_donors`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `wp_give_formmeta`
 --
 ALTER TABLE `wp_give_formmeta`
-  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=461;
 
 --
 -- AUTO_INCREMENT for table `wp_give_logmeta`
 --
 ALTER TABLE `wp_give_logmeta`
-  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `wp_give_logs`
 --
 ALTER TABLE `wp_give_logs`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `wp_give_sequential_ordering`
 --
 ALTER TABLE `wp_give_sequential_ordering`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `wp_give_sessions`
 --
 ALTER TABLE `wp_give_sessions`
-  MODIFY `session_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `session_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `wp_links`
@@ -893,19 +1263,19 @@ ALTER TABLE `wp_links`
 -- AUTO_INCREMENT for table `wp_options`
 --
 ALTER TABLE `wp_options`
-  MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 
 --
 -- AUTO_INCREMENT for table `wp_postmeta`
 --
 ALTER TABLE `wp_postmeta`
-  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `wp_posts`
 --
 ALTER TABLE `wp_posts`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `wp_termmeta`

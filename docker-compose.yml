@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     volumes:
       - db_data:/var/lib/mysql
-      - ./wordpress.sql:/docker-entrypoint-initdb.d/wordpress.sql
+      - ./sample-data/wordpress.sql:/docker-entrypoint-initdb.d/wordpress.sql
     restart: always
     environment:
       MYSQL_USER: wordpress
