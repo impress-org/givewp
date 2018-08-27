@@ -149,6 +149,31 @@ abstract class Give_DB {
 	}
 
 	/**
+	 * Retrieve all rows by a specific column / value
+	 *
+	 * @since  2.2.4
+	 * @access public
+	 *
+	 * @param  int $column Column ID.
+	 * @param  int $row_id Row ID.
+	 *
+	 * @return array
+	 */
+	public function get_results_by( $column, $row_id ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		// Bailout.
+		if ( empty( $column ) || empty( $row_id ) ) {
+			return null;
+		}
+
+		$column = esc_sql( $column );
+
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s;", $row_id ) );
+	}
+
+	/**
 	 * Retrieve a specific column's value by the primary key
 	 *
 	 * @since  1.0
