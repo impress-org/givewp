@@ -1048,7 +1048,7 @@ function give_donor_view( $donor ) {
  *
  * @since  1.0
  *
- * @param  object $donor The donor object being displayed.
+ * @param  Give_Donor $donor The donor object being displayed.
  *
  * @return void
  */
