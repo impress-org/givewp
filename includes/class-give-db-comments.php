@@ -56,7 +56,6 @@ class Give_DB_Comments extends Give_DB {
 	public function get_columns() {
 		return array(
 			'ID'               => '%d',
-			'comment_title'    => '%s',
 			'comment_content'  => '%s',
 			'comment_parent'   => '%d',
 			'comment_type'     => '%s',
@@ -79,7 +78,6 @@ class Give_DB_Comments extends Give_DB {
 
 		return array(
 			'ID'               => 0,
-			'comment_title'    => '',
 			'comment_content'  => '',
 			'comment_parent'   => 0,
 			'comment_type'     => '',
