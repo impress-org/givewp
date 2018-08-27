@@ -29,6 +29,24 @@ class Give_Comment {
 	private $comment_types;
 
 	/**
+	 * Comment Table.
+	 *
+	 * @since  2.3.0
+	 * @access public
+	 * @var array
+	 */
+	private $db;
+
+	/**
+	 * Comment Meta Table.
+	 *
+	 * @since  2.3.0
+	 * @access public
+	 * @var array
+	 */
+	private $db_meta;
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.2.0
@@ -61,6 +79,9 @@ class Give_Comment {
 	 * @access private
 	 */
 	private function init() {
+		$this->db      = new Give_DB_Comments();
+		$this->db_meta = new Give_DB_Comment_Meta();
+
 		/**
 		 * Filter the comment type
 		 *
