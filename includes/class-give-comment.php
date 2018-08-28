@@ -115,7 +115,7 @@ class Give_Comment {
 	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
-			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or cooment type', 'give' ) );
+			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or comment type', 'give' ) );
 		}
 
 		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
