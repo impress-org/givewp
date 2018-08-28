@@ -57,11 +57,12 @@ const helpers = {
 		 *
 		 * @since 2.3.0
 		 *
-		 * @param {Object} page Puppeteer page object.
+		 * @param {Object} page    Puppeteer page object.
+		 * @param {string} content Form content.
 		 */
-		verifyFormContent: function( page ) {
+		verifyFormContent: function( page, $content ) {
 			it( 'verify form content', async () => {
-				await expect( page ).toMatch( 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army’s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God’s saving purposes.' )
+				await expect( page ).toMatch( $content )
 			})	
 		},
 
@@ -106,33 +107,17 @@ const helpers = {
 		},
 
 		/**
-		 * Checks if all the Personal Info fields are present on the donation form.
+		 * Checks if all the input fields are present on the page.
 		 *
 		 * @since 2.3.0
 		 *
 		 * @param {Object} page Puppeteer page object.
 		 */
-		verifyPersonalInfoFields: function( page ) {
-			it( 'verify all fields for Personal Info', async () => {
-				const mr    = await page.evaluate( () => document.querySelector( '#give-title' ).options[0].innerText )
-				const mrs   = await page.evaluate( () => document.querySelector( '#give-title' ).options[1].innerText )
-				const ms    = await page.evaluate( () => document.querySelector( '#give-title' ).options[2].innerText )
-				const dr    = await page.evaluate( () => document.querySelector( '#give-title' ).options[3].innerText )
-				const value = await page.evaluate( () => document.querySelector( '#give-purchase-button' ).value )	
-
-				await expect( page ).toMatchElement( '#give-title' )
-				await expect( page ).toMatchElement( '#give-first' )
-				await expect( page ).toMatchElement( '#give-last' )
-				await expect( page ).toMatchElement( '#give-company' )
-				await expect( page ).toMatchElement( '#give-email' )
-				await expect( page ).toMatchElement( '#give-anonymous-donation' )
-				await expect( page ).toMatchElement( '#give-comment' )
-
-				await expect( mr ).toBe( 'Mr.' )
-				await expect( mrs ).toBe( 'Mrs.' )
-				await expect( ms ).toBe( 'Ms.' )
-				await expect( dr ).toBe( 'Dr.' )
-				await expect( value ).toBe( 'Make a Donation' )
+		verifyInputFields: function( page, testTitle, selectorArray ) {
+			it( testTitle, async () => {
+				for ( const key of selectorArray ) {
+					await expect( page ).toMatchElement( key )
+				}
 			})
 		},
 
@@ -157,7 +142,16 @@ const helpers = {
 				await page.click( '#give-purchase-button' )
 				await page.waitForNavigation()
 			}, 500000) 
+		},
+		verifyElementCount: function( page, selectorObj ) {
+			it( 'verify number of elements', async() => {
+				for ( const key in selectorObj ) {
+					let length = ( await page.$$( key ) ).length
+					expect( length ).toBe( selectorObj[ key ] )
+				}
+			})
 		}
+		/******************************/
 	}
 }
 
