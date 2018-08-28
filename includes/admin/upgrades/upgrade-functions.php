@@ -397,6 +397,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v230_move_donor_note_callback',
 		)
 	);
+
+	// v2.3.0 Move donation notes to custom comment table.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_move_donation_note_3',
+			'version'  => '2.3.0',
+			'callback' => 'give_v230_move_donation_note_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2968,5 +2977,74 @@ function give_v230_move_donor_note_callback() {
 	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v230_move_donor_note' );
+	}
+}
+
+/**
+ * Move donor notes to comment table
+ *
+ * @since 2.3.0
+ */
+function give_v230_move_donation_note_callback() {
+	global $wpdb;
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donation_note_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT count(*)
+			FROM {$wpdb->comments}
+			WHERE comment_type=%s
+			",
+			'give_payment_note'
+		)
+	);
+
+	$comments = $wpdb->get_results(
+		$wpdb->prepare(
+			"
+			SELECT *
+			FROM {$wpdb->comments}
+			WHERE comment_type=%s
+			LIMIT 100
+			OFFSET %d
+			",
+			'give_payment_note',
+			$give_updates->get_offset( 100 )
+		)
+	);
+
+	if ( $comments ) {
+		$give_updates->set_percentage( $donation_note_count, $give_updates->step * 100 );
+
+		// Loop through Donors
+		foreach ( $comments as $comment ) {
+			$donation_id = $comment->comment_post_ID;
+			$form_id     = give_get_payment_form_id( $donation_id );
+
+			$comment_id = Give()->comment->db->add(
+				array(
+					'comment_content'  => $comment->comment_content,
+					'comment_date'     => date( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
+					'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
+					'comment_parent'   => $comment->comment_post_ID,
+					'comment_type'     => 'donation',
+				)
+			);
+
+			if ( $comment_meta = get_comment_meta( $comment->comment_ID ) ) {
+				foreach ( $comment_meta as $meta_key => $meta_value ) {
+					Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
+				}
+			}
+
+			Give()->comment->db_meta->update_meta( $comment_id, 'form_id', $form_id );
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v230_move_donation_note_3' );
 	}
 }
