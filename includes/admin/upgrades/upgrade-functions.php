@@ -392,7 +392,7 @@ function give_show_upgrade_notices( $give_updates ) {
 	// v2.3.0 Move donor notes to custom comment table.
 	$give_updates->register(
 		array(
-			'id'       => 'v230_move_donor_note_6',
+			'id'       => 'v230_move_donor_note',
 			'version'  => '2.3.0',
 			'callback' => 'give_v230_move_donor_note_callback',
 		)
@@ -2967,6 +2967,6 @@ function give_v230_move_donor_note_callback() {
 
 	} else {
 		// The Update Ran.
-		give_set_upgrade_complete( 'v230_move_donor_note_6' );
+		give_set_upgrade_complete( 'v230_move_donor_note' );
 	}
 }
