@@ -113,6 +113,10 @@ class Give_Comment {
 	 * @return int|WP_Error
 	 */
 	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
+		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
+			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to store note/comment data in new table.', '2.3.0' );
+		}
+
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
 			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or comment type', 'give' ) );
@@ -207,6 +211,10 @@ class Give_Comment {
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function delete( $comment_id, $id, $comment_type ) {
+		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
+			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to delete note/comment data from new table.', '2.3.0' );
+		}
+
 		$ret = false;
 
 		// Bailout
@@ -256,6 +264,10 @@ class Give_Comment {
 	 */
 	public static function get( $id, $comment_type, $comment_args = array(), $search = '' ) {
 		$comments = array();
+
+		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
+			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to get note/comment data from new table.', '2.3.0' );
+		}
 
 		// Set default meta_query value.
 		if ( ! isset( $comment_args['meta_query'] ) ) {
