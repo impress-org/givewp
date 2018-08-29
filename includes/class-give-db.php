@@ -180,11 +180,11 @@ abstract class Give_DB {
 
 		$where = array();
 		foreach ( $column_args as $column_name => $column_value ) {
-			$where[] = esc_sql( $column_name ) . "=$column_value";
+			$where[] = esc_sql( $column_name ) . "='$column_value'";
 		}
 		$where = implode( " {$relation} ", $where );
 
-		return $wpdb->get_results( "SELECT * FROM {$this->table_name} {$where};" );
+		return $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE {$where};" );
 	}
 
 	/**
