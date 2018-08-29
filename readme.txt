@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.6
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.2.4: August 29th, 2018 =
+* Upgrade: By default all donors are set as
 
 = 2.2.3: August 10th, 2018 =
 * Fix: Added backwards compatibility for email tag "description" and "function" options that were modified in the previous version. [#3584](https://github.com/WordImpress/Give/issues/3584)
