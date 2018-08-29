@@ -150,27 +150,41 @@ abstract class Give_DB {
 
 	/**
 	 * Retrieve all rows by a specific column / value
+	 * Note: currently support string comparision
 	 *
 	 * @since  2.2.4
 	 * @access public
 	 *
-	 * @param  int $column Column ID.
-	 * @param  int $row_id Row ID.
+	 * @param array $column_args Array contains column key and expected value.
 	 *
 	 * @return array
 	 */
-	public function get_results_by( $column, $row_id ) {
+	public function get_results_by( $column_args ) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		// Bailout.
-		if ( empty( $column ) || empty( $row_id ) ) {
+		if ( empty( $column_args ) ) {
 			return null;
 		}
 
-		$column = esc_sql( $column );
+		$column_args = wp_parse_args(
+			$column_args,
+			array(
+				'relation' => 'AND'
+			)
+		);
 
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s;", $row_id ) );
+		$relation = $column_args['relation'];
+		unset($column_args['relation']);
+
+		$where = array();
+		foreach ( $column_args as $column_name => $column_value ) {
+			$where[] = esc_sql( $column_name ) . "='$column_value'";
+		}
+		$where = implode( " {$relation} ", $where );
+
+		return $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE {$where};" );
 	}
 
 	/**
