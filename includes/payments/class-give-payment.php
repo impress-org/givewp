@@ -947,9 +947,12 @@ final class Give_Payment {
 						break;
 
 					case 'date':
+
+						$date_format = get_option( 'date_format' );
+
 						$args = array(
 							'ID'        => $this->ID,
-							'post_date' => $this->date,
+							'post_date' => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
 							'edit_date' => true,
 						);
 
