@@ -56,7 +56,7 @@ class GiveDonorWall {
 		evt.preventDefault();
 
 		jQuery.ajax({
-			url: give_global_vars.ajaxurl,
+			url: Give.fn.getGlobalVar( 'ajaxurl' ),
 			method: 'POST',
 			data: {
 				action: 'give_get_donor_comments',
