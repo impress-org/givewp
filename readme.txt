@@ -209,7 +209,13 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 == Changelog ==
 
 = 2.2.4: August 29th, 2018 =
-* Upgrade: By default all donors are set as
+* Fix: Ensure donors can be properly connected and disconnected to WP users in the donor details screen. [#3636](https://github.com/wordimpress/give/issues/3636)
+* Fix: Prevent error notices from displaying in the Gutenberg editor. [#3575](https://github.com/wordimpress/give/issues/3575)
+* Fix: Prevent JS errors when attempting to deactivate the plugin. [#3619](https://github.com/wordimpress/give/issues/3619)
+* Fix: There is an upgrade routine to Donors that mark themselves as anonymous .
+* Fix: PHP notices when recalculating total donation income amount. [#3611](https://github.com/wordimpress/give/issues/3611)
+* Fix: Do not display encoded UTF-8 characters in donor comments. [#3631](https://github.com/wordimpress/give/issues/3631)
+* Tweak: Added a test to check if all registered db updates complete automatically on fresh install. [#3628](https://github.com/wordimpress/give/issues/3628)
 
 = 2.2.3: August 10th, 2018 =
 * Fix: Added backwards compatibility for email tag "description" and "function" options that were modified in the previous version. [#3584](https://github.com/WordImpress/Give/issues/3584)
