@@ -57,6 +57,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $item_name;
 
 		/**
+		 * Item ID
+		 *
+		 * @access private
+		 * @since  2.2.4
+		 *
+		 * @var    int
+		 */
+		private $item_id;
+
+		/**
 		 * License Information object.
 		 *
 		 * @access private
@@ -152,6 +162,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string $_api_url
 		 * @param string $_checkout_url
 		 * @param string $_account_url
+		 * @param int    $_item_id
 		 */
 		public function __construct(
 			$_file,
@@ -161,8 +172,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$_optname = null,
 			$_api_url = null,
 			$_checkout_url = null,
-			$_account_url = null
+			$_account_url = null,
+			$_item_id = null
 		) {
+
+			// Only load in wp-admin.
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			if ( is_numeric( $_item_id ) ) {
+				$this->item_id = absint( $_item_id );
+			}
 
 			$give_options = give_get_settings();
 
@@ -191,7 +212,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
-			$this->auto_updater();
+
 		}
 
 
@@ -277,6 +298,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function auto_updater() {
+
+			if ( ! empty( $this->item_id ) ) {
+				$args['item_id'] = $this->item_id;
+			} else {
+				$args['item_name'] = $this->item_name;
+			}
 
 			// Setup the updater.
 			$this->auto_updater_obj = new EDD_SL_Plugin_Updater(
@@ -376,7 +403,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Delete previous license setting if a empty license key submitted.
-			if ( empty( $_POST["{$this->item_shortname}_license_key"] ) ) {
+			if ( empty( $_POST[ "{$this->item_shortname}_license_key" ] ) ) {
 				$this->unset_license();
 
 				return;
@@ -656,7 +683,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
 									Give()->notices->get_dismiss_link(
 										array(
-											'title'            => __( 'Click here if already renewed', 'give' ),
+											'title' => __( 'Click here if already renewed', 'give' ),
 											'dismissible_type' => 'user',
 											'dismiss_interval' => 'permanent',
 										)
@@ -679,7 +706,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
 									Give()->notices->get_dismiss_link(
 										array(
-											'title'            => __( 'Click here if already renewed', 'give' ),
+											'title' => __( 'Click here if already renewed', 'give' ),
 											'dismissible_type' => 'user',
 											'dismiss_interval' => 'permanent',
 										)
@@ -947,7 +974,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Remove license from database.
 			delete_option( "{$this->item_shortname}_license_active" );
 			give_delete_option( "{$this->item_shortname}_license_key" );
-			unset( $_POST["{$this->item_shortname}_license_key"] );
+			unset( $_POST[ "{$this->item_shortname}_license_key" ] );
 
 			// Unset license param.
 			$this->license = '';
