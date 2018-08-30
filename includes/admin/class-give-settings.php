@@ -42,7 +42,7 @@ class Give_Plugin_Settings {
 	 */
 	public function __construct() {
 
-		// Custom CMB2 Settings Fields
+		// Custom settings fields.
 		add_action( 'give_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'give_render_give_description', 'give_description_callback', 10, 5 );
 		add_action( 'give_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
