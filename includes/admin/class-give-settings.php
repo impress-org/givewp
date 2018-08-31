@@ -43,14 +43,14 @@ class Give_Plugin_Settings {
 	public function __construct() {
 
 		// Custom settings fields.
-		add_action( 'give_render_give_title', 'give_title_callback', 10, 5 );
-		add_action( 'give_render_give_description', 'give_description_callback', 10, 5 );
-		add_action( 'give_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
-		add_action( 'give_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
-		add_action( 'give_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
-		add_action( 'give_render_system_info', 'give_system_info_callback', 10, 5 );
-		add_action( 'give_render_api', 'give_api_callback', 10, 5 );
-		add_action( 'give_render_license_key', 'give_license_key_callback', 10, 5 );
+		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
+		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
+		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
+		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
+		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
+		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
+		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
+		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 	}
 
 
