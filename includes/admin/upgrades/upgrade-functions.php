@@ -2797,7 +2797,7 @@ function give_v230_upgrades() {
 	/**
 	 * Update  1
 	 *
-	 * Change column length
+	 * delete unwanted key from option table
 	 */
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name = {$options_key}" );
 }
