@@ -752,6 +752,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return bool
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
+			/**
+			 * Fire the filter
+			 *
+			 * @since 2.2.3
+			 */
+			if ( apply_filters( 'give_is_stop_email_notification', false, $this ) ) {
+				return false;
+			}
+
 			// Add email content type email tags.
 			$email_tag_args['email_content_type'] = $this->config['content_type'];
 

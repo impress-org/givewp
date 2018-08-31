@@ -19,7 +19,7 @@ import GiveBlankSlate from '../blank-slate';
  */
 const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
 
-const FormSelect = ( props ) => {
+const SelectForm = ( props ) => {
 	// Event(s)
 	const getFormOptions = () => {
 		// Add API Data To Select Options
@@ -74,4 +74,4 @@ const FormSelect = ( props ) => {
 	);
 };
 
-export default FormSelect;
+export default SelectForm;

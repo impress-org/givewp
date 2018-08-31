@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.6
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,27 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.2.4: August 29th, 2018 =
+* Fix: Ensure donors can be properly connected and disconnected to WP users in the donor details screen. [#3636](https://github.com/wordimpress/give/issues/3636)
+* Fix: Prevent error notices from displaying in the Gutenberg editor. [#3575](https://github.com/wordimpress/give/issues/3575)
+* Fix: Prevent JS errors when attempting to deactivate the plugin. [#3619](https://github.com/wordimpress/give/issues/3619)
+* Fix: There is an upgrade routine to Donors that mark themselves as anonymous .
+* Fix: PHP notices when recalculating total donation income amount. [#3611](https://github.com/wordimpress/give/issues/3611)
+* Fix: Do not display encoded UTF-8 characters in donor comments. [#3631](https://github.com/wordimpress/give/issues/3631)
+* Tweak: Added a test to check if all registered db updates complete automatically on fresh install. [#3628](https://github.com/wordimpress/give/issues/3628)
+
+= 2.2.3: August 10th, 2018 =
+* Fix: Added backwards compatibility for email tag "description" and "function" options that were modified in the previous version. [#3584](https://github.com/WordImpress/Give/issues/3584)
+* Fix: Refactored the settings API to have custom save logic for individual setting sections. Developers can now easily create a custom setting page and option name which will store data in its own option rather than increasing the size of the give_settings option. [#3541](https://github.com/WordImpress/Give/issues/3541)
+* Fix: Exclude the honeypot field from floating labels js. [#2230](https://github.com/WordImpress/Give/issues/2230)
+* Fix: All donation forms are now listed on Export screen in wp-admin. [#1970](https://github.com/WordImpress/Give/issues/1970)
+* Fix: Increased the contrast for the floating labels for inactive placeholders. [#2179](https://github.com/WordImpress/Give/issues/2179)
+* Fix: Resolve error with email access when the "View Receipt" link is clicked the donor would receive a permissions error. [#3571](https://github.com/WordImpress/Give/issues/3571)
+* Fix: Prevent login button text from updating with wrong text. [#3562](https://github.com/WordImpress/Give/issues/3562)
+* Fix: Uncomment the give_checkout_login_fields_before hook so developers can use it accordingly. [#3566](https://github.com/WordImpress/Give/issues/3566)
+* Fix: Prevent emails from being sent when importing donations. [#3592](https://github.com/WordImpress/Give/issues/3592)
+* Tweak: The donor wall shortcode has been modified so that donors who give without leaving a comment will display by default. [#3581](https://github.com/WordImpress/Give/issues/3581)
 
 = 2.2.2: August 2nd, 2018 =
 * Fix: Fixed email access issue with the donation history page preventing donors from using the submit button once they entered their email. [#3553](https://github.com/wordimpress/give/issues/3553)

@@ -9,7 +9,6 @@ import { stringify } from 'querystringify';
  */
 const { __ } = wp.i18n;
 const { withAPIData } = wp.components;
-const { Component } = wp.element;
 
 /**
  * Internal dependencies
@@ -20,42 +19,27 @@ import FormGridPreview from './components/preview';
 
 /**
  * Render Block UI For Editor
- *
- * @class GiveDonationFormGrid
- * @extends {Component}
  */
-class GiveDonationFormGrid extends Component {
-	constructor( props ) {
-		super( ...props );
+
+const GiveDonationFormGrid = ( props ) => {
+	const { latestForms } = props;
+	const { isLoading, data } = latestForms;
+
+	// Render block UI
+	let blockUI;
+
+	if ( isLoading || isUndefined( data ) ) {
+		blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
+	} else if ( isEmpty( data ) ) {
+		blockUI = <NoForms />;
+	} else {
+		blockUI = <FormGridPreview
+			html={ data }
+			{ ... { ...props } } />;
 	}
 
-	/**
-	 * Render block UI
-	 *
-	 * @returns {object} JSX Object
-	 * @memberof GiveDonationFormGrid
-	 */
-	render() {
-		const props = this.props,
-			{ latestForms } = props,
-			{ isLoading } = latestForms;
-
-		// Render block UI
-		let blockUI;
-
-		if ( isLoading || isUndefined( latestForms.data ) ) {
-			blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
-		} else if ( isEmpty( latestForms.data ) ) {
-			blockUI = <NoForms />;
-		} else {
-			blockUI = <FormGridPreview
-				html={ latestForms.data }
-				{ ... { ...props } } />;
-		}
-
-		return ( <div className={ props.className } key="GiveDonationFormGridBlockUI">{ blockUI }</div> );
-	}
-}
+	return ( <div className={ props.className } key="GiveDonationFormGridBlockUI">{ blockUI }</div> );
+};
 
 /**
  * Export component attaching withAPIdata

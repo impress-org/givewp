@@ -1728,7 +1728,7 @@ var give_setting_edit = false;
 					return false;
 				}
 
-				var donorID = $('input[name="customerinfo[id]"]').val();
+				var donorID = $('input[name="donor_info[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
