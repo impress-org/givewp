@@ -2791,9 +2791,7 @@ function give_v230_upgrades() {
 		'give_recount_earnings_total', // recount income
 		'give_temp_reset_ids', // reset stats
 	);
-
-	$options_key = '\'' . implode( "','", $options_key ) . '\'';
-
+	$options_key = '\'' . implode( "' OR option_name = '", $options_key ) . '\'';
 	global $wpdb;
 
 	/**
@@ -2801,7 +2799,7 @@ function give_v230_upgrades() {
 	 *
 	 * Change column length
 	 */
-	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name IN ( {$options_key} )" );
+	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name = {$options_key}" );
 }
 
 /**
