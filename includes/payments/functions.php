@@ -577,7 +577,6 @@ function give_get_payment_status_keys() {
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
 	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead.
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	$args = array(
 		'post_type'              => 'give_payment',
@@ -608,9 +607,13 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	if ( false === $earnings ) {
 		$donations = get_posts( $args );
 		$earnings  = 0;
+
+		$donation_table     = Give()->payment_meta->table_name;
+		$donation_table_col = Give()->payment_meta->get_meta_type() . '_id';
+
 		if ( $donations ) {
 			$donations      = implode( ',', $donations );
-			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
+			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM {$donation_table} WHERE meta_key = '_give_payment_total' AND {$donation_table_col} IN ({$donations})" );
 
 			/**
 			 * Filter The earnings by dates.

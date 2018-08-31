@@ -12,7 +12,7 @@
 	}
 }
 
-.placeholder-container-animation {
+.placeholder-animation {
 	max-width: 650px;
 	margin: 0 auto;
 }
@@ -42,15 +42,15 @@
 	&.h1 {
 		height: 28px;
 	}
-	
+
 	&.h2 {
 		height: 22px;
 	}
-	
+
 	&.inline-radios {
 		height: 12px;
 	}
-	
+
 	&.label {
 		height: 8px;
 	}
@@ -58,7 +58,7 @@
 
 .layer-item {
 	&.opaque {
-		background: #fff;	
+		background: #fff;
 	}
 }
 
@@ -68,11 +68,11 @@
 	&.large {
 		height: 40px;
 	}
-	
+
 	&.medium {
 		height: 20px;
 	}
-	
+
 	&.small {
 		height: 10px;
 	}
@@ -85,7 +85,7 @@
 	.layer-item:nth-child(odd) {
 		width: 45%
 	}
-	
+
 	.layer-item:nth-child(even) {
 		width: 55%;
 	}
@@ -97,19 +97,19 @@
 	.layer-item:nth-child(1) {
 		width: 30%;
 	}
-	
+
 	.layer-item:nth-child(2) {
 		width: 10%;
 	}
-	
+
 	.layer-item:nth-child(3) {
 		width: 20%;
 	}
-	
+
 	.layer-item:nth-child(4) {
 		width: 30%;
 	}
-	
+
 	.layer-item:nth-child(5) {
 		width: 10%;
 	}
@@ -120,15 +120,15 @@
 	.layer-item:nth-child(1) {
 		width: 40%;
 	}
-	
+
 	.layer-item:nth-child(2) {
 		width: 5%;
 	}
-	
+
 	.layer-item:nth-child(3) {
 		width: 15%;
 	}
-	
+
 	.layer-item:nth-child(4) {
 		width: 40%;
 	}
@@ -139,7 +139,7 @@
 	.layer-item:nth-child(odd) {
 		width: 30%;
 	}
-	
+
 	.layer-item:nth-child(even) {
 		width: 70%;
 	}
@@ -150,11 +150,11 @@
 	.layer-item:nth-child(1) {
 		width: 40%;
 	}
-	
+
 	.layer-item:nth-child(2) {
 		width: 20%;
 	}
-	
+
 	.layer-item:nth-child(3) {
 		width: 40%;
 	}
