@@ -1,25 +1,53 @@
 const give = require( './test-utility' );
 
-describe( 'Shortcode: Form Grid', () => {
+describe( 'Shortcode Form Grid', () => {
+	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/form-grid/` ) )
 
-	beforeAll( async () => {
-		// Visit the Set donation form page.
-		await page.goto( `${give.utility.vars.rootUrl}/form-grid/` )
+	give.utility.fn.verifyExistence( page, [
+		/**
+		 * Form title for grid items
+		 */
+		{
+			desc: 'verify grid item 1 title',
+			selector: '.give-grid__item:nth-child(1) .give-card__title',
+			innerText: 'Button Form',
+		},
 
-	})
+		/**
+		 * Form content for grid items
+		 */
+		{
+			desc: 'verify grid item 1 form content',
+			selector: '.give-grid__item:nth-child(1) .give-card__text',
+			innerText: 'Form Content of the Button Form.',
+		},
+	])
 
-	give.utility.fn.verifyDonationTitle( page, 'Button Form' )
-	give.utility.fn.verifyDonationTitle( page, 'Reveal Form' )
-	give.utility.fn.verifyDonationTitle( page, 'Modal Form' )
-	give.utility.fn.verifyDonationTitle( page, 'Simple Donation Form' )
-	give.utility.fn.verifyFormContent( page, 'Form Content of the Button Form.' )
-	give.utility.fn.verifyFormContent( page, 'Form Content of the Reveal Form. A moderately long description.' )
-	give.utility.fn.verifyFormContent( page, 'Form Content of the Reveal Form. Click on "Donate Now" for the form to popup. This…' )
-	give.utility.fn.verifyFormContent( page, 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and…' )
-	give.utility.fn.verifyCurrencySymbol( page, '$' )
-	give.utility.fn.verifyCurrency( page, '10.00' )
-	give.utility.fn.verifyDonationLevels( page )
-	give.utility.fn.verifyPaymentMethods( page )
-	// give.utility.fn.verifyPersonalInfoFields( page )
-	give.utility.fn.verifyElementCount( page, { '.give-grid__item': 4 })
+	/**
+	 * Test hover animations.
+	 */
+	give.utility.fn.verifyInteraction( page, [
+		{
+			desc: 'verify hover grid item 1',
+			selector: '.give-grid__item:nth-child(1) .give-card',
+			event: 'hover',
+		},
+	])
+
+	/**
+	 * Clicking the grid item to open the popup.
+	 */
+	give.utility.fn.verifyInteraction( page, [
+		{
+			desc: 'verify click grid item 1',
+			selector: '.give-grid__item:nth-child(1) .give-card',
+			event: 'click',
+		},
+
+		{
+			desc: 'verify close popup',
+			selector: '.mfp-close',
+			event: 'click',
+		}
+	])
 })

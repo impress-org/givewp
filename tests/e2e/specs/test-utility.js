@@ -9,149 +9,232 @@ const helpers = {
 	},
 	fn: {
 		/**
-		 * Checks if the donation form title is correct.
+		 * Function to login to WordPress.
 		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page  Puppeteer page object.
-		 * @param {string} title Form title string.
+		 * @param {object} page                 Puppeteer page object.
+		 * @param {object} credentials          Login credentials object.
+		 * @param {string} credentials.username WordPress Login Username.
+		 * @param {string} credentials.password WordPress Login Password.
 		 */
-		verifyDonationTitle: function( page, title ) {
-			it( `verify form title to be "${title}"`, async () => {
-				await expect( page ).toMatch( title )
+		logIn: function( page, credentials ) {
+			it( 'Login to WordPress', async () => {
+
+				// If `#wpadminbar` is absent on the page, means that we are not logged in. 
+				if ( null === await page.$( '#wpadminbar' ) ) {
+
+					// Go to the /wp-admin page to login to WordPress.
+					await page.goto( `${helpers.vars.rootUrl}/wp-admin` )
+
+					// Wait for the login form to appear after visiting /wp-admin.
+					page.waitForSelector( 'form[id="loginform"]' )
+
+					// Fill the login form with the username and password values.
+					await expect( page ).toFillForm( 'form[id="loginform"]', {
+						log: credentials.username,
+						pwd: credentials.password,
+					}, {
+						// This is a preventive measure in case if the form is not filled quickly.
+						timeout: 2000
+					})
+
+					/* Redirection after submission leads to race condition (known bug), below is
+					 * the workaround.
+					 */
+					await Promise.all([
+						await page.click( '#wp-submit' ),
+						await page.waitForNavigation( { timeout: 500000 } ),
+					])
+				}
 			})
 		},
 
 		/**
-		 * Checks if the donation form currency symbol is correct.
+		 * Function to logout of WordPress
 		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page   Puppeteer page object.
-		 * @param {string} symbol Form currency symbol.
+		 * @param {object} page Puppeteer page object.
 		 */
-		verifyCurrencySymbol: function( page, symbol ) {
-			it( `verify currency symbol to be "${symbol}"`, async () => {
-				const value = await page.$( '.give-currency-symbol' )
-				await expect( value ).toMatch( symbol )
+		logOut: function( page ) {
+			it( 'Logout of WordPress', async () =>  {
+
+				// Get the Logout link.
+				const logoutLink = await page.evaluate( ()  => {
+					return document.querySelector( '#wp-admin-bar-logout a' ).href
+				})
+
+				// Visiting the link will logout from WordPress.
+				await page.goto( logoutLink )
 			})
 		},
 
 		/**
-		 * Checks if the donation form currency is correct.
+		 * This function checks whether an element is present on the page or not.
+		 * Also checks if the given text node is found on the page.
 		 *
-		 * @since 2.3.0
+		 * Comparison is strict if the `strict` key is set to `true`
 		 *
-		 * @param {Object} page     Puppeteer page object.
-		 * @param {string} currency Form currency value.
+		 * @param {object} page                     Puppeteer page object.
+		 * @param {array}  elementArray             Array of objects which contain the test data. 
+		 * @param {string} elementArray.desc        Description of the test. 
+		 * @param {string} elementArray.selector    Name of the selector. 
+		 * @param {string} elementArray.strict      If set to true, toBe() will be used, else toMatch(). 
+		 * @param {string} elementArray.<attribute> Value of the <attribute> to compare. 
 		 */
-		verifyCurrency: function( page, currency ) {
-			it( `verify amount to be "${currency}"`, async () => {
-				const value = await page.evaluate( () => document.querySelector( '#give-amount' ).value )
-				await expect( value ).toBe( currency )
-			})
+		verifyExistence: function( page, elementArray = [] ) {
+			for( let object of elementArray ) {
+
+				// Test begins from here.
+				it( `EXISTENCE: ${object.desc}`, async () => {
+
+					const selector = object.selector
+					let strict   = ''
+
+					/**
+					 * We delete the desc, selector and strict keys from the object because
+					 * we only want to test the HTML node attributes. For example `value`
+					 * `innerText`, `innerHTML`, etc.
+					 */
+					delete object.desc
+					delete object.selector
+
+					/**
+					 * The object does not contain the `strict` property, then set
+					 * `strict` to `false` by default.
+					 */
+					if ( object.hasOwnProperty( 'strict' ) ) {
+						strict = object.strict
+						delete object.strict
+					} else {
+						strict = false;
+					}
+
+					if ( 0 < Object.keys( object ).length ) {
+						for( let prop in object ) {
+
+							// Get the value of the attribute.
+							const value = await page.evaluate( ( selector, prop ) => {
+								return document.querySelector( selector )[prop]
+							}, selector, prop )
+
+							if ( strict ) {
+
+								/**
+								 * This will perform a strict case-sensitive comparison.
+								 */
+								await expect( value ).toBe( object[prop] )
+
+							} else {
+
+								/**
+								 * This will perform a loose case-sensitive comparison.
+								 * Checks for substring.
+								 */
+								await expect( value ).toMatch( object[prop] )
+
+							}
+						}
+					} else {
+
+						/**
+						 * If no HTML node attribute is found in the object, it means that
+						 * we have to check whether the element exists in the HTML DOM. 
+						 */
+						await expect( page ).toMatchElement( selector )
+
+					}
+				})
+			}
 		},
 
 		/**
-		 * Checks if the donation form content is correct.
+		 * Runs interaction tests on elements.
 		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page    Puppeteer page object.
-		 * @param {string} content Form content.
+		 * @param {object} page                  Puppeteer page object.
+		 * @param {array}  elementArray          Array of object which contains the data that needs to be tested.
+		 * @param {string} elementArray.desc     Description of the test. 
+		 * @param {string} elementArray.selector Name of the selector. 
+		 * @param {string} elementArray.action   Actions such as hover, click and focus. 
 		 */
-		verifyFormContent: function( page, $content ) {
-			it( 'verify form content', async () => {
-				await expect( page ).toMatch( $content )
+		verifyInteraction: function( page, elementArray ) {
+			for( let object of elementArray ) {
+				it( `INTERACTION: ${object.desc}`, async () => {
+					const element = await page.$( object.selector )
+
+					switch( object.event ) {
+						case 'click':
+							await element.click()
+							break
+
+						case 'hover':
+							await element.hover()
+							break
+
+						case 'focus':
+							await element.focus()
+							break
+					}
+				})
+			}
+		},
+
+		/**
+		 * This function makes a sample donation.
+		 *
+		 * @param {object} page          Puppeteer page object.
+		 * @param {object} formDetails   Form object.
+		 * @param {string} paymentMethod HTML "id" of the payment method option.
+		 */
+		makeDonation: function( page, formDetails = {}, paymentMethod = 'give-gateway-option-manual' ) {
+			it( 'INTERACTION: make a donation', async () =>  {
+
+				// Select the payment method.
+				await page.click( `label[id="${paymentMethod}"]` )
+
+				// Click the button to enter custom donation amount.
+				await page.click( '.give-btn-level-custom' )
+
+				// Wait for custom amount input field to load.
+				await page.waitForSelector( '.give-btn-level-custom' )
+
+				// Fill custom amount input field with value '23.54'
+				await expect( page ).toFill( 'input[name="give-amount"]', '23.54' )
+
+				// Fill the form fields.
+				await expect( page ).toFillForm( 'form[id^="give-form"]', formDetails, { timeout: 10000 } )
+
+				// Select donor title.
+				await expect( page ).toSelect( 'select[name="give_title"]', 'Dr.' )
+
+				// Submit the donation form and wait for navigation.
+				await Promise.all([
+					page.click( '#give-purchase-button' ),
+					page.waitForNavigation()
+				])
 			})	
 		},
 
 		/**
-		 * Checks if the form donation levels are correct. Also checks the placeholder for custom amount field.
+		 * This function is used to assert values on the donation
+		 * confirmation page.
 		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page Puppeteer page object.
+		 * @param {object} page     Puppeteer page object.
+		 * @param {array}  matchers Puppeteer page object.
 		 */
-		verifyDonationLevels: function( page ) {
-			it( 'verify donation levels with custom price button', async () => {
-				const buttonOne   = await page.$( '.give-btn-level-0' )
-				const buttonTwo   = await page.$( '.give-btn-level-1' )
-				const buttonThree = await page.$( '.give-btn-level-2' )
-				const buttonFour  = await page.$( '.give-btn-level-custom' )
+		verifyDonation: function( page, matchers = [] ) {
 
-				await expect( buttonOne ).toMatch( 'Bronze' )
-				await expect( buttonTwo ).toMatch( 'Silver' )
-				await expect( buttonThree ).toMatch( 'Gold' )
-				await expect( buttonFour ).toMatch( 'or donate what you like!' )
+			// Check if we're on /donation-confirmation page.
+			it( 'EXISTENCE: verify donation confirmation URL', async () => {
+				const donationConfirmationUrl = await page.url()
+
+				await expect( donationConfirmationUrl ).toBe( `${helpers.vars.rootUrl}/donation-confirmation/` )
 			})
-		},
 
-		/**
-		 * Checks if the form donation Payment Methods are correct.
-		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page Puppeteer page object.
-		 */
-		verifyPaymentMethods: function( page ) {
-			it( 'verify 3 payment methods', async () => {
-				const test    = await page.$( '#give-gateway-option-manual' )
-				const offline = await page.$( '#give-gateway-option-offline' )
-				const paypal  = await page.$( '#give-gateway-option-paypal' )
-
-				await expect( test ).toMatch( 'Test Donation' )
-				await expect( offline ).toMatch( 'Offline Donation' )
-				await expect( paypal ).toMatch( 'PayPal' )
-			})
-		},
-
-		/**
-		 * Checks if all the input fields are present on the page.
-		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page Puppeteer page object.
-		 */
-		verifyInputFields: function( page, testTitle, selectorArray ) {
-			it( testTitle, async () => {
-				for ( const key of selectorArray ) {
-					await expect( page ).toMatchElement( key )
-				}
-			})
-		},
-
-		/**
-		 * Fills all the form fields and submits the donation form.
-		 *
-		 * @since 2.3.0
-		 *
-		 * @param {Object} page Puppeteer page object.
-		 */
-		verifySubmitDonation: function( page ) {
-			it( 'Fill all fields and donate', async () => {
-				await expect( page ).toClick( 'button', { text: 'or donate what you like!' } )
-				await expect( page ).toFillForm( '.give-form', {
-					'give-amount': '35.45',
-					'give_first': helpers.vars.firstName,
-					'give_last': helpers.vars.lastName,
-					'give_company_name': helpers.vars.company,
-					'give_email': helpers.vars.email,
-					'give_comment': helpers.vars.comment,
+			// Match every text node on /donation-confirmation page.
+			for( let matcher of matchers ) {
+				it( `EXISTENCE: verify the donation confirmation page for "${matcher}"`, async () => {
+					await expect( page ).toMatch( matcher )
 				})
-				await page.click( '#give-purchase-button' )
-				await page.waitForNavigation()
-			}, 500000) 
-		},
-		verifyElementCount: function( page, selectorObj ) {
-			it( 'verify number of elements', async() => {
-				for ( const key in selectorObj ) {
-					let length = ( await page.$$( key ) ).length
-					expect( length ).toBe( selectorObj[ key ] )
-				}
-			})
+			}
 		}
-		/******************************/
 	}
 }
 
