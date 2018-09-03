@@ -57,30 +57,30 @@ describe( 'Shortcode Registration', () => {
 		},
 	])
 
-	// it( 'INTERACTION: register through shortcode', async () => {
-	// 	await expect( page ).toFillForm( '#give-register-form', {
-	// 		give_user_login: 'dummyuser',
-	// 		give_user_email: 'dummyuser@example.com',
-	// 		give_user_pass: 'dummyuser',
-	// 		give_user_pass2: 'dummyuser',
-	// 	})
+	it( 'INTERACTION: register through shortcode', async () => {
+		await expect( page ).toFillForm( '#give-register-form', {
+			give_user_login: 'darryl.phylbin',
+			give_user_email: 'darryl.phylbin@gmail.com',
+			give_user_pass: 'darryl12345',
+			give_user_pass2: 'darryl12345',
+		})
 
-	// 	await Promise.all([
-	// 		page.click( 'input[name="give_register_submit"]' ),
-	// 		page.waitForNavigation()
-	// 	])
-	// })
+		await Promise.all([
+			page.click( 'input[name="give_register_submit"]' ),
+			page.waitForNavigation()
+		])
+	})
 
-	// it( 'EXISTENCE: verify login success', async () => {
-	// 	await expect( page ).toMatchElement( '.display-name', { text: 'dummyuser' } )
-	// })
+	it( 'EXISTENCE: verify login success', async () => {
+		await expect( page ).toMatchElement( '.display-name', { text: 'darryl' } )
+	})
 
-	// // Logout of WordPress.
-	// afterAll( async () => {
-	// 	const logoutLink = await page.evaluate( ()  => {
-	// 		return document.querySelector( '#wp-admin-bar-logout a' ).href
-	// 	})
+	// Logout of WordPress.
+	afterAll( async () => {
+		const logoutLink = await page.evaluate( ()  => {
+			return document.querySelector( '#wp-admin-bar-logout a' ).href
+		})
 
-	// 	page.goto( logoutLink )
-	// })
+		await page.goto( logoutLink )
+	})
 })

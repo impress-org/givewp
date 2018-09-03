@@ -23,10 +23,10 @@ const helpers = {
 				if ( null === await page.$( '#wpadminbar' ) ) {
 
 					// Go to the /wp-admin page to login to WordPress.
-					await page.goto( `${helpers.vars.rootUrl}/wp-admin` )
-
-					// Wait for the login form to appear after visiting /wp-admin.
-					page.waitForSelector( 'form[id="loginform"]' )
+					await Promise.all([
+						page.goto( `${helpers.vars.rootUrl}/wp-admin` ),
+						page.waitForNavigation( { waitUntil: 'networkidle2' } )
+					])
 
 					// Fill the login form with the username and password values.
 					await expect( page ).toFillForm( 'form[id="loginform"]', {
@@ -56,6 +56,8 @@ const helpers = {
 		logOut: function( page ) {
 			it( 'Logout of WordPress', async () =>  {
 
+				await page.waitForSelector( '#wp-admin-bar-logout a' )
+
 				// Get the Logout link.
 				const logoutLink = await page.evaluate( ()  => {
 					return document.querySelector( '#wp-admin-bar-logout a' ).href
@@ -78,6 +80,7 @@ const helpers = {
 		 * @param {string} elementArray.selector    Name of the selector. 
 		 * @param {string} elementArray.strict      If set to true, toBe() will be used, else toMatch(). 
 		 * @param {string} elementArray.<attribute> Value of the <attribute> to compare. 
+		 * @param {bool}   elementArray.<attribute> Value of the <attribute> to compare. 
 		 */
 		verifyExistence: function( page, elementArray = [] ) {
 			for( let object of elementArray ) {
@@ -86,7 +89,8 @@ const helpers = {
 				it( `EXISTENCE: ${object.desc}`, async () => {
 
 					const selector = object.selector
-					let strict   = ''
+					let strict     = '',
+					    screenshot = '';
 
 					/**
 					 * We delete the desc, selector and strict keys from the object because
@@ -97,7 +101,7 @@ const helpers = {
 					delete object.selector
 
 					/**
-					 * The object does not contain the `strict` property, then set
+					 * If the object does not contain the `strict` property, then set
 					 * `strict` to `false` by default.
 					 */
 					if ( object.hasOwnProperty( 'strict' ) ) {
@@ -105,6 +109,17 @@ const helpers = {
 						delete object.strict
 					} else {
 						strict = false;
+					}
+
+					/**
+					 * If the object does not contain the `screenshot` property, then set
+					 * `screenshot` to `false` by default.
+					 */
+					if ( object.hasOwnProperty( 'screenshot' ) ) {
+						screenshot = object.screenshot
+						delete object.screenshot
+					} else {
+						screenshot = false;
 					}
 
 					if ( 0 < Object.keys( object ).length ) {
@@ -122,6 +137,10 @@ const helpers = {
 								 */
 								await expect( value ).toBe( object[prop] )
 
+								if ( screenshot ) {
+									await helpers.fn.takeScreenshot( page )
+								}
+
 							} else {
 
 								/**
@@ -130,6 +149,9 @@ const helpers = {
 								 */
 								await expect( value ).toMatch( object[prop] )
 
+								if ( screenshot ) {
+									await helpers.fn.takeScreenshot( page )
+								}
 							}
 						}
 					} else {
@@ -140,8 +162,11 @@ const helpers = {
 						 */
 						await expect( page ).toMatchElement( selector )
 
+						if ( screenshot ) {
+							await helpers.fn.takeScreenshot( page )
+						}
 					}
-				})
+				}, 10000 )
 			}
 		},
 
@@ -156,23 +181,48 @@ const helpers = {
 		 */
 		verifyInteraction: function( page, elementArray ) {
 			for( let object of elementArray ) {
+
+				let screenshot = ''
+
+				if( object.hasOwnProperty( 'screenshot' ) ) {
+					screenshot = object.screenshot
+					delete object.screenshot
+				} else {
+					screenshot = false
+				}
+
 				it( `INTERACTION: ${object.desc}`, async () => {
 					const element = await page.$( object.selector )
 
 					switch( object.event ) {
 						case 'click':
 							await element.click()
+
+							if ( screenshot ) {
+								await helpers.fn.takeScreenshot( page )
+							}
+
 							break
 
 						case 'hover':
 							await element.hover()
+
+							if ( screenshot ) {
+								await helpers.fn.takeScreenshot( page )
+							}
+
 							break
 
 						case 'focus':
 							await element.focus()
+
+							if ( screenshot ) {
+								await helpers.fn.takeScreenshot( page )
+							}
+
 							break
 					}
-				})
+				}, 10000 )
 			}
 		},
 
@@ -186,18 +236,6 @@ const helpers = {
 		makeDonation: function( page, formDetails = {}, paymentMethod = 'give-gateway-option-manual' ) {
 			it( 'INTERACTION: make a donation', async () =>  {
 
-				// Select the payment method.
-				await page.click( `label[id="${paymentMethod}"]` )
-
-				// Click the button to enter custom donation amount.
-				await page.click( '.give-btn-level-custom' )
-
-				// Wait for custom amount input field to load.
-				await page.waitForSelector( '.give-btn-level-custom' )
-
-				// Fill custom amount input field with value '23.54'
-				await expect( page ).toFill( 'input[name="give-amount"]', '23.54' )
-
 				// Fill the form fields.
 				await expect( page ).toFillForm( 'form[id^="give-form"]', formDetails, { timeout: 10000 } )
 
@@ -209,7 +247,7 @@ const helpers = {
 					page.click( '#give-purchase-button' ),
 					page.waitForNavigation()
 				])
-			})	
+			}, 10000 )	
 		},
 
 		/**
@@ -234,6 +272,19 @@ const helpers = {
 					await expect( page ).toMatch( matcher )
 				})
 			}
+		},
+
+		/**
+		 * Takes screenshot of the page.
+		 *
+		 * @param {object} Puppeteer page object
+		 */
+		takeScreenshot: function( page ) {
+			page.screenshot({
+				path: 'tests/e2e/specs/screenshot',
+				type: 'jpeg',
+				fullPage: true,
+			})
 		}
 	}
 }

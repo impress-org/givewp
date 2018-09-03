@@ -32,9 +32,10 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
+  - echo $TRAVIS_BRANCH
   - phpunit -c phpunit.xml
   - |
-    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then
+    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ "${TRAVIS_EVENT_TYPE}" == 'pull_request' ] && [ "${TRAVIS_BRANCH}" == 'master' ]; then
       until $(curl --output /dev/null --silent --head --fail http://localhost:8004); do printf '.'; sleep 5; done;
       cd ~/wordpress_data/wp-content/plugins
       git clone -b $TRAVIS_BRANCH --single-branch https://github.com/WordImpress/Give.git

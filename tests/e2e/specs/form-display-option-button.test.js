@@ -1,10 +1,26 @@
 const give = require( './test-utility' );
 
 describe( 'Display option: Button', () => {
+
+	// Visit the /donations/button-form page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/donations/button-form/` ) )
 
 	it( 'INTERACTION: click donate button to reveal the form', async () => {
-		await expect( page ).toClick( 'button', { text: 'Donate Now' } )
+
+		// Click the button to enter custom donation amount.
+		await page.click( '.give-btn-level-custom' )
+
+		// Wait for custom amount input field to load.
+		await page.waitForSelector( '.give-btn-level-custom' )
+
+		// Fill custom amount input field with value '23.54'
+		await expect( page ).toFill( 'input[name="give-amount"]', '23.54' )
+
+		// Popup the form.
+		await page.click( '.give-btn-reveal' )
+
+		// Select the payment method.
+		await page.click( 'label[id="give-gateway-option-manual"]' )
 	})
 
 	give.utility.fn.verifyExistence( page, [
@@ -30,7 +46,7 @@ describe( 'Display option: Button', () => {
 		{
 			desc: 'verify currency value "10.00"',
 			selector: '.give-text-input',
-			value: '10.00',
+			value: '23.54',
 		},
 
 		{
@@ -244,15 +260,20 @@ describe( 'Display option: Button', () => {
 		await expect( page ).toMatch( 'Billing Details' )
 	})
 
+	it( 'INTERACTION: verify select manual payment method', async () => {
+		await page.click( 'label[id="give-gateway-option-manual"]' )
+		await page.waitFor( 2000 )
+	})
+
+	// Make a sample donation.
 	give.utility.fn.makeDonation( page, {
 		give_first: 'Erin',
 		give_last: 'Hannon',
 		give_email: 'erin.hannon@gmail.com',
 	})
 
+	// Verify the donation that was made above.
 	give.utility.fn.verifyDonation( page, [
-		'Payment Complete: Thank you for your donation.',
-		'Dr. Erin Hannon',
-		'Button Form',
+		'Payment Complete: Thank you for your donation.'
 	])
 })

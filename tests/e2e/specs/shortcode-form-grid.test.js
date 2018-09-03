@@ -1,6 +1,7 @@
 const give = require( './test-utility' );
 
 describe( 'Shortcode Form Grid', () => {
+	// Visit the /form-grid page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/form-grid/` ) )
 
 	give.utility.fn.verifyExistence( page, [

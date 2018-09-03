@@ -63,6 +63,7 @@ describe( 'Shortcode Login', () => {
 		await expect( page ).toMatchElement( '.display-name', { text: 'Samuel' } )
 	})
 
+	// Logout of WordPress if all the tests have completed.
 	afterAll( async () => {
 		const logoutLink = await page.evaluate( ()  => {
 			return document.querySelector( '#wp-admin-bar-logout a' ).href
