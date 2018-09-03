@@ -19,11 +19,10 @@ matrix:
     dist: precise
 
 before_install:
-  - npm i npm@latest -g
-  - echo $TRAVIS_PHP_VERSION
-  - chmod +x docker-compose.yml
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then docker-compose up -d; fi
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then sudo chmod 777 -R ~/wordpress_data/; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [[ ${TRAVIS_BRANCH} == "master" ]]; then npm i npm@latest -g fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [[ ${TRAVIS_BRANCH} == "master" ]]; then chmod +x docker-compose.yml fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [[ ${TRAVIS_BRANCH} == "master" ]]; then docker-compose up -d; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [[ ${TRAVIS_BRANCH} == "master" ]]; then sudo chmod 777 -R ~/wordpress_data/; fi
 
 before_script:
   - phpenv config-rm xdebug.ini
@@ -32,20 +31,8 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - echo $TRAVIS_BRANCH
   - phpunit -c phpunit.xml
-  - |
-    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ "${TRAVIS_EVENT_TYPE}" == 'pull_request' ] && [ "${TRAVIS_BRANCH}" == 'master' ]; then
-      until $(curl --output /dev/null --silent --head --fail http://localhost:8004); do printf '.'; sleep 5; done;
-      cd ~/wordpress_data/wp-content/plugins
-      git clone -b $TRAVIS_BRANCH --single-branch https://github.com/WordImpress/Give.git
-      cd ~/wordpress_data/wp-content/plugins/Give/
-      docker exec give_wordpress_1 wp plugin activate Give
-      composer install
-      npm install
-      npm run dev
-      npm run test
-    fi
+  - bash tests/e2e/bin/install.sh
 
 after_script:
   - bash tests/bin/travis.sh after
