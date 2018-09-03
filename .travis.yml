@@ -1,6 +1,6 @@
 language: php
 
-sudo: false
+sudo: required
 
 php:
   - 5.6
@@ -19,10 +19,13 @@ matrix:
     dist: precise
 
 before_install:
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ ${TRAVIS_BRANCH} == "master" ]; then npm i npm@latest -g; fi
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ ${TRAVIS_BRANCH} == "master" ]; then chmod +x docker-compose.yml; fi
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ ${TRAVIS_BRANCH} == "master" ]; then docker-compose up -d; fi
-  - if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ ${TRAVIS_BRANCH} == "master" ]; then sudo chmod 777 -R ~/wordpress_data/; fi
+  - |
+    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then
+      npm i npm@latest -g
+      chmod +x docker-compose.yml
+      sudo docker-compose up -d
+      sudo chmod 777 -R ~/wordpress_data/
+    fi
 
 before_script:
   - phpenv config-rm xdebug.ini
