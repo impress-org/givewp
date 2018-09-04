@@ -27,16 +27,5 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: wordpress
-    ports:
-      - "8080:80"
-
-  wpcli:
-    image: wordpress:cli 
-
 volumes:
   db_data:
