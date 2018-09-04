@@ -497,8 +497,8 @@ function give_v134_upgrade_give_offline_status() {
 	$select = "SELECT ID FROM $wpdb->posts p ";
 	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
 	$where  = "WHERE p.post_type = 'give_payment' ";
-	$where .= "AND ( p.post_status = 'abandoned' )";
-	$where .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
+	$where  .= "AND ( p.post_status = 'abandoned' )";
+	$where  .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
 
 	$sql            = $select . $join . $where;
 	$found_payments = $wpdb->get_col( $sql );
@@ -2902,7 +2902,7 @@ function give_v213_delete_donation_meta_callback() {
 /**
  * Rename donation meta type
  *
- * @see https://github.com/restrictcontentpro/restrict-content-pro/issues/1656
+ * @see   https://github.com/restrictcontentpro/restrict-content-pro/issues/1656
  *
  * @since 2.2.0
  */
@@ -2937,7 +2937,6 @@ function give_v215_update_donor_user_roles_callback() {
 }
 
 
-
 /**
  * Remove all wp session data from the options table, regardless of expiration.
  *
@@ -2964,7 +2963,7 @@ function give_v224_update_donor_meta_callback() {
 
 	$donor_count = Give()->donors->count(
 		array(
-			'number' => -1,
+			'number' => - 1,
 		)
 	);
 
@@ -3028,6 +3027,7 @@ function give_v230_move_donor_note_callback() {
 					Give()->comment->db->add(
 						array(
 							'comment_content'  => $note[1],
+							'user_id'          => absint( Give()->donors->get_column_by( 'user_id', 'id', $donor->id ) ),
 							'comment_date'     => date( 'Y-m-d H:i:s', $timestamp ),
 							'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', $timestamp ) ),
 							'comment_parent'   => $donor->id,
@@ -3091,6 +3091,7 @@ function give_v230_move_donation_note_callback() {
 			$comment_id = Give()->comment->db->add(
 				array(
 					'comment_content'  => $comment->comment_content,
+					'user_id'          => $comment->user_id,
 					'comment_date'     => date( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
 					'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
 					'comment_parent'   => $comment->comment_post_ID,
@@ -3105,7 +3106,6 @@ function give_v230_move_donation_note_callback() {
 			}
 
 			Give()->comment->db_meta->update_meta( $comment_id, 'form_id', $form_id );
-			Give()->comment->db_meta->update_meta( $comment_id, 'user_id', $comment->user_id );
 		}
 
 	} else {
