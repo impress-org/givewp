@@ -315,7 +315,12 @@ function give_update_payment_details( $data ) {
 
 		// Update comment meta if admin is not updating comment.
 		if( $comment_id ) {
-			update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+				// Backward compatibility.
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			} else{
+				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+			}
 		}
 	}
 
@@ -349,7 +354,12 @@ function give_update_payment_details( $data ) {
 			);
 
 			if ( $is_update_comment_meta ) {
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+				if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+					// Backward compatibility.
+					update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+				} else{
+					Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+				}
 			}
 		}
 
@@ -414,18 +424,31 @@ function give_ajax_store_payment_note() {
 		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	if ( empty( $payment_id ) ) {
+	if ( empty( $payment_id ) || empty( $note ) ) {
 		die( '-1' );
 	}
 
-	if ( empty( $note ) ) {
-		die( '-1' );
+	if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+		// Backward compatibility.
+		$note_id = give_insert_payment_note( $payment_id, $note );
+	} else {
+		$note_id = Give()->comment->db->add(
+			array(
+				'comment_parent'  => $payment_id,
+				'user_id'         => get_current_user_id(),
+				'comment_content' => $note,
+				'comment_type'    => 'donation',
+			)
+		);
 	}
-
-	$note_id = give_insert_payment_note( $payment_id, $note );
 
 	if( $note_id && $note_type ) {
-		add_comment_meta( $note_id, 'note_type', $note_type, true );
+
+		if( ! give_has_upgrade_completed('v230_move_donor_note' ) ) {
+			add_comment_meta( $note_id, 'note_type', $note_type, true );
+		} else{
+			Give()->comment->db_meta->update_meta( $note_id, 'note_type', $note_type );
+		}
 
 		/**
 		 * Fire the action

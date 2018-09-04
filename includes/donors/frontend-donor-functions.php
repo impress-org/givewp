@@ -115,6 +115,7 @@ function give_validate_gravatar( $id_or_email ) {
  * @return int The new note ID
  */
 function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comment_args = array() ) {
+	// Backward compatibility.
 	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
 		$comment_args = wp_parse_args(
 			$comment_args,
@@ -127,19 +128,21 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 		$comment_id = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
 
 		update_comment_meta( $comment_id, '_give_donor_id', $donor );
-	} else{
-		$comment_id = Give()->comment->db->add(
-			array(
-				'comment_parent'  => $donation_id,
-				'comment_content' => $note,
-				'comment_type'    => 'donation',
-			)
-		);
 
-		if( ! empty( $comment_args ) ) {
-			foreach ( $comment_args as $meta_key => $meta_value ) {
-				Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
-			}
+		return $comment_id;
+	}
+
+	$comment_id = Give()->comment->db->add(
+		array(
+			'comment_parent'  => $donation_id,
+			'comment_content' => $note,
+			'comment_type'    => 'donation',
+		)
+	);
+
+	if( ! empty( $comment_args ) ) {
+		foreach ( $comment_args as $meta_key => $meta_value ) {
+			Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
 		}
 	}
 
