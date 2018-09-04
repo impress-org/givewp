@@ -458,4 +458,24 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
 	}
 
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if ( $export->done ) {
+			// Delete all the donation ids.
+			$this->delete_data( 'give_temp_all_payments_data' );
+			$this->delete_data( 'give_recount_total_' . $this->form_id );
+			$this->delete_data( 'give_recount_all_total' );
+			$this->delete_data( 'give_temp_recount_all_stats' );
+			$this->delete_data( 'give_temp_payment_items' );
+			$this->delete_data( 'give_temp_form_ids' );
+			$this->delete_data( 'give_temp_processed_payments' );
+		}
+	}
 }

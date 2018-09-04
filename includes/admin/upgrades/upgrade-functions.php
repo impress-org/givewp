@@ -126,6 +126,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.2.1', '<' ):
 			give_v221_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.3.0', '<' ):
+			give_v230_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -2774,6 +2778,48 @@ function give_v221_upgrades() {
 	 * Change column length
 	 */
 	$wpdb->query( "ALTER TABLE $wpdb->donors MODIFY email varchar(255) NOT NULL" );
+}
+
+/**
+ * Version 2.3.0 automatic updates
+ *
+ * @since 2.3.0
+ */
+function give_v230_upgrades() {
+
+	$options_key = array(
+		'give_temp_delete_form_ids', // delete import donor
+		'give_temp_delete_donation_ids', // delete import donor
+		'give_temp_delete_step', // delete import donor
+		'give_temp_delete_donor_ids', // delete import donor
+		'give_temp_delete_step_on', // delete import donor
+		'give_temp_delete_donation_ids', // delete test donor
+		'give_temp_delete_donor_ids', // delete test donor
+		'give_temp_delete_step', // delete test donor
+		'give_temp_delete_step_on', // delete test donor
+		'give_temp_delete_test_ids', // delete test donations
+		'give_temp_all_payments_data', // delete all stats
+		'give_recount_all_total', // delete all stats
+		'give_temp_recount_all_stats', // delete all stats
+		'give_temp_payment_items', // delete all stats
+		'give_temp_form_ids', // delete all stats
+		'give_temp_processed_payments', // delete all stats
+		'give_temp_recount_form_stats', // delete form stats
+		'give_temp_recount_earnings', // recount income
+		'give_recount_earnings_total', // recount income
+		'give_temp_reset_ids', // reset stats
+	);
+
+	$options_key = '\'' . implode( "','", $options_key ) . '\'';
+
+	global $wpdb;
+
+	/**
+	 * Update  1
+	 *
+	 * delete unwanted key from option table
+	 */
+	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name IN ( {$options_key} )" );
 }
 
 /**

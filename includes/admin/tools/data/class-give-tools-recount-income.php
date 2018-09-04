@@ -284,4 +284,20 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
 	}
 
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if ( $export->done ) {
+			// Delete all the donation ids.
+			$this->delete_data( 'give_temp_recount_earnings' );
+			$this->delete_data( 'give_recount_earnings_total' );
+		}
+	}
+
 }

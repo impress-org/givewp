@@ -340,5 +340,4 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 		global $wpdb;
 		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
 	}
-
 }
