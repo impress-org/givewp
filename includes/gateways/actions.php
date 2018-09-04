@@ -41,7 +41,11 @@ function give_load_ajax_gateway() {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
-	if ( isset( $post_data['give_payment_mode'] ) ) {
+	if ( ! give_verify_donation_form_nonce( $post_data['nonce'], $post_data['give_form_id'] ) ) {
+		Give_Notices::print_frontend_notice( __( 'Nonce verification has failed.', 'give' ), true, 'error' );
+		exit();
+
+	}elseif ( isset( $post_data['give_payment_mode'] ) ) {
 
 		$form_id_prefix = ! empty( $post_data['give_form_id_prefix'] ) ? $post_data['give_form_id_prefix'] : '';
 

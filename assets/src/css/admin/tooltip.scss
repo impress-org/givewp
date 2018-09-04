@@ -1,0 +1,30 @@
+$give-shortcode-space: 20px;
+$give-shortcode-space-half: $give-shortcode-space * 0.5;
+$hintPrefix: "give-shortcode-tooltip--";
+$hintFontSize: 12px;
+$hintFontFamily: inherit;
+$hintVerticalPadding: $give-shortcode-space-half;
+$hintHorizontalPadding: $give-shortcode-space-half;
+$hintSizeSmall: $give-shortcode-space * 4;
+$hintSizeMedium: $give-shortcode-space * 7;
+$hintSizeLarge: $give-shortcode-space *14;
+$hintDefaultColor: #141414;
+$hintTransitionDuration: 0;
+
+@import "~hint.css/src/hint.scss";
+
+.give-shortcode-tooltip {
+	font-weight: normal;
+	cursor: help;
+
+	&:after {
+		box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+		text-shadow: none;
+	}
+
+	& .dashicons {
+		font-size: 16px;
+		vertical-align: middle;
+		margin-right: 2px;
+	}
+}

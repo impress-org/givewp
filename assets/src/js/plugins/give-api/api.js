@@ -84,22 +84,19 @@ let Give = {
 
 					actual_price = actual_price.substr(0, parseInt(decimal_index));
 				}
+				
+				actual_price = Math.floor( actual_price ).toString();
+				lastThree    = actual_price.substring( actual_price.length - 3 );
+				otherNumbers = actual_price.substring( 0, actual_price.length - 3 );
 
-				// Extract last 3 from amount
-				result = actual_price.substr( - 3 );
-				amount = actual_price.substr( 0, parseInt( actual_price.length ) - 3 );
-
-				// Apply digits 2 by 2
-				while ( amount.length > 0 ) {
-					result = amount.substr( - 2 ) + args.thousand + result;
-					amount = amount.substr( 0, parseInt( amount.length ) - 2 );
+				if ( '' !== otherNumbers ) {
+				    lastThree = format_args.thousand + lastThree;
 				}
-
-				if ( decimal_amount.length ) {
-					result = result + decimal_amount;
-				}
-
-				price = result;
+				
+				result          = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
+				lastDotPosition = result.lastIndexOf( '.' );
+				result          = result.slice( 0, lastDotPosition ) + result.slice( lastDotPosition ).replace( '.', format_args.decimal );
+				price           = result;
 
 				if ( undefined !== args.symbol && args.symbol.length ) {
 					if ( 'after' === args.position ) {
@@ -109,7 +106,7 @@ let Give = {
 					}
 				}
 			} else {
-				//Properly position symbol after if selected
+				// Properly position symbol after if selected.
 				if ( 'after' === args.position ) {
 					args.format = '%v%s';
 				}
