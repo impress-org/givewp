@@ -1002,7 +1002,7 @@ class Give_Donor {
 	 */
 	private function get_raw_notes() {
 		$all_notes = '';
-		$comments = Give()->comment->db->get_results_by( 'comment_parent', $this->id );
+		$comments = Give()->comment->db->get_results_by( array( 'comment_parent' => $this->id ) );
 
 		// Generate notes output as we are doing before 2.3.0.
 		if( ! empty( $comments ) ) {
