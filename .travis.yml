@@ -20,7 +20,7 @@ matrix:
 
 before_install:
   - |
-    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then
+    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ] && [ "${TRAVIS_BRANCH}" == 'master' ]; then
       npm i npm@latest -g
       chmod +x docker-compose.yml
       sudo docker-compose up -d
