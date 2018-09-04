@@ -36,7 +36,7 @@ class Give_DB_Comments extends Give_DB {
 		global $wpdb;
 
 		$this->table_name  = $wpdb->prefix . 'give_comments';
-		$this->primary_key = 'ID';
+		$this->primary_key = 'comment_ID';
 		$this->version     = '1.0';
 
 		// Install table.
@@ -55,7 +55,8 @@ class Give_DB_Comments extends Give_DB {
 	 */
 	public function get_columns() {
 		return array(
-			'ID'               => '%d',
+			'comment_ID'       => '%d',
+			'user_id'          => '%d',
 			'comment_content'  => '%s',
 			'comment_parent'   => '%s',
 			'comment_type'     => '%s',
@@ -77,7 +78,8 @@ class Give_DB_Comments extends Give_DB {
 		$comment_create_date_gmt = get_gmt_from_date( $comment_create_date );
 
 		return array(
-			'ID'               => 0,
+			'comment_ID'       => 0,
+			'user_id'          => 0,
 			'comment_content'  => '',
 			'comment_parent'   => 0,
 			'comment_type'     => '',
@@ -116,7 +118,7 @@ class Give_DB_Comments extends Give_DB {
 			: $current_comment_data['comment_parent'];
 
 		// Get comment.
-		$existing_comment = $this->get_comment_by( $current_comment_data['ID'] );
+		$existing_comment = $this->get_comment_by( $current_comment_data['comment_ID'] );
 
 		// Update an existing comment.
 		if ( $existing_comment ) {
@@ -125,9 +127,9 @@ class Give_DB_Comments extends Give_DB {
 			$current_comment_data = array_merge( $current_comment_data, $existing_comment );
 
 			// Update comment data.
-			$this->update( $current_comment_data['ID'], $current_comment_data );
+			$this->update( $current_comment_data['comment_ID'], $current_comment_data );
 
-			$comment_id = $current_comment_data['ID'];
+			$comment_id = $current_comment_data['comment_ID'];
 
 		} else {
 			$comment_id = $this->insert( $current_comment_data, 'comment' );
@@ -165,7 +167,7 @@ class Give_DB_Comments extends Give_DB {
 			case 'id':
 				$comment = $wpdb->get_row(
 					$wpdb->prepare(
-						"SELECT * FROM $this->table_name WHERE ID = %s LIMIT 1",
+						"SELECT * FROM $this->table_name WHERE comment_ID = %s LIMIT 1",
 						$comment_id
 					),
 					ARRAY_A
@@ -217,7 +219,7 @@ class Give_DB_Comments extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 		$args['number'] = - 1;
-		$args['fields'] = 'ID';
+		$args['fields'] = 'comment_ID';
 		$args['count']  = true;
 
 		$sql_query = $this->get_sql( $args );
@@ -243,14 +245,14 @@ class Give_DB_Comments extends Give_DB {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE {$this->table_name} (
-        ID bigint(20) NOT NULL AUTO_INCREMENT,
-        comment_title longtext NOT NULL,
+        comment_ID bigint(20) NOT NULL AUTO_INCREMENT,
+        user_id bigint(20) NOT NULL,
         comment_content longtext NOT NULL,
       	comment_parent mediumtext NOT NULL,
         comment_type mediumtext NOT NULL,
         comment_date datetime NOT NULL,
         comment_date_gmt datetime NOT NULL,
-        PRIMARY KEY  (ID)
+        PRIMARY KEY  (comment_ID)
         ) {$charset_collate};";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -322,12 +324,12 @@ class Give_DB_Comments extends Give_DB {
 		}
 
 		// Specific comments.
-		if ( ! empty( $args['ID'] ) ) {
+		if ( ! empty( $args['comment_ID'] ) ) {
 
-			if ( ! is_array( $args['ID'] ) ) {
-				$args['ID'] = explode( ',', $args['ID'] );
+			if ( ! is_array( $args['comment_ID'] ) ) {
+				$args['comment_ID'] = explode( ',', $args['comment_ID'] );
 			}
-			$comment_ids = implode( ',', array_map( 'intval', $args['ID'] ) );
+			$comment_ids = implode( ',', array_map( 'intval', $args['comment_ID'] ) );
 
 			$where .= " AND {$this->table_name}.ID IN( {$comment_ids} ) ";
 		}
@@ -386,7 +388,7 @@ class Give_DB_Comments extends Give_DB {
 	private function validate_params( &$args ) {
 		// fields params
 		$args['fields'] = 'ids' === $args['fields']
-			? 'ID'
+			? 'comment_ID'
 			: $args['fields'];
 		$args['fields'] = array_key_exists( $args['fields'], $this->get_columns() )
 			? $args['fields']
