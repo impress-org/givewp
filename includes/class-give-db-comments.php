@@ -124,7 +124,7 @@ class Give_DB_Comments extends Give_DB {
 		if ( $existing_comment ) {
 
 			// Create new comment data from existing and new comment data.
-			$current_comment_data = array_merge( $current_comment_data, $existing_comment );
+			$current_comment_data = wp_parse_args( $current_comment_data, $existing_comment );
 
 			// Update comment data.
 			$this->update( $current_comment_data['comment_ID'], $current_comment_data );
