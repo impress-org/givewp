@@ -967,6 +967,7 @@ class Give_Donor {
 			$updated = Give()->comment->db->add(
 				array(
 					'comment_content' => $note,
+					'user_id'         => get_current_user_id(),
 					'comment_parent'  => $this->id,
 					'comment_type'    => 'donor',
 				)
