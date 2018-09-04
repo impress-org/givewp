@@ -134,14 +134,19 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 
 	$comment_id = Give()->comment->db->add(
 		array(
+			'comment_ID'      => isset( $comment_args['comment_ID'] ) ? absint( $comment_args['comment_ID'] ) : 0,
 			'comment_parent'  => $donation_id,
 			'comment_content' => $note,
-			'comment_type'    => 'donation',
+			'comment_type'    => 'donor_donation',
 		)
 	);
 
 	if( ! empty( $comment_args ) ) {
 		foreach ( $comment_args as $meta_key => $meta_value ) {
+			if( in_array( $meta_key, array( 'comment_ID') ) ){
+				continue;
+			}
+
 			Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
 		}
 	}
@@ -164,20 +169,34 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  * @return WP_Comment|array
  */
 function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
-	$comments = Give_Comment::get(
-		$donation_id,
-		'payment',
-		array(
-			'number'     => 1,
-			'meta_query' => array(
-				array(
-					'key'   => '_give_donor_id',
-					'value' => $donor_id
+	// Backward compatibility.
+	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+
+		$comments = Give_Comment::get(
+			$donation_id,
+			'payment',
+			array(
+				'number'     => 1,
+				'meta_query' => array(
+					array(
+						'key'   => '_give_donor_id',
+						'value' => $donor_id
+					)
 				)
-			)
-		),
-		$search
-	);
+			),
+			$search
+		);
+
+		$comment = ! empty( $comments ) ? current( $comments ) : array();
+
+		return $comment;
+	}
+
+	$comments = Give()->comment->db->get_comments( array(
+		'number'         => 1,
+		'comment_parent' => $donation_id,
+		'comment_type'   => 'donor_donation',
+	) );
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
 }
