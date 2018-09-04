@@ -113,13 +113,17 @@ class Give_Comment {
 	 * @return int|WP_Error
 	 */
 	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
-		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
-			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to store note/comment data in new table.', '2.3.0' );
-		}
+		// @todo accept only array as argument
 
 		// Bailout
 		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
 			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or comment type', 'give' ) );
+		}
+
+		// Backward compatibility.
+		$comment_id = self::_bc_add( $id, $note, $comment_type, $comment_args );
+		if ( ! is_null( $comment_id ) ) {
+			return $comment_id;
 		}
 
 		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
@@ -135,51 +139,16 @@ class Give_Comment {
 		 */
 		do_action( "give_pre_{$action_type}_{$comment_type}_note", $id, $note );
 
-		$comment_args = wp_parse_args(
-			$comment_args,
-			array(
-				'comment_post_ID'      => $id,
-				'comment_content'      => $note,
-				'user_id'              => is_admin() ? get_current_user_id() : 0,
-				'comment_date'         => current_time( 'mysql' ),
-				'comment_date_gmt'     => current_time( 'mysql', 1 ),
-				'comment_approved'     => 1,
-				'comment_parent'       => 0,
-				'comment_author'       => '',
-				'comment_author_IP'    => '',
-				'comment_author_url'   => '',
-				'comment_author_email' => '',
-				'comment_type'         => "give_{$comment_type}_note",
 
+		$comment_id = Give()->comment->db->add(
+			array(
+				'comment_ID'      => isset( $comment_args['comment_ID'] ) ? absint( $comment_args['comment_ID'] ) : 0,
+				'comment_content' => $note,
+				'user_id'         => get_current_user_id(),
+				'comment_parent'  => $id,
+				'comment_type'    => 'donation',
 			)
 		);
-
-
-		// Check comment max length.
-		$error = wp_check_comment_data_max_lengths( $comment_args );
-		if( is_wp_error( $error ) ) {
-			return $error;
-		}
-
-		// Remove moderation emails when comment posted.
-		remove_action( 'comment_post', 'wp_new_comment_notify_moderator' );
-		remove_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
-
-		// Remove comment flood check.
-		remove_action( 'check_comment_flood', 'check_comment_flood_db', 10 );
-
-		$comment_id = $is_existing_comment
-			? wp_update_comment( $comment_args )
-			: wp_new_comment( $comment_args, true );
-
-		// Add moderation emails when comment posted.
-		add_action( 'comment_post', 'wp_new_comment_notify_moderator' );
-		add_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
-
-		// Add comment flood check.
-		add_action( 'check_comment_flood', 'check_comment_flood_db', 10, 4 );
-
-		update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
 
 		/**
 		 * Fires after payment|donor comment inserted/updated.
@@ -211,10 +180,6 @@ class Give_Comment {
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function delete( $comment_id, $id, $comment_type ) {
-		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
-			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to delete note/comment data from new table.', '2.3.0' );
-		}
-
 		$ret = false;
 
 		// Bailout
@@ -232,7 +197,14 @@ class Give_Comment {
 		 */
 		do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $id );
 
-		$ret = wp_delete_comment( $comment_id, true );
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$ret = wp_delete_comment( $comment_id, true );
+		} else {
+			$ret = Give()->comment->db->delete( $comment_id );
+
+			// Delete comment meta.
+			Give()->comment->db_meta->delete_all_meta( $comment_id );
+		}
 
 		/**
 		 * Fires after donation note deleted.
@@ -263,70 +235,22 @@ class Give_Comment {
 	 * @return array
 	 */
 	public static function get( $id, $comment_type, $comment_args = array(), $search = '' ) {
-		$comments = array();
-
-		if( give_has_upgrade_completed('v230_move_donor_note' ) ) {
-			give_doing_it_wrong( __FUNCTION__, 'You can use Give()->comment->db or Give()->comment->db_meta to get note/comment data from new table.', '2.3.0' );
-		}
-
-		// Set default meta_query value.
-		if ( ! isset( $comment_args['meta_query'] ) ) {
-			$comment_args['meta_query'] = array();
-		}
-
-		// Bailout
-		if ( empty( $id ) || empty( $comment_type ) ) {
+		// Backward compatibility.
+		$comments = self::_bc_get( $id, $comment_type, $comment_args, $search );
+		if ( ! is_null( $comments ) ) {
 			return $comments;
 		}
 
-		remove_action( 'pre_get_comments', array( self::$instance, 'hide_comments' ), 10 );
-		remove_filter( 'comments_clauses', array( self::$instance, 'hide_comments_pre_wp_41' ), 10 );
+		// @todo deprecate all params and use array as function argument
+		// @todo add support for $comment_args
+		// @todo add support for $search
 
-		switch ( $comment_type ) {
-			case 'payment':
-				$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
-					? $comment_args['meta_query']
-					: array(
-						array(
-							'key'     => '_give_donor_id',
-							'compare' => 'NOT EXISTS'
-						)
-					);
-
-				$comments = get_comments( wp_parse_args(
-					$comment_args,
-					array(
-						'post_id' => $id,
-						'order'   => 'ASC',
-						'search'  => $search,
-						'type'    => 'give_payment_note'
-					)
-				) );
-				break;
-
-			case 'donor':
-				$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
-					? $comment_args['meta_query']
-					: array(
-						array(
-							'key'   => "_give_{$comment_type}_id",
-							'value' => $id
-						)
-					);
-
-				$comments = get_comments( wp_parse_args(
-					$comment_args,
-					array(
-						'order'  => 'ASC',
-						'search' => $search,
-						'type'   => 'give_donor_note'
-					)
-				) );
-				break;
-		}
-
-		add_action( 'pre_get_comments', array( self::$instance, 'hide_comments' ), 10, 1 );
-		add_filter( 'comments_clauses', array( self::$instance, 'hide_comments_pre_wp_41' ), 10, 1 );
+		$comments = Give()->comment->db->get_results_by(
+			array(
+				'comment_parent' => $id,
+				'comment_type'   => 'donation',
+			)
+		);
 
 		return $comments;
 	}
@@ -517,5 +441,179 @@ class Give_Comment {
 		}
 
 		return $_comment_types;
+	}
+
+	/**
+	 * Get comments
+	 * Note: This function add backward compatibility for get function
+	 *
+	 * @since  2.3.0
+	 * @access public
+	 *
+	 * @param int    $id
+	 * @param string $comment_type
+	 * @param array  $comment_args
+	 * @param string $search
+	 *
+	 * @return array|null
+	 */
+	private static function _bc_get( $id, $comment_type, $comment_args = array(), $search = '' ) {
+		$comments = null;
+
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			// Set default meta_query value.
+			if ( ! isset( $comment_args['meta_query'] ) ) {
+				$comment_args['meta_query'] = array();
+			}
+
+			// Bailout
+			if ( empty( $id ) || empty( $comment_type ) ) {
+				return $comments;
+			}
+
+			remove_action( 'pre_get_comments', array( self::$instance, 'hide_comments' ), 10 );
+			remove_filter( 'comments_clauses', array( self::$instance, 'hide_comments_pre_wp_41' ), 10 );
+
+			switch ( $comment_type ) {
+				case 'payment':
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+						? $comment_args['meta_query']
+						: array(
+							array(
+								'key'     => '_give_donor_id',
+								'compare' => 'NOT EXISTS',
+							),
+						);
+
+					$comments = get_comments( wp_parse_args(
+						$comment_args,
+						array(
+							'post_id' => $id,
+							'order'   => 'ASC',
+							'search'  => $search,
+							'type'    => 'give_payment_note',
+						)
+					) );
+					break;
+
+				case 'donor':
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+						? $comment_args['meta_query']
+						: array(
+							array(
+								'key'   => "_give_{$comment_type}_id",
+								'value' => $id,
+							),
+						);
+
+					$comments = get_comments( wp_parse_args(
+						$comment_args,
+						array(
+							'order'  => 'ASC',
+							'search' => $search,
+							'type'   => 'give_donor_note',
+						)
+					) );
+					break;
+			}
+
+			add_action( 'pre_get_comments', array( self::$instance, 'hide_comments' ), 10, 1 );
+			add_filter( 'comments_clauses', array( self::$instance, 'hide_comments_pre_wp_41' ), 10, 1 );
+		}
+
+		return $comments;
+	}
+
+
+	/**
+	 * Insert/Update comment
+	 * Note: This function add backward compatibility for get function
+	 *
+	 * @since  2.3.0
+	 * @access public
+	 *
+	 * @param int    $id           Payment|Donor ID.
+	 * @param string $note         Comment Text
+	 * @param string $comment_type Value can ve donor|payment
+	 * @param array  $comment_args Comment arguments
+	 *
+	 * @return int|null|WP_Error
+	 */
+	private static function _bc_add( $id, $note, $comment_type, $comment_args = array() ) {
+		$comment_id = null;
+
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
+			$action_type         = $is_existing_comment ? 'update' : 'insert';
+
+			/**
+			 * Fires before inserting/updating payment|donor comment.
+			 *
+			 * @param int    $id   Payment|Donor ID.
+			 * @param string $note Comment text.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_pre_{$action_type}_{$comment_type}_note", $id, $note );
+
+			$comment_args = wp_parse_args(
+				$comment_args,
+				array(
+					'comment_post_ID'      => $id,
+					'comment_content'      => $note,
+					'user_id'              => is_admin() ? get_current_user_id() : 0,
+					'comment_date'         => current_time( 'mysql' ),
+					'comment_date_gmt'     => current_time( 'mysql', 1 ),
+					'comment_approved'     => 1,
+					'comment_parent'       => 0,
+					'comment_author'       => '',
+					'comment_author_IP'    => '',
+					'comment_author_url'   => '',
+					'comment_author_email' => '',
+					'comment_type'         => "give_{$comment_type}_note",
+
+				)
+			);
+
+
+			// Check comment max length.
+			$error = wp_check_comment_data_max_lengths( $comment_args );
+			if ( is_wp_error( $error ) ) {
+				return $error;
+			}
+
+			// Remove moderation emails when comment posted.
+			remove_action( 'comment_post', 'wp_new_comment_notify_moderator' );
+			remove_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
+
+			// Remove comment flood check.
+			remove_action( 'check_comment_flood', 'check_comment_flood_db', 10 );
+
+			$comment_id = $is_existing_comment
+				? wp_update_comment( $comment_args )
+				: wp_new_comment( $comment_args, true );
+
+			// Add moderation emails when comment posted.
+			add_action( 'comment_post', 'wp_new_comment_notify_moderator' );
+			add_action( 'comment_post', 'wp_new_comment_notify_postauthor' );
+
+			// Add comment flood check.
+			add_action( 'check_comment_flood', 'check_comment_flood_db', 10, 4 );
+
+			update_comment_meta( $comment_id, "_give_{$comment_type}_id", $id );
+
+			/**
+			 * Fires after payment|donor comment inserted/updated.
+			 *
+			 * @param int    $comment_id Comment ID.
+			 * @param int    $id         Payment|Donor ID.
+			 * @param string $note       Comment text.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_{$action_type}_{$comment_type}_note", $comment_id, $id, $note );
+		}
+
+		return $comment_id;
 	}
 }
