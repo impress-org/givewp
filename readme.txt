@@ -126,7 +126,7 @@ Give version 1.8 is a major update. Please make sure you make a backup of your d
 = Minimum Requirements =
 
 * WordPress 4.8 or greater
-* PHP version 5.3 or greater
+* PHP version 5.6 or greater
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher

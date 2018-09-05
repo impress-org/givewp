@@ -700,7 +700,7 @@ function give_get_paypal_button_type() {
 function give_paypal_purchase_key( $custom_purchase_key, $gateway, $purchase_key ) {
 
 	if ( 'paypal' === $gateway ) {
-		$invoice_id_prefix   = give_get_option( 'paypal_invoice_prefix', 'GIVEPAYPAL-' );
+		$invoice_id_prefix   = give_get_option( 'paypal_invoice_prefix', 'GIVE-' );
 		$custom_purchase_key = $invoice_id_prefix . $purchase_key;
 	}
 
