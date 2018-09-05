@@ -2970,9 +2970,12 @@ function give_v224_update_donor_meta_forms_id_callback() {
 			$donor_id                = give_get_payment_donor_id( $donation_id );
 			$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
 
-			$is_anonymous_donor = (bool) Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
-			
-			if ( $is_anonymous_donor ) {
+			$is_anonymous_donor = Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
+			$is_edit_donor_meta = ! in_array( $is_anonymous_donor, array( '0', '1' ) )
+				? true
+				: ( 0 !== absint( $is_anonymous_donor ) );
+
+			if ( $is_edit_donor_meta ) {
 				Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", absint( $is_donated_as_anonymous ) );
 			}
 		}
