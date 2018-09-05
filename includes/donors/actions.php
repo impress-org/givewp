@@ -13,6 +13,12 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		? absint( $_POST['give_anonymous_donation'] )
 		: 0;
 
+	$form_id                 = isset( $payment_data['give_form_id'] ) ? $donation_data['give_form_id'] : 0;
+	$donor_id                = $donation_data['donor_id'];
+	$donor_meta              = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
+	$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
+
+
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$comment_id = give_insert_donor_donation_comment(
 			$donation_id,
@@ -22,19 +28,22 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
-		Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_has_comment', '1' );
+		Give()->donor_meta->update_meta( $donor_id, '_give_has_comment', '1' );
 	}
 
 	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
-	Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor', $is_anonymous_donation );
+	Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor', $is_anonymous_donation );
 
-	if ( $is_anonymous_donation ) {
-		$donor_meta = (array) Give()->donor_meta->get_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor_forms', true );
+	// Set/Unset donor as anonymous for donation form.
+	if ( $is_donated_as_anonymous && ! in_array( $form_id, $donor_meta ) ) {
+		$donor_meta[] = $form_id;
+		Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
 
-		if ( ! in_array( $donation_data['give_form_id'], $donor_meta ) ) {
-			$donor_meta[] = $donation_data['give_form_id'];
-			Give()->donor_meta->update_meta( $donation_data['user_info']['donor_id'], '_give_anonymous_donor_forms', $donor_meta );
-		}
+	} elseif ( ! $is_donated_as_anonymous && in_array( $form_id, $donor_meta ) ) {
+		$array_index = array_search( $form_id, $donor_meta );
+
+		unset( $donor_meta[ $array_index ] );
+		Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
 	}
 }
 
