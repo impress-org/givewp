@@ -13,8 +13,8 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		? absint( $_POST['give_anonymous_donation'] )
 		: 0;
 
-	$form_id                = isset( $donation_data['give_form_id'] ) ? absint( $donation_data['give_form_id'] ) : 0;
-	$donor_id               = $donation_data['user_info']['donor_id'];
+	$form_id            = isset( $donation_data['give_form_id'] ) ? absint( $donation_data['give_form_id'] ) : 0;
+	$donor_id           = $donation_data['user_info']['donor_id'];
 	$is_anonymous_donor = (bool) Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
 
 

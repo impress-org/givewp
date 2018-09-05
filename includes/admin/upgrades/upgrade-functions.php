@@ -2971,8 +2971,7 @@ function give_v224_update_donor_meta_forms_id_callback() {
 			$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
 
 			$is_anonymous_donor = (bool) Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
-
-
+			
 			if ( $is_anonymous_donor ) {
 				Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", absint( $is_donated_as_anonymous ) );
 			}
