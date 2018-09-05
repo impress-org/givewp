@@ -371,10 +371,6 @@ function give_update_payment_details( $data ) {
 			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
 
 		} else {
-
-			// Update/Insert comment.
-			$is_update_comment_meta = ! $comment_id;
-
 			$comment_args = array(
 				'comment_author_email' => $payment->email
 			);
@@ -383,16 +379,12 @@ function give_update_payment_details( $data ) {
 				$comment_args['comment_ID'] = $comment_id;
 			}
 
-			$comment_id = give_insert_donor_donation_comment(
+			give_insert_donor_donation_comment(
 				$payment->ID,
 				$payment->donor_id,
 				$data['give_comment'],
 				$comment_args
 			);
-
-			if ( $is_update_comment_meta ) {
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
-			}
 		}
 
 		$donor_has_comment = empty( $data['give_comment'] )
