@@ -13,10 +13,9 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		? absint( $_POST['give_anonymous_donation'] )
 		: 0;
 
-	$form_id                 = isset( $payment_data['give_form_id'] ) ? $donation_data['give_form_id'] : 0;
-	$donor_id                = $donation_data['donor_id'];
-	$donor_meta              = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
-	$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
+	$form_id                = isset( $donation_data['give_form_id'] ) ? absint( $donation_data['give_form_id'] ) : 0;
+	$donor_id               = $donation_data['user_info']['donor_id'];
+	$is_non_anonymous_donor = (bool) Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
 
 
 	if ( ! empty( $_POST['give_comment'] ) ) {
@@ -31,20 +30,14 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		Give()->donor_meta->update_meta( $donor_id, '_give_has_comment', '1' );
 	}
 
-	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
 	Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor', $is_anonymous_donation );
 
-	// Set/Unset donor as anonymous for donation form.
-	if ( $is_donated_as_anonymous && ! in_array( $form_id, $donor_meta ) ) {
-		$donor_meta[] = $form_id;
-		Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
-
-	} elseif ( ! $is_donated_as_anonymous && in_array( $form_id, $donor_meta ) ) {
-		$array_index = array_search( $form_id, $donor_meta );
-
-		unset( $donor_meta[ $array_index ] );
-		Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
+	// Set donor as anonymous for donation form.
+	if ( ! $is_non_anonymous_donor ) {
+		Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", $is_anonymous_donation );
 	}
+
+	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
 }
 
 add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );
