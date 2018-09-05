@@ -2964,15 +2964,22 @@ function give_v224_update_donor_meta_forms_id_callback() {
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
 
-			if ( give_is_anonymous_donation( get_the_ID() ) ) {
-				$form_id    = give_get_meta( get_the_ID(), '_give_payment_form_id', true );
-				$donor_id   = give_get_meta( get_the_ID(), '_give_payment_donor_id', true );
-				$donor_meta = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
+			$donation_id = get_the_ID();
 
-				if ( ! in_array( $form_id, $donor_meta ) ) {
-					$donor_meta[] = $form_id;
-					Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
-				}
+			$form_id                 = give_get_payment_form_id( $donation_id );
+			$donor_id                = give_get_payment_donor_id( $donation_id );
+			$donor_meta              = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
+			$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
+
+			if ( $is_donated_as_anonymous && ! in_array( $form_id, $donor_meta ) ) {
+				$donor_meta[] = $form_id;
+				Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
+
+			} elseif ( ! $is_donated_as_anonymous && in_array( $form_id, $donor_meta ) ) {
+				$array_index = array_search( $form_id, $donor_meta );
+
+				unset( $donor_meta[ $array_index ] );
+				Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
 			}
 		}
 
