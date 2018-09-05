@@ -2959,7 +2959,7 @@ function give_v224_update_donor_meta_forms_id_callback() {
 	);
 
 	if ( $donations->have_posts() ) {
-		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
 
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
@@ -2968,18 +2968,13 @@ function give_v224_update_donor_meta_forms_id_callback() {
 
 			$form_id                 = give_get_payment_form_id( $donation_id );
 			$donor_id                = give_get_payment_donor_id( $donation_id );
-			$donor_meta              = (array) Give()->donor_meta->get_meta( $donor_id, '_give_anonymous_donor_forms', true );
 			$is_donated_as_anonymous = give_is_anonymous_donation( $donation_id );
 
-			if ( $is_donated_as_anonymous && ! in_array( $form_id, $donor_meta ) ) {
-				$donor_meta[] = $form_id;
-				Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
+			$is_non_anonymous_donor = (bool) Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
 
-			} elseif ( ! $is_donated_as_anonymous && in_array( $form_id, $donor_meta ) ) {
-				$array_index = array_search( $form_id, $donor_meta );
 
-				unset( $donor_meta[ $array_index ] );
-				Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor_forms', $donor_meta );
+			if ( ! $is_non_anonymous_donor ) {
+				Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", absint( $is_donated_as_anonymous ) );
 			}
 		}
 
