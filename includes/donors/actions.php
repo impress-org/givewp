@@ -30,8 +30,6 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		Give()->donor_meta->update_meta( $donor_id, '_give_has_comment', '1' );
 	}
 
-	Give()->donor_meta->update_meta( $donor_id, '_give_anonymous_donor', $is_anonymous_donation );
-
 	// Set donor as anonymous for donation form.
 	if ( ! $is_non_anonymous_donor ) {
 		Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", $is_anonymous_donation );

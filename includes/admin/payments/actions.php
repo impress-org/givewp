@@ -311,7 +311,6 @@ function give_update_payment_details( $data ) {
 
 	if ( $is_anonymous_donation ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
-		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
 
 		// Update comment meta if admin is not updating comment.
 		if( $comment_id ) {
