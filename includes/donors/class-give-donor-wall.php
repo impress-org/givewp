@@ -185,7 +185,6 @@ class Give_Donor_Wall {
 				'show_total'      => true,
 				'show_time'       => true,
 				'show_comments'   => true,
-				'show_anonymous'  => false,
 				'comment_length'  => 20,
 				'only_comments'   => false,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
@@ -209,7 +208,6 @@ class Give_Donor_Wall {
 			'show_time',
 			'show_comments',
 			'show_comments',
-			'show_anonymous',
 			'hide_empty',
 			'only_comments',
 			'only_donor_html',
@@ -245,18 +243,15 @@ class Give_Donor_Wall {
 			'paged'      => $atts['paged'],
 			'orderby'    => $atts['orderby'],
 			'order'      => $atts['order'],
-		);
-
-		if ( ! $atts['show_anonymous'] ) {
-			$donor_args['meta_query'] = array(
+			'meta_query' => array(
 				// Hide anonymous donor.
 				array(
 					'key'     => '_give_anonymous_donor',
 					'value'   => '1',
-					'compare' => '!='
-				)
-			);
-		}
+					'compare' => '!=',
+				),
+			),
+		);
 
 		// Hide donors with zero donation amount.
 		if ( $atts['hide_empty'] ) {

@@ -71,7 +71,6 @@ class Give_Donor_Stats {
 		$args['status'] = 'publish';
 		$args['fields'] = 'ids';
 		$args['number'] = - 1;
-		$show_anonymous = isset( $args['show_anonymous'] ) && $args['show_anonymous'];
 
 		$donation_query  = new Give_Payments_Query( $args );
 		$donations       = $donation_query->get_payments();
@@ -87,7 +86,7 @@ class Give_Donor_Stats {
 		if ( ! empty( $donated_amounts ) ) {
 			foreach ( $donated_amounts as $donation ) {
 				// Do not include anonymous donation in calculation.
-				if ( give_is_anonymous_donation( $donation['id'] ) && ! $show_anonymous ) {
+				if ( give_is_anonymous_donation( $donation['id'] ) ) {
 					continue;
 				}
 

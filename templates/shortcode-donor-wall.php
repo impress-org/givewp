@@ -14,44 +14,22 @@ $donor = new Give_Donor( $donor->id );
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
-$is_anonymous  = false;
 ?>
 
 <div class="give-grid__item">
 	<div class="give-donor">
 		<div class="give-donor__header">
 			<?php
-			if( true === $atts['show_anonymous'] ) {
-				$is_anonymous = (bool) Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor', true ) ;
-
-				// Check if donor is anonymous for specific form or not.
-				if ( 0 !== absint( $atts['form_id'] ) ) {
-					// Default value.
-					$is_anonymous  = false;
-					$form_list = (array) Give()->donor_meta->get_meta( $donor->id, '_give_anonymous_donor_forms', true );
-
-					if ( ! empty( $form_list ) && in_array( $atts['form_id'], $form_list ) ) {
-						$is_anonymous = true;
-					}
-				}
-			}
-
 			// Maybe display the Avatar.
 			if ( true === $atts['show_avatar'] ) {
-				echo $is_anonymous ?
-					sprintf( '<div class="give-donor__image">%s</div>', get_avatar( 'user@example.com' ) ) :
-					give_get_donor_avatar( $donor );
+				echo give_get_donor_avatar( $donor );
 			}
 			?>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
-						<?php
-						$is_anonymous ?
-							esc_html_e( 'Anonymous', 'give' ) :
-							esc_html_e( $donor->name );
-						?>
+						<?php esc_html_e( $donor->name ); ?>
 					</h3>
 				<?php endif; ?>
 
@@ -67,8 +45,6 @@ $is_anonymous  = false;
 								array(
 									'donor'          => $donor->id,
 									'give_forms'     => $atts['form_id'],
-									'show_anonymous' => $atts['show_anonymous'],
-									'is_anonymous'   => $is_anonymous,
 								)
 							);
 						}
