@@ -127,6 +127,29 @@ function give_process_donation_form() {
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
+	/**
+	 * Update donation Purchase key.
+	 *
+	 * Use this filter to update default donation purchase key
+	 * and add prefix in Invoice.
+	 *
+	 * @since 2.2.4
+	 *
+	 * @param string $purchase_key
+	 * @param string $gateway
+	 * @param string $purchase_key
+	 *
+	 * @return string $purchase_key
+	 */
+	$purchase_key = apply_filters(
+		'give_donation_purchase_key',
+		$purchase_key,
+		$valid_data['gateway'],
+		// Use this purchase key value if you want to generate custom donation purchase key
+		// because donation purchase key editable by filters and you may get unedited donation purchase key.
+		$purchase_key
+	);
+
 	// Setup donation information.
 	$donation_data = array(
 		'price'         => $price,

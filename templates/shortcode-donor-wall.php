@@ -96,19 +96,21 @@ $is_anonymous  = false;
 		?>
 			<div class="give-donor__content">
 					<?php
+					$comment_content = apply_filters( 'the_content', $comment->comment_content );
+
 					if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
 						echo sprintf(
 							'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
-							substr( $comment->comment_content, 0, $atts['comment_length'] ),
+							substr( $comment_content, 0, $atts['comment_length'] ),
 							$atts['readmore_text']
 						);
 
 						echo sprintf(
 							'<div class="give-donor__comment" style="display: none">%s</div>',
-							apply_filters( 'the_content', $comment->comment_content )
+							$comment_content
 						);
 					} else {
-						echo apply_filters( 'the_content', $comment->comment_content );
+						echo $comment_content;
 					}
 					?>
 			</div>

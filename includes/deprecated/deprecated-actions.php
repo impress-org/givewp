@@ -16,7 +16,7 @@ foreach ( $give_map_deprecated_actions as $new => $old ) {
 function give_deprecated_actions() {
 
 	$give_deprecated_actions = array(
-		// New action hook                            Old action hook.
+		// New action hook                               Old action hook.
 		'give_donation_form_login_fields'                => 'give_purchase_form_login_fields',
 		'give_donation_form_register_login_fields'       => 'give_purchase_form_register_login_fields',
 		'give_donation_form_before_register_login'       => 'give_purchase_form_before_register_login',
@@ -113,6 +113,8 @@ function give_deprecated_actions() {
 		'give_view_donation_details_update_inner'        => 'give_view_order_details_update_inner',
 		'give_donor_delete'                              => 'give_process_donor_deletion',
 		'give_delete_donor'                              => 'give_process_donor_deletion',
+		'give_checkout_login_fields_before'              => 'give_donation_form_login_fields_before',
+		'give_checkout_login_fields_after'               => 'give_donation_form_login_fields_after',
 	);
 
 	return $give_deprecated_actions;

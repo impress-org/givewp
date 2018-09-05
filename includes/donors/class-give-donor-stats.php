@@ -61,7 +61,7 @@ class Give_Donor_Stats {
 		global $wpdb;
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-		$donated_amount = '';
+		$donated_amount = 0;
 
 		if ( empty( $args['donor'] ) ) {
 			return $donated_amount;
