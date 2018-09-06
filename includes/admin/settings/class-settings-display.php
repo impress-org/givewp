@@ -133,7 +133,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Anonymous Donations', 'give' ),
-							'desc'    => __( 'Do you want to provide donors the ability mark himself/herself anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability mark themselves anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 							'id'      => 'anonymous_donation',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -143,7 +143,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Donor Commenting', 'give' ),
+							'name'    => __( 'Donor Comments', 'give' ),
 							'desc'    => __( 'Do you want to provide donors the ability to add a comment to their donation? The comment will display publicly on the donor wall if they do not select to give anonymously.', 'give' ),
 							'id'      => 'donor_comment',
 							'type'    => 'radio_inline',
