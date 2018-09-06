@@ -329,8 +329,8 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'    => __( 'Donor Comment', 'give' ),
-							'desc'    => __( 'Would you like donors to give option to add his/her thought while donaitng.', 'give' ),
+							'name'    => __( 'Donor Commenting', 'give' ),
+							'desc'    => __( 'Do you want to provide donors the ability to add a comment to their donation? The comment will display publicly on the donor wall if they do not select to give anonymously.', 'give' ),
 							'id'      => "{$prefix}donor_comment",
 							'type'    => 'radio_inline',
 							'default' => 'global',
