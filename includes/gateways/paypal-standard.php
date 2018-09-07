@@ -685,3 +685,26 @@ function give_get_paypal_button_type() {
 
 	return $paypal_button_type;
 }
+
+/**
+ * Update Purchase key for specific gateway.
+ *
+ * @since 2.2.4
+ *
+ * @param string $custom_purchase_key
+ * @param string $gateway
+ * @param string $purchase_key
+ *
+ * @return string
+ */
+function give_paypal_purchase_key( $custom_purchase_key, $gateway, $purchase_key ) {
+
+	if ( 'paypal' === $gateway ) {
+		$invoice_id_prefix   = give_get_option( 'paypal_invoice_prefix', 'GIVE-' );
+		$custom_purchase_key = $invoice_id_prefix . $purchase_key;
+	}
+
+	return $custom_purchase_key;
+}
+
+add_filter( 'give_donation_purchase_key', 'give_paypal_purchase_key', 10, 3 );

@@ -1,21 +1,39 @@
 const give = require( './test-utility' );
 
-describe( 'Display Option: All fields', () => {
+describe( 'Shortcode Login', () => {
 
-	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/donations/simple-donation-form/` ) )
+	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/give-donation-form-shortcode/` ) )
+
+	it( 'INTERACTION: click donate button to reveal the form', async () => {
+
+		// Click the button to enter custom donation amount.
+		await page.click( '.give-btn-level-custom' )
+
+		// Wait for custom amount input field to load.
+		await page.waitForSelector( '.give-btn-level-custom' )
+
+		// Fill custom amount input field with value '23.54'
+		await expect( page ).toFill( 'input[name="give-amount"]', '23.54' )
+
+		// Popup the form.
+		await page.click( '.give-btn-modal' )
+
+		// Select the payment method.
+		await page.click( 'label[id="give-gateway-option-manual"]' )
+	})
 
 	give.utility.fn.verifyExistence( page, [
 
 		{
-			desc: 'verify form title as "Simple Donation Form"',
+			desc: 'verify form title as "Modal Form"',
 			selector: '.give-form-title',
-			innerText: 'Simple Donation Form',
+			innerText: 'Modal Form',
 		},
 
 		{
 			desc: 'verify form content',
 			selector: '.give-form-content-wrap p',
-			innerText: 'The Salvation Army is an integral part of the Christian Church, although distinctive in government and practice. The Army’s doctrine follows the mainstream of Christian belief and its articles of faith emphasise God’s saving purposes.',
+			innerText: 'Form Content of the Reveal Form. Click the button below for the form to popup. This was a long description.',
 		},
 
 		{
@@ -25,20 +43,20 @@ describe( 'Display Option: All fields', () => {
 		},
 
 		{
-			desc: 'verify currency value as "10.00"',
+			desc: 'verify currency value "10.00"',
 			selector: '.give-text-input',
-			value: '10.00',
+			value: '23.54',
 		},
 
 		{
-			desc: 'verify donation level 1 as "Bronze" with value "10.00"',
+			desc: 'verify donation level 1 as "10.00"',
 			selector: '.give-btn-level-0',
 			innerText: 'Bronze',
 			value: '10.00',
 		},
 
 		{
-			desc: 'verify custom level as "or donate what you like!" with a value "custom"',
+			desc: 'verify custom level as "custom"',
 			selector: '.give-btn-level-custom',
 			innerText: 'or donate what you like!',
 			value: 'custom',
@@ -69,19 +87,19 @@ describe( 'Display Option: All fields', () => {
 		},
 
 		{
-			desc: 'verify manual payment radio with value "manual"',
+			desc: 'verify manual payment radio with value as "manual"',
 			selector: 'input[id^="give-gateway-manual"]',
 			value: 'manual',
 		},
 
 		{
-			desc: 'verify offline payment radio with value "offline"',
+			desc: 'verify offline payment radio with value as "offline"',
 			selector: 'input[id^="give-gateway-offline"]',
 			value: 'offline',
 		},
 
 		{
-			desc: 'verify paypal payment radio with value "paypal"',
+			desc: 'verify paypal payment radio with value as "paypal"',
 			selector: 'input[id^="give-gateway-paypal"]',
 			value: 'paypal',
 		},
@@ -93,55 +111,55 @@ describe( 'Display Option: All fields', () => {
 		},
 
 		{
-			desc: 'verify first name label as "First Name"',
+			desc: 'verify first name label',
 			selector: 'label[for="give-first"]',
 			innerText: 'First Name',
 		},
 
 		{
-			desc: 'verify first name input field placeholder as "First Name"',
+			desc: 'verify first name label input field',
 			selector: '#give-first',
 			placeholder: 'First Name',
 		},
 
 		{
-			desc: 'verify last name label as "Last Name"',
+			desc: 'verify last name label',
 			selector: 'label[for="give-last"]',
 			innerText: 'Last Name',
 		},
 
 		{
-			desc: 'verify last name input field placeholder as "Last Name"',
+			desc: 'verify last name input field',
 			selector: '#give-last',
 			placeholder: 'Last Name',
 		},
 
 		{
-			desc: 'verify company name label as "Company Name"',
+			desc: 'verify company name label',
 			selector: 'label[for="give-company"]',
 			innerText: 'Company Name',
 		},
 
 		{
-			desc: 'verify company name input field placeholder as "Company Name"',
+			desc: 'verify company name input field',
 			selector: '#give-company',
 			placeholder: 'Company Name',
 		},
 
 		{
-			desc: 'verify email address label as "Email Address"',
+			desc: 'verify email address label',
 			selector: 'label[for="give-email"]',
 			innerText: 'Email Address',
 		},
 
 		{
-			desc: 'verify email address input field placeholder as "Email Address"',
+			desc: 'verify email address input field',
 			selector: '#give-email',
 			placeholder: 'Email Address',
 		},
 
 		{
-			desc: 'verify anonymous donation label as "Make this an anonymous donation"',
+			desc: 'verify anonymous donation label',
 			selector: 'label[for="give-anonymous-donation"]',
 			innerText: 'Make this an anonymous donation',
 		},
@@ -152,19 +170,19 @@ describe( 'Display Option: All fields', () => {
 		},
 
 		{
-			desc: 'verify comment label as "Comment"',
+			desc: 'verify comment label',
 			selector: 'label[for="give-comment"]',
 			innerText: 'Comment',
 		},
 
 		{
-			desc: 'verify comment textarea placeholder as "Leave a comment"',
+			desc: 'verify comment textarea',
 			selector: '#give-comment',
 			placeholder: 'Leave a comment',
 		},
 
 		{
-			desc: 'verify create an account label as "Create an account"',
+			desc: 'verify create an account label',
 			selector: 'label[for^="give-create-account"]',
 			innerText: 'Create an account',
 		},
@@ -175,7 +193,7 @@ describe( 'Display Option: All fields', () => {
 		},
 
 		{
-			desc: 'verify submit donation button value as "Make a Donation"',
+			desc: 'verify submit donation button',
 			selector: '#give-purchase-button',
 			value: 'Make a Donation',
 		},
@@ -241,20 +259,21 @@ describe( 'Display Option: All fields', () => {
 		await expect( page ).toMatch( 'Billing Details' )
 	})
 
-	it( 'INTERACTION: verify select test donation payment method', async () => {
-		await page.click( 'label[id="give-gateway-option-manual"]' )
-		await page.waitFor( 2000 )
+	it( 'INTERACTION: select offline payment method', async () => {
+		await page.click( 'label[id="give-gateway-option-offline"]' )
+		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' )
 	})
 
 	// Make a sample donation.
 	give.utility.fn.makeDonation( page, {
-		give_first: 'Stanley',
-		give_last: 'Hudson',
-		give_email: 'stanley.hudson@gmail.com',
+		give_first: 'Oscar',
+		give_last: 'Martinez',
+		give_email: 'oscar.martinez@gmail.com',
 	})
 
 	// Verify the donation that was made above.
 	give.utility.fn.verifyDonation( page, [
-		'Payment Complete: Thank you for your donation.'
+		'Your Donation is Almost Complete!',
+		'Make a check payable to "Give Automation"',
 	])
 })

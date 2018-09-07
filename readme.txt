@@ -126,7 +126,7 @@ Give version 1.8 is a major update. Please make sure you make a backup of your d
 = Minimum Requirements =
 
 * WordPress 4.8 or greater
-* PHP version 5.3 or greater
+* PHP version 5.6 or greater
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
@@ -209,6 +209,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 == Changelog ==
 
 = 2.2.4: August 29th, 2018 =
+* Upgrade: This version contains an upgrade routine to correct issues with the donor wall in which past donors would incorrectly display on the wall regardless of whether they elected to be anonymous or not. As well, donors can now give to multiple donation forms and be anonymous on one and not anonymous on another.
 * Fix: Ensure donors can be properly connected and disconnected to WP users in the donor details screen. [#3636](https://github.com/wordimpress/give/issues/3636)
 * Fix: Prevent error notices from displaying in the Gutenberg editor. [#3575](https://github.com/wordimpress/give/issues/3575)
 * Fix: Prevent JS errors when attempting to deactivate the plugin. [#3619](https://github.com/wordimpress/give/issues/3619)

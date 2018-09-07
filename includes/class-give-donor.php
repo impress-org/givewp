@@ -398,6 +398,11 @@ class Give_Donor {
 			$this->setup_donor( $donor );
 
 			$created = $this->id;
+
+			// Set donor as non anonymous by default
+			if( $created ) {
+				Give()->donor_meta->update_meta( $this->id, '_give_anonymous_donor', 0 );
+			}
 		}
 
 		/**

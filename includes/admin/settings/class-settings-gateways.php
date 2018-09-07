@@ -103,6 +103,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							)
 						),
 						array(
+							'id'      => 'paypal_invoice_prefix',
+							'name'    => esc_html__( 'Invoice ID Prefix', 'give' ),
+							'desc'    => esc_html__( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number.', 'give' ),
+							'type'    => 'text',
+							'default' => 'GIVE-',
+						),
+						array(
 							'name'  => __( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
 							'id'    => 'paypal_standard_gateway_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-paypal-standard' ),

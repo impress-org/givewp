@@ -851,7 +851,7 @@ function give_user_info_fields( $form_id ) {
 				<label class="give-label" for="give-anonymous-donation">
 					<input
 						type="checkbox"
-						class="give-input required"
+						class="give-input<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required' : '' ); ?>"
 						name="give_anonymous_donation"
 						id="give-anonymous-donation"
 						value="1"
@@ -878,7 +878,7 @@ function give_user_info_fields( $form_id ) {
 				</label>
 
 				<textarea
-					class="give-input required"
+					class="give-input<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required' : '' ); ?>"
 					name="give_comment"
 					placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
 					id="give-comment"
