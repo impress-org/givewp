@@ -28,19 +28,26 @@ $atts          = $args[2]; // Shortcode attributes.
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
-					<h3 class="give-donor__name"><?php esc_html_e( $donor->name ); ?></h3>
+					<h3 class="give-donor__name">
+						<?php esc_html_e( $donor->name ); ?>
+					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
 						<?php
-						$donated_amount = Give_Donor_Stats::donated(
-							array(
-								'donor'      => $donor->id,
-								'give_forms' => $atts['form_id']
-							)
-						);
+						// If not filtered by form ID then display total donations
+						// Else filtered by form ID, only display donations made for this form.
+						$donated_amount = $donor->purchase_value;
 
+						if ( ! empty( $atts['form_id'] ) ) {
+							$donated_amount = Give_Donor_Stats::donated(
+								array(
+									'donor'          => $donor->id,
+									'give_forms'     => $atts['form_id'],
+								)
+							);
+						}
 						echo give_currency_filter( give_format_amount( $donated_amount, array( 'sanitize' => false ) ) );
 						?>
 					</span>

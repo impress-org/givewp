@@ -306,12 +306,54 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
-	$comment_id            = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
-	$is_anonymous_donation = give_is_anonymous_donation_field_enabled( $payment->form_id );
+	$comment_id                   = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$has_anonymous_setting_field = give_is_anonymous_donation_field_enabled( $payment->form_id );
 
-	if ( $is_anonymous_donation ) {
+	if ( $has_anonymous_setting_field ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
-		Give()->donor_meta->update_meta( $payment->donor_id, '_give_anonymous_donor', $payment->anonymous );
+
+		// Set donor as anonymous only if donor does not have any non anonymous donation.
+		$donations = Give()->donors->get_column_by( 'payment_ids', 'id', $payment->donor_id );
+		$donations = ! empty( $donations ) ? explode( ',', $donations ) : array();
+		$update_anonymous_donor_meta = false;
+
+		if( ! empty( $donations ) ) {
+			$non_anonymous_donations = new WP_Query( array(
+				'post_type'   => 'give_payment',
+				'post_status' => 'publish',
+				'post__in'    => $donations,
+				'fields'      => 'ids',
+				'meta_query'  => array(
+					'relation' => 'AND',
+					array(
+						'key'   => '_give_anonymous_donation',
+						'value' => 0,
+					),
+					array(
+						'key'   => '_give_payment_form_id',
+						'value' => $payment->form_id,
+					),
+				),
+			) );
+
+			$update_anonymous_donor_meta = ! ( 0 < $non_anonymous_donations->found_posts );
+
+			if(
+				0 === absint( $non_anonymous_donations->found_posts )
+				&&  $payment->anonymous
+			) {
+				$update_anonymous_donor_meta = true;
+			} elseif (
+				1 === absint( $non_anonymous_donations->found_posts )
+				&& ! $payment->anonymous
+			) {
+				$update_anonymous_donor_meta =  true;
+			}
+		}
+
+		if ( $update_anonymous_donor_meta ) {
+			Give()->donor_meta->update_meta( $payment->donor_id, "_give_anonymous_donor_form_{$payment->form_id}", $payment->anonymous );
+		}
 
 		// Update comment meta if admin is not updating comment.
 		if( $comment_id ) {
@@ -329,10 +371,6 @@ function give_update_payment_details( $data ) {
 			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
 
 		} else {
-
-			// Update/Insert comment.
-			$is_update_comment_meta = ! $comment_id;
-
 			$comment_args = array(
 				'comment_author_email' => $payment->email
 			);
@@ -341,16 +379,12 @@ function give_update_payment_details( $data ) {
 				$comment_args['comment_ID'] = $comment_id;
 			}
 
-			$comment_id = give_insert_donor_donation_comment(
+			give_insert_donor_donation_comment(
 				$payment->ID,
 				$payment->donor_id,
 				$data['give_comment'],
 				$comment_args
 			);
-
-			if ( $is_update_comment_meta ) {
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
-			}
 		}
 
 		$donor_has_comment = empty( $data['give_comment'] )
