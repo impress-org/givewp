@@ -1081,11 +1081,14 @@ var give_setting_edit = false;
 				var selected_type = $('option:selected', this).data('type');
 				var submit_button = $('#recount-stats-submit');
 				var forms = $('.tools-form-dropdown');
+				var dateSelector = $('.tools-date-dropdown-delete-donations');
 
 				// Reset the form
 				export_form.find('.notice-wrap').remove();
 				submit_button.removeClass('button-disabled').attr('disabled', false);
 				forms.hide();
+				dateSelector.hide();
+
 				$('.give-recount-stats-descriptions span').hide();
 
 				if ('reset-stats' === selected_type) {
@@ -1102,10 +1105,15 @@ var give_setting_edit = false;
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 					// Add check when admin try to delete all the imported donations.
 				} else if ('delete-import-donors' === selected_type) {
-
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_import_donor') + '</label></p></div>');
+					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
+				} else if ('delete-transactions' === selected_type) {
+					dateSelector.show();
+					export_form.append('<div class="notice-wrap"></div>');
+					var notice_wrap = export_form.find('.notice-wrap');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_donations_only') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 				} else {
 					forms.hide();
@@ -1283,6 +1291,7 @@ var give_setting_edit = false;
 						// Reset the form for preventing multiple ajax request.
 						$('#give-tools-recount-form')[0].reset();
 						$('#give-tools-recount-form .tools-form-dropdown').hide();
+						$('#give-tools-recount-form .tools-date-dropdown').hide();
 						$('#give-tools-recount-form .tools-form-dropdown-recount-form-select').val('0').trigger('chosen:updated');
 					}
 				}

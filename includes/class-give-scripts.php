@@ -253,6 +253,7 @@ class Give_Scripts {
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
+			'delete_donations_only'             => __( 'Are you sure you want to delete all the donations in the specfied date range?', 'give' ),
 			'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 			/* translators : %s: Donation form options metabox */
 			'confirm_before_remove_row_text'    => __( 'Do you want to delete this item?', 'give' ),

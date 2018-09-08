@@ -36,6 +36,7 @@ do_action( 'give_tools_recount_stats_before' );
 						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
 						<option data-type="recount-donor-stats" value="Give_Tools_Recount_Donor_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
 						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Payments', 'give' ); ?></option>
+						<option data-type="delete-transactions" value="Give_Tools_Delete_Donations_Only"><?php esc_html_e( 'Delete Donations Only', 'give' ); ?></option>
 						<option data-type="delete-test-donors"   value="Give_Tools_Delete_Donors"><?php esc_html_e( 'Delete Test Donors and Payments', 'give' ); ?></option>
 						<option data-type="delete-import-donors"   value="Give_Tools_Import_Donors"><?php esc_html_e( 'Delete Imported Donors and Payments', 'give' ); ?></option>
 						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php esc_html_e( 'Delete All Data', 'give' ); ?></option>
@@ -57,9 +58,25 @@ do_action( 'give_tools_recount_stats_before' );
 							'class'       => 'tools-form-dropdown-recount-form-select',
 							'name'        => 'form_id',
 							'chosen'      => true,
-							'placeholder' => __( 'Select Form', 'give' ),
+							'placeholder' => esc_attr__( 'Select Form', 'give' ),
 						);
 						echo Give()->html->forms_dropdown( $args );
+						?>
+					</span>
+
+					<span class="tools-date-dropdown tools-date-dropdown-delete-donations" style="display: none">
+						<?php
+						echo Give()->html->date_field( array(
+							'id'          => 'give_delete_donations_start_date',
+							'name'        => 'delete_donations_start_date',
+							'placeholder' => esc_attr__( 'Start date', 'give' ),
+						) );
+
+						echo Give()->html->date_field( array(
+							'id'          => 'give_delete_donations_start_date',
+							'name'        => 'delete_donations_end_date',
+							'placeholder' => esc_attr__( 'End date', 'give' ),
+						) );
 						?>
 					</span>
 
@@ -92,6 +109,7 @@ do_action( 'give_tools_recount_stats_before' );
 						do_action( 'give_recount_tool_descriptions' );
 						?>
 						<span id="delete-test-transactions"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'all TEST donations, donors, and related log entries.', 'give' ); ?></span>
+						<span id="delete-transactions"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'donations within a specified date range. If date range is not set then all donations are deleted.	', 'give' ); ?></span>
 						<span id="reset-stats"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
