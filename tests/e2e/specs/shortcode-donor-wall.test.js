@@ -1,9 +1,15 @@
+/**
+ * This test performs EXISTENCE tests for the shortcode [give_donor_wall]
+ *
+ * This is a relatively short test since there are no interactions on the page.
+ */
+
 const give = require( './test-utility' );
 
 describe( 'Shortcode Donor Wall', () => {
-	beforeAll( async () => {
-		await page.goto( `${give.utility.vars.rootUrl}/donor-wall/` )
-	})
+
+	// Visit the /donor-wall page.
+	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/donor-wall/` ) )
 
 	give.utility.fn.verifyExistence( page, [
 		/**

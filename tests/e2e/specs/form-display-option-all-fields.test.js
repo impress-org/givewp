@@ -1,7 +1,31 @@
+/**
+ * This test performs EXISTENCE and INTERACTION tests on a form with
+ * display option as "All Fields"
+ *
+ * For EXISTENCE tests, it tests for
+ * - Donation Title
+ * - Donation Form Content
+ * - Currency Symbol
+ * - Currency Value
+ * - One of the levels of the multi-level form
+ * - Custom level
+ * - Form legends
+ * - All input labels and fields
+ *
+ * For INTERACTION tests, it tests for
+ * - hover on all the tooltips present in the form
+ * - clicks through all payment methods
+ *
+ * Makes a sample donation using the 'Test Donation' method.
+ *
+ * Verifies the donation confirmation page to test whether the donation was successful
+ */
+
 const give = require( './test-utility' );
 
 describe( 'Display Option: All fields', () => {
 
+	// Visit the /donations/simple-donation-form page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/donations/simple-donation-form/` ) )
 
 	give.utility.fn.verifyExistence( page, [
@@ -225,22 +249,30 @@ describe( 'Display Option: All fields', () => {
 		},
 	])
 
+	// Click the radio button related to Offline Payment Method.
 	it( 'INTERACTION: verify select offline payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-offline"]' )
 	})
 
+	// Verify the content after clicking the offline payment button radio.
 	it( 'EXISTENCE: verify offline payment method output', async () => {
 		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' )
 	})
 
+	// Click the radio button related to PayPal Payment Method.
 	it( 'INTERACTION: verify select paypal payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-paypal"]' )
 	})
 
+	// Verify the content after clicking the PayPal payment button radio.
 	it( 'EXISTENCE: verify paypal payment method output', async () => {
 		await expect( page ).toMatch( 'Billing Details' )
 	})
 
+	/**
+	 * Click the radio button related to Test Donation Payment Method.
+	 * This method will be used to test a donation ahead.
+	 */
 	it( 'INTERACTION: verify select test donation payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-manual"]' )
 		await page.waitFor( 2000 )

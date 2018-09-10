@@ -1,7 +1,28 @@
+/**
+ * This test performs EXISTENCE and INTERACTION tests on the shortcode [give_form]
+ *
+ * This form's display option is set to 'Modal'.
+ *
+ * For EXISTENCE tests, it tests for
+ * - Donation Title
+ * - Donation Form Content
+ * - Currency Symbol
+ * - Currency Value
+ * - One of the levels of the multi-level form
+ * - Custom level
+ * - Form legends
+ * - All input labels and fields
+ *
+ * For INTERACTION tests, it tests for
+ * - hover on all the tooltips present in the form
+ * - clicks through all payment methods
+ */
+
 const give = require( './test-utility' );
 
-describe( 'Shortcode Login', () => {
+describe( 'Shortcode Give Form', () => {
 
+	// Visit the /give-donation-form-shortcode page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/give-donation-form-shortcode/` ) )
 
 	it( 'INTERACTION: click donate button to reveal the form', async () => {
@@ -243,22 +264,30 @@ describe( 'Shortcode Login', () => {
 		},
 	])
 
+	// Click the radio button related to Offline Payment Method.
 	it( 'INTERACTION: verify select offline payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-offline"]' )
 	})
 
+	// Verify the content after clicking the offline payment button radio.
 	it( 'EXISTENCE: verify offline payment method output', async () => {
 		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' )
 	})
 
+	// Click the radio button related to PayPal Payment Method.
 	it( 'INTERACTION: verify select paypal payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-paypal"]' )
 	})
 
+	// Verify the content after clicking the PayPal payment button radio.
 	it( 'EXISTENCE: verify paypal payment method output', async () => {
 		await expect( page ).toMatch( 'Billing Details' )
 	})
 
+	/**
+	 * Click the radio button related to Offline Donation Payment Method.
+	 * This method will be used to test a donation ahead.
+	 */
 	it( 'INTERACTION: select offline payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-offline"]' )
 		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' )
