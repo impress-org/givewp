@@ -3101,7 +3101,7 @@ function give_v230_move_donor_note_callback() {
 }
 
 /**
- * Move donor notes to comment table
+ * Move donation notes to comment table
  *
  * @since 2.3.0
  */
