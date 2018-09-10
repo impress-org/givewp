@@ -54,6 +54,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 					'{receipt_link}'
 				),
 				'default_email_header'  => __( 'Donor Note', 'give' ),
+				'form_metabox_setting'  => false,
 			) );
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'send_note' ), 10, 2 );
