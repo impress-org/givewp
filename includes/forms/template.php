@@ -1098,6 +1098,10 @@ function give_default_cc_address_fields( $form_id ) {
 		$no_states_country = give_no_states_country_list();
 		// Get the country list that does not require states.
 		$states_not_required_country_list = give_states_not_required_country_list();
+
+		// Get the country list that does not require city.
+		$city_not_required_country_list = give_city_not_required_country_list();
+
 		?>
 		<p id="give-card-country-wrap" class="form-row form-row-wide">
 			<label for="billing_country" class="give-label">
@@ -1171,7 +1175,7 @@ function give_default_cc_address_fields( $form_id ) {
 		<p id="give-card-city-wrap" class="form-row form-row-wide">
 			<label for="card_city" class="give-label">
 				<?php _e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
+				<?php if ( give_field_is_required( 'card_city', $form_id ) && ! array_key_exists( $selected_country, $city_not_required_country_list ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
 				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
