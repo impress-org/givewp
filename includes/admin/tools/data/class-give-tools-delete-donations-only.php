@@ -92,7 +92,6 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 
 		$offset     = ( $this->step - 1 ) * $this->per_step;
 		$step_items = array_slice( $items, $offset, $this->per_step );
-		$meta_table = __give_v20_bc_table_details( 'payment' );
 
 		if ( $step_items ) {
 			foreach ( $step_items as $item ) {
@@ -235,8 +234,7 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 			if ( ! empty( $payments ) ) {
 				foreach ( $payments as $payment ) {
 					$items[] = array(
-						'id'   => (int) $payment->ID,
-						'type' => 'give_payment',
+						'id' => (int) $payment->ID,
 					);
 				}
 
