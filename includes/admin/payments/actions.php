@@ -374,6 +374,7 @@ function give_update_payment_details( $data ) {
 		if ( empty( $data['give_comment'] ) ) {
 			// Delete comment if empty
 			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
+			$comment_id = 0;
 
 		} else {
 			$comment_args = array(
@@ -384,7 +385,7 @@ function give_update_payment_details( $data ) {
 				$comment_args['comment_ID'] = $comment_id;
 			}
 
-			give_insert_donor_donation_comment(
+			$comment_id = give_insert_donor_donation_comment(
 				$payment->ID,
 				$payment->donor_id,
 				$data['give_comment'],
@@ -392,11 +393,20 @@ function give_update_payment_details( $data ) {
 			);
 		}
 
-		$donor_has_comment = empty( $data['give_comment'] )
-			? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
-			: '1';
+		if( $comment_id ) {
+			$donor_has_comment = empty( $data['give_comment'] )
+				? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
+				: '1';
 
-		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
+			if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
+				// Backward compatibility.
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			} else {
+				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			}
+
+			Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
+		}
 	}
 
 	/**
