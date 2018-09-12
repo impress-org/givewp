@@ -105,26 +105,26 @@ class Give_Comment {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param int    $id           Payment|Donor ID.
-	 * @param string $note         Comment Text
-	 * @param string $comment_type Value can ve donor|payment
-	 * @param array  $comment_args Comment arguments
+	 * @param array $comment_args Comment arguments.
 	 *
 	 * @return int|WP_Error
 	 */
-	public static function add( $id, $note, $comment_type, $comment_args = array() ) {
-		// @todo accept only array as argument
-
-		// Bailout
-		if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
-			return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or comment type', 'give' ) );
-		}
-
+	public static function add( $comment_args = array() ) {
 		// Backward compatibility.
-		$comment_id = self::_bc_add( $id, $note, $comment_type, $comment_args );
+		$func_args = func_get_args();
+		$comment_id = self::_bc_add( $func_args );
 		if ( ! is_null( $comment_id ) ) {
 			return $comment_id;
 		}
+
+		$comment_args = wp_parse_args(
+			$comment_args,
+			array(
+				'comment_ID'     => 0,
+				'comment_parent' => 0,
+				'comment_type'   => 'general',
+			)
+		);
 
 		$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
 		$action_type         = $is_existing_comment ? 'update' : 'insert';
@@ -137,16 +137,21 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_pre_{$action_type}_{$comment_type}_note", $id, $note );
+		do_action(
+			"give_pre_{$action_type}_{$comment_args['comment_type']}_note",
+			$comment_args['comment_parent'],
+			$comment_args['comment_content'],
+			$comment_args
+		);
 
 
 		$comment_id = Give()->comment->db->add(
 			array(
-				'comment_ID'      => isset( $comment_args['comment_ID'] ) ? absint( $comment_args['comment_ID'] ) : 0,
-				'comment_content' => $note,
+				'comment_ID'      => absint( $comment_args['comment_ID'] ),
+				'comment_content' => $comment_args['comment_content'],
 				'user_id'         => get_current_user_id(),
-				'comment_parent'  => $id,
-				'comment_type'    => 'donation',
+				'comment_parent'  => $comment_args['comment_parent'],
+				'comment_type'    => $comment_args['comment_type'],
 			)
 		);
 
@@ -159,7 +164,13 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_{$action_type}_{$comment_type}_note", $comment_id, $id, $note );
+		do_action(
+			"give_{$action_type}_{$comment_args['type']}_note",
+			$comment_args['comment_ID'],
+			$comment_args['comment_parent'],
+			$comment_args['comment_content'],
+			$comment_args
+		);
 
 		return $comment_id;
 	}
@@ -172,20 +183,27 @@ class Give_Comment {
 	 * @access public
 	 *
 	 * @param int    $comment_id   The comment ID to delete.
-	 * @param int    $id           The payment|Donor ID the note is connected to.
-	 * @param string $comment_type Value can ve donor|payment.
 	 *
 	 * @since  1.0
 	 *
 	 * @return bool True on success, false otherwise.
 	 */
-	public static function delete( $comment_id, $id, $comment_type ) {
+	public static function delete( $comment_id ) {
 		$ret = false;
 
 		// Bailout
-		if ( empty( $id ) || empty( $comment_id ) || empty( $comment_type ) ) {
+		if ( empty( $comment_id ) ) {
 			return $ret;
 		}
+
+		$comment = Give()->comment->db->get_by( 'comment_ID', $comment_id );
+
+		if( ! is_object( $comment ) ) {
+			return $ret;
+		}
+
+		$comment_type   = $comment['comment_type'];
+		$comment_parent = $comment['comment_parent'];
 
 		/**
 		 * Fires before deleting donation note.
@@ -195,7 +213,7 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $id );
+		do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $comment_parent );
 
 		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 			$ret = wp_delete_comment( $comment_id, true );
@@ -215,7 +233,7 @@ class Give_Comment {
 		 *
 		 * @since 1.0
 		 */
-		do_action( "give_post_delete_{$comment_type}_note", $comment_id, $id, $ret );
+		do_action( "give_post_delete_{$comment_type}_note", $comment_id, $comment_parent, $ret );
 
 		return $ret;
 	}
@@ -227,28 +245,32 @@ class Give_Comment {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param int    $id
-	 * @param string $comment_type
-	 * @param array  $comment_args
-	 * @param string $search
+	 * @param array $comment_args
 	 *
 	 * @return array
 	 */
-	public static function get( $id, $comment_type, $comment_args = array(), $search = '' ) {
+	public static function get( $comment_args ) {
+
 		// Backward compatibility.
-		$comments = self::_bc_get( $id, $comment_type, $comment_args, $search );
+		$func_args = func_get_args();
+		$comments = self::_bc_get( $func_args );
 		if ( ! is_null( $comments ) ) {
 			return $comments;
 		}
 
-		// @todo deprecate all params and use array as function argument
-		// @todo add support for $comment_args
-		// @todo add support for $search
+		$comment_args = wp_parse_args(
+			$comment_args,
+			array(
+				'comment_ID'     => 0,
+				'comment_parent' => 0,
+				'comment_type'   => 'general',
+			)
+		);
 
 		$comments = Give()->comment->db->get_results_by(
 			array(
-				'comment_parent' => $id,
-				'comment_type'   => 'donation',
+				'comment_parent' => $comment_args['comment_parent'],
+				'comment_type'   => $comment_args['comment_type'],
 			)
 		);
 
@@ -450,17 +472,19 @@ class Give_Comment {
 	 * @since  2.3.0
 	 * @access public
 	 *
-	 * @param int    $id
-	 * @param string $comment_type
-	 * @param array  $comment_args
-	 * @param string $search
+	 * @param array $comment_args
 	 *
 	 * @return array|null
 	 */
-	private static function _bc_get( $id, $comment_type, $comment_args = array(), $search = '' ) {
+	private static function _bc_get( $comment_args ) {
 		$comments = null;
 
 		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$id           = $comment_args[0];
+			$comment_type = $comment_args[1];
+			$comment_args = isset( $comment_args[2] ) ? $comment_args[2] : array();
+			$search       = isset( $comment_args[3] ) ? $comment_args[3] : '';
+
 			// Set default meta_query value.
 			if ( ! isset( $comment_args['meta_query'] ) ) {
 				$comment_args['meta_query'] = array();
@@ -532,17 +556,25 @@ class Give_Comment {
 	 * @since  2.3.0
 	 * @access public
 	 *
-	 * @param int    $id           Payment|Donor ID.
-	 * @param string $note         Comment Text
-	 * @param string $comment_type Value can ve donor|payment
-	 * @param array  $comment_args Comment arguments
+	 * @param array $comment_args Comment arguments.
 	 *
 	 * @return int|null|WP_Error
 	 */
-	private static function _bc_add( $id, $note, $comment_type, $comment_args = array() ) {
+	private static function _bc_add( $comment_args = array() ) {
 		$comment_id = null;
 
 		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$id           = $comment_args[0];
+			$note         = $comment_args[1];
+			$comment_type = $comment_args[2];
+			$comment_args = isset( $comment_args[3] ) ? $comment_args[3] : array();
+
+
+			// Bailout
+			if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
+				return new WP_Error( 'give_invalid_required_param', __( 'This comment has invalid ID or comment text or comment type', 'give' ) );
+			}
+
 			$is_existing_comment = array_key_exists( 'comment_ID', $comment_args ) && ! empty( $comment_args['comment_ID'] );
 			$action_type         = $is_existing_comment ? 'update' : 'insert';
 
