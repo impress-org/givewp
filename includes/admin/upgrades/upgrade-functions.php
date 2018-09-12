@@ -3151,7 +3151,9 @@ function give_v230_move_donation_note_callback() {
 					'comment_date'     => date( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
 					'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
 					'comment_parent'   => $comment->comment_post_ID,
-					'comment_type'     => 'donation',
+					'comment_type'     => is_numeric( get_comment_meta( $comment->comment_ID, '_give_donor_id', true ) )
+						? 'donor_donation'
+						: 'donation',
 				)
 			);
 
