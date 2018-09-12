@@ -35,9 +35,9 @@ class Give_DB_Comments extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_comments';
-		$this->primary_key = 'comment_ID';
-		$this->version     = '1.0';
+		$wpdb->give_comments = $this->table_name = $wpdb->prefix . 'give_comments';
+		$this->primary_key   = 'comment_ID';
+		$this->version       = '1.0';
 
 		// Install table.
 		$this->register_table();

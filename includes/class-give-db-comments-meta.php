@@ -50,9 +50,9 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$wpdb->commentmeta     = $this->table_name = $wpdb->prefix . 'give_commentmeta';
-		$this->primary_key = 'meta_id';
-		$this->version     = '1.0';
+		$wpdb->give_commentmeta = $this->table_name = $wpdb->prefix . 'give_commentmeta';
+		$this->primary_key      = 'meta_id';
+		$this->version          = '1.0';
 
 		$this->register_table();
 
