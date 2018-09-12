@@ -621,6 +621,15 @@ function give_get_required_fields( $form_id ) {
 				// If states is empty remove the required fields of state in billing cart.
 				unset( $required_fields['card_state'] );
 			}
+
+			// Get the country list that does not required any city init.
+			$city_country = give_city_not_required_country_list();
+
+			// Check if city is empty or not.
+			if ( array_key_exists( $country, $city_country ) ) {
+				// If states is empty remove the required fields of city in billing cart.
+				unset( $required_fields['card_city'] );
+			}
 		}
 	} // End if().
 
