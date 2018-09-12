@@ -4,11 +4,19 @@ The frontend UI testing tests whether the contents of Give's features display an
 
 ## How to run the tests?
 
+### Prerequisites
+These tests run inside a dockerized container, so it is necessary that you have the [Docker Engine](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed on your system.
+
 A sample `wordpress.sql` is provided within `sample-data/` folder which has few sample forms, donations and donors to test in various combinations.
 
 ### Manual Testing
-After setting up the local development environment, running tests manually is fairly simple. All you need it to run
+After setting up the local development environment, running tests manually is fairly simple. Navigate to the Give root folder where the `docker-compose.yml` file resides and set up the container by running:
 
+```sh
+docker-compose up -d
+```
+
+Now that the container is ready, run the tests by firing the following commad:
 ```sh
 npm run test
 ```
