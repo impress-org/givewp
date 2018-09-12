@@ -114,6 +114,30 @@ await Promise.all([
 ])
 ```
 
+## Documenting tests
+For the ease of understanding, it will be helpful if you follow a naming convention to name the test files. For example, if the test is about the Give Form Shortcode, then a file name as `shortcode-give-form.test.js` gives a fair idea about the test.
+
+Each test file should begin with a desription of the test, following with a brief explanantion of what areas it tests.
+If the test file performs both EXISTENCE and INTERACTION tests, then break down the 2 into separate regions explaining
+what is does, for example:
+
+```JS
+/**
+ * This test performs EXISTENCE and INTERACTION tests for the shortcode [give_form_grid]
+ *
+ * For EXISTENCE tests, it tests for
+ * - Grid item title
+ * - Grid item form content
+ *
+ * For INTERACTION tests, it tests for
+ * - hover to test the hover animation
+ * - click on the grid-item to open the popup
+ * - clicks the close button to close the popup
+ */
+```
+
+Add single line comments wherever there are events such as form submission and redirection.
+
 ## Resources
 1. [jest-puppeteer](https://github.com/smooth-code/jest-puppeteer)
 2. [expect-puppeteer](https://github.com/smooth-code/jest-puppeteer/blob/master/packages/expect-puppeteer/README.md#api)
