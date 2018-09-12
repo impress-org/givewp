@@ -182,13 +182,20 @@ class Give_Comment {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param int    $comment_id   The comment ID to delete.
+	 * @param int $comment_id The comment ID to delete.
 	 *
 	 * @since  1.0
 	 *
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function delete( $comment_id ) {
+		// Backward compatibility.
+		$func_args = func_get_args();
+		$ret       = self::_bc_delete( $func_args );
+		if ( ! is_null( $comment_id ) ) {
+			return $ret;
+		}
+
 		$ret = false;
 
 		// Bailout
@@ -198,7 +205,7 @@ class Give_Comment {
 
 		$comment = Give()->comment->db->get_by( 'comment_ID', $comment_id );
 
-		if( ! is_object( $comment ) ) {
+		if ( ! is_object( $comment ) ) {
 			return $ret;
 		}
 
@@ -215,14 +222,10 @@ class Give_Comment {
 		 */
 		do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $comment_parent );
 
-		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
-			$ret = wp_delete_comment( $comment_id, true );
-		} else {
-			$ret = Give()->comment->db->delete( $comment_id );
+		$ret = Give()->comment->db->delete( $comment_id );
 
-			// Delete comment meta.
-			Give()->comment->db_meta->delete_all_meta( $comment_id );
-		}
+		// Delete comment meta.
+		Give()->comment->db_meta->delete_all_meta( $comment_id );
 
 		/**
 		 * Fires after donation note deleted.
@@ -551,7 +554,7 @@ class Give_Comment {
 
 	/**
 	 * Insert/Update comment
-	 * Note: This function add backward compatibility for get function
+	 * Note: This function add backward compatibility for add function
 	 *
 	 * @since  2.3.0
 	 * @access public
@@ -647,5 +650,59 @@ class Give_Comment {
 		}
 
 		return $comment_id;
+	}
+
+	/**
+	 * Delete comment
+	 * Note: This function add backward compatibility for delete function
+	 * @since  2.3.0
+	 * @access public
+	 *
+	 * @param array $comment_args Comment arguments.
+	 *
+	 * @since  1.0
+	 *
+	 * @return bool True on success, false otherwise.
+	 */
+	private static function _bc_delete( $comment_args ) {
+		$ret = null;
+
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$comment_id   = $comment_args[0];
+			$id           = $comment_args[1];
+			$comment_type = $comment_args[2];
+
+			$ret = false;
+
+			// Bailout
+			if ( empty( $id ) || empty( $comment_id ) || empty( $comment_type ) ) {
+				return $ret;
+			}
+			/**
+			 * Fires before deleting donation note.
+			 *
+			 * @param int $comment_id Comment ID.
+			 * @param int $id         Payment|Donor ID.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $id );
+
+			$ret = wp_delete_comment( $comment_id, true );
+
+
+			/**
+			 * Fires after donation note deleted.
+			 *
+			 * @param int  $comment_id Note ID.
+			 * @param int  $id         Payment|Donor ID.
+			 * @param bool $ret        Flag to check if comment deleted or not.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_post_delete_{$comment_type}_note", $comment_id, $id, $ret );
+		}
+
+		return $ret;
 	}
 }
