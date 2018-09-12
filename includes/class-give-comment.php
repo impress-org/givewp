@@ -117,6 +117,15 @@ class Give_Comment {
 			return $comment_id;
 		}
 
+		// Backward compatibility.
+		if( is_numeric( $comment_args ) ) {
+			$comment_args = array(
+				'comment_parent' => $func_args[0],
+				'comment_content' => $func_args[1],
+				'comment_type'   => 'payment' === $func_args[2] ? 'donation' : $func_args[1],
+			);
+		}
+
 		$comment_args = wp_parse_args(
 			$comment_args,
 			array(
