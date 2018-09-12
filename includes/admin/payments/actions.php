@@ -359,9 +359,9 @@ function give_update_payment_details( $data ) {
 		if( $comment_id ) {
 			if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
 				// Backward compatibility.
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
 			} else{
-				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
+				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
 			}
 		}
 	}
