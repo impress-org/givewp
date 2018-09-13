@@ -295,7 +295,7 @@ class Give_DB_Comments extends Give_DB {
 		// Get sql query for meta.
 		if ( ! empty( $args['meta_query'] ) ) {
 			$meta_query_object = new WP_Meta_Query( $args['meta_query'] );
-			$meta_query        = $meta_query_object->get_sql( 'comment', $this->table_name, 'comment_ID' );
+			$meta_query        = $meta_query_object->get_sql( 'give_comment', $this->table_name, 'comment_ID' );
 			$where             = implode( '', $meta_query );
 		}
 

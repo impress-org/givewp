@@ -38,7 +38,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 	 * @access protected
 	 * @var bool
 	 */
-	protected $meta_type = 'comment';
+	protected $meta_type = 'give_comment';
 
 	/**
 	 * Give_DB_Comment_Meta constructor.
@@ -69,10 +69,10 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 	 */
 	public function get_columns() {
 		return array(
-			'meta_id'    => '%d',
-			'comment_id'     => '%d',
-			'meta_key'   => '%s',
-			'meta_value' => '%s',
+			'meta_id'         => '%d',
+			'give_comment_id' => '%d',
+			'meta_key'        => '%s',
+			'meta_value'      => '%s',
 		);
 	}
 
