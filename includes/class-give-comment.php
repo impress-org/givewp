@@ -129,6 +129,7 @@ class Give_Comment {
 		$comment_args = wp_parse_args(
 			$comment_args,
 			array(
+				'comment_ID'     => 0,
 				'comment_parent' => 0,
 				'comment_type'   => 'general',
 			)
