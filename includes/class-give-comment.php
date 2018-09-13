@@ -201,7 +201,7 @@ class Give_Comment {
 		// Backward compatibility.
 		$func_args = func_get_args();
 		$ret       = self::_bc_delete( $func_args );
-		if ( ! is_null( $comment_id ) ) {
+		if ( ! is_null( $ret ) ) {
 			return $ret;
 		}
 
@@ -212,14 +212,15 @@ class Give_Comment {
 			return $ret;
 		}
 
+		/* @var stdClass $comment */
 		$comment = Give()->comment->db->get_by( 'comment_ID', $comment_id );
 
 		if ( ! is_object( $comment ) ) {
 			return $ret;
 		}
 
-		$comment_type   = $comment['comment_type'];
-		$comment_parent = $comment['comment_parent'];
+		$comment_type   = $comment->comment_type;
+		$comment_parent = $comment->comment_parent;
 
 		/**
 		 * Fires before deleting donation note.
