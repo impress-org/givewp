@@ -862,3 +862,35 @@ function give_donor_delete( $args ) {
 
 	give_process_donor_deletion( $args );
 }
+
+
+/**
+ * Retrieve all donor comment attached to a donation
+ *
+ * Note: currently donor can only add one comment per donation
+ *
+ * @param int    $donor_id The donor ID to retrieve comment for.
+ * @param array  $comment_args
+ * @param string $search   Search for comment that contain a search term.
+ *
+ * @since 2.2.0
+ * @deprecated 2.3.0
+ *
+ * @return array
+ */
+function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.3.0',
+		'Give()->comment->db'
+	);
+
+	$comments = Give_Comment::get(
+		$donor_id,
+		'payment',
+		$comment_args,
+		$search
+	);
+
+	return ( ! empty( $comments ) ? $comments : array() );
+}

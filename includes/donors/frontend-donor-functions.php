@@ -215,30 +215,6 @@ function give_get_donor_donation_comment_id( $donation_id, $donor_id, $search = 
 	return $comment_id;
 }
 
-/**
- * Retrieve all donor comment attached to a donation
- *
- * Note: currently donor can only add one comment per donation
- *
- * @param int    $donor_id The donor ID to retrieve comment for.
- * @param array  $comment_args
- * @param string $search   Search for comment that contain a search term.
- *
- * @since 2.2.0
- *
- * @return array
- */
-function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
-	$comments = Give_Comment::get(
-		$donor_id,
-		'payment',
-		$comment_args,
-		$search
-	);
-
-	return ( ! empty( $comments ) ? $comments : array() );
-}
-
 
 /**
  * Gets the donor donation comment HTML
