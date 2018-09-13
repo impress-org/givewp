@@ -141,15 +141,8 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 		)
 	);
 
-	if( ! empty( $comment_args ) ) {
-		foreach ( $comment_args as $meta_key => $meta_value ) {
-			if( in_array( $meta_key, array( 'comment_ID') ) ){
-				continue;
-			}
-
-			Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
-		}
-	}
+	Give()->comment->db_meta->update_meta( $comment_id, '_give_donor_id', $donor );
+	Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', give_get_payment_form_id( $donation_id ) );
 
 	return $comment_id;
 }
