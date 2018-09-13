@@ -132,7 +132,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
 		return $comment_id;
 	}
 
-	$comment_id = Give()->comment->db->add(
+	$comment_id = Give_Comment::add(
 		array(
 			'comment_ID'      => isset( $comment_args['comment_ID'] ) ? absint( $comment_args['comment_ID'] ) : 0,
 			'comment_parent'  => $donation_id,
