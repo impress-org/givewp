@@ -174,7 +174,7 @@ class Give_Comment {
 		 * @since 1.0
 		 */
 		do_action(
-			"give_{$action_type}_{$comment_args['type']}_note",
+			"give_{$action_type}_{$comment_args['comment_type']}_note",
 			$comment_args['comment_ID'],
 			$comment_args['comment_parent'],
 			$comment_args['comment_content'],
