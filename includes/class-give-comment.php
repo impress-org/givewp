@@ -288,12 +288,7 @@ class Give_Comment {
 			)
 		);
 
-		$comments = Give()->comment->db->get_results_by(
-			array(
-				'comment_parent' => $comment_args['comment_parent'],
-				'comment_type'   => $comment_args['comment_type'],
-			)
-		);
+		$comments = Give()->comment->db->get_results_by( $comment_args );
 
 		return $comments;
 	}
