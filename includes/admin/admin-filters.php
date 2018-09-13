@@ -40,11 +40,18 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' is not set.', 'give' ) );
 	}
 
-	$value = absint( $value );
+	$value           = absint( $value );
+	$number_decimals = 'BTC' === give_get_option( 'currency' ) || 'BTC' === $_POST['currency'] ? 8 : 6;
 
-	if ( 8 <= $value ) {
-		$value = 8;
-		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 8 because you entered a number higher than the maximum allowed.', 'give' ) );
+	if ( $number_decimals <= $value ) {
+		$value = $number_decimals;
+		Give_Admin_Settings::add_error(
+			'give-number-decimal',
+			sprintf(
+				__( 'The \'Number of Decimals\' option has been automatically set to %s because you entered a number higher than the maximum allowed.', 'give' ),
+				$number_decimals
+			)
+		);
 	}
 
 	return absint( $value );
