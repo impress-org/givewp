@@ -613,16 +613,13 @@ function give_get_required_fields( $form_id ) {
 		// Check if billing country already exists.
 		if ( $country ) {
 
+			// Get the country list that does not required any states init.
+			$states_country = give_states_not_required_country_list();
+
 			// Check if states is empty or not.
-			if ( array_key_exists( $country, give_states_not_required_country_list() ) ) {
+			if ( array_key_exists( $country, $states_country ) ) {
 				// If states is empty remove the required fields of state in billing cart.
 				unset( $required_fields['card_state'] );
-			}
-
-			// Check if city is empty or not.
-			if ( array_key_exists( $country, give_city_not_required_country_list() ) ) {
-				// If states is empty remove the required fields of city in billing cart.
-				unset( $required_fields['card_city'] );
 			}
 		}
 	} // End if().

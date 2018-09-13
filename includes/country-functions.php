@@ -444,34 +444,6 @@ function give_states_not_required_country_list() {
 }
 
 /**
- * List of Country in which city fields is not required.
- *
- * There are some country in which city fields is not required Example: Singapore ( sk ).
- *
- * @since 2.3.0
- *
- * $country array $country_list.
- */
-function give_city_not_required_country_list() {
-	$country_list = array();
-	$locale       = give_get_country_locale();
-	foreach ( $locale as $key => $value ) {
-		if ( ! empty( $value['city'] ) && isset( $value['city']['required'] ) && false === $value['city']['required'] ) {
-			$country_list[ $key ] = $value['city'];
-		}
-	}
-
-	/**
-	 * Filter can be used to add or remove the Country in which city fields is not required.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param array $country_list Contain key as there country code & value as there country name.
-	 */
-	return (array) apply_filters( 'give_city_not_required_country_list', $country_list );
-}
-
-/**
  * Get the country name by list key.
  *
  * @since 1.8.12
@@ -712,7 +684,7 @@ function give_get_country_locale() {
 		),
 		'NZ' => array(
 			'state' => array(
-				'label' => __( 'Region', 'give' ),
+				'label'    => __( 'Region', 'give' ),
 			),
 		),
 		'NO' => array(
@@ -752,9 +724,6 @@ function give_get_country_locale() {
 			'state' => array(
 				'required' => false,
 			),
-			'city'  => array(
-				'required' => false,
-			)
 		),
 		'SK' => array(
 			'state' => array(
