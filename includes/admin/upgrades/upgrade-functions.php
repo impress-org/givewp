@@ -3159,11 +3159,14 @@ function give_v230_move_donation_note_callback() {
 
 			if ( $comment_meta = get_comment_meta( $comment->comment_ID ) ) {
 				foreach ( $comment_meta as $meta_key => $meta_value ) {
+					$meta_value = maybe_unserialize( $meta_value );
+					$meta_value = is_array( $meta_value ) ? current( $meta_value ) : $meta_value;
+
 					Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
 				}
 			}
 
-			Give()->comment->db_meta->update_meta( $comment_id, 'form_id', $form_id );
+			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
 		}
 
 	} else {
