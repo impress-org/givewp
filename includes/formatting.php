@@ -240,16 +240,16 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 		&& false === strpos( $number, $decimal_separator )
 		&& 2 === count( $number_parts )
 		&& ( $number_decimals >= strlen( $number_parts[1] ) )
-	){
+	) {
 		return number_format( $number, $number_decimals, '.', '' );
 	}
 
 	// Handle thousand separator as '.'
 	// Handle sanitize database values.
 	$is_db_sanitize_val = ( 2 === count( $number_parts ) &&
-							is_numeric( $number_parts[0] ) &&
-							is_numeric( $number_parts[1] ) &&
-							( 6 === strlen( $number_parts[1] ) ) );
+	                        is_numeric( $number_parts[0] ) &&
+	                        is_numeric( $number_parts[1] ) &&
+	                        ( in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) ) );
 
 	if ( $is_db_sanitize_val ) {
 		// Sanitize database value.
