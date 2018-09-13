@@ -55,6 +55,13 @@ jQuery( function( $ ) {
 						} else {
 							$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
 						}
+
+						// check if city fields is require or not
+						if ( typeof (response.city_require) != 'undefined' && true == response.city_require ) {
+							$form.find( 'input[name="card_city"], select[name="card_city"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' );
+						} else {
+							$form.find( 'input[name="card_city"], select[name="card_city"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
+						}
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label' ).text( states_label );
 					}

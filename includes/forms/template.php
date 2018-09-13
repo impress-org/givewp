@@ -1175,8 +1175,9 @@ function give_default_cc_address_fields( $form_id ) {
 		<p id="give-card-city-wrap" class="form-row form-row-wide">
 			<label for="card_city" class="give-label">
 				<?php _e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city', $form_id ) && $city_required ) : ?>
-					<span class="give-required-indicator">*</span>
+				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
+					<span
+						class="give-required-indicator <?php echo( $city_required ? '' : 'give-hidden' ); ?>">*</span>
 				<?php endif; ?>
 				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
 			</label>

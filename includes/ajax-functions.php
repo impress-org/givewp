@@ -265,7 +265,7 @@ function give_ajax_get_states_field() {
 	}
 
 	// Get the country list that does not require city.
-	$city_required = array_key_exists( $country, give_city_not_required_country_list() ) ? false : true;
+	$city_require = array_key_exists( $country, give_city_not_required_country_list() ) ? false : true;
 
 	$response = array(
 		'success'        => true,
@@ -275,7 +275,7 @@ function give_ajax_get_states_field() {
 		'states_require' => $states_require,
 		'data'           => $data,
 		'default_state'  => $default_state,
-		'city_required'  => $city_required,
+		'city_require'   => $city_require,
 	);
 	wp_send_json( $response );
 }
