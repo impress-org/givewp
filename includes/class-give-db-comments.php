@@ -196,10 +196,7 @@ class Give_DB_Comments extends Give_DB {
 		$sql_query = $this->get_sql( $args );
 
 		// Get comment.
-		if ( ! ( $comments = Give_Cache::get( 'give_comments', true, $sql_query ) ) ) {
-			$comments = $wpdb->get_results( $sql_query );
-			Give_Cache::set( 'give_comments', $comments, 3600, true, $sql_query );
-		}
+		$comments = $wpdb->get_results( $sql_query );
 
 		return $comments;
 	}
@@ -224,10 +221,7 @@ class Give_DB_Comments extends Give_DB {
 
 		$sql_query = $this->get_sql( $args );
 
-		if ( ! ( $count = Give_Cache::get( 'give_comments_count', true, $sql_query ) ) ) {
-			$count = $wpdb->get_var( $sql_query );
-			Give_Cache::set( 'give_comments_count', $count, 3600, true, $args );
-		}
+		$count = $wpdb->get_var( $sql_query );
 
 		return absint( $count );
 	}
