@@ -325,7 +325,7 @@ class Give_DB_Comments extends Give_DB {
 			}
 			$comment_ids = implode( ',', array_map( 'intval', $args['comment_ID'] ) );
 
-			$where .= " AND {$this->table_name}.ID IN( {$comment_ids} ) ";
+			$where .= " AND {$this->table_name}.comment_ID IN( {$comment_ids} ) ";
 		}
 
 		// Comments created for a specific date or in a date range
