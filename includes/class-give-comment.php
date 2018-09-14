@@ -158,7 +158,6 @@ class Give_Comment {
 			array(
 				'comment_ID'      => absint( $comment_args['comment_ID'] ),
 				'comment_content' => $comment_args['comment_content'],
-				'user_id'         => get_current_user_id(),
 				'comment_parent'  => $comment_args['comment_parent'],
 				'comment_type'    => $comment_args['comment_type'],
 			)
