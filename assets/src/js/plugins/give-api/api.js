@@ -66,8 +66,12 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price    = parseFloat( price ).toFixed( format_args.precision ),
-					afterPoint, lastThree, otherNumbers, result, lastDotPosition;
+				let actual_price    = parseFloat(price).toFixed(format_args.precision),
+					afterPoint      = '',
+					lastThree       = '',
+					otherNumbers    = '',
+					result          = '',
+					lastDotPosition = '';
 
 				actual_price = accounting.unformat( actual_price, '.' ).toString();
 				actual_price = actual_price.toString();
