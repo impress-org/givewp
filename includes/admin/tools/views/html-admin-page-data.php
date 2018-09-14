@@ -35,10 +35,10 @@ do_action( 'give_tools_recount_stats_before' );
 						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for a Form', 'give' ); ?></option>
 						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
 						<option data-type="recount-donor-stats" value="Give_Tools_Recount_Donor_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
-						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Payments', 'give' ); ?></option>
-						<option data-type="delete-transactions" value="Give_Tools_Delete_Donations_Only"><?php esc_html_e( 'Delete Donations Only', 'give' ); ?></option>
-						<option data-type="delete-test-donors"   value="Give_Tools_Delete_Donors"><?php esc_html_e( 'Delete Test Donors and Payments', 'give' ); ?></option>
-						<option data-type="delete-import-donors"   value="Give_Tools_Import_Donors"><?php esc_html_e( 'Delete Imported Donors and Payments', 'give' ); ?></option>
+						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Donations', 'give' ); ?></option>
+						<option data-type="delete-donations" value="Give_Tools_Delete_Donations"><?php esc_html_e( 'Delete Live and Test Donations', 'give' ); ?></option>
+						<option data-type="delete-test-donors"   value="Give_Tools_Delete_Donors"><?php esc_html_e( 'Delete Test Donors and Donations', 'give' ); ?></option>
+						<option data-type="delete-import-donors"   value="Give_Tools_Import_Donors"><?php esc_html_e( 'Delete Imported Donors and Donations', 'give' ); ?></option>
 						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php esc_html_e( 'Delete All Data', 'give' ); ?></option>
 						<?php
 						/**
@@ -111,8 +111,8 @@ do_action( 'give_tools_recount_stats_before' );
 						do_action( 'give_recount_tool_descriptions' );
 						?>
 						<span id="delete-test-transactions"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'all TEST donations, donors, and related log entries.', 'give' ); ?></span>
-						<span id="delete-transactions"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'donations within a specified date range. If date range is not set then all donations are deleted.	', 'give' ); ?></span>
-						<span id="reset-stats"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
+						<span id="delete-donations"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'all LIVE and TEST donations within a specified date range. If date range is not set then all donations are deleted.	', 'give' ); ?></span>
+						<span id="reset-stats"><strong><?php esc_html_e( 'Deletes', 'give' ); ?></strong> <?php esc_html_e( 'ALL donations, donors, and related log entries regardless of TEST or LIVE mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>

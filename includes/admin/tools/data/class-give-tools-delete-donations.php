@@ -1,11 +1,11 @@
 <?php
 /**
- * Delete Transactions between a date range.
+ * Delete Donations between a date range.
  *
- * This class handles batch processing of deleting transactions between a given range.
+ * This class handles batch processing of deleting donations between a given range.
  *
  * @package     Admin/Tools
- * @subpackage  Admin/Tools/Give_Tools_Delete_Donations_Only
+ * @subpackage  Admin/Tools/Give_Tools_Delete_Donations
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.3.0
@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Tools_Delete_Donations_Only Class
+ * Give_Tools_Delete_Donations Class
  *
  * @since 2.3.0
  */
-class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
+class Give_Tools_Delete_Donations extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
@@ -153,7 +153,7 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 	 */
 	public function process_step() {
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to delete transactions.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to delete donations.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -172,7 +172,7 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 
 			$donation_count = get_option( 'give_temp_delete_donation_count', 0 );
 
-			$this->message = sprintf( '%1$s %2$s', $donation_count, _n( 'transaction successfully deleted.', 'transactions successfully deleted.', $donation_count, 'give' ) );
+			$this->message = sprintf( '%1$s %2$s', $donation_count, _n( 'donation successfully deleted.', 'donations successfully deleted.', $donation_count, 'give' ) );
 
 			delete_option( 'give_temp_delete_donation_count' );
 

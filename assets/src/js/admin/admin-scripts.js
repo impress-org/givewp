@@ -1109,7 +1109,7 @@ var give_setting_edit = false;
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_import_donor') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
-				} else if ('delete-transactions' === selected_type) {
+				} else if ('delete-donations' === selected_type) {
 					dateSelector.show();
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
