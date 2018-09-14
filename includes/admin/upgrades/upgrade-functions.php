@@ -409,6 +409,24 @@ function give_show_upgrade_notices( $give_updates ) {
 			'depend'   => 'v224_update_donor_meta',
 		)
 	);
+
+	// v2.3.0 Move donor notes to custom comment table.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_move_donor_note',
+			'version'  => '2.3.0',
+			'callback' => 'give_v230_move_donor_note_callback',
+		)
+	);
+
+	// v2.3.0 Move donation notes to custom comment table.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_move_donation_note',
+			'version'  => '2.3.0',
+			'callback' => 'give_v230_move_donation_note_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -489,8 +507,8 @@ function give_v134_upgrade_give_offline_status() {
 	$select = "SELECT ID FROM $wpdb->posts p ";
 	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
 	$where  = "WHERE p.post_type = 'give_payment' ";
-	$where .= "AND ( p.post_status = 'abandoned' )";
-	$where .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
+	$where  .= "AND ( p.post_status = 'abandoned' )";
+	$where  .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
 
 	$sql            = $select . $join . $where;
 	$found_payments = $wpdb->get_col( $sql );
@@ -2894,7 +2912,7 @@ function give_v213_delete_donation_meta_callback() {
 /**
  * Rename donation meta type
  *
- * @see https://github.com/restrictcontentpro/restrict-content-pro/issues/1656
+ * @see   https://github.com/restrictcontentpro/restrict-content-pro/issues/1656
  *
  * @since 2.2.0
  */
@@ -2929,7 +2947,6 @@ function give_v215_update_donor_user_roles_callback() {
 }
 
 
-
 /**
  * Remove all wp session data from the options table, regardless of expiration.
  *
@@ -2956,7 +2973,7 @@ function give_v224_update_donor_meta_callback() {
 
 	$donor_count = Give()->donors->count(
 		array(
-			'number' => -1,
+			'number' => - 1,
 		)
 	);
 
@@ -2984,9 +3001,7 @@ function give_v224_update_donor_meta_callback() {
 	}
 }
 
-
-/**
- * Update donor meta
+/** Update donor meta
  * Set "_give_anonymous_donor_forms" meta key if not exist
  *
  *
@@ -3029,5 +3044,133 @@ function give_v224_update_donor_meta_forms_id_callback() {
 		wp_reset_postdata();
 	} else {
 		give_set_upgrade_complete( 'v224_update_donor_meta_forms_id' );
+	}
+}
+
+
+/**
+ * Move donor notes to comment table
+ *
+ * @since 2.3.0
+ */
+function give_v230_move_donor_note_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donor_count = Give()->donors->count( array(
+		'number' => - 1,
+	) );
+
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
+
+	if ( $donors ) {
+		$give_updates->set_percentage( $donor_count, $give_updates->step * 100 );
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+			$notes = trim( Give()->donors->get_column( 'notes', $donor->id ) );
+
+			// If first name meta of donor is not created, then create it.
+			if ( ! empty( $notes ) ) {
+				$notes = array_values( array_filter( array_map( 'trim', explode( "\n", $notes ) ), 'strlen' ) );
+
+				foreach ( $notes as $note ) {
+					$note      = array_map( 'trim', explode( '-', $note ) );
+					$timestamp = strtotime( $note[0] );
+
+					Give()->comment->db->add(
+						array(
+							'comment_content'  => $note[1],
+							'user_id'          => absint( Give()->donors->get_column_by( 'user_id', 'id', $donor->id ) ),
+							'comment_date'     => date( 'Y-m-d H:i:s', $timestamp ),
+							'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', $timestamp ) ),
+							'comment_parent'   => $donor->id,
+							'comment_type'     => 'donor',
+						)
+					);
+				}
+			}
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v230_move_donor_note' );
+	}
+}
+
+/**
+ * Move donation notes to comment table
+ *
+ * @since 2.3.0
+ */
+function give_v230_move_donation_note_callback() {
+	global $wpdb;
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donation_note_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT count(*)
+			FROM {$wpdb->comments}
+			WHERE comment_type=%s
+			",
+			'give_payment_note'
+		)
+	);
+
+	$comments = $wpdb->get_results(
+		$wpdb->prepare(
+			"
+			SELECT *
+			FROM {$wpdb->comments}
+			WHERE comment_type=%s
+			LIMIT 100
+			OFFSET %d
+			",
+			'give_payment_note',
+			$give_updates->get_offset( 100 )
+		)
+	);
+
+	if ( $comments ) {
+		$give_updates->set_percentage( $donation_note_count, $give_updates->step * 100 );
+
+		// Loop through Donors
+		foreach ( $comments as $comment ) {
+			$donation_id = $comment->comment_post_ID;
+			$form_id     = give_get_payment_form_id( $donation_id );
+
+			$comment_id = Give()->comment->db->add(
+				array(
+					'comment_content'  => $comment->comment_content,
+					'user_id'          => $comment->user_id,
+					'comment_date'     => date( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
+					'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
+					'comment_parent'   => $comment->comment_post_ID,
+					'comment_type'     => is_numeric( get_comment_meta( $comment->comment_ID, '_give_donor_id', true ) )
+						? 'donor_donation'
+						: 'donation',
+				)
+			);
+
+			if ( $comment_meta = get_comment_meta( $comment->comment_ID ) ) {
+				foreach ( $comment_meta as $meta_key => $meta_value ) {
+					$meta_value = maybe_unserialize( $meta_value );
+					$meta_value = is_array( $meta_value ) ? current( $meta_value ) : $meta_value;
+
+					Give()->comment->db_meta->update_meta( $comment_id, $meta_key, $meta_value );
+				}
+			}
+
+			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v230_move_donation_note' );
 	}
 }

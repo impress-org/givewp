@@ -1498,9 +1498,20 @@ function give_email_tag_donor_note( $tag_args ) {
 	$donor_note = '';
 
 	if ( array_key_exists( 'note_id', $tag_args ) ) {
-		$note_id    = absint( $tag_args['note_id'] );
-		$comment    = get_comment( $note_id );
-		$donor_note = $comment->comment_content;
+		$note_id = absint( $tag_args['note_id'] );
+
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			// Backward compatibility.
+			$comment = get_comment( $note_id );
+			$donor_note = $comment instanceof WP_Comment ? $comment->comment_content : '';
+
+		} else {
+
+			$comments = Give_Comment::get( array( 'comment_ID' => $note_id ) );
+			$comment = is_array( $comments ) && count( $comments ) ? current( $comments ) : array();
+
+			$donor_note = $comment instanceof stdClass ? $comment->comment_content : '';
+		}
 	}
 
 	/**

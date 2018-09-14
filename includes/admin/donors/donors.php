@@ -974,7 +974,7 @@ function give_donor_view( $donor ) {
 					<?php
 					$comment = give_get_donor_donation_comment( $donation->ID, give_get_payment_donor_id( $donation->ID ) );
 
-					if ( ! $comment instanceof WP_Comment ) {
+					if ( ! ( $comment instanceof WP_Comment ||  $comment instanceof stdClass ) ) {
 						continue;
 					}
 					?>
@@ -1048,7 +1048,7 @@ function give_donor_view( $donor ) {
  *
  * @since  1.0
  *
- * @param  object $donor The donor object being displayed.
+ * @param  Give_Donor $donor The donor object being displayed.
  *
  * @return void
  */

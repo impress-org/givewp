@@ -68,27 +68,31 @@ $atts          = $args[2]; // Shortcode attributes.
 		<?php
 		$comment = give_get_donor_latest_comment( $donor->id, $atts['form_id'] );
 
-		if ( true === $atts['show_comments'] && absint( $atts['comment_length'] ) && $comment instanceof WP_Comment ) :
+		if (
+			true === $atts['show_comments']
+			&& absint( $atts['comment_length'] )
+			&& ( $comment instanceof WP_Comment || $comment instanceof stdClass )
+		) :
 		?>
 			<div class="give-donor__content">
-					<?php
-					$comment_content = apply_filters( 'the_content', $comment->comment_content );
+				<?php
+				$comment_content = apply_filters( 'the_content', $comment->comment_content );
 
-					if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
-						echo sprintf(
-							'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
-							substr( $comment_content, 0, $atts['comment_length'] ),
-							$atts['readmore_text']
-						);
+				if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
+					echo sprintf(
+						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
+						substr( $comment_content, 0, $atts['comment_length'] ),
+						$atts['readmore_text']
+					);
 
-						echo sprintf(
-							'<div class="give-donor__comment" style="display: none">%s</div>',
-							$comment_content
-						);
-					} else {
-						echo $comment_content;
-					}
-					?>
+					echo sprintf(
+						'<div class="give-donor__comment" style="display: none">%s</div>',
+						$comment_content
+					);
+				} else {
+					echo $comment_content;
+				}
+				?>
 			</div>
 		<?php endif; ?>
 	</div>

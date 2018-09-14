@@ -22,11 +22,18 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 
 
 	if ( ! empty( $_POST['give_comment'] ) ) {
+		$comment_meta = array( 'author_email' => $donation_data['user_info']['email'] );
+
+		if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+			// Backward compatibility.
+			$comment_meta = array( 'comment_author_email' => $donation_data['user_info']['email'] );
+		}
+
 		$comment_id = give_insert_donor_donation_comment(
 			$donation_id,
 			$donation_data['user_info']['donor_id'],
 			trim( $_POST['give_comment'] ), // We are sanitizing comment in Give_comment:add
-			array( 'comment_author_email' => $donation_data['user_info']['email'] )
+			$comment_meta
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );

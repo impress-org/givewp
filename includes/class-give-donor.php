@@ -950,21 +950,34 @@ class Give_Donor {
 			$notes = '';
 		}
 
-		$note_string = date_i18n( 'F j, Y H:i:s', current_time( 'timestamp' ) ) . ' - ' . $note;
-		$new_note    = apply_filters( 'give_customer_add_note_string', $note_string );
-		$notes       .= "\n\n" . $new_note;
+		// Backward compatibility.
+		$note_string        = date_i18n( 'F j, Y H:i:s', current_time( 'timestamp' ) ) . ' - ' . $note;
+		$formatted_new_note = apply_filters( 'give_customer_add_note_string', $note_string );
+		$notes              .= "\n\n" . $formatted_new_note;
 
 		/**
 		 * Fires before donor note is added.
 		 *
 		 * @since 1.0
 		 *
-		 * @param string $new_note New note to add.
-		 * @param int    $donor_id Donor id.
+		 * @param string $formatted_new_note Formatted new note to add.
+		 * @param int    $donor_id           Donor id.
 		 */
-		do_action( 'give_donor_pre_add_note', $new_note, $this->id );
+		do_action( 'give_donor_pre_add_note', $formatted_new_note, $this->id );
 
-		$updated = $this->update( array( 'notes' => $notes ) );
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			// Backward compatibility.
+			$updated = $this->update( array( 'notes' => $notes ) );
+		} else {
+			$updated = Give()->comment->db->add(
+				array(
+					'comment_content' => $note,
+					'user_id'         => get_current_user_id(),
+					'comment_parent'  => $this->id,
+					'comment_type'    => 'donor',
+				)
+			);
+		}
 
 		if ( $updated ) {
 			$this->notes = $this->get_notes();
@@ -975,15 +988,14 @@ class Give_Donor {
 		 *
 		 * @since 1.0
 		 *
-		 * @param array  $donor_notes Donor notes.
-		 * @param string $new_note    New note added.
-		 * @param int    $donor_id    Donor id.
+		 * @param array  $donor_notes        Donor notes.
+		 * @param string $formatted_new_note Formatted new note added.
+		 * @param int    $donor_id           Donor id.
 		 */
-		do_action( 'give_donor_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_donor_post_add_note', $this->notes, $formatted_new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
-		return $new_note;
-
+		return $formatted_new_note;
 	}
 
 	/**
@@ -995,8 +1007,21 @@ class Give_Donor {
 	 * @return string The Notes for the donor, non-parsed.
 	 */
 	private function get_raw_notes() {
+		$all_notes = '';
+		$comments = Give()->comment->db->get_results_by( array( 'comment_parent' => $this->id ) );
 
-		$all_notes = $this->db->get_column( 'notes', $this->id );
+		// Generate notes output as we are doing before 2.3.0.
+		if( ! empty( $comments ) ) {
+			/* @var stdClass $comment */
+			foreach ( $comments  as $comment ) {
+				$all_notes .= date_i18n( 'F j, Y H:i:s', strtotime( $comment->comment_date ) ) . " - {$comment->comment_content}\n\n";
+			}
+		}
+
+		// Backward compatibility.
+		if( ! give_has_upgrade_completed('v230_move_donor_note') ) {
+			$all_notes = $this->db->get_column( 'notes', $this->id );
+		}
 
 		return $all_notes;
 
