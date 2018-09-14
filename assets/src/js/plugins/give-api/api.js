@@ -66,33 +66,24 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price = accounting.unformat( price, '.' ).toString(),
-					decimal_amount = '',
-					result,
-					amount,
-					decimal_index = actual_price.indexOf( '.' );
+				let actual_price    = parseFloat( price ).toFixed( format_args.precision ),
+					afterPoint, lastThree, otherNumbers, result, lastDotPosition;
 
-				if (-1 !== decimal_index) {
-					if (args.precision) {
-						decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) ).toFixed( args.precision ).toString().substr( 1 );
-						decimal_amount = decimal_amount.length ? decimal_amount : '.0000000000'.substr(0, parseInt(decimal_index) + 1);
+				actual_price = accounting.unformat( actual_price, '.' ).toString();
+				actual_price = actual_price.toString();
 
-						if (args.precision + 1 > decimal_amount.length) {
-							decimal_amount = (decimal_amount + '000000000').substr(0, args.precision + 1);
-						}
-					}
-
-					actual_price = actual_price.substr(0, parseInt(decimal_index));
+				if ( actual_price.indexOf( '.' ) > 0 ) {
+					afterPoint = actual_price.substring( actual_price.indexOf( '.' ), actual_price.length );
 				}
-				
+
 				actual_price = Math.floor( actual_price ).toString();
 				lastThree    = actual_price.substring( actual_price.length - 3 );
 				otherNumbers = actual_price.substring( 0, actual_price.length - 3 );
 
 				if ( '' !== otherNumbers ) {
-				    lastThree = format_args.thousand + lastThree;
+					lastThree = format_args.thousand + lastThree;
 				}
-				
+
 				result          = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
 				lastDotPosition = result.lastIndexOf( '.' );
 				result          = result.slice( 0, lastDotPosition ) + result.slice( lastDotPosition ).replace( '.', format_args.decimal );

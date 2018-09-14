@@ -206,7 +206,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<p>
 												<label for="give-payment-total" class="strong"><?php _e( 'Total Donation:', 'give' ); ?></label>&nbsp;
 												<?php echo give_currency_symbol( $payment->currency ); ?>
-												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_donation_amount( $payment_id ), false, false ) ); ?>"/>
+												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( array( 'donation_id' => $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
