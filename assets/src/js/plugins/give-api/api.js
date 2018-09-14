@@ -67,7 +67,7 @@ let Give = {
 
 			if ( 'INR' === args.currency ) {
 				let actual_price    = parseFloat(price).toFixed(format_args.precision),
-					afterPoint      = '',
+					afterPoint = args.precision ? '.0' : '',
 					lastThree       = '',
 					otherNumbers    = '',
 					result          = '',
@@ -88,9 +88,9 @@ let Give = {
 					lastThree = format_args.thousand + lastThree;
 				}
 
-				result          = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
-				lastDotPosition = result.lastIndexOf( '.' );
-				result          = result.slice( 0, lastDotPosition ) + result.slice( lastDotPosition ).replace( '.', format_args.decimal );
+				result          = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, format_args.thousand) + lastThree + afterPoint;
+				lastDotPosition = result.lastIndexOf('.');
+				result          = result.slice(0, lastDotPosition) + ((result.slice(lastDotPosition) + '000000000000').substr(0, args.precision + 1));
 				price           = result;
 
 				if ( undefined !== args.symbol && args.symbol.length ) {
