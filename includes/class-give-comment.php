@@ -263,6 +263,7 @@ class Give_Comment {
 	 * @return array
 	 */
 	public static function get( $comment_args ) {
+		global $wpdb;
 
 		// Backward compatibility.
 		$func_args = func_get_args();
@@ -279,15 +280,7 @@ class Give_Comment {
 			);
 		}
 
-		$comment_args = wp_parse_args(
-			$comment_args,
-			array(
-				'comment_parent' => 0,
-				'comment_type'   => 'general',
-			)
-		);
-
-		$comments = Give()->comment->db->get_results_by( $comment_args );
+		$comments = $wpdb->get_results( Give()->comment->db->get_sql( $comment_args ) );
 
 		return $comments;
 	}
