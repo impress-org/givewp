@@ -214,7 +214,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 	$thousand_separator = give_get_price_thousand_separator( $args['currency'] );
 	$decimal_separator  = give_get_price_decimal_separator( $args['currency'] );
 	$number_decimals    = is_bool( $args['number_decimals'] ) ?
-		give_get_price_decimals() :
+		give_get_price_decimals( $args['currency'] ) :
 		$args['number_decimals'];
 
 	// Explode number by . decimal separator.
