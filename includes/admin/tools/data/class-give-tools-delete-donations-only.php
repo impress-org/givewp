@@ -152,7 +152,6 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 	 * @return bool
 	 */
 	public function process_step() {
-
 		if ( ! $this->can_export() ) {
 			wp_die( esc_html__( 'You do not have permission to delete transactions.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
@@ -169,8 +168,13 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 
 			$this->delete_data( 'give_temp_delete_donation_ids' );
 
-			$this->done    = true;
-			$this->message = __( 'Transactions successfully deleted.', 'give' );
+			$this->done = true;
+
+			$donation_count = get_option( 'give_temp_delete_donation_count', 0 );
+
+			$this->message = sprintf( '%1$s %2$s', $donation_count, _n( 'transaction successfully deleted.', 'transactions successfully deleted.', $donation_count, 'give' ) );
+
+			delete_option( 'give_temp_delete_donation_count' );
 
 			return false;
 		}
@@ -243,9 +247,17 @@ class Give_Tools_Delete_Donations_Only extends Give_Batch_Export {
 				$items = apply_filters( 'give_delete_donation_items', $items );
 
 				$this->store_data( 'give_temp_delete_donation_ids', $items );
+
+				$donation_count = get_option( 'give_temp_delete_donation_count', 0 );
+
+				if ( 0 === $donation_count ) {
+					add_option( 'give_temp_delete_donation_count', count( $items ) );
+				} else {
+					$donation_count += (int) $donation_count;
+					update_option( 'give_temp_delete_donation_count', $donation_count );
+				}
 			}
 		}
-
 	}
 
 	/**
