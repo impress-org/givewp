@@ -533,23 +533,62 @@ function give_human_format_large_amount( $amount, $args = array() ) {
  *
  * @since 1.0
  *
- * @param int|float|string $amount   Formatted or sanitized price
- * @param int|bool         $dp       number of decimals
- * @param bool             $sanitize Whether or not sanitize number
+ * @param array           $args        {
+ *
+ * @type int|float|string $amount      Formatted or sanitized price. (optional if donation id set)
+ * @type int              $donation_id donation amount (optional if set amount, but provide it for better result if formatting decimal amount of donation).
+ * @type string           $currency    donation amount (optional if set donation id). Provide either amount or donation id
+ * @type int|bool         $dp          number of decimals
+ * @type bool             $sanitize    Whether or not sanitize number
+ * }
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
-function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
+function give_format_decimal( $args ) {
+	// Backward compatibility.
+	if ( ! is_array( $args ) ) {
+		$func_args = func_get_args();
+		$args      = array(
+			'amount'   => $func_args[0],
+			'dp'       => isset( $func_args[1] ) ? $func_args[1] : false,
+			'sanitize' => isset( $func_args[2] ) ? $func_args[2] : false,
+		);
+	}
+
+	$args = wp_parse_args(
+		$args,
+		array(
+			'amount'      => '',
+			'donation_id' => 0,
+			'currency'    => '',
+			'dp'          => false,
+			'sanitize'    => false,
+		)
+	);
+
+	if( ! empty( $args['donation_id'] ) ) {
+
+		// Set currency if not already done.
+		if( empty( $args['currency'] ) ) {
+			$args['currency'] = give_get_payment_currency_code( $args['donation_id'] );
+		}
+
+		// Set amount if not already done.
+		if( empty( $args['amount'] ) ) {
+			$args['amount'] = give_donation_amount( $args['donation_id'] );
+		}
+	}
+
 	$decimal_separator = give_get_price_decimal_separator();
-	$formatted_amount  = $sanitize ?
-		give_maybe_sanitize_amount( $amount, array( 'number_decimals' => $dp ) ) :
-		number_format( $amount, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+	$formatted_amount  = $args['sanitize'] ?
+		give_maybe_sanitize_amount( $args['amount'], array( 'number_decimals' => $args['dp'], 'currency' => $args['currency'] ) ) :
+		number_format( $args['amount'], ( is_bool( $args['dp'] ) ? give_get_price_decimals( $args['currency'] ) : $args['dp'] ), '.', '' );
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
 		$formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
 	}
 
-	return apply_filters( 'give_format_decimal', $formatted_amount, $amount, $decimal_separator );
+	return apply_filters( 'give_format_decimal', $formatted_amount, $args['amount'], $decimal_separator, $args );
 }
 
 /**
