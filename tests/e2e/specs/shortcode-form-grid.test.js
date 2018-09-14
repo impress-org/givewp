@@ -1,6 +1,20 @@
+/**
+ * This test performs EXISTENCE and INTERACTION tests for the shortcode [give_form_grid]
+ *
+ * For EXISTENCE tests, it tests for
+ * - Grid item title
+ * - Grid item form content
+ *
+ * For INTERACTION tests, it tests for
+ * - hover to test the hover animation
+ * - click on the grid-item to open the popup
+ * - clicks the close button to close the popup
+ */
+
 const give = require( './test-utility' );
 
 describe( 'Shortcode Form Grid', () => {
+
 	// Visit the /form-grid page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/form-grid/` ) )
 

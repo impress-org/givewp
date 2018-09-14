@@ -4,11 +4,19 @@ The frontend UI testing tests whether the contents of Give's features display an
 
 ## How to run the tests?
 
+### Prerequisites
+These tests run inside a dockerized container, so it is necessary that you have the [Docker Engine](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed on your system.
+
 A sample `wordpress.sql` is provided within `sample-data/` folder which has few sample forms, donations and donors to test in various combinations.
 
 ### Manual Testing
-After setting up the local development environment, running tests manually is fairly simple. All you need it to run
+After setting up the local development environment, running tests manually is fairly simple. Navigate to the Give root folder where the `docker-compose.yml` file resides and set up the container by running:
 
+```sh
+docker-compose up -d
+```
+
+Now that the container is ready, run the tests by firing the following commad:
 ```sh
 npm run test
 ```
@@ -105,6 +113,30 @@ await Promise.all([
 	page.waitForNavigation()
 ])
 ```
+
+## Documenting tests
+For the ease of understanding, it will be helpful if you follow a naming convention to name the test files. For example, if the test is about the Give Form Shortcode, then a file name as `shortcode-give-form.test.js` gives a fair idea about the test.
+
+Each test file should begin with a desription of the test, following with a brief explanantion of what areas it tests.
+If the test file performs both EXISTENCE and INTERACTION tests, then break down the 2 into separate regions explaining
+what is does, for example:
+
+```JS
+/**
+ * This test performs EXISTENCE and INTERACTION tests for the shortcode [give_form_grid]
+ *
+ * For EXISTENCE tests, it tests for
+ * - Grid item title
+ * - Grid item form content
+ *
+ * For INTERACTION tests, it tests for
+ * - hover to test the hover animation
+ * - click on the grid-item to open the popup
+ * - clicks the close button to close the popup
+ */
+```
+
+Add single line comments wherever there are events such as form submission and redirection.
 
 ## Resources
 1. [jest-puppeteer](https://github.com/smooth-code/jest-puppeteer)

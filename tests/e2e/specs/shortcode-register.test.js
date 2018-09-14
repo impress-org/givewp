@@ -1,7 +1,19 @@
+/**
+ * This test performs EXISTENCE test for the shortcode [give_register]
+ *
+ * The EXISTENCE test will first test for
+ * - All the form labels and fields
+ * - verify username after succesfull registration
+ *
+ * The INTERACTION test
+ * - Fill the form with user registration details
+ */
+
 const give = require( './test-utility' );
 
 describe( 'Shortcode Registration', () => {
 
+	// Visit the /give-register-shortcode page.
 	beforeAll( async () => await page.goto( `${give.utility.vars.rootUrl}/give-register-shortcode/` ) )
 
 	give.utility.fn.verifyExistence( page, [
