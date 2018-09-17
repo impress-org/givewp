@@ -112,7 +112,7 @@ jQuery( document ).ready( function( $ ) {
 			give_form_id: this_form.find( '[name=give-form-id]' ).val()
 		};
 
-		$.post( Give.fn.getGlobal('ajaxurl'), data, function( response ) {
+		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( response ) {
 			//user is logged in
 			if ( $.trim( typeof (response.success) ) != undefined && response.success == true && typeof (response.data) != undefined ) {
 
