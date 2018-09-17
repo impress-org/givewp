@@ -38,7 +38,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 * @access private
 	 */
-	private function __construct() {
+	public function __construct() {
 	}
 
 
