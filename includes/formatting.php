@@ -551,7 +551,7 @@ function give_format_decimal( $args ) {
 		$args      = array(
 			'amount'   => $func_args[0],
 			'dp'       => isset( $func_args[1] ) ? $func_args[1] : false,
-			'sanitize' => isset( $func_args[2] ) ? $func_args[2] : false,
+			'sanitize' => isset( $func_args[2] ) ? $func_args[2] : true,
 		);
 	}
 
