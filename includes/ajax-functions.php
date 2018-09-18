@@ -217,7 +217,7 @@ function give_ajax_get_states_field() {
 	$states_label = give_get_states_label();
 
 	$default_state = '';
-	if ( $country === give_get_country() ) {
+	if ( give_get_country() === $country ) {
 		$default_state = give_get_state();
 	}
 

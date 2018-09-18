@@ -1188,7 +1188,7 @@ function give_default_cc_address_fields( $form_id ) {
 				autocomplete="address-level3"
 				class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'City', 'give' ); ?>"
-				value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
+				value="<?php echo( isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : '' ); ?>"
 				<?php echo( give_field_is_required( 'card_city', $form_id ) && $city_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
