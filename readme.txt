@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.6
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.2.5: September 17th, 2018 =
+* Fix: Resolved a JS error preventing visitors from successfully logging into via a donation form. [#3684](https://github.com/WordImpress/Give/issues/3684)
+* Fix: Typo within tooltip. [#3685](https://github.com/WordImpress/Give/issues/3685)
+* Fix: Removed usage of deprecated jQuery load() method. [#3688](https://github.com/WordImpress/Give/issues/3688)
 
 = 2.2.4: August 29th, 2018 =
 * Upgrade: This version contains an upgrade routine to correct issues with the donor wall in which past donors would incorrectly display on the wall regardless of whether they elected to be anonymous or not. As well, donors can now give to multiple donation forms and be anonymous on one and not anonymous on another.
