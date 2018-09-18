@@ -176,7 +176,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
 					$notice_html .= sprintf(
-						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p><strong>%3$s</strong></p></div>',
+						'<div id="setting-error-%1$s" class="%2$s error" data-dismissible="auto" style="display: none"><p><strong>%3$s</strong></p></div>',
 						$code,
 						$classes,
 						$message
@@ -187,7 +187,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
 					$notice_html .= sprintf(
-						'<div id="setting-error-%1$s" class="%2$s updated" data-notice-id="setting-error-%1$s" style="display: block"><p><strong>%3$s</strong></p></div>',
+						'<div id="setting-error-%1$s" class="%2$s updated" data-dismissible="auto" style="display: block"><p><strong>%3$s</strong></p></div>',
 						$code,
 						$classes,
 						$message
