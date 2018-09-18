@@ -7999,7 +7999,7 @@ msgid "Make this an anonymous donation"
 msgstr ""
 
 #: includes/forms/template.php:865
-msgid "Would you like to prevent this donation from being displayed publicy?"
+msgid "Would you like to prevent this donation from being displayed publicly?"
 msgstr ""
 
 #: includes/forms/template.php:873, includes/admin/donors/donors.php:968

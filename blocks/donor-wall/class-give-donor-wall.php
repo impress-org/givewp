@@ -131,9 +131,7 @@ class Give_Donor_Wall_Block {
 			'show_comments' => $attributes['showComments'],
 		);
 
-		$donor_wall = new Give_Donor_Wall();
-
-		return $donor_wall->render_shortcode( $parameters );
+		return Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 	}
 }
 
