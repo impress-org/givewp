@@ -1100,7 +1100,7 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 
 		// Get the country list that does not require city.
-		$city_required = array_key_exists( $selected_country, give_city_not_required_country_list() ) ? false : true;
+		$city_required = ! array_key_exists( $selected_country, give_city_not_required_country_list() );
 
 		?>
 		<p id="give-card-country-wrap" class="form-row form-row-wide">
