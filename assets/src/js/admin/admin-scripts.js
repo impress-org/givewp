@@ -171,10 +171,11 @@ var give_setting_edit = false;
 					$no_results_li = $container.find('li.no-results'),
 					error_string = '';
 
-				if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
-					error_string = Give.fn.getGlobal.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+				var ajax_msg = Give.fn.getGlobalVar( 'chosen' );
+				if ( $container.hasClass( 'give-select-chosen-ajax' ) && $no_results_li.length ) {
+					error_string = ajax_msg.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
 				} else {
-					error_string = Give.fn.getGlobal.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+					error_string = ajax_msg.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
 				}
 
 				$no_results_li.html(error_string);
