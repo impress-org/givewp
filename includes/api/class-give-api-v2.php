@@ -172,9 +172,7 @@ class Give_API_V2 {
 	public function get_donor_wall( $request ) {
 		$parameters = $request->get_params();
 
-		$donor_wall = new Give_Donor_Wall();
-
-		return $donor_wall->render_shortcode( $parameters );
+		return Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 	}
 
 	/**
