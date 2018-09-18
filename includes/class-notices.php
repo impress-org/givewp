@@ -396,12 +396,7 @@ class Give_Notices {
 		<script>
 			jQuery(document).ready(function($){
 				// Fix notice appearance issue.
-				window.setTimeout(
-					function(){
-						$('.give-notice').slideDown();
-					},
-					1000
-				);
+				Give.notice.fn.printNotice();
 			});
 		</script>
 		<?php
