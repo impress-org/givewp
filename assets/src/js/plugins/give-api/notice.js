@@ -1,6 +1,22 @@
 /* globals Give, jQuery */
 export default {
 	fn: {
+
+		/**
+		 * Print notices
+		 *
+		 * @since 2.2.6
+		 */
+		printNotice: function () {
+			// Fix notice appearance issue.
+			window.setTimeout(
+				function () {
+					$( '.give-notice' ).slideDown();
+				},
+				1000
+			);
+		},
+
 		/**
 		 * Render notice
 		 * @since 1.8.17
