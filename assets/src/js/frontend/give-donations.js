@@ -43,28 +43,22 @@ jQuery( function( $ ) {
 				success: function ( response ) {
 					var html = '';
 					var states_label = response.states_label;
-					if ( typeof (
-							response.states_found
-						) != undefined && true == response.states_found ) {
+					if ( 'undefined' !== typeof response.states_found && true === response.states_found ) {
 						html = response.data;
 					} else {
 						html = `<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="${states_label}" value="${response.default_state}" autocomplete="address-level4"/>`;
 					}
 
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
-						if ( 'undefined' != typeof (
-								response.states_require
-							) && true == response.states_require ) {
+						if ( 'undefined' !== typeof ( response.states_require ) && true === response.states_require ) {
 							$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' );
 						} else {
 							$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
 						}
 
-						// check if city fields is require or not
 						var $city = $form.find( 'input[name="card_city"]' );
-						if ( 'undefined' != typeof (
-								response.city_require
-							) && true == response.city_require ) {
+						// check if city fields is require or not
+						if ( 'undefined' !== typeof ( response.city_require ) && true === response.city_require ) {
 							$city.closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' ).removeClass( 'required' );
 							$city.attr( 'required', true );
 						} else {
@@ -79,9 +73,7 @@ jQuery( function( $ ) {
 					$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( html );
 
 					// Check if user want to show the feilds or not.
-					if ( typeof (
-							response.show_field
-						) != undefined && true == response.show_field ) {
+					if ( 'undefined' !== typeof ( response.show_field )  && true === response.show_field ) {
 						$form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
 
 						// Add support to zip fields.

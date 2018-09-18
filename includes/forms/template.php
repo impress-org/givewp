@@ -1176,8 +1176,7 @@ function give_default_cc_address_fields( $form_id ) {
 			<label for="card_city" class="give-label">
 				<?php _e( 'City', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
-					<span
-						class="give-required-indicator <?php echo( $city_required ? '' : 'give-hidden' ); ?>">*</span>
+					<span class="give-required-indicator <?php echo( $city_required ? '' : 'give-hidden' ); ?>">*</span>
 				<?php endif; ?>
 				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
 			</label>
@@ -1198,13 +1197,10 @@ function give_default_cc_address_fields( $form_id ) {
 			<label for="card_state" class="give-label">
 				<span class="state-label-text"><?php echo $label; ?></span>
 				<?php
-				if ( give_field_is_required( 'card_state', $form_id ) ) :
-					?>
-					<span
-						class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ); ?> ">*</span>
+				if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
+					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ); ?> ">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
 			</label>
 			<?php
 
