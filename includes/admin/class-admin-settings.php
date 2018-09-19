@@ -195,6 +195,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				}
 			}
 
+			// print notices.
+			$notice_html .= Give()->notices->print_notices();
+
 			echo $notice_html;
 		}
 

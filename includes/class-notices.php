@@ -392,21 +392,31 @@ class Give_Notices {
 			</script>
 			<?php
 		endif;
+
+		// Print notices.
+		$this->print_notices();
+	}
+
+	/**
+	 * Print Give Notices
+	 *
+	 * @since 2.2.6
+	 */
+	public function print_notices() {
 		?>
 		<script>
-			jQuery(document).ready(function($){
+			jQuery( document ).ready( function ( $ ) {
 				// Fix notice appearance issue.
 				window.setTimeout(
-					function(){
-						$('.give-notice').slideDown();
+					function() {
+						$( '.give-notice' ).slideDown();
 					},
 					1000
 				);
-			});
+			} );
 		</script>
 		<?php
 	}
-
 
 	/**
 	 * Hide notice.
