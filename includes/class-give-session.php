@@ -352,10 +352,10 @@ class Give_Session {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @return string Formatted expiration date string.
+	 * @return string|bool Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
-		return $this->session_expiration;
+		return $this->has_session() ? $this->session_expiration :false;
 	}
 
 	/**
