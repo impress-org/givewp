@@ -248,31 +248,31 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$report_html = array(
 				'duplicate_donor'    => array(
 					__( '%s duplicate %s detected', 'give' ),
-					__( '%s duplicate %s will be detected', 'give' ),
+					__( '%s duplicate %s detected', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_donor'       => array(
 					__( '%s %s created', 'give' ),
-					__( '%s %s will be going to get created', 'give' ),
+					__( '%s %s will be created', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_form'        => array(
 					__( '%s donation %s created', 'give' ),
-					__( '%s donation %s will be going to get created', 'give' ),
+					__( '%s donation %s will be created', 'give' ),
 					__( 'form', 'give' ),
 					__( 'forms', 'give' ),
 				),
 				'duplicate_donation' => array(
 					__( '%s duplicate %s detected', 'give' ),
-					__( '%s duplicate %s will be detected', 'give' ),
+					__( '%s duplicate %s detected', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
 				'create_donation'    => array(
 					__( '%s %s imported', 'give' ),
-					__( '%s %s will going to get imported', 'give' ),
+					__( '%s %s will be imported', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
