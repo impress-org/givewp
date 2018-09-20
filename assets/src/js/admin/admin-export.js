@@ -155,4 +155,32 @@ jQuery( document ).ready( function ( $ ) {
 			} );
 		}
 	}
+
+
+	/**
+	 * Checks/Unchecks checkboxes on exporter page.
+	 */
+	let checkboxes = $( '.give-export-option-fields input[type="checkbox"]' );
+
+	$( '.give-toggle-checkbox-selection' ).toggle( function() {	
+		checkboxes.removeAttr( 'checked' );
+		swapAndUpdateAttribute( this );
+	}, function() {
+		checkboxes.attr( 'checked', true );
+		swapAndUpdateAttribute( this );
+	} );
+
+	/**
+	 * Swaps and updates attributes on the button which is used
+	 * to check/uncheck checkboxes.
+	 */
+	function swapAndUpdateAttribute( reference ) {
+		let deselectAll = $( reference ).val(),
+		    selectAll   = $( reference ).attr( 'data-value' );
+
+		[ deselectAll, selectAll ] = [ selectAll, deselectAll ];
+
+		$( reference ).attr( 'value', deselectAll );
+		$( reference ).attr( 'data-value', selectAll );
+	}
 } );
