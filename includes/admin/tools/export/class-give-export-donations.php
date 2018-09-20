@@ -283,7 +283,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td>
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
-							<input type="button" value="<?php esc_attr_e( 'Deselect All fields', 'give' ); ?>" data-value="<?php esc_attr_e( 'Select All Fields' ); ?>" class="give-export-donation-button button button-secondary">
+							<input type="button" value="<?php esc_attr_e( 'Deselect All Fields', 'give' ); ?>" data-value="<?php esc_attr_e( 'Select All Fields' ); ?>" class="give-toggle-checkbox-selection button button-secondary">
 							<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ) ?>" class="give-export-donation-button button button-primary">
 							<div class="add-notices"></div>
 						</td>
