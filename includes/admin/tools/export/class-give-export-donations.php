@@ -10,7 +10,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( ! class_exists( 'Give_Export_Donations' ) ) {
@@ -89,10 +89,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			}
 
 			// Do not render main export tools page.
-			remove_action( 'give_admin_field_tools_export', array(
-				'Give_Settings_Export',
-				'render_export_field'
-			), 10 );
+			remove_action(
+				'give_admin_field_tools_export',
+				array(
+					'Give_Settings_Export',
+					'render_export_field',
+				),
+				10
+			);
 
 			// Render donation export page
 			add_action( 'give_admin_field_tools_export', array( $this, 'render_page' ) );
@@ -128,8 +132,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tbody>
 					<tr class="top">
 						<td colspan="2">
-							<h2 id="give-export-title"><?php _e( 'Export Donation History and Custom Fields to CSV', 'give' ) ?></h2>
-							<p class="give-field-description"><?php _e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ) ?></p>
+							<h2 id="give-export-title"><?php _e( 'Export Donation History and Custom Fields to CSV', 'give' ); ?></h2>
+							<p class="give-field-description"><?php _e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ); ?></p>
 						</td>
 					</tr>
 
@@ -149,14 +153,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_categories[]',
 										0,
 										array(
-											'id'              => 'give_forms_categories',
-											'class'           => 'give_forms_categories',
-											'chosen'          => true,
-											'multiple'        => true,
-											'selected'        => array(),
+											'id'          => 'give_forms_categories',
+											'class'       => 'give_forms_categories',
+											'chosen'      => true,
+											'multiple'    => true,
+											'selected'    => array(),
 											'show_option_all' => false,
-											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
-											'data'            => array( 'search-type' => 'categories' ),
+											'placeholder' => __( 'Choose one or more from categories', 'give' ),
+											'data'        => array( 'search-type' => 'categories' ),
 										)
 									);
 									?>
@@ -182,14 +186,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 										'give_forms_tags[]',
 										0,
 										array(
-											'id'              => 'give_forms_tags',
-											'class'           => 'give_forms_tags',
-											'chosen'          => true,
-											'multiple'        => true,
-											'selected'        => array(),
+											'id'          => 'give_forms_tags',
+											'class'       => 'give_forms_tags',
+											'chosen'      => true,
+											'multiple'    => true,
+											'selected'    => array(),
 											'show_option_all' => false,
-											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
-											'data'            => array( 'search-type' => 'tags' ),
+											'placeholder' => __( 'Choose one or more from tags', 'give' ),
+											'data'        => array( 'search-type' => 'tags' ),
 										)
 									);
 									?>
@@ -214,7 +218,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'id'          => 'give-payment-form-select',
 									'chosen'      => true,
 									'placeholder' => __( 'All Forms', 'give' ),
-									'data'            => array( 'no-form' => __( 'No donation forms found', 'give' ), ),
+									'data'        => array( 'no-form' => __( 'No donation forms found', 'give' ) ),
 								);
 								echo Give()->html->forms_dropdown( $args );
 								?>
@@ -236,14 +240,16 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'name'        => 'start',
 									'placeholder' => __( 'Start date', 'give' ),
 								);
-								echo Give()->html->date_field( $args ); ?>
+								echo Give()->html->date_field( $args );
+								?>
 								<?php
 								$args = array(
 									'id'          => 'give-payment-export-end',
 									'name'        => 'end',
 									'placeholder' => __( 'End date', 'give' ),
 								);
-								echo Give()->html->date_field( $args ); ?>
+								echo Give()->html->date_field( $args );
+								?>
 							</div>
 						</td>
 					</tr>
@@ -284,7 +290,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 							<input type="hidden" name="give-export-class" value="Give_Export_Donations_CSV"/>
 							<input type="button" value="<?php esc_attr_e( 'Deselect All Fields', 'give' ); ?>" data-value="<?php esc_attr_e( 'Select All Fields' ); ?>" class="give-toggle-checkbox-selection button button-secondary">
-							<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ) ?>" class="give-export-donation-button button button-primary">
+							<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="give-export-donation-button button button-primary">
 							<div class="add-notices"></div>
 						</td>
 					</tr>
@@ -319,9 +325,10 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						 */
 						do_action( 'give_tools_export_donations_form_before_start' );
 						?>
-						<form method="post" id="give-export_donations-form"
-						      class="give-export-form tools-setting-page-export tools-setting-page-export"
-						      enctype="multipart/form-data">
+						<form method="post"
+						      id="give-export_donations-form"
+							  class="give-export-form tools-setting-page-export tools-setting-page-export"
+							  enctype="multipart/form-data">
 
 							<?php
 							/**
