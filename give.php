@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 2.2.5
+ * Version: 2.3.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -413,32 +413,32 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function setup_constants() {
 
-			// Plugin version
+			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.2.5' );
+				define( 'GIVE_VERSION', '2.3.0' );
 			}
 
-			// Plugin Root File
+			// Plugin Root File.
 			if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
 				define( 'GIVE_PLUGIN_FILE', __FILE__ );
 			}
 
-			// Plugin Folder Path
+			// Plugin Folder Path.
 			if ( ! defined( 'GIVE_PLUGIN_DIR' ) ) {
 				define( 'GIVE_PLUGIN_DIR', plugin_dir_path( GIVE_PLUGIN_FILE ) );
 			}
 
-			// Plugin Folder URL
+			// Plugin Folder URL.
 			if ( ! defined( 'GIVE_PLUGIN_URL' ) ) {
 				define( 'GIVE_PLUGIN_URL', plugin_dir_url( GIVE_PLUGIN_FILE ) );
 			}
 
-			// Plugin Basename aka: "give/give.php"
+			// Plugin Basename aka: "give/give.php".
 			if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
 				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( GIVE_PLUGIN_FILE ) );
 			}
 
-			// Make sure CAL_GREGORIAN is defined
+			// Make sure CAL_GREGORIAN is defined.
 			if ( ! defined( 'CAL_GREGORIAN' ) ) {
 				define( 'CAL_GREGORIAN', 1 );
 			}
