@@ -54,6 +54,7 @@ class Give_Notices {
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
+		add_action( 'admin_footer', array( $this, '__reveal_notices' ) );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 
 		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
@@ -392,13 +393,26 @@ class Give_Notices {
 			</script>
 			<?php
 		endif;
+	}
+
+	/**
+	 * Show notices
+	 * Note: only for internal use
+	 *
+	 * @since 2.3.0
+	 */
+	public function __reveal_notices(){
 		?>
 		<script>
 			jQuery(document).ready(function($){
 				// Fix notice appearance issue.
 				window.setTimeout(
 					function(){
-						$('.give-notice').slideDown();
+						var give_notices = $('.give-notice');
+
+						if( give_notices.length ) {
+							give_notices.slideDown();
+						}
 					},
 					1000
 				);
