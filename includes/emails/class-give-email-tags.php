@@ -495,6 +495,13 @@ function give_setup_email_tags() {
 			'context' => 'general',
 		),
 
+		array(
+			'tag'     => 'donor_comment',
+			'desc'    => esc_html__( 'The Donor Comment that was submitted with the donation.', 'give' ),
+			'func'    => 'give_email_donor_comment',
+			'context' => 'donor',
+		),
+
 	);
 
 	// Apply give_email_tags filter
@@ -1609,6 +1616,33 @@ function give_email_offline_mailing_address() {
 	}
 
 	return $offline_address;
+}
+
+/**
+ * Returns the donor comment for a particular donation.
+ *
+ * Email template tag: {donor_comment}
+ *
+ * @param array $tag_args Array of arguments for email tags.
+ *
+ * @since 2.3.0
+ *
+ * @return string
+ */
+function give_email_donor_comment( $tag_args ) {
+
+	// Get the payment ID.
+	$payment_id = $tag_args['payment_id'];
+
+	// Get the comment object for the above payment ID and donor ID.
+	$comment = give_get_donor_donation_comment( $payment_id, give_get_payment_donor_id( $payment_id ) );
+
+	if ( is_array( $comment ) && empty( $comment ) ) {
+		return '';
+	}
+
+	// Return comment content.
+	return $comment->comment_content;
 }
 
 /**
