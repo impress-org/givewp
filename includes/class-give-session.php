@@ -156,8 +156,7 @@ class Give_Session {
 			: 30 * 60 * 24; // Default expiration time is 12 hours
 
 		$this->set_cookie_name();
-		$this->cookie_name = $this->get_cookie_name( 'session' );
-		$cookie            = $this->get_session_cookie();
+		$cookie = $this->get_session_cookie();
 
 		if ( ! empty( $cookie ) ) {
 			$this->donor_id           = $cookie[0];
@@ -259,8 +258,25 @@ class Give_Session {
 	 * @return string Cookie name.
 	 */
 	private function set_cookie_name() {
-		$this->cookie_name       = apply_filters( 'give_session_cookie', 'wp_give_session_' . COOKIEHASH );
-		$this->nonce_cookie_name = 'wp_give_session_reset_nonce_' . COOKIEHASH;
+		/**
+		 * Filter the cookie name
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string $cookie_name Cookie name.
+		 * @param string $cookie_type Cookie type session or nonce.
+		 */
+		$this->cookie_name       = apply_filters(
+			'give_session_cookie',
+			'wp_give_session_' . COOKIEHASH, // Cookie name.
+			'session' // Cookie type.
+		);
+
+		$this->nonce_cookie_name = apply_filters(
+			'give_session_cookie',
+			'wp_give_session_reset_nonce_' . COOKIEHASH, // Cookie name.
+			'nonce' // Cookie type
+		);
 	}
 
 	/**
@@ -352,10 +368,10 @@ class Give_Session {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @return string Formatted expiration date string.
+	 * @return string|bool Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
-		return $this->session_expiration;
+		return $this->has_session() ? $this->session_expiration :false;
 	}
 
 	/**
