@@ -258,8 +258,25 @@ class Give_Session {
 	 * @return string Cookie name.
 	 */
 	private function set_cookie_name() {
-		$this->cookie_name       = apply_filters( 'give_session_cookie', 'wp_give_session_' . COOKIEHASH );
-		$this->nonce_cookie_name = 'wp_give_session_reset_nonce_' . COOKIEHASH;
+		/**
+		 * Filter the cookie name
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string $cookie_name Cookie name.
+		 * @param string $cookie_type Cookie type session or nonce.
+		 */
+		$this->cookie_name       = apply_filters(
+			'give_session_cookie',
+			'wp_give_session_' . COOKIEHASH, // Cookie name.
+			'session' // Cookie type.
+		);
+
+		$this->nonce_cookie_name = apply_filters(
+			'give_session_cookie',
+			'wp_give_session_reset_nonce_' . COOKIEHASH, // Cookie name.
+			'nonce' // Cookie type
+		);
 	}
 
 	/**
