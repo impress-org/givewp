@@ -156,8 +156,7 @@ class Give_Session {
 			: 30 * 60 * 24; // Default expiration time is 12 hours
 
 		$this->set_cookie_name();
-		$this->cookie_name = $this->get_cookie_name( 'session' );
-		$cookie            = $this->get_session_cookie();
+		$cookie = $this->get_session_cookie();
 
 		if ( ! empty( $cookie ) ) {
 			$this->donor_id           = $cookie[0];
