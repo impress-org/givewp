@@ -402,11 +402,11 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<p>
 												<strong><?php _e( 'Donation Form ID:', 'give' ); ?></strong><br>
 												<?php
-												if ( $payment_meta['form_id'] ) :
+												if ( $payment->form_id ) :
 													printf(
 														'<a href="%1$s">%2$s</a>',
-														admin_url( 'post.php?action=edit&post=' . $payment_meta['form_id'] ),
-														$payment_meta['form_id']
+														admin_url( 'post.php?action=edit&post=' . $payment->form_id ),
+														$payment->form_id
 													);
 												endif;
 												?>
@@ -416,7 +416,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<?php
 												echo Give()->html->forms_dropdown(
 													array(
-														'selected' => $payment_meta['form_id'],
+														'selected' => $payment->form_id,
 														'name' => 'give-payment-form-select',
 														'id'   => 'give-payment-form-select',
 														'chosen' => true,
@@ -435,19 +435,19 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<strong><?php _e( 'Donation Level:', 'give' ); ?></strong><br>
 												<span class="give-donation-level">
 													<?php
-													$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
+													$var_prices = give_has_variable_prices( $payment->form_id );
 													if ( empty( $var_prices ) ) {
 														_e( 'n/a', 'give' );
 													} else {
 														$prices_atts = array();
-														if ( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
+														if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
 															foreach ( $variable_prices as $variable_price ) {
 																$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 															}
 														}
 														// Variable price dropdown options.
 														$variable_price_dropdown_option = array(
-															'id'               => $payment_meta['form_id'],
+															'id'               => $payment->form_id,
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
