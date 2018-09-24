@@ -40,7 +40,7 @@ const GiveBlankSlate = ( props ) => {
 		<div className="give-blank-slate">
 			{ ! noIcon && (
 				<img className="give-blank-slate__image"
-					src={ `${ wpApiSettings.schema.url }${ giveLogo }` }
+					src={ `${ wp.api.utils.getRootUrl() }${ giveLogo }` }
 					alt={ __( 'Give Icon' ) } />
 			) }
 			{ !! isLoader ? blockLoading : blockLoaded }

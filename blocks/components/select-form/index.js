@@ -59,7 +59,7 @@ const SelectForm = ( props ) => {
 			/>
 
 			<Button isPrimary
-				isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+				isLarge href={ `${ wp.api.utils.getRootUrl() }/wp-admin/post-new.php?post_type=give_forms` }>
 				{ __( 'Add New Form' ) }
 			</Button>&nbsp;&nbsp;
 

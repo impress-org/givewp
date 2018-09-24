@@ -8,7 +8,10 @@ import { stringify } from 'querystringify';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { withAPIData } = wp.components;
+const {
+	withSelect,
+	registerStore,
+} = wp.data;
 
 /**
  * Internal dependencies
@@ -22,17 +25,16 @@ import SelectForm from '../../components/select-form';
 /**
  * Render Block UI For Editor
  */
-
 const GiveForm = ( props ) => {
 	const { attributes, form } = props;
 	const { id } = attributes;
-	const { isLoading, data } = form;
+	const { data } = form;
 
 	// Render block UI
 	let blockUI;
 
 	if ( ! id ) {
-		if ( isLoading || isUndefined( data ) ) {
+		if ( isUndefined( data ) ) {
 			blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
 		} else if ( isEmpty( data ) ) {
 			blockUI = <NoForms />;
@@ -56,10 +58,63 @@ const GiveForm = ( props ) => {
 	);
 };
 
+const actions = {
+	setDonationForm( donationFormData ) {
+		return {
+			type: 'SET_DONATION_FORM',
+			donationFormData,
+		};
+	},
+
+	getDonationForm( path ) {
+		return {
+			type: 'RECEIVE_DONATION_FORM',
+			path,
+		};
+	},
+};
+
+const store = registerStore( 'give/donation-form', {
+	reducer( state = { donationFormData: {} }, action ) {
+
+		switch ( action.type ) {
+			case 'SET_DONATION_FORM':
+				return {
+					...state,
+					donationFormData: action.donationFormData,
+				};
+			case 'RECEIVE_DONATION_FORM':
+				return action.donationFormData;
+		}
+
+		return state;
+	},
+
+	actions,
+
+	selectors: {
+		getDonationForm( state ) {
+			const { donationFormData } = state;
+			return donationFormData;
+		},
+	},
+
+	resolvers: {
+		* getDonationForm( state, id, parameters ) {
+			const donationFormData = wp.apiFetch( { path: `/give-api/v2/form/${ id }/?${ parameters }` } )
+				.then( donationFormData => {
+					return actions.setDonationForm( donationFormData );
+				} )
+			yield donationFormData;
+		},
+	},
+
+} );
+
 /**
- * Export component attaching withAPIdata
+ * Export component attaching withSelect
  */
-export default withAPIData( ( props ) => {
+export default withSelect( ( select, props ) => {
 	const { showTitle, showGoal, showContent, displayStyle, continueButtonTitle, id } = props.attributes;
 
 	let parameters = {
@@ -76,7 +131,11 @@ export default withAPIData( ( props ) => {
 	parameters = stringify( pickBy( parameters, value => ! isUndefined( value ) ) );
 
 	return {
-		form: `/${ giveApiSettings.rest_base }/form/${ id }/?${ parameters }`,
-		forms: '/wp/v2/give_forms',
-	};
-} )( GiveForm );
+		form: {
+			data: select( 'give/donation-form' ).getDonationForm( id, parameters )
+		},
+		forms: {
+			data: []
+		}
+	}
+})( GiveForm )

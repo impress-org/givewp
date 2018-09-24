@@ -8,7 +8,10 @@ import { stringify } from 'querystringify';
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { withAPIData } = wp.components;
+const {
+	withSelect,
+	registerStore,
+} = wp.data;
 
 /**
  * Internal dependencies
@@ -22,13 +25,13 @@ import FormGridPreview from './components/preview';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { latestForms } = props;
-	const { isLoading, data } = latestForms;
+	const { formGridData } = props;
+	const { data } = formGridData;
 
 	// Render block UI
 	let blockUI;
 
-	if ( isLoading || isUndefined( data ) ) {
+	if ( isUndefined( data ) ) {
 		blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
 	} else if ( isEmpty( data ) ) {
 		blockUI = <NoForms />;
@@ -41,10 +44,63 @@ const GiveDonationFormGrid = ( props ) => {
 	return ( <div className={ props.className } key="GiveDonationFormGridBlockUI">{ blockUI }</div> );
 };
 
+const actions = {
+	setFormGrid( formGridData ) {
+		return {
+			type: 'SET_FORM_GRID',
+			formGridData,
+		};
+	},
+
+	getFormGrid( path ) {
+		return {
+			type: 'RECEIVE_FORM_GRID',
+			path,
+		};
+	},
+};
+
+const store = registerStore( 'give/donation-form-grid', {
+	reducer( state = { formGridData: {} }, action ) {
+
+		switch ( action.type ) {
+			case 'SET_FORM_GRID':
+				return {
+					...state,
+					formGridData: action.formGridData,
+				};
+			case 'RECEIVE_FORM_GRID':
+				return action.formGridData;
+		}
+
+		return state;
+	},
+
+	actions,
+
+	selectors: {
+		getFormGrid( state ) {
+			const { formGridData } = state;
+			return formGridData;
+		},
+	},
+
+	resolvers: {
+		* getFormGrid( state, parameters ) {
+			const formGridData = wp.apiFetch( { path: `/give-api/v2/form-grid/?${ parameters }` } )
+				.then( formGridData => {
+					return actions.setFormGrid( formGridData );
+				} )
+			yield formGridData;
+		},
+	},
+
+} );
+
 /**
- * Export component attaching withAPIdata
+ * Export component attaching withSelect
  */
-export default withAPIData( ( props ) => {
+export default withSelect( ( select, props ) => {
 	const { columns, showGoal, showExcerpt, showFeaturedImage, displayType } = props.attributes;
 
 	const parameters = stringify( pickBy( {
@@ -53,10 +109,13 @@ export default withAPIData( ( props ) => {
 		show_excerpt: showExcerpt,
 		show_featured_image: showFeaturedImage,
 		display_type: displayType,
-	}, value => ! isUndefined( value )
+		},
+		value => ! isUndefined( value )
 	) );
 
 	return {
-		latestForms: `/${ giveApiSettings.rest_base }/form-grid/?${ parameters }`,
-	};
-} )( GiveDonationFormGrid );
+		formGridData: {
+			data: select( 'give/donation-form-grid' ).getFormGrid( parameters )
+		}
+	}
+})( GiveDonationFormGrid )
