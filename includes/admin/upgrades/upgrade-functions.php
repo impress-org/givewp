@@ -2924,6 +2924,9 @@ function give_v220_rename_donation_meta_type_callback() {
 		give_has_upgrade_completed( 'v220_rename_donation_meta_type' )
 		|| ! $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_paymentmeta" ) )
 	) {
+		// Complete update if skip somehow
+		give_set_upgrade_complete( 'v220_rename_donation_meta_type' );
+
 		return;
 	}
 
