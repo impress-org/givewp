@@ -213,7 +213,7 @@ class Give_Session {
 	 */
 	public function get_session_cookie() {
 		$session      = array();
-		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : false; // @codingStandardsIgnoreLine.
+		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : $this->__handle_ajax_cookie(); // @codingStandardsIgnoreLine.
 
 		if ( empty( $cookie_value ) || ! is_string( $cookie_value ) ) {
 			return $session;
@@ -233,7 +233,42 @@ class Give_Session {
 			return $session;
 		}
 
-		return array( $donor_id, $session_expiration, $session_expiring, $cookie_hash );
+		/**
+		 * Filter the session cookie data
+		 *
+		 * @since 2.2.6
+		 */
+		$cookie_data = apply_filters(
+			'give_get_session_cookie',
+			array( $donor_id, $session_expiration, $session_expiring, $cookie_hash )
+		);
+
+		return $cookie_data;
+	}
+
+
+	/**
+	 * Load session cookie by ajax
+	 *
+	 * @since 2.2.6
+	 * @access private
+	 *
+	 * @return array|bool|string
+	 */
+	private function __handle_ajax_cookie(){
+		$cookie = false;
+
+		// @see https://github.com/WordImpress/Give/issues/3705
+		if(
+			empty( $cookie_value )
+			&& wp_doing_ajax()
+			&& isset( $_GET['action'] )
+			&& 'get_receipt' === $_GET['action']
+		) {
+			$cookie = isset( $_GET[$this->cookie_name] ) ? give_clean( $_GET[$this->cookie_name] ) : false;
+		}
+
+		return $cookie;
 	}
 
 
