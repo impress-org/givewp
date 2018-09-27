@@ -4,12 +4,16 @@ about: Suggest an idea for this project
 
 ---
 
+# Feature Request
+
 ## User Story
 <!-- Required. -->
-As a {type of user}, I want {some goal} so that {some reason}.
+As a ________, I want ________ so that ________.
+
+<!-- Expand on the user story if necessary. -->
 
 ## Visuals
-<!-- Optional. Include screenshots, mockups, or video to clarify the goal. Delete if not applicable. -->
+<!-- Optional. Include screenshots, mockups, or video to clarify the feature. Delete if not applicable. -->
 
 ## Possible Solution
 <!-- Optional. Delete if solution is unknown. -->
@@ -19,4 +23,6 @@ As a {type of user}, I want {some goal} so that {some reason}.
 
 ## Acceptance Criteria
 <!-- Required. Include a checklist of conditions that must be true in order to close this issue. -->
-- [ ] {Something happens} when {an action is taken}.
+- [ ] e.g. Something happens when an action is taken.
+- [ ] e.g. Something does not happen when an action is taken.
+- [ ] e.g. Implementing feature in Component A does not affect existing behavior in Component B.

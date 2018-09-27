@@ -4,13 +4,25 @@ about: Create a report to help us improve
 
 ---
 
+# Bug Report
+
+## User Story
+<!-- Required. -->
+As a ________, I want ________ so that ________.
+
+<!-- Expand on the user story if necessary. -->
+
 ## Current Behavior
 <!-- Required. Include any warnings or errors in the browser or console. -->
-I currently...
 
 ## Expected Behavior
 <!-- Required. -->
-I expect to...
+
+## Bug Type
+<!-- Required. -->
+- [ ] This is a new bug regarding functionality that never worked as expected.
+- [ ] This is a regression regarding functionality that once worked as expected in version X.X.X.
+- [ ] I am unsure whether this is a new bug or regression.
 
 ## Steps to Reproduce
 <!-- Required. -->
@@ -19,7 +31,7 @@ I expect to...
 3.
 
 ## Visuals
-<!-- Optional. Include screenshots, mockups, or video to clarify the goal. Delete if not applicable. -->
+<!-- Optional. Include screenshots, mockups, or video to clarify the bug. Delete if not applicable. -->
 
 ## Possible Solution
 <!-- Optional. Delete if solution is unknown. -->
@@ -29,15 +41,17 @@ I expect to...
 
 ## Acceptance Criteria
 <!-- Required. Include a checklist of conditions that must be true in order to close this issue. -->
-- [ ] Something is true.
-- [ ] Something happens when I do this.
+- [ ] e.g. Something happens when an action is taken.
+- [ ] e.g. Something does not happen when an action is taken.
+- [ ] e.g. Fixing behavior in Component A does not affect existing behavior in Component B.
 
 ## Environment
+<!-- Required. -->
 <details>
     <summary>Operating System</summary>
     <ul>
         <li>Platform: Mac OS X | Microsoft Windows | Linux | Android | iOS</li>
-        <li>Version: x.x.x</li>
+        <li>Version: X.X.X</li>
     </ul>
 </details>
 
@@ -45,11 +59,11 @@ I expect to...
     <summary>Browser</summary>
     <ul>
         <li>Name: Chrome | Firefox | Safari | IE | Edge</li>
-        <li>Version: x.x.x</li>
+        <li>Version: X.X.X</li>
     </ul>
 </details>
 
 <details>
     <summary>WordPress System Info</summary>
-    <!-- Paste system info from Donations > Tools > System Info in WP admin. -->
+    <!-- Paste system info if available. -->
 </details>
