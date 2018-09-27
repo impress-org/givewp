@@ -232,16 +232,18 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							<div class="give-clearfix">
 								<?php
 								$args = array(
-									'id'          => 'give-payment-export-start',
-									'name'        => 'start',
-									'placeholder' => __( 'Start date', 'give' ),
+									'id'           => 'give-payment-export-start',
+									'name'         => 'start',
+									'placeholder'  => __( 'Start date', 'give' ),
+									'autocomplete' => 'off',
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<?php
 								$args = array(
-									'id'          => 'give-payment-export-end',
-									'name'        => 'end',
-									'placeholder' => __( 'End date', 'give' ),
+									'id'           => 'give-payment-export-end',
+									'name'         => 'end',
+									'placeholder'  => __( 'End date', 'give' ),
+									'autocomplete' => 'off'
 								);
 								echo Give()->html->date_field( $args ); ?>
 							</div>

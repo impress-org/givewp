@@ -167,12 +167,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 				<div class="give-filter give-filter-half">
 					<label for="start-date"
 					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
-					<input type="text" id="start-date" name="start-date" class="give_datepicker"
+					<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
 					       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php printf( esc_attr( $localized_date_format ) ); ?>"/>
 				</div>
 				<div class="give-filter give-filter-half">
 					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
-					<input type="text" id="end-date" name="end-date" class="give_datepicker"
+					<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
 					       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php printf( esc_attr( $localized_date_format ) ); ?>"/>
 				</div>
 			</div>
