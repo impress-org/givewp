@@ -179,7 +179,7 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 
 	foreach ( $plugins['all'] as $plugin_slug => $plugin_data ) {
 
-		if ( false !== strpos( $plugin_data['Name'], 'Give' ) && false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) ) {
+		if ( false !== strpos( $plugin_data['Name'], 'Give' ) && ( false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) || false !== strpos( $plugin_data['AuthorName'], 'GiveWP' ) ) ) {
 			$plugins['give'][ $plugin_slug ]           = $plugins['all'][ $plugin_slug ];
 			$plugins['give'][ $plugin_slug ]['plugin'] = $plugin_slug;
 			// replicate the next step.
