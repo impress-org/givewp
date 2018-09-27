@@ -266,14 +266,22 @@ jQuery( document ).ready( function( $ ) {
 	const recieptContainer = document.getElementById('give-receipt');
 
 	if (recieptContainer) {
-		let data = {
-			action: 'get_receipt',
-			shortcode_atts: recieptContainer.getAttribute('data-shortcode')
-		};
+
+		let data        = {
+				action: 'get_receipt',
+				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
+			},
+			payment_key = Give.fn.getParameterByName('payment_key');
 
 		const cookie_name = 'wp_give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash');
 
+		// Set cookie.
 		data[cookie_name] = Give.fn.__getCookie( 'wp_give_session_' + Give.fn.getGlobalVar('cookie_hash') );
+
+		// Set payment key.
+		if( null !== payment_key ) {
+			data['payment_key'] = payment_key;
+		}
 
 		$.ajax({
 			url: Give.fn.getGlobalVar('ajaxurl'),
