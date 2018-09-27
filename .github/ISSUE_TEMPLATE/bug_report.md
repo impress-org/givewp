@@ -19,10 +19,10 @@ As a ________, I want ________ so that ________.
 <!-- Required. -->
 
 ## Bug Type
-<!-- Required. -->
-- [ ] This is a new bug regarding functionality that never worked as expected.
-- [ ] This is a regression regarding functionality that once worked as expected in version X.X.X.
-- [ ] I am unsure whether this is a new bug or regression.
+<!-- Required. Include version number if functionality worked as expected in previous version. -->
+- [ ] This bug describes functionality that once worked as expected in version X.X.X.
+- [ ] This bug describes functionality that never worked as expected.
+- [ ] I am not sure whether this functionality ever worked as expected.
 
 ## Steps to Reproduce
 <!-- Required. -->
