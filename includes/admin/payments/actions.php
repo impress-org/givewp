@@ -40,7 +40,7 @@ function give_update_payment_details( $data ) {
 	$payment = new Give_Payment( $payment_id );
 
 	$status = $data['give-payment-status'];
-	$date   = sanitize_text_field( $data['give-payment-date'] );
+	$date   = DateTime::createFromFormat( get_option( 'date_format' ), sanitize_text_field( $data['give-payment-date'] ) );
 	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
 
 	// Restrict to our high and low.
@@ -63,7 +63,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = $date->format('Y-m-d' ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
