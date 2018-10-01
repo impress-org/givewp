@@ -25,7 +25,7 @@ const EditForm = ( { attributes, setAttributes, formId } ) => {
 			<Button isPrimary
 				isLarge
 				target="_blank"
-				href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ formId }&action=edit` }>
+				href={ `${ wp.api.utils.getRootUrl() }/wp-admin/post.php?post=${ formId }&action=edit` }>
 				{ __( 'Edit Donation Form' ) }
 			</Button>
 			&nbsp;&nbsp;

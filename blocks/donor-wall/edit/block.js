@@ -8,7 +8,10 @@ import { stringify } from 'querystringify';
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { withAPIData } = wp.components;
+const {
+	withSelect,
+	registerStore,
+} = wp.data;
 
 /**
  * Internal dependencies
@@ -21,18 +24,18 @@ import DonorWallPreview from './components/preview';
  * Render Block UI For Editor
  */
 
-const GiveDonorWall = ( props ) => {
-	console.log( props )
-	const { latestForms } = props;
-	const { isLoading, data } = latestForms;
+const GiveDonorWall = ( props, walls ) => {
+
+	const { donorWallData } = props;
+	const { isLoading, data } = donorWallData;
 
 	// Render block UI
 	let blockUI;
 
-	if ( isLoading || isUndefined( data ) ) {
+	if ( isUndefined( data ) ) {
 		blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
 	} else if ( isEmpty( data ) ) {
-		blockUI = <NoForms />;
+		blockUI = <p>{ __( 'No donors available...' ) }</p>;
 	} else {
 		blockUI = <DonorWallPreview
 			html={ data }
@@ -42,10 +45,63 @@ const GiveDonorWall = ( props ) => {
 	return ( <div className={ props.className } key="GiveDonorWallBlockUI">{ blockUI }</div> );
 };
 
+const actions = {
+	setDonorWall( donorWallData ) {
+		return {
+			type: 'SET_DONOR_WALL',
+			donorWallData,
+		};
+	},
+
+	getDonorWall( path ) {
+		return {
+			type: 'RECEIVE_DONOR_WALL',
+			path,
+		};
+	},
+};
+
+const store = registerStore( 'give/donor-wall', {
+	reducer( state = { donorWallData: {} }, action ) {
+
+		switch ( action.type ) {
+			case 'SET_DONOR_WALL':
+				return {
+					...state,
+					donorWallData: action.donorWallData,
+				};
+			case 'RECEIVE_DONOR_WALL':
+				return action.donorWallData;
+		}
+
+		return state;
+	},
+
+	actions,
+
+	selectors: {
+		getDonorWall( state ) {
+			const { donorWallData } = state;
+			return donorWallData;
+		},
+	},
+
+	resolvers: {
+		* getDonorWall( state, parameters ) {
+			const donorWallData = wp.apiFetch( { path: `/give-api/v2/donor-wall/?${ parameters }` } )
+				.then( donorWallData => {
+					return actions.setDonorWall( donorWallData );
+				} )
+			yield donorWallData;
+		},
+	},
+
+} );
+
 /**
- * Export component attaching withAPIData
+ * Export component attaching withSelect
  */
-export default withAPIData( ( props ) => {
+export default withSelect( ( select, props ) => {
 	const { columns, showAvatar, showName, showTotal, showDate, showComments } = props.attributes;
 
 	const parameters = stringify( pickBy( {
@@ -56,10 +112,12 @@ export default withAPIData( ( props ) => {
 		show_time: showDate,
 		show_comments: showComments,
 		},
-		value => ! isUndefined( value ) )
-	);
+		value => ! isUndefined( value )
+	) );
 
 	return {
-		latestForms: `/${ giveApiSettings.rest_base }/donor-wall/?${ parameters }`,
-	};
-} )( GiveDonorWall );
+		donorWallData: {
+			data: select( 'give/donor-wall' ).getDonorWall( parameters )
+		}
+	}
+})( GiveDonorWall )
