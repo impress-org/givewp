@@ -108,16 +108,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<?php
 								// Start Date form field for donors
 								echo Give()->html->date_field( array(
-									'id'          => 'give_donor_export_start_date',
-									'name'        => 'donor_export_start_date',
-									'placeholder' => esc_attr__( 'Start date', 'give' ),
+									'id'           => 'give_donor_export_start_date',
+									'name'         => 'donor_export_start_date',
+									'placeholder'  => esc_attr__( 'Start date', 'give' ),
+									'autocomplete' => 'off',
 								) );
 
 								// End Date form field for donors
 								echo Give()->html->date_field( array(
-									'id'          => 'give_donor_export_end_date',
-									'name'        => 'donor_export_end_date',
-									'placeholder' => esc_attr__( 'End date', 'give' ),
+									'id'           => 'give_donor_export_end_date',
+									'name'         => 'donor_export_end_date',
+									'placeholder'  => esc_attr__( 'End date', 'give' ),
+									'autocomplete' => 'off',
 								) );
 
 								// Donation forms dropdown for donors export
