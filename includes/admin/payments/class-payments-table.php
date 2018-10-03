@@ -159,7 +159,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
 		$search      = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
 		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$date_format = get_option( 'date_format' );
+		$date_format = give_date_format();
 		?>
 		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
