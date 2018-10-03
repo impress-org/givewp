@@ -109,9 +109,7 @@ var give_setting_edit = false;
 
 		// Date picker.
 		if ( datepicker.length > 0) {
-			datepicker.datepicker({
-				dateFormat: Give.fn.getGlobalVar('date_format')
-			});
+			datepicker.datepicker();
 		}
 	};
 
