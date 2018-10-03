@@ -97,7 +97,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 			return false;
 		}
 
-		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE comment_id = %d", $comment_id ) ) ) {
+		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$this->table_name} WHERE give_comment_id = %d", $comment_id ) ) ) {
 			return false;
 		}
 
