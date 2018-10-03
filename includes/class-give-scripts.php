@@ -319,7 +319,6 @@ class Give_Scripts {
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
-			'date_format'                       => give_get_localized_date_format_to_js(),
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
