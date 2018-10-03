@@ -948,9 +948,10 @@ final class Give_Payment {
 
 					case 'date':
 						$args = array(
-							'ID'        => $this->ID,
-							'post_date' => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
-							'edit_date' => true,
+							'ID'            => $this->ID,
+							'post_date'     => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
+							'post_date_gmt' => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
+							'edit_date'     => true,
 						);
 
 						wp_update_post( $args );
