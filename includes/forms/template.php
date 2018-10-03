@@ -972,13 +972,13 @@ function give_get_cc_form( $form_id ) {
 
 		<p id="give-card-name-wrap-<?php echo $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
 			<label for="card_name-<?php echo $form_id; ?>" class="give-label">
-				<?php _e( 'Name on the Card', 'give' ); ?>
+				<?php _e( 'Cardholder Name', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The name printed on the front of your credit card.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'The name of the credit card account holder.', 'give' ) ); ?>
 			</label>
 
 			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id; ?>"
-			       class="card-name give-input required" placeholder="<?php esc_attr_e( 'Card name', 'give' ); ?>"
+			       class="card-name give-input required" placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
 			       required aria-required="true"/>
 		</p>
 		<?php
