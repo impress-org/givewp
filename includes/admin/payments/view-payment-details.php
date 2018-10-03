@@ -174,10 +174,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										</div>
 
 										<div class="give-admin-box-inside">
-											<?php $localized_date_format = get_option( 'date_format' ); ?>
+											<?php $date_format = get_option( 'date_format' ); ?>
 											<p>
 												<label for="give-payment-date" class="strong"><?php _e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( get_option( 'date_format' ), $payment_date ) ); ?>" class="medium-text give_datepicker" placeholder="<?php printf( esc_attr( $localized_date_format ) ); ?>"/>
+												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( $date_format, $payment_date ) ); ?>" class="medium-text give_datepicker" placeholder="<?php printf( esc_attr( $date_format ) ); ?>"/>
 											</p>
 										</div>
 
