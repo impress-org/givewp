@@ -950,7 +950,7 @@ final class Give_Payment {
 						$args = array(
 							'ID'            => $this->ID,
 							'post_date'     => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
-							'post_date_gmt' => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
+							'post_date_gmt' => get_gmt_from_date( $this->date ),
 							'edit_date'     => true,
 						);
 
