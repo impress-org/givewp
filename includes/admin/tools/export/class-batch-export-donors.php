@@ -242,9 +242,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		if ( ! empty( $this->form ) ) {
 
-			// Export donors for a specific donation form and also within specified timeframe
+			// Export donors for a specific donation form and also within specified timeframe.
 			$args = array(
-				'output'     => 'payments', // Use 'posts' to get standard post objects
+				'output'     => 'payments',
 				'post_type'  => array( 'give_payment' ),
 				'number'     => 30,
 				'paged'      => $this->step,
@@ -253,7 +253,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				'meta_value' => absint( $this->form ),
 			);
 
-			// Check for date option filter
+			// Check for date option filter.
 			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
 				$args['start_date'] = ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' );
 				$args['end_date']   = ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) );
@@ -312,7 +312,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					// Cache donor ids only if admin export donor for specific form.
 					$this->cache_donor_ids();
 				}
-			}
+			} // End if().
 		} else {
 
 			// Export all donors.
@@ -323,7 +323,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				'offset' => $offset,
 			);
 
-			// Check for date option filter
+			// Check for date option filter.
 			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
 				$args['date'] = array(
 					'start' => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
@@ -399,7 +399,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$address = give_get_donor_address( $donor->user_id );
 		}
 
-		// Set columns
+		// Set columns.
 		if ( ! empty( $columns['full_name'] ) ) {
 			$donor_name              = give_get_donor_name_by( $donor->id, 'donor' );
 			$data[ $i ]['full_name'] = $donor_name;
