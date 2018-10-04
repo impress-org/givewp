@@ -186,14 +186,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 
-		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
-
-		// We need columns.
-		if ( empty( $columns ) ) {
-			return false;
-		}
-
-		$cols = $this->get_cols( $columns );
+		$columns = $this->get_default_columns();
+		$cols    = $this->get_cols( $columns );
 
 		return $cols;
 	}
