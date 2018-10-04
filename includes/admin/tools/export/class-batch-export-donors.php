@@ -206,12 +206,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		foreach ( $columns as $key => $value ) {
 
 			switch ( $key ) {
-				case 'full_name' :
-					$cols['full_name'] = esc_html__( 'Full Name', 'give' );
-					break;
-				case 'email' :
-					$cols['email'] = esc_html__( 'Email Address', 'give' );
-					break;
+
 				case 'address' :
 					$cols['address_line1']   = esc_html__( 'Address', 'give' );
 					$cols['address_line2']   = esc_html__( 'Address 2', 'give' );
@@ -220,17 +215,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					$cols['address_zip']     = esc_html__( 'Zip', 'give' );
 					$cols['address_country'] = esc_html__( 'Country', 'give' );
 					break;
-				case 'userid' :
-					$cols['userid'] = esc_html__( 'User ID', 'give' );
-					break;
-				case 'donor_created_date' :
-					$cols['donor_created_date'] = esc_html__( 'Donor Created Date', 'give' );
-					break;
-				case 'donations' :
-					$cols['donations'] = esc_html__( 'Number of Donations', 'give' );
-					break;
-				case 'donation_sum' :
-					$cols['donation_sum'] = esc_html__( 'Sum of Donations', 'give' );
+
+				default:
+					$cols[ $key ] = $value;
 					break;
 			}
 		}
