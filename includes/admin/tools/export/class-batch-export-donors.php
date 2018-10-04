@@ -395,8 +395,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		// Set address variable.
 		$address = '';
-		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
-			$address = give_get_donor_address( $donor->user_id );
+		if ( isset( $donor->id ) && $donor->id > 0 ) {
+			$address = give_get_donor_address( $donor->id );
 		}
 
 		// Set columns.
