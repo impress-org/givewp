@@ -133,6 +133,33 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	}
 
 	/**
+	 * This function is used to define default columns for export.
+	 *
+	 * @since 2.2.6
+	 *
+	 * @return array
+	 */
+	public function get_default_columns() {
+
+		$default_columns = array(
+			'full_name'          => __( 'Name', 'give' ),
+			'email'              => __( 'Email', 'give' ),
+			'address'            => __( 'Address', 'give' ),
+			'userid'             => __( 'User ID', 'give' ),
+			'donor_created_date' => __( 'Donor Created Date', 'give' ),
+			'donations'          => __( 'Number of donations', 'give' ),
+			'donation_sum'       => __( 'Total Donated', 'give' ),
+		);
+
+		/**
+		 * This filter will be used to define default columns for export.
+		 *
+		 * @since 2.2.6
+		 */
+		return apply_filters( 'give_export_donors_get_default_columns', $default_columns );
+	}
+
+	/**
 	 * Cache donor ids.
 	 *
 	 * @since  1.8.9
