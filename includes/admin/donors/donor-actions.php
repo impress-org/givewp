@@ -530,6 +530,12 @@ add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 )
  */
 function give_process_donor_deletion( $args ) {
 
+	if ( ! isset( $args['give-donor-delete-confirm'] ) && isset ( $args['paged'] ) ) {
+		$redirect_url = add_query_arg( 'paged', $args['paged'], admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) );
+		wp_safe_redirect( $redirect_url );
+		give_die();
+	}
+
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	// Verify user capabilities to proceed for deleting donor.
