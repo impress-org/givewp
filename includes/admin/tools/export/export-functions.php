@@ -124,6 +124,9 @@ add_action( 'wp_ajax_give_do_ajax_export', 'give_do_ajax_export' );
 /**
  * This function is used to define default columns for export.
  *
+ * Note: This function is for internal purposes only.
+ * Use filter "give_export_donors_get_default_columns" instead.
+ *
  * @since 2.2.6
  *
  * @return array
