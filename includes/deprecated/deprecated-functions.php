@@ -845,24 +845,6 @@ function give_delete_donor( $args ) {
 	give_process_donor_deletion( $args );
 }
 
-/**
- * This function is used to delete single donor from donor detail page.
- *
- * @param array $args List of arguments to delete donor.
- *
- * @since 2.2
- */
-function give_donor_delete( $args ) {
-
-	_give_deprecated_function(
-		__FUNCTION__,
-		'2.2',
-		'give_process_donor_deletion'
-	);
-
-	give_process_donor_deletion( $args );
-}
-
 
 /**
  * Retrieve all donor comment attached to a donation
