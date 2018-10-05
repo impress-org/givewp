@@ -529,6 +529,10 @@ add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 )
  * @since 2.2
  */
 function give_process_donor_deletion( $args ) {
+	// Bailout.
+	if ( ! isset( $args['give-donor-delete-confirm'] ) ) {
+		return;
+	}
 
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
