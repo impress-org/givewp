@@ -128,7 +128,7 @@ add_action( 'wp_ajax_give_do_ajax_export', 'give_do_ajax_export' );
  *
  * @return array
  */
-public function give_export_donors_get_default_columns() {
+function give_export_donors_get_default_columns() {
 
 	$default_columns = array(
 		'full_name'          => __( 'Name', 'give' ),
