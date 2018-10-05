@@ -98,7 +98,7 @@ function give_do_ajax_export() {
 		);
 
 	} else {
-		
+
 		$args = array_merge( $_REQUEST, array(
 			'step'        => $step,
 			'class'       => $class,
@@ -119,3 +119,31 @@ function give_do_ajax_export() {
 }
 
 add_action( 'wp_ajax_give_do_ajax_export', 'give_do_ajax_export' );
+
+
+/**
+ * This function is used to define default columns for export.
+ *
+ * @since 2.2.6
+ *
+ * @return array
+ */
+public function give_export_donors_get_default_columns() {
+
+	$default_columns = array(
+		'full_name'          => __( 'Name', 'give' ),
+		'email'              => __( 'Email', 'give' ),
+		'address'            => __( 'Address', 'give' ),
+		'userid'             => __( 'User ID', 'give' ),
+		'donor_created_date' => __( 'Donor Created Date', 'give' ),
+		'donations'          => __( 'Number of donations', 'give' ),
+		'donation_sum'       => __( 'Total Donated', 'give' ),
+	);
+
+	/**
+	 * This filter will be used to define default columns for export.
+	 *
+	 * @since 2.2.6
+	 */
+	return apply_filters( 'give_export_donors_get_default_columns', $default_columns );
+}
