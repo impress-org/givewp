@@ -431,7 +431,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$search_keyword = ! empty( $get_data['s'] ) ? $get_data['s'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
-		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'ID';
+		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
 		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
 			<thead>
