@@ -159,7 +159,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 
-		$columns = $this->get_default_columns();
+		$columns = give_export_donors_get_default_columns();
 		$cols    = $this->get_cols( $columns );
 
 		return $cols;
