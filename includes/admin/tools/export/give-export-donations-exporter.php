@@ -281,7 +281,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				$defaults['date_query'][0]['after'] = date( 'Y-n-d 00:00:00', strtotime( $this->start ) );
 			}
 			if ( ! empty( $this->end ) ) {
-				$defaults['date_query'][0]['before'] = date( 'Y-n-d 00:00:00', strtotime( $this->end ) );
+				$defaults['date_query'][0]['before'] = date( 'Y-n-d 23:59:59', strtotime( $this->end ) );
 			}
 		}
 
