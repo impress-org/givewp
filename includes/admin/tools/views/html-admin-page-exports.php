@@ -128,16 +128,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<p><?php esc_html_e( 'Export Columns:', 'give' ); ?></p>
 									<ul id="give-export-option-ul">
 										<?php
-										if ( ! class_exists( 'Give_Batch_Export' ) ) {
-											require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
-										}
-
-										if ( ! class_exists( 'Give_Batch_Donors_Export' ) ) {
-											require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php';
-										}
-
-										$batch_donors_export  = new Give_Batch_Donors_Export();
-										$donor_export_columns = $batch_donors_export->get_default_columns();
+										$donor_export_columns = give_export_donors_get_default_columns();
 
 										foreach ( $donor_export_columns as $column_name => $column_label ) {
 											?>
