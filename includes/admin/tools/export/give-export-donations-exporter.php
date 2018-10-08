@@ -278,11 +278,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
 			if ( ! empty( $this->start ) ) {
-				$start_date                         = __give_get_mysql_format_date( $this->start );
+				$start_date                         = give_get_formatted_date( $this->start );
 				$defaults['date_query'][0]['after'] = "{$start_date} 00:00:00";
 			}
 			if ( ! empty( $this->end ) ) {
-				$end_date                            = __give_get_mysql_format_date( $this->end );
+				$end_date                            = give_get_formatted_date( $this->end );
 				$defaults['date_query'][0]['before'] = "{$end_date} 23:59:59";
 			}
 		}

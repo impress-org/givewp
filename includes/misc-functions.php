@@ -2238,26 +2238,28 @@ function give_get_safe_asset_url( $url ) {
 }
 
 /**
- * Give get MySQL Formatted date.
+ * Give get formatted date.
  *
  * @since 2.3.0
  *
- * @param string $date   Date.
- * @param string $format Date Format.
+ * @param string $date           Date.
+ * @param string $format         Date Format.
+ * @param string $current_format Current date Format.
  *
  * @return string
  */
-function __give_get_mysql_format_date( $date, $format = 'Y-m-d' ) {
-	$date_obj       = DateTime::createFromFormat( give_date_format(), $date );
+function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
+	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
+	$date_obj       = DateTime::createFromFormat( $current_format, $date );
 	$formatted_date = $date_obj->format( $format );
 
 	/**
-	 * Give get MySQL Formatted date.
+	 * Give get formatted date.
 	 *
 	 * @since 2.3.0
 	 *
 	 * @param string $formatted_date Formatted date.
-	 * @param string $date           Date.
+	 * @param array
 	 */
-	return apply_filters( 'give_get_mysql_format_date', $formatted_date, $date );
+	return apply_filters( 'give_get_formatted_date', $formatted_date, array( $date, $format, $current_format ) );
 }
