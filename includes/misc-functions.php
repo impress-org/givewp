@@ -2240,7 +2240,7 @@ function give_get_safe_asset_url( $url ) {
 /**
  * Give get MySQL Formatted date.
  *
- * @since 2.2.6
+ * @since 2.3.0
  *
  * @param string $date   Date.
  * @param string $format Date Format.
@@ -2254,7 +2254,7 @@ function __give_get_mysql_format_date( $date, $format = 'Y-m-d' ) {
 	/**
 	 * Give get MySQL Formatted date.
 	 *
-	 * @since 2.2.6
+	 * @since 2.3.0
 	 *
 	 * @param string $formatted_date Formatted date.
 	 * @param string $date           Date.
