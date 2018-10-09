@@ -701,7 +701,7 @@ $give_updates = Give_Updates::get_instance();
 				<td class="help">&nbsp;</td>
 				<td>
 					<?php
-					if ( true === $plugin_data['License'] ) {
+					if ( isset( $plugin_data['License'] ) && true === $plugin_data['License'] ) {
 						echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark> ' . __( 'Licensed', 'give' );
 					} else {
 						echo '<mark class="error"><span class="dashicons dashicons-no-alt"></span></mark> ' . __( 'Unlicensed', 'give' );
