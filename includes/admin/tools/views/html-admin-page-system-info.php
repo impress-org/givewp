@@ -661,7 +661,15 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'active' != $plugin_data['Status'] ||  'add-on' != $plugin_data['Type'] ) {
+			// Only show Give Core Activated Add-Ons.
+			if (
+				'active' != $plugin_data['Status']
+				|| false !== strpos( $plugin_data['Name'], 'Give - Donation Plugin' )
+				|| (
+					false === strpos( $plugin_data['AuthorName'], 'WordImpress' )
+					&& false === strpos( $plugin_data['AuthorName'], 'GiveWP' )
+				)
+			) {
 				continue;
 			}
 
@@ -721,12 +729,12 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'active' != $plugin_data['Status'] ||  'other' != $plugin_data['Type'] ) {
-				continue;
-			}
-
-			// Do not show Give core plugin.
-			if ( 'Give - Donation Plugin' === $plugin_data['Name'] ) {
+			// Do not show Give Core and it's Add-On plugins.
+			if (
+				'active' !== $plugin_data['Status']
+				|| false !== strpos( $plugin_data['AuthorName'], 'WordImpress' )
+				|| false !== strpos( $plugin_data['AuthorName'], 'GiveWP' )
+			) {
 				continue;
 			}
 
