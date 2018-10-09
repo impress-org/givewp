@@ -781,7 +781,7 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'inactive' != $plugin_data['Status'] ) {
+			if ( 'inactive' !== $plugin_data['Status'] ) {
 				continue;
 			}
 
