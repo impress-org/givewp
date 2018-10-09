@@ -228,8 +228,17 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			// Check for date option filter.
 			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-				$args['start_date'] = ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' );
-				$args['end_date']   = ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) );
+				// Start date.
+				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
+				if ( ! empty( $start_date ) ) {
+					$start_date         = give_get_formatted_date( $start_date );
+					$args['start_date'] = $start_date;
+				}
+
+				// End date.
+				$end_date         = ! empty( $this->data['donor_export_end_date'] ) ? sanitize_text_field( $this->data['donor_export_end_date'] ) : date( give_date_format(), current_time( 'timestamp' ) );
+				$end_date         = give_get_formatted_date( $end_date );
+				$args['end_date'] = $end_date;
 			}
 
 			// Check for price option.
@@ -298,10 +307,19 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			// Check for date option filter.
 			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-				$args['date'] = array(
-					'start' => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
-					'end'   => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) ),
-				);
+
+				// Start date.
+				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
+				if ( ! empty( $start_date ) ) {
+					$start_date            = give_get_formatted_date( $start_date );
+					$args['date']['start'] = $start_date;
+				}
+
+				// End date.
+				$end_date            = ! empty( $this->data['donor_export_end_date'] ) ? sanitize_text_field( $this->data['donor_export_end_date'] ) : date( give_date_format(), current_time( 'timestamp' ) );
+				$end_date            = give_get_formatted_date( $end_date );
+				$args['date']['end'] = $end_date;
+
 			}
 
 			$donors = Give()->donors->get_donors( $args );
