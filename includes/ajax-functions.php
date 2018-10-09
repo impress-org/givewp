@@ -217,7 +217,7 @@ function give_ajax_get_states_field() {
 	$states_label = give_get_states_label();
 
 	$default_state = '';
-	if ( $country === give_get_country() ) {
+	if ( give_get_country() === $country ) {
 		$default_state = give_get_state();
 	}
 
@@ -263,6 +263,7 @@ function give_ajax_get_states_field() {
 			$states_require = false;
 		}
 	}
+
 	$response = array(
 		'success'        => true,
 		'states_found'   => $states_found,
@@ -271,6 +272,7 @@ function give_ajax_get_states_field() {
 		'states_require' => $states_require,
 		'data'           => $data,
 		'default_state'  => $default_state,
+		'city_require'   => ! array_key_exists( $country, give_city_not_required_country_list() ),
 	);
 	wp_send_json( $response );
 }

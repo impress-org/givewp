@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function __give_sanitize_number_decimals_setting_field( $value ) {
 	$value_changed = false;
+	$show_notice   = false;
 	$old_value     = $value;
 
 	if ( isset( $_POST['decimal_separator'] ) ) {
@@ -40,11 +41,25 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' is not set.', 'give' ) );
 	}
 
-	$value = absint( $value );
+	$value                      = absint( $value );
+	$is_currency_set_to_bitcoin = ( 'BTC' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'BTC' === $_POST['currency'];
 
-	if ( 6 <= $value ) {
+	if ( $is_currency_set_to_bitcoin && 8 < $value) {
+		$value = 8;
+		$show_notice = true;
+	}elseif ( ! $is_currency_set_to_bitcoin && 6 <= $value ) {
 		$value = 5;
-		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 5 because you entered a number higher than the maximum allowed.', 'give' ) );
+		$show_notice = true;
+	}
+
+	if( $show_notice ) {
+		Give_Admin_Settings::add_error(
+			'give-number-decimal',
+			sprintf(
+				__( 'The \'Number of Decimals\' option has been automatically set to %s because you entered a number higher than the maximum allowed.', 'give' ),
+				$value
+			)
+		);
 	}
 
 	return absint( $value );

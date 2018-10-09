@@ -428,8 +428,9 @@ class Give_Updates {
 
 		Give_Background_Updater::flush_cache();
 
+		/* @var stdClass $batch */
 		$batch                = Give_Updates::$background_updater->get_all_batch();
-		$batch_data_count     = count( $batch->data );
+		$old_batch_update_ids = is_array( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 		$all_updates          = $give_updates->get_updates( 'database', 'all' );
 		$all_update_ids       = wp_list_pluck( $all_updates, 'id' );
 		$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
@@ -511,7 +512,7 @@ class Give_Updates {
 				self::$background_updater->complete();
 			}
 
-		} elseif ( $batch_data_count !== count( $batch->data ) ) {
+		} elseif ( array_diff( wp_list_pluck( $batch->data, 'id' ), $old_batch_update_ids ) ) {
 
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );

@@ -115,17 +115,34 @@ function give_validate_gravatar( $id_or_email ) {
  * @return int The new note ID
  */
 function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comment_args = array() ) {
-	$comment_args = wp_parse_args(
-		$comment_args,
+	// Backward compatibility.
+	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+		$comment_args = wp_parse_args(
+			$comment_args,
+			array(
+				'comment_approved' => 0,
+				'comment_parent'   => give_get_payment_form_id( $donation_id )
+			)
+		);
+
+		$comment_id = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
+
+		update_comment_meta( $comment_id, '_give_donor_id', $donor );
+
+		return $comment_id;
+	}
+
+	$comment_id = Give_Comment::add(
 		array(
-			'comment_approved' => 0,
-			'comment_parent'   => give_get_payment_form_id( $donation_id )
+			'comment_ID'      => isset( $comment_args['comment_ID'] ) ? absint( $comment_args['comment_ID'] ) : 0,
+			'comment_parent'  => $donation_id,
+			'comment_content' => $note,
+			'comment_type'    => 'donor_donation',
 		)
 	);
 
-	$comment_id = Give_Comment::add( $donation_id, $note, 'payment', $comment_args );
-
-	update_comment_meta( $comment_id, '_give_donor_id', $donor );
+	Give()->comment->db_meta->update_meta( $comment_id, '_give_donor_id', $donor );
+	Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', give_get_payment_form_id( $donation_id ) );
 
 	return $comment_id;
 }
@@ -145,20 +162,34 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  * @return WP_Comment|array
  */
 function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
-	$comments = Give_Comment::get(
-		$donation_id,
-		'payment',
-		array(
-			'number'     => 1,
-			'meta_query' => array(
-				array(
-					'key'   => '_give_donor_id',
-					'value' => $donor_id
+	// Backward compatibility.
+	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+
+		$comments = Give_Comment::get(
+			$donation_id,
+			'payment',
+			array(
+				'number'     => 1,
+				'meta_query' => array(
+					array(
+						'key'   => '_give_donor_id',
+						'value' => $donor_id
+					)
 				)
-			)
-		),
-		$search
-	);
+			),
+			$search
+		);
+
+		$comment = ! empty( $comments ) ? current( $comments ) : array();
+
+		return $comment;
+	}
+
+	$comments = Give()->comment->db->get_comments( array(
+		'number'         => 1,
+		'comment_parent' => $donation_id,
+		'comment_type'   => 'donor_donation',
+	) );
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
 }
@@ -182,30 +213,6 @@ function give_get_donor_donation_comment_id( $donation_id, $donor_id, $search = 
 	$comment_id = $comment instanceof WP_Comment ? $comment->comment_ID : 0;
 
 	return $comment_id;
-}
-
-/**
- * Retrieve all donor comment attached to a donation
- *
- * Note: currently donor can only add one comment per donation
- *
- * @param int    $donor_id The donor ID to retrieve comment for.
- * @param array  $comment_args
- * @param string $search   Search for comment that contain a search term.
- *
- * @since 2.2.0
- *
- * @return array
- */
-function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
-	$comments = Give_Comment::get(
-		$donor_id,
-		'payment',
-		$comment_args,
-		$search
-	);
-
-	return ( ! empty( $comments ) ? $comments : array() );
 }
 
 
@@ -248,33 +255,70 @@ function give_get_donor_donation_comment_html( $comment, $payment_id = 0 ) {
  * @param int $donor_id
  * @param int $form_id
  *
- * @return WP_Comment/array
+ * @return WP_Comment/stdClass/array
  */
 function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
+	global $wpdb;
+
+	// Backward compatibility.
+	if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+
+		$comment_args = array(
+			'post_id'    => 0,
+			'orderby'    => 'comment_ID',
+			'order'      => 'DESC',
+			'number'     => 1,
+			'meta_query' => array(
+				'related' => 'AND',
+				array(
+					'key'   => '_give_donor_id',
+					'value' => $donor_id
+				),
+				array(
+					'key'   => '_give_anonymous_donation',
+					'value' => 0
+				)
+			)
+		);
+
+		// Get donor donation comment for specific form.
+		if ( $form_id ) {
+			$comment_args['parent'] = $form_id;
+		}
+
+		$comment = current( give_get_donor_donation_comments( $donor_id, $comment_args ) );
+
+		return $comment;
+	}
+
 	$comment_args = array(
-		'post_id'    => 0,
 		'orderby'    => 'comment_ID',
 		'order'      => 'DESC',
 		'number'     => 1,
 		'meta_query' => array(
-			'related' => 'AND',
-			array(
-				'key'   => '_give_donor_id',
-				'value' => $donor_id
-			),
+			'relation' => 'AND',
 			array(
 				'key'   => '_give_anonymous_donation',
-				'value' => 0
-			)
-		)
+				'value' => 0,
+			),
+			array(
+				'key'   => '_give_donor_id',
+				'value' => $donor_id,
+			),
+		),
 	);
 
 	// Get donor donation comment for specific form.
 	if ( $form_id ) {
-		$comment_args['parent'] = $form_id;
+		$comment_args['meta_query'][] = array(
+			'key'   => '_give_form_id',
+			'value' => $form_id,
+		);
 	}
 
-	$comment = current( give_get_donor_donation_comments( $donor_id, $comment_args ) );
+	$sql = Give()->comment->db->get_sql( $comment_args );
+
+	$comment = current( $wpdb->get_results( $sql ) );
 
 	return $comment;
 }

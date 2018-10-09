@@ -177,7 +177,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<?php $date_format = give_date_format(); ?>
 											<p>
 												<label for="give-payment-date" class="strong"><?php _e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( $date_format, $payment_date ) ); ?>" class="medium-text give_datepicker" placeholder="<?php printf( esc_attr( $date_format ) ); ?>"/>
+												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php printf( esc_attr( $date_format ) ); ?>"/>
 											</p>
 										</div>
 
@@ -206,7 +206,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<p>
 												<label for="give-payment-total" class="strong"><?php _e( 'Total Donation:', 'give' ); ?></label>&nbsp;
 												<?php echo give_currency_symbol( $payment->currency ); ?>
-												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_donation_amount( $payment_id ), false, false ) ); ?>"/>
+												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( array( 'donation_id' => $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
@@ -872,7 +872,14 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 
 									<div class="give-clearfix">
-										<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										<p>
+											<label for="donation_note_type" class="screen-reader-text"><?php _e( 'Note type', 'give' ); ?></label>
+											<select name="donation_note_type" id="donation_note_type">
+												<option value=""><?php _e( 'Private note', 'give' ); ?></option>
+												<option value="donor"><?php _e( 'Note to donor', 'give' ); ?></option>
+											</select>
+											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+										</p>
 									</div>
 
 								</div>
@@ -903,13 +910,17 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 												echo sprintf(
 													'<input type="hidden" name="give_comment_id" value="%s">',
-													$donor_comment instanceof WP_Comment ? $donor_comment->comment_ID : 0
+													$donor_comment instanceof WP_Comment // Backward compatibility.
+														|| $donor_comment instanceof stdClass
+															? $donor_comment->comment_ID : 0
 												);
 
 												echo sprintf(
 													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
 													__( 'Add a comment', 'give' ),
-													$donor_comment instanceof WP_Comment ? $donor_comment->comment_content : ''
+													$donor_comment instanceof WP_Comment // Backward compatibility.
+													|| $donor_comment instanceof stdClass
+														? $donor_comment->comment_content : ''
 												);
 												?>
 											</p>

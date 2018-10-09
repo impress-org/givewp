@@ -8,6 +8,7 @@
  */
 /* globals Give, jQuery */
 import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
+import {GiveShortcodeButton} from './shortcode-button.js';
 
 // Provided access to global level.
 var give_setting_edit = false;
@@ -466,21 +467,19 @@ var give_setting_edit = false;
 		},
 
 		add_note: function () {
-
 			$('#give-add-payment-note').on('click', function (e) {
 				e.preventDefault();
-				var postData = {
-					action: 'give_insert_payment_note',
-					payment_id: $(this).data('payment-id'),
-					note: $('#give-payment-note').val()
-				};
 
-				if (postData.note) {
-
+				// ajax function to save donation note
+				function save_note(){
 					$.ajax({
 						type: 'POST',
 						data: postData,
 						url: ajaxurl,
+						beforeSend: function(){
+							noteContainer.prop( 'disabled', true );
+							$this.prop( 'disabled', true );
+						},
 						success: function (response) {
 							$('#give-payment-notes-inner').append(response);
 							$('.give-no-payment-notes').hide();
@@ -490,13 +489,42 @@ var give_setting_edit = false;
 						if (window.console && window.console.log) {
 							console.log(data);
 						}
+					}).always(function(){
+						noteContainer.prop( 'disabled', false );
+						$this.prop( 'disabled', false );
 					});
+				}
 
+				let $this = $(this),
+					noteContainer = $('#give-payment-note'),
+					noteTypeContainer = $('#donation_note_type'),
+					postData = {
+						action: 'give_insert_payment_note',
+						payment_id: $(this).data('payment-id'),
+						note: noteContainer.val(),
+						type: noteTypeContainer.val()
+					};
+
+				if (postData.note) {
+					if( 'donor' === postData.type && give_vars.email_notification.donor_note.status ){
+						// Confirm and save note.
+						new Give.modal.GiveConfirmModal({
+							successConfirm: function(){
+								save_note();
+							},
+							modalContent:{
+								desc: give_vars.donor_note_confirm_msg,
+							}
+						}).render();
+					} else{
+						save_note();
+					}
 				} else {
-					var border_color = $('#give-payment-note').css('border-color');
-					$('#give-payment-note').css('border-color', 'red');
+					let border_color = noteContainer.css('border-color');
+					noteContainer.css('border-color', 'red');
+
 					setTimeout(function () {
-						$('#give-payment-note').css('border-color', border_color);
+						noteContainer.css('border-color', border_color);
 					}, 500);
 				}
 
@@ -1052,11 +1080,14 @@ var give_setting_edit = false;
 				var selected_type = $('option:selected', this).data('type');
 				var submit_button = $('#recount-stats-submit');
 				var forms = $('.tools-form-dropdown');
+				var dateSelector = $('.tools-date-dropdown-delete-donations');
 
 				// Reset the form
 				export_form.find('.notice-wrap').remove();
 				submit_button.removeClass('button-disabled').attr('disabled', false);
 				forms.hide();
+				dateSelector.hide();
+
 				$('.give-recount-stats-descriptions span').hide();
 
 				if ('reset-stats' === selected_type) {
@@ -1073,10 +1104,15 @@ var give_setting_edit = false;
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 					// Add check when admin try to delete all the imported donations.
 				} else if ('delete-import-donors' === selected_type) {
-
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_import_donor') + '</label></p></div>');
+					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
+				} else if ('delete-donations' === selected_type) {
+					dateSelector.show();
+					export_form.append('<div class="notice-wrap"></div>');
+					var notice_wrap = export_form.find('.notice-wrap');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + Give.fn.getGlobalVar('delete_donations_only') + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 				} else {
 					forms.hide();
@@ -1254,6 +1290,7 @@ var give_setting_edit = false;
 						// Reset the form for preventing multiple ajax request.
 						$('#give-tools-recount-form')[0].reset();
 						$('#give-tools-recount-form .tools-form-dropdown').hide();
+						$('#give-tools-recount-form .tools-date-dropdown').hide();
 						$('#give-tools-recount-form .tools-form-dropdown-recount-form-select').val('0').trigger('chosen:updated');
 					}
 				}
@@ -3028,6 +3065,19 @@ var give_setting_edit = false;
 		}
 	};
 
+	var GiveShortcodeButtonObj = {
+		init: function() {
+			// Run scripts for shortcode buttons.
+			const shorcodeButtonEls = document.querySelectorAll( '.js-give-shortcode-button' );
+			if ( shorcodeButtonEls ) {
+				for ( const buttonEl of shorcodeButtonEls ) {
+					const shortcodeButton = new GiveShortcodeButton( buttonEl );
+					shortcodeButton.init();
+				}
+			}
+		}
+	};
+
 	// On DOM Ready.
 	$(function () {
 
@@ -3047,6 +3097,7 @@ var give_setting_edit = false;
 		Give_Upgrades.init();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
+		GiveShortcodeButtonObj.init();
 
 		// Footer.
 		$('a.give-rating-link').click(function () {

@@ -127,7 +127,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "DELETE FROM $wpdb->posts WHERE id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
-						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
+						$sql[] = "DELETE FROM $wpdb->give_commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
+						$sql[] = "DELETE FROM $wpdb->formmeta WHERE form_id IN ($ids)";
+						$sql[] = "DELETE FROM $wpdb->logmeta WHERE meta_key = '_give_log_form_id' AND meta_value IN ($ids)";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_logs WHERE log_parent IN ($ids)";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_sequential_ordering WHERE payment_id IN ($ids)";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_donationmeta WHERE donation_id IN ($ids)";
+
 						$sql[] = $wpdb->prepare(
 							"
 							DELETE FROM $wpdb->terms
@@ -141,6 +147,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 							",
 							array( 'give_forms_category', 'give_forms_tag' )
 						);
+
 						$sql[] = $wpdb->prepare(
 							"
 							DELETE FROM $wpdb->term_taxonomy
@@ -149,6 +156,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 							",
 							array( 'give_forms_category', 'give_forms_tag' )
 						);
+
 						break;
 				}
 
@@ -382,6 +390,21 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		$wpdb->delete( $wpdb->options, array(
 			'option_name' => $key,
 		) );
+	}
+
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if ( $export->done ) {
+			// Delete all the donation ids.
+			$this->delete_data( 'give_temp_reset_ids' );
+		}
 	}
 
 }

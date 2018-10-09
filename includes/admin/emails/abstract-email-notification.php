@@ -914,6 +914,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					),
 					'admin_email'             => give_email_admin_email(),
 					'offline_mailing_address' => give_email_offline_mailing_address(),
+					'donor_comment'           => $payment_id ? give_email_donor_comment( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donor Comment', 'give' ),
 				)
 			);
 

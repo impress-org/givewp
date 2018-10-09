@@ -24,7 +24,7 @@ jQuery( function( $ ) {
 		if ( 'card_state' !== $this.attr( 'id' ) ) {
 
 			//Disable the State field until updated
-			$form.find( '#card_state' ).empty().append( '<option value="1">' + Give.fn.getGlobalVar('general_loading') + '</option>' ).prop( 'disabled', true );
+			$form.find( '#card_state' ).empty().append( '<option value="1">' + Give.fn.getGlobalVar( 'general_loading' ) + '</option>' ).prop( 'disabled', true );
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
@@ -36,24 +36,34 @@ jQuery( function( $ ) {
 			$.ajax( {
 				type: 'POST',
 				data: postData,
-				url: Give.fn.getGlobalVar('ajaxurl'),
+				url: Give.fn.getGlobalVar( 'ajaxurl' ),
 				xhrFields: {
 					withCredentials: true
 				},
-				success: function( response ) {
+				success: function ( response ) {
 					var html = '';
 					var states_label = response.states_label;
-					if ( typeof (response.states_found) != undefined && true == response.states_found ) {
+					if ( 'undefined' !== typeof response.states_found && true === response.states_found ) {
 						html = response.data;
 					} else {
 						html = `<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="${states_label}" value="${response.default_state}" autocomplete="address-level4"/>`;
 					}
 
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
-						if ( typeof (response.states_require) != 'undefined' && true == response.states_require ) {
+						if ( 'undefined' !== typeof ( response.states_require ) && true === response.states_require ) {
 							$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' );
 						} else {
 							$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
+						}
+
+						var $city = $form.find( 'input[name="card_city"]' );
+						// check if city fields is require or not
+						if ( 'undefined' !== typeof ( response.city_require ) && true === response.city_require ) {
+							$city.closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' ).removeClass( 'required' );
+							$city.attr( 'required', true );
+						} else {
+							$city.closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' ).addClass( 'required' );
+							$city.removeAttr( 'required' );
 						}
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).closest( 'p' ).find( 'label' ).text( states_label );
@@ -63,7 +73,7 @@ jQuery( function( $ ) {
 					$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( html );
 
 					// Check if user want to show the feilds or not.
-					if ( typeof (response.show_field) != undefined && true == response.show_field ) {
+					if ( 'undefined' !== typeof ( response.show_field )  && true === response.show_field ) {
 						$form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
 
 						// Add support to zip fields.
@@ -77,9 +87,9 @@ jQuery( function( $ ) {
 						$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-last' );
 					}
 
-					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
+					doc.trigger( 'give_checkout_billing_address_updated', [response, $form.attr( 'id' )] );
 				}
-			} ).fail( function( data ) {
+			} ).fail( function ( data ) {
 				if ( window.console && window.console.log ) {
 					console.log( data );
 				}

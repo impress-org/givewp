@@ -12,9 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load autoloader.
-require_once GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/tcpdf.php';
-
 /**
  * Class Give_PDF
  */

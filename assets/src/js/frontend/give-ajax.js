@@ -329,7 +329,8 @@ function give_load_gateway( form_object, payment_mode ) {
 			give_total: give_total,
 			give_form_id: give_form_id,
 			give_form_id_prefix: give_form_id_prefix,
-			give_payment_mode: payment_mode
+			give_payment_mode: payment_mode,
+			nonce: Give.form.fn.getNonce( form_object )
 		},
 		function( response ) {
 			//Success: let's output the gateway fields in the appropriate form space

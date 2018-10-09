@@ -357,7 +357,12 @@ function give_update_payment_details( $data ) {
 
 		// Update comment meta if admin is not updating comment.
 		if( $comment_id ) {
-			update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+				// Backward compatibility.
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			} else{
+				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			}
 		}
 	}
 
@@ -369,6 +374,7 @@ function give_update_payment_details( $data ) {
 		if ( empty( $data['give_comment'] ) ) {
 			// Delete comment if empty
 			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
+			$comment_id = 0;
 
 		} else {
 			$comment_args = array(
@@ -379,7 +385,7 @@ function give_update_payment_details( $data ) {
 				$comment_args['comment_ID'] = $comment_id;
 			}
 
-			give_insert_donor_donation_comment(
+			$comment_id = give_insert_donor_donation_comment(
 				$payment->ID,
 				$payment->donor_id,
 				$data['give_comment'],
@@ -387,11 +393,20 @@ function give_update_payment_details( $data ) {
 			);
 		}
 
-		$donor_has_comment = empty( $data['give_comment'] )
-			? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
-			: '1';
+		if( $comment_id ) {
+			$donor_has_comment = empty( $data['give_comment'] )
+				? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
+				: '1';
 
-		Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
+			if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
+				// Backward compatibility.
+				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			} else {
+				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
+			}
+
+			Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
+		}
 	}
 
 	/**
@@ -440,23 +455,48 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
  * AJAX Store Donation Note
  */
 function give_ajax_store_payment_note() {
-
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
+	$note_type  = give_clean( $_POST['type'] );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	if ( empty( $payment_id ) ) {
+	if ( empty( $payment_id ) || empty( $note ) ) {
 		die( '-1' );
 	}
 
-	if ( empty( $note ) ) {
-		die( '-1' );
+	if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+		// Backward compatibility.
+		$note_id = give_insert_payment_note( $payment_id, $note );
+	} else {
+		$note_id = Give()->comment->db->add(
+			array(
+				'comment_parent'  => $payment_id,
+				'user_id'         => get_current_user_id(),
+				'comment_content' => $note,
+				'comment_type'    => 'donation',
+			)
+		);
 	}
 
-	$note_id = give_insert_payment_note( $payment_id, $note );
+	if( $note_id && $note_type ) {
+
+		if( ! give_has_upgrade_completed('v230_move_donor_note' ) ) {
+			add_comment_meta( $note_id, 'note_type', $note_type, true );
+		} else{
+			Give()->comment->db_meta->update_meta( $note_id, 'note_type', $note_type );
+		}
+
+		/**
+		 * Fire the action
+		 *
+		 * @since 2.3.0
+		 */
+		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
+	}
+
 	die( give_get_payment_note_html( $note_id ) );
 }
 

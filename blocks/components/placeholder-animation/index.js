@@ -3,9 +3,9 @@
  */
 import './style.scss';
 
-const PlaceholderContainerAnimation = () => {
+const PlaceholderAnimation = () => {
 	return (
-		<div className="placeholder-container-animation">
+		<div className="placeholder-animation">
 			<div className="timeline-wrapper">
 				<div className="timeline-item">
 					<div className="animated-background">
@@ -54,4 +54,4 @@ const PlaceholderContainerAnimation = () => {
 	);
 };
 
-export default PlaceholderContainerAnimation;
+export default PlaceholderAnimation;

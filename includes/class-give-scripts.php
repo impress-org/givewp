@@ -207,6 +207,7 @@ class Give_Scripts {
 		// Price Separators.
 		$thousand_separator = give_get_price_thousand_separator();
 		$decimal_separator  = give_get_price_decimal_separator();
+		$number_decimals    = give_get_price_decimals();
 
 		// Localize strings & variables for JS.
 		$localized_data = array(
@@ -214,6 +215,7 @@ class Give_Scripts {
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
+			'number_decimals'                   => $number_decimals,
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
 			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
@@ -232,6 +234,8 @@ class Give_Scripts {
 			'error'                             => __( 'Error', 'give' ),
 			'close'                             => __( 'Close', 'give' ),
 			'confirm'                           => __( 'Confirm', 'give' ),
+			'copied'                            => __( 'Copied!', 'give' ),
+			'shortcode_not_copy'                => __( 'Shortcode could not be copied.', 'give' ),
 			'confirm_action'                    => __( 'Confirm Action', 'give' ),
 			'confirm_deletion'                  => __( 'Confirm Deletion', 'give' ),
 			'confirm_delete_donation'           => __( 'Confirm Delete Donation', 'give' ),
@@ -249,6 +253,7 @@ class Give_Scripts {
 			'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
+			'delete_donations_only'             => __( 'Are you sure you want to delete all the donations in the specfied date range?', 'give' ),
 			'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 			/* translators : %s: Donation form options metabox */
 			'confirm_before_remove_row_text'    => __( 'Do you want to delete this item?', 'give' ),
@@ -264,7 +269,7 @@ class Give_Scripts {
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
-					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' )
+					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
 				),
 				'no_action_selected' => array(
 					'title' => __( 'No action selected', 'give' ),
@@ -319,6 +324,12 @@ class Give_Scripts {
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
+			'donor_note_confirm_msg'            => __( 'You are adding a donor note , so an email notification will be send to donor. If you do not want to send email notification to donor then either create private note or disable donor note email.', 'give' ),
+			'email_notification'            => array(
+				'donor_note' => array(
+					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
+				)
+			),
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
@@ -454,7 +465,6 @@ class Give_Scripts {
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
-
 	}
 
 	/**

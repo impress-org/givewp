@@ -1411,7 +1411,11 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 function give_get_payment_note_html( $note, $payment_id = 0 ) {
 
 	if ( is_numeric( $note ) ) {
-		$note = get_comment( $note );
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+			$note = get_comment( $note );
+		} else{
+			$note = Give()->comment->db->get( $note );
+		}
 	}
 
 	if ( ! empty( $note->user_id ) ) {
