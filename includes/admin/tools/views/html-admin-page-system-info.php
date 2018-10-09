@@ -20,6 +20,8 @@ global $wpdb;
 $give_options = give_get_settings();
 $plugins      = give_get_plugins();
 
+$give_plugin_authors = array( 'WordImpress', 'GiveWP' );
+
 /* @var  Give_Updates $give_updates */
 $give_updates = Give_Updates::get_instance();
 ?>
@@ -661,7 +663,12 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'active' != $plugin_data['Status'] ||  'add-on' != $plugin_data['Type'] ) {
+			// Only show Give Core Activated Add-Ons.
+			if (
+				'active' !== $plugin_data['Status']
+				|| false !== strpos( $plugin_data['Name'], 'Give - Donation Plugin' )
+				|| ! in_array( $plugin_data['AuthorName'], $give_plugin_authors )
+			) {
 				continue;
 			}
 
@@ -693,7 +700,7 @@ $give_updates = Give_Updates::get_instance();
 				<td class="help">&nbsp;</td>
 				<td>
 					<?php
-					if ( true === $plugin_data['License'] ) {
+					if ( isset( $plugin_data['License'] ) && true === $plugin_data['License'] ) {
 						echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark> ' . __( 'Licensed', 'give' );
 					} else {
 						echo '<mark class="error"><span class="dashicons dashicons-no-alt"></span></mark> ' . __( 'Unlicensed', 'give' );
@@ -721,12 +728,11 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'active' != $plugin_data['Status'] ||  'other' != $plugin_data['Type'] ) {
-				continue;
-			}
-
-			// Do not show Give core plugin.
-			if ( 'Give - Donation Plugin' === $plugin_data['Name'] ) {
+			// Do not show Give Core and it's Add-On plugins.
+			if (
+				'active' !== $plugin_data['Status']
+				|| in_array( $plugin_data['AuthorName'], $give_plugin_authors )
+			) {
 				continue;
 			}
 
@@ -773,7 +779,7 @@ $give_updates = Give_Updates::get_instance();
 	<tbody>
 		<?php
 		foreach ( $plugins as $plugin_data ) {
-			if ( 'inactive' != $plugin_data['Status'] ) {
+			if ( 'inactive' !== $plugin_data['Status'] ) {
 				continue;
 			}
 
