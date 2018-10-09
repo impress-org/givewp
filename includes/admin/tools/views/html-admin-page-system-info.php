@@ -663,7 +663,7 @@ $give_updates = Give_Updates::get_instance();
 		foreach ( $plugins as $plugin_data ) {
 			// Only show Give Core Activated Add-Ons.
 			if (
-				'active' != $plugin_data['Status']
+				'active' !== $plugin_data['Status']
 				|| false !== strpos( $plugin_data['Name'], 'Give - Donation Plugin' )
 				|| (
 					false === strpos( $plugin_data['AuthorName'], 'WordImpress' )
