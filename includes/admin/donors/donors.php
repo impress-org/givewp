@@ -969,7 +969,7 @@ function give_donor_view( $donor ) {
 			</tr>
 			</thead>
 			<tbody>
-			<?php if ( ! empty( $donations ) ) : ?>
+			<?php if ( ! empty( $donations ) && $donor->get_meta( '_give_has_comment', true ) ) : ?>
 				<?php foreach ( $donations as $donation ) : ?>
 					<?php
 					$comment = give_get_donor_donation_comment( $donation->ID, give_get_payment_donor_id( $donation->ID ) );
