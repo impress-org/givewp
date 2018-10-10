@@ -16,11 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 	/**
-	 * Give_Settings_CSV.
+	 * Class Give_Export_Donations
 	 *
 	 * @sine 2.1
 	 */
 	final class Give_Export_Donations {
+
 		/**
 		 * Importer type
 		 *
