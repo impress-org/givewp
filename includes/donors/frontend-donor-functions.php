@@ -322,3 +322,34 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	return $comment;
 }
+
+/**
+ * Retrieves a name initials (first name and last name).
+ *
+ * @since   2.3.0
+ *
+ * @param array $args
+ *
+ * @return string
+ */
+function give_get_name_initial( $args ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'firstname' => '',
+			'lastname'  => '',
+		)
+	);
+
+	$first_name_initial = mb_substr( $args['firstname'], 0, 1, 'utf-8' );
+	$last_name_initial  = mb_substr( $args['lastname'], 0, 1, 'utf-8' );
+
+	$name_initial = trim( $first_name_initial . $last_name_initial );
+
+	/**
+	 * Filter the name initial
+	 *
+	 * @since 2.3.0
+	 */
+	return apply_filters( 'give_get_name_initial', $name_initial, $args );
+}
