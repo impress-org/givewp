@@ -32,16 +32,16 @@ final class Give_Shortcode_Button {
 	 * Class constructor
 	 */
 	public function __construct() {
-		add_action( 'admin_init', array( $this, 'init'), 999 );
+		add_action( 'admin_init', array( $this, 'init' ), 999 );
 	}
 
 	/**
 	 * Initialize
 	 *
-	 * @since 2.1.0
+	 * @since  2.1.0
 	 * @access public
 	 */
-	public function init(){
+	public function init() {
 		if ( $this->is_add_button() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
 
@@ -243,13 +243,16 @@ final class Give_Shortcode_Button {
 			'edit.php?post_type=page',
 		) );
 
-		$setting_page = give_get_current_setting_page();
+		$setting_page     = give_get_current_setting_page();
+		$get_data         = give_clean( $_GET );
+		$form_content_tab = isset( $get_data['give_tab'] ) ? trim( $get_data['give_tab'] ) : '';
 
 		// Only run in admin post/page creation and edit screens
 		if (
 			! is_admin()
 			|| ! in_array( $pagenow, $shortcode_button_pages )
 			|| ( 'give-settings' === $setting_page )
+			|| ( 'form_content_options' === $form_content_tab )
 
 			/**
 			 * Fire the filter
