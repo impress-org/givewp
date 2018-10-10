@@ -413,7 +413,6 @@ class Give_Scripts {
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
 		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
-			'ajaxurl'                     => give_get_ajax_url(),
 			'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
 			// Do not use this nonce. Its deprecated.
 			'currency'                    => give_get_currency(),
