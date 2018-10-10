@@ -199,6 +199,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['address_zip']     = __( 'Zip', 'give' );
 					$cols['address_country'] = __( 'Country', 'give' );
 					break;
+				case 'comment':
+					$cols['comment'] = __( 'Donor Comment', 'give' );
+					break;
 				case 'donation_total':
 					$cols['donation_total'] = __( 'Donation Total', 'give' );
 					break;
@@ -363,6 +366,11 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$data[ $i ]['address_state']   = isset( $address['state'] ) ? $address['state'] : '';
 					$data[ $i ]['address_zip']     = isset( $address['zip'] ) ? $address['zip'] : '';
 					$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
+				}
+
+				if ( ! empty( $columns['comment'] ) ) {
+					$comment               = give_get_donor_donation_comment( $payment->ID, $payment->donor_id );
+					$data[ $i ]['comment'] = $comment->comment_content;
 				}
 
 				if ( ! empty( $columns['donation_total'] ) ) {
