@@ -356,7 +356,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						 *
 						 * @since 2.1
 						 */
-						do_action( 'give_tools_iexport_donations_form_after_end' );
+						do_action( 'give_tools_export_donations_form_after_end' );
 						?>
 					</div><!-- .inside -->
 				</div><!-- .postbox -->
