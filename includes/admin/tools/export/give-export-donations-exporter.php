@@ -257,7 +257,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		 *
 		 * @since 2.1
 		 *
-		 * @param array $cols columns name for CSV
+		 * @param array $cols    columns name for CSV
 		 * @param array $columns columns select by admin to export
 		 */
 		return (array) apply_filters( 'give_export_donation_get_columns_name', $cols, $columns );
@@ -496,9 +496,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				 * @since 2.1
 				 *
 				 * @param array Donation data
-				 * @param Give_Payment $payment Instance of Give_Payment
-				 * @param array $columns Donation data $columns that are not being merge
-				 * @param Give_Export_Donations_CSV $this Instance of Give_Export_Donations_CSV
+				 * @param Give_Payment              $payment Instance of Give_Payment
+				 * @param array                     $columns Donation data $columns that are not being merge
+				 * @param Give_Export_Donations_CSV $this    Instance of Give_Export_Donations_CSV
 				 *
 				 * @return array Donation data
 				 */
