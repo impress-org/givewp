@@ -9,8 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** @var $donor Give_Donor */
-$donor = $args[0];
-$donor = new Give_Donor( $donor->id );
+$donation = $args[0];
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
@@ -19,54 +18,45 @@ $atts          = $args[2]; // Shortcode attributes.
 <div class="give-grid__item">
 	<div class="give-donor">
 		<div class="give-donor__header">
-			<?php
-			// Maybe display the Avatar.
-			if ( true === $atts['show_avatar'] ) {
-				echo give_get_donor_avatar( $donor );
-			}
-			?>
+			<div class="give-donor__image">
+				<?php
+				// Maybe display the Avatar.
+				if ( true === $atts['show_avatar'] ) {
+					if ( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ) {
+						echo get_avatar( $donation['_give_payment_donor_email'], 60 );
+					} else{
+						echo $donation['name_initial'];
+					}
+				}
+				?>
+			</div>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
-						<?php esc_html_e( $donor->name ); ?>
+						<?php $donor_name = trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] ); ?>
+						<?php esc_html_e( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php
-						// If not filtered by form ID then display total donations
-						// Else filtered by form ID, only display donations made for this form.
-						$donated_amount = $donor->purchase_value;
-
-						if ( ! empty( $atts['form_id'] ) ) {
-							$donated_amount = Give_Donor_Stats::donated(
-								array(
-									'donor'          => $donor->id,
-									'give_forms'     => $atts['form_id'],
-								)
-							);
-						}
-						echo give_currency_filter( give_format_amount( $donated_amount, array( 'sanitize' => false ) ) );
-						?>
+						<?php echo give_donation_amount( $donation['donation_id'], true );?>
 					</span>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php
-						// If not filtered by form ID then display the "Donor Since" text.
-						// If filtered by form ID then display the last donation date.
-						echo $donor->get_last_donation_date( true );
-						?>
+						<?php echo date_i18n( give_date_format(), strtotime( $donation['_give_completed_date'] ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
 		</div>
 
 		<?php
-		$comment = give_get_donor_latest_comment( $donor->id, $atts['form_id'] );
+		$comment = $donation['donor_comment'] instanceof WP_Comment || $donation['donor_comment'] instanceof stdClass
+			? $donation['donor_comment']
+			: array();
 
 		if (
 			true === $atts['show_comments']
@@ -81,7 +71,7 @@ $atts          = $args[2]; // Shortcode attributes.
 				if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
 					echo sprintf(
 						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
-						substr( $comment_content, 0, $atts['comment_length'] ),
+						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] ) ),
 						$atts['readmore_text']
 					);
 

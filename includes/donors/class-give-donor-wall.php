@@ -111,18 +111,17 @@ class Give_Donor_Wall {
 
 		$give_settings = give_get_settings();
 
-		$atts        = $this->parse_atts( $atts );
-		$donor_query = $this->get_donor_query_atts( $atts );
-		$donors      = $this->get_donors( $donor_query );
-		$html        = '';
+		$atts      = $this->parse_atts( $atts );
+		$donations = $this->get_sql( $atts );
+		$html      = '';
 
-		if ( $donors ) {
+		if ( $donations ) {
 
 			ob_start();
 
-			foreach ( $donors as $donor ) {
+			foreach ( $donations as $donation ) {
 				// Give/templates/shortcode-donor-wall.php.
-				give_get_template( 'shortcode-donor-wall', array( $donor, $give_settings, $atts ) );
+				give_get_template( 'shortcode-donor-wall', array( $donation, $give_settings, $atts ) );
 			}
 
 			$html = ob_get_clean();
@@ -137,12 +136,11 @@ class Give_Donor_Wall {
 			}
 		}
 
-		$next_donor_query           = $donor_query;
-		$next_donor_query['paged']  = $next_donor_query['paged'] + 1;
-		$next_donor_query['fields'] = 'id';
+		$temp_atts          = $atts;
+		$temp_atts['paged'] = $atts['paged'] + 1;
 
 		$more_btn_html = '';
-		if ( $this->get_donors( $next_donor_query ) ) {
+		if ( $this->has_donations( $temp_atts ) ) {
 			$more_btn_html = sprintf(
 				'<button class="give-donor__load_more give-button-with-loader" data-shortcode="%1$s"><span class="give-loading-animation"></span>%2$s</button>',
 				rawurlencode( http_build_query( $atts ) ),
@@ -175,7 +173,7 @@ class Give_Donor_Wall {
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'donors_per_page' => 20,
+				'number'          => 20,
 				'form_id'         => 0,
 				'paged'           => 1,
 				'ids'             => '',
@@ -185,20 +183,18 @@ class Give_Donor_Wall {
 				'show_total'      => true,
 				'show_time'       => true,
 				'show_comments'   => true,
-				'comment_length'  => 20,
+				'comment_length'  => 140,
 				'only_comments'   => false,
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
 				'avatar_size'     => 60,
-				'orderby'         => 'donation_count',
+				'orderby'         => 'post_date',
 				'order'           => 'DESC',
 				'hide_empty'      => true,
 				'only_donor_html' => false, // Only for internal use.
 			), $atts
 		);
 
-		// Validate integer attributes.
-		$atts['donors_per_page'] = absint( $atts['donors_per_page'] );
 
 		// Validate boolean attributes.
 		$boolean_attributes = array(
@@ -224,97 +220,6 @@ class Give_Donor_Wall {
 		}
 
 		return $atts;
-	}
-
-	/**
-	 * Get donor query from shortcode attribiutes
-	 *
-	 * @since  2.2.0
-	 * @access public
-	 *
-	 * @param array $atts Shortcode attributes.
-	 *
-	 * @return array
-	 */
-	public function get_donor_query_atts( $atts ) {
-		// Set default form query args.
-		$donor_args = array(
-			'number'     => $atts['donors_per_page'],
-			'paged'      => $atts['paged'],
-			'orderby'    => $atts['orderby'],
-			'order'      => $atts['order']
-		);
-
-		if ( give_has_upgrade_completed( 'v224_update_donor_meta_forms_id' ) ) {
-			// Hide anonymous donor.
-			$donor_args['meta_query'][] = array(
-				'key'     => '_give_anonymous_donor',
-				'value'   => '1',
-				'compare' => '!=',
-			);
-		}
-
-		// Hide donors with zero donation amount.
-		if ( $atts['hide_empty'] ) {
-			$donor_args['donation_amount'] = array(
-				'compare' => '>=',
-				'amount'  => 1,
-			);
-		}
-
-		// Show donor who donated to specific form.
-		if ( $atts['form_id'] ) {
-			$donor_args['give_forms'] = $atts['form_id'];
-
-			if( give_has_upgrade_completed('v224_update_donor_meta_forms_id') ) {
-				$donor_args['meta_query']['relation'] = 'AND';
-				$donor_args['meta_query'][] = array(
-					array(
-						'key'   => "_give_anonymous_donor_form_{$atts['form_id']}",
-						'value' => '0',
-					),
-				);
-			}
-		}
-
-		// Show donor by id.
-		if ( $atts['ids'] ) {
-			$donor_args['donor'] = $atts['ids'];
-		}
-
-		// Replace donation with purchase because donor table has that prefix in column name.
-		$donor_args['orderby'] = str_replace(
-			array( 'donation', 'amount' ), array(
-				'purchase',
-				'value',
-			), $atts['orderby']
-		);
-
-		// Add fallback orderby.
-		$donor_args['orderby'] = array(
-			$donor_args['orderby'] => $donor_args['order'],
-			'date_created'         => 'DESC',
-		);
-
-		unset( $donor_args['order'] );
-
-		// Set payment query.
-		// @codingStandardsIgnoreStart
-		if ( true === $atts['only_comments'] ) {
-			if( ! array_key_exists( 'relation', $donor_args['meta_query'] ) ) {
-				$donor_args['meta_query']['relation'] = 'AND';
-			}
-
-			$donor_args['meta_query'][] = array(
-				array(
-					'key'   => '_give_has_comment',
-					'value' => '1',
-				),
-			);
-		}
-		// @codingStandardsIgnoreEnd
-
-		return $donor_args;
 	}
 
 	/**
@@ -351,10 +256,9 @@ class Give_Donor_Wall {
 		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
 
 		// Check if donor comment remaining.
-		$donor_query           = $this->get_donor_query_atts( $shortcode_atts );
-		$donor_query['paged']  = $donor_query['paged'] + 1;
-		$donor_query['fields'] = 'id';
-		$has_donors            = $this->get_donors( $donor_query ) ? 1 : 0;
+		$temp_atts          = $shortcode_atts;
+		$temp_atts['paged'] = $shortcode_atts['paged'] + 1;
+		$has_donors         = $this->has_donations( $temp_atts ) ? 1 : 0;
 
 		// Remove internal shortcode param.
 		unset( $shortcode_atts['only_donor_html'] );
@@ -366,6 +270,143 @@ class Give_Donor_Wall {
 				'remaining' => $has_donors,
 			)
 		);
+	}
+
+	/**
+	 * Get query params
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  array $atts
+	 *
+	 * @return array
+	 */
+	private function get_query_param( $atts = array() ) {
+		$valid_order   = array( 'ASC', 'DESC' );
+		$valid_orderby = array( 'post_date' );
+
+		$query_atts = array();
+
+		$query_atts['order']   = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
+		$query_atts['orderby'] = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
+		$query_atts['limit']   = $atts['number'];
+		$query_atts['offset']  = $atts['number'] * ( $atts['paged'] - 1 );
+		$query_atts['form_id'] = $atts['form_id'];
+
+		return $query_atts;
+	}
+
+	/**
+	 * Get results by direct sql querys.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	private function get_sql( $atts = array() ) {
+		global $wpdb;
+
+		$query_params = $this->get_query_param( $atts );
+
+		// Bailout if donation does not exist.
+		if ( ! ( $donation_ids = $this->get_donations( $atts ) ) ) {
+			return array();
+		}
+
+		$donation_ids = ! empty( $donation_ids )
+			? '\'' . implode( '\',\'', $donation_ids ) . '\''
+			: '';
+
+
+		$sql = "SELECT * FROM {$wpdb->donationmeta}
+				WHERE donation_id IN ( {$donation_ids} )
+				ORDER BY donation_id {$query_params['order']}
+				";
+
+		$results = (array) $wpdb->get_results( $sql );
+
+		if ( ! empty( $results ) ) {
+			$temp = array();
+
+			/* @var stdClass $result */
+			foreach ( $results as $result ) {
+				$temp[ $result->donation_id ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
+			}
+
+			if ( ! empty( $temp ) ) {
+				foreach ( $temp as $donation_id => $donation_data ) {
+					$temp[ $donation_id ]['donation_id'] = $donation_id;
+
+					$temp[ $donation_id ]['name_initial'] = give_get_name_initial( array(
+						'firstname' => $donation_data['_give_donor_billing_first_name'],
+						'lastname'  => $donation_data['_give_donor_billing_first_name'],
+					) );
+
+					$temp[ $donation_id ]['donor_comment'] = give_get_donor_donation_comment( $donation_id, $donation_data['_give_payment_donor_id'] );
+				}
+			}
+
+			$results = ! empty( $temp ) ? $temp : array();
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Get donation list for specific query
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  array $atts
+	 *
+	 * @return array
+	 */
+	private function get_donations( $atts = array() ) {
+		global $wpdb;
+
+		$query_params = $this->get_query_param( $atts );
+
+		$sql = "
+			SELECT ID FROM {$wpdb->posts}
+			WHERE post_status IN ('publish')
+			AND post_type = 'give_payment'
+			ORDER BY {$query_params['orderby']} {$query_params['order']}
+			LIMIT {$query_params['limit']}
+			OFFSET {$query_params['offset']}
+			";
+
+		if( $query_params['form_id'] ) {
+			$sql = "
+			SELECT p1.ID FROM {$wpdb->posts} as p1
+			INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.donation_id)
+			WHERE p1.post_status IN ('publish')
+			AND p1.post_type = 'give_payment'
+			AND m1.meta_key='_give_payment_form_id'
+			AND m1.meta_value={$query_params['form_id']}
+			ORDER BY {$query_params['orderby']} {$query_params['order']}
+			LIMIT {$query_params['limit']}
+			OFFSET {$query_params['offset']}
+			";
+		}
+
+		$donation_ids = $wpdb->get_col( $sql );
+
+		return $donation_ids;
+	}
+
+	/**
+	 * Check if donation exist or not for specific query
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  array $atts
+	 *
+	 * @return bool
+	 */
+	private function has_donations( $atts = array() ) {
+		return (bool) $this->get_donations( $atts );
 	}
 }
 

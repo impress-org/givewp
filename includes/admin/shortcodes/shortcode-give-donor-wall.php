@@ -48,7 +48,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'        => 'textbox',
-				'name'        => 'donors_per_page',
+				'name'        => 'number',
 				'label'       => esc_attr__( 'Donors Per Page', 'give' ),
 				'placeholder' => '20',
 			),
@@ -56,7 +56,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'type'        => 'textbox',
 				'name'        => 'comment_length',
 				'label'       => esc_attr__( 'Comment Length', 'give' ),
-				'placeholder' => '20',
+				'placeholder' => '140',
 			),
 			array(
 				'type'        => 'textbox',
