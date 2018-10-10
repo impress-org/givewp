@@ -1673,10 +1673,13 @@ class Give_Donor {
 	 */
 	public function get_donor_initals() {
 
-		$first_name_initial = mb_substr( $this->get_first_name(), 0, 1, 'utf-8' );
-		$last_name_initial  = mb_substr( $this->get_last_name(), 0, 1, 'utf-8' );
-
-		return apply_filters( 'get_donor_initals', $first_name_initial . $last_name_initial );
+		return apply_filters(
+			'get_donor_initals',
+			give_get_name_initial( array(
+				'firstname' =>  $this->get_first_name(),
+				'lastname' =>  $this->get_last_name()
+			) )
+		);
 
 	}
 
