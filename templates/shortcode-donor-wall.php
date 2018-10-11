@@ -41,7 +41,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php echo give_donation_amount( $donation['donation_id'], true );?>
+						<?php echo give_donation_amount( $donation['donation_id'], true ); ?>
 					</span>
 				<?php endif; ?>
 
@@ -59,12 +59,12 @@ $atts          = $args[2]; // Shortcode attributes.
 			&& absint( $atts['comment_length'] )
 			&& ! empty( $donation['donor_comment'] )
 		) :
-		?>
+			?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = apply_filters( 'the_content', $donation['donor_comment']);
+				$comment_content = apply_filters( 'the_content', $donation['donor_comment'] );
 
-				if ( $atts['comment_length'] < strlen( $donation['donor_comment']) ) {
+				if ( $atts['comment_length'] < strlen( $donation['donor_comment'] ) ) {
 					echo sprintf(
 						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
 						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] ) ),
