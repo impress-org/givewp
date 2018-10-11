@@ -1962,20 +1962,16 @@ function give_currency_filter( $price = '', $args = array() ) {
 	return $formatted;
 }
 
-
 /**
- * Zero Decimal based Currency.
+ * This function is used to fetch list of zero based currencies.
  *
- * @since 1.8.14
- * @since 2.2.0 Modified list.
- * @see   https://github.com/WordImpress/Give/issues/2191
+ * @since 2.3.0
  *
- * @param string $currency Currency code
- *
- * @return bool
+ * @return array
  */
-function give_is_zero_based_currency( $currency = '' ) {
-	$zero_based_currency = array(
+function give_get_zero_based_currencies() {
+
+	$zero_based_currencies = array(
 		'JPY', // Japanese Yen.
 		'KRW', // South Korean Won.
 		'CLP', // Chilean peso.
@@ -1992,6 +1988,29 @@ function give_is_zero_based_currency( $currency = '' ) {
 		'MZN', // Mozambican metical.
 		'VUV', // Vanuatu vatu.
 	);
+
+	/**
+	 * This filter hook can be used to update the list of zero based currencies.
+	 *
+	 * @since 2.3.0
+	 */
+	return apply_filters( 'give_get_zero_based_currencies', $zero_based_currencies );
+}
+
+/**
+ * Zero Decimal based Currency.
+ *
+ * @since 1.8.14
+ * @since 2.2.0 Modified list.
+ * @see   https://github.com/WordImpress/Give/issues/2191
+ *
+ * @param string $currency Currency code
+ *
+ * @return bool
+ */
+function give_is_zero_based_currency( $currency = '' ) {
+
+	$zero_based_currency = give_get_zero_based_currencies();
 
 	// Set default currency.
 	if ( empty( $currency ) ) {
