@@ -188,7 +188,7 @@ class Give_Donor_Wall {
 				'readmore_text'   => esc_html__( 'Read More', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
 				'avatar_size'     => 60,
-				'orderby'         => 'post_date',
+				'orderby'         => 'post_date', // Only for internal use.
 				'order'           => 'DESC',
 				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
