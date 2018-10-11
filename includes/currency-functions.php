@@ -1984,7 +1984,6 @@ function give_get_zero_based_currencies() {
 		'LAK', // Lao kip.
 		'LKR', // Sri Lankan rupee.
 		'MGA', // Malagasy ariary.
-		'MGA', // Malagasy ariary.
 		'MZN', // Mozambican metical.
 		'VUV', // Vanuatu vatu.
 	);
