@@ -391,7 +391,7 @@ class Give_Donor_Wall {
 		// exclude anonymous donation form query.
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
-		$order  = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}";
+		$order  = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
 		$limit  = " LIMIT {$query_params['limit']}";
 		$offset = " OFFSET {$query_params['offset']}";
 
