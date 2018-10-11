@@ -320,9 +320,10 @@ class Give_Donor_Wall {
 			: '';
 
 
-		$sql = "SELECT * FROM {$wpdb->donationmeta}
-				WHERE donation_id IN ( {$donation_ids} )
-				ORDER BY donation_id {$query_params['order']}
+		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
+				INNER JOIN {$wpdb->posts} as p1 ON (m1.donation_id=p1.ID)
+				WHERE m1.donation_id IN ( {$donation_ids} )
+				ORDER BY p1.post_date {$query_params['order']}
 				";
 
 		$results = (array) $wpdb->get_results( $sql );
