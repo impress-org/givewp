@@ -18,18 +18,18 @@ $atts          = $args[2]; // Shortcode attributes.
 <div class="give-grid__item">
 	<div class="give-donor">
 		<div class="give-donor__header">
-			<div class="give-donor__image">
-				<?php
-				// Maybe display the Avatar.
-				if ( true === $atts['show_avatar'] ) {
-					if ( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ) {
-						echo get_avatar( $donation['_give_payment_donor_email'], 60 );
-					} else{
-						echo $donation['name_initial'];
-					}
+			<?php
+			// Maybe display the Avatar.
+			if ( true === $atts['show_avatar'] ) {
+				echo '<div class="give-donor__image">';
+				if ( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ) {
+					echo get_avatar( $donation['_give_payment_donor_email'], 60 );
+				} else {
+					echo $donation['name_initial'];
 				}
-				?>
-			</div>
+				echo '</div>';
+			}
+			?>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
