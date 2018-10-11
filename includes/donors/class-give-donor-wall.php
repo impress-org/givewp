@@ -190,7 +190,7 @@ class Give_Donor_Wall {
 				'avatar_size'     => 60,
 				'orderby'         => 'post_date',
 				'order'           => 'DESC',
-				'hide_empty'      => true,
+				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
 			), $atts
 		);
