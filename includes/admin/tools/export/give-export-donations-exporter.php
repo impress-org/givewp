@@ -370,7 +370,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $columns['comment'] ) ) {
 					$comment               = give_get_donor_donation_comment( $payment->ID, $payment->donor_id );
-					$data[ $i ]['comment'] = $comment->comment_content;
+					$data[ $i ]['comment'] = ! empty( $comment ) ? $comment->comment_content : '';
 				}
 
 				if ( ! empty( $columns['donation_total'] ) ) {
