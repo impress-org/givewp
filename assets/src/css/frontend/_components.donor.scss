@@ -96,6 +96,10 @@ $donor-space-triple: $donor-space * 3;
 			}
 		}
 	}
+	
+	&__read-more{
+		cursor: pointer;
+	}
 
 }
 
