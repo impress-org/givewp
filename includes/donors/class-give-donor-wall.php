@@ -371,9 +371,15 @@ class Give_Donor_Wall {
 		$sql   = "SELECT p1.ID FROM {$wpdb->posts} as p1";
 		$where = " WHERE p1.post_status IN ('publish') AND p1.post_type = 'give_payment'";
 
+		// exclude donation with zero amount from result.
+		$sql   .= " INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.donation_id)";
+		$where .= " AND m1.meta_key='_give_payment_total' AND m1.meta_value>0";
+
+
+
 		if ( $query_params['form_id'] ) {
-			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.donation_id)";
-			$where .= " AND m1.meta_key='_give_payment_form_id' AND m1.meta_value={$query_params['form_id']}";
+			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.donation_id)";
+			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
 		}
 		// exclude anonymous donation form query.
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT(donation_id) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
