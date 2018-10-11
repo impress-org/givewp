@@ -112,7 +112,7 @@ class Give_Donor_Wall {
 		$give_settings = give_get_settings();
 
 		$atts      = $this->parse_atts( $atts );
-		$donations = $this->get_sql( $atts );
+		$donations = $this->get_donation_data( $atts );
 		$html      = '';
 
 		if ( $donations ) {
@@ -297,7 +297,7 @@ class Give_Donor_Wall {
 	}
 
 	/**
-	 * Get results by direct sql querys.
+	 * Get donation data.
 	 *
 	 * @since 2.3.0
 	 *
@@ -305,7 +305,7 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	private function get_sql( $atts = array() ) {
+	private function get_donation_data( $atts = array() ) {
 		global $wpdb;
 
 		$query_params = $this->get_query_param( $atts );
