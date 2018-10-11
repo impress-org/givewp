@@ -54,21 +54,17 @@ $atts          = $args[2]; // Shortcode attributes.
 		</div>
 
 		<?php
-		$comment = $donation['donor_comment'] instanceof WP_Comment || $donation['donor_comment'] instanceof stdClass
-			? $donation['donor_comment']
-			: array();
-
 		if (
 			true === $atts['show_comments']
 			&& absint( $atts['comment_length'] )
-			&& ( $comment instanceof WP_Comment || $comment instanceof stdClass )
+			&& ! empty( $donation['donor_comment'] )
 		) :
 		?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = apply_filters( 'the_content', $comment->comment_content );
+				$comment_content = apply_filters( 'the_content', $donation['donor_comment']);
 
-				if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
+				if ( $atts['comment_length'] < strlen( $donation['donor_comment']) ) {
 					echo sprintf(
 						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
 						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] ) ),
