@@ -1672,7 +1672,11 @@ class Give_Donor {
 	 * @return string The donor's two initials (no middle).
 	 */
 	public function get_donor_initals() {
-
+		/**
+		 * Filter the donor name initials
+		 *
+		 * @since 2.1.0
+		 */
 		return apply_filters(
 			'get_donor_initals',
 			give_get_name_initial( array(
