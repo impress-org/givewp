@@ -319,10 +319,12 @@ class Give_Donor_Wall {
 			? '\'' . implode( '\',\'', $donation_ids ) . '\''
 			: '';
 
+		// Backward compatibility
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
-				INNER JOIN {$wpdb->posts} as p1 ON (m1.donation_id=p1.ID)
-				WHERE m1.donation_id IN ( {$donation_ids} )
+				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
+				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
 				ORDER BY p1.post_date {$query_params['order']}
 				";
 
@@ -333,7 +335,7 @@ class Give_Donor_Wall {
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->donation_id ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
 			}
 
 			$comments = $this->get_donor_comments($temp);
@@ -369,23 +371,25 @@ class Give_Donor_Wall {
 	private function get_donations( $atts = array() ) {
 		global $wpdb;
 
+		// Backward compatibility
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
+
 		$query_params = $this->get_query_param( $atts );
 
 		$sql   = "SELECT p1.ID FROM {$wpdb->posts} as p1";
 		$where = " WHERE p1.post_status IN ('publish') AND p1.post_type = 'give_payment'";
 
 		// exclude donation with zero amount from result.
-		$sql   .= " INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.donation_id)";
+		$sql   .= " INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.{$donation_id_col})";
 		$where .= " AND m1.meta_key='_give_payment_total' AND m1.meta_value>0";
 
 
-
 		if ( $query_params['form_id'] ) {
-			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.donation_id)";
+			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.{$donation_id_col})";
 			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
 		}
 		// exclude anonymous donation form query.
-		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT(donation_id) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
+		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
 		$order  = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}";
 		$limit  = " LIMIT {$query_params['limit']}";
