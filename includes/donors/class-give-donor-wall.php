@@ -287,11 +287,12 @@ class Give_Donor_Wall {
 
 		$query_atts = array();
 
-		$query_atts['order']   = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
-		$query_atts['orderby'] = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
-		$query_atts['limit']   = $atts['number'];
-		$query_atts['offset']  = $atts['number'] * ( $atts['paged'] - 1 );
-		$query_atts['form_id'] = $atts['form_id'];
+		$query_atts['order']         = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
+		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
+		$query_atts['limit']         = $atts['number'];
+		$query_atts['offset']        = $atts['number'] * ( $atts['paged'] - 1 );
+		$query_atts['form_id']       = $atts['form_id'];
+		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 
 		return $query_atts;
 	}
@@ -388,6 +389,13 @@ class Give_Donor_Wall {
 			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.{$donation_id_col})";
 			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
 		}
+
+		// exclude donations which does not has donor comment.
+		if ( $query_params['only_comments'] ) {
+			$sql   .= " INNER JOIN {$wpdb->give_comments} as gc1 ON (p1.ID = gc1.comment_parent)";
+			$where .= " AND gc1.comment_type='donor_donation'";
+		}
+
 		// exclude anonymous donation form query.
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
