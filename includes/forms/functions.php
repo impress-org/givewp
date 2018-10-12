@@ -1494,29 +1494,27 @@ function give_is_name_title_prefix_required( $form_id = 0 ) {
  *
  * @since 2.3.0
  *
- * @param integer $post_id Post ID of the post being deleted.
+ * @param integer $id Donation Form ID which needs to be deleted.
  *
  * @return void
  */
-function give_delete_form_meta_on_form_delete( $post_id ) {
+function give_handle_form_meta_on_delete( $id ) {
 
 	global $wpdb;
 
-	// Get the post object of the revision post.
-	$post = get_post( $post_id );
-
-	// Get parent post ID of the revision post.
-	$post_parent_id = $post->post_parent;
-
-	// Get post type of the form being deleted.
-	$post_type = get_post_type( $post_parent_id );
+	$form     = get_post( $id );
+	$get_data = give_clean( $_GET );
 
 	if (
-		'give_forms' === $post_type
-		&& $wpdb->get_var( $wpdb->prepare( "SELECT form_id FROM $wpdb->formmeta WHERE form_id = %d", $post_id ) )
+		'give_forms' === $form->post_type &&
+		'trash' === $form->post_status &&
+		(
+			( isset( $get_data['action'] ) && 'delete' === $get_data['action'] ) ||
+			! empty( $get_data['delete_all'] )
+		)
 	) {
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->formmeta WHERE form_id = %d", $post_id ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = '%d'", $form->ID ) );
 	}
 }
 
-add_action( 'delete_post', 'give_delete_form_meta_on_form_delete', 10 );
+add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
