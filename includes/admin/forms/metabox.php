@@ -32,7 +32,7 @@ function give_add_shortcode_to_publish_metabox() {
 		//Shortcode column with select all input
 		$shortcode = sprintf( '[give_form id="%s"]', absint( $post->ID ) );
 		printf(
-			'<div class="misc-pub-section"><button type="button" class="button give-shortcode-tooltip give-shortcode-tooltip--top js-give-shortcode-button" aria-label="%1$s" data-give-shortcode="%2$s"><span class="dashicons dashicons-admin-page"></span>%3$s</button></div>',
+			'<div class="misc-pub-section"><button type="button" class="button hint-tooltip hint--top js-give-shortcode-button" aria-label="%1$s" data-give-shortcode="%2$s"><span class="dashicons dashicons-admin-page"></span> %3$s</button></div>',
 			esc_attr( $shortcode ),
 			esc_attr( $shortcode ),
 			esc_html__( 'Copy Shortcode', 'give' )

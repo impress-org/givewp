@@ -32,16 +32,17 @@ final class Give_Shortcode_Button {
 	 * Class constructor
 	 */
 	public function __construct() {
-		add_action( 'admin_init', array( $this, 'init'), 999 );
+		add_action( 'current_screen', array( $this, 'init' ), 999 );
+		add_action( 'admin_init', array( $this, 'ajax_handler' ) );
 	}
 
 	/**
 	 * Initialize
 	 *
-	 * @since 2.1.0
+	 * @since  2.1.0
 	 * @access public
 	 */
-	public function init(){
+	public function init() {
 		if ( $this->is_add_button() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
 
@@ -49,9 +50,16 @@ final class Give_Shortcode_Button {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
 			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
 		}
+	}
 
+
+	/**
+	 * Ajax handler for shortcode
+	 *
+	 * @since 2.3.0
+	 */
+	public function ajax_handler(){
 		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
-		add_action( "wp_ajax_nopriv_give_shortcode", array( $this, 'shortcode_ajax' ) );
 	}
 
 	/**
@@ -240,16 +248,18 @@ final class Give_Shortcode_Button {
 			'post-new.php',
 			'post-edit.php',
 			'edit.php',
-			'edit.php?post_type=page',
 		) );
 
-		$setting_page = give_get_current_setting_page();
+		$exclude_post_types = array( 'give_forms' );
+
+		/* @var WP_Screen $current_screen */
+		$current_screen = get_current_screen();
 
 		// Only run in admin post/page creation and edit screens
 		if (
 			! is_admin()
 			|| ! in_array( $pagenow, $shortcode_button_pages )
-			|| ( 'give-settings' === $setting_page )
+			|| in_array( $current_screen->post_type, $exclude_post_types )
 
 			/**
 			 * Fire the filter

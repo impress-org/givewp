@@ -105,7 +105,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								echo Give()->html->date_field( array(
 									'id'           => 'give_donor_export_start_date',
 									'name'         => 'donor_export_start_date',
-									'placeholder'  => esc_attr__( 'Start date', 'give' ),
+									'placeholder'  => esc_attr__( 'Start Date', 'give' ),
 									'autocomplete' => 'off',
 								) );
 
@@ -113,7 +113,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								echo Give()->html->date_field( array(
 									'id'           => 'give_donor_export_end_date',
 									'name'         => 'donor_export_end_date',
-									'placeholder'  => esc_attr__( 'End date', 'give' ),
+									'placeholder'  => esc_attr__( 'End Date', 'give' ),
 									'autocomplete' => 'off',
 								) );
 

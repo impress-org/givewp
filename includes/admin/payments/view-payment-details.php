@@ -177,7 +177,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 											<?php $date_format = give_date_format(); ?>
 											<p>
 												<label for="give-payment-date" class="strong"><?php _e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php printf( esc_attr( $date_format ) ); ?>"/>
+												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php _e( 'Date', 'give' ); ?>"/>
 											</p>
 										</div>
 
