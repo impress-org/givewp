@@ -125,7 +125,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'shortcode':
 				$shortcode = sprintf( '[give_form id="%s"]', absint( $post_id ) );
 				printf(
-					'<button type="button" class="button give-shortcode-tooltip give-shortcode-tooltip--top js-give-shortcode-button" aria-label="%1$s" data-give-shortcode="%2$s"><span class="dashicons dashicons-admin-page"></span>%3$s</button>',
+					'<button type="button" class="button hint-tooltip hint--top js-give-shortcode-button" aria-label="%1$s" data-give-shortcode="%2$s"><span class="dashicons dashicons-admin-page"></span> %3$s</button>',
 					esc_attr( $shortcode ),
 					esc_attr( $shortcode ),
 					esc_html__( 'Copy Shortcode', 'give' )
