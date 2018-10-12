@@ -170,8 +170,17 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			'posts_per_page' => $this->per_step,
 			'paged'          => $paged,
 			// ONLY TEST MODE TRANSACTIONS!!!
-			'meta_key'       => '_give_payment_mode',
-			'meta_value'     => 'test',
+			'meta_query' => array(
+				'relation' => 'OR',
+				array(
+					'key'   => '_give_payment_mode',
+					'value' => 'test',
+				),
+				array(
+					'key'   => '_give_payment_gateway',
+					'value' => 'manual',
+				),
+			),
 		) );
 
 		// Reset the post data.
