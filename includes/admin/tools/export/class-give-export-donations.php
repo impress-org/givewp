@@ -239,7 +239,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'id'           => 'give-payment-export-start',
 									'name'         => 'start',
-									'placeholder'  => __( 'Start date', 'give' ),
+									'placeholder'  => __( 'Start Date', 'give' ),
 									'autocomplete' => 'off',
 								);
 								echo Give()->html->date_field( $args );
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'id'           => 'give-payment-export-end',
 									'name'         => 'end',
-									'placeholder'  => __( 'End date', 'give' ),
+									'placeholder'  => __( 'End Date', 'give' ),
 									'autocomplete' => 'off'
 								);
 								echo Give()->html->date_field( $args );
