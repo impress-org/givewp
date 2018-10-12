@@ -123,11 +123,13 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '#give-payment-mode-select' ).after( response.data );
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
-				// Create and update nonce.
-				Give.form.fn.resetAllNonce( this_form );
 
-				//reload the selected gateway so it contains their logged in information
-				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
+				Give.form.fn.resetAllNonce( this_form ).then(
+					response => {
+						//reload the selected gateway so it contains their logged in information
+						give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
+					}
+				);
 			} else {
 				//Login failed, show errors
 				this_form.find( '[id^=give-login-fields] input[type=submit]' ).val( complete_purchase_val );
