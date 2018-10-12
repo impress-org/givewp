@@ -473,3 +473,33 @@ function give_widgets_init() {
 }
 
 add_action( 'widgets_init', 'give_widgets_init', 999 );
+
+
+/**
+ * Remove "Quick Edit" for the give_forms CPT.
+ *
+ * @since 2.3.0
+ *
+ * @param array $actions
+ * @param null  $post
+ *
+ * @return array
+ */
+function give_forms_disable_quick_edit( $actions = array(), $post = null ) {
+
+	// Abort if the post type is not "give_forms".
+	if ( ! is_post_type_archive( 'give_forms' ) ) {
+		return $actions;
+	}
+
+	// Remove the Quick Edit link.
+	if ( isset( $actions['inline hide-if-no-js'] ) ) {
+		unset( $actions['inline hide-if-no-js'] );
+	}
+
+	// Return the set of links without Quick Edit.
+	return $actions;
+
+}
+
+add_filter( 'post_row_actions', 'give_forms_disable_quick_edit', 10, 2 );
