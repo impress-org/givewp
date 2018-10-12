@@ -325,9 +325,9 @@ function give_donation_form_validate_fields() {
 
 	// Check spam detect.
 	if (
-		isset( $post_data['action'] ) &&
-		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) &&
-		give_is_spam_donation()
+		isset( $post_data['action'] )
+		&& give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+		&& give_is_spam_donation()
 	) {
 		give_set_error( 'spam_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
@@ -838,8 +838,14 @@ function give_donation_form_validate_user_login() {
 		return $valid_user_data;
 	}
 
-	// Get the user by login.
-	$user_data = get_user_by( 'login', strip_tags( $post_data['give_user_login'] ) );
+	$give_user_login = strip_tags( $post_data['give_user_login'] );
+	if ( is_email( $give_user_login ) ) {
+		// Get the user data by email.
+		$user_data = get_user_by( 'email', $give_user_login );
+	} else {
+		// Get the user data by login.
+		$user_data = get_user_by( 'login', $give_user_login );
+	}
 
 	// Check if user exists.
 	if ( $user_data ) {

@@ -1962,6 +1962,39 @@ function give_currency_filter( $price = '', $args = array() ) {
 	return $formatted;
 }
 
+/**
+ * This function is used to fetch list of zero based currencies.
+ *
+ * @since 2.3.0
+ *
+ * @return array
+ */
+function give_get_zero_based_currencies() {
+
+	$zero_based_currencies = array(
+		'JPY', // Japanese Yen.
+		'KRW', // South Korean Won.
+		'CLP', // Chilean peso.
+		'ISK', // Icelandic króna.
+		'BIF', // Burundian franc.
+		'DJF', // Djiboutian franc.
+		'GNF', // Guinean franc.
+		'KHR', // Cambodian riel.
+		'KPW', // North Korean won.
+		'LAK', // Lao kip.
+		'LKR', // Sri Lankan rupee.
+		'MGA', // Malagasy ariary.
+		'MZN', // Mozambican metical.
+		'VUV', // Vanuatu vatu.
+	);
+
+	/**
+	 * This filter hook can be used to update the list of zero based currencies.
+	 *
+	 * @since 2.3.0
+	 */
+	return apply_filters( 'give_get_zero_based_currencies', $zero_based_currencies );
+}
 
 /**
  * Zero Decimal based Currency.
@@ -1975,23 +2008,8 @@ function give_currency_filter( $price = '', $args = array() ) {
  * @return bool
  */
 function give_is_zero_based_currency( $currency = '' ) {
-	$zero_based_currency = array(
-		'JPY', // Japanese Yen.
-		'KRW', // South Korean Won.
-		'CLP', // Chilean peso.
-		'ISK', // Icelandic króna.
-		'BIF', // Burundian franc.
-		'DJF', // Djiboutian franc.
-		'GNF', // Guinean franc.
-		'KHR', // Cambodian riel.
-		'KPW', // North Korean won.
-		'LAK', // Lao kip.
-		'LKR', // Sri Lankan rupee.
-		'MGA', // Malagasy ariary.
-		'MGA', // Malagasy ariary.
-		'MZN', // Mozambican metical.
-		'VUV', // Vanuatu vatu.
-	);
+
+	$zero_based_currency = give_get_zero_based_currencies();
 
 	// Set default currency.
 	if ( empty( $currency ) ) {

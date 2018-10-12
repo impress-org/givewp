@@ -454,6 +454,14 @@ function give_export_donation_standard_fields() {
 							</li>
 
 							<li>
+								<label for="give-export-comment">
+									<input type="checkbox" checked
+									       name="give_give_donations_export_option[comment]"
+									       id="give-export-comment"><?php _e( 'Donor\'s Comment', 'give' ); ?>
+								</label>
+							</li>
+
+							<li>
 								<label for="give-export-userid">
 									<input type="checkbox" checked
 									       name="give_give_donations_export_option[userid]"
