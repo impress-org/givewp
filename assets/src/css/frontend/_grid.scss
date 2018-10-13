@@ -12,7 +12,9 @@
 	max-width: 30rem;
 
 	&__item {
-		margin-bottom: 1.5rem;
+		> :last-child {
+			margin-bottom: 0;
+		}
 	}
 }
 
