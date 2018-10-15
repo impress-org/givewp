@@ -114,7 +114,7 @@ function give_get_default_donation_receipt_email() {
 	$default_email_body .= '<strong>' . __( 'Donation Date:', 'give' ) . '</strong> {date}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Payment Method:', 'give' ) . '</strong> {payment_method}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Payment ID:', 'give' ) . '</strong> {payment_id}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Payment ID:', 'give' ) . '</strong> {payment_id}' . "\n\n";
 	$default_email_body .= '{receipt_link}' . "\n\n";
 	$default_email_body .= "\n\n";
 	$default_email_body .= __( 'Sincerely,', 'give' ) . "\n";
