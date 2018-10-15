@@ -84,7 +84,7 @@ class Give_Donor_Wall {
 	 * @param array $atts                {
 	 *                                   Optional. Attributes of the donor wall shortcode.
 	 *
-	 * @type int    $number               Number of donors per page. Default '20'.
+	 * @type int    $donors_per_page     Number of donors per page. Default '20'.
 	 * @type int    $form_id             The donation form to filter donors by. Default is all forms (no filter).
 	 * @type bool   $paged               Whether to paginate donors. Default 'true'.
 	 * @type string $ids                 A comma-separated list of donor IDs to display. Default empty.
@@ -173,7 +173,7 @@ class Give_Donor_Wall {
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'number'          => 20,
+				'donors_per_page' => 12,
 				'form_id'         => 0,
 				'paged'           => 1,
 				'ids'             => '',
@@ -289,8 +289,8 @@ class Give_Donor_Wall {
 
 		$query_atts['order']         = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
-		$query_atts['limit']         = $atts['number'];
-		$query_atts['offset']        = $atts['number'] * ( $atts['paged'] - 1 );
+		$query_atts['limit']         = $atts['donors_per_page'];
+		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
 		$query_atts['form_id']       = $atts['form_id'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 

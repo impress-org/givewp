@@ -49,19 +49,18 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'order',
-				'label'       => esc_attr__( 'Columns:', 'give' ),
+				'label'       => esc_attr__( 'Order:', 'give' ),
 				'tooltip'     => esc_attr__( 'Sets the number of forms per row.', 'give' ),
 				'options'     => array(
-					'DESC' => esc_html__( 'Newest to Oldest', 'give' ),
 					'ASC'  => esc_html__( 'Oldest to Newest', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Newest to Oldest', 'give' ),
 			),
 			array(
 				'type'        => 'textbox',
-				'name'        => 'number',
+				'name'        => 'donors_per_page',
 				'label'       => esc_attr__( 'Donors Per Page', 'give' ),
-				'placeholder' => '20',
+				'placeholder' => '12',
 			),
 			array(
 				'type'        => 'textbox',
