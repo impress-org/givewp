@@ -105,6 +105,15 @@ function give_akismet( $spam ) {
 	$args['referrer']             = $_SERVER['HTTP_REFERER'];
 	$args['comment_type']         = 'contact-form';
 
+	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+
+	// Pass Donor comment if enabled.
+	if ( give_is_donor_comment_field_enabled( $form_id ) ) {
+		$give_comment = isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : '';
+
+		$args['comment_content'] = $give_comment;
+	}
+
 	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
 
 	foreach ( $_SERVER as $key => $value ) {
