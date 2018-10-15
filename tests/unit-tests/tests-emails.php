@@ -149,7 +149,6 @@ class Tests_Emails extends Give_Unit_Test_Case {
 		$this->assertarrayHasKey( 'billing_address', give_get_email_tags() );
 		$this->assertarrayHasKey( 'date', give_get_email_tags() );
 		$this->assertarrayHasKey( 'payment_id', give_get_email_tags() );
-		$this->assertarrayHasKey( 'receipt_id', give_get_email_tags() );
 		$this->assertarrayHasKey( 'payment_method', give_get_email_tags() );
 		$this->assertarrayHasKey( 'sitename', give_get_email_tags() );
 		$this->assertarrayHasKey( 'receipt_link', give_get_email_tags() );
@@ -222,13 +221,6 @@ class Tests_Emails extends Give_Unit_Test_Case {
 		give_update_option( 'sequential-ordering_status', 'disabled' );
 		$this->assertEquals( Give()->seq_donation_number->get_serial_number( $this->_payment_id ), give_email_tag_payment_id( $this->_payment_id ) );
 		give_update_option( 'sequential-ordering_status', 'enabled' );
-	}
-
-	/**
-	 * Test {receipt_id} email tag.
-	 */
-	public function test_email_tags_receipt_id() {
-		$this->assertEquals( give_get_payment_key( $this->_payment_id ), give_email_tag_receipt_id( $this->_payment_id ) );
 	}
 
 	/**

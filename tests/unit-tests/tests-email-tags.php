@@ -409,50 +409,6 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test function give_email_tag_receipt_id
-	 *
-	 * @since 2.0
-	 * @cover give_email_tag_receipt_id
-	 */
-	function test_give_email_tag_receipt_id() {
-		/*
-		 * Case 1: Receipt ID from payment.
-		 */
-		$receipt_id = Give_Helper_Payment::create_simple_payment();
-		$receipt_id = give_email_tag_receipt_id( array( 'receipt_id' => $receipt_id ) );
-
-		$this->assertEquals( '', $receipt_id );
-
-		/*
-		 * Case 2: Receipt ID with filter
-		 */
-		add_filter( 'give_email_tag_receipt_id', array( $this, 'give_receipt_id' ), 10, 2 );
-
-		$receipt_id = give_email_tag_receipt_id( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'GIVE-1', $receipt_id );
-
-		remove_filter( 'give_email_tag_receipt_id', array( $this, 'give_receipt_id' ), 10 );
-	}
-
-	/**
-	 * Add give_email_tag_receipt_id filter to give_email_tag_receipt_id function.
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $receipt_id
-	 * @param array  $tag_args
-	 *
-	 * @return string
-	 */
-	public function give_receipt_id( $receipt_id, $tag_args ) {
-		if ( array_key_exists( 'user_id', $tag_args ) ) {
-			$receipt_id = 'GIVE-1';
-		}
-
-		return $receipt_id;
-	}
-
-	/**
 	 * Test function give_email_tag_donation
 	 *
 	 * @since 2.0
