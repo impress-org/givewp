@@ -95,8 +95,8 @@ function give_akismet( $spam ) {
 	// Build args array.
 	$args = array();
 
-	$args['comment_author']       = isset( $_POST['give_first'] ) ? strip_tags( trim( $_POST['give_first'] ) ) : '';
-	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
+	$args['comment_author']       = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
+	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : false;
 	$args['blog']                 = get_option( 'home' );
 	$args['blog_lang']            = get_locale();
 	$args['blog_charset']         = get_option( 'blog_charset' );
