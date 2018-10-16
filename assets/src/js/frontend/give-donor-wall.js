@@ -1,4 +1,4 @@
-/* globals jQuery, give_global_vars */
+/* globals jQuery, Give, give_global_vars */
 import '../plugins/dynamicListener.js';
 
 /**
@@ -10,12 +10,12 @@ import '../plugins/dynamicListener.js';
 class GiveDonorWall {
 	constructor() {
 		window.addEventListener(
-			'load', function() {
+			'load', function () {
 				/**
 				 * Add events
 				 */
-				window.addDynamicEventListener( document, 'click', '.give-donor__read-more', GiveDonorWall.readMoreBtnEvent );
-				window.addDynamicEventListener( document, 'click', '.give-donor__load_more', GiveDonorWall.loadMoreBtnEvent );
+				window.addDynamicEventListener(document, 'click', '.give-donor__read-more', GiveDonorWall.readMoreBtnEvent);
+				window.addDynamicEventListener(document, 'click', '.give-donor__load_more', GiveDonorWall.loadMoreBtnEvent);
 
 			}, false
 		);
@@ -58,19 +58,19 @@ class GiveDonorWall {
 		evt.preventDefault();
 
 		jQuery.ajax({
-			url: Give.fn.getGlobalVar( 'ajaxurl' ),
+			url: Give.fn.getGlobalVar('ajaxurl'),
 			method: 'POST',
 			data: {
 				action: 'give_get_donor_comments',
 				data: evt.target.getAttribute('data-shortcode')
 			},
-			beforeSend(){
+			beforeSend() {
 				evt.target.className += ' give-active';
-				evt.target.setAttribute('disabled', 'disabled' );
+				evt.target.setAttribute('disabled', 'disabled');
 			}
 		}).done(function (res) {
 			evt.target.classList.remove('give-active');
-			evt.target.removeAttribute('disabled', 'disabled' );
+			evt.target.removeAttribute('disabled', 'disabled');
 
 			// Add donor comment.
 			if (res.html.length) {
@@ -81,8 +81,8 @@ class GiveDonorWall {
 			}
 
 			// Update data-shortcode attribute.
-			if( res.shortcode.length ){
-				evt.target.setAttribute('data-shortcode', res.shortcode );
+			if (res.shortcode.length) {
+				evt.target.setAttribute('data-shortcode', res.shortcode);
 			}
 
 			// Remove load more button if not any donor comment exist.
