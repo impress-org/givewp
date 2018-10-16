@@ -66,7 +66,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				if ( $atts['comment_length'] < strlen( $donation['donor_comment'] ) ) {
 					echo sprintf(
-						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
+						'<div class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></div>',
 						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] + 1 ) ),
 						$atts['readmore_text']
 					);
@@ -76,7 +76,10 @@ $atts          = $args[2]; // Shortcode attributes.
 						$comment_content
 					);
 				} else {
-					echo $comment_content;
+					echo sprintf(
+						'<div class="give-donor__comment">%s</div>',
+						$comment_content
+					);
 				}
 				?>
 			</div>
