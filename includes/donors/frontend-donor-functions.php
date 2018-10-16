@@ -98,7 +98,7 @@ function give_validate_gravatar( $id_or_email ) {
 			$data[ $hashkey ] = absint( '200' == $response['response']['code'] );
 		}
 
-		set_transient( $cache_key, $data, WEEK_IN_SECONDS );
+		set_transient( $cache_key, $data, DAY_IN_SECONDS );
 	}
 
 	return (bool) $data[ $hashkey ];
