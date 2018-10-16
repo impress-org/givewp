@@ -348,7 +348,7 @@ class Give_Donor_Wall {
 
 					$temp[ $donation_id ]['name_initial'] = give_get_name_initial( array(
 						'firstname' => $donation_data['_give_donor_billing_first_name'],
-						'lastname'  => $donation_data['_give_donor_billing_first_name'],
+						'lastname'  => $donation_data['_give_donor_billing_last_name'],
 					) );
 
 					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[$donation_id] ) ? $comments[$donation_id] : '';
