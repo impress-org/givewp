@@ -80,25 +80,28 @@ function give_validate_gravatar( $id_or_email ) {
 		$email = $id_or_email;
 	}
 
-	$hashkey = md5( strtolower( trim( $email ) ) );
-	$uri     = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
 
-	$data = wp_cache_get( $hashkey );
-	if ( false === $data ) {
+	$hashkey   = md5( strtolower( trim( $email ) ) );
+	$cache_key = 'give_valid_gravatars';
+	$data      = get_transient( $cache_key );
+	$data      = ! empty( $data ) ? $data : array();
+
+
+	if ( ! array_key_exists( $hashkey, $data ) ) {
+		$uri = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
+
 		$response = wp_remote_head( $uri );
-		if ( is_wp_error( $response ) ) {
-			$data = 'not200';
-		} else {
-			$data = $response['response']['code'];
-		}
-		wp_cache_set( $hashkey, $data, $group = '', $expire = 60 * 5 );
 
+		$data[ $hashkey ] = 0;
+
+		if ( ! is_wp_error( $response ) ) {
+			$data[ $hashkey ] = absint( '200' == $response['response']['code'] );
+		}
+
+		set_transient( $cache_key, $data, WEEK_IN_SECONDS );
 	}
-	if ( $data == '200' ) {
-		return true;
-	} else {
-		return false;
-	}
+
+	return (bool) $data[ $hashkey ];
 }
 
 
