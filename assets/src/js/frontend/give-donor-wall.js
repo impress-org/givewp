@@ -96,6 +96,11 @@ class GiveDonorWall {
 		return false;
 	}
 
+	/**
+	 * Handle gravatar loading
+	 *
+	 * @since 2.3.0
+	 */
 	static loadGravatar() {
 		const gravatar = require('gravatar');
 
@@ -109,22 +114,24 @@ class GiveDonorWall {
 			gravatarContainer,
 			donorEmail,
 			isShowGravatar,
-			gravatarElement;
+			hasValidGravatar;
 
-		gridWraps.forEach(function (gridWrap) {
+		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
 
+			// Bailout out if already loaded gravatar.
 			if (gravatarContainer.classList.contains('gravatar-loaded')) {
 				return;
 			}
 
-			donorEmail = gravatarContainer.getAttribute('data-donor_email'),
-				isShowGravatar = gravatarContainer.getAttribute('data-donor_avatar_attr'),
-				gravatarElement = document.createElement('IMG');
+			donorEmail       = gravatarContainer.getAttribute('data-donor_email');
+			isShowGravatar   = gravatarContainer.getAttribute('data-donor_avatar_attr');
+			hasValidGravatar = gravatarContainer.getAttribute('data-has-valid-gravatar');
 
-			if ('1' === isShowGravatar) {
+			if ('1' === isShowGravatar && '1' === hasValidGravatar) {
+				let gravatarElement = document.createElement('IMG');
+
 				gravatarContainer.innerHTML = '';
-
 				gravatarElement.setAttribute('src', gravatar.url(donorEmail));
 				gravatarElement.setAttribute('width', '60');
 				gravatarElement.setAttribute('height', '60');
