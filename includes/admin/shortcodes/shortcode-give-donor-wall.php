@@ -49,7 +49,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'order',
-				'label'       => esc_attr__( 'Order:', 'give' ),
+				'label'       => esc_attr__( 'Orders', 'give' ),
 				'tooltip'     => esc_attr__( 'Sets the order in which donors appear.', 'give' ),
 				'options'     => array(
 					'ASC'  => esc_html__( 'Oldest to Newest', 'give' ),
@@ -67,6 +67,16 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'name'        => 'comment_length',
 				'label'       => esc_attr__( 'Comment Length', 'give' ),
 				'placeholder' => '140',
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'only_comments',
+				'label'       => __( 'Donors', 'give' ),
+				'tooltip'     => esc_attr__( 'Show and hide donors on basis of comment content.', 'give' ),
+				'options'     => array(
+					'true' => esc_html__( 'Donors With Comment', 'give' ),
+				),
+				'placeholder' => esc_html__( 'All Donors', 'give' ),
 			),
 			array(
 				'type'        => 'textbox',
