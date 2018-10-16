@@ -96,7 +96,8 @@ class Give_Donor_Wall {
 	 * @type bool   $show_time           Whether to display date of the last donation. Default 'true'.
 	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
 	 * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
-	 *                                   displays. Default '140'.
+	 * @type int    $only_comments       Whether to display the donors only with comment. Default 'false'.
+	 *
 	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
 	 * @type string $loadmore_text       Button label which will load more donor comments.
 	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "60"
