@@ -119,7 +119,7 @@ class GiveDonorWall {
 		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
 
-			// Bailout out if already loaded gravatar.
+			// Bailout out if already tried to load gravatar.
 			if (gravatarContainer.classList.contains('gravatar-loaded')) {
 				return;
 			}
@@ -136,10 +136,9 @@ class GiveDonorWall {
 				gravatarElement.setAttribute('width', '60');
 				gravatarElement.setAttribute('height', '60');
 				gravatarContainer.appendChild(gravatarElement);
-
-				gravatarContainer.className += ' gravatar-loaded';
 			}
 
+			gravatarContainer.className += ' gravatar-loaded';
 		});
 	}
 }
