@@ -1,4 +1,4 @@
-/* globals jQuery, give_global_vars */
+/* globals jQuery, Give, give_global_vars */
 import '../plugins/dynamicListener.js';
 
 /**
@@ -16,9 +16,11 @@ class GiveDonorWall {
 				 */
 				window.addDynamicEventListener(document, 'click', '.give-donor__read-more', GiveDonorWall.readMoreBtnEvent);
 				window.addDynamicEventListener(document, 'click', '.give-donor__load_more', GiveDonorWall.loadMoreBtnEvent);
-				
+
 			}, false
 		);
+
+		GiveDonorWall.loadGravatar();
 	}
 
 	/**
@@ -56,19 +58,19 @@ class GiveDonorWall {
 		evt.preventDefault();
 
 		jQuery.ajax({
-			url: Give.fn.getGlobalVar( 'ajaxurl' ),
+			url: Give.fn.getGlobalVar('ajaxurl'),
 			method: 'POST',
 			data: {
 				action: 'give_get_donor_comments',
 				data: evt.target.getAttribute('data-shortcode')
 			},
-			beforeSend(){
+			beforeSend() {
 				evt.target.className += ' give-active';
-				evt.target.setAttribute('disabled', 'disabled' );
+				evt.target.setAttribute('disabled', 'disabled');
 			}
 		}).done(function (res) {
 			evt.target.classList.remove('give-active');
-			evt.target.removeAttribute('disabled', 'disabled' );
+			evt.target.removeAttribute('disabled', 'disabled');
 
 			// Add donor comment.
 			if (res.html.length) {
@@ -79,17 +81,65 @@ class GiveDonorWall {
 			}
 
 			// Update data-shortcode attribute.
-			if( res.shortcode.length ){
-				evt.target.setAttribute('data-shortcode', res.shortcode );
+			if (res.shortcode.length) {
+				evt.target.setAttribute('data-shortcode', res.shortcode);
 			}
 
 			// Remove load more button if not any donor comment exist.
 			if (!res.remaining) {
 				evt.target.remove();
 			}
+
+			GiveDonorWall.loadGravatar();
 		});
 
 		return false;
+	}
+
+	/**
+	 * Handle gravatar loading
+	 *
+	 * @since 2.3.0
+	 */
+	static loadGravatar() {
+		const gravatar = require('gravatar');
+
+		/**
+		 * Loop through the number of donor list on the page.
+		 *
+		 * @since 2.3.0
+		 *
+		 */
+		let gridWraps = document.querySelectorAll('.give-grid__item'),
+			gravatarContainer,
+			donorEmail,
+			isShowGravatar,
+			hasValidGravatar;
+
+		gridWraps.forEach(function (gridWrap, index) {
+			gravatarContainer = gridWrap.querySelector('.give-donor__image');
+
+			// Bailout out if already tried to load gravatar.
+			if (gravatarContainer.classList.contains('gravatar-loaded')) {
+				return;
+			}
+
+			donorEmail       = gravatarContainer.getAttribute('data-donor_email');
+			isShowGravatar   = gravatarContainer.getAttribute('data-donor_avatar_attr');
+			hasValidGravatar = gravatarContainer.getAttribute('data-has-valid-gravatar');
+
+			if ('1' === isShowGravatar && '1' === hasValidGravatar) {
+				let gravatarElement = document.createElement('IMG');
+
+				gravatarContainer.innerHTML = '';
+				gravatarElement.setAttribute('src', gravatar.url(donorEmail));
+				gravatarElement.setAttribute('width', '60');
+				gravatarElement.setAttribute('height', '60');
+				gravatarContainer.appendChild(gravatarElement);
+			}
+
+			gravatarContainer.className += ' gravatar-loaded';
+		});
 	}
 }
 
