@@ -50,7 +50,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'type'        => 'listbox',
 				'name'        => 'order',
 				'label'       => esc_attr__( 'Order:', 'give' ),
-				'tooltip'     => esc_attr__( 'Sets the number of forms per row.', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the order in which donors appear.', 'give' ),
 				'options'     => array(
 					'ASC'  => esc_html__( 'Oldest to Newest', 'give' ),
 				),
