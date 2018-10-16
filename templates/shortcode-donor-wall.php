@@ -21,7 +21,12 @@ $atts          = $args[2]; // Shortcode attributes.
 			<?php
 			// Maybe display the Avatar.
 			$donor_show_avatar = $atts['show_avatar'] ? 1 : 0;
-			echo '<div class="give-donor__image" data-donor_avatar_attr=' . $donor_show_avatar . ' data-donor_email=' . md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ) . '>';
+			echo sprintf(
+				'<div class="give-donor__image" data-donor_avatar_attr="%1$s" data-donor_email="%2$s" data-has-valid-gravatar="%3$s">',
+				$donor_show_avatar,
+				md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
+				absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) )
+			);
 			echo $donation['name_initial'];
 			echo '</div>';
 			?>
