@@ -88,7 +88,9 @@
 
 		// Fit as many columns as possible in the available space.
 		&--best-fit {
-			grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+			@media ( min-width: 40rem ) {
+				grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+			}
 		}
 
 		// Limit the number of columns to an explicit user-defined number.
