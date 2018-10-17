@@ -117,6 +117,9 @@ class Give_DB_Comments extends Give_DB {
 			? give_clean( $current_comment_data['comment_content'] )
 			: $current_comment_data['comment_content'];
 
+		// Filter comment content. Filter documented in /wp-includes/comment.php
+		$current_comment_data['comment_content'] = apply_filters( 'pre_comment_content', $current_comment_data['comment_content'] );
+
 		// Comment parent should be an int.
 		$current_comment_data['comment_parent'] = is_numeric( $current_comment_data['comment_parent'] )
 			? absint( $current_comment_data['comment_parent'] )
