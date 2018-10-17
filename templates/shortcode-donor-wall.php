@@ -16,7 +16,7 @@ $atts          = $args[2]; // Shortcode attributes.
 ?>
 
 <div class="give-grid__item">
-	<div class="give-donor">
+	<div class="give-donor give-card">
 		<div class="give-donor__header">
 			<?php
 			// Maybe display the Avatar.

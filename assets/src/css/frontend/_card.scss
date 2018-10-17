@@ -14,10 +14,8 @@
 	color: inherit;
 	display: flex;
 	flex-direction: column;
-	position: relative;
 	width: 100%;
 	text-decoration: none;
-	top: 0;
 	transition: all 0.1s ease-out;
 
 	&:hover,
@@ -26,7 +24,6 @@
 	&:visited {
 		border-color: #ccc;
 		box-shadow: 0 4px 12px rgba( 0, 0, 0, 0.16 );
-		top: -4px;
 	}
 
 	&__media {
