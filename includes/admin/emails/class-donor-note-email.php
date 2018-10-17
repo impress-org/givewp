@@ -49,11 +49,13 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 					'{date}'
 				),
 				'default_email_message' => sprintf(
-					"Hello, a note has just been added to your donation:\n%s\n\nFor your reference, your donation details are below:\n%s",
+					"Dear %s,\n\nA note has just been added to your donation:\n\n%s\n\nFor your reference, you may may view your donation details by clicking the link below:\n%s\n\nThank you,\n%s",
+					'{name}',
 					'{donor_note}',
-					'{receipt_link}'
+					'{receipt_link}',
+					'{sitename}'
 				),
-				'default_email_header'  => __( 'Donor Note', 'give' ),
+				'default_email_header'  => __( 'New Donation Note Added', 'give' ),
 				'form_metabox_setting'  => false,
 			) );
 
