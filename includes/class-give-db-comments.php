@@ -112,6 +112,14 @@ class Give_DB_Comments extends Give_DB {
 		// Set default values.
 		$current_comment_data = wp_parse_args( $data, $this->get_column_defaults() );
 
+		// Strip out backslash for apostrophe and sanitize comment using give_clean.
+		$current_comment_data['comment_content'] = isset( $current_comment_data['comment_content'] )
+			? give_clean( $current_comment_data['comment_content'] )
+			: $current_comment_data['comment_content'];
+
+		// Filter comment content. Filter documented in /wp-includes/comment.php
+		$current_comment_data['comment_content'] = apply_filters( 'pre_comment_content', $current_comment_data['comment_content'] );
+
 		// Comment parent should be an int.
 		$current_comment_data['comment_parent'] = is_numeric( $current_comment_data['comment_parent'] )
 			? absint( $current_comment_data['comment_parent'] )

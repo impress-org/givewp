@@ -153,13 +153,10 @@ class Give_Comment {
 			$comment_args
 		);
 
-		// Filter comment data
-		$comment_content = apply_filters( 'pre_comment_content', $comment_args['comment_content'] );
-
 		$comment_id = Give()->comment->db->add(
 			array(
 				'comment_ID'      => absint( $comment_args['comment_ID'] ),
-				'comment_content' => $comment_content,
+				'comment_content' => $comment_args['comment_content'],
 				'comment_parent'  => $comment_args['comment_parent'],
 				'comment_type'    => $comment_args['comment_type'],
 			)
