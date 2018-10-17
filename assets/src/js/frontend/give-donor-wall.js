@@ -20,7 +20,10 @@ class GiveDonorWall {
 			}, false
 		);
 
-		GiveDonorWall.loadGravatar();
+		// Run code on after window load.
+		window.addEventListener('load', function () {
+			GiveDonorWall.loadGravatar();
+		});
 	}
 
 	/**
