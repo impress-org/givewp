@@ -325,9 +325,9 @@ function give_donation_form_validate_fields() {
 
 	// Check spam detect.
 	if (
-		isset( $post_data['action'] ) &&
-		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) &&
-		give_is_spam_donation()
+		isset( $post_data['action'] )
+		&& give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+		&& give_is_spam_donation()
 	) {
 		give_set_error( 'spam_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
