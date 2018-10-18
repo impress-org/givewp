@@ -427,6 +427,34 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v230_move_donation_note_callback',
 		)
 	);
+
+	// v2.3.0 remove donor wall related donor meta data.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_delete_donor_wall_related_donor_data',
+			'version'  => '2.3.0',
+			'depend'   => array(
+				'v224_update_donor_meta',
+				'v224_update_donor_meta_forms_id',
+				'v230_move_donor_note',
+				'v230_move_donation_note'
+			),
+			'callback' => 'give_v230_delete_dw_related_donor_data_callback',
+		)
+	);
+
+	// v2.3.0 remove donor wall related comment meta data.
+	$give_updates->register(
+		array(
+			'id'       => 'v230_delete_donor_wall_related_comment_data',
+			'version'  => '2.3.0',
+			'callback' => 'give_v230_delete_dw_related_comment_data_callback',
+			'depend'   => array(
+				'v230_move_donor_note',
+				'v230_move_donation_note'
+			),
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -3188,4 +3216,42 @@ function give_v230_move_donation_note_callback() {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v230_move_donation_note' );
 	}
+}
+
+/**
+ * Delete donor wall related donor meta data
+ *
+ * @since 2.3.0
+ *
+ */
+function give_v230_delete_dw_related_donor_data_callback(){
+	global $wpdb;
+
+	$give_updates = Give_Updates::get_instance();
+
+	$wpdb->query( "DELETE FROM {$wpdb->donormeta} WHERE meta_key LIKE '%_give_anonymous_donor%';" );
+
+	$give_updates->percentage = 100;
+
+	// The Update Ran.
+	give_set_upgrade_complete( 'v230_delete_donor_wall_related_donor_data' );
+}
+
+/**
+ * Delete donor wall related comment meta data
+ *
+ * @since 2.3.0
+ *
+ */
+function give_v230_delete_dw_related_comment_data_callback(){
+	global $wpdb;
+
+	$give_updates = Give_Updates::get_instance();
+
+	$wpdb->query( "DELETE FROM {$wpdb->give_commentmeta} WHERE meta_key='_give_anonymous_donation';" );
+
+	$give_updates->percentage = 100;
+
+	// The Update Ran.
+	give_set_upgrade_complete( 'v230_delete_donor_wall_related_comment_data' );
 }
