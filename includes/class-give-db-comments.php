@@ -117,7 +117,7 @@ class Give_DB_Comments extends Give_DB {
 
 		// Strip out backslash for apostrophe and sanitize comment using give_clean.
 		$current_comment_data['comment_content'] = isset( $current_comment_data['comment_content'] )
-			? give_clean( $current_comment_data['comment_content'] )
+			? wp_unslash( wp_strip_all_tags( $current_comment_data['comment_content'] ) )
 			: $current_comment_data['comment_content'];
 
 		// Comment parent should be an int.
