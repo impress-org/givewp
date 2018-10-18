@@ -8,6 +8,11 @@
 }
 
 .mce-sc-popup {
+	overflow-y: scroll;
+	max-height: 100% !important;
+	top: 50% !important;
+	transform: translate(0, -50%) !important;
+
 	a {
 		text-decoration: underline;
 	}

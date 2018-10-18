@@ -153,7 +153,6 @@ class Give_Comment {
 			$comment_args
 		);
 
-
 		$comment_id = Give()->comment->db->add(
 			array(
 				'comment_ID'      => absint( $comment_args['comment_ID'] ),

@@ -3160,8 +3160,20 @@ function give_v230_move_donation_note_callback() {
 				)
 			);
 
+			// @see https://github.com/impress-org/give/issues/3737#issuecomment-428460802
+			$restricted_meta_keys = array(
+				'akismet_result',
+				'akismet_as_submitted',
+				'akismet_history'
+			);
+
 			if ( $comment_meta = get_comment_meta( $comment->comment_ID ) ) {
 				foreach ( $comment_meta as $meta_key => $meta_value ) {
+					// Skip few comment meta keys.
+					if( in_array( $meta_key, $restricted_meta_keys) ) {
+						continue;
+					}
+
 					$meta_value = maybe_unserialize( $meta_value );
 					$meta_value = is_array( $meta_value ) ? current( $meta_value ) : $meta_value;
 

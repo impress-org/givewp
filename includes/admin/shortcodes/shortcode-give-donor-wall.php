@@ -47,27 +47,47 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
 			),
 			array(
+				'type'        => 'listbox',
+				'name'        => 'order',
+				'label'       => esc_attr__( 'Orders:', 'give' ),
+				'tooltip'     => esc_attr__( 'Sets the order in which donors appear.', 'give' ),
+				'options'     => array(
+					'ASC'  => esc_html__( 'Oldest to Newest', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Newest to Oldest', 'give' ),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'only_comments',
+				'label'       => esc_attr__( 'Donors:', 'give' ),
+				'tooltip'     => esc_attr__( 'Show and hide donors on basis of comment content.', 'give' ),
+				'options'     => array(
+					'true' => esc_html__( 'Donors With Comments', 'give' ),
+				),
+				'placeholder' => esc_html__( 'All Donors', 'give' ),
+			),
+			array(
 				'type'        => 'textbox',
 				'name'        => 'donors_per_page',
-				'label'       => esc_attr__( 'Donors Per Page', 'give' ),
-				'placeholder' => '20',
+				'label'       => esc_attr__( 'Donors Per Page:', 'give' ),
+				'placeholder' => '12',
 			),
 			array(
 				'type'        => 'textbox',
 				'name'        => 'comment_length',
-				'label'       => esc_attr__( 'Comment Length', 'give' ),
-				'placeholder' => '20',
+				'label'       => esc_attr__( 'Comment Length:', 'give' ),
+				'placeholder' => '140',
 			),
 			array(
 				'type'        => 'textbox',
 				'name'        => 'readmore_text',
-				'label'       => esc_attr__( 'Read More Text', 'give' ),
+				'label'       => esc_attr__( 'Read More Text:', 'give' ),
 				'placeholder' => esc_html__( 'Read More', 'give' ),
 			),
 			array(
 				'type'        => 'textbox',
 				'name'        => 'loadmore_text',
-				'label'       => esc_attr__( 'Load More Text', 'give' ),
+				'label'       => esc_attr__( 'Load More Text:', 'give' ),
 				'placeholder' => esc_html__( 'Load More', 'give' ),
 			),
 			array(
@@ -86,7 +106,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'show_avatar',
-				'label'       => esc_attr__( 'Show Avatar', 'give' ),
+				'label'       => esc_attr__( 'Show Avatar:', 'give' ),
 				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
@@ -95,7 +115,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'show_name',
-				'label'       => esc_attr__( 'Show Name', 'give' ),
+				'label'       => esc_attr__( 'Show Name:', 'give' ),
 				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
@@ -104,7 +124,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'show_total',
-				'label'       => esc_attr__( 'Show Total', 'give' ),
+				'label'       => esc_attr__( 'Show Total:', 'give' ),
 				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
@@ -113,7 +133,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'show_time',
-				'label'       => esc_attr__( 'Show Date', 'give' ),
+				'label'       => esc_attr__( 'Show Date:', 'give' ),
 				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
@@ -122,7 +142,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'listbox',
 				'name'        => 'show_comments',
-				'label'       => esc_attr__( 'Show Comments', 'give' ),
+				'label'       => esc_attr__( 'Show Comments:', 'give' ),
 				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
