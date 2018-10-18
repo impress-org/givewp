@@ -128,6 +128,17 @@ class Give_HTML_Elements {
 			)
 		);
 
+		/**
+		 * Filter the forms dropdown.
+		 *
+		 * @since 2.3.0
+		 *
+		 * @param array $form_args Arguments for forms_dropdown query.
+		 *
+		 * @return array Arguments for forms_dropdown query.
+		 */
+		$form_args = apply_filters( 'give_forms_dropdown_args', $form_args );
+
 		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
 
 		// Get forms from cache.
