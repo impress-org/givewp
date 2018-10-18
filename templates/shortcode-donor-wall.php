@@ -76,7 +76,7 @@ $atts          = $args[2]; // Shortcode attributes.
 		?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = apply_filters( 'the_content', $comment->comment_content );
+				$comment_content = nl2br( $comment->comment_content );
 
 				if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
 					echo sprintf(

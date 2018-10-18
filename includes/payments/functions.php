@@ -1440,7 +1440,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
 	$note_html .= '<p>';
 	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
-	$note_html .= $note->comment_content;
+	$note_html .= nl2br( $note->comment_content );
 	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . __( 'Delete this donation note.', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
