@@ -13,14 +13,6 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		? absint( $_POST['give_anonymous_donation'] )
 		: 0;
 
-	$form_id            = isset( $donation_data['give_form_id'] ) ? absint( $donation_data['give_form_id'] ) : 0;
-	$donor_id           = $donation_data['user_info']['donor_id'];
-	$is_anonymous_donor = Give()->donor_meta->get_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", true );
-	$is_edit_donor_meta = ! in_array( $is_anonymous_donor, array( '0', '1' ) )
-		? true
-		: ( 0 !== absint( $is_anonymous_donor ) );
-
-
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$comment_meta = array( 'author_email' => $donation_data['user_info']['email'] );
 
@@ -37,12 +29,6 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 		);
 
 		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
-		Give()->donor_meta->update_meta( $donor_id, '_give_has_comment', '1' );
-	}
-
-	// Set donor as anonymous for donation form.
-	if ( $is_edit_donor_meta ) {
-		Give()->donor_meta->update_meta( $donor_id, "_give_anonymous_donor_form_{$form_id}", $is_anonymous_donation );
 	}
 
 	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
