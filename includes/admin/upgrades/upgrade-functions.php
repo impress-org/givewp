@@ -3229,7 +3229,7 @@ function give_v230_delete_dw_related_donor_data_callback(){
 
 	$give_updates = Give_Updates::get_instance();
 
-	$wpdb->query( "DELETE FROM {$wpdb->donormeta} WHERE meta_key LIKE '%_give_anonymous_donor%';" );
+	$wpdb->query( "DELETE FROM {$wpdb->donormeta} WHERE meta_key LIKE '%_give_anonymous_donor%' OR meta_key='_give_has_comment';" );
 
 	$give_updates->percentage = 100;
 
