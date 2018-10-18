@@ -881,6 +881,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $
  * Converts a PHP date format for use in JavaScript.
  *
  * @since 2.2.0
+ * @deprecated 2.3.0
  *
  * @param string $php_format The PHP date format.
  *
@@ -926,6 +927,7 @@ function give_convert_php_date_format_to_js( $php_format ) {
  * Get localized date format for use in JavaScript.
  *
  * @since 2.2.0
+ * @deprecated 2.3.0
  *
  * @return string.
  */
@@ -935,4 +937,87 @@ function give_get_localized_date_format_to_js() {
 	_give_deprecated_function( __FUNCTION__, '2.3.0', null, $backtrace );
 
 	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
+}
+
+/**
+ * Get donor latest comment
+ *
+ * @since 2.2.0
+ * @deprecated 2.3.0
+ *
+ * @param int $donor_id
+ * @param int $form_id
+ *
+ * @return WP_Comment/stdClass/array
+ */
+function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
+	global $wpdb;
+
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.3.0',
+		'Give()->comment->db'
+	);
+
+	// Backward compatibility.
+	if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
+
+		$comment_args = array(
+			'post_id'    => 0,
+			'orderby'    => 'comment_ID',
+			'order'      => 'DESC',
+			'number'     => 1,
+			'meta_query' => array(
+				'related' => 'AND',
+				array(
+					'key'   => '_give_donor_id',
+					'value' => $donor_id
+				),
+				array(
+					'key'   => '_give_anonymous_donation',
+					'value' => 0
+				)
+			)
+		);
+
+		// Get donor donation comment for specific form.
+		if ( $form_id ) {
+			$comment_args['parent'] = $form_id;
+		}
+
+		$comment = current( give_get_donor_donation_comments( $donor_id, $comment_args ) );
+
+		return $comment;
+	}
+
+	$comment_args = array(
+		'orderby'    => 'comment_ID',
+		'order'      => 'DESC',
+		'number'     => 1,
+		'meta_query' => array(
+			'relation' => 'AND',
+			array(
+				'key'   => '_give_anonymous_donation',
+				'value' => 0,
+			),
+			array(
+				'key'   => '_give_donor_id',
+				'value' => $donor_id,
+			),
+		),
+	);
+
+	// Get donor donation comment for specific form.
+	if ( $form_id ) {
+		$comment_args['meta_query'][] = array(
+			'key'   => '_give_form_id',
+			'value' => $form_id,
+		);
+	}
+
+	$sql = Give()->comment->db->get_sql( $comment_args );
+
+	$comment = current( $wpdb->get_results( $sql ) );
+
+	return $comment;
 }
