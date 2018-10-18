@@ -22,7 +22,7 @@ class GiveDonorWall {
 
 		// Run code on after window load.
 		window.addEventListener('load', function () {
-			GiveDonorWall.loadGravatar();
+			GiveDonorWall.loadGravatars();
 		});
 	}
 
@@ -93,19 +93,41 @@ class GiveDonorWall {
 				evt.target.remove();
 			}
 
-			GiveDonorWall.loadGravatar();
+			GiveDonorWall.loadGravatar(evt.target);
 		});
 
 		return false;
 	}
 
 	/**
+	 * Handle gravatars loading
+	 *
+	 * @since 2.3.0
+	 */
+	static loadGravatars() {
+		/**
+		 * Loop through the number of donor list on the page.
+		 *
+		 * @since 2.3.0
+		 *
+		 */
+		let loaderButtons = document.querySelectorAll('.give-donor__load_more');
+
+		loaderButtons.forEach(function (loaderButton, index) {
+			GiveDonorWall.loadGravatar( loaderButton );
+		});
+	}
+
+
+	/**
 	 * Handle gravatar loading
 	 *
 	 * @since 2.3.0
 	 */
-	static loadGravatar() {
+	static loadGravatar( loaderButton ){
 		const gravatar = require('gravatar');
+
+		console.log('loading for  ' + loaderButton );
 
 		/**
 		 * Loop through the number of donor list on the page.
@@ -113,11 +135,20 @@ class GiveDonorWall {
 		 * @since 2.3.0
 		 *
 		 */
-		let gridWraps = document.querySelectorAll('.give-grid__item'),
+		let gridWraps,
 			gravatarContainer,
 			donorEmail,
 			isShowGravatar,
 			hasValidGravatar;
+
+		isShowGravatar = '1' === Give.fn.getParameterByName('show_avatar', decodeURIComponent(loaderButton.getAttribute('data-shortcode') ) );
+
+		// Bailout.
+		if( ! isShowGravatar ) {
+			return false;
+		}
+
+		gridWraps = loaderButton.parentNode.querySelectorAll('.give-grid__item');
 
 		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
@@ -128,10 +159,9 @@ class GiveDonorWall {
 			}
 
 			donorEmail       = gravatarContainer.getAttribute('data-donor_email');
-			isShowGravatar   = gravatarContainer.getAttribute('data-donor_avatar_attr');
-			hasValidGravatar = gravatarContainer.getAttribute('data-has-valid-gravatar');
+			hasValidGravatar = '1' === gravatarContainer.getAttribute('data-has-valid-gravatar');
 
-			if ('1' === isShowGravatar && '1' === hasValidGravatar) {
+			if (hasValidGravatar) {
 				let gravatarElement = document.createElement('IMG');
 
 				gravatarContainer.innerHTML = '';
