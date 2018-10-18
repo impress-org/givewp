@@ -61,9 +61,9 @@ $atts          = $args[2]; // Shortcode attributes.
 			?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = apply_filters( 'the_content', $donation['donor_comment'] );
+				$comment_content = nl2br( $donation['donor_comment'] );
 
-				if ( $atts['comment_length'] < strlen( $donation['donor_comment'] ) ) {
+				if ( $atts['comment_length'] < strlen( $comment_content ) ) {
 					echo sprintf(
 						'<div class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></div>',
 						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] + 1 ) ),

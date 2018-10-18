@@ -324,7 +324,7 @@ class Give_Scripts {
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
-			'donor_note_confirm_msg'            => __( 'You are adding a donor note , so an email notification will be send to donor. If you do not want to send email notification to donor then either create private note or disable donor note email.', 'give' ),
+			'donor_note_confirm_msg'            => __( 'Please confirm you would like to add a donor note. An email notification will be sent to the donor with the note. If you do not want to notify the donor you may add a private note or disable the donor note email.', 'give' ),
 			'email_notification'            => array(
 				'donor_note' => array(
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
