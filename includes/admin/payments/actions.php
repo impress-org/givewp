@@ -311,16 +311,6 @@ function give_update_payment_details( $data ) {
 
 	if ( $has_anonymous_setting_field ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
-
-		// Update comment meta if admin is not updating comment.
-		if( $comment_id ) {
-			if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
-				// Backward compatibility.
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			} else{
-				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			}
-		}
 	}
 
 	// Update comment.
@@ -348,15 +338,6 @@ function give_update_payment_details( $data ) {
 				$data['give_comment'],
 				$comment_args
 			);
-		}
-
-		if( $comment_id ) {
-			if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
-				// Backward compatibility.
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			} else {
-				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			}
 		}
 	}
 

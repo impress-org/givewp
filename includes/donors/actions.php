@@ -27,8 +27,6 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 			trim( $_POST['give_comment'] ), // We are sanitizing comment in Give_comment:add
 			$comment_meta
 		);
-
-		update_comment_meta( $comment_id, '_give_anonymous_donation', $is_anonymous_donation );
 	}
 
 	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
