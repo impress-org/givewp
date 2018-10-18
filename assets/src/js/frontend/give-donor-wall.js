@@ -127,8 +127,6 @@ class GiveDonorWall {
 	static loadGravatar( loaderButton ){
 		const gravatar = require('gravatar');
 
-		console.log('loading for  ' + loaderButton );
-
 		/**
 		 * Loop through the number of donor list on the page.
 		 *
