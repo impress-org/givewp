@@ -149,7 +149,9 @@ function give_run_install() {
 			'v224_update_donor_meta',
 			'v224_update_donor_meta_forms_id',
 			'v230_move_donor_note',
-			'v230_move_donation_note'
+			'v230_move_donation_note',
+			'v230_delete_donor_wall_related_donor_data',
+			'v230_delete_donor_wall_related_comment_data'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
