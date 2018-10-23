@@ -189,8 +189,8 @@ class Give_Donor_Wall {
 				'show_comments'   => true,
 				'comment_length'  => 140,
 				'only_comments'   => false,
-				'readmore_text'   => esc_html__( 'Read More', 'give' ),
-				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
+				'readmore_text'   => esc_html__( 'Read more', 'give' ),
+				'loadmore_text'   => esc_html__( 'Load more', 'give' ),
 				'avatar_size'     => 60,
 				'orderby'         => 'post_date', // Only for internal use.
 				'order'           => 'DESC',
