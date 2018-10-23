@@ -3153,19 +3153,20 @@ function give_v230_move_donation_note_callback() {
 		)
 	);
 
-	$comments = $wpdb->get_results(
-		$wpdb->prepare(
-			"
+	$query = $wpdb->prepare(
+		"
 			SELECT *
 			FROM {$wpdb->comments}
 			WHERE comment_type=%s
+			ORDER BY comment_ID ASC
 			LIMIT 100
 			OFFSET %d
 			",
-			'give_payment_note',
-			$give_updates->get_offset( 100 )
-		)
+		'give_payment_note',
+		$give_updates->get_offset( 100 )
 	);
+
+	$comments = $wpdb->get_results( $query );
 
 	if ( $comments ) {
 		$give_updates->set_percentage( $donation_note_count, $give_updates->step * 100 );
@@ -3216,10 +3217,30 @@ function give_v230_move_donation_note_callback() {
 			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
 
 			// Delete comment.
-			wp_delete_comment( $comment->comment_ID, true );
+			update_comment_meta( $comment->comment_ID, '_give_comment_moved', 1 );
 		}
 
 	} else {
+		$comment_ids = $wpdb->get_col(
+			$wpdb->prepare(
+					"
+				SELECT DISTINCT comment_id
+				FROM {$wpdb->commentmeta}
+				WHERE meta_key=%s
+				AND meta_value=%d
+				",
+				'_give_comment_moved',
+				1
+			)
+		);
+
+		if( ! empty( $comment_ids ) ) {
+			$comment_ids = "'" . implode( "','", $comment_ids ). "'";
+
+			$wpdb->query( "DELETE FROM {$wpdb->comments} WHERE comment_ID IN ({$comment_ids})" );
+			$wpdb->query( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN ({$comment_ids})" );
+		}
+
 		// The Update Ran.
 		give_set_upgrade_complete( 'v230_move_donation_note' );
 	}
