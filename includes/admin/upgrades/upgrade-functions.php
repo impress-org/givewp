@@ -2601,12 +2601,25 @@ function give_v201_add_missing_donors_callback() {
 	global $wpdb;
 	give_v201_create_tables();
 
-	if ( $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) ) ) {
-		$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
-		$donors     = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
-		$donor_data = array();
+	$give_updates = Give_Updates::get_instance();
 
-		if ( $missing_donors = array_diff( $customers, $donors ) ) {
+	// Bailout.
+	if ( ! $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) ) ) {
+		Give_Updates::get_instance()->percentage = 100;
+		give_set_upgrade_complete( 'v201_add_missing_donors' );
+	}
+
+	$total_customers = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}give_customers " );
+	$customers       = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers LIMIT 20 OFFSET " . $give_updates->get_offset( 20 ) ), 'id' );
+	$donors          = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
+
+	if ( ! empty( $customers ) ) {
+		$give_updates->set_percentage( $total_customers, ( $give_updates->step * 20 ) );
+
+		$missing_donors = array_diff( $customers, $donors );
+		$donor_data     = array();
+
+		if ( $missing_donors ) {
 			foreach ( $missing_donors as $donor_id ) {
 				$donor_data[] = array(
 					'info' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customers WHERE id=%d", $donor_id ) ),
@@ -2700,10 +2713,9 @@ function give_v201_add_missing_donors_callback() {
 			Give()->donors->table_name     = $donor_table_name;
 			Give()->donor_meta->table_name = $donor_meta_table_name;
 		}
+	} else {
+		give_set_upgrade_complete( 'v201_add_missing_donors' );
 	}
-
-	Give_Updates::get_instance()->percentage = 100;
-	give_set_upgrade_complete( 'v201_add_missing_donors' );
 }
 
 
