@@ -3188,6 +3188,10 @@ function give_v230_move_donation_note_callback() {
 				)
 			);
 
+			if( ! $comment_id ) {
+				continue;
+			}
+
 			// @see https://github.com/impress-org/give/issues/3737#issuecomment-428460802
 			$restricted_meta_keys = array(
 				'akismet_result',
@@ -3210,6 +3214,9 @@ function give_v230_move_donation_note_callback() {
 			}
 
 			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
+
+			// Delete comment.
+			wp_delete_comment( $comment->comment_ID );
 		}
 
 	} else {
