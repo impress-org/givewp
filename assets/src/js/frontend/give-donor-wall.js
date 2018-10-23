@@ -62,7 +62,7 @@ class GiveDonorWall {
 
 		let loaderButton = evt.target,
 			parent = loaderButton.parentNode,
-			shortcodeAttrHiddenField = parent.getElementsByClassName('give-donor-wall-shortcode-attrs');
+			shortcodeAttrHiddenField = parent.getElementsByClassName('give-donor-wall-shortcode-attrs')[0];
 
 		jQuery.ajax({
 			url: Give.fn.getGlobalVar('ajaxurl'),
