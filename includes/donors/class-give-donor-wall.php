@@ -140,11 +140,14 @@ class Give_Donor_Wall {
 		$temp_atts          = $atts;
 		$temp_atts['paged'] = $atts['paged'] + 1;
 
-		$more_btn_html = '';
+		$more_btn_html = sprintf(
+			'<input type="hidden" class="give-donor-wall-shortcode-attrs" data-shortcode="%1$s">',
+			rawurlencode( http_build_query( $atts ) )
+		);
+
 		if ( $this->has_donations( $temp_atts ) ) {
-			$more_btn_html = sprintf(
-				'<button class="give-donor__load_more give-button-with-loader" data-shortcode="%1$s"><span class="give-loading-animation"></span>%2$s</button>',
-				rawurlencode( http_build_query( $atts ) ),
+			$more_btn_html .= sprintf(
+				'<button class="give-donor__load_more give-button-with-loader"><span class="give-loading-animation"></span>%1$s</button>',
 				$atts['loadmore_text']
 			);
 		}
