@@ -90,6 +90,11 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sequential_ordering" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sessions" );
 
+	// Remove tables which are supported with backward compatibility.
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_customers" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_customermeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_paymentmeta" );
+
 	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
 	wp_clear_scheduled_hook( 'give_weekly_scheduled_events' );
