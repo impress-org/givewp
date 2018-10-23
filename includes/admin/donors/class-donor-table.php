@@ -171,11 +171,30 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $donor ) {
-		$name     = ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+
+		// Check whether a Gravatar exists for a donor or not.
+		$validate_gravatar_image = give_validate_gravatar( $donor['email'] );
+
+		// Get donor's initials for non-gravatars
+		$title_prefix                 = Give()->donor_meta->get_meta( $donor['id'], '_give_donor_title_prefix', true );
+		$donor_name_without_prefix    = trim( str_replace( $title_prefix, '', $donor['name'] ) );
+		$donor_name_array             = explode( " ", $donor_name_without_prefix );
+		$donor_name_args['firstname'] = ! empty( $donor_name_array[0] ) ? $donor_name_array[0] : '';
+		$donor_name_args['lastname']  = ! empty( $donor_name_array[1] ) ? $donor_name_array[1] : '';
+		$donor_name_initial           = give_get_name_initial( $donor_name_args );
+
+		// Gravatars image for donor
+		if ( $validate_gravatar_image ) {
+			$donor_gravatar_image = get_avatar( $donor['email'] );
+		} else {
+			$donor_gravatar_image = '<div class="give-donor-initial">' . $donor_name_initial . '</div>';
+		}
+
+		$name     = ! empty( $donor['name'] ) ? ($donor_gravatar_image . '<span>'. $donor['name']. '</span>') : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 
-		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
+		return '<a href="' . esc_url( $view_url ) . '" class="give-donor-name">' . $name . '</a>' . $this->row_actions( $actions );
 	}
 
 	/**
