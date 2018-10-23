@@ -96,7 +96,7 @@ class GiveDonorWall {
 				loaderButton.remove();
 			}
 
-			GiveDonorWall.loadGravatar(evt.target);
+			GiveDonorWall.loadGravatar(shortcodeAttrHiddenField);
 		});
 
 		return false;
