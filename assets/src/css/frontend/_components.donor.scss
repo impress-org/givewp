@@ -113,9 +113,17 @@ $donor-space-triple: $donor-space * 3;
 		white-space: nowrap;
 	}
 
+	&__expert+&__comment{
+		display: none;
+	}
+
 }
 
 .give-donor-wall-modal {
+	.give-donor__comment{
+		display: block;
+	}
+
 	p:last-child {
 		margin-bottom: 0;
 	}

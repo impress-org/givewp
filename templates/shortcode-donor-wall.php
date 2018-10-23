@@ -71,7 +71,7 @@ $atts          = $args[2]; // Shortcode attributes.
 					);
 
 					echo sprintf(
-						'<div class="give-donor__comment" style="display: none">%s</div>',
+						'<div class="give-donor__comment">%s</div>',
 						$comment_content
 					);
 				} else {

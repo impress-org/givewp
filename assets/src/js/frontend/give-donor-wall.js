@@ -39,7 +39,7 @@ class GiveDonorWall {
 		jQuery.magnificPopup.open(
 			{
 				items: {
-					src: evt.target.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('give-donor__comment')[0].innerHTML,
+					src: evt.target.parentNode.parentNode.parentNode.getElementsByClassName('give-donor__comment')[0],
 					type: 'inline',
 				},
 				mainClass: 'give-modal give-donor-wall-modal',
