@@ -3216,7 +3216,7 @@ function give_v230_move_donation_note_callback() {
 			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
 
 			// Delete comment.
-			wp_delete_comment( $comment->comment_ID );
+			wp_delete_comment( $comment->comment_ID, true );
 		}
 
 	} else {
