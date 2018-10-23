@@ -79,16 +79,16 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	}
 
 	// Remove all database tables.
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donors' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donormeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customers' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customermeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_paymentmeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_formmeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logs' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logmeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_sequential_ordering' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_sessions' );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donors" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donormeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donationmeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_formmeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_logs" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_logmeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_comments" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_commentmeta" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sequential_ordering" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sessions" );
 
 	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
