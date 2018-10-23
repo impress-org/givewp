@@ -181,7 +181,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				}
 			}
 
-			if ( ! empty( $sql ) ) {
+			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
 					$wpdb->query( $query );
 				}
