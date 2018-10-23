@@ -60,37 +60,40 @@ class GiveDonorWall {
 	static loadMoreBtnEvent(evt) {
 		evt.preventDefault();
 
+		let loaderButton = evt.target,
+			parent = loaderButton.parentNode,
+			shortcodeAttrHiddenField = parent.getElementsByClassName('give-donor-wall-shortcode-attrs');
+
 		jQuery.ajax({
 			url: Give.fn.getGlobalVar('ajaxurl'),
 			method: 'POST',
 			data: {
 				action: 'give_get_donor_comments',
-				data: evt.target.getAttribute('data-shortcode')
+				data: shortcodeAttrHiddenField.getAttribute('data-shortcode')
 			},
 			beforeSend() {
-				evt.target.className += ' give-active';
-				evt.target.setAttribute('disabled', 'disabled');
+				loaderButton.className += ' give-active';
+				loaderButton.setAttribute('disabled', 'disabled');
 			}
 		}).done(function (res) {
-			evt.target.classList.remove('give-active');
-			evt.target.removeAttribute('disabled', 'disabled');
+			loaderButton.classList.remove('give-active');
+			loaderButton.removeAttribute('disabled', 'disabled');
 
 			// Add donor comment.
 			if (res.html.length) {
-				evt.target
-					.parentNode
+				parent
 					.getElementsByClassName('give-grid')[0]
 					.insertAdjacentHTML('beforeend', res.html);
 			}
 
 			// Update data-shortcode attribute.
 			if (res.shortcode.length) {
-				evt.target.setAttribute('data-shortcode', res.shortcode);
+				shortcodeAttrHiddenField.setAttribute('data-shortcode', res.shortcode);
 			}
 
 			// Remove load more button if not any donor comment exist.
 			if (!res.remaining) {
-				evt.target.remove();
+				loaderButton.remove();
 			}
 
 			GiveDonorWall.loadGravatar(evt.target);
@@ -111,10 +114,10 @@ class GiveDonorWall {
 		 * @since 2.3.0
 		 *
 		 */
-		let loaderButtons = document.querySelectorAll('.give-donor__load_more');
+		let shortcodeAttrHiddenFields = document.querySelectorAll('.give-donor-wall-shortcode-attrs');
 
-		loaderButtons.forEach(function (loaderButton, index) {
-			GiveDonorWall.loadGravatar( loaderButton );
+		shortcodeAttrHiddenFields.forEach(function (shortcodeAttrHiddenField, index) {
+			GiveDonorWall.loadGravatar( shortcodeAttrHiddenField );
 		});
 	}
 
@@ -124,7 +127,7 @@ class GiveDonorWall {
 	 *
 	 * @since 2.3.0
 	 */
-	static loadGravatar( loaderButton ){
+	static loadGravatar( shortcodeAttrHiddenField ){
 		const gravatar = require('gravatar');
 
 		/**
@@ -139,14 +142,14 @@ class GiveDonorWall {
 			isShowGravatar,
 			hasValidGravatar;
 
-		isShowGravatar = '1' === Give.fn.getParameterByName('show_avatar', decodeURIComponent(loaderButton.getAttribute('data-shortcode') ) );
+		isShowGravatar = '1' === Give.fn.getParameterByName('show_avatar', decodeURIComponent(shortcodeAttrHiddenField.getAttribute('data-shortcode') ) );
 
 		// Bailout.
 		if( ! isShowGravatar ) {
 			return false;
 		}
 
-		gridWraps = loaderButton.parentNode.querySelectorAll('.give-grid__item');
+		gridWraps = shortcodeAttrHiddenField.parentNode.querySelectorAll('.give-grid__item');
 
 		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
