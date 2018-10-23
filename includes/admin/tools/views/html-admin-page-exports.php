@@ -167,7 +167,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<td>
 							<form method="post">
 								<?php
-								$export_excludes = apply_filters( 'settings_export_excludes', array() );
+								$export_excludes = apply_filters( 'give_settings_export_excludes', array() );
 								if ( ! empty( $export_excludes ) ) {
 									?>
 									<i class="settings-excludes-title"><?php esc_html_e( 'Checked options from the list will not be exported.', 'give' ); ?></i>

@@ -2601,12 +2601,25 @@ function give_v201_add_missing_donors_callback() {
 	global $wpdb;
 	give_v201_create_tables();
 
-	if ( $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) ) ) {
-		$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
-		$donors     = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
-		$donor_data = array();
+	$give_updates = Give_Updates::get_instance();
 
-		if ( $missing_donors = array_diff( $customers, $donors ) ) {
+	// Bailout.
+	if ( ! $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) ) ) {
+		Give_Updates::get_instance()->percentage = 100;
+		give_set_upgrade_complete( 'v201_add_missing_donors' );
+	}
+
+	$total_customers = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}give_customers " );
+	$customers       = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers LIMIT 20 OFFSET " . $give_updates->get_offset( 20 ) ), 'id' );
+	$donors          = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
+
+	if ( ! empty( $customers ) ) {
+		$give_updates->set_percentage( $total_customers, ( $give_updates->step * 20 ) );
+
+		$missing_donors = array_diff( $customers, $donors );
+		$donor_data     = array();
+
+		if ( $missing_donors ) {
 			foreach ( $missing_donors as $donor_id ) {
 				$donor_data[] = array(
 					'info' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customers WHERE id=%d", $donor_id ) ),
@@ -2700,10 +2713,9 @@ function give_v201_add_missing_donors_callback() {
 			Give()->donors->table_name     = $donor_table_name;
 			Give()->donor_meta->table_name = $donor_meta_table_name;
 		}
+	} else {
+		give_set_upgrade_complete( 'v201_add_missing_donors' );
 	}
-
-	Give_Updates::get_instance()->percentage = 100;
-	give_set_upgrade_complete( 'v201_add_missing_donors' );
 }
 
 
@@ -3153,19 +3165,20 @@ function give_v230_move_donation_note_callback() {
 		)
 	);
 
-	$comments = $wpdb->get_results(
-		$wpdb->prepare(
-			"
+	$query = $wpdb->prepare(
+		"
 			SELECT *
 			FROM {$wpdb->comments}
 			WHERE comment_type=%s
+			ORDER BY comment_ID ASC
 			LIMIT 100
 			OFFSET %d
 			",
-			'give_payment_note',
-			$give_updates->get_offset( 100 )
-		)
+		'give_payment_note',
+		$give_updates->get_offset( 100 )
 	);
+
+	$comments = $wpdb->get_results( $query );
 
 	if ( $comments ) {
 		$give_updates->set_percentage( $donation_note_count, $give_updates->step * 100 );
@@ -3187,6 +3200,10 @@ function give_v230_move_donation_note_callback() {
 						: 'donation',
 				)
 			);
+
+			if( ! $comment_id ) {
+				continue;
+			}
 
 			// @see https://github.com/impress-org/give/issues/3737#issuecomment-428460802
 			$restricted_meta_keys = array(
@@ -3210,9 +3227,32 @@ function give_v230_move_donation_note_callback() {
 			}
 
 			Give()->comment->db_meta->update_meta( $comment_id, '_give_form_id', $form_id );
+
+			// Delete comment.
+			update_comment_meta( $comment->comment_ID, '_give_comment_moved', 1 );
 		}
 
 	} else {
+		$comment_ids = $wpdb->get_col(
+			$wpdb->prepare(
+					"
+				SELECT DISTINCT comment_id
+				FROM {$wpdb->commentmeta}
+				WHERE meta_key=%s
+				AND meta_value=%d
+				",
+				'_give_comment_moved',
+				1
+			)
+		);
+
+		if( ! empty( $comment_ids ) ) {
+			$comment_ids = "'" . implode( "','", $comment_ids ). "'";
+
+			$wpdb->query( "DELETE FROM {$wpdb->comments} WHERE comment_ID IN ({$comment_ids})" );
+			$wpdb->query( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN ({$comment_ids})" );
+		}
+
 		// The Update Ran.
 		give_set_upgrade_complete( 'v230_move_donation_note' );
 	}

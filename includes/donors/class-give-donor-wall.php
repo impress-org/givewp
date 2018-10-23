@@ -140,11 +140,14 @@ class Give_Donor_Wall {
 		$temp_atts          = $atts;
 		$temp_atts['paged'] = $atts['paged'] + 1;
 
-		$more_btn_html = '';
+		$more_btn_html = sprintf(
+			'<input type="hidden" class="give-donor-wall-shortcode-attrs" data-shortcode="%1$s">',
+			rawurlencode( http_build_query( $atts ) )
+		);
+
 		if ( $this->has_donations( $temp_atts ) ) {
-			$more_btn_html = sprintf(
-				'<button class="give-donor__load_more give-button-with-loader" data-shortcode="%1$s"><span class="give-loading-animation"></span>%2$s</button>',
-				rawurlencode( http_build_query( $atts ) ),
+			$more_btn_html .= sprintf(
+				'<button class="give-donor__load_more give-button-with-loader"><span class="give-loading-animation"></span>%1$s</button>',
 				$atts['loadmore_text']
 			);
 		}
@@ -186,8 +189,8 @@ class Give_Donor_Wall {
 				'show_comments'   => true,
 				'comment_length'  => 140,
 				'only_comments'   => false,
-				'readmore_text'   => esc_html__( 'Read More', 'give' ),
-				'loadmore_text'   => esc_html__( 'Load More', 'give' ),
+				'readmore_text'   => esc_html__( 'Read more', 'give' ),
+				'loadmore_text'   => esc_html__( 'Load more', 'give' ),
 				'avatar_size'     => 60,
 				'orderby'         => 'post_date', // Only for internal use.
 				'order'           => 'DESC',
@@ -327,7 +330,7 @@ class Give_Donor_Wall {
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
-				ORDER BY p1.post_date {$query_params['order']}
+				ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}
 				";
 
 		$results = (array) $wpdb->get_results( $sql );

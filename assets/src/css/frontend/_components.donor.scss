@@ -113,6 +113,10 @@ $donor-space-triple: $donor-space * 3;
 		white-space: nowrap;
 	}
 
+	&__excerpt+&__comment{
+		display: none;
+	}
+
 }
 
 .give-donor-wall-modal {
