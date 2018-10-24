@@ -405,12 +405,23 @@ class Give_Emails {
 	 * Converts text to formatted HTML. This is primarily for turning line breaks into <p> and <br/> tags.
 	 *
 	 * @since 1.0
+	 *
+	 * @param string $message
+	 *
+	 * @return string
 	 */
 	public function text_to_html( $message ) {
-		$disable_wpautop = false;
-		$disable_wpautop = apply_filters('give_email_disable_wpautop', $disable_wpautop );
+		/**
+		 * Filter the flag which decide to process email message with wpautop or not.
+		 *
+		 * @since 2.3.0
+		 */
+		$disable_wpautop = apply_filters( 'give_email_message_disable_wpautop', false );
 
-		if ( ( 'text/html' == $this->content_type || true === $this->html ) && false === $disable_wpautop ) {
+		if (
+			( 'text/html' == $this->content_type || true === $this->html )
+			&& ! $disable_wpautop
+		) {
 			$message = wpautop( $message );
 		}
 
