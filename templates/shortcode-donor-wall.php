@@ -61,25 +61,37 @@ $atts          = $args[2]; // Shortcode attributes.
 			?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = nl2br( $donation['donor_comment'] );
+				$comment     = trim( $donation['donor_comment'] );
+				$total_chars = strlen( $comment );
+				$max_chars   = $atts['comment_length'];
 
-				if ( $atts['comment_length'] < strlen( $comment_content ) ) {
-					echo sprintf(
-						'<div class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></div>',
-						substr( $comment_content, 0, strpos( $comment_content, ' ', $atts['comment_length'] + 1 ) ),
-						$atts['readmore_text']
-					);
+				// A truncated excerpt is displayed if the comment is too long.
+				if ( $max_chars < $total_chars ) {
+					$excerpt    = '';
+					$offset     = -( $total_chars - $max_chars );
+					$last_space = strrpos( $comment, ' ', $offset );
+
+					if ( $last_space ) {
+						// Truncate excerpt at last space before limit.
+						$excerpt = substr( $comment, 0, $last_space );
+					} else {
+						// There are no spaces, so truncate excerpt at limit.
+						$excerpt = substr( $comment, 0, $max_chars );
+					}
+
+					$excerpt = trim( $excerpt, '.!,:;' );
 
 					echo sprintf(
-						'<div class="give-donor__comment">%s</div>',
-						$comment_content
-					);
-				} else {
-					echo sprintf(
-						'<div class="give-donor__comment">%s</div>',
-						$comment_content
+						'<p class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></p>',
+						nl2br( esc_html( $excerpt ) ),
+						esc_html( $atts['readmore_text'] )
 					);
 				}
+
+				echo sprintf(
+					'<p class="give-donor__comment">%s</p>',
+					nl2br( esc_html( $comment ) )
+				);
 				?>
 			</div>
 		<?php endif; ?>
