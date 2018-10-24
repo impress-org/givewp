@@ -79,6 +79,8 @@ $atts          = $args[2]; // Shortcode attributes.
 						$excerpt = substr( $comment, 0, $max_chars );
 					}
 
+					$excerpt = trim( $excerpt, '.!,:;' );
+
 					echo sprintf(
 						'<p class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></p>',
 						nl2br( esc_html( $excerpt ) ),
