@@ -407,8 +407,10 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function text_to_html( $message ) {
+		$disable_wpautop = false;
+		$disable_wpautop = apply_filters('give_email_disable_wpautop', $disable_wpautop );
 
-		if ( 'text/html' == $this->content_type || true === $this->html ) {
+		if ( ( 'text/html' == $this->content_type || true === $this->html ) && false === $disable_wpautop ) {
 			$message = wpautop( $message );
 		}
 
