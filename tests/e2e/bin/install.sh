@@ -18,5 +18,5 @@ if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [ "${TRAVIS_BRANCH}" == 'master' 
 	npm run test
 
 else
-	echo 'Give Log: Stop frontend tests from running on branches other then master';
+	echo 'Give Log: Stop frontend tests from running on branches other than master';
 fi
