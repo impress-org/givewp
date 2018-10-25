@@ -265,7 +265,7 @@ function give_receipt_shortcode( $atts ) {
 		'date'           => true,
 		'payment_key'    => false,
 		'payment_method' => true,
-		'payment_id'     => true,
+		'donation_id'    => true,
 		'payment_status' => false,
 		'company_name'   => false,
 		'status_notice'  => true,
@@ -275,12 +275,12 @@ function give_receipt_shortcode( $atts ) {
 	$session = give_get_purchase_session();
 
 	// set payment key var
-	if ( isset( $_GET['payment_key'] ) ) {
-		$payment_key = urldecode( $_GET['payment_key'] );
+	if ( isset( $_GET['donation_id'] ) ) {
+		$donation_id = urldecode( $_GET['donation_id'] );
 	} elseif ( $session ) {
-		$payment_key = $session['purchase_key'];
-	} elseif ( $give_receipt_args['payment_key'] ) {
-		$payment_key = $give_receipt_args['payment_key'];
+		$donation_id = $session['donation_id'];
+	} elseif ( $give_receipt_args['donation_id'] ) {
+		$donation_id = $give_receipt_args['donation_id'];
 	}
 
 	if( ! wp_doing_ajax() ) {
@@ -299,7 +299,7 @@ function give_receipt_shortcode( $atts ) {
 	$email_access = give_get_option( 'email_access' );
 
 	// No payment_key found & Email Access is Turned on.
-	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+	if ( ! isset( $donation_id ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
@@ -307,13 +307,13 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} elseif ( ! isset( $payment_key ) ) {
+	} elseif ( ! isset( $donation_id ) ) {
 
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 
 	}
 
-	$user_can_view = give_can_view_receipt( $payment_key );
+	$user_can_view = give_can_view_receipt( $donation_id );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
 	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
