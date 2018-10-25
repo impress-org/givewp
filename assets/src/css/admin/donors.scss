@@ -70,7 +70,7 @@
 			float: left;
 
 			img {
-				border-radius: 3px;
+			  border-radius: 50%;
 			}
 
 		}
@@ -360,5 +360,38 @@
 			text-align: left;
 		}
 	}
-}
 
+	/*
+	* Give Donor Gravatar
+	*/
+	.give-donor-name, #donor-avatar {
+		.give-donor-admin-avatar, img {
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			border: 1px solid #e5e5e5;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 10px;
+			line-height: 60px;
+			text-align: center;
+		}
+	}
+
+	.give-donor-name {
+		&:focus {
+			box-shadow: none;
+			outline: none;
+		}
+	}
+
+	#donor-avatar {
+		.give-donor-admin-avatar, img {
+			width: 96px;
+			height: 96px;
+			line-height: 96px;
+			margin-right: 0;
+		}
+	}
+
+}

@@ -324,8 +324,9 @@ function give_donor_view( $donor ) {
 	$title_prefixes = give_get_name_title_prefixes();
 
 	// Prepend title prefix to name if it is set.
-	$title_prefix = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
-	$donor->name  = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
+	$title_prefix              = Give()->donor_meta->get_meta( $donor->id, '_give_donor_title_prefix', true );
+	$donor_name_without_prefix = $donor->name;
+	$donor->name               = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
 	?>
 	<div id="donor-summary" class="info-wrapper donor-section postbox">
 		<form id="edit-donor-info" method="post"
@@ -333,7 +334,26 @@ function give_donor_view( $donor ) {
 			<div class="donor-info">
 				<div class="donor-bio-header clearfix">
 					<div class="avatar-wrap left" id="donor-avatar">
-						<?php echo get_avatar( $donor->email ); ?>
+						<?php
+
+						// Check whether a Gravatar exists for a donor or not.
+						$validate_gravatar_image = give_validate_gravatar( $donor->email );
+
+						// Get donor's initials for non-gravatars
+						$donor_name_array             = explode( " ", $donor_name_without_prefix );
+						$donor_name_args['firstname'] = ! empty( $donor_name_array[0] ) ? $donor_name_array[0] : '';
+						$donor_name_args['lastname']  = ! empty( $donor_name_array[1] ) ? $donor_name_array[1] : '';
+						$donor_name_initial           = give_get_name_initial( $donor_name_args );
+
+						// Gravatars image for donor
+						if ( $validate_gravatar_image ) {
+							$donor_gravatar_image = get_avatar( $donor->email );
+						} else {
+							$donor_gravatar_image = '<div class="give-donor-admin-avatar">' . $donor_name_initial . '</div>';
+						}
+
+						echo $donor_gravatar_image;
+						?>
 					</div>
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-name info-item edit-item">
