@@ -56,6 +56,30 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'placeholder' => esc_html__( 'Excluded Forms', 'give' )
 			),
 			array(
+				'type'    => 'listbox',
+				'name'    => 'orderby',
+				'label'   => esc_attr__( 'Order By:', 'give' ),
+				'tooltip' => esc_attr__( 'Different parameter to set the order for the forms display in the form grid.', 'give' ),
+				'options' => array(
+					'date'             => esc_html__( 'Date Created', 'give' ),
+					'name'             => esc_html__( 'Form Name', 'give' ),
+					'amount_donated'   => esc_html__( 'Amount Donated', 'give' ),
+					'number_donations' => esc_html__( 'Number of Donations', 'give' ),
+					'menu_order'       => esc_html__( 'Menu Order', 'give' ),
+					'post__in'         => esc_html__( 'Provided Form IDs', 'give' ),
+				),
+			),
+			array(
+				'type'    => 'listbox',
+				'name'    => 'order',
+				'label'   => esc_attr__( 'Order:', 'give' ),
+				'tooltip' => esc_attr__( 'Display forms based on order.', 'give' ),
+				'options' => array(
+					'ASC'  => esc_html__( 'Ascending', 'give' ),
+					'DESC' => esc_html__( 'Descending', 'give' ),
+				),
+			),
+			array(
 				'type'        => 'listbox',
 				'name'        => 'columns',
 				'label'       => esc_attr__( 'Columns:', 'give' ),
