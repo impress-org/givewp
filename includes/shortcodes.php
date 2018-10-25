@@ -802,6 +802,8 @@ function give_form_grid_shortcode( $atts ) {
 		'paged'               => true,
 		'ids'                 => '',
 		'exclude'             => '',
+		'orderby'             => 'date',
+		'order'               => 'DESC',
 		'cats'                => '',
 		'tags'                => '',
 		'columns'             => 'best-fit',
@@ -838,6 +840,8 @@ function give_form_grid_shortcode( $atts ) {
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
 		'posts_per_page' => $atts['forms_per_page'],
+		'orderby'        => $atts['orderby'],
+		'order'          => $atts['order'],
 		'tax_query'      => array(
 			'relation' => 'AND',
 		),
@@ -890,6 +894,18 @@ function give_form_grid_shortcode( $atts ) {
 			'terms'    => $tags,
 		);
 		$form_args['tax_query'][] = $tax_query;
+	}
+
+	// Maybe filter by form Amount Donated.
+	if( !empty( $atts['orderby'] ) && 'amount_donated' === $atts['orderby'] ) {
+		$form_args['meta_key'] = '_give_form_earnings';
+		$form_args['orderby'] = 'meta_value_num';
+	}
+
+	// Maybe filter by form Number of Donations.
+	if( !empty( $atts['orderby'] ) && 'number_donations' === $atts['orderby'] ) {
+		$form_args['meta_key'] = '_give_form_sales';
+		$form_args['orderby'] = 'meta_value_num';
 	}
 
 	// Query to output donation forms.
