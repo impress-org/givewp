@@ -44,7 +44,7 @@ function give_donation_history( $atts, $content = false ) {
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 
 	// If payment_key query arg exists, return receipt instead of donation history.
-	if ( isset( $_GET['payment_key'] ) ) {
+	if ( isset( $_GET['donation_id'] ) ) {
 		ob_start();
 
 		echo give_receipt_shortcode( array() );
