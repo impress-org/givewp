@@ -271,10 +271,10 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	// set $session var
+	// set $session var.
 	$session = give_get_purchase_session();
 
-	// set payment key var
+	// Set donation id.
 	if ( isset( $_GET['donation_id'] ) ) {
 		$donation_id = urldecode( $_GET['donation_id'] );
 	} elseif ( $session ) {
