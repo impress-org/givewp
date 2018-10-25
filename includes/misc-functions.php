@@ -847,30 +847,27 @@ if ( ! function_exists( 'array_column' ) ) {
  *
  * @since 1.3.2
  *
- * @param string $payment_key
+ * @param int $donation_id Donation ID.
  *
  * @return bool Whether the receipt is visible or not.
  */
-function give_can_view_receipt( $payment_key = '' ) {
+function give_can_view_receipt( $donation_id ) {
 
 	$return = false;
 
-	if ( empty( $payment_key ) ) {
+	if ( empty( $donation_id ) ) {
 		return $return;
 	}
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_donation_id_by_key( $payment_key );
-
-	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
-
-	$payment_meta = give_get_payment_meta( $give_receipt_args['id'] );
+	$give_receipt_args['id'] = $donation_id;
+	$user_id                 = (int) give_get_payment_user_id( $donation_id );
 
 	if ( is_user_logged_in() ) {
 		if ( $user_id === (int) get_current_user_id() ) {
 			$return = true;
-		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $give_receipt_args['id'] ) ) {
+		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $donation_id ) ) {
 			$return = true;
 		} elseif ( current_user_can( 'view_give_sensitive_data' ) ) {
 			$return = true;
@@ -880,7 +877,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 	// Check whether it is purchase session?
 	$purchase_session = give_get_purchase_session();
 	if ( ! empty( $purchase_session ) && ! is_user_logged_in() ) {
-		if ( $purchase_session['purchase_key'] === $payment_meta['key'] ) {
+		if ( $purchase_session['donation_id'] === $donation_id ) {
 			$return = true;
 		}
 	}
@@ -888,7 +885,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 	// Check whether it is receipt access session?
 	$receipt_session = give_get_receipt_session();
 	if ( ! empty( $receipt_session ) && ! is_user_logged_in() ) {
-		if ( $receipt_session === $payment_meta['key'] ) {
+		if ( $receipt_session === $donation_id ) {
 			$return = true;
 		}
 	}
@@ -898,7 +895,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 		$return = true;
 	}
 
-	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
+	return (bool) apply_filters( 'give_can_view_receipt', $return, $donation_id );
 
 }
 
