@@ -56,28 +56,28 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'placeholder' => esc_html__( 'Excluded Forms', 'give' )
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'orderby',
-				'label'   => esc_attr__( 'Order By:', 'give' ),
-				'tooltip' => esc_attr__( 'Different parameter to set the order for the forms display in the form grid.', 'give' ),
-				'options' => array(
-					'date'             => esc_html__( 'Date Created', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'orderby',
+				'label'       => esc_attr__( 'Order By:', 'give' ),
+				'tooltip'     => esc_attr__( 'Different parameter to set the order for the forms display in the form grid.', 'give' ),
+				'options'     => array(
 					'name'             => esc_html__( 'Form Name', 'give' ),
 					'amount_donated'   => esc_html__( 'Amount Donated', 'give' ),
 					'number_donations' => esc_html__( 'Number of Donations', 'give' ),
 					'menu_order'       => esc_html__( 'Menu Order', 'give' ),
 					'post__in'         => esc_html__( 'Provided Form IDs', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Date Created', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'order',
-				'label'   => esc_attr__( 'Order:', 'give' ),
-				'tooltip' => esc_attr__( 'Display forms based on order.', 'give' ),
-				'options' => array(
-					'ASC'  => esc_html__( 'Ascending', 'give' ),
-					'DESC' => esc_html__( 'Descending', 'give' ),
+				'type'        => 'listbox',
+				'name'        => 'order',
+				'label'       => esc_attr__( 'Order:', 'give' ),
+				'tooltip'     => esc_attr__( 'Display forms based on order.', 'give' ),
+				'options'     => array(
+					'ASC' => esc_html__( 'Ascending', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Descending', 'give' ),
 			),
 			array(
 				'type'        => 'listbox',
@@ -98,9 +98,9 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Show Goal:', 'give' ),
 				'tooltip' => __( 'Do you want to display the goal\'s progress bar?', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -108,9 +108,9 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Show Excerpt:', 'give' ),
 				'tooltip' => esc_attr__( 'Do you want to display the excerpt?', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -118,9 +118,9 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Show Featured Image:', 'give' ),
 				'tooltip' => esc_attr__( 'Do you want to display the featured image?', 'give' ),
 				'options' => array(
-					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Show', 'give' )
 			),
 			array(
 				'type'    => 'listbox',
@@ -129,8 +129,8 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'tooltip' => esc_attr__( 'Show form as modal window or redirect to a new page?', 'give' ),
 				'options' => array(
 					'redirect'     => esc_html__( 'Redirect', 'give' ),
-					'modal_reveal' => esc_html__( 'Modal', 'give' ),
 				),
+				'placeholder' => esc_html__( 'Modal', 'give' ),
 			),
 			array(
 				'type'    => 'textbox',
