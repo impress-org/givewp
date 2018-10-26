@@ -265,24 +265,24 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @since 2.2.0
 	 */
-	const recieptContainer = document.getElementById('give-receipt');
+	const receiptContainer = document.getElementById('give-receipt');
 
-	if (recieptContainer) {
+	if ( receiptContainer ) {
 
 		let data        = {
 				action: 'get_receipt',
-				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
+				shortcode_atts: receiptContainer.getAttribute('data-shortcode')
 			},
-			payment_key = Give.fn.getParameterByName('payment_key');
+			donation_id = Give.fn.getParameterByName('donation_id');
 
 		const cookie_name = 'wp_give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash');
 
 		// Set cookie.
 		data[cookie_name] = Give.fn.__getCookie( 'wp_give_session_' + Give.fn.getGlobalVar('cookie_hash') );
 
-		// Set payment key.
-		if( null !== payment_key ) {
-			data['payment_key'] = payment_key;
+		// Set donation id, if exists.
+		if( null !== donation_id ) {
+			data['donation_id'] = donation_id;
 		}
 
 		$.ajax({
@@ -290,7 +290,7 @@ jQuery( document ).ready( function( $ ) {
 			method: 'GET',
 			data: data,
 			success: function (response) {
-				recieptContainer.innerHTML = response;
+				receiptContainer.innerHTML = response;
 			}
 		});
 	}
