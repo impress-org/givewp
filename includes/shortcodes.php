@@ -256,34 +256,33 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
 function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args;
-	$payment_key = '';
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
+		'error'          => __( 'You are missing the donation id to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
 		'date'           => true,
-		'payment_key'    => false,
 		'payment_method' => true,
-		'donation_id'    => true,
+		'payment_id'     => true,
 		'payment_status' => false,
 		'company_name'   => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	// set $session var.
-	$session = give_get_purchase_session();
+	$donation_id = false;
+	$session     = give_get_purchase_session();
 
 	// Set donation id.
 	if ( isset( $_GET['donation_id'] ) ) {
-		$donation_id = urldecode( $_GET['donation_id'] );
-	} elseif ( $session ) {
+		$donation_id = $_GET['donation_id'];
+	} elseif ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
-	} elseif ( $give_receipt_args['donation_id'] ) {
-		$donation_id = $give_receipt_args['donation_id'];
+	} elseif ( $give_receipt_args['id'] ) {
+		$donation_id = $give_receipt_args['id'];
 	}
 
-	if( ! wp_doing_ajax() ) {
+	// Display donation receipt placeholder while loading receipt via AJAX.
+	if ( ! wp_doing_ajax() ) {
 		ob_start();
 		give_get_template_part( 'receipt/placeholder' );
 		$placeholder = ob_get_clean();
@@ -291,14 +290,14 @@ function give_receipt_shortcode( $atts ) {
 		return sprintf(
 			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
 			urlencode_deep( wp_json_encode( $atts ) ),
-			$payment_key,
+			$donation_id,
 			$placeholder
 		);
 	}
 
 	$email_access = give_get_option( 'email_access' );
 
-	// No payment_key found & Email Access is Turned on.
+	// No donation id found & Email Access is Turned on.
 	if ( ! isset( $donation_id ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
@@ -307,7 +306,7 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} elseif ( ! isset( $donation_id ) ) {
+	} else if ( ! isset( $donation_id ) ) {
 
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 
@@ -324,7 +323,7 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} elseif ( ! $user_can_view ) {
+	} else if ( ! $user_can_view ) {
 
 		global $give_login_redirect;
 
