@@ -382,6 +382,7 @@ function give_get_default_settings() {
 		'scripts_footer'                              => 'disabled',
 		'agree_to_terms_label'                        => __( 'Agree to Terms?', 'give' ),
 		'agreement_text'                              => give_get_default_agreement_text(),
+		'babel_polyfill_script'                       => 'enabled',
 
 		// Paypal IPN verification.
 		'paypal_verification'                         => 'enabled',
