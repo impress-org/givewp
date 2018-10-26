@@ -382,7 +382,7 @@ class Give_Scripts {
 
 		// Call Babel Polyfill with common handle so that it is compatible with plugins and themes.
 		if ( ! wp_script_is( 'babel-polyfill', 'enqueued' )
-		     && give_is_setting_enabled( give_get_option( 'babel_polyfill_script' ) )
+		     && give_is_setting_enabled( give_get_option( 'babel_polyfill_script', 'enabled' ) )
 		) {
 			wp_enqueue_script(
 				'babel-polyfill',
