@@ -896,16 +896,16 @@ function give_form_grid_shortcode( $atts ) {
 		$form_args['tax_query'][] = $tax_query;
 	}
 
-	// Maybe filter by form Amount Donated.
-	if( !empty( $atts['orderby'] ) && 'amount_donated' === $atts['orderby'] ) {
-		$form_args['meta_key'] = '_give_form_earnings';
-		$form_args['orderby'] = 'meta_value_num';
-	}
-
-	// Maybe filter by form Number of Donations.
-	if( !empty( $atts['orderby'] ) && 'number_donations' === $atts['orderby'] ) {
-		$form_args['meta_key'] = '_give_form_sales';
-		$form_args['orderby'] = 'meta_value_num';
+	// Maybe filter by form Amount Donated or Number of Donations.
+	switch ( $atts['orderby'] ) {
+		case 'amount_donated':
+			$form_args['meta_key'] = '_give_form_earnings';
+			$form_args['orderby']  = 'meta_value_num';
+			break;
+		case 'number_donations':
+			$form_args['meta_key'] = '_give_form_sales';
+			$form_args['orderby']  = 'meta_value_num';
+			break;
 	}
 
 	// Query to output donation forms.
