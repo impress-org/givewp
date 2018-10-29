@@ -129,7 +129,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			 *
 			 * @since 2.4.0
 			 */
-			do_action( 'give_payment_table_advanced_filters' );
+			do_action( 'give_donor_table_advanced_filters' );
 
 
 			if ( ! empty( $status ) ) {
@@ -490,11 +490,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
 		);
-
-		if ( is_string( $search ) && false !== strpos( $search, 'txn:' ) ) {
-			$args['search_in_notes'] = true;
-			$args['s']               = trim( str_replace( 'txn:', '', $args['s'] ) );
-		}
 
 		/**
 		 * Filter to modify donor table argument.
