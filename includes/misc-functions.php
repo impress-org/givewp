@@ -853,49 +853,58 @@ if ( ! function_exists( 'array_column' ) ) {
  */
 function give_can_view_receipt( $donation_id ) {
 
-	$return = false;
-
-	if ( empty( $donation_id ) ) {
-		return $return;
-	}
-
 	global $give_receipt_args;
 
+	$donor            = false;
+	$can_view_receipt = false;
+
+	// Bail out, if donation id doesn't exist.
+	if ( empty( $donation_id ) ) {
+		return $can_view_receipt;
+	}
+
 	$give_receipt_args['id'] = $donation_id;
-	$user_id                 = (int) give_get_payment_user_id( $donation_id );
 
-	if ( is_user_logged_in() ) {
-		if ( $user_id === (int) get_current_user_id() ) {
-			$return = true;
-		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $donation_id ) ) {
-			$return = true;
-		} elseif ( current_user_can( 'view_give_sensitive_data' ) ) {
-			$return = true;
+	if ( is_user_logged_in() && current_user_can( 'view_give_sensitive_data' ) ) {
+
+		// Proceed only, if user is logged in and can view sensitive Give data.
+		$user_id = give_get_payment_user_id( $donation_id );
+		$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
+		$can_view_receipt = true;
+
+	} elseif ( ! is_user_logged_in() ) {
+
+		// Check whether it is purchase session?
+		$purchase_session = give_get_purchase_session();
+		if ( ! empty( $purchase_session ) && $purchase_session['donation_id'] === $donation_id ) {
+			$can_view_receipt = true;
+		}
+
+		// Check whether it is receipt access session?
+		$receipt_session = give_get_receipt_session();
+		if (
+			give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
+			! empty( $receipt_session )
+		) {
+			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+			$donor              = ! empty( $email_access_token ) ?
+				Give()->email_access->get_donor_by_token( $email_access_token ) :
+				false ;
 		}
 	}
 
-	// Check whether it is purchase session?
-	$purchase_session = give_get_purchase_session();
-	if ( ! empty( $purchase_session ) && ! is_user_logged_in() ) {
-		if ( $purchase_session['donation_id'] === $donation_id ) {
-			$return = true;
+	// If donor object exists, compare the donation ids of donor with the donation receipt donor tries to access.
+	if ( is_object( $donor ) ) {
+		$donation_list = explode( ',', $donor->payment_ids );
+
+		if ( in_array( $donation_id, $donation_list, true ) ) {
+			$can_view_receipt = true;
+		} else {
+			Give()->session->set( 'donor_donation_mismatch', true );
 		}
 	}
 
-	// Check whether it is receipt access session?
-	$receipt_session = give_get_receipt_session();
-	if ( ! empty( $receipt_session ) && ! is_user_logged_in() ) {
-		if ( $receipt_session === $donation_id ) {
-			$return = true;
-		}
-	}
-
-	// Check whether it is history access session?
-	if ( true === give_get_history_session() ) {
-		$return = true;
-	}
-
-	return (bool) apply_filters( 'give_can_view_receipt', $return, $donation_id );
+	return (bool) apply_filters( 'give_can_view_receipt', $can_view_receipt, $donation_id );
 
 }
 
