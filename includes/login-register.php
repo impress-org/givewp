@@ -325,9 +325,7 @@ function give_email_access_login() {
 
 	$recaptcha_key    = give_get_option( 'recaptcha_key' );
 	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
-
 	$enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
-	$access_token     = ! empty( $_GET['payment_key'] ) ? $_GET['payment_key'] : '';
 
 	// Use reCAPTCHA.
 	if ( $enable_recaptcha ) {
@@ -367,7 +365,6 @@ function give_email_access_login() {
 	if ( ! give_get_errors() ) {
 
 		$donor = Give()->donors->get_donor_by( 'email', $email );
-
 		Give()->email_access->init();
 
 		// Verify that donor object is present and donor is connected with its user profile or not.
