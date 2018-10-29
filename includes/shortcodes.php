@@ -312,7 +312,7 @@ function give_receipt_shortcode( $atts ) {
 
 	}
 
-	$user_can_view = give_can_view_receipt( $donation_id );
+	$user_can_view   = give_can_view_receipt( $donation_id );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
 	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
@@ -323,7 +323,18 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} else if ( ! $user_can_view ) {
+	} elseif (
+		false === $user_can_view &&
+		true === Give()->session->get( 'donor_donation_mismatch' )
+	) {
+
+		return Give()->notices->print_frontend_notice(
+			__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
+			false,
+			'error'
+		);
+
+	} elseif ( ! $user_can_view ) {
 
 		global $give_login_redirect;
 
