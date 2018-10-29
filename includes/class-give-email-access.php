@@ -141,7 +141,6 @@ class Give_Email_Access {
 		$this->check_for_token();
 
 		if ( $this->token_exists ) {
-			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
 			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
