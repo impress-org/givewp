@@ -190,10 +190,17 @@ function give_export_donation_form_search_args( $args ) {
 	}
 
 	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
-	parse_str( $fields );
+
+	// Using parse_str() function without the result parameter is highly DISCOURAGED and DEPRECATED as of PHP 7.2.
+	if ( version_compare( phpversion(), '7.2.0', '>=' ) ) {
+		$fields_result_array = array();
+		parse_str( $fields, $fields_result_array );
+	} else {
+		parse_str( $fields );
+	}
 
 	if ( ! empty( $give_forms_categories ) || ! empty( $give_forms_tags ) ) {
-		$args['posts_per_page'] = -1;
+		$args['posts_per_page'] = - 1;
 	}
 
 	if ( ! empty( $give_forms_categories ) && ! empty( $give_forms_tags ) ) {

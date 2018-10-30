@@ -162,7 +162,7 @@ class Give_Donors_Query {
 			'donor'              => null,
 			'meta_query'         => array(),
 			'date_query'         => array(),
-			'donor_search_input' => null,
+			'donor-search-input' => null,
 			'fields'             => 'all', // Supports donors (all fields) or valid column as string or array list.
 			'count'              => false,
 			'give_forms'         => array(),
@@ -441,8 +441,8 @@ class Give_Donors_Query {
 	private function get_where_search() {
 		$where = '';
 		// Donors created for a specific date or in a date range
-		if ( ! empty( $this->args['donor_search_input'] ) && false !== strpos( $this->args['donor_search_input'], ':' ) ) {
-			$search_parts = explode( ':', $this->args['donor_search_input'] );
+		if ( ! empty( $this->args['donor-search-input'] ) && false !== strpos( $this->args['donor-search-input'], ':' ) ) {
+			$search_parts = explode( ':', $this->args['donor-search-input'] );
 			if ( ! empty( $search_parts[0] ) ) {
 				switch ( $search_parts[0] ) {
 					case 'name':
@@ -453,9 +453,9 @@ class Give_Donors_Query {
 						break;
 				}
 			}
-		} else if ( ! empty( $this->args['donor_search_input'] ) ) {
-			$search_field = is_email( $this->args['donor_search_input'] ) ? 'email' : 'name';
-			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['donor_search_input']}%'";
+		} else if ( ! empty( $this->args['donor-search-input'] ) ) {
+			$search_field = is_email( $this->args['donor-search-input'] ) ? 'email' : 'name';
+			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['donor-search-input']}%'";
 		}
 
 		return $where;

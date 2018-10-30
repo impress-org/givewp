@@ -26,6 +26,12 @@
 		p.search-box {
 			margin: 0;
 		}
+	  	.give-donor-search-box {
+			margin-right: 25px;
+			width: auto;
+			display: inline-block;
+			float: left;
+	  	}
 	}
 
 	#give-donors-search-filter {
@@ -360,11 +366,5 @@
 			text-align: left;
 		}
 	}
-  .donor_search_box {
-	margin-right: 25px;
-	width: auto;
-	display: inline-block;
-	float: left;
-  }
 }
 

@@ -79,13 +79,17 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
 		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
 		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['donor_search_input'] ) ? give_clean( $_GET['donor_search_input'] ) : '';
+		$search      = isset( $_GET['donor-search-input'] ) ? give_clean( $_GET['donor-search-input'] ) : '';
 		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 
 		?>
 		<div id="give-donor-filters" class="give-filters">
-			<div class="donor_search_box">
-				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Search Donors', 'give' ); ?>" name="donor_search_input" />
+			<div class="give-donor-search-box">
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Donor Name or Email', 'give' ); ?>"
+				       name="donor-search-input" value="<?php echo $search; ?>">
+				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
+					'ID' => 'donor-search-submit',
+				) ); ?>
 			</div>
 			<div id="give-donor-date-filters">
 				<div class="give-filter give-filter-half">
@@ -112,7 +116,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 						'class'    => 'give-donation-forms-filter',
 						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
-						'number'   => - 1,
+						'number'   => 30,
 					)
 				);
 				?>
@@ -312,7 +316,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
-		return ! empty( $_GET['donor_search_input'] ) ? urldecode( trim( $_GET['donor_search_input'] ) ) : false;
+		return ! empty( $_GET['donor-search-input'] ) ? urldecode( trim( $_GET['donor-search-input'] ) ) : false;
 	}
 
 	/**
@@ -447,7 +451,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'orderby'            => $orderby,
 			'order'              => $order,
 			'donor'              => $donor,
-			'donor_search_input' => $search,
+			'donor-search-input' => $search,
 			'start_date'         => $start_date,
 			'end_date'           => $end_date,
 			'give_forms'         => $form_id,
@@ -492,7 +496,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$search_keyword = ! empty( $get_data['donor_search_input'] ) ? $get_data['donor_search_input'] : '';
+		$search_keyword = ! empty( $get_data['donor-search-input'] ) ? $get_data['donor-search-input'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
