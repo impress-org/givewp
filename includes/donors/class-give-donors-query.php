@@ -152,22 +152,22 @@ class Give_Donors_Query {
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
-			'number'          => 20,
-			'offset'          => 0,
-			'paged'           => 1,
-			'orderby'         => 'id',
-			'order'           => 'DESC',
-			'user'            => null,
-			'email'           => null,
-			'donor'           => null,
-			'meta_query'      => array(),
-			'date_query'      => array(),
-			's'               => null,
-			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
-			'count'           => false,
-			'give_forms'      => array(),
-			'start_date'      => false,
-			'end_date'        => false,
+			'number'             => 20,
+			'offset'             => 0,
+			'paged'              => 1,
+			'orderby'            => 'id',
+			'order'              => 'DESC',
+			'user'               => null,
+			'email'              => null,
+			'donor'              => null,
+			'meta_query'         => array(),
+			'date_query'         => array(),
+			'donor_search_input' => null,
+			'fields'             => 'all', // Supports donors (all fields) or valid column as string or array list.
+			'count'              => false,
+			'give_forms'         => array(),
+			'start_date'         => false,
+			'end_date'           => false,
 
 			/**
 			 * donation_amount will contain value like:
@@ -178,14 +178,14 @@ class Give_Donors_Query {
 			 *
 			 * You can also pass number value to this param then compare symbol will auto set to >
 			 */
-			'donation_amount' => array()
+			'donation_amount'    => array(),
 		);
 
-		$this->args  = $this->_args         = wp_parse_args( $args, $defaults );
+		$this->args            = $this->_args = wp_parse_args( $args, $defaults );
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
-		$this->obj_give_stats = new Give_Stats();
+		$this->obj_give_stats  = new Give_Stats();
 	}
 
 	/**
@@ -441,8 +441,8 @@ class Give_Donors_Query {
 	private function get_where_search() {
 		$where = '';
 		// Donors created for a specific date or in a date range
-		if ( ! empty( $this->args['s'] ) && false !== strpos( $this->args['s'], ':' ) ) {
-			$search_parts = explode( ':', $this->args['s'] );
+		if ( ! empty( $this->args['donor_search_input'] ) && false !== strpos( $this->args['donor_search_input'], ':' ) ) {
+			$search_parts = explode( ':', $this->args['donor_search_input'] );
 			if ( ! empty( $search_parts[0] ) ) {
 				switch ( $search_parts[0] ) {
 					case 'name':
@@ -453,9 +453,9 @@ class Give_Donors_Query {
 						break;
 				}
 			}
-		} else if ( ! empty( $this->args['s'] ) ) {
-			$search_field = is_email( $this->args['s'] ) ? 'email' : 'name';
-			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['s']}%'";
+		} else if ( ! empty( $this->args['donor_search_input'] ) ) {
+			$search_field = is_email( $this->args['donor_search_input'] ) ? 'email' : 'name';
+			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['donor_search_input']}%'";
 		}
 
 		return $where;

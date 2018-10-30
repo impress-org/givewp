@@ -79,18 +79,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
 		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
 		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+		$search      = isset( $_GET['donor_search_input'] ) ? give_clean( $_GET['donor_search_input'] ) : '';
 		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="donor_search_box">
-				<form id="give-donors-search-filter" method="get"
-				      action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
-					<?php $this->search_box( __( 'Search Donors', 'give' ), 'give-donors' ); ?>
-					<input type="hidden" name="post_type" value="give_forms" />
-					<input type="hidden" name="page" value="give-donors" />
-					<input type="hidden" name="view" value="donors" />
-				</form>
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Search Donors', 'give' ); ?>" name="donor_search_input" />
 			</div>
 			<div id="give-donor-date-filters">
 				<div class="give-filter give-filter-half">
@@ -153,39 +148,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			</div>
 		</div>
 
-		<?php
-	}
-
-	/**
-	 * Show the search field.
-	 *
-	 * @param string $text     Label for the search box.
-	 * @param string $input_id ID of the search box.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-
-	public function search_box( $text, $input_id ) {
-		$input_id = $input_id . '-search-input';
-
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo sprintf( '<input type="hidden" name="orderby" value="%1$s" />', esc_attr( $_REQUEST['orderby'] ) );
-		}
-
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo sprintf( '<input type="hidden" name="order" value="%1$s" />', esc_attr( $_REQUEST['order'] ) );
-		}
-		?>
-		<p class="search-box" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			<?php submit_button( $text, 'button', false, false, array(
-				'ID' => 'search-submit',
-			) ); ?>
-		</p>
 		<?php
 	}
 
@@ -350,7 +312,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty( $_GET['donor_search_input'] ) ? urldecode( trim( $_GET['donor_search_input'] ) ) : false;
 	}
 
 	/**
@@ -478,17 +440,17 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
 		$args = array(
-			'output'     => 'payments',
-			'number'     => $per_page,
-			'offset'     => $offset,
-			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
-			'orderby'    => $orderby,
-			'order'      => $order,
-			'donor'      => $donor,
-			's'          => $search,
-			'start_date' => $start_date,
-			'end_date'   => $end_date,
-			'give_forms' => $form_id,
+			'output'             => 'payments',
+			'number'             => $per_page,
+			'offset'             => $offset,
+			'page'               => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'orderby'            => $orderby,
+			'order'              => $order,
+			'donor'              => $donor,
+			'donor_search_input' => $search,
+			'start_date'         => $start_date,
+			'end_date'           => $end_date,
+			'give_forms'         => $form_id,
 		);
 
 		/**
@@ -530,7 +492,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$search_keyword = ! empty( $get_data['s'] ) ? $get_data['s'] : '';
+		$search_keyword = ! empty( $get_data['donor_search_input'] ) ? $get_data['donor_search_input'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>

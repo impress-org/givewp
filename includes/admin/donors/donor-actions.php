@@ -561,7 +561,7 @@ function give_process_donor_deletion( $args ) {
 	$donor_ids                = ( isset( $args['donor'] ) && is_array( $args['donor'] ) ) ? $args['donor'] : array( $args['donor_id'] );
 	$redirect_args['order']   = ! empty( $args['order'] ) ? $args['order'] : 'DESC';
 	$redirect_args['orderby'] = ! empty( $args['orderby'] ) ? strtolower( $args['orderby'] ) : 'id';
-	$redirect_args['s']       = ! empty( $args['s'] ) ? $args['s'] : '';
+	$redirect_args['s']       = ! empty( $args['donor_search_input'] ) ? $args['donor_search_input'] : '';
 	$delete_donor             = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
 	$delete_donation          = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;
 
