@@ -264,10 +264,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			do_action( 'give_payment_history_search' );
 			?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<input type="search" id="<?php echo $input_id ?>" name="s"
+			       value="<?php _admin_search_query(); ?>"
+			       placeholder="<?php _e( 'Donor Name or Email', 'give' ); ?>" />
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
-			) ); ?><br/>
+			) ); ?><br />
 		</div>
 		<?php
 	}
