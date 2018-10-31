@@ -1,12 +1,12 @@
 # [GiveWP](https://givewp.com "Give - Democratizing Generosity") #
 
-![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Code Coverage](https://scrutinizer-ci.com/g/WordImpress/Give/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt) 
+![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/impress-org/Give.svg?branch=master)](https://travis-ci.org/impress-org/give) [![Code Coverage](https://scrutinizer-ci.com/g/impress-org/give/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/impress-org/give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) 
 
 Welcome to the GiveWP GitHub repository. This is the code source and the center of active development. Here you can browse the source, look at open issues, and contribute to the project. We recommend all developers follow the GiveWP development blog to stay up to date on the latest features and changes.
  
 ## Getting Started 
 
-If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/WordImpress/Give/#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
+If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/impress-org/give/#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
 
 ### Minimum Requirements
 
@@ -42,7 +42,7 @@ To get started developing on the Give platform you will need to perform the foll
 
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
 
-3. Clone this repository from GitHub into your plugins directory: `https://github.com/WordImpress/Give.git`
+3. Clone this repository from GitHub into your plugins directory: `https://github.com/impress-org/give.git`
 
 4. Run composer to set up dependancies: `composer install`
 
@@ -75,4 +75,4 @@ Give relies on several npm commands to get you started:
     ```
 * Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json). 
 * Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets. 
-* Read [CONTRIBUTING.md](https://github.com/WordImpress/Give/blob/master/CONTRIBUTING.md) - it contains more about contributing to GiveWP.
+* Read [CONTRIBUTING.md](https://github.com/impress-org/give/blob/master/CONTRIBUTING.md) - it contains more about contributing to GiveWP.

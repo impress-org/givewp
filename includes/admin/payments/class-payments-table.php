@@ -239,10 +239,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function search_box( $text, $input_id ) {
-		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
-			//return;
-		}
-
 		$input_id = $input_id . '-search-input';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
@@ -266,7 +262,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s"
 			       value="<?php _admin_search_query(); ?>"
-			       placeholder="<?php _e( 'Donor Name or Email', 'give' ); ?>" />
+			       placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
 			) ); ?><br />

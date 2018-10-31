@@ -211,12 +211,40 @@ add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$donors_db     = new Give_DB_Donors();
-	$donor_meta_db = new Give_DB_Donor_Meta();
+	$donors_db       = new Give_DB_Donors();
+	$donor_meta_db   = new Give_DB_Donor_Meta();
+	$comment_db      = new Give_DB_Comments();
+	$comment_db_meta = new Give_DB_Comment_Meta();
+	$give_session    = new Give_DB_Sessions();
+	$log_db          = new Give_DB_Logs();
+	$logmeta_db      = new Give_DB_Log_Meta();
+	$formmeta_db     = new Give_DB_Form_Meta();
+	$sequential_db   = new Give_DB_Sequential_Ordering();
+	$payment_meta    = new Give_DB_Payment_Meta();
 
 	if ( $donors_db->installed() ) {
 		$tables[] = $donors_db->table_name;
 		$tables[] = $donor_meta_db->table_name;
+	}
+	if ( $comment_db->installed() ) {
+		$tables[] = $comment_db->table_name;
+		$tables[] = $comment_db_meta->table_name;
+	}
+	if ( $give_session->installed() ) {
+		$tables[] = $give_session->table_name;
+	}
+	if ( $log_db->installed() ) {
+		$tables[] = $log_db->table_name;
+		$tables[] = $logmeta_db->table_name;
+	}
+	if ( $formmeta_db->installed() ) {
+		$tables[] = $formmeta_db->table_name;
+	}
+	if ( $sequential_db->installed() ) {
+		$tables[] = $sequential_db->table_name;
+	}
+	if ( $payment_meta->installed() ) {
+		$tables[] = $payment_meta->table_name;
 	}
 	restore_current_blog();
 
@@ -354,6 +382,7 @@ function give_get_default_settings() {
 		'scripts_footer'                              => 'disabled',
 		'agree_to_terms_label'                        => __( 'Agree to Terms?', 'give' ),
 		'agreement_text'                              => give_get_default_agreement_text(),
+		'babel_polyfill_script'                       => 'enabled',
 
 		// Paypal IPN verification.
 		'paypal_verification'                         => 'enabled',

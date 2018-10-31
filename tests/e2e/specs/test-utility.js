@@ -3,8 +3,8 @@ const helpers = {
 		rootUrl: 'http://localhost:8004',
 		firstName: 'Devin',
 		lastName: 'Walker',
-		email: 'devin.walker@gmail.com',
-		company: 'WordImpress',
+		email: 'info@givewp.com',
+		company: 'Impress.org',
 		comment: 'Glad to be a part!'
 	},
 	fn: {
@@ -19,7 +19,7 @@ const helpers = {
 		logIn: function( page, credentials ) {
 			it( 'Login to WordPress', async () => {
 
-				// If `#wpadminbar` is absent on the page, means that we are not logged in. 
+				// If `#wpadminbar` is absent on the page, means that we are not logged in.
 				if ( null === await page.$( '#wpadminbar' ) ) {
 
 					// Go to the /wp-admin page to login to WordPress.
@@ -75,12 +75,12 @@ const helpers = {
 		 * Comparison is strict if the `strict` key is set to `true`
 		 *
 		 * @param {object} page                     Puppeteer page object.
-		 * @param {array}  elementArray             Array of objects which contain the test data. 
-		 * @param {string} elementArray.desc        Description of the test. 
-		 * @param {string} elementArray.selector    Name of the selector. 
-		 * @param {string} elementArray.strict      If set to true, toBe() will be used, else toMatch(). 
-		 * @param {string} elementArray.<attribute> Value of the <attribute> to compare. 
-		 * @param {bool}   elementArray.<attribute> Value of the <attribute> to compare. 
+		 * @param {array}  elementArray             Array of objects which contain the test data.
+		 * @param {string} elementArray.desc        Description of the test.
+		 * @param {string} elementArray.selector    Name of the selector.
+		 * @param {string} elementArray.strict      If set to true, toBe() will be used, else toMatch().
+		 * @param {string} elementArray.<attribute> Value of the <attribute> to compare.
+		 * @param {bool}   elementArray.<attribute> Value of the <attribute> to compare.
 		 */
 		verifyExistence: function( page, elementArray = [] ) {
 			for( let object of elementArray ) {
@@ -158,7 +158,7 @@ const helpers = {
 
 						/**
 						 * If no HTML node attribute is found in the object, it means that
-						 * we have to check whether the element exists in the HTML DOM. 
+						 * we have to check whether the element exists in the HTML DOM.
 						 */
 						await expect( page ).toMatchElement( selector )
 
@@ -175,9 +175,9 @@ const helpers = {
 		 *
 		 * @param {object} page                  Puppeteer page object.
 		 * @param {array}  elementArray          Array of object which contains the data that needs to be tested.
-		 * @param {string} elementArray.desc     Description of the test. 
-		 * @param {string} elementArray.selector Name of the selector. 
-		 * @param {string} elementArray.action   Actions such as hover, click and focus. 
+		 * @param {string} elementArray.desc     Description of the test.
+		 * @param {string} elementArray.selector Name of the selector.
+		 * @param {string} elementArray.action   Actions such as hover, click and focus.
 		 */
 		verifyInteraction: function( page, elementArray ) {
 			for( let object of elementArray ) {
@@ -247,7 +247,7 @@ const helpers = {
 					page.click( '#give-purchase-button' ),
 					page.waitForNavigation()
 				])
-			}, 10000 )	
+			}, 10000 )
 		},
 
 		/**
