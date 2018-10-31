@@ -188,7 +188,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 						'class'    => 'give-donation-forms-filter',
 						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
-						'number'   => - 1,
+						'number'   => 30,
 					)
 				);
 				?>
@@ -240,7 +240,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function search_box( $text, $input_id ) {
 		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
-			return;
+			//return;
 		}
 
 		$input_id = $input_id . '-search-input';
@@ -897,7 +897,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return array  objects in array containing all the data for the payments
 	 */
 	public function payments_data() {
-
 		$per_page   = $this->per_page;
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
@@ -909,8 +908,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
 		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
-		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
-		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $start_date;
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
+		$today_date = date( 'Y-m-d H:i:s' );
+		$end_date   = ! empty( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $today_date;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
