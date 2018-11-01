@@ -329,7 +329,7 @@ class Give_Donor_Wall {
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
 		// order by query based on parameter.
-		if ( ! empty( $query_params['orderby'] ) && 'donation_amount' === $query_params['orderby'] ) {
+		if ( 'donation_amount' === $query_params['orderby'] ) {
 			$order_by_query = "ORDER BY FIELD( p1.ID, {$donation_ids} )";
 		} else {
 			$order_by_query = "ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}";
