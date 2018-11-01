@@ -303,13 +303,13 @@ class Give_Session {
 		 */
 		$this->cookie_name       = apply_filters(
 			'give_session_cookie',
-			'wp_give_session_' . COOKIEHASH, // Cookie name.
+			'wp-give_session_' . COOKIEHASH, // Cookie name.
 			'session' // Cookie type.
 		);
 
 		$this->nonce_cookie_name = apply_filters(
 			'give_session_cookie',
-			'wp_give_session_reset_nonce_' . COOKIEHASH, // Cookie name.
+			'wp-give_session_reset_nonce_' . COOKIEHASH, // Cookie name.
 			'nonce' // Cookie type
 		);
 	}

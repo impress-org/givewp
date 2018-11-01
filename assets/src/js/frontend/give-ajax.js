@@ -13,7 +13,7 @@ jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
 	if( Give.form.fn.isFormExist() ) {
 		// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
-		const resetNonce = '1' === Give.fn.__getCookie( 'wp_give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash') ) && '1' !== Give.fn.getGlobalVar('delete_session_nonce_cookie');
+		const resetNonce = '1' === Give.fn.__getCookie( 'wp-give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash') ) && '1' !== Give.fn.getGlobalVar('delete_session_nonce_cookie');
 
 		//Hide loading elements
 		$( '.give-loading-text' ).hide();
@@ -275,10 +275,10 @@ jQuery( document ).ready( function( $ ) {
 			},
 			payment_key = Give.fn.getParameterByName('payment_key');
 
-		const cookie_name = 'wp_give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash');
+		const cookie_name = 'wp-give_session_reset_nonce_' + Give.fn.getGlobalVar('cookie_hash');
 
 		// Set cookie.
-		data[cookie_name] = Give.fn.__getCookie( 'wp_give_session_' + Give.fn.getGlobalVar('cookie_hash') );
+		data[cookie_name] = Give.fn.__getCookie( 'wp-give_session_' + Give.fn.getGlobalVar('cookie_hash') );
 
 		// Set payment key.
 		if( null !== payment_key ) {
