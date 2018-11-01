@@ -259,7 +259,7 @@ class Give_Session {
 		$cookie = false;
 
 		// @see https://github.com/WordImpress/Give/issues/3705
-		if(
+		if (
 			empty( $cookie_value )
 			&& wp_doing_ajax()
 			&& isset( $_GET['action'] )
@@ -290,7 +290,7 @@ class Give_Session {
 	 * @since  2.2.0
 	 * @access private
 	 *
-	 * @return string Cookie name.
+	 * @return void
 	 */
 	private function set_cookie_name() {
 		/**
@@ -310,7 +310,7 @@ class Give_Session {
 		$this->nonce_cookie_name = apply_filters(
 			'give_session_cookie',
 			'wp-give_session_reset_nonce_' . COOKIEHASH, // Cookie name.
-			'nonce' // Cookie type
+			'nonce' // Cookie type.
 		);
 	}
 
@@ -322,8 +322,8 @@ class Give_Session {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $key     Session key.
-	 * @param mixed   $default default value.
+	 * @param string $key     Session key.
+	 * @param mixed  $default default value.
 	 *
 	 * @return string|array      Session variable.
 	 */
@@ -575,7 +575,7 @@ class Give_Session {
 	 * @return string Session ID.
 	 */
 	public function get_id() {
-		return $this->get_cookie_name('session');
+		return $this->get_cookie_name( 'session' );
 	}
 
 	/**
