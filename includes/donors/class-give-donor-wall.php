@@ -338,7 +338,7 @@ class Give_Donor_Wall {
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
-				$order_by_query
+				{$order_by_query}
 				";
 
 		$results = (array) $wpdb->get_results( $sql );
