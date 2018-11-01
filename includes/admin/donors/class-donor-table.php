@@ -451,9 +451,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
 		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
-		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$today_date = date( 'Y-m-d H:i:s' );
-		$end_date   = ! empty ( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $today_date;
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : '1970-01-01 00:00:00';
+		$end_date   = ! empty( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $today_date;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$offset     = $this->per_page * ( $paged - 1 );
 		$search     = $this->get_search();
