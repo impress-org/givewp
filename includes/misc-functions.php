@@ -868,8 +868,7 @@ function give_can_view_receipt( $donation_id ) {
 	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
 		// Proceed only, if user is logged in or can view sensitive Give data.
-		$donor_email      = give_get_donation_donor_email( $donation_id );
-		$donor            = Give()->donors->get_donor_by( 'email', $donor_email );
+		$donor            = Give()->donors->get_donor_by( 'user_id', get_current_user_id() );
 		$can_view_receipt = true;
 
 	} elseif ( ! is_user_logged_in() ) {
@@ -901,6 +900,7 @@ function give_can_view_receipt( $donation_id ) {
 			$can_view_receipt = true;
 		} else {
 			Give()->session->set( 'donor_donation_mismatch', true );
+			$can_view_receipt = false;
 		}
 	}
 
