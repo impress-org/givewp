@@ -174,6 +174,4 @@ if ( inProduction ) {
 	// Minify CSS.
 	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
 
-	// Delete fonts related to TCPDF.
-	config.plugins.push( new CleanWebpackPlugin( ['assets/src/tcpdf-fonts'] ) );
 }

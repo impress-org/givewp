@@ -101,6 +101,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Babel Polyfill Script', 'give' ),
+							'desc'    => __( 'Decide whether to load the Babel polyfill, which provides backwards compatibility for older browsers such as IE 11. The polyfill may be disabled to avoid conflicts with other themes or plugins that load the same script.', 'give' ),
+							'id'      => 'babel_polyfill_script',
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Akismet SPAM Protection', 'give' ),
 							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
 							'id'      => 'akismet_spam_protection',
