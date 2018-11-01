@@ -865,11 +865,11 @@ function give_can_view_receipt( $donation_id ) {
 
 	$give_receipt_args['id'] = $donation_id;
 
-	if ( is_user_logged_in() && current_user_can( 'view_give_sensitive_data' ) ) {
+	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
-		// Proceed only, if user is logged in and can view sensitive Give data.
-		$user_id = give_get_payment_user_id( $donation_id );
-		$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
+		// Proceed only, if user is logged in or can view sensitive Give data.
+		$donor_email      = give_get_donation_donor_email( $donation_id );
+		$donor            = Give()->donors->get_donor_by( 'email', $donor_email );
 		$can_view_receipt = true;
 
 	} elseif ( ! is_user_logged_in() ) {
