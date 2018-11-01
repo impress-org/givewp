@@ -287,7 +287,7 @@ class Give_Donor_Wall {
 	 */
 	private function get_query_param( $atts = array() ) {
 		$valid_order   = array( 'ASC', 'DESC' );
-		$valid_orderby = array( 'post_date' );
+		$valid_orderby = array( 'post_date', 'donation_amount' );
 
 		$query_atts = array();
 
@@ -327,10 +327,17 @@ class Give_Donor_Wall {
 		// Backward compatibility
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
+		// order by query based on parameter.
+		if ( ! empty( $query_params['orderby'] ) && 'donation_amount' === $query_params['orderby'] ) {
+			$order_by_query = "ORDER BY FIELD( p1.ID, {$donation_ids} )";
+		} else {
+			$order_by_query = "ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}";
+		}
+
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
-				ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}
+				$order_by_query
 				";
 
 		$results = (array) $wpdb->get_results( $sql );
@@ -403,7 +410,13 @@ class Give_Donor_Wall {
 		// exclude anonymous donation form query.
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
-		$order  = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
+		// order by query based on parameter.
+		if ( ! empty( $query_params['orderby'] ) && 'donation_amount' === $query_params['orderby'] ) {
+			$order = " ORDER BY m1.meta_value+0 {$query_params['order']}";
+		} else {
+			$order = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
+		}
+
 		$limit  = " LIMIT {$query_params['limit']}";
 		$offset = " OFFSET {$query_params['offset']}";
 
