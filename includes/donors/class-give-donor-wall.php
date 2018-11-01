@@ -328,17 +328,10 @@ class Give_Donor_Wall {
 		// Backward compatibility
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-		// order by query based on parameter.
-		if ( 'donation_amount' === $query_params['orderby'] ) {
-			$order_by_query = "ORDER BY FIELD( p1.ID, {$donation_ids} )";
-		} else {
-			$order_by_query = "ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}";
-		}
-
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
-				{$order_by_query}
+				ORDER BY FIELD( p1.ID, {$donation_ids} )
 				";
 
 		$results = (array) $wpdb->get_results( $sql );
