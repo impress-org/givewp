@@ -68,8 +68,8 @@ function give_donation_history( $atts, $content = false ) {
 	/**
 	 * Determine access
 	 *
-	 * a. Check if a user is logged in or does a session exists
-	 * b. Does an email-access token exist?
+	 * A. Check if a user is logged in or does a session exists.
+	 * B. Does an email-access token exist?
 	 */
 	if (
 		is_user_logged_in()
@@ -82,7 +82,6 @@ function give_donation_history( $atts, $content = false ) {
 		if ( ! empty( $content ) ) {
 			echo do_shortcode( $content );
 		}
-
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
 		give_get_template_part( 'email', 'login-form' );
@@ -135,7 +134,7 @@ function give_form_shortcode( $atts ) {
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
-	// get the Give Form
+	// Fetch the Give Form.
 	ob_start();
 	give_get_donation_form( $atts );
 	$final_output = ob_get_clean();
@@ -274,7 +273,7 @@ function give_receipt_shortcode( $atts ) {
 
 	// Set donation id.
 	if ( isset( $_GET['donation_id'] ) ) {
-		$donation_id = $_GET['donation_id'];
+		$donation_id = give_clean( $_GET['donation_id'] );
 	} elseif ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
 	} elseif ( $give_receipt_args['id'] ) {
@@ -306,7 +305,7 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} else if ( ! isset( $donation_id ) ) {
+	} elseif ( ! isset( $donation_id ) ) {
 
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 
@@ -485,7 +484,7 @@ function give_process_profile_editor_updates( $data ) {
 		// Make sure email should be valid.
 		give_set_error( 'email_not_valid', __( 'The email you entered is not valid. Please use another', 'give' ) );
 
-	} elseif ( $email != $old_user_data->user_email ) {
+	} elseif ( $email !== $old_user_data->user_email ) {
 		// Make sure the new email doesn't belong to another user.
 		if ( email_exists( $email ) ) {
 			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
@@ -607,14 +606,14 @@ function give_totals_shortcode( $atts ) {
 	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
 
 	$atts = shortcode_atts( array(
-		'total_goal'   => 0, // integer
-		'ids'          => 0, // integer|array
-		'cats'         => 0, // integer|array
-		'tags'         => 0, // integer|array
+		'total_goal'   => 0, // integer.
+		'ids'          => 0, // integer|array.
+		'cats'         => 0, // integer|array.
+		'tags'         => 0, // integer|array.
 		'message'      => $message,
-		'link'         => '', // URL
+		'link'         => '', // URL.
 		'link_text'    => __( 'Donate Now', 'give' ), // string,
-		'progress_bar' => true, // boolean
+		'progress_bar' => true, // boolean.
 	), $atts, 'give_totals' );
 
 	// Total Goal.
@@ -645,12 +644,12 @@ function give_totals_shortcode( $atts ) {
 		 * @param array WP query argument for Total Goal.
 		 */
 		$form_args = array(
-			'post_type'        => 'give_forms',
-			'post_status'      => 'publish',
-			'post__in'         => $form_ids,
-			'posts_per_page'   => - 1,
-			'fields'           => 'ids',
-			'tax_query'        => array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $form_ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => array(
 				'relation' => 'AND',
 			),
 		);
@@ -695,14 +694,13 @@ function give_totals_shortcode( $atts ) {
 				 *
 				 * @since 2.1
 				 *
-				 * @param int $post Form ID.
+				 * @param int    $post         Form ID.
 				 * @param string $form_earning Total earning of Form.
 				 */
 				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
 			}
 		}
-
-	}
+	} // End if().
 
 	// Append link with text.
 	$donate_link = '';
@@ -823,7 +821,7 @@ function give_form_grid_shortcode( $atts ) {
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
 		'display_style'       => 'modal_reveal',
-		'status'              => '', // open or closed
+		'status'              => '', // open or closed.
 	), $atts );
 
 	// Validate integer attributes.
@@ -955,7 +953,7 @@ function give_form_grid_shortcode( $atts ) {
 		echo '</div><!-- .give-wrap -->';
 
 		return ob_get_clean();
-	}
+	} // End if().
 }
 
 add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
