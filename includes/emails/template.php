@@ -62,7 +62,7 @@ function give_email_preview_template_tags( $message ) {
 	$user             = wp_get_current_user();
 	$gateway          = 'PayPal';
 	$donation_id      = rand( 1, 100 );
-	$receipt_link     = give_get_donation_receipt_link( $donation_id );
+	$receipt_link     = give_get_receipt_link( $donation_id );
 	$receipt_link_url = give_get_donation_receipt_link_url( $donation_id );
 	$price            = give_currency_filter(
 		give_format_amount(

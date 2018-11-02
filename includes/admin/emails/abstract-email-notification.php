@@ -854,7 +854,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$user_id = $user_id ? $user_id : wp_get_current_user()->ID;
 
 			$receipt_link_url = give_get_donation_receipt_link_url( $payment_id );
-			$receipt_link     = give_get_donation_receipt_link( $payment_id );
+			$receipt_link     = give_get_receipt_link( $payment_id );
 
 			// Set default values for tags.
 			$this->config['preview_email_tags_values'] = wp_parse_args(

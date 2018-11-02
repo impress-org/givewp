@@ -2279,11 +2279,11 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
  *
  * @return string
  */
-function give_get_donation_receipt_link( $donation_id ) {
+function give_get_receipt_link( $donation_id ) {
 
 	return sprintf(
 		'<a href="%1$s">%2$s</a>',
-		esc_url( give_get_donation_receipt_link_url( $donation_id ) ),
+		esc_url( give_get_receipt_url( $donation_id ) ),
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
 
