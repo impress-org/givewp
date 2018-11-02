@@ -1214,33 +1214,6 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 	);
 }
 
-
-/**
- * Get receipt_url
- *
- * @since 2.0
- *
- * @param int $payment_id
- *
- * @return string
- */
-function give_get_receipt_url( $payment_id ) {
-	$receipt_url = '';
-
-	if ( $payment_id ) {
-		$receipt_url = esc_url(
-			add_query_arg(
-				array(
-					'payment_key' => give_get_payment_key( $payment_id ),
-				), give_get_history_page_uri()
-			)
-		);
-	}
-
-	return $receipt_url;
-}
-
-
 /**
  * Email template tag: {email_access_link}
  *
