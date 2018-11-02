@@ -49,7 +49,7 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				'options' => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
-				'placeholder' => esc_html__( 'Show', 'give' )
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',
@@ -59,7 +59,7 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
-				'placeholder' => esc_html__( 'Show', 'give' )
+				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
 				'type'    => 'listbox',
@@ -95,7 +95,7 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				'options' => array(
 					'true' => esc_html__( 'Show', 'give' ),
 				),
-				'placeholder' => esc_html__( 'Hide', 'give' )
+				'placeholder' => esc_html__( 'Hide', 'give' ),
 			),
 		);
 	}
