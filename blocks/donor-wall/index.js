@@ -16,23 +16,22 @@ import GiveDonorWallGrid from './edit/block';
  */
 
 export default registerBlockType( 'give/donor-wall', {
+	title: __( 'Give Donor Wall' ),
+	description: __( 'The Give Donor Wall block inserts an existing donation form into the page. Each form\'s presentation can be customized below.' ),
+	category: 'give',
+	icon: giveLogo,
+	keywords: [
+		__( 'donation' ),
+		__( 'wall' ),
+	],
+	supports: {
+		html: false,
+	},
+	attributes: blockAttributes,
+	edit: GiveDonorWallGrid,
 
-    title: __( 'Give Donor Wall' ),
-    description: __( 'The Give Donor Wall block inserts an existing donation form into the page. Each form\'s presentation can be customized below.' ),
-    category: 'widgets',
-    icon: giveLogo,
-    keywords: [
-        __( 'donation' ),
-        __( 'wall' ),
-    ],
-    supports: {
-        html: false,
-    },
-    attributes: blockAttributes,
-    edit: GiveDonorWallGrid,
-
-    save: () => {
-        // Server side rendering via shortcode
-        return null;
-    },
+	save: () => {
+		// Server side rendering via shortcode
+		return null;
+	},
 } );

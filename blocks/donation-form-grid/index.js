@@ -19,7 +19,7 @@ export default registerBlockType( 'give/donation-form-grid', {
 
 	title: __( 'Give Donation Form Grid' ),
 	description: __( 'The Give Donation Form Grid block insert an existing donation form into the page. Each form\'s presentation can be customized below.' ),
-	category: 'widgets',
+	category: 'give',
 	icon: giveLogo,
 	keywords: [
 		__( 'donation' ),
