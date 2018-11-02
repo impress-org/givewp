@@ -193,23 +193,22 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 			break;
 	}
 
-	if ( ! empty( $notice_message ) ) {
-		/**
-		 * Filters payment status notice for receipts.
-		 *
-		 * By default, a success, warning, or error notice appears on the receipt
-		 * with payment status. This filter allows the HTML markup
-		 * and messaging for that notice to be customized.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $notice HTML markup for the default notice.
-		 * @param int    $id     Post ID where the notice is displayed.
-		 * @param string $status Payment status.
-		 * @param int $donation_id Donation ID.
-		 */
-		echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
-	}
+	/**
+	 * Filters payment status notice for receipts.
+	 *
+	 * By default, a success, warning, or error notice appears on the receipt
+	 * with payment status. This filter allows the HTML markup
+	 * and messaging for that notice to be customized.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $notice HTML markup for the default notice.
+	 * @param int    $id     Post ID where the notice is displayed.
+	 * @param string $status Payment status.
+	 * @param int $donation_id Donation ID.
+	 */
+	echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
+
 }// End if().
 
 /**
