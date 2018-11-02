@@ -1220,22 +1220,19 @@ function give_email_tag_receipt_link_url( $tag_args ) {
  *
  * @since 2.0
  *
- * @param int $payment_id
+ * @param int $donation_id Donation ID.
  *
  * @return string
  */
-function give_get_receipt_url( $payment_id ) {
-	$receipt_url = '';
+function give_get_receipt_url( $donation_id ) {
 
-	if ( $payment_id ) {
-		$receipt_url = esc_url(
-			add_query_arg(
-				array(
-					'payment_key' => give_get_payment_key( $payment_id ),
-				), give_get_history_page_uri()
-			)
-		);
-	}
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'donation_id' => $donation_id,
+			), give_get_history_page_uri()
+		)
+	);
 
 	return $receipt_url;
 }
