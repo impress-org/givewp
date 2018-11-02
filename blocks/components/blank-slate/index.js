@@ -6,6 +6,7 @@ const { __ } = wp.i18n;
 /**
 * Internal dependencies
 */
+import { getSiteUrl } from '../../utils';
 import GiveHelpLink from '../help-link';
 import PlaceholderAnimation from '../placeholder-animation';
 import './style.scss';
@@ -40,7 +41,7 @@ const GiveBlankSlate = ( props ) => {
 		<div className="give-blank-slate">
 			{ ! noIcon && (
 				<img className="give-blank-slate__image"
-					src={ `${ wpApiSettings.schema.url }${ giveLogo }` }
+					src={ `${ getSiteUrl() }${ giveLogo }` }
 					alt={ __( 'Give Icon' ) } />
 			) }
 			{ !! isLoader ? blockLoading : blockLoaded }

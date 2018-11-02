@@ -12,6 +12,7 @@ const { SelectControl, Button } = wp.components;
 /**
  * Internal dependencies
  */
+import { getSiteUrl } from '../../utils';
 import GiveBlankSlate from '../blank-slate';
 
 /**
@@ -59,7 +60,7 @@ const SelectForm = ( props ) => {
 			/>
 
 			<Button isPrimary
-				isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+				isLarge href={ `${ getSiteUrl() }/wp-admin/post-new.php?post_type=give_forms` }>
 				{ __( 'Add New Form' ) }
 			</Button>&nbsp;&nbsp;
 
