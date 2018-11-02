@@ -252,7 +252,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 */
 	public function test_email_tags_receipt_link_url() {
 
-		$receipt_url = give_get_donation_receipt_link_url( $this->_payment_id );
+		$receipt_url = give_get_receipt_url( $this->_payment_id );
 
 		$this->assertContains( $receipt_url, give_email_tag_receipt_link( $this->_payment_id ) );
 	}

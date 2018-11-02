@@ -1158,7 +1158,7 @@ function give_email_tag_receipt_link( $tag_args ) {
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
 	$donation_id = give_check_variable( $tag_args, 'empty', 0, 'payment_id' );
-	$receipt_url = give_get_donation_receipt_link_url( $donation_id );
+	$receipt_url = give_get_receipt_url( $donation_id );
 
 	// Bailout.
 	if ( give_get_option( 'email_template' ) === 'none' ) {
@@ -1197,7 +1197,7 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 	// Backward compatibility.
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
-	$receipt_link_url = give_get_donation_receipt_link_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
+	$receipt_link_url = give_get_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
 
 	/**
 	 * Filter the {receipt_link_url} email template tag output.
