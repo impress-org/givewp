@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.2.0
  */
 class Give_Donor_Wall {
+
 	/**
 	 * Instance.
 	 *
@@ -192,7 +193,7 @@ class Give_Donor_Wall {
 				'readmore_text'   => esc_html__( 'Read more', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load more', 'give' ),
 				'avatar_size'     => 60,
-				'orderby'         => 'post_date', // Only for internal use.
+				'orderby'         => 'post_date',
 				'order'           => 'DESC',
 				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
@@ -287,7 +288,7 @@ class Give_Donor_Wall {
 	 */
 	private function get_query_param( $atts = array() ) {
 		$valid_order   = array( 'ASC', 'DESC' );
-		$valid_orderby = array( 'post_date' );
+		$valid_orderby = array( 'post_date', 'donation_amount' );
 
 		$query_atts = array();
 
@@ -330,7 +331,7 @@ class Give_Donor_Wall {
 		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
-				ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}
+				ORDER BY FIELD( p1.ID, {$donation_ids} )
 				";
 
 		$results = (array) $wpdb->get_results( $sql );
@@ -343,7 +344,7 @@ class Give_Donor_Wall {
 				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
 			}
 
-			$comments = $this->get_donor_comments($temp);
+			$comments = $this->get_donor_comments( $temp );
 
 			if ( ! empty( $temp ) ) {
 				foreach ( $temp as $donation_id => $donation_data ) {
@@ -354,7 +355,7 @@ class Give_Donor_Wall {
 						'lastname'  => $donation_data['_give_donor_billing_last_name'],
 					) );
 
-					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[$donation_id] ) ? $comments[$donation_id] : '';
+					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
 				}
 			}
 
@@ -403,7 +404,13 @@ class Give_Donor_Wall {
 		// exclude anonymous donation form query.
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
-		$order  = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
+		// order by query based on parameter.
+		if ( 'donation_amount' === $query_params['orderby'] ) {
+			$order = " ORDER BY m1.meta_value+0 {$query_params['order']}";
+		} else {
+			$order = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
+		}
+
 		$limit  = " LIMIT {$query_params['limit']}";
 		$offset = " OFFSET {$query_params['offset']}";
 
@@ -428,7 +435,7 @@ class Give_Donor_Wall {
 		$comments = array();
 
 		// Bailout.
-		if( empty( $donations_data ) ) {
+		if ( empty( $donations_data ) ) {
 			return $comments;
 		}
 
@@ -438,29 +445,29 @@ class Give_Donor_Wall {
 			|| ! give_has_upgrade_completed( 'v230_move_donation_note' )
 		) {
 			foreach ( $donations_data as $id => $data ) {
-				$comment = give_get_donor_donation_comment( $id, $data['_give_payment_donor_id'] );
-				$comments[$id] = ! empty( $comment ) ? $comment->comment_content : '';
+				$comment         = give_get_donor_donation_comment( $id, $data['_give_payment_donor_id'] );
+				$comments[ $id ] = ! empty( $comment ) ? $comment->comment_content : '';
 			}
 
 			return $comments;
 		}
 
-		$sql = "SELECT c1.comment_parent as donation_id, c1.comment_content as comment FROM {$wpdb->give_comments} as c1";
-		$sql .= " INNER JOIN {$wpdb->give_commentmeta} as cm1 ON (c1.comment_ID=cm1.give_comment_id)";
+		$sql   = "SELECT c1.comment_parent as donation_id, c1.comment_content as comment FROM {$wpdb->give_comments} as c1";
+		$sql   .= " INNER JOIN {$wpdb->give_commentmeta} as cm1 ON (c1.comment_ID=cm1.give_comment_id)";
 		$where = array();
 
 		foreach ( $donations_data as $id => $data ) {
 			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
 		}
 
-		$where = ' WHERE '. implode( ' OR ', $where );
+		$where = ' WHERE ' . implode( ' OR ', $where );
 		$where .= " AND c1.comment_type='donor_donation'";
 
-		$sql = $sql.$where;
+		$sql = $sql . $where;
 
 		$comments = (array) $wpdb->get_results( $sql );
 
-		if( ! empty( $comments ) ) {
+		if ( ! empty( $comments ) ) {
 			$comments = array_combine(
 				wp_list_pluck( $comments, 'donation_id' ),
 				wp_list_pluck( $comments, 'comment' )
