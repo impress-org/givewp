@@ -625,16 +625,19 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * Test function give_email_tag_receipt_link_url
 	 *
 	 * @since 2.0
-	 * @cover give_get_receipt_url
 	 * @cover give_email_tag_receipt_link_url
 	 */
 	function test_give_email_tag_receipt_link_url() {
 		$payment = Give_Helper_Payment::create_simple_payment();
 
-		$receipt_link_url = give_email_tag_receipt_link_url( array( 'payment_id' => $payment ) );
+		$receipt_link_url = give_email_tag_receipt_link_url(
+			array(
+				'payment_id' => $payment,
+			)
+		);
 
 		$this->assertRegExp(
-			'/payment_key=/',
+			'/donation_id=/',
 			$receipt_link_url
 		);
 	}
@@ -649,10 +652,14 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment = Give_Helper_Payment::create_simple_payment();
 
 
-		$receipt_link = give_email_tag_receipt_link( array( 'payment_id' => $payment ) );
+		$receipt_link = give_email_tag_receipt_link(
+			array(
+				'payment_id' => $payment,
+			)
+		);
 
 		$this->assertRegExp(
-			'/payment_key=/',
+			'/donation_id=/',
 			$receipt_link
 		);
 	}
