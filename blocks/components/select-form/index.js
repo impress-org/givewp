@@ -44,11 +44,11 @@ const SelectForm = ( props ) => {
 	};
 
 	const setFormIdTo = id => {
-		props.setAttributes( { id } );
+		props.setAttributes( { id: Number( id ) } );
 	};
 
 	const resetFormIdTo = () => {
-		props.setAttributes( { id: props.attributes.prevId } );
+		props.setAttributes( { id: Number( props.attributes.prevId ) } );
 		props.setAttributes( { prevId: 0 } );
 	};
 
