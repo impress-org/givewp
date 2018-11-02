@@ -534,21 +534,15 @@ class Give_Scripts {
 				'wp-components',
 				'wp-api',
 				'wp-editor',
-				'wp-data',
-				'wp-core-data',
-				'wp-api-fetch',
 			),
 			GIVE_VERSION
 		);
-
-		// Enqueue public styles
-		wp_enqueue_style( 'give-styles' );
 
 		// Enqueue the bundled block css file
 		wp_enqueue_style(
 			'give-blocks-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			array( ),
+			array( 'give-styles' ),
 			GIVE_VERSION
 		);
 
