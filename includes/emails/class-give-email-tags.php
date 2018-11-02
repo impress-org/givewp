@@ -1257,7 +1257,7 @@ function give_get_receipt_url( $payment_id ) {
  *
  * @since 2.0
  *
- * @param array $tag_args
+ * @param array $tag_args Email Tag Arguments.
  *
  * @return string
  */
@@ -1288,8 +1288,9 @@ function give_email_tag_email_access_link( $tag_args ) {
 	if ( $donor_id ) {
 		$verify_key = wp_generate_password( 20, false );
 
-		// Generate a new verify key
+		// Generate a new verify key.
 		Give()->email_access->set_verify_key( $donor_id, $donor->email, $verify_key );
+
 		// update verify key in email tags.
 		$tag_args['verify_key'] = $verify_key;
 
@@ -1303,11 +1304,12 @@ function give_email_tag_email_access_link( $tag_args ) {
 			give_get_history_page_uri()
 		);
 
-		// Add Payment Key to email access url, if it exists.
-		if ( ! empty( $_GET['payment_key'] ) ) {
+		// Add donation id to email access url, if it exists.
+		$donation_id = give_clean( filter_input( INPUT_GET, 'donation_id' ) );
+		if ( ! empty( $donation_id ) ) {
 			$access_url = add_query_arg(
 				array(
-					'payment_key' => give_clean( $_GET['payment_key'] ),
+					'donation_id' => $donation_id,
 				),
 				$access_url
 			);
@@ -1328,7 +1330,7 @@ function give_email_tag_email_access_link( $tag_args ) {
 				esc_url( $access_url )
 			);
 		}
-	}
+	} // End if().
 
 	/**
 	 * Filter the {email_access_link} email template tag output.
