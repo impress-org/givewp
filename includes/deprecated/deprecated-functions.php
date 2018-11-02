@@ -1021,3 +1021,17 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	return $comment;
 }
+
+/**
+ * This function is deprecated, instead use give_get_donation_receipt_link_url().
+ *
+ * @param int $payment_id Donation ID.
+ *
+ * @since 2.3.1
+ * @deprecated  2.3.1
+ *
+ * @return string
+ */
+function give_get_receipt_url( $payment_id ) {
+	return give_get_donation_receipt_link_url( $payment_id );
+}
