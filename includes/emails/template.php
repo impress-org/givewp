@@ -53,29 +53,25 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  *
  * @since 1.0
  *
- * @param string $message Email message with template tags
+ * @param string $message Email message with template tags.
  *
  * @return string $message Fully formatted message
  */
 function give_email_preview_template_tags( $message ) {
 
-	$price = give_currency_filter( give_format_amount( 10.50, array( 'sanitize' => false ) ) );
-
-	$gateway = 'PayPal';
-
-	$receipt_id = strtolower( md5( uniqid() ) );
-
-	$payment_id = rand( 1, 100 );
-	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id ), give_get_history_page_uri() ) );
-
-	$receipt_link     = sprintf(
-		'<a href="%1$s">%2$s</a>',
-		$receipt_link_url,
-		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
+	$user             = wp_get_current_user();
+	$gateway          = 'PayPal';
+	$donation_id      = rand( 1, 100 );
+	$receipt_link     = give_get_donation_receipt_link( $donation_id );
+	$receipt_link_url = give_get_donation_receipt_link_url( $donation_id );
+	$price            = give_currency_filter(
+		give_format_amount(
+			10.50,
+			array(
+				'sanitize' => false,
+				)
+		)
 	);
-
-	// Set user.
-	$user = wp_get_current_user();
 
 	$message = str_replace( '{name}', $user->display_name, $message );
 	$message = str_replace( '{fullname}', $user->display_name, $message );
@@ -89,7 +85,7 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{form_title}', esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ), $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
-	$message = str_replace( '{payment_id}', $payment_id, $message );
+	$message = str_replace( '{payment_id}', $donation_id, $message );
 	$message = str_replace( '{receipt_link}', $receipt_link, $message );
 	$message = str_replace( '{receipt_link_url}', $receipt_link_url, $message );
 	$message = str_replace( '{pdf_receipt}', '<a href="#">Download Receipt</a>', $message );
