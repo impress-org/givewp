@@ -2269,3 +2269,42 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
 	 */
 	return apply_filters( 'give_get_formatted_date', $formatted_date, array( $date, $format, $current_format ) );
 }
+
+/**
+ * This function will be used to fetch the donation receipt link.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.3.1
+ *
+ * @return string
+ */
+function give_get_donation_receipt_link_url( $donation_id ) {
+
+	return add_query_arg(
+		array(
+			'donation_id' => $donation_id
+		),
+		give_get_history_page_uri()
+	);
+
+}
+
+/**
+ * This function will be used to fetch the donation receipt link.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.3.1
+ *
+ * @return string
+ */
+function give_get_donation_receipt_link( $donation_id ) {
+
+	return sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( give_get_donation_receipt_link_url( $donation_id ) ),
+		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
+	);
+
+}
