@@ -1149,7 +1149,7 @@ function give_email_tag_sitename( $tag_args = array() ) {
  *
  * The donation receipt direct link, to view the receipt on the website.
  *
- * @param array $tag_args
+ * @param array $tag_args Email Tag Arguments.
  *
  * @return string receipt_link
  */
@@ -1157,26 +1157,15 @@ function give_email_tag_receipt_link( $tag_args ) {
 	// Backward compatibility.
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
-	$receipt_url = give_get_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
+	$donation_id = give_check_variable( $tag_args, 'empty', 0, 'payment_id' );
+	$receipt_url = give_get_donation_receipt_link_url( $donation_id );
 
 	// Bailout.
 	if ( give_get_option( 'email_template' ) === 'none' ) {
 		return $receipt_url;
 	}
 
-	$receipt_url = esc_url(
-		add_query_arg(
-			array(
-				'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
-			), give_get_history_page_uri()
-		)
-	);
-
-	$formatted = sprintf(
-		'<a href="%1$s">%2$s</a>',
-		$receipt_url,
-		__( 'View it in your browser &raquo;', 'give' )
-	);
+	$formatted = give_get_donation_receipt_link( $tag_args['payment_id'] );
 
 	/**
 	 * Filter the {receipt_link} email template tag output.
