@@ -463,7 +463,7 @@ class Give_Scripts {
 				'number_decimals' => give_get_price_decimals(),
 			) ),
 			'cookie_hash'                 => COOKIEHASH,
-			'session_nonce_cookie_name'           => Give()->session->get_cookie_name( 'nonce' ),
+			'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
 			'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
 			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
 		) );
