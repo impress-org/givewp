@@ -405,7 +405,7 @@ class Give_Donor_Wall {
 		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 
 		// order by query based on parameter.
-		if ( ! empty( $query_params['orderby'] ) && 'donation_amount' === $query_params['orderby'] ) {
+		if ( 'donation_amount' === $query_params['orderby'] ) {
 			$order = " ORDER BY m1.meta_value+0 {$query_params['order']}";
 		} else {
 			$order = " ORDER BY p1.{$query_params['orderby']} {$query_params['order']}, p1.ID {$query_params['order']}";
