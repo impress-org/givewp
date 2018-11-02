@@ -193,7 +193,7 @@ class Give_Donor_Wall {
 				'readmore_text'   => esc_html__( 'Read more', 'give' ),
 				'loadmore_text'   => esc_html__( 'Load more', 'give' ),
 				'avatar_size'     => 60,
-				'orderby'         => 'post_date', // Only for internal use.
+				'orderby'         => 'post_date',
 				'order'           => 'DESC',
 				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
