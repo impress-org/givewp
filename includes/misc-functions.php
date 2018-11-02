@@ -2279,26 +2279,6 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
  *
  * @return string
  */
-function give_get_donation_receipt_link_url( $donation_id ) {
-
-	return add_query_arg(
-		array(
-			'donation_id' => $donation_id
-		),
-		give_get_history_page_uri()
-	);
-
-}
-
-/**
- * This function will be used to fetch the donation receipt link.
- *
- * @param int $donation_id Donation ID.
- *
- * @since 2.3.1
- *
- * @return string
- */
 function give_get_donation_receipt_link( $donation_id ) {
 
 	return sprintf(
