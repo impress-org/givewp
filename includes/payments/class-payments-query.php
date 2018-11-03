@@ -352,7 +352,7 @@ class Give_Payments_Query extends Give_Stats {
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
+				$date_query['before'] = date( 'Y-m-d', $this->end_date ) . ' 23:59:59';;
 			}
 
 			// Include Start Date and End Date while querying.

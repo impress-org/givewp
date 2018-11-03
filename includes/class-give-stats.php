@@ -131,10 +131,8 @@ class Give_Stats {
 			$_end_date = $_start_date;
 		}
 
-		$_start_date      = str_replace( '/', '-', $_start_date );
-		$_end_date        = str_replace( '/', '-', $_end_date );
-		$this->start_date = $this->convert_date( $_start_date );
-		$this->end_date   = $this->convert_date( $_end_date, true );
+		$this->start_date = strtotime( $_start_date );
+		$this->end_date   = strtotime( $_end_date );
 	}
 
 	/**

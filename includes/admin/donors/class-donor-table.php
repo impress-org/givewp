@@ -85,7 +85,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
-				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>"
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>"
 				       name="donor-search-input" value="<?php echo $search; ?>">
 				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
 					'ID' => 'donor-search-submit',

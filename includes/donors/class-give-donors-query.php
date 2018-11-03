@@ -453,6 +453,8 @@ class Give_Donors_Query {
 						break;
 				}
 			}
+		} else if ( ! empty( $this->args['donor-search-input'] ) && is_numeric( $this->args['donor-search-input'] ) ) {
+			$where = "AND {$this->table_name}.id ='{$this->args['donor-search-input']}'";
 		} else if ( ! empty( $this->args['donor-search-input'] ) ) {
 			$search_field = is_email( $this->args['donor-search-input'] ) ? 'email' : 'name';
 			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['donor-search-input']}%'";
@@ -671,7 +673,7 @@ class Give_Donors_Query {
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
+				$date_query['before'] = date( 'Y-m-d', $this->end_date ) . ' 23:59:59';
 			}
 
 			// Include Start Date and End Date while querying.
@@ -716,10 +718,8 @@ class Give_Donors_Query {
 		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
 		}
-		$_start_date      = str_replace( '/', '-', $_start_date );
-		$_end_date        = str_replace( '/', '-', $_end_date );
-		$this->start_date = $this->obj_give_stats->convert_date( $_start_date );
-		$this->end_date   = $this->obj_give_stats->convert_date( $_end_date, true );
+		$this->start_date = strtotime( $_start_date );
+		$this->end_date   = strtotime( $_end_date );
 	}
 
 }
