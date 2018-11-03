@@ -661,19 +661,18 @@ class Give_Donors_Query {
 			return;
 		}
 
-		$this->setup_dates( $this->args['start_date'], $this->args['end_date'] );
 		$is_start_date = property_exists( __CLASS__, 'start_date' );
 		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
 		if ( $is_start_date || $is_end_date ) {
 			$date_query = array();
 
-			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
-				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
+			if ( ! empty ( $this->args['start_date'] ) && $is_start_date && ! is_wp_error( $this->start_date ) ) {
+				$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d', $this->end_date ) . ' 23:59:59';
+				$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
 			}
 
 			// Include Start Date and End Date while querying.
@@ -699,27 +698,6 @@ class Give_Donors_Query {
 		} else {
 			$this->args[ $query_var ] = $value;
 		}
-	}
-
-	/**
-	 * If querying a specific date, add the proper filters.
-	 *
-	 * @since  2.4.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
-
-		if ( empty( $_start_date ) ) {
-			$_start_date = 'this_month';
-		}
-
-		if ( empty( $_end_date ) ) {
-			$_end_date = $_start_date;
-		}
-		$this->start_date = strtotime( $_start_date );
-		$this->end_date   = strtotime( $_end_date );
 	}
 
 }

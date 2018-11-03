@@ -130,9 +130,8 @@ class Give_Stats {
 		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
 		}
-
-		$this->start_date = strtotime( $_start_date );
-		$this->end_date   = strtotime( $_end_date );
+		$this->start_date = $this->convert_date( $_start_date );
+		$this->end_date   = $this->convert_date( $_end_date, true );
 	}
 
 	/**

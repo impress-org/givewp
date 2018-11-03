@@ -340,19 +340,18 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		$this->setup_dates( $this->args['start_date'], $this->args['end_date'] );
 		$is_start_date = property_exists( __CLASS__, 'start_date' );
 		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
 		if ( $is_start_date || $is_end_date ) {
 			$date_query = array();
 
-			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
-				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
+			if ( ! empty ( $this->args['start_date'] ) && $is_start_date && ! is_wp_error( $this->start_date ) ) {
+				$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d', $this->end_date ) . ' 23:59:59';;
+				$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
 			}
 
 			// Include Start Date and End Date while querying.

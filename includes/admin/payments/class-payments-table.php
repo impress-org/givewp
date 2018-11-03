@@ -904,8 +904,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
 		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
-		$today_date = date( 'Y-m-d H:i:s' );
-		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : '1970-01-01 00:00:00';
+		$today_date = date( give_date_format(), current_time( 'timestamp' ));
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : '';
 		$end_date   = ! empty( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $today_date;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
