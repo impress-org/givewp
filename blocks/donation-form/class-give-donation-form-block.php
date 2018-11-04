@@ -88,21 +88,28 @@ class Give_Donation_Form_Block {
 		register_block_type( 'give/donation-form', array(
 			'render_callback' => array( $this, 'render_donation_form' ),
 			'attributes'      => array(
-				'id'                  => array(
+				'id'	=> array(
 					'type' => 'number',
 				),
-				'displayStyle'        => array(
+				'prevId'	=> array(
+					'type' => 'number',
+				),
+				'displayStyle'	=> array(
 					'type' => 'string',
 				),
 				'continueButtonTitle' => array(
 					'type' => 'string',
 				),
-				'showTitle'           => array(
+				'showTitle'	=> array(
 					'type'    => 'boolean',
 					'default' => false,
 				),
 				'showGoal'            => array(
 					'type'    => 'boolean',
+					'default' => false,
+				),
+				'contentDisplay' => array(
+					'type' => 'boolean',
 					'default' => false,
 				),
 				'showContent'         => array(

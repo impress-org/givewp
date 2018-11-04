@@ -20,19 +20,22 @@ import GiveBlankSlate from '../blank-slate';
  */
 const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
 
-const SelectForm = ( props ) => {
+const SelectForm = ( { forms, attributes, setAttributes } ) => {
+	//Attributes
+	const { prevId } = attributes;
+
 	// Event(s)
 	const getFormOptions = () => {
 		// Add API Data To Select Options
 
 		let formOptions = [];
 
-		if ( ! isUndefined( props.forms.data ) ) {
-			formOptions = props.forms.data.map(
-				( form ) => {
+		if ( ! isUndefined( forms ) ) {
+			formOptions = forms.map(
+				( { id, title: { rendered: title } } ) => {
 					return {
-						value: form.id,
-						label: form.title.rendered === '' ? `${ form.id } : ${ __( 'No form title' ) }` : form.title.rendered,
+						value: id,
+						label: title === '' ? `${ id } : ${ __( 'No form title' ) }` : title,
 					};
 				}
 			);
@@ -44,12 +47,12 @@ const SelectForm = ( props ) => {
 	};
 
 	const setFormIdTo = id => {
-		props.setAttributes( { id: Number( id ) } );
+		setAttributes( { id: Number( id ) } );
 	};
 
 	const resetFormIdTo = () => {
-		props.setAttributes( { id: Number( props.attributes.prevId ) } );
-		props.setAttributes( { prevId: 0 } );
+		setAttributes( { id: Number( prevId ) } );
+		setAttributes( { prevId: undefined } );
 	};
 
 	return (
@@ -65,7 +68,7 @@ const SelectForm = ( props ) => {
 			</Button>&nbsp;&nbsp;
 
 			{
-				props.attributes.prevId &&
+				prevId &&
 				<Button isLarge
 					onClick={ resetFormIdTo }>
 					{ __( 'Cancel' ) }
