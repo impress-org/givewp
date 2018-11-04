@@ -6,6 +6,7 @@ const { __ } = wp.i18n;
 /**
  * WordPress dependencies
  */
+const { Fragment } = wp.element;
 const { ServerSideRender } = wp.components;
 const { withSelect } = wp.data;
 
@@ -21,7 +22,7 @@ import Inspector from './inspector';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { forms, className, attributes } = props;
+	const { forms, attributes } = props;
 
 	// Render block UI
 	let blockUI;
@@ -32,18 +33,14 @@ const GiveDonationFormGrid = ( props ) => {
 		blockUI = <NoForms />;
 	} else {
 		blockUI = (
-			<div id="donation-form-grid-preview-block">
+			<Fragment>
 				<Inspector { ... { ...props } } />
 				<ServerSideRender block="give/donation-form-grid" attributes={ attributes } />
-			</div>
+			</Fragment>
 		);
 	}
 
-	return (
-		<div className={ className } >
-			{ blockUI }
-		</div>
-	);
+	return blockUI;
 };
 
 export default withSelect( ( select ) => {

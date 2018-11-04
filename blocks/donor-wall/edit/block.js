@@ -1,7 +1,8 @@
 /**
  * Wordpress dependencies
  */
-const { ServerSideRender } = wp.components;
+const { Fragment } = wp.element;
+ const { ServerSideRender } = wp.components;
 
 /**
  * Internal dependencies
@@ -13,15 +14,13 @@ import Inspector from './inspector';
  */
 
 const GiveDonorWall = ( props ) => {
-	const { className, attributes } = props;
+	const { attributes } = props;
 
 	return (
-		<div className={ className }>
-			<div id="donation-form-grid-preview-block">
-				<Inspector { ... { ...props } } />
-				<ServerSideRender block="give/donor-wall" attributes={ attributes } />
-			</div>
-		</div>
+		<Fragment>
+			<Inspector { ... { ...props } } />
+			<ServerSideRender block="give/donor-wall" attributes={ attributes } />
+		</Fragment>
 	);
 };
 

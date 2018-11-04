@@ -25,7 +25,7 @@ const GiveForm = ( props ) => {
 		blockUI = <SelectForm { ... { ...props } } />;
 	} else {
 		blockUI = (
-			<div id="donation-form-preview-block">
+			<div className={ !! isSelected ? `${ className } isSelected` : className } >
 				<Inspector { ... { ...props } } />
 				<Controls { ... { ...props } } />
 				<ServerSideRender block="give/donation-form" attributes={ attributes } />
@@ -33,11 +33,7 @@ const GiveForm = ( props ) => {
 		);
 	}
 
-	return (
-		<div className={ !! isSelected ? `${ className } isSelected` : className } >
-			{ blockUI }
-		</div>
-	);
+	return blockUI;
 };
 
 export default GiveForm;
