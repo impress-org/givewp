@@ -324,8 +324,7 @@ class Give_Scripts {
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
-			'date_format'                       => give_get_localized_date_format_to_js(),
-			'donor_note_confirm_msg'            => __( 'You are adding a donor note , so an email notification will be send to donor. If you do not want to send email notification to donor then either create private note or disable donor note email.', 'give' ),
+			'donor_note_confirm_msg'            => __( 'Please confirm you would like to add a donor note. An email notification will be sent to the donor with the note. If you do not want to notify the donor you may add a private note or disable the donor note email.', 'give' ),
 			'email_notification'            => array(
 				'donor_note' => array(
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
@@ -382,7 +381,9 @@ class Give_Scripts {
 	public function public_enqueue_scripts() {
 
 		// Call Babel Polyfill with common handle so that it is compatible with plugins and themes.
-		if ( ! wp_script_is( 'babel-polyfill', 'enqueued' ) ) {
+		if ( ! wp_script_is( 'babel-polyfill', 'enqueued' )
+		     && give_is_setting_enabled( give_get_option( 'babel_polyfill_script', 'enabled' ) )
+		) {
 			wp_enqueue_script(
 				'babel-polyfill',
 				GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js',
@@ -462,7 +463,9 @@ class Give_Scripts {
 				'number_decimals' => give_get_price_decimals(),
 			) ),
 			'cookie_hash'                 => COOKIEHASH,
-			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() )
+			'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
+			'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
+			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );

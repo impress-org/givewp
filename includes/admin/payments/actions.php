@@ -40,7 +40,6 @@ function give_update_payment_details( $data ) {
 	$payment = new Give_Payment( $payment_id );
 
 	$status = $data['give-payment-status'];
-	$date   = DateTime::createFromFormat( get_option( 'date_format' ), sanitize_text_field( $data['give-payment-date'] ) );
 	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
 
 	// Restrict to our high and low.
@@ -63,7 +62,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = $date->format('Y-m-d' ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = give_get_formatted_date(sanitize_text_field( $data['give-payment-date'] ), 'Y-m-d' ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
@@ -311,59 +310,6 @@ function give_update_payment_details( $data ) {
 
 	if ( $has_anonymous_setting_field ) {
 		give_update_meta( $payment->ID, '_give_anonymous_donation', $payment->anonymous );
-
-		// Set donor as anonymous only if donor does not have any non anonymous donation.
-		$donations = Give()->donors->get_column_by( 'payment_ids', 'id', $payment->donor_id );
-		$donations = ! empty( $donations ) ? explode( ',', $donations ) : array();
-		$update_anonymous_donor_meta = false;
-
-		if( ! empty( $donations ) ) {
-			$non_anonymous_donations = new WP_Query( array(
-				'post_type'   => 'give_payment',
-				'post_status' => 'publish',
-				'post__in'    => $donations,
-				'fields'      => 'ids',
-				'meta_query'  => array(
-					'relation' => 'AND',
-					array(
-						'key'   => '_give_anonymous_donation',
-						'value' => 0,
-					),
-					array(
-						'key'   => '_give_payment_form_id',
-						'value' => $payment->form_id,
-					),
-				),
-			) );
-
-			$update_anonymous_donor_meta = ! ( 0 < $non_anonymous_donations->found_posts );
-
-			if(
-				0 === absint( $non_anonymous_donations->found_posts )
-				&&  $payment->anonymous
-			) {
-				$update_anonymous_donor_meta = true;
-			} elseif (
-				1 === absint( $non_anonymous_donations->found_posts )
-				&& ! $payment->anonymous
-			) {
-				$update_anonymous_donor_meta =  true;
-			}
-		}
-
-		if ( $update_anonymous_donor_meta ) {
-			Give()->donor_meta->update_meta( $payment->donor_id, "_give_anonymous_donor_form_{$payment->form_id}", $payment->anonymous );
-		}
-
-		// Update comment meta if admin is not updating comment.
-		if( $comment_id ) {
-			if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
-				// Backward compatibility.
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			} else{
-				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			}
-		}
 	}
 
 	// Update comment.
@@ -391,21 +337,6 @@ function give_update_payment_details( $data ) {
 				$data['give_comment'],
 				$comment_args
 			);
-		}
-
-		if( $comment_id ) {
-			$donor_has_comment = empty( $data['give_comment'] )
-				? ( $latest_comment = give_get_donor_latest_comment( $payment->donor_id ) && empty( $latest_comment ) ? '0' : '1' )
-				: '1';
-
-			if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
-				// Backward compatibility.
-				update_comment_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			} else {
-				Give()->comment->db_meta->update_meta( $comment_id, '_give_anonymous_donation', $payment->anonymous );
-			}
-
-			Give()->donor_meta->update_meta( $payment->donor_id, '_give_has_comment', $donor_has_comment );
 		}
 	}
 

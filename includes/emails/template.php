@@ -87,7 +87,6 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{price}', $price, $message );
 	$message = str_replace( '{donation}', esc_html__( 'Sample Donation Form Title', 'give' ), $message );
 	$message = str_replace( '{form_title}', esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ), $message );
-	$message = str_replace( '{receipt_id}', $receipt_id, $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );

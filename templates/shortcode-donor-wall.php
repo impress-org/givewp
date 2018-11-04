@@ -9,89 +9,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** @var $donor Give_Donor */
-$donor = $args[0];
-$donor = new Give_Donor( $donor->id );
+$donation = $args[0];
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
 ?>
 
 <div class="give-grid__item">
-	<div class="give-donor">
+	<div class="give-donor give-card">
 		<div class="give-donor__header">
 			<?php
-			// Maybe display the Avatar.
-			if ( true === $atts['show_avatar'] ) {
-				echo give_get_donor_avatar( $donor );
+			if( true === $atts['show_avatar'] ) {
+				// Maybe display the Avatar.
+				echo sprintf(
+					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
+					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
+					absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ),
+					$donation['name_initial']
+				);
 			}
 			?>
 
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
-						<?php esc_html_e( $donor->name ); ?>
+						<?php $donor_name = trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] ); ?>
+						<?php esc_html_e( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php
-						// If not filtered by form ID then display total donations
-						// Else filtered by form ID, only display donations made for this form.
-						$donated_amount = $donor->purchase_value;
-
-						if ( ! empty( $atts['form_id'] ) ) {
-							$donated_amount = Give_Donor_Stats::donated(
-								array(
-									'donor'          => $donor->id,
-									'give_forms'     => $atts['form_id'],
-								)
-							);
-						}
-						echo give_currency_filter( give_format_amount( $donated_amount, array( 'sanitize' => false ) ) );
-						?>
+						<?php echo give_donation_amount( $donation['donation_id'], true ); ?>
 					</span>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php
-						// If not filtered by form ID then display the "Donor Since" text.
-						// If filtered by form ID then display the last donation date.
-						echo $donor->get_last_donation_date( true );
-						?>
+						<?php echo date_i18n( give_date_format(), strtotime( $donation['_give_completed_date'] ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
 		</div>
 
 		<?php
-		$comment = give_get_donor_latest_comment( $donor->id, $atts['form_id'] );
-
 		if (
 			true === $atts['show_comments']
 			&& absint( $atts['comment_length'] )
-			&& ( $comment instanceof WP_Comment || $comment instanceof stdClass )
+			&& ! empty( $donation['donor_comment'] )
 		) :
-		?>
+			?>
 			<div class="give-donor__content">
 				<?php
-				$comment_content = apply_filters( 'the_content', $comment->comment_content );
+				$comment     = trim( $donation['donor_comment'] );
+				$total_chars = strlen( $comment );
+				$max_chars   = $atts['comment_length'];
 
-				if ( $atts['comment_length'] < strlen( $comment->comment_content ) ) {
-					echo sprintf(
-						'<p class="give-donor__comment_excerpt">%s&hellip;<span>&nbsp;<a class="give-donor__read-more">%s</a></span></p>',
-						substr( $comment_content, 0, $atts['comment_length'] ),
-						$atts['readmore_text']
-					);
+				// A truncated excerpt is displayed if the comment is too long.
+				if ( $max_chars < $total_chars ) {
+					$excerpt    = '';
+					$offset     = -( $total_chars - $max_chars );
+					$last_space = strrpos( $comment, ' ', $offset );
+
+					if ( $last_space ) {
+						// Truncate excerpt at last space before limit.
+						$excerpt = substr( $comment, 0, $last_space );
+					} else {
+						// There are no spaces, so truncate excerpt at limit.
+						$excerpt = substr( $comment, 0, $max_chars );
+					}
+
+					$excerpt = trim( $excerpt, '.!,:;' );
 
 					echo sprintf(
-						'<div class="give-donor__comment" style="display: none">%s</div>',
-						$comment_content
+						'<p class="give-donor__excerpt">%s&hellip;<span> <a class="give-donor__read-more">%s</a></span></p>',
+						nl2br( esc_html( $excerpt ) ),
+						esc_html( $atts['readmore_text'] )
 					);
-				} else {
-					echo $comment_content;
 				}
+
+				echo sprintf(
+					'<p class="give-donor__comment">%s</p>',
+					nl2br( esc_html( $comment ) )
+				);
 				?>
 			</div>
 		<?php endif; ?>

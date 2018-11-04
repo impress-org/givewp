@@ -92,11 +92,14 @@ class Give_Comment {
 			self::get_comment_types( array( 'payment', 'donor' ) )
 		);
 
-		add_action( 'pre_get_comments', array( $this, 'hide_comments' ), 10 );
-		add_filter( 'comments_clauses', array( $this, 'hide_comments_pre_wp_41' ), 10, 1 );
-		add_filter( 'comment_feed_where', array( $this, 'hide_comments_from_feeds' ), 10, 1 );
-		add_filter( 'wp_count_comments', array( $this, 'remove_comments_from_comment_counts' ), 10, 2 );
-		add_filter( 'get_comment_author', array( $this, '__get_comment_author' ), 10, 3 );
+		// Backward compatibility.
+		if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
+			add_action( 'pre_get_comments', array( $this, 'hide_comments' ), 10 );
+			add_filter( 'comments_clauses', array( $this, 'hide_comments_pre_wp_41' ), 10, 1 );
+			add_filter( 'comment_feed_where', array( $this, 'hide_comments_from_feeds' ), 10, 1 );
+			add_filter( 'wp_count_comments', array( $this, 'remove_comments_from_comment_counts' ), 10, 2 );
+			add_filter( 'get_comment_author', array( $this, '__get_comment_author' ), 10, 3 );
+		}
 	}
 
 	/**
@@ -152,7 +155,6 @@ class Give_Comment {
 			$comment_args['comment_content'],
 			$comment_args
 		);
-
 
 		$comment_id = Give()->comment->db->add(
 			array(

@@ -529,6 +529,10 @@ add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 )
  * @since 2.2
  */
 function give_process_donor_deletion( $args ) {
+	// Bailout.
+	if ( ! isset( $args['give-donor-delete-confirm'] ) ) {
+		return;
+	}
 
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
@@ -556,7 +560,7 @@ function give_process_donor_deletion( $args ) {
 	$redirect_args            = array();
 	$donor_ids                = ( isset( $args['donor'] ) && is_array( $args['donor'] ) ) ? $args['donor'] : array( $args['donor_id'] );
 	$redirect_args['order']   = ! empty( $args['order'] ) ? $args['order'] : 'DESC';
-	$redirect_args['orderby'] = ! empty( $args['orderby'] ) ? $args['orderby'] : 'ID';
+	$redirect_args['orderby'] = ! empty( $args['orderby'] ) ? strtolower( $args['orderby'] ) : 'id';
 	$redirect_args['s']       = ! empty( $args['s'] ) ? $args['s'] : '';
 	$delete_donor             = ! empty( $args['give-donor-delete-confirm'] ) ? give_is_setting_enabled( $args['give-donor-delete-confirm'] ) : false;
 	$delete_donation          = ! empty( $args['give-donor-delete-records'] ) ? give_is_setting_enabled( $args['give-donor-delete-records'] ) : false;

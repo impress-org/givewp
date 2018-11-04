@@ -2209,58 +2209,6 @@ function give_get_formatted_address( $address = array() ) {
 }
 
 /**
- * Converts a PHP date format for use in JavaScript.
- *
- * @since 2.2.0
- *
- * @param string $php_format The PHP date format.
- *
- * @return string The JS date format.
- */
-function give_convert_php_date_format_to_js( $php_format ) {
-	$js_format = $php_format;
-
-	switch ( $php_format ) {
-		case 'F j, Y':
-			$js_format = 'MM dd, yy';
-			break;
-		case 'Y-m-d':
-			$js_format = 'yy-mm-dd';
-			break;
-		case 'm/d/Y':
-			$js_format = 'mm/dd/yy';
-			break;
-		case 'd/m/Y':
-			$js_format = 'dd/mm/yy';
-			break;
-	}
-
-	/**
-	 * Filters the date format for use in JavaScript.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @param string $js_format  The JS date format.
-	 * @param string $php_format The PHP date format.
-	 */
-	$js_format = apply_filters( 'give_js_date_format', $js_format, $php_format );
-
-	return $js_format;
-}
-
-/**
- * Get localized date format for use in JavaScript.
- *
- * @since 2.2.0
- *
- * @return string.
- */
-function give_get_localized_date_format_to_js() {
-
-	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
-}
-
-/**
  * Get safe url for assets
  * Note: this function will return url without http protocol
  *
@@ -2287,4 +2235,31 @@ function give_get_safe_asset_url( $url ) {
 	 * @since 2.2.0
 	 */
 	return apply_filters( 'give_get_safe_asset_url', $url );
+}
+
+/**
+ * Give get formatted date.
+ *
+ * @since 2.3.0
+ *
+ * @param string $date           Date.
+ * @param string $format         Date Format.
+ * @param string $current_format Current date Format.
+ *
+ * @return string
+ */
+function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
+	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
+	$date_obj       = DateTime::createFromFormat( $current_format, $date );
+	$formatted_date = $date_obj->format( $format );
+
+	/**
+	 * Give get formatted date.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $formatted_date Formatted date.
+	 * @param array
+	 */
+	return apply_filters( 'give_get_formatted_date', $formatted_date, array( $date, $format, $current_format ) );
 }

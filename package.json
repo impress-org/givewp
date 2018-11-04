@@ -72,6 +72,7 @@
     "float-labels.js": "^3.3.5",
     "flot": "^0.8.0-alpha",
     "flot-orderbars": "^1.0.0",
+    "gravatar": "^1.6.0",
     "hint.css": "^2.5.0",
     "jquery-chosen": "latest",
     "jquery.payment": "latest",

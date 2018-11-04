@@ -4,9 +4,10 @@ export default {
 		this.fn.field.formatCreditCard( jQuery( 'form.give-form' ) );
 		this.fn.__initialize_cache();
 
-		window.onload = function() {
+		// Run code on after window load.
+		window.addEventListener('load', function () {
 			Give.form.fn.__sendBackToForm();
-		};
+		});
 	},
 
 	fn: {
@@ -366,7 +367,8 @@ export default {
 		 * @since 2.2.0
 		 *
 		 * @param {object} $form Donation form object.
-		 * @returns {boolean}
+		 *
+		 * @returns {object}
 		 */
 		resetAllNonce: function( $form ) {
 			// Return false, if form is missing.
@@ -376,40 +378,46 @@ export default {
 
 			Give.form.fn.disable( $form, true );
 
-			//Post via AJAX to Give
-			jQuery.post( Give.fn.getGlobalVar('ajaxurl'), {
-					action: 'give_donation_form_reset_all_nonce',
-					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
-				},
-				function( response ) {
-					// Process only if get response successfully.
-					if( ! response.success ) {
-						return;
+			return new Promise( (resolve, reject ) => {
+				//Post via AJAX to Give
+				jQuery.post(
+					Give.fn.getGlobalVar('ajaxurl'),
+					{
+						action: 'give_donation_form_reset_all_nonce',
+						give_form_id: Give.form.fn.getInfo( 'form-id', $form )
+					},
+					function( response ) {
+						// Process only if get response successfully.
+						if( ! response.success ) {
+							return reject(response);
+						}
+
+						const createUserNonceField = $form.find( 'input[name="give-form-user-register-hash"]' );
+
+						// Update nonce field.
+						Give.form.fn.setInfo( 'nonce', response.data.give_form_hash, $form, '' );
+
+						// Update create user nonce field.
+						if( createUserNonceField.length ){
+							createUserNonceField.val( response.data.give_form_user_register_hash );
+						}
+
+						Give.form.fn.disable( $form, false );
+
+						/**
+						 * Fire custom event handler when update all nonce of donation form
+						 *
+						 * @since  2.2.0
+						 * @access access
+						 */
+						jQuery(document).trigger( 'give_reset_all_nonce', [response.data] );
+
+						return resolve(response);
 					}
-
-					const createUserNonceField = $form.find( 'input[name="give-form-user-register-hash"]' );
-
-					// Update nonce field.
-					Give.form.fn.setInfo( 'nonce', response.data.give_form_hash, $form, '' );
-
-					// Update create user nonce field.
-					if( createUserNonceField.length ){
-						createUserNonceField.val( response.data.give_form_user_register_hash );
-					}
-
+				).done(function(){
 					Give.form.fn.disable( $form, false );
-
-					/**
-					 * Fire custom event handler when update all nonce of donation form
-					 *
-					 * @since  2.2.0
-					 * @access access
-					 */
-					jQuery(document).trigger( 'give_reset_all_nonce', [response.data] );
-				}
-			).done(function(){
-				Give.form.fn.disable( $form, false );
-			});
+				});
+			} );
 		},
 
 		/**
