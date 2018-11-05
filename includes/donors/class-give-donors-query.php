@@ -440,11 +440,18 @@ class Give_Donors_Query {
 	 */
 	private function get_where_search() {
 		$where = '';
+
+		// Bailout.
+		if( empty( $this->args['search'] ) ) {
+			return $where;
+		}
+
 		// Donors created for a specific date or in a date range
-		if ( ! empty( $this->args['search'] ) && false !== strpos( $this->args['search'], ':' ) ) {
+		if ( false !== strpos( $this->args['search'], ':' ) ) {
 			$search_parts = explode( ':', $this->args['search'] );
 			if ( ! empty( $search_parts[0] ) ) {
 				switch ( $search_parts[0] ) {
+					// Backward compatibility.
 					case 'name':
 						$where = "AND {$this->table_name}.name LIKE '%{$search_parts[1]}%'";
 						break;
@@ -453,9 +460,11 @@ class Give_Donors_Query {
 						break;
 				}
 			}
-		} else if ( ! empty( $this->args['search'] ) && is_numeric( $this->args['search'] ) ) {
+
+		} else if ( is_numeric( $this->args['search'] ) ) {
 			$where = "AND {$this->table_name}.id ='{$this->args['search']}'";
-		} else if ( ! empty( $this->args['search'] ) ) {
+
+		} else {
 			$search_field = is_email( $this->args['search'] ) ? 'email' : 'name';
 			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['search']}%'";
 		}
