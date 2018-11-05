@@ -130,13 +130,6 @@ class Give_Donors_Query {
 	 */
 	public $end_date;
 
-	/**
-	 * This helps to get information give plugin data.
-	 *
-	 * @var Give_Stats Object.
-	 */
-	public $obj_give_stats;
-
 
 
 	/**
@@ -185,7 +178,6 @@ class Give_Donors_Query {
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
-		$this->obj_give_stats  = new Give_Stats();
 	}
 
 	/**
