@@ -468,7 +468,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'donor'      => $donor,
-			'search'     => $search,
+			's'          => $search,
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
