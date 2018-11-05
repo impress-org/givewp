@@ -155,7 +155,7 @@ class Give_Donors_Query {
 			'donor'           => null,
 			'meta_query'      => array(),
 			'date_query'      => array(),
-			's'          => null,
+			's'               => null,
 			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
 			'count'           => false,
 			'give_forms'      => array(),
