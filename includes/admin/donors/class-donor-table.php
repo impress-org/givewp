@@ -461,17 +461,17 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
 		$args = array(
-			'output'             => 'payments',
-			'number'             => $per_page,
-			'offset'             => $offset,
-			'page'               => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
-			'orderby'            => $orderby,
-			'order'              => $order,
-			'donor'              => $donor,
-			'donor-search-input' => $search,
-			'start_date'         => $start_date,
-			'end_date'           => $end_date,
-			'give_forms'         => $form_id,
+			'output'     => 'payments',
+			'number'     => $per_page,
+			'offset'     => $offset,
+			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'orderby'    => $orderby,
+			'order'      => $order,
+			'donor'      => $donor,
+			'search'     => $search,
+			'start_date' => $start_date,
+			'end_date'   => $end_date,
+			'give_forms' => $form_id,
 		);
 
 		/**
