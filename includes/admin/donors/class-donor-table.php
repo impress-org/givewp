@@ -59,7 +59,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-
 		// Set parent defaults.
 		parent::__construct( array(
 			'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
@@ -79,14 +78,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
 		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
 		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['donor-search-input'] ) ? give_clean( $_GET['donor-search-input'] ) : '';
+		$search      = $this->get_search();
 		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
-				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>"
-				       name="donor-search-input" value="<?php echo $search; ?>">
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
 				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
 					'ID' => 'donor-search-submit',
 				) ); ?>
@@ -332,7 +329,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
-		return ! empty( $_GET['donor-search-input'] ) ? urldecode( trim( $_GET['donor-search-input'] ) ) : false;
+		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
 	}
 
 	/**
@@ -513,7 +510,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$search_keyword = ! empty( $get_data['donor-search-input'] ) ? $get_data['donor-search-input'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
@@ -561,7 +557,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 					<p class="submit inline-edit-save">
 						<input type="hidden" name="give_action" value="delete_bulk_donor"/>
-						<input type="hidden" name="s" value="<?php echo esc_html( $search_keyword ); ?>"/>
 						<input type="hidden" name="orderby" value="<?php echo esc_html( $order_by ); ?>"/>
 						<input type="hidden" name="order" value="<?php echo esc_html( $order ); ?>"/>
 						<button type="button" id="give-bulk-delete-cancel"
