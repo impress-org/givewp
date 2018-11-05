@@ -76,6 +76,63 @@ class Give_Donors_Query {
 	public $meta_type = '';
 
 	/**
+	 * Preserve args
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @var    array
+	 */
+	public $_args = array();
+
+	/**
+	 * Flag to determine if current query is based on timestamps
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @var    string
+	 */
+
+	public $timestamp;
+
+	/**
+	 * The start date for the period we're getting stats for
+	 *
+	 * Can be a timestamp, formatted date, date string (such as August 3, 2013),
+	 * or a predefined date string, such as last_week or this_month
+	 *
+	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
+	 * this_quarter, last_quarter, this_year, last_year
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @var    string
+	 */
+	public $start_date;
+
+	/**
+	 * The end date for the period we're getting stats for
+	 *
+	 * Can be a timestamp, formatted date, date string (such as August 3, 2013),
+	 * or a predefined date string, such as last_week or this_month
+	 *
+	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
+	 * this_quarter, last_quarter, this_year, last_year
+	 *
+	 * The end date is optional
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @var    string
+	 */
+	public $end_date;
+
+
+
+	/**
 	 * Default query arguments.
 	 *
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
@@ -102,6 +159,8 @@ class Give_Donors_Query {
 			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
 			'count'           => false,
 			'give_forms'      => array(),
+			'start_date'      => false,
+			'end_date'        => false,
 
 			/**
 			 * donation_amount will contain value like:
@@ -112,11 +171,10 @@ class Give_Donors_Query {
 			 *
 			 * You can also pass number value to this param then compare symbol will auto set to >
 			 */
-			'donation_amount' => array()
-			// 'form'       => array(),
+			'donation_amount' => array(),
 		);
 
-		$this->args            = wp_parse_args( $args, $defaults );
+		$this->args            = $this->_args = wp_parse_args( $args, $defaults );
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
@@ -164,6 +222,10 @@ class Give_Donors_Query {
 
 		// Get donors from cache.
 		$this->donors = Give_Cache::get_db_query( $cache_key );
+
+		// Modify the query/query arguments before we retrieve donors.
+		$this->args = $this->_args;
+		$this->date_filter_pre();
 
 		if ( is_null( $this->donors ) ) {
 			if ( empty( $this->args['count'] ) ) {
@@ -371,21 +433,32 @@ class Give_Donors_Query {
 	private function get_where_search() {
 		$where = '';
 
-		// Donors created for a specific date or in a date range
-		if ( ! empty( $this->args['s'] ) && false !== strpos( $this->args['s'], ':' ) ) {
-			$search_parts = explode( ':', $this->args['s'] );
+		// Bailout.
+		if( empty( $this->args['s'] ) ) {
+			return $where;
+		}
 
+		// Donors created for a specific date or in a date range
+		if ( false !== strpos( $this->args['s'], ':' ) ) {
+			$search_parts = explode( ':', $this->args['s'] );
 			if ( ! empty( $search_parts[0] ) ) {
 				switch ( $search_parts[0] ) {
+					// Backward compatibility.
 					case 'name':
 						$where = "AND {$this->table_name}.name LIKE '%{$search_parts[1]}%'";
 						break;
-
 					case 'note':
 						$where = "AND {$this->table_name}.notes LIKE '%{$search_parts[1]}%'";
 						break;
 				}
 			}
+
+		} else if ( is_numeric( $this->args['s'] ) ) {
+			$where = "AND {$this->table_name}.id ='{$this->args['s']}'";
+
+		} else {
+			$search_field = is_email( $this->args['s'] ) ? 'email' : 'name';
+			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['s']}%'";
 		}
 
 		return $where;
@@ -575,4 +648,57 @@ class Give_Donors_Query {
 
 		return $where;
 	}
+
+	/**
+	 * If querying a specific date, add the proper filters.
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function date_filter_pre() {
+		if ( ! ( $this->args['start_date'] || $this->args['end_date'] ) ) {
+			return;
+		}
+
+		$is_start_date = property_exists( __CLASS__, 'start_date' );
+		$is_end_date   = property_exists( __CLASS__, 'end_date' );
+
+		if ( $is_start_date || $is_end_date ) {
+			$date_query = array();
+
+			if ( ! empty ( $this->args['start_date'] ) && $is_start_date && ! is_wp_error( $this->start_date ) ) {
+				$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
+			}
+
+			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
+				$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
+			}
+
+			// Include Start Date and End Date while querying.
+			$date_query['inclusive'] = true;
+
+			$this->__set( 'date_query', $date_query );
+
+		}
+	}
+
+	/**
+	 * Set a query variable.
+	 *
+	 * @since  2.4.0
+	 * @access public
+	 *
+	 * @param $query_var
+	 * @param $value
+	 */
+	public function __set( $query_var, $value ) {
+		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
+			$this->args[ $query_var ][] = $value;
+		} else {
+			$this->args[ $query_var ] = $value;
+		}
+	}
+
 }

@@ -48,6 +48,13 @@
 	.donor-section {
 	  border-bottom: 1px solid #eee;
 	  margin-bottom: 10px;
+	  	.give-donor-search-box {
+			margin-right: 25px;
+			width: auto;
+			display: inline-block;
+			float: left;
+
+	  	}
 	}
 
 	.donor-section table {
@@ -104,6 +111,26 @@
 		margin-bottom: 15px;
 	  }
 
+	}
+  }
+  #give-donor-filters{
+	.give-donor-search-box {
+	  display: inline-block;
+	  float: left;
+	  margin-right: 18px;
+	  input#give-donors-search-input {
+		width: 205px;
+		max-width: 100%;
+	  }
+	}
+	label {
+	  vertical-align: initial;
+	  &.give-donation-forms-filter-label{
+		vertical-align: middle;
+	  }
+	  &.give-donation-forms-filter-label	{
+		vertical-align: middle;
+	  }
 	}
   }
 

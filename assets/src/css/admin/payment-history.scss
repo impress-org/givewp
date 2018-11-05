@@ -44,6 +44,15 @@
 	  width: 100%;
 	}
   }
+  #give-payment-form-filter,#give-payment-date-filters{
+	label {
+	  vertical-align: initial;
+	  &.give-donation-forms-filter-label{
+		vertical-align: middle;
+	  }
+	}
+  }
+
   // Chosen / Select donation form filter dropdown.
   #give_donation_forms_filter {
 	width: 255px;
@@ -119,10 +128,11 @@
 }
 
 .give-filter-search {
-  input[type="search"] {
+  input[type="search"]#give-payments-search-input {
 	display: block;
 	float: left;
-	width: 68%;
+	width: 205px;
+	max-width: 100%;
   }
 
   input[type="submit"] {
@@ -135,7 +145,7 @@
 	input[type="search"] {
 	  display: inline-block;
 	  margin-right: 4px;
-	  width: 144px;
+	  width: auto;
 	}
 
 	input[type="submit"] {
