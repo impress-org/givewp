@@ -86,17 +86,6 @@ class Give_Donors_Query {
 	public $_args = array();
 
 	/**
-	 * Flag to determine if current query is based on timestamps
-	 *
-	 * @since  2.4.0
-	 * @access public
-	 *
-	 * @var    string
-	 */
-
-	public $timestamp;
-
-	/**
 	 * Default query arguments.
 	 *
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
