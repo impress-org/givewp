@@ -6,8 +6,10 @@ const { __ } = wp.i18n;
 /**
 * Internal dependencies
 */
+import { getSiteUrl } from '../../utils';
 import GiveHelpLink from '../help-link';
 import PlaceholderAnimation from '../placeholder-animation';
+import GiveLogo from '../logo';
 import './style.scss';
 
 const GiveBlankSlate = ( props ) => {
@@ -19,9 +21,6 @@ const GiveBlankSlate = ( props ) => {
 		children,
 		helpLink,
 	} = props;
-
-	// @todo: do not hard code wp content url that can be configure.
-	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
 
 	const blockLoading = (
 		<PlaceholderAnimation />
@@ -38,11 +37,7 @@ const GiveBlankSlate = ( props ) => {
 
 	return (
 		<div className="give-blank-slate">
-			{ ! noIcon && (
-				<img className="give-blank-slate__image"
-					src={ `${ wpApiSettings.schema.url }${ giveLogo }` }
-					alt={ __( 'Give Icon' ) } />
-			) }
+			{ ! noIcon && <GiveLogo size="80" className="give-blank-slate__image" /> }
 			{ !! isLoader ? blockLoading : blockLoaded }
 		</div>
 	);

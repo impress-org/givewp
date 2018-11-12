@@ -8,7 +8,7 @@ const { registerBlockType } = wp.blocks;
  * Internal dependencies
  */
 import blockAttributes from './data/attributes';
-import giveLogo from './data/icon';
+import GiveLogo from '../components/logo';
 import GiveDonationFormGrid from './edit/block';
 
 /**
@@ -19,8 +19,8 @@ export default registerBlockType( 'give/donation-form-grid', {
 
 	title: __( 'Give Donation Form Grid' ),
 	description: __( 'The Give Donation Form Grid block insert an existing donation form into the page. Each form\'s presentation can be customized below.' ),
-	category: 'widgets',
-	icon: giveLogo,
+	category: 'give',
+	icon: <GiveLogo color="grey" />,
 	keywords: [
 		__( 'donation' ),
 		__( 'grid' ),
