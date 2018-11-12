@@ -97,42 +97,6 @@ class Give_Donors_Query {
 	public $timestamp;
 
 	/**
-	 * The start date for the period we're getting stats for
-	 *
-	 * Can be a timestamp, formatted date, date string (such as August 3, 2013),
-	 * or a predefined date string, such as last_week or this_month
-	 *
-	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
-	 * this_quarter, last_quarter, this_year, last_year
-	 *
-	 * @since  2.4.0
-	 * @access public
-	 *
-	 * @var    string
-	 */
-	public $start_date;
-
-	/**
-	 * The end date for the period we're getting stats for
-	 *
-	 * Can be a timestamp, formatted date, date string (such as August 3, 2013),
-	 * or a predefined date string, such as last_week or this_month
-	 *
-	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
-	 * this_quarter, last_quarter, this_year, last_year
-	 *
-	 * The end date is optional
-	 *
-	 * @since  2.4.0
-	 * @access public
-	 *
-	 * @var    string
-	 */
-	public $end_date;
-
-
-
-	/**
 	 * Default query arguments.
 	 *
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
@@ -651,6 +615,7 @@ class Give_Donors_Query {
 
 	/**
 	 * If querying a specific date, add the proper filters.
+	 * Note: This function currently only accept dates with admin defined core date format
 	 *
 	 * @since  2.4.0
 	 * @access public
@@ -662,26 +627,20 @@ class Give_Donors_Query {
 			return;
 		}
 
-		$is_start_date = property_exists( __CLASS__, 'start_date' );
-		$is_end_date   = property_exists( __CLASS__, 'end_date' );
+		$date_query = array();
 
-		if ( $is_start_date || $is_end_date ) {
-			$date_query = array();
-
-			if ( ! empty ( $this->args['start_date'] ) && $is_start_date && ! is_wp_error( $this->start_date ) ) {
-				$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
-			}
-
-			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
-			}
-
-			// Include Start Date and End Date while querying.
-			$date_query['inclusive'] = true;
-
-			$this->__set( 'date_query', $date_query );
-
+		if ( ! empty ( $this->args['start_date'] ) ) {
+			$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
 		}
+
+		if ( ! empty ( $this->args['start_date'] ) ) {
+			$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
+		}
+
+		// Include Start Date and End Date while querying.
+		$date_query['inclusive'] = true;
+
+		$this->__set( 'date_query', $date_query );
 	}
 
 	/**
