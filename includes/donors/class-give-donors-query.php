@@ -622,7 +622,7 @@ class Give_Donors_Query {
 			$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
 		}
 
-		if ( ! empty ( $this->args['start_date'] ) ) {
+		if ( ! empty ( $this->args['end_date'] ) ) {
 			$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
 		}
 
