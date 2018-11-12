@@ -50,24 +50,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 				case 'email-settings' :
 					$settings = array(
 
-						// Section 1: Email Notification Listing.
+						// Section 1: Email Sender Setting
 						array(
-							'desc'       => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
-							'type'       => 'title',
-							'id'         => 'give_email_notification_settings',
-							'table_html' => false,
-						),
-						array(
-							'type' => 'email_notification',
-						),
-						array(
-							'type' => 'sectionend',
-							'id'   => 'give_email_notification_settings',
-						),
-
-						// Section 2: Email Sender Setting
-						array(
-							'title' => __( 'Email Sender Options', 'give' ),
 							'id'    => 'give_title_email_settings_1',
 							'type'  => 'title',
 						),
@@ -109,6 +93,48 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'id'   => 'give_title_email_settings_3',
 							'type' => 'sectionend',
 						),
+					);
+					break;
+
+				case 'donor-email' :
+					$settings = array(
+
+						// Section 1: Donor Email Notification Listing.
+						array(
+							'desc'       => __( 'Email notifications sent from Give for donor are listed below. Click on an email to configure it.', 'give' ),
+							'type'       => 'title',
+							'id'         => 'give_donor_email_notification_settings',
+							'table_html' => false,
+						),
+						array(
+							'type' => 'email_notification',
+						),
+						array(
+							'type' => 'sectionend',
+							'id'   => 'give_donor_email_notification_settings',
+						),
+
+					);
+					break;
+
+				case 'admin-email' :
+					$settings = array(
+
+						// Section 1: Admin Email Notification Listing.
+						array(
+							'desc'       => __( 'Email notifications sent from Give for admin are listed below. Click on an email to configure it.', 'give' ),
+							'type'       => 'title',
+							'id'         => 'give_admin_email_notification_settings',
+							'table_html' => false,
+						),
+						array(
+							'type' => 'email_notification',
+						),
+						array(
+							'type' => 'sectionend',
+							'id'   => 'give_admin_email_notification_settings',
+						),
+
 					);
 					break;
 
@@ -171,6 +197,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		public function get_sections() {
 			$sections = array(
 				'email-settings' => esc_html__( 'Email Settings', 'give' ),
+				'donor-email'    => esc_html__( 'Donor Emails', 'give' ),
+				'admin-email'    => esc_html__( 'Admin Emails', 'give' ),
 				'contact'        => esc_html__( 'Contact Information', 'give' ),
 			);
 
