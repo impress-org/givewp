@@ -866,7 +866,7 @@ function give_can_view_receipt( $donation_id ) {
 	$give_receipt_args['id'] = $donation_id;
 
 	// Add backward compatibility.
-	if ( ! is_int( $donation_id ) ) {
+	if ( ! is_numeric( $donation_id ) ) {
 		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
 	}
 
