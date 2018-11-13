@@ -251,32 +251,32 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable, $this->get_primary_column_name() );
 
 		// Get email section
-		$current_section = isset( $_GET['section'] ) && ! empty( $_GET['section'] ) ? give_clean( $_GET['section'] ) : '';
+		$current_section = give_get_current_setting_section();
 
 		// Set email notifications.
 		/* @var Give_Email_Notification $email_notification */
 		foreach ( $this->email_notifications->get_email_notifications() as $email_notification ) {
-			if ( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email_notification ) ) {
+			if ( ! Give_Email_Notification_Util::is_show_on_emails_setting_page( $email_notification ) ) {
+				continue;
+			}
 
-				if ( ! empty( $current_section ) && 'donor-email' === $current_section ) {
-					// Add donor emails to email array list.
-					if ( empty( $email_notification->config['has_recipient_field'] ) ) {
-						$email_notifications[] = $email_notification;
-					}
-				} elseif ( ! empty( $current_section ) && 'admin-email' === $current_section ) {
-					// Add admin emails to email array list.
-					if ( ! empty( $email_notification->config['has_recipient_field'] ) ) {
-						$email_notifications[] = $email_notification;
-					}
+			if ( 'donor-email' === $current_section ) {
+				// Add donor emails to email array list.
+				if ( empty( $email_notification->config['has_recipient_field'] ) ) {
+					$email_notifications[] = $email_notification;
 				}
-
+			} elseif ( 'admin-email' === $current_section ) {
+				// Add admin emails to email array list.
+				if ( ! empty( $email_notification->config['has_recipient_field'] ) ) {
+					$email_notifications[] = $email_notification;
+				}
 			}
 		}
 
-		$totalItems  = count( $email_notifications );
+		$total_items  = count( $email_notifications );
 		$this->items = $email_notifications;
 		$this->set_pagination_args( array(
-			'total_items' => $totalItems,
+			'total_items' => $total_items,
 			'per_page'    => $this->per_page,
 		) );
 	}
