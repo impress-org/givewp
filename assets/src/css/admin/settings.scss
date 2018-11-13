@@ -362,7 +362,7 @@ div.give-field-description,
   }
 }
 
-.give-settings-email-settings-section {
+.give-settings-email-settings-section, .give-settings-donor-email-section, .give-settings-admin-email-section {
   // Nothing in table nav so hide it.
   .tablenav {
 	display: none;
