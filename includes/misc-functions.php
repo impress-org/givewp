@@ -894,19 +894,19 @@ function give_can_view_receipt( $donation_id ) {
 			$donor              = ! empty( $email_access_token ) ?
 				Give()->email_access->get_donor_by_token( $email_access_token ) :
 				false ;
+			$can_view_receipt = true;
 		}
 	}
 
 	// If donor object exists, compare the donation ids of donor with the donation receipt donor tries to access.
-	if ( is_object( $donor ) ) {
-		$donation_list = explode( ',', $donor->payment_ids );
-
-		if ( in_array( $donation_id, $donation_list, true ) ) {
-			$can_view_receipt = true;
-		} else {
-			Give()->session->set( 'donor_donation_mismatch', true );
-			$can_view_receipt = false;
-		}
+	if (
+		is_object( $donor ) &&
+		in_array( $donation_id, explode( ',', $donor->payment_ids ), true )
+	) {
+		$can_view_receipt = true;
+	} else {
+		Give()->session->set( 'donor_donation_mismatch', true );
+		$can_view_receipt = false;
 	}
 
 	return (bool) apply_filters( 'give_can_view_receipt', $can_view_receipt, $donation_id );
