@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WordImpress/Give.git"
+    "url": "git+https://github.com/impress-org/give.git"
   },
   "author": "WordImpress, LLC",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/WordImpress/Give/issues"
+    "url": "https://github.com/impress-org/give/issues"
   },
-  "homepage": "https://github.com/WordImpress/Give#readme",
+  "homepage": "https://github.com/impress-org/give#readme",
   "devDependencies": {
     "autoprefixer": "^7.2.6",
     "babel-core": "^6.26.3",

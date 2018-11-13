@@ -42,6 +42,7 @@ class Inspector extends Component {
 	render() {
 		const {
 			displayStyle,
+			showTitle,
 			showGoal,
 			showContent,
 			contentDisplay,
@@ -68,6 +69,11 @@ class Inspector extends Component {
 					}
 				</PanelBody>
 				<PanelBody title={ __( 'Settings' ) }>
+					<ToggleControl
+						label={ __( 'Title' ) }
+						name="showTitle"
+						checked={ !! showTitle }
+						onChange={ ( value ) => this.saveSetting( 'showTitle', value ) } />
 					<ToggleControl
 						label={ __( 'Goal' ) }
 						name="showGoal"
