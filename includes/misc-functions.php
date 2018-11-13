@@ -865,6 +865,11 @@ function give_can_view_receipt( $donation_id ) {
 
 	$give_receipt_args['id'] = $donation_id;
 
+	// Add backward compatibility.
+	if ( ! is_int( $donation_id ) ) {
+		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
+	}
+
 	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
 		// Proceed only, if user is logged in or can view sensitive Give data.
