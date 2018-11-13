@@ -526,21 +526,26 @@ class Give_Scripts {
 	public function gutenberg_admin_scripts() {
 
 		// Enqueue the bundled block JS file
+		//@todo: Update dependencies on 5.0 Stable release
 		wp_enqueue_script(
 			'give-blocks-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
-			array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
+			array(
+				'wp-i18n',
+				'wp-element',
+				'wp-blocks',
+				'wp-components',
+				'wp-api',
+				'wp-editor',
+			),
 			GIVE_VERSION
 		);
-
-		// Enqueue public styles
-		wp_enqueue_style( 'give-styles' );
 
 		// Enqueue the bundled block css file
 		wp_enqueue_style(
 			'give-blocks-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			array( ),
+			array( 'give-styles' ),
 			GIVE_VERSION
 		);
 

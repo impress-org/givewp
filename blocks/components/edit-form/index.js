@@ -7,6 +7,7 @@ const { Button } = wp.components;
 /**
  * Internal dependencies
  */
+import { getSiteUrl } from '../../utils';
 import GiveBlankSlate from '../blank-slate';
 
 /**
@@ -25,7 +26,7 @@ const EditForm = ( { attributes, setAttributes, formId } ) => {
 			<Button isPrimary
 				isLarge
 				target="_blank"
-				href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ formId }&action=edit` }>
+				href={ `${ getSiteUrl() }/wp-admin/post.php?post=${ formId }&action=edit` }>
 				{ __( 'Edit Donation Form' ) }
 			</Button>
 			&nbsp;&nbsp;

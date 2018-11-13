@@ -7,6 +7,7 @@ const { __ } = wp.i18n;
 * Internal dependencies
 */
 import './scss/controls.scss';
+import { getSiteUrl } from '../../utils';
 
 /**
  * Render Block Controls
@@ -36,7 +37,7 @@ const Controls = ( props ) => {
 				{ /* Edit Form */ }
 				<a
 					className="control-button edit-form"
-					href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
+					href={ `${ getSiteUrl() }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
 					target="_blank"
 					rel="noopener noreferrer"
 					tooltip={ __( 'Edit donation form' ) }
