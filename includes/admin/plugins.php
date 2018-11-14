@@ -444,6 +444,10 @@ function give_get_recently_activated_addons() {
  * @since 2.2
  */
 function give_deactivation_popup() {
+	// Bailout.
+	if ( ! current_user_can( 'delete_plugins' ) ) {
+		give_die();
+	}
 
 	$results = array();
 
