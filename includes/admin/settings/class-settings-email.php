@@ -29,7 +29,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			$this->id    = 'emails';
 			$this->label = esc_html__( 'Emails', 'give' );
 
-			$this->default_tab = 'email-settings';
+			$this->default_tab = 'donor-email';
 
 			parent::__construct();
 
@@ -196,9 +196,9 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'email-settings' => esc_html__( 'Email Settings', 'give' ),
 				'donor-email'    => esc_html__( 'Donor Emails', 'give' ),
 				'admin-email'    => esc_html__( 'Admin Emails', 'give' ),
+				'email-settings' => esc_html__( 'Email Settings', 'give' ),
 				'contact'        => esc_html__( 'Contact Information', 'give' ),
 			);
 
