@@ -267,7 +267,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	const recieptContainer = document.getElementById('give-receipt');
 
-	if (recieptContainer) {
+	if ( recieptContainer ) {
 
 		let data        = {
 				action: 'get_receipt',
@@ -275,7 +275,7 @@ jQuery( document ).ready( function( $ ) {
 			},
 			payment_key = Give.fn.getParameterByName('payment_key');
 
-		const cookie_name = Give.fn.getGlobalVar( 'session_nonce_cookie_name' );
+		const cookie_name = Give.fn.getGlobalVar( 'session_cookie_name' );
 
 		// Set cookie.
 		data[cookie_name] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
