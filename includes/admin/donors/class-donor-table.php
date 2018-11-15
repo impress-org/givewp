@@ -153,8 +153,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $donor ) {
 		return sprintf(
-			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
-			$this->_args['singular'],
+			'<input class="donor-selector" type="checkbox" name="donor[]" value="%1$d" data-name="%2$s" />',
 			$donor['id'],
 			$donor['name']
 		);
@@ -290,7 +289,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'], '_wpnonce', false );
+			wp_nonce_field( 'bulk-donors','_wpnonce', false );
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
