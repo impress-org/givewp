@@ -267,7 +267,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	const receiptContainer = document.getElementById('give-receipt');
 
-	if ( recieptContainer ) {
+	if ( receiptContainer ) {
 
 		let data        = {
 				action: 'get_receipt',
