@@ -1,5 +1,3 @@
-import giveFormOptions from "../../donation-form/data/options";
-
 /**
  * WordPress dependencies
  */
