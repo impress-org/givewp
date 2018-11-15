@@ -50,49 +50,54 @@ function give_test_ajax_works() {
 
 	add_filter( 'block_local_requests', '__return_false' );
 
-	if ( Give_Cache::get( '_give_ajax_works', true ) ) {
-		return true;
+	$works = Give_Cache::get( '_give_ajax_works', true );
+
+	if ( ! $works ) {
+		$params = array(
+			'sslverify' => false,
+			'timeout'   => 30,
+			'body'      => array(
+				'action' => 'give_test_ajax',
+			),
+		);
+
+		$ajax = wp_remote_post( give_get_ajax_url(), $params );
+
+		$works = true;
+
+		if ( is_wp_error( $ajax ) ) {
+
+			$works = false;
+
+		} else {
+
+			if ( empty( $ajax['response'] ) ) {
+				$works = false;
+			}
+
+			if ( empty( $ajax['response']['code'] ) || 200 !== (int) $ajax['response']['code'] ) {
+				$works = false;
+			}
+
+			if ( empty( $ajax['response']['message'] ) || 'OK' !== $ajax['response']['message'] ) {
+				$works = false;
+			}
+
+			if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
+				$works = false;
+			}
+		}
+
+		if ( $works ) {
+			Give_Cache::set( '_give_ajax_works', '1', DAY_IN_SECONDS, true );
+		}
 	}
 
-	$params = array(
-		'sslverify' => false,
-		'timeout'   => 30,
-		'body'      => array(
-			'action' => 'give_test_ajax',
-		),
-	);
-
-	$ajax = wp_remote_post( give_get_ajax_url(), $params );
-
-	$works = true;
-
-	if ( is_wp_error( $ajax ) ) {
-
-		$works = false;
-
-	} else {
-
-		if ( empty( $ajax['response'] ) ) {
-			$works = false;
-		}
-
-		if ( empty( $ajax['response']['code'] ) || 200 !== (int) $ajax['response']['code'] ) {
-			$works = false;
-		}
-
-		if ( empty( $ajax['response']['message'] ) || 'OK' !== $ajax['response']['message'] ) {
-			$works = false;
-		}
-
-		if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
-			$works = false;
-		}
-	}
-
-	if ( $works ) {
-		Give_Cache::set( '_give_ajax_works', '1', DAY_IN_SECONDS, true );
-	}
-
+	/**
+	 * Filter the output
+	 *
+	 * @since 1.0
+	 */
 	return apply_filters( 'give_test_ajax_works', $works );
 }
 

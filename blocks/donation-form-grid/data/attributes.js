@@ -5,19 +5,19 @@
 const blockAttributes = {
 	columns: {
 		type: 'string',
-		default: '4',
+		default: 'best-fit',
 	},
 	showExcerpt: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showGoal: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showFeaturedImage: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	displayType: {
 		type: 'string',

@@ -5,7 +5,7 @@
 const blockAttributes = {
 	columns: {
 		type: 'string',
-		default: '2',
+		default: 'best-fit',
 	},
 	showAvatar: {
 		type: 'boolean',
