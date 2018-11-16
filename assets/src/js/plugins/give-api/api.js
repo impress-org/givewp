@@ -1,6 +1,7 @@
 /* global accounting, give_global_vars, jQuery */
 import GiveNotice from './notice';
 import GiveForm from './form';
+import GiveDonor from './donor';
 
 /**
  *  This API is under development.
@@ -265,5 +266,6 @@ let Give = {
 
 Give.notice = GiveNotice;
 Give.form = GiveForm;
+Give.donor = GiveDonor;
 
 export default Give;
