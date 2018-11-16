@@ -3,9 +3,33 @@
 */
 
 const blockAttributes = {
+	formsPerPage:{
+		type: 'string',
+		default: '12',
+	},
+	formIDs: {
+		type: 'string',
+		default: '',
+	},
+	excludedFormIDs:{
+		type: 'string',
+		default: '',
+	},
+	categories:{
+		type: 'string',
+		default: '',
+	},
+	tags:{
+		type: 'string',
+		default: '',
+	},
 	columns: {
 		type: 'string',
 		default: 'best-fit',
+	},
+	showTitle: {
+		type: 'boolean',
+		default: true,
 	},
 	showExcerpt: {
 		type: 'boolean',
