@@ -171,7 +171,7 @@ jQuery( document ).ready( function( $ ) {
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
-			nonce: Give.fn.getGlobalVar('ajaxNonce')
+			nonce: Give.fn.getGlobalVar('ajax_vars').ajaxNonce
 		};
 
 		$this.text( Give.fn.getGlobalVar('loading') );
