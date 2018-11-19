@@ -17,4 +17,10 @@ giveDonorWallOptions.columns = [
 	{ value: '4', label: '4' },
 ];
 
+// Order
+giveDonorWallOptions.order = [
+	{ value: 'DESC', label: __( 'Newest to Oldest' ) },
+	{ value: 'ASC', label: __( 'Oldest to Newest' ) },
+];
+
 export default giveDonorWallOptions;
