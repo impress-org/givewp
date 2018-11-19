@@ -901,7 +901,7 @@ function give_can_view_receipt( $donation_id ) {
 	// If donor object exists, compare the donation ids of donor with the donation receipt donor tries to access.
 	if (
 		is_object( $donor ) &&
-		in_array( $donation_id, explode( ',', $donor->payment_ids ), true )
+		in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true )
 	) {
 		$can_view_receipt = true;
 	} else {
