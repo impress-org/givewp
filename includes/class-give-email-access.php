@@ -376,24 +376,4 @@ class Give_Email_Access {
 		// Create columns in donors table.
 		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 	}
-
-	/**
-	 * This function will return donor details by token id.
-	 *
-	 * @param int $id Email Access Token ID.
-	 *
-	 * @since 2.3.1
-	 *
-	 * @return object
-	 */
-	public function get_donor_by_token( $id ) {
-		global $wpdb;
-
-		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $id )
-		);
-
-		return $row;
-	}
-
 }
