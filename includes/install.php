@@ -152,7 +152,7 @@ function give_run_install() {
 			'v230_move_donation_note',
 			'v230_delete_donor_wall_related_donor_data',
 			'v230_delete_donor_wall_related_comment_data',
-			'v240_update_form_goal_progress'
+			'v240_update_form_goal_progress',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
