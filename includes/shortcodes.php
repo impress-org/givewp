@@ -280,20 +280,6 @@ function give_receipt_shortcode( $atts ) {
 		$donation_id = $give_receipt_args['id'];
 	}
 
-	// Display donation receipt placeholder while loading receipt via AJAX.
-	if ( ! wp_doing_ajax() ) {
-		ob_start();
-		give_get_template_part( 'receipt/placeholder' );
-		$placeholder = ob_get_clean();
-
-		return sprintf(
-			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
-			urlencode_deep( wp_json_encode( $atts ) ),
-			$donation_id,
-			$placeholder
-		);
-	}
-
 	$email_access = give_get_option( 'email_access' );
 
 	// No donation id found & Email Access is Turned on.
@@ -359,6 +345,20 @@ function give_receipt_shortcode( $atts ) {
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
+	}
+
+	// Display donation receipt placeholder while loading receipt via AJAX.
+	if ( ! wp_doing_ajax() ) {
+		ob_start();
+		give_get_template_part( 'receipt/placeholder' );
+		$placeholder = ob_get_clean();
+
+		return sprintf(
+			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
+			urlencode_deep( wp_json_encode( $atts ) ),
+			$donation_id,
+			$placeholder
+		);
 	}
 
 	ob_start();
