@@ -66,6 +66,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 					'number_donations' => esc_html__( 'Number of Donations', 'give' ),
 					'menu_order'       => esc_html__( 'Menu Order', 'give' ),
 					'post__in'         => esc_html__( 'Provided Form IDs', 'give' ),
+					'closest_to_goal'  => esc_html__( 'Closest To Goal', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Date Created', 'give' ),
 			),

@@ -82,6 +82,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	give_increase_earnings( $form_id, $amount, $payment_id );
 	give_increase_donation_count( $form_id );
 
+	// Update the goal progress for this form ID.
+	give_update_goal_progress( $form_id );
+
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();
 
