@@ -297,7 +297,7 @@ function give_receipt_shortcode( $atts ) {
 	$email_access = give_get_option( 'email_access' );
 
 	// No donation id found & Email Access is Turned on.
-	if ( ! isset( $donation_id ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+	if ( ! $donation_id && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
@@ -305,7 +305,7 @@ function give_receipt_shortcode( $atts ) {
 
 		return ob_get_clean();
 
-	} elseif ( ! isset( $donation_id ) ) {
+	} elseif ( ! $donation_id ) {
 
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 
