@@ -877,6 +877,16 @@ function give_can_view_receipt( $donation_id ) {
 
 	} elseif ( ! is_user_logged_in() ) {
 
+		// Check whether it is purchase session?
+		// This condition is to show receipt to donor after donation.
+		$purchase_session = give_get_purchase_session();
+		if (
+			! empty( $purchase_session )
+			&& $purchase_session['donation_id'] === $donation_id
+		) {
+			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
+		}
+
 		// Check whether it is receipt access session?
 		$receipt_session = give_get_receipt_session();
 		if (
@@ -899,12 +909,6 @@ function give_can_view_receipt( $donation_id ) {
 	} else {
 		Give()->session->set( 'donor_donation_mismatch', true );
 		$can_view_receipt = false;
-	}
-
-	// Check whether it is purchase session?
-	$purchase_session = give_get_purchase_session();
-	if ( ! empty( $purchase_session ) && $purchase_session['donation_id'] === $donation_id ) {
-		$can_view_receipt = true;
 	}
 
 	return (bool) apply_filters( 'give_can_view_receipt', $can_view_receipt, $donation_id );
