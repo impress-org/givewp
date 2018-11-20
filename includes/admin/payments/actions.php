@@ -340,6 +340,11 @@ function give_update_payment_details( $data ) {
 		}
 	}
 
+	// Check if payment status is not completed then update the goal progress for donation form.
+	if ( 'publish' !== $status ) {
+		give_update_goal_progress( $form->ID );
+	}
+
 	/**
 	 * Fires after updating edited donation.
 	 *
