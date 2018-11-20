@@ -276,64 +276,58 @@ function give_receipt_shortcode( $atts ) {
 		$donation_id = give_clean( $_GET['donation_id'] );
 	} elseif ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
-	} elseif ( $give_receipt_args['id'] ) {
+	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
 	}
 
 	$email_access = give_get_option( 'email_access' );
+	$is_email_access = give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists;
+
+	ob_start();
 
 	// No donation id found & Email Access is Turned on.
-	if ( ! $donation_id && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+	if ( ! $donation_id ) {
 
-		ob_start();
-
-		give_get_template_part( 'email-login-form' );
+		if( $is_email_access ){
+			give_get_template_part( 'email-login-form' );
+		} else{
+			echo Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
+		}
 
 		return ob_get_clean();
-
-	} elseif ( ! $donation_id ) {
-
-		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
-
 	}
 
-	$user_can_view = give_can_view_receipt( $donation_id );
+	// Donation id provided, but user is logged out. Offer them the ability to login and view the receipt.
+	if ( ! ( $user_can_view = give_can_view_receipt( $donation_id ) ) ) {
 
-	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
-	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+		if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
 
-		ob_start();
+			echo Give()->notices->print_frontend_notice(
+				__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
+				false,
+				'error'
+			);
 
-		give_get_template_part( 'email-login-form' );
+		} elseif( $is_email_access ) {
+
+			give_get_template_part( 'email-login-form' );
+
+		}else{
+
+			global $give_login_redirect;
+
+			$give_login_redirect = give_get_current_page_url();
+
+			Give()->notices->print_frontend_notice(
+				apply_filters( 'give_must_be_logged_in_error_message',
+					__( 'You must be logged in to view this donation receipt.', 'give' )
+				)
+			);
+
+			give_get_template_part( 'shortcode', 'login' );
+		}
 
 		return ob_get_clean();
-
-	} elseif (
-		false === $user_can_view &&
-		true === Give()->session->get( 'donor_donation_mismatch' )
-	) {
-
-		return Give()->notices->print_frontend_notice(
-			__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
-			false,
-			'error'
-		);
-
-	} elseif ( ! $user_can_view ) {
-
-		global $give_login_redirect;
-
-		$give_login_redirect = give_get_current_page_url();
-
-		ob_start();
-
-		Give()->notices->print_frontend_notice( apply_filters( 'give_must_be_logged_in_error_message', __( 'You must be logged in to view this donation receipt.', 'give' ) ) );
-
-		give_get_template_part( 'shortcode', 'login' );
-
-		$login_form = ob_get_clean();
-
-		return $login_form;
 	}
 
 	/**
@@ -349,25 +343,20 @@ function give_receipt_shortcode( $atts ) {
 
 	// Display donation receipt placeholder while loading receipt via AJAX.
 	if ( ! wp_doing_ajax() ) {
-		ob_start();
 		give_get_template_part( 'receipt/placeholder' );
-		$placeholder = ob_get_clean();
 
 		return sprintf(
 			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
 			urlencode_deep( wp_json_encode( $atts ) ),
 			$donation_id,
-			$placeholder
+			ob_get_clean()
 		);
 	}
 
-	ob_start();
 
 	give_get_template_part( 'shortcode', 'receipt' );
 
-	$display = ob_get_clean();
-
-	return $display;
+	return ob_get_clean();
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
