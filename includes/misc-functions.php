@@ -847,58 +847,70 @@ if ( ! function_exists( 'array_column' ) ) {
  *
  * @since 1.3.2
  *
- * @param string $payment_key
+ * @param int $donation_id Donation ID.
  *
  * @return bool Whether the receipt is visible or not.
  */
-function give_can_view_receipt( $payment_key = '' ) {
-
-	$return = false;
-
-	if ( empty( $payment_key ) ) {
-		return $return;
-	}
+function give_can_view_receipt( $donation_id ) {
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_donation_id_by_key( $payment_key );
+	$donor            = false;
+	$can_view_receipt = false;
 
-	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
+	// Bail out, if donation id doesn't exist.
+	if ( empty( $donation_id ) ) {
+		return $can_view_receipt;
+	}
 
-	$payment_meta = give_get_payment_meta( $give_receipt_args['id'] );
+	$give_receipt_args['id'] = $donation_id;
 
-	if ( is_user_logged_in() ) {
-		if ( $user_id === (int) get_current_user_id() ) {
-			$return = true;
-		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $give_receipt_args['id'] ) ) {
-			$return = true;
-		} elseif ( current_user_can( 'view_give_sensitive_data' ) ) {
-			$return = true;
+	// Add backward compatibility.
+	if ( ! is_numeric( $donation_id ) ) {
+		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
+	}
+
+	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
+
+		// Proceed only, if user is logged in or can view sensitive Give data.
+		$donor = Give()->donors->get_donor_by( 'user_id', get_current_user_id() );
+
+	} elseif ( ! is_user_logged_in() ) {
+
+		// Check whether it is purchase session?
+		// This condition is to show receipt to donor after donation.
+		$purchase_session = give_get_purchase_session();
+		if (
+			! empty( $purchase_session )
+			&& $purchase_session['donation_id'] === $donation_id
+		) {
+			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
+		}
+
+		// Check whether it is receipt access session?
+		$receipt_session = give_get_receipt_session();
+		if (
+			give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
+			! empty( $receipt_session )
+		) {
+			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+			$donor              = ! empty( $email_access_token )
+				? Give()->donors->get_donor_by( 'verify_key', $email_access_token )
+				: false ;
 		}
 	}
 
-	// Check whether it is purchase session?
-	$purchase_session = give_get_purchase_session();
-	if ( ! empty( $purchase_session ) && ! is_user_logged_in() ) {
-		if ( $purchase_session['purchase_key'] === $payment_meta['key'] ) {
-			$return = true;
+	// If donor object exists, compare the donation ids of donor with the donation receipt donor tries to access.
+	if ( is_object( $donor ) ) {
+		$is_donor_donated = in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true );
+		$can_view_receipt = $is_donor_donated ? true : $can_view_receipt;
+
+		if( ! $is_donor_donated ) {
+			Give()->session->set( 'donor_donation_mismatch', true );
 		}
 	}
 
-	// Check whether it is receipt access session?
-	$receipt_session = give_get_receipt_session();
-	if ( ! empty( $receipt_session ) && ! is_user_logged_in() ) {
-		if ( $receipt_session === $payment_meta['key'] ) {
-			$return = true;
-		}
-	}
-
-	// Check whether it is history access session?
-	if ( true === give_get_history_session() ) {
-		$return = true;
-	}
-
-	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
+	return (bool) apply_filters( 'give_can_view_receipt', $can_view_receipt, $donation_id );
 
 }
 
@@ -2262,4 +2274,23 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
 	 * @param array
 	 */
 	return apply_filters( 'give_get_formatted_date', $formatted_date, array( $date, $format, $current_format ) );
+}
+
+/**
+ * This function will be used to fetch the donation receipt link.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.3.1
+ *
+ * @return string
+ */
+function give_get_receipt_link( $donation_id ) {
+
+	return sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( give_get_receipt_url( $donation_id ) ),
+		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
+	);
+
 }

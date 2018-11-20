@@ -98,21 +98,25 @@ function give_register_form( $redirect = '' ) {
  * @return void
  */
 function give_process_login_form( $data ) {
+
 	if ( wp_verify_nonce( $data['give_login_nonce'], 'give-login-nonce' ) ) {
 
 		// Set Receipt Access Session.
-		if ( ! empty( $_GET['payment_key'] ) ) {
+		if ( ! empty( $_GET['donation_id'] ) ) {
 			Give()->session->set( 'receipt_access', true );
 		}
 
 		$user_data = get_user_by( 'login', $data['give_user_login'] );
+
 		if ( ! $user_data ) {
 			$user_data = get_user_by( 'email', $data['give_user_login'] );
 		}
+
 		if ( $user_data ) {
-			$user_ID    = $user_data->ID;
-			$user_email = $user_data->user_email;
-			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_ID ) ) {
+
+			$user_id = $user_data->ID;
+
+			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_id ) ) {
 				give_log_user_in( $user_data->ID, $data['give_user_login'], $data['give_user_pass'] );
 			} else {
 				give_set_error( 'password_incorrect', __( 'The password you entered is incorrect.', 'give' ) );
@@ -120,10 +124,12 @@ function give_process_login_form( $data ) {
 		} else {
 			give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
 		}
-		// Check for errors and redirect if none present
+
+		// Check for errors and redirect if none present.
 		$errors = give_get_errors();
+
 		if ( ! $errors ) {
-			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_ID );
+			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_id );
 			wp_redirect( $redirect );
 			give_die();
 		}
@@ -325,9 +331,7 @@ function give_email_access_login() {
 
 	$recaptcha_key    = give_get_option( 'recaptcha_key' );
 	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
-
 	$enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
-	$access_token     = ! empty( $_GET['payment_key'] ) ? $_GET['payment_key'] : '';
 
 	// Use reCAPTCHA.
 	if ( $enable_recaptcha ) {
@@ -367,7 +371,6 @@ function give_email_access_login() {
 	if ( ! give_get_errors() ) {
 
 		$donor = Give()->donors->get_donor_by( 'email', $email );
-
 		Give()->email_access->init();
 
 		// Verify that donor object is present and donor is connected with its user profile or not.

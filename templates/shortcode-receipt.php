@@ -3,32 +3,31 @@
  * This template is used to display the donation summary with [give_receipt]
  */
 
-global $give_receipt_args, $payment;
+global $give_receipt_args, $donation;
 
-// Validation: Ensure $payment var is set.
-if ( empty( $payment ) ) {
-	$payment = ! empty( $give_receipt_args['id'] ) ? get_post( $give_receipt_args['id'] ) : 0;
+// Validation: Ensure $donation var is set.
+if ( empty( $donation ) ) {
+	$donation = ! empty( $give_receipt_args['id'] ) ? get_post( $give_receipt_args['id'] ) : 0;
 }
 
-// Double-Validation: Check for $payment global.
-if ( empty( $payment ) ) {
+// Double-Validation: Check for $donation global.
+if ( empty( $donation ) ) {
 	Give()->notices->print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
-
 	return;
 }
 
-$donation_id  = $payment->ID;
-$donation_number = Give()->seq_donation_number->get_serial_code( $payment->ID );
-$form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
-$donation     = give_get_donation_form_title( $donation_id );
-$user         = give_get_payment_meta_user_info( $donation_id );
-$email        = give_get_payment_user_email( $donation_id );
-$status       = $payment->post_status;
-$status_label = give_get_payment_status( $payment, true );
-$company_name = give_get_payment_meta( $donation_id, '_give_donation_company', true );
+$donation_id     = $donation->ID;
+$donation_number = Give()->seq_donation_number->get_serial_code( $donation_id );
+$form_id         = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
+$form_name       = give_get_donation_form_title( $donation_id );
+$user            = give_get_payment_meta_user_info( $donation_id );
+$email           = give_get_payment_user_email( $donation_id );
+$status          = $donation->post_status;
+$status_label    = give_get_payment_status( $donation_id, true );
+$company_name    = give_get_payment_meta( $donation_id, '_give_donation_company', true );
 
 // Update donor name, if title prefix is set.
-$full_name    = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['first_name']} {$user['last_name']}" );
+$full_name       = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['first_name']} {$user['last_name']}" );
 
 /**
  * Generate Donation Receipt Arguments.
@@ -74,7 +73,7 @@ $give_receipt_args['donation_receipt']['total_donation'] = array(
 
 $give_receipt_args['donation_receipt']['donation'] = array(
 	'name'    => __( 'Donation', 'give' ),
-	'value'   => $donation,
+	'value'   => $form_name,
 	'display' => true,
 );
 
@@ -88,12 +87,6 @@ $give_receipt_args['donation_receipt']['donation_id'] = array(
 	'name'    => __( 'Donation ID', 'give' ),
 	'value'   => $donation_number,
 	'display' => $give_receipt_args['payment_id'],
-);
-
-$give_receipt_args['donation_receipt']['payment_key'] = array(
-	'name'    => __( 'Payment Key', 'give' ),
-	'value'   => get_post_meta( $donation_id, '_give_payment_purchase_key', true ),
-	'display' => $give_receipt_args['payment_key'],
 );
 
 $give_receipt_args['donation_receipt']['payment_method'] = array(
@@ -116,17 +109,17 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
 $give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'], $donation_id, $form_id );
 
 // When the donation were made through offline donation, We won't show receipt and payment status though.
-if ( 'offline' === give_get_payment_gateway( $payment->ID ) && 'pending' === $status ) {
+if ( 'offline' === give_get_payment_gateway( $donation_id ) && 'pending' === $status ) {
 
 	/**
 	 * Before the offline donation receipt content starts.
 	 *
 	 * @since 1.8.14
 	 *
-	 * @param Give_Payment $payment           Donation payment object.
+	 * @param Give_Payment $donation          Donation object.
 	 * @param array        $give_receipt_args Receipt Arguments.
 	 */
-	do_action( 'give_receipt_before_offline_payment', $payment, $give_receipt_args );
+	do_action( 'give_receipt_before_offline_payment', $donation, $give_receipt_args );
 	?>
 	<h2><?php echo apply_filters( 'give_receipt_offline_payment_heading', __( 'Your Donation is Almost Complete!', 'give' ) ); ?></h2>
 	<div id="give_donation_receipt" class="<?php echo esc_attr( apply_filters( 'give_receipt_offline_payment_classes', 'give_receipt_offline_payment' ) ); ?>">
@@ -140,10 +133,10 @@ if ( 'offline' === give_get_payment_gateway( $payment->ID ) && 'pending' === $st
 		 * @since 1.8.14
 		 *
 		 * @param string       $offline_instruction Offline instruction content.
-		 * @param Give_Payment $payment             Payment object.
+		 * @param Give_Payment $donation            Donation object.
 		 * @param integer      $form_id             Donation form id.
 		 */
-		echo apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $payment, $form_id );
+		echo apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $donation, $form_id );
 		?>
 	</div>
 	<?php
@@ -152,10 +145,10 @@ if ( 'offline' === give_get_payment_gateway( $payment->ID ) && 'pending' === $st
 	 *
 	 * @since 1.8.14
 	 *
-	 * @param Give_Payment $payment           Donation payment object.
+	 * @param Give_Payment $donation          Donation object.
 	 * @param array        $give_receipt_args Receipt Arguments.
 	 */
-	do_action( 'give_receipt_after_offline_payment', $payment, $give_receipt_args );
+	do_action( 'give_receipt_after_offline_payment', $donation, $give_receipt_args );
 
 	return;
 }
@@ -200,52 +193,51 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 			break;
 	}
 
-	if ( ! empty( $notice_message ) ) {
-		/**
-		 * Filters payment status notice for receipts.
-		 *
-		 * By default, a success, warning, or error notice appears on the receipt
-		 * with payment status. This filter allows the HTML markup
-		 * and messaging for that notice to be customized.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $notice HTML markup for the default notice.
-		 * @param int    $id     Post ID where the notice is displayed.
-		 * @param string $status Payment status.
-		 * @param int $donation_id Donation ID.
-		 */
-		echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
-	}
+	/**
+	 * Filters payment status notice for receipts.
+	 *
+	 * By default, a success, warning, or error notice appears on the receipt
+	 * with payment status. This filter allows the HTML markup
+	 * and messaging for that notice to be customized.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $notice HTML markup for the default notice.
+	 * @param int    $id     Post ID where the notice is displayed.
+	 * @param string $status Payment status.
+	 * @param int $donation_id Donation ID.
+	 */
+	echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
+
 }// End if().
 
 /**
- * Fires in the payment receipt shortcode, before the receipt main table.
+ * Fires in the donation receipt shortcode, before the receipt main table.
  *
  * Allows you to add elements before the table.
  *
  * @since 1.0
  *
- * @param object $payment           The payment object.
+ * @param object $donation          Donation object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
+do_action( 'give_payment_receipt_before_table', $donation, $give_receipt_args );
 ?>
 
 <table id="give_donation_receipt" class="give-table">
 	<thead>
 	<?php
 	/**
-	 * Fires in the payment receipt shortcode, before the receipt first header item.
+	 * Fires in the donation receipt shortcode, before the receipt first header item.
 	 *
 	 * Allows you to add new <th> elements before the receipt first header item.
 	 *
 	 * @since 1.7
 	 *
-	 * @param object $payment           The payment object.
+	 * @param object $donation          Donation object.
 	 * @param array  $give_receipt_args Receipt_argument.
 	 */
-	do_action( 'give_payment_receipt_header_before', $payment, $give_receipt_args );
+	do_action( 'give_payment_receipt_header_before', $donation, $give_receipt_args );
 	?>
 	<tr>
 		<th scope="colgroup" colspan="2">
@@ -254,32 +246,32 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 	</tr>
 	<?php
 	/**
-	 * Fires in the payment receipt shortcode, after the receipt last header item.
+	 * Fires in the donation receipt shortcode, after the receipt last header item.
 	 *
 	 * Allows you to add new <th> elements after the receipt last header item.
 	 *
 	 * @since 1.7
 	 *
-	 * @param object $payment           The payment object.
+	 * @param object $donation          Donation object.
 	 * @param array  $give_receipt_args Receipt_argument.
 	 */
-	do_action( 'give_payment_receipt_header_after', $payment, $give_receipt_args );
+	do_action( 'give_payment_receipt_header_after', $donation, $give_receipt_args );
 	?>
 	</thead>
 
 	<tbody>
 	<?php
 	/**
-	 * Fires in the payment receipt shortcode, before the receipt first item.
+	 * Fires in the donation receipt shortcode, before the receipt first item.
 	 *
 	 * Allows you to add new <td> elements before the receipt first item.
 	 *
 	 * @since 1.7
 	 *
-	 * @param object $payment           The payment object.
+	 * @param object $donation          Donation object.
 	 * @param array  $give_receipt_args Receipt_argument.
 	 */
-	do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
+	do_action( 'give_payment_receipt_before', $donation, $give_receipt_args );
 	?>
 
 	<?php foreach ( $give_receipt_args['donation_receipt'] as $receipt_item ) { ?>
@@ -293,30 +285,30 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 
 	<?php
 	/**
-	 * Fires in the payment receipt shortcode, after the receipt last item.
+	 * Fires in the donation receipt shortcode, after the receipt last item.
 	 *
 	 * Allows you to add new <td> elements after the receipt last item.
 	 *
 	 * @since 1.7
 	 *
-	 * @param object $payment           The payment object.
+	 * @param object $donation          Donation object.
 	 * @param array  $give_receipt_args Receipt_argument.
 	 */
-	do_action( 'give_payment_receipt_after', $payment, $give_receipt_args );
+	do_action( 'give_payment_receipt_after', $donation, $give_receipt_args );
 	?>
 	</tbody>
 </table>
 
 <?php
 /**
- * Fires in the payment receipt shortcode, after the receipt main table.
+ * Fires in the donation receipt shortcode, after the receipt main table.
  *
  * Allows you to add elements after the table.
  *
  * @since 1.7
  *
- * @param object $payment           The payment object.
+ * @param object $donation          Donation object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_payment_receipt_after_table', $payment, $give_receipt_args );
+do_action( 'give_payment_receipt_after_table', $donation, $give_receipt_args );
 ?>

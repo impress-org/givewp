@@ -197,8 +197,8 @@ if ( $donations ) : ?>
 								'<span class="give-mobile-title">%4$s</span><a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
 								esc_url(
 									add_query_arg(
-										'payment_key',
-										give_get_payment_key( $post->ID ),
+										'donation_id',
+										$post->ID,
 										give_get_history_page_uri()
 									)
 								),
@@ -212,8 +212,8 @@ if ( $donations ) : ?>
 								'<span class="give-mobile-title">%3$s</span><a href="%1$s">%2$s</a>',
 								esc_url(
 									add_query_arg(
-										'payment_key',
-										give_get_payment_key( $post->ID ),
+										'donation_id',
+										$post->ID,
 										give_get_history_page_uri()
 									)
 								),

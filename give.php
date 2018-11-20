@@ -415,7 +415,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.3.0' );
+				define( 'GIVE_VERSION', '2.3.1' );
 			}
 
 			// Plugin Root File.
