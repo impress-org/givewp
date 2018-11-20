@@ -904,8 +904,10 @@ function give_form_grid_shortcode( $atts ) {
 			$form_args['orderby']  = 'meta_value_num';
 			break;
 		case 'closest_to_goal':
-			$form_args['meta_key'] = '_give_form_goal_progress';
-			$form_args['orderby']  = 'meta_value_num';
+			if( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
+				$form_args['meta_key'] = '_give_form_goal_progress';
+				$form_args['orderby']  = 'meta_value_num';
+			}
 			break;
 	}
 
