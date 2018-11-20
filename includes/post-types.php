@@ -503,3 +503,68 @@ function give_forms_disable_quick_edit( $actions = array(), $post = null ) {
 }
 
 add_filter( 'post_row_actions', 'give_forms_disable_quick_edit', 10, 2 );
+
+/**
+ * Outputs advanced filter html in Give forms list admin screen.
+ *
+ * @sicne 2.4.0
+ *
+ * @param $post_type
+ * @param $which
+ */
+function give_forms_advanced_filter( $post_type, $which ) {
+	// Apply this only on a specific post type
+	if ( 'give_forms' !== $post_type ) {
+		return;
+	}
+	$start_date = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
+	$end_date   = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+	$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+	$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+	?>
+	<div id="give-forms-advanced-filter" class="give-filters">
+		<div class="give-forms-search-box">
+			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+			<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
+				'ID' => 'form-search-submit',
+			) ); ?>
+		</div>
+		<div id="give-payment-date-filters">
+			<div class="give-filter give-filter-half">
+				<label for="start-date"
+				       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+				<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
+				       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+			</div>
+			<div class="give-filter give-filter-half">
+				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+				<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
+				       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+			</div>
+		</div>
+		<div id="give-payment-form-filter" class="give-filter">
+			<label for="give-donation-forms-filter"
+			       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+			<select id="give-forms-filter-select" class="give-forms-filter-select">
+				<option value="<?php echo esc_attr( 'any_goal_status' ); ?>"><?php _e( 'Any Goal Status', 'give' ); ?></option>
+				<option value="<?php echo esc_attr( 'goal_achieved' ); ?>"><?php _e( 'Goal Achieved', 'give' ); ?> </option>
+				<option value="<?php echo esc_attr( 'goal_in_progress' ); ?>"><?php _e( 'Goal In Progress', 'give' ); ?> </option>
+				<option value="<?php echo esc_attr( 'goal_not_set' ); ?>"><?php _e( 'Goal Not Set', 'give' ); ?> </option>
+			</select>
+		</div>
+		<div class="give-filter">
+			<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
+			<?php
+			// Clear active filters button.
+			if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
+				?>
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms' ); ?>"
+				   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
+}
+
+add_action( 'restrict_manage_posts', 'give_forms_advanced_filter', 10, 2 );
+
