@@ -463,7 +463,9 @@ class Give_Scripts {
 				'number_decimals' => give_get_price_decimals(),
 			) ),
 			'cookie_hash'                 => COOKIEHASH,
-			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() )
+			'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
+			'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
+			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
 		) );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
@@ -524,21 +526,26 @@ class Give_Scripts {
 	public function gutenberg_admin_scripts() {
 
 		// Enqueue the bundled block JS file
+		//@todo: Update dependencies on 5.0 Stable release
 		wp_enqueue_script(
 			'give-blocks-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
-			array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
+			array(
+				'wp-i18n',
+				'wp-element',
+				'wp-blocks',
+				'wp-components',
+				'wp-api',
+				'wp-editor',
+			),
 			GIVE_VERSION
 		);
-
-		// Enqueue public styles
-		wp_enqueue_style( 'give-styles' );
 
 		// Enqueue the bundled block css file
 		wp_enqueue_style(
 			'give-blocks-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			array( ),
+			array( 'give-styles' ),
 			GIVE_VERSION
 		);
 

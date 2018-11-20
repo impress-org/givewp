@@ -7,6 +7,7 @@ const { Button } = wp.components;
 /**
  * Internal dependencies
  */
+import { getSiteUrl } from '../../utils';
 import GiveBlankSlate from '../blank-slate';
 
 /**
@@ -20,7 +21,7 @@ const NoForms = () => {
 			helpLink>
 			<Button isPrimary
 				isLarge
-				href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+				href={ `${ getSiteUrl() }/wp-admin/post-new.php?post_type=give_forms` }>
 				{ __( 'Create Donation Form' ) }
 			</Button>
 		</GiveBlankSlate>

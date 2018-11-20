@@ -1,62 +1,50 @@
 /**
- * External dependencies
- */
-import { isEmpty, pickBy, isUndefined } from 'lodash';
-import { stringify } from 'querystringify';
-
-/**
- * Wordpress dependencies
+ * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { withAPIData } = wp.components;
+
+/**
+ * WordPress dependencies
+ */
+const { Fragment } = wp.element;
+const { ServerSideRender } = wp.components;
+const { withSelect } = wp.data;
 
 /**
  * Internal dependencies
  */
 import GiveBlankSlate from '../../components/blank-slate';
 import NoForms from '../../components/no-form';
-import FormGridPreview from './components/preview';
+import Inspector from './inspector';
 
 /**
  * Render Block UI For Editor
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { latestForms } = props;
-	const { isLoading, data } = latestForms;
+	const { forms, attributes } = props;
 
 	// Render block UI
 	let blockUI;
 
-	if ( isLoading || isUndefined( data ) ) {
+	if ( ! forms ) {
 		blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
-	} else if ( isEmpty( data ) ) {
+	} else if ( forms && forms.length === 0 ) {
 		blockUI = <NoForms />;
 	} else {
-		blockUI = <FormGridPreview
-			html={ data }
-			{ ... { ...props } } />;
+		blockUI = (
+			<Fragment>
+				<Inspector { ... { ...props } } />
+				<ServerSideRender block="give/donation-form-grid" attributes={ attributes } />
+			</Fragment>
+		);
 	}
 
-	return ( <div className={ props.className } key="GiveDonationFormGridBlockUI">{ blockUI }</div> );
+	return blockUI;
 };
 
-/**
- * Export component attaching withAPIdata
- */
-export default withAPIData( ( props ) => {
-	const { columns, showGoal, showExcerpt, showFeaturedImage, displayType } = props.attributes;
-
-	const parameters = stringify( pickBy( {
-		columns: columns,
-		show_goal: showGoal,
-		show_excerpt: showExcerpt,
-		show_featured_image: showFeaturedImage,
-		display_type: displayType,
-	}, value => ! isUndefined( value )
-	) );
-
+export default withSelect( ( select ) => {
 	return {
-		latestForms: `/${ giveApiSettings.rest_base }/form-grid/?${ parameters }`,
+		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
 	};
 } )( GiveDonationFormGrid );

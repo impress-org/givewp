@@ -341,6 +341,7 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->setup_dates( $this->args['start_date'], $this->args['end_date'] );
+
 		$is_start_date = property_exists( __CLASS__, 'start_date' );
 		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
@@ -628,6 +629,24 @@ class Give_Payments_Query extends Give_Stats {
 			$search = str_replace( '#:', '', $search );
 			$search = str_replace( '#', '', $search );
 			$this->__set( 'give_forms', $search );
+			$this->__unset( 's' );
+
+		} else if ( ! empty( $search ) ) {
+			$search_meta = array(
+				'relation' => 'OR',
+				array(
+					'key'     => '_give_donor_billing_first_name',
+					'value'   => $search,
+					'compare' => 'LIKE'
+				),
+				array(
+					'key'     => '_give_donor_billing_last_name',
+					'value'   => $search,
+					'compare' => 'LIKE'
+				)
+			);
+			$this->__set( 'meta_query', $search_meta );
+
 			$this->__unset( 's' );
 
 		} else {

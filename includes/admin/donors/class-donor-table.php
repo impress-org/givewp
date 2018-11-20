@@ -59,7 +59,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-
 		// Set parent defaults.
 		parent::__construct( array(
 			'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
@@ -68,36 +67,88 @@ class Give_Donor_List_Table extends WP_List_Table {
 		) );
 
 	}
-
 	/**
-	 * Show the search field.
+	 * Add donors search filter.
 	 *
-	 * @param string $text     Label for the search box.
-	 * @param string $input_id ID of the search box.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
+	 * @since 2.4.0
 	 * @return void
 	 */
-	public function search_box( $text, $input_id ) {
-		$input_id = $input_id . '-search-input';
-
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo sprintf( '<input type="hidden" name="orderby" value="%1$s" />', esc_attr( $_REQUEST['orderby'] ) );
-		}
-
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo sprintf( '<input type="hidden" name="order" value="%1$s" />', esc_attr( $_REQUEST['order'] ) );
-		}
+	public function advanced_filters() {
+		$start_date  = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
+		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
+		$search      = $this->get_search();
+		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
-		<p class="search-box" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
-			<?php submit_button( $text, 'button', false, false, array(
-				'ID' => 'search-submit',
-			) ); ?>
-		</p>
+		<div id="give-donor-filters" class="give-filters">
+			<div class="give-donor-search-box">
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
+					'ID' => 'donor-search-submit',
+				) ); ?>
+			</div>
+			<div id="give-donor-date-filters">
+				<div class="give-filter give-filter-half">
+					<label for="start-date"
+					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
+					       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+				</div>
+				<div class="give-filter give-filter-half">
+					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+					<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
+					       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+				</div>
+			</div>
+			<div id="give-payment-form-filter" class="give-filter">
+				<label for="give-donation-forms-filter"
+				       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+				<?php
+				// Filter Donations by Donation Forms.
+				echo Give()->html->forms_dropdown(
+					array(
+						'name'     => 'form_id',
+						'id'       => 'give-donation-forms-filter',
+						'class'    => 'give-donation-forms-filter',
+						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'chosen'   => true,
+						'number'   => 30,
+					)
+				);
+				?>
+			</div>
+
+			<?php
+			/**
+			 * Action to add hidden fields and HTML in donor search.
+			 *
+			 * @since 2.4.0
+			 */
+			do_action( 'give_donor_table_advanced_filters' );
+
+
+			if ( ! empty( $status ) ) {
+				echo sprintf( '<input type="hidden" name="status" value="%s"/>', esc_attr( $status ) );
+			}
+
+			if ( ! empty( $donor ) ) {
+				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $donor ) );
+			}
+			?>
+
+			<div class="give-filter">
+				<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
+				<?php
+				// Clear active filters button.
+				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
+					?>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>"
+					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</div>
+
 		<?php
 	}
 
@@ -391,28 +442,37 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_donor_query() {
-		$paged   = $this->get_paged();
-		$offset  = $this->per_page * ( $paged - 1 );
-		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		$per_page   = $this->per_page;
+		$paged      = $this->get_paged();
+		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : false;
+		$end_date   = ! empty( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : false;
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+		$offset     = $this->per_page * ( $paged - 1 );
+		$search     = $this->get_search();
+		$order      = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
+		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
 		$args = array(
-			'number'  => $this->per_page,
-			'offset'  => $offset,
-			'order'   => $order,
-			'orderby' => $orderby,
+			'output'     => 'payments',
+			'number'     => $per_page,
+			'offset'     => $offset,
+			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'orderby'    => $orderby,
+			'order'      => $order,
+			'donor'      => $donor,
+			's'          => $search,
+			'start_date' => $start_date,
+			'end_date'   => $end_date,
+			'give_forms' => $form_id,
 		);
 
-		if ( $search ) {
-			if ( is_email( $search ) ) {
-				$args['email'] = $search;
-			} elseif ( is_numeric( $search ) ) {
-				$args['id'] = $search;
-			} else {
-				$args['name'] = $search;
-			}
-		}
+		/**
+		 * Filter to modify donor table argument.
+		 *
+		 * @since 2.4.0
+		 */
+		$args = (array) apply_filters( 'give_donor_table_query', $args );
 
 		return $args;
 	}
@@ -446,7 +506,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$search_keyword = ! empty( $get_data['s'] ) ? $get_data['s'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
@@ -494,7 +553,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 					<p class="submit inline-edit-save">
 						<input type="hidden" name="give_action" value="delete_bulk_donor"/>
-						<input type="hidden" name="s" value="<?php echo esc_html( $search_keyword ); ?>"/>
 						<input type="hidden" name="orderby" value="<?php echo esc_html( $order_by ); ?>"/>
 						<input type="hidden" name="order" value="<?php echo esc_html( $order ); ?>"/>
 						<button type="button" id="give-bulk-delete-cancel"

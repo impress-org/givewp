@@ -164,7 +164,7 @@ if ( inProduction ) {
 		domain: 'give',
 		destFile: 'languages/give.pot',
 		relativeTo: './',
-		bugReport: 'https://github.com/WordImpress/Give/issues/new',
+		bugReport: 'https://github.com/impress-org/give/issues/new',
 		team: 'WordImpress <info@wordimpress.com>',
 	} );
 

@@ -122,8 +122,8 @@ class Give_HTML_Elements {
 			$args['query_args'],
 			array(
 				'post_type'      => 'give_forms',
-				'orderby'        => 'title',
-				'order'          => 'ASC',
+				'orderby'        => 'ID',
+				'order'          => 'DESC',
 				'posts_per_page' => $args['number'],
 			)
 		);
