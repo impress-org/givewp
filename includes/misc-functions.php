@@ -901,14 +901,13 @@ function give_can_view_receipt( $donation_id ) {
 	}
 
 	// If donor object exists, compare the donation ids of donor with the donation receipt donor tries to access.
-	if (
-		is_object( $donor ) &&
-		in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true )
-	) {
-		$can_view_receipt = true;
-	} else {
-		Give()->session->set( 'donor_donation_mismatch', true );
-		$can_view_receipt = false;
+	if ( is_object( $donor ) ) {
+		$is_donor_donated = in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true );
+		$can_view_receipt = $is_donor_donated ? true : $can_view_receipt;
+
+		if( ! $is_donor_donated ) {
+			Give()->session->set( 'donor_donation_mismatch', true );
+		}
 	}
 
 	return (bool) apply_filters( 'give_can_view_receipt', $can_view_receipt, $donation_id );
