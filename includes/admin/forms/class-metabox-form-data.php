@@ -1013,6 +1013,9 @@ class Give_MetaBox_Form_Data {
 			}// End foreach().
 		}// End if().
 
+		// Update the goal progress for donation form.
+		give_update_goal_progress( $post_id );
+
 		// Fire action after saving form meta.
 		do_action( 'give_post_process_give_forms_meta', $post_id, $post );
 	}
