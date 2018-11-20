@@ -22,11 +22,13 @@
 		}
 	  }
 	}
+  }
+}
 
-	.title-for-mobile {
+.give_user_history_main {
+	.give-mobile-title {
 		display: none;
 	}
-  }
 }
 
 @media screen and ( max-width: 480px ) {
@@ -61,7 +63,7 @@
 			text-align: left;
 		}
 
-		.title-for-mobile {
+		.give-mobile-title {
 			display: inline-block;
 			font-weight: bold;
 			min-width: 6em;

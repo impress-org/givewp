@@ -171,7 +171,7 @@ jQuery( document ).ready( function( $ ) {
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
-			nonce: Give.fn.getGlobalVar('ajaxNonce')
+			nonce: Give.fn.getGlobalVar('ajax_vars').ajaxNonce
 		};
 
 		$this.text( Give.fn.getGlobalVar('loading') );
@@ -265,24 +265,24 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @since 2.2.0
 	 */
-	const recieptContainer = document.getElementById('give-receipt');
+	const receiptContainer = document.getElementById('give-receipt');
 
-	if (recieptContainer) {
+	if ( receiptContainer ) {
 
 		let data        = {
 				action: 'get_receipt',
-				shortcode_atts: recieptContainer.getAttribute('data-shortcode')
+				shortcode_atts: receiptContainer.getAttribute('data-shortcode')
 			},
-			payment_key = Give.fn.getParameterByName('payment_key');
+			donation_id = Give.fn.getParameterByName('donation_id');
 
-		const cookie_name = Give.fn.getGlobalVar( 'session_nonce_cookie_name' );
+		const cookie_name = Give.fn.getGlobalVar( 'session_cookie_name' );
 
 		// Set cookie.
 		data[cookie_name] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
 
-		// Set payment key.
-		if( null !== payment_key ) {
-			data['payment_key'] = payment_key;
+		// Set donation id, if exists.
+		if( null !== donation_id ) {
+			data['donation_id'] = donation_id;
 		}
 
 		$.ajax({
@@ -290,7 +290,7 @@ jQuery( document ).ready( function( $ ) {
 			method: 'GET',
 			data: data,
 			success: function (response) {
-				recieptContainer.innerHTML = response;
+				receiptContainer.innerHTML = response;
 			}
 		});
 	}

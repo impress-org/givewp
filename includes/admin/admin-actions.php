@@ -536,10 +536,12 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  * Fire when importing from CSV start
  *
  * @since  1.8.13
- *
- * @return json $json_data
  */
 function give_donation_import_callback() {
+	// Bailout.
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
 
 	// Disable Give cache
 	Give_Cache::get_instance()->disable();
@@ -664,11 +666,14 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
  * Fire when importing from JSON start
  *
  * @since  1.8.17
- *
- * @return json $json_data
  */
 
 function give_core_settings_import_callback() {
+	// Bailout.
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
+
 	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 	parse_str( $fields, $fields );
 

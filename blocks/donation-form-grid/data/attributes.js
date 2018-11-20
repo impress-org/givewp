@@ -3,21 +3,45 @@
 */
 
 const blockAttributes = {
+	formsPerPage:{
+		type: 'string',
+		default: '12',
+	},
+	formIDs: {
+		type: 'string',
+		default: '',
+	},
+	excludedFormIDs:{
+		type: 'string',
+		default: '',
+	},
+	categories:{
+		type: 'string',
+		default: '',
+	},
+	tags:{
+		type: 'string',
+		default: '',
+	},
 	columns: {
 		type: 'string',
-		default: '4',
+		default: 'best-fit',
+	},
+	showTitle: {
+		type: 'boolean',
+		default: true,
 	},
 	showExcerpt: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showGoal: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showFeaturedImage: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	displayType: {
 		type: 'string',

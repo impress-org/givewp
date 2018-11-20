@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
-const { PanelBody, SelectControl, ToggleControl } = wp.components;
+const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { columns, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, formIDs, excludedFormIDs, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -24,13 +24,43 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Settings' ) }>
+			<PanelBody title={ __( 'Form Grid Settings' ) }>
+				<TextControl
+					name="formsPerPage"
+					label={ __( 'Forms Per Page' ) }
+					value={ formsPerPage }
+					onChange={ ( value ) => saveSetting( 'formsPerPage', value ) }/>
+				<TextControl
+					name="formIDs"
+					label={ __( 'Form IDs' ) }
+					value={ formIDs }
+					onChange={ ( value ) => saveSetting( 'formIDs', value ) }/>
+				<TextControl
+					name="excludedFormIDs"
+					label={ __( 'Excluded Form IDs' ) }
+					value={ excludedFormIDs }
+					onChange={ ( value ) => saveSetting( 'excludedFormIDs', value ) }/>
+				<TextControl
+					name="categories"
+					label={ __( 'Categories' ) }
+					value={ categories }
+					onChange={ ( value ) => saveSetting( 'categories', value ) }/>
+				<TextControl
+					name="tags"
+					label={ __( 'Tags' ) }
+					value={ tags }
+					onChange={ ( value ) => saveSetting( 'tags', value ) }/>
 				<SelectControl
 					label={ __( 'Columns' ) }
 					name="columns"
 					value={ columns }
 					options={ giveFormOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
+				<ToggleControl
+					name="showTitle"
+					label={ __( 'Show Title' ) }
+					checked={ !! showTitle }
+					onChange={ ( value ) => saveSetting( 'showTitle', value ) } />
 				<ToggleControl
 					name="showExcerpt"
 					label={ __( 'Show Excerpt' ) }
