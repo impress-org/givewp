@@ -89,7 +89,7 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 		if ( $forms->posts ) {
 			foreach ( $forms->posts as $form ) {
 
-				$row = [];
+				$row = array();
 
 				foreach ( $this->csv_cols() as $key => $value ) {
 
@@ -111,7 +111,7 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 
 								if ( give_has_variable_prices( $form->ID ) ) {
 
-									$prices = [];
+									$prices = array();
 									foreach ( give_get_variable_prices( $form->ID ) as $price ) {
 										$prices[] = $price['name'] . ': ' . $price['amount'];
 									}
