@@ -517,10 +517,10 @@ function give_forms_advanced_filter( $post_type, $which ) {
 	if ( 'give_forms' !== $post_type ) {
 		return;
 	}
-	$start_date = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
-	$end_date   = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
-	$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
-	$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+	$start_date             = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
+	$end_date               = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? $_GET['give-forms-goal-filter'] : '';
 	?>
 	<div id="give-forms-advanced-filter" class="give-filters">
 		<div class="give-forms-search-box">
@@ -544,19 +544,27 @@ function give_forms_advanced_filter( $post_type, $which ) {
 		</div>
 		<div id="give-payment-form-filter" class="give-filter">
 			<label for="give-donation-forms-filter"
-			       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
-			<select id="give-forms-filter-select" class="give-forms-filter-select">
-				<option value="<?php echo esc_attr( 'any_goal_status' ); ?>"><?php _e( 'Any Goal Status', 'give' ); ?></option>
-				<option value="<?php echo esc_attr( 'goal_achieved' ); ?>"><?php _e( 'Goal Achieved', 'give' ); ?> </option>
-				<option value="<?php echo esc_attr( 'goal_in_progress' ); ?>"><?php _e( 'Goal In Progress', 'give' ); ?> </option>
-				<option value="<?php echo esc_attr( 'goal_not_set' ); ?>"><?php _e( 'Goal Not Set', 'give' ); ?> </option>
+			       class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
+			<select id="give-forms-goal-filter" name="give-forms-goal-filter" class="give-forms-goal-filter">
+				<option value="any_goal_status" <?php if ( "any_goal_status" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Any Goal Status', 'give' ); ?></option>
+				<option value="goal_achieved" <?php if ( "goal_achieved" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal Achieved', 'give' ); ?></option>
+				<option value="goal_in_progress" <?php if ( "goal_in_progress" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal In Progress', 'give' ); ?></option>
+				<option value="goal_not_set" <?php if ( "goal_not_set" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal Not Set', 'give' ); ?></option>
 			</select>
 		</div>
 		<div class="give-filter">
 			<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
 			<?php
 			// Clear active filters button.
-			if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
+			if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $search ) || ! empty( $give_forms_goal_filter ) ) :
 				?>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms' ); ?>"
 				   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>

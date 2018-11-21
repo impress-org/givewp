@@ -380,3 +380,88 @@ function give_save_bulk_edit() {
 }
 
 add_action( 'wp_ajax_give_save_bulk_edit', 'give_save_bulk_edit' );
+
+/**
+ * Function is used to filter the query for search result.
+ *
+ * @since 2.4.0
+ *
+ * @param $wp Current WordPress environment instance (passed by reference).
+ */
+function give_form_search_query_filter( $wp ) {
+	if ( isset( $wp->query_vars['post_type'] ) && 'give_forms' == $wp->query_vars['post_type'] ) {
+		$wp->query_vars['date_query'] =
+			array(
+				'after'     => ! empty ( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
+				'before'    => ! empty ( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
+				'inclusive' => true,
+			);
+		if ( ! empty( $_GET['give-forms-goal-filter'] ) ) {
+			switch ( $_GET['give-forms-goal-filter'] ) {
+				case 'goal_in_progress':
+					$wp->query_vars['meta_query'] =
+						array(
+							'relation' => 'AND',
+							array(
+								'key'     => '_give_form_goal_progress',
+								'value'   => array( 1, 99 ),
+								'compare' => 'BETWEEN',
+								'type'    => 'NUMERIC',
+							),
+						);
+
+					break;
+				case 'goal_achieved':
+					$wp->query_vars['meta_query'] =
+						array(
+							'relation' => 'AND',
+							array(
+								'key'     => '_give_form_goal_progress',
+								'value'   => 100,
+								'compare' => '>=',
+								'type'    => 'NUMERIC',
+							),
+						);
+					break;
+				case 'goal_not_set':
+					$wp->query_vars['meta_query'] =
+						array(
+							'relation' => 'AND',
+							array(
+								'key'     => '_give_goal_option',
+								'value'   => 'disabled',
+								'compare' => '=',
+							),
+						);
+					break;
+			}// End switch().
+		}
+	}
+}
+
+add_action( 'parse_request', 'give_form_search_query_filter' );
+
+/**
+ * function is used to search give forms by ID or title.
+ *
+ * @since 2.4.0
+ *
+ * @param $query the WP_Query instance (passed by reference).
+ */
+
+function give_search_form_by_id( $query ) {
+	// Verify that we are on the give forms list page.
+	if ( 'give_forms' !== $query->query_vars['post_type'] ) {
+		return;
+	}
+	if ( '' !== $query->query_vars['s'] && is_search() ) {
+		if ( absint( $query->query_vars['s'] ) ) {
+			// Set the post id value
+			$query->set( 'p', $query->query_vars['s'] );
+			// Reset the search value
+			$query->set( 's', '' );
+		}
+	}
+}
+
+add_filter( 'pre_get_posts', 'give_search_form_by_id' );
