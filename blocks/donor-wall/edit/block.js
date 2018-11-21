@@ -25,3 +25,6 @@ const GiveDonorWall = ( props ) => {
 };
 
 export default GiveDonorWall;
+
+// @todo show no donor template if donor does not exist.
+

@@ -44,7 +44,7 @@ function give_donation_history( $atts, $content = false ) {
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 
 	// If payment_key query arg exists, return receipt instead of donation history.
-	if ( isset( $_GET['payment_key'] ) ) {
+	if ( isset( $_GET['donation_id'] ) ) {
 		ob_start();
 
 		echo give_receipt_shortcode( array() );
@@ -68,8 +68,8 @@ function give_donation_history( $atts, $content = false ) {
 	/**
 	 * Determine access
 	 *
-	 * a. Check if a user is logged in or does a session exists
-	 * b. Does an email-access token exist?
+	 * A. Check if a user is logged in or does a session exists.
+	 * B. Does an email-access token exist?
 	 */
 	if (
 		is_user_logged_in()
@@ -82,7 +82,6 @@ function give_donation_history( $atts, $content = false ) {
 		if ( ! empty( $content ) ) {
 			echo do_shortcode( $content );
 		}
-
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
 		// Is Email-based access enabled?
 		give_get_template_part( 'email', 'login-form' );
@@ -135,7 +134,7 @@ function give_form_shortcode( $atts ) {
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
-	// get the Give Form
+	// Fetch the Give Form.
 	ob_start();
 	give_get_donation_form( $atts );
 	$final_output = ob_get_clean();
@@ -256,14 +255,12 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
 function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args;
-	$payment_key = '';
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
+		'error'          => __( 'You are missing the donation id to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
 		'date'           => true,
-		'payment_key'    => false,
 		'payment_method' => true,
 		'payment_id'     => true,
 		'payment_status' => false,
@@ -271,74 +268,66 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	// set $session var
-	$session = give_get_purchase_session();
+	$donation_id = false;
+	$session     = give_get_purchase_session();
 
-	// set payment key var
-	if ( isset( $_GET['payment_key'] ) ) {
-		$payment_key = urldecode( $_GET['payment_key'] );
-	} elseif ( $session ) {
-		$payment_key = $session['purchase_key'];
-	} elseif ( $give_receipt_args['payment_key'] ) {
-		$payment_key = $give_receipt_args['payment_key'];
-	}
-
-	if( ! wp_doing_ajax() ) {
-		ob_start();
-		give_get_template_part( 'receipt/placeholder' );
-		$placeholder = ob_get_clean();
-
-		return sprintf(
-			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
-			urlencode_deep( wp_json_encode( $atts ) ),
-			$payment_key,
-			$placeholder
-		);
+	// Set donation id.
+	if ( isset( $_GET['donation_id'] ) ) {
+		$donation_id = give_clean( $_GET['donation_id'] );
+	} elseif ( isset( $session['donation_id'] ) ) {
+		$donation_id = $session['donation_id'];
+	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
+		$donation_id = $give_receipt_args['id'];
 	}
 
 	$email_access = give_get_option( 'email_access' );
+	$is_email_access = give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists;
 
-	// No payment_key found & Email Access is Turned on.
-	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+	ob_start();
 
-		ob_start();
+	// No donation id found & Email Access is Turned on.
+	if ( ! $donation_id ) {
 
-		give_get_template_part( 'email-login-form' );
+		if( $is_email_access ){
+			give_get_template_part( 'email-login-form' );
+		} else{
+			echo Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
+		}
 
 		return ob_get_clean();
-
-	} elseif ( ! isset( $payment_key ) ) {
-
-		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
-
 	}
 
-	$user_can_view = give_can_view_receipt( $payment_key );
+	// Donation id provided, but user is logged out. Offer them the ability to login and view the receipt.
+	if ( ! ( $user_can_view = give_can_view_receipt( $donation_id ) ) ) {
 
-	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
-	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
+		if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
 
-		ob_start();
+			echo Give()->notices->print_frontend_notice(
+				__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
+				false,
+				'error'
+			);
 
-		give_get_template_part( 'email-login-form' );
+		} elseif( $is_email_access ) {
+
+			give_get_template_part( 'email-login-form' );
+
+		}else{
+
+			global $give_login_redirect;
+
+			$give_login_redirect = give_get_current_page_url();
+
+			Give()->notices->print_frontend_notice(
+				apply_filters( 'give_must_be_logged_in_error_message',
+					__( 'You must be logged in to view this donation receipt.', 'give' )
+				)
+			);
+
+			give_get_template_part( 'shortcode', 'login' );
+		}
 
 		return ob_get_clean();
-
-	} elseif ( ! $user_can_view ) {
-
-		global $give_login_redirect;
-
-		$give_login_redirect = give_get_current_page_url();
-
-		ob_start();
-
-		Give()->notices->print_frontend_notice( apply_filters( 'give_must_be_logged_in_error_message', __( 'You must be logged in to view this donation receipt.', 'give' ) ) );
-
-		give_get_template_part( 'shortcode', 'login' );
-
-		$login_form = ob_get_clean();
-
-		return $login_form;
 	}
 
 	/**
@@ -352,13 +341,22 @@ function give_receipt_shortcode( $atts ) {
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 	}
 
-	ob_start();
+	// Display donation receipt placeholder while loading receipt via AJAX.
+	if ( ! wp_doing_ajax() ) {
+		give_get_template_part( 'receipt/placeholder' );
+
+		return sprintf(
+			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
+			urlencode_deep( wp_json_encode( $atts ) ),
+			$donation_id,
+			ob_get_clean()
+		);
+	}
+
 
 	give_get_template_part( 'shortcode', 'receipt' );
 
-	$display = ob_get_clean();
-
-	return $display;
+	return ob_get_clean();
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
@@ -475,7 +473,7 @@ function give_process_profile_editor_updates( $data ) {
 		// Make sure email should be valid.
 		give_set_error( 'email_not_valid', __( 'The email you entered is not valid. Please use another', 'give' ) );
 
-	} elseif ( $email != $old_user_data->user_email ) {
+	} elseif ( $email !== $old_user_data->user_email ) {
 		// Make sure the new email doesn't belong to another user.
 		if ( email_exists( $email ) ) {
 			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
@@ -597,14 +595,14 @@ function give_totals_shortcode( $atts ) {
 	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
 
 	$atts = shortcode_atts( array(
-		'total_goal'   => 0, // integer
-		'ids'          => 0, // integer|array
-		'cats'         => 0, // integer|array
-		'tags'         => 0, // integer|array
+		'total_goal'   => 0, // integer.
+		'ids'          => 0, // integer|array.
+		'cats'         => 0, // integer|array.
+		'tags'         => 0, // integer|array.
 		'message'      => $message,
-		'link'         => '', // URL
+		'link'         => '', // URL.
 		'link_text'    => __( 'Donate Now', 'give' ), // string,
-		'progress_bar' => true, // boolean
+		'progress_bar' => true, // boolean.
 	), $atts, 'give_totals' );
 
 	// Total Goal.
@@ -635,12 +633,12 @@ function give_totals_shortcode( $atts ) {
 		 * @param array WP query argument for Total Goal.
 		 */
 		$form_args = array(
-			'post_type'        => 'give_forms',
-			'post_status'      => 'publish',
-			'post__in'         => $form_ids,
-			'posts_per_page'   => - 1,
-			'fields'           => 'ids',
-			'tax_query'        => array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $form_ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => array(
 				'relation' => 'AND',
 			),
 		);
@@ -685,14 +683,13 @@ function give_totals_shortcode( $atts ) {
 				 *
 				 * @since 2.1
 				 *
-				 * @param int $post Form ID.
+				 * @param int    $post         Form ID.
 				 * @param string $form_earning Total earning of Form.
 				 */
 				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
 			}
 		}
-
-	}
+	} // End if().
 
 	// Append link with text.
 	$donate_link = '';
@@ -815,7 +812,7 @@ function give_form_grid_shortcode( $atts ) {
 		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
 		'display_style'       => 'modal_reveal',
-		'status'              => '', // open or closed
+		'status'              => '', // open or closed.
 	), $atts );
 
 	// Validate integer attributes.
@@ -907,8 +904,10 @@ function give_form_grid_shortcode( $atts ) {
 			$form_args['orderby']  = 'meta_value_num';
 			break;
 		case 'closest_to_goal':
-			$form_args['meta_key'] = '_give_form_goal_progress';
-			$form_args['orderby']  = 'meta_value_num';
+			if( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
+				$form_args['meta_key'] = '_give_form_goal_progress';
+				$form_args['orderby']  = 'meta_value_num';
+			}
 			break;
 	}
 
@@ -965,7 +964,7 @@ function give_form_grid_shortcode( $atts ) {
 		echo '</div><!-- .give-wrap -->';
 
 		return ob_get_clean();
-	}
+	} // End if().
 }
 
 add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
