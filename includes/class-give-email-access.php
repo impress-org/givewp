@@ -141,7 +141,6 @@ class Give_Email_Access {
 		$this->check_for_token();
 
 		if ( $this->token_exists ) {
-			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
 			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
@@ -264,7 +263,7 @@ class Give_Email_Access {
 
 		// Set error only if email access form isn't being submitted.
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
-			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one.', 'give' ) ) );
 		}
 
 		return false;
@@ -377,5 +376,4 @@ class Give_Email_Access {
 		// Create columns in donors table.
 		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 	}
-
 }

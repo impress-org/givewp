@@ -217,10 +217,14 @@ function give_sort_forms( $vars ) {
 
 		// Check if "orderby" is set to "goal".
 		case 'goal':
+			$meta_key = give_has_upgrade_completed( 'v240_update_form_goal_progress' )
+				? '_give_form_goal_progress'
+				: '_give_set_goal'; // Backward compatibility
+
 			$vars = array_merge(
 				$vars,
 				array(
-					'meta_key' => '_give_set_goal',
+					'meta_key' => $meta_key,
 					'orderby'  => 'meta_value_num',
 				)
 			);

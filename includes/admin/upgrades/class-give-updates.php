@@ -788,6 +788,11 @@ class Give_Updates {
 	 * @return string
 	 */
 	public function __give_db_updates_info() {
+		// Check permission.
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			give_die();
+		}
+
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 

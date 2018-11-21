@@ -128,21 +128,21 @@ if ( $donations ) : ?>
 
 					if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-id"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							'<td class="give-donation-id"><span class="give-mobile-title">%2$s</span>%1$s</td>',
 							give_get_payment_number( $post->ID ), esc_html( $table_headings['id'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-date"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							'<td class="give-donation-date"><span class="give-mobile-title">%2$s</span>%1$s</td>',
 							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ), esc_html( $table_headings['date'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-donor"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							'<td class="give-donation-donor"><span class="give-mobile-title">%2$s</span>%1$s</td>',
 							give_get_donor_name_by( $post->ID ), $table_headings['donor']
 						);
 					endif;
@@ -150,7 +150,7 @@ if ( $donations ) : ?>
 
 					<?php if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 						<td class="give-donation-amount">
-						<?php printf( '<span class="title-for-mobile">%1$s</span>', esc_html( $table_headings['amount'] ) ); ?>
+						<?php printf( '<span class="give-mobile-title">%1$s</span>', esc_html( $table_headings['amount'] ) ); ?>
 						<span class="give-donation-amount">
 							<?php
 							$currency_code   = give_get_payment_currency_code( $post->ID );
@@ -175,7 +175,7 @@ if ( $donations ) : ?>
 					<?php
 					if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-status"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							'<td class="give-donation-status"><span class="give-mobile-title">%2$s</span>%1$s</td>',
 							give_get_payment_status( $post, true ),
 							esc_html( $table_headings['status'] )
 						);
@@ -183,7 +183,7 @@ if ( $donations ) : ?>
 
 					if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
-							'<td class="give-donation-payment-method"><span class="title-for-mobile">%2$s</span>%1$s</td>',
+							'<td class="give-donation-payment-method"><span class="give-mobile-title">%2$s</span>%1$s</td>',
 							give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ),
 							esc_html( $table_headings['payment_method'] )
 						);
@@ -194,11 +194,11 @@ if ( $donations ) : ?>
 						// Display View Receipt or.
 						if ( 'publish' !== $post->post_status && 'subscription' !== $post->post_status ) :
 							echo sprintf(
-								'<span class="title-for-mobile">%4$s</span><a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
+								'<span class="give-mobile-title">%4$s</span><a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
 								esc_url(
 									add_query_arg(
-										'payment_key',
-										give_get_payment_key( $post->ID ),
+										'donation_id',
+										$post->ID,
 										give_get_history_page_uri()
 									)
 								),
@@ -209,11 +209,11 @@ if ( $donations ) : ?>
 
 						else :
 							echo sprintf(
-								'<span class="title-for-mobile">%3$s</span><a href="%1$s">%2$s</a>',
+								'<span class="give-mobile-title">%3$s</span><a href="%1$s">%2$s</a>',
 								esc_url(
 									add_query_arg(
-										'payment_key',
-										give_get_payment_key( $post->ID ),
+										'donation_id',
+										$post->ID,
 										give_get_history_page_uri()
 									)
 								),

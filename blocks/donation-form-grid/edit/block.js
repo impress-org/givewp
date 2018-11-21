@@ -22,25 +22,14 @@ import Inspector from './inspector';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { forms, attributes } = props;
+	const { attributes } = props;
 
-	// Render block UI
-	let blockUI;
-
-	if ( ! forms ) {
-		blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
-	} else if ( forms && forms.length === 0 ) {
-		blockUI = <NoForms />;
-	} else {
-		blockUI = (
-			<Fragment>
-				<Inspector { ... { ...props } } />
-				<ServerSideRender block="give/donation-form-grid" attributes={ attributes } />
-			</Fragment>
-		);
-	}
-
-	return blockUI;
+	return (
+		<Fragment>
+			<Inspector { ... { ...props } } />
+			<ServerSideRender block="give/donation-form-grid" attributes={ attributes } />
+		</Fragment>
+	);
 };
 
 export default withSelect( ( select ) => {
@@ -48,3 +37,5 @@ export default withSelect( ( select ) => {
 		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
 	};
 } )( GiveDonationFormGrid );
+
+// @todo show no form template if forms does not exist.
