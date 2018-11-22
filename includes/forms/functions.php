@@ -406,6 +406,31 @@ function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 }
 
 /**
+ * Update the goal progress count of a donation form.
+ *
+ * @since 2.4.0
+ *
+ * @param int $form_id Give Form ID
+ *
+ * @return void
+ */
+function give_update_goal_progress( $form_id = 0 ) {
+
+	//Get goal option meta key
+	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
+
+	// Check, if the form goal is enabled.
+	if ( $is_goal_enabled ) {
+		$goal_stats               = give_goal_progress_stats( $form_id );
+		$form_goal_progress_value = ! empty( $goal_stats['progress'] ) ? $goal_stats['progress'] : 0;
+	} else {
+		$form_goal_progress_value = -1;
+	}
+
+	give_update_meta( $form_id, '_give_form_goal_progress', $form_goal_progress_value );
+}
+
+/**
  * Decreases the sale count of a form. Primarily for when a donation is refunded.
  *
  * @since 1.0

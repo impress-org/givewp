@@ -78,7 +78,7 @@ class Give_Donation_form_Grid_Block {
 	 */
 	public function register_block() {
 		// Bailout.
-		if( ! function_exists('register_block_type' ) ) {
+		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
 
@@ -86,9 +86,41 @@ class Give_Donation_form_Grid_Block {
 		register_block_type( 'give/donation-form-grid', array(
 			'render_callback' => array( $this, 'render_block' ),
 			'attributes'      => array(
+				'formsPerPage'      => array(
+					'type'    => 'string',
+					'default' => '12',
+				),
+				'formIDs'           => array(
+					'type'    => 'string',
+					'default' => '',
+				),
+				'excludedFormIDs'   => array(
+					'type'    => 'string',
+					'default' => '',
+				),
+				'orderBy'           => array(
+					'type'    => 'string',
+					'default' => 'date',
+				),
+				'order'             => array(
+					'type'    => 'string',
+					'default' => 'DESC',
+				),
+				'categories'        => array(
+					'type'    => 'string',
+					'default' => '',
+				),
+				'tags'              => array(
+					'type'    => 'string',
+					'default' => '',
+				),
 				'columns'           => array(
 					'type'    => 'string',
 					'default' => '4',
+				),
+				'showTitle'         => array(
+					'type'    => 'boolean',
+					'default' => false,
 				),
 				'showExcerpt'       => array(
 					'type'    => 'boolean',
@@ -120,7 +152,15 @@ class Give_Donation_form_Grid_Block {
 	 */
 	public function render_block( $attributes ) {
 		$parameters = array(
+			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
+			'ids'                 => $attributes['formIDs'],
+			'exclude'             => $attributes['excludedFormIDs'],
+			'orderby'             => $attributes['orderBy'],
+			'order'               => $attributes['order'],
+			'cats'                => $attributes['categories'],
+			'tags'                => $attributes['tags'],
 			'columns'             => absint( $attributes['columns'] ),
+			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
 			'show_excerpt'        => $attributes['showExcerpt'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
