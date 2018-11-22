@@ -214,7 +214,10 @@ class Give_Notices {
 		}
 
 		// Do not render notice on Gutenberg editor page.
-		if ( $wp_screen->is_block_editor() ) {
+		if (
+			method_exists( $wp_screen, 'is_block_editor' )
+			&& $wp_screen->is_block_editor()
+		) {
 			return;
 		}
 
