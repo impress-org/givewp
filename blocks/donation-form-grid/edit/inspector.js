@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, formIDs, excludedFormIDs, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -40,6 +40,18 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Excluded Form IDs' ) }
 					value={ excludedFormIDs }
 					onChange={ ( value ) => saveSetting( 'excludedFormIDs', value ) }/>
+				<SelectControl
+					label={ __( 'Order By' ) }
+					name="orderBy"
+					value={ orderBy }
+					options={ giveFormOptions.orderBy }
+					onChange={ ( value ) => saveSetting( 'orderBy', value ) } />
+				<SelectControl
+					label={ __( 'Order' ) }
+					name="order"
+					value={ order }
+					options={ giveFormOptions.order }
+					onChange={ ( value ) => saveSetting( 'order', value ) } />
 				<TextControl
 					name="categories"
 					label={ __( 'Categories' ) }

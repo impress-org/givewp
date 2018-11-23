@@ -424,7 +424,7 @@ function give_update_goal_progress( $form_id = 0 ) {
 		$goal_stats               = give_goal_progress_stats( $form_id );
 		$form_goal_progress_value = ! empty( $goal_stats['progress'] ) ? $goal_stats['progress'] : 0;
 	} else {
-		$form_goal_progress_value = 0;
+		$form_goal_progress_value = -1;
 	}
 
 	give_update_meta( $form_id, '_give_form_goal_progress', $form_goal_progress_value );

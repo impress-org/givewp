@@ -205,6 +205,9 @@ class Give_Notices {
 	 *
 	 */
 	public function render_admin_notices() {
+		/* @var WP_Screen $wp_screen */
+		$wp_screen = get_current_screen();
+
 		// Bailout.
 		if ( empty( self::$notices ) ) {
 			return;
@@ -212,8 +215,8 @@ class Give_Notices {
 
 		// Do not render notice on Gutenberg editor page.
 		if (
-			function_exists('is_gutenberg_page')
-			&& is_gutenberg_page()
+			method_exists( $wp_screen, 'is_block_editor' )
+			&& $wp_screen->is_block_editor()
 		) {
 			return;
 		}
