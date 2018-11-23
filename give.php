@@ -223,6 +223,20 @@ if ( ! class_exists( 'Give' ) ) :
 		public $logs;
 
 		/**
+		 * Give log db Object
+		 *
+		 * @var    Give_DB_Logs $log_db
+		 */
+		public $log_db;
+
+		/**
+		 * Give log meta db Object
+		 *
+		 * @var    Give_DB_Log_Meta $logmeta_db
+		 */
+		public $logmeta_db;
+
+		/**
 		 * Give payment Object
 		 *
 		 * @var    Give_DB_Payment_Meta $payment_meta
@@ -354,6 +368,8 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices                = new Give_Notices();
 			$this->payment_meta           = new Give_DB_Payment_Meta();
 			$this->logs                   = new Give_Logging();
+			$this->log_db                 = new Give_DB_Logs();
+			$this->logmeta_db             = new Give_DB_Log_Meta();
 			$this->form_meta              = new Give_DB_Form_Meta();
 			$this->sequential_donation_db = new Give_DB_Sequential_Ordering();
 			$this->async_process          = new Give_Async_Process();
@@ -510,6 +526,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
