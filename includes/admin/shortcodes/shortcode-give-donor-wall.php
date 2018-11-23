@@ -120,6 +120,16 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'        => 'listbox',
+				'name'        => 'anonymous',
+				'label'       => esc_attr__( 'Anonymous:', 'give' ),
+				'tooltip'     => esc_attr__( 'Determines whether anonymous donations are included.', 'give' ),
+				'options'     => array(
+					'false' => esc_html__( 'Hide', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
+			),
+			array(
+				'type'        => 'listbox',
 				'name'        => 'show_avatar',
 				'label'       => esc_attr__( 'Donor Avatar:', 'give' ),
 				'tooltip'     => esc_attr__( 'Determines whether the avatar is visible.', 'give' ),
