@@ -20,12 +20,23 @@ $atts          = $args[2]; // Shortcode attributes.
 		<div class="give-donor__header">
 			<?php
 			if( true === $atts['show_avatar'] ) {
+
+				// Get anonymous donor image.
+				$anonymous_donor_img = sprintf(
+					'<img src="%1$s" alt="%2$s">',
+					esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg' ),
+					esc_attr__( 'Anonymous User', 'give' )
+				);
+
+				// Get donor avatar image based on donation parameter.
+				$donor_avatar = $donation['_give_anonymous_donation'] ? $anonymous_donor_img : $donation['name_initial'];
+
 				// Maybe display the Avatar.
 				echo sprintf(
 					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
 					absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ),
-					$donation['name_initial']
+					$donor_avatar
 				);
 			}
 			?>
@@ -33,7 +44,12 @@ $atts          = $args[2]; // Shortcode attributes.
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
-						<?php $donor_name = trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] ); ?>
+						<?php
+						// Get donor name based on donation parameter.
+						$donor_name = ( $donation['_give_anonymous_donation'] )
+							? __( 'Anonymous', 'give' )
+							: trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
+						?>
 						<?php esc_html_e( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
@@ -57,6 +73,7 @@ $atts          = $args[2]; // Shortcode attributes.
 			true === $atts['show_comments']
 			&& absint( $atts['comment_length'] )
 			&& ! empty( $donation['donor_comment'] )
+			&& ! $donation['_give_anonymous_donation']
 		) :
 			?>
 			<div class="give-donor__content">
