@@ -858,11 +858,11 @@ function give_user_info_fields( $form_id ) {
 						<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 						<?php checked( 1, $is_anonymous_donation ); ?>
 					>
-					<?php _e( 'Make this an anonymous donation', 'give' ); ?>
+					<?php _e( 'Hide name and comment from everyone but the administrator.', 'give' ); ?>
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like to prevent this donation from being displayed publicly?', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like your donation to be displayed from an anonymous source?', 'give' ) ); ?>
 				</label>
 			</p>
 		<?php endif; ?>
