@@ -31,11 +31,14 @@ $atts          = $args[2]; // Shortcode attributes.
 				// Get donor avatar image based on donation parameter.
 				$donor_avatar = $donation['_give_anonymous_donation'] ? $anonymous_donor_img : $donation['name_initial'];
 
+				// Validate donor gravatar.
+				$validate_gravatar = $donation['_give_anonymous_donation'] ? 0 : give_validate_gravatar( $donation['_give_payment_donor_email'] );
+
 				// Maybe display the Avatar.
 				echo sprintf(
 					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
-					absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ),
+					absint( $validate_gravatar ),
 					$donor_avatar
 				);
 			}
