@@ -462,6 +462,11 @@ class Give_Donor_Wall {
 		$where = array();
 
 		foreach ( $donations_data as $id => $data ) {
+			// Do not fetch comment for anonymous donation.
+			if( ! empty( $data['_give_anonymous_donation'] )  ) {
+				continue;
+			}
+
 			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
 		}
 
