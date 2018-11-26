@@ -403,7 +403,10 @@ class Give_Donor_Wall {
 		}
 
 		// exclude anonymous donation form query based on query parameters.
-		if ( ! $query_params['anonymous'] ) {
+		if (
+			! $query_params['anonymous']
+			|| $query_params['only_comments']
+		) {
 			$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 		}
 
