@@ -317,8 +317,6 @@ class Give_Donor_Wall {
 	private function get_donation_data( $atts = array() ) {
 		global $wpdb;
 
-		$query_params = $this->get_query_param( $atts );
-
 		// Bailout if donation does not exist.
 		if ( ! ( $donation_ids = $this->get_donations( $atts ) ) ) {
 			return array();
