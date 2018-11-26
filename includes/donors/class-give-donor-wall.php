@@ -183,6 +183,7 @@ class Give_Donor_Wall {
 				'paged'           => 1,
 				'ids'             => '',
 				'columns'         => 'best-fit',
+				'anonymous'       => true,
 				'show_avatar'     => true,
 				'show_name'       => true,
 				'show_total'      => true,
@@ -203,6 +204,7 @@ class Give_Donor_Wall {
 
 		// Validate boolean attributes.
 		$boolean_attributes = array(
+			'anonymous',
 			'show_avatar',
 			'show_name',
 			'show_total',
@@ -298,6 +300,7 @@ class Give_Donor_Wall {
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
 		$query_atts['form_id']       = $atts['form_id'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
+		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
 
 		return $query_atts;
 	}
@@ -313,8 +316,6 @@ class Give_Donor_Wall {
 	 */
 	private function get_donation_data( $atts = array() ) {
 		global $wpdb;
-
-		$query_params = $this->get_query_param( $atts );
 
 		// Bailout if donation does not exist.
 		if ( ! ( $donation_ids = $this->get_donations( $atts ) ) ) {
@@ -401,8 +402,13 @@ class Give_Donor_Wall {
 			$where .= " AND gc1.comment_type='donor_donation'";
 		}
 
-		// exclude anonymous donation form query.
-		$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
+		// exclude anonymous donation form query based on query parameters.
+		if (
+			! $query_params['anonymous']
+			|| $query_params['only_comments']
+		) {
+			$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
+		}
 
 		// order by query based on parameter.
 		if ( 'donation_amount' === $query_params['orderby'] ) {
@@ -457,6 +463,11 @@ class Give_Donor_Wall {
 		$where = array();
 
 		foreach ( $donations_data as $id => $data ) {
+			// Do not fetch comment for anonymous donation.
+			if( ! empty( $data['_give_anonymous_donation'] )  ) {
+				continue;
+			}
+
 			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
 		}
 

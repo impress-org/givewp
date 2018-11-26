@@ -58,7 +58,7 @@ $donor-space-triple: $donor-space * 3;
 		img {
 			border-radius: 50%;
 			display: block;
-			height: $donor-space * 3;
+			height: ( $donor-space * 3 ) - 2;
 			object-fit: cover;
 			width: 100%;
 		}
