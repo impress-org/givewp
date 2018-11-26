@@ -118,7 +118,11 @@ function give_get_success_page_uri() {
  * @return bool True if on the Success page, false otherwise.
  */
 function give_is_success_page() {
-	return apply_filters( 'give_is_success_page', is_page( give_get_success_page_uri() ) );
+	$give_options = give_get_settings();
+
+	$success_page = isset( $give_options['success_page'] ) ? is_page( $give_options['success_page'] ) : false;
+
+	return apply_filters( 'give_is_success_page', $success_page );
 }
 
 /**
