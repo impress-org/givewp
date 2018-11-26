@@ -48,13 +48,17 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
-	commentLength: {
-		type: 'string',
-		default: '140',
+	showAnonymous: {
+		type: 'boolean',
+		default: true,
 	},
 	onlyComments: {
 		type: 'boolean',
 		default: false,
+	},
+	commentLength: {
+		type: 'string',
+		default: '140',
 	},
 	readMoreText: {
 		type: 'string',
