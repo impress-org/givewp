@@ -39,9 +39,6 @@ class Give_DB_Comments extends Give_DB {
 		$this->primary_key   = 'comment_ID';
 		$this->version       = '1.0';
 
-		// Install table.
-		$this->register_table();
-
 		parent::__construct();
 	}
 

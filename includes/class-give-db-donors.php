@@ -41,12 +41,6 @@ class Give_DB_Donors extends Give_DB {
 
 		$this->bc_200_params();
 
-		// Set hooks and register table only if instance loading first time.
-		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
-			// Install table.
-			$this->register_table();
-		}
-
 		parent::__construct();
 	}
 

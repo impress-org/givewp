@@ -58,8 +58,6 @@ class Give_DB_Sessions extends Give_DB {
 		$incrementer_value      = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
 		$this->cache_group      = "{$this->cache_group}_{$current_blog_id}_{$incrementer_value}";
 
-		$this->register_table();
-
 		parent::__construct();
 	}
 

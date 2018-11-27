@@ -60,8 +60,6 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 			$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_paymentmeta';
 		}
 
-		$this->register_table();
-
 		parent::__construct();
 	}
 

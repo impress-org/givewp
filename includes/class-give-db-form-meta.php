@@ -54,8 +54,6 @@ class Give_DB_Form_Meta extends Give_DB_Meta {
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
 
-		$this->register_table();
-
 		parent::__construct();
 	}
 

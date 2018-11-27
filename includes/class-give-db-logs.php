@@ -39,9 +39,6 @@ class Give_DB_Logs extends Give_DB {
 		$this->primary_key = 'ID';
 		$this->version     = '1.0';
 
-		// Install table.
-		$this->register_table();
-
 		parent::__construct();
 	}
 
