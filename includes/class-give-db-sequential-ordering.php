@@ -39,9 +39,6 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 
-		// Install table.
-		$this->register_table();
-
 		parent::__construct();
 	}
 
