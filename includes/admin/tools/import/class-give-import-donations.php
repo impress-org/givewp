@@ -368,10 +368,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			// Reset the donation form report.
 			give_import_donation_report_reset();
 
-			$csv         = (int) $_REQUEST['csv'];
+			$csv         = absint( $_REQUEST['csv'] );
 			$delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
 			$index_start = 1;
-			$index_end   = 1;
 			$next        = true;
 			$total       = self::get_csv_total( $csv );
 			if ( self::$per_page < $total ) {
@@ -397,30 +396,24 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<span class="spinner is-active"></span>
 					<div class="give-progress"
 						 data-current="1"
-						 data-total_ajax="<?php echo $total_ajax; ?>"
-						 data-start="<?php echo $index_start; ?>"
-						 data-end="<?php echo $index_end; ?>"
-						 data-next="<?php echo $next; ?>"
-						 data-total="<?php echo $total; ?>"
-						 data-per_page="<?php echo self::$per_page; ?>">
+						 data-total_ajax="<?php echo absint( $total_ajax ); ?>"
+						 data-start="<?php echo absint( $index_start ); ?>"
+						 data-end="<?php echo absint( $index_end ); ?>"
+						 data-next="<?php echo absint( $next ); ?>"
+						 data-total="<?php echo absint( $total ); ?>"
+						 data-per_page="<?php echo absint( self::$per_page ); ?>">
 
-						<div style="width: <?php echo $current_percentage; ?>%"></div>
+						<div style="width: <?php echo (float) $current_percentage; ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
-					<input type="hidden" value='<?php echo maybe_serialize( $_REQUEST['mapto'] ); ?>' name="mapto"
-						   class="mapto">
-					<input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
-					<input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
-					<input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user"
-						   class="create_user">
-					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
-						   class="delete_csv">
-					<input type="hidden" value="<?php echo $delimiter; ?>" name="delimiter">
+					<input type="hidden" value='<?php esc_attr_e( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
+					<input type="hidden" value="<?php echo $csv; ?>" name="csv" class="csv">
+					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
+					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
+					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
+					<input type="hidden" value="<?php esc_attr_e( $delimiter ); ?>" name="delimiter">
 					<input type="hidden" value="<?php echo absint( $_REQUEST['dry_run'] ); ?>" name="dry_run">
-					<input type="hidden"
-						   value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
-						   name="main_key"
-						   class="main_key">
+					<input type="hidden" value='<?php esc_attr_e( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
 				</th>
 			</tr>
 			<?php

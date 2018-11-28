@@ -274,8 +274,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					</div>
 					<span class="spinner is-active"></span>
 					<input type="hidden" value="2" name="step">
-					<input type="hidden" value="<?php echo $type; ?>" name="type">
-					<input type="hidden" value="<?php echo $file_name; ?>" name="file_name">
+					<input type="hidden" value="<?php esc_attr_e( $type ); ?>" name="type">
+					<input type="hidden" value="<?php esc_attr_e( $file_name ); ?>" name="file_name">
 				</th>
 			</tr>
 			<?php
