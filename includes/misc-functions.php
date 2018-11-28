@@ -1577,6 +1577,10 @@ function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	}
 
 	foreach ( $attributes as $tag => $value ) {
+		if( 'value' == $tag ){
+			$value = esc_attr( $value );
+		}
+
 		$attribute_str .= " {$tag}=\"{$value}\"";
 	}
 
