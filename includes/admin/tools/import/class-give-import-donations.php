@@ -406,14 +406,14 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<div style="width: <?php echo (float) $current_percentage; ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
-					<input type="hidden" value='<?php esc_attr_e( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
+					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
 					<input type="hidden" value="<?php echo $csv; ?>" name="csv" class="csv">
-					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
-					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
-					<input type="hidden" value="<?php esc_attr_e( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
-					<input type="hidden" value="<?php esc_attr_e( $delimiter ); ?>" name="delimiter">
+					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
+					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
+					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
+					<input type="hidden" value="<?php echo esc_attr( $delimiter ); ?>" name="delimiter">
 					<input type="hidden" value="<?php echo absint( $_REQUEST['dry_run'] ); ?>" name="dry_run">
-					<input type="hidden" value='<?php esc_attr_e( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
+					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
 				</th>
 			</tr>
 			<?php
