@@ -895,7 +895,7 @@ function give_can_view_receipt( $donation_id ) {
 		) {
 			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
 			$donor              = ! empty( $email_access_token )
-				? Give()->donors->get_donor_by( 'verify_key', $email_access_token )
+				? Give()->donors->get_donor_by_token( $email_access_token )
 				: false ;
 		}
 	}

@@ -483,6 +483,23 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
+	 * This function will return donor details by token id.
+	 *
+	 * @param int $id Email Access Token ID.
+	 *
+	 * @since 2.3.1
+	 *
+	 * @return object
+	 */
+	public function get_donor_by_token( $id ) {
+		global $wpdb;
+		$row = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $id )
+		);
+		return $row;
+	}
+
+	/**
 	 * Retrieve donors from the database.
 	 *
 	 * @since  1.0
