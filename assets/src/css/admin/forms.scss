@@ -806,24 +806,66 @@ Donations forms filter
 }
 
 .post-type-give_forms #posts-filter .tablenav.top {
-  .alignleft.actions.bulkactions + .alignleft.actions {
-	width: 100%;
-	margin-top: 15px;
-  }
-  > .alignleft.actions {
-	width: 100%;
-	.give-forms-search-box {
-	  display: inline-block;
-	  float: left;
-	  margin-right: 18px;
+	position:relative;
+	height: 130px;
+
+	a{
+		display: inline-block;
+		margin: 0;
 	}
-	.give-forms-goal-filter {
-	  float: none;
-	  max-width: 255px;
+
+	#give-forms-search-input{
+		margin-right: 6px;
 	}
-	.give-filter input.button + .give-clear-filters-button {
-	  display: inline-block;
-	  margin-top: 0;
+
+	#give-forms-advanced-filter,
+	.tablenav-pages,
+	.bulkactions{
+		position: absolute;
 	}
-  }
+
+	.bulkactions{
+		left:0;
+		bottom:0;
+	}
+
+	#give-forms-advanced-filter{
+		left:0;
+		top:0;
+		right:0;
+
+		select{
+			width: 80%;
+		}
+	}
+
+	.tablenav-pages{
+		right:0;
+		bottom:0;
+	}
+
+	//.alignleft.actions.bulkactions + .alignleft.actions {
+	//	width: 100%;
+	//	margin-top: 15px;
+	//}
+	//
+	//> .alignleft.actions {
+	//	width: 100%;
+	//
+	//	.give-forms-search-box {
+	//		display: inline-block;
+	//		float: left;
+	//		margin-right: 18px;
+	//	}
+	//
+	//	.give-forms-goal-filter {
+	//		float: none;
+	//		max-width: 255px;
+	//	}
+	//
+	//	.give-filter input.button + .give-clear-filters-button {
+	//		display: inline-block;
+	//		margin-top: 0;
+	//	}
+	//}
 }

@@ -469,3 +469,82 @@ function give_search_form_by_id( $query ) {
 }
 
 add_filter( 'pre_get_posts', 'give_search_form_by_id' );
+
+/**
+ * Outputs advanced filter html in Give forms list admin screen.
+ *
+ * @sicne 2.4.0
+ *
+ * @param $which
+ */
+function give_forms_advanced_filter( $which ) {
+	/* @var stdClass $screen */
+	$screen = get_current_screen();
+
+	if( 'edit' !== $screen->parent_base || 'give_forms' !== $screen->post_type ) {
+		return;
+	}
+
+	// Apply this only on a specific post type
+	if ( 'top' !== $which ) {
+		return;
+	}
+
+	$start_date             = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
+	$end_date               = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? $_GET['give-forms-goal-filter'] : '';
+	?>
+	<div id="give-forms-advanced-filter" class="give-filters">
+		<div class="give-filter give-filter-search">
+			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+			<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
+				'ID' => 'form-search-submit',
+			) ); ?>
+		</div>
+		<div id="give-payment-date-filters">
+			<div class="give-filter give-filter-half">
+				<label for="start-date"
+				       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+				<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
+				       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+			</div>
+			<div class="give-filter give-filter-half">
+				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+				<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
+				       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+			</div>
+		</div>
+		<div id="give-payment-form-filter" class="give-filter">
+			<label for="give-donation-forms-filter"
+			       class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
+			<select id="give-forms-goal-filter" name="give-forms-goal-filter" class="give-forms-goal-filter">
+				<option value="any_goal_status" <?php if ( "any_goal_status" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Any Goal Status', 'give' ); ?></option>
+				<option value="goal_achieved" <?php if ( "goal_achieved" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal Achieved', 'give' ); ?></option>
+				<option value="goal_in_progress" <?php if ( "goal_in_progress" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal In Progress', 'give' ); ?></option>
+				<option value="goal_not_set" <?php if ( "goal_not_set" === $give_forms_goal_filter ) {
+					echo "selected";
+				} ?>><?php _e( 'Goal Not Set', 'give' ); ?></option>
+			</select>
+		</div>
+		<div class="give-filter">
+			<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
+			<?php
+			// Clear active filters button.
+			if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $search ) || ! empty( $give_forms_goal_filter ) ) :
+				?>
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms' ); ?>"
+				   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
+}
+
+add_action( 'manage_posts_extra_tablenav', 'give_forms_advanced_filter', 10, 1 );
