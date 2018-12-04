@@ -905,6 +905,11 @@ function give_can_view_receipt( $donation_id ) {
 		$is_donor_donated = in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true );
 		$can_view_receipt = $is_donor_donated ? true : $can_view_receipt;
 
+		// Provide support to download receipts from admin panel.
+		if ( is_admin() || $is_donor_donated ) {
+		    $can_view_receipt = true;
+        }
+
 		if( ! $is_donor_donated ) {
 			Give()->session->set( 'donor_donation_mismatch', true );
 		}
