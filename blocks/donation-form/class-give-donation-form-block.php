@@ -96,9 +96,11 @@ class Give_Donation_Form_Block {
 				),
 				'displayStyle'	=> array(
 					'type' => 'string',
+					'default' => 'onpage',
 				),
 				'continueButtonTitle' => array(
 					'type' => 'string',
+					'default' => '',
 				),
 				'showTitle'	=> array(
 					'type'    => 'boolean',
