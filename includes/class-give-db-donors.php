@@ -485,6 +485,8 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * This function will return donor details by token id.
 	 *
+	 * Note: This function is for internal purposes only. Don't use this function as it will be deprecated soon.
+	 *
 	 * @param int $id Email Access Token ID.
 	 *
 	 * @since 2.3.1
