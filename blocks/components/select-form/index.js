@@ -68,6 +68,7 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
 		componentUI = (
 			<GiveBlankSlate title={ __( 'Give Donation form' ) }>
 				<SelectControl
+					className="give-blank-slate__select"
 					options={ getFormOptions() }
 					onChange={ setFormIdTo }
 				/>
