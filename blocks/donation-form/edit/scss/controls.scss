@@ -84,9 +84,10 @@
 		transition: transform 0.3s ease, opacity 0.3s ease;
 	}
 
-	&.isSelected:hover .give-form-wrap {
+	&:hover .give-form-wrap {
 		transition: transform 0.3s ease, opacity 0.3s ease;
 		opacity: 0.3;
+		transform: scale(0.9);
 	}
 
 	form[id*=give-form] #give-gateway-radio-list>li input[type=radio] {
