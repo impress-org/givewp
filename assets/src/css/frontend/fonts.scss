@@ -31,8 +31,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[class^="give-icon-"], [class*=" give-icon-"] {
-  @include iconstyle();
+.give-icon {
+	&:before {
+		font-style: normal;
+	}
+}
+
+[class^="give-icon-"],
+[class*=" give-icon-"] {
+	@include iconstyle();
 }
 
 .give-icon-lamp:before {
