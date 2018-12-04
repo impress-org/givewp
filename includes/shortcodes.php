@@ -302,8 +302,15 @@ function give_receipt_shortcode( $atts ) {
 
 		if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
 
+			/**
+			 * This filter will be used to modify the donor mismatch text for front end error notice.
+             *
+             * @since 2.3.1
+			 */
+		    $donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
+
 			echo Give()->notices->print_frontend_notice(
-				__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
+				$donor_mismatch_text,
 				false,
 				'error'
 			);

@@ -870,6 +870,16 @@ function give_can_view_receipt( $donation_id ) {
 		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
 	}
 
+	// Return to download receipts from admin panel.
+	if ( is_admin() ) {
+	    /**
+	     * This filter will be used to modify can view receipt response when accessed from admin.
+         *
+         * @since 2.3.1
+	     */
+		return apply_filters( 'give_can_admin_view_receipt', true );
+	}
+
 	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
 		// Proceed only, if user is logged in or can view sensitive Give data.
@@ -895,7 +905,7 @@ function give_can_view_receipt( $donation_id ) {
 		) {
 			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
 			$donor              = ! empty( $email_access_token )
-				? Give()->donors->get_donor_by( 'verify_key', $email_access_token )
+				? Give()->donors->get_donor_by_token( $email_access_token )
 				: false ;
 		}
 	}
