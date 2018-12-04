@@ -872,6 +872,11 @@ function give_can_view_receipt( $donation_id ) {
 
 	// Return to download receipts from admin panel.
 	if ( is_admin() ) {
+	    /**
+	     * This filter will be used to modify can view receipt response when accessed from admin.
+         *
+         * @since 2.3.1
+	     */
 		return apply_filters( 'give_can_admin_view_receipt', true );
 	}
 
