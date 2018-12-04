@@ -870,6 +870,11 @@ function give_can_view_receipt( $donation_id ) {
 		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
 	}
 
+	// Return to download receipts from admin panel.
+	if ( is_admin() ) {
+		return apply_filters( 'give_can_admin_view_receipt', true );
+	}
+
 	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
 		// Proceed only, if user is logged in or can view sensitive Give data.
@@ -904,11 +909,6 @@ function give_can_view_receipt( $donation_id ) {
 	if ( is_object( $donor ) ) {
 		$is_donor_donated = in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true );
 		$can_view_receipt = $is_donor_donated ? true : $can_view_receipt;
-
-		// Provide support to download receipts from admin panel.
-		if ( is_admin() || $is_donor_donated ) {
-		    $can_view_receipt = true;
-        }
 
 		if( ! $is_donor_donated ) {
 			Give()->session->set( 'donor_donation_mismatch', true );
