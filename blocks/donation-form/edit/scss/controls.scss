@@ -85,4 +85,8 @@
 		transform: scale(0.85);
 		opacity: 0.3;
 	}
+
+	form[id*=give-form] #give-gateway-radio-list>li input[type=radio] {
+		display: inline-block;
+	}
 }
