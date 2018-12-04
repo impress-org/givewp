@@ -307,7 +307,7 @@ function give_receipt_shortcode( $atts ) {
              *
              * @since 2.3.1
 			 */
-		    $donor_mismatch_text = apply_filters( 'give_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
+		    $donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
 
 			echo Give()->notices->print_frontend_notice(
 				$donor_mismatch_text,
