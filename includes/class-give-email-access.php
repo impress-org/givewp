@@ -106,7 +106,19 @@ class Give_Email_Access {
 	public function __construct() {
 
 		// Get it started.
-		add_action( 'wp', array( $this, 'init' ) );
+		add_action( 'wp', array( $this, 'setup' ) );
+	}
+
+	/**
+	 * Setup hooks
+	 *
+	 * @since 2.4.0
+	 */
+	public function setup(){
+		if( give_is_success_page() || give_is_history_page() ){
+			// Get it started.
+			add_action( 'wp', array( $this, 'init' ), 14 );
+		}
 	}
 
 	/**
@@ -263,10 +275,6 @@ class Give_Email_Access {
 
 		// Set error only if email access form isn't being submitted.
 		if (
-			(
-				(int) give_get_option( 'history_page' ) === get_the_ID() ||
-				(int) give_get_option( 'success_page' ) === get_the_ID()
-			) &&
 			! isset( $_POST['give_email'] ) &&
 			! isset( $_POST['_wpnonce'] )
 		) {
