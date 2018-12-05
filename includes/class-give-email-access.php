@@ -105,8 +105,8 @@ class Give_Email_Access {
 	 */
 	public function __construct() {
 
-		// get it started
-		add_action( 'init', array( $this, 'init' ) );
+		// Get it started.
+		add_action( 'wp', array( $this, 'init' ) );
 	}
 
 	/**
