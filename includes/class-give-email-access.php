@@ -262,7 +262,14 @@ class Give_Email_Access {
 		}
 
 		// Set error only if email access form isn't being submitted.
-		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
+		if (
+			(
+				(int) give_get_option( 'history_page' ) === get_the_ID() ||
+				(int) give_get_option( 'success_page' ) === get_the_ID()
+			) &&
+			! isset( $_POST['give_email'] ) &&
+			! isset( $_POST['_wpnonce'] )
+		) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one.', 'give' ) ) );
 		}
 
