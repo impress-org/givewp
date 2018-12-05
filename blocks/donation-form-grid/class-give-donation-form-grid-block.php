@@ -112,19 +112,19 @@ class Give_Donation_form_Grid_Block {
 				),
 				'showTitle'         => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showExcerpt'       => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showGoal'          => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showFeaturedImage' => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'displayType'       => array(
 					'type'    => 'string',
