@@ -157,7 +157,41 @@ class Give_Donation_form_Grid_Block {
 			'display_type'        => $attributes['displayType'],
 		);
 
-		return give_form_grid_shortcode( $parameters );
+		$html = give_form_grid_shortcode( $parameters );
+		$html = ! empty( $html ) ? $html : $this->blank_slate();
+
+		return $html;
+	}
+
+	/**
+	 * Renturn formatted notice when shortcode return empty string
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return string
+	 */
+	private function blank_slate(){
+		if( ! defined( 'REST_REQUEST' ) ) {
+			return '';
+		}
+
+		ob_start();
+
+		$content = array(
+			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_alt' => __( 'Give Icon', 'give' ),
+			'heading'  => __( 'No donation forms found.', 'give' ),
+			'help'     => sprintf(
+			/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				__( 'Need help? Learn more about %1$sDonation Forms%2$s.', 'give' ),
+				'<a href="https://givewp.com/documentation/core/give-forms/">',
+				'</a>'
+			),
+		);
+
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
+
+		return ob_get_clean();
 	}
 }
 
