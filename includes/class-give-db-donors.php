@@ -41,12 +41,6 @@ class Give_DB_Donors extends Give_DB {
 
 		$this->bc_200_params();
 
-		// Set hooks and register table only if instance loading first time.
-		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
-			// Install table.
-			$this->register_table();
-		}
-
 		parent::__construct();
 	}
 
@@ -486,6 +480,25 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 		return current( $donor );
+	}
+
+	/**
+	 * This function will return donor details by token id.
+	 *
+	 * Note: This function is for internal purposes only. Don't use this function as it will be deprecated soon.
+	 *
+	 * @param int $id Email Access Token ID.
+	 *
+	 * @since 2.3.1
+	 *
+	 * @return object
+	 */
+	public function get_donor_by_token( $id ) {
+		global $wpdb;
+		$row = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $id )
+		);
+		return $row;
 	}
 
 	/**

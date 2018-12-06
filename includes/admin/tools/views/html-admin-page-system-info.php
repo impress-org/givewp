@@ -156,7 +156,7 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
-			<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
+			<td><?php echo give_test_ajax_works( true ) ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Registered Post Statuses"><?php _e( 'Registered Post Statuses', 'give' ); ?>:</td>

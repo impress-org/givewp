@@ -60,7 +60,6 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 		parent::__construct();
 
 		$this->bc_200_params();
-		$this->register_table();
 	}
 
 	/**

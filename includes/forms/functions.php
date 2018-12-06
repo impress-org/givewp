@@ -343,6 +343,17 @@ function give_get_history_page_uri() {
 }
 
 /**
+ * Determines if we're currently on the History page.
+ *
+ * @since 1.0
+ *
+ * @return bool True if on the History page, false otherwise.
+ */
+function give_is_history_page() {
+	return apply_filters( 'give_is_history_page', is_page( give_get_history_page_uri() ) );
+}
+
+/**
  * Check if a field is required
  *
  * @param string $field

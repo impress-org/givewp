@@ -2203,10 +2203,17 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 		<?php
 	}
 
+	$data_attr = sprintf(
+		'data-time="%1$s" data-nonce-life="%2$s" data-donor-session="%3$s"',
+		time(),
+		give_get_nonce_life(),
+		absint( Give()->session->has_session() )
+	);
+
 	// WP nonce field.
 	echo str_replace(
 		'/>',
-		'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
+		"{$data_attr}/>",
 		give_get_nonce_field( "give_donation_form_nonce_{$form_id}", 'give-form-hash', false )
 	);
 

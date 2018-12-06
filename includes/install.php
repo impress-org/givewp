@@ -102,11 +102,8 @@ function give_run_install() {
 
 	flush_rewrite_rules();
 
-	// Create the donor databases.
-	$donors_db = new Give_DB_Donors();
-	$donors_db->create_table();
-	$donor_meta = new Give_DB_Donor_Meta();
-	$donor_meta->create_table();
+	// Create databases.
+	__give_register_tables();
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
@@ -212,41 +209,15 @@ add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$donors_db       = new Give_DB_Donors();
-	$donor_meta_db   = new Give_DB_Donor_Meta();
-	$comment_db      = new Give_DB_Comments();
-	$comment_db_meta = new Give_DB_Comment_Meta();
-	$give_session    = new Give_DB_Sessions();
-	$log_db          = new Give_DB_Logs();
-	$logmeta_db      = new Give_DB_Log_Meta();
-	$formmeta_db     = new Give_DB_Form_Meta();
-	$sequential_db   = new Give_DB_Sequential_Ordering();
-	$payment_meta    = new Give_DB_Payment_Meta();
+	$custom_tables = __give_get_tables();
 
-	if ( $donors_db->installed() ) {
-		$tables[] = $donors_db->table_name;
-		$tables[] = $donor_meta_db->table_name;
+	/* @var Give_DB $table */
+	foreach ( $custom_tables as $table ) {
+		if ( $table->installed() ) {
+			$tables[] = $table->table_name;
+		}
 	}
-	if ( $comment_db->installed() ) {
-		$tables[] = $comment_db->table_name;
-		$tables[] = $comment_db_meta->table_name;
-	}
-	if ( $give_session->installed() ) {
-		$tables[] = $give_session->table_name;
-	}
-	if ( $log_db->installed() ) {
-		$tables[] = $log_db->table_name;
-		$tables[] = $logmeta_db->table_name;
-	}
-	if ( $formmeta_db->installed() ) {
-		$tables[] = $formmeta_db->table_name;
-	}
-	if ( $sequential_db->installed() ) {
-		$tables[] = $sequential_db->table_name;
-	}
-	if ( $payment_meta->installed() ) {
-		$tables[] = $payment_meta->table_name;
-	}
+
 	restore_current_blog();
 
 	return $tables;
@@ -513,3 +484,47 @@ function give_create_pages() {
 }
 
 add_action( 'admin_init', 'give_create_pages', - 1 );
+
+
+/**
+ * Get array of table class objects
+ *
+ * Note: only for internal purpose use
+ *
+ * @sice 2.3.1
+ *
+ */
+function __give_get_tables() {
+	$tables = array(
+		'donors_db'       => new Give_DB_Donors(),
+		'donor_meta_db'   => new Give_DB_Donor_Meta(),
+		'comment_db'      => new Give_DB_Comments(),
+		'comment_db_meta' => new Give_DB_Comment_Meta(),
+		'give_session'    => new Give_DB_Sessions(),
+		'log_db'          => new Give_DB_Logs(),
+		'logmeta_db'      => new Give_DB_Log_Meta(),
+		'formmeta_db'     => new Give_DB_Form_Meta(),
+		'sequential_db'   => new Give_DB_Sequential_Ordering(),
+		'donation_meta'   => new Give_DB_Payment_Meta(),
+	);
+
+	return $tables;
+}
+
+/**
+ * Register classes
+ * Note: only for internal purpose use
+ *
+ * @sice 2.3.1
+ *
+ */
+function __give_register_tables() {
+	$tables = __give_get_tables();
+
+	/* @var Give_DB $table */
+	foreach ( $tables  as $table ) {
+		if( ! $table->installed() ) {
+			$table->register_table();
+		}
+	}
+}
