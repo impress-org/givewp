@@ -871,7 +871,7 @@ function give_can_view_receipt( $donation_id ) {
 	}
 
 	// Return to download receipts from admin panel.
-	if ( current_user_can( 'manage_options' ) ) {
+	if ( current_user_can( 'export_give_reports' ) ) {
 
 	    /**
 	     * This filter will be used to modify can view receipt response when accessed from admin.
