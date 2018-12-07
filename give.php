@@ -528,7 +528,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/import-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
