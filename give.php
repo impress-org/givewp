@@ -472,16 +472,6 @@ if ( ! class_exists( 'Give' ) ) :
 			global $give_options;
 
 			/**
-			 * Composer's autoload.php.
-			 */
-			if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-			} else {
-				// Load autoloader.
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/tcpdf/tcpdf.php';
-			}
-
-			/**
 			 * Load libraries.
 			 */
 			if ( ! class_exists( 'WP_Async_Request' ) ) {
@@ -505,7 +495,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-v2.php';
@@ -598,6 +587,8 @@ if ( ! class_exists( 'Give' ) ) :
 			}
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-admin.php';
+
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
@@ -626,7 +617,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-functions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php';
@@ -651,6 +641,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donor-wall.php';
 			}// End if().
 
+			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
 
 		}
