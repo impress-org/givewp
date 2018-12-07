@@ -14,6 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Bailout if class already defined.
+if( class_exists( 'Give_HTML_Elements' ) ) {
+	return;
+}
+
 /**
  * Give_HTML_Elements Class
  *
@@ -22,6 +27,40 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_HTML_Elements {
+	/**
+	 * Instance.
+	 *
+	 * @since  1.0
+	 * @access private
+	 * @var
+	 */
+	static private $instance;
+
+	/**
+	 * Singleton pattern.
+	 *
+	 * @since  1.0
+	 * @access private
+	 */
+	private function __construct() {
+	}
+
+
+	/**
+	 * Get instance.
+	 *
+	 * @since  1.0
+	 * @access public
+	 * @return Give_HTML_Elements
+	 */
+	public static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+		}
+
+		return self::$instance;
+	}
+
 
 	/**
 	 * Donations Dropdown
@@ -113,7 +152,7 @@ class Give_HTML_Elements {
 			'data'        => array(
 				'search-type' => 'form',
 			),
-			'query_args' => array()
+			'query_args'  => array(),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -139,7 +178,7 @@ class Give_HTML_Elements {
 		 */
 		$form_args = apply_filters( 'give_forms_dropdown_args', $form_args );
 
-		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
+		$cache_key = Give_Cache::get_key( 'give_forms', $form_args, false );
 
 		// Get forms from cache.
 		$forms = Give_Cache::get_db_query( $cache_key );
@@ -225,7 +264,7 @@ class Give_HTML_Elements {
 		if ( $donors ) {
 			$options[0] = esc_html__( 'No donor attached', 'give' );
 			foreach ( $donors as $donor ) {
-				$donor = give_get_name_with_title_prefixes( $donor );
+				$donor                           = give_get_name_with_title_prefixes( $donor );
 				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
@@ -240,7 +279,7 @@ class Give_HTML_Elements {
 				$donor = new Give_Donor( $args['selected'] );
 
 				if ( $donor ) {
-					$donor = give_get_name_with_title_prefixes( $donor );
+					$donor                                  = give_get_name_with_title_prefixes( $donor );
 					$options[ absint( $args['selected'] ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 
 				}
@@ -271,9 +310,9 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_categories'.
-	 * @param  int $selected Category to select automatically. Default is 0.
-	 * @param  array $args Select box options.
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
+	 * @param  int    $selected Category to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
 	 *
 	 * @return string           Categories dropdown.
 	 */
@@ -305,14 +344,14 @@ class Give_HTML_Elements {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_tags'.
-	 * @param  int $selected Tag to select automatically. Default is 0.
-	 * @param  array $args Select box options.
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_tags'.
+	 * @param  int    $selected Tag to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
 	 *
 	 * @return string           Tags dropdown.
 	 */
 	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
-		$tags    = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+		$tags = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
 
 		$options = array();
 
@@ -717,8 +756,8 @@ class Give_HTML_Elements {
 
 		// Now add the selected user to the $users array if the arg is present.
 		if ( ! empty( $args['selected'] ) ) {
-			$selected_user =  apply_filters( 'give_ajax_user_search_selected_results', get_users( "include={$args['selected']}" ), $args );;
-			$users         = array_merge( $users, $selected_user );
+			$selected_user = apply_filters( 'give_ajax_user_search_selected_results', get_users( "include={$args['selected']}" ), $args );;
+			$users = array_merge( $users, $selected_user );
 		}
 
 		$options = array();

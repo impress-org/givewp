@@ -357,7 +357,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->roles                  = new Give_Roles();
 			$this->api                    = new Give_API();
 			$this->give_settings          = new Give_Admin_Settings();
-			$this->html                   = new Give_HTML_Elements();
 			$this->emails                 = new Give_Emails();
 			$this->email_tags             = new Give_Email_Template_Tags();
 			$this->donors                 = new Give_DB_Donors();
@@ -521,7 +520,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';

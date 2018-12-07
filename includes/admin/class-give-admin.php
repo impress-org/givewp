@@ -53,6 +53,8 @@ class Give_Admin {
 	private function setup() {
 		$this->admin_loading();
 		$this->conditional_loading();
+
+		add_action( 'give_init', array( $this, 'bc_240' ), 0 );
 	}
 
 	/**
@@ -63,6 +65,7 @@ class Give_Admin {
 	 */
 	private function admin_loading() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be load only for form edit screen. review possibilities
 	}
 
@@ -88,6 +91,18 @@ class Give_Admin {
 	 */
 	private function is_generate_pdf() {
 		return isset( $_GET['give-action'] ) && 'generate_pdf' === give_clean( $_GET['give-action'] );
+	}
+
+	/**
+	 * Backward compatibility GIVE_VERSION < 2.4.0
+	 *
+	 * @since 2.4.0
+	 * @ccess public
+	 *
+	 * @param Give $give
+	 */
+	public function bc_240( $give ) {
+		$give->html = Give_HTML_Elements::get_instance();
 	}
 }
 
