@@ -491,7 +491,6 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-async-process.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';

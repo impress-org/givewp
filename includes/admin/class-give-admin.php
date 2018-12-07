@@ -51,7 +51,19 @@ class Give_Admin {
 	 * @access private
 	 */
 	private function setup() {
+		$this->admin_loading();
 		$this->conditional_loading();
+	}
+
+	/**
+	 *  Load core file
+	 *
+	 * @since  2.4.0
+	 * @access private
+	 */
+	private function admin_loading() {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be load only for form edit screen. review possibilities
 	}
 
 	/**
