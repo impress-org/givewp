@@ -312,6 +312,11 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 		return $error;
 	}
 
+	// Load file.
+	if( ! class_exists( 'Give_Readme_Parser' ) ) {
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-readme-parser.php';
+	}
+
 	$plugin_base = strtolower( $plugin_base );
 	$plugin_slug = str_replace( '.php', '', basename( $plugin_base ) );
 
