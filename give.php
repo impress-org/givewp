@@ -481,6 +481,8 @@ if ( ! class_exists( 'Give' ) ) :
 				include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php' );
 			}
 
+			require_once GIVE_PLUGIN_DIR . 'includes/setting-functions.php';
+
 			/**
 			 * Load plugin files
 			 */
