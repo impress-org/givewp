@@ -489,6 +489,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 
 			/**
 			 * Load plugin files
@@ -547,14 +549,12 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-payment.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-sequential-donation-number.php';
 
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
