@@ -346,7 +346,11 @@ function give_get_history_page_uri() {
  * @return bool True if on the History page, false otherwise.
  */
 function give_is_history_page() {
-	return apply_filters( 'give_is_history_page', is_page( give_get_history_page_uri() ) );
+	$give_options = give_get_settings();
+
+	$history_page = isset( $give_options['history_page'] ) ? absint( $give_options['history_page'] ) : 0;
+
+	return apply_filters( 'give_is_history_page', is_page( $history_page ) );
 }
 
 /**
