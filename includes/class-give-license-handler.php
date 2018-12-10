@@ -175,6 +175,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$_account_url = null,
 			$_item_id = null
 		) {
+
+			// Only load in wp-admin.
+			if ( ! is_admin() ) {
+				return;
+			}
+
 			if ( is_numeric( $_item_id ) ) {
 				$this->item_id = absint( $_item_id );
 			}
