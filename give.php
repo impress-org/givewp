@@ -361,7 +361,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->email_tags             = new Give_Email_Template_Tags();
 			$this->donors                 = new Give_DB_Donors();
 			$this->donor_meta             = new Give_DB_Donor_Meta();
-			$this->email_access           = new Give_Email_Access();
 			$this->tooltips               = new Give_Tooltips();
 			$this->notices                = new Give_Notices();
 			$this->payment_meta           = new Give_DB_Payment_Meta();
@@ -512,6 +511,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-comments.php';
@@ -522,14 +522,14 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
 
