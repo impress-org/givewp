@@ -482,6 +482,15 @@ if ( ! class_exists( 'Give' ) ) :
 			}
 
 			require_once GIVE_PLUGIN_DIR . 'includes/setting-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/currency-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
 
 			/**
 			 * Load plugin files
@@ -494,7 +503,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-async-process.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-v2.php';
@@ -526,20 +534,14 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
-			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/currency-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-classes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-functions.php';
@@ -571,7 +573,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-wall.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donor-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/actions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
