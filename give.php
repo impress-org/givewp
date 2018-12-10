@@ -361,7 +361,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->email_tags             = new Give_Email_Template_Tags();
 			$this->donors                 = new Give_DB_Donors();
 			$this->donor_meta             = new Give_DB_Donor_Meta();
-			$this->template_loader        = new Give_Template_Loader();
 			$this->email_access           = new Give_Email_Access();
 			$this->tooltips               = new Give_Tooltips();
 			$this->notices                = new Give_Notices();
@@ -512,7 +511,6 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php';
@@ -581,6 +579,11 @@ if ( ! class_exists( 'Give' ) ) :
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
+			}
+
+			// Load file for frontend
+			if( $this->is_request('frontend' ) ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/frontend/class-give-frontend.php';
 			}
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
