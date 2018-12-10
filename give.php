@@ -520,7 +520,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';

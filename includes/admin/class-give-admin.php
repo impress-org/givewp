@@ -68,6 +68,8 @@ class Give_Admin {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be load only for form edit screen. review possibilities
+
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 	}
 
 	/**
