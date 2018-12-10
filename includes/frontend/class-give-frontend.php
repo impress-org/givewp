@@ -66,6 +66,8 @@ class Give_Frontend {
 	private function admin_loading() {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php'; // @todo: [refactor] can be load only for success and history page.
+
+		require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 	}
 
 	/**

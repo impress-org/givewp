@@ -526,19 +526,19 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
+
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-classes.php';
