@@ -78,7 +78,7 @@ class Give_Frontend {
 	 */
 	public function bc_240( $give ) {
 		$give->template_loader = new Give_Template_Loader();
-		$give->email_access = new Give_Email_Access();
+		$give->email_access    = new Give_Email_Access();
 	}
 }
 
