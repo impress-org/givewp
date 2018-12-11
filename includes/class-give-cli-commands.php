@@ -236,7 +236,7 @@ class GIVE_CLI_COMMAND {
 
 										switch ( $subheading ) {
 											case 'earnings':
-												WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata ) ) );
+												WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata, array( 'decode_currency' => true ) ) ) );
 												break;
 											default:
 												WP_CLI::log( $this->color_message( $subheading . ': ', $subdata ) );
@@ -492,7 +492,7 @@ class GIVE_CLI_COMMAND {
 
 								switch ( $heading ) {
 									case 'total_spent':
-										$table_row[] = give_currency_filter( $data );
+										$table_row[] = give_currency_filter( $data, array( 'decode_currency' => true ) );
 										break;
 
 									default:
