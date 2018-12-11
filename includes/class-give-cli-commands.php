@@ -501,6 +501,9 @@ class GIVE_CLI_COMMAND {
 							}
 							break;
 
+						case 'address':
+							break;
+
 						case 'info':
 						default:
 							foreach ( $donor as $heading => $data ) {
