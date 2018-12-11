@@ -64,13 +64,13 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-logging.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/country-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/template-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/misc-functions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/import-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/widget.php' );
