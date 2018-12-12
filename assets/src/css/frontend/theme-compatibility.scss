@@ -29,7 +29,7 @@ body.give-twentysixteen {
 
 }
 
-//Twenty Seventeen Dark Color Scheme
+// Twenty Seventeen Dark Color Scheme
 body.give-twentyseventeen.colors-dark {
   div.give-total-wrap input.give-text-input,
   div#give_purchase_form_wrap span.give-final-total-amount,
@@ -39,6 +39,15 @@ body.give-twentyseventeen.colors-dark {
 
   form[id*="give"] fieldset {
 	background-color: transparent;
+  }
+
+}
+
+// Twenty Nineteen Compatibility.
+body.give-twentynineteen {
+
+  .give-form .give-btn:focus {
+		color: #FFF;
   }
 
 }
