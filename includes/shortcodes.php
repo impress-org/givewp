@@ -692,8 +692,9 @@ function give_totals_shortcode( $atts ) {
 				 *
 				 * @param int    $post         Form ID.
 				 * @param string $form_earning Total earning of Form.
+				 * @param array $atts shortcode attributes.
 				 */
-				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
+				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post, $atts );
 			}
 		}
 	} // End if().

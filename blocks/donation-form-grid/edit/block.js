@@ -13,7 +13,6 @@ const { withSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import NoForms from '../../components/no-form';
 import Inspector from './inspector';
 
 /**
