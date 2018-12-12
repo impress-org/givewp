@@ -158,8 +158,6 @@ class Give_Donor_Wall_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
-		define( 'GIVE_RENDER_DONOR_WALL_BLOCK', true );
-
 		$parameters = array(
 			'donors_per_page' => absint( $attributes['donorsPerPage'] ),
 			'form_id'         => absint( $attributes['formID'] ),
