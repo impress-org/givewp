@@ -34,6 +34,9 @@ switch ( $template ) {
 	case 'twentyseventeen' :
 		echo '<div class="wrap give-wrap">';
 		break;
+	case 'twentynineteen' :
+		echo '<div class="entry"><div class="entry-content"><div class="give-wrap">';
+		break;
 	case 'flatsome' :
 		echo '<div id="container" class="row product-page give-wrap"><div id="content" role="main">';
 		break;
