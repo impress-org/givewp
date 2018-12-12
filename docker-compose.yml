@@ -16,7 +16,7 @@ services:
   wordpress:
     image: conetix/wordpress-with-wp-cli
     volumes:
-      - ./:/var/www/html/wp-content/plugins/Give
+      - ./:/var/www/html/wp-content/plugins/give
     depends_on:
       - db
     ports:
