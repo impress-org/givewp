@@ -255,7 +255,7 @@ class Give_Blank_Slate {
 		$defaults = array(
 			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'Give Icon', 'give' ),
-			'heading'   => __( 'No donation forms  found.', 'give' ),
+			'heading'   => __( 'No donation forms found.', 'give' ),
 			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
 			'cta_text'  => __( 'Create Donation Form', 'give' ),
 			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
