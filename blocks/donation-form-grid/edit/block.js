@@ -22,11 +22,6 @@ import Inspector from './inspector';
 
 const GiveDonationFormGrid = ( props ) => {
 	const {attributes} = props;
-	const {forms}      = attributes;
-
-	if( ! forms ) {
-		return <NoForms { ... { ...props } } />
-	}
 
 	return (
 		<Fragment>
