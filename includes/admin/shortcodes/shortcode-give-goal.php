@@ -3,7 +3,7 @@
  * The [give_goal] Shortcode Generator class
  *
  * @package     Give/Admin/Shortcodes
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.3.0
  */

@@ -5,7 +5,7 @@
  * @package:     Give
  * @since:       1.5
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2016, WordImpress
+ * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 

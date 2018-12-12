@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Blocks
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0.2
  */
@@ -116,23 +116,23 @@ class Give_Donation_form_Grid_Block {
 				),
 				'columns'           => array(
 					'type'    => 'string',
-					'default' => '4',
+					'default' => 'best-fit',
 				),
 				'showTitle'         => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showExcerpt'       => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showGoal'          => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'showFeaturedImage' => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'displayType'       => array(
 					'type'    => 'string',
@@ -159,7 +159,7 @@ class Give_Donation_form_Grid_Block {
 			'order'               => $attributes['order'],
 			'cats'                => $attributes['categories'],
 			'tags'                => $attributes['tags'],
-			'columns'             => absint( $attributes['columns'] ),
+			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
 			'show_excerpt'        => $attributes['showExcerpt'],
@@ -167,7 +167,44 @@ class Give_Donation_form_Grid_Block {
 			'display_type'        => $attributes['displayType'],
 		);
 
-		return give_form_grid_shortcode( $parameters );
+		$html = give_form_grid_shortcode( $parameters );
+		$html = ! empty( $html ) ? $html : $this->blank_slate();
+
+		return $html;
+	}
+
+	/**
+	 * Return formatted notice when shortcode return empty string
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return string
+	 */
+	private function blank_slate(){
+		if( ! defined( 'REST_REQUEST' ) ) {
+			return '';
+		}
+
+		ob_start();
+
+		$content = array(
+			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_alt' => __( 'Give Icon', 'give' ),
+			'heading'   => __( 'No donation forms  found.', 'give' ),
+			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
+			'cta_text'  => __( 'Create Donation Form', 'give' ),
+			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
+			'help'      => sprintf(
+				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
+				'<a href="http://docs.givewp.com/give101/" target="_blank">',
+				'</a>'
+			),
+		);
+
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
+
+		return ob_get_clean();
 	}
 }
 

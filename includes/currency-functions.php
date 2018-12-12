@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2017, WordImpress
+ * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8.17
  */
@@ -2001,7 +2001,7 @@ function give_get_zero_based_currencies() {
  *
  * @since 1.8.14
  * @since 2.2.0 Modified list.
- * @see   https://github.com/WordImpress/Give/issues/2191
+ * @see   https://github.com/impress-org/give/issues/2191
  *
  * @param string $currency Currency code
  *

@@ -4,7 +4,7 @@
  * @description: The Give Admin Forms scripts. Only enqueued on the give_forms CPT; used to validate fields, show/hide, and other functions
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2016, WordImpress
+ * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 

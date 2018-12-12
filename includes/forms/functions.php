@@ -2,9 +2,9 @@
 /**
  * Give Form Functions
  *
- * @package     WordImpress
+ * @package     GiveWP
  * @subpackage  Includes/Forms
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.1
  */

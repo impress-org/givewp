@@ -165,7 +165,7 @@ if ( inProduction ) {
 		destFile: 'languages/give.pot',
 		relativeTo: './',
 		bugReport: 'https://github.com/impress-org/give/issues/new',
-		team: 'WordImpress <info@wordimpress.com>',
+		team: 'GiveWP <info@givewp.com>',
 	} );
 
 	// Uglify JS.

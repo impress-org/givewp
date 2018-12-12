@@ -20,7 +20,7 @@ import Inspector from './inspector';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { attributes } = props;
+	const {attributes} = props;
 
 	return (
 		<Fragment>
@@ -35,5 +35,3 @@ export default withSelect( ( select ) => {
 		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
 	};
 } )( GiveDonationFormGrid );
-
-// @todo show no form template if forms does not exist.

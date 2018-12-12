@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: WordImpress <info@wordimpress.com>\n"
-"Report-Msgid-Bugs-To: https://github.com/WordImpress/Give/issues/new\n"
+"Report-Msgid-Bugs-To: https://github.com/impress-org/give/issues/new\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -7633,7 +7633,7 @@ msgstr ""
 msgid "Thanks to all those who have contributed code directly or indirectly."
 msgstr ""
 
-#. translators: %s: https://github.com/WordImpress/give
+#. translators: %s: https://github.com/impress-org/give
 #: includes/admin/welcome.php:409
 msgid "Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href=\"%s\" target=\"_blank\">GitHub Repo</a>."
 msgstr ""
