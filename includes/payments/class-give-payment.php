@@ -660,7 +660,7 @@ final class Give_Payment {
 		}
 
 		// @todo: payment data exist here only for backward compatibility
-		// issue: https://github.com/WordImpress/Give/issues/1132
+		// issue: https://github.com/impress-org/give/issues/1132
 		$payment_data = array(
 			'price'        => $this->total,
 			'date'         => $this->date,

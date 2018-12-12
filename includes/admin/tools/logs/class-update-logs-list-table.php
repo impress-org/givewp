@@ -150,7 +150,7 @@ class Give_Update_Log_Table extends WP_List_Table {
 	 *
 	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
 	 *
-	 * @see    : https://github.com/WordImpress/Give/issues/564
+	 * @see    : https://github.com/impress-org/give/issues/564
 	 *
 	 * @since  1.4.1
 	 * @access protected

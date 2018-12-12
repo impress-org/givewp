@@ -258,7 +258,7 @@ class Give_Session {
 	private function __handle_ajax_cookie(){
 		$cookie = false;
 
-		// @see https://github.com/WordImpress/Give/issues/3705
+		// @see https://github.com/impress-org/give/issues/3705
 		if (
 			empty( $cookie_value )
 			&& wp_doing_ajax()

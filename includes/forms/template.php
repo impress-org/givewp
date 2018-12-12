@@ -1886,7 +1886,7 @@ function give_get_donation_form_submit_button( $form_id ) {
  *
  * @since  1.0
  * @since  1.6   Add template for Give Goals Shortcode.
- *               More info is on https://github.com/WordImpress/Give/issues/411
+ *               More info is on https://github.com/impress-org/give/issues/411
  *
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
@@ -2066,7 +2066,7 @@ function give_form_display_content( $form_id, $args ) {
 	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
 	// remove action to prevent content output on addition forms on page.
-	// @see: https://github.com/WordImpress/Give/issues/634.
+	// @see: https://github.com/impress-org/give/issues/634.
 	remove_action( $show_content, 'give_form_display_content' );
 }
 

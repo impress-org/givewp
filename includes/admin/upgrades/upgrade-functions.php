@@ -857,7 +857,7 @@ function give_v18_upgrades_core_setting() {
 			// Set checkbox value to radio value.
 			$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
 
-			// @see https://github.com/WordImpress/Give/issues/1063.
+			// @see https://github.com/impress-org/give/issues/1063.
 			if ( false !== strpos( $setting_name, 'disable_' ) ) {
 
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
@@ -921,13 +921,13 @@ function give_v18_upgrades_form_metadata() {
 			}
 
 			// "Disable" Guest Donation. Checkbox.
-			// See: https://github.com/WordImpress/Give/issues/1470.
+			// See: https://github.com/impress-org/give/issues/1470.
 			$guest_donation        = give_get_meta( get_the_ID(), '_give_logged_in_only', true );
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
 			give_update_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
 
 			// Offline Donations.
-			// See: https://github.com/WordImpress/Give/issues/1579.
+			// See: https://github.com/impress-org/give/issues/1579.
 			$offline_donation = give_get_meta( get_the_ID(), '_give_customize_offline_donations', true );
 			if ( 'no' === $offline_donation ) {
 				$offline_donation_newval = 'global';
@@ -1356,7 +1356,7 @@ function give_v1812_upgrades() {
  *
  * Standardized amount values to six decimal
  *
- * @see        https://github.com/WordImpress/Give/issues/1849#issuecomment-315128602
+ * @see        https://github.com/impress-org/give/issues/1849#issuecomment-315128602
  *
  * @since      1.8.12
  */
@@ -1457,7 +1457,7 @@ function give_v1812_update_amount_values_callback() {
  *
  * Standardized amount values to six decimal for donor
  *
- * @see        https://github.com/WordImpress/Give/issues/1849#issuecomment-315128602
+ * @see        https://github.com/impress-org/give/issues/1849#issuecomment-315128602
  *
  * @since      1.8.12
  */
@@ -1735,7 +1735,7 @@ function give_v1818_assign_custom_amount_set_donation() {
 /**
  * Upgrade Routine - Removed Give Worker caps.
  *
- * See: https://github.com/WordImpress/Give/issues/2476
+ * See: https://github.com/impress-org/give/issues/2476
  *
  * @since 1.8.18
  */

@@ -405,9 +405,9 @@ class Give_Welcome {
 
 			<p class="about-description"><?php
 				printf(
-				/* translators: %s: https://github.com/WordImpress/give */
+				/* translators: %s: https://github.com/impress-org/give */
 					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
-					esc_url( 'https://github.com/WordImpress/give' )
+					esc_url( 'https://github.com/impress-org/give' )
 				);
 				?></p>
 
@@ -496,7 +496,7 @@ class Give_Welcome {
 			return $contributors;
 		}
 
-		$response = wp_remote_get( 'https://api.github.com/repos/WordImpress/Give/contributors', array( 'sslverify' => false ) );
+		$response = wp_remote_get( 'https://api.github.com/repos/impress-org/give/contributors', array( 'sslverify' => false ) );
 
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 			return array();

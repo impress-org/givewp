@@ -344,7 +344,7 @@ class Give_Email_Setting_Field {
 		}
 
 		// Disable field if email donor has recipient field.
-		// @see https://github.com/WordImpress/Give/issues/2657
+		// @see https://github.com/impress-org/give/issues/2657
 		if ( ! $edit_recipient ) {
 			if ( 'group' == $recipient['type'] ) {
 				$recipient         = current( $recipient['fields'] );
