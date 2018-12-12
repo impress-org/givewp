@@ -158,6 +158,8 @@ class Give_Donor_Wall_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
+		define( 'GIVE_RENDER_DONOR_WALL_BLOCK', true );
+
 		$parameters = array(
 			'donors_per_page' => absint( $attributes['donorsPerPage'] ),
 			'form_id'         => absint( $attributes['formID'] ),
@@ -183,7 +185,7 @@ class Give_Donor_Wall_Block {
 	}
 
 	/**
-	 * Renturn formatted notice when shortcode return empty string
+	 * Return formatted notice when shortcode return empty string
 	 *
 	 * @since 2.4.0
 	 *

@@ -20,12 +20,15 @@ $atts          = $args[2]; // Shortcode attributes.
 		<div class="give-donor__header">
 			<?php
 			if( true === $atts['show_avatar'] ) {
+				$has_avatar = absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) );
 				// Maybe display the Avatar.
 				echo sprintf(
 					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
-					absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) ),
-					$donation['name_initial']
+					$has_avatar,
+					defined( 'GIVE_RENDER_DONOR_WALL_BLOCK' ) && $has_avatar ?
+						get_avatar($donation['_give_payment_donor_email'])
+						: $donation['name_initial']
 				);
 			}
 			?>
