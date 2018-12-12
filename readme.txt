@@ -1,9 +1,9 @@
 === Give - Donation Plugin and Fundraising Platform ===
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, kevinwhoffman, mehul0810
 Donate link: https://givewp.com/
-Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
+Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.6
 <<<<<<< HEAD
 Stable tag: 2.4.0
@@ -210,6 +210,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.3.1: =
 
 = 2.3.0: October 24th, 2018 =
 * New: This release includes an upgrade routine to move comments from WordPress core tables to our own custom tables. This was done to resolve conflicts with various plugins incorrectly flagging Give's comments as spam. [Developer's Post - Custom Comment Tables](https://developers.givewp.com/2018/10/08/give-2-3-0-custom-comment-tables/), [#3627](https://github.com/impress-org/Give/issues/3627), [#3589](https://github.com/impress-org/Give/issues/3589), [#3604](https://github.com/impress-org/Give/issues/3604), [#3588](https://github.com/impress-org/Give/issues/3588)
