@@ -331,9 +331,6 @@ if ( ! class_exists( 'Give' ) ) :
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
-
-			// Set up localization on init Hook.
-			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
 
