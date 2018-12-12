@@ -4,7 +4,7 @@
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
- * Author URI: https://wordimpress.com
+ * Author URI: https://givewp.com
  * Version: 2.3.1
  * Text Domain: give
  * Domain Path: /languages
@@ -34,7 +34,7 @@
  *
  * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
- * - The WordImpress Team
+ * - The GiveWP Team
  */
 
 // Exit if accessed directly.

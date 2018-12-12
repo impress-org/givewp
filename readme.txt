@@ -207,7 +207,28 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.3.1: =
+= 2.3.1: December 12th, 2018 =
+* New: Gutenber blocks are here! You can now add donation forms, a donor wall, donation form grids and more to your Gutenberg (Block Editor) powered posts. [#3813](https://github.com/impress-org/give/issues/3813), [#3697](https://github.com/impress-org/give/issues/3697), [#3887](https://github.com/impress-org/give/issues/3887)
+* New: You can now more easily search your donation records by donor name, email, or donation ID in WP-Admin. [#3806](https://github.com/impress-org/give/issues/3806)
+* New: Give now registers its custom tables on plugin activation instead of multiple checks when DB class creates to increase performance. [#3854](https://github.com/impress-org/give/issues/3854)
+* New: Added an advanced option to display Babel polyfill for sites that don't require it. [#3658](https://github.com/impress-org/give/issues/3658)
+* Tweak: Removed the "Quick Edit" feature of donation forms because it wasn't very useful and not often used. [#2485](https://github.com/impress-org/give/issues/2485)
+* Tweak: Adjusted the HTML for the "Create an account" checkbox to be consistent with other donation form checkbox elements for consistency. [#3499](https://github.com/impress-org/give/issues/3499)
+* Tweak: Changed Give's session cookie prefix to be inline with WP's naming convention to prevent conflicts with hosts like Panteon's caching logic. [#3819](https://github.com/impress-org/give/issues/3819)
+* Fix: Resolved an issue with Recurring donations renewal receipt links displaying the most recent donation incorrectly rather than the renewal information. [#3778](https://github.com/impress-org/give/issues/3778)
+* Fix: Ensure that "nonce verification" errors don't display when logging in and out between donations. [#3820](https://github.com/impress-org/give/issues/3820)
+* Fix: Ensure that mobile-only text displays properly in the `[donation_history]` shortcode. [#3829](https://github.com/impress-org/give/issues/3829)
+* Fix: Prevent nonce error when deleting a donor from the donors screen. [#3832](https://github.com/impress-org/give/issues/3832)
+* Fix: Correct the select page placeholder text on "Subscription Page" select field to "Choose a page" in Give's General Settings page. [#3833](https://github.com/impress-org/give/issues/3833)
+* Fix: Removed the apostrophe as a thousand separator for Taiwan New Dollars. [#3840](https://github.com/impress-org/give/issues/3840)
+* Fix: Removed usage of PHP 5.4+ shorthand bracket array declarations for compatibility with lower PHP versions. [#3847](https://github.com/impress-org/give/issues/3847)
+* Fix: The "cat" and "tag" shortcode attributes now properly work to display total earnings in the `[give_totals]` shortcode when the "ID" attribute is not set. [#3879](https://github.com/impress-org/give/issues/3879)
+* Fix: Resolved rare scenario when a donor attempts to donate when a cookie generated via the email access link is expired and is using the same browser to process a donation. [#3886](https://github.com/impress-org/give/issues/3886)
+* Fix: Updated the formatting for the Russian Ruble to be correct. [#3893](https://github.com/impress-org/give/issues/3893)
+* Fix: Ensure that deleting the test data at Donations > Tools > Data (tab) deletes donations made when give is in test mode, as well as donations made with the test gateway is in live mode. [#2473](https://github.com/impress-org/give/issues/2473)
+* Fix: Ensure that when a subsite is deleted in a multisite environment that Give's custom tables are also removed. [#3790](https://github.com/impress-org/give/issues/3790)
+* Fix: Ensure that when a subsite is created in a multisite environment that Give autocompletes all DB updates. [#3795](https://github.com/impress-org/give/issues/3795)
+* Fix: Refactored the database upgrade "v201_add_missing_donors" callback to prevent a rare memory exhausted issue. [#3797](https://github.com/impress-org/give/issues/3797)
 
 = 2.3.0: October 24th, 2018 =
 * New: This release includes an upgrade routine to move comments from WordPress core tables to our own custom tables. This was done to resolve conflicts with various plugins incorrectly flagging Give's comments as spam. [Developer's Post - Custom Comment Tables](https://developers.givewp.com/2018/10/08/give-2-3-0-custom-comment-tables/), [#3627](https://github.com/impress-org/Give/issues/3627), [#3589](https://github.com/impress-org/Give/issues/3589), [#3604](https://github.com/impress-org/Give/issues/3604), [#3588](https://github.com/impress-org/Give/issues/3588)
