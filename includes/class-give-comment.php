@@ -5,7 +5,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Cache
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.2.0
  */

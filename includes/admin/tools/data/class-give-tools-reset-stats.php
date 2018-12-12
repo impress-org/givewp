@@ -5,7 +5,7 @@
  * This class handles batch processing of resetting donations and income stats.
  *
  * @subpackage  Admin/Tools/Give_Tools_Reset_Stats
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */

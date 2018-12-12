@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Readme_Parser
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.1.4
  */

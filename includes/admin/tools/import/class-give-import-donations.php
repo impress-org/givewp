@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Import_Donations
- * @copyright   Copyright (c) 2017, WordImpress
+ * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8.14
  */

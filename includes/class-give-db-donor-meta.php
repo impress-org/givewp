@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/DB Donor Meta
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.6
  */
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.6
  */
 class Give_DB_Donor_Meta extends Give_DB_Meta {
-	
+
 	/**
 	 * Meta supports.
 	 *
