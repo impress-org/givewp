@@ -103,7 +103,7 @@ class Give_Donor_Wall_Block {
 				),
 				'columns'       => array(
 					'type'    => 'string',
-					'default' => '2',
+					'default' => 'best-fit',
 				),
 				'showAvatar'    => array(
 					'type'    => 'boolean',
@@ -163,7 +163,7 @@ class Give_Donor_Wall_Block {
 			'form_id'         => absint( $attributes['formID'] ),
 			'order'           => $attributes['order'],
 			'pages'           => absint( $attributes['paged'] ),
-			'columns'         => absint( $attributes['columns'] ),
+			'columns'         => $attributes['columns'],
 			'show_avatar'     => $attributes['showAvatar'],
 			'show_name'       => $attributes['showName'],
 			'show_total'      => $attributes['showTotal'],
