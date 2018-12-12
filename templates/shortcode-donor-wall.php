@@ -26,8 +26,8 @@ $atts          = $args[2]; // Shortcode attributes.
 					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
 					$has_avatar,
-					defined( 'GIVE_RENDER_DONOR_WALL_BLOCK' ) && $has_avatar ?
-						get_avatar($donation['_give_payment_donor_email'])
+					defined( 'GIVE_RENDER_DONOR_WALL_BLOCK' ) && $has_avatar
+						? get_avatar($donation['_give_payment_donor_email'])
 						: $donation['name_initial']
 				);
 			}
