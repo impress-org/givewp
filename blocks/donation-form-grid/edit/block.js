@@ -13,8 +13,6 @@ const { withSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import GiveBlankSlate from '../../components/blank-slate';
-import NoForms from '../../components/no-form';
 import Inspector from './inspector';
 
 /**
