@@ -298,7 +298,8 @@ abstract class Give_Shortcode_Generator {
 			foreach ( $posts as $post ) {
 				$options[ absint( $post->ID ) ] = empty( $post->post_title )
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID )
-					: apply_filters( 'the_title', $post->post_title );
+					/** This filter is documented in wp-includes/post-template.php */
+					: apply_filters( 'the_title', $post->post_title, $post->ID );
 			}
 
 			$field['type']    = 'listbox';
