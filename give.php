@@ -359,6 +359,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->give_settings          = new Give_Admin_Settings();
 			$this->emails                 = new Give_Emails();
 			$this->email_tags             = new Give_Email_Template_Tags();
+			$this->html                   = Give_HTML_Elements::get_instance();
 			$this->donors                 = new Give_DB_Donors();
 			$this->donor_meta             = new Give_DB_Donor_Meta();
 			$this->tooltips               = new Give_Tooltips();
@@ -509,6 +510,9 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-translation.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
+
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
@@ -548,6 +552,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
