@@ -9,7 +9,7 @@
  * @version  2.0.0
  * @package  Give/Classes
  * @category Class
- * @author   WordImpress
+ * @author   GiveWP
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
