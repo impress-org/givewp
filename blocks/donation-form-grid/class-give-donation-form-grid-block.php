@@ -108,7 +108,7 @@ class Give_Donation_form_Grid_Block {
 				),
 				'columns'           => array(
 					'type'    => 'string',
-					'default' => '4',
+					'default' => 'best-fit',
 				),
 				'showTitle'         => array(
 					'type'    => 'boolean',
@@ -149,7 +149,7 @@ class Give_Donation_form_Grid_Block {
 			'exclude'             => $attributes['excludedFormIDs'],
 			'cats'                => $attributes['categories'],
 			'tags'                => $attributes['tags'],
-			'columns'             => absint( $attributes['columns'] ),
+			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
 			'show_excerpt'        => $attributes['showExcerpt'],
