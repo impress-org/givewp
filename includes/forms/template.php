@@ -2027,7 +2027,22 @@ function give_form_display_content( $form_id, $args ) {
 	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_is_setting_enabled( give_get_option( 'the_content_filter' ) ) ) {
+
+		// Do not restore wpautop if we are still parsing blocks.
+		$priority = has_filter( 'the_content', '_restore_wpautop_hook' );
+		if ( false !== $priority && doing_filter( 'the_content' ) ) {
+			remove_filter( 'the_content', '_restore_wpautop_hook', $priority );
+		}
+
 		$content = apply_filters( 'the_content', $content );
+
+		// Restore wpautop after done with blocks parsing.
+		if( $priority ) {
+			// Run wpautop manually if parsing block
+			$content = wpautop( $content );
+
+			add_filter( 'the_content', '_restore_wpautop_hook', $priority );
+		}
 	} else {
 		$content = wpautop( do_shortcode( $content ) );
 	}

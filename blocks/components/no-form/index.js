@@ -19,8 +19,10 @@ const NoForms = () => {
 		<GiveBlankSlate title={ __( 'No donation forms found.' ) }
 			description={ __( 'The first step towards accepting online donations is to create a form.' ) }
 			helpLink>
-			<Button isPrimary
+			<Button
+				isPrimary
 				isLarge
+				className="give-blank-slate__cta"
 				href={ `${ getSiteUrl() }/wp-admin/post-new.php?post_type=give_forms` }>
 				{ __( 'Create Donation Form' ) }
 			</Button>

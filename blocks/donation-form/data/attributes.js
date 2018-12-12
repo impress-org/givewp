@@ -31,7 +31,7 @@ const blockAttributes = {
 	},
 	showContent: {
 		type: 'string',
-		default: 'none',
+		default: 'above',
 	},
 };
 

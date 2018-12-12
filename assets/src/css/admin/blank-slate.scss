@@ -28,9 +28,13 @@
 
 	&__image {
 		display: block;
-		height: 80px;
+		height: 80px !important;
 		margin: 0 auto 10px;
 		width: auto;
+	}
+
+	&__select {
+		margin-bottom: 20px;
 	}
 
 	&__help {
