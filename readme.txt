@@ -259,6 +259,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Resolved jumping to a page number issue in Donations > Donors when entering a custom page number and pressing enter. [#3719](https://github.com/impress-org/Give/issues/3719)
 * Fix: Do not display shortcode generator above form content. [#3739](https://github.com/impress-org/Give/issues/3739)
 * Fix: Ensure date fields have the same placeholders throughout the admin interface. [#3757](https://github.com/impress-org/Give/issues/3757)
+* Fix: Ensure the TinyMCE shortcode builder doesn't unnecessarily display scrollbars. [#3876](https://github.com/impress-org/Give/issues/3876)
 
 = 2.2.5: September 17th, 2018 =
 * Fix: Resolved a JS error preventing visitors from successfully logging into via a donation form. [#3684](https://github.com/impress-org/Give/issues/3684)
