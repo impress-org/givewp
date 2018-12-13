@@ -299,7 +299,7 @@ function give_get_currencies_list() {
 			'symbol'      => '&#70;&#114;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => ',',
+				'thousands_separator' => ' ',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
 			),
