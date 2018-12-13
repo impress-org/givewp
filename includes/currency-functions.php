@@ -681,7 +681,7 @@ function give_get_currencies_list() {
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 3,
+				'number_decimals'     => 2,
 			),
 		),
 		'KYD' => array(
