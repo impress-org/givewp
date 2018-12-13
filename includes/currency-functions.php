@@ -338,9 +338,9 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Turkish Lira (%1$s)', 'give'), '&#8378;'),
 			'symbol'      => '&#8378;',
 			'setting'     => array(
-				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
