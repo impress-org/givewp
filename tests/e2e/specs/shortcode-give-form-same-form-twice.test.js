@@ -437,5 +437,5 @@ describe( 'Display Option: All fields', () => {
 		await expect( page ).toMatch( 'Payment Complete: Thank you for your donation.' )
 		await expect( page ).toMatch( 'Mr. Creed Bratton' )
 		await expect( page ).toMatch( '$30.00' )
-	})
+	}, 200000)
 })
