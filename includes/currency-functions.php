@@ -288,7 +288,7 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Swedish Krona (%1$s)', 'give'), '&nbsp;kr.&nbsp;'),
 			'symbol'      => '&nbsp;kr.&nbsp;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
