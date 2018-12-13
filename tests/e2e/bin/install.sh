@@ -13,6 +13,7 @@ if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [ "${TRAVIS_BRANCH}" == 'master' 
 	cd ~/wordpress_data/wp-content/plugins/give/
 	docker exec give_wordpress_1 wp plugin activate give
 	composer install
+	rm package-lock.json
 	npm install
 	npm run dev
 	npm run test
