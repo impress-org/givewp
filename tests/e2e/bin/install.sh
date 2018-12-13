@@ -10,9 +10,10 @@ if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [ "${TRAVIS_BRANCH}" == 'master' 
 	until $(curl --output /dev/null --silent --head --fail http://localhost:8004); do printf '.'; sleep 5; done;
 	cd ~/wordpress_data/wp-content/plugins
 	git clone -b ${TRAVIS_BRANCH} --single-branch https://github.com/impress-org/give.git
-	cd ~/wordpress_data/wp-content/plugins/Give/
-	docker exec give_wordpress_1 wp plugin activate Give
+	cd ~/wordpress_data/wp-content/plugins/give/
+	docker exec give_wordpress_1 wp plugin activate give
 	composer install
+	rm package-lock.json
 	npm install
 	npm run dev
 	npm run test
