@@ -159,8 +159,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&#70;&#116;',
 			'setting'     => array(
 				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
