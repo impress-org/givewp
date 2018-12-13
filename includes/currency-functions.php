@@ -1178,9 +1178,9 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Kazakhstani tenge (%1$s)', 'give'), 'KZT'),
 			'symbol'      => 'KZT',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
-				'decimal_separator'   => '-',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
