@@ -8,7 +8,7 @@ import { isUndefined } from 'lodash';
  */
 const { __ } = wp.i18n;
 const { withSelect } = wp.data;
-const { SelectControl, Button } = wp.components;
+const { SelectControl, Button, Placeholder, Spinner } = wp.components;
 
 /**
  * Internal dependencies
@@ -61,13 +61,14 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
 	let componentUI;
 
 	if ( ! forms ) {
-		componentUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader={ true } />;
+		componentUI = <Placeholder><Spinner/></Placeholder>;
 	} else if ( forms && forms.length === 0 ) {
 		componentUI = <NoForms />;
 	} else {
 		componentUI = (
 			<GiveBlankSlate title={ __( 'Give Donation form' ) }>
 				<SelectControl
+					className="give-blank-slate__select"
 					options={ getFormOptions() }
 					onChange={ setFormIdTo }
 				/>

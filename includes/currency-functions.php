@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2017, WordImpress
+ * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8.17
  */
@@ -109,8 +109,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&#82;&#36;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -129,8 +129,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&#75;&#269;',
 			'setting'     => array(
 				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -139,8 +139,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&nbsp;kr.&nbsp;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -159,8 +159,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&#70;&#116;',
 			'setting'     => array(
 				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -229,7 +229,7 @@ function give_get_currencies_list() {
 			'symbol'      => '&#107;&#114;.',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => '.',
+				'thousands_separator' => ' ',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
@@ -288,7 +288,7 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Swedish Krona (%1$s)', 'give'), '&nbsp;kr.&nbsp;'),
 			'symbol'      => '&nbsp;kr.&nbsp;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
@@ -299,7 +299,7 @@ function give_get_currencies_list() {
 			'symbol'      => '&#70;&#114;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => ',',
+				'thousands_separator' => ' ',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
 			),
@@ -338,9 +338,9 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Turkish Lira (%1$s)', 'give'), '&#8378;'),
 			'symbol'      => '&#8378;',
 			'setting'     => array(
-				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -661,7 +661,7 @@ function give_get_currencies_list() {
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 3,
+				'number_decimals'     => 2,
 			),
 		),
 		'KES' => array(
@@ -681,7 +681,7 @@ function give_get_currencies_list() {
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 3,
+				'number_decimals'     => 2,
 			),
 		),
 		'KYD' => array(
@@ -1140,7 +1140,7 @@ function give_get_currencies_list() {
 			'setting'     => array(
 				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
-				'decimal_separator'   => '-',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -1178,9 +1178,9 @@ function give_get_currencies_list() {
 			'admin_label' => sprintf( __('Kazakhstani tenge (%1$s)', 'give'), 'KZT'),
 			'symbol'      => 'KZT',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
-				'decimal_separator'   => '-',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -1249,8 +1249,8 @@ function give_get_currencies_list() {
 			'symbol'      => 'MDL',
 			'setting'     => array(
 				'currency_position'   => 'after',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -2001,7 +2001,7 @@ function give_get_zero_based_currencies() {
  *
  * @since 1.8.14
  * @since 2.2.0 Modified list.
- * @see   https://github.com/WordImpress/Give/issues/2191
+ * @see   https://github.com/impress-org/give/issues/2191
  *
  * @param string $currency Currency code
  *

@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Payment
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
@@ -660,7 +660,7 @@ final class Give_Payment {
 		}
 
 		// @todo: payment data exist here only for backward compatibility
-		// issue: https://github.com/WordImpress/Give/issues/1132
+		// issue: https://github.com/impress-org/give/issues/1132
 		$payment_data = array(
 			'price'        => $this->total,
 			'date'         => $this->date,

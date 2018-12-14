@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * the terms of the GNU Public License, version 3.
  *
  * Copyright (c) 2015 WooThemes
- * Copyright (c) 2016 WordImpress, LLC
+ * Copyright (c) 2016 GiveWP
  */
 
 global $wpdb;

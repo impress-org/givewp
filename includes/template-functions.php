@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Templates
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -347,6 +347,9 @@ function give_add_body_classes( $class ) {
 			break;
 		case 'twentyseventeen':
 			$classes[] = 'give-twentyseventeen';
+			break;
+		case 'twentynineteen':
+			$classes[] = 'give-twentynineteen';
 			break;
 
 	}

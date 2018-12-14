@@ -4,8 +4,8 @@
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
- * Author URI: https://givewp.com
- * Version: 2.4.0
+ * Author URI: https://wordimpress.com
+ * Version: 2.3.1
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -331,9 +331,6 @@ if ( ! class_exists( 'Give' ) ) :
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
-
-			// Set up localization on init Hook.
-			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
 

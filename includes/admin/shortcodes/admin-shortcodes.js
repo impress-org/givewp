@@ -5,7 +5,7 @@
  * @package:     Give
  * @subpackage:  Assets/JS
  * @author:      Paul Ryley
- * @copyright:   Copyright (c) 2016, WordImpress
+ * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since:       1.3.0
  */
@@ -141,6 +141,15 @@ jQuery( function( $ ) {
 						scForm.destroy();
 					},
 					onopen: function() {
+
+						// Hacky way to remove scrollbars when not necessary.
+						let popup = $('.mce-sc-popup');
+						popup.css({
+							width: popup.width(),
+							height: popup.height(),
+							overflow: 'auto'
+						});
+
 						// Conditional fields.
 						render_continue_button_title_field();
 					}

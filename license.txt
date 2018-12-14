@@ -26,7 +26,7 @@ permission notices:
 
 and
 
-  Give is Copyright (c) 2015 WordImpress, LLC
+  Give is Copyright (c) 2015 GiveWP, LLC
   https://givewp.com/
 
   Give is released under the GPLv3

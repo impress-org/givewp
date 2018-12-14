@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Compatibility
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
@@ -67,7 +67,7 @@ add_action( 'give-settings_save_display', 'give_clear_seo_sitemap_cache_on_setti
  * disables the Give Shortcodes button on the Elementor's
  * editor page.
  *
- * See link: https://github.com/WordImpress/Give/issues/3171#issuecomment-387471355
+ * See link: https://github.com/impress-org/give/issues/3171#issuecomment-387471355
  *
  * @since 2.1.3
  *

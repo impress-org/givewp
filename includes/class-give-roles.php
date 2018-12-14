@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Roles
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -334,7 +334,7 @@ class Give_Roles {
 	 * Note: WooCommerce doesn't allow the user to access the WP dashboard who holds "Give Accountant" role.
 	 *
 	 * @since 1.8.14
-	 * @updated 1.8.18 - Fixed Give conflicting by not returning $show_admin_bar https://github.com/WordImpress/Give/issues/2539
+	 * @updated 1.8.18 - Fixed Give conflicting by not returning $show_admin_bar https://github.com/impress-org/give/issues/2539
 	 *
 	 * @param bool
 	 *
