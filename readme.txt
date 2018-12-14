@@ -211,13 +211,14 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.3.1: December 12th, 2018 =
-* New: Gutenber blocks are here! You can now add donation forms, a donor wall, donation form grids and more to your Gutenberg (Block Editor) powered posts. [#3813](https://github.com/impress-org/give/issues/3813), [#3697](https://github.com/impress-org/give/issues/3697), [#3887](https://github.com/impress-org/give/issues/3887)
+= 2.3.1: December 13th, 2018 =
+* New: Gutenberg blocks are here! You can now add donation forms, a donor wall, donation form grids and more to your Gutenberg (Block Editor) powered posts. [#3813](https://github.com/impress-org/give/issues/3813), [#3697](https://github.com/impress-org/give/issues/3697), [#3887](https://github.com/impress-org/give/issues/3887)
 * New: You can now more easily search your donation records by donor name, email, or donation ID in WP-Admin. [#3806](https://github.com/impress-org/give/issues/3806)
 * New: Give now registers its custom tables on plugin activation instead of multiple checks when DB class creates to increase performance. [#3854](https://github.com/impress-org/give/issues/3854)
 * New: Added an advanced option to display Babel polyfill for sites that don't require it. [#3658](https://github.com/impress-org/give/issues/3658)
 * Tweak: Removed the "Quick Edit" feature of donation forms because it wasn't very useful and not often used. [#2485](https://github.com/impress-org/give/issues/2485)
 * Tweak: Adjusted the HTML for the "Create an account" checkbox to be consistent with other donation form checkbox elements for consistency. [#3499](https://github.com/impress-org/give/issues/3499)
+* Tweak: Updated the default currency formatting for KZT, KGS, KWD, JOD, TRY, CHF, SEK, NOK, HUF, DKK, CZK, BRL to be accurate according to the most widely used formatted for each currency. [#3903](https://github.com/impress-org/give/issues/3903)
 * Tweak: Changed Give's session cookie prefix to be inline with WP's naming convention to prevent conflicts with hosts like Panteon's caching logic. [#3819](https://github.com/impress-org/give/issues/3819)
 * Fix: Resolved an issue with Recurring donations renewal receipt links displaying the most recent donation incorrectly rather than the renewal information. [#3778](https://github.com/impress-org/give/issues/3778)
 * Fix: Ensure that "nonce verification" errors don't display when logging in and out between donations. [#3820](https://github.com/impress-org/give/issues/3820)
