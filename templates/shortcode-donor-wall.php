@@ -1,6 +1,6 @@
 <?php
 /**
- * This template is used to display the donation grid with [donation_grid]
+ * This template is used to display the donation grid with [give_donor_wall]
  */
 
 // Exit if accessed directly.
