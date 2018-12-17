@@ -49,7 +49,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php echo date_i18n( give_date_format(), strtotime( $donation['_give_completed_date'] ) ); ?>
+						<?php echo esc_html( get_the_date( give_date_format(), $donation[ 'donation_id' ] ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
