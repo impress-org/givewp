@@ -37,13 +37,13 @@ $atts          = $args[2]; // Shortcode attributes.
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
 						<?php $donor_name = trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] ); ?>
-						<?php esc_html_e( $donor_name ); ?>
+						<?php echo esc_html( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php echo give_donation_amount( $donation['donation_id'], true ); ?>
+						<?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
 					</span>
 				<?php endif; ?>
 
