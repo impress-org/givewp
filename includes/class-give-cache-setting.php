@@ -137,7 +137,7 @@ class Give_Cache_Setting {
 		}
 
 		wp_cache_delete( 'giveAllOptions', 'options' );
-		$this->$this->load_plugin_settings();
+		$this->load_plugin_settings();
 	}
 
 
