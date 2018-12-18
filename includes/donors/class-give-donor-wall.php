@@ -327,13 +327,13 @@ class Give_Donor_Wall {
 		// Backward compatibility
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-		$sql_1 = "SELECT m1.*, p1.post_date as donation_date FROM {$wpdb->donationmeta} as m1
+		$sql = "SELECT m1.*, p1.post_date as donation_date FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
 				ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}
 				";
 
-		$results = (array) $wpdb->get_results( $sql_1 );
+		$results = (array) $wpdb->get_results( $sql );
 
 		if ( ! empty( $results ) ) {
 			$temp = array();
