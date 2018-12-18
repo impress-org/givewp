@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** @var $donor Give_Donor */
 $donation = $args[0];
 
 $give_settings = $args[1]; // Give settings.
@@ -49,7 +48,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php echo esc_html( get_the_date( give_date_format(), $donation[ 'donation_id' ] ) ); ?>
+						<?php echo esc_html( give_get_formatted_date( $donation[ 'donation_date' ], give_date_format(), 'Y-m-d H:i:s' ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
