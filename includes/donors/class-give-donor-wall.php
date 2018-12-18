@@ -327,13 +327,13 @@ class Give_Donor_Wall {
 		// Backward compatibility
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-		$sql = "SELECT * FROM {$wpdb->donationmeta} as m1
+		$sql_1 = "SELECT m1.*, p1.post_date as donation_date FROM {$wpdb->donationmeta} as m1
 				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
 				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
 				ORDER BY p1.post_date {$query_params['order']}, p1.ID {$query_params['order']}
 				";
 
-		$results = (array) $wpdb->get_results( $sql );
+		$results = (array) $wpdb->get_results( $sql_1 );
 
 		if ( ! empty( $results ) ) {
 			$temp = array();
@@ -341,6 +341,11 @@ class Give_Donor_Wall {
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
 				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
+
+				// Set donation date.
+				if( empty( $temp[ $result->{$donation_id_col} ][ 'donation_date' ] ) ){
+					$temp[ $result->{$donation_id_col} ]['donation_date'] = $result->donation_date;
+				}
 			}
 
 			$comments = $this->get_donor_comments($temp);
