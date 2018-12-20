@@ -230,12 +230,12 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				if ( $undo ) {
 					$host_give_options = get_option( 'give_settings_old', array() );
 					update_option( 'give_settings', $host_give_options, false );
-					$title = __( 'Undo of Setting Imported Completed!', 'give' );
+					$title = __( 'Successfully Reverted Settings Import', 'give' );
 				} else {
-					$title = __( 'Failed to import', 'give' );
+					$title = __( 'Failed to Import', 'give' );
 				}
 
-				$text = __( 'Importing Again', 'give' );
+				$text = __( 'Import Again', 'give' );
 			}
 			?>
 			<tr valign="top" class="give-import-dropdown">
