@@ -220,7 +220,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				'undo'      => 'true',
 			);
 
-			$title = __( 'Settings Importing Completed!', 'give' );
+			$title = __( 'Settings Import Complete!', 'give' );
 			if ( $success ) {
 				$query_arg_success['undo'] = '1';
 				$query_arg_success['step'] = '3';
