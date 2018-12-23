@@ -53,11 +53,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	static private $options = array(
-		'give_settings',
-		'give_version',
-		'give_completed_upgrades',
-	);
+	static private $options;
 
 	/**
 	 * Singleton pattern.
@@ -93,6 +89,8 @@ class Give_Cache_Setting {
 	 * @access private
 	 */
 	private function setup() {
+		self::$options = array_keys( self::$settings );
+
 		$this->load_plugin_settings();
 
 		add_action( 'added_option', array( $this, '__reload_plugin_settings' ) );
@@ -128,10 +126,8 @@ class Give_Cache_Setting {
 
 			/* @var  stdClass $result */
 			foreach ( $results as $result ) {
-				$tmp[ $result->option_name ] = maybe_unserialize( $result->option_value );
+				self::$settings[ $result->option_name ] = maybe_unserialize( $result->option_value );
 			}
-
-			self::$settings = array_merge( self::$settings, $tmp );
 
 			wp_cache_set( self::$cache_key, $tmp, 'options' );
 		}
