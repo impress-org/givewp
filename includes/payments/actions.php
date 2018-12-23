@@ -273,9 +273,13 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
  * @return array
  */
 function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) {
+	// Early exit.
+	if ( 'give_payment' !== get_post_type( $object_id ) ) {
+		return $check;
+	}
+
 	// Bailout.
 	if (
-		'give_payment' !== get_post_type( $object_id ) ||
 		'_give_payment_meta' !== $meta_key ||
 		! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' )
 	) {

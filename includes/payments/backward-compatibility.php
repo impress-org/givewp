@@ -257,6 +257,10 @@ add_filter( 'update_post_metadata', '_give_20_bc_saving_old_payment_meta', 10, 5
 function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $single ) {
 	global $wpdb;
 
+	// Early exit.
+	if( 'give_payment' !== get_post_type( $object_id ) ) {
+		return $check;
+	}
 	// Deprecated meta keys.
 	$old_meta_keys = array(
 		'_give_payment_customer_id',
@@ -270,10 +274,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	// Bailout.
-	if (
-		'give_payment' !== get_post_type( $object_id ) ||
-		! in_array( $meta_key, $old_meta_keys )
-	) {
+	if ( in_array( $meta_key, $old_meta_keys ) ) {
 		return $check;
 	}
 
@@ -358,6 +359,12 @@ add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
  */
 function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $single ) {
 	global $wpdb;
+
+	// Early exit.
+	if( 'give_payment' !== get_post_type( $object_id ) ) {
+		return $check;
+	}
+
 	$new_meta_keys = array(
 		'_give_payment_donor_id',
 		'_give_payment_donor_email',
@@ -379,7 +386,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 
 	// Bailout.
 	if (
-		'give_payment' !== get_post_type( $object_id ) ||
 		! in_array( $meta_key, $new_meta_keys ) ||
 		metadata_exists( 'post', $object_id, $meta_key )
 	) {
