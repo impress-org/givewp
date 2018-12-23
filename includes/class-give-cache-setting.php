@@ -178,43 +178,6 @@ class Give_Cache_Setting {
 	}
 
 	/**
-	 * Get option
-	 *
-	 * @since  2.4.0
-	 * @access public
-	 *
-	 * @param      $setting_name
-	 * @param bool $default
-	 *
-	 * @return mixed
-	 */
-	public static function get_give_option( $setting_name, $default = false ) {
-		$give_settings = self::$settings['give_settings'];
-
-		$value = ! empty( $give_settings[ $setting_name ] )
-			? self::$settings[ $setting_name ]
-			: $default;
-
-		/**
-		 * Filter the option
-		 *
-		 * @since 2.4.0
-		 */
-		$value = apply_filters( 'give_get_option', $value, $setting_name, $default );
-
-
-		/**
-		 * filter the specific option
-		 *
-		 * @since 2.4.0
-		 */
-		$value = apply_filters( "give_get_option_{$setting_name}", $value, $setting_name, $default );
-
-
-		return $value;
-	}
-
-	/**
 	 * Get plugin settings
 	 *
 	 * @since  2.4.0
