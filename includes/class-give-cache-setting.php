@@ -30,6 +30,15 @@ class Give_Cache_Setting {
 	 *
 	 * @since  2.4.0
 	 * @access private
+	 * @var string
+	 */
+	static private $cache_key = 'giveAllOptions';
+
+	/**
+	 * Instance.
+	 *
+	 * @since  2.4.0
+	 * @access private
 	 * @var array
 	 */
 	static private $settings;
@@ -96,11 +105,12 @@ class Give_Cache_Setting {
 	private function load_plugin_settings() {
 		global $wpdb;
 
-		$cache = wp_cache_get( 'giveAllOptions','options' );
+		$cache = wp_cache_get( self::$cache_key, 'options' );
 
 		// Load options from cache.
-		if( false !== $cache ) {
+		if ( false !== $cache ) {
 			self::$settings = $cache;
+
 			return;
 		}
 
@@ -117,8 +127,9 @@ class Give_Cache_Setting {
 				$tmp[ $result->option_name ] = maybe_unserialize( $result->option_value );
 			}
 
-			self::$settings = $tmp;
-			wp_cache_set( 'giveAllOptions', $tmp, 'options' );
+			self::$settings = array_merge( self::$settings, $tmp );
+
+			wp_cache_set( self::$cache_key, $tmp, 'options' );
 		}
 	}
 
@@ -136,7 +147,7 @@ class Give_Cache_Setting {
 			return;
 		}
 
-		wp_cache_delete( 'giveAllOptions', 'options' );
+		wp_cache_delete( self::$cache_key, 'options' );
 		$this->load_plugin_settings();
 	}
 
