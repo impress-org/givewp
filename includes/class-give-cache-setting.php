@@ -91,9 +91,9 @@ class Give_Cache_Setting {
 	private function setup() {
 		$this->load_plugin_settings();
 
-		add_action( 'added_option', array( $this, '__reload_plugin_settings' )  );
-		add_action( 'updated_option', array( $this, '__reload_plugin_settings' )  );
-		add_action( 'deleted_option', array( $this, '__reload_plugin_settings' )  );
+		add_action( 'added_option', array( $this, '__reload_plugin_settings' ) );
+		add_action( 'updated_option', array( $this, '__reload_plugin_settings' ) );
+		add_action( 'deleted_option', array( $this, '__reload_plugin_settings' ) );
 	}
 
 	/**
