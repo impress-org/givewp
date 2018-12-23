@@ -41,7 +41,11 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	static private $settings;
+	static private $settings = array(
+		'give_settings'           => array(),
+		'give_version'            => '',
+		'give_completed_upgrades' => array(),
+	);
 
 	/**
 	 * List of core options
