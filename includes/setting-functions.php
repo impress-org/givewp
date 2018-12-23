@@ -46,7 +46,7 @@ function give_update_option( $key = '', $value = false ) {
 	}
 
 	// First let's grab the current settings
-	$options = Give_Cache_Setting::get_settings();
+	$options = give_get_settings();
 
 	// Let's let devs alter that value coming in
 	$value = apply_filters( 'give_update_option', $value, $key );
