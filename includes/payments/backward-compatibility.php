@@ -278,7 +278,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	// Bailout.
-	if ( in_array( $meta_key, $old_meta_keys ) ) {
+	if ( ! in_array( $meta_key, $old_meta_keys ) ) {
 		return $check;
 	}
 
