@@ -486,7 +486,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/currency-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/currency/currency-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/frontend-donor-functions.php';
