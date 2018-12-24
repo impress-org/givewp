@@ -46,6 +46,7 @@ class Give_Cache_Setting {
 		'give_version'            => '',
 		'give_completed_upgrades' => array(),
 		'currencies'              => array(),
+		'gateways'                => array(),
 	);
 
 	/**
@@ -113,6 +114,7 @@ class Give_Cache_Setting {
 		add_action( 'deleted_option', array( $this, '__reload_plugin_settings' ) );
 
 		add_action( 'give_init', array( $this, '__setup_currencies_list' ), 11 );
+		add_action( 'give_init', array( $this, '__setup_gateways_list' ), 11 );
 	}
 
 	/**
@@ -184,6 +186,39 @@ class Give_Cache_Setting {
 		$currencies = apply_filters( 'give_register_currency', $currencies );
 
 		self::$settings['currencies'] = $currencies;
+	}
+
+
+	/**
+	 * Setup gateway list
+	 *
+	 * @since 2.4.0
+	 */
+	public function __setup_gateways_list() {
+		// Default, built-in gateways
+		$gateways = array(
+			'paypal'  => array(
+				'admin_label'    => __( 'PayPal Standard', 'give' ),
+				'checkout_label' => __( 'PayPal', 'give' ),
+			),
+			'manual'  => array(
+				'admin_label'    => __( 'Test Donation', 'give' ),
+				'checkout_label' => __( 'Test Donation', 'give' ),
+			),
+			'offline' => array(
+				'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
+				'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
+			),
+		);
+
+		/**
+		 * Filter the supported gateways list
+		 *
+		 * @since 2.4.0
+		 */
+		$gateways = apply_filters( 'give_register_gateway', $gateways );
+
+		self::$settings['gateways'] = $gateways;
 	}
 
 
