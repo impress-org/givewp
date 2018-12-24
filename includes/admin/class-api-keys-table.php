@@ -19,11 +19,6 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-// Bailout if class already defined.
-if( class_exists( 'Give_API_Keys_Table' ) ) {
-	return;
-}
-
 /**
  * Give_API_Keys_Table Class
  *

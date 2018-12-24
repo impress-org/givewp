@@ -14,11 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Bailout if class already defined.
-if( class_exists( 'Give_HTML_Elements' ) ) {
-	return;
-}
-
 /**
  * Give_HTML_Elements Class
  *
