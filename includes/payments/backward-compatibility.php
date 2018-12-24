@@ -211,8 +211,12 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
  */
 function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 	// Bailout.
+	if( 'give_payment' !== get_post_type( $object_id ) ) {
+		return $check;
+	}
+
+	// Bailout.
 	if (
-		'give_payment' !== get_post_type( $object_id ) ||
 		! in_array( $meta_key, array(
 			'_give_payment_meta',
 			'_give_payment_user_email',
