@@ -32,7 +32,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var string
 	 */
-	static private $cache_key = 'giveAllOptions';
+	private $cache_key = 'giveAllOptions';
 
 	/**
 	 * Array of cached settings
@@ -41,7 +41,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	static private $settings = array(
+	private $settings = array(
 		'give_settings'           => array(),
 		'give_version'            => '',
 		'give_completed_upgrades' => array(),
@@ -56,7 +56,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	static private $db_option_ids = array(
+	private $db_option_ids = array(
 		'give_settings',
 		'give_version',
 		'give_completed_upgrades',
@@ -105,7 +105,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 */
 	private function setup() {
-		self::$all_option_ids = array_keys( self::$settings );
+		self::$all_option_ids = array_keys( $this->settings );
 
 		$this->load_plugin_settings();
 
@@ -126,16 +126,16 @@ class Give_Cache_Setting {
 	private function load_plugin_settings() {
 		global $wpdb;
 
-		$cache = wp_cache_get( self::$cache_key, 'options' );
+		$cache = wp_cache_get( $this->cache_key, 'options' );
 
 		// Load options from cache.
 		if ( false !== $cache ) {
-			self::$settings = $cache;
+			$this->settings = $cache;
 
 			return;
 		}
 
-		$db_option_ids = '\'' . implode( '\',\'', self::$db_option_ids ) . '\'';
+		$db_option_ids = '\'' . implode( '\',\'', $this->db_option_ids ) . '\'';
 
 		$tmp     = array();
 		$sql     = "SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN ({$db_option_ids}) ";
@@ -145,10 +145,10 @@ class Give_Cache_Setting {
 
 			/* @var  stdClass $result */
 			foreach ( $results as $result ) {
-				self::$settings[ $result->option_name ] = maybe_unserialize( $result->option_value );
+				$this->settings[ $result->option_name ] = maybe_unserialize( $result->option_value );
 			}
 
-			wp_cache_set( self::$cache_key, $tmp, 'options' );
+			wp_cache_set( $this->cache_key, $tmp, 'options' );
 		}
 	}
 
@@ -162,11 +162,11 @@ class Give_Cache_Setting {
 	 */
 	public function __reload_plugin_settings( $option_name ) {
 		// Bailout.
-		if ( ! in_array( $option_name, self::$db_option_ids ) ) {
+		if ( ! in_array( $option_name, $this->db_option_ids ) ) {
 			return;
 		}
 
-		wp_cache_delete( self::$cache_key, 'options' );
+		wp_cache_delete( $this->cache_key, 'options' );
 		$this->load_plugin_settings();
 	}
 
@@ -185,7 +185,7 @@ class Give_Cache_Setting {
 		 */
 		$currencies = apply_filters( 'give_register_currency', $currencies );
 
-		self::$settings['currencies'] = $currencies;
+		$this->settings['currencies'] = $currencies;
 	}
 
 
@@ -218,7 +218,7 @@ class Give_Cache_Setting {
 		 */
 		$gateways = apply_filters( 'give_register_gateway', $gateways );
 
-		self::$settings['gateways'] = $gateways;
+		$this->settings['gateways'] = $gateways;
 	}
 
 
@@ -237,8 +237,8 @@ class Give_Cache_Setting {
 		$value = $default;
 
 		if ( in_array( $option_name, self::$all_option_ids ) ) {
-			$value = ! empty( self::$settings[ $option_name ] )
-				? self::$settings[ $option_name ]
+			$value = ! empty( self::$instance->settings[ $option_name ] )
+				? self::$instance->settings[ $option_name ]
 				: $default;
 		}
 
@@ -256,7 +256,7 @@ class Give_Cache_Setting {
 		/**
 		 * Filter the plugin setting
 		 */
-		return (array) apply_filters( 'give_get_settings', self::$settings['give_settings'] );
+		return (array) apply_filters( 'give_get_settings', self::$instance->settings['give_settings'] );
 	}
 }
 
