@@ -1,12 +1,16 @@
 <?php
 /**
- * This class will handle file loading for admin.
+ * This class will handle file loading for the wp-admin interface.
  *
  * @package     Give
  * @subpackage  Admin
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.4.0
+ */
+
+/**
+ * Class Give_Admin
  */
 class Give_Admin {
 	/**
@@ -64,7 +68,7 @@ class Give_Admin {
 	private function admin_loading() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be load only for form edit screen. review possibilities
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be loaded only on the form edit screen. review possibilities
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';

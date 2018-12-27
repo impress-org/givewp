@@ -1,6 +1,7 @@
 <?php
 /**
- * Class for managing plugin setting cache
+ * Class for managing plugin settings cache
+ *
  * Note: only use for internal purpose.
  *
  * @package     Give
@@ -15,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Give_Cache_Setting
+ */
 class Give_Cache_Setting {
 	/**
 	 * Instance.
@@ -164,6 +168,7 @@ class Give_Cache_Setting {
 
 	/**
 	 * Reload option when add, update or delete
+	 * 
 	 * Note: only for internal logic
 	 *
 	 * @since 2.4.0

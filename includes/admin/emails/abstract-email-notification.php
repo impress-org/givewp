@@ -177,7 +177,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 */
 		private function setup_filters() {
-			// Do not setup filters other then admin.
+			// Do not setup filters if not admin.
 			if( ! is_admin() ){
 				return;
 			}
