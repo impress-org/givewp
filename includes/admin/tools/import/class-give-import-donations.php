@@ -531,7 +531,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 				foreach ( $raw_key as $index => $value ) {
 					?>
-					<tr valign="top" class="give-import-option">
+					<tr valign="middle" class="give-import-option">
 						<th><?php echo $value; ?></th>
 						<th>
 							<?php
