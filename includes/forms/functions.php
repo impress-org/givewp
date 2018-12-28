@@ -367,7 +367,7 @@ function give_is_history_page() {
  * @since       1.0
  * @return      bool
  */
-function give_field_is_required( $field = '', $form_id ) {
+function give_field_is_required( $field, $form_id ) {
 
 	$required_fields = give_get_required_fields( $form_id );
 

@@ -13,6 +13,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Composer's autoload.php.
+ */
+if( ! class_exists( 'TCPDF' ) ) {
+	if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+		require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+	} else {
+		// Load autoloader.
+		require_once GIVE_PLUGIN_DIR . 'includes/libraries/tcpdf/tcpdf.php';
+	}
+}
+
+/**
  * Class Give_PDF
  */
 class Give_PDF extends TCPDF {

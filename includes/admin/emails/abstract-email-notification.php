@@ -177,6 +177,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 */
 		private function setup_filters() {
+			// Do not setup filters if not admin.
+			if( ! is_admin() ){
+				return;
+			}
+
 			// Apply filter only for current email notification section.
 			if ( give_get_current_setting_section() === $this->config['id'] ) {
 				// Initialize email context for email notification.

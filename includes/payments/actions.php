@@ -275,9 +275,8 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
 function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) {
 	// Bailout.
 	if (
-		'give_payment' !== get_post_type( $object_id ) ||
-		'_give_payment_meta' !== $meta_key ||
-		! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' )
+		'give_payment' !== get_post_type( $object_id )
+		|| '_give_payment_meta' !== $meta_key
 	) {
 		return $check;
 	}
@@ -428,7 +427,9 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	return $payment_meta;
 }
 
-add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+if( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+}
 
 /**
  * Add meta in payment that store page id and page url.

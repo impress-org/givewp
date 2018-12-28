@@ -1166,7 +1166,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 
 	// Fresh install?
 	// If fresh install then all upgrades will be consider as completed.
-	$is_fresh_install = ! get_option( 'give_version' );
+	$is_fresh_install = ! Give_Cache_Setting::get_option( 'give_version' );
 	if ( $is_fresh_install ) {
 		return true;
 	}
@@ -1231,7 +1231,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
-	return (array) get_option( 'give_completed_upgrades' );
+	return (array) Give_Cache_Setting::get_option( 'give_completed_upgrades' );
 }
 
 /**
