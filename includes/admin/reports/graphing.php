@@ -183,7 +183,92 @@ function give_reports_graph() {
 	// start our own output buffer.
 	ob_start();
 	?>
+   <?php // @todo: remove this html before pr merge. ?>
+	<style>
+		.stats {
+			color: #fff;
+			position: relative;
+			width: 300px;
+		}
 
+		.stats__amount {
+			font-size: 42px;
+			font-weight: bold;
+			line-height: 1.2;
+			color: deeppink
+		}
+
+		.stats__caption {
+			font-size: 18px;
+			color: #9c9c9c;
+		}
+
+		.stats__change {
+			position: absolute;
+			top: 10px;
+			right: 0;
+			text-align: right;
+			color: #B1B7C8;
+		}
+
+		.stats__value {
+			font-size: 18px;
+		}
+
+		.stats__period {
+			font-size: 14px;
+			color: #9c9c9c;
+		}
+
+		.stats__value--positive {
+			color: #AEDC6F;
+		}
+
+		.stats__value--negative {
+			color: #FB5055;
+		}
+
+		.stats--main .stats__amount {
+			font-size: 54px;
+		}
+	</style>
+	<div id="give-stats-container">
+		<div class="stats stats--main">
+			<div class="stats__amount">12698</div>
+			<div class="stats__caption">subscribers</div>
+			<div class="stats__change">
+				<div class="stats__value stats__value--positive">+6%</div>
+				<div class="stats__period">this week</div>
+			</div>
+		</div>
+
+		<div class="stats">
+			<div class="stats__amount">87359</div>
+			<div class="stats__caption">visitors</div>
+			<div class="stats__change">
+				<div class="stats__value stats__value--negative">-12%</div>
+				<div class="stats__period">this week</div>
+			</div>
+		</div>
+
+		<div class="stats">
+			<div class="stats__amount">6302</div>
+			<div class="stats__caption">comments</div>
+			<div class="stats__change">
+				<div class="stats__value">+78</div>
+				<div class="stats__period">this week</div>
+			</div>
+		</div>
+
+		<div class="stats">
+			<div class="stats__amount">268</div>
+			<div class="stats__caption">posts</div>
+			<div class="stats__change">
+				<div class="stats__value">+3</div>
+				<div class="stats__period">this week</div>
+			</div>
+		</div>
+	</div>
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
