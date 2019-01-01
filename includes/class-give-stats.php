@@ -22,6 +22,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_Stats {
+	/**
+	 * Give_Date object
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @var Give_Date
+	 */
+	protected $date;
 
 	/**
 	 * The start date for the period we're getting stats for
@@ -68,17 +77,70 @@ class Give_Stats {
 	public $timestamp;
 
 	/**
-	 * Class Constructor
+	 * Parsed query arguments
 	 *
-	 * Set up the Give Stats Class.
+	 * @since  2.4.1
+	 * @access protected
 	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
+	 * @var array
 	 */
-	public function __construct() {
-		/* nothing here. Call get_sales() and get_earnings() directly */
+	protected $query_vars = array();
+
+	/**
+	 * Default query arguments
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @var array
+	 */
+	protected $query_var_defaults = array(
+		'range'               => '',
+		'relative'            => false,
+		'start_date'          => '',
+		'end_date'            => '',
+		'relative_start_date' => '',
+		'relative_end_date'   => '',
+		'where_sql'           => array(),
+		'function'            => 'SUM',
+	);
+
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.0
+	 * @since 2.4.1 Updated
+	 *
+	 * @param array $query     {
+	 *                         Optional. Array of query parameters.
+	 *                         Default empty.
+	 *
+	 *     Each method accepts query parameters to be passed. Parameters passed to methods override the ones passed in
+	 *     the constructor. This is by design to allow for multiple calculations to be executed from one instance of
+	 *     this class. Some methods will not allow parameters to be overridden as it could lead to inaccurate calculations.
+	 *
+	 * @type string $start     Start day and time (based on the beginning of the given day).
+	 * @type string $end       End day and time (based on the end of the given day).
+	 * @type string $range     Date range. If a range is passed, this will override and `start` and `end`
+	 *                             values passed. See \EDD\Reports\get_dates_filter_options() for valid date ranges.
+	 * @type string $function  SQL function. Certain methods will only accept certain functions. See each method for
+	 *                             a list of accepted SQL functions.
+	 * @type string $where_sql Reserved for internal use. Allows for additional WHERE clauses to be appended to the
+	 *                             query.
+	 * @type string $output    The output format of the calculation. Accepts `raw` and `formatted`. Default `raw`.
+	 * }
+	 */
+	public function __construct( $query = array() ) {
+		$this->date = new Give_Date();
+
+		// Maybe parse query.
+		if ( ! empty( $query ) ) {
+			$this->parse_query( $query );
+
+			// Set defaults.
+		} else {
+			$this->query_vars = $this->query_var_defaults;
+		}
 	}
 
 	/**
@@ -92,20 +154,51 @@ class Give_Stats {
 	 * @return array  Predefined dates.
 	 */
 	public function get_predefined_dates() {
-		$predefined = array(
-			'today'        => esc_html__( 'Today', 'give' ),
-			'yesterday'    => esc_html__( 'Yesterday', 'give' ),
-			'this_week'    => esc_html__( 'This Week', 'give' ),
-			'last_week'    => esc_html__( 'Last Week', 'give' ),
-			'this_month'   => esc_html__( 'This Month', 'give' ),
-			'last_month'   => esc_html__( 'Last Month', 'give' ),
-			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
-			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
-			'this_year'    => esc_html__( 'This Year', 'give' ),
-			'last_year'    => esc_html__( 'Last Year', 'give' ),
-		);
+		// Backward compatibility.
+		if ( ! $this->date instanceof Give_Date ) {
+			$this->date = new Give_Date();
+		}
 
-		return apply_filters( 'give_stats_predefined_dates', $predefined );
+		return $this->date->get_predefined_dates();
+	}
+
+
+	/**
+	 * Setup date range
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param string $range
+	 */
+	protected function set_date_ranges( $range = 'last_30_days' ) {
+		if ( empty( $range ) ) {
+			return;
+		}
+
+		$current = $this->date->parse_date_for_range( $range );
+
+		if ( empty( $this->query_vars['start_date'] ) ) {
+			$this->query_vars['start_date'] = $current['start']->format( 'mysql' );
+		}
+
+		if ( empty( $this->query_vars['end_date'] ) ) {
+			$this->query_vars['end_date'] = $current['end']->format( 'mysql' );
+		}
+
+		// Setup relative time.
+		if ( true === $this->query_vars['relative'] ) {
+
+			$relative = $this->date->parse_date_for_range( $range, true );
+
+			if ( empty( $this->query_vars['relative_start_date'] ) ) {
+				$this->query_vars['relative_start_date'] = $relative['start']->format( 'mysql' );
+			}
+
+			if ( empty( $this->query_vars['relative_end_date'] ) ) {
+				$this->query_vars['relative_end_date'] = $relative['end']->format( 'mysql' );
+			}
+		}
 	}
 
 	/**
@@ -122,14 +215,10 @@ class Give_Stats {
 	 * @return void
 	 */
 	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
-
-		if ( empty( $_start_date ) ) {
-			$_start_date = 'this_month';
-		}
-
 		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
 		}
+
 		$this->start_date = $this->convert_date( $_start_date );
 		$this->end_date   = $this->convert_date( $_end_date, true );
 	}
@@ -215,7 +304,7 @@ class Give_Stats {
 						// If current month is 1
 						if ( 1 == $month ) {
 
-							$year -= 1; // Today is January 1, so skip back to last day of December
+							$year  -= 1; // Today is January 1, so skip back to last day of December
 							$month = 12;
 							$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
@@ -223,7 +312,7 @@ class Give_Stats {
 
 							// Go back one month and get the last day of the month
 							$month -= 1;
-							$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+							$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 						}
 					}
@@ -361,7 +450,7 @@ class Give_Stats {
 						if ( ! $end_date ) {
 							$month = 10;
 						} else {
-							$year -= 1;
+							$year   -= 1;
 							$month  = 12;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 							$hour   = 23;
@@ -469,6 +558,99 @@ class Give_Stats {
 	}
 
 	/**
+	 * Get growth
+	 *
+	 * @since 2.4.1
+	 * @access protected
+	 *
+	 * @param int $current
+	 * @param int $past
+	 *
+	 * @return float|int
+	 */
+	protected function get_growth( $current = 0, $past = 0 ){
+		$growth = 0;
+
+		if (
+			( 0 !== $current && 0 !== $past )
+			|| ( $current !== $past )
+		) {
+			$growth = ( ( $current - $past ) / $past ) * 100;
+		}
+
+		return $growth;
+	}
+
+
+	/**
+	 * Parse process query
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param array $query
+	 */
+	protected function parse_query( $query = array() ) {
+		if ( empty( $this->query_vars ) ) {
+			$this->query_vars = wp_parse_args( $query, $this->query_var_defaults );
+		} else {
+			$this->query_vars = wp_parse_args( $query, $this->query_vars );
+		}
+	}
+
+
+	/**
+	 * Pre process query
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param array $query
+	 */
+	protected function pre_query( $query = array() ) {
+		$query = ! is_array( $query ) ? array() : $query;
+
+		$this->parse_query( $query );
+		$this->set_date_ranges();
+	}
+
+	/**
+	 * Runs after a query. Resets query vars back to the originals passed in via the constructor.
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 */
+	protected function reset_query() {
+		$this->query_vars = $this->query_var_defaults;
+	}
+
+	/**
+	 * Get where query SQL
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @return string
+	 */
+	protected function get_where_query_sql() {
+		return implode( ' ', $this->query_vars['where_sql'] );
+	}
+
+	/**
+	 * Get WordPress database class object
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @return wpdb
+	 */
+	protected function get_db() {
+		global $wpdb;
+
+		return $wpdb;
+	}
+
+	/**
 	 * Count Where
 	 *
 	 * Modifies the WHERE flag for payment counts.
@@ -477,7 +659,7 @@ class Give_Stats {
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {
@@ -566,3 +748,5 @@ class Give_Stats {
 	}
 
 }
+
+// @todo: deprecated count_where and payment_where
