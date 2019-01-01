@@ -251,7 +251,7 @@ final class Give_Date extends Carbon {
 				case 'last_30_days':
 					$dates = array(
 						'start' => $this->copy()->subDay( 60 )->startOfDay(),
-						'end'   => $this->copy()->endOfDay( 30 ),
+						'end'   => $this->copy()->subDay( 30 )->endOfDay(),
 					);
 					break;
 				case 'this_quarter':
