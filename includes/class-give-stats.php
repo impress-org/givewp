@@ -102,6 +102,8 @@ class Give_Stats {
 		'relative_start_date' => '',
 		'relative_end_date'   => '',
 		'where_sql'           => array(),
+		'date_sql'            => array(),
+		'relative_date_sql'   => array(),
 		'function'            => 'SUM',
 	);
 
@@ -168,10 +170,11 @@ class Give_Stats {
 	 *
 	 * @since  2.4.1
 	 * @access protected
-	 *
-	 * @param string $range
 	 */
-	protected function set_date_ranges( $range = 'last_30_days' ) {
+	protected function set_date_ranges() {
+		$range = $this->query_vars['range'];
+
+		// Bailout
 		if ( empty( $range ) ) {
 			return;
 		}
@@ -560,7 +563,7 @@ class Give_Stats {
 	/**
 	 * Get growth
 	 *
-	 * @since 2.4.1
+	 * @since  2.4.1
 	 * @access protected
 	 *
 	 * @param int $current
@@ -568,7 +571,7 @@ class Give_Stats {
 	 *
 	 * @return float|int
 	 */
-	protected function get_growth( $current = 0, $past = 0 ){
+	protected function get_growth( $current = 0, $past = 0 ) {
 		$growth = 0;
 
 		if (
@@ -622,18 +625,6 @@ class Give_Stats {
 	 */
 	protected function reset_query() {
 		$this->query_vars = $this->query_var_defaults;
-	}
-
-	/**
-	 * Get where query SQL
-	 *
-	 * @since  2.4.1
-	 * @access protected
-	 *
-	 * @return string
-	 */
-	protected function get_where_query_sql() {
-		return implode( ' ', $this->query_vars['where_sql'] );
 	}
 
 	/**
@@ -750,3 +741,4 @@ class Give_Stats {
 }
 
 // @todo: deprecated count_where and payment_where
+// @todo: document stat query params

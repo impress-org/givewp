@@ -53,8 +53,13 @@ class Give_Donation_Stats extends Give_Stats {
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
-		$sql         = '';
+		$allowed_functions = array( 'COUNT', 'AVG' );
+
 		$is_relative = true === $this->query_vars['relative'];
+
+		$function = isset( $this->query_vars['function'] ) && in_array( $this->query_vars['function'], $allowed_functions, true )
+			? $this->query_vars['function'] . "(ID)"
+			: "COUNT(ID)";
 
 		if ( $is_relative ) {
 			$sql = "SELECT IFNULL(COUNT(ID), 0) AS sales, IFNULL(relative, 0) AS relative
@@ -63,14 +68,19 @@ class Give_Donation_Stats extends Give_Stats {
 						SELECT IFNULL(COUNT(ID), 0) AS relative
 						FROM {$this->get_db()->posts}
 						WHERE 1=1
-						{$this->get_where_query_sql()}
-						AND {$this->get_db()->posts}.post_date>='{$this->query_vars['relative_start_date']}'
-						AND {$this->get_db()->posts}.post_date<='{$this->query_vars['relative_end_date']}'
+						{$this->query_vars['where_sql']}
+						{$this->query_vars['relative_date_sql']}
 					) o
 					WHERE 1=1
-					{$this->get_where_query_sql()}
-					AND {$this->get_db()->posts}.post_date>='{$this->query_vars['start_date']}'
-					AND {$this->get_db()->posts}.post_date<='{$this->query_vars['end_date']}'
+					{$this->query_vars['where_sql']}
+					{$this->query_vars['date_sql']}
+					";
+		} else {
+			$sql = "SELECT IFNULL({$function}, 0) AS sales
+					FROM {$this->get_db()->posts}
+					WHERE 1=1
+					{$this->query_vars['where_sql']}
+					{$this->query_vars['date_sql']}
 					";
 		}
 
@@ -106,28 +116,40 @@ class Give_Donation_Stats extends Give_Stats {
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
-		$sql         = '';
+		$allowed_functions = array( 'SUM', 'AVG' );
+
 		$is_relative = true === $this->query_vars['relative'];
 
+		$function = isset( $this->query_vars['function'] ) && in_array( $this->query_vars['function'], $allowed_functions, true )
+			? $this->query_vars['function'] . "(m1.meta_value)"
+			: "SUM(m1.meta_value)";
+
 		if ( $is_relative ) {
-			$sql = "SELECT IFNULL(SUM(m1.meta_value), 0) AS total, IFNULL(relative, 0) AS relative
+			$sql = "SELECT IFNULL({$function}, 0) AS total, IFNULL(relative, 0) AS relative
 					FROM {$this->get_db()->donationmeta} as m1
 					CROSS JOIN (
-						SELECT IFNULL(SUM(m1.meta_value), 0) AS relative
+						SELECT IFNULL($function, 0) AS relative
 						FROM {$this->get_db()->donationmeta} as m1
 						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
 						WHERE 1=1
-						{$this->get_where_query_sql()}
+						{$this->query_vars['where_sql']}
+						{$this->query_vars['relative_date_sql']}
 						AND m1.meta_key='_give_payment_total'
-						AND {$this->get_db()->posts}.post_date>='{$this->query_vars['relative_start_date']}'
-						AND {$this->get_db()->posts}.post_date<='{$this->query_vars['relative_end_date']}'
 					) o
 					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
 					WHERE 1=1
-					{$this->get_where_query_sql()}
+					{$this->query_vars['where_sql']}
+					{$this->query_vars['date_sql']}
 					AND m1.meta_key='_give_payment_total'
-					AND {$this->get_db()->posts}.post_date>='{$this->query_vars['start_date']}'
-					AND {$this->get_db()->posts}.post_date<='{$this->query_vars['end_date']}'
+					";
+		} else {
+			$sql = "SELECT IFNULL({$function}, 0) AS total
+					FROM {$this->get_db()->donationmeta} as m1
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
+					WHERE 1=1
+					{$this->query_vars['where_sql']}
+					{$this->query_vars['date_sql']}
+					AND m1.meta_key='_give_payment_total'
 					";
 		}
 
@@ -225,7 +247,7 @@ class Give_Donation_Stats extends Give_Stats {
 			FROM {$this->get_db()->donationmeta} as m1
 			INNER JOIN {$this->get_db()->posts} ON m1.{$donation_col_name}={$this->get_db()->posts}.ID
 			WHERE 1=1
-			{$this->get_where_query_sql()}
+			{$this->query_vars['where_sql']}
 			AND m1.meta_key=%s
 			GROUP BY form
 			ORDER BY total_donation DESC
@@ -255,7 +277,9 @@ class Give_Donation_Stats extends Give_Stats {
 	protected function pre_query( $query = array() ) {
 		parent::pre_query( $query );
 
-		// Generate status SQL if statuses have been set.
+		$this->query_vars['function'] = strtoupper( $this->query_vars['function'] );
+
+		// Where sql.
 		if ( ! empty( $this->query_vars['status'] ) ) {
 			if ( 'any' === $this->query_vars['status'] ) {
 				$this->query_vars['status_sql'] = '';
@@ -269,6 +293,33 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		$this->query_vars['where_sql'][] = $this->get_db()->prepare( "AND {$this->get_db()->posts}.post_type=%s", 'give_payment' );
+		$this->query_vars['where_sql']   = implode( ' ', $this->query_vars['where_sql'] );
+
+
+		// Date sql.
+		if ( $this->query_vars["start_date"] ) {
+			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["start_date"]}'";
+		}
+
+		if ( $this->query_vars["end_date"] ) {
+			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["end_date"]}'";
+		}
+
+		$this->query_vars['date_sql'] = implode( ' ', $this->query_vars['date_sql'] );
+
+
+		// Relative date query.
+		if ( $this->query_vars['range'] ) {
+			if ( $this->query_vars["relative_start_date"] ) {
+				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["relative_start_date"]}'";
+			}
+
+			if ( $this->query_vars["relative_end_date"] ) {
+				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["relative_end_date"]}'";
+			}
+
+			$this->query_vars['relative_date_sql'] = implode( ' ', $this->query_vars['relative_date_sql'] );
+		}
 	}
 
 }
@@ -276,3 +327,7 @@ class Give_Donation_Stats extends Give_Stats {
 // @todo: compatibility with recurring, fee recovery and currency switcher
 // @todo: currency formatting compatibility
 // @todo review donation earning growth logic
+// @todo: develop logic to sent raw and formatted value
+// @todo: review number decimal format
+// @todo: document stat query params
+
