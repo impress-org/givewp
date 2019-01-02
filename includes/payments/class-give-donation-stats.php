@@ -284,6 +284,42 @@ class Give_Donation_Stats extends Give_Stats {
 	}
 
 	/**
+	 * Calculate number of refunded donations.
+	 *
+	 * @since 2.4.1
+	 * @acess public
+	 *
+	 * @param array $query
+	 *
+	 * @return stdClass
+	 */
+	public function get_refund_count( $query = array() ) {
+		$query['status'] = isset( $query['status'] )
+			? $query['status']
+			: array( 'refunded' );
+
+		return $this->get_sales( $query );
+	}
+
+	/**
+	 * Calculate amount of refunded donations.
+	 *
+	 * @since 2.4.1
+	 * @acess public
+	 *
+	 * @param array $query
+	 *
+	 * @return stdClass
+	 */
+	public function get_refund( $query = array() ) {
+		$query['status'] = isset( $query['status'] )
+			? $query['status']
+			: array( 'refunded' );
+
+		return $this->get_earnings( $query );
+	}
+
+	/**
 	 *  Set meta query
 	 *
 	 * @since  2.4.1
