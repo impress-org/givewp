@@ -116,6 +116,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
+		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
 		$allowed_functions = array( 'SUM', 'AVG' );
 
 		$is_relative = true === $this->query_vars['relative'];
