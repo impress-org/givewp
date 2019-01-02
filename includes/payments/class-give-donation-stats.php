@@ -248,6 +248,7 @@ class Give_Donation_Stats extends Give_Stats {
 			INNER JOIN {$this->get_db()->posts} ON m1.{$donation_col_name}={$this->get_db()->posts}.ID
 			WHERE 1=1
 			{$this->query_vars['where_sql']}
+			{$this->query_vars['date_sql']}
 			AND m1.meta_key=%s
 			GROUP BY form
 			ORDER BY total_donation DESC
