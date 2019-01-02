@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Stats
  * @copyright   Copyright (c) 2016, Give
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       2.4.1
  */
 
 // Exit if accessed directly.
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Base class for other stats classes. Primarily for setting up dates and ranges.
  *
- * @since 1.0
+ * @since 2.4.1
  */
 class Give_Stats {
 	/**
@@ -41,7 +41,7 @@ class Give_Stats {
 	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @var    string
@@ -59,7 +59,7 @@ class Give_Stats {
 	 *
 	 * The end date is optional
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @var    string
@@ -69,7 +69,7 @@ class Give_Stats {
 	/**
 	 * Flag to determine if current query is based on timestamps
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @var    string
@@ -101,16 +101,28 @@ class Give_Stats {
 		'end_date'            => '',
 		'relative_start_date' => '',
 		'relative_end_date'   => '',
-		'where_sql'           => array(),
-		'date_sql'            => array(),
-		'relative_date_sql'   => array(),
+		'where_sql'           => '',
+		'inner_join_sql'      => '',
+		'inner_join_at'       => '',
+		'date_sql'            => '',
+		'relative_date_sql'   => '',
 		'function'            => 'SUM',
 	);
 
 	/**
+	 * Counters
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @var    string
+	 */
+	protected $counters = array();
+
+	/**
 	 * Constructor.
 	 *
-	 * @since 1.0
+	 * @since 2.4.1
 	 * @since 2.4.1 Updated
 	 *
 	 * @param array $query     {
@@ -150,7 +162,7 @@ class Give_Stats {
 	 *
 	 * Retrieve the predefined date periods permitted.
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @return array  Predefined dates.
@@ -209,7 +221,7 @@ class Give_Stats {
 	 *
 	 * This calls the convert_date() member function to ensure the dates are formatted correctly.
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @param  string $_start_date Start date. Default is 'this_month'.
@@ -231,7 +243,7 @@ class Give_Stats {
 	 *
 	 * Converts a date to a timestamp.
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @param  string $date     Date.
@@ -584,6 +596,45 @@ class Give_Stats {
 		return $growth;
 	}
 
+	/**
+	 * Set counter
+	 * Note: by default counter handle integer increment.
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 *
+	 * @return mixed
+	 */
+	protected function set_counter( $key, $value = 0 ) {
+		if ( ! $value ) {
+			$value = isset( $this->counters[ $key ] ) ? ( $this->counters[ $key ] + 1 ) : 0;
+		}
+
+		$this->counters[ $key ] = $value;
+	}
+
+	/**
+	 * Get counter
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	protected function get_counter( $key ) {
+
+		if ( ! isset( $this->counters[ $key ] ) ) {
+			$this->counters[ $key ] = 0;
+		}
+
+		return $this->counters[ $key ];
+	}
+
 
 	/**
 	 * Parse process query
@@ -625,6 +676,7 @@ class Give_Stats {
 	 */
 	protected function reset_query() {
 		$this->query_vars = $this->query_var_defaults;
+		$this->counters   = array();
 	}
 
 	/**
@@ -646,7 +698,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment counts.
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.
@@ -694,7 +746,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment queries.
 	 *
-	 * @since  1.0
+	 * @since  2.4.1
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.
