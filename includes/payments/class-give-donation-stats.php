@@ -198,10 +198,14 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return string
 	 */
 	public function get_busiest_day( $query = array() ) {
+		// Add table and column name to query_vars to assist with date query generation.
+		$this->query_vars['table']  = $this->get_db()->posts;
+		$this->query_vars['column'] = 'post_date';
+
 		$this->pre_query( $query );
 
-		$sql = "SELECT DAYOFWEEK(post_date) AS day, COUNT(ID) as total
-				FROM {$this->get_db()->posts}
+		$sql = "SELECT DAYOFWEEK({$this->query_vars['column']}) AS day, COUNT(ID) as total
+				FROM {$this->query_vars['table']}
 				{$this->query_vars['inner_join_sql']}
 				WHERE 1=1
 				{$this->query_vars['where_sql'] }
@@ -260,26 +264,28 @@ class Give_Donation_Stats extends Give_Stats {
 	public function get_most_valuable_cause( $query = array() ) {
 		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
+		// Add table and column name to query_vars to assist with date query generation.
+		$this->query_vars['table']  = $this->get_db()->donationmeta;
+		$this->query_vars['column'] = 'meta_value';
+
 		$this->pre_query( $query );
 
-		$sql = "SELECT m1.meta_value as form, COUNT(m1.{$donation_col_name}) as total_donation
-			FROM {$this->get_db()->donationmeta} as m1
-			INNER JOIN {$this->get_db()->posts} ON m1.{$donation_col_name}={$this->get_db()->posts}.ID
+		$this->pre_query( $query );
+
+		$sql = "SELECT {$this->query_vars['table']}.{$this->query_vars['column']} as form, COUNT({$this->query_vars['table']}.{$donation_col_name}) as total_donation
+			FROM {$this->query_vars['table']}
+			INNER JOIN {$this->get_db()->posts} ON {$this->query_vars['table']}.{$donation_col_name}={$this->get_db()->posts}.ID
+			{$this->query_vars['inner_join_sql']}
 			WHERE 1=1
 			{$this->query_vars['where_sql']}
 			{$this->query_vars['date_sql']}
-			AND m1.meta_key=%s
+			AND {$this->query_vars['table']}.meta_key='_give_payment_form_id'
 			GROUP BY form
 			ORDER BY total_donation DESC
 			LIMIT 1
 			";
 
-		$result = $this->get_db()->get_row(
-			$this->get_db()->prepare(
-				$sql,
-				'_give_payment_form_id'
-			)
-		);
+		$result = $this->get_db()->get_row( $sql );
 
 		$form = is_null( $result ) ? 0 : $result->form;
 
@@ -413,8 +419,6 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->set_meta_sql( 'gateways', '_give_payment_gateway' );
 
 		// Create sql query string
-		$sql_types = array( 'relative_date_sql', 'date_sql', 'inner_join_sql', 'where_sql' );
-
 		foreach ( $sql_types as $sql_type ) {
 			$this->query_vars[ $sql_type ] = is_array( $this->query_vars[ $sql_type ] )
 				? implode( ' ', $this->query_vars[ $sql_type ] )
