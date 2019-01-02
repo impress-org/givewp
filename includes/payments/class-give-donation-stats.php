@@ -183,11 +183,11 @@ class Give_Donation_Stats extends Give_Stats {
 	public function get_busiest_day( $query = array() ) {
 		$this->pre_query( $query );
 
-		$where_sql = implode( ' ', $this->query_vars['where_sql'] );
-
 		$sql = "SELECT DAYOFWEEK(post_date) AS day, COUNT(ID) as total
 				FROM {$this->get_db()->posts}
-				WHERE 1=1 {$where_sql}
+				WHERE 1=1
+				{$this->query_vars['where_sql'] }
+				{$this->query_vars['date_sql'] }
 				GROUP BY day
 				ORDER BY day DESC
 				LIMIT 1";
