@@ -34,6 +34,7 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->query_var_defaults = array_merge( array(
 			'status'     => array( 'publish' ),
 			'give_forms' => array(),
+			'gateways'   => array(),
 		), $this->query_var_defaults );
 
 		parent::__construct( $query );
@@ -50,6 +51,9 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return stdClass
 	 */
 	public function get_sales( $query = array() ) {
+		$this->query_vars['table']  = $this->get_db()->posts;
+		$this->query_vars['column'] = $this->query_vars['inner_join_at'] = 'ID';
+
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
@@ -58,15 +62,16 @@ class Give_Donation_Stats extends Give_Stats {
 		$is_relative = true === $this->query_vars['relative'];
 
 		$function = isset( $this->query_vars['function'] ) && in_array( $this->query_vars['function'], $allowed_functions, true )
-			? $this->query_vars['function'] . "(ID)"
-			: "COUNT(ID)";
+			? "{$this->query_vars['function']}({$this->query_vars['table']}.{$this->query_vars['column']})"
+			: "COUNT({$this->query_vars['table']}.{$this->query_vars['column']})";
 
 		if ( $is_relative ) {
-			$sql = "SELECT IFNULL(COUNT(ID), 0) AS sales, IFNULL(relative, 0) AS relative
-					FROM {$this->get_db()->posts}
+			$sql = "SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS sales, IFNULL(relative, 0) AS relative
+					FROM {$this->query_vars['table']}
 					CROSS JOIN (
-						SELECT IFNULL(COUNT(ID), 0) AS relative
-						FROM {$this->get_db()->posts}
+						SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS relative
+						FROM {$this->query_vars['table']}
+						{$this->query_vars['inner_join_sql']}
 						WHERE 1=1
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
@@ -77,7 +82,8 @@ class Give_Donation_Stats extends Give_Stats {
 					";
 		} else {
 			$sql = "SELECT IFNULL({$function}, 0) AS sales
-					FROM {$this->get_db()->posts}
+					FROM {$this->query_vars['table']}
+					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
@@ -113,44 +119,52 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return stdClass
 	 */
 	public function get_earnings( $query = array() ) {
+		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
+
+		$this->query_vars['table']         = $this->get_db()->donationmeta;
+		$this->query_vars['column']        = 'meta_value';
+		$this->query_vars['inner_join_at'] = $donation_col_name;
+
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
-		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
 		$allowed_functions = array( 'SUM', 'AVG' );
 
 		$is_relative = true === $this->query_vars['relative'];
 
 		$function = isset( $this->query_vars['function'] ) && in_array( $this->query_vars['function'], $allowed_functions, true )
-			? $this->query_vars['function'] . "(m1.meta_value)"
-			: "SUM(m1.meta_value)";
+			? "{$this->query_vars['function']}({$this->query_vars['table']}.{$this->query_vars['column']})"
+			: "SUM({$this->query_vars['table']}.{$this->query_vars['column']})";
 
 		if ( $is_relative ) {
 			$sql = "SELECT IFNULL({$function}, 0) AS total, IFNULL(relative, 0) AS relative
-					FROM {$this->get_db()->donationmeta} as m1
+					FROM {$this->query_vars['table']}
 					CROSS JOIN (
 						SELECT IFNULL($function, 0) AS relative
-						FROM {$this->get_db()->donationmeta} as m1
-						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.{$donation_col_name}
+						FROM {$this->query_vars['table']}
+						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+						{$this->query_vars['inner_join_sql']}
 						WHERE 1=1
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
-						AND m1.meta_key='_give_payment_total'
+						AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					) o
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.{$donation_col_name}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
-					AND m1.meta_key='_give_payment_total'
+					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					";
 		} else {
 			$sql = "SELECT IFNULL({$function}, 0) AS total
-					FROM {$this->get_db()->donationmeta} as m1
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.{$donation_col_name}
+					FROM {$this->query_vars['table']}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
-					AND m1.meta_key='_give_payment_total'
+					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					";
 		}
 
@@ -186,6 +200,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$sql = "SELECT DAYOFWEEK(post_date) AS day, COUNT(ID) as total
 				FROM {$this->get_db()->posts}
+				{$this->query_vars['inner_join_sql']}
 				WHERE 1=1
 				{$this->query_vars['where_sql'] }
 				{$this->query_vars['date_sql'] }
@@ -269,6 +284,38 @@ class Give_Donation_Stats extends Give_Stats {
 	}
 
 	/**
+	 *  Set meta query
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @param string $query_key
+	 * @param string $meta_key
+	 *
+	 */
+	private function set_meta_sql( $query_key, $meta_key ) {
+		// Bailout.
+		if ( empty( $this->query_vars[ $query_key ] ) ) {
+			return;
+		}
+
+		$donation_col_name              = Give()->payment_meta->get_meta_type() . '_id';
+		$this->query_vars[ $query_key ] = (array) $this->query_vars[ $query_key ];
+
+		$alias = "m{$this->get_counter( $this->get_db()->donationmeta )}";
+		$data  = implode( '\',\'', $this->query_vars[ $query_key ] );
+
+		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as {$alias} on {$alias}.{$donation_col_name}={$this->query_vars['table']}.{$this->query_vars['inner_join_at']}";
+
+		$this->query_vars['where_sql'][] = " AND {$alias}.meta_key='{$meta_key}'";
+		$this->query_vars['where_sql'][] = " AND {$alias}.meta_value IN ('{$data}')";
+
+
+		// Set counter.
+		$this->set_counter( $this->get_db()->donationmeta );
+	}
+
+	/**
 	 * Pre process query
 	 *
 	 * @since  2.4.1
@@ -293,10 +340,7 @@ class Give_Donation_Stats extends Give_Stats {
 				$this->query_vars['where_sql'][] = $this->get_db()->prepare( "AND {$this->get_db()->posts}.post_status IN ({$placeholders})", $this->query_vars['status'] );
 			}
 		}
-
 		$this->query_vars['where_sql'][] = $this->get_db()->prepare( "AND {$this->get_db()->posts}.post_type=%s", 'give_payment' );
-		$this->query_vars['where_sql']   = implode( ' ', $this->query_vars['where_sql'] );
-
 
 		// Date sql.
 		if ( $this->query_vars["start_date"] ) {
@@ -307,9 +351,6 @@ class Give_Donation_Stats extends Give_Stats {
 			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["end_date"]}'";
 		}
 
-		$this->query_vars['date_sql'] = implode( ' ', $this->query_vars['date_sql'] );
-
-
 		// Relative date query.
 		if ( $this->query_vars['range'] ) {
 			if ( $this->query_vars["relative_start_date"] ) {
@@ -319,8 +360,21 @@ class Give_Donation_Stats extends Give_Stats {
 			if ( $this->query_vars["relative_end_date"] ) {
 				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["relative_end_date"]}'";
 			}
+		}
 
-			$this->query_vars['relative_date_sql'] = implode( ' ', $this->query_vars['relative_date_sql'] );
+		// Add sql for specific donation form.
+		$this->set_meta_sql( 'give_forms', '_give_payment_form_id' );
+
+		// Add sql for specific donation payment gateways.
+		$this->set_meta_sql( 'gateways', '_give_payment_gateway' );
+
+		// Create sql query string
+		$sql_types = array( 'relative_date_sql', 'date_sql', 'inner_join_sql', 'where_sql' );
+
+		foreach ( $sql_types as $sql_type ) {
+			$this->query_vars[ $sql_type ] = is_array( $this->query_vars[ $sql_type ] )
+				? implode( ' ', $this->query_vars[ $sql_type ] )
+				: $this->query_vars[ $sql_type ];
 		}
 	}
 
