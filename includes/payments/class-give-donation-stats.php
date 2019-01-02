@@ -51,6 +51,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return stdClass
 	 */
 	public function get_sales( $query = array() ) {
+		// Add table and column name to query_vars to assist with date query generation.
 		$this->query_vars['table']  = $this->get_db()->posts;
 		$this->query_vars['column'] = $this->query_vars['inner_join_at'] = 'ID';
 
@@ -121,6 +122,7 @@ class Give_Donation_Stats extends Give_Stats {
 	public function get_earnings( $query = array() ) {
 		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
+		// Add table and column name to query_vars to assist with date query generation.
 		$this->query_vars['table']         = $this->get_db()->donationmeta;
 		$this->query_vars['column']        = 'meta_value';
 		$this->query_vars['inner_join_at'] = $donation_col_name;
@@ -221,6 +223,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 	/**
 	 * Get the best selling forms
+	 * @todo   : make this function dynamic with new api
 	 *
 	 * @since  2.4.1
 	 * @access public
