@@ -332,4 +332,5 @@ class Give_Donation_Stats extends Give_Stats {
 // @todo: review number decimal format
 // @todo: document stat query params
 // @todo: think about table backward compatibility for paymentmeta
+// @todo: think about custom dates
 
