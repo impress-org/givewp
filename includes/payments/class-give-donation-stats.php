@@ -63,7 +63,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 		if ( $is_relative ) {
 			$sql = "SELECT IFNULL(COUNT(ID), 0) AS sales, IFNULL(relative, 0) AS relative
-					FROM {$this->get_db()->posts}
+					FROM {$this->get_db()->posts} as p
 					CROSS JOIN (
 						SELECT IFNULL(COUNT(ID), 0) AS relative
 						FROM {$this->get_db()->posts}
@@ -130,13 +130,13 @@ class Give_Donation_Stats extends Give_Stats {
 					CROSS JOIN (
 						SELECT IFNULL($function, 0) AS relative
 						FROM {$this->get_db()->donationmeta} as m1
-						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
+						INNER JOIN {$this->get_db()->posts} as p on p.ID = m1.{$donation_col_name}
 						WHERE 1=1
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 						AND m1.meta_key='_give_payment_total'
 					) o
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.{$donation_col_name}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
@@ -145,7 +145,7 @@ class Give_Donation_Stats extends Give_Stats {
 		} else {
 			$sql = "SELECT IFNULL({$function}, 0) AS total
 					FROM {$this->get_db()->donationmeta} as m1
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.donation_id
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = m1.{$donation_col_name}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
@@ -326,9 +326,10 @@ class Give_Donation_Stats extends Give_Stats {
 }
 
 // @todo: compatibility with recurring, fee recovery and currency switcher
-// @todo: currency formatting compatibility
-// @todo review donation earning growth logic
+// @todo: currency formatting compatibility for earnings and other
+// @todo  review donation earning growth logic
 // @todo: develop logic to sent raw and formatted value
 // @todo: review number decimal format
 // @todo: document stat query params
+// @todo: think about table backward compatibility for paymentmeta
 
