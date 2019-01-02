@@ -364,11 +364,16 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$this->query_vars['function'] = strtoupper( $this->query_vars['function'] );
 
+		$sql_types = array( 'relative_date_sql', 'date_sql', 'inner_join_sql', 'where_sql' );
+
+		// Set empty sql collection string to array
+		foreach ( $sql_types as $sql_type ) {
+			$this->query_vars[$sql_type] = array_filter( (array) $this->query_vars['where_sql'] );
+		}
+
 		// Where sql.
 		if ( ! empty( $this->query_vars['status'] ) ) {
-			if ( 'any' === $this->query_vars['status'] ) {
-				$this->query_vars['status_sql'] = '';
-			} else {
+			if ( 'any' !== $this->query_vars['status'] ) {
 				$this->query_vars['status'] = array_map( 'sanitize_text_field', $this->query_vars['status'] );
 
 				$placeholders = implode( ', ', array_fill( 0, count( $this->query_vars['status'] ), '%s' ) );
