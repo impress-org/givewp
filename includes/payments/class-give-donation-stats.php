@@ -120,12 +120,9 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return stdClass
 	 */
 	public function get_earnings( $query = array() ) {
-		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
-
 		// Add table and column name to query_vars to assist with date query generation.
 		$this->query_vars['table']         = $this->get_db()->donationmeta;
 		$this->query_vars['column']        = 'meta_value';
-		$this->query_vars['inner_join_at'] = $donation_col_name;
 
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
@@ -144,14 +141,14 @@ class Give_Donation_Stats extends Give_Stats {
 					CROSS JOIN (
 						SELECT IFNULL($function, 0) AS relative
 						FROM {$this->query_vars['table']}
-						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 						{$this->query_vars['inner_join_sql']}
 						WHERE 1=1
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 						AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					) o
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
@@ -161,7 +158,7 @@ class Give_Donation_Stats extends Give_Stats {
 		} else {
 			$sql = "SELECT IFNULL({$function}, 0) AS total
 					FROM {$this->query_vars['table']}
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$donation_col_name}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
 					{$this->query_vars['where_sql']}
