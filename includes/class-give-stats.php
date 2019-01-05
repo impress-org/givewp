@@ -645,7 +645,7 @@ class Give_Stats {
 	 */
 	private function set_inner_join_col_id( $table_name = '' ) {
 		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
-		$table_name = ! empty( $table_name ) ? $table_name : $this->query_vars['table'];
+		$table_name        = ! empty( $table_name ) ? $table_name : $this->query_vars['table'];
 
 		$arr = array(
 			$this->get_db()->posts        => 'ID',
