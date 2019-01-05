@@ -151,6 +151,16 @@ const config = {
 		// Minify images.
 		// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
 		new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}),
+
+		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
+		new BrowserSyncPlugin({
+			files: [
+				'**/*.php',
+			],
+			host: 'localhost',
+			port: 3000,
+			proxy: 'give.test',
+		}),
 	],
 };
 
@@ -170,16 +180,6 @@ if (inProduction) {
 
 	// Minify JS
 	config.plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}));
-} else {
-	// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
-	config.plugins.push(new BrowserSyncPlugin({
-		files: [
-			'**/*.php',
-		],
-		host: 'localhost',
-		port: 3000,
-		proxy: 'give.test',
-	}));
 }
 
 module.exports = config;
