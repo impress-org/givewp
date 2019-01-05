@@ -391,21 +391,21 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Date sql.
 		if ( $this->query_vars["start_date"] ) {
-			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["start_date"]}'";
+			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["start_date"]->format('mysql')}'";
 		}
 
 		if ( $this->query_vars["end_date"] ) {
-			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["end_date"]}'";
+			$this->query_vars['date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["end_date"]->format('mysql')}'";
 		}
 
 		// Relative date query.
 		if ( $this->query_vars['range'] ) {
 			if ( $this->query_vars["relative_start_date"] ) {
-				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["relative_start_date"]}'";
+				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date>='{$this->query_vars["relative_start_date"]->format('mysql')}'";
 			}
 
 			if ( $this->query_vars["relative_end_date"] ) {
-				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["relative_end_date"]}'";
+				$this->query_vars['relative_date_sql'][] = "AND {$this->get_db()->posts}.post_date<='{$this->query_vars["relative_end_date"]->format('mysql')}'";
 			}
 		}
 
