@@ -194,11 +194,11 @@ class Give_Stats {
 		$current = $this->date->parse_date_for_range( $range );
 
 		if ( empty( $this->query_vars['start_date'] ) ) {
-			$this->query_vars['start_date'] = $current['start']->format( 'mysql' );
+			$this->query_vars['start_date'] = $current['start'];
 		}
 
 		if ( empty( $this->query_vars['end_date'] ) ) {
-			$this->query_vars['end_date'] = $current['end']->format( 'mysql' );
+			$this->query_vars['end_date'] = $current['end'];
 		}
 
 		// Setup relative time.
@@ -207,11 +207,11 @@ class Give_Stats {
 			$relative = $this->date->parse_date_for_range( $range, true );
 
 			if ( empty( $this->query_vars['relative_start_date'] ) ) {
-				$this->query_vars['relative_start_date'] = $relative['start']->format( 'mysql' );
+				$this->query_vars['relative_start_date'] = $relative['start'];
 			}
 
 			if ( empty( $this->query_vars['relative_end_date'] ) ) {
-				$this->query_vars['relative_end_date'] = $relative['end']->format( 'mysql' );
+				$this->query_vars['relative_end_date'] = $relative['end'];
 			}
 		}
 	}
@@ -714,6 +714,13 @@ class Give_Stats {
 		global $wpdb;
 
 		return $wpdb;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_query_var(){
+		return $this->query_vars;
 	}
 
 	/**
