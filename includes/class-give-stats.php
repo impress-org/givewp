@@ -824,3 +824,4 @@ class Give_Stats {
 
 // @todo: deprecated count_where and payment_where
 // @todo: document stat query params
+// @todo: return query var and other useful information in result
