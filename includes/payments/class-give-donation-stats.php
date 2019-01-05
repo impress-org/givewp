@@ -185,6 +185,90 @@ class Give_Donation_Stats extends Give_Stats {
 	}
 
 	/**
+	 * Get donation earning and sales information
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @param array $query
+	 *
+	 * @return stdClass
+	 */
+	public function get_donation_statics( $query = array() ) {
+		$day_by_day = true;
+
+		$this->query_vars['table']  = $this->get_db()->posts;
+		$this->query_vars['column'] = 'post_date_gmt';
+
+		$column = "{$this->query_vars['table']}.{$this->query_vars['column']}";
+
+		$sql_clauses = array(
+			'select'  => "YEAR({$column}) AS year, MONTH({$column}) AS month, DAY({$column}) AS day",
+			'groupby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
+			'orderby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
+		);
+
+
+		$this->pre_query( $query );
+
+		$sql = "SELECT COUNT(ID) AS sales, SUM(m1.meta_value) AS earnings, {$sql_clauses['select']}
+					FROM {$this->query_vars['table']}
+					INNER JOIN {$this->get_db()->donationmeta} as m1 on m1.donation_id={$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
+					{$this->query_vars['where_sql']}
+					AND m1.meta_key='_give_payment_total'
+					{$this->query_vars['date_sql']}
+                    GROUP BY {$sql_clauses['groupby']}
+                    ORDER BY {$sql_clauses['orderby']} ASC";
+
+		$results = $this->get_db()->get_results( $sql );
+
+		$sales    = array();
+		$earnings = array();
+		$dates = array(
+			'start' => $this->query_vars['start_date'],
+			'end' => $this->query_vars['end_date']
+		);
+
+		// Initialise all arrays with timestamps and set values to 0.
+		while ( strtotime( $dates['start']->copy()->format( 'mysql' ) ) <= strtotime( $dates['end']->copy()->format( 'mysql' ) ) ) {
+			$day = ( true === $day_by_day )
+				? $dates['start']->day
+				: 1;
+
+			$timestamp = Give_Date::create( $dates['start']->year, $dates['start']->month, $day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
+
+			$sales[ $timestamp ]['x']    = $earnings[ $timestamp ]['x'] = $timestamp * 1000;
+			$sales[ $timestamp ]['y']    = 0;
+			$earnings[ $timestamp ]['y'] = 0.00;
+
+			$dates['start'] = ( true === $day_by_day )
+				? $dates['start']->addDays( 1 )
+				: $dates['start']->addMonth( 1 );
+		}
+
+		foreach ( $results as $result ) {
+			$day = ( true === $day_by_day )
+				? $result->day
+				: 1;
+
+			$timestamp = Give_Date::create( $result->year, $result->month, $day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
+
+			$sales[ $timestamp ]['y']  = $result->sales;
+			$earnings[ $timestamp ]['y'] = floatval( $result->earnings );
+		}
+
+		$sales    = array_values( $sales );
+		$earnings = array_values( $earnings );
+
+		$results = new stdClass();
+
+		$results->sales    = $sales;
+		$results->earnings = $earnings;
+
+		return $results;
+	}
+
+	/**
 	 * Get the best selling forms
 	 *
 	 * @since  2.4.1
