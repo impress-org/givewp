@@ -80,7 +80,6 @@
     "jquery-chosen": "latest",
     "jquery.payment": "latest",
     "magnific-popup": "latest",
-    "npm": "^5.7.1",
     "query-string": "^5.1.1",
     "querystringify": "^1.0.0",
     "uiblocker": "latest"
