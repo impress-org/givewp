@@ -142,7 +142,7 @@ const config = {
 		// Create RTL css.
 		new WebpackRTLPlugin({
 			suffix: '-rtl',
-			minify: 'production' === mode ? {safe: true} : false,
+			minify: 'production' === mode,
 		}),
 
 		// Copy images and SVGs
