@@ -606,4 +606,5 @@ class Give_Donation_Stats extends Give_Stats {
 // @todo: document stat query params
 // @todo: think about table backward compatibility for paymentmeta
 // @todo: think about custom dates
+// @todo: add snippet to show how to use donation api filters
 
