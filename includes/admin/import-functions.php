@@ -488,8 +488,8 @@ function give_import_donations_options() {
 			__( 'Mode', 'give' ),
 			__( 'Test Mode', 'give' ),
 		),
-		'post_meta'    => __( 'Import as Meta', 'give' ),
 		'donor_ip'     => __( 'Donor IP Address', 'give' ),
+		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
 }
 
