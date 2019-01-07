@@ -351,8 +351,6 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$this->pre_query( $query );
 
-		$this->pre_query( $query );
-
 		$sql = "SELECT {$this->query_vars['table']}.{$this->query_vars['column']} as form, COUNT({$this->query_vars['table']}.{$donation_col_name}) as total_donation
 			FROM {$this->query_vars['table']}
 			INNER JOIN {$this->get_db()->posts} ON {$this->query_vars['table']}.{$donation_col_name}={$this->get_db()->posts}.ID
