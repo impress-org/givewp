@@ -107,6 +107,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_sales', $result, $this );
+
 		return $result;
 	}
 
@@ -184,6 +191,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
 		$this->reset_query();
+
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_earnings', $result, $this );
 
 		return $result;
 	}
@@ -274,6 +288,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$results->query_vars = $this->query_vars;
 		$this->reset_query();
 
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$results = apply_filters( 'give_donation_stats_get_statistics', $results, $this );
+
 		return $results;
 	}
 
@@ -315,6 +336,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_busiest_day', $result, $this );
+
 		return $result;
 	}
 
@@ -348,6 +376,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
 		$this->reset_query();
+
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_best_selling', $result, $this );
 
 		return $result;
 	}
@@ -393,6 +428,13 @@ class Give_Donation_Stats extends Give_Stats {
 		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_most_valuable_sause', $result, $this );
+
 		return $result;
 	}
 
@@ -411,7 +453,16 @@ class Give_Donation_Stats extends Give_Stats {
 			? $query['status']
 			: array( 'refunded' );
 
-		return $this->get_sales( $query );
+		$result = $this->get_sales( $query );
+
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_refund_count', $result, $this );
+
+		return $result;
 	}
 
 	/**
@@ -429,7 +480,16 @@ class Give_Donation_Stats extends Give_Stats {
 			? $query['status']
 			: array( 'refunded' );
 
-		return $this->get_earnings( $query );
+		$result = $this->get_earnings( $query );
+
+		/**
+		 * Filter the result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_get_refund', $result, $this );
+
+		return $result;
 	}
 
 	/**
