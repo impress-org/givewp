@@ -58,6 +58,16 @@ class Give_Donation_Stats extends Give_Stats {
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
+		/**
+		 * Return custom result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_pre_get_sales', null, $this );
+		if( ! is_null( $result ) ){
+			return $result;
+		}
+
 		$allowed_functions = array( 'COUNT', 'AVG' );
 
 		$is_relative = true === $this->query_vars['relative'];
@@ -135,6 +145,16 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
+
+		/**
+		 * Return custom result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_pre_get_earnings', null, $this );
+		if( ! is_null( $result ) ){
+			return $result;
+		}
 
 		$allowed_functions = array( 'SUM', 'AVG' );
 
@@ -218,6 +238,18 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->query_vars['table']  = $this->get_db()->posts;
 		$this->query_vars['column'] = 'post_date_gmt';
 
+		$this->pre_query( $query );
+
+		/**
+		 * Return custom result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_pre_get_donation_statistics', null, $this );
+		if( ! is_null( $result ) ){
+			return $result;
+		}
+
 		$column = "{$this->query_vars['table']}.{$this->query_vars['column']}";
 
 		$sql_clauses = array(
@@ -225,9 +257,6 @@ class Give_Donation_Stats extends Give_Stats {
 			'groupby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
 			'orderby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
 		);
-
-
-		$this->pre_query( $query );
 
 		$sql = "SELECT COUNT(ID) AS sales, SUM(m1.meta_value) AS earnings, {$sql_clauses['select']}
 					FROM {$this->query_vars['table']}
@@ -315,6 +344,16 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$this->pre_query( $query );
 
+		/**
+		 * Return custom result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_pre_get_busiest_day', null, $this );
+		if( ! is_null( $result ) ){
+			return $result;
+		}
+
 		$sql = "SELECT DAYOFWEEK({$this->query_vars['column']}) AS day, COUNT(ID) as total
 				FROM {$this->query_vars['table']}
 				{$this->query_vars['inner_join_sql']}
@@ -354,38 +393,9 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
-	 * @param       $number int The number of results to retrieve with the default set to 10.
-	 *
-	 * @return stdClass       Best selling forms
+	 * @param array $query
 	 */
-	public function get_best_selling( $number = 10 ) {
-		$meta_table = __give_v20_bc_table_details( 'form' );
-
-		$sql = $this->get_db()->prepare(
-			"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
-				FROM {$meta_table['name']}
-				WHERE meta_key='_give_form_sales' AND meta_value > 0
-				GROUP BY meta_value+0
-				DESC LIMIT %d;",
-			$number
-		);
-
-		$result = $this->get_db()->get_results( $sql );
-
-		// Reset query vars.
-		$result->sql        = $sql;
-		$result->query_vars = $this->query_vars;
-		$this->reset_query();
-
-		/**
-		 * Filter the result
-		 *
-		 * @since 2.4.1
-		 */
-		$result = apply_filters( 'give_donation_stats_get_best_selling', $result, $this );
-
-		return $result;
-	}
+	public function get_best_selling( $query = array() ) {}
 
 	/**
 	 * Get most valuable cause
@@ -405,6 +415,16 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->query_vars['column'] = 'meta_value';
 
 		$this->pre_query( $query );
+
+		/**
+		 * Return custom result
+		 *
+		 * @since 2.4.1
+		 */
+		$result = apply_filters( 'give_donation_stats_pre_get_most_valuable_cause', null, $this );
+		if( ! is_null( $result ) ){
+			return $result;
+		}
 
 		$sql = "SELECT {$this->query_vars['table']}.{$this->query_vars['column']} as form, COUNT({$this->query_vars['table']}.{$donation_col_name}) as total_donation
 			FROM {$this->query_vars['table']}
@@ -455,13 +475,6 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$result = $this->get_sales( $query );
 
-		/**
-		 * Filter the result
-		 *
-		 * @since 2.4.1
-		 */
-		$result = apply_filters( 'give_donation_stats_get_refund_count', $result, $this );
-
 		return $result;
 	}
 
@@ -481,13 +494,6 @@ class Give_Donation_Stats extends Give_Stats {
 			: array( 'refunded' );
 
 		$result = $this->get_earnings( $query );
-
-		/**
-		 * Filter the result
-		 *
-		 * @since 2.4.1
-		 */
-		$result = apply_filters( 'give_donation_stats_get_refund', $result, $this );
 
 		return $result;
 	}
