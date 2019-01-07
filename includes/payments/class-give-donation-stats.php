@@ -265,6 +265,11 @@ class Give_Donation_Stats extends Give_Stats {
 		$results->sales    = $sales;
 		$results->earnings = $earnings;
 
+		// Set query_vars in result
+		$results->query_vars = $this->query_vars;
+
+		$this->reset_query();
+
 		return $results;
 	}
 
