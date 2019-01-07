@@ -103,6 +103,8 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		// Reset query vars.
+		$result->sql        = $sql;
+		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
 		return $result;
@@ -121,8 +123,8 @@ class Give_Donation_Stats extends Give_Stats {
 	 */
 	public function get_earnings( $query = array() ) {
 		// Add table and column name to query_vars to assist with date query generation.
-		$this->query_vars['table']         = $this->get_db()->donationmeta;
-		$this->query_vars['column']        = 'meta_value';
+		$this->query_vars['table']  = $this->get_db()->donationmeta;
+		$this->query_vars['column'] = 'meta_value';
 
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
@@ -179,6 +181,8 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		// Reset query vars.
+		$result->sql        = $sql;
+		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
 		return $result;
@@ -224,9 +228,9 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$sales    = array();
 		$earnings = array();
-		$dates = array(
+		$dates    = array(
 			'start' => $this->query_vars['start_date'],
-			'end' => $this->query_vars['end_date']
+			'end'   => $this->query_vars['end_date'],
 		);
 
 		// Initialise all arrays with timestamps and set values to 0.
@@ -253,7 +257,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 			$timestamp = Give_Date::create( $result->year, $result->month, $day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
 
-			$sales[ $timestamp ]['y']  = $result->sales;
+			$sales[ $timestamp ]['y']    = $result->sales;
 			$earnings[ $timestamp ]['y'] = floatval( $result->earnings );
 		}
 
@@ -265,9 +269,9 @@ class Give_Donation_Stats extends Give_Stats {
 		$results->sales    = $sales;
 		$results->earnings = $earnings;
 
-		// Set query_vars in result
+		// Reset query vars.
+		$results->sql        = $sql;
 		$results->query_vars = $this->query_vars;
-
 		$this->reset_query();
 
 		return $results;
@@ -281,7 +285,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @param array $query Array of query arguments
 	 *
-	 * @return string
+	 * @return stdClass
 	 */
 	public function get_busiest_day( $query = array() ) {
 		// Add table and column name to query_vars to assist with date query generation.
@@ -302,13 +306,16 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$result = $this->get_db()->get_row( $sql );
 
-		$day = is_null( $result )
+		$result->day = is_null( $result )
 			? ''
 			: Give_Date::getDays()[ $result->day - 1 ];
 
+		// Reset query vars.
+		$result->sql        = $sql;
+		$result->query_vars = $this->query_vars;
 		$this->reset_query();
 
-		return $day;
+		return $result;
 	}
 
 	/**
@@ -321,20 +328,28 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @param       $number int The number of results to retrieve with the default set to 10.
 	 *
-	 * @return array       Best selling forms
+	 * @return stdClass       Best selling forms
 	 */
 	public function get_best_selling( $number = 10 ) {
 		$meta_table = __give_v20_bc_table_details( 'form' );
 
-		$give_forms = $this->get_db()->get_results(
-			$this->get_db()->prepare(
-				"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
-				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
+		$sql = $this->get_db()->prepare(
+			"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
+				FROM {$meta_table['name']}
+				WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
-				DESC LIMIT %d;", $number
-			) );
+				DESC LIMIT %d;",
+			$number
+		);
 
-		return $give_forms;
+		$result = $this->get_db()->get_results( $sql );
+
+		// Reset query vars.
+		$result->sql        = $sql;
+		$result->query_vars = $this->query_vars;
+		$this->reset_query();
+
+		return $result;
 	}
 
 	/**
@@ -345,7 +360,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @param array $query
 	 *
-	 * @return int
+	 * @return stdClass
 	 */
 	public function get_most_valuable_cause( $query = array() ) {
 		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
@@ -371,9 +386,14 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$result = $this->get_db()->get_row( $sql );
 
-		$form = is_null( $result ) ? 0 : $result->form;
+		$result->form = is_null( $result ) ? 0 : absint( $result->form );
 
-		return absint( $form );
+		// Reset query vars.
+		$result->sql        = $sql;
+		$result->query_vars = $this->query_vars;
+		$this->reset_query();
+
+		return $result;
 	}
 
 	/**
@@ -461,7 +481,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Set empty sql collection string to array
 		foreach ( $sql_types as $sql_type ) {
-			$this->query_vars[$sql_type] = array_filter( (array) $this->query_vars['where_sql'] );
+			$this->query_vars[ $sql_type ] = array_filter( (array) $this->query_vars['where_sql'] );
 		}
 
 		// Where sql.
