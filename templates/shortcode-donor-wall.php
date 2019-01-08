@@ -1,6 +1,6 @@
 <?php
 /**
- * This template is used to display the donation grid with [donation_grid]
+ * This template is used to display the donation grid with [give_donor_wall]
  */
 
 // Exit if accessed directly.
@@ -59,13 +59,13 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php echo give_donation_amount( $donation['donation_id'], true ); ?>
+						<?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
 					</span>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php echo date_i18n( give_date_format(), strtotime( $donation['_give_completed_date'] ) ); ?>
+						<?php echo esc_html( give_get_formatted_date( $donation[ 'donation_date' ], give_date_format(), 'Y-m-d H:i:s' ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
