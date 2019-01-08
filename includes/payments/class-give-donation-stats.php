@@ -64,7 +64,7 @@ class Give_Donation_Stats extends Give_Stats {
 		 * @since 2.4.1
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_sales', null, $this );
-		if( ! is_null( $result ) ){
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 
@@ -152,7 +152,7 @@ class Give_Donation_Stats extends Give_Stats {
 		 * @since 2.4.1
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_earnings', null, $this );
-		if( ! is_null( $result ) ){
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 
@@ -246,7 +246,7 @@ class Give_Donation_Stats extends Give_Stats {
 		 * @since 2.4.1
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_donation_statistics', null, $this );
-		if( ! is_null( $result ) ){
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 
@@ -350,7 +350,7 @@ class Give_Donation_Stats extends Give_Stats {
 		 * @since 2.4.1
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_busiest_day', null, $this );
-		if( ! is_null( $result ) ){
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 
@@ -395,7 +395,8 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @param array $query
 	 */
-	public function get_best_selling( $query = array() ) {}
+	public function get_best_selling( $query = array() ) {
+	}
 
 	/**
 	 * Get most valuable cause
@@ -422,7 +423,7 @@ class Give_Donation_Stats extends Give_Stats {
 		 * @since 2.4.1
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_most_valuable_cause', null, $this );
-		if( ! is_null( $result ) ){
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 
