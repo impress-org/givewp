@@ -104,17 +104,11 @@ function give_get_donation_form( $args = array() ) {
 		} else {
 			/**
 			 * Show form title:
-			 * 1. if show_title params set to true
-			 * 2. if admin set form display_style to button
+			 * 1. if admin set form display_style to button or modal
 			 */
 			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
-			if (
-				(
-					( isset( $args['show_title'] ) && $args['show_title'] == true )
-					|| ( 'button' === get_post_meta( $form_id, '_give_payment_display', true ) )
-				)
-				&& ! doing_action( 'give_single_form_summary' )
-			) {
+
+			if ( ! doing_action( 'give_single_form_summary' ) ) {
 				echo $form_title;
 			}
 
