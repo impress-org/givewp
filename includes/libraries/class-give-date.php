@@ -114,13 +114,13 @@ final class Give_Date extends Carbon {
 	 * @since  2.4.1
 	 * @access public
 	 *
-	 * @param string $range    Predefined date range
+	 * @param string|array $range    Predefined date range
 	 * @param bool   $relative Flag to to get relative date or not
 	 *
 	 * @return array
 	 */
 	public function parse_date_for_range( $range = 'last_30_days', $relative = false ) {
-		if ( ! array_key_exists( $range, $this->get_predefined_dates() ) ) {
+		if ( is_string( $range ) && ! array_key_exists( $range, $this->get_predefined_dates() ) ) {
 			$range = 'last_30_days';
 		}
 
@@ -205,6 +205,40 @@ final class Give_Date extends Carbon {
 					$dates = array(
 						'start' => $this->copy()->subYear( 1 )->startOfYear(),
 						'end'   => $this->copy()->subYear( 1 )->endOfYear(),
+					);
+					break;
+
+				default:
+					$required_args     = array( 'start_date', 'end_date' );
+					$has_required_args = 2 === count( array_intersect( array_keys( $range ), $required_args ) );
+
+					$start = $end = current_time( 'timestamp' );
+
+					if ( is_array( $range ) && $has_required_args ) {
+						$start = strtotime( $range['start_date'] );
+						$end   = strtotime( $range['end_date'] );
+					}
+
+					$dates = array(
+						'start' => self::create(
+							date( 'Y', $start ),
+							date( 'm', $start ),
+							date( 'd', $start ),
+							0,
+							0,
+							0,
+							$this->getWpTimezone()
+						)->startOfDay(),
+
+						'end' => self::create(
+							date( 'Y', $end ),
+							date( 'm', $end ),
+							date( 'd', $end ),
+							0,
+							0,
+							0,
+							$this->getWpTimezone()
+						)->endOfDay(),
 					);
 					break;
 			}
