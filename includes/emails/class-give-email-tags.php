@@ -1095,7 +1095,8 @@ function give_email_tag_payment_total( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment_total = give_currency_filter( give_get_payment_total( $tag_args['payment_id'] ) );
+			$give_payment_total = give_currency_filter( give_format_amount( give_get_payment_total( $tag_args['payment_id'] ) ) );
+			$payment_total      = html_entity_decode( $give_payment_total, ENT_COMPAT, 'UTF-8' );
 			break;
 	}
 
