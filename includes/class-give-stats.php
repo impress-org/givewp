@@ -719,7 +719,7 @@ class Give_Stats {
 	/**
 	 * @return array
 	 */
-	public function get_query_var(){
+	public function get_query_var() {
 		return $this->query_vars;
 	}
 
