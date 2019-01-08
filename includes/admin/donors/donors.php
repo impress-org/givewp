@@ -316,6 +316,12 @@ function give_donor_view( $donor ) {
 		$read_only = 'readonly="readonly"';
 	}
 
+	/* @var Give_Donor_Stats $donor_stats */
+	$donor_stats = new Give_Donor_Stats();
+
+	/* @var stdClass $donated_stats */
+	$donated_stats = $donor_stats->donated( array( 'donor_id' => $donor->id ) );
+
 	// List of title prefixes.
 	$title_prefixes = give_get_name_title_prefixes();
 
@@ -529,7 +535,7 @@ function give_donor_view( $donor ) {
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $donor->get_total_donation_amount(), array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $donated_stats->total, array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php
 			/**
