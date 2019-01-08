@@ -35,6 +35,7 @@ class Give_Donation_Stats extends Give_Stats {
 			'status'     => array( 'publish' ),
 			'give_forms' => array(),
 			'gateways'   => array(),
+			'donor_id'   => 0,
 		), $this->query_var_defaults );
 
 		parent::__construct( $query );
@@ -588,6 +589,9 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Add sql for specific donation payment gateways.
 		$this->set_meta_sql( 'gateways', '_give_payment_gateway' );
+
+		// Add sql for specific donation donor id.
+		$this->set_meta_sql( 'donor_id', '_give_payment_donor_id' );
 
 		// Create sql query string
 		foreach ( $sql_types as $sql_type ) {
