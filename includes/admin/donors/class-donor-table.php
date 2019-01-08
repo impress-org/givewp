@@ -53,6 +53,14 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public $total = 0;
 
 	/**
+	 * Object.
+	 *
+	 * @var Give_Donor_Stats
+	 * @since 2.4.1
+	 */
+	private $donor_stats;
+
+	/**
 	 * Get things started.
 	 *
 	 * @since 1.0
@@ -66,6 +74,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'ajax'     => false, // Does this table support ajax?.
 		) );
 
+
+		$this->donor_stats = new Give_Donor_Stats();
 	}
 	/**
 	 * Add donors search filter.
@@ -392,6 +402,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		if ( $donors ) {
 
+			/* @var stdClass $donor */
 			foreach ( $donors as $donor ) {
 
 				$user_id      = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
@@ -399,14 +410,18 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 				// If title prefix is set, then update the donor name.
 				$donor->name = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
+				/* @var stdClass $donation_count_stats */
+				$donation_count_stats = $this->donor_stats->donation_count( array( 'donor_id' => $donor->id ) );
+				/* @var stdClass $donated_stats */
+				$donated_stats = $this->donor_stats->donated( array( 'donor_id' => $donor->id ) );
 
 				$data[] = array(
 					'id'            => $donor->id,
 					'user_id'       => $user_id,
 					'name'          => $donor->name,
 					'email'         => $donor->email,
-					'num_donations' => $donor->purchase_count,
-					'amount_spent'  => $donor->purchase_value,
+					'num_donations' => $donation_count_stats->sales,
+					'amount_spent'  => $donated_stats->total,
 					'date_created'  => $donor->date_created,
 				);
 			}
