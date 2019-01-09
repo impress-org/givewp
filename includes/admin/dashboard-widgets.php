@@ -45,7 +45,7 @@ function give_render_dashboard_sales_widget() {
 	}
 
 	?>
-	<div id="give-statistic-dashboard-widget">
+	<div id="give-dashboard-sales-widget">
 		<span class="spinner is-active" style="float: none;margin: auto 50%;padding-bottom: 15px;"></span>
 
 		<script>
@@ -53,10 +53,10 @@ function give_render_dashboard_sales_widget() {
 				jQuery.ajax({
 					url: ajaxurl,
 					data: {
-						action: 'give_render_dashboard_widget'
+						action: 'give_render_dashboard_sales_widget'
 					},
 					success: function (response) {
-						jQuery('#give-statistic-dashboard-widget').html(response);
+						jQuery('#give-dashboard-sales-widget').html(response);
 					}
 				});
 			})
@@ -71,14 +71,14 @@ function give_render_dashboard_sales_widget() {
  *
  * @since 2.4.0
  */
-function give_ajax_render_dashboard_widget(){
+function give_ajax_render_dashboard_sales_widget(){
 	ob_start();
 	give_dashboard_sales_widget();
 
 	wp_send_json( ob_get_clean() );
 
 }
-add_action( 'wp_ajax_give_render_dashboard_widget', 'give_ajax_render_dashboard_widget' );
+add_action( 'wp_ajax_give_render_dashboard_sales_widget', 'give_ajax_render_dashboard_sales_widget' );
 
 /**
  * Sales Summary Dashboard Widget
