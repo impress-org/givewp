@@ -891,9 +891,10 @@ function give_can_view_receipt( $donation_id ) {
 		// Check whether it is purchase session?
 		// This condition is to show receipt to donor after donation.
 		$purchase_session = give_get_purchase_session();
+
 		if (
 			! empty( $purchase_session )
-			&& $purchase_session['donation_id'] === $donation_id
+			&& absint( $purchase_session['donation_id'] ) === absint( $donation_id )
 		) {
 			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
 		}
