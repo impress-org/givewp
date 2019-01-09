@@ -22,11 +22,63 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_render_dashboard_sales_widget' );
 	}
 }
 
 add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
+
+
+/**
+ * Sales Summary Dashboard Widget render callback
+ * Note: only for internal use
+ *
+ * Builds and renders the ajaxify statistics dashboard widget.
+ * This widget displays the current month's donations.
+ *
+ * @since  2.4.0
+ * @return void
+ */
+function give_render_dashboard_sales_widget() {
+	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
+		return;
+	}
+
+	?>
+	<div id="give-statistic-dashboard-widget">
+		<span class="spinner is-active" style="float: none;margin: auto 50%;padding-bottom: 15px;"></span>
+
+		<script>
+			jQuery(document).ready(function () {
+				jQuery.ajax({
+					url: ajaxurl,
+					data: {
+						action: 'give_render_dashboard_widget'
+					},
+					success: function (response) {
+						jQuery('#give-statistic-dashboard-widget').html(response);
+					}
+				});
+			})
+		</script>
+	</div>
+	<?php
+}
+
+/**
+ * Ajax handler for dashboard statistic widget render
+ * Note: only for internal use
+ *
+ * @since 2.4.0
+ */
+function give_ajax_render_dashboard_widget(){
+	ob_start();
+	give_dashboard_sales_widget();
+
+	wp_send_json( ob_get_clean() );
+
+}
+add_action( 'wp_ajax_give_render_dashboard_widget', 'give_ajax_render_dashboard_widget' );
 
 /**
  * Sales Summary Dashboard Widget
