@@ -555,7 +555,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
 		$payment_total = html_entity_decode( $payment_total, ENT_COMPAT, 'UTF-8' );
 
-		$this->assertEquals( '$20', htmlentities( $payment_total, ENT_COMPAT, 'UTF-8' ) );
+		$this->assertEquals( '$20.00', htmlentities( $payment_total, ENT_COMPAT, 'UTF-8' ) );
 
 		/*
 		 * Case 2: Payment total with filter
