@@ -63,7 +63,6 @@
     "stylelint": "^9.9.0",
     "stylelint-config-wordpress": "^13.1.0",
     "uglifyjs-webpack-plugin": "^2.1.1",
-    "url-loader": "^1.1.2",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.0",
     "webpack-rtl-plugin": "^1.7.0",
