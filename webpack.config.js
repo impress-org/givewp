@@ -41,7 +41,7 @@ const config = {
 		jquery: 'jQuery',
 		lodash: 'lodash',
 	},
-	devtool: 'source-map',
+	devtool: ! inProduction ? 'source-map' : '',
 	module: {
 		rules: [
 
@@ -71,7 +71,7 @@ const config = {
 					{
 						loader: 'style-loader',
 						options: {
-							sourceMap: ! inProduction,
+							sourceMap: true,
 						},
 					}
 				],
@@ -85,13 +85,13 @@ const config = {
 					{
 						loader: 'css-loader',
 						options: {
-							sourceMap: ! inProduction,
+							sourceMap: true,
 						},
 					},
 					{
 						loader: 'sass-loader',
 						options: {
-							sourceMap: ! inProduction,
+							sourceMap: true,
 							outputStyle: (inProduction ? 'compressed' : 'nested'),
 						},
 					}],
@@ -169,7 +169,7 @@ const config = {
 						comments: false
 					},
 				},
-				sourceMap: ! inProduction
+				sourceMap: true
 			}),
 			new OptimizeCSSAssetsPlugin({
 				cssProcessor: require('cssnano'),
