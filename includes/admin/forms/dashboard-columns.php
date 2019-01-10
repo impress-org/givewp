@@ -460,7 +460,7 @@ add_action( 'parse_request', 'give_form_search_query_filter' );
  *
  * @since 2.4.0
  *
- * @param $query the WP_Query instance (passed by reference).
+ * @param $query WP_Query the WP_Query instance (passed by reference).
  */
 
 function give_search_form_by_id( $query ) {
