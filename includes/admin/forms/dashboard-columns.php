@@ -210,7 +210,7 @@ function give_sort_forms( $vars ) {
 				array(
 					'key'  => '_give_set_price',
 					'type' => 'NUMERIC',
-				)
+				),
 			);
 
 			break;
@@ -262,9 +262,11 @@ function give_filter_forms( $vars ) {
 
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
-				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 403,
-				) );
+				wp_die(
+					esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+						'response' => 403,
+					)
+				);
 			}
 			$vars = array_merge(
 				$vars,
@@ -396,57 +398,57 @@ function give_form_search_query_filter( $wp ) {
 
 	if (
 		isset( $wp->query_vars['post_type'] )
-	     && 'give_forms' == $wp->query_vars['post_type']
-		&& isset($_GET['give-forms-goal-filter'])
+		 && 'give_forms' == $wp->query_vars['post_type']
+		&& isset( $_GET['give-forms-goal-filter'] )
 	) {
 
 		$wp->query_vars['date_query'] =
 			array(
-				'after'     => ! empty ( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
-				'before'    => ! empty ( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
+				'before'    => ! empty( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
 				'inclusive' => true,
 			);
-			switch ( $_GET['give-forms-goal-filter'] ) {
-				case 'goal_in_progress':
-					$wp->query_vars['meta_query'] =
+		switch ( $_GET['give-forms-goal-filter'] ) {
+			case 'goal_in_progress':
+				$wp->query_vars['meta_query'] =
+					array(
+						'relation' => 'AND',
 						array(
-							'relation' => 'AND',
-							array(
-								'key'     => '_give_form_goal_progress',
-								'value'   => array( 1, 99 ),
-								'compare' => 'BETWEEN',
-								'type'    => 'NUMERIC',
-							),
-						);
+							'key'     => '_give_form_goal_progress',
+							'value'   => array( 1, 99 ),
+							'compare' => 'BETWEEN',
+							'type'    => 'NUMERIC',
+						),
+					);
 
-					break;
-				case 'goal_achieved':
-					$wp->query_vars['meta_query'] =
+				break;
+			case 'goal_achieved':
+				$wp->query_vars['meta_query'] =
+					array(
+						'relation' => 'AND',
 						array(
-							'relation' => 'AND',
-							array(
-								'key'     => '_give_form_goal_progress',
-								'value'   => 100,
-								'compare' => '>=',
-								'type'    => 'NUMERIC',
-							),
-						);
-					break;
-				case 'goal_not_set':
-					$wp->query_vars['meta_query'] =
+							'key'     => '_give_form_goal_progress',
+							'value'   => 100,
+							'compare' => '>=',
+							'type'    => 'NUMERIC',
+						),
+					);
+				break;
+			case 'goal_not_set':
+				$wp->query_vars['meta_query'] =
+					array(
+						'relation' => 'OR',
 						array(
-							'relation' => 'OR',
-							array(
-								'key'     => '_give_goal_option',
-								'value'   => 'disabled',
-								'compare' => '=',
-							),
-							array(
-								'key'     => '_give_goal_option',
-								'compare'   => 'NOT EXISTS',
-							),
-						);
-					break;
+							'key'     => '_give_goal_option',
+							'value'   => 'disabled',
+							'compare' => '=',
+						),
+						array(
+							'key'     => '_give_goal_option',
+							'compare' => 'NOT EXISTS',
+						),
+					);
+				break;
 		}
 	}
 }
@@ -489,7 +491,7 @@ function give_forms_advanced_filter( $which ) {
 	/* @var stdClass $screen */
 	$screen = get_current_screen();
 
-	if( 'edit' !== $screen->parent_base || 'give_forms' !== $screen->post_type ) {
+	if ( 'edit' !== $screen->parent_base || 'give_forms' !== $screen->post_type ) {
 		return;
 	}
 
@@ -506,39 +508,59 @@ function give_forms_advanced_filter( $which ) {
 	<div id="give-forms-advanced-filter" class="give-filters">
 		<div class="give-filter give-filter-search">
 			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
-			<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
-				'ID' => 'form-search-submit',
-			) ); ?>
+			<?php
+			submit_button(
+				__( 'Search', 'give' ), 'button', false, false, array(
+					'ID' => 'form-search-submit',
+				)
+			);
+			?>
 		</div>
 		<div id="give-payment-date-filters">
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
-				       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
 				<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
-				       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+					   value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
 				<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
-				       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+					   value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
 			</div>
 		</div>
 		<div id="give-payment-form-filter" class="give-filter">
 			<label for="give-donation-forms-filter"
-			       class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
+				   class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
 			<select id="give-forms-goal-filter" name="give-forms-goal-filter" class="give-forms-goal-filter">
-				<option value="any_goal_status" <?php if ( "any_goal_status" === $give_forms_goal_filter ) {
-					echo "selected";
-				} ?>><?php _e( 'Any Goal Status', 'give' ); ?></option>
-				<option value="goal_achieved" <?php if ( "goal_achieved" === $give_forms_goal_filter ) {
-					echo "selected";
-				} ?>><?php _e( 'Goal Achieved', 'give' ); ?></option>
-				<option value="goal_in_progress" <?php if ( "goal_in_progress" === $give_forms_goal_filter ) {
-					echo "selected";
-				} ?>><?php _e( 'Goal In Progress', 'give' ); ?></option>
-				<option value="goal_not_set" <?php if ( "goal_not_set" === $give_forms_goal_filter ) {
-					echo "selected";
-				} ?>><?php _e( 'Goal Not Set', 'give' ); ?></option>
+				<option value="any_goal_status" 
+				<?php
+				if ( 'any_goal_status' === $give_forms_goal_filter ) {
+					echo 'selected';
+				}
+				?>
+				><?php _e( 'Any Goal Status', 'give' ); ?></option>
+				<option value="goal_achieved" 
+				<?php
+				if ( 'goal_achieved' === $give_forms_goal_filter ) {
+					echo 'selected';
+				}
+				?>
+				><?php _e( 'Goal Achieved', 'give' ); ?></option>
+				<option value="goal_in_progress" 
+				<?php
+				if ( 'goal_in_progress' === $give_forms_goal_filter ) {
+					echo 'selected';
+				}
+				?>
+				><?php _e( 'Goal In Progress', 'give' ); ?></option>
+				<option value="goal_not_set" 
+				<?php
+				if ( 'goal_not_set' === $give_forms_goal_filter ) {
+					echo 'selected';
+				}
+				?>
+				><?php _e( 'Goal Not Set', 'give' ); ?></option>
 			</select>
 		</div>
 		<div class="give-filter">
