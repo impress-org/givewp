@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_render_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_render_dashboard_stats_widget' );
 	}
 }
 
@@ -39,7 +39,7 @@ add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
  * @since  2.4.0
  * @return void
  */
-function give_render_dashboard_sales_widget() {
+function give_render_dashboard_stats_widget() {
 	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 		return;
 	}
@@ -53,7 +53,7 @@ function give_render_dashboard_sales_widget() {
 				jQuery.ajax({
 					url: ajaxurl,
 					data: {
-						action: 'give_render_dashboard_sales_widget'
+						action: 'give_render_dashboard_stats_widget'
 					},
 					success: function (response) {
 						jQuery('#give-dashboard-sales-widget').html(response);
@@ -71,14 +71,14 @@ function give_render_dashboard_sales_widget() {
  *
  * @since 2.4.0
  */
-function give_ajax_render_dashboard_sales_widget(){
+function give_ajax_render_dashboard_stats_widget(){
 	ob_start();
-	give_dashboard_sales_widget();
+	give_dashboard_stats_widget();
 
 	wp_send_json( ob_get_clean() );
 
 }
-add_action( 'wp_ajax_give_render_dashboard_sales_widget', 'give_ajax_render_dashboard_sales_widget' );
+add_action( 'wp_ajax_give_render_dashboard_stats_widget', 'give_ajax_render_dashboard_stats_widget' );
 
 /**
  * Sales Summary Dashboard Widget
@@ -88,7 +88,7 @@ add_action( 'wp_ajax_give_render_dashboard_sales_widget', 'give_ajax_render_dash
  * @since       1.0
  * @return void
  */
-function give_dashboard_sales_widget() {
+function give_dashboard_stats_widget() {
 
 	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 		return;
