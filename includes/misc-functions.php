@@ -891,9 +891,10 @@ function give_can_view_receipt( $donation_id ) {
 		// Check whether it is purchase session?
 		// This condition is to show receipt to donor after donation.
 		$purchase_session = give_get_purchase_session();
+
 		if (
 			! empty( $purchase_session )
-			&& $purchase_session['donation_id'] === $donation_id
+			&& absint( $purchase_session['donation_id'] ) === absint( $donation_id )
 		) {
 			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
 		}
@@ -2278,7 +2279,8 @@ function give_get_safe_asset_url( $url ) {
 function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
 	$date_obj       = DateTime::createFromFormat( $current_format, $date );
-	$formatted_date = $date_obj->format( $format );
+
+	$formatted_date = $date_obj instanceof DateTime ? $date_obj->format( $format ) : '';
 
 	/**
 	 * Give get formatted date.

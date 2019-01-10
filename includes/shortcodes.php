@@ -900,6 +900,17 @@ function give_form_grid_shortcode( $atts ) {
 		);
 		$form_args['tax_query'][] = $tax_query;
 	}
+	
+	/**
+	 * Filter to modify WP Query for Total Goal.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $form_args WP query argument for Grid.
+	 *
+	 * @return array $form_args WP query argument for Grid.
+	 */
+	$form_args = (array) apply_filters( 'give_form_grid_shortcode_query_args', $form_args );
 
 	// Maybe filter by form Amount Donated or Number of Donations.
 	switch ( $atts['orderby'] ) {

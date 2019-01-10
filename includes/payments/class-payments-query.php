@@ -632,19 +632,36 @@ class Give_Payments_Query extends Give_Stats {
 			$this->__unset( 's' );
 
 		} else if ( ! empty( $search ) ) {
-			$search_meta = array(
-				'relation' => 'OR',
-				array(
-					'key'     => '_give_donor_billing_first_name',
-					'value'   => $search,
-					'compare' => 'LIKE'
-				),
-				array(
-					'key'     => '_give_donor_billing_last_name',
-					'value'   => $search,
-					'compare' => 'LIKE'
-				)
-			);
+			$search_parts = preg_split( '/\s+/', $search );
+			if ( is_array( $search_parts ) && 2 === count( $search_parts ) ) {
+				$search_meta = array(
+					'relation' => 'AND',
+					array(
+						'key'     => '_give_donor_billing_first_name',
+						'value'   => $search_parts[0],
+						'compare' => '=',
+					),
+					array(
+						'key'     => '_give_donor_billing_last_name',
+						'value'   => $search_parts[1],
+						'compare' => '=',
+					),
+				);
+			} else {
+				$search_meta = array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_give_donor_billing_first_name',
+						'value'   => $search,
+						'compare' => 'LIKE',
+					),
+					array(
+						'key'     => '_give_donor_billing_last_name',
+						'value'   => $search,
+						'compare' => 'LIKE',
+					),
+				);
+			}
 			$this->__set( 'meta_query', $search_meta );
 
 			$this->__unset( 's' );
