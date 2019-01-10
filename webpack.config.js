@@ -3,15 +3,17 @@
 /**
  * External dependencies
  */
-const path                 = require('path');
-const webpack              = require('webpack');
-const CopyWebpackPlugin    = require('copy-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const BrowserSyncPlugin    = require('browser-sync-webpack-plugin');
-const ImageminPlugin       = require('imagemin-webpack-plugin').default;
-const CleanWebpackPlugin   = require('clean-webpack-plugin');
-const WebpackRTLPlugin     = require('webpack-rtl-plugin');
-const wpPot                = require('wp-pot');
+const path                    = require('path');
+const webpack                 = require('webpack');
+const CopyWebpackPlugin       = require('copy-webpack-plugin');
+const MiniCSSExtractPlugin    = require('mini-css-extract-plugin');
+const BrowserSyncPlugin       = require('browser-sync-webpack-plugin');
+const ImageminPlugin          = require('imagemin-webpack-plugin').default;
+const CleanWebpackPlugin      = require('clean-webpack-plugin');
+const WebpackRTLPlugin        = require('webpack-rtl-plugin');
+const wpPot                   = require('wp-pot');
+const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const inProduction = ('production' === process.env.NODE_ENV);
 const mode         = inProduction ? 'production' : 'development';
@@ -39,7 +41,7 @@ const config = {
 		jquery: 'jQuery',
 		lodash: 'lodash',
 	},
-	devtool: 'source-map',
+	devtool: ! inProduction ? 'source-map' : '',
 	module: {
 		rules: [
 
@@ -85,12 +87,8 @@ const config = {
 						options: {
 							sourceMap: true,
 						},
-					}, {
-						loader: 'postcss-loader',
-						options: {
-							sourceMap: true,
-						},
-					}, {
+					},
+					{
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
@@ -142,7 +140,7 @@ const config = {
 		// Create RTL css.
 		new WebpackRTLPlugin({
 			suffix: '-rtl',
-			minify: 'production' === mode,
+			minify: inProduction,
 		}),
 
 		// Copy images and SVGs
@@ -162,6 +160,30 @@ const config = {
 			proxy: 'give.test',
 		}),
 	],
+
+	optimization: {
+		minimizer: [
+			new UglifyJsPlugin({
+				uglifyOptions: {
+					output: {
+						comments: false
+					},
+				},
+				sourceMap: true
+			}),
+			new OptimizeCSSAssetsPlugin({
+				cssProcessor: require('cssnano'),
+				cssProcessorPluginOptions: {
+					preset: ['advanced', {
+						autoprefixer: {},
+						discardComments: {
+							removeAll: true
+						}
+					}],
+				}
+			}),
+		]
+	}
 };
 
 if (inProduction) {
@@ -174,12 +196,6 @@ if (inProduction) {
 		bugReport: 'https://github.com/impress-org/give/issues/new',
 		team: 'GiveWP <info@givewp.com>',
 	});
-
-	// Uglify JS
-	config.plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
-
-	// Minify JS
-	config.plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}));
 }
 
 module.exports = config;
