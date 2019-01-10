@@ -174,7 +174,12 @@ const config = {
 			new OptimizeCSSAssetsPlugin({
 				cssProcessor: require('cssnano'),
 				cssProcessorPluginOptions: {
-					preset: ['default', { discardComments: { removeAll: true } }],
+					preset: ['advanced', {
+						autoprefixer: {},
+						discardComments: {
+							removeAll: true
+						}
+					}],
 				}
 			}),
 		]
