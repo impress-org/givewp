@@ -3100,6 +3100,25 @@ function give_v224_update_donor_meta_forms_id_callback() {
 	}
 }
 
+/**
+ * Add custom comment table
+ *
+ * @since 2.4.0
+ */
+function  give_v230_add_missing_comment_tables(){
+	$custom_tables = array(
+		Give()->comment->db,
+		Give()->comment->db_meta,
+	);
+
+	/* @var Give_DB $table */
+	foreach ( $custom_tables as $table ) {
+		if ( ! $table->installed() ) {
+			$table->register_table();
+		}
+	}
+}
+
 
 /**
  * Move donor notes to comment table
@@ -3107,6 +3126,9 @@ function give_v224_update_donor_meta_forms_id_callback() {
  * @since 2.3.0
  */
 function give_v230_move_donor_note_callback() {
+	// Add comment table if missing.
+	give_v230_add_missing_comment_tables();
+
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
@@ -3160,6 +3182,9 @@ function give_v230_move_donor_note_callback() {
  */
 function give_v230_move_donation_note_callback() {
 	global $wpdb;
+
+	// Add comment table if missing.
+	give_v230_add_missing_Comment_tables();
 
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
