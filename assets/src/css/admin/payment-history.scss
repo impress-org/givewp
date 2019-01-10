@@ -37,14 +37,16 @@
 
 
   // Prevent select from causing line break flash.
-  #give-payment-form-filter, #give_donation_forms_filter {
+  #give-payment-form-filter,
+  #give_donation_forms_filter {
 	display: inline-block;
 	width: 300px;
 	@media screen and (max-width: 782px) {
 	  width: 100%;
 	}
   }
-  #give-payment-form-filter,#give-payment-date-filters{
+  #give-payment-form-filter,
+  #give-payment-date-filters{
 	label {
 	  vertical-align: initial;
 	  &.give-donation-forms-filter-label{
