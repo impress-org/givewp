@@ -806,41 +806,31 @@ Donations forms filter
 }
 
 .post-type-give_forms #posts-filter .tablenav.top {
-	position:relative;
-	height: 130px;
+  position: relative;
+  margin: 42px 0 0;
 
-	a{
-		display: inline-block;
-		margin: 0;
+  #give-forms-advanced-filter {
+	margin: 0 0 10px;
+
+	#give-forms-goal-filter {
+	  width: 255px;
 	}
 
-	#give-forms-search-input{
-		margin-right: 6px;
+	a {
+	  display: inline-block;
+	  margin: 0;
 	}
 
-	#give-forms-advanced-filter,
-	.tablenav-pages,
-	.bulkactions{
-		position: absolute;
+	#give-forms-search-input {
+	  margin-right: 6px;
 	}
 
-	.bulkactions{
-		left:0;
-		bottom:0;
-	}
+  }
 
-	#give-forms-advanced-filter{
-		left:0;
-		top:0;
-		right:0;
+  .bulkactions {
+	position: absolute;
+	left: 0;
+	bottom: 4px;
+  }
 
-		select{
-			width: 80%;
-		}
-	}
-
-	.tablenav-pages{
-		right:0;
-		bottom:0;
-	}
 }
