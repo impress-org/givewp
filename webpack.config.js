@@ -3,15 +3,16 @@
 /**
  * External dependencies
  */
-const path                 = require('path');
-const webpack              = require('webpack');
-const CopyWebpackPlugin    = require('copy-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const BrowserSyncPlugin    = require('browser-sync-webpack-plugin');
-const ImageminPlugin       = require('imagemin-webpack-plugin').default;
-const CleanWebpackPlugin   = require('clean-webpack-plugin');
-const WebpackRTLPlugin     = require('webpack-rtl-plugin');
-const wpPot                = require('wp-pot');
+const path                    = require('path');
+const webpack                 = require('webpack');
+const CopyWebpackPlugin       = require('copy-webpack-plugin');
+const MiniCSSExtractPlugin    = require('mini-css-extract-plugin');
+const BrowserSyncPlugin       = require('browser-sync-webpack-plugin');
+const ImageminPlugin          = require('imagemin-webpack-plugin').default;
+const CleanWebpackPlugin      = require('clean-webpack-plugin');
+const WebpackRTLPlugin        = require('webpack-rtl-plugin');
+const wpPot                   = require('wp-pot');
+const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
 
 const inProduction = ('production' === process.env.NODE_ENV);
 const mode         = inProduction ? 'production' : 'development';
@@ -162,6 +163,20 @@ const config = {
 			proxy: 'give.test',
 		}),
 	],
+
+	optimization: {
+		minimize: inProduction,
+		minimizer: [
+			new UglifyJsPlugin({
+				uglifyOptions: {
+					output: {
+						comments: false
+					},
+				},
+				sourceMap: true
+			})
+		]
+	}
 };
 
 if (inProduction) {
@@ -174,12 +189,6 @@ if (inProduction) {
 		bugReport: 'https://github.com/impress-org/give/issues/new',
 		team: 'GiveWP <info@givewp.com>',
 	});
-
-	// Uglify JS
-	config.plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
-
-	// Minify JS
-	config.plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}));
 }
 
 module.exports = config;
