@@ -13,6 +13,7 @@ const CleanWebpackPlugin      = require('clean-webpack-plugin');
 const WebpackRTLPlugin        = require('webpack-rtl-plugin');
 const wpPot                   = require('wp-pot');
 const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const inProduction = ('production' === process.env.NODE_ENV);
 const mode         = inProduction ? 'production' : 'development';
@@ -161,7 +162,6 @@ const config = {
 	],
 
 	optimization: {
-		minimize: inProduction,
 		minimizer: [
 			new UglifyJsPlugin({
 				uglifyOptions: {
@@ -169,8 +169,14 @@ const config = {
 						comments: false
 					},
 				},
-				sourceMap: true
-			})
+				sourceMap: ! inProduction
+			}),
+			new OptimizeCSSAssetsPlugin({
+				cssProcessor: require('cssnano'),
+				cssProcessorPluginOptions: {
+					preset: ['default', { discardComments: { removeAll: true } }],
+				}
+			}),
 		]
 	}
 };
