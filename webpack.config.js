@@ -70,7 +70,7 @@ const config = {
 					{
 						loader: 'style-loader',
 						options: {
-							sourceMap: true,
+							sourceMap: ! inProduction,
 						},
 					}
 				],
@@ -84,17 +84,13 @@ const config = {
 					{
 						loader: 'css-loader',
 						options: {
-							sourceMap: true,
+							sourceMap: ! inProduction,
 						},
-					}, {
-						loader: 'postcss-loader',
-						options: {
-							sourceMap: true,
-						},
-					}, {
+					},
+					{
 						loader: 'sass-loader',
 						options: {
-							sourceMap: true,
+							sourceMap: ! inProduction,
 							outputStyle: (inProduction ? 'compressed' : 'nested'),
 						},
 					}],
