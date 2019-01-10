@@ -390,17 +390,22 @@ add_action( 'wp_ajax_give_save_bulk_edit', 'give_save_bulk_edit' );
  *
  * @since 2.4.0
  *
- * @param $wp Current WordPress environment instance (passed by reference).
+ * @param $wp WP WordPress environment instance (passed by reference).
  */
 function give_form_search_query_filter( $wp ) {
-	if ( isset( $wp->query_vars['post_type'] ) && 'give_forms' == $wp->query_vars['post_type'] ) {
+
+	if (
+		isset( $wp->query_vars['post_type'] )
+	     && 'give_forms' == $wp->query_vars['post_type']
+		&& isset($_GET['give-forms-goal-filter'])
+	) {
+
 		$wp->query_vars['date_query'] =
 			array(
 				'after'     => ! empty ( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
 				'before'    => ! empty ( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
 				'inclusive' => true,
 			);
-		if ( ! empty( $_GET['give-forms-goal-filter'] ) ) {
 			switch ( $_GET['give-forms-goal-filter'] ) {
 				case 'goal_in_progress':
 					$wp->query_vars['meta_query'] =
@@ -430,15 +435,18 @@ function give_form_search_query_filter( $wp ) {
 				case 'goal_not_set':
 					$wp->query_vars['meta_query'] =
 						array(
-							'relation' => 'AND',
+							'relation' => 'OR',
 							array(
 								'key'     => '_give_goal_option',
 								'value'   => 'disabled',
 								'compare' => '=',
 							),
+							array(
+								'key'     => '_give_goal_option',
+								'compare'   => 'NOT EXISTS',
+							),
 						);
 					break;
-			}// End switch().
 		}
 	}
 }
