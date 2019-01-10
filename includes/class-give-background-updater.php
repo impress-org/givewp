@@ -230,7 +230,11 @@ class Give_Background_Updater extends WP_Background_Process {
 		try{
 			// Run update.
 			if ( is_array( $update['callback'] ) ) {
-				$update['callback'][0]->$update['callback'][1]();
+				$object      = $update['callback'][0];
+				$method_name = $update['callback'][1];
+
+				$object->$method_name();
+
 			} else {
 				$update['callback']();
 			}
