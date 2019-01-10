@@ -77,6 +77,9 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * @since 2.1
 	 */
 	function setUp() {
+		// Load import functions.
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
 
 		// check if import-donation file is include or not to check we are checking for a functions that is being declared in that file.
 		$this->assertTrue( function_exists( 'give_save_import_donation_to_db' ) );

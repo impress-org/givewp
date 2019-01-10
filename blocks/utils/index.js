@@ -3,5 +3,5 @@
  * @returns {string} siteurl
  */
 export function getSiteUrl() {
-	return wpApiSettings.root.replace( 'wp-json/', '' );
+	return wpApiSettings.root.replace( '/wp-json/', '' );
 }

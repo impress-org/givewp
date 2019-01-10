@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -23,6 +23,7 @@ table.give-table {
 
     th:first-child {
       text-align: left;
+	  border-left: none;
     }
   }
 

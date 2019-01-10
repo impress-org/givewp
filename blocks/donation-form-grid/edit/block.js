@@ -13,8 +13,6 @@ const { withSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import GiveBlankSlate from '../../components/blank-slate';
-import NoForms from '../../components/no-form';
 import Inspector from './inspector';
 
 /**
@@ -22,7 +20,7 @@ import Inspector from './inspector';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const { attributes } = props;
+	const {attributes} = props;
 
 	return (
 		<Fragment>
@@ -37,5 +35,3 @@ export default withSelect( ( select ) => {
 		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
 	};
 } )( GiveDonationFormGrid );
-
-// @todo show no form template if forms does not exist.

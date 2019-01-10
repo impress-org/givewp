@@ -10,7 +10,6 @@ import { getSiteUrl } from '../../utils';
 import GiveHelpLink from '../help-link';
 import PlaceholderAnimation from '../placeholder-animation';
 import GiveLogo from '../logo';
-import './style.scss';
 
 const GiveBlankSlate = ( props ) => {
 	const {

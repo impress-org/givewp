@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Gateways
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -22,16 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_payment_gateways() {
 	// Default, built-in gateways
-	$gateways = array(
-		'paypal' => array(
-			'admin_label'    => __( 'PayPal Standard', 'give' ),
-			'checkout_label' => __( 'PayPal', 'give' ),
-		),
-		'manual' => array(
-			'admin_label'    => __( 'Test Donation', 'give' ),
-			'checkout_label' => __( 'Test Donation', 'give' )
-		),
-	);
+	$gateways = Give_Cache_Setting::get_option( 'gateways' );
 
 	return apply_filters( 'give_payment_gateways', $gateways );
 

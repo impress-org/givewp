@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -28,9 +28,13 @@
 
 	&__image {
 		display: block;
-		height: 80px;
+		height: 80px !important;
 		margin: 0 auto 10px;
 		width: auto;
+	}
+
+	&__select {
+		margin-bottom: 20px;
 	}
 
 	&__help {

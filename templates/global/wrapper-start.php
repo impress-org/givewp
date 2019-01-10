@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Templates/Global
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -33,6 +33,9 @@ switch ( $template ) {
 		break;
 	case 'twentyseventeen' :
 		echo '<div class="wrap give-wrap">';
+		break;
+	case 'twentynineteen' :
+		echo '<div class="entry"><div class="entry-content"><div class="give-wrap">';
 		break;
 	case 'flatsome' :
 		echo '<div id="container" class="row product-page give-wrap"><div id="content" role="main">';

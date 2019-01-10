@@ -2,7 +2,7 @@
 /**
  * Give Activation Banner
  *
- * @author  WordImpress
+ * @author  GiveWP
  * @version 1.0
  */
 

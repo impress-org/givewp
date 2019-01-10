@@ -4,7 +4,7 @@
  *
  * @package     Give/Admin
  * @author      Paul Ryley
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @version     1.0
  * @since       1.3
@@ -298,7 +298,8 @@ abstract class Give_Shortcode_Generator {
 			foreach ( $posts as $post ) {
 				$options[ absint( $post->ID ) ] = empty( $post->post_title )
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID )
-					: apply_filters( 'the_title', $post->post_title );
+					/** This filter is documented in wp-includes/post-template.php */
+					: apply_filters( 'the_title', $post->post_title, $post->ID );
 			}
 
 			$field['type']    = 'listbox';

@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Functions/AJAX
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -22,9 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
+ * @param bool $force Flag to test ajax by discarding cache result
+ *
  * @return bool True if AJAX works, false otherwise
  */
-function give_test_ajax_works() {
+function give_test_ajax_works( $force = false ) {
 	// Handle ajax.
 	if ( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
 		wp_die( 0, 200 );
@@ -52,7 +54,7 @@ function give_test_ajax_works() {
 
 	$works = Give_Cache::get( '_give_ajax_works', true );
 
-	if ( ! $works ) {
+	if ( ! $works || $force ) {
 		$params = array(
 			'sslverify' => false,
 			'timeout'   => 30,

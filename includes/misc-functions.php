@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -870,6 +870,17 @@ function give_can_view_receipt( $donation_id ) {
 		$give_receipt_args['id'] = give_get_donation_id_by_key( $donation_id );
 	}
 
+	// Return to download receipts from admin panel.
+	if ( current_user_can( 'export_give_reports' ) ) {
+
+	    /**
+	     * This filter will be used to modify can view receipt response when accessed from admin.
+         *
+         * @since 2.3.1
+	     */
+		return apply_filters( 'give_can_admin_view_receipt', true );
+	}
+
 	if ( is_user_logged_in() || current_user_can( 'view_give_sensitive_data' ) ) {
 
 		// Proceed only, if user is logged in or can view sensitive Give data.
@@ -880,9 +891,10 @@ function give_can_view_receipt( $donation_id ) {
 		// Check whether it is purchase session?
 		// This condition is to show receipt to donor after donation.
 		$purchase_session = give_get_purchase_session();
+
 		if (
 			! empty( $purchase_session )
-			&& $purchase_session['donation_id'] === $donation_id
+			&& absint( $purchase_session['donation_id'] ) === absint( $donation_id )
 		) {
 			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
 		}
@@ -895,7 +907,7 @@ function give_can_view_receipt( $donation_id ) {
 		) {
 			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
 			$donor              = ! empty( $email_access_token )
-				? Give()->donors->get_donor_by( 'verify_key', $email_access_token )
+				? Give()->donors->get_donor_by_token( $email_access_token )
 				: false ;
 		}
 	}
@@ -966,7 +978,7 @@ function give_get_plugins() {
 
 		$dirname = strtolower( dirname( $plugin_path ) );
 
-		// Is plugin a Give add-on by WordImpress?
+		// Is the plugin a Give add-on?
 		if ( strstr( $dirname, 'give-' ) && strstr( $plugin_data['AuthorURI'], 'wordimpress.com' ) ) {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
@@ -1155,7 +1167,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 
 	// Fresh install?
 	// If fresh install then all upgrades will be consider as completed.
-	$is_fresh_install = ! get_option( 'give_version' );
+	$is_fresh_install = ! Give_Cache_Setting::get_option( 'give_version' );
 	if ( $is_fresh_install ) {
 		return true;
 	}
@@ -1220,7 +1232,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
-	return (array) get_option( 'give_completed_upgrades' );
+	return (array) Give_Cache_Setting::get_option( 'give_completed_upgrades' );
 }
 
 /**
@@ -1577,6 +1589,10 @@ function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	}
 
 	foreach ( $attributes as $tag => $value ) {
+		if( 'value' == $tag ){
+			$value = esc_attr( $value );
+		}
+
 		$attribute_str .= " {$tag}=\"{$value}\"";
 	}
 
@@ -2263,7 +2279,8 @@ function give_get_safe_asset_url( $url ) {
 function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
 	$date_obj       = DateTime::createFromFormat( $current_format, $date );
-	$formatted_date = $date_obj->format( $format );
+
+	$formatted_date = $date_obj instanceof DateTime ? $date_obj->format( $format ) : '';
 
 	/**
 	 * Give get formatted date.

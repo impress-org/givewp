@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8.17
  */
@@ -55,7 +55,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 */
 	public function json_core_settings_export() {
 		$settings_excludes = isset( $_POST['settings_export_excludes'] ) ? give_clean( $_POST['settings_export_excludes'] ) : array();
-		$give_settings     = get_option( 'give_settings' );
+		$give_settings     = Give_Cache_Setting::get_settings();
 
 		if ( is_array( $settings_excludes ) && ! empty( $settings_excludes ) ) {
 			foreach ( $settings_excludes as $key => $value ) {

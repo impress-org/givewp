@@ -1,4 +1,4 @@
-# Give Unit Tests [![Build Status](https://api.travis-ci.org/WordImpress/Give.png?branch=master)](https://api.travis-ci.org/WordImpress/Give)
+# Give Unit Tests [![Build Status](https://api.travis-ci.org/impress-org/give.png?branch=master)](https://api.travis-ci.org/impress-org/give)
 
 This folder contains instructions and test code for Give PHPUnit testing.
 

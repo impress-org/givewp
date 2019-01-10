@@ -17,7 +17,7 @@
  *
  * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -1636,7 +1636,7 @@ function give_email_donor_comment( $tag_args ) {
  * Note: meta data email tag must be in given format {meta_*}
  *
  * @since 2.0.3
- * @see   https://github.com/WordImpress/Give/issues/2801#issuecomment-365136602
+ * @see   https://github.com/impress-org/give/issues/2801#issuecomment-365136602
  *
  * @param $content
  * @param $tag_args

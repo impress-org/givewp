@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Session
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.2.0
  */
@@ -57,8 +57,6 @@ class Give_DB_Sessions extends Give_DB {
 		$incrementer_value      = wp_cache_get( $this->incrementer_name );
 		$incrementer_value      = ! empty( $incrementer_value ) ? $incrementer_value : microtime( true );
 		$this->cache_group      = "{$this->cache_group}_{$current_blog_id}_{$incrementer_value}";
-
-		$this->register_table();
 
 		parent::__construct();
 	}

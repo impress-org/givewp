@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_DB_Logs
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0
  */
@@ -38,9 +38,6 @@ class Give_DB_Logs extends Give_DB {
 		$this->table_name  = $wpdb->prefix . 'give_logs';
 		$this->primary_key = 'ID';
 		$this->version     = '1.0';
-
-		// Install table.
-		$this->register_table();
 
 		parent::__construct();
 	}

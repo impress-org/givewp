@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -310,6 +310,11 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	// Skip if not a Give addon.
 	if ( ! in_array( $plugin_base, $licensed_addon ) ) {
 		return $error;
+	}
+
+	// Load file.
+	if( ! class_exists( 'Give_Readme_Parser' ) ) {
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-readme-parser.php';
 	}
 
 	$plugin_base = strtolower( $plugin_base );

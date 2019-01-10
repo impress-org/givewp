@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_DB_Comments
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.3.0
  */
@@ -38,9 +38,6 @@ class Give_DB_Comments extends Give_DB {
 		$wpdb->give_comments = $this->table_name = $wpdb->prefix . 'give_comments';
 		$this->primary_key   = 'comment_ID';
 		$this->version       = '1.0';
-
-		// Install table.
-		$this->register_table();
 
 		parent::__construct();
 	}

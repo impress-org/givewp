@@ -5,7 +5,7 @@
  * @package:     Give
  * @since:       2.1
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2016, WordImpress
+ * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /* globals Give, jQuery */
@@ -162,7 +162,7 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	let checkboxes = $( '.give-export-option-fields input[type="checkbox"]' );
 
-	$( '.give-toggle-checkbox-selection' ).toggle( function() {	
+	$( '.give-toggle-checkbox-selection' ).toggle( function() {
 		checkboxes.removeAttr( 'checked' );
 		swapAndUpdateAttribute( this );
 	}, function() {

@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Email_Access
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
@@ -105,8 +105,20 @@ class Give_Email_Access {
 	 */
 	public function __construct() {
 
-		// get it started
-		add_action( 'init', array( $this, 'init' ) );
+		// Get it started.
+		add_action( 'wp', array( $this, 'setup' ) );
+	}
+
+	/**
+	 * Setup hooks
+	 *
+	 * @since 2.4.0
+	 */
+	public function setup(){
+		if( give_is_success_page() || give_is_history_page() ){
+			// Get it started.
+			add_action( 'wp', array( $this, 'init' ), 14 );
+		}
 	}
 
 	/**
@@ -262,7 +274,10 @@ class Give_Email_Access {
 		}
 
 		// Set error only if email access form isn't being submitted.
-		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
+		if (
+			! isset( $_POST['give_email'] ) &&
+			! isset( $_POST['_wpnonce'] )
+		) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one.', 'give' ) ) );
 		}
 

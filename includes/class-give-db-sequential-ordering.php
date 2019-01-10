@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_DB_Sequential_Ordering
- * @copyright   Copyright (c) 2018, WordImpress
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.1.0
  */
@@ -38,9 +38,6 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 		$this->table_name  = $wpdb->prefix . 'give_sequential_ordering';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
-
-		// Install table.
-		$this->register_table();
 
 		parent::__construct();
 	}

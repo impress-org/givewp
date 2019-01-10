@@ -204,7 +204,7 @@ jQuery( function( $ ) {
 
 		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID( parent_form, true ) : price_id;
 
-		// https://github.com/WordImpress/Give/issues/3299
+		// https://github.com/impress-org/give/issues/3299
 		// If we change from custom amount to donation level then
 		// this event fire twice. First on amount field blur and second time on level button/radio/select click which cause of minimum donation notice.
 		// This condition will prevent minimum donation amount notice show by set default level.
@@ -332,7 +332,7 @@ jQuery( function( $ ) {
 
 	/**
 	 * Prevent level jump which happens due to same id.
-	 * @see https://github.com/WordImpress/Give/issues/2292
+	 * @see https://github.com/impress-org/give/issues/2292
 	 */
 	$( 'label[for^="give-radio-level"]' ).on( 'click', function( e ) {
 		var $form = $( this ).closest( 'form' ),

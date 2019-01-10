@@ -1,5 +1,5 @@
 {
-  "name": "wordimpress/give",
+  "name": "impress-org/give",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "description": "Give - a WordPress Donation Plugin and Fundraising Platform",
@@ -19,7 +19,7 @@
     "donations"
   ],
   "support": {
-    "issues": "https://github.com/WordImpress/Give/issues"
+    "issues": "https://github.com/impress-org/give/issues"
   },
   "scripts": {
     "post-install-cmd": [

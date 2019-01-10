@@ -4,7 +4,7 @@
  *
  * This template is used to display the profile editor with [give_profile_editor]
  *
- * @copyright    Copyright (c) 2016, WordImpress
+ * @copyright    Copyright (c) 2016, GiveWP
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
 

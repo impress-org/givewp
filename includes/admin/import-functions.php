@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8.14
  */
@@ -488,6 +488,7 @@ function give_import_donations_options() {
 			__( 'Mode', 'give' ),
 			__( 'Test Mode', 'give' ),
 		),
+		'donor_ip'     => __( 'Donor IP Address', 'give' ),
 		'post_meta'    => __( 'Import as Meta', 'give' ),
 	) );
 }
@@ -865,6 +866,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				if ( ! empty( $data['company_name'] ) ) {
 					$payment->update_meta( '_give_donation_company', $data['company_name'] );
 					$donor_data->update_meta( '_give_donor_company', $data['company_name'] );
+				}
+
+				// Insert Donor IP address.
+				if ( ! empty( $data['donor_ip'] ) ) {
+					$payment->update_meta( '_give_payment_donor_ip', $data['donor_ip'] );
 				}
 
 				// Insert Notes.

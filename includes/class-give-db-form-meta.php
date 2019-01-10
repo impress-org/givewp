@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/DB Form Meta
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0
  */
@@ -53,8 +53,6 @@ class Give_DB_Form_Meta extends Give_DB_Meta {
 		$wpdb->formmeta    = $this->table_name = $wpdb->prefix . 'give_formmeta';
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
-
-		$this->register_table();
 
 		parent::__construct();
 	}

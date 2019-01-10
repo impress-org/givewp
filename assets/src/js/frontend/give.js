@@ -16,4 +16,4 @@ import './give-ajax';
 import './give-misc';
 import './give-donor-wall';
 
-export const { init, fn, form, notice, cache } = GiveAPI;
+export const { init, fn, form, notice, cache, donor } = GiveAPI;

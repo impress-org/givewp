@@ -4,7 +4,7 @@
  *
  * @package    Give
  * @subpackage Donors
- * @copyright  Copyright (c) 2018, WordImpress
+ * @copyright  Copyright (c) 2018, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  * @since      2.2.0
  */
@@ -82,13 +82,13 @@ function give_validate_gravatar( $id_or_email ) {
 
 
 	$hashkey   = md5( strtolower( trim( $email ) ) );
-	$cache_key = 'give_valid_gravatars';
-	$data      = get_transient( $cache_key );
+	$cache_key = Give_Cache::get_key( 'give_valid_gravatars' );
+	$data      = Give_Cache::get( $cache_key );
 	$data      = ! empty( $data ) ? $data : array();
 
 
 	if ( ! array_key_exists( $hashkey, $data ) ) {
-		$uri = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
+		$uri = "http://www.gravatar.com/avatar/{$hashkey}?d=404";
 
 		$response = wp_remote_head( $uri );
 
@@ -98,7 +98,7 @@ function give_validate_gravatar( $id_or_email ) {
 			$data[ $hashkey ] = absint( '200' == $response['response']['code'] );
 		}
 
-		set_transient( $cache_key, $data, DAY_IN_SECONDS );
+		Give_Cache::set( $cache_key, $data, DAY_IN_SECONDS );
 	}
 
 	return (bool) $data[ $hashkey ];

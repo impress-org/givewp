@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Forms
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -1886,7 +1886,7 @@ function give_get_donation_form_submit_button( $form_id ) {
  *
  * @since  1.0
  * @since  1.6   Add template for Give Goals Shortcode.
- *               More info is on https://github.com/WordImpress/Give/issues/411
+ *               More info is on https://github.com/impress-org/give/issues/411
  *
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
@@ -2027,7 +2027,22 @@ function give_form_display_content( $form_id, $args ) {
 	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_is_setting_enabled( give_get_option( 'the_content_filter' ) ) ) {
+
+		// Do not restore wpautop if we are still parsing blocks.
+		$priority = has_filter( 'the_content', '_restore_wpautop_hook' );
+		if ( false !== $priority && doing_filter( 'the_content' ) ) {
+			remove_filter( 'the_content', '_restore_wpautop_hook', $priority );
+		}
+
 		$content = apply_filters( 'the_content', $content );
+
+		// Restore wpautop after done with blocks parsing.
+		if( $priority ) {
+			// Run wpautop manually if parsing block
+			$content = wpautop( $content );
+
+			add_filter( 'the_content', '_restore_wpautop_hook', $priority );
+		}
 	} else {
 		$content = wpautop( do_shortcode( $content ) );
 	}
@@ -2051,7 +2066,7 @@ function give_form_display_content( $form_id, $args ) {
 	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
 	// remove action to prevent content output on addition forms on page.
-	// @see: https://github.com/WordImpress/Give/issues/634.
+	// @see: https://github.com/impress-org/give/issues/634.
 	remove_action( $show_content, 'give_form_display_content' );
 }
 
@@ -2203,10 +2218,17 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 		<?php
 	}
 
+	$data_attr = sprintf(
+		'data-time="%1$s" data-nonce-life="%2$s" data-donor-session="%3$s"',
+		time(),
+		give_get_nonce_life(),
+		absint( Give()->session->has_session() )
+	);
+
 	// WP nonce field.
 	echo str_replace(
 		'/>',
-		'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
+		"{$data_attr}/>",
 		give_get_nonce_field( "give_donation_form_nonce_{$form_id}", 'give-form-hash', false )
 	);
 

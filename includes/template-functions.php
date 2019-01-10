@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Templates
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -157,6 +157,8 @@ function give_locate_template( $template_names, $load = false, $require_once = t
 	// No file found yet
 	$located = false;
 
+	$theme_template_paths = give_get_theme_template_paths();
+
 	// Try to find a template file
 	foreach ( (array) $template_names as $template_name ) {
 
@@ -169,7 +171,7 @@ function give_locate_template( $template_names, $load = false, $require_once = t
 		$template_name = ltrim( $template_name, '/' );
 
 		// try locating this template file by looping through the template paths
-		foreach ( give_get_theme_template_paths() as $template_path ) {
+		foreach ( $theme_template_paths as $template_path ) {
 
 			if ( file_exists( $template_path . $template_name ) ) {
 				$located = $template_path . $template_name;
@@ -347,6 +349,9 @@ function give_add_body_classes( $class ) {
 			break;
 		case 'twentyseventeen':
 			$classes[] = 'give-twentyseventeen';
+			break;
+		case 'twentynineteen':
+			$classes[] = 'give-twentynineteen';
 			break;
 
 	}

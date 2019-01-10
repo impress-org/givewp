@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/DB Payment Meta
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0
  */
@@ -59,8 +59,6 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 			$this->meta_type = 'payment';
 			$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_paymentmeta';
 		}
-
-		$this->register_table();
 
 		parent::__construct();
 	}

@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Templates/Global
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -31,6 +31,9 @@ switch ( $template ) {
 		break;
 	case 'twentyfifteen' :
 		echo '</div></div>';
+		break;
+	case 'twentynineteen' :
+		echo '</div></div></div>';
 		break;
 	case 'x' :
 		echo '</div></div></div></div>';

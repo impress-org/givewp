@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Shortcodes
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -302,8 +302,15 @@ function give_receipt_shortcode( $atts ) {
 
 		if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
 
+			/**
+			 * This filter will be used to modify the donor mismatch text for front end error notice.
+             *
+             * @since 2.3.1
+			 */
+		    $donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
+
 			echo Give()->notices->print_frontend_notice(
-				__( 'You are trying to access invalid donation receipt. Please try again.', 'give' ),
+				$donor_mismatch_text,
 				false,
 				'error'
 			);
@@ -685,8 +692,9 @@ function give_totals_shortcode( $atts ) {
 				 *
 				 * @param int    $post         Form ID.
 				 * @param string $form_earning Total earning of Form.
+				 * @param array $atts shortcode attributes.
 				 */
-				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
+				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post, $atts );
 			}
 		}
 	} // End if().
@@ -892,6 +900,17 @@ function give_form_grid_shortcode( $atts ) {
 		);
 		$form_args['tax_query'][] = $tax_query;
 	}
+	
+	/**
+	 * Filter to modify WP Query for Total Goal.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $form_args WP query argument for Grid.
+	 *
+	 * @return array $form_args WP query argument for Grid.
+	 */
+	$form_args = (array) apply_filters( 'give_form_grid_shortcode_query_args', $form_args );
 
 	// Maybe filter by form Amount Donated or Number of Donations.
 	switch ( $atts['orderby'] ) {

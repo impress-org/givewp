@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give_Logging
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -52,11 +52,8 @@ class Give_Logging {
 		/**
 		 * Setup properties
 		 */
-
-		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
-		$this->log_db     = new Give_DB_Logs();
-		$this->logmeta_db = new Give_DB_Log_Meta();
+		$this->log_db     = Give()->log_db;
+		$this->logmeta_db = Give()->logmeta_db;
 
 		/**
 		 * Setup hooks.

@@ -4,7 +4,7 @@
  * @description: The Give AJAX scripts
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2016, WordImpress
+ * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -12,27 +12,38 @@
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
 	if( Give.form.fn.isFormExist() ) {
-		// Reset nonce if session start. It will prevent nonce failed issue for cached pages.
-		const resetNonce = '1' === Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_nonce_cookie_name' ) ) && '1' !== Give.fn.getGlobalVar( 'delete_session_nonce_cookie' );
 
 		//Hide loading elements
 		$( '.give-loading-text' ).hide();
 
 		// Update and invalidate cached nonce.
 		$('.give-form').each(function (index, $form) {
-			$form = jQuery($form);
+			let nonceInfo, nonceTime, currentTime, timeDiff;
 
-			// Reset nonce if session started and page loaded from html cache.
-			if( resetNonce ) {
+			$form = jQuery($form);
+			nonceInfo = Give.form.fn.getNonceInfo( $form );
+
+			if( ! nonceInfo.el.attr( 'data-donor-session' ) ){
+				// Backward compatibility.
+				// @see https://github.com/impress-org/give/issues/3820
+				Give.form.fn.resetAllNonce($form);
+
+			}else if(
+				(
+					nonceInfo.createdInDonorSession
+					|| Give.donor.fn.hasSession( $form )
+				)
+				&& ! Give.donor.fn.isLoggedIn()
+			) {
+				// Reset nonce if nonce cached when donor was in session or logged in.
 				Give.form.fn.resetAllNonce($form);
 			}
 
-			const $nonceField = jQuery('input[name="give-form-hash"]', $form),
-				  nonceTime = ( parseInt($nonceField.data('time')) + parseInt($nonceField.data('nonce-life') ) ) * 1000,
-				  currentTime = Date.now();
+			nonceTime = ( parseInt(nonceInfo.el.data('time')) + parseInt(nonceInfo.el.data('nonce-life') ) ) * 1000,
+			currentTime = Date.now();
 
 			// We need time in ms.
-			let timeDiff = nonceTime - currentTime;
+			timeDiff = nonceTime - currentTime;
 
 			timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
 

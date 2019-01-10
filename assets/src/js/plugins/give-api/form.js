@@ -332,6 +332,38 @@ export default {
 		},
 
 		/**
+		 * Get form's nonce information
+		 *
+		 * @since 2.3.1
+		 *
+		 * @param {object} $form
+		 *
+		 * @return {object}
+		 */
+		getNonceInfo: function( $form ) {
+			let nonce = {},
+				$nonceField;
+
+			// Bailout
+			if ( ! $form.length ) {
+				return nonce;
+			}
+
+			nonce.el = $form.find( 'input[name="give-form-hash"]' );
+
+			if( ! nonce.el.length ) {
+				return nonce;
+			}
+
+			nonce.value = $form.find( 'input[name="give-form-hash"]' ).val();
+			nonce.value =  'undefined' === typeof nonce.value || ! nonce.value ? '' : nonce.value;
+
+			nonce.createdInDonorSession   = '1' === nonce.el.attr('data-donor-session');
+
+			return nonce;
+		},
+
+		/**
 		 * Reset form nonce.
 		 *
 		 * @since 2.0
@@ -611,7 +643,7 @@ export default {
 				price_id = this.getPriceID( $form, true );
 
 			// Don't allow zero donation amounts.
-			// https://github.com/WordImpress/Give/issues/3181
+			// https://github.com/impress-org/give/issues/3181
 			if( 0 === amount ) {
 				return false
 			}

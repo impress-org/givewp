@@ -74,7 +74,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @return        void
 	 *
-	 * @subcommand    logo
+	 * @subcommand    ascii
 	 */
 	public function ascii( $args, $assoc_args ) {
 		WP_CLI::log( file_get_contents( GIVE_PLUGIN_DIR . 'assets/dist/images/give-ascii-logo.txt' ) );
@@ -236,7 +236,7 @@ class GIVE_CLI_COMMAND {
 
 										switch ( $subheading ) {
 											case 'earnings':
-												WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata ) ) );
+												WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata, array( 'decode_currency' => true ) ) ) );
 												break;
 											default:
 												WP_CLI::log( $this->color_message( $subheading . ': ', $subdata ) );
@@ -492,13 +492,16 @@ class GIVE_CLI_COMMAND {
 
 								switch ( $heading ) {
 									case 'total_spent':
-										$table_row[] = give_currency_filter( $data );
+										$table_row[] = give_currency_filter( $data, array( 'decode_currency' => true ) );
 										break;
 
 									default:
 										$table_row[] = $data;
 								}
 							}
+							break;
+
+						case 'address':
 							break;
 
 						case 'info':

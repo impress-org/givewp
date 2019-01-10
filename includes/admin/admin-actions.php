@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Actions
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -701,8 +701,8 @@ function give_core_settings_import_callback() {
 		$json_string   = give_get_core_settings_json( $file_name );
 		$json_to_array = json_decode( $json_string, true );
 
-		// get the current settign from the options table.
-		$host_give_options = get_option( 'give_settings', array() );
+		// get the current setting from the options table.
+		$host_give_options = Give_Cache_Setting::get_settings();
 
 		// Save old settins for backup.
 		update_option( 'give_settings_old', $host_give_options, false );
