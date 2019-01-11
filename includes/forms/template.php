@@ -852,11 +852,24 @@ function give_user_info_fields( $form_id ) {
 						<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 						<?php checked( 1, $is_anonymous_donation ); ?>
 					>
-					<?php _e( 'Hide name and comment from everyone but the administrator.', 'give' ); ?>
-					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+					<?php
+					/**
+					 * Filters the checkbox label.
+					 *
+					 * @since 2.4.1
+					 */
+					echo apply_filters('give_anonymous_donation_checkbox_label', __('Make this an anonymous donation.', 'give' ), $form_id);
+
+					if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like your donation to be displayed from an anonymous source?', 'give' ) ); ?>
+					<?php
+					// Conditional tooltip text when comments enabled:
+					// https://github.com/impress-org/give/issues/3911
+					$anonymous_donation_tooltip = give_is_donor_comment_field_enabled( $form_id ) ? esc_html__( 'Would you like to prevent your name, image, and comment from being displayed publicly?', 'give' ) 	: esc_html__( 'Would you like to prevent your name and image from being displayed publicly?', 'give' );
+
+					echo Give()->tooltips->render_help( $anonymous_donation_tooltip ); ?>
+
 				</label>
 			</p>
 		<?php endif; ?>
