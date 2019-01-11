@@ -138,6 +138,8 @@ const config = {
 			filename: "css/[name].css"
 		}),
 
+		new CopyWebpackPlugin([{from: 'assets/src/images', to: 'images'}]),
+
 		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
 		new BrowserSyncPlugin({
 			files: [
@@ -174,21 +176,16 @@ const config = {
 	}
 };
 
-if (!isWatching) {
-	// Copy images and SVGs
-	config.plugins.push(new CopyWebpackPlugin([{from: 'assets/src/images', to: 'images'}]));
-
-	// Minify images.
-	// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
-	config.plugins.push(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}));
-}
-
 if (inProduction) {
 	// Create RTL css.
 	config.plugins.push(new WebpackRTLPlugin({
 		suffix: '-rtl',
 		minify: true
 	}));
+
+	// Minify images.
+	// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
+	config.plugins.push(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}));
 
 	// POT file.
 	wpPot({
