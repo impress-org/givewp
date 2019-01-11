@@ -1527,7 +1527,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 			'give_recount_form_stats_args', array(
 				'give_forms'     => $form_id,
 				'status'         => $accepted_statuses,
-				'posts_per_page' => - 1,
+				'number'         => - 1,
 				'fields'         => 'ids',
 			)
 		);
@@ -1542,12 +1542,12 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 
 		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-				// Ensure acceptible status only
+				// Ensure acceptable status only.
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				// Ensure only payments for this form are counted
+				// Ensure only payments for this form are counted.
 				if ( $payment->form_id != $form_id ) {
 					continue;
 				}
