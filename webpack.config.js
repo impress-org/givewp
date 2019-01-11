@@ -17,7 +17,6 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const inProduction                   = ('production' === process.env.NODE_ENV);
 const mode                           = inProduction ? 'production' : 'development';
-const isWatching                     = process.argv.includes('--watch');
 
 const config = {
 	mode,
