@@ -149,10 +149,10 @@ jQuery(
  * @param {object} $form
  */
 window.give_open_form_modal = function ($form_wrap, $form) {
-	// Hide form children.
-	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
 
-	// Alls well, open popup!
+	// Don't his these form children elements.
+	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden, .give-form-title';
+
 	jQuery.magnificPopup.open(
 		{
 			mainClass: Give.fn.getGlobal().magnific_options.main_class,
@@ -168,12 +168,24 @@ window.give_open_form_modal = function ($form_wrap, $form) {
 				beforeOpen: function () {
 
 					jQuery( 'body' ).addClass( 'give-modal-open' );
+					var $form_title   = jQuery( '.give-form-title', $form_wrap );
 
-					// add title, content, goal and error to form if admin want to show button only
-					if ($form_wrap.hasClass( 'give-display-button-only' ) && ! $form.data( 'content' )) {
+					// Modal Display
+					if ($form_wrap.hasClass( 'give-display-modal' ) && ! $form.data( 'content' )) {
+
+						// Add title container to form.
+						if ($form_title.length && ! jQuery( '.give-form-title', $form ).length) {
+							$form.prepend( $form_title );
+						}
+
+						$form.data( 'content', 'loaded' );
+
+					} else if ($form_wrap.hasClass( 'give-display-button-only' ) && ! $form.data( 'content' )) {
+
+						// Button Display:
+						// add title, content, goal and error to form if admin want to show button only
 
 						var $form_content = jQuery( '.give-form-content-wrap', $form_wrap ),
-							$form_title   = jQuery( '.give-form-title', $form_wrap ),
 							$form_goal    = jQuery( '.give-goal-progress', $form_wrap ),
 							$form_error   = jQuery( '>.give_error', $form_wrap ),
 							$form_errors  = jQuery( '.give_errors', $form_wrap );
@@ -227,7 +239,7 @@ window.give_open_form_modal = function ($form_wrap, $form) {
 						$mfp_content.addClass( 'give-responsive-mfp-content' );
 					}
 
-					// Hide .give-hidden and .give-btn-modal  if admin only want to show only button.
+					// Hide .give-hidden and .give-btn-modal if admin only wants to show the button.
 					if ($form_wrap.hasClass( 'give-display-button-only' )) {
 						children = $form.children().not( '.give-btn-modal' );
 					}
