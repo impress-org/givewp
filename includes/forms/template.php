@@ -1122,7 +1122,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 			<select
 				name="billing_country"
-				autocomplete="country-name"
+				autocomplete="country"
 				id="billing_country"
 				class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
 				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
@@ -1191,7 +1191,7 @@ function give_default_cc_address_fields( $form_id ) {
 				type="text"
 				id="card_city"
 				name="card_city"
-				autocomplete="address-level3"
+				autocomplete="address-level2"
 				class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'City', 'give' ); ?>"
 				value="<?php echo( isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : '' ); ?>"
@@ -1215,7 +1215,7 @@ function give_default_cc_address_fields( $form_id ) {
 				?>
 				<select
 					name="card_state"
-					autocomplete="address-level4"
+					autocomplete="address-level1"
 					id="card_state"
 					class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
 					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
