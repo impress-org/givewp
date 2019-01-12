@@ -142,7 +142,7 @@ class Give_API {
 		);
 
 		foreach ( $this->get_versions() as $version => $class ) {
-			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-' . $version . '.php';
+			require_once GIVE_PLUGIN_DIR . "includes/api/class-give-api-{$version}.php";
 		}
 
 		add_action( 'init', array( $this, 'add_endpoint' ) );
