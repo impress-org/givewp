@@ -67,13 +67,31 @@ class Give_API {
 	public $user_id = 0;
 
 	/**
-	 * Instance of Give Stats class
+	 * Instance
 	 *
-	 * @var object
+	 * @var Give_Donation_Stats
 	 * @access private
 	 * @since  1.1
 	 */
 	private $stats;
+
+	/**
+	 * Instance
+	 *
+	 * @var Give_Donation_Stats
+	 * @access private
+	 * @since  2.4.1
+	 */
+	private $donation_stats;
+
+	/**
+	 * Instance
+	 *
+	 * @var Give_Date
+	 * @access private
+	 * @since  2.4.1
+	 */
+	private $date;
 
 	/**
 	 * Response data to return
@@ -141,6 +159,17 @@ class Give_API {
 			'v1' => 'GIVE_API_V1',
 		);
 
+		// Determine if JSON_PRETTY_PRINT is available
+		$this->pretty_print = defined( 'JSON_PRETTY_PRINT' ) ? JSON_PRETTY_PRINT : null;
+
+		// Allow API request logging to be turned off
+		$this->log_requests = apply_filters( 'give_api_log_requests', $this->log_requests );
+
+		// Setup instance
+		$this->stats          = new Give_Payment_Stats(); // @todo: remove this
+		$this->donation_stats = new Give_Donation_Stats();
+		$this->date           = new Give_Date();
+
 		foreach ( $this->get_versions() as $version => $class ) {
 			require_once GIVE_PLUGIN_DIR . "includes/api/class-give-api-{$version}.php";
 		}
@@ -156,15 +185,6 @@ class Give_API {
 
 		// Setup a backwards compatibility check for user API Keys
 		add_filter( 'get_user_metadata', array( $this, 'api_key_backwards_compat' ), 10, 4 );
-
-		// Determine if JSON_PRETTY_PRINT is available
-		$this->pretty_print = defined( 'JSON_PRETTY_PRINT' ) ? JSON_PRETTY_PRINT : null;
-
-		// Allow API request logging to be turned off
-		$this->log_requests = apply_filters( 'give_api_log_requests', $this->log_requests );
-
-		// Setup Give_Payment_Stats instance
-		$this->stats = new Give_Payment_Stats();
 
 	}
 
@@ -901,7 +921,7 @@ class Give_API {
 	 * @since  1.1
 	 * @global WPDB $wpdb  Used to query the database using the WordPress Database API.
 	 *
-	 * @param int $donor Donor ID.
+	 * @param int   $donor Donor ID.
 	 *
 	 * @return array $donors Multidimensional array of the donors.
 	 */
@@ -983,7 +1003,7 @@ class Give_API {
 		} elseif ( $donor ) {
 
 			$error['error'] = sprintf(
-				/* translators: %s: donor */
+			/* translators: %s: donor */
 				__( 'Donor %s not found.', 'give' ),
 				$donor
 			);
@@ -1138,6 +1158,54 @@ class Give_API {
 	 * @return array
 	 */
 	public function get_stats( $args = array() ) {
+		// Default result.
+		$stats = array(
+			'donations' => array(),
+			'earnings'  => array(),
+		);
+
+		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
+			return $stats;
+		}
+
+		// Return default results if type does not defined
+		if ( empty( $args['type'] ) ) {
+			$stats = array_merge( $stats, $this->get_default_sales_stats() );
+			$stats = array_merge( $stats, $this->get_default_earnings_stats() );
+
+			return array(
+				'stats' => $stats,
+			);
+		}
+
+		switch ( $args['type'] ) {
+			case 'donations':
+				$stats = $this->get_donations( $args );
+				break;
+
+			case 'earnings':
+				$stats = $this->get_earnings( $args );
+				break;
+
+			case 'donors':
+				$donors = new Give_DB_Donors();
+
+				$stats['donations']['total_donors'] = $donors->count();
+				break;
+		}
+
+		return $stats;
+	}
+
+	/**
+	 * Parse stats query arguments
+	 *
+	 * @since 2.4.1
+	 * @access private
+	 *
+	 * @param $args
+	 */
+	private function parse_stats_query_args( &$args ) {
 		$defaults = array(
 			'type'      => null,
 			'form'      => null,
@@ -1148,294 +1216,295 @@ class Give_API {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$dates = $this->get_dates( $args );
-
-		$stats     = array();
-		$earnings  = array(
-			'earnings' => array(),
-		);
-		$donations = array(
-			'donations' => array(),
-		);
-		$error     = array();
-
-		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
-			return $stats;
-		}
-
-		if ( $args['type'] == 'donations' ) {
-
-			if ( $args['form'] == null ) {
-				if ( $args['date'] == null ) {
-					$donations = $this->get_default_sales_stats();
-				} elseif ( $args['date'] === 'range' ) {
-					// Return donations for a date range.
-					// Ensure the end date is later than the start date.
-					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = __( 'The end date must be later than the start date.', 'give' );
-					}
-
-					// Ensure both the start and end date are specified
-					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = __( 'Invalid or no date range specified.', 'give' );
-					}
-
-					$total = 0;
-
-					// Loop through the years
-					$y = $dates['year'];
-					while ( $y <= $dates['year_end'] ) :
-
-						if ( $dates['year'] == $dates['year_end'] ) {
-							$month_start = $dates['m_start'];
-							$month_end   = $dates['m_end'];
-						} elseif ( $y == $dates['year'] && $dates['year_end'] > $dates['year'] ) {
-							$month_start = $dates['m_start'];
-							$month_end   = 12;
-						} elseif ( $y == $dates['year_end'] ) {
-							$month_start = 1;
-							$month_end   = $dates['m_end'];
-						} else {
-							$month_start = 1;
-							$month_end   = 12;
-						}
-
-						$i = $month_start;
-						while ( $i <= $month_end ) :
-
-							if ( $i == $dates['m_start'] ) {
-								$d = $dates['day_start'];
-							} else {
-								$d = 1;
-							}
-
-							if ( $i == $dates['m_end'] ) {
-								$num_of_days = $dates['day_end'];
-							} else {
-								$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
-							}
-
-							while ( $d <= $num_of_days ) :
-								$sale_count = give_get_sales_by_date( $d, $i, $y );
-								$date_key   = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
-								if ( ! isset( $donations['sales'][ $date_key ] ) ) {
-									$donations['sales'][ $date_key ] = 0;
-								}
-								$donations['sales'][ $date_key ] += $sale_count;
-								$total                           += $sale_count;
-								$d ++;
-							endwhile;
-							$i ++;
-						endwhile;
-
-						$y ++;
-					endwhile;
-
-					$donations['totals'] = $total;
-				} else {
-					if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
-						$donations_count = 0;
-
-						// Loop through the months
-						$month = $dates['m_start'];
-
-						while ( $month <= $dates['m_end'] ) :
-							$donations_count += give_get_sales_by_date( null, $month, $dates['year'] );
-							$month ++;
-						endwhile;
-
-						$donations['donations'][ $args['date'] ] = $donations_count;
-					} else {
-						$donations['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
-					}
-				}// End if().
-			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array(
-					'post_type' => 'give_forms',
-					'nopaging'  => true,
-				) );
-				$i     = 0;
-				foreach ( $forms as $form_info ) {
-					$donations['donations'][ $i ] = array(
-						$form_info->post_name => $this->stats->get_sales(
-							$form_info->ID,
-							is_numeric( $args['startdate'] )
-								? strtotime( $args['startdate'] )
-								: $args['startdate'],
-							is_numeric( $args['enddate'] )
-								? strtotime( $args['enddate'] )
-								: $args['enddate']
-						),
-					);
-					$i ++;
-				}
-			} else {
-				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
-					$form_info                 = get_post( $args['form'] );
-					$donations['donations'][0] = array(
-						$form_info->post_name => $this->stats->get_sales(
-							$args['form'],
-							is_numeric( $args['startdate'] )
-								? strtotime( $args['startdate'] )
-								: $args['startdate'],
-							is_numeric( $args['enddate'] )
-								? strtotime( $args['enddate'] )
-								: $args['enddate']
-						),
-					);
-				} else {
-					$error['error'] = sprintf( /* translators: %s: form */
-						__( 'Form %s not found.', 'give' ), $args['form'] );
-				}
-			}// End if().
-
-			if ( ! empty( $error ) ) {
-				return $error;
-			}
-
-			return $donations;
-
-		} elseif ( $args['type'] == 'earnings' ) {
-			if ( $args['form'] == null ) {
-				if ( $args['date'] == null ) {
-					$earnings = $this->get_default_earnings_stats();
-				} elseif ( $args['date'] === 'range' ) {
-					// Return sales for a date range
-					// Ensure the end date is later than the start date
-					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = __( 'The end date must be later than the start date.', 'give' );
-					}
-
-					// Ensure both the start and end date are specified
-					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = __( 'Invalid or no date range specified.', 'give' );
-					}
-
-					$total = (float) 0.00;
-
-					// Loop through the years
-					$y = $dates['year'];
-					if ( ! isset( $earnings['earnings'] ) ) {
-						$earnings['earnings'] = array();
-					}
-					while ( $y <= $dates['year_end'] ) :
-
-						if ( $dates['year'] == $dates['year_end'] ) {
-							$month_start = $dates['m_start'];
-							$month_end   = $dates['m_end'];
-						} elseif ( $y == $dates['year'] && $dates['year_end'] > $dates['year'] ) {
-							$month_start = $dates['m_start'];
-							$month_end   = 12;
-						} elseif ( $y == $dates['year_end'] ) {
-							$month_start = 1;
-							$month_end   = $dates['m_end'];
-						} else {
-							$month_start = 1;
-							$month_end   = 12;
-						}
-
-						$i = $month_start;
-						while ( $i <= $month_end ) :
-
-							if ( $i == $dates['m_start'] ) {
-								$d = $dates['day_start'];
-							} else {
-								$d = 1;
-							}
-
-							if ( $i == $dates['m_end'] ) {
-								$num_of_days = $dates['day_end'];
-							} else {
-								$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
-							}
-
-							while ( $d <= $num_of_days ) :
-								$earnings_stat = give_get_earnings_by_date( $d, $i, $y );
-								$date_key      = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
-								if ( ! isset( $earnings['earnings'][ $date_key ] ) ) {
-									$earnings['earnings'][ $date_key ] = 0;
-								}
-								$earnings['earnings'][ $date_key ] += $earnings_stat;
-								$total                             += $earnings_stat;
-								$d ++;
-							endwhile;
-
-							$i ++;
-						endwhile;
-
-						$y ++;
-					endwhile;
-
-					$earnings['totals'] = $total;
-				} else {
-					if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
-						$earnings_count = (float) 0.00;
-
-						// Loop through the months
-						$month = $dates['m_start'];
-
-						while ( $month <= $dates['m_end'] ) :
-							$earnings_count += give_get_earnings_by_date( null, $month, $dates['year'] );
-							$month ++;
-						endwhile;
-
-						$earnings['earnings'][ $args['date'] ] = $earnings_count;
-					} else {
-						$earnings['earnings'][ $args['date'] ] = give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
-					}
-				}// End if().
-			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array(
-					'post_type' => 'give_forms',
-					'nopaging'  => true,
-				) );
-
-				$i = 0;
-				foreach ( $forms as $form_info ) {
-					$earnings['earnings'][ $i ] = array(
-						$form_info->post_name => give_get_form_earnings_stats( $form_info->ID ),
-					);
-					$i ++;
-				}
-			} else {
-				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
-					$form_info               = get_post( $args['form'] );
-					$earnings['earnings'][0] = array(
-						$form_info->post_name => $this->stats->get_earnings(
-								$args['form'],
-								is_numeric( $args['startdate'] )
-									? strtotime( $args['startdate'] )
-									: $args['startdate'],
-								is_numeric( $args['enddate'] )
-									? strtotime( $args['enddate'] )
-									: $args['enddate']
-						),
-					);
-				} else {
-					$error['error'] = sprintf( /* translators: %s: form */
-						__( 'Form %s not found.', 'give' ), $args['form'] );
-				}
-			}// End if().
-
-			if ( ! empty( $error ) ) {
-				return $error;
-			}
-
-			return $earnings;
-		} elseif ( $args['type'] == 'donors' ) {
-			$donors                             = new Give_DB_Donors();
-			$stats['donations']['total_donors'] = $donors->count();
-
-			return $stats;
-
-		} elseif ( empty( $args['type'] ) ) {
-			$stats = array_merge( $stats, $this->get_default_sales_stats() );
-			$stats = array_merge( $stats, $this->get_default_earnings_stats() );
-
-			return array(
-				'stats' => $stats,
+		if ( 'range' === $args['date'] ) {
+			$args['dates'] = $this->date->parse_date_for_range(
+				array(
+					'start_date' => $args['startdate'],
+					'end_date'   => $args['enddate'],
+				)
 			);
+		}
+	}
+
+	/**
+	 * Get donations
+	 *
+	 * @since  2.4.1
+	 * @access private
+	 *
+	 * @param $args
+	 *
+	 * @return array
+	 */
+	private function get_donations( $args ) {
+		$error     = array();
+		$dates     = $this->get_dates( $args );
+		$donations = array();
+
+		if ( $args['form'] == null ) {
+			if ( $args['date'] == null ) {
+				$donations = $this->get_default_sales_stats();
+			} elseif ( $args['date'] === 'range' ) {
+				// Return donations for a date range.
+				// Ensure the end date is later than the start date.
+				if ( $args['enddate'] < $args['startdate'] ) {
+					$donations['error'] = __( 'The end date must be later than the start date.', 'give' );
+				}
+
+				// Ensure both the start and end date are specified
+				if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
+					$donations['error'] = __( 'Invalid or no date range specified.', 'give' );
+				}
+
+				$total = 0;
+
+				// Loop through the years
+				$y = $dates['year'];
+				while ( $y <= $dates['year_end'] ) :
+
+					if ( $dates['year'] == $dates['year_end'] ) {
+						$month_start = $dates['m_start'];
+						$month_end   = $dates['m_end'];
+					} elseif ( $y == $dates['year'] && $dates['year_end'] > $dates['year'] ) {
+						$month_start = $dates['m_start'];
+						$month_end   = 12;
+					} elseif ( $y == $dates['year_end'] ) {
+						$month_start = 1;
+						$month_end   = $dates['m_end'];
+					} else {
+						$month_start = 1;
+						$month_end   = 12;
+					}
+
+					$i = $month_start;
+					while ( $i <= $month_end ) :
+
+						if ( $i == $dates['m_start'] ) {
+							$d = $dates['day_start'];
+						} else {
+							$d = 1;
+						}
+
+						if ( $i == $dates['m_end'] ) {
+							$num_of_days = $dates['day_end'];
+						} else {
+							$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
+						}
+
+						while ( $d <= $num_of_days ) :
+							$sale_count = give_get_sales_by_date( $d, $i, $y );
+							$date_key   = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+							if ( ! isset( $donations['sales'][ $date_key ] ) ) {
+								$donations['sales'][ $date_key ] = 0;
+							}
+							$donations['sales'][ $date_key ] += $sale_count;
+							$total                           += $sale_count;
+							$d ++;
+						endwhile;
+						$i ++;
+					endwhile;
+
+					$y ++;
+				endwhile;
+
+				$donations['totals'] = $total;
+			} else {
+				if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
+					$donations_count = 0;
+
+					// Loop through the months
+					$month = $dates['m_start'];
+
+					while ( $month <= $dates['m_end'] ) :
+						$donations_count += give_get_sales_by_date( null, $month, $dates['year'] );
+						$month ++;
+					endwhile;
+
+					$donations['donations'][ $args['date'] ] = $donations_count;
+				} else {
+					$donations['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
+				}
+			}// End if().
+		} elseif ( $args['form'] == 'all' ) {
+			$forms = get_posts( array(
+				'post_type' => 'give_forms',
+				'nopaging'  => true,
+			) );
+			$i     = 0;
+			foreach ( $forms as $form_info ) {
+				$donations['donations'][ $i ] = array(
+					$form_info->post_name => $this->stats->get_sales(
+						$form_info->ID,
+						is_numeric( $args['startdate'] )
+							? strtotime( $args['startdate'] )
+							: $args['startdate'],
+						is_numeric( $args['enddate'] )
+							? strtotime( $args['enddate'] )
+							: $args['enddate']
+					),
+				);
+				$i ++;
+			}
+		} else {
+			if ( get_post_type( $args['form'] ) == 'give_forms' ) {
+				$form_info                 = get_post( $args['form'] );
+				$donations['donations'][0] = array(
+					$form_info->post_name => $this->stats->get_sales(
+						$args['form'],
+						is_numeric( $args['startdate'] )
+							? strtotime( $args['startdate'] )
+							: $args['startdate'],
+						is_numeric( $args['enddate'] )
+							? strtotime( $args['enddate'] )
+							: $args['enddate']
+					),
+				);
+			} else {
+				$donations['error'] = sprintf( /* translators: %s: form */
+					__( 'Form %s not found.', 'give' ), $args['form'] );
+			}
 		}// End if().
+
+
+		return $donations;
+	}
+
+	/**
+	 * Get earnings
+	 *
+	 * @since  2.4.1
+	 * @access private
+	 *
+	 * @param $args
+	 *
+	 * @return array
+	 */
+	private function get_earnings( $args ) {
+		$dates    = $this->get_dates( $args );
+		$earnings = array();
+
+		if ( $args['form'] == null ) {
+			if ( $args['date'] == null ) {
+				$earnings = $this->get_default_earnings_stats();
+			} elseif ( $args['date'] === 'range' ) {
+				// Return sales for a date range
+				// Ensure the end date is later than the start date
+				if ( $args['enddate'] < $args['startdate'] ) {
+					$earnings['error'] = __( 'The end date must be later than the start date.', 'give' );
+				}
+
+				// Ensure both the start and end date are specified
+				if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
+					$earnings['error'] = __( 'Invalid or no date range specified.', 'give' );
+				}
+
+				$total = (float) 0.00;
+
+				// Loop through the years
+				$y = $dates['year'];
+				if ( ! isset( $earnings['earnings'] ) ) {
+					$earnings['earnings'] = array();
+				}
+				while ( $y <= $dates['year_end'] ) :
+
+					if ( $dates['year'] == $dates['year_end'] ) {
+						$month_start = $dates['m_start'];
+						$month_end   = $dates['m_end'];
+					} elseif ( $y == $dates['year'] && $dates['year_end'] > $dates['year'] ) {
+						$month_start = $dates['m_start'];
+						$month_end   = 12;
+					} elseif ( $y == $dates['year_end'] ) {
+						$month_start = 1;
+						$month_end   = $dates['m_end'];
+					} else {
+						$month_start = 1;
+						$month_end   = 12;
+					}
+
+					$i = $month_start;
+					while ( $i <= $month_end ) :
+
+						if ( $i == $dates['m_start'] ) {
+							$d = $dates['day_start'];
+						} else {
+							$d = 1;
+						}
+
+						if ( $i == $dates['m_end'] ) {
+							$num_of_days = $dates['day_end'];
+						} else {
+							$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
+						}
+
+						while ( $d <= $num_of_days ) :
+							$earnings_stat = give_get_earnings_by_date( $d, $i, $y );
+							$date_key      = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+							if ( ! isset( $earnings['earnings'][ $date_key ] ) ) {
+								$earnings['earnings'][ $date_key ] = 0;
+							}
+							$earnings['earnings'][ $date_key ] += $earnings_stat;
+							$total                             += $earnings_stat;
+							$d ++;
+						endwhile;
+
+						$i ++;
+					endwhile;
+
+					$y ++;
+				endwhile;
+
+				$earnings['totals'] = $total;
+			} else {
+				if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
+					$earnings_count = (float) 0.00;
+
+					// Loop through the months
+					$month = $dates['m_start'];
+
+					while ( $month <= $dates['m_end'] ) :
+						$earnings_count += give_get_earnings_by_date( null, $month, $dates['year'] );
+						$month ++;
+					endwhile;
+
+					$earnings['earnings'][ $args['date'] ] = $earnings_count;
+				} else {
+					$earnings['earnings'][ $args['date'] ] = give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
+				}
+			}// End if().
+		} elseif ( $args['form'] == 'all' ) {
+			$forms = get_posts( array(
+				'post_type' => 'give_forms',
+				'nopaging'  => true,
+			) );
+
+			$i = 0;
+			foreach ( $forms as $form_info ) {
+				$earnings['earnings'][ $i ] = array(
+					$form_info->post_name => give_get_form_earnings_stats( $form_info->ID ),
+				);
+				$i ++;
+			}
+		} else {
+			if ( get_post_type( $args['form'] ) == 'give_forms' ) {
+				$form_info               = get_post( $args['form'] );
+				$earnings['earnings'][0] = array(
+					$form_info->post_name => $this->stats->get_earnings(
+						$args['form'],
+						is_numeric( $args['startdate'] )
+							? strtotime( $args['startdate'] )
+							: $args['startdate'],
+						is_numeric( $args['enddate'] )
+							? strtotime( $args['enddate'] )
+							: $args['enddate']
+					),
+				);
+			} else {
+				$earnings['error'] = sprintf( /* translators: %s: form */
+					__( 'Form %s not found.', 'give' ), $args['form'] );
+			}
+		}// End if().
+
+		return $earnings;
 	}
 
 	/**
@@ -1589,7 +1658,7 @@ class Give_API {
 					}
 				}
 
-				if( ! empty( $payment_meta ) ) {
+				if ( ! empty( $payment_meta ) ) {
 					// Add custom meta to API
 					foreach ( $payment_meta as $meta_key => $meta_value ) {
 
@@ -1645,9 +1714,9 @@ class Give_API {
 	 * @access private
 	 * @since  1.1
 	 *
-	 * @global WP_Query     $wp_query
+	 * @global WP_Query $wp_query
 	 *
-	 * @param array         $data
+	 * @param array     $data
 	 *
 	 * @return void
 	 */
@@ -1805,36 +1874,36 @@ class Give_API {
 			?>
 			<table class="form-table">
 				<tbody>
-				<tr>
-					<th>
-						<?php _e( 'Give API Keys', 'give' ); ?>
-					</th>
-					<td>
-						<?php
-						$public_key = $this->get_user_public_key( $user->ID );
-						$secret_key = $this->get_user_secret_key( $user->ID );
-						?>
-						<?php if ( empty( $user->give_user_public_key ) ) { ?>
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" />
-							<span class="description"><?php _e( 'Generate API Key', 'give' ); ?></span>
-						<?php } else { ?>
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>
-								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
-							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>
-								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
-							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>
-								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
-							<br />
-							<input name="give_revoke_api_key" type="checkbox" id="give_revoke_api_key" />
-							<span class="description"><label for="give_revoke_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
-						<?php } ?>
-					</td>
-				</tr>
+					<tr>
+						<th>
+							<?php _e( 'Give API Keys', 'give' ); ?>
+						</th>
+						<td>
+							<?php
+							$public_key = $this->get_user_public_key( $user->ID );
+							$secret_key = $this->get_user_secret_key( $user->ID );
+							?>
+							<?php if ( empty( $user->give_user_public_key ) ) { ?>
+								<input name="give_set_api_key" type="checkbox" id="give_set_api_key"/>
+								<span class="description"><?php _e( 'Generate API Key', 'give' ); ?></span>
+							<?php } else { ?>
+								<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>
+									&nbsp;</strong>
+								<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
+								<br/>
+								<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>
+									&nbsp;</strong>
+								<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
+								<br/>
+								<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>
+									&nbsp;</strong>
+								<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
+								<br/>
+								<input name="give_revoke_api_key" type="checkbox" id="give_revoke_api_key"/>
+								<span class="description"><label for="give_revoke_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<?php } ?>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		<?php }// End if().
@@ -1940,9 +2009,9 @@ class Give_API {
 		$new_public_key = '';
 		$new_secret_key = '';
 
-		if( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
+		if ( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
 			// For User Profile Page.
-			if( ! empty( $_POST['give_set_api_key'] ) ) {
+			if ( ! empty( $_POST['give_set_api_key'] ) ) {
 				// Generate API Key from User Profile page.
 				$new_public_key = $this->generate_public_key( $user->user_email );
 				$new_secret_key = $this->generate_private_key( $user->ID );
@@ -2072,18 +2141,20 @@ class Give_API {
 	/**
 	 * Generate the default donation stats returned by the 'stats' endpoint
 	 *
-	 * @access private
 	 * @since  1.1
+	 * @since  2.4.1 Use Give_Donation_Stats
+	 * @access private
+	 *
 	 * @return array default sales statistics
 	 */
 	private function get_default_sales_stats() {
 
 		// Default sales return
 		$donations                               = array();
-		$donations['donations']['today']         = $this->stats->get_sales( 0, 'today' );
-		$donations['donations']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
-		$donations['donations']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
-		$donations['donations']['totals']        = give_get_total_donations();
+		$donations['donations']['today']         = $this->donation_stats->get_sales( array( 'range' => 'today' ) )->sales;
+		$donations['donations']['current_month'] = $this->donation_stats->get_sales( array( 'range' => 'this_month' ) )->sales;
+		$donations['donations']['last_month']    = $this->donation_stats->get_sales( array( 'range' => 'last_month' ) )->sales;
+		$donations['donations']['totals']        = $this->donation_stats->get_sales()->sales;
 
 		return $donations;
 	}
@@ -2091,18 +2162,20 @@ class Give_API {
 	/**
 	 * Generate the default earnings stats returned by the 'stats' endpoint
 	 *
-	 * @access private
 	 * @since  1.1
+	 * @since  2.4.1 Use Give_Donation_Stats
+	 * @access private
+	 *
 	 * @return array default earnings statistics
 	 */
 	private function get_default_earnings_stats() {
 
 		// Default earnings return
 		$earnings                              = array();
-		$earnings['earnings']['today']         = $this->stats->get_earnings( 0, 'today' );
-		$earnings['earnings']['current_month'] = $this->stats->get_earnings( 0, 'this_month' );
-		$earnings['earnings']['last_month']    = $this->stats->get_earnings( 0, 'last_month' );
-		$earnings['earnings']['totals']        = give_get_total_earnings();
+		$earnings['earnings']['today']         = $this->donation_stats->get_earnings( array( 'range' => 'today' ) )->total;
+		$earnings['earnings']['current_month'] = $this->donation_stats->get_earnings( array( 'range' => 'this_month' ) )->total;
+		$earnings['earnings']['last_month']    = $this->donation_stats->get_earnings( array( 'range' => 'last_month' ) )->total;
+		$earnings['earnings']['totals']        = $this->donation_stats->get_earnings()->total;
 
 		return $earnings;
 	}
