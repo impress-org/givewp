@@ -225,6 +225,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 	/**
 	 * Get donation earning and sales information
+	 * Note: only for internal purpose.
 	 *
 	 * @since  2.4.1
 	 * @access public
@@ -234,9 +235,45 @@ class Give_Donation_Stats extends Give_Stats {
 	 * @return stdClass
 	 */
 	public function get_donation_statistics( $query = array() ) {
-		$this->query_vars['day_by_day'] = true;
-		$this->query_vars['table']      = $this->get_db()->posts;
-		$this->query_vars['column']     = 'post_date';
+		$this->query_vars['table']  = $this->get_db()->posts;
+		$this->query_vars['column'] = 'post_date';
+
+		$meta_table_count                     = $this->get_counter( $this->get_db()->donationmeta );
+		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as m{$meta_table_count} on m{$meta_table_count}.donation_id={$this->query_vars['table']}.ID";
+		$this->set_counter( $this->get_db()->donationmeta );
+
+		$column = "{$this->query_vars['table']}.{$this->query_vars['column']}";
+
+		$query = wp_parse_args(
+			$query,
+			array( 'statistic_type' => 'time', )
+		);
+
+		// Set query on basis of statistic type
+		switch ( $query['statistic_type'] ) {
+			case 'time':
+				$query = array_merge(
+					$query,
+					array(
+						'select'  => "YEAR({$column}) AS year, MONTH({$column}) AS month, DAY({$column}) AS day",
+						'groupby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
+						'orderby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
+					)
+				);
+				break;
+
+			case 'form':
+				$query = array_merge(
+					$query,
+					array(
+						'select'  => "CAST( m1.meta_value as SIGNED ) as form",
+						'groupby' => "form",
+						'orderby' => "form",
+					)
+				);
+
+				break;
+		}
 
 		$this->pre_query( $query );
 
@@ -250,57 +287,64 @@ class Give_Donation_Stats extends Give_Stats {
 			return $result;
 		}
 
-		$column = "{$this->query_vars['table']}.{$this->query_vars['column']}";
-
-		$sql_clauses = array(
-			'select'  => "YEAR({$column}) AS year, MONTH({$column}) AS month, DAY({$column}) AS day",
-			'groupby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
-			'orderby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
-		);
-
-		$sql = "SELECT COUNT(ID) AS sales, SUM(m1.meta_value) AS earnings, {$sql_clauses['select']}
+		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$meta_table_count}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
-					INNER JOIN {$this->get_db()->donationmeta} as m1 on m1.donation_id={$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
+					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
-					AND m1.meta_key='_give_payment_total'
+					AND m{$meta_table_count}.meta_key='_give_payment_total'
 					{$this->query_vars['date_sql']}
-                    GROUP BY {$sql_clauses['groupby']}
-                    ORDER BY {$sql_clauses['orderby']} ASC";
+                    GROUP BY {$this->query_vars['groupby']}
+                    ORDER BY {$this->query_vars['orderby']} ASC";
 
 		$results = $this->get_db()->get_results( $sql );
 
+		// Modify result.
 		$sales    = array();
 		$earnings = array();
-		$dates    = array(
-			'start' => $this->query_vars['start_date'],
-			'end'   => $this->query_vars['end_date'],
-		);
 
-		$cache_timestamps = array();
+		switch ( $this->query_vars['statistic_type'] ) {
+			case 'time':
+				$this->query_vars['day_by_day'] = true;
 
-		// Initialise all arrays with timestamps and set values to 0.
-		while ( strtotime( $dates['start']->copy()->format( 'mysql' ) ) <= strtotime( $dates['end']->copy()->format( 'mysql' ) ) ) {
-			$timestamp = Give_Date::create( $dates['start']->year, $dates['start']->month, $dates['start']->day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
+				$dates = array(
+					'start' => $this->query_vars['start_date'],
+					'end'   => $this->query_vars['end_date'],
+				);
 
-			$cache_timestamps[ "{$dates['start']->year}|{$dates['start']->month}|{$dates['start']->day}" ] = $timestamp;
+				$cache_timestamps = array();
 
-			$sales[ $timestamp ]    = 0;
-			$earnings[ $timestamp ] = 0.00;
+				// Initialise all arrays with timestamps and set values to 0.
+				while ( strtotime( $dates['start']->copy()->format( 'mysql' ) ) <= strtotime( $dates['end']->copy()->format( 'mysql' ) ) ) {
+					$timestamp = Give_Date::create( $dates['start']->year, $dates['start']->month, $dates['start']->day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
 
-			$dates['start'] = ( true === $this->query_vars['day_by_day'] )
-				? $dates['start']->addDays( 1 )
-				: $dates['start']->addMonth( 1 );
-		}
+					$cache_timestamps["{$dates['start']->year}|{$dates['start']->month}|{$dates['start']->day}"] = $timestamp;
 
-		foreach ( $results as $result ) {
-			$cache_key = "{$result->year}|{$result->month}|{$result->day}";
+					$sales[ $timestamp ]    = 0;
+					$earnings[ $timestamp ] = 0.00;
 
-			$timestamp = ! empty( $cache_timestamps[ $cache_key ] )
-				? $cache_timestamps[ $cache_key ]
-				: Give_Date::create( $result->year, $result->month, $result->day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
+					$dates['start'] = ( true === $this->query_vars['day_by_day'] )
+						? $dates['start']->addDays( 1 )
+						: $dates['start']->addMonth( 1 );
+				}
 
-			$sales[ $timestamp ]   = (int) $result->sales;
-			$earnings[ $timestamp ] = floatval( $result->earnings );
+				foreach ( $results as $result ) {
+					$cache_key = "{$result->year}|{$result->month}|{$result->day}";
+
+					$timestamp = ! empty( $cache_timestamps[ $cache_key ] )
+						? $cache_timestamps[ $cache_key ]
+						: Give_Date::create( $result->year, $result->month, $result->day, 0, 0, 0, $this->date->getWpTimezone() )->timestamp;
+
+					$sales[ $timestamp ]    = (int) $result->sales;
+					$earnings[ $timestamp ] = floatval( $result->earnings );
+				}
+
+				break;
+
+			case 'form':
+				foreach ( $results as $result ) {
+					$sales[ $result->form ]    = (int) $result->sales;
+					$earnings[ $result->form ] = floatval( $result->earnings );
+				}
 		}
 
 		$results = new stdClass();
