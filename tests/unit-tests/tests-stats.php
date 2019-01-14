@@ -51,6 +51,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 			'yesterday'    => 'Yesterday',
 			'this_week'    => 'This Week',
 			'last_week'    => 'Last Week',
+			'last_30_Days' => 'Last 30 Days',
 			'this_month'   => 'This Month',
 			'last_month'   => 'Last Month',
 			'this_quarter' => 'This Quarter',
