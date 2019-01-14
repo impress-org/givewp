@@ -118,7 +118,11 @@ function give_get_success_page_uri() {
  * @return bool True if on the Success page, false otherwise.
  */
 function give_is_success_page() {
-	return apply_filters( 'give_is_success_page', is_page( give_get_success_page_uri() ) );
+	$give_options = give_get_settings();
+
+	$success_page = isset( $give_options['success_page'] ) ? is_page( $give_options['success_page'] ) : false;
+
+	return apply_filters( 'give_is_success_page', $success_page );
 }
 
 /**
@@ -363,7 +367,7 @@ function give_is_history_page() {
  * @since       1.0
  * @return      bool
  */
-function give_field_is_required( $field = '', $form_id ) {
+function give_field_is_required( $field, $form_id ) {
 
 	$required_fields = give_get_required_fields( $form_id );
 
@@ -418,6 +422,31 @@ function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$form = new Give_Donate_Form( $form_id );
 
 	return $form->increase_sales( $quantity );
+}
+
+/**
+ * Update the goal progress count of a donation form.
+ *
+ * @since 2.4.0
+ *
+ * @param int $form_id Give Form ID
+ *
+ * @return void
+ */
+function give_update_goal_progress( $form_id = 0 ) {
+
+	//Get goal option meta key
+	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
+
+	// Check, if the form goal is enabled.
+	if ( $is_goal_enabled ) {
+		$goal_stats               = give_goal_progress_stats( $form_id );
+		$form_goal_progress_value = ! empty( $goal_stats['progress'] ) ? $goal_stats['progress'] : 0;
+	} else {
+		$form_goal_progress_value = -1;
+	}
+
+	give_update_meta( $form_id, '_give_form_goal_progress', $form_goal_progress_value );
 }
 
 /**

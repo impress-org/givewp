@@ -188,7 +188,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 						'class'    => 'give-donation-forms-filter',
 						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
-						'number'   => - 1,
+						'number'   => 30,
 					)
 				);
 				?>
@@ -239,10 +239,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function search_box( $text, $input_id ) {
-		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
-			return;
-		}
-
 		$input_id = $input_id . '-search-input';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
@@ -264,10 +260,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			do_action( 'give_payment_history_search' );
 			?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<input type="search" id="<?php echo $input_id ?>" name="s"
+			       value="<?php _admin_search_query(); ?>"
+			       placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
-			) ); ?><br/>
+			) ); ?><br />
 		</div>
 		<?php
 	}
@@ -895,7 +893,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return array  objects in array containing all the data for the payments
 	 */
 	public function payments_data() {
-
 		$per_page   = $this->per_page;
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
@@ -907,8 +904,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
 		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
-		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
-		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $start_date;
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : date( give_date_format(), 0 );
+		$end_date   = ! empty( $_GET['end-date'] )
+			? sanitize_text_field( $_GET['end-date'] )
+			: date( give_date_format(), current_time( 'timestamp' ) );
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 

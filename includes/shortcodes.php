@@ -807,6 +807,8 @@ function give_form_grid_shortcode( $atts ) {
 		'paged'               => true,
 		'ids'                 => '',
 		'exclude'             => '',
+		'orderby'             => 'date',
+		'order'               => 'DESC',
 		'cats'                => '',
 		'tags'                => '',
 		'columns'             => 'best-fit',
@@ -843,6 +845,8 @@ function give_form_grid_shortcode( $atts ) {
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
 		'posts_per_page' => $atts['forms_per_page'],
+		'orderby'        => $atts['orderby'],
+		'order'          => $atts['order'],
 		'tax_query'      => array(
 			'relation' => 'AND',
 		),
@@ -895,6 +899,35 @@ function give_form_grid_shortcode( $atts ) {
 			'terms'    => $tags,
 		);
 		$form_args['tax_query'][] = $tax_query;
+	}
+	
+	/**
+	 * Filter to modify WP Query for Total Goal.
+	 *
+	 * @since 2.1.4
+	 *
+	 * @param array $form_args WP query argument for Grid.
+	 *
+	 * @return array $form_args WP query argument for Grid.
+	 */
+	$form_args = (array) apply_filters( 'give_form_grid_shortcode_query_args', $form_args );
+
+	// Maybe filter by form Amount Donated or Number of Donations.
+	switch ( $atts['orderby'] ) {
+		case 'amount_donated':
+			$form_args['meta_key'] = '_give_form_earnings';
+			$form_args['orderby']  = 'meta_value_num';
+			break;
+		case 'number_donations':
+			$form_args['meta_key'] = '_give_form_sales';
+			$form_args['orderby']  = 'meta_value_num';
+			break;
+		case 'closest_to_goal':
+			if( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
+				$form_args['meta_key'] = '_give_form_goal_progress';
+				$form_args['orderby']  = 'meta_value_num';
+			}
+			break;
 	}
 
 	// Query to output donation forms.

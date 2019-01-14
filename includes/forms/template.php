@@ -104,17 +104,11 @@ function give_get_donation_form( $args = array() ) {
 		} else {
 			/**
 			 * Show form title:
-			 * 1. if show_title params set to true
-			 * 2. if admin set form display_style to button
+			 * 1. if admin set form display_style to button or modal
 			 */
 			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
-			if (
-				(
-					( isset( $args['show_title'] ) && $args['show_title'] == true )
-					|| ( 'button' === get_post_meta( $form_id, '_give_payment_display', true ) )
-				)
-				&& ! doing_action( 'give_single_form_summary' )
-			) {
+
+			if ( ! doing_action( 'give_single_form_summary' ) ) {
 				echo $form_title;
 			}
 
@@ -858,11 +852,24 @@ function give_user_info_fields( $form_id ) {
 						<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 						<?php checked( 1, $is_anonymous_donation ); ?>
 					>
-					<?php _e( 'Make this an anonymous donation', 'give' ); ?>
-					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
+					<?php
+					/**
+					 * Filters the checkbox label.
+					 *
+					 * @since 2.4.1
+					 */
+					echo apply_filters('give_anonymous_donation_checkbox_label', __('Make this an anonymous donation.', 'give' ), $form_id);
+
+					if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( esc_html__( 'Would you like to prevent this donation from being displayed publicly?', 'give' ) ); ?>
+					<?php
+					// Conditional tooltip text when comments enabled:
+					// https://github.com/impress-org/give/issues/3911
+					$anonymous_donation_tooltip = give_is_donor_comment_field_enabled( $form_id ) ? esc_html__( 'Would you like to prevent your name, image, and comment from being displayed publicly?', 'give' ) 	: esc_html__( 'Would you like to prevent your name and image from being displayed publicly?', 'give' );
+
+					echo Give()->tooltips->render_help( $anonymous_donation_tooltip ); ?>
+
 				</label>
 			</p>
 		<?php endif; ?>

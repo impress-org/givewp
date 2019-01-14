@@ -82,6 +82,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	give_increase_earnings( $form_id, $amount, $payment_id );
 	give_increase_donation_count( $form_id );
 
+	// Update the goal progress for this form ID.
+	give_update_goal_progress( $form_id );
+
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();
 
@@ -272,9 +275,8 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
 function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) {
 	// Bailout.
 	if (
-		'give_payment' !== get_post_type( $object_id ) ||
-		'_give_payment_meta' !== $meta_key ||
-		! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' )
+		'give_payment' !== get_post_type( $object_id )
+		|| '_give_payment_meta' !== $meta_key
 	) {
 		return $check;
 	}
@@ -425,7 +427,9 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	return $payment_meta;
 }
 
-add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+if( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+}
 
 /**
  * Add meta in payment that store page id and page url.

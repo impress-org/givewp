@@ -125,13 +125,17 @@ class Give_Donor_Wall_Block {
 					'type'    => 'boolean',
 					'default' => true,
 				),
-				'commentLength' => array(
-					'type'    => 'string',
-					'default' => '140',
+				'showAnonymous' => array(
+					'type'    => 'boolean',
+					'default' => true,
 				),
 				'onlyComments'  => array(
 					'type'    => 'boolean',
 					'default' => false,
+				),
+				'commentLength' => array(
+					'type'    => 'string',
+					'default' => '140',
 				),
 				'readMoreText'  => array(
 					'type'    => 'string',
@@ -169,6 +173,7 @@ class Give_Donor_Wall_Block {
 			'show_total'      => $attributes['showTotal'],
 			'show_time'       => $attributes['showDate'],
 			'show_comments'   => $attributes['showComments'],
+			'anonymous'       => $attributes['showAnonymous'],
 			'comment_length'  => absint( $attributes['commentLength'] ),
 			'only_comments'   => $attributes['onlyComments'],
 			'readmore_text'   => $attributes['readMoreText'],

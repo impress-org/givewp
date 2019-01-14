@@ -59,7 +59,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-
 		// Set parent defaults.
 		parent::__construct( array(
 			'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
@@ -68,43 +67,95 @@ class Give_Donor_List_Table extends WP_List_Table {
 		) );
 
 	}
-
 	/**
-	 * Show the search field.
+	 * Add donors search filter.
 	 *
-	 * @param string $text     Label for the search box.
-	 * @param string $input_id ID of the search box.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
+	 * @since 2.4.0
 	 * @return void
 	 */
-	public function search_box( $text, $input_id ) {
-		$input_id = $input_id . '-search-input';
-
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo sprintf( '<input type="hidden" name="orderby" value="%1$s" />', esc_attr( $_REQUEST['orderby'] ) );
-		}
-
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo sprintf( '<input type="hidden" name="order" value="%1$s" />', esc_attr( $_REQUEST['order'] ) );
-		}
+	public function advanced_filters() {
+		$start_date  = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
+		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
+		$search      = $this->get_search();
+		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
-		<p class="search-box" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
-			<?php submit_button( $text, 'button', false, false, array(
-				'ID' => 'search-submit',
-			) ); ?>
-		</p>
+		<div id="give-donor-filters" class="give-filters">
+			<div class="give-donor-search-box">
+				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
+					'ID' => 'donor-search-submit',
+				) ); ?>
+			</div>
+			<div id="give-donor-date-filters">
+				<div class="give-filter give-filter-half">
+					<label for="start-date"
+					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
+					       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+				</div>
+				<div class="give-filter give-filter-half">
+					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+					<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
+					       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+				</div>
+			</div>
+			<div id="give-payment-form-filter" class="give-filter">
+				<label for="give-donation-forms-filter"
+				       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+				<?php
+				// Filter Donations by Donation Forms.
+				echo Give()->html->forms_dropdown(
+					array(
+						'name'     => 'form_id',
+						'id'       => 'give-donation-forms-filter',
+						'class'    => 'give-donation-forms-filter',
+						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'chosen'   => true,
+						'number'   => 30,
+					)
+				);
+				?>
+			</div>
+
+			<?php
+			/**
+			 * Action to add hidden fields and HTML in donor search.
+			 *
+			 * @since 2.4.0
+			 */
+			do_action( 'give_donor_table_advanced_filters' );
+
+
+			if ( ! empty( $status ) ) {
+				echo sprintf( '<input type="hidden" name="status" value="%s"/>', esc_attr( $status ) );
+			}
+
+			if ( ! empty( $donor ) ) {
+				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $donor ) );
+			}
+			?>
+
+			<div class="give-filter">
+				<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
+				<?php
+				// Clear active filters button.
+				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
+					?>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>"
+					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</div>
+
 		<?php
 	}
 
 	/**
 	 * This function renders most of the columns in the list table.
 	 *
-	 * @param array  $donor        Contains all the data of the donors.
+	 * @param array  $donor       Contains all the data of the donors.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @access public
@@ -170,11 +221,27 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $donor ) {
-		$name     = ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+
+		// Get donor's initials for non-gravatars
+		$title_prefix                 = Give()->donor_meta->get_meta( $donor['id'], '_give_donor_title_prefix', true );
+		$donor_name_without_prefix    = trim( str_replace( $title_prefix, '', $donor['name'] ) );
+		$donor_name_array             = explode( " ", $donor_name_without_prefix );
+		$donor_name_args['firstname'] = ! empty( $donor_name_array[0] ) ? $donor_name_array[0] : '';
+		$donor_name_args['lastname']  = ! empty( $donor_name_array[1] ) ? $donor_name_array[1] : '';
+		$donor_name_initial           = give_get_name_initial( $donor_name_args );
+
+		$donation_gravatar_image = sprintf(
+			'<span class="give-donor__image give-donor-admin-avatar" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</span>',
+			md5( strtolower( trim( $donor['email'] ) ) ),
+			absint( give_validate_gravatar( $donor['email'] ) ),
+			$donor_name_initial
+		);
+
+		$name     = ! empty( $donor['name'] ) ? ( $donation_gravatar_image . '<span class="give-donor-name-text">' . $donor['name'] . '</span>' ) : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 
-		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
+		return '<a href="' . esc_url( $view_url ) . '" class="give-donor-name">' . $name . '</a>' . $this->row_actions( $actions );
 	}
 
 	/**
@@ -231,9 +298,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public function get_row_actions( $donor ) {
 
 		$actions = array(
+			'id'     => '<span class="give-donor-id">ID: ' . $donor['id'] . '  </span>',
 			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
-			'notes'  => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
-			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'],sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
+			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'], sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
 		);
 
 		return apply_filters( 'give_donor_row_actions', $actions, $donor );
@@ -276,6 +343,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$actions = array(
 			'delete' => __( 'Delete', 'give' ),
 		);
+
 		return $actions;
 	}
 
@@ -301,7 +369,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
 			?>
-			<br class="clear" />
+			<br class="clear"/>
 		</div>
 		<?php
 	}
@@ -373,28 +441,37 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_donor_query() {
-		$paged   = $this->get_paged();
-		$offset  = $this->per_page * ( $paged - 1 );
-		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		$per_page   = $this->per_page;
+		$paged      = $this->get_paged();
+		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
+		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : false;
+		$end_date   = ! empty( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : false;
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+		$offset     = $this->per_page * ( $paged - 1 );
+		$search     = $this->get_search();
+		$order      = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
+		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
 		$args = array(
-			'number'  => $this->per_page,
-			'offset'  => $offset,
-			'order'   => $order,
-			'orderby' => $orderby,
+			'output'     => 'payments',
+			'number'     => $per_page,
+			'offset'     => $offset,
+			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'orderby'    => $orderby,
+			'order'      => $order,
+			'donor'      => $donor,
+			's'          => $search,
+			'start_date' => $start_date,
+			'end_date'   => $end_date,
+			'give_forms' => $form_id,
 		);
 
-		if ( $search ) {
-			if ( is_email( $search ) ) {
-				$args['email'] = $search;
-			} elseif ( is_numeric( $search ) ) {
-				$args['id'] = $search;
-			} else {
-				$args['name'] = $search;
-			}
-		}
+		/**
+		 * Filter to modify donor table argument.
+		 *
+		 * @since 2.4.0
+		 */
+		$args = (array) apply_filters( 'give_donor_table_query', $args );
 
 		return $args;
 	}
@@ -416,7 +493,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Display the final donor table
 	 *
-	 * @since 1.8.17
+	 * @since  1.8.17
 	 * @access public
 	 */
 	public function display() {
@@ -428,7 +505,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$search_keyword = ! empty( $get_data['s'] ) ? $get_data['s'] : '';
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
@@ -444,7 +520,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 				echo " data-wp-lists='list:$singular'";
 			} ?>>
 			<tr class="hidden"></tr>
-			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;" >
+			<tr id="give-bulk-delete"
+			    class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor"
+			    style="display: none;">
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
@@ -460,11 +538,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 					<fieldset class="inline-edit-col-right">
 						<div class="inline-edit-col">
 							<label>
-								<input class="give-donor-delete-confirm" type="checkbox" name="give-donor-delete-confirm"/>
+								<input class="give-donor-delete-confirm" type="checkbox"
+								       name="give-donor-delete-confirm"/>
 								<?php esc_attr_e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
 							</label>
 							<label>
-								<input class="give-donor-delete-records" type="checkbox" name="give-donor-delete-records"/>
+								<input class="give-donor-delete-records" type="checkbox"
+								       name="give-donor-delete-records"/>
 								<?php esc_attr_e( 'Delete all associated donations and records?', 'give' ); ?>
 							</label>
 						</div>
@@ -472,11 +552,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 					<p class="submit inline-edit-save">
 						<input type="hidden" name="give_action" value="delete_bulk_donor"/>
-						<input type="hidden" name="s" value="<?php echo esc_html( $search_keyword ); ?>"/>
 						<input type="hidden" name="orderby" value="<?php echo esc_html( $order_by ); ?>"/>
 						<input type="hidden" name="order" value="<?php echo esc_html( $order ); ?>"/>
-						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft"><?php esc_attr_e( 'Cancel', 'give' ); ?></button>
-						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="<?php esc_attr_e( 'Delete', 'give' ); ?>">
+						<button type="button" id="give-bulk-delete-cancel"
+						        class="button cancel alignleft"><?php esc_attr_e( 'Cancel', 'give' ); ?></button>
+						<input type="submit" id="give-bulk-delete-button" disabled
+						       class="button button-primary alignright"
+						       value="<?php esc_attr_e( 'Delete', 'give' ); ?>">
 						<br class="clear">
 					</p>
 				</td>

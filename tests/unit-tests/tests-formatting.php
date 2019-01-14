@@ -31,11 +31,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
 	function test_give_get_currency_formatting_settings( $currency_code, $expected ) {
-
-		// Setting.
-		$setting_arr = array( 'currency_position', 'thousands_separator', 'decimal_separator', 'number_decimals' );
-
-
 		/**
 		 * Case 1: Currency
 		 */

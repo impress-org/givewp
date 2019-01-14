@@ -10,27 +10,6 @@
  */
 
 /**
- * Register the payment gateway
- *
- * @since  1.0
- *
- * @param array $gateways
- *
- * @return array
- */
-function give_offline_register_gateway( $gateways ) {
-	// Format: ID => Name
-	$gateways['offline'] = array(
-		'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-		'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
-	);
-
-	return $gateways;
-}
-
-add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
-
-/**
  * Add our payment instructions to the checkout
  *
  * @since  1.0

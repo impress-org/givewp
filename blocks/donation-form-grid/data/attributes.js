@@ -15,6 +15,14 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+	orderBy:{
+		type: 'string',
+		default: 'date',
+	},
+	order:{
+		type: 'string',
+		default: 'DESC',
+	},
 	categories:{
 		type: 'string',
 		default: '',

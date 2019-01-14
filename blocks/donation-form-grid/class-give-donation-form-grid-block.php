@@ -98,6 +98,14 @@ class Give_Donation_form_Grid_Block {
 					'type'    => 'string',
 					'default' => '',
 				),
+				'orderBy'           => array(
+					'type'    => 'string',
+					'default' => 'date',
+				),
+				'order'             => array(
+					'type'    => 'string',
+					'default' => 'DESC',
+				),
 				'categories'        => array(
 					'type'    => 'string',
 					'default' => '',
@@ -147,6 +155,8 @@ class Give_Donation_form_Grid_Block {
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
 			'ids'                 => $attributes['formIDs'],
 			'exclude'             => $attributes['excludedFormIDs'],
+			'orderby'             => $attributes['orderBy'],
+			'order'               => $attributes['order'],
 			'cats'                => $attributes['categories'],
 			'tags'                => $attributes['tags'],
 			'columns'             => $attributes['columns'],

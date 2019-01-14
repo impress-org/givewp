@@ -455,6 +455,16 @@ function give_show_upgrade_notices( $give_updates ) {
 			),
 		)
 	);
+
+	// v2.4.0 Update donation form goal progress data.
+	$give_updates->register(
+		array(
+			'id'       => 'v240_update_form_goal_progress',
+			'version'  => '2.4.0',
+			'callback' => 'give_v240_update_form_goal_progress_callback',
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -3090,6 +3100,25 @@ function give_v224_update_donor_meta_forms_id_callback() {
 	}
 }
 
+/**
+ * Add custom comment table
+ *
+ * @since 2.4.0
+ */
+function  give_v230_add_missing_comment_tables(){
+	$custom_tables = array(
+		Give()->comment->db,
+		Give()->comment->db_meta,
+	);
+
+	/* @var Give_DB $table */
+	foreach ( $custom_tables as $table ) {
+		if ( ! $table->installed() ) {
+			$table->register_table();
+		}
+	}
+}
+
 
 /**
  * Move donor notes to comment table
@@ -3097,6 +3126,9 @@ function give_v224_update_donor_meta_forms_id_callback() {
  * @since 2.3.0
  */
 function give_v230_move_donor_note_callback() {
+	// Add comment table if missing.
+	give_v230_add_missing_comment_tables();
+
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
@@ -3150,6 +3182,9 @@ function give_v230_move_donor_note_callback() {
  */
 function give_v230_move_donation_note_callback() {
 	global $wpdb;
+
+	// Add comment table if missing.
+	give_v230_add_missing_Comment_tables();
 
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
@@ -3294,4 +3329,45 @@ function give_v230_delete_dw_related_comment_data_callback(){
 
 	// The Update Ran.
 	give_set_upgrade_complete( 'v230_delete_donor_wall_related_comment_data' );
+}
+
+/**
+ * Update donation form goal progress data.
+ *
+ * @since 2.4.0
+ *
+ */
+function give_v240_update_form_goal_progress_callback() {
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$forms = new WP_Query(
+		array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => 'give_forms',
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+
+			// Update the goal progress for donation form.
+			give_update_goal_progress( get_the_ID() );
+
+		}// End while().
+
+		wp_reset_postdata();
+
+	} else {
+
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v240_update_form_goal_progress' );
+
+	}
 }

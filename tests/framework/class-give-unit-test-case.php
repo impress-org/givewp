@@ -8,6 +8,15 @@
  * @since 1.0
  */
 class Give_Unit_Test_Case extends WP_UnitTestCase {
+	/**
+	 * Cache Give setting
+	 * Note: we will use this variable to reset setting after each test to prevent test failure
+	 * which happen due to change in setting during test.
+	 *
+	 * @since 2.4.0
+	 * @var array
+	 */
+	private static $saved_settings;
 
 	/**
 	 * Setup test case.
@@ -15,6 +24,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
+		self::$saved_settings = Give_Cache_Setting::get_settings();
 
 		parent::setUp();
 
@@ -29,6 +39,9 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
+		// Reset Give setting to prevent failing test which happen we update setting in test function.
+		update_option( 'give_settings', self::$saved_settings );
+
 		parent::tearDown();
 	}
 

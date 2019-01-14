@@ -12,8 +12,10 @@ import {GiveShortcodeButton} from './shortcode-button.js';
 
 // Provided access to global level.
 var give_setting_edit = false;
+var gravatar = require('gravatar');
 
 (function ($) {
+
 	/**
 	 * Show/Hide ajax loader.
 	 *
@@ -1694,6 +1696,7 @@ var give_setting_edit = false;
 		onLoadPageNumber: '',
 
 		init: function () {
+			this.loadGravatar();
 			this.unlockDonorFields();
 			this.editDonor();
 			this.add_email();
@@ -1705,6 +1708,37 @@ var give_setting_edit = false;
 			this.bulkDeleteDonor();
 			GiveDonor.onLoadPageNumber = $( '#current-page-selector' ).val();
 			$('body').on('click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions);
+		},
+
+		loadGravatar: function() {
+
+			var giveDonorImage, donorEmail, hasValidGravatar = '';
+
+			$( '.give-donor-name' ).each( function() {
+
+				giveDonorImage = $( this ).find( '.give-donor__image' );
+
+				// Bailout out if already tried to load gravatar.
+				if ( giveDonorImage.hasClass( 'gravatar-loaded' ) ) {
+					return;
+				}
+
+				donorEmail = giveDonorImage.attr( 'data-donor_email' );
+				hasValidGravatar = '1' === giveDonorImage.attr( 'data-has-valid-gravatar' );
+
+				if ( hasValidGravatar ) {
+					// executes when complete page is fully loaded, including all frames, objects and images
+					var donorImage = $( '<img>' );
+					donorImage.attr( 'src', gravatar.url( donorEmail ) );
+					donorImage.attr( 'width', '60' );
+					donorImage.attr( 'height', '60' );
+
+					$( this ).find( '.give-donor__image' ).html( donorImage );
+				}
+
+				giveDonorImage.addClass( 'gravatar-loaded' );
+			} );
+
 		},
 
 		unlockDonorFields: function (e) {

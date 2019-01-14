@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, formID, order, columns, showAvatar, showName, showTotal, showDate, showComments, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, formID, order, columns, showAvatar, showName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -72,6 +72,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Comments' ) }
 					checked={ !! showComments }
 					onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+				<ToggleControl
+					name="showAnonymous"
+					label={ __( 'Show Anonymous' ) }
+					checked={ !! showAnonymous }
+					onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
 				<ToggleControl
 					name="onlyComments"
 					label={ __( 'Donor With Comments' ) }

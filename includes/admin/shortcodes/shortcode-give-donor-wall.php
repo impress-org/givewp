@@ -49,13 +49,23 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'        => 'listbox',
+				'name'        => 'orderby',
+				'label'       => esc_attr__( 'Order By:', 'give' ),
+				'tooltip'     => esc_attr__( 'Different parameters to set the order in which donors appear.', 'give' ),
+				'options'     => array(
+					'donation_amount' => esc_html__( 'Donation Amount', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Date Created', 'give' ),
+			),
+			array(
+				'type'        => 'listbox',
 				'name'        => 'order',
 				'label'       => esc_attr__( 'Order:', 'give' ),
 				'tooltip'     => esc_attr__( 'Sets the order in which donors appear.', 'give' ),
 				'options'     => array(
-					'ASC'  => esc_html__( 'Oldest to Newest', 'give' ),
+					'ASC' => esc_html__( 'Ascending', 'give' ),
 				),
-				'placeholder' => esc_html__( 'Newest to Oldest', 'give' ),
+				'placeholder' => esc_html__( 'Descending', 'give' ),
 			),
 			array(
 				'type'        => 'listbox',
@@ -110,6 +120,16 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'        => 'listbox',
+				'name'        => 'anonymous',
+				'label'       => esc_attr__( 'Anonymous:', 'give' ),
+				'tooltip'     => esc_attr__( 'Determines whether anonymous donations are included.', 'give' ),
+				'options'     => array(
+					'false' => esc_html__( 'Hide', 'give' ),
+				),
+				'placeholder' => esc_html__( 'Show', 'give' ),
+			),
+			array(
+				'type'        => 'listbox',
 				'name'        => 'show_avatar',
 				'label'       => esc_attr__( 'Donor Avatar:', 'give' ),
 				'tooltip'     => esc_attr__( 'Determines whether the avatar is visible.', 'give' ),
@@ -157,7 +177,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
-			)
+			),
 		);
 	}
 }

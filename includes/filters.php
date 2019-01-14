@@ -190,14 +190,14 @@ function give_akismet_spam_check( $args ) {
  * @return array
  */
 function give_bc_v1817_iranian_currency_code( $currencies ) {
-	if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
-		$currencies['RIAL'] = $currencies['IRR'];
-	}
+	$currencies['RIAL'] = $currencies['IRR'];
 
 	return $currencies;
 }
 
-add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
+if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+	add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
+}
 
 
 /**

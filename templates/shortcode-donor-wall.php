@@ -1,6 +1,6 @@
 <?php
 /**
- * This template is used to display the donation grid with [donation_grid]
+ * This template is used to display the donation grid with [give_donor_wall]
  */
 
 // Exit if accessed directly.
@@ -20,15 +20,26 @@ $atts          = $args[2]; // Shortcode attributes.
 		<div class="give-donor__header">
 			<?php
 			if( true === $atts['show_avatar'] ) {
-				$has_avatar = absint( give_validate_gravatar( $donation['_give_payment_donor_email'] ) );
+
+				// Get anonymous donor image.
+				$anonymous_donor_img = sprintf(
+					'<img src="%1$s" alt="%2$s">',
+					esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg' ),
+					esc_attr__( 'Anonymous User', 'give' )
+				);
+
+				// Get donor avatar image based on donation parameter.
+				$donor_avatar = $donation['_give_anonymous_donation'] ? $anonymous_donor_img : $donation['name_initial'];
+
+				// Validate donor gravatar.
+				$validate_gravatar = $donation['_give_anonymous_donation'] ? 0 : give_validate_gravatar( $donation['_give_payment_donor_email'] );
+
 				// Maybe display the Avatar.
 				echo sprintf(
 					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
-					$has_avatar,
-					defined( 'REST_REQUEST' ) && $has_avatar
-						? get_avatar($donation['_give_payment_donor_email'])
-						: $donation['name_initial']
+					absint( $validate_gravatar ),
+					$donor_avatar
 				);
 			}
 			?>
@@ -36,20 +47,25 @@ $atts          = $args[2]; // Shortcode attributes.
 			<div class="give-donor__details">
 				<?php if ( true === $atts['show_name'] ) : ?>
 					<h3 class="give-donor__name">
-						<?php $donor_name = trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] ); ?>
+						<?php
+						// Get donor name based on donation parameter.
+						$donor_name = ( $donation['_give_anonymous_donation'] )
+							? __( 'Anonymous', 'give' )
+							: trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
+						?>
 						<?php esc_html_e( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
-						<?php echo give_donation_amount( $donation['donation_id'], true ); ?>
+						<?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
 					</span>
 				<?php endif; ?>
 
 				<?php if ( true === $atts['show_time'] ) : ?>
 					<span class="give-donor__timestamp">
-						<?php echo date_i18n( give_date_format(), strtotime( $donation['_give_completed_date'] ) ); ?>
+						<?php echo esc_html( give_get_formatted_date( $donation[ 'donation_date' ], give_date_format(), 'Y-m-d H:i:s' ) ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
@@ -60,6 +76,7 @@ $atts          = $args[2]; // Shortcode attributes.
 			true === $atts['show_comments']
 			&& absint( $atts['comment_length'] )
 			&& ! empty( $donation['donor_comment'] )
+			&& ! $donation['_give_anonymous_donation']
 		) :
 			?>
 			<div class="give-donor__content">

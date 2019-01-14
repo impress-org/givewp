@@ -891,9 +891,10 @@ function give_can_view_receipt( $donation_id ) {
 		// Check whether it is purchase session?
 		// This condition is to show receipt to donor after donation.
 		$purchase_session = give_get_purchase_session();
+
 		if (
 			! empty( $purchase_session )
-			&& $purchase_session['donation_id'] === $donation_id
+			&& absint( $purchase_session['donation_id'] ) === absint( $donation_id )
 		) {
 			$donor = Give()->donors->get_donor_by( 'email', $purchase_session['user_email'] );
 		}
@@ -1170,7 +1171,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 
 	// Fresh install?
 	// If fresh install then all upgrades will be consider as completed.
-	$is_fresh_install = ! get_option( 'give_version' );
+	$is_fresh_install = ! Give_Cache_Setting::get_option( 'give_version' );
 	if ( $is_fresh_install ) {
 		return true;
 	}
@@ -1235,7 +1236,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
-	return (array) get_option( 'give_completed_upgrades' );
+	return (array) Give_Cache_Setting::get_option( 'give_completed_upgrades' );
 }
 
 /**
@@ -1530,7 +1531,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 			'give_recount_form_stats_args', array(
 				'give_forms'     => $form_id,
 				'status'         => $accepted_statuses,
-				'posts_per_page' => - 1,
+				'number'         => - 1,
 				'fields'         => 'ids',
 			)
 		);
@@ -1545,12 +1546,12 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 
 		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-				// Ensure acceptible status only
+				// Ensure acceptable status only.
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				// Ensure only payments for this form are counted
+				// Ensure only payments for this form are counted.
 				if ( $payment->form_id != $form_id ) {
 					continue;
 				}
@@ -2282,7 +2283,8 @@ function give_get_safe_asset_url( $url ) {
 function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
 	$date_obj       = DateTime::createFromFormat( $current_format, $date );
-	$formatted_date = $date_obj->format( $format );
+
+	$formatted_date = $date_obj instanceof DateTime ? $date_obj->format( $format ) : '';
 
 	/**
 	 * Give get formatted date.
