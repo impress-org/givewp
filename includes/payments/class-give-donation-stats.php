@@ -59,6 +59,12 @@ class Give_Donation_Stats extends Give_Stats {
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
 
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
+
 		/**
 		 * Return custom result
 		 *
@@ -116,6 +122,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Reset query vars.
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
+		$this->set_cache( $result );
 		$this->reset_query();
 
 		/**
@@ -146,6 +153,12 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
+
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
 
 		/**
 		 * Return custom result
@@ -211,6 +224,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Reset query vars.
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
+		$this->set_cache( $result );
 		$this->reset_query();
 
 		/**
@@ -276,6 +290,12 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		$this->pre_query( $query );
+
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
 
 		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$meta_table_count}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
@@ -345,6 +365,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Reset query vars.
 		$results->sql        = $sql;
 		$results->query_vars = $this->query_vars;
+		$this->set_cache( $results );
 		$this->reset_query();
 
 		return $results;
@@ -366,6 +387,12 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->query_vars['column'] = 'post_date';
 
 		$this->pre_query( $query );
+
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
 
 		/**
 		 * Return custom result
@@ -396,6 +423,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Reset query vars.
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
+		$this->set_cache( $result );
 		$this->reset_query();
 
 		/**
@@ -440,6 +468,12 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$this->pre_query( $query );
 
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
+
 		/**
 		 * Return custom result
 		 *
@@ -470,6 +504,7 @@ class Give_Donation_Stats extends Give_Stats {
 		// Reset query vars.
 		$result->sql        = $sql;
 		$result->query_vars = $this->query_vars;
+		$this->set_cache( $result );
 		$this->reset_query();
 
 		/**

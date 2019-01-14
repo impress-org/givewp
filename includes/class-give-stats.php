@@ -717,10 +717,58 @@ class Give_Stats {
 	}
 
 	/**
+	 * Get query_vars
+	 *
+	 * @since 2.4.1
+	 * @access public
+	 *
 	 * @return array
 	 */
 	public function get_query_var() {
 		return $this->query_vars;
+	}
+
+	/**
+	 * Set cache
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @param stdClass $result
+	 */
+	protected function set_cache( $result ) {
+		error_log( print_r( 'setting cache', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		error_log( print_r( $result, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+		Give_Cache::set_db_query( $this->query_vars['_cache_key'], $result );
+	}
+
+	/**
+	 * Get cache
+	 *
+	 * @since  2.4.1
+	 * @access protected
+	 *
+	 * @return mixed
+	 */
+	protected function get_cache() {
+		$this->query_vars['_cache_key'] = $this->get_cache_key();
+
+		error_log( print_r( Give_Cache::get_db_query( $this->query_vars['_cache_key'] ), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+		return Give_Cache::get_db_query( $this->query_vars['_cache_key'] );
+	}
+
+	/**
+	 * Get cache key
+	 *
+	 * @since  2.4.1
+	 * @access private
+	 *
+	 * @return string
+	 */
+	private function get_cache_key() {
+		return Give_Cache::get_key( 'give_stat', $this->query_vars, false );
 	}
 
 	/**
@@ -819,7 +867,6 @@ class Give_Stats {
 
 		return $where;
 	}
-
 }
 
 // @todo: deprecated count_where and payment_where
