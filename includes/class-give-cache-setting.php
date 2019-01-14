@@ -162,7 +162,7 @@ class Give_Cache_Setting {
 				$this->settings[ $result->option_name ] = maybe_unserialize( $result->option_value );
 			}
 
-			wp_cache_set( $this->cache_key, $tmp, $this->cache_group );
+			wp_cache_set( $this->cache_key, $this->settings, $this->cache_group );
 		}
 	}
 
