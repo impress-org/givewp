@@ -737,9 +737,6 @@ class Give_Stats {
 	 * @param stdClass $result
 	 */
 	protected function set_cache( $result ) {
-		error_log( print_r( 'setting cache', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $result, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 		Give_Cache::set_db_query( $this->query_vars['_cache_key'], $result );
 	}
 
@@ -753,8 +750,6 @@ class Give_Stats {
 	 */
 	protected function get_cache() {
 		$this->query_vars['_cache_key'] = $this->get_cache_key();
-
-		error_log( print_r( Give_Cache::get_db_query( $this->query_vars['_cache_key'] ), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 		return Give_Cache::get_db_query( $this->query_vars['_cache_key'] );
 	}
