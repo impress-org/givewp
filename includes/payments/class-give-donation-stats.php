@@ -277,16 +277,6 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$this->pre_query( $query );
 
-		/**
-		 * Return custom result
-		 *
-		 * @since 2.4.1
-		 */
-		$result = apply_filters( 'give_donation_stats_pre_get_donation_statistics', null, $this );
-		if ( ! is_null( $result ) ) {
-			return $result;
-		}
-
 		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$meta_table_count}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
@@ -356,13 +346,6 @@ class Give_Donation_Stats extends Give_Stats {
 		$results->sql        = $sql;
 		$results->query_vars = $this->query_vars;
 		$this->reset_query();
-
-		/**
-		 * Filter the result
-		 *
-		 * @since 2.4.1
-		 */
-		$results = apply_filters( 'give_donation_stats_get_statistics', $results, $this );
 
 		return $results;
 	}
