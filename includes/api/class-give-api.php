@@ -1234,7 +1234,7 @@ class Give_API {
 		$args = wp_parse_args( $args, $defaults );
 
 		$has_dates = 'range' === $args['date']
-		             || ! ( empty( $args['form'] ) && empty( $args['startdate'] ) && empty( $args['enddate'] ) );
+						|| ! ( empty( $args['form'] ) && empty( $args['startdate'] ) && empty( $args['enddate'] ) );
 
 		if ( $has_dates ) {
 			// Return donations for a date range.
@@ -1352,7 +1352,6 @@ class Give_API {
 			$form = get_post( $args['form'] );
 
 			$args['statistic_type'] = 'form';
-			$args['give_forms']     = array( (int) $args['form'] );
 
 			$donations['donations'][] = array(
 				$form->post_name => $this->donation_stats->get_sales( $args )->sales,
@@ -1436,7 +1435,6 @@ class Give_API {
 			$form = get_post( $args['form'] );
 
 			$args['statistic_type'] = 'form';
-			$args['give_forms']     = array( (int) $args['form'] );
 
 			$earnings['earnings'][] = array(
 				$form->post_name => $this->donation_stats->get_earnings( $args )->total,
