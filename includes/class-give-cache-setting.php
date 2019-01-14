@@ -140,18 +140,29 @@ class Give_Cache_Setting {
 	private function load_plugin_settings() {
 		global $wpdb;
 
-		$cache = wp_cache_get( $this->cache_key, $this->cache_group );
+		/**
+		 * Fire the filter
+		 *
+		 * This filter can be used if admin facing any caching issue.
+		 * This is a switch to enable or disable setting cache.
+		 * Thus filter can be removed in future.
+		 *
+		 * @since 2.4.1
+		 *
+		 */
+		if( ! apply_filters( 'give_disable_setting_cache', false ) ){
+			$cache = wp_cache_get( $this->cache_key, $this->cache_group );
 
-		// Load options from cache.
-		if ( false !== $cache ) {
-			$this->settings = $cache;
+			// Load options from cache.
+			if ( ! empty( $cache ) ) {
+				$this->settings = $cache;
 
-			return;
+				return;
+			}
 		}
 
 		$db_option_ids = '\'' . implode( '\',\'', $this->db_option_ids ) . '\'';
 
-		$tmp     = array();
 		$sql     = "SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN ({$db_option_ids}) ";
 		$results = $wpdb->get_results( $sql );
 
