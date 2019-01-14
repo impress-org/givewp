@@ -126,40 +126,33 @@ function give_dashboard_stats_widget() {
 
 
 		<table class="give-table-stats">
-			<thead style="display: none;">
-			<tr>
-				<th><?php _e( 'This Week', 'give' ); ?></th>
-				<th><?php _e( 'This Month', 'give' ); ?></th>
-				<th><?php _e( 'Past 30 Days', 'give' ); ?></th>
-			</tr>
-			</thead>
 			<tbody>
-			<tr id="give-table-stats-tr-1">
-				<td>
-					<?php $this_week_earning = $stats->get_earnings( array( 'range' => 'this_week' ) ); ?>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_week_earning->total, array( 'sanitize' => false ) ) ); ?></p>
+				<tr id="give-table-stats-tr-1">
+					<td>
+						<?php $this_week_earning = $stats->get_earnings( array( 'range' => 'this_week' ) ); ?>
+						<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_week_earning->total, array( 'sanitize' => false ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'This Week', 'give' ); ?></p>
-				</td>
-				<td>
-					<?php $this_month_earning = $stats->get_earnings( array( 'range' => 'this_month' ) ); ?>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_month_earning->total, array( 'sanitize' => false ) ) ); ?></p>
+						<p class="give-dashboard-stat-total-label"><?php _e( 'This Week', 'give' ); ?></p>
+					</td>
+					<td>
+						<?php $this_month_earning = $stats->get_earnings( array( 'range' => 'this_month' ) ); ?>
+						<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_month_earning->total, array( 'sanitize' => false ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'This Month', 'give' ); ?></p>
-				</td>
-			</tr>
-			<tr id="give-table-stats-tr-2">
-				<td>
-					<?php $last_month_earning = $stats->get_earnings( array( 'range' => 'last_month' ) ); ?>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $last_month_earning->total, array( 'sanitize' => false ) ) ) ?></p>
-					<p class="give-dashboard-stat-total-label"><?php _e( 'Last Month', 'give' ); ?></p>
-				</td>
-				<td>
-					<?php $this_quarter_earning = $stats->get_earnings( array( 'range' => 'this_quarter' ) ); ?>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_quarter_earning->total, array( 'sanitize' => false ) ) ) ?></p>
-					<p class="give-dashboard-stat-total-label"><?php _e( 'This Quarter', 'give' ); ?></p>
-				</td>
-			</tr>
+						<p class="give-dashboard-stat-total-label"><?php _e( 'This Month', 'give' ); ?></p>
+					</td>
+				</tr>
+				<tr id="give-table-stats-tr-2">
+					<td>
+						<?php $last_month_earning = $stats->get_earnings( array( 'range' => 'last_month' ) ); ?>
+						<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $last_month_earning->total, array( 'sanitize' => false ) ) ) ?></p>
+						<p class="give-dashboard-stat-total-label"><?php _e( 'Last Month', 'give' ); ?></p>
+					</td>
+					<td>
+						<?php $this_quarter_earning = $stats->get_earnings( array( 'range' => 'this_quarter' ) ); ?>
+						<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $this_quarter_earning->total, array( 'sanitize' => false ) ) ) ?></p>
+						<p class="give-dashboard-stat-total-label"><?php _e( 'This Quarter', 'give' ); ?></p>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 
