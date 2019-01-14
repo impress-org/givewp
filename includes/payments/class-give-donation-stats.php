@@ -544,7 +544,7 @@ class Give_Donation_Stats extends Give_Stats {
 
 		// Set empty sql collection string to array
 		foreach ( $sql_types as $sql_type ) {
-			$this->query_vars[ $sql_type ] = array_filter( (array) $this->query_vars['where_sql'] );
+			$this->query_vars[ $sql_type ] = array_filter( (array) $this->query_vars[ $sql_type ] );
 		}
 
 		// Where sql.
