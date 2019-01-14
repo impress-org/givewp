@@ -54,7 +54,7 @@ class Give_Donation_Stats extends Give_Stats {
 	public function get_sales( $query = array() ) {
 		// Add table and column name to query_vars to assist with date query generation.
 		$this->query_vars['table']  = $this->get_db()->posts;
-		$this->query_vars['column'] = $this->query_vars['inner_join_at'] = 'ID';
+		$this->query_vars['column'] = 'ID';
 
 		// Run pre-query checks and maybe generate SQL.
 		$this->pre_query( $query );
