@@ -19,16 +19,6 @@ class Give_Donor_Stats extends Give_Stats {
 	private $donation_stats;
 
 	/**
-	 * Required query vars
-	 *
-	 * @since 2.4.1
-	 * @var array
-	 */
-	protected $required_query_vars = array(
-		'donor_id',
-	);
-
-	/**
 	 * Singleton pattern.
 	 *
 	 * @since  2.2.0
