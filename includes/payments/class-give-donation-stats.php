@@ -234,7 +234,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @return stdClass
 	 */
-	public function get_donation_statistics( $query = array() ) {
+	public function get_statistics( $query = array() ) {
 		$this->query_vars['table']  = $this->get_db()->posts;
 		$this->query_vars['column'] = 'post_date';
 

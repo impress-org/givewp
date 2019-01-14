@@ -1308,7 +1308,7 @@ class Give_API {
 				$donations = $this->get_default_sales_stats();
 
 			} elseif ( $args['date'] === 'range' ) {
-				$donations['sales'] = (array) $this->donation_stats->get_donation_statistics( $args )->sales;
+				$donations['sales'] = (array) $this->donation_stats->get_statistics( $args )->sales;
 
 				$donations['sales'] = array_combine(
 				// Convert timestamp to human readable format.
@@ -1338,7 +1338,7 @@ class Give_API {
 			$args['statistic_type'] = 'form';
 			$args['give_forms']     = wp_list_pluck( $forms, 'ID' );
 
-			$sales = $this->donation_stats->get_donation_statistics( $args )->sales;
+			$sales = $this->donation_stats->get_statistics( $args )->sales;
 
 			foreach ( $forms as $form_info ) {
 				$donations['donations'][] = array(
@@ -1382,7 +1382,7 @@ class Give_API {
 				$earnings = $this->get_default_earnings_stats();
 
 			} elseif ( $args['date'] === 'range' ) {
-				$earnings['earnings'] = (array) $this->donation_stats->get_donation_statistics( $args )->earnings;
+				$earnings['earnings'] = (array) $this->donation_stats->get_statistics( $args )->earnings;
 
 				$earnings['earnings'] = array_combine(
 				// Convert timestamp to human readable format.
@@ -1422,7 +1422,7 @@ class Give_API {
 			$args['statistic_type'] = 'form';
 			$args['give_forms']     = wp_list_pluck( $forms, 'ID' );
 
-			$earnings = $this->donation_stats->get_donation_statistics( $args )->earnings;
+			$earnings = $this->donation_stats->get_statistics( $args )->earnings;
 
 			foreach ( $forms as $form_info ) {
 				$earnings['earnings'][] = array(
