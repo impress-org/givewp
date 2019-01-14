@@ -717,18 +717,6 @@ class Give_Stats {
 	}
 
 	/**
-	 * Get query_vars
-	 *
-	 * @since 2.4.1
-	 * @access public
-	 *
-	 * @return array
-	 */
-	public function get_query_var() {
-		return $this->query_vars;
-	}
-
-	/**
 	 * Set cache
 	 *
 	 * @since  2.4.1
