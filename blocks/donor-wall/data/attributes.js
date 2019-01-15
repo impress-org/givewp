@@ -16,6 +16,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '0',
 	},
+	orderBy:{
+		type: 'string',
+		default: 'post_date',
+	},
 	order:{
 		type: 'string',
 		default: 'DESC',
