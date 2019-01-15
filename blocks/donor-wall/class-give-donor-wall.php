@@ -194,8 +194,8 @@ class Give_Donor_Wall_Block {
 	 *
 	 * @return string
 	 */
-	private function blank_slate(){
-		if( ! defined( 'REST_REQUEST' ) ) {
+	private function blank_slate() {
+		if ( ! defined( 'REST_REQUEST' ) ) {
 			return '';
 		}
 
@@ -204,8 +204,8 @@ class Give_Donor_Wall_Block {
 		$content = array(
 			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'Give Icon', 'give' ),
-			'heading'  => __( 'No donors found.', 'give' ),
-			'help'     => sprintf(
+			'heading'   => __( 'No donors found.', 'give' ),
+			'help'      => sprintf(
 			/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 				__( 'Need help? Learn more about %1$sDonors%2$s.', 'give' ),
 				'<a href="http://docs.givewp.com/core-donors/">',
