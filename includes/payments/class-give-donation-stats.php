@@ -38,6 +38,13 @@ class Give_Donation_Stats extends Give_Stats {
 			'donor_id'   => 0,
 		), $this->query_var_defaults );
 
+		/**
+		 * Filter the donation stats query default arguments
+		 *
+		 * @since 2.4.1
+		 */
+		$this->query_var_defaults = apply_filters( 'give_donation_stats_default_args', $this->query_var_defaults, $this );
+
 		parent::__construct( $query );
 	}
 
