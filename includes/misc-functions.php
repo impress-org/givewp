@@ -900,12 +900,16 @@ function give_can_view_receipt( $donation_id ) {
 		}
 
 		// Check whether it is receipt access session?
-		$receipt_session = give_get_receipt_session();
+		$receipt_session    = give_get_receipt_session();
+		$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+
 		if (
-			give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
-			! empty( $receipt_session )
+			! empty( $receipt_session ) ||
+			(
+				give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
+				! empty( $email_access_token )
+			)
 		) {
-			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
 			$donor              = ! empty( $email_access_token )
 				? Give()->donors->get_donor_by_token( $email_access_token )
 				: false ;
