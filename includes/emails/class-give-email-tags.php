@@ -389,6 +389,7 @@ function give_setup_email_tags() {
 			'context' => 'donation',
 		),
 		array(
+			// Deprecated email tag.
 			'tag'     => 'receipt_id',
 			'desc'    => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
 			'func'    => 'give_email_tag_receipt_id',
@@ -884,36 +885,6 @@ function give_email_tag_payment_id( $tag_args ) {
 	 * @param array  $tag_args
 	 */
 	return apply_filters( 'give_email_tag_payment_id', $payment_id, $tag_args );
-}
-
-/**
- * Email template tag: {receipt_id}
- *
- * The unique ID number for this donation receipt
- * Please Note: Soon we are planning to deprecate this function and remove it from the email template because it will no useful.
- *
- * @param array $tag_args
- *
- * @return string receipt_id
- */
-function give_email_tag_receipt_id( $tag_args ) {
-	$receipt_id = '';
-	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
-	switch ( true ) {
-		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$receipt_id = give_get_payment_key( $tag_args['payment_id'] );
-			break;
-	}
-	/**
-	 * Filter the {receipt_id} email template tag output.
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $receipt_id
-	 * @param array  $tag_args
-	 */
-	return apply_filters( 'give_email_tag_receipt_id', $receipt_id, $tag_args );
 }
 
 /**
