@@ -80,11 +80,11 @@ class Give_Stats {
 	 * Parsed query arguments
 	 *
 	 * @since  2.4.1
-	 * @access protected
+	 * @access public
 	 *
 	 * @var array
 	 */
-	protected $query_vars = array();
+	public $query_vars = array();
 
 	/**
 	 * Default query arguments
@@ -559,14 +559,15 @@ class Give_Stats {
 	 * Get growth
 	 *
 	 * @since  2.4.1
-	 * @access protected
+	 * @access public
 	 *
 	 * @param int $current
 	 * @param int $past
 	 *
 	 * @return float|int
 	 */
-	protected function get_growth( $current = 0, $past = 0 ) {
+
+	public function get_growth( $current = 0, $past = 0 ) {
 		$growth = 0;
 
 		if (
