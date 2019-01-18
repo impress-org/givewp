@@ -25,6 +25,10 @@ jQuery(
 				mainClass: 'modal-fade-slide give-modal',
 			}
 		);
+		// Compatible for X theme and Cornerstone plugin.
+		$( '.give-wrap' ).on( 'touchend click', '.js-give-grid-modal-launcher', function( e ) {
+			e.stopPropagation();
+		} );
 
 		// Disable button if it have give-disabled class init.
 		doc.on(
