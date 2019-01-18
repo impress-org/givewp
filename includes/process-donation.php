@@ -561,6 +561,7 @@ function give_donation_form_validate_agree_to_terms() {
  */
 function give_get_required_fields( $form_id ) {
 
+	$posted_data  = give_clean( filter_input_array( INPUT_POST ) );
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
 	$required_fields = array(
@@ -581,9 +582,11 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
 	}
-	
 	// Validate card number field for empty check.
-	if ( give_check_variable( 'card_number', 'empty', true ) ) {
+	if (
+		isset( $posted_data['card_number'] ) &&
+		empty( $posted_data['card_number'] )
+	) {
 		$required_fields['card_number'] = array(
 			'error_id'      => 'empty_card_number',
 			'error_message' => __( 'Please enter a credit card number.', 'give' ),
@@ -591,7 +594,10 @@ function give_get_required_fields( $form_id ) {
 	}
 	
 	// Validate card cvc field for empty check.
-	if ( give_check_variable( 'card_cvc', 'empty', true ) ) {
+	if (
+		isset( $posted_data['card_cvc'] ) &&
+		empty( $posted_data['card_cvc'] )
+	) {
 		$required_fields['card_cvc'] = array(
 			'error_id'      => 'empty_card_cvc',
 			'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
@@ -599,7 +605,10 @@ function give_get_required_fields( $form_id ) {
 	}
 	
 	// Validate card name field for empty check.
-	if ( give_check_variable( 'card_name', 'empty', true ) ) {
+	if (
+		isset( $posted_data['card_name'] ) &&
+		empty( $posted_data['card_name'] )
+	) {
 		$required_fields['card_name'] = array(
 			'error_id'      => 'empty_card_name',
 			'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
@@ -607,7 +616,10 @@ function give_get_required_fields( $form_id ) {
 	}
 	
 	// Validate card expiry field for empty check.
-	if ( give_check_variable( 'card_expiry', 'empty', true ) ) {
+	if (
+		isset( $posted_data['card_expiry'] ) &&
+		empty( $posted_data['card_expiry'] )
+	) {
 		$required_fields['card_expiry'] = array(
 			'error_id'      => 'empty_card_expiry',
 			'error_message' => __( 'Please enter a credit card expiry date.', 'give' ),
