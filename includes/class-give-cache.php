@@ -778,8 +778,8 @@ class Give_Cache {
 
 			}
 
-			$currenct_blog_id = get_current_blog_id();
-			$filtered_group   = "{$group}_{$currenct_blog_id}_{$incrementer}";
+			$current_blog_id = get_current_blog_id();
+			$filtered_group   = "{$group}_{$current_blog_id}_{$incrementer}";
 		}
 
 		return $filtered_group;
