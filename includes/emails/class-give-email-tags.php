@@ -425,7 +425,7 @@ function give_setup_email_tags() {
 		/* Donor */
 		array(
 			'tag'     => 'name',
-			'desc'    => esc_html__( 'The donor\'s first name.', 'give' ),
+			'desc'    => esc_html__( 'Displays the donor\'s name for salutation purposes; either just the first name, or prefix and last name if provided.', 'give' ),
 			'func'    => 'give_email_tag_first_name',
 			'context' => 'donor',
 		),
