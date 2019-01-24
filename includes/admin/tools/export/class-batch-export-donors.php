@@ -237,7 +237,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				// End date.
 				$end_date         = ! empty( $this->data['donor_export_end_date'] ) ? sanitize_text_field( $this->data['donor_export_end_date'] ) : date( give_date_format(), current_time( 'timestamp' ) );
-				$end_date         = give_get_formatted_date( $end_date );
+				$end_date         = give_get_formatted_date( $end_date ) . ' 23:59:59';
 				$args['end_date'] = $end_date;
 			}
 
@@ -317,7 +317,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				// End date.
 				$end_date            = ! empty( $this->data['donor_export_end_date'] ) ? sanitize_text_field( $this->data['donor_export_end_date'] ) : date( give_date_format(), current_time( 'timestamp' ) );
-				$end_date            = give_get_formatted_date( $end_date );
+				$end_date            = give_get_formatted_date( $end_date ) . ' 23:59:59';
 				$args['date']['end'] = $end_date;
 
 			}
