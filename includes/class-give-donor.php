@@ -1539,7 +1539,7 @@ class Give_Donor {
 	 * @return bool
 	 */
 	private function is_address_match( $address_1, $address_2 ) {
-		$result = array_diff( $address_1, $address_2 );
+		$result = array_diff_assoc( $address_1, $address_2 );
 
 		return empty( $result );
 	}
