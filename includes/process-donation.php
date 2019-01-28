@@ -582,48 +582,56 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
 	}
-	// Validate card number field for empty check.
-	if (
-		isset( $posted_data['card_number'] ) &&
-		empty( $posted_data['card_number'] )
-	) {
-		$required_fields['card_number'] = array(
-			'error_id'      => 'empty_card_number',
-			'error_message' => __( 'Please enter a credit card number.', 'give' ),
-		);
-	}
 	
-	// Validate card cvc field for empty check.
+	// If credit card fields related actions exists then check for the cc fields validations.
 	if (
-		isset( $posted_data['card_cvc'] ) &&
-		empty( $posted_data['card_cvc'] )
+		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
+		has_action('give_cc_form', 'give_get_cc_form' )
 	) {
-		$required_fields['card_cvc'] = array(
-			'error_id'      => 'empty_card_cvc',
-			'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
-		);
-	}
-	
-	// Validate card name field for empty check.
-	if (
-		isset( $posted_data['card_name'] ) &&
-		empty( $posted_data['card_name'] )
-	) {
-		$required_fields['card_name'] = array(
-			'error_id'      => 'empty_card_name',
-			'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
-		);
-	}
-	
-	// Validate card expiry field for empty check.
-	if (
-		isset( $posted_data['card_expiry'] ) &&
-		empty( $posted_data['card_expiry'] )
-	) {
-		$required_fields['card_expiry'] = array(
-			'error_id'      => 'empty_card_expiry',
-			'error_message' => __( 'Please enter a credit card expiry date.', 'give' ),
-		);
+		
+		// Validate card number field for empty check.
+		if (
+			isset( $posted_data['card_number'] ) &&
+			empty( $posted_data['card_number'] )
+		) {
+			$required_fields['card_number'] = array(
+				'error_id'      => 'empty_card_number',
+				'error_message' => __( 'Please enter a credit card number.', 'give' ),
+			);
+		}
+		
+		// Validate card cvc field for empty check.
+		if (
+			isset( $posted_data['card_cvc'] ) &&
+			empty( $posted_data['card_cvc'] )
+		) {
+			$required_fields['card_cvc'] = array(
+				'error_id'      => 'empty_card_cvc',
+				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
+			);
+		}
+		
+		// Validate card name field for empty check.
+		if (
+			isset( $posted_data['card_name'] ) &&
+			empty( $posted_data['card_name'] )
+		) {
+			$required_fields['card_name'] = array(
+				'error_id'      => 'empty_card_name',
+				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
+			);
+		}
+		
+		// Validate card expiry field for empty check.
+		if (
+			isset( $posted_data['card_expiry'] ) &&
+			empty( $posted_data['card_expiry'] )
+		) {
+			$required_fields['card_expiry'] = array(
+				'error_id'      => 'empty_card_expiry',
+				'error_message' => __( 'Please enter a credit card expiry date.', 'give' ),
+			);
+		}
 	}
 
 	$require_address = give_require_billing_address( $payment_mode );
