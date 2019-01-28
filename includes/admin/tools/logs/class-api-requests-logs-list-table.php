@@ -374,7 +374,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $this->get_logs();
-		$total_items           = Give()->logs->get_log_count( 0, 'api_request' );
+		$total_items           = Give()->logs->get_log_count( 0, 'api_request', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
