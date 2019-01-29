@@ -487,6 +487,28 @@ add_action( 'admin_init', 'give_create_pages', - 1 );
 
 
 /**
+ * Install tables on plugin update if missing
+ * Note: only for internal use
+ *
+ * @since 2.4.1
+ *
+ * @param string $old_version
+ * @param string $new_version
+ */
+function give_install_tables_on_plugin_update( $old_version, $new_version ) {
+	// Bailout if plugin version already updated.
+	if( version_compare( $old_version, GIVE_VERSION, '=' ) ) {
+		return;
+	}
+
+	update_option( 'give_version_upgraded_from', $old_version );
+	__give_register_tables();
+}
+
+add_action( 'update_option_give_version', 'give_install_tables_on_plugin_update', 0, 2 );
+
+
+/**
  * Get array of table class objects
  *
  * Note: only for internal purpose use
