@@ -2310,8 +2310,30 @@ function give_get_receipt_link( $donation_id ) {
 
 	return sprintf(
 		'<a href="%1$s">%2$s</a>',
-		esc_url( give_get_receipt_url( $donation_id ) ),
+		esc_url( give_get_view_receipt_url( $donation_id ) ),
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
 
+}
+
+/**
+ * Get "View in browser" Receipt URL for email.
+ *
+ * @since 2.4.1
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @return string
+ */
+function give_get_view_receipt_url( $donation_id ) {
+	
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'_give_hash' => give_get_payment_key( $donation_id ),
+			), give_get_history_page_uri()
+		)
+	);
+	
+	return $receipt_url;
 }
