@@ -46,7 +46,6 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
-		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
@@ -893,31 +892,6 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 	endforeach;
 
 	echo '</ul>';
-}
-
-/**
- * Gateways Callback (drop down)
- *
- * Renders gateways select menu
- *
- * @since  1.0
- *
- * @param  array $field_arr
- * @param  array $saved_value
- *
- * @return void
- */
-function give_default_gateway_callback( $field_arr, $saved_value ) {
-	$id       = $field_arr['id'];
-	$gateways = give_get_enabled_payment_gateways();
-	echo '<select class="give-select" name="' . $id . '" id="' . $id . '">';
-	foreach ( $gateways as $key => $option ) :
-		$selected = isset( $saved_value ) ? selected( $key, $saved_value, false ) : '';
-		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
-	endforeach;
-
-	echo '</select>';
-
 }
 
 /**
