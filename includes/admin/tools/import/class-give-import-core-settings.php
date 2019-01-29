@@ -489,22 +489,19 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * https://github.com/impress-org/give/issues/3907
 		 *
+		 * @param $check
 		 * @param $file
 		 * @param $filename
 		 * @param $mimes
 		 *
 		 * @return mixed
 		 */
-		public static function filetype_mod(  $check, $file, $filename, $mimes  ) {
-
+		public static function filetype_mod(  $check, $file, $filename, $mimes ) {
 			if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
 				// Allow JSON uploads
-				$secondary_mime = [ 'json' => 'text/plain' ];
-
+				$secondary_mime = array( 'json' => 'text/plain' );
 				// Run another check, but only for our secondary mime and not on core mime types.
-				remove_filter( 'wp_check_filetype_and_ext', array(__CLASS__, 'filetype_mod'), 99, 4 );
 				$check = wp_check_filetype_and_ext( $file, $filename, $secondary_mime );
-				add_filter( 'wp_check_filetype_and_ext', array(__CLASS__, 'filetype_mod'), 99, 4 );
 			}
 			return $check;
 		}
