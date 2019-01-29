@@ -485,6 +485,10 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		}
 
 		/**
+		 * Allow for json file type uploads.
+		 *
+		 * https://github.com/impress-org/give/issues/3907
+		 *
 		 * @param $file
 		 * @param $filename
 		 * @param $mimes
