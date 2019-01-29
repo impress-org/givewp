@@ -143,7 +143,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-forms.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-give-export-donations.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-exporter.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php' );
