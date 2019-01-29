@@ -452,7 +452,7 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
-			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
+			<td><?php echo esc_html( get_option( 'give_version' )); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Give Cache"><?php _e( 'Give Cache', 'give' ); ?>:</td>
