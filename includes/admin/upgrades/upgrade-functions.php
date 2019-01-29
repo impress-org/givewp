@@ -137,8 +137,8 @@ function give_do_automatic_upgrades() {
 	}
 }
 
-add_action( 'admin_init', 'give_do_automatic_upgrades' );
-add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
+add_action( 'admin_init', 'give_do_automatic_upgrades', 0 );
+add_action( 'give_upgrades', 'give_do_automatic_upgrades', 0 );
 
 /**
  * Display Upgrade Notices.
