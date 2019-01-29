@@ -900,12 +900,16 @@ function give_can_view_receipt( $donation_id ) {
 		}
 
 		// Check whether it is receipt access session?
-		$receipt_session = give_get_receipt_session();
+		$receipt_session    = give_get_receipt_session();
+		$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+
 		if (
-			give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
-			! empty( $receipt_session )
+			! empty( $receipt_session ) ||
+			(
+				give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
+				! empty( $email_access_token )
+			)
 		) {
-			$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
 			$donor              = ! empty( $email_access_token )
 				? Give()->donors->get_donor_by_token( $email_access_token )
 				: false ;
@@ -1527,7 +1531,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 			'give_recount_form_stats_args', array(
 				'give_forms'     => $form_id,
 				'status'         => $accepted_statuses,
-				'posts_per_page' => - 1,
+				'number'         => - 1,
 				'fields'         => 'ids',
 			)
 		);
@@ -1542,12 +1546,12 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 
 		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-				// Ensure acceptible status only
+				// Ensure acceptable status only.
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				// Ensure only payments for this form are counted
+				// Ensure only payments for this form are counted.
 				if ( $payment->form_id != $form_id ) {
 					continue;
 				}

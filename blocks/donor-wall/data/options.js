@@ -19,8 +19,14 @@ giveDonorWallOptions.columns = [
 
 // Order
 giveDonorWallOptions.order = [
-	{ value: 'DESC', label: __( 'Newest to Oldest' ) },
-	{ value: 'ASC', label: __( 'Oldest to Newest' ) },
+	{ value: 'DESC', label: __( 'Descending' ) },
+	{ value: 'ASC', label: __( 'Ascending' ) },
+];
+
+// Order
+giveDonorWallOptions.orderBy = [
+	{ value: 'donation_amount', label: __( 'Donation Amount' ) },
+	{ value: 'post_date', label: __( 'Date Created' ) },
 ];
 
 export default giveDonorWallOptions;

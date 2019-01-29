@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -206,6 +206,24 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.4.0: January 16th, 2018 =
+* New: Optimized the loading of the plugin's resources to achieve a much more performant fundraising platform. to decrease load times, optimize queries, and decrease processing power. [#3871](https://github.com/impress-org/give/issues/3871), [#3929](https://github.com/impress-org/give/issues/3929)
+* New: Added the ability to sort the Donation Form Grid based on goal progress. [#3818](https://github.com/impress-org/give/issues/3818)
+* New: Improved the how "Anonymous" donors appear and the ordering of the Donor Wall. [#3826](https://github.com/impress-org/give/issues/3826), [#3816](https://github.com/impress-org/give/issues/3816)
+* New: Added a search and filter utility within WP-Admin > Donations > Forms to easily find donation forms by goal status, published date, and form name or ID. [#3845](https://github.com/impress-org/give/issues/3845)
+* New: Added the ability to import a donor's IP address when using import tool. [#3918](https://github.com/impress-org/give/issues/3918)
+* New: Added advanced search filters for the Donations > Donors screen within WP-Admin. [#1882](https://github.com/impress-org/give/issues/1882)
+* New: The Donations > Donors screen within WP-Admin now displays the donor's Gravatar image based on their email. [#3777](https://github.com/impress-org/give/issues/3777)
+* Tweak: The import sample data has been improved to have more realistic example donor names, campaigns, and donation form configurations. [#3913](https://github.com/impress-org/give/issues/3913)
+* Tweak: The donation form title will now appears at the top of modal donation forms screens for a better donor experience. [#3881](https://github.com/impress-org/give/issues/3881)
+* Tweak: We changed the default text for Anonymous Donation checkbox and tooltips to optimize the donor experience in understanding what the checkbox means. [#3911](https://github.com/impress-org/give/issues/3911)
+* Tweak: Reviewed PHP 7.2 compatibility, identified false positives, and resolved a few minor compatibility flags. [#3919](https://github.com/impress-org/give/issues/3919)
+* Fix: Resolved an issue with Sessions not being properly set when AJAX was in use. [#3941](https://github.com/impress-org/give/issues/3941)
+* Fix: Resolved issue with give_recount_form_income_donation() using incorrectly the `post_per_page` rather than `number` which `Give_Payment_Query()` expects. [#2973](https://github.com/impress-org/give/issues/2973)
+* Fix: Sourcemaps now again generate properly for easy SCSS line number references for developers. [#3860](https://github.com/impress-org/give/issues/3860)
+* Fix: The {payment_total} tag was incorrectly outputting HTML characters rather than currency symbols when used within the email subject. [#3922](https://github.com/impress-org/give/issues/3922)
+* Fix: Searching donations by the donor's first and last name in WP-Admin is now displaying accurate results. [#3927](https://github.com/impress-org/give/issues/3927)
 
 = 2.3.1: December 13th, 2018 =
 * New: Gutenberg blocks are here! You can now add donation forms, a donor wall, donation form grids and more to your Gutenberg (Block Editor) powered posts. [#3813](https://github.com/impress-org/give/issues/3813), [#3697](https://github.com/impress-org/give/issues/3697), [#3887](https://github.com/impress-org/give/issues/3887)

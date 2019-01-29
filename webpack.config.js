@@ -15,8 +15,8 @@ const wpPot                   = require('wp-pot');
 const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-const inProduction = ('production' === process.env.NODE_ENV);
-const mode         = inProduction ? 'production' : 'development';
+const inProduction                   = ('production' === process.env.NODE_ENV);
+const mode                           = inProduction ? 'production' : 'development';
 
 const config = {
 	mode,
@@ -41,7 +41,7 @@ const config = {
 		jquery: 'jQuery',
 		lodash: 'lodash',
 	},
-	devtool: ! inProduction ? 'source-map' : '',
+	devtool: !inProduction ? 'source-map' : '',
 	module: {
 		rules: [
 
@@ -137,18 +137,7 @@ const config = {
 			filename: "css/[name].css"
 		}),
 
-		// Create RTL css.
-		new WebpackRTLPlugin({
-			suffix: '-rtl',
-			minify: inProduction,
-		}),
-
-		// Copy images and SVGs
 		new CopyWebpackPlugin([{from: 'assets/src/images', to: 'images'}]),
-
-		// Minify images.
-		// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
-		new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}),
 
 		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
 		new BrowserSyncPlugin({
@@ -187,6 +176,16 @@ const config = {
 };
 
 if (inProduction) {
+	// Create RTL css.
+	config.plugins.push(new WebpackRTLPlugin({
+		suffix: '-rtl',
+		minify: true
+	}));
+
+	// Minify images.
+	// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
+	config.plugins.push(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}));
+
 	// POT file.
 	wpPot({
 		package: 'Give',
