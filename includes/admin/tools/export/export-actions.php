@@ -133,31 +133,3 @@ function give_include_donors_batch_processor( $class ) {
 	}
 
 }
-
-/**
- * Register the download products batch exporter
- *
- * @since  1.5
- */
-function give_register_forms_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_forms_batch_processor', 10, 1 );
-}
-
-add_action( 'give_register_batch_exporter', 'give_register_forms_batch_export', 10 );
-
-/**
- * Loads the file downloads batch process if needed
- *
- * @since  1.5
- *
- * @param  string $class The class being requested to run for the batch export
- *
- * @return void
- */
-function give_include_forms_batch_processor( $class ) {
-
-	if ( 'Give_Batch_Forms_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-forms.php';
-	}
-
-}

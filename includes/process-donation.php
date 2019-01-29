@@ -561,6 +561,7 @@ function give_donation_form_validate_agree_to_terms() {
  */
 function give_get_required_fields( $form_id ) {
 
+	$posted_data  = give_clean( filter_input_array( INPUT_POST ) );
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
 	$required_fields = array(
@@ -580,6 +581,57 @@ function give_get_required_fields( $form_id ) {
 			'error_id'      => 'invalid_title',
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
+	}
+	
+	// If credit card fields related actions exists then check for the cc fields validations.
+	if (
+		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
+		has_action('give_cc_form', 'give_get_cc_form' )
+	) {
+		
+		// Validate card number field for empty check.
+		if (
+			isset( $posted_data['card_number'] ) &&
+			empty( $posted_data['card_number'] )
+		) {
+			$required_fields['card_number'] = array(
+				'error_id'      => 'empty_card_number',
+				'error_message' => __( 'Please enter a credit card number.', 'give' ),
+			);
+		}
+		
+		// Validate card cvc field for empty check.
+		if (
+			isset( $posted_data['card_cvc'] ) &&
+			empty( $posted_data['card_cvc'] )
+		) {
+			$required_fields['card_cvc'] = array(
+				'error_id'      => 'empty_card_cvc',
+				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
+			);
+		}
+		
+		// Validate card name field for empty check.
+		if (
+			isset( $posted_data['card_name'] ) &&
+			empty( $posted_data['card_name'] )
+		) {
+			$required_fields['card_name'] = array(
+				'error_id'      => 'empty_card_name',
+				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
+			);
+		}
+		
+		// Validate card expiry field for empty check.
+		if (
+			isset( $posted_data['card_expiry'] ) &&
+			empty( $posted_data['card_expiry'] )
+		) {
+			$required_fields['card_expiry'] = array(
+				'error_id'      => 'empty_card_expiry',
+				'error_message' => __( 'Please enter a credit card expiry date.', 'give' ),
+			);
+		}
 	}
 
 	$require_address = give_require_billing_address( $payment_mode );

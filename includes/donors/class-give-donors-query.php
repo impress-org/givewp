@@ -131,6 +131,8 @@ class Give_Donors_Query {
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
+
+		$this->date_filter_pre();
 	}
 
 	/**
@@ -175,10 +177,6 @@ class Give_Donors_Query {
 
 		// Get donors from cache.
 		$this->donors = Give_Cache::get_db_query( $cache_key );
-
-		// Modify the query/query arguments before we retrieve donors.
-		$this->args = $this->_args;
-		$this->date_filter_pre();
 
 		if ( is_null( $this->donors ) ) {
 			if ( empty( $this->args['count'] ) ) {
@@ -612,7 +610,11 @@ class Give_Donors_Query {
 	 * @return void
 	 */
 	public function date_filter_pre() {
-		if ( ! ( $this->args['start_date'] || $this->args['end_date'] ) ) {
+		if (
+			! empty( $this->args['date_query'] )
+			|| empty( $this->args['start_date'] )
+			|| empty( $this->args['end_date'] )
+		) {
 			return;
 		}
 

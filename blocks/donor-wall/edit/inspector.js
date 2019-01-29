@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, formID, order, columns, showAvatar, showName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, formID, orderBy, order, columns, showAvatar, showName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -35,6 +35,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Form ID' ) }
 					value={ formID }
 					onChange={ ( value ) => saveSetting( 'formID', value ) }/>
+				<SelectControl
+					label={ __( 'Order By' ) }
+					name="orderBy"
+					value={ orderBy }
+					options={ giveDonorWallOptions.orderBy }
+					onChange={ ( value ) => saveSetting( 'orderBy', value ) } />
 				<SelectControl
 					label={ __( 'Order' ) }
 					name="order"
