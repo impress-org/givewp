@@ -132,7 +132,7 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 	}
 
-	if ( $did_upgrade ) {
+	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
 	}
 }
