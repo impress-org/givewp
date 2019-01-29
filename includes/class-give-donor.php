@@ -1321,9 +1321,10 @@ class Give_Donor {
 		if ( $is_multi_address = ( false !== strpos( $address_type, '[]' ) ) ) {
 			$address_type = $is_multi_address ? str_replace( '[]', '', $address_type ) : $address_type;
 		} elseif ( $is_multi_address = ( false !== strpos( $address_type, '_' ) ) ) {
-			$multi_address_id = $is_multi_address ? array_pop( explode( '_', $address_type ) ) : $address_type;
+			$exploded_address_type = explode( '_', $address_type );
+			$multi_address_id      = $is_multi_address ? array_pop( $exploded_address_type ) : $address_type;
 
-			$address_type = $is_multi_address ? array_shift( explode( '_', $address_type ) ) : $address_type;
+			$address_type = $is_multi_address ? array_shift( $exploded_address_type ) : $address_type;
 		}
 
 		// Bailout: do not save duplicate orders
@@ -1439,10 +1440,11 @@ class Give_Donor {
 
 		// Get address type.
 		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+		$exploded_address_id = explode( '_', $address_id );
 
-		$address_type = false !== strpos( $address_id, '_' ) ? array_shift( explode( '_', $address_id ) ) : $address_id;
+		$address_type = false !== strpos( $address_id, '_' ) ? array_shift( $exploded_address_id ) : $address_id;
 
-		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( explode( '_', $address_id ) ) : null;
+		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( $exploded_address_id ) : null;
 
 		// Set meta key prefix.
 		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
