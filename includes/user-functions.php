@@ -473,9 +473,6 @@ function give_count_total_donors() {
 function give_get_donor_address( $donor_id = null, $args = array() ) {
 	if ( empty( $donor_id ) ) {
 		$donor_id = get_current_user_id();
-
-		// Backward compatibility for user id param.
-		$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 	}
 
 	$address         = array();
@@ -493,6 +490,10 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		'country' => '',
 		'zip'     => '',
 	);
+
+
+	// Backward compatibility for user id param.
+	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 
 	// Backward compatibility.
 	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ) {
