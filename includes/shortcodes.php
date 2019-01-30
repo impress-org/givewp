@@ -42,12 +42,20 @@ function give_donation_history( $atts, $content = false ) {
 
 	// Set Donation History Shortcode Arguments in session variable.
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
-
+	
+	$get_data = give_clean( filter_input_array( INPUT_GET ) );
+	
 	// If payment_key query arg exists, return receipt instead of donation history.
-	if ( isset( $_GET['donation_id'] ) ) {
+	if (
+        ! empty( $get_data['donation_id'] ) ||
+        (
+            ! empty( $get_data['action'] ) &&
+            'view_in_browser' === $get_data['action']
+        )
+    ) {
 		ob_start();
 
-		echo give_receipt_shortcode( array() );
+		echo give_receipt_shortcode( array( ) );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
