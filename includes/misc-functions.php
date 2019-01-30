@@ -2317,6 +2317,28 @@ function give_get_receipt_link( $donation_id ) {
 }
 
 /**
+ * Get receipt_url
+ *
+ * @since 2.0
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @return string
+ */
+function give_get_receipt_url( $donation_id ) {
+	
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'donation_id' => $donation_id,
+			), give_get_history_page_uri()
+		)
+	);
+	
+	return $receipt_url;
+}
+
+/**
  * Get "View in browser" Receipt Link for email.
  *
  * @param int $donation_id Donation ID.
