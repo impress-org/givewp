@@ -2330,6 +2330,7 @@ function give_get_view_receipt_url( $donation_id ) {
 	$receipt_url = esc_url(
 		add_query_arg(
 			array(
+                'action'     => 'view_in_browser',
 				'_give_hash' => give_get_payment_key( $donation_id ),
 			), give_get_history_page_uri()
 		)
