@@ -2317,6 +2317,25 @@ function give_get_receipt_link( $donation_id ) {
 }
 
 /**
+ * Get "View in browser" Receipt Link for email.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.4.1
+ *
+ * @return string
+ */
+function give_get_view_receipt_link( $donation_id ) {
+	
+	return sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( give_get_view_receipt_url( $donation_id ) ),
+		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
+	);
+	
+}
+
+/**
  * Get "View in browser" Receipt URL for email.
  *
  * @since 2.4.1
