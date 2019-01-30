@@ -1137,7 +1137,7 @@ function give_email_tag_receipt_link( $tag_args ) {
 		return $receipt_url;
 	}
 
-	$formatted = give_get_receipt_link( $tag_args['payment_id'] );
+	$formatted = give_get_view_receipt_link( $tag_args['payment_id'] );
 
 	/**
 	 * Filter the {receipt_link} email template tag output.
