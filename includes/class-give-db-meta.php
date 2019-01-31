@@ -539,6 +539,8 @@ class Give_DB_Meta extends Give_DB {
 			$this->delete_cache( $id, $this->meta_type );
 		}
 
+		wp_cache_delete( $id, $this->meta_type );
+
 		return $status;
 	}
 }
