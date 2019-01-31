@@ -897,7 +897,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @param $donation_ids
 	 */
-	private function update_meta_cache( $donation_ids ) {
+	public static function update_meta_cache( $donation_ids ) {
 		// Exit.
 		if ( empty( $donation_ids ) ) {
 			return;
