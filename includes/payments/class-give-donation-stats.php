@@ -118,6 +118,13 @@ class Give_Donation_Stats extends Give_Stats {
 					";
 		}
 
+		/**
+		 * Filter the sql query
+		 *
+		 * @since 2.5.0
+		 */
+		$sql = apply_filters( 'give_donation_stats_get_sales_sql', $sql, $this );
+
 		$result = $this->get_db()->get_row( $sql );
 
 		if ( is_null( $result ) ) {
@@ -223,6 +230,13 @@ class Give_Donation_Stats extends Give_Stats {
 					";
 		}
 
+		/**
+		 * Filter the sql query
+		 *
+		 * @since 2.5.0
+		 */
+		$sql = apply_filters( 'give_donation_stats_get_earnings_sql', $sql, $this );
+
 		$result = $this->get_db()->get_row( $sql );
 
 		if ( is_null( $result ) ) {
@@ -264,9 +278,9 @@ class Give_Donation_Stats extends Give_Stats {
 	public function get_statistics( $query = array() ) {
 		$this->query_vars['table']  = $this->get_db()->posts;
 		$this->query_vars['column'] = 'post_date';
+		$query['meta_table_count']  = $this->get_counter( $this->get_db()->donationmeta );
 
-		$meta_table_count                     = $this->get_counter( $this->get_db()->donationmeta );
-		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as m{$meta_table_count} on m{$meta_table_count}.donation_id={$this->query_vars['table']}.ID";
+		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as m{$query['meta_table_count']} on m{$query['meta_table_count']}.donation_id={$this->query_vars['table']}.ID";
 		$this->set_counter( $this->get_db()->donationmeta );
 
 		$column = "{$this->query_vars['table']}.{$this->query_vars['column']}";
@@ -310,14 +324,21 @@ class Give_Donation_Stats extends Give_Stats {
 			return $cache;
 		}
 
-		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$meta_table_count}.meta_value) AS earnings, {$this->query_vars['select']}
+		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
-					AND m{$meta_table_count}.meta_key='_give_payment_total'
+					AND m{$this->query_vars['meta_table_count']}.meta_key='_give_payment_total'
 					{$this->query_vars['date_sql']}
                     GROUP BY {$this->query_vars['groupby']}
                     ORDER BY {$this->query_vars['orderby']} ASC";
+
+		/**
+		 * Filter the sql query
+		 *
+		 * @since 2.5.0
+		 */
+		$sql = apply_filters( 'give_donation_stats_get_statistics_sql', $sql, $this );
 
 		$results = $this->get_db()->get_results( $sql );
 
