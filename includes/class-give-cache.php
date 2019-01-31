@@ -706,7 +706,7 @@ class Give_Cache {
 		$incrementer_value = wp_cache_get( $incrementer_key );
 
 		if ( false === $incrementer_value || true === $refresh ) {
-			$incrementer_value = microtime( true );
+			$incrementer_value = (string) microtime( true );
 			wp_cache_set( $incrementer_key, $incrementer_value );
 		}
 
@@ -721,7 +721,7 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param bool $force Delte cache forcefully.
+	 * @param bool $force Delete cache forcefully.
 	 *
 	 * @return bool
 	 */
