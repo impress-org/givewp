@@ -904,18 +904,5 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		update_meta_cache( Give()->payment_meta->get_meta_type(), $donation_ids );
-
-		$cache_object_ids = array(
-			'form' => array(),
-			'donor' => array()
-		);
-
-		foreach ( $donation_ids as $donation_id ) {
-			$cache_object_ids['form'][] = give_get_payment_form_id( $donation_id );
-			$cache_object_ids['donor'][] = give_get_payment_donor_id( $donation_id );
-		}
-
-		update_meta_cache( Give()->form_meta->get_meta_type(), $cache_object_ids['form'] );
-		update_meta_cache( Give()->donor_meta->get_meta_type(), $cache_object_ids['donor'] );
 	}
 }
