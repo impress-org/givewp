@@ -721,7 +721,7 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param bool $force Delte cache forcefully.
+	 * @param bool $force Delete cache forcefully.
 	 *
 	 * @return bool
 	 */
