@@ -456,10 +456,13 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			$upload = false;
 			if ( isset( $_FILES['json'] ) ) {
 				add_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
+				add_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ), 10, 4 );
 
 				$upload = wp_handle_upload( $_FILES['json'], array( 'test_form' => false ) );
 
 				remove_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
+				remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ), 10, 4 );
+
 			} else {
 				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
 			}
@@ -471,11 +474,36 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * Add mime type for JSON
 		 *
 		 * @param array $existing_mimes
+		 *
+		 * @return array
 		 */
 		public static function json_upload_mimes( $existing_mimes = array() ) {
+
 			$existing_mimes['json'] = 'application/json';
 
 			return $existing_mimes;
+		}
+
+		/**
+		 * Allow for json file type uploads.
+		 *
+		 * https://github.com/impress-org/give/issues/3907
+		 *
+		 * @param $check
+		 * @param $file
+		 * @param $filename
+		 * @param $mimes
+		 *
+		 * @return mixed
+		 */
+		public static function filetype_mod(  $check, $file, $filename, $mimes ) {
+			if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
+				// Allow JSON uploads
+				$secondary_mime = array( 'json' => 'text/plain' );
+				// Run another check, but only for our secondary mime and not on core mime types.
+				$check = wp_check_filetype_and_ext( $file, $filename, $secondary_mime );
+			}
+			return $check;
 		}
 	}
 

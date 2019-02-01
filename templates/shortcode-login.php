@@ -75,8 +75,8 @@ if ( ! is_user_logged_in() ) {
 	Give()->notices->print_frontend_notice(
 		apply_filters( 'give_already_logged_in_message', sprintf(
 			/* translators: %s Redirect URL. */
-			__( 'You are already logged in to the site. <a href="%s">Click here</a> to logout.', 'give' ),
-			esc_url( admin_url() )
+			__( 'You are already logged in to the site. <a href="%s">Click here</a> to log out.', 'give' ),
+			esc_url(  wp_logout_url() )
 		) ),
 		true,
 		'warning'

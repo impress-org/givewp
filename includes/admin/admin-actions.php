@@ -872,11 +872,12 @@ function __give_ajax_donor_manage_addresses() {
 	$donorID               = absint( $post['donorID'] );
 	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
 	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
+	$exploded_address_id   = explode( '_', $form_data['address-id'] );
 	$address_type          = false !== strpos( $form_data['address-id'], '_' ) ?
-		array_shift( explode( '_', $form_data['address-id'] ) ) :
+		array_shift( $exploded_address_id ) :
 		$form_data['address-id'];
 	$address_id            = false !== strpos( $form_data['address-id'], '_' ) ?
-		array_pop( explode( '_', $form_data['address-id'] ) ) :
+		array_pop( $exploded_address_id ) :
 		null;
 	$response_data         = array(
 		'action' => $form_data['address-action'],

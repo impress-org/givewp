@@ -6,8 +6,8 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  - 7.2
-  - 7.3
+#  - 7.2
+#  - 7.3
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
