@@ -12,7 +12,7 @@
  */
 
 if ( ! class_exists( '\\Carbon\\Carbon' ) ) {
-	require_once GIVE_PLUGIN_DIR . 'includes/libraries/Carbon.php';
+	require_once GIVE_PLUGIN_DIR . 'includes/libraries/carbon.php';
 }
 
 use Carbon\Carbon;
