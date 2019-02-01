@@ -735,10 +735,6 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __flush_resume_updates() {
-		//delete_option( 'give_doing_upgrade' );
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
-
-		// Reset counter.
 		$this->step = $this->percentage = 0;
 
 		$this->update = ( $this->get_total_db_update_count() > $this->update ) ?

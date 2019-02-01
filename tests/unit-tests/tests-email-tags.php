@@ -637,7 +637,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		);
 
 		$this->assertRegExp(
-			'/donation_id=/',
+			'/action=view_in_browser/',
+			$receipt_link_url
+		);
+		
+		$this->assertRegExp(
+			'/_give_hash=/',
 			$receipt_link_url
 		);
 	}
@@ -657,11 +662,22 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 				'payment_id' => $payment,
 			)
 		);
-
+		
 		$this->assertRegExp(
-			'/donation_id=/',
+			'/>View the receipt in your browser &raquo;<\/a>/',
 			$receipt_link
 		);
+		
+		$this->assertRegExp(
+			'/<a href=".+?\?action=view_in_browser/',
+			$receipt_link
+		);
+		
+		$this->assertRegExp(
+			'/_give_hash=/',
+			$receipt_link
+		);
+		
 	}
 
 
