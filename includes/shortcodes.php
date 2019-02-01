@@ -307,6 +307,7 @@ function give_receipt_shortcode( $atts ) {
 		);
 	}
 
+	return give_display_donation_receipt( $atts );
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );

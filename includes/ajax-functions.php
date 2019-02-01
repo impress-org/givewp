@@ -776,7 +776,7 @@ function __give_get_receipt(){
 	}
 
 	$atts = (array) json_decode( $get_data['shortcode_atts'] );
-	$data = give_display_donation_receipt( $atts );
+	$data = give_receipt_shortcode( $atts );
 
 	wp_send_json( $data );
 }
