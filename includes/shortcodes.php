@@ -42,15 +42,23 @@ function give_donation_history( $atts, $content = false ) {
 
 	// Set Donation History Shortcode Arguments in session variable.
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
-
+	
+	$get_data = give_clean( filter_input_array( INPUT_GET ) );
+	
 	// If payment_key query arg exists, return receipt instead of donation history.
-	if ( isset( $_GET['donation_id'] ) ) {
+	if (
+        ! empty( $get_data['donation_id'] ) ||
+        (
+            ! empty( $get_data['action'] ) &&
+            'view_in_browser' === $get_data['action']
+        )
+    ) {
 		ob_start();
 
-		echo give_receipt_shortcode( array() );
+		echo give_receipt_shortcode( array( ) );
 
 		// Display donation history link only if Receipt Access Session is available.
-		if ( give_get_receipt_session() ) {
+		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( give_get_history_page_uri() ),
@@ -267,103 +275,39 @@ function give_receipt_shortcode( $atts ) {
 		'company_name'   => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
-
-	$donation_id = false;
-	$session     = give_get_purchase_session();
-
-	// Set donation id.
-	if ( isset( $_GET['donation_id'] ) ) {
-		$donation_id = give_clean( $_GET['donation_id'] );
-	} elseif ( isset( $session['donation_id'] ) ) {
+	
+	ob_start();
+	
+	$donation_id  = false;
+	$receipt_type = false;
+	$get_data     = give_clean( filter_input_array( INPUT_GET ) );
+	$session      = give_get_purchase_session();
+	
+	if ( ! empty( $get_data['donation_id'] ) ) {
+	    $donation_id = $get_data['donation_id'];
+    } else if ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
+		$receipt_type = 'view_in_browser';
+	    $donation_id  = give_get_donation_id_by_key( $get_data['_give_hash'] );
+    } else if ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
-	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
+	} else if ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
 	}
-
-	$email_access = give_get_option( 'email_access' );
-	$is_email_access = give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists;
-
-	ob_start();
-
-	// No donation id found & Email Access is Turned on.
-	if ( ! $donation_id ) {
-
-		if( $is_email_access ){
-			give_get_template_part( 'email-login-form' );
-		} else{
-			echo Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
-		}
-
-		return ob_get_clean();
-	}
-
-	// Donation id provided, but user is logged out. Offer them the ability to login and view the receipt.
-	if ( ! ( $user_can_view = give_can_view_receipt( $donation_id ) ) ) {
-
-		if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
-
-			/**
-			 * This filter will be used to modify the donor mismatch text for front end error notice.
-             *
-             * @since 2.3.1
-			 */
-		    $donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
-
-			echo Give()->notices->print_frontend_notice(
-				$donor_mismatch_text,
-				false,
-				'error'
-			);
-
-		} elseif( $is_email_access ) {
-
-			give_get_template_part( 'email-login-form' );
-
-		}else{
-
-			global $give_login_redirect;
-
-			$give_login_redirect = give_get_current_page_url();
-
-			Give()->notices->print_frontend_notice(
-				apply_filters( 'give_must_be_logged_in_error_message',
-					__( 'You must be logged in to view this donation receipt.', 'give' )
-				)
-			);
-
-			give_get_template_part( 'shortcode', 'login' );
-		}
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Check if the user has permission to view the receipt.
-	 *
-	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 * or if user is logged out and donation was made as a guest, the donation session is checked for
-	 * or if user is logged in and the user can view sensitive shop data.
-	 */
-	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
-	}
-
+	
 	// Display donation receipt placeholder while loading receipt via AJAX.
 	if ( ! wp_doing_ajax() ) {
 		give_get_template_part( 'receipt/placeholder' );
 
 		return sprintf(
-			'<div id="give-receipt" data-shortcode="%s" data-donation-key="%s">%s</div>',
-			urlencode_deep( wp_json_encode( $atts ) ),
+			'<div id="give-receipt" data-shortcode="%1$s" data-receipt-type="%2$s" data-donation-key="%3$s" >%4$s</div>',
+            htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
+			$receipt_type,
 			$donation_id,
 			ob_get_clean()
 		);
 	}
 
-
-	give_get_template_part( 'shortcode', 'receipt' );
-
-	return ob_get_clean();
+	return give_display_donation_receipt( $atts );
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );

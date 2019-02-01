@@ -96,6 +96,10 @@ class Give_Payments_Query extends Give_Stats {
 			'count'           => false,
 		);
 
+		// We do not want WordPress to handle meta cache because WordPress stores in under `post_meta` key and cache object while we want it under `donation_meta`.
+		// Similar for term cache
+		$args['update_post_meta_cache'] = false;
+
 		$this->args = $this->_args = wp_parse_args( $args, $defaults );
 
 		$this->init();
@@ -214,6 +218,8 @@ class Give_Payments_Query extends Give_Stats {
 	public function get_payments() {
 		global $post;
 
+		$results        = array();
+		$this->payments = array();
 		$cache_key      = Give_Cache::get_key( 'give_payment_query', $this->args, false );
 		$this->payments = Give_Cache::get_db_query( $cache_key );
 
@@ -226,45 +232,50 @@ class Give_Payments_Query extends Give_Stats {
 		// Modify the query/query arguments before we retrieve payments.
 		$this->set_filters();
 
-		$query          = new WP_Query( $this->args );
-		$this->payments = array();
+		/* @var WP_Query $query */
+		$query = new WP_Query( $this->args );
 
 		$custom_output = array(
 			'payments',
 			'give_payments',
 		);
 
-		if ( ! in_array( $this->args['output'], $custom_output ) ) {
-			return $query->posts;
-		}
-
 		if ( $query->have_posts() ) {
-			$previous_post = $post;
+			$this->update_meta_cache( wp_list_pluck( $query->posts, 'ID' ) );
 
-			while ( $query->have_posts() ) {
-				$query->the_post();
+			if ( ! in_array( $this->args['output'], $custom_output ) ) {
+				$results = $query->posts;
 
-				$payment_id = get_post()->ID;
-				$payment    = new Give_Payment( $payment_id );
+			} else{
+				$previous_post = $post;
 
-				$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
-			}
+				while ( $query->have_posts() ) {
+					$query->the_post();
 
-			wp_reset_postdata();
+					$payment_id = get_post()->ID;
+					$payment    = new Give_Payment( $payment_id );
 
-			// Prevent nest loop from producing unexpected results.
-			if( $previous_post instanceof WP_Post ) {
-				$post = $previous_post;
-				setup_postdata( $post );
+					$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
+				}
+
+				wp_reset_postdata();
+
+				// Prevent nest loop from producing unexpected results.
+				if ( $previous_post instanceof WP_Post ) {
+					$post = $previous_post;
+					setup_postdata( $post );
+				}
+
+				$results = $this->payments;
 			}
 		}
 
-		Give_Cache::set_db_query( $cache_key, $this->payments );
+		Give_Cache::set_db_query( $cache_key, $results );
 
 		// Remove query filters after we retrieve payments.
 		$this->unset_filters();
 
-		return $this->payments;
+		return $results;
 	}
 
 	/**
@@ -531,7 +542,7 @@ class Give_Payments_Query extends Give_Stats {
 			);
 		}
 
-		$this->__set( 'meta_query',$args );
+		$this->__set( 'meta_query', $args );
 	}
 
 	/**
@@ -633,6 +644,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		} else if ( ! empty( $search ) ) {
 			$search_parts = preg_split( '/\s+/', $search );
+
 			if ( is_array( $search_parts ) && 2 === count( $search_parts ) ) {
 				$search_meta = array(
 					'relation' => 'AND',
@@ -662,6 +674,7 @@ class Give_Payments_Query extends Give_Stats {
 					),
 				);
 			}
+
 			$this->__set( 'meta_query', $search_meta );
 
 			$this->__unset( 's' );
@@ -796,7 +809,7 @@ class Give_Payments_Query extends Give_Stats {
 		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
 		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
 
-		if( is_numeric( $this->args['post_parent'] ) ) {
+		if ( is_numeric( $this->args['post_parent'] ) ) {
 			$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
 		}
 
@@ -876,4 +889,20 @@ class Give_Payments_Query extends Give_Stats {
 		return $sql;
 	}
 
+	/**
+	 * Update donations meta cache
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 *
+	 * @param $donation_ids
+	 */
+	public static function update_meta_cache( $donation_ids ) {
+		// Exit.
+		if ( empty( $donation_ids ) ) {
+			return;
+		}
+
+		update_meta_cache( Give()->payment_meta->get_meta_type(), $donation_ids );
+	}
 }

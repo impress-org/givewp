@@ -328,4 +328,47 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_4->id ) );
 
 	}
+	
+	/**
+	 * Check if the give_get_receipt_url() generates proper URL.
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @cover give_get_receipt_url()
+	 */
+	public function test_give_get_receipt_url() {
+		$payment = Give_Helper_Payment::create_simple_payment();
+		
+		$receipt_link_url = give_get_receipt_url( $payment );
+		
+		$this->assertRegExp(
+			'/donation_id=/',
+			$receipt_link_url
+		);
+	}
+	
+	/**
+	 * Check if the give_get_receipt_link() generates proper link.
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @cover give_get_receipt_link()
+	 */
+	public function test_give_get_receipt_link() {
+		$payment = Give_Helper_Payment::create_simple_payment();
+		
+		$receipt_link_url = give_get_receipt_link( $payment );
+		
+		$this->assertRegExp(
+			'/donation_id=/',
+			$receipt_link_url
+		);
+		
+		$this->assertRegExp(
+			'/<a href=".+?\?donation_id=/',
+			$receipt_link_url
+		);
+	}
 }
