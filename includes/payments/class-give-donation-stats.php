@@ -687,14 +687,3 @@ class Give_Donation_Stats extends Give_Stats {
 
 }
 
-// @todo: compatibility with recurring, fee recovery and currency switcher
-// @todo: currency formatting compatibility for earnings and other
-// @todo  review donation earning growth logic
-// @todo: develop logic to sent raw and formatted value
-// @todo: review number decimal format
-// @todo: document stat query params
-// @todo: think about table backward compatibility for paymentmeta
-// @todo: think about custom dates
-// @todo: add snippet to show how to use donation api filters
-// @todo: update REST api integration
-

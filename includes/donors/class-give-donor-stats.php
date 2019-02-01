@@ -69,7 +69,3 @@ class Give_Donor_Stats extends Give_Stats {
 		return $this->donation_stats->get_sales( $query );
 	}
 }
-
-// @todo: add document to query params.
-// @todo: add feat to get recent donations
-// @todo: add feat to get completed donation form
