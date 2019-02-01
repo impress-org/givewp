@@ -35,53 +35,6 @@ function give_get_logs_tab() {
 	do_action( "give_logs_view_{$current_section}" );
 }
 
-
-/**
- * Sales Log View
- *
- * @since 1.0
- * @uses  Give_Sales_Log_Table::prepare_items()
- * @uses  Give_Sales_Log_Table::display()
- * @return void
- */
-function give_logs_view_sales() {
-
-	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php';
-
-	$logs_table = new Give_Sales_Log_Table();
-	$logs_table->prepare_items();
-	?>
-	<div class="wrap">
-
-		<?php
-		/**
-		 * Fires before displaying Donations logs.
-		 *
-		 * @since 1.8.12
-		 */
-		do_action( 'give_logs_donations_top' );
-
-		$logs_table->display(); ?>
-		<input type="hidden" name="post_type" value="give_forms"/>
-		<input type="hidden" name="page" value="give-tools"/>
-		<input type="hidden" name="tab" value="logs"/>
-		<input type="hidden" name="section" value="sales"/>
-
-		<?php
-		/**
-		 * Fires after displaying Donations logs.
-		 *
-		 * @since 1.8.12
-		 */
-		do_action( 'give_logs_donations_bottom' );
-		?>
-
-	</div>
-	<?php
-}
-
-add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
-
 /**
  * Update Logs
  *
@@ -95,7 +48,7 @@ function give_logs_view_updates() {
 	$logs_table = new Give_Update_Log_Table();
 	$logs_table->prepare_items();
 	?>
-	<div class="wrap">
+	<div class="give-log-wrap">
 
 		<?php
 		/**
@@ -140,7 +93,7 @@ function give_logs_view_gateway_errors() {
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
 	?>
-	<div class="wrap">
+	<div class="give-log-wrap">
 
 		<?php
 		/**
@@ -246,7 +199,9 @@ function give_log_views() {
 }
 
 /**
- * Set Get form method for tools page
+ * Set Get form method for tools page.
+ *
+ * Prevents Tools from displaying a "Settings Saved" notice.
  *
  * @since 1.8.12
  *
