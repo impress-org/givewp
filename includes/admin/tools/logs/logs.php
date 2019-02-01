@@ -48,7 +48,7 @@ function give_logs_view_updates() {
 	$logs_table = new Give_Update_Log_Table();
 	$logs_table->prepare_items();
 	?>
-	<div class="wrap">
+	<div class="give-log-wrap">
 
 		<?php
 		/**
@@ -93,7 +93,7 @@ function give_logs_view_gateway_errors() {
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
 	?>
-	<div class="wrap">
+	<div class="give-log-wrap">
 
 		<?php
 		/**
@@ -199,7 +199,9 @@ function give_log_views() {
 }
 
 /**
- * Set Get form method for tools page
+ * Set Get form method for tools page.
+ *
+ * Prevents Tools from displaying a "Settings Saved" notice.
  *
  * @since 1.8.12
  *
