@@ -221,6 +221,7 @@ class Give_Stats {
 		$this->end_date   = $this->convert_date( $_end_date, true );
 	}
 
+
 	/**
 	 * Convert Date
 	 *
@@ -232,327 +233,44 @@ class Give_Stats {
 	 * @param  string $date     Date.
 	 * @param  bool   $end_date End date. Default is false.
 	 *
-	 * @return array|WP_Error   If the date is invalid, a WP_Error object will be returned.
+	 * @return string|WP_Error   If the date is invalid, a WP_Error object will be returned.
 	 */
 	public function convert_date( $date, $end_date = false ) {
-
 		$this->timestamp = false;
-		$second          = $end_date ? 59 : 0;
-		$minute          = $end_date ? 59 : 0;
-		$hour            = $end_date ? 23 : 0;
-		$day             = 1;
-		$month           = date( 'n', current_time( 'timestamp' ) );
-		$year            = date( 'Y', current_time( 'timestamp' ) );
+		$rst             = new WP_Error( 'invalid_date', esc_html__( 'Improper date provided.', 'give' ) );
 
 		if ( array_key_exists( (string) $date, $this->get_predefined_dates() ) ) {
 
-			// This is a predefined date rate, such as last_week
-			switch ( $date ) {
-
-				case 'this_month' :
-
-					if ( $end_date ) {
-
-						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-						$hour   = 23;
-						$minute = 59;
-						$second = 59;
-					}
-
-					break;
-
-				case 'last_month' :
-
-					if ( $month == 1 ) {
-
-						$month = 12;
-						$year --;
-
-					} else {
-
-						$month --;
-
-					}
-
-					if ( $end_date ) {
-						$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-					}
-
-					break;
-
-				case 'today' :
-
-					$day = date( 'd', current_time( 'timestamp' ) );
-
-					if ( $end_date ) {
-						$hour   = 23;
-						$minute = 59;
-						$second = 59;
-					}
-
-					break;
-
-				case 'yesterday' :
-
-					$day = date( 'd', current_time( 'timestamp' ) ) - 1;
-
-					// Check if Today is the first day of the month (meaning subtracting one will get us 0)
-					if ( $day < 1 ) {
-
-						// If current month is 1
-						if ( 1 == $month ) {
-
-							$year  -= 1; // Today is January 1, so skip back to last day of December
-							$month = 12;
-							$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-
-						} else {
-
-							// Go back one month and get the last day of the month
-							$month -= 1;
-							$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-
-						}
-					}
-
-					break;
-
-				case 'this_week' :
-
-					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
-					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
-
-					if ( $today <= $days_to_week_start ) {
-
-						if ( $month > 1 ) {
-							$month -= 1;
-						} else {
-							$month = 12;
-						}
-
-					}
-
-					if ( ! $end_date ) {
-
-						// Getting the start day
-
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
-						$day += get_option( 'start_of_week' );
-
-					} else {
-
-						// Getting the end day
-
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
-						$day += get_option( 'start_of_week' ) + 6;
-
-					}
-
-					break;
-
-				case 'last_week' :
-
-					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
-					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
-
-					if ( $today <= $days_to_week_start ) {
-
-						if ( $month > 1 ) {
-							$month -= 1;
-						} else {
-							$month = 12;
-						}
-
-					}
-
-					if ( ! $end_date ) {
-
-						// Getting the start day
-
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
-						$day += get_option( 'start_of_week' );
-
-					} else {
-
-						// Getting the end day
-
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
-						$day += get_option( 'start_of_week' ) + 6;
-
-					}
-
-					break;
-
-				case 'this_quarter' :
-
-					$month_now = date( 'n', current_time( 'timestamp' ) );
-
-					if ( $month_now <= 3 ) {
-
-						if ( ! $end_date ) {
-							$month = 1;
-						} else {
-							$month  = 3;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else if ( $month_now <= 6 ) {
-
-						if ( ! $end_date ) {
-							$month = 4;
-						} else {
-							$month  = 6;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else if ( $month_now <= 9 ) {
-
-						if ( ! $end_date ) {
-							$month = 7;
-						} else {
-							$month  = 9;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else {
-
-						if ( ! $end_date ) {
-							$month = 10;
-						} else {
-							$month  = 12;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					}
-
-					break;
-
-				case 'last_quarter' :
-
-					$month_now = date( 'n', current_time( 'timestamp' ) );
-
-					if ( $month_now <= 3 ) {
-
-						if ( ! $end_date ) {
-							$month = 10;
-						} else {
-							$year   -= 1;
-							$month  = 12;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else if ( $month_now <= 6 ) {
-
-						if ( ! $end_date ) {
-							$month = 1;
-						} else {
-							$month  = 3;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else if ( $month_now <= 9 ) {
-
-						if ( ! $end_date ) {
-							$month = 4;
-						} else {
-							$month  = 6;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					} else {
-
-						if ( ! $end_date ) {
-							$month = 7;
-						} else {
-							$month  = 9;
-							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 23;
-							$minute = 59;
-							$second = 59;
-						}
-
-					}
-
-					break;
-
-				case 'this_year' :
-
-					if ( ! $end_date ) {
-						$month = 1;
-					} else {
-						$month  = 12;
-						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-						$hour   = 23;
-						$minute = 59;
-						$second = 59;
-					}
-
-					break;
-
-				case 'last_year' :
-
-					$year -= 1;
-					if ( ! $end_date ) {
-						$month = 1;
-					} else {
-						$month  = 12;
-						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-						$hour   = 23;
-						$minute = 59;
-						$second = 59;
-					}
-
-					break;
-
-			}
-
+			/* @var Give_Date $date */
+			$date = $this->date->parse_date_for_range( $date );
+			$date = $end_date
+				? $date['end']
+				: $date['start'];
+
+			$rst = strtotime( $date->toDateTimeString() );
 
 		} else if ( is_numeric( $date ) ) {
+			$rst = $date;
 
 			// return $date unchanged since it is a timestamp
 			$this->timestamp = true;
 
-		} else if ( false !== strtotime( $date ) ) {
+		} else if ( is_string( $date ) && false !== strtotime( $date ) ) {
+			/* @var Give_Date $date */
+			$date = new Give_Date( $date );
 
-			$date  = strtotime( $date, current_time( 'timestamp' ) );
-			$year  = date( 'Y', $date );
-			$month = date( 'm', $date );
-			$day   = date( 'd', $date );
+			$date = $end_date
+				? $date->endOfDay()
+				: $date->startOfDay();
 
-		} else {
-
-			return new WP_Error( 'invalid_date', esc_html__( 'Improper date provided.', 'give' ) );
-
+			$rst = strtotime( $date->toDateTimeString() );
 		}
 
-		if ( false === $this->timestamp ) {
-			// Create an exact timestamp
-			$date = mktime( $hour, $minute, $second, $month, $day, $year );
-		}
 
-		return apply_filters( 'give_stats_date', $date, $end_date, $this );
-
+		/**
+		 * Filter the date
+		 */
+		return apply_filters( 'give_stats_date', $rst, $end_date, $this );
 	}
 
 	/**
