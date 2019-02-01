@@ -293,7 +293,8 @@ class Give_Stats {
 			( 0 !== $current && 0 !== $past )
 			|| ( $current !== $past )
 		) {
-			$growth = ( ( $current - $past ) / $past ) * 100;
+			// Prevent divisible by zero issue by setting one as default divider for $past
+			$growth = ( ( $current - $past ) / ( $past ? $past: 1 ) ) * 100;
 		}
 
 		return $growth;
