@@ -513,6 +513,8 @@ final class Give_Payment {
 			return false;
 		}
 
+		Give_Payments_Query::update_meta_cache( array( $payment_id ) );
+
 		/**
 		 * Fires before payment setup.
 		 *
