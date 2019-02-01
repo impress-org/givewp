@@ -474,19 +474,6 @@ class Give_Donation_Stats extends Give_Stats {
 	}
 
 	/**
-	 * Get the best selling forms
-	 * @todo   : make this function dynamic with new api
-	 *
-	 * @since  2.5.0
-	 * @access public
-	 * @global wpdb $wpdb
-	 *
-	 * @param array $query
-	 */
-	public function get_best_selling( $query = array() ) {
-	}
-
-	/**
 	 * Get most valuable cause
 	 *
 	 * @since  2.5.0
