@@ -545,7 +545,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test payment date query.
 	 */
 	public function test_payments_date_query() {
-		$payment_id_1 = Give_Helper_Payment::create_simple_payment( date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) );
+		$payment_id_1 = Give_Helper_Payment::create_simple_payment();
 
 		$args           = array(
 			'start_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
