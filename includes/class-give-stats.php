@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Stats
  * @copyright   Copyright (c) 2016, Give
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.4.1
+ * @since       1.0
  */
 
 // Exit if accessed directly.
@@ -19,13 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Base class for other stats classes. Primarily for setting up dates and ranges.
  *
- * @since 2.4.1
+ * @since 1.0
  */
 class Give_Stats {
 	/**
 	 * Give_Date object
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @var Give_Date
@@ -41,7 +41,7 @@ class Give_Stats {
 	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @var    string
@@ -59,7 +59,7 @@ class Give_Stats {
 	 *
 	 * The end date is optional
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @var    string
@@ -69,7 +69,7 @@ class Give_Stats {
 	/**
 	 * Flag to determine if current query is based on timestamps
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @var    string
@@ -79,7 +79,7 @@ class Give_Stats {
 	/**
 	 * Parsed query arguments
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @var array
@@ -89,7 +89,7 @@ class Give_Stats {
 	/**
 	 * Default query arguments
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @var array
@@ -112,7 +112,7 @@ class Give_Stats {
 	/**
 	 * Counters
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @var    string
@@ -122,8 +122,8 @@ class Give_Stats {
 	/**
 	 * Constructor.
 	 *
-	 * @since 2.4.1
-	 * @since 2.4.1 Updated
+	 * @since 1.0
+	 * @since 2.5.0 Updated
 	 *
 	 * @param array $query
 	 */
@@ -145,7 +145,7 @@ class Give_Stats {
 	 *
 	 * Retrieve the predefined date periods permitted.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @return array  Predefined dates.
@@ -163,7 +163,7 @@ class Give_Stats {
 	/**
 	 * Setup date range
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 */
 	protected function set_date_ranges() {
@@ -204,7 +204,7 @@ class Give_Stats {
 	 *
 	 * This calls the convert_date() member function to ensure the dates are formatted correctly.
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  string $_start_date Start date. Default is 'this_month'.
@@ -227,7 +227,8 @@ class Give_Stats {
 	 *
 	 * Converts a date to a timestamp.
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
+	 * @since  2.5.0 Decode date using Give_Date
 	 * @access public
 	 *
 	 * @param  string $date     Date.
@@ -276,7 +277,7 @@ class Give_Stats {
 	/**
 	 * Get growth
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param int $current
@@ -302,7 +303,7 @@ class Give_Stats {
 	 * Set counter
 	 * Note: by default counter handle integer increment.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param string $key
@@ -321,7 +322,7 @@ class Give_Stats {
 	/**
 	 * Get counter
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param string $key
@@ -340,7 +341,7 @@ class Give_Stats {
 	/**
 	 * Set column id for inner join
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param string $table_name
@@ -363,7 +364,7 @@ class Give_Stats {
 	/**
 	 * Parse process query
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param array $query
@@ -380,7 +381,7 @@ class Give_Stats {
 	/**
 	 * Pre process query
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param array $query
@@ -396,7 +397,7 @@ class Give_Stats {
 	/**
 	 * Runs after a query. Resets query vars back to the originals passed in via the constructor.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 */
 	protected function reset_query() {
@@ -407,7 +408,7 @@ class Give_Stats {
 	/**
 	 * Get WordPress database class object
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @return wpdb
@@ -421,7 +422,7 @@ class Give_Stats {
 	/**
 	 * Set cache
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param stdClass $result
@@ -447,7 +448,7 @@ class Give_Stats {
 	/**
 	 * Get cache key
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access private
 	 *
 	 * @return string
@@ -461,7 +462,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment counts.
 	 *
-	 * @since  2.4.1
+	 * @since  2.1.0
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.
@@ -509,7 +510,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment queries.
 	 *
-	 * @since  2.4.1
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.

@@ -80,7 +80,7 @@ class Give_API {
 	 *
 	 * @var Give_Donation_Stats
 	 * @access private
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 */
 	private $donation_stats;
 
@@ -89,7 +89,7 @@ class Give_API {
 	 *
 	 * @var Give_Date
 	 * @access private
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 */
 	private $date;
 
@@ -152,7 +152,7 @@ class Give_API {
 	 *
 	 * @var string
 	 * @access private
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 */
 	private $error;
 
@@ -1217,7 +1217,7 @@ class Give_API {
 	/**
 	 * Parse stats query arguments
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access private
 	 *
 	 * @param $args
@@ -1292,7 +1292,7 @@ class Give_API {
 	/**
 	 * Get sales
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access private
 	 *
 	 * @param $args
@@ -1366,7 +1366,7 @@ class Give_API {
 	/**
 	 * Get earnings
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access private
 	 *
 	 * @param $args
@@ -2080,7 +2080,7 @@ class Give_API {
 	 * Generate the default donation stats returned by the 'stats' endpoint
 	 *
 	 * @since  1.1
-	 * @since  2.4.1 Use Give_Donation_Stats
+	 * @since  2.5.0 Use Give_Donation_Stats
 	 * @access private
 	 *
 	 * @return array default sales statistics
@@ -2101,7 +2101,7 @@ class Give_API {
 	 * Generate the default earnings stats returned by the 'stats' endpoint
 	 *
 	 * @since  1.1
-	 * @since  2.4.1 Use Give_Donation_Stats
+	 * @since  2.5.0 Use Give_Donation_Stats
 	 * @access private
 	 *
 	 * @return array default earnings statistics

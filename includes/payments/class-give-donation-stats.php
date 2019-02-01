@@ -6,7 +6,7 @@
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.4.1
+ * @since       2.5.0
  */
 
 // Exit if accessed directly.
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Stats can be retrieved for date ranges and pre-defined periods.
  *
- * @since 2.4.1
+ * @since 2.5.0
  */
 class Give_Donation_Stats extends Give_Stats {
 	/**
@@ -41,7 +41,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Filter the donation stats query default arguments
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$this->query_var_defaults = apply_filters( 'give_donation_stats_default_args', $this->query_var_defaults, $this );
 
@@ -51,7 +51,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Retrieve sale stats
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query
@@ -75,7 +75,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Return custom result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_sales', null, $this );
 		if ( ! is_null( $result ) ) {
@@ -145,7 +145,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Filter the result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_get_sales', $result, $this );
 
@@ -156,7 +156,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query
@@ -180,7 +180,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Return custom result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_earnings', null, $this );
 		if ( ! is_null( $result ) ) {
@@ -257,7 +257,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Filter the result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_get_earnings', $result, $this );
 
@@ -268,7 +268,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 * Get donation earning and sales information
 	 * Note: only for internal purpose.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query
@@ -408,7 +408,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Get the best selling forms
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query Array of query arguments
@@ -431,7 +431,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Return custom result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_busiest_day', null, $this );
 		if ( ! is_null( $result ) ) {
@@ -466,7 +466,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Filter the result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_get_busiest_day', $result, $this );
 
@@ -477,7 +477,7 @@ class Give_Donation_Stats extends Give_Stats {
 	 * Get the best selling forms
 	 * @todo   : make this function dynamic with new api
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
@@ -489,7 +489,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Get most valuable cause
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query
@@ -514,7 +514,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Return custom result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_pre_get_most_valuable_cause', null, $this );
 		if ( ! is_null( $result ) ) {
@@ -550,7 +550,7 @@ class Give_Donation_Stats extends Give_Stats {
 		/**
 		 * Filter the result
 		 *
-		 * @since 2.4.1
+		 * @since 2.5.0
 		 */
 		$result = apply_filters( 'give_donation_stats_get_most_valuable_sause', $result, $this );
 
@@ -560,7 +560,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Calculate number of refunded donations.
 	 *
-	 * @since 2.4.1
+	 * @since 2.5.0
 	 * @acess public
 	 *
 	 * @param array $query
@@ -580,7 +580,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Calculate amount of refunded donations.
 	 *
-	 * @since 2.4.1
+	 * @since 2.5.0
 	 * @acess public
 	 *
 	 * @param array $query
@@ -600,7 +600,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 *  Set meta query
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param string $query_key
@@ -632,7 +632,7 @@ class Give_Donation_Stats extends Give_Stats {
 	/**
 	 * Pre process query
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access protected
 	 *
 	 * @param array $query

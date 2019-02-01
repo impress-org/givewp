@@ -56,7 +56,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Object.
 	 *
 	 * @var Give_Donor_Stats
-	 * @since 2.4.1
+	 * @since 2.5.0
 	 */
 	private $donor_stats;
 

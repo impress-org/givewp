@@ -13,7 +13,7 @@ class Give_Donor_Stats extends Give_Stats {
 	/**
 	 * Object.
 	 *
-	 * @since 2.4.1
+	 * @since 2.5.0
 	 * @var Give_Donation_Stats
 	 */
 	private $donation_stats;
@@ -41,7 +41,7 @@ class Give_Donor_Stats extends Give_Stats {
 	 *
 	 *
 	 * @since  2.2.0
-	 * @since  2.4.1 Add Give_Donation_Stats integration.
+	 * @since  2.5.0 Add Give_Donation_Stats integration.
 	 * @access public
 	 *
 	 * @param array $query
@@ -57,7 +57,7 @@ class Give_Donor_Stats extends Give_Stats {
 	 *  Get total donation count
 	 *
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param array $query

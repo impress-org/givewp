@@ -8,7 +8,7 @@
  * @subpackage  Utilite/Date
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.4.1
+ * @since       2.5.0
  */
 
 if ( ! class_exists( '\\Carbon\\Carbon' ) ) {
@@ -20,7 +20,7 @@ use Carbon\Carbon;
 /**
  * Implements date formatting helpers for EDD.
  *
- * @since 2.4.1
+ * @since 2.5.0
  *
  * @see   \Carbon\Carbon
  * @see   \DateTime
@@ -32,7 +32,7 @@ final class Give_Date extends Carbon {
 	 * Please see the testing aids section (specifically static::setTestNow())
 	 * for more on the possibility of this constructor returning a test instance.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param string|null               $time
@@ -49,7 +49,7 @@ final class Give_Date extends Carbon {
 	/**
 	 * Determine time zone from WordPress options and return as object.
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @return string
@@ -80,7 +80,7 @@ final class Give_Date extends Carbon {
 	/**
 	 * Predefined dates
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @return array
@@ -111,7 +111,7 @@ final class Give_Date extends Carbon {
 	/**
 	 * Parse predefined date ranges
 	 *
-	 * @since  2.4.1
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param string|array $range    Predefined date range
@@ -321,7 +321,7 @@ final class Give_Date extends Carbon {
 	/**
 	 * Formats a given date string according to WP date and time formats and timezone.
 	 *
-	 * @since 2.4.1
+	 * @since 2.5.0
 	 *
 	 * @param string|true $format Optional. How to format the date string.  Accepts 'date',
 	 *                            'time', 'datetime', 'mysql', 'timestamp', 'wp_timestamp',
