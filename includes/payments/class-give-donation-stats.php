@@ -453,9 +453,10 @@ class Give_Donation_Stats extends Give_Stats {
 
 		$result = $this->get_db()->get_row( $sql );
 
+		$days = Give_Date::getDays();
 		$result->day = is_null( $result )
 			? ''
-			: Give_Date::getDays()[ $result->day - 1 ];
+			: $days[ $result->day - 1 ];
 
 		// Reset query vars.
 		$result->sql        = $sql;
