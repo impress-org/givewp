@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Blocks
- * @copyright   Copyright (c) 2016, GiveWP
+ * @copyright   Copyright (c) 2019, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0.2
  */
@@ -15,19 +15,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Donation_form_Grid_Block Class.
+ * Give_Donation_Form_Grid_Block Class.
  *
  * This class handles donation forms block.
  *
  * @since 2.0.2
  */
-class Give_Donation_form_Grid_Block {
+class Give_Donation_Form_Grid_Block {
 	/**
 	 * Instance.
 	 *
 	 * @since
 	 * @access private
-	 * @var Give_Donation_form_Grid_Block
+	 * @var Give_Donation_Form_Grid_Block
 	 */
 	static private $instance;
 
@@ -46,7 +46,7 @@ class Give_Donation_form_Grid_Block {
 	 *
 	 * @since
 	 * @access public
-	 * @return Give_Donation_form_Grid_Block
+	 * @return Give_Donation_Form_Grid_Block
 	 */
 	public static function get_instance() {
 		if ( null === static::$instance ) {
@@ -208,4 +208,4 @@ class Give_Donation_form_Grid_Block {
 	}
 }
 
-Give_Donation_form_Grid_Block::get_instance();
+Give_Donation_Form_Grid_Block::get_instance();
