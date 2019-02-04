@@ -36,7 +36,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$this->id    = 'logs';
 			$this->label = __( 'Logs', 'give' );
 
-			$this->default_tab = 'sales';
+			$this->default_tab = 'gateway_errors';
 
 			parent::__construct();
 
@@ -90,7 +90,6 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'sales'          => __( 'Donations', 'give' ),
 				'gateway_errors' => __( 'Payment Errors', 'give' ),
 				'api_requests'   => __( 'API Requests', 'give' ),
 				'updates'   => __( 'Updates', 'give' ),
