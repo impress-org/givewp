@@ -2478,3 +2478,25 @@ function give_display_donation_receipt( $args ) {
 	
 	return ob_get_clean();
 }
+
+/**
+ * This function is used to prepare url with query strings on top of donation history url.
+ *
+ * @param bool|array $args List of query strings to be added.
+ *
+ * @since 2.4.1
+ *
+ * @return string
+ */
+function give_prepare_donation_history_url( $args = false ) {
+	
+	$url = give_get_history_page_uri();
+ 
+	// If $args is array then add query string to URL.
+    if ( is_array( $args ) ) {
+	    $url = add_query_arg( $args , give_get_history_page_uri() );
+    }
+	
+	return esc_url( $url );
+ 
+}
