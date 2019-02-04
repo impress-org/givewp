@@ -580,7 +580,7 @@ function give_get_payment_status_keys() {
  * @return int $earnings Earnings
  */
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
-	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead.
+	// This is getting deprecated soon. Use Give_Donation_Stats with the get_earnings() method instead.
 	global $wpdb;
 
 	$args = array(
@@ -652,7 +652,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
  */
 function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $hour = null ) {
 
-	// This is getting deprecated soon. Use Give_Payment_Stats with the get_sales() method instead.
+	// This is getting deprecated soon. Use Give_Donation_Stats with the get_sales() method instead.
 	$args = array(
 		'post_type'              => 'give_payment',
 		'nopaging'               => true,
