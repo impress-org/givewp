@@ -693,23 +693,37 @@ class GIVE_CLI_COMMAND {
 	 * @return        void
 	 */
 	public function report( $args, $assoc_args ) {
-		$stats      = new Give_Payment_Stats();
-		$date       = isset( $assoc_args ) && array_key_exists( 'date', $assoc_args ) ? $assoc_args['date'] : false;
-		$start_date = isset( $assoc_args ) && array_key_exists( 'start-date', $assoc_args ) ? $assoc_args['start-date'] : false;
-		$end_date   = isset( $assoc_args ) && array_key_exists( 'end-date', $assoc_args ) ? $assoc_args['end-date'] : false;
-		$form_id    = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? $assoc_args['id'] : 0;
+		$stats = new Give_Donation_Stats();
 
-		if ( ! empty( $date ) ) {
-			$start_date = $date;
-			$end_date   = false;
-		} elseif ( empty( $date ) && empty( $start_date ) ) {
-			$start_date = 'this_month';
-			$end_date   = false;
+		$date_obj          = new Give_Date();
+		$predefined_ranges = $date_obj->get_predefined_dates();
+
+		$stats_args               = array();
+		$date                     = isset( $assoc_args ) && array_key_exists( 'date', $assoc_args ) ? $assoc_args['date'] : false;
+		$stats_args['start_date'] = isset( $assoc_args ) && array_key_exists( 'start-date', $assoc_args ) ? $assoc_args['start-date'] : false;
+		$stats_args['end_date']   = isset( $assoc_args ) && array_key_exists( 'end-date', $assoc_args ) ? $assoc_args['end-date'] : false;
+		$form_id                  = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? $assoc_args['id'] : 0;
+
+		if (
+			! empty( $date )
+			&& array_key_exists( $date, $predefined_ranges )
+		) {
+			$stats_args['range'] = $date;
+
+		} elseif (
+			empty( $date )
+			&& empty( $stats_args['start_date'] )
+			&& empty( $stats_args['end_date'] )
+		) {
+			$stats_args['range'] = 'this_month';
 		}
 
-		// Get stats.
-		$earnings = $stats->get_earnings( $form_id, $start_date, $end_date );
-		$sales    = $stats->get_sales( $form_id, $start_date, $end_date );
+		if ( $form_id ) {
+			$stats_args['give_forms'] = array( $form_id );
+		}
+
+		$earnings = $stats->get_earnings( $stats_args )->total;
+		$sales    = $stats->get_sales( $stats_args )->sales;
 
 		WP_CLI::line( $this->color_message( __( 'Earnings', 'give' ), give_currency_filter( $earnings, array( 'decode_currency' => true ) ) ) );
 		WP_CLI::line( $this->color_message( __( 'Sales', 'give' ), $sales ) );
