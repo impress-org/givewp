@@ -307,7 +307,7 @@ class Give_Donation_Stats extends Give_Stats {
 				$query = array_merge(
 					$query,
 					array(
-						'select'  => "CAST( m1.meta_value as SIGNED ) as form",
+						'select'  => "CAST( m{$query['meta_table_count']}.meta_value as SIGNED ) as form",
 						'groupby' => "form",
 						'orderby' => "form",
 					)
