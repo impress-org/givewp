@@ -97,10 +97,10 @@ class Give_Stats {
 	protected $query_var_defaults = array(
 		'range'               => '',
 		'relative'            => false,
-		'start_date'          => '',
-		'end_date'            => '',
-		'relative_start_date' => '',
-		'relative_end_date'   => '',
+		'start_date'          => '', // Optional: pass date in mysql format
+		'end_date'            => '', // Optional: pass date in mysql format
+		'relative_start_date' => '', // Optional: pass date in mysql format
+		'relative_end_date'   => '', // Optional: pass date in mysql format
 		'where_sql'           => '',
 		'inner_join_sql'      => '',
 		'inner_join_at'       => '',
