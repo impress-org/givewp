@@ -82,7 +82,7 @@ class Give_Earnings_Export extends Give_Export {
 
 		$data  = array();
 		$year  = $start_year;
-		$stats = new Give_Payment_Stats;
+		$stats = new Give_Donation_Stats();
 
 		while ( $year <= $end_year ) {
 
@@ -113,10 +113,12 @@ class Give_Earnings_Export extends Give_Export {
 				$date1 = mktime( 0, 0, 0, $m1, 1, $year );
 				$date2 = mktime( 0, 0, 0, $m1, cal_days_in_month( CAL_GREGORIAN, $m1, $year ), $year );
 
+				$stats_query_args = array( 'start_date' => date( 'Y-m-d', $date1 ), 'end_date' => date( 'Y-m-d', $date2 ) );
+
 				$data[] = array(
 					'date'      => date_i18n( 'F Y', $date1 ),
-					'donations' => $stats->get_sales( 0, $date1, $date2 ),
-					'earnings'  => give_format_amount( $stats->get_earnings( 0, $date1, $date2 ), array( 'sanitize' => false ) ),
+					'donations' => $stats->get_sales( $stats_query_args)->sales,
+					'earnings'  => give_format_amount( $stats->get_earnings(  $stats_query_args )->total, array( 'sanitize' => false ) ),
 				);
 
 				$m1 ++;
