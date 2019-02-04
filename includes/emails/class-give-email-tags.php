@@ -461,7 +461,7 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'     => 'donation_history_link',
-			'desc'    => esc_html__( 'The donation history link.', 'give' ),
+			'desc'    => esc_html__( 'The donor\'s email access link for donation history.', 'give' ),
 			'func'    => 'give_email_tag_donation_history_link',
 			'context' => 'donor',
 		),
