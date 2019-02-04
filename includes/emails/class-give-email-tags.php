@@ -1276,7 +1276,7 @@ function give_email_tag_donation_history_link( $tag_args ) {
 	} // End if().
 
 	/**
-	 * Filter the {email_access_link} email template tag output.
+	 * Filter the {donation_history_link} email template tag output.
 	 *
 	 * @since 2.0
 	 *
