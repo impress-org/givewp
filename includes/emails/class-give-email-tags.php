@@ -265,7 +265,7 @@ function give_get_emails_tags_list() {
 				<span class="give_<?php echo $email_tag['tag']; ?>_tag">
 					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
 				</span>
-			<?php endforeach; ?>
+            <?php endforeach; ?>
 		</div>
 	<?php
 	endif;
