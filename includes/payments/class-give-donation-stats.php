@@ -596,13 +596,16 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 */
 	private function set_meta_sql( $query_key, $meta_key ) {
+		// Filter values.
+		$this->query_vars[ $query_key ] = array_filter( (array) $this->query_vars[ $query_key ] );
+
 		// Bailout.
 		if ( empty( $this->query_vars[ $query_key ] ) ) {
 			return;
 		}
 
-		$donation_col_name              = Give()->payment_meta->get_meta_type() . '_id';
-		$this->query_vars[ $query_key ] = (array) $this->query_vars[ $query_key ];
+
+		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$alias = "m{$this->get_counter( $this->get_db()->donationmeta )}";
 		$data  = implode( '\',\'', $this->query_vars[ $query_key ] );
