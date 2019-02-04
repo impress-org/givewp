@@ -124,7 +124,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetFont( apply_filters( 'give_pdf_custom_font', $custom_font ), $font_style, 12 );
 
 	// Object for getting stats.
-	$donation_stats = new Give_Payment_Stats();
+	$donation_stats = new Give_Donation_Stats();
 
 	$give_forms = get_posts( array(
 		'post_type'        => 'give_forms',
@@ -160,8 +160,9 @@ function give_generate_pdf( $data ) {
 				$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
 			}
 
-			$sales    = $donation_stats->get_sales( $form->ID, 'this_year' );
-			$earnings = give_currency_filter( give_format_amount( $donation_stats->get_earnings( $form->ID, 'this_year' ), array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
+			$donation_stats_query = array( 'give_forms' => $form->ID,  'range' => 'this_year' );
+			$sales    = $donation_stats->get_sales( $donation_stats_query )->sales;
+			$earnings = give_currency_filter( give_format_amount( $donation_stats->get_earnings( $donation_stats_query )->total, array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
 
 			// This will help filter data before appending it to PDF Receipt.
 			$prepare_pdf_data   = array();
