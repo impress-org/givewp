@@ -465,9 +465,13 @@ add_action( 'parse_request', 'give_form_search_query_filter' );
 
 function give_search_form_by_id( $query ) {
 	// Verify that we are on the give forms list page.
-	if ( 'give_forms' !== $query->query_vars['post_type'] ) {
+	if (
+		empty( $query->query_vars['post_type'] )
+		|| 'give_forms' !== $query->query_vars['post_type']
+	) {
 		return;
 	}
+
 	if ( '' !== $query->query_vars['s'] && is_search() ) {
 		if ( absint( $query->query_vars['s'] ) ) {
 			// Set the post id value
