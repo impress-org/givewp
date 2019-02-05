@@ -102,10 +102,12 @@ class Give_Donation_Stats extends Give_Stats {
 						{$this->query_vars['inner_join_sql']}
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
+						{$this->query_vars['limit_sql']}
 					) o
   
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
+					{$this->query_vars['limit_sql']}
 					";
 		} else {
 			$this->sql = "SELECT IFNULL({$function}, 0) AS sales
@@ -113,6 +115,7 @@ class Give_Donation_Stats extends Give_Stats {
 					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
+					{$this->query_vars['limit_sql']}
 					";
 		}
 
@@ -205,13 +208,14 @@ class Give_Donation_Stats extends Give_Stats {
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 						AND {$this->query_vars['table']}.meta_key='_give_payment_total'
+						{$this->query_vars['limit_sql']}
 					) o
 					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->get_donation_id_column()}
 					{$this->query_vars['inner_join_sql']}
-  
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
+					{$this->query_vars['limit_sql']}
 					";
 		} else {
 			$this->sql = "SELECT IFNULL({$function}, 0) AS total
@@ -221,6 +225,7 @@ class Give_Donation_Stats extends Give_Stats {
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
+					{$this->query_vars['limit_sql']}
 					";
 		}
 
@@ -322,14 +327,17 @@ class Give_Donation_Stats extends Give_Stats {
 				break;
 		}
 
-		$this->sql = "SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
+		$this->sql = "
+					SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
 					AND m{$this->query_vars['meta_table_count']}.meta_key='_give_payment_total'
 					{$this->query_vars['date_sql']}
                     GROUP BY {$this->query_vars['groupby']}
-                    ORDER BY {$this->query_vars['orderby']} ASC";
+                    ORDER BY {$this->query_vars['orderby']} ASC
+                    {$this->query_vars['limit_sql']}
+                    ";
 
 		/**
 		 * Filter the sql query
@@ -676,6 +684,14 @@ class Give_Donation_Stats extends Give_Stats {
 			$this->query_vars[ $sql_type ] = is_array( $this->query_vars[ $sql_type ] )
 				? implode( ' ', $this->query_vars[ $sql_type ] )
 				: $this->query_vars[ $sql_type ];
+		}
+
+		if( empty( $this->query_vars['limit_sql'] ) && ! empty( $this->query_vars['number'] ) ) {
+			$this->query_vars['limit_sql'] = "LIMIT {$this->query_vars['number']}";
+
+			if( ! empty( $this->query_vars['offset'] ) ) {
+				$this->query_vars['limit_sql'] .= " OFFSET {$this->query_vars['offset']}";
+			}
 		}
 	}
 
