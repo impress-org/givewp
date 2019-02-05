@@ -111,7 +111,7 @@ class Give_Stats {
 		'end_date'            => '', // Optional: pass date in mysql format
 		'relative_start_date' => '', // Optional: pass date in mysql format
 		'relative_end_date'   => '', // Optional: pass date in mysql format
-		'where_sql'           => '',
+		'where_sql'           => 'WHERE 1=1',
 		'inner_join_sql'      => '',
 		'inner_join_at'       => '',
 		'date_sql'            => '',

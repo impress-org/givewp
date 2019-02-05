@@ -100,11 +100,11 @@ class Give_Donation_Stats extends Give_Stats {
 						SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS relative
 						FROM {$this->query_vars['table']}
 						{$this->query_vars['inner_join_sql']}
-						WHERE 1=1
+	  
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 					) o
-					WHERE 1=1
+  
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					";
@@ -112,7 +112,7 @@ class Give_Donation_Stats extends Give_Stats {
 			$this->sql = "SELECT IFNULL({$function}, 0) AS sales
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
-					WHERE 1=1
+  
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					";
@@ -204,14 +204,14 @@ class Give_Donation_Stats extends Give_Stats {
 						FROM {$this->query_vars['table']}
 						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 						{$this->query_vars['inner_join_sql']}
-						WHERE 1=1
+	  
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 						AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					) o
 					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 					{$this->query_vars['inner_join_sql']}
-					WHERE 1=1
+  
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
@@ -221,7 +221,7 @@ class Give_Donation_Stats extends Give_Stats {
 					FROM {$this->query_vars['table']}
 					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 					{$this->query_vars['inner_join_sql']}
-					WHERE 1=1
+  
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
 					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
@@ -444,7 +444,6 @@ class Give_Donation_Stats extends Give_Stats {
 		$this->sql = "SELECT DAYOFWEEK({$this->query_vars['column']}) AS day, COUNT(ID) as total
 				FROM {$this->query_vars['table']}
 				{$this->query_vars['inner_join_sql']}
-				WHERE 1=1
 				{$this->query_vars['where_sql'] }
 				{$this->query_vars['date_sql'] }
 				GROUP BY day
@@ -514,7 +513,6 @@ class Give_Donation_Stats extends Give_Stats {
 			FROM {$this->query_vars['table']}
 			INNER JOIN {$this->get_db()->posts} ON {$this->query_vars['table']}.{$donation_col_name}={$this->get_db()->posts}.ID
 			{$this->query_vars['inner_join_sql']}
-			WHERE 1=1
 			{$this->query_vars['where_sql']}
 			{$this->query_vars['date_sql']}
 			AND {$this->query_vars['table']}.meta_key='_give_payment_form_id'
