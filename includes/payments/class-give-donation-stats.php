@@ -94,7 +94,7 @@ class Give_Donation_Stats extends Give_Stats {
 			: "COUNT({$this->query_vars['table']}.{$this->query_vars['column']})";
 
 		if ( $is_relative ) {
-			$sql = "SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS sales, IFNULL(relative, 0) AS relative
+			$this->sql = "SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS sales, IFNULL(relative, 0) AS relative
 					FROM {$this->query_vars['table']}
 					CROSS JOIN (
 						SELECT IFNULL(COUNT({$this->query_vars['table']}.{$this->query_vars['column']}), 0) AS relative
@@ -109,7 +109,7 @@ class Give_Donation_Stats extends Give_Stats {
 					{$this->query_vars['date_sql']}
 					";
 		} else {
-			$sql = "SELECT IFNULL({$function}, 0) AS sales
+			$this->sql = "SELECT IFNULL({$function}, 0) AS sales
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
 					WHERE 1=1
@@ -123,9 +123,9 @@ class Give_Donation_Stats extends Give_Stats {
 		 *
 		 * @since 2.5.0
 		 */
-		$sql = apply_filters( 'give_donation_stats_get_sales_sql', $sql, $this );
+		$this->sql = apply_filters( 'give_donation_stats_get_sales_sql', $this->sql, $this );
 
-		$result = $this->get_db()->get_row( $sql );
+		$result = $this->get_db()->get_row( $this->sql );
 
 		if ( is_null( $result ) ) {
 			$result        = new stdClass();
@@ -137,9 +137,7 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		// Reset query vars.
-		$result->sql        = $sql;
-		$result->query_vars = $this->query_vars;
-		$this->set_cache( $result );
+		$this->build_result( $result );
 		$this->reset_query();
 
 		/**
@@ -199,7 +197,7 @@ class Give_Donation_Stats extends Give_Stats {
 			: "SUM({$this->query_vars['table']}.{$this->query_vars['column']})";
 
 		if ( $is_relative ) {
-			$sql = "SELECT IFNULL({$function}, 0) AS total, IFNULL(relative, 0) AS relative
+			$this->sql = "SELECT IFNULL({$function}, 0) AS total, IFNULL(relative, 0) AS relative
 					FROM {$this->query_vars['table']}
 					CROSS JOIN (
 						SELECT IFNULL($function, 0) AS relative
@@ -219,7 +217,7 @@ class Give_Donation_Stats extends Give_Stats {
 					AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					";
 		} else {
-			$sql = "SELECT IFNULL({$function}, 0) AS total
+			$this->sql = "SELECT IFNULL({$function}, 0) AS total
 					FROM {$this->query_vars['table']}
 					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
 					{$this->query_vars['inner_join_sql']}
@@ -235,9 +233,9 @@ class Give_Donation_Stats extends Give_Stats {
 		 *
 		 * @since 2.5.0
 		 */
-		$sql = apply_filters( 'give_donation_stats_get_earnings_sql', $sql, $this );
+		$this->sql = apply_filters( 'give_donation_stats_get_earnings_sql', $this->sql, $this );
 
-		$result = $this->get_db()->get_row( $sql );
+		$result = $this->get_db()->get_row( $this->sql );
 
 		if ( is_null( $result ) ) {
 			$result        = new stdClass();
@@ -249,9 +247,7 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 
 		// Reset query vars.
-		$result->sql        = $sql;
-		$result->query_vars = $this->query_vars;
-		$this->set_cache( $result );
+		$this->build_result( $result );
 		$this->reset_query();
 
 		/**
@@ -330,7 +326,7 @@ class Give_Donation_Stats extends Give_Stats {
 				break;
 		}
 
-		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
+		$this->sql = "SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
 					FROM {$this->query_vars['table']}
 					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
@@ -344,9 +340,9 @@ class Give_Donation_Stats extends Give_Stats {
 		 *
 		 * @since 2.5.0
 		 */
-		$sql = apply_filters( 'give_donation_stats_get_statistics_sql', $sql, $this );
+		$this->sql = apply_filters( 'give_donation_stats_get_statistics_sql', $this->sql, $this );
 
-		$results = $this->get_db()->get_results( $sql );
+		$results = $this->get_db()->get_results( $this->sql );
 
 		// Modify result.
 		$sales    = array();
@@ -403,9 +399,7 @@ class Give_Donation_Stats extends Give_Stats {
 		$results->earnings = $earnings;
 
 		// Reset query vars.
-		$results->sql        = $sql;
-		$results->query_vars = $this->query_vars;
-		$this->set_cache( $results );
+		$this->build_result( $results );
 		$this->reset_query();
 
 		return $results;
@@ -447,7 +441,7 @@ class Give_Donation_Stats extends Give_Stats {
 			return $result;
 		}
 
-		$sql = "SELECT DAYOFWEEK({$this->query_vars['column']}) AS day, COUNT(ID) as total
+		$this->sql = "SELECT DAYOFWEEK({$this->query_vars['column']}) AS day, COUNT(ID) as total
 				FROM {$this->query_vars['table']}
 				{$this->query_vars['inner_join_sql']}
 				WHERE 1=1
@@ -457,7 +451,7 @@ class Give_Donation_Stats extends Give_Stats {
 				ORDER BY day DESC
 				LIMIT 1";
 
-		$result = $this->get_db()->get_row( $sql );
+		$result = $this->get_db()->get_row( $this->sql );
 
 		$days        = Give_Date::getDays();
 		$result->day = is_null( $result )
@@ -465,9 +459,7 @@ class Give_Donation_Stats extends Give_Stats {
 			: $days[ $result->day - 1 ];
 
 		// Reset query vars.
-		$result->sql        = $sql;
-		$result->query_vars = $this->query_vars;
-		$this->set_cache( $result );
+		$this->build_result( $result );
 		$this->reset_query();
 
 		/**
@@ -518,7 +510,7 @@ class Give_Donation_Stats extends Give_Stats {
 			return $result;
 		}
 
-		$sql = "SELECT {$this->query_vars['table']}.{$this->query_vars['column']} as form, COUNT({$this->query_vars['table']}.{$donation_col_name}) as total_donation
+		$this->sql = "SELECT {$this->query_vars['table']}.{$this->query_vars['column']} as form, COUNT({$this->query_vars['table']}.{$donation_col_name}) as total_donation
 			FROM {$this->query_vars['table']}
 			INNER JOIN {$this->get_db()->posts} ON {$this->query_vars['table']}.{$donation_col_name}={$this->get_db()->posts}.ID
 			{$this->query_vars['inner_join_sql']}
@@ -531,14 +523,12 @@ class Give_Donation_Stats extends Give_Stats {
 			LIMIT 1
 			";
 
-		$result = $this->get_db()->get_row( $sql );
+		$result = $this->get_db()->get_row( $this->sql );
 
 		$result->form = is_null( $result ) ? 0 : absint( $result->form );
 
 		// Reset query vars.
-		$result->sql        = $sql;
-		$result->query_vars = $this->query_vars;
-		$this->set_cache( $result );
+		$this->build_result( $result );
 		$this->reset_query();
 
 		/**

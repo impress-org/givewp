@@ -87,6 +87,16 @@ class Give_Stats {
 	public $query_vars = array();
 
 	/**
+	 * SQL Query
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 *
+	 * @var string
+	 */
+	public $sql = array();
+
+	/**
 	 * Default query arguments
 	 *
 	 * @since  2.5.0
@@ -401,12 +411,27 @@ class Give_Stats {
 	}
 
 	/**
+	 * Add extra information to result
+	 * @since 2.5.0
+	 *
+	 * @param $results
+	 */
+	protected function build_result( &$results ) {
+		// Add extra data to result.
+		$results->sql        = $this->sql;
+		$results->query_vars = $this->query_vars;
+
+		$this->set_cache( $results );
+	}
+
+	/**
 	 * Runs after a query. Resets query vars back to the originals passed in via the constructor.
 	 *
 	 * @since  2.5.0
 	 * @access protected
 	 */
 	protected function reset_query() {
+		// Reset params.
 		$this->query_vars = $this->query_var_defaults;
 		$this->counters   = array();
 	}
