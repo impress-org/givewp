@@ -200,13 +200,13 @@ class Give_Donation_Stats extends Give_Stats {
 					CROSS JOIN (
 						SELECT IFNULL($function, 0) AS relative
 						FROM {$this->query_vars['table']}
-						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
+						INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->get_donation_id_column()}
 						{$this->query_vars['inner_join_sql']}
 						{$this->query_vars['where_sql']}
 						{$this->query_vars['relative_date_sql']}
 						AND {$this->query_vars['table']}.meta_key='_give_payment_total'
 					) o
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->get_donation_id_column()}
 					{$this->query_vars['inner_join_sql']}
   
 					{$this->query_vars['where_sql']}
@@ -216,7 +216,7 @@ class Give_Donation_Stats extends Give_Stats {
 		} else {
 			$this->sql = "SELECT IFNULL({$function}, 0) AS total
 					FROM {$this->query_vars['table']}
-					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->query_vars['inner_join_at']}
+					INNER JOIN {$this->get_db()->posts} on {$this->get_db()->posts}.ID = {$this->query_vars['table']}.{$this->get_donation_id_column()}
 					{$this->query_vars['inner_join_sql']}
 					{$this->query_vars['where_sql']}
 					{$this->query_vars['date_sql']}
@@ -600,7 +600,7 @@ class Give_Donation_Stats extends Give_Stats {
 		$alias = "m{$this->get_counter( $this->get_db()->donationmeta )}";
 		$data  = implode( '\',\'', $this->query_vars[ $query_key ] );
 
-		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as {$alias} on {$alias}.{$donation_col_name}={$this->query_vars['table']}.{$this->query_vars['inner_join_at']}";
+		$this->query_vars['inner_join_sql'][] = "INNER JOIN {$this->get_db()->donationmeta} as {$alias} on {$alias}.{$donation_col_name}={$this->query_vars['table']}.{$this->get_donation_id_column()}";
 
 		$this->query_vars['where_sql'][] = " AND {$alias}.meta_key='{$meta_key}'";
 		$this->query_vars['where_sql'][] = " AND {$alias}.meta_value IN ('{$data}')";
@@ -706,8 +706,9 @@ class Give_Donation_Stats extends Give_Stats {
 	 *
 	 * @return string
 	 */
-	protected function get_donation_id_column( $table_name ) {
-		$tables = $this->get_table_with_donation_id_columns();
+	public function get_donation_id_column( $table_name = '' ) {
+		$table_name = empty( $table_name ) ? $this->query_vars['table'] : $table_name;
+		$tables     = $this->get_table_with_donation_id_columns();
 
 		// Bailout.
 		if (
@@ -719,6 +720,5 @@ class Give_Donation_Stats extends Give_Stats {
 
 		return $tables[ $table_name ];
 	}
-
 }
 

@@ -113,7 +113,6 @@ class Give_Stats {
 		'relative_end_date'   => '', // Optional: pass date in mysql format
 		'where_sql'           => 'WHERE 1=1',
 		'inner_join_sql'      => '',
-		'inner_join_at'       => '',
 		'date_sql'            => '',
 		'relative_date_sql'   => '',
 		'function'            => 'SUM',
@@ -354,28 +353,6 @@ class Give_Stats {
 		return $this->counters[ $key ];
 	}
 
-	/**
-	 * Set column id for inner join
-	 *
-	 * @since  2.5.0
-	 * @access protected
-	 *
-	 * @param string $table_name
-	 */
-	private function set_inner_join_col_id( $table_name = '' ) {
-		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
-		$table_name        = ! empty( $table_name ) ? $table_name : $this->query_vars['table'];
-
-		$arr = array(
-			$this->get_db()->posts        => 'ID',
-			$this->get_db()->donationmeta => $donation_col_name,
-		);
-
-		$col_id = isset( $arr[ $table_name ] ) ? $arr[ $table_name ] : '';
-
-		$this->query_vars['inner_join_at'] = $col_id;
-	}
-
 
 	/**
 	 * Parse process query
@@ -407,7 +384,6 @@ class Give_Stats {
 
 		$this->parse_query( $query );
 		$this->set_date_ranges();
-		$this->set_inner_join_col_id();
 	}
 
 	/**
