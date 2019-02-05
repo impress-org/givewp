@@ -290,11 +290,19 @@ class Give_Donation_Stats extends Give_Stats {
 			array( 'statistic_type' => 'time', )
 		);
 
+		$this->pre_query( $query );
+
+		if ( $cache = $this->get_cache() ) {
+			$this->reset_query();
+
+			return $cache;
+		}
+
 		// Set query on basis of statistic type
 		switch ( $query['statistic_type'] ) {
 			case 'time':
-				$query = array_merge(
-					$query,
+				$this->query_vars = array_merge(
+					$this->query_vars,
 					array(
 						'select'  => "YEAR({$column}) AS year, MONTH({$column}) AS month, DAY({$column}) AS day",
 						'groupby' => "YEAR({$column}), MONTH({$column}), DAY({$column})",
@@ -304,24 +312,22 @@ class Give_Donation_Stats extends Give_Stats {
 				break;
 
 			case 'form':
-				$query = array_merge(
-					$query,
+				$form_meta_query_counter = $this->get_counter( $this->get_db()->donationmeta );;
+				$this->query_vars = array_merge(
+					$this->query_vars,
 					array(
-						'select'  => "CAST( m{$query['meta_table_count']}.meta_value as SIGNED ) as form",
-						'groupby' => "form",
-						'orderby' => "form",
+						'select'  => "CAST( m{$form_meta_query_counter}.meta_value as SIGNED ) as form",
+						'groupby' => 'form',
+						'orderby' => 'form',
 					)
 				);
 
+				$this->query_vars['inner_join_sql'] .= " INNER JOIN wp_lluk_give_donationmeta as m{$form_meta_query_counter} on m{$form_meta_query_counter}.donation_id=wp_lluk_posts.ID";
+				$this->query_vars['where_sql']      .= " AND m{$form_meta_query_counter}.meta_key='_give_payment_form_id'";
+
+				$this->set_counter( $this->get_db()->donationmeta );
+
 				break;
-		}
-
-		$this->pre_query( $query );
-
-		if ( $cache = $this->get_cache() ) {
-			$this->reset_query();
-
-			return $cache;
 		}
 
 		$sql = "SELECT COUNT(ID) AS sales, SUM(m{$this->query_vars['meta_table_count']}.meta_value) AS earnings, {$this->query_vars['select']}
