@@ -107,6 +107,8 @@ class Give_Stats {
 		'date_sql'            => '',
 		'relative_date_sql'   => '',
 		'function'            => 'SUM',
+		'number'              => false,
+		'offset'              => false,
 	);
 
 	/**
