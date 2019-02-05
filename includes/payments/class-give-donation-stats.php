@@ -695,5 +695,46 @@ class Give_Donation_Stats extends Give_Stats {
 		}
 	}
 
+	/**
+	 * Get table with primary columns
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return array
+	 */
+	private function get_table_with_donation_id_columns() {
+		$donation_col_name = Give()->payment_meta->get_meta_type() . '_id';
+
+		$arr = array(
+			$this->get_db()->posts        => 'ID',
+			$this->get_db()->donationmeta => $donation_col_name,
+		);
+
+		return $arr;
+	}
+
+	/**
+	 * Get donation id column name
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param string $table_name
+	 *
+	 * @return string
+	 */
+	protected function get_donation_id_column( $table_name ) {
+		$tables = $this->get_table_with_donation_id_columns();
+
+		// Bailout.
+		if (
+			empty( $table_name )
+			|| ! array_key_exists( $table_name, $tables )
+		) {
+			return '';
+		}
+
+		return $tables[ $table_name ];
+	}
+
 }
 
