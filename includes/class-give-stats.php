@@ -564,3 +564,6 @@ class Give_Stats {
 		return $where;
 	}
 }
+
+// @todo: add support for group by and order by
+// @todo: add support for relative stats query on basis of custom date range
