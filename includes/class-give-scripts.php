@@ -215,7 +215,10 @@ class Give_Scripts {
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
-			'number_decimals'                   => $number_decimals,
+			'number_decimals'                   => $number_decimals, // Use this for number of decimals instead of `currency_decimals`.
+			'currency_decimals'                 => $number_decimals, // If you find usage of this variable then replace it with `number_decimals`.
+			'currency_sign'                     => give_currency_filter( '' ),
+			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
 			'delete_payment'                    => __( 'Are you sure you want to <strong>permanently</strong> delete this donation?', 'give' ),
 			'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
@@ -225,9 +228,6 @@ class Give_Scripts {
 			'disconnect_user'                   => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 			'one_option'                        => __( 'Choose a form', 'give' ),
 			'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
-			'currency_sign'                     => give_currency_filter( '' ),
-			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-			'currency_decimals'                 => give_get_price_decimals(),
 			'ok'                                => __( 'Ok', 'give' ),
 			'cancel'                            => __( 'Cancel', 'give' ),
 			'success'                           => __( 'Success', 'give' ),
