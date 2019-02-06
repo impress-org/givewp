@@ -161,6 +161,7 @@ function give_generate_pdf( $data ) {
 			}
 
 			$donation_stats_query = array( 'give_forms' => $form->ID,  'range' => 'this_year' );
+
 			$sales    = $donation_stats->get_sales( $donation_stats_query )->sales;
 			$earnings = give_currency_filter( give_format_amount( $donation_stats->get_earnings( $donation_stats_query )->total, array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
 
