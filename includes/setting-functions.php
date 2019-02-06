@@ -45,10 +45,10 @@ function give_update_option( $key = '', $value = false ) {
 		return $remove_option;
 	}
 
-	// First let's grab the current settings
+	// First let's grab the current settings.
 	$options = give_get_settings();
 
-	// Let's let devs alter that value coming in
+	// Let's developers alter that value coming in.
 	$value = apply_filters( 'give_update_option', $value, $key );
 
 	// Next let's try to update the value
