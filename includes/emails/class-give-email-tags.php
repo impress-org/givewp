@@ -1243,9 +1243,12 @@ function give_email_tag_donation_history_link( $tag_args ) {
 		// update donor id in email tags.
 		$tag_args['donor_id'] = $donor_id;
 
-		$access_url = give_prepare_donation_history_url( array(
-            'give_nl' => $verify_key,
-        ) );
+		$access_url = add_query_arg(
+            array(
+                'give_nl' => $verify_key,
+            ),
+            give_get_history_page_uri()
+        );
 
 		// Add donation id to email access url, if it exists.
 		$donation_id = give_clean( filter_input( INPUT_GET, 'donation_id' ) );
