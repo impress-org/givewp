@@ -466,22 +466,20 @@ function give_count_total_donors() {
  * @since  1.0
  *
  * @param int/null $donor_id Donor ID.
- * @param array    $args donor args.
+ * @param array $args         {
+ *
+ * @type bool   $by_user_id   Flag to validate find donor by donor ID or user ID
+ * @type string $address_type Optional. Which type of donor address this function will return.
+ * }
  *
  * @return array The donor's address, if any
  */
 function give_get_donor_address( $donor_id = null, $args = array() ) {
-	if ( empty( $donor_id ) ) {
-		$donor_id = get_current_user_id();
-	}
-
-	$address         = array();
-	$args            = wp_parse_args(
-		$args,
-		array(
-			'address_type' => 'billing',
-		)
+	$default_args = array(
+		'by_user_id'   => false,
+		'address_type' => 'billing',
 	);
+
 	$default_address = array(
 		'line1'   => '',
 		'line2'   => '',
@@ -491,9 +489,14 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		'zip'     => '',
 	);
 
+	$address = array();
+	$args    = wp_parse_args( $args, $default_args );
 
-	// Backward compatibility for user id param.
-	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
+	// Set user id if donor is empty.
+	if ( empty( $donor_id ) ) {
+		$donor_id           = get_current_user_id();
+		$args['by_user_id'] = true;
+	}
 
 	// Backward compatibility.
 	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ) {
@@ -503,7 +506,7 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		);
 	}
 
-	$donor = new Give_Donor( $donor_id, $by_user_id );
+	$donor = new Give_Donor( $donor_id, (bool) $args['by_user_id'] );
 
 	if (
 		! $donor->id ||
