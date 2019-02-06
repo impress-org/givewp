@@ -895,16 +895,22 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'billing_address'         => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
 					'email_access_link'       => sprintf(
 						'<a href="%1$s">%2$s</a>',
-						give_prepare_donation_history_url( array(
+						add_query_arg(
+							array(
 								'give_nl' => uniqid(),
-                        ) ),
+							),
+							give_get_history_page_uri()
+						),
 						__( 'View your donation history &raquo;', 'give' )
 					),
 					'donation_history_link'   => sprintf(
 						'<a href="%1$s">%2$s</a>',
-						give_prepare_donation_history_url( array(
-							'give_nl' => uniqid(),
-						) ),
+						add_query_arg(
+                            array(
+                                'give_nl' => uniqid(),
+                            ),
+                            give_get_history_page_uri()
+                        ),
 						__( 'View your donation history &raquo;', 'give' )
 					),
 					'reset_password_link'     => $user_id ? give_email_tag_reset_password_link( array( 'user_id' => $user_id ), $payment_id ) : '',
