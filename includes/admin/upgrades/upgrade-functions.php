@@ -465,6 +465,16 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.4.1 Update to remove sale type log
+	$give_updates->register(
+		array(
+			'id'       => 'v241_remove_sale_logs',
+			'version'  => '2.4.1',
+			'callback' => 'give_v241_remove_sale_logs_callback',
+			'depend'   => array( 'v201_logs_upgrades' ),
+		)
+	);
+
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -3370,4 +3380,30 @@ function give_v240_update_form_goal_progress_callback() {
 		give_set_upgrade_complete( 'v240_update_form_goal_progress' );
 
 	}
+}
+
+
+/**
+ * Manual update handler for v241_remove_sale_logs
+ *
+ * @since 2.4.1
+ *
+ * @param Give_Updates $give_updates;
+ */
+function give_v241_remove_sale_logs_callback( $give_updates ) {
+	global $wpdb;
+
+	$log_table      = Give()->logs->log_db->table_name;
+	$log_meta_table = Give()->logs->logmeta_db->table_name;
+
+	$sql = "DELETE {$log_table}, {$log_meta_table}
+		FROM {$log_table}
+		INNER JOIN  {$log_meta_table} ON {$log_meta_table}.log_id={$log_table}.ID
+		WHERE log_type='sale'
+		";
+
+	// Remove donation logs.
+	$wpdb->query( $sql );
+
+	give_set_upgrade_complete( 'v241_remove_sale_logs' );
 }
