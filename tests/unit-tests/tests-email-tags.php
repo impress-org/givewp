@@ -682,12 +682,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 
 	/**
-	 * Test function give_email_tag_email_access_link
+	 * Test function give_email_tag_donation_history_link
 	 *
 	 * @since 2.0
-	 * @cover give_email_tag_email_access_link
+	 * @cover give_email_tag_donation_history_link
 	 */
-	function test_give_email_tag_email_access_link() {
+	function test_give_email_tag_donation_history_link() {
 		// Create new table columns manually.
 		// Are db columns setup?
 		if( ! Give()->donors->does_column_exist( 'token' ) ) {
@@ -696,7 +696,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		Give_Helper_Payment::create_simple_payment();
 
-		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );
+		$link = give_email_tag_donation_history_link( array( 'user_id' => 1 ) );
 
 		$this->assertRegExp(
 			'/target="_blank">View your donation history &raquo;<\/a>/',
@@ -708,7 +708,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			$link
 		);
 
-		$link = give_email_tag_email_access_link( array( 'user_id' => 1, 'email_content_type' => 'text/plain' ) );
+		$link = give_email_tag_donation_history_link( array( 'user_id' => 1, 'email_content_type' => 'text/plain' ) );
 
 		$this->assertRegExp(
 			'/View your donation history: .+?\?give_nl=/',

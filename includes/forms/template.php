@@ -1053,12 +1053,6 @@ function give_default_cc_address_fields( $form_id ) {
 	// Get user info.
 	$give_user_info = _give_get_prefill_form_field_values( $form_id );
 
-	$logged_in = is_user_logged_in();
-
-	if ( $logged_in ) {
-		$user_address = give_get_donor_address( get_current_user_id() );
-	}
-
 	ob_start();
 	?>
 	<fieldset id="give_cc_address" class="cc-address">

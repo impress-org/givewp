@@ -115,7 +115,10 @@ class Give_Email_Access {
 	 * @since 2.4.0
 	 */
 	public function setup(){
-		if( give_is_success_page() || give_is_history_page() ){
+		
+		$is_email_access_on_page = apply_filters( 'give_is_email_access_on_page', give_is_success_page() || give_is_history_page() );
+		
+		if ( $is_email_access_on_page ){
 			// Get it started.
 			add_action( 'wp', array( $this, 'init' ), 14 );
 		}
@@ -208,7 +211,27 @@ class Give_Email_Access {
 	public function send_email( $donor_id, $email ) {
 		return apply_filters( 'give_email-access_email_notification', $donor_id, $email );
 	}
-
+	
+	/**
+	 * This function is used to fetch the token value from query string or cookies based on availability.
+	 *
+	 * @since  2.4.1
+	 * @access public
+	 *
+	 * @return string
+	 */
+	public function get_token() {
+		
+		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : '';
+		
+		// Check for cookie.
+		if ( empty( $token ) ) {
+			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : '';
+		}
+		
+		return $token;
+	}
+	
 	/**
 	 * Has the user authenticated?
 	 *
@@ -219,12 +242,7 @@ class Give_Email_Access {
 	 */
 	public function check_for_token() {
 
-		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : '';
-
-		// Check for cookie.
-		if ( empty( $token ) ) {
-			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : '';
-		}
+		$token = $this->get_token();
 
 		// Must have a token.
 		if ( ! empty( $token ) ) {
