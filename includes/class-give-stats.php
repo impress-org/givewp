@@ -116,8 +116,6 @@ class Give_Stats {
 		'date_sql'            => '',
 		'relative_date_sql'   => '',
 		'limit_sql'           => '',
-		'group_by_gql'        => '',
-		'order_by_gql'        => '',
 		'function'            => 'SUM',
 		'number'              => false,
 		'offset'              => false,
