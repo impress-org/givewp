@@ -129,6 +129,10 @@ class Give_DB_Meta extends Give_DB {
 	 *                                is true.
 	 */
 	public function get_meta( $id = 0, $meta_key = '', $single = false ) {
+		if( ! $this->is_called_by_filter() ) {
+			return get_metadata( $this->meta_type, $id, $meta_key, $single );
+		}
+
 		$id = $this->sanitize_id( $id );
 
 		// Bailout.
@@ -167,7 +171,11 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @return  int|bool                  False for failure. True for success.
 	 */
-	public function add_meta( $id = 0, $meta_key = '', $meta_value, $unique = false ) {
+	public function add_meta( $id, $meta_key, $meta_value, $unique = false ) {
+		if( ! $this->is_called_by_filter() ) {
+			return add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+		}
+
 		$id = $this->sanitize_id( $id );
 
 		// Bailout.
@@ -204,7 +212,11 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @return  int|bool                  False on failure, true if success.
 	 */
-	public function update_meta( $id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
+	public function update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
+		if( ! $this->is_called_by_filter() ) {
+			return update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+		}
+
 		$id = $this->sanitize_id( $id );
 
 		// Bailout.
@@ -239,6 +251,10 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
+		if( ! $this->is_called_by_filter() ) {
+			return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+		}
+
 		$id = $this->sanitize_id( $id );
 
 		// Bailout.
@@ -408,6 +424,33 @@ class Give_DB_Meta extends Give_DB {
 		if ( array_key_exists( $meta_type, $group ) ) {
 			Give_Cache::delete_group( $id, $group[ $meta_type ] );
 		}
+	}
+
+
+	/**
+	 * Return whether function called by WordPress filter or not
+	 * Note: This added to safely remove backward compatibility for WordPress *_post_meta functions.
+	 *       We can use Give_DB_Meta::*_meta function for form, donation or donor metadata action.
+	 *       For example: if you want to get meta tha for donation then use Give()->payment_meta->get_meta
+	 *
+	 *       ref: https://github.com/impress-org/give/issues/3003
+	 *
+	 * @since 2.5.0
+	 */
+	private function is_called_by_filter() {
+		$debug_backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 4 );
+		$caller_function = count( $debug_backtrace ) >= 3 && ! empty( $debug_backtrace[2]['function'] )
+			? $debug_backtrace[3]['function']
+			: '';
+
+		$filter_functions = array(
+			'__add_meta',
+			'__get_meta',
+			'__update_meta',
+			'__delete_meta',
+		);
+
+		return $caller_function && in_array( $caller_function, $filter_functions );
 	}
 
 	/**
