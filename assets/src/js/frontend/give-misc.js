@@ -26,9 +26,13 @@ jQuery(
 			}
 		);
 		// Compatible for X theme and Cornerstone plugin.
-		$( '.give-wrap' ).on( 'touchend click', '.js-give-grid-modal-launcher', function( e ) {
-			e.stopPropagation();
-		} );
+		if(typeof window.csGlobal !== 'undefined') {
+			window.jQuery(function($){
+				window.csGlobal.csHooks.filter('hash_scrolling_allow', function(allow, el) {
+					return $(el).hasClass('give-card') ? false : allow
+				});
+			});
+		}
 
 		// Disable button if it have give-disabled class init.
 		doc.on(
