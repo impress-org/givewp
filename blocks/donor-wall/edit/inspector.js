@@ -85,7 +85,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
 				<ToggleControl
 					name="onlyComments"
-					label={ __( 'Donor With Comments' ) }
+					label={ __( 'Only Donors with Comments' ) }
 					checked={ !! onlyComments }
 					onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
 				<TextControl

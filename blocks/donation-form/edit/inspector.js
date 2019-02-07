@@ -14,7 +14,6 @@ import giveFormOptions from '../data/options';
 /**
  * Render Inspector Controls
 */
-
 class Inspector extends Component {
 	constructor( props ) {
 		super( props );

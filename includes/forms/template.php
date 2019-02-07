@@ -108,7 +108,7 @@ function give_get_donation_form( $args = array() ) {
 			 */
 			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
 
-			if ( ! doing_action( 'give_single_form_summary' ) ) {
+			if ( ! doing_action( 'give_single_form_summary' ) && true === $args['show_title'] ) {
 				echo $form_title;
 			}
 
