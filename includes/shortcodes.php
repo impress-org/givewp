@@ -128,15 +128,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  * @return string
  */
 function give_form_shortcode( $atts ) {
-	$atts = shortcode_atts( array(
-		'id'                    => '',
-		'show_title'            => true,
-		'show_goal'             => true,
-		'show_content'          => '',
-		'float_labels'          => '',
-		'display_style'         => '',
-		'continue_button_title' => '',
-	), $atts, 'give_form' );
+	$atts = shortcode_atts( give_get_default_form_shortcode_args(), $atts, 'give_form' );
 
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );

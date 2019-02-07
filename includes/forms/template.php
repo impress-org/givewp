@@ -34,16 +34,7 @@ function give_get_donation_form( $args = array() ) {
 		$form_id = $args['id'];
 	}
 
-	$defaults = apply_filters(
-		'give_form_args_defaults', array(
-			'form_id'      => $form_id,
-			'show_title'   => true,
-			'show_goal'    => true,
-			'show_content' => true,
-		)
-	);
-
-	$args = wp_parse_args( $args, $defaults );
+	$args = wp_parse_args( $args, give_get_default_form_shortcode_args() );
 
 	$form = new Give_Donate_Form( $args['form_id'] );
 
