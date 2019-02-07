@@ -154,7 +154,7 @@ jQuery(
  */
 window.give_open_form_modal = function ($form_wrap, $form) {
 
-	// Don't his these form children elements.
+	// Don't hide these form children elements.
 	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden, .give-form-title';
 
 	jQuery.magnificPopup.open(
@@ -175,8 +175,8 @@ window.give_open_form_modal = function ($form_wrap, $form) {
 					var $form_title   = jQuery( '.give-form-title', $form_wrap );
 
 					// Modal Display
-					if ($form_wrap.hasClass( 'give-display-modal' ) && ! $form.data( 'content' )) {
-
+					if ($form_wrap.hasClass( 'give-modal' ) && ! $form.data( 'content' )) {
+						
 						// Add title container to form.
 						if ($form_title.length && ! jQuery( '.give-form-title', $form ).length) {
 							$form.prepend( $form_title );
@@ -187,8 +187,7 @@ window.give_open_form_modal = function ($form_wrap, $form) {
 					} else if ($form_wrap.hasClass( 'give-display-button-only' ) && ! $form.data( 'content' )) {
 
 						// Button Display:
-						// add title, content, goal and error to form if admin want to show button only
-
+						// add title, content, goal and error to form.
 						var $form_content = jQuery( '.give-form-content-wrap', $form_wrap ),
 							$form_goal    = jQuery( '.give-goal-progress', $form_wrap ),
 							$form_error   = jQuery( '>.give_error', $form_wrap ),
