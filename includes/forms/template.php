@@ -36,7 +36,10 @@ function give_get_donation_form( $args = array() ) {
 
 	$defaults = apply_filters(
 		'give_form_args_defaults', array(
-			'form_id' => $form_id,
+			'form_id'      => $form_id,
+			'show_title'   => true,
+			'show_goal'    => true,
+			'show_content' => true,
 		)
 	);
 
