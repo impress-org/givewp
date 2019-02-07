@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Blocks
- * @copyright   Copyright (c) 2016, GiveWP
+ * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.0.2
  */
@@ -80,46 +80,48 @@ class Give_Donation_Form_Block {
 	 */
 	public function register_block() {
 		// Bailout.
-		if( ! function_exists('register_block_type' ) ) {
+		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
 
 		// Register block.
-		register_block_type( 'give/donation-form', array(
-			'render_callback' => array( $this, 'render_donation_form' ),
-			'attributes'      => array(
-				'id'	=> array(
-					'type' => 'number',
+		register_block_type(
+			'give/donation-form', array(
+				'render_callback' => array( $this, 'render_donation_form' ),
+				'attributes'      => array(
+					'id'                  => array(
+						'type' => 'number',
+					),
+					'prevId'              => array(
+						'type' => 'number',
+					),
+					'displayStyle'        => array(
+						'type'    => 'string',
+						'default' => 'onpage',
+					),
+					'continueButtonTitle' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'showTitle'           => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showGoal'            => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'contentDisplay'      => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showContent'         => array(
+						'type'    => 'string',
+						'default' => 'above',
+					),
 				),
-				'prevId'	=> array(
-					'type' => 'number',
-				),
-				'displayStyle'	=> array(
-					'type' => 'string',
-					'default' => 'onpage',
-				),
-				'continueButtonTitle' => array(
-					'type' => 'string',
-					'default' => '',
-				),
-				'showTitle'	=> array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'showGoal'            => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'contentDisplay' => array(
-					'type' => 'boolean',
-					'default' => false,
-				),
-				'showContent'         => array(
-					'type'    => 'string',
-					'default' => 'above',
-				),
-			),
-		) );
+			)
+		);
 	}
 
 	/**
