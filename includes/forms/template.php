@@ -200,7 +200,7 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int              $form ->ID The form ID.
+			 * @param int              Give_Donate_Form::ID The form ID.
 			 * @param array            $args An array of form arguments.
 			 * @param Give_Donate_Form $form Form object.
 			 */
