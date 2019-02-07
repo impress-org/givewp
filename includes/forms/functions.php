@@ -1584,7 +1584,7 @@ function give_get_default_form_shortcode_args() {
 	/**
 	 * Fire the filter
 	 */
-	$default = apply_filters( 'give_form_args_defaults', $default );
+	$default = apply_filters( 'give_get_default_form_shortcode_args', $default );
 
 	return $default;
 }

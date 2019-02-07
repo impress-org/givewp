@@ -42,6 +42,14 @@ function give_get_donation_form( $args = array() ) {
 	// set `form_id` for backward compatibility because many filter and function  using it.
 	$args['form_id'] = $args['id'];
 
+	/**
+	 * Fire the filter
+	 * Note: we will deprecated this filter soon. Use give_get_default_form_shortcode_args instead
+	 *
+	 * @deprecated 2.4.1
+	 */
+	$args = apply_filters( 'give_form_args_defaults', $args );
+
 	$form = new Give_Donate_Form( $args['id'] );
 
 	// Bail out, if no form ID.
