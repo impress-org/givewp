@@ -177,8 +177,8 @@ jQuery( function( $ ) {
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
 
 		//Set Multi-Level to Custom Amount Field
-		parent_form.find( '.give-default-level, .give-radio-input' ).removeClass( 'give-default-level' );
-		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-default-level' );
+		parent_form.find( '.give-selected-level, .give-radio-input' ).removeClass( 'give-selected-level' );
+		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-selected-level' );
 		parent_form.find( '.give-radio-input' ).prop( 'checked', false ); // Radio
 		parent_form.find( '.give-radio-input.give-radio-level-custom' ).prop( 'checked', true ); // Radio
 		parent_form.find( '.give-select-level' ).prop( 'selected', false ); // Select
@@ -218,7 +218,7 @@ jQuery( function( $ ) {
 			}
 		}
 
-		// Cache donor selected price id for a amount.
+		// Cache donor selected price id for an amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
 		$( this ).val( formatted_total );
 
@@ -288,7 +288,7 @@ jQuery( function( $ ) {
 			parent_form.find( '.give-amount-hidden' ).val( Give.form.fn.formatAmount( value_now, parent_form, {} ) );
 
 			// Remove old selected class & add class for CSS purposes
-			parent_form.find( '.give-default-level' ).removeClass( 'give-default-level' );
+			parent_form.find( '.give-selected-level' ).removeClass( 'give-selected-level' );
 
 			// Auto select variable price items ( Radio/Button/Select ).
 			Give.form.fn.autoSelectDonationLevel( parent_form, price_id );
@@ -298,8 +298,8 @@ jQuery( function( $ ) {
 		$( this ).parent( '.give-donation-amount' )
 			.removeClass( 'give-custom-amount-focus-in' );
 
-		// trigger an event for hooks
-		jQuery( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
+		// Trigger an event for hooks
+		$( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
 
 	} );
 
