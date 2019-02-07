@@ -207,7 +207,25 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.4.0: January 16th, 2018 =
+= 2.4.1: February 7th, 2019 =
+* New: Links to view receipts and subscriptions no longer expire. This prevents unnecessary errors and login screens for donors who attempt to access donations and subscription history. [#3956](https://github.com/impress-org/give/issues/3956), [#3963](https://github.com/impress-org/give/issues/3963), [#3964](https://github.com/impress-org/give/issues/3964)
+* Fix: Ensure that browser autofill works for the Billing Country and Address 1 and Address 2 fields. [#3830](https://github.com/impress-org/give/issues/3830)
+* Fix: Additional checks are now in place to ensure the plugin's custom tables properly are created when upgrading from very old versions. [#3966](https://github.com/impress-org/give/issues/3966)
+* Fix: The `[give_login]` shortcode's "click here to logout" link to log me out was not correctly working. Now the link properly logs out the user when clicked. [#3957](https://github.com/impress-org/give/issues/3957)
+* Fix: Resolved an issue with the Donation Form title displaying incorrectly in widgets. [#3947](https://github.com/impress-org/give/issues/3947)
+* Fix: The API log was not displaying the proper log count for entries. [#3924](https://github.com/impress-org/give/issues/3924)
+* Fix: JSON files can now properly be uploaded to the Donations importer in WP 5.0+. [#3907](https://github.com/impress-org/give/issues/3907)
+* Fix: Resolved a conflict with the X theme and accompanying Cornerstone page builder plugin and the Form Grid shortcode on phones and touch devices preventing the modal from opening. [#3905](https://github.com/impress-org/give/issues/3905)
+* Fix: There was an issue occuring causing the donor to click twice into a donation form field after they entered a custom donation amount. This has been resolved so the donor can immediately click into a form field after leaving a custom amount. [#3889](https://github.com/impress-org/give/issues/3889)
+* Fix: When attempting to export between two dates an error "No data found for export parameters." was displaying incorrectly and has been resolved. [#3864](https://github.com/impress-org/give/issues/3864)
+* Fix: A frontend JS error no longer happens if the offline payment gateway is enable globally. [#3959](https://github.com/impress-org/give/issues/3959)
+* Fix: There was a PHP warning occuring when editing a donor's address that is now resolved. [#3961](https://github.com/impress-org/give/issues/3961)
+* Fix: When exporting in certain cases the donor's address would be incorrect if the donor had the same ID as a WP user. This was due to pre-2.0 backwards compatibility code which has since been removed to correct the issue. [#3971](https://github.com/impress-org/give/issues/3971)
+* Fix: Added checks to prevent a PHP "Undefined index: post_type" notice. [#3981](https://github.com/impress-org/give/issues/3981)
+* Fix: Updated the email tag descriptions for `{name}` and `{company}` to be more accurate and helpful. [#3943](https://github.com/impress-org/give/issues/3943)
+* Fix: Allow deletion of Address line 2 in French donation addresses on the donor details screen in WP-Admin. [#3940](https://github.com/impress-org/give/issues/3940)
+
+= 2.4.0: January 16th, 2019 =
 * New: Optimized the loading of the plugin's resources to achieve a much more performant fundraising platform. to decrease load times, optimize queries, and decrease processing power. [#3871](https://github.com/impress-org/give/issues/3871), [#3929](https://github.com/impress-org/give/issues/3929)
 * New: Added the ability to sort the Donation Form Grid based on goal progress. [#3818](https://github.com/impress-org/give/issues/3818)
 * New: Improved the how "Anonymous" donors appear and the ordering of the Donor Wall. [#3826](https://github.com/impress-org/give/issues/3826), [#3816](https://github.com/impress-org/give/issues/3816)
