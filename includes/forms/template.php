@@ -28,22 +28,28 @@ function give_get_donation_form( $args = array() ) {
 	global $post;
 	static $count = 1;
 
-	$form_id = is_object( $post ) ? $post->ID : 0;
-
-	if ( isset( $args['id'] ) ) {
-		$form_id = $args['id'];
-	}
-
 	$args = wp_parse_args( $args, give_get_default_form_shortcode_args() );
 
-	$form = new Give_Donate_Form( $args['form_id'] );
+	// Backward compatibility for `form_id` function param.
+	// If are calling this function directly with `form_id` the use `id` instead.
+	$args['id'] =  ! empty( $args['form_id'] ) ?  absint( $args['form_id'] ) : $args['id'];
+
+	// If `id` does not set then maybe we are single donation form page, so lets render form.
+	if ( empty( $args['id'] ) && is_object( $post ) && $post->ID ) {
+		$args['id'] =  $post->ID;
+	}
+
+	// set `form_id` for backward compatibility because many filter and function  using it.
+	$args['form_id'] = $args['id'];
+
+	$form = new Give_Donate_Form( $args['id'] );
 
 	// Bail out, if no form ID.
 	if ( empty( $form->ID ) ) {
 		return false;
 	}
 
-	$args['id_prefix'] = "{$form_id}-{$count}";
+	$args['id_prefix'] = "{$form->ID}-{$count}";
 	$payment_mode      = give_get_chosen_gateway( $form->ID );
 
 	$form_action = add_query_arg(
@@ -76,8 +82,8 @@ function give_get_donation_form( $args = array() ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $form_id The form ID.
-	 * @param array $args    An array of form arguments.
+	 * @param int   Give_Donate_Form::ID The form ID.
+	 * @param array $args An array of form arguments.
 	 */
 	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
@@ -86,7 +92,7 @@ function give_get_donation_form( $args = array() ) {
 		<?php
 		if ( $form->is_close_donation_form() ) {
 
-			$form_title = ! is_singular( 'give_forms' ) ? apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' ) : '';
+			$form_title = ! is_singular( 'give_forms' ) ? apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form->ID ) . '</h2>' ) : '';
 
 			// Get Goal thank you message.
 			$goal_achieved_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
@@ -100,7 +106,7 @@ function give_get_donation_form( $args = array() ) {
 			 * Show form title:
 			 * 1. if admin set form display_style to button or modal
 			 */
-			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form->ID ) . '</h2>' );
 
 			if ( ! doing_action( 'give_single_form_summary' ) && true === $args['show_title'] ) {
 				echo $form_title;
@@ -111,9 +117,9 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int              $form_id The form ID.
-			 * @param array            $args    An array of form arguments.
-			 * @param Give_Donate_Form $form    Form object.
+			 * @param int              Give_Donate_Form::ID The form ID.
+			 * @param array            $args An array of form arguments.
+			 * @param Give_Donate_Form $form Form object.
 			 */
 			do_action( 'give_pre_form', $form->ID, $args, $form );
 
@@ -138,9 +144,9 @@ function give_get_donation_form( $args = array() ) {
 			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
-					<label for="give-form-honeypot-<?php echo $form_id; ?>"></label>
-					<input id="give-form-honeypot-<?php echo $form_id; ?>" type="text" name="give-honeypot"
-						   class="give-honeypot give-hidden"/>
+					<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
+					<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot"
+					       class="give-honeypot give-hidden"/>
 				</span>
 
 				<?php
@@ -149,9 +155,9 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @since 1.0
 				 *
-				 * @param int              $form_id The form ID.
-				 * @param array            $args    An array of form arguments.
-				 * @param Give_Donate_Form $form    Form object.
+				 * @param int              Give_Donate_Form::ID The form ID.
+				 * @param array            $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
@@ -160,9 +166,9 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @since 1.7
 				 *
-				 * @param int              $form_id The form ID.
-				 * @param array            $args    An array of form arguments.
-				 * @param Give_Donate_Form $form    Form object.
+				 * @param int              Give_Donate_Form::ID The form ID.
+				 * @param array            $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
@@ -171,9 +177,9 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @since 1.0
 				 *
-				 * @param int              $form_id The form ID.
-				 * @param array            $args    An array of form arguments.
-				 * @param Give_Donate_Form $form    Form object.
+				 * @param int              Give_Donate_Form::ID The form ID.
+				 * @param array            $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
@@ -186,9 +192,9 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int              $form_id The form ID.
-			 * @param array            $args    An array of form arguments.
-			 * @param Give_Donate_Form $form    Form object.
+			 * @param int              $form ->ID The form ID.
+			 * @param array            $args An array of form arguments.
+			 * @param Give_Donate_Form $form Form object.
 			 */
 			do_action( 'give_post_form', $form->ID, $args, $form );
 
@@ -203,8 +209,8 @@ function give_get_donation_form( $args = array() ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $form_id The form ID.
-	 * @param array $args    An array of form arguments.
+	 * @param int   Give_Donate_Form::ID The form ID.
+	 * @param array $args An array of form arguments.
 	 */
 	do_action( 'give_post_form_output', $form->ID, $args );
 
