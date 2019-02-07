@@ -218,7 +218,7 @@ jQuery( function( $ ) {
 			}
 		}
 
-		// Cache donor selected price id for a amount.
+		// Cache donor selected price id for an amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
 		$( this ).val( formatted_total );
 
@@ -298,8 +298,8 @@ jQuery( function( $ ) {
 		$( this ).parent( '.give-donation-amount' )
 			.removeClass( 'give-custom-amount-focus-in' );
 
-		// trigger an event for hooks
-		jQuery( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
+		// Trigger an event for hooks
+		$( document ).trigger( 'give_donation_value_updated', [ parent_form, value_now, price_id ] );
 
 	} );
 
