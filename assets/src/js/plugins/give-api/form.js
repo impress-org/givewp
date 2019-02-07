@@ -477,7 +477,7 @@ export default {
 						.prop( 'checked', false );
 					$form.find( '.give-radio-input[data-price-id="' + price_id + '"]' )
 						.prop( 'checked', true )
-						.addClass( 'give-selected-level' );
+						.addClass( 'give-default-level' );
 					break;
 
 				// Set focus to price id button.
@@ -485,7 +485,7 @@ export default {
 					$form.find( 'button.give-donation-level-btn' )
 						.blur();
 					$form.find( 'button.give-donation-level-btn[data-price-id="' + price_id + '"]' )
-						.addClass( 'give-selected-level' );
+						.addClass( 'give-default-level' );
 					break;
 
 				// Auto select option.
@@ -494,7 +494,7 @@ export default {
 						.prop( 'selected', false );
 					$form.find( 'select.give-select-level option[data-price-id="' + price_id + '"]' )
 						.prop( 'selected', true )
-						.addClass( 'give-selected-level' );
+						.addClass( 'give-default-level' );
 					break;
 
 			}
