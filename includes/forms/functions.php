@@ -1562,3 +1562,29 @@ function give_handle_form_meta_on_delete( $id ) {
 }
 
 add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
+
+
+/**
+ * Get list of default param of form shrtcode.
+ *
+ * @since 2.4.1
+ * @return array
+ */
+function give_get_default_form_shortcode_args() {
+	$default = array(
+		'id'                    => '',
+		'show_title'            => true,
+		'show_goal'             => true,
+		'show_content'          => '',
+		'float_labels'          => '',
+		'display_style'         => '',
+		'continue_button_title' => '',
+	);
+
+	/**
+	 * Fire the filter
+	 */
+	$default = apply_filters( 'give_get_default_form_shortcode_args', $default );
+
+	return $default;
+}
