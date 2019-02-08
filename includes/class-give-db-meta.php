@@ -423,6 +423,7 @@ class Give_DB_Meta extends Give_DB {
 
 		if ( array_key_exists( $meta_type, $group ) ) {
 			Give_Cache::delete_group( $id, $group[ $meta_type ] );
+			wp_cache_delete( $id, $this->meta_type . '_meta' );
 		}
 	}
 
@@ -581,8 +582,6 @@ class Give_DB_Meta extends Give_DB {
 		if ( $status ) {
 			$this->delete_cache( $id, $this->meta_type );
 		}
-
-		wp_cache_delete( $id, $this->meta_type );
 
 		return $status;
 	}
