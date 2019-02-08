@@ -1447,6 +1447,10 @@ class Give_Donor {
 				AND {$meta_type}_id=%d
 				", $meta_key_prefix, $this->id ) );
 
+		// Delete cache.
+		Give_Cache::delete_group( $this->id, 'give-donors' );
+		wp_cache_delete( $this->id,  "{$meta_type}_meta" );
+
 		$this->setup_address();
 
 		return (bool) $row_affected;
