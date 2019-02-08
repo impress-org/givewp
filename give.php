@@ -539,6 +539,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
 
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
