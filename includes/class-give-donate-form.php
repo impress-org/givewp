@@ -349,8 +349,14 @@ class Give_Donate_Form {
 	 * @param  array    $_args Arguments passed.
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
+		$result = new Give_Forms_Query(
+			array(
+				'output' => '',
+				'p'      => $_id,
+			)
+		);
 
-		$donation_form = WP_Post::get_instance( $_id );
+		$donation_form = current( $result->get_forms() );
 
 		return $this->setup_donation_form( $donation_form );
 	}
