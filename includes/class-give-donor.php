@@ -1426,9 +1426,10 @@ class Give_Donor {
 		// Get address type.
 		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
 
-		$address_type = false !== strpos( $address_id, '_' ) ? array_shift( explode( '_', $address_id ) ) : $address_id;
+		$address_key_arr = explode( '_', $address_id );
 
-		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( explode( '_', $address_id ) ) : null;
+		$address_type  = false !== strpos( $address_id, '_' ) ? array_shift( $address_key_arr ) : $address_id;
+		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( $address_key_arr ) : null;
 
 		// Set meta key prefix.
 		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
