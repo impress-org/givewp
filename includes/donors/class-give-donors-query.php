@@ -181,11 +181,10 @@ class Give_Donors_Query {
 		if ( is_null( $this->donors ) ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
+				$this->update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
-
-			$this->update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 
 			Give_Cache::set_db_query( $cache_key, $this->donors );
 		}
