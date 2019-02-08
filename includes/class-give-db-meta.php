@@ -434,10 +434,13 @@ class Give_DB_Meta extends Give_DB {
 	 * @since 2.5.0
 	 */
 	private function is_called_by_filter() {
+		// debug_backtrace return two different results for PHP5 and PHP7
 		$debug_backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 4 );
-		$caller_function = count( $debug_backtrace ) >= 3 && ! empty( $debug_backtrace[2]['function'] )
+		$caller_function = count( $debug_backtrace ) >= 3 && ! empty( $debug_backtrace[3]['function'] )
 			? $debug_backtrace[3]['function']
 			: '';
+
+		$is_call_called = count( $debug_backtrace ) >= 2 && '__call' === $debug_backtrace[2]['function'];
 
 		$filter_functions = array(
 			'__add_meta',
@@ -446,7 +449,7 @@ class Give_DB_Meta extends Give_DB {
 			'__delete_meta',
 		);
 
-		return $caller_function && in_array( $caller_function, $filter_functions );
+		return $is_call_called && $caller_function && ( 'apply_filters' === $caller_function ||  in_array( $caller_function, $filter_functions ) );
 	}
 
 	/**
