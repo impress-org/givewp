@@ -172,15 +172,13 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False for failure. True for success.
 	 */
 	public function add_meta( $id, $meta_key, $meta_value, $unique = false ) {
-		if( ! $this->is_called_by_filter() ) {
-			return add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
-		}
+		if( $this->is_called_by_filter() ) {
+			$id = $this->sanitize_id( $id );
 
-		$id = $this->sanitize_id( $id );
-
-		// Bailout.
-		if ( ! $this->is_valid_post_type( $id ) ) {
-			return $this->check;
+			// Bailout.
+			if ( ! $this->is_valid_post_type( $id ) ) {
+				return $this->check;
+			}
 		}
 
 		$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
@@ -213,15 +211,13 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False on failure, true if success.
 	 */
 	public function update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
-		if( ! $this->is_called_by_filter() ) {
-			return update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
-		}
+		if( $this->is_called_by_filter() ) {
+			$id = $this->sanitize_id( $id );
 
-		$id = $this->sanitize_id( $id );
-
-		// Bailout.
-		if ( ! $this->is_valid_post_type( $id ) ) {
-			return $this->check;
+			// Bailout.
+			if ( ! $this->is_valid_post_type( $id ) ) {
+				return $this->check;
+			}
 		}
 
 		$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
@@ -251,16 +247,15 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
-		if( ! $this->is_called_by_filter() ) {
-			return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+		if( $this->is_called_by_filter() ) {
+			$id = $this->sanitize_id( $id );
+
+			// Bailout.
+			if ( ! $this->is_valid_post_type( $id ) ) {
+				return $this->check;
+			}
 		}
 
-		$id = $this->sanitize_id( $id );
-
-		// Bailout.
-		if ( ! $this->is_valid_post_type( $id ) ) {
-			return $this->check;
-		}
 
 		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
 
