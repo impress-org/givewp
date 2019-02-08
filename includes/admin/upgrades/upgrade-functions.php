@@ -3387,10 +3387,8 @@ function give_v240_update_form_goal_progress_callback() {
  * Manual update handler for v241_remove_sale_logs
  *
  * @since 2.4.1
- *
- * @param Give_Updates $give_updates;
  */
-function give_v241_remove_sale_logs_callback( $give_updates ) {
+function give_v241_remove_sale_logs_callback() {
 	global $wpdb;
 
 	$log_table      = Give()->logs->log_db->table_name;

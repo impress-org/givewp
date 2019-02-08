@@ -485,7 +485,6 @@ export default {
 					$form.find( 'button.give-donation-level-btn' )
 						.blur();
 					$form.find( 'button.give-donation-level-btn[data-price-id="' + price_id + '"]' )
-						.focus()
 						.addClass( 'give-default-level' );
 					break;
 
