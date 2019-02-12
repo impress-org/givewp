@@ -49,6 +49,14 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	protected $check = false;
 
+	/**
+	 * Flag to check whether meta function called by WP filter or directly
+	 *
+	 * @since  2.0
+	 * @access protected
+	 */
+	private $is_filter_callback = false;
+
 
 	/**
 	 * Meta supports.
@@ -65,7 +73,7 @@ class Give_DB_Meta extends Give_DB {
 		'posts_where',
 		'posts_join',
 		'posts_groupby',
-		'posts_orderby'
+		'posts_orderby',
 	);
 
 	/**
@@ -129,7 +137,7 @@ class Give_DB_Meta extends Give_DB {
 	 *                                is true.
 	 */
 	public function get_meta( $id = 0, $meta_key = '', $single = false ) {
-		if( ! $this->is_called_by_filter() ) {
+		if ( ! $this->is_filter_callback ) {
 			return get_metadata( $this->meta_type, $id, $meta_key, $single );
 		}
 
@@ -152,6 +160,8 @@ class Give_DB_Meta extends Give_DB {
 			$value = get_metadata( $this->meta_type, $id, $meta_key, $single );
 		}
 
+		$this->is_filter_callback = false;
+
 		return $value;
 	}
 
@@ -172,7 +182,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False for failure. True for success.
 	 */
 	public function add_meta( $id, $meta_key, $meta_value, $unique = false ) {
-		if( $this->is_called_by_filter() ) {
+		if ( $this->is_filter_callback ) {
 			$id = $this->sanitize_id( $id );
 
 			// Bailout.
@@ -186,6 +196,8 @@ class Give_DB_Meta extends Give_DB {
 		if ( $meta_id ) {
 			$this->delete_cache( $id );
 		}
+
+		$this->is_filter_callback = false;
 
 		return $meta_id;
 	}
@@ -211,7 +223,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False on failure, true if success.
 	 */
 	public function update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
-		if( $this->is_called_by_filter() ) {
+		if ( $this->is_filter_callback ) {
 			$id = $this->sanitize_id( $id );
 
 			// Bailout.
@@ -225,6 +237,8 @@ class Give_DB_Meta extends Give_DB {
 		if ( $meta_id ) {
 			$this->delete_cache( $id );
 		}
+
+		$this->is_filter_callback = false;
 
 		return $meta_id;
 	}
@@ -247,7 +261,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
-		if( $this->is_called_by_filter() ) {
+		if ( $this->is_filter_callback ) {
 			$id = $this->sanitize_id( $id );
 
 			// Bailout.
@@ -262,6 +276,8 @@ class Give_DB_Meta extends Give_DB {
 		if ( $is_meta_deleted ) {
 			$this->delete_cache( $id );
 		}
+
+		$this->is_filter_callback = false;
 
 		return $is_meta_deleted;
 	}
@@ -329,7 +345,7 @@ class Give_DB_Meta extends Give_DB {
 			case 'posts_where':
 				$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array(
 					"mt2.{$this->meta_type}_id",
-					"mt1.{$this->meta_type}_id"
+					"mt1.{$this->meta_type}_id",
 				), $clause );
 				break;
 		}
@@ -422,36 +438,6 @@ class Give_DB_Meta extends Give_DB {
 		}
 	}
 
-
-	/**
-	 * Return whether function called by WordPress filter or not
-	 * Note: This added to safely remove backward compatibility for WordPress *_post_meta functions.
-	 *       We can use Give_DB_Meta::*_meta function for form, donation or donor metadata action.
-	 *       For example: if you want to get meta tha for donation then use Give()->payment_meta->get_meta
-	 *
-	 *       ref: https://github.com/impress-org/give/issues/3003
-	 *
-	 * @since 2.5.0
-	 */
-	private function is_called_by_filter() {
-		// debug_backtrace return two different results for PHP5 and PHP7
-		$debug_backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 4 );
-		$caller_function = count( $debug_backtrace ) >= 3 && ! empty( $debug_backtrace[3]['function'] )
-			? $debug_backtrace[3]['function']
-			: '';
-
-		$is_call_called = count( $debug_backtrace ) >= 2 && '__call' === $debug_backtrace[2]['function'];
-
-		$filter_functions = array(
-			'__add_meta',
-			'__get_meta',
-			'__update_meta',
-			'__delete_meta',
-		);
-
-		return $is_call_called && $caller_function && ( 'apply_filters' === $caller_function ||  in_array( $caller_function, $filter_functions ) );
-	}
-
 	/**
 	 * Add support for hidden functions.
 	 *
@@ -466,11 +452,12 @@ class Give_DB_Meta extends Give_DB {
 	public function __call( $name, $arguments ) {
 		switch ( $name ) {
 			case '__add_meta':
-				$this->check = $arguments[0];
-				$id          = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$unique      = $arguments[4];
+				$this->check              = $arguments[0];
+				$id                       = $arguments[1];
+				$meta_key                 = $arguments[2];
+				$meta_value               = $arguments[3];
+				$unique                   = $arguments[4];
+				$this->is_filter_callback = true;
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
@@ -480,10 +467,11 @@ class Give_DB_Meta extends Give_DB {
 				return $this->add_meta( $id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
-				$this->check = $arguments[0];
-				$id          = $arguments[1];
-				$meta_key    = $arguments[2];
-				$single      = $arguments[3];
+				$this->check              = $arguments[0];
+				$id                       = $arguments[1];
+				$meta_key                 = $arguments[2];
+				$single                   = $arguments[3];
+				$this->is_filter_callback = true;
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
@@ -495,10 +483,11 @@ class Give_DB_Meta extends Give_DB {
 				return $this->get_meta( $id, $meta_key, $single );
 
 			case '__update_meta':
-				$this->check = $arguments[0];
-				$id          = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
+				$this->check              = $arguments[0];
+				$id                       = $arguments[1];
+				$meta_key                 = $arguments[2];
+				$meta_value               = $arguments[3];
+				$this->is_filter_callback = true;
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
@@ -508,11 +497,12 @@ class Give_DB_Meta extends Give_DB {
 				return $this->update_meta( $id, $meta_key, $meta_value );
 
 			case '__delete_meta':
-				$this->check = $arguments[0];
-				$id          = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$delete_all  = $arguments[3];
+				$this->check              = $arguments[0];
+				$id                       = $arguments[1];
+				$meta_key                 = $arguments[2];
+				$meta_value               = $arguments[3];
+				$delete_all               = $arguments[3];
+				$this->is_filter_callback = true;
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
