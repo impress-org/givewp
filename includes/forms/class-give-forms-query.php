@@ -26,7 +26,7 @@ class Give_Forms_Query {
 	/**
 	 * Preserve args
 	 *
-	 * @since  1.8.17
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @var    array
@@ -36,7 +36,7 @@ class Give_Forms_Query {
 	/**
 	 * The args to pass to the give_get_forms() query
 	 *
-	 * @since  1.0
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @var    array
@@ -46,7 +46,7 @@ class Give_Forms_Query {
 	/**
 	 * The forms found based on the criteria set
 	 *
-	 * @since  1.0
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @var    array
@@ -59,15 +59,15 @@ class Give_Forms_Query {
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
 	 * the query is run to convert them to the proper syntax.
 	 *
-	 * @since  1.0
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @param  $args array The array of arguments that can be passed in and used for setting up this form query.
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
-			'output'          => 'forms',
-			'post_type'       => array( 'give_forms' ),
+			'output'    => 'forms',
+			'post_type' => array( 'give_forms' ),
 		);
 
 		// We do not want WordPress to handle meta cache because WordPress stores in under `post_meta` key and cache object while we want it under `form_meta`.
@@ -84,7 +84,7 @@ class Give_Forms_Query {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @since  1.0
+	 * @since  2.5.0
 	 * @access public
 	 *
 	 * @return array
@@ -92,9 +92,9 @@ class Give_Forms_Query {
 	public function get_forms() {
 		global $post;
 
-		$results        = array();
+		$results     = array();
 		$this->forms = array();
-		$cache_key      = Give_Cache::get_key( 'give_form_query', $this->args, false );
+		$cache_key   = Give_Cache::get_key( 'give_form_query', $this->args, false );
 		$this->forms = Give_Cache::get_db_query( $cache_key );
 
 		// Return cached result.
@@ -116,7 +116,7 @@ class Give_Forms_Query {
 			if ( ! in_array( $this->args['output'], $custom_output ) ) {
 				$results = $query->posts;
 
-			} else{
+			} else {
 				$previous_post = $post;
 
 				while ( $query->have_posts() ) {
