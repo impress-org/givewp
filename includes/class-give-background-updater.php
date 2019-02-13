@@ -320,10 +320,10 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		if ( ! $memory_limit || '-1' === $memory_limit ) {
 			// Unlimited, set to 32GB.
-			$memory_limit = '32000M';
+			$memory_limit = '32G';
 		}
 
-		return intval( $memory_limit ) * 1024 * 1024;
+		return give_let_to_num( $memory_limit );
 	}
 
 	/**
