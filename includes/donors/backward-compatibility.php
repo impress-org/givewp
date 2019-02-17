@@ -16,7 +16,7 @@ function __give_v20_bc_user_address( $meta_value, $user_id, $meta_key, $single )
 		give_has_upgrade_completed( 'v20_upgrades_user_address' ) &&
 		'_give_user_address' === $meta_key
 	) {
-		$meta_value = give_get_donor_address( $user_id );
+		$meta_value = give_get_donor_address( $user_id, array( 'by_user_id' => true ) );
 
 		if ( $single ) {
 			$meta_value = array( $meta_value );

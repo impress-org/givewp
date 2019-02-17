@@ -1,7 +1,6 @@
 /**
  * Block Attributes
 */
-
 const blockAttributes = {
 	id: {
 		type: 'number',
@@ -19,15 +18,15 @@ const blockAttributes = {
 	},
 	showTitle: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showGoal: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	contentDisplay: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showContent: {
 		type: 'string',

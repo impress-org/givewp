@@ -265,7 +265,7 @@ function give_get_emails_tags_list() {
 				<span class="give_<?php echo $email_tag['tag']; ?>_tag">
 					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
 				</span>
-			<?php endforeach; ?>
+            <?php endforeach; ?>
 		</div>
 	<?php
 	endif;
@@ -456,7 +456,13 @@ function give_setup_email_tags() {
 		array(
 			'tag'     => 'email_access_link',
 			'desc'    => esc_html__( 'The donor\'s email access link.', 'give' ),
-			'func'    => 'give_email_tag_email_access_link',
+			'func'    => 'give_email_tag_donation_history_link',
+			'context' => 'donor',
+		),
+		array(
+			'tag'     => 'donation_history_link',
+			'desc'    => esc_html__( 'The donor\'s email access link for donation history.', 'give' ),
+			'func'    => 'give_email_tag_donation_history_link',
 			'context' => 'donor',
 		),
 
@@ -1130,14 +1136,14 @@ function give_email_tag_receipt_link( $tag_args ) {
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
 	$donation_id = give_check_variable( $tag_args, 'empty', 0, 'payment_id' );
-	$receipt_url = give_get_receipt_url( $donation_id );
+	$receipt_url = give_get_view_receipt_url( $donation_id );
 
 	// Bailout.
 	if ( give_get_option( 'email_template' ) === 'none' ) {
 		return $receipt_url;
 	}
 
-	$formatted = give_get_receipt_link( $tag_args['payment_id'] );
+	$formatted = give_get_view_receipt_link( $tag_args['payment_id'] );
 
 	/**
 	 * Filter the {receipt_link} email template tag output.
@@ -1169,7 +1175,7 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 	// Backward compatibility.
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
-	$receipt_link_url = give_get_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
+	$receipt_link_url = give_get_view_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
 
 	/**
 	 * Filter the {receipt_link_url} email template tag output.
@@ -1186,32 +1192,8 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 	);
 }
 
-
 /**
- * Get receipt_url
- *
- * @since 2.0
- *
- * @param int $donation_id Donation ID.
- *
- * @return string
- */
-function give_get_receipt_url( $donation_id ) {
-
-	$receipt_url = esc_url(
-		add_query_arg(
-			array(
-				'donation_id' => $donation_id,
-			), give_get_history_page_uri()
-		)
-	);
-
-	return $receipt_url;
-}
-
-
-/**
- * Email template tag: {email_access_link}
+ * Email template tag: {donation_history_link}
  *
  * @since 2.0
  *
@@ -1219,7 +1201,7 @@ function give_get_receipt_url( $donation_id ) {
  *
  * @return string
  */
-function give_email_tag_email_access_link( $tag_args ) {
+function give_email_tag_donation_history_link( $tag_args ) {
 	$donor_id          = 0;
 	$donor             = array();
 	$email_access_link = '';
@@ -1228,6 +1210,12 @@ function give_email_tag_email_access_link( $tag_args ) {
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
+		
+	    case ! empty( $tag_args['payment_id'] ):
+			$donor_id = Give()->payment_meta->get_meta( $tag_args['payment_id'], '_give_payment_donor_id', true );
+			$donor    = Give()->donors->get_by( 'id', $donor_id );
+			break;
+		
 		case ! empty( $tag_args['donor_id'] ):
 			$donor_id = $tag_args['donor_id'];
 			$donor    = Give()->donors->get_by( 'id', $tag_args['donor_id'] );
@@ -1256,11 +1244,11 @@ function give_email_tag_email_access_link( $tag_args ) {
 		$tag_args['donor_id'] = $donor_id;
 
 		$access_url = add_query_arg(
-			array(
-				'give_nl' => $verify_key,
-			),
-			give_get_history_page_uri()
-		);
+            array(
+                'give_nl' => $verify_key,
+            ),
+            give_get_history_page_uri()
+        );
 
 		// Add donation id to email access url, if it exists.
 		$donation_id = give_clean( filter_input( INPUT_GET, 'donation_id' ) );
@@ -1291,7 +1279,7 @@ function give_email_tag_email_access_link( $tag_args ) {
 	} // End if().
 
 	/**
-	 * Filter the {email_access_link} email template tag output.
+	 * Filter the {donation_history_link} email template tag output.
 	 *
 	 * @since 2.0
 	 *

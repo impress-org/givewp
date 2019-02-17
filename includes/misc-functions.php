@@ -2315,3 +2315,166 @@ function give_get_receipt_link( $donation_id ) {
 	);
 
 }
+
+/**
+ * Get receipt_url
+ *
+ * @since 2.0
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @return string
+ */
+function give_get_receipt_url( $donation_id ) {
+	
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+				'donation_id' => $donation_id,
+			), give_get_history_page_uri()
+		)
+	);
+	
+	return $receipt_url;
+}
+
+/**
+ * Get "View in browser" Receipt Link for email.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.4.1
+ *
+ * @return string
+ */
+function give_get_view_receipt_link( $donation_id ) {
+	
+	return sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( give_get_view_receipt_url( $donation_id ) ),
+		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
+	);
+	
+}
+
+/**
+ * Get "View in browser" Receipt URL for email.
+ *
+ * @since 2.4.1
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @return string
+ */
+function give_get_view_receipt_url( $donation_id ) {
+	
+	$receipt_url = esc_url(
+		add_query_arg(
+			array(
+                'action'     => 'view_in_browser',
+				'_give_hash' => give_get_payment_key( $donation_id ),
+			), give_get_history_page_uri()
+		)
+	);
+	
+	return $receipt_url;
+}
+
+/**
+ * This function is used to display donation receipt content based on the parameters.
+ *
+ * @param $args
+ *
+ * @since 2.4.1
+ *
+ * @return bool|mixed
+ */
+function give_display_donation_receipt( $args ) {
+	
+	global $give_receipt_args;
+	
+	$give_receipt_args = $args;
+	
+	ob_start();
+	
+	$get_data     = give_clean( filter_input_array( INPUT_GET ) );
+	$donation_id  = ! empty( $get_data['donation_id'] ) ? $get_data['donation_id'] : false;
+	$receipt_type = ! empty( $get_data['receipt_type'] ) ? $get_data['receipt_type'] : false;
+	
+	$give_receipt_args['id'] = $donation_id;
+	
+	if ( 'view_in_browser' !== $receipt_type ) {
+	 
+		$email_access = give_get_option( 'email_access' );
+		$is_email_access = give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists;
+		
+		
+		// No donation id found & Email Access is Turned on.
+		if ( ! $donation_id ) {
+			
+			if( $is_email_access ){
+				give_get_template_part( 'email-login-form' );
+			} else{
+				echo Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
+			}
+			
+			return ob_get_clean();
+		}
+		
+		// Donation id provided, but user is logged out. Offer them the ability to login and view the receipt.
+		if ( ! ( $user_can_view = give_can_view_receipt( $donation_id ) ) ) {
+			
+			if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
+				
+				/**
+				 * This filter will be used to modify the donor mismatch text for front end error notice.
+				 *
+				 * @since 2.3.1
+				 */
+				$donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
+				
+				echo Give()->notices->print_frontend_notice(
+					$donor_mismatch_text,
+					false,
+					'error'
+				);
+				
+			} elseif( $is_email_access ) {
+				
+				give_get_template_part( 'email-login-form' );
+				
+			}else{
+				
+				global $give_login_redirect;
+				
+				$give_login_redirect = give_get_current_page_url();
+				
+				Give()->notices->print_frontend_notice(
+					apply_filters( 'give_must_be_logged_in_error_message',
+						__( 'You must be logged in to view this donation receipt.', 'give' )
+					)
+				);
+				
+				give_get_template_part( 'shortcode', 'login' );
+			}
+			
+			return ob_get_clean();
+		}
+		
+		/**
+		 * Check if the user has permission to view the receipt.
+		 *
+		 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
+		 * or if user is logged out and donation was made as a guest, the donation session is checked for
+		 * or if user is logged in and the user can view sensitive shop data.
+		 */
+		if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $args ) ) {
+			return Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
+		}
+		
+	}
+	
+	give_get_template_part( 'shortcode', 'receipt' );
+	
+	return ob_get_clean();
+}

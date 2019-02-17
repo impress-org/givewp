@@ -150,6 +150,7 @@ function give_run_install() {
 			'v230_delete_donor_wall_related_donor_data',
 			'v230_delete_donor_wall_related_comment_data',
 			'v240_update_form_goal_progress',
+			'v241_remove_sale_logs'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -484,6 +485,22 @@ function give_create_pages() {
 }
 
 add_action( 'admin_init', 'give_create_pages', - 1 );
+
+
+/**
+ * Install tables on plugin update if missing
+ * Note: only for internal use
+ *
+ * @since 2.4.1
+ *
+ * @param string $old_version
+ */
+function give_install_tables_on_plugin_update( $old_version ) {
+	update_option( 'give_version_upgraded_from', $old_version, false );
+	__give_register_tables();
+}
+
+add_action( 'update_option_give_version', 'give_install_tables_on_plugin_update', 0, 2 );
 
 
 /**

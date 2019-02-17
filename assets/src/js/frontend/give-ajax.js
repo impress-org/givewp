@@ -282,19 +282,15 @@ jQuery( document ).ready( function( $ ) {
 
 		let data        = {
 				action: 'get_receipt',
-				shortcode_atts: receiptContainer.getAttribute('data-shortcode')
-			},
-			donation_id = Give.fn.getParameterByName('donation_id');
+				shortcode_atts: receiptContainer.getAttribute('data-shortcode'),
+				donation_id: receiptContainer.getAttribute( 'data-donation-key'),
+				receipt_type: receiptContainer.getAttribute( 'data-receipt-type'),
+			};
 
 		const cookie_name = Give.fn.getGlobalVar( 'session_cookie_name' );
 
 		// Set cookie.
 		data[cookie_name] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
-
-		// Set donation id, if exists.
-		if( null !== donation_id ) {
-			data['donation_id'] = donation_id;
-		}
 
 		$.ajax({
 			url: Give.fn.getGlobalVar('ajaxurl'),

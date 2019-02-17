@@ -154,7 +154,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php' );
