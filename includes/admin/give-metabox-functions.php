@@ -1381,66 +1381,6 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	<?php
 }
 
-/**
- * Set value for Form content --> Display content field setting.
- *
- * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set
- * yet.
- *
- * @since  1.8
- *
- * @param  mixed $field_value Field Value.
- * @param  array $field       Field args.
- * @param  int   $postid      Form/Post ID.
- *
- * @return string
- */
-function _give_display_content_field_value( $field_value, $field, $postid ) {
-	$show_content = give_get_meta( $postid, '_give_content_option', true );
-
-	if (
-		! give_get_meta( $postid, '_give_display_content', true )
-		&& $show_content
-		&& ( 'none' !== $show_content )
-	) {
-		$field_value = 'enabled';
-	}
-
-	return $field_value;
-}
-
-add_filter( '_give_display_content_field_value', '_give_display_content_field_value', 10, 3 );
-
-
-/**
- * Set value for Form content --> Content placement field setting.
- *
- * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not
- * set yet.
- *
- * @since  1.8
- *
- * @param  mixed $field_value Field Value.
- * @param  array $field       Field args.
- * @param  int   $postid      Form/Post ID.
- *
- * @return string
- */
-function _give_content_placement_field_value( $field_value, $field, $postid ) {
-	$show_content = give_get_meta( $postid, '_give_content_option', true );
-
-	if (
-		! give_get_meta( $postid, '_give_content_placement', true )
-		&& ( 'none' !== $show_content )
-	) {
-		$field_value = $show_content;
-	}
-
-	return $field_value;
-}
-
-add_filter( '_give_content_placement_field_value', '_give_content_placement_field_value', 10, 3 );
-
 
 /**
  * Set value for Terms and Conditions --> Terms and Conditions field setting.
