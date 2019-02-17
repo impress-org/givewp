@@ -497,7 +497,6 @@ if ( ! class_exists( 'Give' ) ) :
 			 * Load plugin files
 			 */
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';

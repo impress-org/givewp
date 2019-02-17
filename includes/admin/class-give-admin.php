@@ -66,6 +66,7 @@ class Give_Admin {
 	 * @access private
 	 */
 	private function admin_loading() {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/misc-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be loaded only on the form edit screen. review possibilities

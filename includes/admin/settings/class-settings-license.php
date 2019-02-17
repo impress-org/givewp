@@ -34,6 +34,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			// Filter to remove the license tab.
 			add_filter( 'give-settings_tabs_array', array( $this, 'remove_license_tab' ), 9999999, 1 );
 
+			// Do not use main form for this tab.
+			if ( give_get_current_setting_tab() === $this->id ) {
+				add_action( 'give_admin_field_license_key', array( $this, 'render_license_key' ), 10, 2 );
+			}
 		}
 
 		/**
@@ -108,6 +112,25 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			}
 
 			return (bool) count( array_intersect( $activated_plugins, $licensed_addons ) );
+		}
+
+
+		/**
+		 * Render  license key field
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param $field
+		 * @param $value
+		 */
+		public function render_license_key( $field, $value ) {
+			ob_start();
+			give_license_key_callback( $field, $value );
+
+			printf(
+				'<div class="give-settings-wrap give-settings-wrap-licenses">%s</div>',
+				ob_get_clean()
+			);
 		}
 	}
 
