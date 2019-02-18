@@ -621,11 +621,21 @@ class Give_Donors_Query {
 		$date_query = array();
 
 		if ( ! empty ( $this->args['start_date'] ) ) {
-			$date_query['after'] = give_get_formatted_date( $this->args['start_date'] );
+			$date_query['after'] = date(
+				'Y-m-d H:i:s',
+				is_numeric( $this->args['start_date'] )
+					? $this->args['start_date']
+					: strtotime( $this->args['start_date'] )
+			);
 		}
 
 		if ( ! empty ( $this->args['end_date'] ) ) {
-			$date_query['before'] = give_get_formatted_date( $this->args['end_date'] ) . ' 23:59:59';
+			$date_query['before'] = date(
+				'Y-m-d H:i:s',
+				is_numeric( $this->args['end_date'] )
+					? $this->args['end_date']
+					: strtotime( $this->args['end_date'] )
+			);
 		}
 
 		// Include Start Date and End Date while querying.
