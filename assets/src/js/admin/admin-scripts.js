@@ -108,11 +108,49 @@ var gravatar = require('gravatar');
 	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
-		let datepicker = $('.give_datepicker');
+		let  datepicker = $('.give_datepicker' );
 
-		// Date picker.
-		if ( datepicker.length > 0) {
-			datepicker.datepicker();
+		if (datepicker.length) {
+			let $clone  = {},
+				options = {
+					altFormat: 'yy-mm-dd',
+					onClose: function (selectedDate, inst) {
+						if( ! selectedDate.length ){
+							inst.input.next().val('');
+						}
+					}
+				};
+
+			$.each( datepicker, function ( index, $input) {
+				$input = $($input);
+
+				if( ! $input.attr('name').length ){
+					return;
+				}
+
+				$clone = $input.clone();
+
+				// Update datepicker list with latest.
+				datepicker[index] = $clone;
+
+				$clone.attr('name', '');
+				$clone.attr('id', '');
+
+				$input.before( $clone  );
+				$input.hide();
+				$input.removeClass('give_datepicker');
+				$input.val( $input.attr( 'data-standard-date' ) );
+				$input.prop('readonly', true );
+			});
+
+			if (datepicker.length > 0) {
+				$.each( datepicker, function ( index, $input) {
+					$input = $($input);
+					options.altField = $input.next();
+
+					$input.datepicker(options);
+				});
+			}
 		}
 	};
 
