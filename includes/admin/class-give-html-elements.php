@@ -623,8 +623,11 @@ class Give_HTML_Elements {
 		}
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
-
-		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		
+		// Don't output label when the label is empty.
+		if ( ! empty( $args['label'] ) ) {
+			$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		}
 
 		if ( ! empty( $args['desc'] ) ) {
 			$output .= '<span class="give-description">' . esc_html( $args['desc'] ) . '</span>';
