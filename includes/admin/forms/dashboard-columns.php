@@ -404,8 +404,8 @@ function give_form_search_query_filter( $wp ) {
 
 		$wp->query_vars['date_query'] =
 			array(
-				'after'     => ! empty( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
-				'before'    => ! empty( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? date( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
+				'before'    => ! empty( $_GET['end-date'] ) ? date( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
 				'inclusive' => true,
 			);
 		switch ( $_GET['give-forms-goal-filter'] ) {
