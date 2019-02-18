@@ -263,7 +263,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private function hooks() {
 
 			// Register settings.
-			add_filter( 'give_settings_licenses', array( $this, 'settings' ), 1 );
+			add_filter( 'give_get_settings_licenses', array( $this, 'settings' ), 1 );
 
 			// Activate license key on settings save.
 			add_action( 'admin_init', array( $this, 'activate_license' ), 10 );
