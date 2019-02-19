@@ -108,7 +108,8 @@ var gravatar = require('gravatar');
 	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
-		let  datepicker = $('.give_datepicker' );
+		let datepicker = $('.give_datepicker' ),
+			inputDefaultDate;
 
 		if (datepicker.length) {
 			let $clone  = {},
@@ -123,6 +124,9 @@ var gravatar = require('gravatar');
 
 			$.each( datepicker, function ( index, $input) {
 				$input = $($input);
+				inputDefaultDate = undefined !== $input.attr( 'data-standard-date' )
+					? $input.attr( 'data-standard-date' )
+					: $input.attr( 'value' );
 
 				if( ! $input.attr('name').length ){
 					return;
@@ -139,7 +143,7 @@ var gravatar = require('gravatar');
 				$input.hide();
 				$input.attr( 'class', '' );
 				$input.attr( 'id', '' );
-				$input.val( $input.attr( 'data-standard-date' ) );
+				$input.val( inputDefaultDate );
 				$input.prop('readonly', true );
 			});
 
