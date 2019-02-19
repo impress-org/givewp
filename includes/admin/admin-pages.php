@@ -238,7 +238,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
  */
 function give_settings_page_pages( $settings ) {
 	include( 'abstract-admin-settings-page.php' );
-	include( 'settings/class-settings-cmb2-backward-compatibility.php' );
 
 	$settings = array(
 		// General settings.
