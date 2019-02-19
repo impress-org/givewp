@@ -134,11 +134,11 @@ var gravatar = require('gravatar');
 				datepicker[index] = $clone;
 
 				$clone.attr('name', '');
-				$clone.attr('id', '');
 
 				$input.before( $clone  );
 				$input.hide();
-				$input.removeClass('give_datepicker');
+				$input.attr( 'class', '' );
+				$input.attr( 'id', '' );
 				$input.val( $input.attr( 'data-standard-date' ) );
 				$input.prop('readonly', true );
 			});
