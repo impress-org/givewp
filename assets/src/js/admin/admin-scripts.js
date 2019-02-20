@@ -108,11 +108,53 @@ var gravatar = require('gravatar');
 	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
-		let datepicker = $('.give_datepicker');
+		let datepicker = $('.give_datepicker' ),
+			inputDefaultDate;
 
-		// Date picker.
-		if ( datepicker.length > 0) {
-			datepicker.datepicker();
+		if (datepicker.length) {
+			let $clone  = {},
+				options = {
+					altFormat: 'yy-mm-dd',
+					onClose: function (selectedDate, inst) {
+						if( ! selectedDate.length ){
+							inst.input.next().val('');
+						}
+					}
+				};
+
+			$.each( datepicker, function ( index, $input) {
+				$input = $($input);
+				inputDefaultDate = undefined !== $input.attr( 'data-standard-date' )
+					? $input.attr( 'data-standard-date' )
+					: $input.attr( 'value' );
+
+				if( ! $input.attr('name').length ){
+					return;
+				}
+
+				$clone = $input.clone();
+
+				// Update datepicker list with latest.
+				datepicker[index] = $clone;
+
+				$clone.attr('name', '');
+
+				$input.before( $clone  );
+				$input.hide();
+				$input.attr( 'class', '' );
+				$input.attr( 'id', '' );
+				$input.val( inputDefaultDate );
+				$input.prop('readonly', true );
+			});
+
+			if (datepicker.length > 0) {
+				$.each( datepicker, function ( index, $input) {
+					$input = $($input);
+					options.altField = $input.next();
+
+					$input.datepicker(options);
+				});
+			}
 		}
 	};
 

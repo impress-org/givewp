@@ -153,13 +153,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function advanced_filters() {
-		$start_date  = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
-		$end_date    = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+		$start_date  = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
+		$end_date    = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
 		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
 		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
 		$search      = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
 		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$date_format = give_date_format();
 		?>
 		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
@@ -167,13 +166,27 @@ class Give_Payment_History_Table extends WP_List_Table {
 				<div class="give-filter give-filter-half">
 					<label for="start-date"
 					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
-					<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
-					       value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+					<input type="text"
+					       id="start-date"
+					       name="start-date"
+					       class="give_datepicker"
+					       autocomplete="off"
+					       value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
+					       data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
+					       placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+					/>
 				</div>
 				<div class="give-filter give-filter-half">
 					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
-					<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
-					       value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+					<input type="text"
+					       id="end-date"
+					       name="end-date"
+					       class="give_datepicker"
+					       autocomplete="off"
+					       value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
+					       data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+					       placeholder="<?php _e( 'End Date', 'give' ); ?>"
+					/>
 				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
@@ -904,7 +917,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
 		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
-		$start_date = ! empty ( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : date( give_date_format(), 0 );
+		$start_date = ! empty ( $_GET['start-date'] )
+			? date('Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) )
+			: date( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )
 			? sanitize_text_field( $_GET['end-date'] )
 			: date( give_date_format(), current_time( 'timestamp' ) );
