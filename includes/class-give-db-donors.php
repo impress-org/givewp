@@ -479,7 +479,11 @@ class Give_DB_Donors extends Give_DB {
 			}
 		}
 
-		return current( $donor );
+		$donor = current( $donor );
+
+		isset( $donor->id ) && Give_Donors_Query::update_meta_cache( array( $donor->id  ) );
+
+		return $donor;
 	}
 
 	/**

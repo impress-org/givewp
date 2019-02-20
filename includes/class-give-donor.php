@@ -245,7 +245,11 @@ class Give_Donor {
 		global $wpdb;
 		$meta_type = Give()->donor_meta->meta_type;
 
-		$addresses = $wpdb->get_results( $wpdb->prepare( "
+		$addresses = $this->get_addresses_from_meta_cache();
+
+		$addresses = ! empty( $addresses )
+			? $addresses
+			: $wpdb->get_results( $wpdb->prepare( "
 				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%%%s%%'
@@ -266,6 +270,30 @@ class Give_Donor {
 				$this->address[ $address[0][0] ][ $address[0][1] ] = $address[1];
 			}
 		}
+	}
+
+
+	/**
+	 * Get addresses from meta cache
+	 *
+	 * @since 2.5.0
+	 * @return array
+	 */
+	private function get_addresses_from_meta_cache() {
+		$meta      = wp_cache_get( $this->id, 'donor_meta' );
+		$addresses = array();
+
+		if ( ! empty( $meta ) ) {
+			foreach ( $meta as $meta_key => $meta_value ) {
+				if ( false === strpos( $meta_key, 'give_donor_address' ) ) {
+					continue;
+				}
+
+				$addresses[] = array( $meta_key, current( $meta_value ) );
+			}
+		}
+
+		return $addresses;
 	}
 
 	/**
@@ -1418,6 +1446,10 @@ class Give_Donor {
 				LIKE '%s'
 				AND {$meta_type}_id=%d
 				", $meta_key_prefix, $this->id ) );
+
+		// Delete cache.
+		Give_Cache::delete_group( $this->id, 'give-donors' );
+		wp_cache_delete( $this->id,  "{$meta_type}_meta" );
 
 		$this->setup_address();
 

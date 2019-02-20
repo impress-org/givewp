@@ -181,6 +181,7 @@ class Give_Donors_Query {
 		if ( is_null( $this->donors ) ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
+				$this->update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
@@ -632,6 +633,23 @@ class Give_Donors_Query {
 		$date_query['inclusive'] = true;
 
 		$this->__set( 'date_query', $date_query );
+	}
+
+	/**
+	 * Update donors meta cache
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 *
+	 * @param array $donor_ids
+	 */
+	public static function update_meta_cache( $donor_ids ){
+		// Exit.
+		if ( empty( $donor_ids ) ) {
+			return;
+		}
+
+		update_meta_cache( Give()->donor_meta->get_meta_type(), $donor_ids );
 	}
 
 	/**

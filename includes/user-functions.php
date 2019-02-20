@@ -116,9 +116,12 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	// Get all the items donated.
 	$payment_ids    = array_reverse( explode( ',', $donor->payment_ids ) );
 	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
+
 	if ( ! empty( $limit_payments ) ) {
 		$payment_ids = array_slice( $payment_ids, 0, $limit_payments );
+		Give_Payments_Query::update_meta_cache( $payment_ids );
 	}
+
 	$donation_data = array();
 	foreach ( $payment_ids as $payment_id ) {
 		$donation_data[] = give_get_payment_meta( $payment_id );
