@@ -738,7 +738,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_title', $form_id ) ) : ?>
 						<span class="give-required-indicator">*</span>
 					<?php endif ?>
-					<?php echo Give()->tooltips->render_help( __( 'We will use this to personalize your account experience.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
 				</label>
 				<select
 					class="give-input required"
@@ -761,7 +761,7 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
-				<?php echo Give()->tooltips->render_help( __( 'We will use this to personalize your account experience.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'First Name is used to personalize your donation record.', 'give' ) ); ?>
 			</label>
 			<input
 				class="give-input required"
@@ -781,7 +781,7 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
-				<?php echo Give()->tooltips->render_help( __( 'We will use this as well to personalize your account experience.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'Last Name is used to personalize your donation record.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1991,9 +1991,6 @@ function give_get_form_content_placement( $form_id, $args ) {
 	} elseif ( give_is_setting_enabled( give_get_meta( $form_id, '_give_display_content', true ) ) ) {
 		$show_content = give_get_meta( $form_id, '_give_content_placement', true );
 
-	} elseif ( 'none' !== give_get_meta( $form_id, '_give_content_option', true ) ) {
-		// Backward compatibility for _give_content_option for v18.
-		$show_content = give_get_meta( $form_id, '_give_content_option', true );
 	}
 
 	return $show_content;
