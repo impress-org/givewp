@@ -97,8 +97,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->tags       = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
 		$this->form_id    = $this->get_form_ids( $request );
 		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
-		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
-		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
+		$this->start      = isset( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
+		$this->end        = isset( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
 		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
 
 		/**
@@ -281,12 +281,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
 			if ( ! empty( $this->start ) ) {
-				$start_date                         = give_get_formatted_date( $this->start );
-				$defaults['date_query'][0]['after'] = "{$start_date} 00:00:00";
+				$defaults['date_query'][0]['after'] = "{$this->start} 00:00:00";
 			}
 			if ( ! empty( $this->end ) ) {
-				$end_date                            = give_get_formatted_date( $this->end );
-				$defaults['date_query'][0]['before'] = "{$end_date} 23:59:59";
+				$defaults['date_query'][0]['before'] = "{$this->end} 23:59:59";
 			}
 		}
 
