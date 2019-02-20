@@ -154,13 +154,9 @@ class Give_Batch_Export extends Give_Export {
 			$this->print_csv_cols();
 		}
 
-		$rows = $this->print_csv_rows();
+		$this->print_csv_rows();
 
-		if ( $rows ) {
-			return true;
-		} else {
-			return false;
-		}
+		return 100 !== $this->get_percentage_complete();
 	}
 
 	/**
