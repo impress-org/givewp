@@ -735,6 +735,18 @@ final class Give_Payment {
 
 			}
 
+			/**
+			 * Filter donor class after the donor is retrieved. Useful if you do not want to update an existing donor with payment data.
+			 *
+			 * @since 2.5.0
+			 *
+			 * @param stdClass $donor        Donor class.
+			 * @param int      $payment_id   Payment ID.
+			 * @param array    $payment_data Payment data array.
+			 * @param array    $args         Payment args.
+			 */
+			$donor = apply_filters( 'give_update_donor_information_post_create', $donor, $payment_id, $payment_data, $args );
+
 			// Update Donor Meta once donor is created.
 			$donor->update_meta( '_give_donor_first_name', $this->first_name );
 			$donor->update_meta( '_give_donor_last_name', $this->last_name );
