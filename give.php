@@ -279,6 +279,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $comment;
 
 		/**
+		 * Give_Stripe_Core Object.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var Give_Stripe_Core
+		 */
+		public $stripe_core;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -373,6 +383,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
+			$this->stripe_core            = new Give_Stripe_Core();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -564,6 +575,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe-core.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
