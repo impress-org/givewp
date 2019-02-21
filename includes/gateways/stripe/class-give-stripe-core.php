@@ -22,10 +22,34 @@ if ( ! class_exists( 'Give_Stripe_Core' ) ) {
 		 *
 		 * @since  2.5.0
 		 * @access public
+		 *
+		 * @return void
 		 */
 		public function __construct() {
 
+			$this->includes();
+
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+		}
+
+		/**
+		 * This function is used to include the related Stripe core files.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function includes() {
+
+			// Include admin files.
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
+
+			// Include frontend files.
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
+
 		}
 
 		/**
