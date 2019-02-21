@@ -713,6 +713,18 @@ final class Give_Payment {
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
 
+				/**
+				 * Filter donor class after the donation is completed and after retrieving the logged-in user and before customer table is updated.
+				 *
+				 * @since 2.5.0
+				 *
+				 * @param Give_Donor $donor        Donor object.
+				 * @param int        $payment_id   Payment ID.
+				 * @param array      $payment_data Payment data array.
+				 * @param array      $args         Payment args.
+				 */
+				$donor = apply_filters( 'give_update_donor_information_logged_in_user', $donor, $payment_id, $payment_data, $args );
+
 				// Donor is logged in but used a different email to purchase with so assign to their donor record.
 				if ( ! empty( $donor->id ) && $this->email !== $donor->email ) {
 					$donor->add_email( $this->email );
