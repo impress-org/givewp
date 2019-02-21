@@ -747,14 +747,16 @@ final class Give_Payment {
 			 */
 			$donor = apply_filters( 'give_update_donor_information_post_create', $donor, $payment_id, $payment_data, $args );
 
-			// Update Donor Meta once donor is created.
-			$donor->update_meta( '_give_donor_first_name', $this->first_name );
-			$donor->update_meta( '_give_donor_last_name', $this->last_name );
-			$donor->update_meta( '_give_donor_title_prefix', $this->title_prefix );
+			if ( ! empty( $donor->id ) ) {
+				// Update Donor Meta once donor is created.
+				$donor->update_meta( '_give_donor_first_name', $this->first_name );
+				$donor->update_meta( '_give_donor_last_name', $this->last_name );
+				$donor->update_meta( '_give_donor_title_prefix', $this->title_prefix );
 
-			$this->customer_id            = $donor->id;
-			$this->pending['customer_id'] = $this->customer_id;
-			$donor->attach_payment( $this->ID, false );
+				$this->customer_id            = $donor->id;
+				$this->pending['customer_id'] = $this->customer_id;
+				$donor->attach_payment( $this->ID, false );
+			}
 
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 
