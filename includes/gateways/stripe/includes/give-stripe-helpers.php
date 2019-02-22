@@ -42,7 +42,7 @@ function give_stripe_get_secret_key() {
  * @return bool
  */
 function give_stripe_is_preapprove_enabled() {
-	return give_is_setting_enabled( give_get_option( 'stripe_preapprove_only' ) );
+	return give_is_setting_enabled( give_get_option( 'stripe_preapprove_only', 'disabled' ) );
 }
 
 /**
@@ -53,7 +53,7 @@ function give_stripe_is_preapprove_enabled() {
  * @return bool
  */
 function give_stripe_is_checkout_enabled() {
-	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled' ) );
+	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
 }
 
 /**
@@ -134,4 +134,55 @@ function give_stripe_get_connected_account_options() {
 	}
 
 	return $args;
+}
+
+/**
+ * Displays Stripe Connect Button.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_connect_button() {
+
+	$connected = give_get_option( 'give_stripe_connected' );
+
+	// Prepare Stripe Connect URL.
+	$link = add_query_arg(
+		array(
+			'stripe_action'         => 'connect',
+			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+			'website_url'           => get_bloginfo( 'url' ),
+			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
+		),
+		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+	);
+
+	echo sprintf(
+		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
+		__( 'Connect with Stripe', 'give' ),
+		esc_url( $link )
+	);
+}
+
+/**
+ * Stripe Disconnect URL.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_disconnect_url() {
+
+	// Prepare Stripe Disconnect URL.
+	$link = add_query_arg(
+		array(
+			'stripe_action'  => 'disconnect',
+			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
+			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+		),
+		'https://connect.givewp.com/stripe/connect.php'
+	);
+
+	echo esc_url( $link );
 }
