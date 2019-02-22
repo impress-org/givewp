@@ -4,8 +4,10 @@
  *
  * @since 2.5.0
  *
- * @package Give
+ * @package    Give
  * @subpackage Stripe Core
+ * @copyright  Copyright (c) 2019, GiveWP
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
 // Exit, if accessed directly.
@@ -13,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Give_Stripe_Core' ) ) {
+if ( ! class_exists( 'Give_Stripe' ) ) {
 
-	class Give_Stripe_Core {
+	class Give_Stripe {
 
 		/**
-		 * Give_Stripe_Core() constructor.
+		 * Give_Stripe() constructor.
 		 *
 		 * @since  2.5.0
 		 * @access public
@@ -47,6 +49,7 @@ if ( ! class_exists( 'Give_Stripe_Core' ) ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
 
 			// Include frontend files.
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
 
