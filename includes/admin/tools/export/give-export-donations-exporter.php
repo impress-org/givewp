@@ -248,10 +248,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['donor_ip'] = __( 'Donor IP Address', 'give' );
 					break;
 				case 'donation_note_private':
-					$cols['donation_note_private'] = __( 'donation Note (private)', 'give' );
+					$cols['donation_note_private'] = __( 'Donation Note (private)', 'give' );
 					break;
 				case 'donation_note_to_donor':
-					$cols['donation_note_to_donor'] = __( 'donation Note (to donor)', 'give' );
+					$cols['donation_note_to_donor'] = __( 'Donation Note (to donor)', 'give' );
 					break;
 				default:
 					$cols[ $key ] = $key;
