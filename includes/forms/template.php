@@ -423,7 +423,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	// Set Price, No Custom Amount Allowed means hidden price field.
 	if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 		?>
-		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
+		<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
 			   value="<?php echo $default_amount; ?>" required aria-required="true"/>
 		<div class="set-price give-donation-amount form-row-wide">
