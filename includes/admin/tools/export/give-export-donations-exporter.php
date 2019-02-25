@@ -216,6 +216,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					break;
 				case 'payment_gateway':
 					$cols['payment_gateway'] = __( 'Payment Gateway', 'give' );
+					break;
 				case 'payment_mode':
 					$cols['payment_mode'] = __( 'Payment Mode', 'give' );
 					break;
