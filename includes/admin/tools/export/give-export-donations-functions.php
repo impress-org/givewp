@@ -336,18 +336,18 @@ function give_export_donation_standard_fields() {
 							</li>
 
 							<li>
-								<label for="give-export-payment-mode">
+								<label for="give-export-donation-note-private">
 									<input type="checkbox"
 									       name="give_give_donations_export_option[donation_note_private]"
-									       id="give-export-payment-mode"><?php _e( 'Donation Note (private)', 'give' ); ?>
+									       id="give-export-donation-note-private"><?php _e( 'Donation Note (private)', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
-								<label for="give-export-payment-mode">
+								<label for="give-export-donation-note-to-donor">
 									<input type="checkbox"
 									       name="give_give_donations_export_option[donation_note_to_donor]"
-									       id="give-export-payment-mode"><?php _e( 'Donation Note (to donor)', 'give' ); ?>
+									       id="give-export-donation-note-to-donor"><?php _e( 'Donation Note (to donor)', 'give' ); ?>
 								</label>
 							</li>
 
