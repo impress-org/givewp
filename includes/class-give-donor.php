@@ -121,7 +121,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $notes;
+	protected $notes = null;
 
 	/**
 	 * Donor address.
@@ -202,7 +202,6 @@ class Give_Donor {
 				switch ( $key ) {
 
 					case 'notes':
-						$this->$key = $this->get_notes();
 						break;
 
 					default:
