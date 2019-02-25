@@ -2321,6 +2321,7 @@ function give_get_safe_asset_url( $url ) {
 
 /**
  * Give get formatted date.
+ * Note: This function does not work well with localize translated  date strings
  *
  * @since 2.3.0
  *
