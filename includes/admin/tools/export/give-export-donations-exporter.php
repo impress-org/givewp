@@ -96,10 +96,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->categories = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
 		$this->tags       = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
 		$this->form_id    = $this->get_form_ids( $request );
-		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
-		$this->start      = isset( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
-		$this->end        = isset( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
-		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->price_id   = ! empty( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
+		$this->start      = ! empty( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
+		$this->end        = ! empty( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
+		$this->status     = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
 
 		/**
 		 * Hook to use after setting properties.
