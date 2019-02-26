@@ -188,3 +188,21 @@ function give_stripe_disconnect_url() {
 
 	echo esc_url( $link );
 }
+
+/**
+ * Get Publishable Key.
+ *
+ * @since 2.5.0
+ *
+ * @return mixed
+ */
+function give_stripe_get_publishable_key() {
+
+	$publishable_key = give_get_option( 'live_publishable_key' );
+
+	if ( give_is_test_mode() ) {
+		$publishable_key = give_get_option( 'test_publishable_key' );
+	}
+
+	return $publishable_key;
+}
