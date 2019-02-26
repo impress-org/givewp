@@ -201,6 +201,8 @@ class Give_Donor {
 
 				switch ( $key ) {
 
+					// @todo We will remove this statement when we will remove notes column from donor table
+					// https://github.com/impress-org/give/issues/3632
 					case 'notes':
 						break;
 
