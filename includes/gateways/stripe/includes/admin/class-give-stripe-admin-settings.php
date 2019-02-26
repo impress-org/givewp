@@ -293,22 +293,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @access public
 		 */
 		public function stripe_connect_field( $value, $option_value ) {
-
-			// If the user wants to use their own API keys they can.
-			$user_api_keys_enabled = give_is_setting_enabled( give_get_option( 'stripe_user_api_keys' ) );
-			if ( $user_api_keys_enabled ) : ?>
-				<style>
-					.give-stripe-connect-tr {
-						display: none;
-					}
-				</style>
-			<?php else : ?>
-				<style>
-					.stripe-checkout-field, .give-stripe-key {
-						display: none;
-					}
-				</style>
-			<?php endif; ?>
+			?>
 			<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . esc_attr( $value['wrapper_class'] ) . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label for="test_secret_key"> <?php esc_attr_e( 'Stripe Connection', 'give' ); ?></label>
