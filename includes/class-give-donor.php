@@ -121,7 +121,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $notes;
+	protected $notes = null;
 
 	/**
 	 * Donor address.
@@ -201,8 +201,9 @@ class Give_Donor {
 
 				switch ( $key ) {
 
+					// @todo We will remove this statement when we will remove notes column from donor table
+					// https://github.com/impress-org/give/issues/3632
 					case 'notes':
-						$this->$key = $this->get_notes();
 						break;
 
 					default:
