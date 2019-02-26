@@ -160,8 +160,8 @@ function give_stripe_connect_button() {
 
 	echo sprintf(
 		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
-		__( 'Connect with Stripe', 'give' ),
-		esc_url( $link )
+		esc_url( $link ),
+        __('Connect with Stripe', 'give' )
 	);
 }
 
