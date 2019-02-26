@@ -151,6 +151,7 @@ function give_stripe_connect_button() {
 	$link = add_query_arg(
 		array(
 			'stripe_action'         => 'connect',
+			'mode'                  => give_is_test_mode() ? 'test' : 'live',
 			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 			'website_url'           => get_bloginfo( 'url' ),
 			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
@@ -161,7 +162,7 @@ function give_stripe_connect_button() {
 	echo sprintf(
 		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
 		esc_url( $link ),
-        __('Connect with Stripe', 'give' )
+        __( 'Connect with Stripe', 'give' )
 	);
 }
 
@@ -178,6 +179,7 @@ function give_stripe_disconnect_url() {
 	$link = add_query_arg(
 		array(
 			'stripe_action'  => 'disconnect',
+			'mode'           => give_is_test_mode() ? 'test' : 'live',
 			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
 			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 		),
