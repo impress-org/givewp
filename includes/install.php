@@ -227,62 +227,6 @@ function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 add_filter( 'wpmu_drop_tables', 'give_wpmu_drop_tables', 10, 2 );
 
-/**
- * Post-installation
- *
- * Runs just after plugin installation and exposes the give_after_install hook.
- *
- * @since 1.0
- * @return void
- */
-function give_after_install() {
-
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	$give_options     = Give_Cache::get( '_give_installed', true );
-	$give_table_check = get_option( '_give_table_check', false );
-
-	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
-
-		if ( ! @Give()->donor_meta->installed() ) {
-
-			// Create the donor meta database.
-			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->donor_meta->create_table();
-
-		}
-
-		if ( ! @Give()->donors->installed() ) {
-			// Create the donor database.
-			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->donors->create_table();
-
-			/**
-			 * Fires after plugin installation.
-			 *
-			 * @since 1.0
-			 *
-			 * @param array $give_options Give plugin options.
-			 */
-			do_action( 'give_after_install', $give_options );
-		}
-
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
-
-	}
-
-	// Delete the transient
-	if ( false !== $give_options ) {
-		Give_Cache::delete( Give_Cache::get_key( '_give_installed' ) );
-	}
-
-
-}
-
-add_action( 'admin_init', 'give_after_install' );
-
 
 /**
  * Install user roles on sub-sites of a network
