@@ -123,12 +123,12 @@ class Give_Cache_Setting {
 
 		$this->load_plugin_settings();
 
-		add_action( 'added_option', array( $this, '__reload_plugin_settings' ) );
-		add_action( 'updated_option', array( $this, '__reload_plugin_settings' ) );
-		add_action( 'deleted_option', array( $this, '__reload_plugin_settings' ) );
+		add_action( 'added_option', array( $this, 'reload_plugin_settings' ) );
+		add_action( 'updated_option', array( $this, 'reload_plugin_settings' ) );
+		add_action( 'deleted_option', array( $this, 'reload_plugin_settings' ) );
 
-		add_action( 'give_init', array( $this, '__setup_currencies_list' ), 11 );
-		add_action( 'give_init', array( $this, '__setup_gateways_list' ), 11 );
+		add_action( 'give_init', array( $this, 'setup_currencies_list' ), 11 );
+		add_action( 'give_init', array( $this, 'setup_gateways_list' ), 11 );
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Give_Cache_Setting {
 	 *
 	 * @param $option_name
 	 */
-	public function __reload_plugin_settings( $option_name ) {
+	public function reload_plugin_settings( $option_name ) {
 		// Bailout.
 		if ( ! in_array( $option_name, $this->db_option_ids ) ) {
 			return;
@@ -201,7 +201,7 @@ class Give_Cache_Setting {
 	 *
 	 * @since 2.4.0
 	 */
-	public function __setup_currencies_list() {
+	public function setup_currencies_list() {
 		$currencies = require_once GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
 
 		/**
@@ -220,7 +220,7 @@ class Give_Cache_Setting {
 	 *
 	 * @since 2.4.0
 	 */
-	public function __setup_gateways_list() {
+	public function setup_gateways_list() {
 		// Default, built-in gateways
 		$gateways = array(
 			'paypal'  => array(
