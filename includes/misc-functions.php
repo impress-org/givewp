@@ -337,16 +337,22 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  * @return string $host if detected, false otherwise
  */
 function give_get_host() {
-	$host = false;
+	$find_host = gethostname();
 
-	if ( defined( 'WPE_APIKEY' ) ) {
+	if ( strpos( $find_host, 'sgvps.net' ) ) {
+		$host = 'Siteground';
+	} elseif ( defined( 'WPE_APIKEY' ) ) {
 		$host = 'WP Engine';
-	} elseif ( defined( 'PAGELYBIN' ) ) {
+	} elseif ( defined( 'PAGELYBIN' ) || strpos( $find_host, 'pagelyhosting.com' ) ) {
 		$host = 'Pagely';
+	} elseif ( strpos( $find_host, 'secureserver.net') ) {
+		$host = "GoDaddy/Media Temple";
 	} elseif ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
 		$host = 'ICDSoft';
 	} elseif ( DB_HOST == 'mysqlv5' ) {
 		$host = 'NetworkSolutions';
+	} elseif ( strpos( $find_host, preg_match('wp', $find_host) ) ) {
+		$host = "Bluehost";
 	} elseif ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
 		$host = 'iPage';
 	} elseif ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
@@ -359,7 +365,7 @@ function give_get_host() {
 		$host = 'Rackspace Cloud';
 	} elseif ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
 		$host = 'SysFix.eu Power Hosting';
-	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
 		$host = 'Flywheel';
 	} else {
 		// Adding a general fallback for data gathering
