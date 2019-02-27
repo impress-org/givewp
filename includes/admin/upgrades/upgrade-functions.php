@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_do_automatic_upgrades() {
 	$did_upgrade  = false;
-	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
+	$give_version = preg_replace( '/[^0-9.].*/', '', Give_Cache_Setting::get_option( 'give_version' ) );
 
 	if ( ! $give_version ) {
 		// 1.0 is the first version to use this option so we must add it.
