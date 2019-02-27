@@ -428,6 +428,8 @@ function give_create_pages() {
 	add_option( 'give_install_pages_created', 1, '', false );
 }
 
+// @TODO we can add this hook only when plugin activate instead of every admin page load.
+// @see known issue https://github.com/impress-org/give/issues/1848
 add_action( 'admin_init', 'give_create_pages', - 1 );
 
 
