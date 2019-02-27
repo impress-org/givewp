@@ -1148,6 +1148,25 @@ class Give_Donate_Form {
 
 	}
 
+
+	/**
+	 * Check whether donation form has goal or not
+	 *
+	 * @since  2.4.2
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function has_goal() {
+		return give_is_setting_enabled(
+			Give()->form_meta->get_meta(
+				$this->ID,
+				'_give_goal_option',
+				true
+			)
+		);
+	}
+
 	/**
 	 * Updates a single meta entry for the donation form
 	 *
