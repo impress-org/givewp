@@ -635,18 +635,18 @@ class Give_Donate_Form {
 
 			$goal_format = give_get_form_goal_format( $this->ID );
 
-			if ( 'donation' === $goal_format ) {
+			if( ! $this->has_goal() ) {
+				$this->goal = '';
+
+			} elseif ( 'donation' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donation_goal', true );
+
 			} elseif ( 'donors' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
-			} else {
+
+			} elseif( 'amount' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
-
-			if ( ! $this->goal ) {
-				$this->goal = 0;
-			}
-
 		}
 
 		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
