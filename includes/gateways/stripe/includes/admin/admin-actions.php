@@ -64,3 +64,39 @@ function give_stripe_check_webhook_status_callback() {
     give_die();
 }
 add_action( 'wp_ajax_give_stripe_check_webhook_status', 'give_stripe_check_webhook_status_callback' );
+
+/**
+ * This function is used to save the parameters returned after successfull connection of Stripe account.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_connect_save_options() {
+
+	$get_vars = give_clean( filter_input_array( INPUT_GET ) );
+
+	// If we don't have values here, bounce.
+	if (
+		! isset( $get_vars['stripe_publishable_key'] )
+		|| ! isset( $get_vars['stripe_user_id'] )
+		|| ! isset( $get_vars['stripe_access_token'] )
+		|| ! isset( $get_vars['stripe_access_token_test'] )
+		|| ! isset( $get_vars['connected'] )
+	) {
+		return false;
+	}
+
+	// Update keys.
+	give_update_option( 'give_stripe_connected', $get_vars['connected'] );
+	give_update_option( 'give_stripe_user_id', $get_vars['stripe_user_id'] );
+	give_update_option( 'live_secret_key', $get_vars['stripe_access_token'] );
+	give_update_option( 'test_secret_key', $get_vars['stripe_access_token_test'] );
+	give_update_option( 'live_publishable_key', $get_vars['stripe_publishable_key'] );
+	give_update_option( 'test_publishable_key', $get_vars['stripe_publishable_key_test'] );
+
+	// Delete option for user API key.
+	give_delete_option( 'stripe_user_api_keys' );
+
+}
+add_action( 'admin_init', 'give_stripe_connect_save_options' );
