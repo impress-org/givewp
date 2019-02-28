@@ -162,7 +162,7 @@ function give_stripe_connect_button() {
 	echo sprintf(
 		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
 		esc_url( $link ),
-        __( 'Connect with Stripe', 'give' )
+        esc_html__( 'Connect with Stripe', 'give' )
 	);
 }
 
@@ -183,7 +183,7 @@ function give_stripe_disconnect_url() {
 			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
 			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 		),
-		'https://connect.givewp.com/stripe/connect.php'
+        esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
 
 	echo esc_url( $link );
@@ -206,3 +206,21 @@ function give_stripe_get_publishable_key() {
 
 	return $publishable_key;
 }
+
+/**
+ * Delete all the Give settings options for Stripe Connect.
+ *
+ * @since 1.5
+ */
+function give_stripe_connect_delete_options() {
+
+	// Disconnection successful.
+	// Remove the connect options within the db.
+	give_delete_option( 'give_stripe_connected' );
+	give_delete_option( 'give_stripe_user_id' );
+	give_delete_option( 'live_secret_key' );
+	give_delete_option( 'test_secret_key' );
+	give_delete_option( 'live_publishable_key' );
+	give_delete_option( 'test_publishable_key' );
+}
+
