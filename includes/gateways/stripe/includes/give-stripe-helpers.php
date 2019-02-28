@@ -194,7 +194,7 @@ function give_stripe_disconnect_url() {
  *
  * @since 2.5.0
  *
- * @return mixed
+ * @return string
  */
 function give_stripe_get_publishable_key() {
 
@@ -210,7 +210,9 @@ function give_stripe_get_publishable_key() {
 /**
  * Delete all the Give settings options for Stripe Connect.
  *
- * @since 1.5
+ * @since 2.5.0
+ *
+ * @return void
  */
 function give_stripe_connect_delete_options() {
 
