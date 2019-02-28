@@ -16,5 +16,8 @@ import './give-ajax';
 import './give-misc';
 import './give-donor-wall';
 
+// Give Stripe core.
+import './give-stripe';
+
 const { init, fn, form, notice, cache, donor } = GiveAPI;
 window.Give = { init, fn, form, notice, cache, donor };
