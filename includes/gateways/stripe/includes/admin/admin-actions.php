@@ -100,3 +100,39 @@ function give_stripe_connect_save_options() {
 
 }
 add_action( 'admin_init', 'give_stripe_connect_save_options' );
+
+/**
+ * Disconnects user from the Give Stripe Connected App.
+ */
+function give_stripe_connect_deauthorize() {
+
+	$get_vars = give_clean( $_GET ); // WPCS: input var ok.
+
+	// Be sure only to deauthorize when param present.
+	if ( ! isset( $get_vars['stripe_disconnected'] ) ) {
+		return false;
+	}
+
+	// Show message if NOT disconnected.
+	if (
+		'false' === $get_vars['stripe_disconnected']
+		&& isset( $get_vars['error_code'] )
+	) {
+
+		$class   = 'notice notice-warning give-stripe-disconnect-message';
+		$message = sprintf(
+			/* translators: %s Error Message */
+			__( '<strong>Error:</strong> Give could not disconnect from the Stripe API. Reason: %s', 'give' ),
+			esc_html( $get_vars['error_message'] )
+		);
+
+		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
+
+	}
+
+	// If user disconnects, remove the options regardless.
+	// They can always click reconnect even if connected.
+	give_stripe_connect_delete_options();
+
+}
+add_action( 'admin_notices', 'give_stripe_connect_deauthorize' );
