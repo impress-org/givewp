@@ -361,8 +361,8 @@ function give_get_default_agreement_text() {
 function give_create_pages() {
 
 	// Bailout if pages already created.
-	if ( get_option( 'give_install_pages_created' ) ) {
-		return false;
+	if ( Give_Cache_Setting::get_option( 'give_install_pages_created' ) ) {
+		return;
 	}
 
 	$options = array();
