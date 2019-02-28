@@ -56,11 +56,16 @@ class Give_Cache_Setting {
 	 * @var array
 	 */
 	private $settings = array(
-		'give_settings'           => array(),
-		'give_version'            => '',
-		'give_completed_upgrades' => array(),
-		'currencies'              => array(),
-		'gateways'                => array(),
+		'give_settings'                        => array(),
+		'give_version'                         => '',
+		'give_completed_upgrades'              => array(),
+		'give_doing_upgrade'                   => array(),
+		'give_paused_batches'                  => array(),
+		'give_install_pages_created'           => '',
+		'give_show_db_upgrade_complete_notice' => '',
+		'give_is_addon_activated'              => '',
+		'currencies'                           => array(),
+		'gateways'                             => array(),
 	);
 
 	/**
@@ -74,6 +79,11 @@ class Give_Cache_Setting {
 		'give_settings',
 		'give_version',
 		'give_completed_upgrades',
+		'give_doing_upgrade',
+		'give_install_pages_created',
+		'give_show_db_upgrade_complete_notice',
+		'give_is_addon_activated',
+		'give_paused_batches',
 	);
 
 	/**
