@@ -150,7 +150,7 @@ class Give_Cache_Setting {
 		 * @since 2.4.1
 		 *
 		 */
-		if( ! apply_filters( 'give_disable_setting_cache', false ) ){
+		if ( ! apply_filters( 'give_disable_setting_cache', false ) ) {
 			$cache = wp_cache_get( $this->cache_key, $this->cache_group );
 
 			// Load options from cache.
@@ -179,7 +179,7 @@ class Give_Cache_Setting {
 
 	/**
 	 * Reload option when add, update or delete
-	 * 
+	 *
 	 * Note: only for internal logic
 	 *
 	 * @since 2.4.0
@@ -282,7 +282,7 @@ class Give_Cache_Setting {
 		/**
 		 * Filter the plugin setting
 		 */
-		return (array) apply_filters( 'give_get_settings', self::$instance->settings['give_settings'] );
+		return (array) apply_filters( 'give_get_settings', self::get_option( 'give_settings', array() ) );
 	}
 }
 
