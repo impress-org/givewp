@@ -282,10 +282,10 @@ var gravatar = require('gravatar');
 						return;
 					}
 
-					clearTimeout(give_vars['chosenSearchTypingTimer']);
+					clearTimeout(Give.cache['chosenSearchTypingTimer']);
 					$container.addClass('give-select-chosen-ajax');
 
-					give_vars['chosenSearchTypingTimer'] = setTimeout(
+					Give.cache['chosenSearchTypingTimer'] = setTimeout(
 						function () {
 							$.ajax({
 								type: 'POST',
