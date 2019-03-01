@@ -409,7 +409,8 @@ class Give_Donors_Query {
 
 		} else {
 			$search_field = is_email( $this->args['s'] ) ? 'email' : 'name';
-			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['s']}%'";
+			$binary       = 'email' === $search_field ? 'BINARY ' : '';
+			$where        = "AND {$this->table_name}.$search_field LIKE {$binary}'%{$this->args['s']}%'";
 		}
 
 		return $where;
