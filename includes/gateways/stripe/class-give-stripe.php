@@ -51,6 +51,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 			// Include frontend files.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php';
