@@ -165,6 +165,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	public function test_exists() {
 
 		$this->assertTrue( Give()->donors->exists( 'testadmin@domain.com' ) );
+		$this->assertFalse( Give()->donors->exists( 'Testadmin@domain.com' ) );
 
 	}
 
