@@ -85,11 +85,11 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 			),
 			array(
 				array( 'email' => 'devin@givewp.com' ),
-				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 AND wptests_give_donors.email = \'devin@givewp.com\' ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
+				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 AND BINARY wptests_give_donors.email = \'devin@givewp.com\' ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
 			),
 			array(
 				array( 'email' => array( 'devin@givewp.com', 'matt@givewp.com' ) ),
-				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 AND wptests_give_donors.email IN( \'devin@givewp.com\', \'matt@givewp.com\' ) ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
+				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 AND BINARY wptests_give_donors.email IN( \'devin@givewp.com\', \'matt@givewp.com\' ) ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,20;',
 			),
 			array(
 				array( 'donor' => 1 ),
