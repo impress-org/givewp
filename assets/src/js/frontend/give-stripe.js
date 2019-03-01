@@ -53,7 +53,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		if ( 'single' === give_stripe_vars.cc_fields_format ) {
 			cardElementSelectors = [ '#give-stripe-single-cc-fields-' ];
 		} else if ( 'multi' === give_stripe_vars.cc_fields_format ) {
-			cardElementSelectors = [ '#give-card-number-field-', '#give-card-cvc-field-','#give-card-expiration-field-' ];
+			cardElementSelectors = [ '#give-card-number-field-', '#give-card-cvc-field-', '#give-card-expiration-field-' ];
 		}
 
 		// Prepare Card Elements for each form on a single page.
@@ -171,7 +171,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * @since 1.6
 	 */
 	function giveStripeMountCardElements( idPrefix, cardElements = [] ) {
-		let cardElementsLength = Object.keys( cardElements ).length;
+		const cardElementsLength = Object.keys( cardElements ).length;
 
 		// Assign any card element to variable to create source.
 		if ( cardElementsLength > 0 ) {
@@ -216,20 +216,20 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * @returns {array}
 	 */
 	function giveStripePrepareCardElements( form_element, elements, idPrefix ) {
-		let prepareCardElements = [];
-		let baseStyles = give_stripe_vars.element_base_styles;
-		let completeStyles = give_stripe_vars.element_complete_styles;
-		let emptyStyles = give_stripe_vars.element_empty_styles;
-		let invalidStyles = give_stripe_vars.element_invalid_styles;
+		const prepareCardElements = [];
+		const baseStyles = give_stripe_vars.element_base_styles;
+		const completeStyles = give_stripe_vars.element_complete_styles;
+		const emptyStyles = give_stripe_vars.element_empty_styles;
+		const invalidStyles = give_stripe_vars.element_invalid_styles;
 
-		let elementStyles = {
+		const elementStyles = {
 			base: baseStyles,
 			complete: completeStyles,
 			empty: emptyStyles,
 			invalid: invalidStyles,
 		};
 
-		let elementClasses = {
+		const elementClasses = {
 			focus: 'focus',
 			empty: 'empty',
 			invalid: 'invalid',
@@ -237,7 +237,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		// Mount CC Fields based on the settings.
 		if ( 'multi' === give_stripe_vars.cc_fields_format ) {
-			let cardNumber = elements.create(
+			const cardNumber = elements.create(
 				'cardNumber',
 				{
 					style: elementStyles,
@@ -249,13 +249,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			// Update Card Type for Stripe Multi Fields.
 			cardNumber.addEventListener( 'change', function( event ) {
 				// Workaround for class name of Diners Club Card.
-				let brand = ( 'diners' === event.brand ) ? 'dinersclub' : event.brand;
+				const brand = ( 'diners' === event.brand ) ? 'dinersclub' : event.brand;
 
 				// Add Brand to card type wrapper to display specific brand logo based on card number.
 				form_element.querySelector( '.card-type' ).className = 'card-type ' + brand;
 			} );
 
-			let cardExpiry = elements.create(
+			const cardExpiry = elements.create(
 				'cardExpiry',
 				{
 					style: elementStyles,
@@ -263,7 +263,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				}
 			);
 
-			let cardCvc = elements.create(
+			const cardCvc = elements.create(
 				'cardCvc',
 				{
 					style: elementStyles,
@@ -274,7 +274,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 			prepareCardElements.push( cardNumber, cardCvc, cardExpiry );
 		} else if ( 'single' === give_stripe_vars.cc_fields_format ) {
-			let card = elements.create(
+			const card = elements.create(
 				'card',
 				{
 					style: elementStyles,
@@ -352,7 +352,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		// createSource returns immediately - the supplied callback submits the form if there are no errors.
 		stripe.createSource( card, additionalData ).then( function( result ) {
 			if ( result.error ) {
-				let error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 
 				// re-enable the submit button.
 				$form_submit_btn.attr( 'disabled', false );
