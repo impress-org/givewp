@@ -495,6 +495,7 @@ class Give_DB_Donors extends Give_DB {
 					array(
 						'key'   => 'additional_email',
 						'value' => $value,
+						'type'  => 'BINARY',
 					),
 				),
 			);
