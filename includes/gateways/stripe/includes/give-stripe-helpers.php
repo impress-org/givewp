@@ -226,3 +226,141 @@ function give_stripe_connect_delete_options() {
 	give_delete_option( 'test_publishable_key' );
 }
 
+/**
+ * This function will prepare JSON for default base styles.
+ *
+ * @since 2.5.0
+ *
+ * @return mixed|string
+ */
+function give_stripe_get_default_base_styles() {
+
+	$float_labels = give_is_float_labels_enabled(
+		array(
+			'form_id' => get_the_ID(),
+		)
+	);
+
+	return wp_json_encode(
+		array(
+			'color'             => '#32325D',
+			'fontWeight'        => 500,
+			'fontSize'          => '16px',
+			'fontSmoothing'     => 'antialiased',
+			'::placeholder'     => array(
+				'color' => $float_labels ? '#CCCCCC' : '#222222',
+			),
+			':-webkit-autofill' => array(
+				'color' => '#e39f48',
+			),
+		)
+	);
+}
+
+/**
+ * This function is used to get the stripe styles.
+ *
+ * @since 2.5.0
+ *
+ * @return mixed
+ */
+function give_stripe_get_stripe_styles() {
+
+	$default_styles = array(
+		'base'     => give_stripe_get_default_base_styles(),
+		'empty'    => false,
+		'invalid'  => false,
+		'complete' => false,
+	);
+
+	return give_get_option( 'stripe_styles', $default_styles );
+}
+
+/**
+ * Get Base Styles for Stripe Elements CC Fields.
+ *
+ * @since 2.5.0
+ *
+ * @return object
+ */
+function give_stripe_get_element_base_styles() {
+
+	$stripe_styles = give_stripe_get_stripe_styles();
+	$base_styles   = json_decode( $stripe_styles['base'] );
+
+	return (object) apply_filters( 'give_stripe_get_element_base_styles', $base_styles );
+}
+
+/**
+ * Get Complete Styles for Stripe Elements CC Fields.
+ *
+ * @since 2.5.0
+ *
+ * @return object
+ */
+function give_stripe_get_element_complete_styles() {
+
+	$stripe_styles   = give_stripe_get_stripe_styles();
+	$complete_styles = json_decode( $stripe_styles['complete'] );
+
+	return (object) apply_filters( 'give_stripe_get_element_complete_styles', $complete_styles );
+}
+
+/**
+ * Get Invalid Styles for Stripe Elements CC Fields.
+ *
+ * @since 2.5.0
+ *
+ * @return object
+ */
+function give_stripe_get_element_invalid_styles() {
+
+	$stripe_styles  = give_stripe_get_stripe_styles();
+	$invalid_styles = json_decode( $stripe_styles['invalid'] );
+
+	return (object) apply_filters( 'give_stripe_get_element_invalid_styles', $invalid_styles );
+}
+
+/**
+ * Get Empty Styles for Stripe Elements CC Fields.
+ *
+ * @since 2.5.0
+ *
+ * @return object
+ */
+function give_stripe_get_element_empty_styles() {
+
+	$stripe_styles = give_stripe_get_stripe_styles();
+	$empty_styles  = json_decode( $stripe_styles['empty'] );
+
+	return (object) apply_filters( 'give_stripe_get_element_empty_styles', $empty_styles );
+}
+
+/**
+ * Get Stripe Element Font Styles.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_element_font_styles() {
+
+	$font_styles  = '';
+	$stripe_fonts = give_get_option( 'stripe_fonts', 'google_fonts' );
+
+	if ( 'custom_fonts' === $stripe_fonts ) {
+		$custom_fonts_attributes = give_get_option( 'stripe_custom_fonts' );
+		$font_styles = json_decode( $custom_fonts_attributes );
+	} else {
+		$font_styles = array(
+			'cssSrc' => give_get_option( 'stripe_google_fonts_url' ),
+		);
+	}
+
+	if ( empty( $font_styles ) ) {
+		$font_styles = array();
+	}
+
+	return apply_filters( 'give_stripe_get_element_font_styles', $font_styles );
+
+}
