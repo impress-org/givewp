@@ -396,6 +396,34 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
+	 * Retrieve a specific column's value by the the specified column / value
+	 *
+	 * @since  2.4.2
+	 * @access public
+	 *
+	 * @param  int    $column       Column ID.
+	 * @param  string $column_where Column name.
+	 * @param  string $column_value Column value.
+	 *
+	 * @return string
+	 */
+	public function get_column_by( $column, $column_where, $column_value ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		// Bailout.
+		if ( empty( $column ) || empty( $column_where ) || empty( $column_value ) ) {
+			return null;
+		}
+
+		$column_where = esc_sql( $column_where );
+		$column       = esc_sql( $column );
+		$binary       = 'email' === $column_where ? 'BINARY ' : '';
+
+		return $wpdb->get_var( $wpdb->prepare( "SELECT {$column} FROM {$this->table_name} WHERE {$binary}{$column_where} = %s LIMIT 1;", $column_value ) );
+	}
+
+	/**
 	 * Retrieves a single donor from the database
 	 *
 	 * @since  1.0
