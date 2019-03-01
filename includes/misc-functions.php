@@ -337,16 +337,22 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  * @return string $host if detected, false otherwise
  */
 function give_get_host() {
-	$host = false;
+	$find_host = gethostname();
 
-	if ( defined( 'WPE_APIKEY' ) ) {
+	if ( strpos( $find_host, 'sgvps.net' ) ) {
+		$host = 'Siteground';
+	} elseif ( defined( 'WPE_APIKEY' ) ) {
 		$host = 'WP Engine';
-	} elseif ( defined( 'PAGELYBIN' ) ) {
+	} elseif ( defined( 'PAGELYBIN' ) || strpos( $find_host, 'pagelyhosting.com' ) ) {
 		$host = 'Pagely';
+	} elseif ( strpos( $find_host, 'secureserver.net') ) {
+		$host = "GoDaddy/Media Temple";
 	} elseif ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
 		$host = 'ICDSoft';
 	} elseif ( DB_HOST == 'mysqlv5' ) {
 		$host = 'NetworkSolutions';
+	} elseif ( strpos( $find_host, preg_match('wp', $find_host) ) ) {
+		$host = "Bluehost";
 	} elseif ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
 		$host = 'iPage';
 	} elseif ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
@@ -359,7 +365,7 @@ function give_get_host() {
 		$host = 'Rackspace Cloud';
 	} elseif ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
 		$host = 'SysFix.eu Power Hosting';
-	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
 		$host = 'Flywheel';
 	} else {
 		// Adding a general fallback for data gathering
@@ -367,88 +373,6 @@ function give_get_host() {
 	}
 
 	return $host;
-}
-
-
-/**
- * Check site host
- *
- * @since 1.0
- *
- * @param bool /string $host The host to check
- *
- * @return bool true if host matches, false if not
- */
-function give_is_host( $host = false ) {
-
-	$return = false;
-
-	if ( $host ) {
-		$host = str_replace( ' ', '', strtolower( $host ) );
-
-		switch ( $host ) {
-			case 'wpengine':
-				if ( defined( 'WPE_APIKEY' ) ) {
-					$return = true;
-				}
-				break;
-			case 'pagely':
-				if ( defined( 'PAGELYBIN' ) ) {
-					$return = true;
-				}
-				break;
-			case 'icdsoft':
-				if ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
-					$return = true;
-				}
-				break;
-			case 'networksolutions':
-				if ( DB_HOST == 'mysqlv5' ) {
-					$return = true;
-				}
-				break;
-			case 'ipage':
-				if ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'ipower':
-				if ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'mediatemplegrid':
-				if ( strpos( DB_HOST, '.gridserver.com' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'pairnetworks':
-				if ( strpos( DB_HOST, '.pair.com' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'rackspacecloud':
-				if ( strpos( DB_HOST, '.stabletransit.com' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'sysfix.eu':
-			case 'sysfix.eupowerhosting':
-				if ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
-					$return = true;
-				}
-				break;
-			case 'flywheel':
-				if ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
-					$return = true;
-				}
-				break;
-			default:
-				$return = false;
-		}// End switch().
-	}// End if().
-
-	return $return;
 }
 
 /**
@@ -620,20 +544,20 @@ function give_get_newsletter() {
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
 	<script type='text/javascript'>(
-			function ( $ ) {
+			function( $ ) {
 				window.fnames = new Array();
 				window.ftypes = new Array();
-				fnames[0] = 'EMAIL';
-				ftypes[0] = 'email';
-				fnames[1] = 'FNAME';
-				ftypes[1] = 'text';
-				fnames[2] = 'LNAME';
-				ftypes[2] = 'text';
+				fnames[ 0 ] = 'EMAIL';
+				ftypes[ 0 ] = 'email';
+				fnames[ 1 ] = 'FNAME';
+				ftypes[ 1 ] = 'text';
+				fnames[ 2 ] = 'LNAME';
+				ftypes[ 2 ] = 'text';
 
 				$( 'form[name="mc-embedded-subscribe-form"]' ).removeAttr( 'novalidate' );
 
 				//Successful submission
-				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function () {
+				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
 					var email_field = $( this ).find( '#mce-EMAIL' ).val();
 					if ( ! email_field ) {
@@ -873,11 +797,11 @@ function give_can_view_receipt( $donation_id ) {
 	// Return to download receipts from admin panel.
 	if ( current_user_can( 'export_give_reports' ) ) {
 
-	    /**
-	     * This filter will be used to modify can view receipt response when accessed from admin.
-         *
-         * @since 2.3.1
-	     */
+		/**
+		 * This filter will be used to modify can view receipt response when accessed from admin.
+		 *
+		 * @since 2.3.1
+		 */
 		return apply_filters( 'give_can_admin_view_receipt', true );
 	}
 
@@ -910,9 +834,9 @@ function give_can_view_receipt( $donation_id ) {
 				! empty( $email_access_token )
 			)
 		) {
-			$donor              = ! empty( $email_access_token )
+			$donor = ! empty( $email_access_token )
 				? Give()->donors->get_donor_by_token( $email_access_token )
-				: false ;
+				: false;
 		}
 	}
 
@@ -921,7 +845,7 @@ function give_can_view_receipt( $donation_id ) {
 		$is_donor_donated = in_array( (int) $donation_id, array_map( 'absint', explode( ',', $donor->payment_ids ) ), true );
 		$can_view_receipt = $is_donor_donated ? true : $can_view_receipt;
 
-		if( ! $is_donor_donated ) {
+		if ( ! $is_donor_donated ) {
 			Give()->session->set( 'donor_donation_mismatch', true );
 		}
 	}
@@ -1582,10 +1506,10 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 		 */
 		$args = apply_filters(
 			'give_recount_form_stats_args', array(
-				'give_forms'     => $form_id,
-				'status'         => $accepted_statuses,
-				'number'         => - 1,
-				'fields'         => 'ids',
+				'give_forms' => $form_id,
+				'status'     => $accepted_statuses,
+				'number'     => - 1,
+				'fields'     => 'ids',
 			)
 		);
 
@@ -1646,7 +1570,7 @@ function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	}
 
 	foreach ( $attributes as $tag => $value ) {
-		if( 'value' == $tag ){
+		if ( 'value' == $tag ) {
 			$value = esc_attr( $value );
 		}
 
@@ -2121,9 +2045,9 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 2.1.3
 			 *
-			 * @param int $donors Total number of donors that donated to the form.
-			 * @param int $form_id Donation Form ID.
-			 * @param Give_Donate_Form $form instances of Give_Donate_Form.
+			 * @param int              $donors  Total number of donors that donated to the form.
+			 * @param int              $form_id Donation Form ID.
+			 * @param Give_Donate_Form $form    instances of Give_Donate_Form.
 			 *
 			 * @return int $donors Total number of donors that donated to the form.
 			 */
@@ -2380,7 +2304,7 @@ function give_get_receipt_link( $donation_id ) {
  * @return string
  */
 function give_get_receipt_url( $donation_id ) {
-	
+
 	$receipt_url = esc_url(
 		add_query_arg(
 			array(
@@ -2388,7 +2312,7 @@ function give_get_receipt_url( $donation_id ) {
 			), give_get_history_page_uri()
 		)
 	);
-	
+
 	return $receipt_url;
 }
 
@@ -2402,13 +2326,13 @@ function give_get_receipt_url( $donation_id ) {
  * @return string
  */
 function give_get_view_receipt_link( $donation_id ) {
-	
+
 	return sprintf(
 		'<a href="%1$s">%2$s</a>',
 		esc_url( give_get_view_receipt_url( $donation_id ) ),
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
-	
+
 }
 
 /**
@@ -2421,16 +2345,16 @@ function give_get_view_receipt_link( $donation_id ) {
  * @return string
  */
 function give_get_view_receipt_url( $donation_id ) {
-	
+
 	$receipt_url = esc_url(
 		add_query_arg(
 			array(
-                'action'     => 'view_in_browser',
+				'action'     => 'view_in_browser',
 				'_give_hash' => give_get_payment_key( $donation_id ),
 			), give_get_history_page_uri()
 		)
 	);
-	
+
 	return $receipt_url;
 }
 
@@ -2444,77 +2368,77 @@ function give_get_view_receipt_url( $donation_id ) {
  * @return bool|mixed
  */
 function give_display_donation_receipt( $args ) {
-	
+
 	global $give_receipt_args;
-	
+
 	$give_receipt_args = $args;
-	
+
 	ob_start();
-	
+
 	$get_data     = give_clean( filter_input_array( INPUT_GET ) );
 	$donation_id  = ! empty( $get_data['donation_id'] ) ? $get_data['donation_id'] : false;
 	$receipt_type = ! empty( $get_data['receipt_type'] ) ? $get_data['receipt_type'] : false;
-	
+
 	$give_receipt_args['id'] = $donation_id;
-	
+
 	if ( 'view_in_browser' !== $receipt_type ) {
-	 
-		$email_access = give_get_option( 'email_access' );
+
+		$email_access    = give_get_option( 'email_access' );
 		$is_email_access = give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists;
-		
-		
+
 		// No donation id found & Email Access is Turned on.
 		if ( ! $donation_id ) {
-			
-			if( $is_email_access ){
+
+			if ( $is_email_access ) {
 				give_get_template_part( 'email-login-form' );
-			} else{
+			} else {
 				echo Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
 			}
-			
+
 			return ob_get_clean();
 		}
-		
+
 		// Donation id provided, but user is logged out. Offer them the ability to login and view the receipt.
 		if ( ! ( $user_can_view = give_can_view_receipt( $donation_id ) ) ) {
-			
-			if( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
-				
+
+			if ( true === Give()->session->get( 'donor_donation_mismatch' ) ) {
+
 				/**
 				 * This filter will be used to modify the donor mismatch text for front end error notice.
 				 *
 				 * @since 2.3.1
 				 */
 				$donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
-				
+
 				echo Give()->notices->print_frontend_notice(
 					$donor_mismatch_text,
 					false,
 					'error'
 				);
-				
-			} elseif( $is_email_access ) {
-				
+
+			} elseif ( $is_email_access ) {
+
 				give_get_template_part( 'email-login-form' );
-				
-			}else{
-				
+
+			} else {
+
 				global $give_login_redirect;
-				
+
 				$give_login_redirect = give_get_current_page_url();
-				
+
 				Give()->notices->print_frontend_notice(
-					apply_filters( 'give_must_be_logged_in_error_message',
+					apply_filters(
+						'give_must_be_logged_in_error_message',
 						__( 'You must be logged in to view this donation receipt.', 'give' )
 					)
 				);
-				
+
 				give_get_template_part( 'shortcode', 'login' );
 			}
-			
+
 			return ob_get_clean();
 		}
-		
+
 		/**
 		 * Check if the user has permission to view the receipt.
 		 *
@@ -2525,10 +2449,9 @@ function give_display_donation_receipt( $args ) {
 		if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $args ) ) {
 			return Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
 		}
-		
 	}
-	
+
 	give_get_template_part( 'shortcode', 'receipt' );
-	
+
 	return ob_get_clean();
 }
