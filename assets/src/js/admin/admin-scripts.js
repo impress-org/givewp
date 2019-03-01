@@ -223,7 +223,6 @@ var gravatar = require('gravatar');
 				$no_results_li.html(error_string);
 
 				// Variables for setting up the typing timer.
-				var typingTimer;               // Timer identifier.
 				var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
 
 				// Replace options with search results.
@@ -283,10 +282,10 @@ var gravatar = require('gravatar');
 						return;
 					}
 
-					clearTimeout(typingTimer);
+					clearTimeout(give_vars['chosenSearchTypingTimer']);
 					$container.addClass('give-select-chosen-ajax');
 
-					typingTimer = setTimeout(
+					give_vars['chosenSearchTypingTimer'] = setTimeout(
 						function () {
 							$.ajax({
 								type: 'POST',
