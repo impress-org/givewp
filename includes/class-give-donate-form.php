@@ -351,7 +351,7 @@ class Give_Donate_Form {
 	public function __construct( $_id = false, $_args = array() ) {
 		$donation_form = WP_Post::get_instance( $_id );
 
-		return $this->setup_donation_form( $donation_form );
+		$this->setup_donation_form( $donation_form );
 	}
 
 	/**
@@ -366,30 +366,19 @@ class Give_Donate_Form {
 	 */
 	private function setup_donation_form( $donation_form ) {
 
-		if ( ! is_object( $donation_form ) ) {
+		// Bailout.
+		if (
+			! ( $donation_form instanceof WP_Post )
+			|| 'give_forms' !== $donation_form->post_type
+		) {
 			return false;
 		}
 
-		if ( ! is_a( $donation_form, 'WP_Post' ) ) {
-			return false;
-		}
-
-		if ( 'give_forms' !== $donation_form->post_type ) {
-			return false;
-		}
 
 		Give_Forms_Query::update_meta_cache( array( $donation_form->ID ) );
 
 		foreach ( $donation_form as $key => $value ) {
-
-			switch ( $key ) {
-
-				default:
-					$this->$key = $value;
-					break;
-
-			}
-
+			$this->$key = $value;
 		}
 
 		return true;
@@ -408,16 +397,12 @@ class Give_Donate_Form {
 	 */
 	public function __get( $key ) {
 
-		if ( method_exists( $this, 'get_' . $key ) ) {
-
-			return call_user_func( array( $this, 'get_' . $key ) );
-
-		} else {
-
-			/* translators: %s: property key */
-			return new WP_Error( 'give-form-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
-
+		if ( method_exists( $this, "get_{$key}" ) ) {
+			return $this->{"get_{$key}"}();
 		}
+
+		/* translators: %s: property key */
+		return new WP_Error( 'give-form-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
 
 	}
 
@@ -651,18 +636,18 @@ class Give_Donate_Form {
 
 			$goal_format = give_get_form_goal_format( $this->ID );
 
-			if ( 'donation' === $goal_format ) {
+			if( ! $this->has_goal() ) {
+				$this->goal = '';
+
+			} elseif ( 'donation' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donation_goal', true );
+
 			} elseif ( 'donors' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
-			} else {
+
+			} elseif( 'amount' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
-
-			if ( ! $this->goal ) {
-				$this->goal = 0;
-			}
-
 		}
 
 		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
@@ -1162,6 +1147,25 @@ class Give_Donate_Form {
 			$this
 		);
 
+	}
+
+
+	/**
+	 * Check whether donation form has goal or not
+	 *
+	 * @since  2.4.2
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function has_goal() {
+		return give_is_setting_enabled(
+			Give()->form_meta->get_meta(
+				$this->ID,
+				'_give_goal_option',
+				true
+			)
+		);
 	}
 
 	/**

@@ -96,10 +96,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->categories = ! empty( $request['give_forms_categories'] ) ? (array) $request['give_forms_categories'] : array();
 		$this->tags       = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
 		$this->form_id    = $this->get_form_ids( $request );
-		$this->price_id   = isset( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
-		$this->start      = isset( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
-		$this->end        = isset( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
-		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->price_id   = ! empty( $request['give_price_option'] ) && ( 'all' !== $request['give_price_option'] && '' !== $request['give_price_option'] ) ? absint( $request['give_price_option'] ) : null;
+		$this->start      = ! empty( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
+		$this->end        = ! empty( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
+		$this->status     = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
 
 		/**
 		 * Hook to use after setting properties.
@@ -216,6 +216,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					break;
 				case 'payment_gateway':
 					$cols['payment_gateway'] = __( 'Payment Gateway', 'give' );
+					break;
 				case 'payment_mode':
 					$cols['payment_mode'] = __( 'Payment Mode', 'give' );
 					break;
@@ -245,6 +246,12 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					break;
 				case 'donor_ip':
 					$cols['donor_ip'] = __( 'Donor IP Address', 'give' );
+					break;
+				case 'donation_note_private':
+					$cols['donation_note_private'] = __( 'Donation Note (private)', 'give' );
+					break;
+				case 'donation_note_to_donor':
+					$cols['donation_note_to_donor'] = __( 'Donation Note (to donor)', 'give' );
 					break;
 				default:
 					$cols[ $key ] = $key;
@@ -446,6 +453,65 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $columns['donor_ip'] ) ) {
 					$data[ $i ]['donor_ip'] = give_get_payment_user_ip( $payment->ID );
+				}
+
+				if ( ! empty( $columns['donation_note_private'] ) ) {
+					$comments = Give()->comment->db->get_comments( array(
+						'comment_parent' => $payment->ID,
+						'comment_type'   => 'donation',
+						'meta_query'     => array(
+							'relation' => 'OR',
+							array(
+								'key'     => 'note_type',
+								'compare' => 'NOT EXISTS',
+							),
+							array(
+								'key'     => 'note_type',
+								'value'   => 'donor',
+								'compare' => '!=',
+							),
+						),
+					) );
+
+					$comment_html = array();
+
+					if ( ! empty( $comments ) ) {
+						foreach ( $comments as $comment ) {
+							$comment_html[] = sprintf(
+								'%s - %s',
+								date( 'Y-m-d', strtotime( $comment->comment_date ) ),
+								$comment->comment_content
+							);
+						}
+					}
+
+					$data[ $i ]['donation_note_private'] = implode( "\n", $comment_html );
+				}
+
+				if ( ! empty( $columns['donation_note_to_donor'] ) ) {
+					$comments = Give()->comment->db->get_comments( array(
+						'comment_parent' => $payment->ID,
+						'comment_type'   => 'donation',
+						'meta_query'     => array(
+							array(
+								'key'     => 'note_type',
+								'value'   => 'donor',
+							),
+						),
+					) );
+
+					$comment_html = array();
+
+					if ( ! empty( $comments ) ) {
+						foreach ( $comments as $comment ) {
+							$comment_html[] = sprintf(
+								'%s - %s',
+								date( 'Y-m-d', strtotime( $comment->comment_date ) ),
+								$comment->comment_content
+							);
+						}
+					}
+					$data[ $i ]['donation_note_to_donor'] = implode( "\n", $comment_html );
 				}
 
 				// Add custom field data.
