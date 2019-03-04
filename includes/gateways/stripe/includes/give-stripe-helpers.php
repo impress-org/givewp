@@ -457,7 +457,7 @@ function give_stripe_get_customer_id( $user_id_or_email ) {
 				// We changed the method name in recurring.
 				if ( method_exists( $subscriber, 'get_recurring_donor_id' ) ) {
 					$stripe_customer_id = $subscriber->get_recurring_donor_id( 'stripe' );
-				} elseif(method_exists($subscriber, 'get_recurring_customer_id')) {
+				} elseif ( method_exists( $subscriber, 'get_recurring_customer_id' ) ) {
 					$stripe_customer_id = $subscriber->get_recurring_customer_id( 'stripe' );
 				}
 			}
@@ -470,4 +470,22 @@ function give_stripe_get_customer_id( $user_id_or_email ) {
 
 	return $stripe_customer_id;
 
+}
+
+/**
+ * Get the meta key for storing Stripe customer IDs in.
+ *
+ * @since  2.5.0
+ *
+ * @return string $key
+ */
+function give_stripe_get_customer_key() {
+
+	$key = '_give_stripe_customer_id';
+
+	if ( give_is_test_mode() ) {
+		$key .= '_test';
+	}
+
+	return $key;
 }
