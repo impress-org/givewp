@@ -573,3 +573,73 @@ function give_stripe_get_sequential_id( $donation_or_post_id, $check_enabled = t
 
 	return Give()->seq_donation_number->get_serial_code( $donation_or_post_id );
 }
+
+/**
+ * Get Custom FFM Fields.
+ *
+ * @param int $form_id     Donation Form ID.
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.5.0
+ *
+ * @return array
+ */
+function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
+
+	// Bail out, if FFM add-on is not active.
+	if ( ! class_exists( 'Give_Form_Fields_Manager' ) ) {
+		return array();
+	}
+
+	$ffm_meta     = array();
+	$ffm_required = array();
+	$ffm_optional = array();
+	$field_label  = '';
+	$ffm_fields   = give_get_meta( $form_id, 'give-form-fields', true );
+
+	if ( is_array( $ffm_fields ) && count( $ffm_fields ) > 0 ) {
+
+		// Loop through ffm fields.
+		foreach ( $ffm_fields as $field ) {
+
+			if ( $donation_id > 0 ) {
+				$field_value = give_get_meta( $donation_id, $field['name'], true );
+			} elseif ( ! empty( $_POST[ $field['name'] ] ) ) { // WPCS: input var ok, sanitization ok, CSRF ok.
+				$field_value = give_clean( $_POST[ $field['name'] ] ); // WPCS: input var ok, sanitization ok, CSRF ok.
+				$field_value = give_stripe_ffm_field_value_to_str( $field_value );
+
+			} else {
+				$field_value = __( '-- N/A --', 'give-stripe' );
+			}
+
+			// Strip the number of characters below 450 for custom fields value input when passed to metadata.
+			if ( strlen( $field_value ) > 450 ) {
+				$field_value = substr( $field_value, 0, 450 ) . '...';
+			}
+
+			if ( ! empty( $field['label'] ) ) {
+				$field_label = strlen( $field['label'] ) > 25
+					? trim( substr( $field['label'], 0, 25 ) ) . '...'
+					: $field['label'];
+			} elseif ( ! empty( $field['name'] ) ) {
+				$field_label = strlen( $field['name'] ) > 25
+					? trim( substr( $field['name'], 0, 25 ) ) . '...'
+					: $field['name'];
+			}
+
+			// Make sure that the required fields are at the top.
+			$required_field = ! empty( $field['required'] ) ? $field['required'] : '';
+			if ( give_is_setting_enabled( $required_field ) ) {
+				$ffm_required[ $field_label ] = is_array( $field_value ) ? implode( ' | ', $field_value ) : $field_value;
+			} else {
+				$ffm_optional[ $field_label ] = is_array( $field_value ) ? implode( ' | ', $field_value ) : $field_value;
+			}
+
+			$ffm_meta = array_merge( $ffm_required, $ffm_optional );
+
+		} // End foreach().
+	} // End if().
+
+	return $ffm_meta;
+
+}
