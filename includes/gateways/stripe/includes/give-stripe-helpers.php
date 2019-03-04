@@ -550,3 +550,26 @@ function give_stripe_get_statement_descriptor( $data = array() ) {
 	return apply_filters( 'give_stripe_statement_descriptor', $statement_descriptor, $data );
 
 }
+
+/**
+ * Get the sequential order number of donation.
+ *
+ * @since 2.5.0
+ *
+ * @param integer $donation_or_post_id Donation or wp post id.
+ * @param bool    $check_enabled       Check if sequential-ordering_status is activated or not.
+ *
+ * @return bool|string
+ */
+function give_stripe_get_sequential_id( $donation_or_post_id, $check_enabled = true ) {
+	// Check if enabled.
+	if ( true === $check_enabled ) {
+		$sequential_ordering = give_get_option( 'sequential-ordering_status' );
+
+		if ( ! give_is_setting_enabled( $sequential_ordering ) ) {
+			return false;
+		}
+	}
+
+	return Give()->seq_donation_number->get_serial_code( $donation_or_post_id );
+}
