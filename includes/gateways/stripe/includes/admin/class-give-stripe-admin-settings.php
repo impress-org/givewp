@@ -73,6 +73,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 			add_filter( 'give_get_sections_gateways', array( $this, 'register_sections' ) );
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
+			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
 			add_action( 'give_admin_field_stripe_connect', array( $this, 'stripe_connect_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
@@ -92,6 +93,22 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$sections['stripe-settings'] = __( 'Stripe Settings', 'give' );
 
 			return $sections;
+		}
+
+		/**
+		 * Add "Stripe" advanced settings.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @param array $section List of sections.
+		 *
+		 * @return mixed
+		 */
+		public function register_advanced_sections( $section ) {
+			$section['stripe'] = __( 'Stripe', 'give' );
+
+			return $section;
 		}
 
 		/**
@@ -428,7 +445,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							esc_attr_e( 'Stripe is connected.', 'give' );
 							$disconnect_confirmation_message = sprintf(
 								/* translators: %s Stripe User ID */
-								__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give-stripe' ),
+								__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
 								$stripe_user_id
 							);
 							?>
