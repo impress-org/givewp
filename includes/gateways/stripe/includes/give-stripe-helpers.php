@@ -489,3 +489,38 @@ function give_stripe_get_customer_key() {
 
 	return $key;
 }
+
+/**
+ * Determines if the shop is using a zero-decimal currency.
+ *
+ * @access      public
+ * @since       1.0
+ * @return      bool
+ */
+function give_stripe_is_zero_decimal_currency() {
+
+	$ret      = false;
+	$currency = give_get_currency();
+
+	switch ( $currency ) {
+		case 'BIF':
+		case 'CLP':
+		case 'DJF':
+		case 'GNF':
+		case 'JPY':
+		case 'KMF':
+		case 'KRW':
+		case 'MGA':
+		case 'PYG':
+		case 'RWF':
+		case 'VND':
+		case 'VUV':
+		case 'XAF':
+		case 'XOF':
+		case 'XPF':
+			$ret = true;
+			break;
+	}
+
+	return $ret;
+}
