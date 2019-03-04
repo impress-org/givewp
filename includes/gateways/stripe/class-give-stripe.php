@@ -29,9 +29,9 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function __construct() {
 
-			$this->includes();
-
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+
+			$this->includes();
 		}
 
 		/**
