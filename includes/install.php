@@ -417,8 +417,8 @@ function give_get_default_agreement_text() {
 function give_create_pages() {
 
 	// Bailout if pages already created.
-	if ( get_option( 'give_install_pages_created' ) ) {
-		return false;
+	if ( Give_Cache_Setting::get_option( 'give_install_pages_created' ) ) {
+		return;
 	}
 
 	$options = array();
@@ -484,6 +484,8 @@ function give_create_pages() {
 	add_option( 'give_install_pages_created', 1, '', false );
 }
 
+// @TODO we can add this hook only when plugin activate instead of every admin page load.
+// @see known issue https://github.com/impress-org/give/issues/1848
 add_action( 'admin_init', 'give_create_pages', - 1 );
 
 

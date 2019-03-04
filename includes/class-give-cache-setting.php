@@ -56,11 +56,16 @@ class Give_Cache_Setting {
 	 * @var array
 	 */
 	private $settings = array(
-		'give_settings'           => array(),
-		'give_version'            => '',
-		'give_completed_upgrades' => array(),
-		'currencies'              => array(),
-		'gateways'                => array(),
+		'give_settings'                        => array(),
+		'give_version'                         => '',
+		'give_completed_upgrades'              => array(),
+		'give_doing_upgrade'                   => array(),
+		'give_paused_batches'                  => array(),
+		'give_install_pages_created'           => '',
+		'give_show_db_upgrade_complete_notice' => '',
+		'give_is_addon_activated'              => '',
+		'currencies'                           => array(),
+		'gateways'                             => array(),
 	);
 
 	/**
@@ -74,6 +79,11 @@ class Give_Cache_Setting {
 		'give_settings',
 		'give_version',
 		'give_completed_upgrades',
+		'give_doing_upgrade',
+		'give_install_pages_created',
+		'give_show_db_upgrade_complete_notice',
+		'give_is_addon_activated',
+		'give_paused_batches',
 	);
 
 	/**
@@ -123,12 +133,12 @@ class Give_Cache_Setting {
 
 		$this->load_plugin_settings();
 
-		add_action( 'added_option', array( $this, '__reload_plugin_settings' ) );
-		add_action( 'updated_option', array( $this, '__reload_plugin_settings' ) );
-		add_action( 'deleted_option', array( $this, '__reload_plugin_settings' ) );
+		add_action( 'added_option', array( $this, 'reload_plugin_settings' ) );
+		add_action( 'updated_option', array( $this, 'reload_plugin_settings' ) );
+		add_action( 'deleted_option', array( $this, 'reload_plugin_settings' ) );
 
-		add_action( 'give_init', array( $this, '__setup_currencies_list' ), 11 );
-		add_action( 'give_init', array( $this, '__setup_gateways_list' ), 11 );
+		add_action( 'give_init', array( $this, 'setup_currencies_list' ), 11 );
+		add_action( 'give_init', array( $this, 'setup_gateways_list' ), 11 );
 	}
 
 	/**
@@ -150,7 +160,7 @@ class Give_Cache_Setting {
 		 * @since 2.4.1
 		 *
 		 */
-		if( ! apply_filters( 'give_disable_setting_cache', false ) ){
+		if ( ! apply_filters( 'give_disable_setting_cache', false ) ) {
 			$cache = wp_cache_get( $this->cache_key, $this->cache_group );
 
 			// Load options from cache.
@@ -179,14 +189,14 @@ class Give_Cache_Setting {
 
 	/**
 	 * Reload option when add, update or delete
-	 * 
+	 *
 	 * Note: only for internal logic
 	 *
 	 * @since 2.4.0
 	 *
 	 * @param $option_name
 	 */
-	public function __reload_plugin_settings( $option_name ) {
+	public function reload_plugin_settings( $option_name ) {
 		// Bailout.
 		if ( ! in_array( $option_name, $this->db_option_ids ) ) {
 			return;
@@ -201,7 +211,7 @@ class Give_Cache_Setting {
 	 *
 	 * @since 2.4.0
 	 */
-	public function __setup_currencies_list() {
+	public function setup_currencies_list() {
 		$currencies = require_once GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
 
 		/**
@@ -220,7 +230,7 @@ class Give_Cache_Setting {
 	 *
 	 * @since 2.4.0
 	 */
-	public function __setup_gateways_list() {
+	public function setup_gateways_list() {
 		// Default, built-in gateways
 		$gateways = array(
 			'paypal'  => array(
@@ -282,7 +292,7 @@ class Give_Cache_Setting {
 		/**
 		 * Filter the plugin setting
 		 */
-		return (array) apply_filters( 'give_get_settings', self::$instance->settings['give_settings'] );
+		return (array) apply_filters( 'give_get_settings', self::get_option( 'give_settings', array() ) );
 	}
 }
 
