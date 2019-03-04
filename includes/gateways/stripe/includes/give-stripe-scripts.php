@@ -22,35 +22,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_stripe_frontend_scripts() {
 
-	// Which mode are we in? Get the corresponding key.
-	// if ( give_is_test_mode() ) {
-	// 	$test_pub_key    = give_get_option( 'test_publishable_key' );
-	// 	$publishable_key = isset( $test_pub_key ) ? trim( $test_pub_key ) : '';
-	// } else {
-	// 	$live_pub_key    = give_get_option( 'live_publishable_key' );
-	// 	$publishable_key = isset( $live_pub_key ) ? trim( $live_pub_key ) : '';
-	// }
-
+	// Get publishable key.
 	$publishable_key = give_stripe_get_publishable_key();
 
 	// Checkout options.
 	// @TODO: convert checkboxes to radios.
-	$zip_option      = give_get_option( 'stripe_checkout_zip_verify' );
-	$zip_option      = 'on' === $zip_option ? true : false;
-	$remember_option = give_get_option( 'stripe_checkout_remember_me' );
-	$remember_option = 'on' === $remember_option ? true : false;
+	$zip_option      = give_is_setting_enabled( give_get_option( 'stripe_checkout_zip_verify' ) );
+	$remember_option = give_is_setting_enabled( give_get_option( 'stripe_checkout_remember_me' ) );
 
 	$stripe_card_update = false;
+	$get_data           = give_clean( filter_input_array( INPUT_GET ) );
+	$is_footer          = give_get_option( 'stripe_footer' );
 
-	// if ( isset( $_GET['action'] )
-	//      && 'update' === $_GET['action']
-	//      && isset( $_GET['subscription_id'] )
-	//      && is_numeric( $_GET['subscription_id'] )
-	// ) {
-	// 	$stripe_card_update = true;
-	// }
-
-	$is_footer = give_get_option( 'stripe_footer' );
+	if ( isset( $get_data['action'] ) &&
+		'update' === $get_data['action'] &&
+		isset( $get_data['subscription_id'] ) &&
+		is_numeric( $get_data['subscription_id'] )
+	) {
+		$stripe_card_update = true;
+	}
 
 	// Set vars for AJAX.
 	$stripe_vars = array(
@@ -73,9 +63,9 @@ function give_stripe_frontend_scripts() {
 		'element_complete_styles'      => give_stripe_get_element_complete_styles(),
 		'element_empty_styles'         => give_stripe_get_element_empty_styles(),
 		'element_invalid_styles'       => give_stripe_get_element_invalid_styles(),
-		// 'float_labels'                 => give_is_float_labels_enabled( array(
-		// 	'form_id' => get_the_ID(),
-		// ) ),
+		'float_labels'                 => give_is_float_labels_enabled( array(
+			'form_id' => get_the_ID(),
+		) ),
 		'base_country'                 => give_get_option( 'base_country' ),
 		'stripe_card_update'           => $stripe_card_update,
 		'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
@@ -134,10 +124,10 @@ add_action( 'wp_enqueue_scripts', 'give_stripe_frontend_scripts' );
  */
 function give_stripe_admin_js() {
 
-	wp_register_script( 'give-stripe-admin-js', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/js/give-stripe-admin.js', 'jquery', GIVE_STRIPE_VERSION, true );
+	wp_register_script( 'give-stripe-admin-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-admin.js', 'jquery', GIVE_VERSION, true );
 	wp_enqueue_script( 'give-stripe-admin-js' );
 
-	wp_register_style( 'give-stripe-admin-css', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/css/give-stripe-admin.css', false, GIVE_STRIPE_VERSION );
+	wp_register_style( 'give-stripe-admin-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-stripe-admin.css', false, GIVE_VERSION );
 	wp_enqueue_style( 'give-stripe-admin-css' );
 
 }
@@ -204,7 +194,7 @@ function give_stripe_woo_script_compatibility( $ret ) {
 
 }
 
-// add_filter( 'give_stripe_js_loading_conditions', 'give_stripe_woo_script_compatibility', 10, 1 );
+add_filter( 'give_stripe_js_loading_conditions', 'give_stripe_woo_script_compatibility', 10, 1 );
 
 
 /**
@@ -231,4 +221,4 @@ function give_stripe_edd_script_compatibility( $ret ) {
 
 }
 
-// add_filter( 'give_stripe_js_loading_conditions', 'give_stripe_edd_script_compatibility', 10, 1 );
+add_filter( 'give_stripe_js_loading_conditions', 'give_stripe_edd_script_compatibility', 10, 1 );
