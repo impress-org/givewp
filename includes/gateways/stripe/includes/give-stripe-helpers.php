@@ -524,3 +524,29 @@ function give_stripe_is_zero_decimal_currency() {
 
 	return $ret;
 }
+
+/**
+ * Get Statement Descriptor.
+ *
+ * Create the Statement Description.
+ *
+ * @see https://stripe.com/docs/api/php#create_charge-statement_descriptor
+ *
+ * @since 2.5.0
+ *
+ * @param array $data List of posted variable while submitting donation.
+ *
+ * @return mixed
+ */
+function give_stripe_get_statement_descriptor( $data = array() ) {
+
+	$descriptor_option = give_get_option( 'stripe_statement_descriptor', get_bloginfo( 'name' ) );
+
+	// Clean the statement descriptor.
+	$unsupported_characters = array( '<', '>', '"', '\'' );
+	$statement_descriptor   = mb_substr( $descriptor_option, 0, 22 );
+	$statement_descriptor   = str_replace( $unsupported_characters, '', $statement_descriptor );
+
+	return apply_filters( 'give_stripe_statement_descriptor', $statement_descriptor, $data );
+
+}
