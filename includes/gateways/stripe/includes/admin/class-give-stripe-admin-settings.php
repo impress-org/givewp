@@ -330,46 +330,47 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
 					$settings[] = array(
-						array(
-							'name' => __( 'Stripe JS Incompatibility', 'give' ),
-							'desc' => __( 'If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing.', 'give' ),
-							'id'   => 'stripe_js_fallback',
-							'type' => 'checkbox',
-						),
-						array(
-							'name' => __( 'Stripe Styles', 'give' ),
-							'desc' => __( 'Edit the properties above to match the look and feel of your WordPress theme. These styles will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. Any valid CSS property can be defined, however, it must be formatted as JSON, not CSS. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#element-options" target="_blank">article</a>.', 'give' ),
-							'id'   => 'stripe_styles',
-							'type' => 'stripe_styles_field',
-							'css'  => 'width: 100%',
-						),
-						array(
-							'name'    => __( 'Stripe Fonts', 'give' ),
-							'desc'    => __( 'Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#stripe-elements" target="_blank">article</a>.', 'give' ),
-							'id'      => 'stripe_fonts',
-							'type'    => 'radio_inline',
-							'default' => 'google_fonts',
-							'options' => array(
-								'google_fonts' => __( 'Google Fonts', 'give' ),
-								'custom_fonts' => __( 'Custom Fonts', 'give' ),
-							),
-						),
-						array(
-							'name'          => __( 'Google Fonts URL', 'give' ),
-							'desc'          => __( 'Please enter the Google Fonts URL which is applied to your theme to have the Stripe Credit Card fields reflect the same fonts.', 'give' ),
-							'id'            => 'stripe_google_fonts_url',
-							'type'          => 'text',
-							'wrapper_class' => 'give-stripe-google-fonts-wrap ' . ( 'google_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
-						),
-						array(
-							'name'          => __( 'Custom Fonts', 'give' ),
-							'desc'          => __( 'Edit the font properties above to match the fonts of your WordPress theme. These font properties will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. However, it must be formatted as JSON, not CSS.', 'give' ),
-							'wrapper_class' => 'give-stripe-custom-fonts-wrap ' . ( 'custom_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
-							'id'            => 'stripe_custom_fonts',
-							'type'          => 'textarea',
-							'default'       => '{}',
-						),
+						'name' => __( 'Stripe JS Incompatibility', 'give' ),
+						'desc' => __( 'If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing.', 'give' ),
+						'id'   => 'stripe_js_fallback',
+						'type' => 'checkbox',
+					);
 
+					$settings[] = array(
+						'name' => __( 'Stripe Styles', 'give' ),
+						'desc' => __( 'Edit the properties above to match the look and feel of your WordPress theme. These styles will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. Any valid CSS property can be defined, however, it must be formatted as JSON, not CSS. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#element-options" target="_blank">article</a>.', 'give' ),
+						'id'   => 'stripe_styles',
+						'type' => 'stripe_styles_field',
+						'css'  => 'width: 100%',
+					);
+
+					$settings[] = array(
+						'name'    => __( 'Stripe Fonts', 'give' ),
+						'desc'    => __( 'Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#stripe-elements" target="_blank">article</a>.', 'give' ),
+						'id'      => 'stripe_fonts',
+						'type'    => 'radio_inline',
+						'default' => 'google_fonts',
+						'options' => array(
+							'google_fonts' => __( 'Google Fonts', 'give' ),
+							'custom_fonts' => __( 'Custom Fonts', 'give' ),
+						),
+					);
+
+					$settings[] = array(
+						'name'          => __( 'Google Fonts URL', 'give' ),
+						'desc'          => __( 'Please enter the Google Fonts URL which is applied to your theme to have the Stripe Credit Card fields reflect the same fonts.', 'give' ),
+						'id'            => 'stripe_google_fonts_url',
+						'type'          => 'text',
+						'wrapper_class' => 'give-stripe-google-fonts-wrap ' . ( 'google_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
+					);
+
+					$settings[] = array(
+						'name'          => __( 'Custom Fonts', 'give' ),
+						'desc'          => __( 'Edit the font properties above to match the fonts of your WordPress theme. These font properties will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. However, it must be formatted as JSON, not CSS.', 'give' ),
+						'wrapper_class' => 'give-stripe-custom-fonts-wrap ' . ( 'custom_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
+						'id'            => 'stripe_custom_fonts',
+						'type'          => 'textarea',
+						'default'       => '{}',
 					);
 
 					/**
