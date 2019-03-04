@@ -749,6 +749,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 																'chosen'           => true,
 																'placeholder'      => esc_attr__( 'Select a country', 'give' ),
 																'data'             => array( 'search-type' => 'no_ajax' ),
+																'autocomplete'     => 'country',
 															)
 														);
 														?>
@@ -796,11 +797,12 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 																		'chosen'           => true,
 																		'placeholder'      => esc_attr__( 'Select a state', 'give' ),
 																		'data'             => array( 'search-type' => 'no_ajax' ),
+																		'autocomplete' => 'address-level1',
 																	)
 																);
 															} else {
 																?>
-																<input id="give-payment-address-state" type="text" name="give-payment-address[0][state]" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text"/>
+																<input id="give-payment-address-state" type="text" name="give-payment-address[0][state]" autocomplete="address-line1" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text"/>
 																<?php
 															}
 															?>
