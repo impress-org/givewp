@@ -77,6 +77,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
 			add_action( 'give_admin_field_stripe_connect', array( $this, 'stripe_connect_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
+			add_action( 'give_admin_field_stripe_styles_field', array( $this, 'stripe_styles_field' ), 10, 2 );
 		}
 
 		/**
@@ -561,6 +562,108 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</td>
 			</tr>
 		<?php
+		}
+
+		/**
+		 * Advanced Stripe Styles field to manage theme stylings for Stripe CC fields.
+		 *
+		 * @param array  $field_options List of field options.
+		 * @param string $option_value  Option value.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 */
+		public function stripe_styles_field( $field_options, $option_value ) {
+
+			$default_attributes  = array(
+				'rows' => 10,
+				'cols' => 60,
+			);
+			$textarea_attributes = isset( $value['attributes'] ) ? $field_options['attributes'] : array();
+
+			// Make sure empty textarea have default valid json data so that the textarea doesn't show error.
+			$base_styles_value     = ! empty( $option_value['base'] ) ? trim( $option_value['base'] ) : give_stripe_get_default_base_styles();
+			$empty_styles_value    = ! empty( $option_value['empty'] ) ? trim( $option_value['empty'] ) : '{}';
+			$invalid_styles_value  = ! empty( $option_value['invalid'] ) ? trim( $option_value['invalid'] ) : '{}';
+			$complete_styles_value = ! empty( $option_value['complete'] ) ? trim( $option_value['complete'] ) : '{}';
+
+			?>
+			<tr valign="top" <?php echo ! empty( $field_options['wrapper_class'] ) ? 'class="' . esc_attr( $field_options['wrapper_class'] ) . '"' : ''; ?>>
+				<th scope="row" class="titledesc">
+					<label for="<?php echo esc_html( $field_options['type'] ); ?>">
+						<?php echo esc_attr( $field_options['title'] ); ?>
+					</label>
+				</th>
+				<td class="give-forminp give-forminp-<?php echo esc_html( $field_options['type'] ); ?>">
+					<div>
+						<p>
+							<strong><?php esc_attr_e( 'Base Styles', 'give' ); ?></strong>
+						</p>
+						<p>
+							<textarea
+								name="stripe_styles[base]"
+								id="<?php echo esc_attr( $field_options['id'] ) . '_base'; ?>"
+								style="<?php echo esc_attr( $field_options['css'] ); ?>"
+								class="<?php echo esc_attr( $field_options['class'] ); ?>"
+								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+							><?php echo esc_textarea( $base_styles_value ); ?></textarea>
+						</p>
+					</div>
+					<div>
+						<p>
+							<strong><?php esc_attr_e( 'Empty Styles', 'give' ); ?></strong>
+						</p>
+						<p>
+							<textarea
+								name="stripe_styles[empty]"
+								id="<?php echo esc_attr( $field_options['id'] ) . '_empty'; ?>"
+								style="<?php echo esc_attr( $field_options['css'] ); ?>"
+								class="<?php echo esc_attr( $field_options['class'] ); ?>"
+								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+							>
+								<?php echo esc_textarea( $empty_styles_value ); ?>
+							</textarea>
+						</p>
+					</div>
+					<div>
+						<p>
+							<strong><?php esc_attr_e( 'Invalid Styles', 'give' ); ?></strong>
+						</p>
+						<p>
+							<textarea
+								name="stripe_styles[invalid]"
+								id="<?php echo esc_attr( $field_options['id'] ) . '_invalid'; ?>"
+								style="<?php echo esc_attr( $field_options['css'] ); ?>"
+								class="<?php echo esc_attr( $field_options['class'] ); ?>"
+								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+							>
+								<?php echo esc_textarea( $invalid_styles_value ); ?>
+							</textarea>
+						</p>
+					</div>
+					<div>
+						<p>
+							<strong><?php esc_attr_e( 'Complete Styles', 'give' ); ?></strong>
+						</p>
+						<p>
+							<textarea
+								name="stripe_styles[complete]"
+								id="<?php echo esc_attr( $field_options['id'] ) . '_complete'; ?>"
+								style="<?php echo esc_attr( $field_options['css'] ); ?>"
+								class="<?php echo esc_attr( $field_options['class'] ); ?>"
+								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+							>
+								<?php echo esc_textarea( $complete_styles_value ); ?>
+							</textarea>
+						</p>
+					</div>
+					<p class="give-field-description">
+						<?php echo $field_options['desc']; ?>
+					</p>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 }
