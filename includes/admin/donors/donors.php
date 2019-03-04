@@ -633,6 +633,7 @@ function give_donor_view( $donor ) {
 										'chosen'           => true,
 										'placeholder'      => esc_attr__( 'Select a country', 'give' ),
 										'data'             => array( 'search-type' => 'no_ajax' ),
+										'autocomplete'     => 'country',
 									) );
 									?>
 								</td>
@@ -676,8 +677,9 @@ function give_donor_view( $donor ) {
 										<?php
 										$states     = give_get_states( $base_country );
 										$state_args = array(
-											'name'  => 'state',
-											'class' => 'regular-text',
+											'name'         => 'state',
+											'class'        => 'regular-text',
+											'autocomplete' => 'address-level1',
 										);
 
 										if ( empty( $states ) ) {
