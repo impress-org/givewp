@@ -470,13 +470,13 @@ var gravatar = require('gravatar');
 
 			// Update base state field based on selected base country.
 			$('select[name="give-payment-address[0][country]"]').change(function () {
-				var $this = $(this);
-
-				data = {
+				var $this = $(this),
+					data = {
 					action: 'give_get_states',
 					country: $this.val(),
 					field_name: 'give-payment-address[0][state]'
 				};
+
 				$.post(ajaxurl, data, function (response) {
 
 					// Show the states dropdown menu.
