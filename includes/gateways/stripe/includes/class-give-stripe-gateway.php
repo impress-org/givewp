@@ -68,6 +68,8 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				return false;
 			}
 
+			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+
 			// Set secret key received from Stripe.
 			$this->secret_key = give_stripe_get_secret_key();
 
