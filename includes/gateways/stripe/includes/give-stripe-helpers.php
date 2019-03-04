@@ -129,7 +129,7 @@ function give_stripe_get_connected_account_options() {
 
 	$args = array();
 
-	if ( give_is_stripe_connected() ) {
+	if ( give_stripe_is_connected() ) {
 		$args['stripe_account'] = give_get_option( 'give_stripe_user_id' );
 	}
 
