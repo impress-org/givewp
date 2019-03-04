@@ -73,6 +73,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 			add_filter( 'give_get_sections_gateways', array( $this, 'register_sections' ) );
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
+			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
 			add_action( 'give_admin_field_stripe_connect', array( $this, 'stripe_connect_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
 		}
@@ -80,11 +81,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register sections.
 		 *
-		 * @acess public
+		 * @since  2.5.0
+		 * @access public
 		 *
-		 * @param $sections
+		 * @param array $sections List of sections.
 		 *
-		 * @return mixed
+		 * @return array
 		 */
 		public function register_sections( $sections ) {
 			$sections['stripe-settings'] = __( 'Stripe Settings', 'give' );
@@ -266,6 +268,112 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			} // End switch().
 
 			return $settings;
+		}
+
+		/**
+		 * Add advanced Stripe settings.
+		 *
+		 * New tab under Settings > Advanced that allows users to use their own API key.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @param array $settings List of settings.
+		 *
+		 * @return array
+		 */
+		public function register_advanced_settings( $settings ) {
+
+			$current_section = give_get_current_setting_section();
+
+			// Bailout, if stripe is not the current section.
+			if ( 'stripe' !== $current_section ) {
+				return $settings;
+			}
+
+			$stripe_fonts = give_get_option( 'stripe_fonts', 'google_fonts' );
+
+			switch ( $current_section ) {
+
+				case 'stripe':
+					$settings = array(
+						array(
+							'id'   => 'give_title_stripe_advanced',
+							'type' => 'title',
+						),
+					);
+
+					/**
+					 * This filter hook is used to add setting fields before stripe advanced settings.
+					 *
+					 * @since 2.5.0
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
+
+					$settings[] = array(
+						array(
+							'name' => __( 'Stripe JS Incompatibility', 'give' ),
+							'desc' => __( 'If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing.', 'give' ),
+							'id'   => 'stripe_js_fallback',
+							'type' => 'checkbox',
+						),
+						array(
+							'name' => __( 'Stripe Styles', 'give' ),
+							'desc' => __( 'Edit the properties above to match the look and feel of your WordPress theme. These styles will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. Any valid CSS property can be defined, however, it must be formatted as JSON, not CSS. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#element-options" target="_blank">article</a>.', 'give' ),
+							'id'   => 'stripe_styles',
+							'type' => 'stripe_styles_field',
+							'css'  => 'width: 100%',
+						),
+						array(
+							'name'    => __( 'Stripe Fonts', 'give' ),
+							'desc'    => __( 'Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#stripe-elements" target="_blank">article</a>.', 'give' ),
+							'id'      => 'stripe_fonts',
+							'type'    => 'radio_inline',
+							'default' => 'google_fonts',
+							'options' => array(
+								'google_fonts' => __( 'Google Fonts', 'give' ),
+								'custom_fonts' => __( 'Custom Fonts', 'give' ),
+							),
+						),
+						array(
+							'name'          => __( 'Google Fonts URL', 'give' ),
+							'desc'          => __( 'Please enter the Google Fonts URL which is applied to your theme to have the Stripe Credit Card fields reflect the same fonts.', 'give' ),
+							'id'            => 'stripe_google_fonts_url',
+							'type'          => 'text',
+							'wrapper_class' => 'give-stripe-google-fonts-wrap ' . ( 'google_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
+						),
+						array(
+							'name'          => __( 'Custom Fonts', 'give' ),
+							'desc'          => __( 'Edit the font properties above to match the fonts of your WordPress theme. These font properties will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. However, it must be formatted as JSON, not CSS.', 'give' ),
+							'wrapper_class' => 'give-stripe-custom-fonts-wrap ' . ( 'custom_fonts' !== $stripe_fonts ? 'give-hidden' : '' ),
+							'id'            => 'stripe_custom_fonts',
+							'type'          => 'textarea',
+							'default'       => '{}',
+						),
+
+					);
+
+					/**
+					 * This filter hook is used to add setting fields after stripe advanced settings.
+					 *
+					 * @since 2.5.0
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_after_advanced_setting_fields', $settings );
+
+					$settings[] = array(
+						'id'   => 'give_title_stripe_advanced',
+						'type' => 'sectionend',
+					);
+					break;
+			} // End switch().
+
+			// Output.
+			return $settings;
+
 		}
 
 		/**
