@@ -455,7 +455,7 @@ class Give_HTML_Elements {
 			'name'             => null,
 			'class'            => '',
 			'id'               => '',
-			'autocomplete'     => '',
+			'autocomplete'     => 'no',
 			'selected'         => 0,
 			'chosen'           => false,
 			'placeholder'      => null,
