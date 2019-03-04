@@ -381,3 +381,93 @@ function give_stripe_get_preferred_locale() {
 
 	return apply_filters( 'give_stripe_elements_preferred_locale', $language_code );
 }
+
+/**
+ * Look up the stripe customer id in user meta, and look to recurring if not found yet.
+ *
+ * @since 2.5.0
+ *
+ * @param int $user_id_or_email The user ID or email to look up.
+ *
+ * @return string Stripe customer ID.
+ */
+function give_stripe_get_customer_id( $user_id_or_email ) {
+
+	$user_id            = 0;
+	$stripe_customer_id = '';
+
+	// First check the customer meta of purchase email.
+	if ( class_exists( 'Give_DB_Donor_Meta' ) && is_email( $user_id_or_email ) ) {
+		$donor              = new Give_Donor( $user_id_or_email );
+		$stripe_customer_id = $donor->get_meta( give_stripe_get_customer_key() );
+	}
+
+	// If not found via email, check user_id.
+	if ( class_exists( 'Give_DB_Donor_Meta' ) && empty( $stripe_customer_id ) ) {
+		$donor              = new Give_Donor( $user_id, true );
+		$stripe_customer_id = $donor->get_meta( give_stripe_get_customer_key() );
+	}
+
+	// Get user ID from customer.
+	if ( is_email( $user_id_or_email ) && empty( $stripe_customer_id ) ) {
+
+		$donor = new Give_Donor( $user_id_or_email );
+		// Pull user ID from customer object.
+		if ( $donor->id > 0 && ! empty( $donor->user_id ) ) {
+			$user_id = $donor->user_id;
+		}
+	} else {
+		// This is a user ID passed.
+		$user_id = $user_id_or_email;
+	}
+
+	// If no Stripe customer ID found in customer meta move to wp user meta.
+	if ( empty( $stripe_customer_id ) && ! empty( $user_id ) ) {
+
+		$stripe_customer_id = get_user_meta( $user_id, give_stripe_get_customer_key(), true );
+
+	} elseif ( empty( $stripe_customer_id ) && class_exists( 'Give_Recurring_Subscriber' ) ) {
+
+		// Not found in customer meta or user meta, check Recurring data.
+		$by_user_id = is_int( $user_id_or_email ) ? true : false;
+		$subscriber = new Give_Recurring_Subscriber( $user_id_or_email, $by_user_id );
+
+		if ( $subscriber->id > 0 ) {
+
+			$verified = false;
+
+			if ( ( $by_user_id && $user_id_or_email == $subscriber->user_id ) ) {
+				// If the user ID given, matches that of the subscriber.
+				$verified = true;
+			} else {
+				// If the email used is the same as the primary email.
+				if ( $subscriber->email == $user_id_or_email ) {
+					$verified = true;
+				}
+
+				// If the email is in the Give's Additional emails.
+				if ( property_exists( $subscriber, 'emails' ) && in_array( $user_id_or_email, $subscriber->emails ) ) {
+					$verified = true;
+				}
+			}
+
+			if ( $verified ) {
+
+				// Backwards compatibility from changed method name.
+				// We changed the method name in recurring.
+				if ( method_exists( $subscriber, 'get_recurring_donor_id' ) ) {
+					$stripe_customer_id = $subscriber->get_recurring_donor_id( 'stripe' );
+				} elseif(method_exists($subscriber, 'get_recurring_customer_id')) {
+					$stripe_customer_id = $subscriber->get_recurring_customer_id( 'stripe' );
+				}
+			}
+		}
+
+		if ( ! empty( $stripe_customer_id ) ) {
+			update_user_meta( $subscriber->user_id, give_stripe_get_customer_key(), $stripe_customer_id );
+		}
+	}// End if().
+
+	return $stripe_customer_id;
+
+}
