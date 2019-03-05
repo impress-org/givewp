@@ -351,7 +351,7 @@ function give_donation_form_validate_fields() {
 		'cc_info'          => give_donation_form_validate_cc(), // Credit card info.
 	);
 
-	$form_id = intval( $post_data['give-form-id'] );
+	$form_id = (int) $post_data['give-form-id'];
 
 	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
