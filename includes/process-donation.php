@@ -1008,7 +1008,17 @@ function give_donation_form_validate_guest_user() {
 			$donor = new Give_Donor( $guest_email );
 
 			if ( $donor->id && $donor->user_id ) {
+				$donor_email_index = array_search(
+					strtolower( $guest_email ),
+					array_map( 'strtolower', $donor->emails ),
+					true
+				);
+
 				$valid_user_data['user_id'] = $donor->user_id;
+
+				// Set email to original format.
+				// @see https://github.com/impress-org/give/issues/4025
+				$valid_user_data['user_email'] = $donor->emails[ $donor_email_index ];
 			}
 		}
 	} else {
