@@ -213,6 +213,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
 
 /**
  * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer.
+ * Note: only for internal use
  *
  * @since  1.7
  *
