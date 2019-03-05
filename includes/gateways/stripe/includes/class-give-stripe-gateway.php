@@ -576,25 +576,20 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			// Sanity checks: verify all vars exist.
 			if ( $payment_id && ( ! empty( $stripe_customer_id ) || ! empty( $charge ) ) ) {
 
-				// Preapproved payment? These don't get published, rather set to 'preapproval' status.
-				if (
-					$this->is_preapproved_enabled()
-					&& 'stripe_ach' !== give_get_payment_gateway( $payment_id )
-				) {
+				/**
+				 * This action hook is used to perform some additional steps to verify the payment.
+				 *
+				 * @param int            $payment_id         Payment ID.
+				 * @param string         $stripe_customer_id Customer ID.
+				 * @param \Stripe\Charge $charge             Stripe Charge Object.
+				 *
+				 * @since 2.5.0
+				 */
+				do_action( 'give_stripe_verify_payment', $payment_id, $stripe_customer_id, $charge );
 
-					give_update_payment_status( $payment_id, 'preapproval' );
-					add_post_meta( $payment_id, give_stripe_get_customer_key(), $stripe_customer_id );
-
-					$preapproval = new Give_Stripe_Preapproval();
-					$preapproval->send_preapproval_admin_notice( $payment_id );
-					$preapproval->send_preapproval_donor_notice( $payment_id );
-
-				} else {
-
-					// @TODO use Stripe's API here to retrieve the invoice then confirm it has been paid.
-					// Regular payment, publish it.
-					give_update_payment_status( $payment_id, 'publish' );
-				}
+				// @TODO use Stripe's API here to retrieve the invoice then confirm it has been paid.
+				// Regular payment, publish it.
+				give_update_payment_status( $payment_id, 'publish' );
 
 				// Save Stripe customer id.
 				$this->save_stripe_customer_id( $stripe_customer_id, $payment_id );
