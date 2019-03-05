@@ -221,37 +221,40 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
  *
  * @return void
  */
-function give_check_logged_in_user_for_existing_email( $valid_data ) {
+function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$submitted_email = $valid_data['logged_in_user']['user_email'];
-		$donor           = new Give_Donor( get_current_user_id(), true );
+		$submitted_email = strtolower( $valid_data['user_email'] );
+
+		$donor        = new Give_Donor( get_current_user_id(), true );
+		$donor_emails = array_map( 'strtolower', $donor->emails );
+		$email_index  = array_search( $submitted_email, $donor_emails, true );
+
+		// If donor matched with email then return set formatted email from database.
+		if ( false !== $email_index ) {
+			$valid_data['user_email'] = $donor->emails[$email_index];
+
+			return;
+		}
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer.
-		if (
-			$submitted_email !== $donor->email
-			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails, true ) )
-		) {
-			$found_donor = new Give_Donor( $submitted_email );
+		$found_donor = new Give_Donor( $submitted_email );
 
-			if ( $found_donor->id > 0 ) {
-				give_set_error(
-					'give-customer-email-exists',
-					sprintf(
-						/* translators: 1. Donor Email, 2. Submitted Email */
-						__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
-						$donor->email,
-						$submitted_email
-					)
-				);
-			}
+		if ( $found_donor->id > 0 ) {
+			give_set_error(
+				'give-customer-email-exists',
+				sprintf(
+				/* translators: 1. Donor Email, 2. Submitted Email */
+					__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
+					$donor->email,
+					$submitted_email
+				)
+			);
 		}
 	}
 }
-
-add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existing_email', 10, 1 );
 
 /**
  * Process the checkout login form
@@ -760,7 +763,7 @@ function give_donation_form_validate_logged_in_user() {
 		'user_id' => - 1,
 	);
 
-	// Proceed on;y, if valid $user_id found.
+	// Proceed only, if valid $user_id found.
 	if ( $user_id > 0 ) {
 
 		// Get the logged in user data.
@@ -771,17 +774,24 @@ function give_donation_form_validate_logged_in_user() {
 
 		// Verify data.
 		if ( is_object( $user_data ) && $user_data->ID > 0 ) {
-
 			// Collected logged in user data.
 			$valid_user_data = array(
 				'user_id'    => $user_id,
-				'user_email' => ! empty( $post_data['give_email'] ) ? sanitize_email( $post_data['give_email'] ) : $user_data->user_email,
-				'user_first' => ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : $user_data->first_name,
-				'user_last'  => ! empty( $post_data['give_last'] ) ? $post_data['give_last'] : $user_data->last_name,
+				'user_email' => ! empty( $post_data['give_email'] )
+					? sanitize_email( $post_data['give_email'] )
+					: $user_data->user_email,
+				'user_first' => ! empty( $post_data['give_first'] )
+					? $post_data['give_first']
+					: $user_data->first_name,
+				'user_last'  => ! empty( $post_data['give_last'] )
+					? $post_data['give_last']
+					: $user_data->last_name,
 			);
 
 			// Validate essential form fields.
 			give_donation_form_validate_name_fields( $post_data );
+
+			give_check_logged_in_user_for_existing_email( $valid_user_data );
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
 				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
