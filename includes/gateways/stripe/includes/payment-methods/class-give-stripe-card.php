@@ -88,7 +88,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		public function validate_fields( $post_data ) {
 
 			if (
-				! give_is_stripe_checkout_enabled() &&
+				! give_stripe_is_checkout_enabled() &&
 				'single' !== give_get_option( 'stripe_cc_fields_format', 'multi' ) &&
 				isset( $post_data['card_info']['card_name'] ) &&
 				empty( $post_data['card_info']['card_name'] )
@@ -214,24 +214,12 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					$donation_data['description'] = $donation_summary;
 					$donation_data['source_id']   = $source_id;
 
-					if ( ! give_is_stripe_checkout_enabled() && $this->is_3d_secure_required( $source ) ) {
+					// Process charge w/ support for preapproval.
+					$charge = $this->process_charge( $donation_data, $stripe_customer_id );
 
-						// Create a 3D secure source object.
-						$source_object = $this->create_3d_secure_source( $donation_id, $source_id );
+					// Verify the Stripe payment.
+					$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
 
-						// Redirect to authorise payment after receiving 3D Secure Source Response.
-						wp_redirect( esc_url_raw( $source_object->redirect->url ) );
-						give_die();
-
-					} else {
-
-						// Process charge w/ support for preapproval.
-						$charge = $this->process_charge( $donation_data, $stripe_customer_id );
-
-						// Verify the Stripe payment.
-						$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
-
-					}
 				} else {
 
 					// No customer, failed.
@@ -265,8 +253,8 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 */
 		public function process_charge( $donation_data, $stripe_customer_id ) {
 
-			$form_id          = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
-			$donation_id      = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
+			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
+			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
 
 			// Process the charge.
 			$amount = $this->format_amount( $donation_data['price'] );
@@ -276,18 +264,9 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				'currency'             => give_get_currency( $form_id ),
 				'customer'             => $stripe_customer_id,
 				'description'          => html_entity_decode( $donation_data['description'], ENT_COMPAT, 'UTF-8' ),
-				'statement_descriptor' => give_get_stripe_statement_descriptor( $donation_data ),
+				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
 				'metadata'             => $this->prepare_metadata( $donation_id ),
 			);
-
-			/**
-			 * If preapproval enabled, only capture the charge
-			 *
-			 * @see https://stripe.com/docs/api#create_charge-capture
-			 */
-			if ( $this->is_preapproved_enabled() ) {
-				$charge_args['capture'] = false;
-			}
 
 			// Create charge with general gateway fn.
 			$charge = $this->create_charge( $donation_id, $charge_args );
@@ -316,7 +295,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			}
 
 			// Get the Stripe SDK autoloader.
-			require_once GIVE_STRIPE_PLUGIN_DIR . '/vendor/autoload.php';
+			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
 			$this->set_api_key();
 			$this->set_api_version();
@@ -332,7 +311,8 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		/**
 		 * Process Stripe Webhooks.
 		 *
-		 * @since 1.5
+		 * @since  2.5.0
+		 * @access public
 		 *
 		 * @param object $event_json Stripe Webhook JSON.
 		 */
