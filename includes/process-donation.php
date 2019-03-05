@@ -215,7 +215,10 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
  * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer.
  * Note: only for internal use
  *
+ * @see https://github.com/impress-org/give/issues/4025
+ *
  * @since  1.7
+ * @since  2.4.2 This function runs independently instead of give_checkout_error_checks hook and also edit donor email.
  *
  * @param  array $valid_data Validated data submitted for the donation.
  *
