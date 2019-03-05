@@ -80,7 +80,7 @@ function give_process_donation_form() {
 	// Validate the user.
 	$user = give_get_donation_form_user( $valid_data );
 
-	if ( false === $valid_data || give_get_errors() || ! $user ) {
+	if ( false === $valid_data || ! $user || give_get_errors() ) {
 		if ( $is_ajax ) {
 			/**
 			 * Fires when AJAX sends back errors from the donation form.
