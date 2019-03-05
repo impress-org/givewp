@@ -1007,7 +1007,7 @@ function give_donation_form_validate_guest_user() {
 			// Get user_id from donor if exist.
 			$donor = new Give_Donor( $guest_email );
 
-			if ( $donor->id && $donor->user_id ) {
+			if ( $donor->id ) {
 				$donor_email_index = array_search(
 					strtolower( $guest_email ),
 					array_map( 'strtolower', $donor->emails ),
