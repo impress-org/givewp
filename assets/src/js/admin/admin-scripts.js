@@ -223,7 +223,6 @@ var gravatar = require('gravatar');
 				$no_results_li.html(error_string);
 
 				// Variables for setting up the typing timer.
-				var typingTimer;               // Timer identifier.
 				var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
 
 				// Replace options with search results.
@@ -283,10 +282,10 @@ var gravatar = require('gravatar');
 						return;
 					}
 
-					clearTimeout(typingTimer);
+					clearTimeout(Give.cache['chosenSearchTypingTimer']);
 					$container.addClass('give-select-chosen-ajax');
 
-					typingTimer = setTimeout(
+					Give.cache['chosenSearchTypingTimer'] = setTimeout(
 						function () {
 							$.ajax({
 								type: 'POST',
@@ -470,13 +469,13 @@ var gravatar = require('gravatar');
 
 			// Update base state field based on selected base country.
 			$('select[name="give-payment-address[0][country]"]').change(function () {
-				var $this = $(this);
-
-				data = {
+				var $this = $(this),
+					data = {
 					action: 'give_get_states',
 					country: $this.val(),
 					field_name: 'give-payment-address[0][state]'
 				};
+
 				$.post(ajaxurl, data, function (response) {
 
 					// Show the states dropdown menu.

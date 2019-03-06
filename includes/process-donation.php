@@ -80,7 +80,7 @@ function give_process_donation_form() {
 	// Validate the user.
 	$user = give_get_donation_form_user( $valid_data );
 
-	if ( false === $valid_data || give_get_errors() || ! $user ) {
+	if ( false === $valid_data || ! $user || give_get_errors() ) {
 		if ( $is_ajax ) {
 			/**
 			 * Fires when AJAX sends back errors from the donation form.
@@ -213,44 +213,51 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
 
 /**
  * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer.
+ * Note: only for internal use
+ *
+ * @see https://github.com/impress-org/give/issues/4025
  *
  * @since  1.7
+ * @since  2.4.2 This function runs independently instead of give_checkout_error_checks hook and also edit donor email.
  *
  * @param  array $valid_data Validated data submitted for the donation.
  *
  * @return void
  */
-function give_check_logged_in_user_for_existing_email( $valid_data ) {
+function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$submitted_email = $valid_data['logged_in_user']['user_email'];
-		$donor           = new Give_Donor( get_current_user_id(), true );
+		$submitted_email = strtolower( $valid_data['user_email'] );
+
+		$donor        = new Give_Donor( get_current_user_id(), true );
+		$donor_emails = array_map( 'strtolower', $donor->emails );
+		$email_index  = array_search( $submitted_email, $donor_emails, true );
+
+		// If donor matched with email then return set formatted email from database.
+		if ( false !== $email_index ) {
+			$valid_data['user_email'] = $donor->emails[$email_index];
+
+			return;
+		}
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer.
-		if (
-			$submitted_email !== $donor->email
-			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails, true ) )
-		) {
-			$found_donor = new Give_Donor( $submitted_email );
+		$found_donor = new Give_Donor( $submitted_email );
 
-			if ( $found_donor->id > 0 ) {
-				give_set_error(
-					'give-customer-email-exists',
-					sprintf(
-						/* translators: 1. Donor Email, 2. Submitted Email */
-						__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
-						$donor->email,
-						$submitted_email
-					)
-				);
-			}
+		if ( $found_donor->id > 0 ) {
+			give_set_error(
+				'give-customer-email-exists',
+				sprintf(
+				/* translators: 1. Donor Email, 2. Submitted Email */
+					__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
+					$donor->email,
+					$submitted_email
+				)
+			);
 		}
 	}
 }
-
-add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existing_email', 10, 1 );
 
 /**
  * Process the checkout login form
@@ -344,7 +351,7 @@ function give_donation_form_validate_fields() {
 		'cc_info'          => give_donation_form_validate_cc(), // Credit card info.
 	);
 
-	$form_id = intval( $post_data['give-form-id'] );
+	$form_id = (int) $post_data['give-form-id'];
 
 	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
@@ -759,7 +766,7 @@ function give_donation_form_validate_logged_in_user() {
 		'user_id' => - 1,
 	);
 
-	// Proceed on;y, if valid $user_id found.
+	// Proceed only, if valid $user_id found.
 	if ( $user_id > 0 ) {
 
 		// Get the logged in user data.
@@ -770,17 +777,24 @@ function give_donation_form_validate_logged_in_user() {
 
 		// Verify data.
 		if ( is_object( $user_data ) && $user_data->ID > 0 ) {
-
 			// Collected logged in user data.
 			$valid_user_data = array(
 				'user_id'    => $user_id,
-				'user_email' => ! empty( $post_data['give_email'] ) ? sanitize_email( $post_data['give_email'] ) : $user_data->user_email,
-				'user_first' => ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : $user_data->first_name,
-				'user_last'  => ! empty( $post_data['give_last'] ) ? $post_data['give_last'] : $user_data->last_name,
+				'user_email' => ! empty( $post_data['give_email'] )
+					? sanitize_email( $post_data['give_email'] )
+					: $user_data->user_email,
+				'user_first' => ! empty( $post_data['give_first'] )
+					? $post_data['give_first']
+					: $user_data->first_name,
+				'user_last'  => ! empty( $post_data['give_last'] )
+					? $post_data['give_last']
+					: $user_data->last_name,
 			);
 
 			// Validate essential form fields.
 			give_donation_form_validate_name_fields( $post_data );
+
+			give_check_logged_in_user_for_existing_email( $valid_user_data );
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
 				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
@@ -993,8 +1007,18 @@ function give_donation_form_validate_guest_user() {
 			// Get user_id from donor if exist.
 			$donor = new Give_Donor( $guest_email );
 
-			if ( $donor->id && $donor->user_id ) {
+			if ( $donor->id ) {
+				$donor_email_index = array_search(
+					strtolower( $guest_email ),
+					array_map( 'strtolower', $donor->emails ),
+					true
+				);
+
 				$valid_user_data['user_id'] = $donor->user_id;
+
+				// Set email to original format.
+				// @see https://github.com/impress-org/give/issues/4025
+				$valid_user_data['user_email'] = $donor->emails[ $donor_email_index ];
 			}
 		}
 	} else {

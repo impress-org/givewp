@@ -113,11 +113,7 @@ function give_delete_option( $key = '' ) {
  * @return array Give settings
  */
 function give_get_settings() {
-
-	$settings = Give_Cache_Setting::get_settings();
-
-	return (array) apply_filters( 'give_get_settings', $settings );
-
+	return Give_Cache_Setting::get_settings();
 }
 
 /**

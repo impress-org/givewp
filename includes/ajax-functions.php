@@ -239,7 +239,7 @@ function give_ajax_get_states_field() {
 
 	$states = give_get_states( $country );
 	if ( ! empty( $states ) ) {
-		$args         = array(
+		$args = array(
 			'name'             => $field_name,
 			'id'               => $field_name,
 			'class'            => $field_name . '  give-select',
@@ -248,6 +248,7 @@ function give_ajax_get_states_field() {
 			'show_option_none' => false,
 			'placeholder'      => $label,
 			'selected'         => $default_state,
+			'autocomplete'     => 'address-level1',
 		);
 		$data         = Give()->html->select( $args );
 		$states_found = true;

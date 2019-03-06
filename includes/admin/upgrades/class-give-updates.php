@@ -294,7 +294,7 @@ class Give_Updates {
 		if (
 			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
-			get_option( 'give_show_db_upgrade_complete_notice' ) &&
+			Give_Cache_Setting::get_option( 'give_show_db_upgrade_complete_notice' ) &&
 			! isset( $_GET['give-db-update-completed'] )
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
@@ -919,7 +919,7 @@ class Give_Updates {
 	 * @return bool
 	 */
 	public function is_doing_updates() {
-		return (bool) get_option( 'give_doing_upgrade' );
+		return (bool) Give_Cache_Setting::get_option( 'give_doing_upgrade' );
 	}
 
 
