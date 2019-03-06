@@ -156,7 +156,8 @@ function give_stripe_connect_button() {
 			'website_url'           => get_bloginfo( 'url' ),
 			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
 		),
-		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		// esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		esc_url_raw( 'http://give.test/Gateway-oAuth/stripe/connect_new.php' )
 	);
 
 	echo sprintf(
@@ -183,7 +184,8 @@ function give_stripe_disconnect_url() {
 			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
 			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 		),
-        esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		// esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		esc_url_raw( 'http://give.test/Gateway-oAuth/stripe/connect_new.php' )
 	);
 
 	echo esc_url( $link );
@@ -641,5 +643,58 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 	} // End if().
 
 	return $ffm_meta;
+
+}
+
+/**
+ * This function is used to set application information to Stripe.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_set_app_info() {
+
+	try {
+
+		/**
+		 * This filter hook is used to change the application name when Stripe add-on is used.
+		 *
+		 * Note: This filter hook is for internal purposes only.
+		 *
+		 * @since 2.5.0
+		 */
+		$application_name = apply_filters( 'give_stripe_get_application_name', 'Give Core' );
+
+		/**
+		 * This filter hook is used to chnage the application version when Stripe add-on is used.
+		 *
+		 * Note: This filter hook is for internal purposes only.
+		 *
+		 * @since 2.5.0
+		 */
+		$application_version = apply_filters( 'give_stripe_get_application_version', GIVE_VERSION );
+
+		\Stripe\Stripe::setAppInfo(
+			$application_name,
+			$application_version,
+			esc_url_raw( 'https://givewp.com' ),
+			'pp_partner_DKj75W1QYBxBLK' // Partner ID.
+		);
+	} catch ( \Stripe\Error\Base $e ) {
+		Give_Stripe_Logger::log_error( $e, $this->id );
+	} catch ( Exception $e ) {
+
+		give_record_gateway_error(
+			__( 'Stripe Error', 'give' ),
+			sprintf(
+				/* translators: %s Exception Error Message */
+				__( 'Unable to set application information to Stripe. Details: %s', 'give' ),
+				$e->getMessage()
+			)
+		);
+
+		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
+	} // End try().
 
 }
