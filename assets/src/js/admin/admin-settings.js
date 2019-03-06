@@ -44,13 +44,13 @@ jQuery(document).ready(function ($) {
 		$(give_settings_position + ' option[value="after"]').text(afterText);
 
 		// Change thousand separator.
-		$thounsandSeparator.val(formattingSetting['setting']['thousands_separator']);
+		$thounsandSeparator.val(formattingSetting['setting']['thousands_separator']).trigger('blur');
 
 		// Change decimal separator.
-		$decimalSeparator.val(formattingSetting['setting']['decimal_separator']);
+		$decimalSeparator.val(formattingSetting['setting']['decimal_separator']).trigger('blur');
 
 		// Change number of decimals.
-		$numerDecimals.val(formattingSetting['setting']['number_decimals']);
+		$numerDecimals.val(formattingSetting['setting']['number_decimals']).trigger('blur');
 	});
 
 	/**
