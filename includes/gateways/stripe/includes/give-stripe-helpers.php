@@ -722,13 +722,5 @@ function give_stripe_get_application_fee_percentage() {
  * @return int
  */
 function give_stripe_get_application_fee_amount( $amount ) {
-
-	$application_fee = $amount * give_stripe_get_application_fee_percentage() / 100;
-
-	// Waive off application fee, if Stripe Premium add-on is active.
-	if ( defined( 'GIVE_STRIPE_VERSION' ) ) {
-		$application_fee = 0;
-	}
-
-	return $application_fee;
+	return $amount * give_stripe_get_application_fee_percentage() / 100;
 }
