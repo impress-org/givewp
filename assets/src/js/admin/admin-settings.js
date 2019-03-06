@@ -25,24 +25,33 @@ jQuery(document).ready(function ($) {
 	 */
 	let give_settings_currency = '#give-mainform #currency';
 	let give_settings_position = '#give-mainform #currency_position';
-	$( 'body' ).on( 'change', give_settings_currency, function () {
-		let currency_text = $( give_settings_currency + ' option:selected' ).text(),
-			currency_sign = currency_text.split( '(' ).pop().split( ')' ).shift();
+	$('body').on('change', give_settings_currency, function () {
+		const $currency    = $(give_settings_currency + ' option:selected'),
+			  currencyCode = $currency.val(),
+			  currencyList = JSON.parse($(this).attr('data-formatting-setting'));
 
-		if ( '' === currency_sign ) {
-			currency_sign = Give.fn.getGlobalVar('currency_sign');
-		}
+		let beforeText = afterText = {},
+			formattingSetting = currencyList[currencyCode],
+			$thounsandSeparator = $('#thousands_separator', '#give-mainform'),
+			$decimalSeparator = $('#decimal_separator', '#give-mainform'),
+			$numerDecimals = $('#number_decimals', '#give-mainform');
 
-		let before_text = $( give_settings_position ).data( 'before-template' );
-		before_text = before_text.replace( '{currency_pos}', currency_sign );
-		$( give_settings_position + ' option[value="before"]' ).text( before_text );
+		// Change currency position text.
+		beforeText = $(give_settings_position).data('before-template').replace('{currency_pos}', formattingSetting['symbol']);
+		$(give_settings_position + ' option[value="before"]').text(beforeText);
 
+		afterText = $(give_settings_position).data('after-template').replace('{currency_pos}', formattingSetting['symbol']);
+		$(give_settings_position + ' option[value="after"]').text(afterText);
 
-		let after_text = $( give_settings_position ).data( 'after-template' );
-		after_text = after_text.replace( '{currency_pos}', currency_sign );
-		$( give_settings_position + ' option[value="after"]' ).text( after_text );
+		// Change thousand separator.
+		$thounsandSeparator.val(formattingSetting['setting']['thousands_separator']);
 
-	} );
+		// Change decimal separator.
+		$decimalSeparator.val(formattingSetting['setting']['decimal_separator']);
+
+		// Change number of decimals.
+		$numerDecimals.val(formattingSetting['setting']['number_decimals']);
+	});
 
 	/**
 	 * Show/Hide Title Prefixes
