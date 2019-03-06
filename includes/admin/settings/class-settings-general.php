@@ -158,6 +158,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_get_currencies(),
 							'default' => 'USD',
+							'attributes' => array(
+								'data-formatting-setting' => esc_js( wp_json_encode( give_get_currencies_list() ))
+							)
 						),
 						array(
 							'name'       => __( 'Currency Position', 'give' ),
