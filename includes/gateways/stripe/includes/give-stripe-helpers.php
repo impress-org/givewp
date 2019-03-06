@@ -698,3 +698,37 @@ function give_stripe_set_app_info() {
 	} // End try().
 
 }
+
+/**
+ * This function is used to get application fee percentage.
+ *
+ * Note: This function is for internal purpose only.
+ *
+ * @since 2.5.0
+ *
+ * @return int
+ */
+function give_stripe_get_application_fee_percentage() {
+	return 2;
+}
+
+/**
+ * This function is used to calculate application fee amount.
+ *
+ * @param int $amount Donation amount.
+ *
+ * @since 2.5.0
+ *
+ * @return int
+ */
+function give_stripe_get_application_fee_amount( $amount ) {
+
+	$application_fee = $amount * give_stripe_get_application_fee_percentage() / 100;
+
+	// Waive off application fee, if Stripe Premium add-on is active.
+	if ( defined( 'GIVE_STRIPE_VERSION' ) ) {
+		$application_fee = 0;
+	}
+
+	return $application_fee;
+}
