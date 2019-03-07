@@ -730,6 +730,7 @@ final class Give_Payment {
 			 * Filter donor class after the donation is completed and before customer table is updated.
 			 *
 			 * @since 1.8.13
+			 * @since 2.4.2 updated filter position
 			 */
 			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
 
