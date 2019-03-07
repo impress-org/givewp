@@ -23,6 +23,9 @@ import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
 
+// Stripe Core.
+import './stripe-admin';
+
 GiveAPI.modal = Modals;
 const { init, fn, cache, modal } = GiveAPI;
-window.Give={ init, fn, cache, modal };
+window.Give = { init, fn, cache, modal };
