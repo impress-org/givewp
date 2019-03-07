@@ -731,6 +731,11 @@ final class Give_Payment {
 			 *
 			 * @since 1.8.13
 			 * @since 2.4.2  Moved location of filter to occur after donor is hydrated.
+			 *
+			 * @param Give_Donor $donor        Donor object.
+			 * @param int        $payment_id   Payment ID.
+			 * @param array      $payment_data Payment data array.
+			 * @param array      $args         Payment args.
 			 */
 			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
 
