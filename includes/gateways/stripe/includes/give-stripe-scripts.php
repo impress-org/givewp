@@ -86,7 +86,7 @@ function give_stripe_frontend_scripts() {
 		);
 
 		// Give Stripe Checkout JS.
-		wp_register_script( 'give-stripe-popup-js', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION, $is_footer );
+		wp_register_script( 'give-stripe-popup-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION, $is_footer );
 		wp_enqueue_script( 'give-stripe-popup-js' );
 		wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
 
