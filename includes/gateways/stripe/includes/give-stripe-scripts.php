@@ -86,9 +86,9 @@ function give_stripe_frontend_scripts() {
 		);
 
 		// Give Stripe Checkout JS.
-		// wp_register_script( 'give-stripe-popup-js', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/js/give-stripe-popup.js', $deps, GIVE_STRIPE_VERSION );
-		// wp_enqueue_script( 'give-stripe-popup-js' );
-		// wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
+		wp_register_script( 'give-stripe-popup-js', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION, $is_footer );
+		wp_enqueue_script( 'give-stripe-popup-js' );
+		wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
 
 		return;
 	}
@@ -102,15 +102,7 @@ function give_stripe_frontend_scripts() {
 		wp_register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION, $is_footer );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 		wp_localize_script( 'give-stripe-onpage-js', 'give_stripe_vars', $stripe_vars );
-
-		// Add Payment Request Script to support Apple/Google Pay.
-		// if ( give_stripe_is_apple_google_pay_enabled() ) {
-		// 	wp_enqueue_script( 'give-stripe-payment-request-js', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/js/give-stripe-payment-request.js', array( 'give-stripe-js' ), GIVE_STRIPE_VERSION );
-		// }
-
-		// wp_enqueue_style( 'give-stripe', GIVE_STRIPE_PLUGIN_URL . 'assets/dist/css/give-stripe.css', array(), GIVE_STRIPE_VERSION );
 	}
-
 }
 
 add_action( 'wp_enqueue_scripts', 'give_stripe_frontend_scripts' );
