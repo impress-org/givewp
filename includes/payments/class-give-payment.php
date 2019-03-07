@@ -701,13 +701,6 @@ final class Give_Payment {
 
 			$donor = new stdClass;
 
-			/**
-			 * Filter donor class after the donation is completed and before customer table is updated.
-			 *
-			 * @since 1.8.13
-			 */
-			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
-
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
 
@@ -732,6 +725,14 @@ final class Give_Payment {
 				$donor->create( $donor_data );
 
 			}
+
+			/**
+			 * Filters the donor object after donation is completed but before donor table is updated.
+			 *
+			 * @since 1.8.13
+			 * @since 2.4.2  Moved location of filter to occur after donor is hydrated.
+			 */
+			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
 
 			// Update Donor Meta once donor is created.
 			$donor->update_meta( '_give_donor_first_name', $this->first_name );
