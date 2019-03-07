@@ -151,6 +151,14 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 		?>
     </fieldset>
 	<?php
+	// Remove Address Fields if user has option enabled.
+	$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
+	if ( ! $billing_fields_enabled ) {
+		remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
+	}
+
+	do_action( 'give_after_cc_fields', $form_id, $args );
+
 	$form = ob_get_clean();
 
 	if ( false !== $echo ) {
