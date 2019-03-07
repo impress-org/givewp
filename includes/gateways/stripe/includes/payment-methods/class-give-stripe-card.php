@@ -260,13 +260,12 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			$amount = $this->format_amount( $donation_data['price'] );
 
 			$charge_args = array(
-				'amount'                 => $amount,
-				'currency'               => give_get_currency( $form_id ),
-				'customer'               => $stripe_customer_id,
-				'description'            => html_entity_decode( $donation_data['description'], ENT_COMPAT, 'UTF-8' ),
-				'statement_descriptor'   => give_stripe_get_statement_descriptor( $donation_data ),
-				'metadata'               => $this->prepare_metadata( $donation_id ),
-				'application_fee_amount' => give_stripe_get_application_fee_amount( $amount ),
+				'amount'               => $amount,
+				'currency'             => give_get_currency( $form_id ),
+				'customer'             => $stripe_customer_id,
+				'description'          => html_entity_decode( $donation_data['description'], ENT_COMPAT, 'UTF-8' ),
+				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
+				'metadata'             => $this->prepare_metadata( $donation_id ),
 			);
 
 			// Create charge with general gateway fn.
