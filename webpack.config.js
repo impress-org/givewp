@@ -192,6 +192,7 @@ if (inProduction) {
 		domain: 'give',
 		destFile: 'languages/give.pot',
 		relativeTo: './',
+		src: ['./**/*.php', '!./includes/libraries/**/*', '!./vendor/**/*'],
 		bugReport: 'https://github.com/impress-org/give/issues/new',
 		team: 'GiveWP <info@givewp.com>',
 	});
