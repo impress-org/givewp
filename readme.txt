@@ -3,7 +3,7 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, kevinwhoffman, mehul0810
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
-Tested up to: 5.0
+Tested up to: 5.1
 Requires PHP: 5.6
 Stable tag: 2.4.2
 License: GPLv3
@@ -206,6 +206,17 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.4.2: March 7th, 2019 =
+* Tweak: Adjusted how web hosts are detected in WP-Admin > Donations > Tools > System Info to improve accuracy. [#3356](https://github.com/impress-org/give/issues/3356)
+* Tweak: Added `get_goal` within the `Give_Donate_Form` for developers. [#4020](https://github.com/impress-org/give/issues/4020)
+* Fix: License statuses were not properly displaying in WP-Admin > Donations > Tools > System Info and that has been fixed. [#3975](https://github.com/impress-org/give/issues/3975)
+* Fix: The label "State" incorrectly displayed on the admin donor details screen. [#3995](https://github.com/impress-org/give/issues/3995)
+* Fix: Resolved a tooltip title that was not translatable. [#3996](https://github.com/impress-org/give/issues/3996)
+* Fix: Date fields now have better support for international date formats. [#4000](https://github.com/impress-org/give/issues/4000)
+* Fix: Resolve a mislabeled name attribute for the donation amount field within donation forms. [#4001](https://github.com/impress-org/give/issues/4001)
+* Fix: Improved support for varying capitalizations within donor's emails when a repeat donation happens. This update will prevent case-insensitive matches being incorrectly compared. [#4025](https://github.com/impress-org/give/issues/4025)
+* Fix: Resolved incorrect setting of the "autocomplete" attribute on certain dropdown fields. [#4028](https://github.com/impress-org/give/issues/4028)
 
 = 2.4.1: February 7th, 2019 =
 * New: Links to view receipts and subscriptions no longer expire. This prevents unnecessary errors and login screens for donors who attempt to access donations and subscription history. [#3956](https://github.com/impress-org/give/issues/3956), [#3963](https://github.com/impress-org/give/issues/3963), [#3964](https://github.com/impress-org/give/issues/3964)
