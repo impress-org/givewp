@@ -82,3 +82,5 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 	}
 }
+
+new Give_Stripe();
