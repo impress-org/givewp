@@ -2,9 +2,15 @@
  * Give - Stripe Gateway Add-on JS
  */
 
-let stripe = Stripe( give_stripe_vars.publishable_key );
+let stripe = Stripe( give_stripe_vars.publishable_key, {
+	betas: [ 'payment_intent_beta_3' ],
+} );
+
 if ( give_stripe_vars.stripe_account_id ) {
-	stripe = Stripe( give_stripe_vars.publishable_key, { stripeAccount: give_stripe_vars.stripe_account_id } );
+	stripe = Stripe( give_stripe_vars.publishable_key, {
+		stripeAccount: give_stripe_vars.stripe_account_id,
+		betas: [ 'payment_intent_beta_3' ],
+	} );
 }
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
@@ -349,31 +355,42 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			};
 		}
 
-		// createSource returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createSource( card, additionalData ).then( function( result ) {
+		const clientSecret = $form.find( 'input[name="give_stripe_intent_client_secret"]' ).val();
+		stripe.handleCardPayment( clientSecret, card ).then( function( result ) {
+			console.log( result );
+			e.preventDefault();
 			if ( result.error ) {
-				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
-
-				// re-enable the submit button.
-				$form_submit_btn.attr( 'disabled', false );
-
-				// Hide the loading animation.
-				jQuery( '.give-loading-animation' ).fadeOut();
-
-				// Display Error on the form.
-				$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
-
-				// Reset Donate Button.
-				if ( give_global_vars.complete_purchase ) {
-					$form_submit_btn.val( give_global_vars.complete_purchase );
-				} else {
-					$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
-				}
+			  // Display error.message in your UI.
 			} else {
-				// Send source to server for processing payment.
-				give_stripe_response_handler( $form, result.source );
+			  // The payment has succeeded. Display a success message.
 			}
 		} );
+
+		// createSource returns immediately - the supplied callback submits the form if there are no errors.
+		// stripe.createSource( card, additionalData ).then( function( result ) {
+		// 	if ( result.error ) {
+		// 		const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+
+		// 		// re-enable the submit button.
+		// 		$form_submit_btn.attr( 'disabled', false );
+
+		// 		// Hide the loading animation.
+		// 		jQuery( '.give-loading-animation' ).fadeOut();
+
+		// 		// Display Error on the form.
+		// 		$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
+
+		// 		// Reset Donate Button.
+		// 		if ( give_global_vars.complete_purchase ) {
+		// 			$form_submit_btn.val( give_global_vars.complete_purchase );
+		// 		} else {
+		// 			$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
+		// 		}
+		// 	} else {
+		// 		// Send source to server for processing payment.
+		// 		give_stripe_response_handler( $form, result.source );
+		// 	}
+		// } );
 
 		return false; // Submit from callback.
 	}
