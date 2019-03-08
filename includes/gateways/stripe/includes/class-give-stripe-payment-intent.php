@@ -48,10 +48,10 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 			try {
 				return \Stripe\PaymentIntent::create(
 					$args,
-					give_stripe_get_connected_account_options
+					give_stripe_get_connected_account_options()
 				);
 			} catch ( \Stripe\Error\Base $e ) {
-				Give_Stripe_Logger::log_error( $e, $this->id );
+				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
@@ -85,7 +85,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 					give_stripe_get_connected_account_options()
 				);
 			} catch ( \Stripe\Error\Base $e ) {
-				Give_Stripe_Logger::log_error( $e, $this->id );
+				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 					give_stripe_get_connected_account_options()
 				);
 			} catch ( \Stripe\Error\Base $e ) {
-				Give_Stripe_Logger::log_error( $e, $this->id );
+				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
