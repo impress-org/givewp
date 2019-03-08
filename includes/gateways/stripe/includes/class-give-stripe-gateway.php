@@ -54,6 +54,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		private $secret_key = '';
 
 		/**
+		 * Payment Intent.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var \Stripe\PaymentIntent
+		 */
+		public $payment_intent;
+
+		/**
 		 * Give_Stripe_Gateway constructor.
 		 *
 		 * @since  2.5.0
@@ -68,7 +78,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				return false;
 			}
 
-			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			require_once GIVE_PLUGIN_DIR . '/vendor/autoload.php';
 
 			// Set secret key received from Stripe.
 			$this->secret_key = give_stripe_get_secret_key();
@@ -78,6 +88,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			// Set API Version.
 			$this->set_api_version();
+
+			// Call Payment Intent Class to utilize.
+			$this->payment_intent = new Give_Stripe_Payment_Intent();
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
 

@@ -49,53 +49,34 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			add_action( 'init', array( $this, 'stripe_event_listener' ) );
 
-			// add_filter( 'give_donation_form_required_fields', array( $this, 'remove_default_required_fields' ), 10, 1 );
+			add_action( 'give_donation_form_top', array( $this, 'send_payment_intent_to_client_side' ), 10, 3 );
 
 		}
 
 		/**
-		 * This function will be used to remove default credit card fields validation.
+		 * This function is used to create and send the payment intent to client side.
 		 *
-		 * @param array $required_fields List of required fields for validation.
+		 * @since 1.8.17
 		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return array
+		 * @param int              $form_id
+		 * @param array            $args
+		 * @param Give_Donate_Form $form
 		 */
-		public function remove_default_required_fields( $required_fields ) {
+		public function send_payment_intent_to_client_side( $form_id, $args, $form ) {
 
-			// Unset card name when stripe is the selected gateway.
-			if ( give_is_gateway_active( 'stripe' ) ) {
+			$default_form_amount = give_get_default_form_amount( $form_id );
+			$form_currency       = give_get_currency( $form_id );
+			$form_amount         = give_is_zero_based_currency( $form_currency ) ? $default_form_amount : $default_form_amount * 100;
 
-				// Unset the card name field
-				unset( $required_fields['card_name'] );
-			}
-
-			return $required_fields;
-		}
-
-		/**
-		 * This function will be used to validate CC fields.
-		 *
-		 * @param array $post_data List of posted variables.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function validate_fields( $post_data ) {
-
-			if (
-				! give_stripe_is_checkout_enabled() &&
-				'single' !== give_get_option( 'stripe_cc_fields_format', 'multi' ) &&
-				isset( $post_data['card_info']['card_name'] ) &&
-				empty( $post_data['card_info']['card_name'] )
-			) {
-				give_set_error( 'no_card_name', __( 'Please enter a name for the credit card.', 'give' ) );
-			}
-
+			$intent_args = array(
+				'amount'               => $form_amount,
+				'currency'             => $form_currency,
+				'payment_method_types' => [ 'card' ],
+			);
+			$intent      = $this->payment_intent->create( $intent_args );
+			?>
+			<input type="hidden" name="give_stripe_intent_client_secret" value="<?php echo $intent->client_secret; ?>"/>
+			<?php
 		}
 
 		/**
@@ -145,9 +126,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			// Make sure we don't have any left over errors present.
 			give_clear_errors();
-
-			// Validate CC Fields.
-			$this->validate_fields( $donation_data );
 
 			$source_id = ! empty( $donation_data['post_data']['give_stripe_source'] )
 				? $donation_data['post_data']['give_stripe_source']
