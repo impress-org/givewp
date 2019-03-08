@@ -383,7 +383,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
-			$this->stripe            = new Give_Stripe();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -575,7 +574,16 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
+
+			if (
+				! defined( 'GIVE_STRIPE_VERSION' ) ||
+				(
+					defined( 'GIVE_STRIPE_VERSION' ) &&
+					version_compare( '2.2.0', GIVE_STRIPE_VERSION, '>' )
+				)
+			) {
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
+			}
 
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
