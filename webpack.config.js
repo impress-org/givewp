@@ -149,30 +149,6 @@ const config = {
 			proxy: 'give.test',
 		}),
 	],
-
-	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({
-				uglifyOptions: {
-					output: {
-						comments: false
-					},
-				},
-				sourceMap: true
-			}),
-			new OptimizeCSSAssetsPlugin({
-				cssProcessor: require('cssnano'),
-				cssProcessorPluginOptions: {
-					preset: ['advanced', {
-						autoprefixer: {},
-						discardComments: {
-							removeAll: true
-						}
-					}],
-				}
-			}),
-		]
-	}
 };
 
 if (inProduction) {
