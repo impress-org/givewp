@@ -455,6 +455,7 @@ class Give_HTML_Elements {
 			'name'             => null,
 			'class'            => '',
 			'id'               => '',
+			'autocomplete'     => 'no',
 			'selected'         => 0,
 			'chosen'           => false,
 			'placeholder'      => null,
@@ -489,14 +490,15 @@ class Give_HTML_Elements {
 		}
 
 		$output = sprintf(
-			'<select name="%1$s" id="%2$s" autocomplete="address-level4" class="give-select %3$s" %4$s %5$s placeholder="%6$s" data-placeholder="%6$s" %7$s>',
+			'<select name="%1$s" id="%2$s" autocomplete="%8$s" class="give-select %3$s" %4$s %5$s placeholder="%6$s" data-placeholder="%6$s" %7$s>',
 			esc_attr( $args['name'] ),
 			esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ),
 			esc_attr( $args['class'] ),
 			$multiple,
 			$args['select_atts'],
 			$placeholder,
-			$data_elements
+			$data_elements,
+			$args['autocomplete']
 		);
 
 		if ( $args['show_option_all'] ) {
@@ -623,8 +625,11 @@ class Give_HTML_Elements {
 		}
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
-
-		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		
+		// Don't output label when the label is empty.
+		if ( ! empty( $args['label'] ) ) {
+			$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		}
 
 		if ( ! empty( $args['desc'] ) ) {
 			$output .= '<span class="give-description">' . esc_html( $args['desc'] ) . '</span>';

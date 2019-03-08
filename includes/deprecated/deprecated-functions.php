@@ -1052,3 +1052,91 @@ function give_email_tag_receipt_id( $tag_args ) {
 	 */
 	return apply_filters( 'give_email_tag_receipt_id', $receipt_id, $tag_args );
 }
+
+
+/**
+ * Check site host
+ *
+ * @since 1.0
+ *
+ * @param bool /string $host The host to check
+ *
+ * @return bool true if host matches, false if not
+ */
+function give_is_host( $host = false ) {
+
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.4.2',
+		'give_get_host'
+	);
+
+	$return = false;
+
+	if ( $host ) {
+		$host = str_replace( ' ', '', strtolower( $host ) );
+
+		switch ( $host ) {
+			case 'wpengine':
+				if ( defined( 'WPE_APIKEY' ) ) {
+					$return = true;
+				}
+				break;
+			case 'pagely':
+				if ( defined( 'PAGELYBIN' ) ) {
+					$return = true;
+				}
+				break;
+			case 'icdsoft':
+				if ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
+					$return = true;
+				}
+				break;
+			case 'networksolutions':
+				if ( DB_HOST == 'mysqlv5' ) {
+					$return = true;
+				}
+				break;
+			case 'ipage':
+				if ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'ipower':
+				if ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'mediatemplegrid':
+				if ( strpos( DB_HOST, '.gridserver.com' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'pairnetworks':
+				if ( strpos( DB_HOST, '.pair.com' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'rackspacecloud':
+				if ( strpos( DB_HOST, '.stabletransit.com' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'sysfix.eu':
+			case 'sysfix.eupowerhosting':
+				if ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
+					$return = true;
+				}
+				break;
+			case 'flywheel':
+				if ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+					$return = true;
+				}
+				break;
+			default:
+				$return = false;
+		}// End switch().
+	}// End if().
+
+	return $return;
+}

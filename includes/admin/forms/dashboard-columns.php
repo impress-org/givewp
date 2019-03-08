@@ -404,8 +404,8 @@ function give_form_search_query_filter( $wp ) {
 
 		$wp->query_vars['date_query'] =
 			array(
-				'after'     => ! empty( $_GET['start-date'] ) ? give_get_formatted_date( $_GET['start-date'] ) : false,
-				'before'    => ! empty( $_GET['end-date'] ) ? give_get_formatted_date( $_GET['end-date'] ) . ' 23:59:59' : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? date( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
+				'before'    => ! empty( $_GET['end-date'] ) ? date( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
 				'inclusive' => true,
 			);
 		switch ( $_GET['give-forms-goal-filter'] ) {
@@ -504,8 +504,8 @@ function give_forms_advanced_filter( $which ) {
 		return;
 	}
 
-	$start_date             = isset( $_GET['start-date'] ) ? give_clean( $_GET['start-date'] ) : null;
-	$end_date               = isset( $_GET['end-date'] ) ? give_clean( $_GET['end-date'] ) : null;
+	$start_date             = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
+	$end_date               = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
 	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
 	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? $_GET['give-forms-goal-filter'] : '';
 	?>
@@ -524,13 +524,27 @@ function give_forms_advanced_filter( $which ) {
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
 					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
-				<input type="text" id="start-date" name="start-date" class="give_datepicker" autocomplete="off"
-					   value="<?php printf( esc_attr( $start_date ) ); ?>" placeholder="<?php _e( 'Start Date', 'give' ); ?>" />
+				<input type="text"
+				       id="start-date"
+				       name="start-date"
+				       class="give_datepicker"
+				       autocomplete="off"
+					   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
+					   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
+					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+				/>
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
-				<input type="text" id="end-date" name="end-date" class="give_datepicker" autocomplete="off"
-					   value="<?php printf( esc_attr( $end_date ) ); ?>" placeholder="<?php _e( 'End Date', 'give' ); ?>" />
+				<input type="text"
+				       id="end-date"
+				       name="end-date"
+				       class="give_datepicker"
+				       autocomplete="off"
+				       value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
+				       data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+				/>
 			</div>
 		</div>
 		<div id="give-payment-form-filter" class="give-filter">

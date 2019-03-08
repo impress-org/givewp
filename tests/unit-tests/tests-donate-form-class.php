@@ -101,11 +101,38 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	 */
 	public function test_get_goal() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
-		$this->assertEquals( 0, $simple_form->get_goal() );
+		$this->assertEquals( '', $simple_form->get_goal() );
 		give_update_meta( $simple_form->ID, '_give_set_goal', give_sanitize_amount_for_db( 5000 ) );
+
+		// Enable Goal.
+		Give()->form_meta->update_meta(
+			$simple_form->ID,
+			'_give_goal_option',
+			'enabled'
+		);
 
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 		$this->assertEquals( 5000, $simple_form->get_goal() );
+	}
+
+	/**
+	 * Test Has Goal
+	 *
+	 * @covers Give_Donate_Form::get_goal
+	 */
+	public function test_has_goal() {
+		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
+
+		$this->assertFalse( $simple_form->has_goal() );
+
+		// Enable Goal.
+		Give()->form_meta->update_meta(
+			$simple_form->ID,
+			'_give_goal_option',
+			'enabled'
+		);
+
+		$this->assertTrue( $simple_form->has_goal() );
 	}
 
 	/**
