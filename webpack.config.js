@@ -149,30 +149,6 @@ const config = {
 			proxy: 'give.test',
 		}),
 	],
-
-	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({
-				uglifyOptions: {
-					output: {
-						comments: false
-					},
-				},
-				sourceMap: true
-			}),
-			new OptimizeCSSAssetsPlugin({
-				cssProcessor: require('cssnano'),
-				cssProcessorPluginOptions: {
-					preset: ['advanced', {
-						autoprefixer: {},
-						discardComments: {
-							removeAll: true
-						}
-					}],
-				}
-			}),
-		]
-	}
 };
 
 if (inProduction) {
@@ -192,6 +168,7 @@ if (inProduction) {
 		domain: 'give',
 		destFile: 'languages/give.pot',
 		relativeTo: './',
+		src: ['./**/*.php', '!./includes/libraries/**/*', '!./vendor/**/*'],
 		bugReport: 'https://github.com/impress-org/give/issues/new',
 		team: 'GiveWP <info@givewp.com>',
 	});
