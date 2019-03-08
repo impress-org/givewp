@@ -3,7 +3,9 @@
     [
       "@babel/preset-env",
       {
-        "modules": false
+		"targets": {
+		  "node": "current"
+		}
       }
     ]
   ],
@@ -14,11 +16,7 @@
       {
         "pragma": "wp.element.createElement"
       }
-    ]
-  ],
-  "env": {
-    "default": {
-      "plugins": ["transform-runtime"]
-    }
-  }
+    ],
+	"@babel/plugin-transform-runtime"
+  ]
 }
