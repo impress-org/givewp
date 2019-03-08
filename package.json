@@ -1,11 +1,11 @@
 {
   "name": "give",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "npm install && npm run watch",
-    "dev": "cross-env webpack",
+    "dev": "cross-env NODE_ENV=development webpack",
     "production": "cross-env NODE_ENV=production webpack",
     "build": "npm run production",
     "watch": "cross-env webpack --watch",
@@ -33,9 +33,9 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.3",
+    "@babel/runtime": "^7.3.4",
     "autoprefixer": "^9.4.5",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.5",
     "browser-sync": "^2.26.3",
     "browser-sync-webpack-plugin": "^2.2.2",
@@ -51,13 +51,12 @@
     "expose-loader": "^0.7.5",
     "file-loader": "^3.0.1",
     "imagemin-webpack-plugin": "^2.4.0",
-    "jest": "^23.6.0",
-    "jest-puppeteer": "^3.8.0",
+    "jest": "^24.1.0",
+    "jest-puppeteer": "^4.0.0",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "puppeteer": "^1.11.0",
-    "regenerator-runtime": "^0.12.1",
+    "puppeteer": "^1.13.0",
     "sass-loader": "^7.1.0",
     "script-loader": "^0.7.2",
     "stylelint": "^9.10.0",
@@ -83,9 +82,5 @@
     "query-string": "^5.1.1",
     "querystringify": "^1.0.0",
     "uiblocker": "latest"
-  },
-  "engines": {
-    "node": "8.9.1",
-    "npm": "5.5.1"
   }
 }
