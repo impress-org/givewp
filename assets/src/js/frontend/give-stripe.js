@@ -305,7 +305,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 */
 	function give_stripe_response_handler( $form, response ) {
 		// Add Source to hidden field for form submission.
-		$form.find( 'input[name="give_stripe_source"]' ).val( response.id );
+		$form.find( 'input[name="give_stripe_source"]' ).val( response );
 
 		// Submit the form.
 		$form.get( 0 ).submit();
@@ -317,12 +317,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * @param {object} $form Form Object.
 	 * @param {object} card  Card Object.
 	 *
-	 * @returns {boolean}
+	 * @returns {boolean} True or False.
 	 */
 	function give_stripe_process_card( $form, card ) {
 		const additionalData = {
-			type: 'card',
-			owner: {},
+			source_data: {
+				owner: {},
+			},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
 		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
@@ -333,7 +334,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		// Set Card Name to Source.
 		if ( 'multi' === give_stripe_vars.cc_fields_format && '' !== card_name ) {
-			additionalData.owner.name = card_name;
+			additionalData.source_data.owner.name = card_name;
 		}
 
 		// Gather additional customer data we may have collected in our form.
@@ -345,7 +346,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			const zip = $form.find( '.card-zip' ).val();
 			const country = $form.find( '.billing-country' ).val();
 
-			additionalData.owner.address = {
+			additionalData.source_data.owner.address = {
 				line1: address1 ? address1 : '',
 				line2: address2 ? address2 : '',
 				city: city ? city : '',
@@ -355,42 +356,33 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			};
 		}
 
+		additionalData.use_stripe_sdk = true;
+
 		const clientSecret = $form.find( 'input[name="give_stripe_intent_client_secret"]' ).val();
-		stripe.handleCardPayment( clientSecret, card ).then( function( result ) {
-			console.log( result );
-			e.preventDefault();
+		stripe.confirmPaymentIntent( clientSecret, card, additionalData ).then( function( result ) {
 			if ( result.error ) {
-			  // Display error.message in your UI.
+				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+
+				// re-enable the submit button.
+				$form_submit_btn.attr( 'disabled', false );
+
+				// Hide the loading animation.
+				jQuery( '.give-loading-animation' ).fadeOut();
+
+				// Display Error on the form.
+				$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
+
+				// Reset Donate Button.
+				if ( give_global_vars.complete_purchase ) {
+					$form_submit_btn.val( give_global_vars.complete_purchase );
+				} else {
+					$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
+				}
 			} else {
-			  // The payment has succeeded. Display a success message.
+				// Send source to server for processing payment.
+				give_stripe_response_handler( $form, result.paymentIntent.source );
 			}
 		} );
-
-		// createSource returns immediately - the supplied callback submits the form if there are no errors.
-		// stripe.createSource( card, additionalData ).then( function( result ) {
-		// 	if ( result.error ) {
-		// 		const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
-
-		// 		// re-enable the submit button.
-		// 		$form_submit_btn.attr( 'disabled', false );
-
-		// 		// Hide the loading animation.
-		// 		jQuery( '.give-loading-animation' ).fadeOut();
-
-		// 		// Display Error on the form.
-		// 		$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
-
-		// 		// Reset Donate Button.
-		// 		if ( give_global_vars.complete_purchase ) {
-		// 			$form_submit_btn.val( give_global_vars.complete_purchase );
-		// 		} else {
-		// 			$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
-		// 		}
-		// 	} else {
-		// 		// Send source to server for processing payment.
-		// 		give_stripe_response_handler( $form, result.source );
-		// 	}
-		// } );
 
 		return false; // Submit from callback.
 	}
