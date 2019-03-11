@@ -130,7 +130,11 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 				),
 				'value'   => 'true',
 			),
-
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation Totals Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-donation-totals',
+			),
 		);
 	}
 }

@@ -97,6 +97,11 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				),
 				'placeholder' => esc_html__( 'Hide', 'give' ),
 			),
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation Receipt Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-donation-receipt',
+			),
 		);
 	}
 }

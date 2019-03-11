@@ -113,6 +113,11 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Button Text', 'give' ),
 				'tooltip' => esc_attr__( 'The button label for displaying the additional payment fields.', 'give' ),
 			),
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation Form Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-give-forms',
+			),
 		);
 	}
 }
