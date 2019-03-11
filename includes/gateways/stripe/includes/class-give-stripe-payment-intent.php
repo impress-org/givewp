@@ -45,13 +45,14 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
+			// Set Stripe Application Info.
+			give_stripe_set_app_info();
+
 			try {
 				return \Stripe\PaymentIntent::create(
 					$args,
 					give_stripe_get_connected_account_options()
 				);
-			} catch ( \Stripe\Error\Base $e ) {
-				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
@@ -84,8 +85,6 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 					$client_secret,
 					give_stripe_get_connected_account_options()
 				);
-			} catch ( \Stripe\Error\Base $e ) {
-				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
@@ -119,14 +118,15 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
+			// Set Stripe Application Info.
+			give_stripe_set_app_info();
+
 			try {
 				return \Stripe\PaymentIntent::update(
 					$client_secret,
 					$args,
 					give_stripe_get_connected_account_options()
 				);
-			} catch ( \Stripe\Error\Base $e ) {
-				// Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
