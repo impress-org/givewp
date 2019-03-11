@@ -72,7 +72,12 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				'amount'               => $form_amount,
 				'currency'             => $form_currency,
 				'payment_method_types' => [ 'card' ],
+				'statement_descriptor' => give_stripe_get_statement_descriptor,
+				'save_payment_method'  => true,
+				'confirm'              => true,
+				'return_url'           => give_get_failed_transaction_uri(),
 			);
+
 			$intent      = $this->payment_intent->create( $intent_args );
 			?>
 			<input type="hidden" name="give_stripe_intent_client_secret" value="<?php echo $intent->client_secret; ?>"/>
