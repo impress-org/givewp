@@ -205,6 +205,7 @@ abstract class Give_Shortcode_Generator {
 	 * @return array
 	 */
 	protected function generate_docs_link( $field ){
+		// Add custom style to override mce style.
 		$dashicon_style = 'width: 20px;
 			height: 20px;
 			font-size: 17px;
@@ -223,6 +224,7 @@ abstract class Give_Shortcode_Generator {
 			font-size: 13px;';
 
 		$p_style = 'text-align:right;';
+
 		return $this->generate_container(
 			array(
 				'type' => 'container',
