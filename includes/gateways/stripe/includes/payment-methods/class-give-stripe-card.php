@@ -54,6 +54,63 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		}
 
 		/**
+		 * Check for the Stripe Source.
+		 *
+		 * @param array $donation_data List of Donation Data.
+		 *
+		 * @since 2.0.6
+		 *
+		 * @return string
+		 */
+		public function check_for_source( $donation_data ) {
+
+			$source_id          = $donation_data['post_data']['give_stripe_source'];
+			$stripe_js_fallback = give_get_option( 'stripe_js_fallback' );
+
+			if ( ! isset( $source_id ) ) {
+
+				// check for fallback mode.
+				if ( ! empty( $stripe_js_fallback ) ) {
+
+					$card_data = $this->prepare_card_data( $donation_data );
+
+					try {
+
+						$source = \Stripe\Source::create( array(
+							'card' => $card_data,
+						) );
+						$source_id = $source->id;
+
+					} catch ( \Stripe\Error\Base $e ) {
+						$this->log_error( $e );
+
+					} catch ( Exception $e ) {
+
+						give_record_gateway_error(
+							__( 'Stripe Error', 'give-stripe' ),
+							sprintf(
+								/* translators: %s Exception Message Body */
+								__( 'The Stripe Gateway returned an error while creating the customer payment source. Details: %s', 'give-stripe' ),
+								$e->getMessage()
+							)
+						);
+						give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give-stripe' ) );
+						give_send_back_to_checkout( "?payment-mode={$this->id}&form_id={$donation_data['post_data']['give-form-id']}" );
+					}
+				} elseif ( ! $this->is_stripe_popup_enabled() ) {
+
+					// No Stripe source and fallback mode is disabled.
+					give_set_error( 'no_token', __( 'Missing Stripe Source. Please contact support.', 'give-stripe' ) );
+					give_record_gateway_error( __( 'Missing Stripe Source', 'give-stripe' ), __( 'A Stripe token failed to be generated. Please check Stripe logs for more information.', 'give-stripe' ) );
+
+				}
+			} // End if().
+
+			return $source_id;
+
+		}
+
+		/**
 		 * This function is used to create and send the payment intent to client side.
 		 *
 		 * @since 1.8.17
@@ -72,14 +129,12 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				'amount'               => $form_amount,
 				'currency'             => $form_currency,
 				'payment_method_types' => [ 'card' ],
-				'statement_descriptor' => give_stripe_get_statement_descriptor,
-				'save_payment_method'  => true,
-				'confirm'              => true,
-				'return_url'           => give_get_failed_transaction_uri(),
+				'statement_descriptor' => give_stripe_get_statement_descriptor(),
 			);
 
 			$intent      = $this->payment_intent->create( $intent_args );
 			?>
+			<input type="hidden" name="give_stripe_intent_id" value="<?php echo $intent->id; ?>"/>
 			<input type="hidden" name="give_stripe_intent_client_secret" value="<?php echo $intent->client_secret; ?>"/>
 			<?php
 		}
@@ -145,6 +200,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				$form_id          = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
 				$price_id         = ! empty( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : 0;
 				$donor_email      = ! empty( $donation_data['post_data']['give_email'] ) ? $donation_data['post_data']['give_email'] : 0;
+				$intent_id        = ! empty( $donation_data['post_data']['give_stripe_intent_id'] ) ? $donation_data['post_data']['give_stripe_intent_id'] : 0;
 				$donation_summary = give_payment_gateway_donation_summary( $donation_data, false );
 
 				// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
@@ -197,11 +253,21 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					$donation_data['description'] = $donation_summary;
 					$donation_data['source_id']   = $source_id;
 
+					$intent_args = array(
+						'receipt_email'       => $donation_data['user_email'],
+						'description'         => give_payment_gateway_donation_summary( $donation_data ),
+						'metadata'            => give_stripe_get_custom_ffm_fields( $form_id, $donation_id ),
+						'customer'            => $stripe_customer_id,
+						'source'              => $source_id,
+						'save_payment_method' => true,
+					);
+					$intent      = $this->payment_intent->update( $intent_id, $intent_args );
+
 					// Process charge w/ support for preapproval.
-					$charge = $this->process_charge( $donation_data, $stripe_customer_id );
+					// $charge = $this->process_charge( $donation_data, $stripe_customer_id );
 
 					// Verify the Stripe payment.
-					$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
+					$this->verify_payment( $donation_id, $stripe_customer_id, $intent );
 
 				} else {
 
@@ -323,6 +389,10 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 				switch ( $event->type ) :
 
+
+					case 'payment_intent.succeeded':
+						event_log(print_r( $event, true ));
+						break;
 					case 'charge.refunded' :
 
 						global $wpdb;
