@@ -196,6 +196,48 @@ abstract class Give_Shortcode_Generator {
 		return $generated_fields;
 	}
 
+
+	/**
+	 * Generate a TinyMCE docs_link field
+	 *
+	 * @param $field
+	 *
+	 * @return array
+	 */
+	protected function generate_docs_link( $field ){
+		$dashicon_style = 'width: 20px;
+			height: 20px;
+			font-size: 17px;
+			line-height: 1;
+			font-family: dashicons;
+			text-decoration: inherit;
+			font-weight: normal;
+			font-style: normal;
+			vertical-align: top;
+			text-align: center;
+			transition: color .1s ease-in 0;';
+
+		$a_style = 'color: #999;
+			text-decoration: none;
+			font-style: italic;
+			font-size: 13px;';
+
+		$p_style = 'text-align:right;';
+		return $this->generate_container(
+			array(
+				'type' => 'container',
+				'html' => sprintf(
+					'<p class="give-docs-link" style="%5$s"><a href="%4$s" style="%3$s" target="_blank">%1$s<span class="dashicons dashicons-editor-help" style="%2$s"></a></span></p>',
+					$field['text'],
+					$dashicon_style,
+					$a_style,
+					esc_url( $field['link'] ),
+					$p_style
+				)
+			)
+		);
+	}
+
 	/**
 	 * Generate a TinyMCE container field
 	 *
