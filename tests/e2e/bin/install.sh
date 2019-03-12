@@ -13,10 +13,8 @@ if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [ "${TRAVIS_BRANCH}" == 'master' 
 	cd ~/wordpress_data/wp-content/plugins/give/
 	docker exec give_wordpress_1 wp plugin activate give
 	composer install
-	rm -rf ./node_modules package.json .babelrc package-lock.json
+	rm -rf ./node_modules package-lock.json
 	npm cache clean --force
-	wget https://raw.githubusercontent.com/impress-org/Give/master/package.json
-	wget https://raw.githubusercontent.com/impress-org/Give/master/.babelrc
 	npm install
 	npm run dev
 	npm run test
