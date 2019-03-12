@@ -579,7 +579,7 @@ if ( ! class_exists( 'Give' ) ) :
 				! defined( 'GIVE_STRIPE_VERSION' ) ||
 				(
 					defined( 'GIVE_STRIPE_VERSION' ) &&
-					version_compare( '2.2.0', GIVE_STRIPE_VERSION, '>' )
+					version_compare( '2.2.0', GIVE_STRIPE_VERSION, '>=' )
 				)
 			) {
 				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
