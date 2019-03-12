@@ -360,16 +360,16 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 
- 				// re-enable the submit button.
+				// re-enable the submit button.
 				$form_submit_btn.attr( 'disabled', false );
 
- 				// Hide the loading animation.
+				// Hide the loading animation.
 				jQuery( '.give-loading-animation' ).fadeOut();
 
- 				// Display Error on the form.
+				// Display Error on the form.
 				$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
 
- 				// Reset Donate Button.
+				// Reset Donate Button.
 				if ( give_global_vars.complete_purchase ) {
 					$form_submit_btn.val( give_global_vars.complete_purchase );
 				} else {
