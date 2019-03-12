@@ -25,6 +25,22 @@ class Give_Shortcode_Donation_History extends Give_Shortcode_Generator {
 
 		parent::__construct( 'donation_history' );
 	}
+
+	/**
+	 * Define the shortcode attribute fields
+	 *
+	 * @since 2.5.0
+	 * @return array
+	 */
+	public function define_fields() {
+		return array(
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation History Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-donation-history',
+			),
+		);
+	}
 }
 
 new Give_Shortcode_Donation_History;

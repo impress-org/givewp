@@ -25,6 +25,22 @@ class Give_Shortcode_Profile_Editor extends Give_Shortcode_Generator {
 
 		parent::__construct( 'give_profile_editor' );
 	}
+
+	/**
+	 * Define the shortcode attribute fields
+	 *
+	 * @since 2.5.0
+	 * @return array
+	 */
+	public function define_fields() {
+		return array(
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation Profile Editor Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-profile-editor',
+			),
+		);
+	}
 }
 
 new Give_Shortcode_Profile_Editor;
