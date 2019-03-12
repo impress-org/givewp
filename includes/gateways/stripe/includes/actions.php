@@ -169,3 +169,20 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 }
 
 add_action( 'give_stripe_cc_form', 'give_stripe_credit_card_form', 10, 3 );
+
+/**
+ * Add an errors div per form.
+ *
+ * @param int   $form_id Donation Form ID.
+ * @param array $args    List of Donation Arguments.
+ *
+ * @access public
+ * @since  2.5.0
+ *
+ * @return void
+ */
+function give_stripe_add_stripe_errors( $form_id, $args ) {
+	echo '<div id="give-stripe-payment-errors-' . esc_html( $args['id_prefix'] ) . '"></div>';
+}
+
+add_action( 'give_donation_form_after_cc_form', 'give_stripe_add_stripe_errors', 8899, 2 );
