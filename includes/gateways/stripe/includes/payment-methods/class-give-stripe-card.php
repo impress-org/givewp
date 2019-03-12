@@ -48,9 +48,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			parent::__construct();
 
 			add_action( 'init', array( $this, 'stripe_event_listener' ) );
-
-			add_action( 'give_donation_form_top', array( $this, 'send_payment_intent_to_client_side' ), 10, 3 );
-
 		}
 
 		/**
@@ -108,35 +105,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			return $source_id;
 
-		}
-
-		/**
-		 * This function is used to create and send the payment intent to client side.
-		 *
-		 * @since 1.8.17
-		 *
-		 * @param int              $form_id
-		 * @param array            $args
-		 * @param Give_Donate_Form $form
-		 */
-		public function send_payment_intent_to_client_side( $form_id, $args, $form ) {
-
-			$default_form_amount = give_get_default_form_amount( $form_id );
-			$form_currency       = give_get_currency( $form_id );
-			$form_amount         = give_is_zero_based_currency( $form_currency ) ? $default_form_amount : $default_form_amount * 100;
-
-			$intent_args = array(
-				'amount'               => $form_amount,
-				'currency'             => $form_currency,
-				'payment_method_types' => [ 'card' ],
-				'statement_descriptor' => give_stripe_get_statement_descriptor(),
-			);
-
-			$intent      = $this->payment_intent->create( $intent_args );
-			?>
-			<input type="hidden" name="give_stripe_intent_id" value="<?php echo $intent->id; ?>"/>
-			<input type="hidden" name="give_stripe_intent_client_secret" value="<?php echo $intent->client_secret; ?>"/>
-			<?php
 		}
 
 		/**
@@ -238,36 +206,52 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					$this->save_stripe_customer_id( $stripe_customer_id, $donation_id );
 					give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
 
-					// Add donation note for source ID.
+					// Save Source ID to donation note and DB.
 					give_insert_payment_note( $donation_id, 'Stripe Source ID: ' . $source_id );
-
-					// Save source id to donation.
 					give_update_meta( $donation_id, '_give_stripe_source_id', $source_id );
 
 					// Save donation summary to donation.
 					give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
-					// Assign required data to array of donation data for future reference.
-					$donation_data['donation_id'] = $donation_id;
-					$donation_data['customer_id'] = $stripe_customer_id;
-					$donation_data['description'] = $donation_summary;
-					$donation_data['source_id']   = $source_id;
-
 					$intent_args = array(
-						'receipt_email'       => $donation_data['user_email'],
-						'description'         => give_payment_gateway_donation_summary( $donation_data ),
-						'metadata'            => give_stripe_get_custom_ffm_fields( $form_id, $donation_id ),
-						'customer'            => $stripe_customer_id,
-						'source'              => $source_id,
-						'save_payment_method' => true,
+						'amount'               => $this->format_amount( $donation_data['price'] ),
+						'currency'             => give_get_currency( $form_id ),
+						'payment_method_types' => [ 'card' ],
+						'statement_descriptor' => give_stripe_get_statement_descriptor(),
+						'receipt_email'        => $donation_data['user_email'],
+						'description'          => give_payment_gateway_donation_summary( $donation_data ),
+						'metadata'             => $this->prepare_metadata( $donation_id ),
+						'customer'             => $stripe_customer_id,
+						'source'               => $source_id,
+						'save_payment_method'  => true,
+						'confirm'              => true,
+						'return_url'           => give_get_success_page_uri(),
 					);
-					$intent      = $this->payment_intent->update( $intent_id, $intent_args );
+					$intent      = $this->payment_intent->create( $intent_args );
 
-					// Process charge w/ support for preapproval.
-					// $charge = $this->process_charge( $donation_data, $stripe_customer_id );
+					// Save Payment Intent ID to donation note and DB.
+					give_insert_payment_note( $donation_id, 'Stripe Payment Intent ID: ' . $intent->id );
+					give_update_meta( $donation_id, '_give_stripe_payment_intent_id', $intent->id );
 
-					// Verify the Stripe payment.
-					$this->verify_payment( $donation_id, $stripe_customer_id, $intent );
+					// Save Payment Intent Client Secret to donation note and DB.
+					give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+					give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
+					// Additional steps required when payment intent status is set to `requires_action`.
+					if ( 'requires_action' === $intent->status ) {
+
+						$action_url = $intent->next_action->redirect_to_url->url;
+
+						// Save Payment Intent requires action related information to donation note and DB.
+						give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
+						give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
+
+						wp_redirect( $action_url );
+						exit;
+					}
+
+					// Send them to success page.
+					give_send_to_success_page();
 
 				} else {
 
@@ -387,21 +371,43 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 				}
 
-				switch ( $event->type ) :
-
+				switch ( $event->type ) {
 
 					case 'payment_intent.succeeded':
-						event_log(print_r( $event, true ));
-						break;
-					case 'charge.refunded' :
+						$intent = $event->data->object;
 
+						if ( 'succeeded' === $intent->status ) {
+							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+
+							// Update payment status to donation.
+							give_update_payment_status( $donation_id, 'publish' );
+
+							// Insert donation note to inform admin that charge succeeded.
+							give_insert_payment_note( $donation_id, __( 'Charge succeeded in Stripe.', 'give' ) );
+						}
+
+						break;
+
+					case 'payment_intent.payment_failed':
+							$intent      = $event->data->object;
+							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+
+							// Update payment status to donation.
+							give_update_payment_status( $donation_id, 'failed' );
+
+							// Insert donation note to inform admin that charge succeeded.
+							give_insert_payment_note( $donation_id, __( 'Charge failed in Stripe.', 'give' ) );
+
+						break;
+
+					case 'charge.refunded':
 						global $wpdb;
 
 						$charge = $event->data->object;
 
 						if ( $charge->refunded ) {
 
-							$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
+							$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
 
 							if ( $payment_id ) {
 
@@ -412,8 +418,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						}
 
 						break;
-
-				endswitch;
+				}
 
 				do_action( 'give_stripe_event_' . $event->type, $event );
 
