@@ -4,7 +4,7 @@ echo "Give Log: current branch is ${TRAVIS_BRANCH}";
 echo "${TRAVIS_PHP_VERSION:0:3}";
 echo "${TRAVIS_EVENT_TYPE}"
 
-if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]] && [ "${TRAVIS_BRANCH}" == 'master' ]; then
+if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]]; then
 	echo 'Give Log: setup and run frontend tests';
 
 	until $(curl --output /dev/null --silent --head --fail http://localhost:8004); do printf '.'; sleep 5; done;
