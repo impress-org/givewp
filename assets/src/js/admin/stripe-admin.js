@@ -13,12 +13,32 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeStylesInvalid = document.getElementById( 'stripe_styles_invalid' );
 	const stripeStylesComplete = document.getElementById( 'stripe_styles_complete' );
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
+	const donationStatus = document.getElementById( 'give-payment-status' );
 
 	jsonFormattedTextarea( stripeStylesBase );
 	jsonFormattedTextarea( stripeStylesEmpty );
 	jsonFormattedTextarea( stripeStylesInvalid );
 	jsonFormattedTextarea( stripeStylesComplete );
 	jsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== donationStatus ) {
+		donationStatus.addEventListener( 'change', ( event ) => {
+			const stripeCheckbox = document.getElementById( 'give-stripe-opt-refund' );
+
+			if ( null === stripeCheckbox ) {
+				return;
+			}
+
+			stripeCheckbox.checked = false;
+
+			// If donation status is complete, then show refund checkbox
+			if ( 'refunded' === event.target.value ) {
+				document.getElementById( 'give-stripe-opt-refund-wrap' ).style.display = 'block';
+			} else {
+				document.getElementById( 'give-stripe-opt-refund-wrap' ).style.display = 'none';
+			}
+		} );
+	}
 
 	// Toggle based on selection of stripe fonts admin settings.
 	if ( null !== stripeFonts ) {
@@ -49,9 +69,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			ccFormatSettings.style.display = 'none';
 		}
 	} );
-
-	if ( ! modalOption.checked ) {
-	}
 
 	modalOption.addEventListener( 'click', function() {
 		modalCheckout.forEach( function( element, index ) {
