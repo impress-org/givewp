@@ -724,3 +724,30 @@ function give_stripe_get_application_fee_percentage() {
 function give_stripe_get_application_fee_amount( $amount ) {
 	return $amount * give_stripe_get_application_fee_percentage() / 100;
 }
+
+/**
+ * This function is used to fetch the donation id by meta key.
+ *
+ * @param string $id   Any String.
+ * @param string $type intent_id/client_secret
+ * @return void
+ */
+function give_stripe_get_donation_id_by( $id, $type ) {
+
+	global $wpdb;
+
+	$donation_id = 0;
+
+	switch ( $type ) {
+		case 'intent_id':
+			$donation_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_stripe_payment_intent_id' AND meta_value = %s LIMIT 1", $id ) );
+			break;
+
+		case 'client_secret':
+			$donation_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_stripe_payment_intent_client_secret' AND meta_value = %s LIMIT 1", $id ) );
+			break;
+	}
+
+	return $donation_id;
+
+}
