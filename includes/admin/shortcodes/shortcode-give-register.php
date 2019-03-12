@@ -45,6 +45,11 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 				'minWidth' => 320,
 				'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after registering.', 'give' ),
 			),
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Register Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-give-register',
+			),
 		);
 	}
 }
