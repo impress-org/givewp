@@ -207,7 +207,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.4.2: March 7th, 2019 =
+= 2.4.2: March 11th, 2019 =
 * Tweak: Adjusted how web hosts are detected in WP-Admin > Donations > Tools > System Info to improve accuracy. [#3356](https://github.com/impress-org/give/issues/3356)
 * Tweak: Added `get_goal` within the `Give_Donate_Form` for developers. [#4020](https://github.com/impress-org/give/issues/4020)
 * Fix: License statuses were not properly displaying in WP-Admin > Donations > Tools > System Info and that has been fixed. [#3975](https://github.com/impress-org/give/issues/3975)
