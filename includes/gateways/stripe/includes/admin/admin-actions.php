@@ -136,3 +136,128 @@ function give_stripe_connect_deauthorize() {
 
 }
 add_action( 'admin_notices', 'give_stripe_connect_deauthorize' );
+
+/**
+ * This function will display field to opt for refund in Stripe.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_opt_refund( $donation_id ) {
+
+	$processed_gateway = Give()->payment_meta->get_meta( $donation_id, '_give_payment_gateway', true );
+
+	// Bail out, if the donation is not processed with Stripe payment gateway.
+	if ( 'stripe' !== $processed_gateway ) {
+		return;
+	}
+	?>
+	<div id="give-stripe-opt-refund-wrap" class="give-stripe-opt-refund give-admin-box-inside give-hidden">
+		<p>
+			<input type="checkbox" id="give-stripe-opt-refund" name="give_stripe_opt_refund" value="1"/>
+			<label for="give-stripe-opt-refund">
+				<?php esc_html_e( 'Refund Charge in Stripe?', 'give' ); ?>
+			</label>
+		</p>
+	</div>
+
+	<?php
+}
+
+add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund', 10, 1 );
+
+/**
+ * Process refund in Stripe.
+ *
+ * @since  2.5.0
+ * @access public
+ *
+ * @param int    $donation_id Donation ID.
+ * @param string $new_status  New Donation Status.
+ * @param string $old_status  Old Donation Status.
+ *
+ * @return void
+ */
+function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
+
+	// Only move forward if refund requested.
+	$can_process_refund = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : false;
+	if ( ! $can_process_refund ) {
+		return;
+	}
+
+	// Verify statuses.
+	$should_process_refund = 'publish' !== $old_status ? false : true;
+	$should_process_refund = apply_filters( 'give_stripe_should_process_refund', $should_process_refund, $donation_id, $new_status, $old_status );
+
+	if ( false === $should_process_refund ) {
+		return;
+	}
+
+	if ( 'refunded' !== $new_status ) {
+		return;
+	}
+
+	$charge_id = give_get_payment_transaction_id( $donation_id );
+
+	// If no charge ID, look in the payment notes.
+	if ( empty( $charge_id ) || $charge_id == $donation_id ) {
+		$charge_id = give_stripe_get_payment_txn_id_fallback( $donation_id );
+	}
+
+	// Bail if no charge ID was found.
+	if ( empty( $charge_id ) ) {
+		return;
+	}
+
+	try {
+
+		$refund = \Stripe\Refund::create( array(
+			'charge' => $charge_id,
+		) );
+
+		if ( isset( $refund->id ) ) {
+			give_insert_payment_note(
+				$donation_id,
+				sprintf(
+					/* translators: 1. Refund ID */
+					esc_html__( 'Charge refunded in Stripe: %s', 'give' ),
+					$refund->id
+				)
+			);
+		}
+	} catch ( \Stripe\Error\Base $e ) {
+		// Refund issue occurred.
+		$log_message = __( 'The Stripe payment gateway returned an error while refunding a donation.', 'give' ) . '<br><br>';
+		$log_message .= sprintf( esc_html__( 'Message: %s', 'give' ), $e->getMessage() ) . '<br><br>';
+		$log_message .= sprintf( esc_html__( 'Code: %s', 'give' ), $e->getCode() );
+
+		// Log it with DB.
+		give_record_gateway_error( __( 'Stripe Error', 'give' ), $log_message );
+
+	} catch ( Exception $e ) {
+
+		// some sort of other error.
+		$body = $e->getJsonBody();
+		$err  = $body['error'];
+
+		if ( isset( $err['message'] ) ) {
+			$error = $err['message'];
+		} else {
+			$error = esc_html__( 'Something went wrong while refunding the charge in Stripe.', 'give' );
+		}
+
+		wp_die( $error, esc_html__( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
+
+	} // End try().
+
+	do_action( 'give_stripe_donation_refunded', $donation_id );
+
+}
+
+add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 );
