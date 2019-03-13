@@ -1471,7 +1471,7 @@ function give_get_login_fields( $form_id ) {
 		<div class="give-user-login-fields-container">
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
-					<?php _e( 'Username', 'give' ); ?>
+					<?php _e( 'Username or Email Address', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
