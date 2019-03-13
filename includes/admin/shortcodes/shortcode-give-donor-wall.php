@@ -178,6 +178,11 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donor Wall Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-donor-wall',
+			),
 		);
 	}
 }
