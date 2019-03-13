@@ -905,7 +905,7 @@ function give_donation_form_validate_user_login() {
 
 	// Bailout, if Username is empty.
 	if ( empty( $post_data['give_user_login'] ) ) {
-		give_set_error( 'must_log_in', __( 'You must register or login to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', __( 'Please enter your username or email to log in.', 'give' ) );
 
 		return $valid_user_data;
 	}
