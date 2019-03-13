@@ -1434,7 +1434,7 @@ function give_get_login_fields( $form_id ) {
 	<fieldset id="give-login-fields-<?php echo $form_id; ?>">
 		<legend>
 			<?php
-			echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ) );
+			echo apply_filters( 'give_account_login_fieldset_heading', __( 'Log In to Your Account', 'give' ) );
 			if ( ! give_logged_in_only( $form_id ) ) {
 				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 			}
