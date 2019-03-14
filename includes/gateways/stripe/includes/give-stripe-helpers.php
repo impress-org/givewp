@@ -730,6 +730,9 @@ function give_stripe_get_application_fee_amount( $amount ) {
  *
  * @param string $id   Any String.
  * @param string $type intent_id/client_secret
+ *
+ * @since 2.5.0
+ *
  * @return void
  */
 function give_stripe_get_donation_id_by( $id, $type ) {
@@ -750,4 +753,82 @@ function give_stripe_get_donation_id_by( $id, $type ) {
 
 	return $donation_id;
 
+}
+
+/**
+ * This function is used to set Stripe API Key.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_set_api_key() {
+
+    try {
+
+		// Fetch secret key.
+        $secret_key = give_stripe_get_secret_key();
+
+		// Set App Info.
+		give_stripe_set_app_info();
+
+        // Set secret key.
+		\Stripe\Stripe::setApiKey( $secret_key );
+
+	} catch ( \Stripe\Error\Base $e ) {
+
+		// Log Error.
+		$this->log_error( $e );
+
+	} catch ( Exception $e ) {
+
+		// Something went wrong outside of Stripe.
+		give_record_gateway_error(
+			__( 'Stripe Error', 'give' ),
+			sprintf(
+			/* translators: %s Exception Message Body */
+				__( 'Unable to set Stripe API Key. Details: %s', 'give' ),
+				$e->getMessage()
+			)
+		);
+		give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give-stripe' ) );
+
+		// Send donor back to donation form page.
+		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+
+	}
+
+}
+
+/**
+ * This function is used to fetch the webhook id which is stored in DB, if the webhook is set on Stripe.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_webhook_id() {
+
+    $mode = give_stripe_get_payment_mode();
+    $key  = "give_stripe_{$mode}_webhook_id";
+
+	return trim( give_get_option( $key ) );
+}
+
+/**
+ * This function is used to get the payment mode text. For example, "test" or "live"
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_payment_mode() {
+
+    $mode = 'live';
+
+    if ( give_is_test_mode() ) {
+        $mode = 'test';
+    }
+
+    return $mode;
 }
