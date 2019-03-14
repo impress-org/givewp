@@ -316,7 +316,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public function __construct() {
 			// PHP version
 			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
-				define( 'GIVE_REQUIRED_PHP_VERSION', '5.4' );
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.4.0' );
 			}
 
 			// Bailout: Need minimum php version to load plugin.
