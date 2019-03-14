@@ -4,7 +4,6 @@
  * External dependencies
  */
 const path = require( 'path' );
-const webpack = require( 'webpack' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
@@ -12,8 +11,6 @@ const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const wpPot = require( 'wp-pot' );
-const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
-const OptimizeCSSAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
 
 const inProduction = ( 'production' === process.env.NODE_ENV );
 const mode = inProduction ? 'production' : 'development';
