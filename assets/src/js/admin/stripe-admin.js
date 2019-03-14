@@ -122,3 +122,53 @@ function jsonFormattedTextarea( element ) {
 		} );
 	}
 }
+
+/**
+ * Webhook Sync related js.
+ */
+jQuery.noConflict();
+( function( $ ) {
+	// On DOM Ready.
+	$( function() {
+		$( '.give-stripe-sync-webhooks' ).on( 'click', function( e ) {
+			// Prevent form submission.
+			e.preventDefault();
+
+			// Show loading icon.
+			$( '.give-stripe-syncing-status' ).show();
+
+			give_stripe_check_webhook_status();
+		} );
+	} );
+
+	/**
+	 * Check Stripe Webhooks status.
+	 *
+	 * AJAX to see if webhooks are already setup
+	 *
+	 * @since 2.5.0
+	 */
+	function give_stripe_check_webhook_status() {
+		const data = {
+			action: 'give_stripe_check_webhook_status',
+		};
+
+		jQuery.post( ajaxurl, data, function( response ) {
+			$( '.give-stripe-syncing-status' ).hide();
+			$( '.give-stripe-webhook-sync-wrap' ).show();
+
+			if ( true === response.data.live_webhooks_setup ) {
+				$( '.give-stripe-live-webhook-not-connected' ).hide();
+				$( '.give-stripe-live-webhook-connected' ).show();
+			} else if ( true === response.data.sandbox_webhooks_setup ) {
+				$( '.give-stripe-sandbox-webhook-not-connected' ).hide();
+				$( '.give-stripe-sandbox-webhook-connected' ).show();
+			} else {
+				$( '.give-stripe-webhook-general-error' ).show();
+			}
+
+			$( '.give-stripe-sync-webhooks' ).show();
+		} );
+	}
+}( jQuery ) );
+
