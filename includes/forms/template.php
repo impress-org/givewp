@@ -32,11 +32,11 @@ function give_get_donation_form( $args = array() ) {
 
 	// Backward compatibility for `form_id` function param.
 	// If are calling this function directly with `form_id` the use `id` instead.
-	$args['id'] =  ! empty( $args['form_id'] ) ?  absint( $args['form_id'] ) : $args['id'];
+	$args['id'] = ! empty( $args['form_id'] ) ? absint( $args['form_id'] ) : $args['id'];
 
 	// If `id` does not set then maybe we are single donation form page, so lets render form.
 	if ( empty( $args['id'] ) && is_object( $post ) && $post->ID ) {
-		$args['id'] =  $post->ID;
+		$args['id'] = $post->ID;
 	}
 
 	// set `form_id` for backward compatibility because many filter and function  using it.
@@ -154,7 +154,7 @@ function give_get_donation_form( $args = array() ) {
 				<span class="give-hidden" style="display: none !important;">
 					<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
 					<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot"
-					       class="give-honeypot give-hidden"/>
+						   class="give-honeypot give-hidden"/>
 				</span>
 
 				<?php
@@ -1434,7 +1434,7 @@ function give_get_login_fields( $form_id ) {
 	<fieldset id="give-login-fields-<?php echo $form_id; ?>">
 		<legend>
 			<?php
-			echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ) );
+			echo apply_filters( 'give_account_login_fieldset_heading', __( 'Log In to Your Account', 'give' ) );
 			if ( ! give_logged_in_only( $form_id ) ) {
 				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 			}
@@ -1471,7 +1471,7 @@ function give_get_login_fields( $form_id ) {
 		<div class="give-user-login-fields-container">
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
-					<?php _e( 'Username', 'give' ); ?>
+					<?php _e( 'Username or Email Address', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
@@ -1480,7 +1480,7 @@ function give_get_login_fields( $form_id ) {
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="text"
 					   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-					   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   placeholder="<?php _e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
@@ -1494,7 +1494,9 @@ function give_get_login_fields( $form_id ) {
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
 					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
-				<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+				<?php if ( give_logged_in_only( $form_id ) ) : ?>
+					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+				<?php endif; ?>
 			</div>
 
 			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">

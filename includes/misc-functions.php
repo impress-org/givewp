@@ -351,8 +351,6 @@ function give_get_host() {
 		$host = 'ICDSoft';
 	} elseif ( DB_HOST == 'mysqlv5' ) {
 		$host = 'NetworkSolutions';
-	} elseif ( strpos( $find_host, preg_match('wp', $find_host) ) ) {
-		$host = "Bluehost";
 	} elseif ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
 		$host = 'iPage';
 	} elseif ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {

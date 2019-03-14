@@ -7,7 +7,7 @@ The frontend UI testing tests whether the contents of Give's features display an
 ### Prerequisites
 These tests run inside a dockerized container, so it is necessary that you have the [Docker Engine](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed on your system.
 
-A sample `wordpress.sql` is provided within `sample-data/` folder which has few sample forms, donations and donors to test in various combinations.
+A sample `wordpress.sql` is provided within the `/sample-data/` folder that has a few sample forms, donations, and donors to test in various combinations.
 
 ### Manual Testing
 After setting up the local development environment, running tests manually is fairly simple. Navigate to the Give root folder where the `docker-compose.yml` file resides and set up the container by running:
@@ -22,17 +22,10 @@ npm run test
 ```
 
 By default this will run the tests in the headless mode.
-If you wish to run the tests in non-headless mode, you can set
-```
-headless: false
-```
-inside `tests/e2e/jest-puppeteer.config.js`.
-This will launch an instance of Chrome browser and the tests will begin.
-You can also change the speed of execution by setting
-```
-slowMo: 50
-```
-The ideal speed range is between 30-80. _Low number indicates high speed_.
+If you wish to run the tests in non-headless mode, you can set `headless: false` inside `tests/e2e/jest-puppeteer.config.js`.
+This will launch an instance of the Chrome browser and the tests will begin.
+
+You can also change the speed of execution by setting `slowMo: 50`. The ideal speed range is between 30-80. _Low number indicates high speed_.
 
 ### Automation testing
 The automation testing architecture is set within Travis where all the frontend tests run inside a Docker Container for the current branch on every pull request. For every pull request, a Docker Container is created which installs WordPress and sets up the database using the aforementioned SQL file. After running the tests, the Docker Container is destroyed automatically.
