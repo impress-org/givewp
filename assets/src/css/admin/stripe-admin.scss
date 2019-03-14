@@ -182,6 +182,50 @@ a.give-stripe-connect-temp-dismiss:focus, a.give-stripe-connect-temp-dismiss:act
   }
 }
 
+.give-stripe-loading-icon {
+  background: url('/wp-admin/images/spinner-2x.gif');
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+  background-size: 18px;
+  margin: 0 7px 0 0;
+  position: relative;
+  top: 4px;
+}
+
+ .give-stripe-webhook-sync-wrap {
+  margin: 15px 0 10px;
+}
+
+ .give-stripe-webhook-general-error {
+  border: 1px solid #de2727;
+  vertical-align: top;
+  padding: 2px;
+}
+
+ .give-stripe-webhook-status-wrap {
+  .give-stripe-webhook-status {
+    padding: 5px 0;
+    margin: 10px 0;
+
+     .give-stripe-live-webhook-not-connected,
+    .give-stripe-sandbox-webhook-not-connected {
+      background: #de2727;
+      padding: 5px;
+      border-radius: 3px;
+      color: #ffffff;
+    }
+
+     .give-stripe-live-webhook-connected,
+    .give-stripe-sandbox-webhook-connected {
+      background: #008000;
+      padding: 5px;
+      border-radius: 3px;
+      color: #ffffff;
+    }
+  }
+}
+
 /**
  * Single Donor Page CSS
  */
