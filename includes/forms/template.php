@@ -32,11 +32,11 @@ function give_get_donation_form( $args = array() ) {
 
 	// Backward compatibility for `form_id` function param.
 	// If are calling this function directly with `form_id` the use `id` instead.
-	$args['id'] =  ! empty( $args['form_id'] ) ?  absint( $args['form_id'] ) : $args['id'];
+	$args['id'] = ! empty( $args['form_id'] ) ? absint( $args['form_id'] ) : $args['id'];
 
 	// If `id` does not set then maybe we are single donation form page, so lets render form.
 	if ( empty( $args['id'] ) && is_object( $post ) && $post->ID ) {
-		$args['id'] =  $post->ID;
+		$args['id'] = $post->ID;
 	}
 
 	// set `form_id` for backward compatibility because many filter and function  using it.
@@ -154,7 +154,7 @@ function give_get_donation_form( $args = array() ) {
 				<span class="give-hidden" style="display: none !important;">
 					<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
 					<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot"
-					       class="give-honeypot give-hidden"/>
+						   class="give-honeypot give-hidden"/>
 				</span>
 
 				<?php
@@ -1480,7 +1480,7 @@ function give_get_login_fields( $form_id ) {
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="text"
 					   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-					   placeholder="<?php _e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   placeholder="<?php _e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
