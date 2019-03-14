@@ -369,9 +369,9 @@ function give_donation_form_validate_fields() {
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
 	} elseif (
-		isset( $post_data['give-purchase-var'] ) &&
-		'needs-to-register' === $post_data['give-purchase-var'] &&
-		! empty( $post_data['give_create_account'] )
+		isset( $post_data['give-purchase-var'] )
+		&& 'needs-to-register' === $post_data['give-purchase-var']
+		&& ! empty( $post_data['give_create_account'] )
 	) {
 
 		// Set new user registration as required.
@@ -380,8 +380,8 @@ function give_donation_form_validate_fields() {
 		// Validate new user data.
 		$valid_data['new_user_data'] = give_donation_form_validate_new_user();
 	} elseif (
-		isset( $post_data['give-purchase-var'] ) &&
-		'needs-to-login' === $post_data['give-purchase-var']
+		isset( $post_data['give-purchase-var'] )
+		&& 'needs-to-login' === $post_data['give-purchase-var']
 	) {
 
 		// Set user login as required.
