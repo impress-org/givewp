@@ -1494,7 +1494,9 @@ function give_get_login_fields( $form_id ) {
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
 					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
-				<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+				<?php if ( give_logged_in_only( $form_id ) ) : ?>
+					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
+				<?php endif; ?>
 			</div>
 
 			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
