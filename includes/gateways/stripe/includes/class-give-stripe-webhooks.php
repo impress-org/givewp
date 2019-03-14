@@ -20,14 +20,14 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 	/**
 	 * Class Give_Stripe_Webhooks
 	 *
-	 * @since 2.2.0
+	 * @since 2.5.0
 	 */
 	class Give_Stripe_Webhooks {
 
 		/**
 		 * WebHook URL.
 		 *
-		 * @since 2.2.0
+		 * @since 2.5.0
 		 *
 		 * @var $url
 		 */
@@ -36,7 +36,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		/**
 		 * Give_Stripe_Webhooks constructor.
 		 *
-		 * @since 2.2.0
+		 * @since 2.5.0
 		 */
 		public function __construct() {
 			$this->url = site_url() . '?give-listener=stripe';
@@ -46,27 +46,31 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		/**
 		 * This function is used to create webhooks in Stripe.
 		 *
-		 * @since  2.2.0
+		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return \Stripe\ApiResource
 		 */
 		public function create() {
 			try {
-				$result = \Stripe\WebhookEndpoint::create( array(
-					'url'            => $this->url,
-					'enabled_events' => array( '*' ),
-					'connect'        => give_is_stripe_connected() ? true : false,
-				) );
+				$result = \Stripe\WebhookEndpoint::create(
+					array(
+						'url'            => $this->url,
+						'enabled_events' => array( '*' ),
+						'connect'        => give_stripe_is_connected() ? true : false,
+					)
+				);
 
 				$this->set_data_to_db( $result->id );
 				return $result;
 			} catch ( \Stripe\Error\InvalidRequest $e ) {
-
-				// Record Log.
-				give_stripe_record_log(
-					__( 'Stripe - Webhook Error', 'give-stripe' ),
-					$e->getMessage()
+				give_record_gateway_error(
+					__( 'Stripe Webhook Error', 'give' ),
+					sprintf(
+						/* translators: %s Exception Error Message */
+						__( 'Unable to create a webhook. Details: %s', 'give' ),
+						$e->getMessage()
+					)
 				);
 			}
 		}
@@ -76,7 +80,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 *
 		 * @param string $id WebHook ID.
 		 *
-		 * @since  2.2.0
+		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return \Stripe\StripeObject
@@ -84,12 +88,14 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		public function retrieve( $id ) {
 			try {
 				return \Stripe\WebhookEndpoint::retrieve( $id );
-			}  catch ( \Stripe\Error\InvalidRequest $e ) {
-
-				// Record Log.
-				give_stripe_record_log(
-					__( 'Stripe - Webhook Error', 'give-stripe' ),
-					$e->getMessage()
+			} catch ( \Stripe\Error\InvalidRequest $e ) {
+				give_record_gateway_error(
+					__( 'Stripe Webhook Error', 'give' ),
+					sprintf(
+						/* translators: %s Exception Error Message */
+						__( 'Unable to retrieve webhook. Details: %s', 'give' ),
+						$e->getMessage()
+					)
 				);
 			}
 		}
@@ -97,7 +103,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		/**
 		 * This function is used to list all the webhooks registered with Stripe.
 		 *
-		 * @since  2.2.0
+		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return \Stripe\Collection
@@ -106,14 +112,19 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 */
 		public function list_all() {
 			try {
-				return \Stripe\WebhookEndpoint::all( array(
-					'limit' => 20,
-				) );
+				return \Stripe\WebhookEndpoint::all(
+					array(
+						'limit' => 20,
+					)
+				);
 			} catch ( \Stripe\Error\InvalidRequest $e ) {
-				// Record Log.
-				give_stripe_record_log(
-					__( 'Stripe - Webhook Error', 'give-stripe' ),
-					$e->getMessage()
+				give_record_gateway_error(
+					__( 'Stripe Webhook Error', 'give' ),
+					sprintf(
+						/* translators: %s Exception Error Message */
+						__( 'Unable to list all webhooks. Details: %s', 'give' ),
+						$e->getMessage()
+					)
 				);
 			}
 		}
@@ -123,7 +134,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 *
 		 * @param int $id Webhook ID.
 		 *
-		 * @since  2.2.0
+		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return void
