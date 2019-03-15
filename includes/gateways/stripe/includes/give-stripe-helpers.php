@@ -477,7 +477,7 @@ function give_stripe_get_customer_id( $user_id_or_email ) {
 /**
  * Get the meta key for storing Stripe customer IDs in.
  *
- * @since  2.5.0
+ * @since 2.5.0
  *
  * @return string $key
  */
@@ -495,9 +495,9 @@ function give_stripe_get_customer_key() {
 /**
  * Determines if the shop is using a zero-decimal currency.
  *
- * @access      public
- * @since       1.0
- * @return      bool
+ * @since 2.5.0
+ *
+ * @return bool
  */
 function give_stripe_is_zero_decimal_currency() {
 
@@ -611,7 +611,7 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 				$field_value = give_stripe_ffm_field_value_to_str( $field_value );
 
 			} else {
-				$field_value = __( '-- N/A --', 'give-stripe' );
+				$field_value = __( '-- N/A --', 'give' );
 			}
 
 			// Strip the number of characters below 450 for custom fields value input when passed to metadata.
@@ -791,7 +791,7 @@ function give_stripe_set_api_key() {
 				$e->getMessage()
 			)
 		);
-		give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give-stripe' ) );
+		give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
 
 		// Send donor back to donation form page.
 		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
@@ -831,4 +831,81 @@ function give_stripe_get_payment_mode() {
     }
 
     return $mode;
+}
+
+/**
+ * This function will be used to convert upto 2 dimensional array to string as per FFM add-on Repeater field needs.
+ *
+ * This function is for internal purpose only.
+ *
+ * @param array|string $data Data to be converted to string.
+ *
+ * @since 2.5.0
+ *
+ * @return array|string
+ */
+function give_stripe_ffm_field_value_to_str( $data ) {
+
+	if ( is_array( $data ) && count( $data ) > 0 ) {
+		$count = 0;
+		foreach ( $data as $item ) {
+			if ( is_array( $item ) && count( $item ) > 0 ) {
+				$data[ $count ] = implode( ',', $item );
+			}
+
+			$count ++;
+		}
+
+		$data = implode( '|', $data );
+	}
+
+	return $data;
+}
+
+/**
+ * This function will be used to get Stripe transaction id link.
+ *
+ * @param int    $donation_id    Donation ID.
+ * @param string $transaction_id Stripe Transaction ID.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_transaction_link( $donation_id, $transaction_id = '' ) {
+
+	// If empty transaction id then get transaction id from donation id.
+	if ( empty( $transaction_id ) ) {
+		$transaction_id = give_get_payment_transaction_id( $donation_id );
+	}
+
+	$transaction_link = sprintf(
+		'<a href="%1$s" target="_blank">%2$s</a>',
+		give_stripe_get_transaction_url( $transaction_id ),
+		$transaction_id
+	);
+
+	return $transaction_link;
+}
+
+/**
+ * This function will return stripe transaction url.
+ *
+ * @param string $transaction_id Stripe Transaction ID.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_transaction_url( $transaction_id ) {
+
+	$mode = '';
+
+	if ( give_is_test_mode() ) {
+		$mode = 'test/';
+	}
+
+	$transaction_url = esc_url_raw( "https://dashboard.stripe.com/{$mode}payments/{$transaction_id}" );
+
+	return $transaction_url;
 }
