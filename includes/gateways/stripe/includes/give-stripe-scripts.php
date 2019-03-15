@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load Frontend javascript
  *
- * @since 1.0
+ * @since 2.5.0
  *
  * @return void
  */
@@ -106,61 +106,6 @@ function give_stripe_frontend_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'give_stripe_frontend_scripts' );
-
-/**
- * Load Admin javascript
- *
- * @since  1.0
- *
- * @return void
- */
-function give_stripe_admin_js() {
-
-	wp_register_script( 'give-stripe-admin-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-admin.js', 'jquery', GIVE_VERSION, true );
-	wp_enqueue_script( 'give-stripe-admin-js' );
-
-	wp_register_style( 'give-stripe-admin-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-stripe-admin.css', false, GIVE_VERSION );
-	wp_enqueue_style( 'give-stripe-admin-css' );
-
-}
-
-// add_action( 'admin_enqueue_scripts', 'give_stripe_admin_js', 100 );
-
-/**
- * Load Transaction-specific admin javascript.
- *
- * Allows the user to refund non-recurring donations.
- *
- * @since  1.0
- *
- * @param int $payment_id Payment ID.
- */
-function give_stripe_admin_payment_js( $payment_id = 0 ) {
-
-	if (
-		'stripe' !== give_get_payment_gateway( $payment_id )
-		&& 'stripe_ach' !== give_get_payment_gateway( $payment_id )
-	) {
-		return;
-	}
-	?>
-	<script type="text/javascript">
-		jQuery( function( $ ) {
-			$( 'select[name="give-payment-status"]' ).on( 'change', function() {
-				if ( 'refunded' === $(this).val() ) {
-					$(this).parent().parent().append('<p class="give-stripe-refund"><input type="checkbox" id="give_refund_in_stripe" name="give_refund_in_stripe" value="1"/><label for="give_refund_in_stripe"><?php esc_html_e( 'Refund Charge in Stripe?', 'give-stripe' ); ?></label></p>');
-				} else {
-					$('.give-stripe-refund').remove();
-				}
-			});
-		});
-	</script>
-	<?php
-
-}
-
-// add_action( 'give_view_donation_details_before', 'give_stripe_admin_payment_js', 100 );
-
 
 /**
  * WooCommerce checkout compatibility.
