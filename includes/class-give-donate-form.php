@@ -644,7 +644,7 @@ class Give_Donate_Form {
 			} elseif ( 'donors' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
 
-			} elseif( 'amount' === $goal_format ) {
+			} elseif( in_array( $goal_format, array( 'amount', 'percentage' ) ) ) {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
 		}
