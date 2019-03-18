@@ -363,7 +363,7 @@ msgstr ""
 msgid "Give Donor"
 msgstr ""
 
-#: includes/class-give-scripts.php:188, includes/class-give-scripts.php:232, includes/forms/template.php:1515, includes/admin/donors/class-donor-table.php:570, includes/admin/donors/donors.php:500, includes/admin/donors/donors.php:727, includes/admin/donors/donors.php:1114, includes/admin/payments/view-payment-details.php:674
+#: includes/class-give-scripts.php:188, includes/class-give-scripts.php:232, includes/forms/template.php:1517, includes/admin/donors/class-donor-table.php:570, includes/admin/donors/donors.php:500, includes/admin/donors/donors.php:727, includes/admin/donors/donors.php:1114, includes/admin/payments/view-payment-details.php:674
 msgid "Cancel"
 msgstr ""
 
@@ -679,19 +679,19 @@ msgstr ""
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:445, includes/process-donation.php:581, includes/shortcodes.php:405, includes/admin/admin-actions.php:793
+#: includes/class-give-scripts.php:445, includes/process-donation.php:587, includes/shortcodes.php:405, includes/admin/admin-actions.php:793
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:446, includes/process-donation.php:577
+#: includes/class-give-scripts.php:446, includes/process-donation.php:583
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-give-scripts.php:447, includes/user-functions.php:305
-msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed."
+#: includes/class-give-scripts.php:447
+msgid "Invalid email address or username."
 msgstr ""
 
-#: includes/class-give-scripts.php:448, includes/process-donation.php:955, includes/user-functions.php:410
+#: includes/class-give-scripts.php:448, includes/process-donation.php:961, includes/user-functions.php:410
 msgid "Enter a password."
 msgstr ""
 
@@ -699,7 +699,7 @@ msgstr ""
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:450, includes/process-donation.php:555
+#: includes/class-give-scripts.php:450, includes/process-donation.php:561
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
@@ -5391,11 +5391,11 @@ msgstr ""
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:725, includes/formatting.php:762, includes/process-donation.php:844, includes/gateways/actions.php:48
+#: includes/formatting.php:725, includes/formatting.php:762, includes/process-donation.php:850, includes/gateways/actions.php:48
 msgid "Nonce verification has failed."
 msgstr ""
 
-#: includes/install.php:356, includes/forms/template.php:1708, includes/forms/template.php:1713, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:322
+#: includes/install.php:356, includes/forms/template.php:1710, includes/forms/template.php:1715, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:322
 msgid "Agree to Terms?"
 msgstr ""
 
@@ -5415,11 +5415,11 @@ msgstr ""
 msgid "Donation History"
 msgstr ""
 
-#: includes/login-register.php:122, includes/process-donation.php:935
+#: includes/login-register.php:122, includes/process-donation.php:941
 msgid "The password you entered is incorrect."
 msgstr ""
 
-#: includes/login-register.php:125, includes/process-donation.php:959
+#: includes/login-register.php:125, includes/process-donation.php:965
 msgid "The username you entered does not exist."
 msgstr ""
 
@@ -5435,7 +5435,7 @@ msgstr ""
 msgid "Email address already taken."
 msgstr ""
 
-#: includes/login-register.php:267, includes/process-donation.php:800, includes/process-donation.php:1000, includes/user-functions.php:364, includes/admin/donors/donor-actions.php:379
+#: includes/login-register.php:267, includes/process-donation.php:806, includes/process-donation.php:1006, includes/user-functions.php:364, includes/admin/donors/donor-actions.php:379
 msgid "Invalid email."
 msgstr ""
 
@@ -5479,83 +5479,83 @@ msgstr ""
 msgid "Untitled donation form"
 msgstr ""
 
-#: includes/misc-functions.php:419
+#: includes/misc-functions.php:417
 msgid "%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead."
 msgstr ""
 
-#: includes/misc-functions.php:423
+#: includes/misc-functions.php:421
 msgid "%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available."
 msgstr ""
 
-#: includes/misc-functions.php:499
+#: includes/misc-functions.php:497
 msgid "Be sure to sign up for the Give newsletter below to stay informed of important updates and news."
 msgstr ""
 
-#: includes/misc-functions.php:507
+#: includes/misc-functions.php:505
 msgid "To complete your subscription, click the confirmation link in your email. Thank you!"
 msgstr ""
 
-#: includes/misc-functions.php:514, includes/misc-functions.php:516
+#: includes/misc-functions.php:512, includes/misc-functions.php:514
 msgid "Email Address (required)"
 msgstr ""
 
-#: includes/misc-functions.php:521, includes/misc-functions.php:523, templates/shortcode-profile-editor.php:52, includes/admin/import-functions.php:435, includes/forms/template.php:760, includes/forms/template.php:771, includes/admin/donors/donors.php:373, includes/admin/tools/export/give-export-donations-exporter.php:183, includes/admin/tools/import/class-give-import-donations.php:493
+#: includes/misc-functions.php:519, includes/misc-functions.php:521, templates/shortcode-profile-editor.php:52, includes/admin/import-functions.php:435, includes/forms/template.php:760, includes/forms/template.php:771, includes/admin/donors/donors.php:373, includes/admin/tools/export/give-export-donations-exporter.php:183, includes/admin/tools/import/class-give-import-donations.php:493
 msgid "First Name"
 msgstr ""
 
-#: includes/misc-functions.php:527, includes/misc-functions.php:529, templates/shortcode-profile-editor.php:60, includes/admin/import-functions.php:441, includes/forms/template.php:780, includes/forms/template.php:793, includes/admin/donors/donors.php:382, includes/admin/tools/export/give-export-donations-exporter.php:186
+#: includes/misc-functions.php:525, includes/misc-functions.php:527, templates/shortcode-profile-editor.php:60, includes/admin/import-functions.php:441, includes/forms/template.php:780, includes/forms/template.php:793, includes/admin/donors/donors.php:382, includes/admin/tools/export/give-export-donations-exporter.php:186
 msgid "Last Name"
 msgstr ""
 
-#: includes/misc-functions.php:533
+#: includes/misc-functions.php:531
 msgid "Subscribe"
 msgstr ""
 
-#: includes/misc-functions.php:616, includes/post-types.php:54
+#: includes/misc-functions.php:614, includes/post-types.php:54
 msgid "Donation Forms"
 msgstr ""
 
-#: includes/misc-functions.php:702
+#: includes/misc-functions.php:700
 msgid "array_column() expects at least 2 parameters, %s given."
 msgstr ""
 
-#: includes/misc-functions.php:708
+#: includes/misc-functions.php:706
 msgid "array_column() expects parameter 1 to be array, %s given."
 msgstr ""
 
-#: includes/misc-functions.php:714
+#: includes/misc-functions.php:712
 msgid "array_column(): The column key should be either a string or an integer."
 msgstr ""
 
-#: includes/misc-functions.php:720
+#: includes/misc-functions.php:718
 msgid "array_column(): The index key should be either a string or an integer."
 msgstr ""
 
-#: includes/misc-functions.php:1560, includes/admin/tools/import/class-give-import-core-settings.php:467
+#: includes/misc-functions.php:1558, includes/admin/tools/import/class-give-import-core-settings.php:467
 msgid "Please upload or provide a valid JSON file."
 msgstr ""
 
-#: includes/misc-functions.php:1593
+#: includes/misc-functions.php:1591
 msgid "For security reasons, please confirm your email address (%s) to view your complete donation history."
 msgstr ""
 
-#: includes/misc-functions.php:1599, includes/admin/emails/class-email-access-email.php:45
+#: includes/misc-functions.php:1597, includes/admin/emails/class-email-access-email.php:45
 msgid "Confirm Email"
 msgstr ""
 
-#: includes/misc-functions.php:1601
+#: includes/misc-functions.php:1599
 msgid "Email Sent!"
 msgstr ""
 
-#: includes/misc-functions.php:2241, includes/misc-functions.php:2282
+#: includes/misc-functions.php:2239, includes/misc-functions.php:2280
 msgid "View the receipt in your browser &raquo;"
 msgstr ""
 
-#: includes/misc-functions.php:2360
+#: includes/misc-functions.php:2358
 msgid "You are trying to access invalid donation receipt. Please try again."
 msgstr ""
 
-#: includes/misc-functions.php:2381
+#: includes/misc-functions.php:2379
 msgid "You must be logged in to view this donation receipt."
 msgstr ""
 
@@ -5842,115 +5842,115 @@ msgid "Widgets in this area will be shown on the single Give forms aside area. T
 msgstr ""
 
 #. translators: 1. Donor Email, 2. Submitted Email
-#: includes/process-donation.php:253
+#: includes/process-donation.php:259
 msgid "You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address."
 msgstr ""
 
 #. translators: %s: user first name
-#: includes/process-donation.php:300
+#: includes/process-donation.php:306
 msgid "Welcome %s! You have successfully logged into your account."
 msgstr ""
 
-#: includes/process-donation.php:330
+#: includes/process-donation.php:336
 msgid "Honeypot field detected. Go away bad bot!"
 msgstr ""
 
-#: includes/process-donation.php:339
+#: includes/process-donation.php:345
 msgid "This donation has been flagged as spam. Please try again."
 msgstr ""
 
-#: includes/process-donation.php:436
+#: includes/process-donation.php:442
 msgid "The donation form will process with a valid payment gateway."
 msgstr ""
 
-#: includes/process-donation.php:440
+#: includes/process-donation.php:446
 msgid "The selected payment gateway is not enabled."
 msgstr ""
 
-#: includes/process-donation.php:444
+#: includes/process-donation.php:450
 msgid "Please insert a valid donation amount."
 msgstr ""
 
 #. translators: %s: minimum donation amount
-#: includes/process-donation.php:452
+#: includes/process-donation.php:458
 msgid "This form has a minimum donation amount of %s."
 msgstr ""
 
 #. translators: %s: Maximum donation amount
-#: includes/process-donation.php:468
+#: includes/process-donation.php:474
 msgid "This form has a maximum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:589
+#: includes/process-donation.php:595
 msgid "Please enter your title."
 msgstr ""
 
-#: includes/process-donation.php:606
+#: includes/process-donation.php:612
 msgid "Please enter a credit card number."
 msgstr ""
 
-#: includes/process-donation.php:617
+#: includes/process-donation.php:623
 msgid "Please enter a credit card CVC information."
 msgstr ""
 
-#: includes/process-donation.php:628
+#: includes/process-donation.php:634
 msgid "Please enter a name of your credit card account holder."
 msgstr ""
 
-#: includes/process-donation.php:639
+#: includes/process-donation.php:645
 msgid "Please enter a credit card expiry date."
 msgstr ""
 
-#: includes/process-donation.php:649
+#: includes/process-donation.php:655
 msgid "Please enter your primary billing address."
 msgstr ""
 
-#: includes/process-donation.php:653
+#: includes/process-donation.php:659
 msgid "Please enter your zip / postal code."
 msgstr ""
 
-#: includes/process-donation.php:657
+#: includes/process-donation.php:663
 msgid "Please enter your billing city."
 msgstr ""
 
-#: includes/process-donation.php:661
+#: includes/process-donation.php:667
 msgid "Please select your billing country."
 msgstr ""
 
-#: includes/process-donation.php:667
+#: includes/process-donation.php:673
 msgid "Please enter billing state / province / County."
 msgstr ""
 
-#: includes/process-donation.php:709
+#: includes/process-donation.php:715
 msgid "Please enter Company Name."
 msgstr ""
 
-#: includes/process-donation.php:805
+#: includes/process-donation.php:811
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:902, includes/user-functions.php:319
-msgid "You must register or login to complete your donation."
+#: includes/process-donation.php:908
+msgid "Please enter your username or email to log in."
 msgstr ""
 
-#: includes/process-donation.php:937, templates/shortcode-login.php:51, includes/forms/template.php:1503
+#: includes/process-donation.php:943, templates/shortcode-login.php:51, includes/forms/template.php:1505
 msgid "Reset Password"
 msgstr ""
 
-#: includes/process-donation.php:1026, includes/user-functions.php:354
+#: includes/process-donation.php:1032, includes/user-functions.php:354
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:1210
+#: includes/process-donation.php:1216
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
 #. translators: %s: invalid donation amount
-#: includes/process-donation.php:1519
+#: includes/process-donation.php:1525
 msgid "Donation amount %s is invalid."
 msgstr ""
 
-#: includes/process-donation.php:1570
+#: includes/process-donation.php:1576
 msgid "The First Name and Last Name fields cannot contain an email address or numbers."
 msgstr ""
 
@@ -5998,7 +5998,7 @@ msgstr ""
 msgid "Hey! We've raised {total} of the {total_goal} we are trying to raise for this campaign!"
 msgstr ""
 
-#: includes/shortcodes.php:547, includes/forms/template.php:686, includes/forms/template.php:1886, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273
+#: includes/shortcodes.php:547, includes/forms/template.php:686, includes/forms/template.php:1888, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273
 msgid "Donate Now"
 msgstr ""
 
@@ -6019,8 +6019,16 @@ msgstr ""
 msgid "Give Placeholder Image"
 msgstr ""
 
+#: includes/user-functions.php:305
+msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed."
+msgstr ""
+
 #: includes/user-functions.php:314
 msgid "Enter a username."
+msgstr ""
+
+#: includes/user-functions.php:319
+msgid "You must register or login to complete your donation."
 msgstr ""
 
 #: includes/user-functions.php:359
@@ -6131,7 +6139,7 @@ msgstr[1] ""
 msgid "Log into Your Account"
 msgstr ""
 
-#: templates/shortcode-login.php:33, templates/shortcode-register.php:34, includes/admin/class-api-keys-table.php:192, includes/forms/template.php:1474
+#: templates/shortcode-login.php:33, templates/shortcode-register.php:34, includes/admin/class-api-keys-table.php:192
 msgid "Username"
 msgstr ""
 
@@ -8385,12 +8393,12 @@ msgstr ""
 msgid "Already have an account?"
 msgstr ""
 
-#: includes/forms/template.php:1367, includes/forms/template.php:1511, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
+#: includes/forms/template.php:1367, includes/forms/template.php:1513, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
 msgid "Login"
 msgstr ""
 
 #: includes/forms/template.php:1437
-msgid "Login to Your Account"
+msgid "Log In to Your Account"
 msgstr ""
 
 #: includes/forms/template.php:1439
@@ -8409,47 +8417,51 @@ msgstr ""
 msgid "Register or donate as a guest &raquo;"
 msgstr ""
 
+#: includes/forms/template.php:1474
+msgid "Username or Email Address"
+msgstr ""
+
 #: includes/forms/template.php:1483
-msgid "Your username"
+msgid "Your username or email"
 msgstr ""
 
 #: includes/forms/template.php:1496
 msgid "Your password"
 msgstr ""
 
-#: includes/forms/template.php:1583
+#: includes/forms/template.php:1585
 msgid "Select Payment Method"
 msgstr ""
 
-#: includes/forms/template.php:1724
+#: includes/forms/template.php:1726
 msgid "Please enter valid terms and conditions in <a href=\"%s\">this form's settings</a>."
 msgstr ""
 
-#: includes/forms/template.php:1739
+#: includes/forms/template.php:1741
 msgid "Terms"
 msgstr ""
 
-#: includes/forms/template.php:1760
+#: includes/forms/template.php:1762
 msgid "Show Terms"
 msgstr ""
 
-#: includes/forms/template.php:1762
+#: includes/forms/template.php:1764
 msgid "Hide Terms"
 msgstr ""
 
-#: includes/forms/template.php:1807, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
+#: includes/forms/template.php:1809, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
 msgid "Donation Total:"
 msgstr ""
 
-#: includes/forms/template.php:2161
+#: includes/forms/template.php:2163
 msgid "Notice:"
 msgstr ""
 
-#: includes/forms/template.php:2161
+#: includes/forms/template.php:2163
 msgid "Test mode is enabled. While in test mode no live donations are processed."
 msgstr ""
 
-#: includes/forms/template.php:2191
+#: includes/forms/template.php:2193
 msgid "Please log in in order to complete your donation."
 msgstr ""
 

@@ -226,18 +226,24 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
  */
 function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 
-	// Verify that the email address belongs to this customer.
+	// Verify that the email address belongs to this donor.
 	if ( is_user_logged_in() ) {
+
+		$donor = new Give_Donor( get_current_user_id(), true );
+
+		// Bailout: check if wp user is existing donor or not.
+		if ( ! $donor->id ) {
+			return;
+		}
 
 		$submitted_email = strtolower( $valid_data['user_email'] );
 
-		$donor        = new Give_Donor( get_current_user_id(), true );
 		$donor_emails = array_map( 'strtolower', $donor->emails );
 		$email_index  = array_search( $submitted_email, $donor_emails, true );
 
 		// If donor matched with email then return set formatted email from database.
 		if ( false !== $email_index ) {
-			$valid_data['user_email'] = $donor->emails[$email_index];
+			$valid_data['user_email'] = $donor->emails[ $email_index ];
 
 			return;
 		}
@@ -363,9 +369,9 @@ function give_donation_form_validate_fields() {
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
 	} elseif (
-		isset( $post_data['give-purchase-var'] ) &&
-		'needs-to-register' === $post_data['give-purchase-var'] &&
-		! empty( $post_data['give_create_account'] )
+		isset( $post_data['give-purchase-var'] )
+		&& 'needs-to-register' === $post_data['give-purchase-var']
+		&& ! empty( $post_data['give_create_account'] )
 	) {
 
 		// Set new user registration as required.
@@ -374,8 +380,8 @@ function give_donation_form_validate_fields() {
 		// Validate new user data.
 		$valid_data['new_user_data'] = give_donation_form_validate_new_user();
 	} elseif (
-		isset( $post_data['give-purchase-var'] ) &&
-		'needs-to-login' === $post_data['give-purchase-var']
+		isset( $post_data['give-purchase-var'] )
+		&& 'needs-to-login' === $post_data['give-purchase-var']
 	) {
 
 		// Set user login as required.
@@ -899,7 +905,7 @@ function give_donation_form_validate_user_login() {
 
 	// Bailout, if Username is empty.
 	if ( empty( $post_data['give_user_login'] ) ) {
-		give_set_error( 'must_log_in', __( 'You must register or login to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', __( 'Please enter your username or email to log in.', 'give' ) );
 
 		return $valid_user_data;
 	}
