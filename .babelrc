@@ -4,13 +4,12 @@
       "@babel/preset-env",
       {
 		"targets": {
-		  "node": "current"
+		  "browsers": "last 2 version, > 1%, not dead, ie >= 10"
 		}
       }
     ]
   ],
   "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
     [
       "@babel/transform-react-jsx",
       {
