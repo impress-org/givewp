@@ -1628,7 +1628,7 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 					// Bailout.
 					if ( ! isset( $tag_args['payment_id'] ) ) {
 						$replace[] = '';
-						continue;
+						continue 2;
 					}
 
 					$meta_data = give_get_meta( absint( $tag_args['payment_id'] ), $meta_name, true, '' );
