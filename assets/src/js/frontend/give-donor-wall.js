@@ -149,7 +149,7 @@ class GiveDonorWall {
 			return false;
 		}
 
-		gridWraps = shortcodeAttrHiddenField.parentNode.querySelectorAll('.give-grid__item');
+		gridWraps = Array.from( shortcodeAttrHiddenField.parentNode.querySelectorAll('.give-grid__item') );
 
 		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
