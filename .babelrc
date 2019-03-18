@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
 		"targets": {
-		  "browsers": "last 2 version, > 1%, not dead, ie >= 10"
+		  "browsers": "last 2 version, > 0.05%, not dead, ie >= 10"
 		}
       }
     ]
