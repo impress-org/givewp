@@ -152,7 +152,7 @@ class Give_Scripts {
 
 		// Plugin page script
 		if ( 'plugins.php' === $pagenow ) {
-			$this->plugin_equeue_scripts();
+			$this->plugin_enqueue_scripts();
 		}
 
 		// Give Admin Only.
@@ -179,7 +179,7 @@ class Give_Scripts {
 	 * @since  2.2.0
 	 * @access private
 	 */
-	private function plugin_equeue_scripts() {
+	private function plugin_enqueue_scripts() {
 		wp_enqueue_style( 'plugin-deactivation-survey-css' );
 		wp_enqueue_script( 'plugin-deactivation-survey-js' );
 
