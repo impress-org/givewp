@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.1
 Requires PHP: 5.6
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -206,6 +206,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.4.4: March 20th, 2019 =
+* Fix: Resolved a regression where percentage based goals were not displaying their progress correctly. [#4049](https://github.com/impress-org/give/issues/4049)
+* Fix: Resolved a regression in `2.4.3` where IE10/11 browsers had issues with donating with multi-level donation forms. [#4048](https://github.com/impress-org/give/issues/4048)
+* Fix: Corrected a PHP Warning on servers running PHP 7.3.3 within the email tags settings section. [#4044](https://github.com/impress-org/give/issues/4044)
 
 = 2.4.3: March 13th, 2019 =
 * Fix: Ensure when a donation form's "Registration" option is set to "Login" that it does not appear incorrectly as optional on the donation form. [#4045](https://github.com/impress-org/give/issues/4045)
