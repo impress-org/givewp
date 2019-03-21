@@ -38,7 +38,7 @@ class Give_Email_Notifications {
 	 *
 	 * @since  2.0
 	 * @access private
-	 * Give_Payumoney_API constructor.
+	 * Give_Email_Notifications constructor.
 	 */
 	private function __construct() {
 	}
