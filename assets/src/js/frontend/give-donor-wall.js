@@ -114,7 +114,7 @@ class GiveDonorWall {
 		 * @since 2.3.0
 		 *
 		 */
-		let shortcodeAttrHiddenFields = document.querySelectorAll('.give-donor-wall-shortcode-attrs');
+		let shortcodeAttrHiddenFields = Array.from( document.querySelectorAll('.give-donor-wall-shortcode-attrs') );
 
 		shortcodeAttrHiddenFields.forEach(function (shortcodeAttrHiddenField, index) {
 			GiveDonorWall.loadGravatar( shortcodeAttrHiddenField );
@@ -149,7 +149,7 @@ class GiveDonorWall {
 			return false;
 		}
 
-		gridWraps = shortcodeAttrHiddenField.parentNode.querySelectorAll('.give-grid__item');
+		gridWraps = Array.from( shortcodeAttrHiddenField.parentNode.querySelectorAll('.give-grid__item') );
 
 		gridWraps.forEach(function (gridWrap, index) {
 			gravatarContainer = gridWrap.querySelector('.give-donor__image');
