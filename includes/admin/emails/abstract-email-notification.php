@@ -132,10 +132,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['has_preview_header'] = $this->config['has_preview'] && $this->config['has_preview_header'] ? true : false;
 
 			// Set email content type
-			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array(
-				'text/html',
-				'text/plain',
-			) )
+			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array(
+				$this->config['content_type'], array(
+					'text/html',
+					'text/plain',
+				)
+			)
 				? Give()->emails->get_content_type()
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( Give_Email_Setting_Field::get_prefix( $this ) . 'email_content_type', $this->config['content_type'] );
@@ -178,7 +180,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		private function setup_filters() {
 			// Do not setup filters if not admin.
-			if( ! is_admin() ){
+			if ( ! is_admin() ) {
 				return;
 			}
 
@@ -193,7 +195,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Setup setting fields.
-			if( $this->config['show_on_emails_setting_page'] ) {
+			if ( $this->config['show_on_emails_setting_page'] ) {
 				add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 			}
 
@@ -206,12 +208,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				);
 			}
 
-			if( $this->config['has_recipient_field'] ) {
+			if ( $this->config['has_recipient_field'] ) {
 				add_action(
-						"give_save__give_{$this->config['id']}_recipient",
-						array( $this, 'validate_form_recipient_field_value' ),
-						10,
-						3
+					"give_save__give_{$this->config['id']}_recipient",
+					array( $this, 'validate_form_recipient_field_value' ),
+					10,
+					3
 				);
 			}
 
@@ -326,7 +328,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function add_metabox_setting_field( $settings, $form_id ) {
 
-			if( Give_Email_Notification_Util::is_email_notification_active( $this ) ) {
+			if ( Give_Email_Notification_Util::is_email_notification_active( $this ) ) {
 				$settings[] = array(
 					'id'     => $this->config['id'],
 					'title'  => $this->config['label'],
@@ -368,11 +370,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_recipient( $form_id = null ) {
 			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
 				$this->recipient_email = Give_Email_Notification_Util::get_value(
-						$this,
-						Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient',
-						$form_id
+					$this,
+					Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient',
+					$form_id
 				);
-
 
 				/**
 				 * Filter the admin notice emails.
@@ -567,7 +568,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$email_template = give_get_meta( $form_id, '_give_email_template', true );
 			$email_template = Give_Email_Notification_Util::get_value(
 				$this,
-				Give_Email_Setting_Field::get_prefix( $this, $form_id ) .'email_template',
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_template',
 				$form_id,
 				! empty( $email_template ) && Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ?
 					$email_template :
@@ -627,7 +628,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				}
 			}
 
-			if ( count( $email_tags ) && $formatted ) : ob_start() ?>
+			if ( count( $email_tags ) && $formatted ) :
+				ob_start() ?>
 				<ul class="give-email-tags-wrap">
 					<?php foreach ( $email_tags as $email_tag ) : ?>
 						<li class="give_<?php echo $email_tag['tag']; ?>_tag">
@@ -781,7 +783,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				? absint( $email_tag_args['form_id'] )
 				: ( ! empty( $email_tag_args['payment_id'] ) ? give_get_payment_form_id( $email_tag_args['payment_id'] ) : null );
 
-
 			// Do not send email if notification is disable.
 			if ( ! Give_Email_Notification_Util::is_email_notification_active( $this, $form_id ) ) {
 				return false;
@@ -865,33 +866,41 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['preview_email_tags_values'] = wp_parse_args(
 				$this->config['preview_email_tags_values'],
 				array(
-					'name'                     => give_email_tag_first_name( array(
-						'payment_id' => $payment_id,
-						'user_id'    => $user_id,
-					) ),
-					'fullname'                 => give_email_tag_fullname( array(
-						'payment_id' => $payment_id,
-						'user_id'    => $user_id,
-					) ),
-					'username'                 => give_email_tag_username( array(
-						'payment_id' => $payment_id,
-						'user_id'    => $user_id,
-					) ),
-					'user_email'               => give_email_tag_user_email( array(
-						'payment_id' => $payment_id,
-						'user_id'    => $user_id,
-					) ),
-					'payment_total'            => $payment_id ? give_email_tag_payment_total( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'amount'                   => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'price'                    => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
-					'payment_method'           => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
-					'payment_id'               => $payment_id ? $payment_id : rand( 2000, 2050 ),
-					'receipt_link_url'         => $receipt_link_url,
-					'receipt_link'             => $receipt_link,
-					'date'                     => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
-					'donation'                 => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
-					'form_title'               => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
-					'sitename'                 => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
+					'name'                    => give_email_tag_first_name(
+						array(
+							'payment_id' => $payment_id,
+							'user_id'    => $user_id,
+						)
+					),
+					'fullname'                => give_email_tag_fullname(
+						array(
+							'payment_id' => $payment_id,
+							'user_id'    => $user_id,
+						)
+					),
+					'username'                => give_email_tag_username(
+						array(
+							'payment_id' => $payment_id,
+							'user_id'    => $user_id,
+						)
+					),
+					'user_email'              => give_email_tag_user_email(
+						array(
+							'payment_id' => $payment_id,
+							'user_id'    => $user_id,
+						)
+					),
+					'payment_total'           => $payment_id ? give_email_tag_payment_total( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'amount'                  => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'price'                   => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'payment_method'          => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
+					'payment_id'              => $payment_id ? $payment_id : rand( 2000, 2050 ),
+					'receipt_link_url'        => $receipt_link_url,
+					'receipt_link'            => $receipt_link,
+					'date'                    => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
+					'donation'                => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
+					'form_title'              => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
+					'sitename'                => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
 					'billing_address'         => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
 					'email_access_link'       => sprintf(
 						'<a href="%1$s">%2$s</a>',
@@ -906,11 +915,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'donation_history_link'   => sprintf(
 						'<a href="%1$s">%2$s</a>',
 						add_query_arg(
-                            array(
-                                'give_nl' => uniqid(),
-                            ),
-                            give_get_history_page_uri()
-                        ),
+							array(
+								'give_nl' => uniqid(),
+							),
+							give_get_history_page_uri()
+						),
 						__( 'View your donation history &raquo;', 'give' )
 					),
 					'reset_password_link'     => $user_id ? give_email_tag_reset_password_link( array( 'user_id' => $user_id ), $payment_id ) : '',
@@ -955,19 +964,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @param $form_meta_key
 		 * @param $form_meta_value
 		 * @param $post_id
-		 *
 		 */
 		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
 			// Get valid emails.
-			$new_form_meta_value = array_filter( $form_meta_value, function ( $value ) {
-				return ! empty( $value['email'] ) && is_email( $value['email'] );
-			} );
+			$new_form_meta_value = array_filter(
+				$form_meta_value, function ( $value ) {
+					return ! empty( $value['email'] ) && is_email( $value['email'] );
+				}
+			);
 
 			// Remove duplicate emails from array.
 			$email_arr = array();
 			foreach ( $new_form_meta_value as $index => $email ) {
-				if( in_array( $email['email'], $email_arr  ) ) {
-					unset( $new_form_meta_value[$index] );
+				if ( in_array( $email['email'], $email_arr ) ) {
+					unset( $new_form_meta_value[ $index ] );
 					continue;
 				}
 
@@ -980,7 +990,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				// Set default recipient.
 				$form_meta_value = array(
 					array(
-						'email' => get_bloginfo( 'admin_email' )
+						'email' => get_bloginfo( 'admin_email' ),
 					),
 				);
 
@@ -993,7 +1003,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				$update = true;
 			}
 
-			if( $update ) {
+			if ( $update ) {
 				give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 			}
 		}
