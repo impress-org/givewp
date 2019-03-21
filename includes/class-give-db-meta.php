@@ -376,6 +376,7 @@ class Give_DB_Meta extends Give_DB {
 				$status = true;
 			} elseif (
 				is_array( $wp_query->query['post_type'] ) &&
+				1 === count( $wp_query->query['post_type'] ) &&
 				in_array( $this->post_type, $wp_query->query['post_type'] )
 			) {
 				$status = true;
