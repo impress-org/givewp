@@ -57,13 +57,7 @@ function give_generate_pdf( $data ) {
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
 	$custom_font  = 'dejavusans';
 	$font_style   = '';
-	$font_path    = '';
-
-	if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-		$font_path = GIVE_PLUGIN_DIR . '/vendor/tecnickcom/tcpdf/fonts/CODE2000.TTF';
-	} else {
-		$font_path = GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF';
-	}
+	$font_path    = GIVE_PLUGIN_DIR . '/vendor/tecnickcom/tcpdf/fonts/CODE2000.TTF';
 
 	if (
 		file_exists( $font_path ) &&
