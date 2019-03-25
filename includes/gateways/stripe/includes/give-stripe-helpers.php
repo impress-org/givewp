@@ -156,8 +156,7 @@ function give_stripe_connect_button() {
 			'website_url'           => get_bloginfo( 'url' ),
 			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
 		),
-		// esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
-		esc_url_raw( 'http://give.test/Gateway-oAuth/stripe/connect_new.php' )
+		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
 
 	echo sprintf(
@@ -184,8 +183,7 @@ function give_stripe_disconnect_url() {
 			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
 			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 		),
-		// esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
-		esc_url_raw( 'http://give.test/Gateway-oAuth/stripe/connect_new.php' )
+		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
 
 	echo esc_url( $link );
