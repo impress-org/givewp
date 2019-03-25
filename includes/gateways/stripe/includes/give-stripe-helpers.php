@@ -35,17 +35,6 @@ function give_stripe_get_secret_key() {
 }
 
 /**
- * Is Pre-approved Enabled?
- *
- * @since 2.5.0
- *
- * @return bool
- */
-function give_stripe_is_preapprove_enabled() {
-	return give_is_setting_enabled( give_get_option( 'stripe_preapprove_only', 'disabled' ) );
-}
-
-/**
  * Is Stripe Checkout Enabled?
  *
  * @since 2.5.0
