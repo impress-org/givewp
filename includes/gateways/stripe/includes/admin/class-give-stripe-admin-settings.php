@@ -135,14 +135,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
-					// Stripe Admin Settings - Configuration Fields.
-					$settings[] = array(
-						'name'          => __( 'Stripe Connect', 'give' ),
-						'desc'          => '',
-						'wrapper_class' => 'give-stripe-connect-tr',
-						'id'            => 'stripe_connect',
-						'type'          => 'stripe_connect',
-					);
+					if ( apply_filters( 'give_stripe_show_connect_button', true ) ) {
+						// Stripe Admin Settings - Configuration Fields.
+						$settings[] = array(
+							'name'          => __( 'Stripe Connect', 'give' ),
+							'desc'          => '',
+							'wrapper_class' => 'give-stripe-connect-tr',
+							'id'            => 'stripe_connect',
+							'type'          => 'stripe_connect',
+						);
+					}
 
 					/**
 					 * This filter hook is used to add configuration fields like api key, access token, oAuth button, etc.
