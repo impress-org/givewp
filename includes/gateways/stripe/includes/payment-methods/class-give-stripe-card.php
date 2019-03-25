@@ -213,19 +213,27 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Save donation summary to donation.
 					give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
-					$intent_args = array(
-						'amount'               => $this->format_amount( $donation_data['price'] ),
-						'currency'             => give_get_currency( $form_id ),
-						'payment_method_types' => [ 'card' ],
-						'statement_descriptor' => give_stripe_get_statement_descriptor(),
-						'receipt_email'        => $donation_data['user_email'],
-						'description'          => give_payment_gateway_donation_summary( $donation_data ),
-						'metadata'             => $this->prepare_metadata( $donation_id ),
-						'customer'             => $stripe_customer_id,
-						'source'               => $source_id,
-						'save_payment_method'  => true,
-						'confirm'              => true,
-						'return_url'           => give_get_success_page_uri(),
+					/**
+					 * This filter hook is used to update the payment intent arguments.
+					 *
+					 * @since 2.5.0
+					 */
+					$intent_args = apply_filters(
+						'give_stripe_create_intent_args',
+						array(
+							'amount'               => $this->format_amount( $donation_data['price'] ),
+							'currency'             => give_get_currency( $form_id ),
+							'payment_method_types' => [ 'card' ],
+							'statement_descriptor' => give_stripe_get_statement_descriptor(),
+							'receipt_email'        => $donation_data['user_email'],
+							'description'          => give_payment_gateway_donation_summary( $donation_data ),
+							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'customer'             => $stripe_customer_id,
+							'source'               => $source_id,
+							'save_payment_method'  => true,
+							'confirm'              => true,
+							'return_url'           => give_get_success_page_uri(),
+						)
 					);
 					$intent      = $this->payment_intent->create( $intent_args );
 
