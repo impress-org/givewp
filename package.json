@@ -27,7 +27,6 @@
   "homepage": "https://github.com/impress-org/give#readme",
   "devDependencies": {
     "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/plugin-syntax-jsx": "^7.2.0",
     "@babel/plugin-transform-react-jsx": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
@@ -64,7 +63,7 @@
     "uglifyjs-webpack-plugin": "^2.1.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-rtl-plugin": "^1.7.0",
+    "webpack-rtl-plugin": "^2.0.0",
     "wp-pot": "^1.6.5"
   },
   "dependencies": {
