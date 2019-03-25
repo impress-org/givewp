@@ -801,6 +801,20 @@ function give_stripe_set_api_key() {
 }
 
 /**
+ * This function is used to fetch the webhook key used to store in options table.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_get_webhook_key() {
+
+	$mode = give_stripe_get_payment_mode();
+
+	return "give_stripe_{$mode}_webhook_id";
+}
+
+/**
  * This function is used to fetch the webhook id which is stored in DB, if the webhook is set on Stripe.
  *
  * @since 2.5.0
@@ -809,10 +823,23 @@ function give_stripe_set_api_key() {
  */
 function give_stripe_get_webhook_id() {
 
-    $mode = give_stripe_get_payment_mode();
-    $key  = "give_stripe_{$mode}_webhook_id";
+    $key = give_stripe_get_webhook_key();
 
 	return trim( give_get_option( $key ) );
+}
+
+/**
+ * This function is used to fetch the webhook id which is stored in DB, if the webhook is set on Stripe.
+ *
+ * @since 2.5.0
+ *
+ * @return string
+ */
+function give_stripe_delete_webhook_id() {
+
+    $key = give_stripe_get_webhook_key();
+
+	return trim( give_delete_option( $key ) );
 }
 
 /**
