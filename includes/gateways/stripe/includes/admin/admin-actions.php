@@ -33,7 +33,7 @@ function give_stripe_check_webhook_status_callback() {
     $give_stripe_webhook = new Give_Stripe_Webhooks();
     $webhook_id          = give_stripe_get_webhook_id();
 
-    if ( ! empty( $webhook_id ) ) {
+	if ( ! empty( $webhook_id ) ) {
 
         // Get webhook details of an existing one.
         $webhook_details = $give_stripe_webhook->retrieve( $webhook_id );
@@ -45,7 +45,7 @@ function give_stripe_check_webhook_status_callback() {
     }
 
     // Recreate Webhook, if the details in DB mismatch with Stripe.
-    if ( empty( $webhook_details->id ) ) {
+    if ( empty( $webhook_id ) || empty( $webhook_details->id ) ) {
 
         // Get webhook details after creating one.
         $webhook_details = $give_stripe_webhook->create();
