@@ -185,7 +185,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Apply filter only for current email notification section.
-			if ( give_get_current_setting_section() === $this->config['id'] ) {
+			if ( isset( $_GET['section'] ) && give_get_current_setting_section() === $this->config['id'] ) {
 				// Initialize email context for email notification.
 				$this->config['email_tag_context'] = apply_filters(
 					"give_{$this->config['id']}_email_tag_context",
