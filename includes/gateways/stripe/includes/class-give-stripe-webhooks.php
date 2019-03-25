@@ -53,11 +53,14 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 */
 		public function create() {
 			try {
+				// Set Application Information.
+				give_stripe_set_app_info();
+
 				$result = \Stripe\WebhookEndpoint::create(
 					array(
 						'url'            => $this->url,
 						'enabled_events' => array( '*' ),
-						'connect'        => give_stripe_is_connected() ? true : false,
+						'connect'        => true,
 					)
 				);
 
@@ -72,6 +75,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						$e->getMessage()
 					)
 				);
+				return false;
 			}
 		}
 
@@ -87,6 +91,9 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 */
 		public function retrieve( $id ) {
 			try {
+				// Set Application Information.
+				give_stripe_set_app_info();
+
 				return \Stripe\WebhookEndpoint::retrieve( $id );
 			} catch ( \Stripe\Error\InvalidRequest $e ) {
 				give_record_gateway_error(
@@ -97,6 +104,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						$e->getMessage()
 					)
 				);
+				return false;
 			}
 		}
 
@@ -112,6 +120,9 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 */
 		public function list_all() {
 			try {
+				// Set Application Information.
+				give_stripe_set_app_info();
+
 				return \Stripe\WebhookEndpoint::all(
 					array(
 						'limit' => 20,
@@ -126,6 +137,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						$e->getMessage()
 					)
 				);
+				return false;
 			}
 		}
 
