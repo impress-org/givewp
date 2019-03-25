@@ -224,6 +224,10 @@ function give_stripe_connect_delete_options() {
 	give_delete_option( 'test_secret_key' );
 	give_delete_option( 'live_publishable_key' );
 	give_delete_option( 'test_publishable_key' );
+	give_delete_option( "give_stripe_is_live_webhook_exists" );
+	give_delete_option( "give_stripe_is_test_webhook_exists" );
+	give_delete_option( "give_stripe_live_webhook_id" );
+	give_delete_option( "give_stripe_test_webhook_id" );
 }
 
 /**
