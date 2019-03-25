@@ -67,6 +67,21 @@ class Give_Scripts {
 	}
 
 	/**
+	 * Register plugin script.
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 *
+	 * @param string $handle Script Handle.
+	 * @param string $src    Script Source URL.
+	 * @param array  $dep    Dependency on a script.
+	 * @param mixed  $ver    Script Version
+	 */
+	public static function register_script( $handle, $src, $dep = array(), $ver = false ) {
+		wp_register_script( $handle, $src, $dep, $ver, self::$scripts_footer );
+	}
+
+	/**
 	 * Registers all plugin styles.
 	 *
 	 * @since 2.1.0
