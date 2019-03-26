@@ -211,6 +211,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Resolved a regression where percentage based goals were not displaying their progress correctly. [#4049](https://github.com/impress-org/give/issues/4049)
 * Fix: Resolved a regression in `2.4.3` where IE10/11 browsers had issues with donating with multi-level donation forms. [#4048](https://github.com/impress-org/give/issues/4048)
 * Fix: Corrected a PHP Warning on servers running PHP 7.3.3 within the email tags settings section. [#4044](https://github.com/impress-org/give/issues/4044)
+* Fix: Resolved conflict with iTheme's Sync plugin. [#3989](https://github.com/impress-org/give/issues/3989)
+* Fix: Updated the backwards compatibile TCPDF version used by older plugin versions to the latest version. [#4054](https://github.com/impress-org/give/issues/4054)
 
 = 2.4.3: March 13th, 2019 =
 * Fix: Ensure when a donation form's "Registration" option is set to "Login" that it does not appear incorrectly as optional on the donation form. [#4045](https://github.com/impress-org/give/issues/4045)
