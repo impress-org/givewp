@@ -76,7 +76,7 @@ class Give_Email_Notifications {
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox_setting_fields' ), 10, 2 );
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
-		add_action( 'init', array( $this, 'validate_settings' ) );
+		add_action( 'admin_init', array( $this, 'validate_settings' ) );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
