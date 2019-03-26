@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.1
 Requires PHP: 5.6
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -206,6 +206,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.4.5: =
+
 
 = 2.4.4: March 20th, 2019 =
 * Fix: Resolved a regression where percentage based goals were not displaying their progress correctly. [#4049](https://github.com/impress-org/give/issues/4049)
