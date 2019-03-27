@@ -1,6 +1,6 @@
 const helpers = {
 	vars: {
-		rootUrl: 'http://localhost:8004',
+		rootUrl: 'http://jestgivetest.test',
 		firstName: 'Devin',
 		lastName: 'Walker',
 		email: 'info@givewp.com',
