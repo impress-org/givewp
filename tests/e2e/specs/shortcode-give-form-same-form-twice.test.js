@@ -428,12 +428,12 @@ describe( 'Display Option: All fields', () => {
 
 		await Promise.all([
 			page.click( '.give-display-reveal .give-submit' ),
-			page.waitForNavigation()
+			page.waitForNavigation({waitUntil: 'networkidle0' })
 		])
 	}, 100000 )
 
 	it ( 'EXISTENCE: verify donation confirmation of the second form', async () => {
-		await page.waitFor( 2000 ); // Wait for receipt to load by ajax.
+		await page.waitFor( 3000 ); // Wait for receipt to load by ajax.
 		await expect( page ).toMatch( 'Payment Complete: Thank you for your donation.' )
 		await expect( page ).toMatch( 'Mr. Creed Bratton' )
 		await expect( page ).toMatch( '$30.00' )
