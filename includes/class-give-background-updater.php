@@ -58,7 +58,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return bool
 	 */
 	public function has_queue() {
-		return ( ! parent::is_queue_empty() );
+		return ( ! $this->is_queue_empty() );
 	}
 
 
