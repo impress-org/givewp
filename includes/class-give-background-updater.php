@@ -154,7 +154,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			WHERE {$column} LIKE %s
 		", $key ) );
 
-		return ( $count > 0 ) ? false : true;
+		return ! ( $count > 0 );
 	}
 
 	/**
