@@ -1100,12 +1100,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Check fo setting tab.
-			if ( ! empty( $tab ) ) {
+			if ( ! empty( $tab ) && isset( $_GET['tab'] ) ) {
 				$is_setting_page = ( $tab === give_get_current_setting_tab() );
 			}
 
 			// Check fo setting section.
-			if ( ! empty( $section ) ) {
+			if ( ! empty( $section ) && isset( $_GET['section'] ) ) {
 				$is_setting_page = ( $section === give_get_current_setting_section() );
 			}
 

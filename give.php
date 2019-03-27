@@ -507,6 +507,7 @@ if ( ! class_exists( 'Give' ) ) :
 			 * Load plugin files
 			 */
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
@@ -548,7 +549,6 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
 
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
