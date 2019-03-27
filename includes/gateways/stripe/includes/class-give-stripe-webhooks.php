@@ -52,9 +52,11 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 * @return \Stripe\ApiResource
 		 */
 		public function create() {
+
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
-				// Set Application Information.
-				give_stripe_set_app_info();
 
 				$result = \Stripe\WebhookEndpoint::create(
 					array(
@@ -90,10 +92,11 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 * @return \Stripe\StripeObject
 		 */
 		public function retrieve( $id ) {
-			try {
-				// Set Application Information.
-				give_stripe_set_app_info();
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
+			try {
 				return \Stripe\WebhookEndpoint::retrieve( $id );
 			} catch ( \Stripe\Error\InvalidRequest $e ) {
 				give_record_gateway_error(
@@ -119,10 +122,11 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 * @throws \Stripe\Error\Api Throws API error from Stripe.
 		 */
 		public function list_all() {
-			try {
-				// Set Application Information.
-				give_stripe_set_app_info();
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
+			try {
 				return \Stripe\WebhookEndpoint::all(
 					array(
 						'limit' => 20,

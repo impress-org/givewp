@@ -111,6 +111,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function set_api_version() {
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
 
 				// Set API Version to latest.
@@ -148,33 +151,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return void
 		 */
 		public function set_api_key() {
-
-			try {
-
-				// Fetch and Set API Key.
-				\Stripe\Stripe::setApiKey( $this->secret_key );
-
-			} catch ( \Stripe\Error\Base $e ) {
-
-				// Log Error.
-				$this->log_error( $e );
-
-			} catch ( Exception $e ) {
-
-				// Something went wrong outside of Stripe.
-				give_record_gateway_error(
-					__( 'Stripe Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Message Body */
-						__( 'Unable to set Stripe API Key. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
-				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
-
-				// Send donor back to checkout page on error.
-				$this->send_back_to_checkout();
-			}
+			give_stripe_set_api_key();
 		}
 
 		/**
@@ -202,6 +179,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function get_token_details( $id, $args = array() ) {
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
 
 				$args = wp_parse_args( $args, give_stripe_get_connected_account_options() );
@@ -215,10 +195,10 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 				// Something went wrong outside of Stripe.
 				give_record_gateway_error(
-					__( 'Stripe Error', 'give' ),
+					__( 'Stripe Token Error', 'give' ),
 					sprintf(
 						/* translators: %s Exception Message Body */
-						__( 'Unable to retrieve source. Details: %s', 'give' ),
+						__( 'Unable to retrieve token. Details: %s', 'give' ),
 						$e->getMessage()
 					)
 				);
@@ -241,6 +221,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function get_source_details( $id ) {
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
 
 				// Retrieve Source Object.
@@ -252,7 +235,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 				// Something went wrong outside of Stripe.
 				give_record_gateway_error(
-					__( 'Stripe Error', 'give' ),
+					__( 'Stripe Source Error', 'give' ),
 					sprintf(
 						/* translators: %s Exception Message Body */
 						__( 'Unable to retrieve source. Details: %s', 'give' ),
@@ -277,6 +260,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return \Stripe\Source
 		 */
 		public function prepare_source( $args ) {
+
+			// Set Application Info.
+			give_stripe_set_app_info();
 
 			try {
 
@@ -495,86 +481,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			} else {
 				return $amount * 100;
 			}
-		}
-
-		/**
-		 * Create Source for Stripe 3D Secure Payments.
-		 *
-		 * @param int $donation_id Donation ID.
-		 * @param int $source_id   Source ID/Object.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return bool|\Stripe\Source
-		 */
-		public function create_3d_secure_source( $donation_id, $source_id ) {
-
-			$form_id         = give_get_payment_form_id( $donation_id );
-			$customer_id     = give_get_payment_meta( $donation_id, '_give_stripe_customer_id', true );
-			$donation_amount = give_donation_amount( $donation_id );
-
-			// Prepare basic source args.
-			$source_args = array(
-				'amount'               => $this->format_amount( $donation_amount ),
-				'currency'             => give_get_currency( $form_id ),
-				'type'                 => 'three_d_secure',
-				'three_d_secure'       => array(
-					'card' => $source_id,
-				),
-				'statement_descriptor' => give_get_stripe_statement_descriptor(),
-				'redirect'             => array(
-					'return_url' => add_query_arg(
-						array(
-							'give-listener' => 'stripe_three_d_secure',
-							'donation_id'   => $donation_id,
-						),
-						give_get_success_page_uri()
-					),
-				),
-			);
-
-			$source = $this->prepare_source( $source_args );
-
-			// Add donation note for 3D secure source ID.
-			if ( ! empty( $source->id ) ) {
-				give_insert_payment_note( $donation_id, 'Stripe 3D Secure Source ID: ' . $source->id );
-			}
-
-			// Save 3D secure source id to donation.
-			give_update_payment_meta( $donation_id, '_give_stripe_3dsecure_source_id', $source->id );
-
-			return $source;
-
-		}
-
-		/**
-		 * Is 3D secure payment required?
-		 *
-		 * @param \Stripe\Source $source_object Stripe Source Object.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return bool
-		 */
-		public function is_3d_secure_required( $source_object ) {
-
-			$is_3d_secure_enabled = give_is_setting_enabled( give_get_option( 'stripe_enable_three_d_secure_payments', '' ) );
-
-			if ( $is_3d_secure_enabled ) {
-				return apply_filters(
-					'give_stripe_3d_secure_required',
-					(
-						! empty( $source_object->type ) &&
-						'card' === $source_object->type &&
-						'required' === $source_object->card->three_d_secure
-					),
-					$source_object
-				);
-			}
-
-			return false;
 		}
 
 		/**

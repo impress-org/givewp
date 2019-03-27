@@ -71,6 +71,9 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					$card_data = $this->prepare_card_data( $donation_data );
 
+					// Set Application Info.
+					give_stripe_set_app_info();
+
 					try {
 
 						$source = \Stripe\Source::create( array(

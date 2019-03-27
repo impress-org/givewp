@@ -80,6 +80,9 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		 */
 		public function retrieve( $client_secret ) {
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
 				return \Stripe\PaymentIntent::retrieve(
 					$client_secret,

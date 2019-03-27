@@ -162,6 +162,9 @@ class Give_Stripe_Customer {
 		// There is a customer ID. Check if it is active still in Stripe.
 		if ( ! empty( $stripe_customer_id ) ) {
 
+			// Set Application Info.
+			give_stripe_set_app_info();
+
 			try {
 
 				// Retrieve the customer to ensure the customer has not been deleted.
@@ -219,6 +222,9 @@ class Give_Stripe_Customer {
 		$customer     = false;
 		$post_data    = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
+
+		// Set Application Info.
+		give_stripe_set_app_info();
 
 		try {
 
@@ -355,14 +361,14 @@ class Give_Stripe_Customer {
 
 				} catch ( Exception $e ) {
 					give_record_gateway_error(
-						__( 'Stripe Error', 'give-stripe' ),
+						__( 'Stripe Error', 'give' ),
 						sprintf(
 							/* translators: %s Exception Message Body */
-							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give-stripe' ),
+							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
 							$e->getMessage()
 						)
 					);
-					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give-stripe' ) );
+					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
 					give_send_back_to_checkout( '?payment-mode=stripe' );
 				}
 			}
@@ -372,8 +378,8 @@ class Give_Stripe_Customer {
 				$this->attached_source = $card;
 			} else {
 
-				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give-stripe' ) );
-				give_record_gateway_error( __( 'Stripe Error', 'give-stripe' ), __( 'An error occurred retrieving or creating the ', 'give-stripe' ) );
+				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
+				give_record_gateway_error( __( 'Stripe Error', 'give' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
 				give_send_back_to_checkout( '?payment-mode=stripe' );
 
 				$this->attached_source = false;
