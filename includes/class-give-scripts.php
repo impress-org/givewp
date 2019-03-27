@@ -29,7 +29,7 @@ class Give_Scripts {
 	 * @var    bool
 	 * @access private
 	 */
-	private $scripts_footer;
+	private static $scripts_footer;
 
 	/**
 	 * Instantiates the Assets class.
