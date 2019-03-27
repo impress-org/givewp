@@ -76,7 +76,7 @@ function give_stripe_frontend_scripts() {
 	if ( give_stripe_is_checkout_enabled() ) {
 
 		// Stripe checkout js.
-		wp_register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION, $is_footer );
+		Give_Scripts::register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-checkout-js' );
 
 		$deps = array(
@@ -86,7 +86,7 @@ function give_stripe_frontend_scripts() {
 		);
 
 		// Give Stripe Checkout JS.
-		wp_register_script( 'give-stripe-popup-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION, $is_footer );
+		Give_Scripts::register_script( 'give-stripe-popup-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-popup-js' );
 		wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
 
@@ -96,10 +96,10 @@ function give_stripe_frontend_scripts() {
 	// Load Stripe on-page checkout scripts.
 	if ( apply_filters( 'give_stripe_js_loading_conditions', give_is_gateway_active( 'stripe' ) ) ) {
 
-		wp_register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array( 'jquery' ), GIVE_VERSION, $is_footer );
+		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array( 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-js' );
 
-		wp_register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION, $is_footer );
+		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 		wp_localize_script( 'give-stripe-onpage-js', 'give_stripe_vars', $stripe_vars );
 	}
