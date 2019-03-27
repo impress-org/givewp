@@ -130,6 +130,8 @@ jQuery.noConflict();
 ( function( $ ) {
 	// On DOM Ready.
 	$( function() {
+		give_stripe_check_webhook_status();
+
 		$( '.give-stripe-sync-webhooks' ).on( 'click', function( e ) {
 			// Prevent form submission.
 			e.preventDefault();
@@ -153,7 +155,7 @@ jQuery.noConflict();
 			action: 'give_stripe_check_webhook_status',
 		};
 
-		jQuery.post( ajaxurl, data, function( response ) {
+		$.post( ajaxurl, data, function( response ) {
 			$( '.give-stripe-syncing-status' ).hide();
 			$( '.give-stripe-webhook-sync-wrap' ).show();
 
