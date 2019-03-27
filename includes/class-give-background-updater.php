@@ -47,7 +47,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return stdClass
 	 */
 	public function get_all_batch() {
-		return parent::get_batch();
+		return $this->get_batch();
 	}
 
 	/**
