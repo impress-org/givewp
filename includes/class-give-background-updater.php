@@ -99,7 +99,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		$lock_duration = ( property_exists( $this, 'queue_lock_time' ) ) ? $this->queue_lock_time : 60; // 1 minute
 		$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
 
-		set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
+		set_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
 	}
 
 	/**
@@ -235,6 +235,38 @@ class Give_Background_Updater extends WP_Background_Process {
 	 */
 	public function delete( $key ) {
 		delete_option( $key );
+
+		return $this;
+	}
+
+	/**
+	 * Is process running
+	 *
+	 * @since 2.4.5
+	 *
+	 * Check whether the current process is already running
+	 * in a background process.
+	 */
+	public function is_process_running() {
+		if ( get_transient( $this->identifier . '_process_lock' ) ) {
+			// Process already running.
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Unlock process
+	 *
+	 * Unlock the process so that other instances can spawn.
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return $this
+	 */
+	protected function unlock_process() {
+		delete_transient( $this->identifier . '_process_lock' );
 
 		return $this;
 	}
