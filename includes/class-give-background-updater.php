@@ -190,6 +190,56 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
+	 * Save queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return $this
+	 */
+	public function save() {
+		$key = $this->generate_key();
+
+		if ( ! empty( $this->data ) ) {
+			update_option( $key, $this->data );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Update queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @param string $key Key.
+	 * @param array  $data Data.
+	 *
+	 * @return $this
+	 */
+	public function update( $key, $data ) {
+		if ( ! empty( $data ) ) {
+			update_option( $key, $data );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Delete queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @param string $key Key.
+	 *
+	 * @return $this
+	 */
+	public function delete( $key ) {
+		delete_option( $key );
+
+		return $this;
+	}
+
+	/**
 	 * Task
 	 *
 	 * Override this method to perform any actions required on each
