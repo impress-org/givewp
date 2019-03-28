@@ -8,6 +8,52 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+#give-license-activator-wrap {
+  border: 1px solid #DBDBDB;
+  background: #FFF;
+  padding: 35px 30px 25px;
+  margin: 30px 0;
+
+  label {
+	display: none;
+  }
+
+  #give-license-activator {
+	font-size: 20px;
+	height: 50px;
+	padding: 0 15px;
+	width: 78%;
+	margin-right: 2%;
+  }
+
+  .button {
+	height: 50px;
+	padding: 0;
+	font-size: 16px;
+	width: 19%;
+  }
+
+  .give-field-description {
+	font-size: 15px !important;
+	margin: 10px 0 0;
+	padding: 0;
+  }
+
+  @media(max-width: 850px) {
+	#give-license-activator {
+	  margin-right: 0;
+	  margin-bottom: 20px;
+	}
+
+	.button, #give-license-activator {
+	  width: 100%;
+	}
+
+
+  }
+
+}
+
 .type-download {
   float: left;
   margin: 0 1em 1em 0 !important;
@@ -45,6 +91,7 @@
 
 	.addon-heading {
 	  margin: 0 0 10px;
+
 	  a {
 		outline: none;
 		text-decoration: none;

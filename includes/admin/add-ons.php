@@ -14,6 +14,61 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Class Give_Admin
+ */
+class Give_Addons {
+	/**
+	 * Instance.
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 * @var
+	 */
+	static private $instance;
+
+	/**
+	 * Singleton pattern.
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 */
+	private function __construct() {
+	}
+
+
+	/**
+	 * Get instance.
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 * @return Give_Addons
+	 */
+	public static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+			self::$instance->setup();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Setup Admin
+	 *
+	 * @sinve  2.5.0
+	 * @access private
+	 */
+	private function setup() {
+
+	}
+
+}
+
+Give_Addons::get_instance();
+
+
 /**
  * Add-ons Page
  *
@@ -26,16 +81,30 @@ function give_add_ons_page() {
 	?>
 	<div class="wrap" id="give-add-ons">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all"
+			                      target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
 
 		<hr class="wp-header-end">
 
 		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
+
+
+		<div id="give-license-activator-wrap">
+			<div id="give-license-activator-inner">
+				<label for="give-license-activator"><?php _e( 'Activate License', 'give' ); ?></label>
+				<input id="give-license-activator" type="text" name="give-license-activator" placeholder="<?php _e('Enter a valid license key', 'give') ?>">
+				<input value="<?php _e( 'Activate License', 'give' ); ?>" type="submit" class="button">
+			</div>
+
+			<p class="give-field-description"><?php _e( 'Enter a license key above to unlock your GiveWP add-ons. You can access your licenses anytime from the My Account section on the GiveWP website.' ); ?></p>
+		</div>
+
 		<?php give_add_ons_feed(); ?>
 	</div>
 	<?php
+
 }
 
 /**
@@ -48,7 +117,7 @@ function give_add_ons_page() {
  */
 function give_add_ons_feed() {
 
-	$addons_debug = false; //set to true to debug
+	$addons_debug = false; // set to true to debug
 	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
