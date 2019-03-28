@@ -38,7 +38,7 @@ class Give_Scripts {
 	 */
 	public function __construct() {
 		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
-		$this->scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
+		self::$scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
 		$this->init();
 	}
 
