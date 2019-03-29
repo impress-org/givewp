@@ -1206,6 +1206,11 @@ function give_email_tag_donation_history_link( $tag_args ) {
 	$donor             = array();
 	$email_access_link = '';
 
+	if( ! ( Give()->email_access instanceof Give_Email_Access )  ){
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
+		Give()->email_access =  new Give_Email_Access();
+	}
+
 	// Backward compatibility.
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
