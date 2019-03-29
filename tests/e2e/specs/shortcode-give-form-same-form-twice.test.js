@@ -432,10 +432,17 @@ describe( 'Display Option: All fields', () => {
 		])
 	}, 100000 )
 
-	it ( 'EXISTENCE: verify donation confirmation of the second form', async () => {
-		await page.waitFor( 2000 ); // Wait for receipt to load by ajax.
-		await expect( page ).toMatch( 'Payment Complete: Thank you for your donation.' )
-		await expect( page ).toMatch( 'Mr. Creed Bratton' )
-		await expect( page ).toMatch( '$30.00' )
-	}, 200000)
+	// Verify the donation that was made above.
+	give.utility.fn.verifyDonation( page, [
+		'Payment Complete: Thank you for your donation.',
+		'Mr. Creed Bratton',
+		'$30.00'
+	])
+
+	// it ( 'EXISTENCE: verify donation confirmation of the second form', async () => {
+	// 	await page.waitFor( 2000 ); // Wait for receipt to load by ajax.
+	// 	await expect( page ).toMatch( 'Payment Complete: Thank you for your donation.' )
+	// 	await expect( page ).toMatch( 'Mr. Creed Bratton' )
+	// 	await expect( page ).toMatch( '$30.00' )
+	// }, 200000)
 })
