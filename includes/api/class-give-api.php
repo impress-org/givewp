@@ -1782,7 +1782,7 @@ class Give_API {
 		 */
 		do_action( 'give_api_output_after', $this->data, $this, $format );
 
-		give_die();
+		die();
 	}
 
 	/**
