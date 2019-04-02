@@ -90,12 +90,15 @@ function give_add_ons_page() {
 
 		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
 
-
 		<div id="give-license-activator-wrap">
 			<div id="give-license-activator-inner">
-				<label for="give-license-activator"><?php _e( 'Activate License', 'give' ); ?></label>
-				<input id="give-license-activator" type="text" name="give-license-activator" placeholder="<?php _e('Enter a valid license key', 'give') ?>">
-				<input value="<?php _e( 'Activate License', 'give' ); ?>" type="submit" class="button">
+				<form method="post">
+					<?php wp_nonce_field( 'license_activator-nonce', 'license_activator-nonce' ); ?>
+					<label for="give-license-activator"><?php _e( 'Activate License', 'give' ); ?></label>
+					<input id="give-license-activator" type="text" name="give_license_key"
+					       placeholder="<?php _e( 'Enter a valid license key', 'give' ) ?>">
+					<input value="<?php _e( 'Activate License', 'give' ); ?>" type="submit" class="button">
+				</form>
 			</div>
 
 			<p class="give-field-description"><?php _e( 'Enter a license key above to unlock your GiveWP add-ons. You can access your licenses anytime from the My Account section on the GiveWP website.' ); ?></p>
