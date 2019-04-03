@@ -1594,13 +1594,19 @@ class Give_API {
 					foreach ( $payment_meta as $meta_key => $meta_value ) {
 
 						$exceptions = array(
+							'_give_payment_form_title',
 							'form_title',
+							'_give_payment_form_id',
 							'form_id',
+							'_give_payment_price_id',
 							'price_id',
 							'user_info',
 							'key',
 							'email',
 							'date',
+							'currency',
+							'_give_payment_total',
+							'_give_payment_date'
 						);
 
 						// Don't clutter up results with dupes
