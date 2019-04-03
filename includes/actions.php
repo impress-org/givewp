@@ -410,3 +410,23 @@ function give_add_support_for_wpml() {
 }
 
 add_action( 'give_init', 'give_add_support_for_wpml', 1000 );
+
+/**
+ * Backward compatibility for email_access property
+ * Note: only for internal purpose
+ *
+ * @todo: Need to decide when to remove this backward compatibility.
+ *        We decided to load Give()->email_access on for frontend but some of email tags is still using this. Since we have option to resend email in admin then
+ *        this cause of fatal error because that property does not load in backend. This is a temporary solution to prevent fatal error when resend receipt.
+ *        ref: https://github.com/impress-org/give/issues/4068
+ *
+ * @since 2.4.5
+ */
+function give_set_email_access_property(){
+	if( ! ( Give()->email_access instanceof Give_Email_Access )  ){
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
+		Give()->email_access =  new Give_Email_Access();
+	}
+}
+add_action( 'give_email_links', 'give_set_email_access_property', -1 );
+add_action( 'give_donation-receipt_email_notification', 'give_set_email_access_property', -1 );
