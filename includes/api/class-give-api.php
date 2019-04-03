@@ -2150,4 +2150,33 @@ class Give_API {
 
 	}
 
+
+	/**
+	 * Check if price sanitized
+	 * @todo: Create helper function by refactoring give_maybe_sanitize_amount
+	 *
+	 * @param $price
+	 *
+	 * @return bool
+	 * @since 2.4.5
+	 */
+	private function is_price_sanitized( $price ) {
+		$is_sanitize = false;
+
+		if( false === strpos( $price, '.' ) ) {
+			return $is_sanitize;
+		}
+
+		$number_parts = explode( '.', $price );
+
+		// Handle thousand separator as '.'
+		// Handle sanitize database values.
+		$is_sanitize = ( 2 === count( $number_parts ) &&
+		                        is_numeric( $number_parts[0] ) &&
+		                        is_numeric( $number_parts[1] ) &&
+		                        ( in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) ) );
+
+		return $is_sanitize;
+	}
+
 }
