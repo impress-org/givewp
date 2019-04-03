@@ -1547,8 +1547,6 @@ class Give_API {
 
 				if ( is_numeric( $payment ) ) {
 					$payment      = new Give_Payment( $payment );
-					$payment_meta = $payment->get_meta();
-					$user_info    = $payment->user_info;
 				}
 
 				$payment_meta = $payment->get_meta();
@@ -1561,10 +1559,10 @@ class Give_API {
 				$donations['donations'][ $i ]['number']         = $payment->number;
 				$donations['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
 				$donations['donations'][ $i ]['key']            = $payment->key;
-				$donations['donations'][ $i ]['total']          = $payment->total;
+				$donations['donations'][ $i ]['total']          = give_format_decimal( array( 'donation_id' => $payment->ID, 'dp' => true ) );
 				$donations['donations'][ $i ]['status']         = give_get_payment_status( $payment, true );
 				$donations['donations'][ $i ]['gateway']        = $payment->gateway;
-				$donations['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
+				$donations['donations'][ $i ]['name']           = trim( "{$first_name} {$last_name}" );
 				$donations['donations'][ $i ]['fname']          = $first_name;
 				$donations['donations'][ $i ]['lname']          = $last_name;
 				$donations['donations'][ $i ]['email']          = $payment->email;
@@ -1577,15 +1575,14 @@ class Give_API {
 
 				$donations['donations'][ $i ]['form']['id']    = $form_id;
 				$donations['donations'][ $i ]['form']['name']  = get_the_title( $payment_meta['form_id'] );
-				$donations['donations'][ $i ]['form']['price'] = $price;
+				$donations['donations'][ $i ]['form']['price'] = give_format_decimal( array( 'amount' => $price, 'currency' => give_get_option('currency' ), 'dp' => true ) );
 
 				if ( give_has_variable_prices( $form_id ) ) {
 					if ( isset( $payment_meta['price_id'] ) ) {
 						$price_name                                         = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
 						$donations['donations'][ $i ]['form']['price_name'] = $price_name;
 						$donations['donations'][ $i ]['form']['price_id']   = $price_id;
-						$donations['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
-
+						$donations['donations'][ $i ]['form']['price']      = give_format_decimal( array( 'amount' => give_get_price_option_amount( $form_id, $price_id ), 'currency' => give_get_option('currency' ), 'dp' => true ) );
 					}
 				}
 
@@ -1601,6 +1598,7 @@ class Give_API {
 							'_give_payment_price_id',
 							'price_id',
 							'user_info',
+							'_give_payment_purchase_key',
 							'key',
 							'email',
 							'date',
