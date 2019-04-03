@@ -154,6 +154,33 @@ function give_get_price_decimal_separator( $id_or_currency_code = null ) {
 }
 
 /**
+ * Check if amount sanitized
+ *
+ * @param string $amount
+ *
+ * @return bool
+ * @since 2.4.5
+ */
+function give_is_amount_sanitized( $amount ) {
+	$is_sanitize = false;
+
+	if ( false === strpos( $amount, '.' ) ) {
+		return $is_sanitize;
+	}
+
+	$number_parts = explode( '.', $amount );
+
+	// Handle thousand separator as '.'
+	// Handle sanitize database values.
+	$is_sanitize = ( 2 === count( $number_parts ) &&
+	                 is_numeric( $number_parts[0] ) &&
+	                 is_numeric( $number_parts[1] ) &&
+	                 in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) );
+
+	return $is_sanitize;
+}
+
+/**
  * Sanitize Amount before saving to database
  *
  * @since      1.8.12
@@ -244,14 +271,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 		return number_format( $number, $number_decimals, '.', '' );
 	}
 
-	// Handle thousand separator as '.'
-	// Handle sanitize database values.
-	$is_db_sanitize_val = ( 2 === count( $number_parts ) &&
-	                        is_numeric( $number_parts[0] ) &&
-	                        is_numeric( $number_parts[1] ) &&
-	                        ( in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) ) );
-
-	if ( $is_db_sanitize_val ) {
+	if ( give_is_amount_sanitized( $number ) ) {
 		// Sanitize database value.
 		return number_format( $number, $number_decimals, '.', '' );
 
