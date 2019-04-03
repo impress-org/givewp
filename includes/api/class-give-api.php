@@ -1612,6 +1612,11 @@ class Give_API {
 							continue;
 						}
 
+						// Meta key can contain price value like _give_fee_amount, so convert them to standard format.
+						if( $this->is_price_sanitized( $meta_value ) ) {
+							$meta_value = give_format_decimal( array( 'amount' => $meta_value, 'currency' => give_get_option('currency' ), 'dp' => true ) );
+						}
+
 						$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
 
 					}
@@ -2174,7 +2179,7 @@ class Give_API {
 		$is_sanitize = ( 2 === count( $number_parts ) &&
 		                        is_numeric( $number_parts[0] ) &&
 		                        is_numeric( $number_parts[1] ) &&
-		                        ( in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) ) );
+		                        in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) );
 
 		return $is_sanitize;
 	}
