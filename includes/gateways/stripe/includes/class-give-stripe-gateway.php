@@ -629,5 +629,83 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			} // End try().
 		}
+
+		/**
+		 * Create Source for Stripe 3D Secure Payments.
+		 *
+		 * @param int $donation_id Donation ID.
+		 * @param int $source_id   Source ID/Object.
+		 *
+		 * @since  1.6
+		 * @access public
+	 	 *
+		 * @return bool|\Stripe\Source
+		 */
+		public function create_3d_secure_source( $donation_id, $source_id ) {
+			$form_id         = give_get_payment_form_id( $donation_id );
+			$customer_id     = give_get_payment_meta( $donation_id, '_give_stripe_customer_id', true );
+			$donation_amount = give_donation_amount( $donation_id );
+
+			// Prepare basic source args.
+			$source_args = array(
+				'amount'               => $this->format_amount( $donation_amount ),
+				'currency'             => give_get_currency( $form_id ),
+				'type'                 => 'three_d_secure',
+				'three_d_secure'       => array(
+					'card'     => $source_id,
+				),
+				'statement_descriptor' => give_stripe_get_statement_descriptor(),
+				'redirect'             => array(
+					'return_url' => add_query_arg(
+						array(
+							'give-listener' => 'stripe_three_d_secure',
+							'donation_id'   => $donation_id,
+						),
+						give_get_success_page_uri()
+					),
+				),
+			);
+
+			$source = $this->prepare_source( $source_args );
+
+			// Add donation note for 3D secure source ID.
+			if ( ! empty( $source->id ) ) {
+				give_insert_payment_note( $donation_id, 'Stripe 3D Secure Source ID: ' . $source->id );
+			}
+
+			// Save 3D secure source id to donation.
+			give_update_payment_meta( $donation_id, '_give_stripe_3dsecure_source_id', $source->id );
+
+			return $source;
+		}
+
+		/**
+		 * Is 3D secure payment required?
+		 *
+		 * @param \Stripe\Source $source_object Stripe Source Object.
+		 *
+		 * @since  1.6
+		 * @access public
+		 *
+	 	 * @return bool
+		 */
+		public function is_3d_secure_required( $source_object ) {
+
+			$is_3d_secure_enabled = give_is_setting_enabled( give_get_option( 'stripe_enable_three_d_secure_payments', '' ) );
+
+			if ( $is_3d_secure_enabled ) {
+				return apply_filters(
+					'give_stripe_3d_secure_required',
+					(
+						! empty( $source_object->type ) &&
+						'card' === $source_object->type &&
+						'required' === $source_object->card->three_d_secure
+					),
+					$source_object
+				);
+			}
+
+			return false;
+		}
 	}
 }

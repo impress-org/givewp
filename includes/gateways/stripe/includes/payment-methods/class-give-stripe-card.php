@@ -48,6 +48,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			parent::__construct();
 
 			add_action( 'init', array( $this, 'stripe_event_listener' ) );
+			add_action( 'init', array( $this, 'listen_stripe_3dsecure_payment' ) );
 		}
 
 		/**
@@ -410,6 +411,96 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				give_record_gateway_error( __( 'Stripe Error', 'give' ), sprintf( __( 'An error occurred while processing a webhook.', 'give' ) ) );
 				die( '-1' ); // Failed.
 			} // End if().
+		}
+
+		/**
+		 * Authorise Donation to successfully complete the donation.
+		 *
+		 * @since  1.6
+		 * @access public
+		 *
+		 * @todo remove this function when payment intent is supported with subscriptions.
+		 *
+		 * @return void
+		 */
+		public function listen_stripe_3dsecure_payment() {
+
+			// Sanitize the parameter received from query string.
+			$data = give_clean( $_GET ); // WPCS: input var ok.
+
+			// Must be a stripe three-d-secure listener to proceed.
+			if ( ! isset( $data['give-listener'] ) || 'stripe_three_d_secure' !== $data['give-listener'] ) {
+				return;
+			}
+
+			$donation_id = ! empty( $data['donation_id'] ) ? $data['donation_id'] : '';
+			$source_id   = ! empty( $data['source'] ) ? $data['source'] : '';
+			$description = give_get_meta( $donation_id, '_give_stripe_donation_summary', true );
+			$customer_id = give_get_meta( $donation_id, '_give_stripe_customer_id', true );
+
+			// Get Source Object from source id.
+			$source_object = $this->get_source_details( $source_id );
+
+			// Proceed to charge, if the 3D secure source is chargeable.
+			if ( 'chargeable' === $source_object->status ) {
+				$charge_args = array(
+					'amount'               => $source_object->amount,
+					'currency'             => $source_object->currency,
+					'customer'             => $customer_id,
+					'source'               => $source_object->id,
+					'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
+					'statement_descriptor' => $source_object->statement_descriptor,
+					'metadata'             => $this->prepare_metadata( $donation_id ),
+				);
+
+				// If preapproval enabled, only capture the charge
+				// @see: https://stripe.com/docs/api#create_charge-capture.
+				if ( give_stripe_is_preapproved_enabled() ) {
+					$charge_args['capture'] = false;
+				}
+
+				try {
+					$charge = $this->create_charge( $donation_id, $charge_args );
+
+					if ( $charge ) {
+						/**
+						 * This action hook will help to perform additional steps when 3D secure payments are processed.
+						 *
+						 * @since 2.1
+						 *
+						 * @param int            $donation_id Donation ID.
+						 * @param \Stripe\Charge $charge      Stripe Charge Object.
+						 * @param string         $customer_id Stripe Customer ID.
+						 */
+						do_action( 'give_stripe_verify_3dsecure_payment', $donation_id, $charge, $customer_id );
+
+						// Verify Payment.
+						$this->verify_payment( $donation_id, $customer_id, $charge );
+					}
+				} catch ( \Stripe\Error\Base $e ) {
+					$this->log_error( $e );
+				} catch ( Exception $e ) {
+					give_update_payment_status( $donation_id, 'failed' );
+
+					give_record_gateway_error(
+						__( 'Stripe Error', 'give-stripe' ),
+						sprintf(
+							/* translators: Exception Message Body */
+							__( 'The Stripe Gateway returned an error while processing a donation. Details: %s', 'give' ),
+							$e->getMessage()
+						)
+					);
+
+					wp_safe_redirect( give_get_failed_transaction_uri() );
+				} // End try().
+			} else {
+
+				give_update_payment_status( $donation_id, 'failed' );
+				give_record_gateway_error( __( 'Donor Error', 'give' ), sprintf( __( 'Donor has cancelled the payment during authorization process.', 'give' ) ) );
+				wp_safe_redirect( give_get_failed_transaction_uri() );
+			} // End if().
+
+			give_die();
 		}
 	}
 }
