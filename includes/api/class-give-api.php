@@ -1062,6 +1062,7 @@ class Give_API {
 	private function get_form_data( $form_info ) {
 
 		$form = array();
+		$currency = give_get_option('currency');
 
 		$form['info']['id']            = $form_info->ID;
 		$form['info']['slug']          = $form_info->post_name;
@@ -1087,15 +1088,15 @@ class Give_API {
 		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
 			$total_income                         = give_get_form_earnings_stats( $form_info->ID );
 			$goal_percentage_completed            = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
-			$form['goal']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
+			$form['goal']['amount']               = isset( $goal_amount ) ? give_format_decimal( array( 'amount' => $goal_amount, 'currency' => $currency  ) ) : '';
 			$form['goal']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
 
 		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
 			$form['stats']['total']['donations']           = give_get_form_sales_stats( $form_info->ID );
-			$form['stats']['total']['earnings']            = give_get_form_earnings_stats( $form_info->ID );
+			$form['stats']['total']['earnings']            = give_format_decimal( array( 'amount' => give_get_form_earnings_stats( $form_info->ID ), 'currency' => $currency  ) );
 			$form['stats']['monthly_average']['donations'] = give_get_average_monthly_form_sales( $form_info->ID );
-			$form['stats']['monthly_average']['earnings']  = give_get_average_monthly_form_earnings( $form_info->ID );
+			$form['stats']['monthly_average']['earnings']  = give_format_decimal( array( 'amount' => give_get_average_monthly_form_earnings( $form_info->ID ), 'currency' => $currency  ) );
 		}
 
 		$counter = 0;
@@ -1104,11 +1105,11 @@ class Give_API {
 				$counter ++;
 				// multi-level item
 				$level                                     = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
-				$form['pricing'][ sanitize_key( $level ) ] = $price['_give_amount'];
+				$form['pricing'][ sanitize_key( $level ) ] = give_format_decimal( array( 'amount' => $price['_give_amount'], 'currency' => $currency ) );
 
 			}
 		} else {
-			$form['pricing']['amount'] = give_get_form_price( $form_info->ID );
+			$form['pricing']['amount'] = give_format_decimal( array( 'amount' => give_get_form_price( $form_info->ID ), 'currency' => $currency ) );
 		}
 
 		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
@@ -1150,6 +1151,7 @@ class Give_API {
 
 		$dates = $this->get_dates( $args );
 
+		$currency = give_get_option('currency');
 		$stats     = array();
 		$earnings  = array(
 			'earnings' => array(),
@@ -1355,7 +1357,8 @@ class Give_API {
 								if ( ! isset( $earnings['earnings'][ $date_key ] ) ) {
 									$earnings['earnings'][ $date_key ] = 0;
 								}
-								$earnings['earnings'][ $date_key ] += $earnings_stat;
+
+								$earnings['earnings'][ $date_key ] += give_format_decimal( array( 'amount' => $earnings_stat, 'currency' => $currency ) );
 								$total                             += $earnings_stat;
 								$d ++;
 							endwhile;
@@ -1366,7 +1369,7 @@ class Give_API {
 						$y ++;
 					endwhile;
 
-					$earnings['totals'] = $total;
+					$earnings['totals'] = give_format_decimal( array( 'amount' => $total, 'currency' => $currency ) );
 				} else {
 					if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
 						$earnings_count = (float) 0.00;
@@ -1379,9 +1382,9 @@ class Give_API {
 							$month ++;
 						endwhile;
 
-						$earnings['earnings'][ $args['date'] ] = $earnings_count;
+						$earnings['earnings'][ $args['date'] ] = give_format_decimal( array( 'amount' => $earnings_count, 'currency' => $currency ) );
 					} else {
-						$earnings['earnings'][ $args['date'] ] = give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
+						$earnings['earnings'][ $args['date'] ] = give_format_decimal( array( 'amount' => give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] ), 'currency' => $currency ) );
 					}
 				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
@@ -1393,7 +1396,7 @@ class Give_API {
 				$i = 0;
 				foreach ( $forms as $form_info ) {
 					$earnings['earnings'][ $i ] = array(
-						$form_info->post_name => give_get_form_earnings_stats( $form_info->ID ),
+						$form_info->post_name => give_format_decimal( array( 'amount' => give_get_form_earnings_stats( $form_info->ID ), 'currency' => $currency ) ),
 					);
 					$i ++;
 				}
@@ -1401,15 +1404,15 @@ class Give_API {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info               = get_post( $args['form'] );
 					$earnings['earnings'][0] = array(
-						$form_info->post_name => $this->stats->get_earnings(
-								$args['form'],
-								is_numeric( $args['startdate'] )
-									? strtotime( $args['startdate'] )
-									: $args['startdate'],
-								is_numeric( $args['enddate'] )
-									? strtotime( $args['enddate'] )
-									: $args['enddate']
-						),
+						$form_info->post_name => give_format_decimal( array( 'amount' => $this->stats->get_earnings(
+							$args['form'],
+							is_numeric( $args['startdate'] )
+								? strtotime( $args['startdate'] )
+								: $args['startdate'],
+							is_numeric( $args['enddate'] )
+								? strtotime( $args['enddate'] )
+								: $args['enddate']
+						), 'currency' => $currency ) ),
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
@@ -2101,17 +2104,30 @@ class Give_API {
 	 * Generate the default earnings stats returned by the 'stats' endpoint
 	 *
 	 * @access private
-	 * @since  1.1
 	 * @return array default earnings statistics
+	 * @since  1.1
 	 */
 	private function get_default_earnings_stats() {
+		$currency = give_get_option( 'currency' );
 
 		// Default earnings return
 		$earnings                              = array();
-		$earnings['earnings']['today']         = $this->stats->get_earnings( 0, 'today' );
-		$earnings['earnings']['current_month'] = $this->stats->get_earnings( 0, 'this_month' );
-		$earnings['earnings']['last_month']    = $this->stats->get_earnings( 0, 'last_month' );
-		$earnings['earnings']['totals']        = give_get_total_earnings();
+		$earnings['earnings']['today']         = give_format_decimal( array(
+			'amount'   => $this->stats->get_earnings( 0, 'today' ),
+			'currency' => $currency,
+		) );
+		$earnings['earnings']['current_month'] = give_format_decimal( array(
+			'amount'   => $this->stats->get_earnings( 0, 'this_month' ),
+			'currency' => $currency,
+		) );
+		$earnings['earnings']['last_month']    = give_format_decimal( array(
+			'amount'   => $this->stats->get_earnings( 0, 'last_month' ),
+			'currency' => $currency,
+		) );
+		$earnings['earnings']['totals']        = give_format_decimal( array(
+			'amount'   => give_get_total_earnings(),
+			'currency' => $currency,
+		) );
 
 		return $earnings;
 	}
