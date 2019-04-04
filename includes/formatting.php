@@ -155,6 +155,9 @@ function give_get_price_decimal_separator( $id_or_currency_code = null ) {
 
 /**
  * Check if amount sanitized
+ * Note: only for internal purpose
+ *
+ * Current this function only check if number is DB sanitize.
  *
  * @param string $amount
  *
