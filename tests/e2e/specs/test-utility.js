@@ -34,7 +34,7 @@ const helpers = {
 						pwd: credentials.password,
 					}, {
 						// This is a preventive measure in case if the form is not filled quickly.
-						timeout: 2000
+						timeout: 500000
 					})
 
 					/* Redirection after submission leads to race condition (known bug), below is
