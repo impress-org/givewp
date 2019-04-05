@@ -16,9 +16,9 @@ describe( 'Shortcode Donor Wall', () => {
 		 * Donor image
 		 */
 		{
-			desc: 'verify donor 1 image as "RH"',
+			desc: 'verify donor 1 has image',
 			selector: '.give-donor__image',
-			innerText: 'RH',
+			innerText: 'SH',
 		},
 
 		/**
@@ -27,7 +27,7 @@ describe( 'Shortcode Donor Wall', () => {
 		{
 			desc: 'verify donor name as "Ryan Howard"',
 			selector: '.give-donor__name',
-			innerText: 'Ryan Howard',
+			innerText: 'Stanley Hudson',
 		},
 	])
 })

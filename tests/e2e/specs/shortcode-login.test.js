@@ -74,7 +74,7 @@ describe( 'Shortcode Login', () => {
 	})
 
 	it( 'EXISTENCE: verify login success', async () => {
-		await expect( page ).toMatchElement( '.display-name', { text: 'Samuel' } )
+		await expect( page ).toMatchElement( '.display-name', { text: 'Samuel' }, { timeout: 10000 } )
 	})
 
 	// Logout of WordPress if all the tests have completed.
