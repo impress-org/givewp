@@ -113,7 +113,7 @@ if ( ! class_exists( 'Give_Stripe_Logs' ) ) {
 		 * @return void
 		 */
 		public function give_stripe_logs_view() {
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/admin/class-give-stripe-logs-list-table.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php';
 
 			$logs_table = new Give_Stripe_Log_Table();
 			$logs_table->prepare_items();
