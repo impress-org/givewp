@@ -113,6 +113,13 @@ function give_add_ons_page() {
 							<input type="file" name="addon" value="<?php _e( 'Select File', 'give' ); ?>">
 						</form>
 					</div>
+					<div class="give-activate-addon-wrap" style="display: none">
+						<button
+							class="give-activate-addon-btn button-primary"
+							data-activate="<?php _e( 'Activate Addon', 'give' ); ?>"
+							data-activating="<?php _e( 'Activateing Addon...', 'give' ); ?>"
+						><?php _e( 'Activate Addon', 'give' ); ?></button>
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>

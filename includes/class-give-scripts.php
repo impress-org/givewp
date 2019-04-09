@@ -189,6 +189,7 @@ class Give_Scripts {
 					'uploaded'        => __( 'Uploaded', 'give' ),
 					'invalid_license' => __( 'Sorry, you entered a invalid key.', 'give' ),
 					'download_file'   => __( '<a href="{link}" target="_blank">Click here</a> to download addon zip file.', 'give' ),
+					'addon_activated'   => __( '{pluginName} addon Activated successfully.', 'give' ),
 				),
 			);
 

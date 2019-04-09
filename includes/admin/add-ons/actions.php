@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_upload_addon_handler() {
 	/* @var WP_Filesystem_Direct $wp_filesystem */
 	global $wp_filesystem;
+
 	$addon_authors = array( 'WordImpress', 'GiveWP' );
 	$filename      = basename( $_FILES['file']['name'], '.zip' );
 
@@ -42,7 +43,6 @@ function give_upload_addon_handler() {
 	$access_type = get_filesystem_method();
 
 	if ( 'direct' !== $access_type ) {
-		// @todo: add error.
 		wp_send_json_error(
 			array(
 				'errorMsg' => sprintf(
@@ -91,9 +91,6 @@ function give_upload_addon_handler() {
 	}
 
 	// @todo: check how wordpress verify plugin files before uploading to plugin directory
-	// @todo: do not allow to upload multiple files.
-	// @todo: check if direct filesystem type reliable to upload addon.
-	// @todo: get information from user if filesystem is not direct.
 
 	/* you can safely run request_filesystem_credentials() without any issues and don't need to worry about passing in a URL */
 	$creds = request_filesystem_credentials( site_url() . '/wp-admin/', '', false, false, array() );
@@ -114,7 +111,30 @@ function give_upload_addon_handler() {
 		wp_send_json_error( $unzip_status );
 	}
 
-	wp_send_json_success();
+	// Delete cache and get current installed addon plugin path.
+	wp_cache_delete( 'plugins', 'plugins' );
+	$give_addons_list = get_plugins();
+	$installed_addon  = array();
+
+	if ( ! empty( $give_addons_list ) ) {
+		foreach ( $give_addons_list as $addon => $give_addon ) {
+			// Only show Give Core Activated Add-Ons.
+			if ( ! in_array( $give_addon['AuthorName'], $addon_authors ) ) {
+				continue;
+			}
+
+			if ( false !== stripos( $addon, $filename ) ) {
+				$installed_addon         = $give_addon;
+				$installed_addon['path'] = $addon;
+			}
+		}
+	}
+
+	wp_send_json_success( array(
+		'pluginPath' => $installed_addon['path'],
+		'pluginName' => $installed_addon['Name'],
+		'nonce'      => wp_create_nonce( "give_activate-{$installed_addon['path']}" ),
+	) );
 }
 
 add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
@@ -132,7 +152,7 @@ function give_get_license_info_handler() {
 	if ( ! $license ) {
 		wp_send_json_error(
 			array(
-				'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' )
+				'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' ),
 			)
 		);
 	}
@@ -160,7 +180,7 @@ function give_get_license_info_handler() {
 	if ( is_wp_error( $response ) ) {
 		wp_send_json_error(
 			array(
-				'errorMsg' => $response->get_error_message()
+				'errorMsg' => $response->get_error_message(),
 			)
 		);
 	}
@@ -171,3 +191,27 @@ function give_get_license_info_handler() {
 }
 
 add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
+
+
+/**
+ * Activate addon handler
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_activate_addon_handler() {
+	$plugin_path = give_clean( $_POST['plugin'] );
+
+	check_admin_referer( "give_activate-{$plugin_path}" );
+
+	$status = activate_plugin( $plugin_path );
+
+	if ( is_wp_error( $status ) ) {
+		wp_send_json_error( array( 'errorMsg' => $status->get_error_message() ) );
+	}
+
+	wp_send_json_success( $status );
+}
+
+add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
