@@ -26,6 +26,7 @@ const config = {
 		'admin-shortcode-button': ['./assets/src/css/admin/shortcodes.scss'],
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 		'plugin-deactivation-survey': ['./assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js'],
+		'admin-add-ons': ['./assets/src/js/admin/admin-add-ons.js'],
 	},
 	output: {
 		path: path.join(__dirname, './assets/dist/'),

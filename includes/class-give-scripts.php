@@ -113,6 +113,14 @@ class Give_Scripts {
 			true
 		);
 
+		// WP-admin: add-ons page.
+		wp_register_script( 'admin-add-ons-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
+			array( 'jquery' ),
+			GIVE_VERSION,
+			true
+		);
+
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
@@ -171,6 +179,11 @@ class Give_Scripts {
 
 		// Localize admin scripts
 		$this->admin_localize_scripts();
+
+
+		if ( give_is_admin_page( 'addons' ) ) {
+			wp_enqueue_script( 'admin-add-ons-js' );
+		}
 	}
 
 	/**
