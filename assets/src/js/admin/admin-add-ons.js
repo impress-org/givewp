@@ -73,7 +73,6 @@
 					}
 				},
 			} ).always( function() {
-				$noticeContainer.empty();
 				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 			} );
 
