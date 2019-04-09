@@ -39,11 +39,25 @@ function give_upload_addon_handler() {
 		wp_send_json_error( __( 'Please upload a valid add-on file.', 'give' ) );
 	}
 
-	$filetype = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
+	$access_type = get_filesystem_method();
 
-	// error_log( print_r( $filetype, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	if ( 'direct' !== $access_type ) {
+		// @todo: add error.
+		wp_send_json_error(
+			array(
+				'errorMsg' => sprintf(
+					__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
+					admin_url( 'plugin-install.php?tab=upload' )
+				),
+			)
+		);
+	}
 
-	if ( empty( $filetype['ext'] ) ) {
+	$file_type = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
+
+	// error_log( print_r( $file_type, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+	if ( empty( $file_type['ext'] ) ) {
 		wp_send_json_error( __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) );
 	}
 
@@ -82,12 +96,6 @@ function give_upload_addon_handler() {
 	// @todo: do not allow to upload multiple files.
 	// @todo: check if direct filesystem type reliable to upload addon.
 	// @todo: get information from user if filesystem is not direct.
-	$access_type = get_filesystem_method();
-
-	if ( 'direct' !== $access_type ) {
-		// @todo: add error.
-		wp_send_json_error();
-	}
 
 	/* you can safely run request_filesystem_credentials() without any issues and don't need to worry about passing in a URL */
 	$creds = request_filesystem_credentials( site_url() . '/wp-admin/', '', false, false, array() );

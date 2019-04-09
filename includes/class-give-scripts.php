@@ -183,6 +183,15 @@ class Give_Scripts {
 
 		if ( give_is_admin_page( 'addons' ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
+			$localized_data = array(
+				'notices' => array(
+					'uploading' => __( 'Uploading', 'give' ),
+					'uploaded'  => __( 'Uploaded', 'give' )
+				),
+
+			);
+
+			wp_localize_script( 'admin-add-ons-js', 'give_addon_var', $localized_data );
 		}
 	}
 

@@ -1,4 +1,4 @@
-/* globals jQuery, ajaxurl */
+/* globals jQuery, ajaxurl, give_addon_var */
 
 ( function( $ ) {
 	// $(document).ready(function(){
@@ -43,12 +43,8 @@
 	$( document ).ready( function() {
 		const $container = $( '#give-addon-uploader-wrap' ),
 			$form = $( 'form', $container ),
-			$file = $( 'input[type="file"]', $form );
-
-		// Stop page redirects when drop zip file.
-		$( 'html' ).on( 'drop', function( e ) {
-			e.preventDefault(); e.stopPropagation();
-		} );
+			$file = $( 'input[type="file"]', $form ),
+			$noticeContainer = $( '.give-notices', $container );
 
 		// Drop
 		// @todo: add validation to upload only zip files
@@ -73,18 +69,6 @@
 			$( this ).removeClass( 'thick-border' );
 		} );
 
-		// Prevent click event loop.
-		$file.on( 'click', function( e ) {
-			e.stopPropagation();
-		} );
-
-		$container.on( 'click', function( e ) {
-			e.stopPropagation();
-			e.preventDefault();
-
-			$file.click();
-		} );
-
 		$file.on( 'change', function( e ) {
 			e.stopPropagation();
 			e.preventDefault();
@@ -107,6 +91,8 @@
 		 * @param {FormData} formData Form Data.
 		 */
 		function giveUploadData( formData ) {
+			$noticeContainer.empty();
+
 			$.ajax( {
 				url: `${ ajaxurl }?action=give_upload_addon&_wpnonce=${ $( 'input[name="_give_upload_addon"]', $form ).val().trim() }`,
 				method: 'POST',
@@ -115,17 +101,15 @@
 				processData: false,
 				dataType: 'json',
 				beforeSend: function() {
-					$container.html( 'Uploading File...' );
+					$noticeContainer.html(`<div class="give-notice notice notice-info"><p>${ give_addon_var.notices.uploading }</p></div>`);
 				},
 				success: function( response ) {
 					if ( true === response.success ) {
-						$container.html( 'Uploaded ! ' );
-
+						$noticeContainer.html(`<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.uploaded }</p></div>` );
 						return;
 					}
 
-					$container.html( 'Error: check console for more information.' );
-					console.log( response );
+					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p></div>` );
 				},
 			} );
 		}
