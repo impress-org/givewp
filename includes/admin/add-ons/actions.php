@@ -78,6 +78,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error( $upload_status );
 	}
 
+	// @todo: check how wordpress verify plugin files before uploading to plugin directory
 	// @todo: do not allow to upload multiple files.
 	// @todo: check if direct filesystem type reliable to upload addon.
 	// @todo: get information from user if filesystem is not direct.
