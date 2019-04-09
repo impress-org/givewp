@@ -24,8 +24,6 @@ function give_upload_addon_handler() {
 	global $wp_filesystem;
 	$addon_authors = array( 'WordImpress', 'GiveWP' );
 	$filename      = basename( $_FILES['file']['name'], '.zip' );
-	// error_log( print_r( $_GET, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	// error_log( print_r( $_FILES, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	check_admin_referer( 'give-upload-addon' );
 
@@ -54,8 +52,6 @@ function give_upload_addon_handler() {
 	}
 
 	$file_type = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
-
-	// error_log( print_r( $file_type, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	if ( empty( $file_type['ext'] ) ) {
 		wp_send_json_error( __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) );
@@ -105,11 +101,6 @@ function give_upload_addon_handler() {
 		/* any problems and we exit */
 		wp_send_json_error();
 	}
-
-
-	// error_log( print_r( get_filesystem_method(), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	// error_log( print_r( $upload_status, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	// error_log( print_r( $unzip_status, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	$unzip_status = unzip_file( $upload_status['file'], $wp_filesystem->wp_plugins_dir() );
 
