@@ -8,6 +8,9 @@
 			  $submitBtn = $( 'input[type="submit"]', $form ),
 			  $noticeContainer = $( '.give-notices', $container );
 
+		/**
+		 * License form submit button handler
+		 */
 		$license.on( 'change', function() {
 			if ( ! $( this ).val().trim() ) {
 				$submitBtn.prop( 'disabled', true );
@@ -17,10 +20,13 @@
 			$submitBtn.prop( 'disabled', false );
 		} ).change();
 
+		/**
+		 * License form validation handler
+		 */
 		$form.on( 'submit', function() {
 			const license = $license.val().trim(),
-				action = 'give_get_license_info',
-				_wpnonce = $( 'input[name="give_license_activator_nonce"]', $( this ) ).val().trim();
+				  action = 'give_get_license_info',
+				  _wpnonce = $( 'input[name="give_license_activator_nonce"]', $( this ) ).val().trim();
 
 			// Remove all errors.
 			$noticeContainer.empty();
@@ -84,8 +90,9 @@
 			  $activateBtn = $( 'button', $activateBtnContainer ),
 			  $noticeContainer = $( '.give-notices', $container );
 
-		// Drop
-		// @todo: add validation to upload only zip files
+		/**
+		 * File drop handler
+		 */
 		$container.on( 'drop', function( e ) {
 			e.stopPropagation();
 			e.preventDefault();
@@ -93,7 +100,7 @@
 			$( this ).removeClass( 'thick-border' );
 
 			const file = e.originalEvent.dataTransfer.files,
-				fd = new FormData();
+				  fd = new FormData();
 
 			fd.append( 'file', file[ 0 ] );
 
@@ -107,12 +114,15 @@
 			$( this ).removeClass( 'thick-border' );
 		} );
 
+		/**
+		 * File change handler
+		 */
 		$file.on( 'change', function( e ) {
 			e.stopPropagation();
 			e.preventDefault();
 
 			const fd = new FormData(),
-				files = $file[ 0 ].files[ 0 ];
+				  files = $file[ 0 ].files[ 0 ];
 
 			if ( ! files ) {
 				return false;
@@ -122,6 +132,9 @@
 			giveUploadData( fd );
 		} );
 
+		/**
+		 * Activate button event handle
+		 */
 		$activateBtn.on( 'click', function( e ) {
 			e.preventDefault();
 
