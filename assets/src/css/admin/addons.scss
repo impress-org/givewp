@@ -54,6 +54,19 @@
 
 }
 
+#give-addon-uploader-wrap {
+	border: 1px solid #DBDBDB;
+	background: #FFF;
+	padding: 35px 30px 25px;
+	margin: 30px 0;
+	min-height: 200px;
+	min-width: 200px;
+
+	&.thick-border{
+		border: 4px dashed green;
+	}
+}
+
 .type-download {
   float: left;
   margin: 0 1em 1em 0 !important;
