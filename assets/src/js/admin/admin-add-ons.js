@@ -1,7 +1,10 @@
-// jQuery(document).ready(function(){
-// 	var $Container = jQuery('#give-license-activator-wrap'),
-// 	    $form = jQuery('form', $Container),
-// 		$errorContainer = jQuery( '.give-errors', $Container ),
+/* globals jQuery, ajaxurl */
+
+( function( $ ) {
+	// $(document).ready(function(){
+// 	var $Container = $('#give-license-activator-wrap'),
+// 	    $form = $('form', $Container),
+// 		$errorContainer = $( '.give-errors', $Container ),
 // 		apiURL = 'http://givewp.test/chechout',
 // 		data = {
 // 			edd_action: 'check_license',
@@ -10,7 +13,7 @@
 // 		};
 //
 // 	$form.on( 'submit', function(){
-// 		data.license = jQuery( 'input[name="give_license_key"]', jQuery(this) ).val().trim();
+// 		data.license = $( 'input[name="give_license_key"]', $(this) ).val().trim();
 //
 // 		// Remove all errors.
 // 		$errorContainer.empty();
@@ -37,91 +40,94 @@
 // 	}
 // });
 
-jQuery(document).ready(function(){
-	var $container = jQuery('#give-addon-uploader-wrap'),
-		$form = jQuery('form', $container),
-		$file = jQuery( 'input[type="file"]', $form );
+	$( document ).ready( function() {
+		const $container = $( '#give-addon-uploader-wrap' ),
+			$form = $( 'form', $container ),
+			$file = $( 'input[type="file"]', $form );
 
-	// Stop page redirects when drop zip file.
-	jQuery('html').on('drop', function(e) { e.preventDefault(); e.stopPropagation(); });
+		// Stop page redirects when drop zip file.
+		$( 'html' ).on( 'drop', function( e ) {
+			e.preventDefault(); e.stopPropagation();
+		} );
 
-	// Drop
-	// @todo: add validation to upload only zip files
-	$container.on('drop', function (e) {
-		e.stopPropagation();
-		e.preventDefault();
+		// Drop
+		// @todo: add validation to upload only zip files
+		$container.on( 'drop', function( e ) {
+			e.stopPropagation();
+			e.preventDefault();
 
-		jQuery(this).removeClass('thick-border');
+			$( this ).removeClass( 'thick-border' );
 
-		var file = e.originalEvent.dataTransfer.files,
-			fd = new FormData();
+			const file = e.originalEvent.dataTransfer.files,
+				fd = new FormData();
 
-		fd.append( 'file', file[0] );
+			fd.append( 'file', file[ 0 ] );
 
-		giveUploadData(fd);
-	});
+			giveUploadData( fd );
+		} );
 
-	// Drag over
-	$container.on('dragover', function (e) {
-		jQuery(this).addClass('thick-border');
-	}).on('dragleave', function (e) {
-		jQuery(this).removeClass('thick-border');
-	});
+		// Drag over
+		$container.on( 'dragover', function( e ) {
+			$( this ).addClass( 'thick-border' );
+		} ).on( 'dragleave', function( e ) {
+			$( this ).removeClass( 'thick-border' );
+		} );
 
+		// Prevent click event loop.
+		$file.on( 'click', function( e ) {
+			e.stopPropagation();
+		} );
 
-	// Prevent click event loop.
-	$file.on( 'click', function(e){e.stopPropagation();});
+		$container.on( 'click', function( e ) {
+			e.stopPropagation();
+			e.preventDefault();
 
-	$container.on( 'click', function(e){
-		e.stopPropagation();
-		e.preventDefault();
+			$file.click();
+		} );
 
-		$file.click();
-	});
+		$file.on( 'change', function( e ) {
+			e.stopPropagation();
+			e.preventDefault();
 
-	$file.on( 'change', function(e){
-		e.stopPropagation();
-		e.preventDefault();
+			const fd = new FormData(),
+				files = $file[ 0 ].files[ 0 ];
 
-		var fd = new FormData(),
-			files = $file[0].files[0] ;
-
-
-		if( ! files ){
-			return false;
-		}
-
-		fd.append('file',files);
-		giveUploadData(fd);
-	} );
-
-	/**
-	 * Sending AJAX request and upload file
-	 *
-	 * @since 2.5.0
-	 * @param formdata
-	 */
-	function giveUploadData(formdata){
-		jQuery.ajax({
-			url: `${ajaxurl}?action=give_upload_addon&_wpnonce=${jQuery( 'input[name="_give_upload_addon"]', $form ).val().trim()}`,
-			method: 'POST',
-			data: formdata,
-			contentType: false,
-			processData: false,
-			dataType: 'json',
-			beforeSend: function(){
-				$container.html('Uploading File...');
-			},
-			success: function(response){
-				if( true === response.success ) {
-					$container.html('Uploaded ! ');
-
-					return;
-				}
-
-				$container.html('Error: check console for more information.');
-				console.log( response );
+			if ( ! files ) {
+				return false;
 			}
-		});
-	}
-});
+
+			fd.append( 'file', files );
+			giveUploadData( fd );
+		} );
+
+		/**
+		 * Sending AJAX request and upload file
+		 *
+		 * @since 2.5.0
+		 * @param {FormData} formData Form Data.
+		 */
+		function giveUploadData( formData ) {
+			$.ajax( {
+				url: `${ ajaxurl }?action=give_upload_addon&_wpnonce=${ $( 'input[name="_give_upload_addon"]', $form ).val().trim() }`,
+				method: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				dataType: 'json',
+				beforeSend: function() {
+					$container.html( 'Uploading File...' );
+				},
+				success: function( response ) {
+					if ( true === response.success ) {
+						$container.html( 'Uploaded ! ' );
+
+						return;
+					}
+
+					$container.html( 'Error: check console for more information.' );
+					console.log( response );
+				},
+			} );
+		}
+	} );
+}( jQuery ) );
