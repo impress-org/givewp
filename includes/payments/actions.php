@@ -324,7 +324,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		$payment_meta['form_id'] = ! empty( $payment_meta['_give_payment_form_id'] ) ? $payment_meta['_give_payment_form_id'] : '';
 
 		// Price id.
-		$payment_meta['price_id'] = ! empty( $payment_meta['_give_payment_price_id'] ) ? $payment_meta['_give_payment_price_id'] : '';
+		$payment_meta['price_id'] = isset( $payment_meta['_give_payment_price_id'] ) ? $payment_meta['_give_payment_price_id'] : '';
 
 		// Date.
 		$payment_meta['date'] = ! empty( $payment_meta['_give_payment_date'] ) ? $payment_meta['_give_payment_date'] : '';

@@ -34,7 +34,7 @@ const helpers = {
 						pwd: credentials.password,
 					}, {
 						// This is a preventive measure in case if the form is not filled quickly.
-						timeout: 2000
+						timeout: 500000
 					})
 
 					/* Redirection after submission leads to race condition (known bug), below is
@@ -264,13 +264,13 @@ const helpers = {
 				const donationConfirmationUrl = await page.url()
 
 				await expect( donationConfirmationUrl ).toBe( `${helpers.vars.rootUrl}/donation-confirmation/` )
-			})
+			}, 100000)
 
 			// Match every text node on /donation-confirmation page.
 			for( let matcher of matchers ) {
 				it( `EXISTENCE: verify the donation confirmation page for "${matcher}"`, async () => {
 					await expect( page ).toMatch( matcher )
-				})
+				}, 100000)
 			}
 		},
 
