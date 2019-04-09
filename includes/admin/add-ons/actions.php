@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Ajax addon upload handler
  *
+ * Note: only for internal use
+ *
  * @since 2.5.0
  */
 function give_upload_addon_handler() {
@@ -116,3 +118,56 @@ function give_upload_addon_handler() {
 }
 
 add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
+
+/**
+ * Ajax license inquiry handler
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_get_license_info_handler() {
+	$license = give_clean( $_POST['license'] );
+
+	if ( ! $license ) {
+		wp_send_json_error(
+			array(
+				'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' )
+			)
+		);
+	}
+
+	check_admin_referer( 'give-license-activator-nonce' );
+
+	// Data to send to the API.
+	$api_params = array(
+		'edd_action' => 'check_license', // never change from "edd_" to "give_"!
+		'license'    => $license,
+		'url'        => home_url(),
+	);
+
+	// Call the API.
+	$response = wp_remote_post(
+		'https://givewp.test/chechout',
+		array(
+			'timeout'   => 15,
+			'sslverify' => false,
+			'body'      => $api_params,
+		)
+	);
+
+	// Make sure there are no errors.
+	if ( is_wp_error( $response ) ) {
+		wp_send_json_error(
+			array(
+				'errorMsg' => $response->get_error_message()
+			)
+		);
+	}
+
+	$response = json_decode( wp_remote_retrieve_body( $response ) );
+
+	wp_send_json_success( $response );
+}
+
+add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );

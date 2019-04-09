@@ -121,10 +121,16 @@ function give_add_ons_page() {
 			<div id="give-license-activator-inner">
 				<div class="give-notices"></div>
 				<form method="post">
-					<?php wp_nonce_field( 'license_activator-nonce', 'license_activator-nonce' ); ?>
+					<?php wp_nonce_field( 'give-license-activator-nonce', 'give_license_activator_nonce' ); ?>
 					<label for="give-license-activator"><?php _e( 'Activate License', 'give' ); ?></label>
 					<input id="give-license-activator" type="text" name="give_license_key" placeholder="<?php _e( 'Enter a valid license key', 'give' ) ?>">
-					<input value="<?php _e( 'Activate License', 'give' ); ?>" type="submit" class="button">
+					<input
+						data-activate="<?php _e( 'Activate License', 'give' ); ?>"
+						data-activating="<?php _e( 'Verifying License...', 'give' ); ?>"
+						value="<?php _e( 'Activate License', 'give' ); ?>"
+						type="submit"
+						class="button"
+					>
 				</form>
 			</div>
 

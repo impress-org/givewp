@@ -185,10 +185,11 @@ class Give_Scripts {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(
-					'uploading' => __( 'Uploading', 'give' ),
-					'uploaded'  => __( 'Uploaded', 'give' )
+					'uploading'       => __( 'Uploading', 'give' ),
+					'uploaded'        => __( 'Uploaded', 'give' ),
+					'invalid_license' => __( 'Sorry, you entered a invalid key.', 'give' ),
+					'download_file'   => __( '<a href="{link}" target="_blank">Click here</a> to download addon zip file.', 'give' ),
 				),
-
 			);
 
 			wp_localize_script( 'admin-add-ons-js', 'give_addon_var', $localized_data );
