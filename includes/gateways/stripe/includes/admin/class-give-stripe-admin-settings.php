@@ -495,71 +495,46 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</th>
 
 				<td class="give-forminp give-forminp-api_key">
-
-					<div class="give-stripe-webhook-status-wrap give-stripe-live-webhook-status-wrap">
-						<div class="give-stripe-webhook-status give-stripe-live-webhook-status">
-							<strong><?php esc_html_e( 'Live Webhooks', 'give' ); ?></strong>
-							<?php $is_live_webhook_exists = give_get_option( 'give_stripe_is_live_webhook_exists' ); ?>
-							<span class="give-stripe-live-webhook-connected <?php echo ! $is_live_webhook_exists ? 'give-hidden' : ''; ?>">
-								<?php esc_html_e( 'Connected', 'give' ); ?>
-							</span>
-							<span class="give-stripe-live-webhook-not-connected <?php echo $is_live_webhook_exists ? 'give-hidden' : ''; ?>">
-								<?php esc_html_e( 'Not Connected', 'give' ); ?>
-							</span>
-						</div>
-					</div>
-
-					<div class="give-stripe-webhook-status-wrap give-stripe-sandbox-webhook-status-wrap">
-						<div class="give-stripe-webhook-status give-stripe-sandbox-webhook-status">
-							<strong><?php esc_html_e( 'Sandbox Webhooks', 'give' ); ?></strong>
-							<?php $is_test_webhook_exists = give_get_option( 'give_stripe_is_test_webhook_exists' ); ?>
-
-							<span class="give-stripe-sandbox-webhook-connected <?php echo ! $is_test_webhook_exists ? 'give-hidden' : ''; ?>">
-								<?php esc_html_e( 'Connected', 'give' ); ?>
-							</span>
-							<span class="give-stripe-sandbox-webhook-not-connected <?php echo $is_test_webhook_exists ? 'give-hidden' : ''; ?>">
-								<?php esc_html_e( 'Not Connected', 'give' ); ?>
-							</span>
-						</div>
-					</div>
-
-					<span class="give-stripe-syncing-status give-hidden">
-						<span class="give-stripe-loading-icon"></span>
-						<?php esc_html_e( 'Syncing webhooks status...', 'give' ); ?>
-					</span>
-
 					<div class="give-stripe-webhook-sync-wrap">
-						<button class="button button-small give-stripe-sync-webhooks">
-							<?php esc_html_e( 'Sync again', 'give' ); ?>
-						</button>
-						<span class="give-stripe-webhook-error-wrap">
-							<span class="give-stripe-webhook-empty-key-error">
-								<?php
-								$publishable_key = give_stripe_get_publishable_key();
-								$secret_key      = give_stripe_get_secret_key();
-
-								// Bail out with error, if publishable or secret key is empty.
-								if ( empty( $publishable_key ) || empty( $secret_key ) ) {
-									echo give_is_test_mode() ?
-										esc_html__( 'No Sandbox API Keys Detected!', 'give' ) :
-										esc_html__( 'No Live API Keys Detected!', 'give' );
-								}
-								?>
-							</span>
-							<span class="give-stripe-webhook-general-error give-hidden">
-								<?php
-								echo sprintf(
-									/* translators: %s URL. */
-									__( 'There was a problem setting up the sandbox webhooks. Please check the <a href="%s">logs</a> for additional details.', 'give' ),
-									admin_url( '/edit.php?post_type=give_forms&page=give-tools&tab=logs&section=stripe' )
-								);
-								?>
-							</span>
-						</span>
+						<p>
+							<?php
+							esc_html_e( 'In order for Stripe to function completely, you must configure your Stripe webhooks.', 'give' );
+							echo sprintf(
+								/* translators: 1. Webhook settings page. */
+								__( ' Visit your <a href="%1$s" target="_blank">account dashboard</a> to configure them. ', 'give' ),
+								esc_url_raw( 'https://dashboard.stripe.com/account/webhooks' )
+							);
+							esc_html_e( 'Please add a webhook endpoint for the URL below.', 'give' );
+							?>
+						</p>
+						<p>
+							<strong><?php echo esc_html__( 'Webhook URL:', 'give' ); ?></strong>
+							<input style="width: 400px;" type="text" readonly="true" value="<?php echo site_url() . '/?give-listener=stripe'; ?>"/>
+						</p>
+						<?php
+						$webhook_received_on = give_get_option( 'give_stripe_last_webhook_received_timestamp' );
+						if ( ! empty( $webhook_received_on ) ) {
+							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+							?>
+							<p>
+								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
+							</p>
+							<?php
+						}
+						?>
+						<p>
+							<?php
+							echo sprintf(
+								/* translators: 1. Documentation on webhook setup. */
+								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
+								esc_url_raw( 'https://givewp.com/documentation/add-ons/recurring-donations/supported-payment-gateways/stripe/ ' )
+							);
+							?>
+						</p>
 					</div>
 
 					<p class="give-field-description">
-						<?php esc_html_e( 'Stripe webhooks are important to setup so Give can communicate properly with the payment gateway. Please enter your API keys above and the plugin will automatically enable the webhooks within the gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
+						<?php esc_html_e( 'Stripe webhooks are important to setup so Give can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
 					</p>
 				</td>
 			</tr>

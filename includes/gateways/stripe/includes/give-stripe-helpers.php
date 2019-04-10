@@ -927,3 +927,20 @@ function give_stripe_get_transaction_url( $transaction_id ) {
 
 	return $transaction_url;
 }
+
+/**
+ * This function will record errors under Stripe Log.
+ *
+ * @param string $title   Log Title.
+ * @param string $message Log Message.
+ * @param int    $parent  Parent.
+ *
+ * @since 2.5.0
+ *
+ * @return int
+ */
+function give_stripe_record_log( $title = '', $message = '', $parent = 0 ) {
+	$title = empty( $title ) ? esc_html__( 'Stripe Error', 'give' ) : $title;
+
+	return give_record_log( $title, $message, $parent, 'stripe' );
+}

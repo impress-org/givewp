@@ -341,6 +341,9 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					$event = \Stripe\Event::retrieve( $event_json->id );
 
+					// Update time of webhook received whenever the event is retrieved.
+					give_update_option( 'give_stripe_last_webhook_received_timestamp', current_time( 'timestamp', 1 ) );
+
 				} catch ( \Stripe\Error\Authentication $e ) {
 
 					if ( strpos( $e->getMessage(), 'Platform access may have been revoked' ) !== false ) {

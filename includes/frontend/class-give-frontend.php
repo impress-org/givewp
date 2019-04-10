@@ -52,7 +52,7 @@ class Give_Frontend {
 	 * @access private
 	 */
 	private function setup() {
-		$this->admin_loading();
+		$this->frontend_loading();
 
 		add_action( 'give_init', array( $this, 'bc_240' ), 0 );
 	}
@@ -63,7 +63,7 @@ class Give_Frontend {
 	 * @since  2.4.0
 	 * @access private
 	 */
-	private function admin_loading() {
+	private function frontend_loading() {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php'; // @todo: [refactor] can be load only for success and history page.
 	}

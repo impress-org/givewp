@@ -86,7 +86,6 @@ The above test will hover the mouse pointer over the label which has the `for` a
 
 ## How to write tests?
 - Test files should end with `.test.js` suffix
-- [babel-jest](https://www.npmjs.com/package/babel-jest) is added to support ES6 syntax
 - `test-utility.js` file contains helper functions and variables that should be used across all tests.
 - The URL to test should be set within the [beforeAll()](https://jestjs.io/docs/en/api#beforeallfn-timeout) method
 - Priority should be given to [expect-puppeteer](https://github.com/smooth-code/jest-puppeteer/blob/master/packages/expect-puppeteer/README.md#api) followed by [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteer-api-tip-of-tree). There are few bugs that produces [race condition](https://en.wikipedia.org/wiki/Race_condition) which causes tests to fail due to unresolved Promises. [link#1](https://github.com/GoogleChrome/puppeteer/issues/1412#issuecomment-345287522), [link#2](https://github.com/GoogleChrome/puppeteer/issues/1412#issuecomment-345294748), [link#3](https://github.com/GoogleChrome/puppeteer/issues/1412#issuecomment-345299369), [link#4](https://github.com/GoogleChrome/puppeteer/issues/1412#issuecomment-402725036)
