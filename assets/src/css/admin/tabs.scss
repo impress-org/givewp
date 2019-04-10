@@ -1,0 +1,23 @@
+/**
+ * Customizes the default .nav-tab-wrapper with GiveWP style admin tabs.
+ */
+
+.give-nav-tab-wrapper,
+.wrap h2.give-nav-tab-wrapper {
+	background: #DDDDDD;
+	border: none !important;
+	padding-top: 0;
+
+	.nav-tab {
+		border: none;
+		margin: 0;
+		padding: 15px 30px;
+
+		&.nav-tab-active {
+			border-top: 4px solid;
+			margin-bottom: 0;
+
+		}
+	}
+
+}

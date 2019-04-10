@@ -3,6 +3,7 @@
  * Give Welcome Page Class
  *
  * Displays on plugin activation
+ *
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2016, GiveWP
@@ -45,15 +46,15 @@ class Give_Welcome {
 	 * are used to render the Welcome and Credits pages.
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function admin_menus() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 
 		// About Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Welcome to Give %s', 'give' ), $display_version ),
 			esc_html__( 'Welcome to Give', 'give' ),
 			$this->minimum_capability,
@@ -72,7 +73,7 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Give %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
@@ -82,7 +83,7 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Give %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
@@ -95,8 +96,8 @@ class Give_Welcome {
 	 * Hide Individual Dashboard Pages
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function admin_head() {
 
@@ -111,28 +112,28 @@ class Give_Welcome {
 	 * Navigation tabs
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function tabs() {
 		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-about';
 		?>
-		<h2 class="nav-tab-wrapper">
-			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
-				<?php esc_html_e( 'About Give', 'give' ); ?>
-			</a>
+		<h2 class="nav-tab-wrapper give-nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>"
 			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Getting Started', 'give' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-credits' ), 'index.php' ) ) ); ?>">
-				<?php esc_html_e( 'Credits', 'give' ); ?>
+			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>"
+			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
+				<?php esc_html_e( 'About Give', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>"
 			   href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-addons' ) ); ?>">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
+			</a>
+			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>"
+			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-credits' ), 'index.php' ) ) ); ?>">
+				<?php esc_html_e( 'Credits', 'give' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -142,40 +143,45 @@ class Give_Welcome {
 	 * Render About Screen
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function about_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
-		<div class="wrap about-wrap">
+		<div class="wrap give-welcome-wrap">
 
-			<?php $this->get_welcome_header() ?>
 
-			<p class="about-text"><?php
+			<?php $this->get_welcome_header(); ?>
+
+			<p class="about-text">
+			<?php
 				printf(
-				/* translators: %s: http://docs.givewp.com/docs */
+					/* translators: %s: http://docs.givewp.com/docs */
 					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
 					esc_url( 'http://docs.givewp.com/docs' )
 				);
-				?></p>
+				?>
+				</p>
 
 			<?php give_get_newsletter(); ?>
 
-			<div class="give-badge"><?php
+			<div class="give-badge">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
-				?></div>
+				?>
+				</div>
 
 			<?php $this->tabs(); ?>
 
 			<div class="feature-section clearfix introduction">
 
 				<div class="video feature-section-item">
-					<img src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-photo-mashup.png' ?>"
+					<img src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-photo-mashup.png'; ?>"
 						 alt="<?php esc_attr_e( 'Give', 'give' ); ?>">
 				</div>
 
@@ -215,7 +221,7 @@ class Give_Welcome {
 				</div>
 
 				<div class="content  feature-section-item last-feature">
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/give-form-mockup.png' ?>"
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/give-form-mockup.png'; ?>"
 						 alt="<?php esc_attr_e( 'A Give donation form', 'give' ); ?>">
 				</div>
 
@@ -231,29 +237,35 @@ class Give_Welcome {
 	 * Render Changelog Screen
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function changelog_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
-		<div class="wrap about-wrap">
-			<h1><?php echo get_admin_page_title(); ?></h1>
+		<div class="wrap give-welcome-wrap">
+			<div class="give-welcome-header">
+				<h1><?php echo get_admin_page_title(); ?></h1>
 
-			<p class="about-text"><?php
-				printf(
-				/* translators: %s: Give version */
-					esc_html__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
-					$display_version
-				);
-				?></p>
-			<div class="give-badge"><?php
-				printf(
-				/* translators: %s: Give version */
-					esc_html__( 'Version %s', 'give' ),
-					$display_version
-				);
-				?></div>
+				<p class="about-text">
+				<?php
+					printf(
+						/* translators: %s: Give version */
+						esc_html__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
+						$display_version
+					);
+					?>
+					</p>
+				<div class="give-badge">
+					<?php
+					printf(
+						/* translators: %s: Give version */
+						esc_html__( 'Version %s', 'give' ),
+						$display_version
+					);
+					?>
+				</div>
+			</div>
 
 			<?php $this->tabs(); ?>
 
@@ -266,10 +278,20 @@ class Give_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array(
-					'post_type' => 'give_forms',
-					'page'      => 'give-settings'
-				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'Give Settings', 'give' ); ?></a>
+				<a href="
+				<?php
+				echo esc_url(
+					admin_url(
+						add_query_arg(
+							array(
+								'post_type' => 'give_forms',
+								'page'      => 'give-settings',
+							), 'edit.php'
+						)
+					)
+				);
+				?>
+				"><?php esc_html_e( 'Give Settings', 'give' ); ?></a>
 			</div>
 		</div>
 		<?php
@@ -279,27 +301,30 @@ class Give_Welcome {
 	 * Render Getting Started Screen
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function getting_started_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
-		<div class="wrap about-wrap get-started">
+		<div class="wrap give-welcome-wrap get-started">
+			<div class="give-welcome-header">
+				<?php $this->get_welcome_header(); ?>
 
-			<?php $this->get_welcome_header() ?>
+				<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
+				<?php give_get_newsletter(); ?>
 
-			<?php give_get_newsletter(); ?>
-
-			<div class="give-badge"><?php
-				printf(
-				/* translators: %s: Give version */
-					esc_html__( 'Version %s', 'give' ),
-					$display_version
-				);
-				?></div>
+				<div class="give-badge">
+				<?php
+					printf(
+						/* translators: %s: Give version */
+						esc_html__( 'Version %s', 'give' ),
+						$display_version
+					);
+					?>
+					</div>
+			</div>
 
 			<?php $this->tabs(); ?>
 
@@ -325,7 +350,8 @@ class Give_Welcome {
 			<div class="feature-section clearfix">
 
 				<div class="content feature-section-item multi-level-gif">
-					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
+					<img
+						src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -357,7 +383,8 @@ class Give_Welcome {
 			<div class="feature-section clearfix">
 
 				<div class="content feature-section-item display-options">
-					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-display-options.png">
+					<img
+						src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-display-options.png">
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -379,37 +406,42 @@ class Give_Welcome {
 	 * Render Credits Screen
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return void
+	 * @since  1.0
 	 */
 	public function credits_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
-		<div class="wrap about-wrap">
+		<div class="wrap give-welcome-wrap">
+			<div class="give-welcome-header">
+				<?php $this->get_welcome_header(); ?>
 
-			<?php $this->get_welcome_header() ?>
+				<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
 
-			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
+				<?php give_get_newsletter(); ?>
 
-			<?php give_get_newsletter(); ?>
-
-			<div class="give-badge"><?php
-				printf(
-				/* translators: %s: Give version */
-					esc_html__( 'Version %s', 'give' ),
-					$display_version
-				);
-				?></div>
+				<div class="give-badge">
+				<?php
+					printf(
+						/* translators: %s: Give version */
+						esc_html__( 'Version %s', 'give' ),
+						$display_version
+					);
+					?>
+					</div>
+			</div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php
+			<p class="about-description">
+			<?php
 				printf(
-				/* translators: %s: https://github.com/impress-org/give */
+					/* translators: %s: https://github.com/impress-org/give */
 					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
-				?></p>
+				?>
+				</p>
 
 			<?php echo $this->contributors(); ?>
 		</div>
@@ -420,8 +452,8 @@ class Give_Welcome {
 	/**
 	 * Parse the GIVE readme.txt file
 	 *
-	 * @since 1.0
 	 * @return string $readme HTML formatted readme file
+	 * @since 1.0
 	 */
 	public function parse_readme() {
 		$file = file_exists( GIVE_PLUGIN_DIR . 'readme.txt' ) ? GIVE_PLUGIN_DIR . 'readme.txt' : null;
@@ -448,9 +480,9 @@ class Give_Welcome {
 	/**
 	 * Render Contributors List
 	 *
-	 * @since 1.0
-	 * @uses  Give_Welcome::get_contributors()
 	 * @return string $contributor_list HTML formatted list of all the contributors for GIVE
+	 * @uses  Give_Welcome::get_contributors()
+	 * @since 1.0
 	 */
 	public function contributors() {
 		$contributors = $this->get_contributors();
@@ -483,11 +515,11 @@ class Give_Welcome {
 	}
 
 	/**
-	 * Retreive list of contributors from GitHub.
+	 * Retrieve list of contributors from GitHub.
 	 *
 	 * @access public
-	 * @since  1.0
 	 * @return array $contributors List of contributors
+	 * @since  1.0
 	 */
 	public function get_contributors() {
 		$contributors = Give_Cache::get( 'give_contributors', true );
@@ -533,68 +565,8 @@ class Give_Welcome {
 
 			/*]]>*/
 		</style>
-		<script>
-			//FitVids
-			(function (e) {
-				"use strict";
-				e.fn.fitVids = function (t) {
-					var n = {customSelector: null, ignore: null};
-					if (!document.getElementById("fit-vids-style")) {
-						var r = document.head || document.getElementsByTagName("head")[0];
-						var i = ".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}";
-						var s = document.createElement("div");
-						s.innerHTML = '<p>x</p><style id="fit-vids-style">' + i + "</style>";
-						r.appendChild(s.childNodes[1])
-					}
-					if (t) {
-						e.extend(n, t)
-					}
-					return this.each(function () {
-						var t = ['iframe[src*="player.vimeo.com"]', 'iframe[src*="youtube.com"]', 'iframe[src*="youtube-nocookie.com"]', 'iframe[src*="kickstarter.com"][src*="video.html"]', "object", "embed"];
-						if (n.customSelector) {
-							t.push(n.customSelector)
-						}
-						var r = ".fitvidsignore";
-						if (n.ignore) {
-							r = r + ", " + n.ignore
-						}
-						var i = e(this).find(t.join(","));
-						i = i.not("object object");
-						i = i.not(r);
-						i.each(function () {
-							var t = e(this);
-							if (t.parents(r).length > 0) {
-								return
-							}
-							if (this.tagName.toLowerCase() === "embed" && t.parent("object").length || t.parent(".fluid-width-video-wrapper").length) {
-								return
-							}
-							if (!t.css("height") && !t.css("width") && (isNaN(t.attr("height")) || isNaN(t.attr("width")))) {
-								t.attr("height", 9);
-								t.attr("width", 16)
-							}
-							var n = this.tagName.toLowerCase() === "object" || t.attr("height") && !isNaN(parseInt(t.attr("height"), 10)) ? parseInt(t.attr("height"), 10) : t.height(),
-								i = !isNaN(parseInt(t.attr("width"), 10)) ? parseInt(t.attr("width"), 10) : t.width(),
-								s = n / i;
-							if (!t.attr("id")) {
-								var o = "fitvid" + Math.floor(Math.random() * 999999);
-								t.attr("id", o)
-							}
-							t.wrap('<div class="fluid-width-video-wrapper"></div>').parent(".fluid-width-video-wrapper").css("padding-top", s * 100 + "%");
-							t.removeAttr("height").removeAttr("width")
-						})
-					})
-				}
-			})(window.jQuery || window.Zepto);
-			jQuery(document).ready(function ($) {
-
-				// Target your .container, .wrapper, .post, etc.
-				$(".wrap").fitVids();
-
-			});
-
-		</script>
-	<?php }
+	<?php
+	}
 
 
 	/**
@@ -602,30 +574,34 @@ class Give_Welcome {
 	 *
 	 * Various social media elements to Give
 	 */
-	public function social_media_elements() { ?>
+	public function social_media_elements() {
+	?>
 
 		<div class="social-items-wrap">
 
-			<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969"
-					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
-					allowTransparency="true"></iframe>
+			<iframe
+				src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969"
+				scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
+				allowTransparency="true"></iframe>
 
-			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">
+			<?php
 				printf(
-				/* translators: %s: Give twitter user @givewp */
+					/* translators: %s: Give twitter user @givewp */
 					esc_html_e( 'Follow %s', 'give' ),
 					'@givewp'
 				);
-				?></a>
-			<script>!function (d, s, id) {
-					var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-					if (!d.getElementById(id)) {
-						js = d.createElement(s);
+				?>
+				</a>
+			<script>!function( d, s, id ) {
+					var js, fjs = d.getElementsByTagName( s )[ 0 ], p = /^http:/.test( d.location ) ? 'http' : 'https';
+					if ( !d.getElementById( id ) ) {
+						js = d.createElement( s );
 						js.id = id;
 						js.src = p + '://platform.twitter.com/widgets.js';
-						fjs.parentNode.insertBefore(js, fjs);
+						fjs.parentNode.insertBefore( js, fjs );
 					}
-				}(document, 'script', 'twitter-wjs');
+				}( document, 'script', 'twitter-wjs' );
 			</script>
 
 		</div>
@@ -640,9 +616,8 @@ class Give_Welcome {
 	 * time GIVE is upgraded to a new version
 	 *
 	 * @access public
-	 * @since  1.0
-	 *
 	 * @return void
+	 * @since  1.0
 	 */
 	public function welcome() {
 
@@ -661,11 +636,12 @@ class Give_Welcome {
 
 		$upgrade = get_option( 'give_version_upgraded_from' );
 
-		if ( ! $upgrade ) { // First time install
-			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
+		if ( ! $upgrade ) {
+			// First time install
+			wp_safe_redirect( admin_url( 'index.php?page=give-getting-started' ) );
 			exit;
-		} elseif ( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) { // Welcome is disabled in settings
-
+		} elseif ( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) {
+			// Welcome is disabled in settings
 		} else { // Welcome is NOT disabled in settings
 			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
 			exit;
