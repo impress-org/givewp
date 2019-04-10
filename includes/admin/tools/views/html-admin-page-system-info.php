@@ -677,6 +677,21 @@ $give_updates = Give_Updates::get_instance();
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether donors can access their donation history using only email.', 'give' ) ); ?></td>
 			<td><?php echo 'enabled' === give_get_option( 'email_access' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
+		<tr>
+			<td data-export-label="Stripe Webhook Notifications"><?php _e( 'Stripe Webhook Notifications', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Displays whether when last Stripe Webhook is received with which donation or transaction.', 'give' ) ); ?></td>
+			<td>
+				<?php
+				$webhook_received_on = give_get_option( 'give_stripe_last_webhook_received_timestamp' );
+				if ( ! empty( $webhook_received_on ) ) {
+					$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+					echo date_i18n( esc_html( $date_time_format ), $webhook_received_on );
+				} else {
+					echo 'N/A';
+				}
+				?>
+			</td>
+		</tr>
 	</tbody>
 </table>
 
