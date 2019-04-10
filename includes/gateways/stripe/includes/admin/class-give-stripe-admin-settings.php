@@ -514,9 +514,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<?php
 						$webhook_received_on = give_get_option( 'give_stripe_last_webhook_received_timestamp' );
 						if ( ! empty( $webhook_received_on ) ) {
+							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 							?>
 							<p>
-								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php date_i18n( give_date_format(), $webhook_received_on ); ?>
+								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
 							</p>
 							<?php
 						}
