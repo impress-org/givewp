@@ -150,7 +150,10 @@ function give_add_ons_page() {
 
 		<?php foreach ( $give_plugins as $give_plugin ): ?>
 			<?php
-			if ( 'add-on' !== $give_plugin['Type'] ) {
+			if (
+				'add-on' !== $give_plugin['Type']
+				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' ) // Exclude public add-ons
+			) {
 				continue;
 			}
 
