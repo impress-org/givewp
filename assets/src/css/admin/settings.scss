@@ -14,6 +14,10 @@
 .give-settings-page {
 	margin:0 20px 0 2px;
 
+	#poststuff {
+		padding-top:25px;
+	}
+
 	// White bg header.
 	.give-settings-header {
 		background: #FFF;
@@ -192,51 +196,6 @@ div.give-field-description {
 	border-top: none;
 }
 
-.cmb-type-enabled-gateways .cmb-td > p:first-of-type {
-	display: none;
-}
-
-.tablenav {
-	height: auto;
-}
-
-// CMB2 Checkbox Revised Styles
-.cmb-type-checkbox .cmb-td {
-	width: 80%;
-
-	label {
-		font-size: 13px;
-	}
-}
-
-/* Responsive Settings Rows */
-.give_settings {
-	.cmb2-wrap .cmb-row {
-		display: table-row;
-
-		> .cmb-th, > .cmb-td {
-			display: table-cell;
-			float: none;
-		}
-	}
-}
-
-/* Custom Title Separators */
-.cmb2-id-give-title {
-	label {
-		font-style: italic;
-		color: #AAA;
-		cursor: default;
-	}
-
-	> div.cmb-th {
-		padding-bottom: 10px;
-	}
-
-	> div.cmb-td {
-		padding-bottom: 5px;
-	}
-}
 
 //--------------------------------------------------------------
 // Payment Gateways
@@ -385,7 +344,9 @@ div.give-field-description {
 	}
 }
 
-.give-settings-email-settings-section, .give-settings-donor-email-section, .give-settings-admin-email-section {
+.give-settings-email-settings-section,
+.give-settings-donor-email-section,
+.give-settings-admin-email-section {
 	// Nothing in table nav so hide it.
 	.tablenav {
 		display: none;
