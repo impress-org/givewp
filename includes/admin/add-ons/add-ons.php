@@ -220,8 +220,8 @@ function give_add_ons_page() {
 									);
 									?>
 								</span>
-							<?php elseif ( 'valid' === $addon_license_active->license ): ?>
-								<?php echo sprintf( '%1$s %2$s', __( 'Renew:' ), date( give_date_format(), strtotime( $addon_license_active->expires ) ) ); ?>
+							<?php elseif ( 'valid' === $addon_license->license ): ?>
+								<?php echo sprintf( '%1$s %2$s', __( 'Renew:' ), date( give_date_format(), $license_expire_date ) ); ?>
 							<?php else: ?>
 								<i class="dashicons dashicons-yes give-license__status"></i>
 								<?php _e( 'License', 'give' ); ?>
