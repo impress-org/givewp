@@ -215,7 +215,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		if ( ! empty( $this->form ) ) {
 
-			// Export donors for a specific donation form and also within specified timeframe.
+			// Export donors for a specific donation form and also within specified time frame.
 			$args = array(
 				'output'     => 'payments',
 				'post_type'  => array( 'give_payment' ),
@@ -255,7 +255,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
-
+			
 			if ( $payments ) {
 				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
@@ -308,7 +308,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			);
 
 			// Check for date option filter.
-			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+			if (
+				! empty( $this->data['donor_export_start_date'] )
+				|| ! empty( $this->data['donor_export_end_date'] )
+			) {
 
 				// Start date.
 				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
@@ -356,7 +359,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$percentage = 0;
 
-		// We can't count the number when getting them for a specific form.
+		// We can't count the number when getting donors for a specific form.
 		if ( empty( $this->form ) ) {
 
 			$total = Give()->donors->count();
