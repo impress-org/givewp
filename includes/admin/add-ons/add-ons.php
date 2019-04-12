@@ -188,7 +188,15 @@ function give_add_ons_page() {
 								if ( ! $give_plugin['License'] ) {
 									// Leave blank foe now.
 								} elseif ( 'valid' === $addon_license_active->license ) {
-									echo sprintf( '%1$s %2$s', $addon_license_active->activations_left, __( 'activations remaining', 'give' ) );
+									if( ! $addon_license_active->activations_left ) {
+										_e( 'No activation remaining', 'give' );
+									} else{
+										echo sprintf(
+											'%1$s %2$s',
+											$addon_license_active->activations_left,
+											_n( 'activation remaining', 'activations remaining', $addon_license_active->activations_left  ,'give' )
+										);
+									}
 								} elseif ( 'expired' === $addon_license_active->license ) {
 									echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Renew to manage sites', 'give' ) );
 								}
