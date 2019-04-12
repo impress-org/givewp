@@ -278,7 +278,7 @@ function give_add_ons_page() {
 								echo sprintf(
 									'%1$s %2$s',
 									__( 'currently', 'give' ),
-									'active' === $give_plugin['Status'] ? __( 'activated', 'give' ) : __( 'deactivated', 'give' )
+									'active' === $give_plugin['Status'] ? __( 'activated', 'give' ) : __( 'installed', 'give' )
 								);
 								?>
 							</span>
