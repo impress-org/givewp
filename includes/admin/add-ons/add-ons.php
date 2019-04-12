@@ -78,6 +78,7 @@ Give_Addons::get_instance();
  * @since 1.0
  */
 function give_add_ons_page() {
+	add_thickbox();
 	// @todo: show plugin activate button if plugin uploaded successfully.
 	?>
 	<div class="wrap" id="give-add-ons">
@@ -259,9 +260,10 @@ function give_add_ons_page() {
 							<span class="give-text">
 							<?php
 							echo sprintf(
-								'<a href="%1$s" target="_blank">%2$s</a>',
-								give_get_addon_readme_url( $addon_slug ),
-								__( 'changelog', 'give' )
+								'<a href="%1$s" class="thickbox" title="%3$s">%2$s</a>',
+								give_thickbox_ajax_url( array( 'url' => urlencode_deep( give_get_addon_readme_url( $addon_slug ) ) ) ),
+								__( 'changelog', 'give' ),
+								__( 'Changelog of' ) . " {$give_plugin['Name']}"
 							);
 							?>
 						</span>
