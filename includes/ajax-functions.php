@@ -821,17 +821,31 @@ function give_get_content_by_ajax_handler() {
 		die();
 	}
 
-	$url = urldecode_deep( give_clean( $_GET['url'] ) );
+	// Handle changelog render request.
+	if(
+		! empty( $_GET['show_changelog'] )
+		&& (int) give_clean( $_GET['show_changelog'] )
+	) {
+		$url = urldecode_deep( give_clean( $_GET['url'] ) );
 
-	$response = wp_remote_get( $url );
+		$response = wp_remote_get( $url );
 
-	if ( is_wp_error( $response ) ) {
-		die();
+		if ( is_wp_error( $response ) ) {
+			die();
+		}
+
+		$response = wp_remote_retrieve_body( $response );
+
+		if( false === strpos( $response,  '== Changelog ==' ) ) {
+			echo __( 'sorry, unable to load changelog.', 'give' );
+			exit;
+		}
+
+		echo nl2br( $response );
 	}
 
-	$response = wp_remote_retrieve_body( $response );
+	do_action( 'give_get_content_by_ajax_handler' );
 
-	echo nl2br( $response );
 	exit;
 }
 
