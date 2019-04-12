@@ -81,6 +81,22 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			}
 		} );
 	} );
+
+	const dismissConnectBanner = document.querySelector( '.give-stripe-connect-temp-dismiss' );
+	if ( null !== dismissConnectBanner ) {
+		dismissConnectBanner.on( 'click', function() {
+			const dismissBanner = new XMLHttpRequest();
+			const formData = new FormData();
+
+			formData.append( 'give_action', 'stripe_connect_dismiss' );
+
+			dismissBanner.onreadystatechange = function() {
+				// Do nothing.
+			};
+			dismissBanner.open( 'POST', give_global_vars.ajaxurl, false );
+			dismissBanner.send( formData );
+		} );
+	}
 } );
 
 /**

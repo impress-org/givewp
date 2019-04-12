@@ -434,14 +434,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			?>
 			<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . esc_attr( $value['wrapper_class'] ) . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
-					<label for="test_secret_key"> <?php esc_attr_e( 'Stripe Connection', 'give' ); ?></label>
+					<label for="give-stripe-connect"> <?php esc_attr_e( 'Stripe Connection', 'give' ); ?></label>
 				</th>
-				<?php
-				if ( give_stripe_is_connected() ) :
-					$stripe_user_id = give_get_option( 'give_stripe_user_id' );
-					?>
-
-					<td class="give-forminp give-forminp-api_key">
+				<td class="give-forminp give-forminp-api_key">
+					<?php
+					if ( give_stripe_is_connected() ) :
+						$stripe_user_id = give_get_option( 'give_stripe_user_id' );
+						?>
 						<span id="give-stripe-connect" class="stripe-btn-disabled"><span>Connected</span></span>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-yes" style="color:#25802d;"></span>
@@ -456,25 +455,35 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<a href="<?php give_stripe_disconnect_url(); ?>" class="give-stripe-disconnect"
 								onclick="return confirm('<?php echo esc_html( $disconnect_confirmation_message ); ?>');">[Disconnect]</a>
 						</p>
-					</td>
-
-
-				<?php else : ?>
-					<td class="give-forminp give-forminp-api_key">
-						<?php give_stripe_connect_button(); ?>
+					<?php else : ?>
+						<?php echo give_stripe_connect_button(); ?>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-no"
-								style="color:red;"></span><?php _e( 'Stripe is NOT connected.', 'give' ); ?>
+								style="color:red;"></span><?php esc_html_e( 'Stripe is NOT connected.', 'give' ); ?>
 						</p>
 						<?php if ( isset( $_GET['error_code'] ) && isset( $_GET['error_message'] ) ) : ?>
 							<p class="stripe-connect-error">
 								<strong><?php echo give_clean( $_GET['error_code'] ); ?>:</strong> <?php echo give_clean( $_GET['error_message'] ); ?>
 							</p>
 						<?php endif; ?>
-					</td>
-
-				<?php endif; ?>
-
+					<?php endif; ?>
+					<?php
+					if ( ! defined( 'GIVE_STRIPE_VERSION' ) ) {
+						?>
+						<p class="give-field-description">
+							<?php
+							echo sprintf(
+								__( 'The Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium add-on <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
+								esc_url_raw( 'https://givewp.com/addons/stripe-gateway/' ),
+								esc_url_raw( 'https://givewp.com/addons/recurring-donations/' ),
+								esc_url_raw( 'https://givewp.com' )
+							);
+							?>
+						</p>
+						<?php
+					}
+					?>
+				</td>
 			</tr>
 		<?php
 		}

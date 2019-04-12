@@ -365,7 +365,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 				echo '<li>';
 				printf( '<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>' );
-				printf( '<span class="admin-label">%s</span>', esc_html( $option['admin_label'] ) );
+				printf(
+					'<span class="admin-label">%1$s %2$s</span>',
+					esc_html( $option['admin_label'] ),
+					! empty( $option['admin_tooltip'] ) ? Give()->tooltips->render_help( esc_attr( $option['admin_tooltip'] ) ) : ''
+				);
 
 				$label = '';
 				if ( ! empty( $gateways_label[ $key ] ) ) {
