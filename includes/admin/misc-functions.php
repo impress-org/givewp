@@ -392,3 +392,22 @@ function give_api_callback() {
 	 */
 	do_action( 'give_tools_api_keys_after' );
 }
+
+
+/**
+ * Hide char in string
+ *
+ * @param string $str
+ * @param int    $show_char_count
+ * @param string $replace
+ *
+ * @return string
+ * @since 2.5.0
+ *
+ */
+function give_hide_char( $str, $show_char_count, $replace = '*' ) {
+	return str_repeat(
+		$replace,
+		strlen( $str ) - $show_char_count ) . substr( $str, - $show_char_count, $show_char_count
+	);
+}
