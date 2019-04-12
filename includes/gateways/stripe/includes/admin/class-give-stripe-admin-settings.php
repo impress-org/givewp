@@ -456,7 +456,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								onclick="return confirm('<?php echo esc_html( $disconnect_confirmation_message ); ?>');">[Disconnect]</a>
 						</p>
 					<?php else : ?>
-						<?php give_stripe_connect_button(); ?>
+						<?php echo give_stripe_connect_button(); ?>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-no"
 								style="color:red;"></span><?php esc_html_e( 'Stripe is NOT connected.', 'give' ); ?>
@@ -468,13 +468,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<?php endif; ?>
 					<?php endif; ?>
 					<?php
-					if (
-						! defined( 'GIVE_STRIPE_VERSION' ) ||
-						(
-							defined( 'GIVE_STRIPE_VERSION' ) &&
-							version_compare( '2.2.0', GIVE_STRIPE_VERSION, '<=' )
-						)
-					) {
+					if ( ! defined( 'GIVE_STRIPE_VERSION' ) ) {
 						?>
 						<p class="give-field-description">
 							<?php
