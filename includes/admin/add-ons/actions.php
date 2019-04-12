@@ -168,7 +168,7 @@ function give_get_license_info_handler() {
 
 	// Call the API.
 	$response = wp_remote_post(
-		'https://givewp.test/chechout',
+		'https://staging.givewp.com/chechout', // @todo convert this url to live site.
 		array(
 			'timeout'   => 15,
 			'sslverify' => false,
