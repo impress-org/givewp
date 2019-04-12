@@ -153,11 +153,13 @@ function give_add_ons_page() {
 				continue;
 			}
 
+			$addon_shortname      = Give_License::get_short_name( $give_plugin['Name'] );
+			$addon_slug           = str_replace( '_', '-', $addon_shortname );
 			$addon_license_active = __give_get_active_license_info( Give_License::get_short_name( $give_plugin['Name'] ) );
-			$addon_license_key    = give_get_option( Give_License::get_short_name( $give_plugin['Name'] ) . '_license_key' );
+			$addon_license_key    = give_get_option( "{$addon_shortname}_license_key" );
 			?>
-			<div id="give-addon-info-wrap">
-				<div id="give-addon-info-inner">
+			<div class="give-addon-wrap">
+				<div class="give-addon-inner">
 					<div class="give-row">
 						<div class="give-left">
 							<span class="give-license__key give-background__gray give-border">
@@ -209,8 +211,8 @@ function give_add_ons_page() {
 							<span class="give-text">
 							<?php
 							echo sprintf(
-								'<a href="%1$s">%2$s</a>',
-								'#',
+								'<a href="%1$s" target="_blank">%2$s</a>',
+								give_get_addon_readme_url( $addon_slug ),
 								__( 'changelog', 'give' )
 							);
 							?>
