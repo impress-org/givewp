@@ -1021,6 +1021,33 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return self::$licensed_addons;
 		}
 
+
+		/**
+		 * Check if license key attached to subscription
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param string $license_key
+		 *
+		 * @return array
+		 */
+		static function is_subscription( $license_key = '' ) {
+			// Check if current license is part of subscription or not.
+			$subscriptions = get_option( 'give_subscriptions' );
+			$subscription = array();
+
+			if ( $subscriptions ) {
+				foreach ( $subscriptions as $subs ) {
+					if ( in_array( $license_key, $subs['licenses'] ) ) {
+						$subscription = $subs;
+						break;
+					}
+				}
+			}
+
+			return $subscription;
+		}
+
 	}
 
 endif; // end class_exists check.
