@@ -261,3 +261,95 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 }
 
 add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 );
+
+/**
+ * Displays the "Give Connect" banner.
+ *
+ * @since 2.5.0
+ *
+ * @see: https://stripe.com/docs/connect/reference
+ *
+ * @return bool
+ */
+function give_stripe_show_connect_banner() {
+
+	// Don't show if already connected.
+	if ( give_stripe_is_connected() ) {
+		return false;
+	}
+
+	/**
+	 * This action hook is used to perform additional checks before showing banner.
+	 *
+	 * @since 2.5.0
+	 */
+	do_action( 'give_stripe_show_connect_banner' );
+
+	$hide_on_pages = array( 'stripe-settings', 'gateways-settings' );
+
+	// Don't show if on the payment settings section.
+	if ( in_array( give_get_current_setting_section(), $hide_on_pages, true ) ) {
+		return false;
+	}
+
+	// Don't show for non-admins.
+	if ( ! current_user_can( 'update_plugins' ) ) {
+		return false;
+	}
+
+	// Is the notice temporarily dismissed?
+	if ( give_stripe_is_connect_banner_dismissed() ) {
+		return false;
+	}
+
+	// $give_stripe  = Give_Stripe::get_instance();
+	$connect_link = give_stripe_connect_button();
+
+	// Default message.
+	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website. <a href="#" class="give-stripe-connect-temp-dismiss">Not right now <span class="dashicons dashicons-dismiss"></span></a>', 'give' );
+
+	/**
+	 * This filter hook is used to change the text of the connect banner.
+	 *
+	 * @param string $main_text Text to be displayed on the connect banner.
+	 *
+	 * @since 2.5.0
+	 */
+	$main_text = apply_filters( 'give_stripe_change_connect_banner_text', $main_text );
+
+	$message = sprintf(
+		/* translators: 1. Main Text, 2. Connect Link */
+		__( '<strong>Stripe Connect:</strong> %1$s %2$s', 'give' ),
+		$main_text,
+		$connect_link
+	);
+
+	?>
+	<div class="notice notice-warning give-stripe-connect-message">
+		<p>
+			<?php echo $message; ?>
+		</p>
+	</div>
+	<?php
+}
+
+add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
+
+/**
+ * Dismiss connect banner temporarily.
+ *
+ * Sets transient via AJAX callback.
+ *
+ * @since 2.5.0
+ */
+function give_stripe_connect_dismiss_banner() {
+
+	$user_id = get_current_user_id();
+	set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
+
+	return true;
+
+}
+
+add_action( 'give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
+
