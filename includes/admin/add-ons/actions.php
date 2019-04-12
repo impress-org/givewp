@@ -185,7 +185,14 @@ function give_get_license_info_handler() {
 		);
 	}
 
-	$response = json_decode( wp_remote_retrieve_body( $response ) );
+	/* @var stdClass $license */
+	$license                           = json_decode( wp_remote_retrieve_body( $response ) );
+	$licenses                          = $tmp = get_option( 'give_licenses', array() );
+	$licenses[ $license->license_key ] = $license;
+
+	if ( array_diff_key( $licenses, $tmp ) ) {
+		update_option( 'give_licenses', $licenses );
+	}
 
 	wp_send_json_success( $response );
 }
