@@ -82,7 +82,7 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 						sprintf(
 							'<strong>%1$s</strong> %2$s',
 							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Credit card fields are disabled because Stripe is either not connected or your site is not running securely over HTTPS.', 'give' )
+							esc_html__( 'Credit card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
 						)
 					);
 		} elseif (
