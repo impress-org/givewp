@@ -71,26 +71,39 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 		if (
 				(
 					! is_ssl() &&
-					! give_is_test_mode()
-				) ||
-				(
-					empty( give_stripe_get_publishable_key() ) ||
-					empty( give_stripe_get_secret_key() )
+					! give_is_test_mode() &&
+					(
+						empty( give_stripe_get_publishable_key() ) ||
+						empty( give_stripe_get_secret_key() )
+					)
 				)
 			) {
-			?>
-			<div class="give_error give_warning">
-				<p>
-					<?php
-					echo sprintf(
-						'<strong>%1$s</strong> %2$s',
-						esc_html__( 'Notice:', 'give' ),
-						esc_html__( 'Credit card fields are disabled because Stripe is either not connected or your site is not running securely over HTTPS.', 'give' )
+					Give()->notices->print_frontend_notice(
+						sprintf(
+							'<strong>%1$s</strong> %2$s',
+							esc_html__( 'Notice:', 'give' ),
+							esc_html__( 'Credit card fields are disabled because Stripe is either not connected or your site is not running securely over HTTPS.', 'give' )
+						)
 					);
-					?>
-				</p>
-			</div>
-			<?php
+		} elseif (
+			empty( give_stripe_get_publishable_key() ) ||
+			empty( give_stripe_get_secret_key() )
+		) {
+			Give()->notices->print_frontend_notice(
+				sprintf(
+					'<strong>%1$s</strong> %2$s',
+					esc_html__( 'Notice:', 'give' ),
+					esc_html__( 'Credit card fields are disabled because Stripe is not connected.', 'give' )
+				)
+			);
+		} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
+			Give()->notices->print_frontend_notice(
+				sprintf(
+					'<strong>%1$s</strong> %2$s',
+					esc_html__( 'Notice:', 'give' ),
+					esc_html__( 'Credit card fields are disabled because your site is not running securely over HTTPS.', 'give' )
+				)
+			);
 		} else {
 			if ( 'single' === $stripe_cc_field_format ) {
 
