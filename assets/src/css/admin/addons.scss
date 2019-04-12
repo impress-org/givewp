@@ -135,7 +135,7 @@
 	}
 
 	.give-background__gray{
-		background: lightgray;
+		background: #eee;
 	}
 
 	.give-license__status{
@@ -149,11 +149,17 @@
 	}
 
 	.give-license__key{
-		min-width: 150px;
 		display: inline-block;
-		min-height: 22px;
-		padding: 0 4px;
-		line-height: 22px;
+
+		input[type="text"]{
+			min-width: 225px;
+			background-color: #eee;
+			height: 28px;
+		}
+
+		input[type="text"]:focus{
+			background-color: white;
+		}
 	}
 
 	.give-plugin__status{

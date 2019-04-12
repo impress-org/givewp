@@ -162,17 +162,20 @@ function give_add_ons_page() {
 				<div class="give-addon-inner">
 					<div class="give-row">
 						<div class="give-left">
-							<span class="give-license__key give-background__gray give-border">
-								<?php if ( $give_plugin['License'] ): ?>
-									<?php echo str_repeat( '*' , strlen( $addon_license_key ) - 5 ) . substr( $addon_license_key, -5, 5 ) ; ?>
-								<?php endif; ?>
+							<span class="give-license__key<?php echo $give_plugin['License'] ? ' give-has-license-key' : ''; ?>">
+								<?php
+								$value = '';
+								if ( $give_plugin['License'] ){
+									$value = str_repeat( '*' , strlen( $addon_license_key ) - 5 ) . substr( $addon_license_key, -5, 5 );
+								}
+								?>
+								<input type="text" class="license-key" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							</span>
 
 							<?php //@todo: handle all license status; ?>
 							<span class="give-text">
 								<?php if ( ! $give_plugin['License'] ) : ?>
-									<i class="dashicons dashicons-warning"></i>
-									<?php _e( 'Unlicensed', 'give' ); ?>
+									<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
 								<?php elseif ( 'valid' === $addon_license_active->license ): ?>
 									<i class="dashicons dashicons-yes give-license__status"></i>
 									<?php _e( 'Active', 'give' ); ?>
