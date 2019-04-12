@@ -144,6 +144,93 @@ function give_add_ons_page() {
 			<p class="give-field-description"><?php _e( 'Enter a license key above to unlock your GiveWP add-ons. You can access your licenses anytime from the My Account section on the GiveWP website.' ); ?></p>
 		</div>
 
+		<h2><?php _e( 'License and Downloads', 'give' ); ?></h2>
+		<?php $give_plugins = give_get_plugins(); ?>
+
+		<?php foreach ( $give_plugins as $give_plugin ): ?>
+			<?php
+			if ( 'add-on' !== $give_plugin['Type'] ) {
+				continue;
+			}
+
+			$addon_license_active = __give_get_active_license_info( Give_License::get_short_name( $give_plugin['Name'] ) );
+			$addon_license_key    = give_get_option( Give_License::get_short_name( $give_plugin['Name'] ) . '_license_key' );
+			?>
+			<div id="give-addon-info-wrap">
+				<div id="give-addon-info-inner">
+					<div class="give-row">
+						<div class="give-left">
+							<span class="give-license__key give-background__gray give-border">
+								<?php if ( $give_plugin['License'] ): ?>
+									<?php echo str_repeat( '*' , strlen( $addon_license_key ) - 5 ) . substr( $addon_license_key, -5, 5 ) ; ?>
+								<?php endif; ?>
+							</span>
+
+							<?php //@todo: handle all license status; ?>
+							<span class="give-text">
+								<?php if ( ! $give_plugin['License'] ) : ?>
+									<i class="dashicons dashicons-warning"></i>
+									<?php _e( 'Unlicensed', 'give' ); ?>
+								<?php elseif ( 'valid' === $addon_license_active->license ): ?>
+									<i class="dashicons dashicons-yes give-license__status"></i>
+									<?php _e( 'Active', 'give' ); ?>
+								<?php else: ?>
+									<i class="dashicons dashicons-yes give-license__status"></i>
+									<?php _e( 'License', 'give' ); ?>
+								<?php endif; ?>
+							</span>
+
+							<?php //@todo: handle all license status; ?>
+							<span class="give-text">
+								<?php if ( ! $give_plugin['License'] ) : ?>
+									<?php echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Purchase license', 'give' ) ); ?>
+								<?php elseif ( 'valid' === $addon_license_active->license ): ?>
+									<?php echo sprintf( '%1$s %2$s', $addon_license_active->activations_left, __( 'activations remaining', 'give' ) ); ?>
+								<?php elseif ( 'expired' === $addon_license_active->license ) : ?>
+									<?php echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Renew to manage sites', 'give' ) ); ?>
+								<?php endif; ?>
+						</span>
+						</div>
+						<div class="give-right">
+							<?php if ( ! $give_plugin['License'] ) : ?>
+								<span class="give-text"><?php _e( 'Not receiving updates or support' ) ?></span>
+								<span><a class="give-button button-secondary" href="#"><?php _e( 'Purchase License' ) ?></a></span>
+							<?php elseif ( 'valid' === $addon_license_active->license ): ?>
+								<?php echo sprintf( '%1$s %2$s', __( 'Renew:' ), date( give_date_format(), strtotime( $addon_license_active->expires ) ) ); ?>
+							<?php else: ?>
+								<i class="dashicons dashicons-yes give-license__status"></i>
+								<?php _e( 'License', 'give' ); ?>
+							<?php endif; ?>
+						</div>
+					</div>
+					<div class="give-row give-border give-last">
+						<div class="give-left">
+							<span class="give-text give-plugin__name"><?php echo $give_plugin['Name']; ?></span>
+							<span class="give-text">
+							<?php
+							echo sprintf(
+								'<a href="%1$s">%2$s</a>',
+								'#',
+								__( 'changelog', 'give' )
+							);
+							?>
+						</span>
+						</div>
+						<div class="give-right">
+							<span class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $give_plugin['Version'] ) ?></span>
+							<span class="give-background__gray give-border give-text give-text_small give-plugin__status"><?php _e( 'currently installed' ) ?></span>
+							<span>
+							<a class="give-button button-secondary" href="#" disabled="">
+								<i class="dashicons dashicons-download"></i>
+								<?php _e( 'Download' ) ?>
+							</a>
+						</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php endforeach; ?>
+
 		<?php //give_add_ons_feed(); ?>
 	</div>
 	<?php

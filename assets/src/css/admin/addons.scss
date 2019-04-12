@@ -65,6 +65,108 @@
 	}
 }
 
+#give-addon-info-wrap {
+	border: 1px solid #DBDBDB;
+	background: #FFF;
+	padding: 30px;
+	margin: 0 15px 30px 0;
+
+	span{
+		display: inline-block;
+		vertical-align: top;
+
+		i{
+			line-height: inherit;
+		}
+	}
+
+	.give-text{
+		vertical-align: middle;
+		line-height: 26px;
+	}
+
+	.give-row{
+		clear:both;
+		overflow: auto;
+
+		&:first-child{
+			margin-bottom: 20px;
+		}
+	}
+
+	.give-right{
+		span{
+			margin-right: 15px;
+		}
+
+		span:last-child{
+			margin-right: 0;
+		}
+	}
+
+	.give-left{
+		span{
+			margin-left: 15px;
+		}
+
+		span:first-child{
+			margin-left: 0;
+		}
+	}
+
+	.give-last{
+		padding: 6px 9px;
+	}
+
+	.give-border{
+		border: 2px solid #444;
+	}
+
+	.give-left{
+		float: left;
+	}
+
+	.give-right{
+		float:right;
+	}
+
+	.give-text_small {
+		font-size: 11px;
+	}
+
+	.give-background__gray{
+		background: lightgray;
+	}
+
+	.give-license__status{
+		background: #444;
+		color: white;
+		border-radius: 30px;
+		vertical-align: middle;
+		line-height: 18px;
+		width: 18px;
+		height: 18px;
+	}
+
+	.give-license__key{
+		min-width: 150px;
+		display: inline-block;
+		min-height: 22px;
+		padding: 0 4px;
+		line-height: 22px;
+	}
+
+	.give-plugin__status{
+		border: none;
+		padding: 0 5px;
+		line-height: 20px!important;
+	}
+
+	.give-plugin__name{
+		font-weight: bold;
+	}
+}
+
 .type-download {
   float: left;
   margin: 0 1em 1em 0 !important;
