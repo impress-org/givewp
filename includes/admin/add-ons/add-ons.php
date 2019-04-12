@@ -177,7 +177,7 @@ function give_add_ons_page() {
 									$value = str_repeat( '*' , strlen( $addon_license_key ) - 5 ) . substr( $addon_license_key, -5, 5 );
 								}
 								?>
-								<input type="text" class="license-key" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
+								<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							</span>
 
 							<?php //@todo: handle all license status; ?>
