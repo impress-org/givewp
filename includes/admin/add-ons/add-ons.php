@@ -184,19 +184,31 @@ function give_add_ons_page() {
 
 							<?php //@todo: handle all license status; ?>
 							<span class="give-text">
-								<?php if ( ! $give_plugin['License'] ) : ?>
-									<?php echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Purchase license', 'give' ) ); ?>
-								<?php elseif ( 'valid' === $addon_license_active->license ): ?>
-									<?php echo sprintf( '%1$s %2$s', $addon_license_active->activations_left, __( 'activations remaining', 'give' ) ); ?>
-								<?php elseif ( 'expired' === $addon_license_active->license ) : ?>
-									<?php echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Renew to manage sites', 'give' ) ); ?>
-								<?php endif; ?>
+								<?php
+								if ( ! $give_plugin['License'] ) {
+									// Leave blank foe now.
+								} elseif ( 'valid' === $addon_license_active->license ) {
+									echo sprintf( '%1$s %2$s', $addon_license_active->activations_left, __( 'activations remaining', 'give' ) );
+								} elseif ( 'expired' === $addon_license_active->license ) {
+									echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Renew to manage sites', 'give' ) );
+								}
+								?>
 						</span>
 						</div>
 						<div class="give-right">
 							<?php if ( ! $give_plugin['License'] ) : ?>
 								<span class="give-text"><?php _e( 'Not receiving updates or support' ) ?></span>
-								<span><a class="give-button button-secondary" href="#"><?php _e( 'Purchase License' ) ?></a></span>
+								<span>
+									<?php
+									// @todo: confirm do we need to redirect user to addon page or direct to cart with current addon.
+									// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
+									echo sprintf(
+										'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
+										'https://givewp.com/addons/' . str_replace( 'give-', '', $addon_slug ) .'/',
+										__( 'Purchase license', 'give' )
+									);
+									?>
+								</span>
 							<?php elseif ( 'valid' === $addon_license_active->license ): ?>
 								<?php echo sprintf( '%1$s %2$s', __( 'Renew:' ), date( give_date_format(), strtotime( $addon_license_active->expires ) ) ); ?>
 							<?php else: ?>
