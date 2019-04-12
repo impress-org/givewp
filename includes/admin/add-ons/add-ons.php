@@ -268,7 +268,15 @@ function give_add_ons_page() {
 						</div>
 						<div class="give-right">
 							<span class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $give_plugin['Version'] ) ?></span>
-							<span class="give-background__gray give-border give-text give-text_small give-plugin__status"><?php _e( 'currently installed' ) ?></span>
+							<span class="give-background__gray give-border give-text give-text_small give-plugin__status">
+								<?php
+								echo sprintf(
+									'%1$s %2$s',
+									__( 'currently', 'give' ),
+									'active' === $give_plugin['Status'] ? __( 'activated', 'give' ) : __( 'deactivated', 'give' )
+								);
+								?>
+							</span>
 							<span>
 							<a class="give-button button-secondary" href="#" disabled="">
 								<i class="dashicons dashicons-download"></i>
