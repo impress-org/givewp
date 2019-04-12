@@ -148,7 +148,7 @@ function give_stripe_connect_button() {
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
 
-	echo sprintf(
+	return sprintf(
 		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
 		esc_url( $link ),
         esc_html__( 'Connect with Stripe', 'give' )
@@ -943,4 +943,23 @@ function give_stripe_record_log( $title = '', $message = '', $parent = 0 ) {
 	$title = empty( $title ) ? esc_html__( 'Stripe Error', 'give' ) : $title;
 
 	return give_record_log( $title, $message, $parent, 'stripe' );
+}
+
+/**
+ * Check if notice dismissed by admin user or not.
+ *
+ * @since  2.5.0
+ *
+ * @return bool
+ */
+function give_stripe_is_connect_banner_dismissed() {
+
+	$current_user        = wp_get_current_user();
+	$is_notice_dismissed = false;
+
+	if ( get_transient( "give_hide_stripe_connect_notice_{$current_user->ID}" ) ) {
+		$is_notice_dismissed = true;
+	}
+
+	return $is_notice_dismissed;
 }
