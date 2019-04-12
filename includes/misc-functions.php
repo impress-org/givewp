@@ -2453,3 +2453,36 @@ function give_display_donation_receipt( $args ) {
 
 	return ob_get_clean();
 }
+
+
+/**
+ * Get plugin add-on readme.txt path
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ *
+ * @param      $plugin_slug
+ * @param bool $by_plugin_name
+ *
+ * @return mixed|void
+ */
+function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
+
+	if( $by_plugin_name ) {
+		$plugin_slug = Give_License::get_short_name( $plugin_slug );
+	}
+
+	/**
+	 * Filter the addon readme.txt url
+	 *
+	 * @since 2.1.4
+	 */
+	$url = apply_filters(
+		'give_addon_readme_file_url',
+		"https://givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
+		$plugin_slug,
+		$by_plugin_name
+	);
+
+	return $url;
+}
