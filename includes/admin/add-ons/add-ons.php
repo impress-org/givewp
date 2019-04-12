@@ -153,10 +153,14 @@ function give_add_ons_page() {
 				continue;
 			}
 
-			$addon_shortname      = Give_License::get_short_name( $give_plugin['Name'] );
-			$addon_slug           = str_replace( '_', '-', $addon_shortname );
-			$addon_license_active = __give_get_active_license_info( Give_License::get_short_name( $give_plugin['Name'] ) );
-			$addon_license_key    = give_get_option( "{$addon_shortname}_license_key" );
+			/* @var  stdClass $addon_license */
+			$addon_shortname     = Give_License::get_short_name( $give_plugin['Name'] );
+			$addon_slug          = str_replace( '_', '-', $addon_shortname );
+			$addon_license       = __give_get_active_license_info( $addon_shortname );
+			$addon_license_key   = give_get_option( "{$addon_shortname}_license_key" );
+			$subscription        = $addon_license_key ? Give_License::is_subscription( $addon_license_key ) : array();
+			$license_expire_date = ! $give_plugin['License'] ?: strtotime( $subscription ? $subscription['expires'] : $addon_license->expires );
+			$is_license_expired  = $license_expire_date && ( $license_expire_date < current_time( 'timestamp', 1 ) )
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
@@ -176,7 +180,10 @@ function give_add_ons_page() {
 							<span class="give-text">
 								<?php if ( ! $give_plugin['License'] ) : ?>
 									<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
-								<?php elseif ( 'valid' === $addon_license_active->license ): ?>
+								<?php elseif ( $is_license_expired ): ?>
+									<i class="dashicons dashicons-yes give-license__status"></i>
+									<?php _e( 'Expired', 'give' ); ?>
+								<?php elseif ( 'valid' === $addon_license->license ): ?>
 									<i class="dashicons dashicons-yes give-license__status"></i>
 									<?php _e( 'Active', 'give' ); ?>
 								<?php else: ?>
@@ -190,21 +197,39 @@ function give_add_ons_page() {
 								<?php
 								if ( ! $give_plugin['License'] ) {
 									// Leave blank foe now.
-								} elseif ( 'valid' === $addon_license_active->license ) {
-									if( ! $addon_license_active->activations_left ) {
+								} elseif ( $is_license_expired ) {
+									// @todo: need to test renew license link
+									echo sprintf(
+										'<a href="%1$s" target="_blank">%2$s</a>',
+										"https://givewp.com/checkout/?edd_license_key={$addon_license_key}",
+										__( 'Renew to manage sites', 'give' )
+									);
+								} elseif ( 'valid' === $addon_license->license ) {
+									if ( ! $addon_license->activations_left ) {
 										_e( 'No activation remaining', 'give' );
-									} else{
+									} else {
 										echo sprintf(
 											'%1$s %2$s',
-											$addon_license_active->activations_left,
-											_n( 'activation remaining', 'activations remaining', $addon_license_active->activations_left  ,'give' )
+											$addon_license->activations_left,
+											_n( 'activation remaining', 'activations remaining', $addon_license->activations_left, 'give' )
 										);
 									}
-								} elseif ( 'expired' === $addon_license_active->license ) {
-									echo sprintf( '<a href="%1$s">%2$s</a>', '#', __( 'Renew to manage sites', 'give' ) );
 								}
 								?>
-						</span>
+							</span>
+
+							<?php
+							if ( ! $is_license_expired && $give_plugin['License'] ){
+								echo sprintf(
+									'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a> | <a href="%3$s" target="_blank">%4$s</a> </span>',
+										// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
+								'http://staging.givewp.com/purchase-history/?license_id={license_id}&action=manage_licenses&payment_id={payment_id}',
+									__( 'Visit site', 'give' ),
+									'#', // need to integrate edd api to send deactivation notice to givewp
+									__( 'Deactivate', 'give' )
+								);
+							}
+							?>
 						</div>
 						<div class="give-right">
 							<?php if ( ! $give_plugin['License'] ) : ?>
