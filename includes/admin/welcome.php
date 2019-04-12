@@ -150,32 +150,32 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap give-welcome-wrap">
+			<div class="give-welcome-header">
+				<?php $this->get_welcome_header(); ?>
 
-
-			<?php $this->get_welcome_header(); ?>
-
-			<p class="about-text">
-			<?php
-				printf(
-					/* translators: %s: http://docs.givewp.com/docs */
-					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
-					esc_url( 'http://docs.givewp.com/docs' )
-				);
-				?>
+				<p class="about-text">
+					<?php
+					printf(
+						/* translators: %s: http://docs.givewp.com/docs */
+						__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
+						esc_url( 'http://docs.givewp.com/docs' )
+					);
+					?>
 				</p>
 
-			<?php give_get_newsletter(); ?>
+				<?php give_get_newsletter(); ?>
 
-			<div class="give-badge">
-			<?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Version %s', 'give' ),
-					$display_version
-				);
-				?>
+				<div class="give-badge">
+					<?php
+					printf(
+						/* translators: %s: Give version */
+						esc_html__( 'Version %s', 'give' ),
+						$display_version
+					);
+					?>
 				</div>
-
+			</div>
+			
 			<?php $this->tabs(); ?>
 
 			<div class="feature-section clearfix introduction">
@@ -248,14 +248,14 @@ class Give_Welcome {
 				<h1><?php echo get_admin_page_title(); ?></h1>
 
 				<p class="about-text">
-				<?php
+					<?php
 					printf(
 						/* translators: %s: Give version */
 						esc_html__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
 						$display_version
 					);
 					?>
-					</p>
+				</p>
 				<div class="give-badge">
 					<?php
 					printf(
@@ -316,14 +316,14 @@ class Give_Welcome {
 				<?php give_get_newsletter(); ?>
 
 				<div class="give-badge">
-				<?php
+					<?php
 					printf(
 						/* translators: %s: Give version */
 						esc_html__( 'Version %s', 'give' ),
 						$display_version
 					);
 					?>
-					</div>
+				</div>
 			</div>
 
 			<?php $this->tabs(); ?>
@@ -421,27 +421,27 @@ class Give_Welcome {
 				<?php give_get_newsletter(); ?>
 
 				<div class="give-badge">
-				<?php
+					<?php
 					printf(
 						/* translators: %s: Give version */
 						esc_html__( 'Version %s', 'give' ),
 						$display_version
 					);
 					?>
-					</div>
+				</div>
 			</div>
 
 			<?php $this->tabs(); ?>
 
 			<p class="about-description">
-			<?php
+				<?php
 				printf(
 					/* translators: %s: https://github.com/impress-org/give */
 					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
 				?>
-				</p>
+			</p>
 
 			<?php echo $this->contributors(); ?>
 		</div>
@@ -565,7 +565,7 @@ class Give_Welcome {
 
 			/*]]>*/
 		</style>
-	<?php
+		<?php
 	}
 
 
@@ -575,7 +575,7 @@ class Give_Welcome {
 	 * Various social media elements to Give
 	 */
 	public function social_media_elements() {
-	?>
+		?>
 
 		<div class="social-items-wrap">
 
@@ -585,14 +585,14 @@ class Give_Welcome {
 				allowTransparency="true"></iframe>
 
 			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">
-			<?php
+				<?php
 				printf(
 					/* translators: %s: Give twitter user @givewp */
 					esc_html_e( 'Follow %s', 'give' ),
 					'@givewp'
 				);
 				?>
-				</a>
+			</a>
 			<script>!function( d, s, id ) {
 					var js, fjs = d.getElementsByTagName( s )[ 0 ], p = /^http:/.test( d.location ) ? 'http' : 'https';
 					if ( !d.getElementById( id ) ) {
