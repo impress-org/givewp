@@ -783,3 +783,57 @@ function __give_get_receipt(){
 }
 add_action( 'wp_ajax_get_receipt', '__give_get_receipt' );
 add_action( 'wp_ajax_nopriv_get_receipt', '__give_get_receipt' );
+
+/**
+ * Get ajax url to render content from other website into thickbox
+ * Note: only for internal use
+ *
+ * @param array $args
+ *
+ * @return string
+ * @since 2.5.0
+ */
+function give_thickbox_ajax_url( $args = array() ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'action'   => 'give_get_content_by_ajax',
+			'_wpnonce' => wp_create_nonce( 'give_get_content_by_ajax' ),
+		)
+	);
+
+	return add_query_arg( $args, admin_url( '/admin-ajax.php' ) );
+}
+
+
+/**
+ * Return content from url
+ * Note: only for internal use
+ *
+ * @return string
+ * @since 2.5.0
+ *
+ */
+function give_get_content_by_ajax_handler() {
+	check_admin_referer( 'give_get_content_by_ajax' );
+
+	if ( empty( $_GET['url'] ) ) {
+		die();
+	}
+
+	$url = urldecode_deep( give_clean( $_GET['url'] ) );
+
+	$response = wp_remote_get( $url );
+
+	if ( is_wp_error( $response ) ) {
+		die();
+	}
+
+	$response = wp_remote_retrieve_body( $response );
+
+	echo nl2br( $response );
+	exit;
+}
+
+add_action( 'wp_ajax_give_get_content_by_ajax', 'give_get_content_by_ajax_handler' );
+
