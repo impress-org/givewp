@@ -11,7 +11,7 @@
 		/**
 		 * License form submit button handler
 		 */
-		$license.on( 'change', function() {
+		$license.on( 'change keyup', function() {
 			if ( ! $( this ).val().trim() ) {
 				$submitBtn.prop( 'disabled', true );
 				return;
