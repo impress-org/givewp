@@ -300,30 +300,31 @@ function give_get_addon_item_html_by_plugin( $give_plugin ) {
 					</span>
 
 					<?php //@todo: handle all license status;?>
-					<span class="give-text">
-						<?php
-						if ( ! $give_plugin['License'] ) {
-							// Leave blank foe now.
-						} elseif ( $is_license_expired ) {
-							// @todo: need to test renew license link
+					<?php
+					if ( ! $give_plugin['License'] ) {
+						// Leave blank foe now.
+					} elseif ( $is_license_expired ) {
+						// @todo: need to test renew license link
+						echo sprintf(
+							'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a></span>',
+							"https://givewp.com/checkout/?edd_license_key={$addon_license_key}",
+							__( 'Renew to manage sites', 'give' )
+						);
+					} elseif ( 'valid' === $addon_license->license ) {
+						if ( ! $addon_license->activations_left ) {
 							echo sprintf(
-								'<a href="%1$s" target="_blank">%2$s</a>',
-								"https://givewp.com/checkout/?edd_license_key={$addon_license_key}",
-								__( 'Renew to manage sites', 'give' )
+								'<span class="give-text give-license__activation-left">%1$s</span>',
+								__( 'No activation remaining', 'give' )
 							);
-						} elseif ( 'valid' === $addon_license->license ) {
-							if ( ! $addon_license->activations_left ) {
-								_e( 'No activation remaining', 'give' );
-							} else {
-								echo sprintf(
-									'%1$s %2$s',
-									$addon_license->activations_left,
-									_n( 'activation remaining', 'activations remaining', $addon_license->activations_left, 'give' )
-								);
-							}
+						} else {
+							echo sprintf(
+								'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
+								$addon_license->activations_left,
+								_n( 'activation remaining', 'activations remaining', $addon_license->activations_left, 'give' )
+							);
 						}
-						?>
-					</span>
+					}
+					?>
 
 					<?php
 					if ( ! $is_license_expired && $give_plugin['License'] ) {
@@ -430,6 +431,38 @@ function give_get_addon_item_html_by_license( $license ) {
 					<span class="give-license__key give-has-license-key">
 						<input type="text" value="<?php echo give_hide_char( $license->license_key, 5 ); ?>" readonly>
 					</span>
+					<span class="give-text">
+						<i class="dashicons dashicons-yes give-license__status"></i>
+						<?php _e( 'Active', 'give' ); ?>
+					</span>
+					<span class="give-text give-license__activation-left">
+						<?php
+						if ( ! $license->activations_left ) {
+							_e( 'No activation remaining', 'give' );
+						} else {
+							echo sprintf(
+								'<i class="give-background__gray">%1$s</i> %2$s',
+								$license->activations_left,
+								_n(
+									'activation remaining',
+									'activations remaining',
+									$license->activations_left,
+									'give'
+								)
+							);
+						}
+						?>
+					</span>
+					<?php
+					echo sprintf(
+						'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a> | <a href="%3$s" target="_blank">%4$s</a> </span>',
+						// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
+						'http://staging.givewp.com/purchase-history/?license_id={license_id}&action=manage_licenses&payment_id={payment_id}',
+						__( 'Visit site', 'give' ),
+						'#', // need to integrate edd api to send deactivation notice to givewp
+						__( 'Deactivate', 'give' )
+					);
+					?>
 				</div>
 				<div class="give-right">
 					<?php
