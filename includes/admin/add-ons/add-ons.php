@@ -495,7 +495,7 @@ function give_get_addon_item_html_by_license( $license ) {
 							<?php echo sprintf( '%1$s %2$s', __( 'Version' ), $addon->current_version ) ?>
 						</span>
 						<span>
-							<a class="give-button button-secondary" href="#" disabled="">
+							<a class="give-button button-secondary" href="<?php echo esc_url( $addon->file ); ?>" target="_blank">
 								<i class="dashicons dashicons-download"></i>
 								<?php _e( 'Download' ) ?>
 							</a>
