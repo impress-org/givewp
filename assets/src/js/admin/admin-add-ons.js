@@ -2,7 +2,8 @@
 
 ( function( $ ) {
 	$( document ).ready( function() {
-		const $container = $( '#give-license-activator-wrap' ),
+		const $mainContainer = $( '#give-licenses-container' ),
+			  $container = $( '#give-license-activator-wrap' ),
 			  $form = $( 'form', $container ),
 			  $license = $( 'input[name="give_license_key"]', $container ),
 			  $submitBtn = $( 'input[type="submit"]', $form ),
@@ -23,7 +24,7 @@
 		/**
 		 * Deactivate license
 		 */
-		$( '.give-license__deactivate' ).on( 'click', function( e ) {
+		$mainContainer.on( 'click', '.give-license__deactivate', function( e ) {
 			e.preventDefault();
 
 			const $this = $( this ),
