@@ -87,7 +87,7 @@
 							response.data.download
 						) {
 							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download ) }</p></div>` );
-							$( '#give-licenses-container' ).html( response.data.html );
+							$mainContainer.html( response.data.html );
 						} else {
 							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p></div>` );
 						}
