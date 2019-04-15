@@ -70,6 +70,7 @@
 	background: #FFF;
 	padding: 30px;
 	margin: 0 15px 30px 0;
+	position: relative;
 
 	span{
 		display: inline-block;
@@ -183,6 +184,21 @@
 
 	.give-plugin__name{
 		font-weight: bold;
+	}
+
+	.give-spinner-wrap{
+		position: absolute;
+		left:0;
+		top:0;
+		right: 0;
+		bottom:0;
+		background-color: white;
+
+		span{
+			float: none;
+			margin-left: 50%;
+			margin-top: 30px;
+		}
 	}
 }
 

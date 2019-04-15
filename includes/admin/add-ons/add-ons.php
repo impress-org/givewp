@@ -138,17 +138,22 @@ class Give_Addons {
 	 * @since 2.5.0
 	 *
 	 */
-	private function html_by_plugin( $plugin ) {
+	public static function html_by_plugin( $plugin ) {
 		ob_start();
 		$addon_shortname = Give_License::get_short_name( $plugin['Name'] );
 		$addon_slug      = str_replace( '_', '-', $addon_shortname );
 		$item_name       = str_replace( 'give-', '', $addon_slug );
-		$license         = $this->get_license_by_item_name( $item_name );
+		$license         = self::get_instance()->get_license_by_item_name( $item_name );
 
 		$default_plugin = array(
 			'ChangeLogSlug' => $addon_slug,
 			'DownloadURL'   => '',
 		);
+
+		if ( false !== strpos( $default_plugin['ChangeLogSlug'], '-gateway' ) ) {
+			// We found that each gateway addon does not have `-gateway` in changelog file slug
+			$default_plugin['ChangeLogSlug'] = str_replace( '-gateway', '', $default_plugin['ChangeLogSlug'] );
+		}
 
 		if ( $license ) {
 			$addon_license_key             = give_get_option( "{$addon_shortname}_license_key" );
@@ -205,14 +210,14 @@ class Give_Addons {
 					);
 
 					$plugin         = wp_parse_args(
-						self::get_instance()->get_plugin_by_item_name( $item_name ),
+						self::get_plugin_by_item_name( $item_name ),
 						$default_plugin
 					);
 					$plugin['Name'] = false === strpos( $plugin['Name'], 'Give -' )
 						? $plugin['Name']
 						: "Give  - {$addon['name']}";
 
-					echo self::get_instance()->html_plugin_row( $plugin );
+					echo self::html_plugin_row( $plugin );
 				}
 				?>
 			</div>
@@ -237,7 +242,7 @@ class Give_Addons {
 
 		$is_license         = $license && ! empty( $license['license_key'] );
 		$license_key        = $is_license ? $license['license_key'] : '';
-		$expires_timestamp  = $is_license ?  strtotime( $license['expires'] ) : '';
+		$expires_timestamp  = $is_license ? strtotime( $license['expires'] ) : '';
 		$is_license_expired = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
 		?>
 		<div class="give-row">
@@ -289,13 +294,14 @@ class Give_Addons {
 
 					if ( ! $is_license_expired ) {
 						echo sprintf(
-							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%4$s&action=manage_licenses&payment_id=%5$s" target="_blank">%1$s</a> | <a href="%2$s" target="_blank">%3$s</a> </span>',
+							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="">%2$s</a> </span>',
 							// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
 							__( 'Visit site', 'give' ),
-							'#', // need to integrate edd api to send deactivation notice to givewp
 							__( 'Deactivate', 'give' ),
 							$license['license_id'],
-							$license['payment_id']
+							$license['payment_id'],
+							$license['license_key'],
+							$license['item_name']
 						);
 					}
 				}
@@ -336,10 +342,16 @@ class Give_Addons {
 	 *
 	 * @param array $plugin
 	 *
+	 *
 	 * @return string
 	 * @since 2.5.0
 	 */
-	private function html_plugin_row( $plugin ) {
+	public static function html_plugin_row( $plugin ) {
+		// Bailout.
+		if ( ! $plugin ) {
+			return '';
+		}
+
 		ob_start();
 		?>
 		<div class="give-row give-border give-plugin__info">
@@ -394,7 +406,7 @@ class Give_Addons {
 	 * @since 2.5.0
 	 *
 	 */
-	private function get_plugin_by_item_name( $plugin_id ) {
+	public static function get_plugin_by_item_name( $plugin_id ) {
 		$give_plugins = give_get_plugins();
 		$plugin       = array();
 
@@ -425,10 +437,12 @@ class Give_Addons {
 		$license       = array();
 		$give_licenses = get_option( 'give_licenses', array() );
 
-		foreach ( $give_licenses as $give_license ) {
-			if ( $item_name === $give_license['item_name'] ) {
-				$license = $give_license;
-				break;
+		if( ! empty( $give_licenses ) ) {
+			foreach ( $give_licenses as $give_license ) {
+				if ( $item_name === $give_license['item_name'] ) {
+					$license = $give_license;
+					break;
+				}
 			}
 		}
 
@@ -517,7 +531,9 @@ function give_add_ons_page() {
 		</div>
 
 		<h2><?php _e( 'License and Downloads', 'give' ); ?></h2>
-		<?php echo Give_Addons::render_license_section(); ?>
+		<section id="give-licenses-container">
+			<?php echo Give_Addons::render_license_section(); ?>
+		</section>
 		<?php //give_add_ons_feed(); @todo: enabled this function when create pr ?>
 	</div>
 	<?php

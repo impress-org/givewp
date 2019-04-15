@@ -21,6 +21,36 @@
 		} ).change();
 
 		/**
+		 * Deactivate license
+		 */
+		$( '.give-license__deactivate' ).on( 'click', function( e ) {
+			e.preventDefault();
+
+			const $this = $( this ),
+				$container = $this.parents( '.give-addon-wrap' );
+
+			$.ajax( {
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'give_deactivate_license',
+					license: $this.attr( 'data-license-key' ),
+					item_name: $this.attr( 'data-item-name' ),
+				},
+				beforeSend: function() {
+					loader( $container );
+				},
+				success: function( response ) {
+					if ( true === response.success ) {
+						$container.replaceWith( response.data.html );
+					}
+				},
+			} ).done( function() {
+				loader( $container, false );
+			} );
+		} );
+
+		/**
 		 * License form validation handler
 		 */
 		$form.on( 'submit', function() {
@@ -52,10 +82,11 @@
 
 					if ( true === response.success ) {
 						if (
-							response.data.hasOwnProperty( 'download_file' ) &&
-							response.data.download_file
+							response.data.hasOwnProperty( 'download' ) &&
+							response.data.download
 						) {
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download_file ) }</p></div>` );
+							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download ) }</p></div>` );
+							$( '#give-licenses-container' ).html( response.data.html );
 						} else {
 							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p></div>` );
 						}
@@ -78,6 +109,24 @@
 
 			return false;
 		} );
+
+		/**
+		 * Show/Hide loader
+		 *
+		 * @since 2.5.0
+		 * @param {object} $container
+		 * @param {boolean} set
+		 */
+		function loader( $container, set = true ) {
+			if ( set ) {
+				$container.prepend( '<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>' );
+				console.log( 'adding loader' );
+				return;
+			}
+
+			console.log( 'removing loader' );
+			$( '.give-spinner-wrap', $container ).remove();
+		}
 	} );
 
 	$( document ).ready( function() {

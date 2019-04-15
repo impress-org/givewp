@@ -147,51 +147,69 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
-	$license = give_clean( $_POST['license'] );
-
-	if ( ! $license ) {
-		wp_send_json_error(
-			array(
-				'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' ),
-			)
-		);
-	}
-
 	check_admin_referer( 'give-license-activator-nonce' );
 
-	// Data to send to the API.
-	$api_params = array(
-		'edd_action' => 'check_license', // never change from "edd_" to "give_"!
-		'license'    => $license,
-		'url'        => home_url(),
-	);
+	$license_key = give_clean( $_POST['license'] );
+	$licenses    = $tmp = get_option( 'give_licenses', array() );
 
-	// Call the API.
-	$response = wp_remote_post(
-		'http://staging.givewp.com/chechout', // @todo convert this url to live site.
-		array(
-			'timeout'   => 15,
-			'sslverify' => false,
-			'body'      => $api_params,
-		)
-	);
+
+	if ( ! $license_key ) {
+		wp_send_json_error( array(
+			'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' ),
+		) );
+	} else if ( array_key_exists( $license_key, $licenses ) ) {
+		wp_send_json_error( array(
+			'errorMsg' => __( 'Sorry, this license key is already in use on this website.', 'give' ),
+		) );
+	}
+
+
+	// Check license.
+	$check_license_res = Give_License::request_license_api( array(
+		'edd_action' => 'check_license',
+		'license'    => $license_key,
+	), true );
+
+	// @todo check if license is invalid or not.
 
 	// Make sure there are no errors.
-	if ( is_wp_error( $response ) ) {
-		wp_send_json_error(
-			array(
-				'errorMsg' => $response->get_error_message(),
-			)
-		);
+	if ( is_wp_error( $check_license_res ) ) {
+		wp_send_json_error( array(
+			'errorMsg' => $check_license_res->get_error_message(),
+		) );
 	}
 
-	$license                             = json_decode( wp_remote_retrieve_body( $response ), true );
-	$licenses                            = $tmp = get_option( 'give_licenses', array() );
-	$licenses[ $license['license_key'] ] = $license;
+	error_log( print_r( $check_license_res, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
-	if ( array_diff_key( $licenses, $tmp ) ) {
-		update_option( 'give_licenses', $licenses );
+
+	if ( 0 < $check_license_res['license_limit'] && 1 > $check_license_res['activations_left'] ) {
+		wp_send_json_error( array(
+			'errorMsg' => __( 'We can not activate this license because no activation remaining for this license.', 'give' ),
+		) );
 	}
+
+	// Activate license.
+	$activate_license_res = Give_License::request_license_api( array(
+		'edd_action' => 'activate_license',
+		'item_name'  => $check_license_res['item_name'],
+		'license'    => $license_key,
+	), true );
+
+	if ( is_wp_error( $activate_license_res ) ) {
+		wp_send_json_error();
+	}
+
+	error_log( print_r( $activate_license_res, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+	$check_license_res['site_count']       = $activate_license_res['site_count'];
+	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
+
+	$licenses[ $check_license_res['license_key'] ] = $check_license_res;
+	update_option( 'give_licenses', $licenses );
+
+	// Get license section HTML.
+	$response         = $check_license_res;
+	$response['html'] = Give_Addons::render_license_section();
 
 	wp_send_json_success( $response );
 }
@@ -221,3 +239,52 @@ function give_activate_addon_handler() {
 }
 
 add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
+
+
+/**
+ * deactivate addon handler
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_deactivate_license_handler() {
+	$license   = give_clean( $_POST['license'] );
+	$item_name = give_clean( $_POST['item_name'] );
+
+	if ( ! $license || ! $item_name ) {
+		wp_send_json_error();
+	}
+
+	/* @var array|WP_Error $response */
+	$response = Give_License::request_license_api( array(
+		'edd_action' => 'deactivate_license',
+		'license'    => $license,
+		'item_name'  => $item_name,
+	), true );
+
+	if ( is_wp_error( $response ) ) {
+		wp_send_json_error( array(
+			'errorMsg' => $response->get_error_message(),
+			'response' => $license,
+		) );
+	}
+
+	$give_licenses = get_option( 'give_licenses', array() );
+
+	if ( ! empty( $give_licenses[ $license ] ) ) {
+		unset( $give_licenses[ $license ] );
+		update_option( 'give_licenses', $give_licenses );
+
+		error_log( print_r( "{$license} removed", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		error_log( print_r( $give_licenses, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	}
+
+	$response['html'] = Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) );
+
+	wp_send_json_success( $response );
+
+	// @todo update whole license section when all access pass deactivated.
+}
+
+add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler' );

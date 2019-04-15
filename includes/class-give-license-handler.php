@@ -1077,8 +1077,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Call the API.
 			$response = wp_remote_post(
-				// 'https://givewp.com/edd-sl-api/',
-				'https://staging.givewp.com/edd-sl-api/', // For testing purpose
+				// 'https://givewp.com/checkout/',
+				'http://staging.givewp.com/chekout/', // For testing purpose
 				array(
 					'timeout'   => 15,
 					'sslverify' => false,
