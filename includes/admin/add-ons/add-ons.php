@@ -269,7 +269,7 @@ class Give_Addons {
 						// @todo: need to test renew license link
 						echo sprintf(
 							'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a></span>',
-							"https://givewp.com/checkout/?edd_license_key={$license['license_key']}",
+							"https://givewp.com/checkout/?edd_license_key={$license_key}",
 							__( 'Renew to manage sites', 'give' )
 						);
 					} elseif ( $license_key ) {
@@ -289,12 +289,13 @@ class Give_Addons {
 
 					if ( ! $is_license_expired ) {
 						echo sprintf(
-							'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a> | <a href="%3$s" target="_blank">%4$s</a> </span>',
+							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%4$s&action=manage_licenses&payment_id=%5$s" target="_blank">%1$s</a> | <a href="%2$s" target="_blank">%3$s</a> </span>',
 							// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
-							'http://staging.givewp.com/purchase-history/?license_id={license_id}&action=manage_licenses&payment_id={payment_id}',
 							__( 'Visit site', 'give' ),
 							'#', // need to integrate edd api to send deactivation notice to givewp
-							__( 'Deactivate', 'give' )
+							__( 'Deactivate', 'give' ),
+							$license['license_id'],
+							$license['payment_id']
 						);
 					}
 				}
@@ -309,7 +310,7 @@ class Give_Addons {
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-							'https://givewp.com/addons/' . str_replace( 'give-', '', $license['item_name'] ) . '/',
+							'https://givewp.com/addons/' . $license['item_name'] . '/',
 							__( 'Purchase license', 'give' )
 						);
 						?>
