@@ -256,6 +256,8 @@ function give_deactivate_license_handler() {
 		wp_send_json_error();
 	}
 
+	// @todo: add nonce validation.
+
 	/* @var array|WP_Error $response */
 	$response = Give_License::request_license_api( array(
 		'edd_action' => 'deactivate_license',
