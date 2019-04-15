@@ -250,26 +250,22 @@ class Give_Addons {
 					<span class="give-license__key<?php echo $license_key ? ' give-has-license-key' : ''; ?>">
 						<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
+						<?php if ( ! $license_key ) : ?>
+							&nbsp;&nbsp;<button class="give-button__license-activate button-secondary" data-item-name="<?php echo $license['item_name']; ?>" disabled><?php _e( 'Activate License' ); ?></button>
+						<?php endif; ?>
 					</span>
-
-				<?php //@todo: handle all license status;
-				?>
-				<span class="give-text">
-					<?php if ( ! $license_key ) : ?>
-						<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
-					<?php elseif ( $is_license_expired ): ?>
-						<i class="dashicons dashicons-yes give-license__status"></i>
-						<?php _e( 'Expired', 'give' ); ?>
-					<?php else: ?>
-						<i class="dashicons dashicons-yes give-license__status"></i>
-						<?php _e( 'Active', 'give' ); ?>
-					<?php endif; ?>
-				</span>
 
 				<?php //@todo: handle all license status;
 				?>
 				<?php
 				if ( $license_key ) {
+					echo sprintf(
+						'<span class="give-text"><i class="dashicons dashicons-yes give-license__status"></i>&nbsp;%1$s</span>',
+						$is_license_expired
+							? __( 'Expired', 'give' )
+							: __( 'Active', 'give' )
+					);
+
 					if ( $is_license_expired ) {
 						// @todo: need to test renew license link
 						echo sprintf(
@@ -523,6 +519,7 @@ function give_add_ons_page() {
 						value="<?php _e( 'Activate License', 'give' ); ?>"
 						type="submit"
 						class="button"
+						disabled
 					>
 				</form>
 			</div>

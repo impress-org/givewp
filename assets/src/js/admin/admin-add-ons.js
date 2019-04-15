@@ -2,7 +2,8 @@
 
 ( function( $ ) {
 	$( document ).ready( function() {
-		const $mainContainer = $( '#give-licenses-container' ),
+		const $licensesContainer = $( '#give-licenses-container' ),
+			  $licenseActivationFormContainer = $( '#give-license-activator-wrap' ),
 			  $container = $( '#give-license-activator-wrap' ),
 			  $form = $( 'form', $container ),
 			  $license = $( 'input[name="give_license_key"]', $container ),
@@ -12,23 +13,59 @@
 		/**
 		 * License form submit button handler
 		 */
-		$license.on( 'change keyup', function() {
+		function giveDisableActivateLicenseButton() {
+			const $btn = $( this ).next();
+
 			if ( ! $( this ).val().trim() ) {
-				$submitBtn.prop( 'disabled', true );
+				$btn.prop( 'disabled', true );
 				return;
 			}
 
-			$submitBtn.prop( 'disabled', false );
-		} ).change();
+			$btn.prop( 'disabled', false );
+		}
+
+		$licensesContainer.on( 'change keyup', '.give-license__key input[type="text"]', giveDisableActivateLicenseButton ).change();
+		$licenseActivationFormContainer.on( 'change keyup', 'input[name="give_license_key"]', giveDisableActivateLicenseButton ).change();
 
 		/**
 		 * Deactivate license
 		 */
-		$mainContainer.on( 'click', '.give-license__deactivate', function( e ) {
+		$licensesContainer.on( 'click', '.give-button__license-activate', function( e ) {
 			e.preventDefault();
 
 			const $this = $( this ),
 				$container = $this.parents( '.give-addon-wrap' );
+
+			$.ajax( {
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'give_get_license_info',
+					license: $this.prev( '.give-license__key input[type="text"]' ).val().trim(),
+					item_name: $this.attr( 'data-item-name' ),
+					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
+				},
+				beforeSend: function() {
+					loader( $container );
+				},
+				success: function( response ) {
+					if ( true === response.success ) {
+						$container.replaceWith( response.data.html );
+					}
+				},
+			} ).done( function() {
+				loader( $container, false );
+			} );
+		} );
+
+		/**
+		 * Deactivate license
+		 */
+		$licensesContainer.on( 'click', '.give-license__deactivate', function( e ) {
+			e.preventDefault();
+
+			const $this = $( this ),
+				  $container = $this.parents( '.give-addon-wrap' );
 
 			$.ajax( {
 				url: ajaxurl,
@@ -87,7 +124,7 @@
 							response.data.download
 						) {
 							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download ) }</p></div>` );
-							$mainContainer.html( response.data.html );
+							$licensesContainer.html( response.data.html );
 						} else {
 							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p></div>` );
 						}
@@ -121,11 +158,9 @@
 		function loader( $container, set = true ) {
 			if ( set ) {
 				$container.prepend( '<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>' );
-				console.log( 'adding loader' );
 				return;
 			}
 
-			console.log( 'removing loader' );
 			$( '.give-spinner-wrap', $container ).remove();
 		}
 	} );

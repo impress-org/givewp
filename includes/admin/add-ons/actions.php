@@ -150,7 +150,8 @@ function give_get_license_info_handler() {
 	check_admin_referer( 'give-license-activator-nonce' );
 
 	$license_key = give_clean( $_POST['license'] );
-	$licenses    = $tmp = get_option( 'give_licenses', array() );
+	$item_name   = give_clean( $_POST['item_name'] );
+	$licenses    = get_option( 'give_licenses', array() );
 
 
 	if ( ! $license_key ) {
@@ -168,6 +169,7 @@ function give_get_license_info_handler() {
 	$check_license_res = Give_License::request_license_api( array(
 		'edd_action' => 'check_license',
 		'license'    => $license_key,
+		'item_name'  => $item_name,
 	), true );
 
 	// @todo check if license is invalid or not.
@@ -204,7 +206,9 @@ function give_get_license_info_handler() {
 
 	// Get license section HTML.
 	$response         = $check_license_res;
-	$response['html'] = Give_Addons::render_license_section();
+	$response['html'] = $item_name
+		? Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) )
+		: Give_Addons::render_license_section();
 
 	wp_send_json_success( $response );
 }
