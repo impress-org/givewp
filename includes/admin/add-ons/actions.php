@@ -179,9 +179,6 @@ function give_get_license_info_handler() {
 		) );
 	}
 
-	error_log( print_r( $check_license_res, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
-
 	if ( 0 < $check_license_res['license_limit'] && 1 > $check_license_res['activations_left'] ) {
 		wp_send_json_error( array(
 			'errorMsg' => __( 'We can not activate this license because no activation remaining for this license.', 'give' ),
@@ -198,8 +195,6 @@ function give_get_license_info_handler() {
 	if ( is_wp_error( $activate_license_res ) ) {
 		wp_send_json_error();
 	}
-
-	error_log( print_r( $activate_license_res, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
 	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
@@ -277,9 +272,6 @@ function give_deactivate_license_handler() {
 	if ( ! empty( $give_licenses[ $license ] ) ) {
 		unset( $give_licenses[ $license ] );
 		update_option( 'give_licenses', $give_licenses );
-
-		error_log( print_r( "{$license} removed", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $give_licenses, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	}
 
 	$response['html'] = Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) );
