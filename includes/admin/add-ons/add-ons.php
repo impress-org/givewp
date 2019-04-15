@@ -574,3 +574,4 @@ function give_add_ons_feed() {
 }
 
 // @todo: convert all staging site link to live site
+// @todo check if all plugin follow download file and github repo naming standards
