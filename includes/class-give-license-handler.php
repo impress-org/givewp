@@ -1048,6 +1048,52 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return $subscription;
 		}
 
+		/**
+		 * Get license information.
+		 *
+		 * @param array  $api_params
+		 * @param bool   $response_in_array
+		 *
+		 * @return mixed
+		 * @since  1.8.9
+		 * @access public
+		 *
+		 */
+		public static function request_license_api( $api_params = array(), $response_in_array = false ) {
+			// Bailout.
+			if ( empty( $api_params['edd_action'] ) ) {
+				return false;
+			}
+
+			// Data to send to the API.
+			$default_api_params = array(
+				// 'edd_action' => $edd_action, never change from "edd_" to "give_"!
+				// 'license'    => $this->license,
+				// 'item_name'  => urlencode( $this->item_name ),
+				'url'        => home_url(),
+			);
+
+			$api_params = wp_parse_args( $api_params, $default_api_params );
+
+			// Call the API.
+			$response = wp_remote_post(
+				// 'https://givewp.com/edd-sl-api/',
+				'https://staging.givewp.com/edd-sl-api/', // For testing purpose
+				array(
+					'timeout'   => 15,
+					'sslverify' => false,
+					'body'      => $api_params,
+				)
+			);
+
+			// Make sure there are no errors.
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
+		}
+
 	}
 
 endif; // end class_exists check.
