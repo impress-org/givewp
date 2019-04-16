@@ -74,6 +74,7 @@
 					action: 'give_deactivate_license',
 					license: $this.attr( 'data-license-key' ),
 					item_name: $this.attr( 'data-item-name' ),
+					_wpnonce: $this.attr( 'data-nonce' ),
 				},
 				beforeSend: function() {
 					loader( $container );
@@ -81,6 +82,7 @@
 				success: function( response ) {
 					if ( true === response.success ) {
 						$container.replaceWith( response.data.html );
+						return;
 					}
 				},
 			} ).done( function() {

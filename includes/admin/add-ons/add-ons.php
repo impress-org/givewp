@@ -290,14 +290,15 @@ class Give_Addons {
 
 					if ( ! $is_license_expired ) {
 						echo sprintf(
-							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="">%2$s</a> </span>',
+							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s">%2$s</a> </span>',
 							// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
 							__( 'Visit site', 'give' ),
 							__( 'Deactivate', 'give' ),
 							$license['license_id'],
 							$license['payment_id'],
 							$license['license_key'],
-							$license['item_name']
+							$license['item_name'],
+							wp_create_nonce("give-deactivate-license-{$license['item_name']}" )
 						);
 					}
 				}
