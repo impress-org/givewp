@@ -66,9 +66,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-	 * @since 2.1.0
-	 *
 	 * @param int $_step
+	 *
+	 * @since 2.1.0
 	 */
 	public function __construct( $_step = 1 ) {
 
@@ -81,12 +81,11 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Function to change the filename
 	 *
-	 * @since 2.1.0
-	 *
-	 * @param string $filename File name.
+	 * @param string $filename    File name.
 	 * @param string $export_type export type.
 	 *
 	 * @return string $filename file name.
+	 * @since 2.1.0
 	 */
 	public function give_export_filename( $filename, $export_type ) {
 
@@ -109,9 +108,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set the properties specific to the donors export.
 	 *
-	 * @since 1.5
-	 *
 	 * @param array $request The Form Data passed into the batch processing
+	 *
+	 * @since 1.5
 	 */
 	public function set_properties( $request ) {
 
@@ -129,7 +128,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$this->cache_donor_ids();
 		}
 
-		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+		$this->price_id = give_clean( $request['give_price_option'] );
+		$this->price_id = isset( $request['give_price_option'] ) && ! in_array( $this->price_id, array( 'all', '' ) )
+			? absint( $request['give_price_option'] )
+			: null;
 	}
 
 	/**
@@ -154,8 +156,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * Set the CSV columns.
 	 *
 	 * @access public
-	 * @since  1.5
 	 * @return array|bool $cols All the columns.
+	 * @since  1.5
 	 */
 	public function csv_cols() {
 
@@ -180,7 +182,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			switch ( $key ) {
 
-				case 'address' :
+				case 'address':
 					$cols['address_line1']   = esc_html__( 'Address', 'give' );
 					$cols['address_line2']   = esc_html__( 'Address 2', 'give' );
 					$cols['address_city']    = esc_html__( 'City', 'give' );
@@ -199,13 +201,61 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 	}
 
+
+	/**
+	 * Get donation query arguments
+	 *
+	 * @return array
+	 * @since 2.4.5
+	 */
+	private function get_donation_query_args() {
+		// Export donors for a specific donation form and also within specified time frame.
+		$args = array(
+			'output'     => 'payments',
+			'post_type'  => array( 'give_payment' ),
+			'number'     => 30,
+			'paged'      => $this->step,
+			'status'     => 'publish',
+			'meta_key'   => '_give_payment_form_id',
+			'meta_value' => absint( $this->form ),
+		);
+
+		// Check for date option filter.
+		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+			// Start date.
+			$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
+			if ( ! empty( $start_date ) ) {
+				$start_date         = date( 'Y-m-d', strtotime( $start_date ) );
+				$args['start_date'] = $start_date;
+			}
+
+			// End date.
+			$end_date         = ! empty( $this->data['donor_export_end_date'] )
+				? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
+				: date( 'Y-m-d', current_time( 'timestamp' ) );
+			$end_date         = "{$end_date} 23:59:59";
+			$args['end_date'] = $end_date;
+		}
+
+		// Check for price option.
+		if ( null !== $this->price_id ) {
+			$args['meta_query'] = array(
+				array(
+					'key'   => '_give_payment_price_id',
+					'value' => (int) $this->price_id,
+				),
+			);
+		}
+
+		return $args;
+	}
+
 	/**
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since  1.0
-	 *
 	 * @return array $data The data for the CSV file.
+	 * @since  1.0
 	 */
 	public function get_data() {
 		$i = 0;
@@ -214,53 +264,16 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
 
 		if ( ! empty( $this->form ) ) {
-
-			// Export donors for a specific donation form and also within specified time frame.
-			$args = array(
-				'output'     => 'payments',
-				'post_type'  => array( 'give_payment' ),
-				'number'     => 30,
-				'paged'      => $this->step,
-				'status'     => 'publish',
-				'meta_key'   => '_give_payment_form_id',
-				'meta_value' => absint( $this->form ),
-			);
-
-			// Check for date option filter.
-			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-				// Start date.
-				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
-				if ( ! empty( $start_date ) ) {
-					$start_date         = date( 'Y-m-d', strtotime( $start_date ) );
-					$args['start_date'] = $start_date;
-				}
-
-				// End date.
-				$end_date         = ! empty( $this->data['donor_export_end_date'] )
-					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ))
-					: date( 'Y-m-d', current_time( 'timestamp' ) );
-				$end_date = "{$end_date} 23:59:59";
-				$args['end_date'] = $end_date;
-			}
-
-			// Check for price option.
-			if ( null !== $this->price_id ) {
-				$args['meta_query'] = array(
-					array(
-						'key'   => '_give_payment_price_id',
-						'value' => (int) $this->price_id,
-					),
-				);
-			}
+			$args = $this->get_donation_query_args();
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
-			
+
 			if ( $payments ) {
 				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
 					// Set donation sum.
-					$this->payment_stats[ $payment->customer_id ]['donation_sum'] = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] ) ?
+					$this->payment_stats[ $payment->customer_id ]['donation_sum']  = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] ) ?
 						$this->payment_stats[ $payment->customer_id ]['donation_sum'] :
 						0;
 					$this->payment_stats[ $payment->customer_id ]['donation_sum'] += $payment->total;
@@ -275,7 +288,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 					// Continue if donor already included.
 					if ( empty( $payment->customer_id ) ||
-					     in_array( $payment->customer_id, $cached_donor_ids )
+						 in_array( $payment->customer_id, $cached_donor_ids )
 					) {
 						continue;
 					}
@@ -322,9 +335,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 				// End date.
 				$end_date            = ! empty( $this->data['donor_export_end_date'] )
-					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ))
+					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
 					: date( 'Y-m-d', current_time( 'timestamp' ) );
-				$end_date = "{$end_date} 23:59:59";
+				$end_date            = "{$end_date} 23:59:59";
 				$args['date']['end'] = $end_date;
 
 			}
@@ -352,8 +365,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 1.5
 	 * @return int
+	 * @since 1.5
 	 */
 	public function get_percentage_complete() {
 
@@ -369,6 +382,23 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				$percentage = ( ( 30 * $this->step ) / $total ) * 100;
 
 			}
+		} else {
+			// Calculate donations if form id set
+			$args      = $this->get_donation_query_args();
+			$donations = new Give_Payments_Query( $args );
+
+			if ( empty( $donations->get_payments() ) ) {
+				$percentage = 100;
+			} else {
+				$tmp_number = $args['number'];
+				$tmp_paged  = $args['paged'];
+
+				unset( $args['paged'] );
+				$args['number']  = - 1;
+				$total_donations = new Give_Payments_Query( $args );
+				$total_donations = count( $total_donations->get_payments() );
+				$percentage      = ( ( $tmp_number * $tmp_paged ) / $total_donations ) * 100;
+			}
 		}
 
 		if ( $percentage > 100 ) {
@@ -381,8 +411,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int $i CSV line.
-	 * @param array $data Donor CSV data.
+	 * @param int    $i     CSV line.
+	 * @param array  $data  Donor CSV data.
 	 * @param object $donor Donor data.
 	 *
 	 * @return mixed
@@ -436,7 +466,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Unset the properties specific to the donors export.
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
