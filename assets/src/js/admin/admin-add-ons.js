@@ -36,6 +36,9 @@
 			const $this = $( this ),
 				$container = $this.parents( '.give-addon-wrap' );
 
+			// Remove errors if any.
+			$('.give-notice', $container).remove();
+
 			$.ajax( {
 				url: ajaxurl,
 				method: 'POST',
@@ -51,7 +54,10 @@
 				success: function( response ) {
 					if ( true === response.success ) {
 						$container.replaceWith( response.data.html );
+						return;
 					}
+
+					$('.give-addon-inner', $container).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				loader( $container, false );
@@ -66,6 +72,9 @@
 
 			const $this = $( this ),
 				  $container = $this.parents( '.give-addon-wrap' );
+
+			// Remove errors if any.
+			$('.give-notice', $container).remove();
 
 			$.ajax( {
 				url: ajaxurl,
@@ -84,6 +93,8 @@
 						$container.replaceWith( response.data.html );
 						return;
 					}
+
+					$('.give-addon-inner', $container).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				loader( $container, false );
