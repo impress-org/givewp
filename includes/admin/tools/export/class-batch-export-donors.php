@@ -421,6 +421,23 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				$percentage = ( ( 30 * $this->step ) / $total ) * 100;
 
 			}
+		} else {
+			// Calculate donations if form id set
+			$args      = $this->get_donation_query_args();
+			$donations = new Give_Payments_Query( $args );
+
+			if ( empty( $donations->get_payments() ) ) {
+				$percentage = 100;
+			} else {
+				$tmp_number = $args['number'];
+				$tmp_paged  = $args['paged'];
+
+				unset( $args['paged'] );
+				$args['number'] = - 1;
+				$total_donations = new Give_Payments_Query( $args );
+				$total_donations = count( $total_donations->get_payments() );
+				$percentage     = ( ( $tmp_number * $tmp_paged ) / $total_donations ) * 100;
+			}
 		}
 
 		if ( $percentage > 100 ) {
