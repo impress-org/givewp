@@ -150,7 +150,7 @@ function give_get_license_info_handler() {
 	check_admin_referer( 'give-license-activator-nonce' );
 
 	$license_key = give_clean( $_POST['license'] );
-	$item_name   = give_clean( $_POST['item_name'] );
+	$item_name   = isset( $_POST['item_name'] ) ? give_clean( $_POST['item_name'] ) : '';
 	$licenses    = get_option( 'give_licenses', array() );
 
 
@@ -172,8 +172,6 @@ function give_get_license_info_handler() {
 		'item_name'  => $item_name,
 	), true );
 
-	// @todo check if license is invalid or not.
-
 	// Make sure there are no errors.
 	if ( is_wp_error( $check_license_res ) ) {
 		wp_send_json_error( array(
@@ -181,10 +179,15 @@ function give_get_license_info_handler() {
 		) );
 	}
 
-	if ( 0 < $check_license_res['license_limit'] && 1 > $check_license_res['activations_left'] ) {
-		wp_send_json_error( array(
-			'errorMsg' => __( 'We can not activate this license because no activation remaining for this license.', 'give' ),
-		) );
+	// Check if license valid or not.
+	if( ! $check_license_res['success'] ) {
+		wp_send_json_error(array(
+			'errorMsg' => sprintf(
+				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				'http://staging.givewp.com/my-account/',
+				$check_license_res['license']
+			)
+		));
 	}
 
 	// Activate license.
@@ -195,7 +198,19 @@ function give_get_license_info_handler() {
 	), true );
 
 	if ( is_wp_error( $activate_license_res ) ) {
-		wp_send_json_error();
+		wp_send_json_error( array(
+			'errorMsg' => $check_license_res->get_error_message(),
+		) );
+	}
+
+	if( ! $activate_license_res['success'] ) {
+		wp_send_json_error(array(
+			'errorMsg' => sprintf(
+				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				'http://staging.givewp.com/my-account/',
+				$activate_license_res['license']
+			)
+		));
 	}
 
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
