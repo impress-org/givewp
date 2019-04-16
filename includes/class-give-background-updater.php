@@ -47,7 +47,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return stdClass
 	 */
 	public function get_all_batch() {
-		return parent::get_batch();
+		return $this->get_batch();
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return bool
 	 */
 	public function has_queue() {
-		return ( ! parent::is_queue_empty() );
+		return ( ! $this->is_queue_empty() );
 	}
 
 
@@ -99,7 +99,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		$lock_duration = ( property_exists( $this, 'queue_lock_time' ) ) ? $this->queue_lock_time : 60; // 1 minute
 		$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
 
-		set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
+		set_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
 	}
 
 	/**
@@ -131,6 +131,144 @@ class Give_Background_Updater extends WP_Background_Process {
 		if ( ! wp_next_scheduled( $this->cron_hook_identifier ) && ! $this->is_paused_process() ) {
 			wp_schedule_event( time() + 10, $this->cron_interval_identifier, $this->cron_hook_identifier );
 		}
+	}
+
+	/**
+	 * Is queue empty
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return bool
+	 */
+	protected function is_queue_empty() {
+		global $wpdb;
+
+		$table  = $wpdb->options;
+		$column = 'option_name';
+
+		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
+
+		$count = $wpdb->get_var( $wpdb->prepare( "
+			SELECT COUNT(*)
+			FROM {$table}
+			WHERE {$column} LIKE %s
+		", $key ) );
+
+		return ! ( $count > 0 );
+	}
+
+	/**
+	 * Get batch
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return stdClass Return the first batch from the queue
+	 */
+	protected function get_batch() {
+		global $wpdb;
+
+		$table        = $wpdb->options;
+		$column       = 'option_name';
+		$key_column   = 'option_id';
+		$value_column = 'option_value';
+
+		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
+
+		$query = $wpdb->get_row( $wpdb->prepare( "
+			SELECT *
+			FROM {$table}
+			WHERE {$column} LIKE %s
+			ORDER BY {$key_column} ASC
+			LIMIT 1
+		", $key ) );
+
+		$batch       = new stdClass();
+		$batch->key  = $query->$column;
+		$batch->data = maybe_unserialize( $query->$value_column );
+
+		return $batch;
+	}
+
+	/**
+	 * Save queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return $this
+	 */
+	public function save() {
+		$key = $this->generate_key();
+
+		if ( ! empty( $this->data ) ) {
+			update_option( $key, $this->data );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Update queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @param string $key Key.
+	 * @param array  $data Data.
+	 *
+	 * @return $this
+	 */
+	public function update( $key, $data ) {
+		if ( ! empty( $data ) ) {
+			update_option( $key, $data );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Delete queue
+	 *
+	 * @since 2.4.5
+	 *
+	 * @param string $key Key.
+	 *
+	 * @return $this
+	 */
+	public function delete( $key ) {
+		delete_option( $key );
+
+		return $this;
+	}
+
+	/**
+	 * Is process running
+	 *
+	 * @since 2.4.5
+	 *
+	 * Check whether the current process is already running
+	 * in a background process.
+	 */
+	public function is_process_running() {
+		if ( get_transient( $this->identifier . '_process_lock' ) ) {
+			// Process already running.
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Unlock process
+	 *
+	 * Unlock the process so that other instances can spawn.
+	 *
+	 * @since 2.4.5
+	 *
+	 * @return $this
+	 */
+	protected function unlock_process() {
+		delete_transient( $this->identifier . '_process_lock' );
+
+		return $this;
 	}
 
 	/**
