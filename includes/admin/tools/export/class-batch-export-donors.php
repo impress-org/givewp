@@ -266,48 +266,11 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
 
 		if ( ! empty( $this->form ) ) {
-
-			// Export donors for a specific donation form and also within specified time frame.
-			$args = array(
-				'output'     => 'payments',
-				'post_type'  => array( 'give_payment' ),
-				'number'     => 30,
-				'paged'      => $this->step,
-				'status'     => 'publish',
-				'meta_key'   => '_give_payment_form_id',
-				'meta_value' => absint( $this->form ),
-			);
-
-			// Check for date option filter.
-			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-				// Start date.
-				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
-				if ( ! empty( $start_date ) ) {
-					$start_date         = date( 'Y-m-d', strtotime( $start_date ) );
-					$args['start_date'] = $start_date;
-				}
-
-				// End date.
-				$end_date         = ! empty( $this->data['donor_export_end_date'] )
-					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ))
-					: date( 'Y-m-d', current_time( 'timestamp' ) );
-				$end_date = "{$end_date} 23:59:59";
-				$args['end_date'] = $end_date;
-			}
-
-			// Check for price option.
-			if ( null !== $this->price_id ) {
-				$args['meta_query'] = array(
-					array(
-						'key'   => '_give_payment_price_id',
-						'value' => (int) $this->price_id,
-					),
-				);
-			}
+			$args = $this->get_donation_query_args();
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
-			
+
 			if ( $payments ) {
 				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
