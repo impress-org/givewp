@@ -83,6 +83,18 @@ export default {
 			}
 
 			return notice;
+		},
+
+		/**
+		 * Print notice
+		 * @since 2.5.0
+		 * @param {string} notice Notice description.
+		 * @param {string} type   Notice type.
+		 *
+		 * @return {string} Notice HTML.
+		 */
+		getAdminNoticeHTML: function( notice, type = 'info' ){
+			return `<div class="give-notice notice notice-${type}"><p>${ notice }</p></div>`;
 		}
 	}
 };
