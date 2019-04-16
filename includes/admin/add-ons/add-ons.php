@@ -260,10 +260,13 @@ class Give_Addons {
 				<?php
 				if ( $license_key ) {
 					echo sprintf(
-						'<span class="give-text"><i class="dashicons dashicons-yes give-license__status"></i>&nbsp;%1$s</span>',
+						'<span class="give-text"><i class="dashicons dashicons-%2$s give-license__status"></i>&nbsp;%1$s</span>',
 						$is_license_expired
 							? __( 'Expired', 'give' )
-							: __( 'Active', 'give' )
+							: __( 'Active', 'give' ),
+						$is_license_expired
+							? 'no'
+							: 'yes'
 					);
 
 					if ( $is_license_expired ) {
