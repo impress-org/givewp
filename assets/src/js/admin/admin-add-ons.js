@@ -127,6 +127,7 @@
 				},
 				beforeSend: function() {
 					$submitBtn.val( $submitBtn.attr( 'data-activating' ) );
+					loader( $licensesContainer );
 				},
 				success: function( response ) {
 					$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
@@ -155,6 +156,7 @@
 					}
 				},
 			} ).always( function() {
+				loader( $licensesContainer, false );
 				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 			} );
 

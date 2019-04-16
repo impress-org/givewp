@@ -65,6 +65,23 @@
 	}
 }
 
+#give-licenses-container{
+	position: relative;
+
+	.give-spinner-wrap{
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99;
+		background-color: white;
+
+		.spinner{
+			float:left;
+		}
+	}
+}
 .give-addon-wrap {
 	border: 1px solid #DBDBDB;
 	background: #FFF;
@@ -187,14 +204,7 @@
 	}
 
 	.give-spinner-wrap{
-		position: absolute;
-		left:0;
-		top:0;
-		right: 0;
-		bottom:0;
-		background-color: white;
-
-		span{
+		.spinner{
 			float: none;
 			margin-left: 50%;
 			margin-top: 30px;
