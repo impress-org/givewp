@@ -439,7 +439,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			$donation_id = ! empty( $data['donation_id'] ) ? $data['donation_id'] : '';
 			$source_id   = ! empty( $data['source'] ) ? $data['source'] : '';
 			$description = give_get_meta( $donation_id, '_give_stripe_donation_summary', true );
-			$customer_id = give_get_meta( $donation_id, '_give_stripe_customer_id', true );
+			$customer_id = give_get_meta( $donation_id, give_stripe_get_customer_key(), true );
 
 			// Get Source Object from source id.
 			$source_object = $this->get_source_details( $source_id );
