@@ -99,8 +99,9 @@ class Give_Addons {
 			/* @var  stdClass $addon_license */
 			$addon_shortname   = Give_License::get_short_name( $give_plugin['Name'] );
 			$addon_slug        = str_replace( '_', '-', $addon_shortname );
+			$item_name         = str_replace( 'give-', '', $addon_slug );
 			$addon_id          = str_replace( 'give-', '', $addon_slug );
-			$addon_license_key = give_get_option( "{$addon_shortname}_license_key" );
+			$addon_license_key = self::get_instance()->get_license_by_item_name( $item_name );
 
 			if (
 				'add-on' !== $give_plugin['Type']
