@@ -207,8 +207,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 = 2.4.5: April 16th, 2019 =
 * Fix: Resolved two issues with donor and donation exporters not working properly when filters (Date and Donation Forms) were set. [#4078](https://github.com/impress-org/give/issues/4078), [#4079](https://github.com/impress-org/give/issues/4079)
-* Fix: Ensure that the database upgrade process is fully compatibile with WP Multisite upgrades. [#4065](https://github.com/impress-org/give/issues/4065)
-* Fix: Resolved a PHP Fatal error that was occuring when clicking on the "Resend Donation Receipt" within the donation details screen in WP-Admin and also when marking an offline donation as complete. [#4068](https://github.com/impress-org/give/issues/4068)
+* Fix: Ensure that the database upgrade process is fully compatible with WP Multisite upgrades. [#4065](https://github.com/impress-org/give/issues/4065)
+* Fix: Resolved a PHP Fatal error that was occurring when clicking on the "Resend Donation Receipt" within the donation details screen in WP-Admin and also when marking an offline donation as complete. [#4068](https://github.com/impress-org/give/issues/4068)
 * Fix: The Give API was returning non-valid JSON resulting in Zapier having issues pulling in Sample Data. This has been resolved and an acceptance test created to ensure valid JSON is returned to help prevent it breaking in further releases. [#4071](https://github.com/impress-org/give/issues/4071)
 * Fix: The Give API now returns consistent amount formats for donations, fees collected, etc. [#4073](https://github.com/impress-org/give/issues/4073), [#4074](https://github.com/impress-org/give/issues/4074)
 
