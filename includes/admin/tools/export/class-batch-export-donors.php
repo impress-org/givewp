@@ -129,7 +129,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$this->cache_donor_ids();
 		}
 
-		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+		$this->price_id = give_clean( $request['give_price_option'] );
+		$this->price_id = isset( $request['give_price_option'] ) && ! in_array( $this->price_id, array( 'all', '' ) )
+			? absint( $request['give_price_option'] )
+			: null;
 	}
 
 	/**
