@@ -203,6 +203,7 @@ function give_get_license_info_handler() {
 		) );
 	}
 
+	// Check if license activated or not.
 	if( ! $activate_license_res['success'] ) {
 		wp_send_json_error(array(
 			'errorMsg' => sprintf(
