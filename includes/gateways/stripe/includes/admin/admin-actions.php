@@ -232,6 +232,11 @@ function give_stripe_show_connect_banner() {
 
 	$hide_on_pages = array( 'stripe-settings', 'gateways-settings' );
 
+	// Don't show if on the about page.
+	if ( 'give-about' === give_get_current_setting_page() ) {
+		$status = false;
+	}
+
 	// Don't show if on the payment settings section.
 	if ( in_array( give_get_current_setting_section(), $hide_on_pages, true ) ) {
 		$status = false;
