@@ -223,36 +223,42 @@ add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 )
  */
 function give_stripe_show_connect_banner() {
 
+	$status = true;
+
 	// Don't show if already connected.
 	if ( give_stripe_is_connected() ) {
-		return false;
+		$status = false;
 	}
-
-	/**
-	 * This action hook is used to perform additional checks before showing banner.
-	 *
-	 * @since 2.5.0
-	 */
-	do_action( 'give_stripe_show_connect_banner' );
 
 	$hide_on_pages = array( 'stripe-settings', 'gateways-settings' );
 
 	// Don't show if on the payment settings section.
 	if ( in_array( give_get_current_setting_section(), $hide_on_pages, true ) ) {
-		return false;
+		$status = false;
 	}
 
 	// Don't show for non-admins.
 	if ( ! current_user_can( 'update_plugins' ) ) {
-		return false;
+		$status = false;
 	}
 
 	// Is the notice temporarily dismissed?
 	if ( give_stripe_is_connect_banner_dismissed() ) {
-		return false;
+		$status = false;
 	}
 
-	// $give_stripe  = Give_Stripe::get_instance();
+	/**
+	 * This filter hook is used to decide whether the connect button banner need to be displayed or not.
+	 *
+	 * @since 2.5.0
+	 */
+	$status = apply_filters( 'give_stripe_connect_banner_status', $status );
+
+	// Bailout, if status is false.
+	if ( false === $status ) {
+		return $status;
+	}
+
 	$connect_link = give_stripe_connect_button();
 
 	// Default message.
