@@ -16,56 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * This function is used as an AJAX callback to the click event of "Sync Again" button.
- *
- * @since 2.5.0
- *
- * @return void|array
- */
-function give_stripe_check_webhook_status_callback() {
-
-    // Set defaults.
-    $data = array(
-        'live_webhooks_setup'    => false,
-        'sandbox_webhooks_setup' => false,
-    );
-
-    $give_stripe_webhook = new Give_Stripe_Webhooks();
-    $webhook_id          = give_stripe_get_webhook_id();
-
-	if ( ! empty( $webhook_id ) ) {
-
-        // Get webhook details of an existing one.
-        $webhook_details = $give_stripe_webhook->retrieve( $webhook_id );
-
-		// Set WebHook details to DB.
-        if ( ! empty( $webhook_details->id ) ) {
-            $give_stripe_webhook->set_data_to_db( $webhook_details->id );
-        }
-    }
-
-    // Recreate Webhook, if the details in DB mismatch with Stripe.
-    if ( empty( $webhook_id ) || empty( $webhook_details->id ) ) {
-
-        // Get webhook details after creating one.
-        $webhook_details = $give_stripe_webhook->create();
-    }
-
-	if ( ! empty( $webhook_details->id ) ) {
-        if ( give_is_test_mode() ) {
-            $data['sandbox_webhooks_setup'] = true;
-        } else {
-            $data['live_webhooks_setup'] = true;
-        }
-    }
-
-	wp_send_json_success( $data );
-
-    give_die();
-}
-add_action( 'wp_ajax_give_stripe_check_webhook_status', 'give_stripe_check_webhook_status_callback' );
-
-/**
  * This function is used to save the parameters returned after successfull connection of Stripe account.
  *
  * @since 2.5.0
@@ -273,36 +223,49 @@ add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 )
  */
 function give_stripe_show_connect_banner() {
 
+	$status = true;
+
 	// Don't show if already connected.
 	if ( give_stripe_is_connected() ) {
-		return false;
+		$status = false;
 	}
 
-	/**
-	 * This action hook is used to perform additional checks before showing banner.
-	 *
-	 * @since 2.5.0
-	 */
-	do_action( 'give_stripe_show_connect_banner' );
+	$hide_on_pages = array( 'give-about', 'give-getting-started', 'give-credits', 'give-addons' );
 
-	$hide_on_pages = array( 'stripe-settings', 'gateways-settings' );
+	// Don't show if on the about page.
+	if ( in_array( give_get_current_setting_page(), $hide_on_pages, true ) ) {
+		$status = false;
+	}
+
+	$hide_on_sections = array( 'stripe-settings', 'gateways-settings' );
 
 	// Don't show if on the payment settings section.
-	if ( in_array( give_get_current_setting_section(), $hide_on_pages, true ) ) {
-		return false;
+	if ( in_array( give_get_current_setting_section(), $hide_on_sections, true ) ) {
+		$status = false;
 	}
 
 	// Don't show for non-admins.
 	if ( ! current_user_can( 'update_plugins' ) ) {
-		return false;
+		$status = false;
 	}
 
 	// Is the notice temporarily dismissed?
 	if ( give_stripe_is_connect_banner_dismissed() ) {
-		return false;
+		$status = false;
 	}
 
-	// $give_stripe  = Give_Stripe::get_instance();
+	/**
+	 * This filter hook is used to decide whether the connect button banner need to be displayed or not.
+	 *
+	 * @since 2.5.0
+	 */
+	$status = apply_filters( 'give_stripe_connect_banner_status', $status );
+
+	// Bailout, if status is false.
+	if ( false === $status ) {
+		return $status;
+	}
+
 	$connect_link = give_stripe_connect_button();
 
 	// Default message.
