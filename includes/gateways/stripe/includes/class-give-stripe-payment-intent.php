@@ -41,7 +41,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		public function create( $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( ! defined( GIVE_STRIPE_VERSION ) ) {
+			if ( ! defined( 'GIVE_STRIPE_VERSION' ) ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
