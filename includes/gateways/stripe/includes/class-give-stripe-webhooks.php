@@ -60,7 +60,31 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			$body  = @file_get_contents( 'php://input' );
 			$event = json_decode( $body );
 
-			$this->process( $event );
+			$processed_event = $this->process( $event );
+
+			if ( false === $processed_event ) {
+				$message = __( 'Something went wrong with processing the payment gateway event.', 'give' );
+			} else {
+				$message = sprintf(
+					/* translators: 1. Processing result. */
+					__( 'Processed event: %s', 'give' ),
+					$result
+				);
+			}
+
+			give_stripe_record_log(
+				__( 'Stripe - Webhook Received', 'give' ),
+				sprintf(
+					/* translators: 1. Event ID 2. Event Type 3. Message */
+					__( 'Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s.', 'give' ),
+					$event_json->id,
+					$event_json->type,
+					$message
+				)
+			);
+
+			status_header( 200 );
+			exit( $message );
 		}
 
 		/**
@@ -92,6 +116,11 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 					}
 				} catch ( Exception $e ) {
 					die( 'Invalid event ID' );
+				}
+
+				// Bailout, if event type doesn't exists.
+				if ( empty( $event->type ) ) {
+					return false;
 				}
 
 				switch ( $event->type ) {
@@ -145,7 +174,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 
 				do_action( 'give_stripe_event_' . $event->type, $event );
 
-				die( '1' ); // Completed successfully.
+				return $event->type;
 
 			} else {
 				status_header( 500 );
