@@ -204,12 +204,6 @@ div.give-field-description {
 	font-size: 14px;
 }
 
-.postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
-	border-bottom: 1px solid #e9e9e9;
-	border-top: none;
-}
-
-
 //--------------------------------------------------------------
 // Payment Gateways
 //--------------------------------------------------------------
@@ -623,13 +617,9 @@ a.give-delete {
 
 }
 
-//Fix double <hr>s for change to `give_title` in 1.3.5
-.give_settings .cmb-td hr + hr {
-	display: none;
-}
-
 //Set a min-height for TinyMCE so it's not too small when hidden in a tab and then revealed
-.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
+.post-type-give_forms .mce-container iframe,
+.post-type-give_forms .wp-editor-area {
 	min-height: 400px;
 }
 
