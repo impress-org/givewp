@@ -837,11 +837,14 @@ function give_get_content_by_ajax_handler() {
 		$response = wp_remote_retrieve_body( $response );
 
 		if( false === strpos( $response,  '== Changelog ==' ) ) {
-			echo __( 'sorry, unable to load changelog.', 'give' );
+			echo __( 'Sorry, unable to load changelog.', 'give' );
 			exit;
 		}
 
-		echo nl2br( $response );
+		$changelog = substr( $response, strpos( $response, '== Changelog ==') );
+		$changelog = trim( str_replace( '== Changelog ==', '', $changelog ) );
+
+		echo nl2br( $changelog );
 	}
 
 	do_action( 'give_get_content_by_ajax_handler' );
