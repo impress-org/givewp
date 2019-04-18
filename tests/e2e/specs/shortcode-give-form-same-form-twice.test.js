@@ -419,7 +419,7 @@ describe( 'Display Option: All fields', () => {
 	})
 
 	it( 'INTERACTION: fill second form and donate', async () => {
-		await expect( page ).click( '.give-display-reveal .give-btn-level-2' )
+		await page.click( '.give-display-reveal .give-btn-level-2' )
 
 		await expect( page ).toFillForm( '.give-display-reveal .give-form', {
 			give_first: 'Creed',
