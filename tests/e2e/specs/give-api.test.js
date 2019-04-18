@@ -12,8 +12,8 @@
 const give = require('./test-utility');
 
 describe('GiveAPI', () => {
-	const apiKey   = 'c7f8e6d3a85b83c6bfe663a820dc54b8',
-		  apiToken = '2b97f886f792034f071c0386c9b027f9';
+	const apiKey   = '531015f26df318f77eae0575620bfc89',
+		  apiToken = 'e29c81b0e76e0c86fc6771ba0c57a159';
 
 	const apiEndpoints = {
 		donations: `donations?key=${apiKey}&token=${apiToken}`

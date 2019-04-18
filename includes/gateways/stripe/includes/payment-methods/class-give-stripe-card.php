@@ -47,7 +47,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			parent::__construct();
 
-			add_action( 'init', array( $this, 'stripe_event_listener' ) );
 			add_action( 'init', array( $this, 'listen_stripe_3dsecure_payment' ) );
 		}
 
@@ -290,129 +289,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				} // End if().
 			} else {
 				give_send_back_to_checkout( "?payment-mode={$this->id}" );
-			} // End if().
-		}
-
-		/**
-		 * Listen for Stripe events.
-		 *
-		 * @access public
-		 * @since  2.5.0
-		 *
-		 * @return void
-		 */
-		public function stripe_event_listener() {
-
-			// Must be a stripe listener to proceed.
-			if ( ! isset( $_GET['give-listener'] ) || $this->id !== $_GET['give-listener'] ) {
-				return;
-			}
-
-			// Get the Stripe SDK autoloader.
-			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-
-			$this->set_api_key();
-			$this->set_api_version();
-
-			// Retrieve the request's body and parse it as JSON.
-			$body       = @file_get_contents( 'php://input' );
-			$event_json = json_decode( $body );
-
-			$this->process_webhooks( $event_json );
-
-		}
-
-		/**
-		 * Process Stripe Webhooks.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @param object $event_json Stripe Webhook JSON.
-		 */
-		public function process_webhooks( $event_json ) {
-
-			// Next, proceed with additional webhooks.
-			if ( isset( $event_json->id ) ) {
-
-				status_header( 200 );
-
-				try {
-
-					$event = \Stripe\Event::retrieve( $event_json->id );
-
-					// Update time of webhook received whenever the event is retrieved.
-					give_update_option( 'give_stripe_last_webhook_received_timestamp', current_time( 'timestamp', 1 ) );
-
-				} catch ( \Stripe\Error\Authentication $e ) {
-
-					if ( strpos( $e->getMessage(), 'Platform access may have been revoked' ) !== false ) {
-						give_stripe_connect_delete_options();
-					}
-				} catch ( Exception $e ) {
-
-					die( 'Invalid event ID' );
-
-				}
-
-				switch ( $event->type ) {
-
-					case 'payment_intent.succeeded':
-						$intent = $event->data->object;
-
-						if ( 'succeeded' === $intent->status ) {
-							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
-
-							// Update payment status to donation.
-							give_update_payment_status( $donation_id, 'publish' );
-
-							// Insert donation note to inform admin that charge succeeded.
-							give_insert_payment_note( $donation_id, __( 'Charge succeeded in Stripe.', 'give' ) );
-						}
-
-						break;
-
-					case 'payment_intent.payment_failed':
-							$intent      = $event->data->object;
-							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
-
-							// Update payment status to donation.
-							give_update_payment_status( $donation_id, 'failed' );
-
-							// Insert donation note to inform admin that charge succeeded.
-							give_insert_payment_note( $donation_id, __( 'Charge failed in Stripe.', 'give' ) );
-
-						break;
-
-					case 'charge.refunded':
-						global $wpdb;
-
-						$charge = $event->data->object;
-
-						if ( $charge->refunded ) {
-
-							$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
-
-							if ( $payment_id ) {
-
-								give_update_payment_status( $payment_id, 'refunded' );
-								give_insert_payment_note( $payment_id, __( 'Charge refunded in Stripe.', 'give' ) );
-
-							}
-						}
-
-						break;
-				}
-
-				do_action( 'give_stripe_event_' . $event->type, $event );
-
-				die( '1' ); // Completed successfully.
-
-			} else {
-				status_header( 500 );
-				// Something went wrong outside of Stripe.
-				give_record_gateway_error( __( 'Stripe Error', 'give' ), sprintf( __( 'An error occurred while processing a webhook.', 'give' ) ) );
-				die( '-1' ); // Failed.
 			} // End if().
 		}
 

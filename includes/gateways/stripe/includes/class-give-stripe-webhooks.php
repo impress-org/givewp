@@ -1,6 +1,6 @@
 <?php
 /**
- * Give - Stripe Core Webhooks
+ * Give - Stripe Core | Process Webhooks
  *
  * @since 2.5.0
  *
@@ -25,13 +25,14 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 	class Give_Stripe_Webhooks {
 
 		/**
-		 * WebHook URL.
+		 * Stripe Gateway
 		 *
-		 * @since 2.5.0
+		 * @since  2.5.0
+		 * @access public
 		 *
-		 * @var $url
+		 * @var $stripe_gateway
 		 */
-		public $url = '';
+		public $stripe_gateway;
 
 		/**
 		 * Give_Stripe_Webhooks constructor.
@@ -39,136 +40,163 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 * @since 2.5.0
 		 */
 		public function __construct() {
-			$this->url = site_url() . '?give-listener=stripe';
-			add_action( 'init', array( $this, 'check_status' ) );
+
+			$this->stripe_gateway = new Give_Stripe_Gateway();
+
+			add_action( 'init', array( $this, 'listen' ) );
 		}
 
 		/**
-		 * This function is used to create webhooks in Stripe.
+		 * Listen for Stripe events.
 		 *
-		 * @since  2.5.0
 		 * @access public
-		 *
-		 * @return \Stripe\ApiResource
-		 */
-		public function create() {
-
-			// Set Application Info.
-			give_stripe_set_app_info();
-
-			try {
-
-				$result = \Stripe\WebhookEndpoint::create(
-					array(
-						'url'            => $this->url,
-						'enabled_events' => array( '*' ),
-						'connect'        => true,
-					)
-				);
-
-				$this->set_data_to_db( $result->id );
-				return $result;
-			} catch ( \Stripe\Error\InvalidRequest $e ) {
-				give_record_gateway_error(
-					__( 'Stripe Webhook Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Error Message */
-						__( 'Unable to create a webhook. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
-				return false;
-			}
-		}
-
-		/**
-		 * This function is used to retrieve Stripe webhooks details based on the webhook id.
-		 *
-		 * @param string $id WebHook ID.
-		 *
 		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return \Stripe\StripeObject
-		 */
-		public function retrieve( $id ) {
-
-			// Set Application Info.
-			give_stripe_set_app_info();
-
-			try {
-				return \Stripe\WebhookEndpoint::retrieve( $id );
-			} catch ( \Stripe\Error\InvalidRequest $e ) {
-				give_record_gateway_error(
-					__( 'Stripe Webhook Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Error Message */
-						__( 'Unable to retrieve webhook. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
-				return false;
-			}
-		}
-
-		/**
-		 * This function is used to list all the webhooks registered with Stripe.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return \Stripe\Collection
-		 *
-		 * @throws \Stripe\Error\Api Throws API error from Stripe.
-		 */
-		public function list_all() {
-
-			// Set Application Info.
-			give_stripe_set_app_info();
-
-			try {
-				return \Stripe\WebhookEndpoint::all(
-					array(
-						'limit' => 20,
-					)
-				);
-			} catch ( \Stripe\Error\InvalidRequest $e ) {
-				give_record_gateway_error(
-					__( 'Stripe Webhook Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Error Message */
-						__( 'Unable to list all webhooks. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
-				return false;
-			}
-		}
-
-		/**
-		 * This function is used to set default WebHook data to DB.
-		 *
-		 * @param int $id Webhook ID.
-		 *
-		 * @since  2.5.0
-		 * @access public
 		 *
 		 * @return void
 		 */
-		public function set_data_to_db( $id ) {
+		public function listen() {
 
-			// Bailout, if $id is empty.
-			if ( empty( $id ) ) {
+			$give_listener = give_clean( filter_input( INPUT_GET, 'give-listener' ) );
+
+			// Must be a stripe listener to proceed.
+			if ( ! isset( $give_listener ) || 'stripe' !== $give_listener ) {
 				return;
 			}
 
-			$mode = give_stripe_get_payment_mode();
+			// Get the Stripe SDK autoloader.
+			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-			// Set WebHook status flag.
-			give_update_option( "give_stripe_is_{$mode}_webhook_exists", true );
+			$this->stripe_gateway->set_api_key();
+			$this->stripe_gateway->set_api_version();
 
-			// Set WebHook id in DB.
-			give_update_option( "give_stripe_{$mode}_webhook_id", $id );
+			// Retrieve the request's body and parse it as JSON.
+			$body  = @file_get_contents( 'php://input' );
+			$event = json_decode( $body );
+
+			$processed_event = $this->process( $event );
+
+			if ( false === $processed_event ) {
+				$message = __( 'Something went wrong with processing the payment gateway event.', 'give' );
+			} else {
+				$message = sprintf(
+					/* translators: 1. Processing result. */
+					__( 'Processed event: %s', 'give' ),
+					$result
+				);
+			}
+
+			give_stripe_record_log(
+				__( 'Stripe - Webhook Received', 'give' ),
+				sprintf(
+					/* translators: 1. Event ID 2. Event Type 3. Message */
+					__( 'Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s.', 'give' ),
+					$event_json->id,
+					$event_json->type,
+					$message
+				)
+			);
+
+			status_header( 200 );
+			exit( $message );
+		}
+
+		/**
+		 * Process Stripe Webhooks.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @param \Stripe\Event $event_json Stripe Event.
+		 */
+		public function process( $event_json ) {
+
+			// Next, proceed with additional webhooks.
+			if ( isset( $event_json->id ) ) {
+
+				status_header( 200 );
+
+				try {
+
+					$event = \Stripe\Event::retrieve( $event_json->id );
+
+					// Update time of webhook received whenever the event is retrieved.
+					give_update_option( 'give_stripe_last_webhook_received_timestamp', current_time( 'timestamp', 1 ) );
+
+				} catch ( \Stripe\Error\Authentication $e ) {
+
+					if ( strpos( $e->getMessage(), 'Platform access may have been revoked' ) !== false ) {
+						give_stripe_connect_delete_options();
+					}
+				} catch ( Exception $e ) {
+					die( 'Invalid event ID' );
+				}
+
+				// Bailout, if event type doesn't exists.
+				if ( empty( $event->type ) ) {
+					return false;
+				}
+
+				switch ( $event->type ) {
+
+					case 'payment_intent.succeeded':
+						$intent = $event->data->object;
+
+						if ( 'succeeded' === $intent->status ) {
+							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+
+							// Update payment status to donation.
+							give_update_payment_status( $donation_id, 'publish' );
+
+							// Insert donation note to inform admin that charge succeeded.
+							give_insert_payment_note( $donation_id, __( 'Charge succeeded in Stripe.', 'give' ) );
+						}
+
+						break;
+
+					case 'payment_intent.payment_failed':
+							$intent      = $event->data->object;
+							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+
+							// Update payment status to donation.
+							give_update_payment_status( $donation_id, 'failed' );
+
+							// Insert donation note to inform admin that charge succeeded.
+							give_insert_payment_note( $donation_id, __( 'Charge failed in Stripe.', 'give' ) );
+
+						break;
+
+					case 'charge.refunded':
+						global $wpdb;
+
+						$charge = $event->data->object;
+
+						if ( $charge->refunded ) {
+
+							$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
+
+							if ( $payment_id ) {
+
+								give_update_payment_status( $payment_id, 'refunded' );
+								give_insert_payment_note( $payment_id, __( 'Charge refunded in Stripe.', 'give' ) );
+
+							}
+						}
+
+						break;
+				}
+
+				do_action( 'give_stripe_event_' . $event->type, $event );
+
+				return $event->type;
+
+			} else {
+				status_header( 500 );
+				// Something went wrong outside of Stripe.
+				give_record_gateway_error( __( 'Stripe Error', 'give' ), sprintf( __( 'An error occurred while processing a webhook.', 'give' ) ) );
+				die( '-1' ); // Failed.
+			} // End if().
 		}
 	}
 }
+
+new Give_Stripe_Webhooks();
