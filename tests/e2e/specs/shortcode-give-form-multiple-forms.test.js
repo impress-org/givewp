@@ -419,18 +419,21 @@ describe( 'Display Option: All fields', () => {
 	})
 
 	it( 'INTERACTION: fill second form and donate', async () => {
-		await page.click( '.give-display-reveal .give-btn-level-2' )
+		await page.click( '.give-display-reveal .give-btn-level-2' );
+
+		// Add wait time to allow button event to update dom
+		page.waitFor(400);
 
 		await expect( page ).toFillForm( '.give-display-reveal .give-form', {
 			give_first: 'David',
 			give_last: 'Wallace',
 			give_email: 'david.wallace@gmail.com',
-		}, 10000 )
+		}, 10000 );
 
 		await Promise.all([
 			page.click( '.give-display-reveal .give-submit' ),
 			page.waitForNavigation()
-		])
+		]);
 	}, 100000 )
 
 	// Verify the donation that was made above.
