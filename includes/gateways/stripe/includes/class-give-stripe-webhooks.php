@@ -25,11 +25,24 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 	class Give_Stripe_Webhooks {
 
 		/**
+		 * Stripe Gateway
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var $stripe_gateway
+		 */
+		public $stripe_gateway;
+
+		/**
 		 * Give_Stripe_Webhooks constructor.
 		 *
 		 * @since 2.5.0
 		 */
 		public function __construct() {
+
+			$this->stripe_gateway = new Give_Stripe_Gateway();
+
 			add_action( 'init', array( $this, 'listen' ) );
 		}
 
@@ -53,8 +66,8 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			// Get the Stripe SDK autoloader.
 			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-			$this->set_api_key();
-			$this->set_api_version();
+			$this->stripe_gateway->set_api_key();
+			$this->stripe_gateway->set_api_version();
 
 			// Retrieve the request's body and parse it as JSON.
 			$body  = @file_get_contents( 'php://input' );
@@ -185,3 +198,5 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		}
 	}
 }
+
+new Give_Stripe_Webhooks();
