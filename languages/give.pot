@@ -59,7 +59,7 @@ msgstr ""
 msgid "Give version %s is required to update this add-on."
 msgstr ""
 
-#: includes/ajax-functions.php:223, includes/country-functions.php:502, includes/country-functions.php:550, includes/country-functions.php:801, includes/admin/import-functions.php:457, includes/forms/template.php:1101, includes/admin/settings/class-settings-general.php:243, includes/admin/tools/export/class-batch-export-donors.php:187, includes/admin/tools/export/give-export-donations-exporter.php:198
+#: includes/ajax-functions.php:223, includes/country-functions.php:502, includes/country-functions.php:550, includes/country-functions.php:801, includes/admin/import-functions.php:457, includes/forms/template.php:1101, includes/admin/settings/class-settings-general.php:243, includes/admin/tools/export/class-batch-export-donors.php:189, includes/admin/tools/export/give-export-donations-exporter.php:198
 msgid "State"
 msgstr ""
 
@@ -335,11 +335,11 @@ msgstr ""
 msgid "Your Give add-on license will expire in %1$s for payment <a href=\"%2$s\" target=\"_blank\">#%3$d</a>. <a href=\"%4$s\" target=\"_blank\">Click to renew an existing license</a> or %5$s."
 msgstr ""
 
-#: includes/class-give-license-handler.php:912, includes/api/class-give-api.php:1856, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:374, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
+#: includes/class-give-license-handler.php:912, includes/api/class-give-api.php:1868, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:374, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
 msgid "Nonce verification failed."
 msgstr ""
 
-#: includes/class-give-license-handler.php:912, includes/class-give-scripts.php:234, includes/class-notices.php:622, includes/formatting.php:726, includes/admin/EDD_SL_Plugin_Updater.php:428, includes/api/class-give-api.php:1856, includes/api/class-give-api.php:1862, includes/api/class-give-api.php:1877, includes/api/class-give-api.php:1882, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:180, includes/admin/donors/donor-actions.php:194, includes/admin/donors/donor-actions.php:263, includes/admin/donors/donor-actions.php:277, includes/admin/donors/donor-actions.php:356, includes/admin/donors/donor-actions.php:452, includes/admin/donors/donor-actions.php:499, includes/admin/donors/donor-actions.php:543, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:494, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136
+#: includes/class-give-license-handler.php:912, includes/class-give-scripts.php:234, includes/class-notices.php:622, includes/formatting.php:749, includes/admin/EDD_SL_Plugin_Updater.php:428, includes/api/class-give-api.php:1868, includes/api/class-give-api.php:1874, includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:180, includes/admin/donors/donor-actions.php:194, includes/admin/donors/donor-actions.php:263, includes/admin/donors/donor-actions.php:277, includes/admin/donors/donor-actions.php:356, includes/admin/donors/donor-actions.php:452, includes/admin/donors/donor-actions.php:499, includes/admin/donors/donor-actions.php:543, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:494, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136
 msgid "Error"
 msgstr ""
 
@@ -5367,31 +5367,31 @@ msgstr ""
 msgid "Zambian kwacha (%1$s)"
 msgstr ""
 
-#: includes/formatting.php:510
+#: includes/formatting.php:533
 msgid "%s arab"
 msgstr ""
 
-#: includes/formatting.php:512
+#: includes/formatting.php:535
 msgid "%s crore"
 msgstr ""
 
-#: includes/formatting.php:514
+#: includes/formatting.php:537
 msgid "%s lakh"
 msgstr ""
 
-#: includes/formatting.php:520
+#: includes/formatting.php:543
 msgid "%s trillion"
 msgstr ""
 
-#: includes/formatting.php:522
+#: includes/formatting.php:545
 msgid "%s billion"
 msgstr ""
 
-#: includes/formatting.php:524
+#: includes/formatting.php:547
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:725, includes/formatting.php:762, includes/process-donation.php:850, includes/gateways/actions.php:48
+#: includes/formatting.php:748, includes/formatting.php:785, includes/process-donation.php:850, includes/gateways/actions.php:48
 msgid "Nonce verification has failed."
 msgstr ""
 
@@ -7547,19 +7547,19 @@ msgstr ""
 msgid "Address 1"
 msgstr ""
 
-#: includes/admin/import-functions.php:452, includes/admin/tools/export/class-batch-export-donors.php:184, includes/admin/tools/export/export-functions.php:142
+#: includes/admin/import-functions.php:452, includes/admin/tools/export/class-batch-export-donors.php:186, includes/admin/tools/export/export-functions.php:142
 msgid "Address"
 msgstr ""
 
-#: includes/admin/import-functions.php:454, includes/forms/template.php:1167, includes/admin/tools/export/class-batch-export-donors.php:185, includes/admin/tools/export/give-export-donations-exporter.php:196
+#: includes/admin/import-functions.php:454, includes/forms/template.php:1167, includes/admin/tools/export/class-batch-export-donors.php:187, includes/admin/tools/export/give-export-donations-exporter.php:196
 msgid "Address 2"
 msgstr ""
 
-#: includes/admin/import-functions.php:455, includes/forms/template.php:1188, includes/forms/template.php:1200, includes/admin/tools/export/class-batch-export-donors.php:186, includes/admin/tools/export/give-export-donations-exporter.php:197
+#: includes/admin/import-functions.php:455, includes/forms/template.php:1188, includes/forms/template.php:1200, includes/admin/tools/export/class-batch-export-donors.php:188, includes/admin/tools/export/give-export-donations-exporter.php:197
 msgid "City"
 msgstr ""
 
-#: includes/admin/import-functions.php:462, includes/forms/template.php:1119, includes/admin/tools/export/class-batch-export-donors.php:189, includes/admin/tools/export/give-export-donations-exporter.php:200
+#: includes/admin/import-functions.php:462, includes/forms/template.php:1119, includes/admin/tools/export/class-batch-export-donors.php:191, includes/admin/tools/export/give-export-donations-exporter.php:200
 msgid "Country"
 msgstr ""
 
@@ -7567,7 +7567,7 @@ msgstr ""
 msgid "Zip Code"
 msgstr ""
 
-#: includes/admin/import-functions.php:465, includes/admin/tools/export/class-batch-export-donors.php:188, includes/admin/tools/export/give-export-donations-exporter.php:199
+#: includes/admin/import-functions.php:465, includes/admin/tools/export/class-batch-export-donors.php:190, includes/admin/tools/export/give-export-donations-exporter.php:199
 msgid "Zip"
 msgstr ""
 
@@ -7930,49 +7930,49 @@ msgstr ""
 #. translators: %s: form
 #. translators: %s: form
 #. translators: %s: form
-#: includes/api/class-give-api.php:1044, includes/api/class-give-api.php:1288, includes/api/class-give-api.php:1416
+#: includes/api/class-give-api.php:1044, includes/api/class-give-api.php:1290, includes/api/class-give-api.php:1419
 msgid "Form %s not found."
 msgstr ""
 
-#: includes/api/class-give-api.php:1175, includes/api/class-give-api.php:1306
+#: includes/api/class-give-api.php:1177, includes/api/class-give-api.php:1308
 msgid "The end date must be later than the start date."
 msgstr ""
 
-#: includes/api/class-give-api.php:1180, includes/api/class-give-api.php:1311
+#: includes/api/class-give-api.php:1182, includes/api/class-give-api.php:1313
 msgid "Invalid or no date range specified."
 msgstr ""
 
-#: includes/api/class-give-api.php:1810
+#: includes/api/class-give-api.php:1822
 msgid "Give API Keys"
 msgstr ""
 
-#: includes/api/class-give-api.php:1819
+#: includes/api/class-give-api.php:1831
 msgid "Generate API Key"
 msgstr ""
 
-#: includes/api/class-give-api.php:1821
+#: includes/api/class-give-api.php:1833
 msgid "Public key:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1825
+#: includes/api/class-give-api.php:1837
 msgid "Secret key:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1829
+#: includes/api/class-give-api.php:1841
 msgid "Token:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1834
+#: includes/api/class-give-api.php:1846
 msgid "Revoke API Keys"
 msgstr ""
 
-#: includes/api/class-give-api.php:1862
+#: includes/api/class-give-api.php:1874
 msgid "User ID Required."
 msgstr ""
 
 #. translators: %s: process
 #. translators: %s: process
-#: includes/api/class-give-api.php:1877, includes/api/class-give-api.php:1882
+#: includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894
 msgid "You do not have permission to %s API keys for this user."
 msgstr ""
 

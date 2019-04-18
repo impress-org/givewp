@@ -245,7 +245,7 @@ const helpers = {
 				// Submit the donation form and wait for navigation.
 				await Promise.all([
 					page.click( '#give-purchase-button' ),
-					page.waitForNavigation()
+					page.waitFor(3000)
 				])
 			}, 10000 )
 		},
