@@ -276,7 +276,8 @@ describe( 'Shortcode Give Form', () => {
 
 	// Click the radio button related to PayPal Payment Method.
 	it( 'INTERACTION: verify select paypal payment method', async () => {
-		await page.click( 'label[id="give-gateway-option-paypal"]' )
+		await page.click( 'label[id="give-gateway-option-paypal"]' );
+		await page.waitFor( 2000 );
 	})
 
 	// Verify the content after clicking the PayPal payment button radio.
@@ -289,8 +290,9 @@ describe( 'Shortcode Give Form', () => {
 	 * This method will be used to test a donation ahead.
 	 */
 	it( 'INTERACTION: select offline payment method', async () => {
-		await page.click( 'label[id="give-gateway-option-offline"]' )
-		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' )
+		await page.click( 'label[id="give-gateway-option-offline"]' );
+		await page.waitFor( 2000 );
+		await expect( page ).toMatch( 'Make a check payable to "Give Automation"' );
 	})
 
 	// Make a sample donation.
