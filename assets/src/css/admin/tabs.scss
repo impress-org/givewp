@@ -4,9 +4,10 @@
 
 .give-nav-tab-wrapper,
 .wrap h2.give-nav-tab-wrapper {
-	background: #DDDDDD;
+	background: $settings-tabs-bg;
 	border: none !important;
 	padding-top: 0;
+	overflow: hidden;
 
 	.nav-tab {
 		border: none;
@@ -14,14 +15,14 @@
 		padding: 15px 30px;
 		outline: none;
 		box-shadow: none;
-		background: #DDDDDD;
+		background: $settings-tabs-bg;
 
 		&:hover {
-			background: #ebebeb;
+			background: $settings-tabs-tg-hover;
 		}
 
 		&.nav-tab-active {
-			background: #f1f1f1;
+			background: $settings-tabs-tg-active;
 			box-shadow: inset 0 4px 0 $give-green;
 			margin:0;
 		}

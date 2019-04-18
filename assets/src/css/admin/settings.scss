@@ -700,13 +700,14 @@ a.give-delete {
 
 .give-sub-nav-tab-wrapper {
 	position: relative;
-	display: inline-block;
 	z-index: 999;
 	float: left;
+	// By default hide setting tab wrapper.
+	display: none;
 
 	nav.give-sub-nav-tab {
-		border: 1px solid #ccc;
-		border-bottom: 0;
+		border: 1px solid #f1f1f1;
+		border-bottom: none;
 		position: absolute;
 		top: 37px;
 		right: 0;
@@ -714,24 +715,20 @@ a.give-delete {
 		a {
 			float: left;
 			background: white;
-			padding: 6px 10px;
+			padding: 8px 10px;
 			clear: both;
 			text-decoration: none;
-			border-bottom: 1px solid #ccc;
+			border-bottom: 1px solid #f1f1f1;
 			min-width: 170px;
 			color: #555;
 			font-size: 14px;
+			font-weight:600;
 		}
 
 		a:hover {
-			background: #ffffff;
+			background: $settings-tabs-tg-hover;
 		}
 	}
-}
-
-// By default hide setting tab wrapper.
-.give-sub-nav-tab-wrapper {
-	display: none;
 }
 
 #give-show-sub-nav {
@@ -741,18 +738,20 @@ a.give-delete {
 	line-height: 0;
 	background: white;
 	border-radius: 4px;
-	margin-top: 15px;
+	margin: 15px 0 0 10px;
 
 	> span.dashicons {
 		font-size: 16px;
 		height: 16px;
 		width: 16px;
 	}
-}
 
-#give-show-sub-nav:hover, #give-show-sub-nav:active {
-	outline: none;
-	box-shadow: inset 0px 0px 4px #ddd;
+	&:hover,
+	&:active {
+		outline: none;
+		box-shadow: inset 0px 0px 4px #ddd;
+	}
+
 }
 
 //--------------------------------------------------------------
