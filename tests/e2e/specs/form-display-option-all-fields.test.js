@@ -261,7 +261,8 @@ describe( 'Display Option: All fields', () => {
 
 	// Click the radio button related to PayPal Payment Method.
 	it( 'INTERACTION: verify select paypal payment method', async () => {
-		await page.click( 'label[id="give-gateway-option-paypal"]' )
+		await page.click( 'label[id="give-gateway-option-paypal"]' );
+		await page.waitFor( 2000 );
 	})
 
 	// Verify the content after clicking the PayPal payment button radio.
