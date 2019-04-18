@@ -245,7 +245,7 @@ const helpers = {
 				// Submit the donation form and wait for navigation.
 				await Promise.all([
 					page.click( '#give-purchase-button' ),
-					page.waitFor(3000)
+					page.waitForNavigation()
 				])
 			}, 10000 )
 		},
@@ -258,6 +258,7 @@ const helpers = {
 		 * @param {array}  matchers Puppeteer page object.
 		 */
 		verifyDonation: function( page, matchers = [] ) {
+			page.waitForSelector('#give_donation_receipt');
 
 			// Check if we're on /donation-confirmation page.
 			it( 'EXISTENCE: verify donation confirmation URL', async () => {
