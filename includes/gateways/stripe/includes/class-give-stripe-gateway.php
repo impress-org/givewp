@@ -325,7 +325,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			$card_exists = false;
 			$all_sources = $stripe_customer->sources->all();
 
-			if ( give_is_stripe_checkout_enabled() ) {
+			if ( give_is_stripe_checkout_enabled() && 'stripe' === $this->id ) {
 				$card = $this->get_token_details( $id );
 			} else {
 				$card = $this->get_source_details( $id );
