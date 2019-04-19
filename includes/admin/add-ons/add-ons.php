@@ -144,6 +144,11 @@ class Give_Addons {
 	 *
 	 */
 	public static function html_by_plugin( $plugin ) {
+		// Bailout.
+		if( empty( $plugin ) ) {
+			return '';
+		}
+
 		ob_start();
 		$addon_shortname = Give_License::get_short_name( $plugin['Name'] );
 		$addon_slug      = str_replace( '_', '-', $addon_shortname );
