@@ -411,3 +411,23 @@ function give_hide_char( $str, $show_char_count, $replace = '*' ) {
 		strlen( $str ) - $show_char_count ) . substr( $str, - $show_char_count, $show_char_count
 	);
 }
+
+
+/**
+ *  Format marKdown formatted string.
+ *
+ * @param string $readme Markdown format string
+ *
+ * @return string
+ * @since 2.5.0
+ *
+ */
+function give_get_format_md( $readme ) {
+	$readme = preg_replace( '/`(.*?)`/', '<code>\\1</code>', $readme );
+	$readme = preg_replace( '/[\040]\*\*(.*?)\*\*/', ' <strong>\\1</strong>', $readme );
+	$readme = preg_replace( '/[\040]\*(.*?)\*/', ' <em>\\1</em>', $readme );
+	$readme = preg_replace( '/= (.*?) =/', '<h4>\\1</h4>', $readme );
+	$readme = preg_replace( '/\[(.*?)\]\((.*?)\)/', '<a href="\\2">\\1</a>', $readme );
+
+	return $readme;
+}
