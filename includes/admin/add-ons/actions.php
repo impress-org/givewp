@@ -152,6 +152,11 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
 function give_get_license_info_handler() {
 	check_admin_referer( 'give-license-activator-nonce' );
 
+	// check user permission.
+	if( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
+
 	$license_key = give_clean( $_POST['license'] );
 	$item_name   = isset( $_POST['item_name'] ) ? give_clean( $_POST['item_name'] ) : '';
 	$licenses    = get_option( 'give_licenses', array() );
@@ -247,6 +252,11 @@ function give_activate_addon_handler() {
 
 	check_admin_referer( "give_activate-{$plugin_path}" );
 
+	// check user permission.
+	if( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
+
 	$status = activate_plugin( $plugin_path );
 
 	if ( is_wp_error( $status ) ) {
@@ -275,6 +285,11 @@ function give_deactivate_license_handler() {
 	}
 
 	check_admin_referer("give-deactivate-license-{$item_name}" );
+
+	// check user permission.
+	if( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
 
 	/* @var array|WP_Error $response */
 	$response = Give_License::request_license_api( array(
