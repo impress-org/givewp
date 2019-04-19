@@ -294,6 +294,7 @@ function give_deactivate_license_handler() {
 		update_option( 'give_licenses', $give_licenses );
 	}
 
+	$item_name        = str_replace( ' ', '-', strtolower( $item_name ) );
 	$response['html'] = Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) );
 
 	// Check if license deactivated or not.
