@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Welcome
- * @copyright   Copyright (c) 2016, GiveWP
+ * @copyright   Copyright (c) 2019, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Welcome Class
  *
- * A general class for About and Credits page.
+ * A general class for Welcome and Credits pages.
  *
  * @since 1.0
  */
@@ -91,7 +91,6 @@ class Give_Welcome {
 	 */
 	public function admin_head() {
 
-		remove_submenu_page( 'index.php', 'give-about' );
 		remove_submenu_page( 'index.php', 'give-changelog' );
 		remove_submenu_page( 'index.php', 'give-getting-started' );
 		remove_submenu_page( 'index.php', 'give-credits' );
@@ -106,7 +105,7 @@ class Give_Welcome {
 	 * @since  1.0
 	 */
 	public function tabs() {
-		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-about';
+		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-getting-started';
 		?>
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>"
@@ -130,6 +129,63 @@ class Give_Welcome {
 	}
 
 	/**
+	 * The header section for the welcome screen.
+	 *
+	 * @since 1.8.8
+	 */
+	public function get_welcome_header() {
+		// Badge for welcome page
+		list( $display_version ) = explode( '-', GIVE_VERSION );
+
+		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+		if ( empty( $page ) ) {
+			return;
+		}
+
+		switch ( $page ) {
+			case 'give-getting-started':
+
+				$title   = sprintf( __( 'Welcome to Give %s', 'give' ), $display_version );
+				$content = __( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
+				break;
+
+			default:
+				$title   = get_admin_page_title();
+				$content = '';
+				break;
+
+		}
+
+		?>
+		<div class="give-welcome-header">
+
+			<div class="give-welcome-header-inner">
+
+				<h1 class="give-welcome-h1"><?php esc_html_e( $title ); ?></h1>
+
+				<?php $this->social_media_elements(); ?>
+
+				<p class="give-welcome-text"><?php esc_html_e( $content ); ?></p>
+
+				<?php $this->get_newsletter(); ?>
+
+				<div class="give-badge">
+					<?php
+					printf(
+					/* translators: %s: Give version */
+						esc_html__( 'Version %s', 'give' ),
+						$display_version
+					);
+					?>
+				</div>
+
+			</div>
+		</div>
+
+		<?php
+	}
+
+	/**
 	 * Render Getting Started Screen
 	 *
 	 * @access public
@@ -146,11 +202,11 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap">
 
-				<p class="about-text"><?php esc_html__( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
+				<p class="give-getting-started-intro"><?php esc_html_e( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
 
-				<div class="feature-section clearfix">
+				<div class="give-feature-section clearfix">
 
-					<div class="feature-section-item">
+					<div class="give-feature-section-item">
 						<h3><?php esc_html_e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
 
 						<p><?php esc_html_e( 'Give is driven by its powerful donation form building features. However, it is much more than just a "donation form." From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You will also be able to set the preferred donation amounts.', 'give' ); ?></p>
@@ -158,33 +214,33 @@ class Give_Welcome {
 						<p><?php esc_html_e( 'All of these features begin by simply going to the menu and choosing "Donations > Add Form."', 'give' ); ?></p>
 					</div>
 
-					<div class="feature-section-item last-feature">
+					<div class="give-feature-section-item last-feature">
 						<img
 							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-new-form.png">
 					</div>
 
 				</div>
-				<!-- /.feature-section -->
+				<!-- /.give-feature-section -->
 
-				<div class="feature-section clearfix">
+				<div class="give-feature-section clearfix">
 
-					<div class="feature-section-item multi-level-gif">
+					<div class="give-feature-section-item multi-level-gif">
 						<img
 							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
 					</div>
 
-					<div class="feature-section-item last-feature">
+					<div class="give-feature-section-item last-feature">
 						<h3><?php esc_html_e( 'STEP 2: Customize Your Donation Forms', 'give' ); ?></h3>
 
 						<p><?php esc_html_e( 'Each donation form you create can be customized to receive either a pre-determined set donation amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the donation levels view where you can add as many levels as you\'d like with your own custom names and suggested amounts. As well, you can allow donors to give a custom amount and even set up donation goals.', 'give' ); ?></p>
 					</div>
 
 				</div>
-				<!-- /.feature-section -->
+				<!-- /.give-feature-section -->
 
-				<div class="feature-section clearfix">
+				<div class="give-feature-section clearfix">
 
-					<div class="feature-section-item add-content">
+					<div class="give-feature-section-item add-content">
 						<h3><?php esc_html_e( 'STEP 3: Add Additional Content', 'give' ); ?></h3>
 
 						<p><?php esc_html_e( 'Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
@@ -192,22 +248,22 @@ class Give_Welcome {
 						<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
 					</div>
 
-					<div class="feature-section-item last-feature">
+					<div class="give-feature-section-item last-feature">
 						<img
 							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-content.png">
 					</div>
 
 				</div>
-				<!-- /.feature-section -->
+				<!-- /.give-feature-section -->
 
-				<div class="feature-section clearfix">
+				<div class="give-feature-section clearfix">
 
-					<div class="feature-section-item display-options">
+					<div class="give-feature-section-item display-options">
 						<img
 							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-display-options.png">
 					</div>
 
-					<div class="feature-section-item last-feature">
+					<div class="give-feature-section-item last-feature">
 						<h3><?php esc_html_e( 'STEP 4: Configure Your Display Options', 'give' ); ?></h3>
 
 						<p><?php esc_html_e( 'Lastly, you can present the form in a number of different ways that each create their own unique donor experience. The "Modal" display mode opens the credit card fieldset within a popup window. The "Reveal" mode will slide into place the additional fields. If you\'re looking for a simple button, then "Button" more is the way to go. This allows you to create a customizable "Donate Now" button which will open the donation form upon clicking. There\'s tons of possibilities here, give it a try!', 'give' ); ?></p>
@@ -215,7 +271,7 @@ class Give_Welcome {
 
 
 				</div>
-				<!-- /.feature-section -->
+				<!-- /.give-feature-section -->
 
 			</div>
 			<!-- /.give-welcome-content-wrap -->
@@ -394,43 +450,6 @@ class Give_Welcome {
 	}
 
 	/**
-	 * The header section for the welcome screen.
-	 *
-	 * @since 1.8.8
-	 */
-	public function get_welcome_header() {
-		// Badge for welcome page
-		list( $display_version ) = explode( '-', GIVE_VERSION );
-		?>
-		<div class="give-welcome-header">
-			<div class="give-welcome-header-inner">
-
-				<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
-
-				<?php $this->social_media_elements(); ?>
-
-				<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
-
-				<?php give_get_newsletter(); ?>
-
-				<div class="give-badge">
-					<?php
-					printf(
-					/* translators: %s: Give version */
-						esc_html__( 'Version %s', 'give' ),
-						$display_version
-					);
-					?>
-				</div>
-
-			</div>
-		</div>
-
-		<?php
-	}
-
-
-	/**
 	 * Social Media Like Buttons
 	 *
 	 * Various social media elements to Give
@@ -504,9 +523,100 @@ class Give_Welcome {
 		} elseif ( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) {
 			// Welcome is disabled in settings
 		} else { // Welcome is NOT disabled in settings
-			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
+			wp_safe_redirect( admin_url( 'index.php?page=give-changelog' ) );
 			exit;
 		}
+	}
+
+	/**
+	 * Give Newsletter
+	 *
+	 * Returns the main Give newsletter form
+	 */
+	public function get_newsletter() {
+		$current_user = wp_get_current_user();
+		?>
+		<div class="give-newsletter-form-wrap">
+
+			<p class="give-newsletter-intro"><?php esc_html_e( 'Sign up for the below to stay informed about important updates, release notes, fundraising tips, and more! We\'ll never spam you.', 'give' ); ?></p>
+
+			<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
+			      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="give-newsletter-form validate"
+			      target="_blank">
+				<div class="give-newsletter-confirmation">
+					<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
+				</div>
+
+				<table class="form-table give-newsletter-form">
+					<tr valign="middle">
+						<td>
+							<label for="mce-EMAIL"
+							       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+							<input type="email" name="EMAIL" id="mce-EMAIL"
+							       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+							       class="required email" value="<?php echo $current_user->user_email; ?>" required>
+						</td>
+						<td>
+							<label for="mce-FNAME"
+							       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+							<input type="text" name="FNAME" id="mce-FNAME"
+							       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="<?php echo $current_user->user_firstname; ?>" required>
+						</td>
+						<td>
+							<label for="mce-LNAME"
+							       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+							<input type="text" name="LNAME" id="mce-LNAME"
+							       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="<?php echo $current_user->user_lastname; ?>">
+						</td>
+						<td>
+							<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button button-primary"
+							       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+						</td>
+					</tr>
+				</table>
+			</form>
+
+			<div style="position: absolute; left: -5000px;">
+				<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+			</div>
+
+		</div>
+
+		<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+		<script type='text/javascript'>(
+				function( $ ) {
+					window.fnames = new Array();
+					window.ftypes = new Array();
+					fnames[ 0 ] = 'EMAIL';
+					ftypes[ 0 ] = 'email';
+					fnames[ 1 ] = 'FNAME';
+					ftypes[ 1 ] = 'text';
+					fnames[ 2 ] = 'LNAME';
+					ftypes[ 2 ] = 'text';
+
+					$( 'form[name="mc-embedded-subscribe-form"]' ).removeAttr( 'novalidate' );
+
+					//Successful submission
+					$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
+
+						var email_field = $( this ).find( '#mce-EMAIL' ).val();
+						if ( ! email_field ) {
+							return false;
+						}
+						$( this ).find( '.give-newsletter-confirmation' ).show();
+						$( this ).find( '.give-newsletter-form' ).hide();
+
+					} );
+
+				}( jQuery )
+			);
+			var $mcj = jQuery.noConflict( true );
+
+
+		</script>
+		<!--End mc_embed_signup-->
+
+		<?php
 	}
 
 }
