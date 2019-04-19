@@ -130,6 +130,9 @@ function give_upload_addon_handler() {
 		}
 	}
 
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( array(
 		'pluginPath' => $installed_addon['path'],
 		'pluginName' => $installed_addon['Name'],
@@ -307,6 +310,9 @@ function give_deactivate_license_handler() {
 			)
 		));
 	}
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
 
 	wp_send_json_success( $response );
 
