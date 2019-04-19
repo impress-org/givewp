@@ -2479,7 +2479,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
 	 */
 	$url = apply_filters(
 		'give_addon_readme_file_url',
-		"https://givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
+		"http://staging.givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
 		$plugin_slug,
 		$by_plugin_name
 	);
