@@ -32,7 +32,6 @@ function give_stripe_frontend_scripts() {
 
 	$stripe_card_update = false;
 	$get_data           = give_clean( filter_input_array( INPUT_GET ) );
-	$is_footer          = give_get_option( 'stripe_footer' );
 
 	if ( isset( $get_data['action'] ) &&
 		'update' === $get_data['action'] &&
