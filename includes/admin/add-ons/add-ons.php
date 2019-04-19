@@ -96,6 +96,14 @@ class Give_Addons {
 		);
 
 		foreach ( $give_plugins as $give_plugin ) {
+			if (
+				'add-on' !== $give_plugin['Type']
+				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
+			){
+				continue;
+			}
+
+
 			/* @var  stdClass $addon_license */
 			$addon_shortname   = Give_License::get_short_name( $give_plugin['Name'] );
 			$addon_slug        = str_replace( '_', '-', $addon_shortname );
@@ -103,11 +111,7 @@ class Give_Addons {
 			$addon_id          = str_replace( 'give-', '', $addon_slug );
 			$addon_license_key = self::get_instance()->get_license_by_item_name( $item_name );
 
-			if (
-				'add-on' !== $give_plugin['Type']
-				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' ) // Exclude public add-ons
-				|| in_array( $addon_id, $all_access_pass_addon_list )
-			) {
+			if ( in_array( $addon_id, $all_access_pass_addon_list ) ) {
 				continue;
 			}
 
@@ -440,7 +444,9 @@ class Give_Addons {
 
 		if( ! empty( $give_licenses ) ) {
 			foreach ( $give_licenses as $give_license ) {
-				if ( $item_name === $give_license['item_name'] ) {
+				$tmp_item_name = str_replace( ' ', '-', strtolower( $give_license['item_name'] ) );
+
+				if ( $item_name === $tmp_item_name ) {
 					$license = $give_license;
 					break;
 				}
