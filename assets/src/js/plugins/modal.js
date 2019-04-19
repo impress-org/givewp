@@ -170,9 +170,24 @@ class GiveModal {
 	 * @private
 	 */
 	static __ajaxModalHandle( event ){
-		let $this = jQuery( event.target );
+		let $this = jQuery( event.target ),
+			cache = $this.attr( 'data-cache' );
 
 		event.preventDefault();
+
+		// Load result from cache if any.
+		if( 'undefined' !== typeof cache ){
+			cache = decodeURI( cache );
+
+			new Give.modal.GiveSuccessAlert({
+				modalContent:{
+					title: $this.attr('title'),
+					desc: cache
+				}
+			}).render();
+
+			return;
+		}
 
 		jQuery.ajax({
 			url: $this.attr('href'),
@@ -185,6 +200,10 @@ class GiveModal {
 				}).render();
 			},
 			success: function( response ){
+				if( response.length ) {
+					$this.attr( 'data-cache', encodeURI( response ) );
+				}
+
 				new Give.modal.GiveSuccessAlert({
 					modalContent:{
 						title: $this.attr('title'),
