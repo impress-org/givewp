@@ -793,7 +793,7 @@ add_action( 'wp_ajax_nopriv_get_receipt', '__give_get_receipt' );
  * @return string
  * @since 2.5.0
  */
-function give_thickbox_ajax_url( $args = array() ) {
+function give_modal_ajax_url( $args = array() ) {
 	$args = wp_parse_args(
 		$args,
 		array(

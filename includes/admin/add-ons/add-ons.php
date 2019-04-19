@@ -361,8 +361,8 @@ class Give_Addons {
 				<span class="give-text">
 						<?php
 						echo sprintf(
-							'<a href="%1$s" class="thickbox" title="%3$s">%2$s</a>',
-							give_thickbox_ajax_url( array(
+							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
+							give_modal_ajax_url( array(
 								'url'            => urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
 								'show_changelog' => 1,
 							) ),
