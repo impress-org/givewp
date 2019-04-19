@@ -434,11 +434,7 @@ class Give_Welcome {
 			$readme = explode( '== Changelog ==', $readme );
 			$readme = end( $readme );
 
-			$readme = preg_replace( '/`(.*?)`/', '<code>\\1</code>', $readme );
-			$readme = preg_replace( '/[\040]\*\*(.*?)\*\*/', ' <strong>\\1</strong>', $readme );
-			$readme = preg_replace( '/[\040]\*(.*?)\*/', ' <em>\\1</em>', $readme );
-			$readme = preg_replace( '/= (.*?) =/', '<h4>\\1</h4>', $readme );
-			$readme = preg_replace( '/\[(.*?)\]\((.*?)\)/', '<a href="\\2">\\1</a>', $readme );
+			$readme = give_get_format_md( $readme );
 		}
 
 		return $readme;

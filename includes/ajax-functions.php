@@ -841,10 +841,10 @@ function give_get_content_by_ajax_handler() {
 			exit;
 		}
 
-		$changelog = substr( $response, strpos( $response, '== Changelog ==') );
-		$changelog = trim( str_replace( '== Changelog ==', '', $changelog ) );
+		$changelog = explode( '== Changelog ==', $response );
+		$changelog = end( $changelog );
 
-		echo nl2br( $changelog );
+		echo give_get_format_md( $changelog );
 	}
 
 	do_action( 'give_get_content_by_ajax_handler' );
