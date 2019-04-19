@@ -162,6 +162,38 @@ class GiveModal {
 
 		return this;
 	}
+
+	/**
+	 * Open modal after getting content from ajax
+	 *
+	 * @since 2.5.0
+	 * @private
+	 */
+	static __ajaxModalHandle( event ){
+		let $this = jQuery( event.target );
+
+		event.preventDefault();
+
+		jQuery.ajax({
+			url: $this.attr('href'),
+			method: 'GET',
+			beforeSend: function(){
+				new Give.modal.GiveSuccessAlert({
+					modalContent:{
+						desc: '<span class="give-modal__spinner spinner is-active"></span>',
+					}
+				}).render();
+			},
+			success: function( response ){
+				new Give.modal.GiveSuccessAlert({
+					modalContent:{
+						title: $this.attr('title'),
+						desc: response
+					}
+				}).render();
+			}
+		});
+	}
 }
 
 /**
@@ -299,5 +331,6 @@ class GiveFormModal extends GiveModal {
 window.addDynamicEventListener( document, 'click', '.give-popup-close-button', GiveModal.__closePopup, {} );
 window.addDynamicEventListener( document, 'click', '.give-popup-confirm-button', GiveConfirmModal.__confirmPopup, {} );
 window.addDynamicEventListener( document, 'click', '.give-popup-form-button', GiveFormModal.__submitPopup, {} );
+window.addDynamicEventListener( document, 'click', '.give-ajax-modal', GiveModal.__ajaxModalHandle, {} );
 
 export { GiveModal, GiveErrorAlert, GiveWarningAlert, GiveNoticeAlert, GiveSuccessAlert, GiveConfirmModal, GiveFormModal };
