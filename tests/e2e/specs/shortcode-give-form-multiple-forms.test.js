@@ -419,10 +419,6 @@ describe( 'Display Option: All fields', () => {
 	})
 
 	it( 'INTERACTION: fill second form and donate', async () => {
-		await page.click( '.give-display-reveal .give-btn-level-2' );
-
-		// Add wait time to allow button event to update dom
-		page.waitFor(400);
 
 		await expect( page ).toFillForm( '.give-display-reveal .give-form', {
 			give_first: 'David',
@@ -431,6 +427,7 @@ describe( 'Display Option: All fields', () => {
 		}, 10000 );
 
 		await Promise.all([
+			await page.click( '.give-display-reveal .give-btn-level-2' ),
 			page.click( '.give-display-reveal .give-submit' ),
 			page.waitForNavigation()
 		]);
