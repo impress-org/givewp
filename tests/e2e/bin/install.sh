@@ -11,8 +11,8 @@ if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]]; then
 	cd ~/wordpress_data/wp-content/plugins
 	git clone -b ${TRAVIS_BRANCH} --single-branch https://github.com/impress-org/give.git
 	cd ~/wordpress_data/wp-content/plugins/give/
-	docker exec give_wordpress_1 wp core update
 	composer install
+	docker exec give_wordpress_1 wp core update
 	docker exec give_wordpress_1 wp plugin activate give
 	rm -rf ./node_modules package-lock.json
 	npm cache clean --force
