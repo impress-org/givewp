@@ -42,10 +42,10 @@ const helpers = {
 					 */
 					await Promise.all([
 						await page.click( '#wp-submit' ),
-						await page.waitForNavigation( { timeout: 500000 } ),
+						await page.waitForNavigation(),
 					])
 				}
-			})
+			}, 500000 )
 		},
 
 		/**
