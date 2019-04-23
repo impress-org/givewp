@@ -335,3 +335,42 @@ function give_deactivate_license_handler() {
 }
 
 add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler' );
+
+
+/**
+ * Refresh all addons licenses handler
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_refresh_all_licenses_handler() {
+	check_admin_referer('give-refresh-all-licenses' );
+
+	// check user permission.
+	if( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
+
+	$give_licenses = get_option( 'give_licenses', array() );
+
+	/* @var stdClass $data */
+	foreach ( $give_licenses as $key => $data ) {
+		$tmp = Give_License::request_license_api(array(
+			'edd_action' => 'check_license',
+			'license' => $key
+		), true );
+
+		if( is_wp_error( $tmp ) ) {
+			continue;
+		}
+
+		$give_licenses[$key] = $tmp;
+	}
+
+	update_option( 'give_licenses', $give_licenses );
+
+	wp_send_json_success(array( 'html' => Give_Addons::render_license_section() ));
+}
+
+add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );

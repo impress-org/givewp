@@ -102,6 +102,36 @@
 		} );
 
 		/**
+		 * Refresh all licenses
+		 */
+		$('#give-button__refresh-licenses').on( 'click', function( e ) {
+			e.preventDefault();
+
+			const $this = $(this);
+
+			$.ajax( {
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'give_refresh_all_licenses',
+					_wpnonce: $this.attr( 'data-nonce' ),
+				},
+				beforeSend: function() {
+					$this.text( $this.attr( 'data-activating' ) );
+					loader( $licensesContainer );
+				},
+				success: function( response ) {
+					if ( true === response.success ) {
+						$licensesContainer.html( response.data.html );
+					}
+				},
+			} ).done( function() {
+				loader( $licensesContainer, false );
+				$this.text( $this.attr( 'data-activate' ) );
+			} );
+		} );
+
+		/**
 		 * License form validation handler
 		 */
 		$form.on( 'submit', function() {

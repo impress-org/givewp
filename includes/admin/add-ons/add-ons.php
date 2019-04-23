@@ -554,6 +554,15 @@ function give_add_ons_page() {
 		</div>
 
 		<h2><?php _e( 'License and Downloads', 'give' ); ?></h2>
+		<button
+			id="give-button__refresh-licenses"
+			class="button-secondary"
+			data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
+			data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
+			data-nonce="<?php echo wp_create_nonce('give-refresh-all-licenses'); ?>"
+		>
+			<?php _e( 'Refresh All Licenses', 'give' ); ?>
+		</button>
 		<section id="give-licenses-container">
 			<?php echo Give_Addons::render_license_section(); ?>
 		</section>
