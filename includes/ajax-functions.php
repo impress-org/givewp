@@ -826,18 +826,22 @@ function give_get_content_by_ajax_handler() {
 		! empty( $_GET['show_changelog'] )
 		&& (int) give_clean( $_GET['show_changelog'] )
 	) {
+		$msg = __( 'Sorry, unable to load changelog.', 'give' );
 		$url = urldecode_deep( give_clean( $_GET['url'] ) );
 
 		$response = wp_remote_get( $url );
 
+
 		if ( is_wp_error( $response ) ) {
-			die();
+			echo $msg;
+			exit;
 		}
 
 		$response = wp_remote_retrieve_body( $response );
 
+
 		if( false === strpos( $response,  '== Changelog ==' ) ) {
-			echo __( 'Sorry, unable to load changelog.', 'give' );
+			echo $msg;
 			exit;
 		}
 
