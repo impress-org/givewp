@@ -149,6 +149,12 @@ class Give_Welcome {
 				$content = __( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
 				break;
 
+			case 'give-changelog':
+
+				$title   = sprintf( __( 'What\'s New in Give %s', 'give' ), $display_version );
+				$content = __( 'Give is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping Give up to date with the latest version.', 'give' );
+				break;
+
 			default:
 				$title   = get_admin_page_title();
 				$content = '';
@@ -202,7 +208,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap">
 
-				<p class="give-getting-started-intro"><?php esc_html_e( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
+				<p class="give-welcome-content-intro"><?php esc_html_e( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
 
 				<div class="give-feature-section clearfix">
 
@@ -226,7 +232,7 @@ class Give_Welcome {
 
 					<div class="give-feature-section-item multi-level-gif">
 						<img
-							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
+							src="<?php echo GIVE_PLUGIN_URL ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
 					</div>
 
 					<div class="give-feature-section-item last-feature">
@@ -296,7 +302,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-				<h3><?php esc_html_e( 'Full Changelog', 'give' ); ?></h3>
+				<p class="give-welcome-content-intro"><?php printf(__( 'See what\'s new in version 2.5.0 of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%s" target="_blank">contact support</a>.', 'give' ), 'https://givewp.com/support/'); ?></p>
 
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>
