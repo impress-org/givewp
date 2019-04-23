@@ -172,7 +172,7 @@ class Give_Addons {
 			$default_plugin['DownloadURL'] = $license['download'];
 		}
 
-		$license = wp_parse_args( $license, array(
+		$plugin['License'] = $license = wp_parse_args( $license, array(
 			'item_name' => $item_name,
 		) );
 
@@ -223,9 +223,12 @@ class Give_Addons {
 						self::get_plugin_by_item_name( $item_name ),
 						$default_plugin
 					);
+
 					$plugin['Name'] = false === strpos( $plugin['Name'], 'Give -' )
 						? $plugin['Name']
 						: "Give  - {$addon['name']}";
+
+					$plugin['License'] = $license;
 
 					echo self::html_plugin_row( $plugin );
 				}
@@ -362,6 +365,10 @@ class Give_Addons {
 			return '';
 		}
 
+		$is_license         = $plugin['License'] && ! empty( $plugin['License']['license_key'] );
+		$expires_timestamp  = $is_license ? strtotime( $plugin['License']['expires'] ) : '';
+		$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+
 		ob_start();
 		?>
 		<div class="give-row give-border give-plugin__info">
@@ -391,13 +398,16 @@ class Give_Addons {
 						'active' === $plugin['Status'] ? __( 'activated', 'give' ) : __( 'installed', 'give' )
 					);
 				}
+
+
+				printf(
+					'<span><%3$s class="give-button button-secondary" target="_blank" href="%1$s"%4$s><i class="dashicons dashicons-download"></i>%2$s</%3$s></span>',
+					$plugin['DownloadURL'],
+					__( 'Download', 'give' ),
+					$is_license_expired || ! $plugin['DownloadURL'] ? 'button' : 'a',
+					$is_license_expired || ! $plugin['DownloadURL'] ? ' disabled' : ''
+				);
 				?>
-				<span>
-					<a class="give-button button-secondary" href="<?php echo $plugin['DownloadURL']; ?>"<?php echo ! $plugin['DownloadURL'] ? ' disabled' : ''; ?>>
-						<i class="dashicons dashicons-download"></i>
-						<?php _e( 'Download' ) ?>
-					</a>
-				</span>
 			</div>
 		</div>
 		<?php
