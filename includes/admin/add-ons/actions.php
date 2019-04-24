@@ -352,28 +352,7 @@ function give_refresh_all_licenses_handler() {
 		give_die();
 	}
 
-	$give_licenses = get_option( 'give_licenses', array() );
-
-	/* @var stdClass $data */
-	foreach ( $give_licenses as $key => $data ) {
-		$tmp = Give_License::request_license_api(array(
-			'edd_action' => 'check_license',
-			'license' => $key
-		), true );
-
-		if( is_wp_error( $tmp ) ) {
-			continue;
-		}
-
-		if( ! $tmp['success'] ) {
-			unset( $give_licenses[$key] );
-			continue;
-		}
-
-		$give_licenses[$key] = $tmp;
-	}
-
-	update_option( 'give_licenses', $give_licenses );
+	give_refresh_licenses();
 
 	wp_send_json_success(array( 'html' => Give_Addons::render_license_section() ));
 }
