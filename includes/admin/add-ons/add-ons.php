@@ -99,7 +99,7 @@ class Give_Addons {
 			if (
 				'add-on' !== $give_plugin['Type']
 				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
-			){
+			) {
 				continue;
 			}
 
@@ -109,7 +109,7 @@ class Give_Addons {
 			$addon_slug        = str_replace( '_', '-', $addon_shortname );
 			$item_name         = str_replace( 'give-', '', $addon_slug );
 			$addon_id          = str_replace( 'give-', '', $addon_slug );
-			$addon_license_key = self::get_instance()->get_license_by_item_name( $item_name );
+			$addon_license_key = Give_License::get_license_by_item_name( $item_name );
 
 			if ( in_array( $addon_id, $all_access_pass_addon_list ) ) {
 				continue;
@@ -145,7 +145,7 @@ class Give_Addons {
 	 */
 	public static function html_by_plugin( $plugin ) {
 		// Bailout.
-		if( empty( $plugin ) ) {
+		if ( empty( $plugin ) ) {
 			return '';
 		}
 
@@ -153,7 +153,7 @@ class Give_Addons {
 		$addon_shortname = Give_License::get_short_name( $plugin['Name'] );
 		$addon_slug      = str_replace( '_', '-', $addon_shortname );
 		$item_name       = str_replace( 'give-', '', $addon_slug );
-		$license         = self::get_instance()->get_license_by_item_name( $item_name );
+		$license         = Give_License::get_license_by_item_name( $item_name );
 
 		$default_plugin = array(
 			'ChangeLogSlug' => $addon_slug,
@@ -169,7 +169,7 @@ class Give_Addons {
 			$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
 
 			// Backward compatibility.
-			if( ! empty( $license['subscription']) ) {
+			if ( ! empty( $license['subscription'] ) ) {
 				$license['expires']            = $license['subscription']['expires'];
 				$default_plugin['DownloadURL'] = $license['download'];
 
@@ -226,7 +226,7 @@ class Give_Addons {
 						'DownloadURL'   => $addon['file'],
 					);
 
-					$plugin         = wp_parse_args(
+					$plugin = wp_parse_args(
 						self::get_plugin_by_item_name( $item_name ),
 						$default_plugin
 					);
@@ -271,7 +271,8 @@ class Give_Addons {
 						<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 						<?php if ( ! $license_key ) : ?>
-							&nbsp;&nbsp;<button class="give-button__license-activate button-secondary" data-item-name="<?php echo $license['item_name']; ?>" disabled><?php _e( 'Activate License' ); ?></button>
+							&nbsp;&nbsp;
+							<button class="give-button__license-activate button-secondary" data-item-name="<?php echo $license['item_name']; ?>" disabled><?php _e( 'Activate License' ); ?></button>
 						<?php endif; ?>
 					</span>
 
@@ -321,7 +322,7 @@ class Give_Addons {
 							$license['payment_id'],
 							$license['license_key'],
 							$license['item_name'],
-							wp_create_nonce("give-deactivate-license-{$license['item_name']}" )
+							wp_create_nonce( "give-deactivate-license-{$license['item_name']}" )
 						);
 					}
 				}
@@ -450,34 +451,6 @@ class Give_Addons {
 
 		return $plugin;
 	}
-
-	/**
-	 * Get license by item name
-	 *
-	 * @param $item_name
-	 *
-	 * @return array
-	 * @since  2.5.0
-	 * @access private
-	 */
-	private function get_license_by_item_name( $item_name ) {
-		$license       = array();
-		$give_licenses = get_option( 'give_licenses', array() );
-
-		if( ! empty( $give_licenses ) ) {
-			foreach ( $give_licenses as $give_license ) {
-				$tmp_item_name = str_replace( ' ', '-', strtolower( $give_license['item_name'] ) );
-
-				if ( $item_name === $tmp_item_name ) {
-					$license = $give_license;
-					break;
-				}
-			}
-		}
-
-		return $license;
-	}
-
 }
 
 Give_Addons::get_instance();
@@ -566,7 +539,7 @@ function give_add_ons_page() {
 			class="button-secondary"
 			data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
 			data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
-			data-nonce="<?php echo wp_create_nonce('give-refresh-all-licenses'); ?>"
+			data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
 		>
 			<?php _e( 'Refresh All Licenses', 'give' ); ?>
 		</button>

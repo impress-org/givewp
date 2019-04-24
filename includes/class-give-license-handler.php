@@ -152,7 +152,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Set up the Give License Class.
 		 *
 		 * @access public
-		 * @since  1.0
 		 *
 		 * @param string $_file
 		 * @param string $_item_name
@@ -163,6 +162,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string $_checkout_url
 		 * @param string $_account_url
 		 * @param int    $_item_id
+		 *
+		 * @since  1.0
+		 *
 		 */
 		public function __construct(
 			$_file,
@@ -185,14 +187,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$this->item_id = absint( $_item_id );
 			}
 
-			$give_options = give_get_settings();
-
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
 			$this->item_shortname   = self::get_short_name( $this->item_name );
+			$this->license_data     = self::get_license_by_item_name( str_replace( 'give-', '', $this->item_shortname ) );
 			$this->version          = $_version;
-			$this->license          = isset( $give_options[ $this->item_shortname . '_license_key' ] ) ? trim( $give_options[ $this->item_shortname . '_license_key' ] ) : '';
-			$this->license_data     = __give_get_active_license_info( $this->item_shortname );
+			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;
 			$this->api_url          = is_null( $_api_url ) ? $this->api_url : $_api_url;
 			$this->checkout_url     = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
@@ -219,12 +219,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Get plugin shortname
 		 *
-		 * @since  2.1.0
-		 * @access public
-		 *
 		 * @param $plugin_name
 		 *
 		 * @return string
+		 * @since  2.1.0
+		 * @access public
+		 *
 		 */
 		public static function get_short_name( $plugin_name ) {
 			$plugin_name = trim( str_replace( 'Give - ', '', $plugin_name ) );
@@ -239,9 +239,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Include the updater class.
 		 *
 		 * @access private
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
 		private function includes() {
 
@@ -256,9 +256,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Setup license hooks.
 		 *
 		 * @access private
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
 		private function hooks() {
 			// Updater.
@@ -277,9 +277,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Auto Updater
 		 *
 		 * @access private
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
 		public function auto_updater() {
 
@@ -308,11 +308,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Activate the license key.
 		 *
 		 * @access public
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
-		public function activate_license() {}
+		public function activate_license() {
+		}
 
 		/**
 		 * Deactivate License
@@ -320,19 +321,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Deactivate the license key.
 		 *
 		 * @access public
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
-		public function deactivate_license() {}
+		public function deactivate_license() {
+		}
 
 		/**
 		 * Admin notices for errors
 		 *
 		 * @access public
+		 * @return void
 		 * @since  1.0
 		 *
-		 * @return void
 		 */
 		public function notices() {
 
@@ -483,12 +485,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license is valid or not.
 		 *
-		 * @since  1.7
-		 * @access public
-		 *
 		 * @param null|object $licence_data
 		 *
 		 * @return bool
+		 * @since  1.7
+		 * @access public
+		 *
 		 */
 		public function is_valid_license( $licence_data = null ) {
 			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
@@ -504,12 +506,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license is license object or not.
 		 *
-		 * @since  1.7
-		 * @access public
-		 *
 		 * @param null|object $licence_data
 		 *
 		 * @return bool
+		 * @since  1.7
+		 * @access public
+		 *
 		 */
 		public function is_license( $licence_data = null ) {
 			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
@@ -548,9 +550,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Get message related to license state.
 		 *
+		 * @return array
 		 * @since  1.8.7
 		 * @access public
-		 * @return array
 		 */
 		public function license_state_message() {
 			$message_data = array();
@@ -571,14 +573,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Get license information.
 		 *
-		 * @since  1.8.9
-		 * @access public
-		 * @deprecated 2.5.0 Use Give_License::request_license_api instead.
-		 *
 		 * @param string $edd_action
 		 * @param bool   $response_in_array
 		 *
 		 * @return mixed
+		 * @deprecated 2.5.0 Use Give_License::request_license_api instead.
+		 *
+		 * @since      1.8.9
+		 * @access     public
 		 */
 		public function get_license_info( $edd_action = '', $response_in_array = false ) {
 
@@ -603,9 +605,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * Note: note only for internal logic
 		 *
+		 * @return array
 		 * @since 2.1.4
 		 *
-		 * @return array
 		 */
 		static function get_licensed_addons() {
 			return self::$licensed_addons;
@@ -615,16 +617,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license key attached to subscription
 		 *
-		 * @since 2.5.0
-		 *
 		 * @param string $license_key
 		 *
 		 * @return array
+		 * @since 2.5.0
+		 *
 		 */
 		static function is_subscription( $license_key = '' ) {
 			// Check if current license is part of subscription or not.
 			$subscriptions = get_option( 'give_subscriptions' );
-			$subscription = array();
+			$subscription  = array();
 
 			if ( $subscriptions ) {
 				foreach ( $subscriptions as $subs ) {
@@ -641,8 +643,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Get license information.
 		 *
-		 * @param array  $api_params
-		 * @param bool   $response_in_array
+		 * @param array $api_params
+		 * @param bool  $response_in_array
 		 *
 		 * @return mixed
 		 * @since  1.8.9
@@ -660,14 +662,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 				// 'edd_action' => $edd_action, never change from "edd_" to "give_"!
 				// 'license'    => $this->license,
 				// 'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
+				'url' => home_url(),
 			);
 
 			$api_params = wp_parse_args( $api_params, $default_api_params );
 
 			// Call the API.
 			$response = wp_remote_post(
-				// 'https://givewp.com/checkout/',
+			// 'https://givewp.com/checkout/',
 				'http://staging.givewp.com/chekout/', // For testing purpose
 				array(
 					'timeout'   => 15,
@@ -682,6 +684,33 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
+		}
+
+		/**
+		 * Get license by item name
+		 *
+		 * @param $item_name
+		 *
+		 * @return array
+		 * @since  2.5.0
+		 * @access private
+		 */
+		public static function get_license_by_item_name( $item_name ) {
+			$license       = array();
+			$give_licenses = get_option( 'give_licenses', array() );
+
+			if ( ! empty( $give_licenses ) ) {
+				foreach ( $give_licenses as $give_license ) {
+					$tmp_item_name = str_replace( ' ', '-', strtolower( $give_license['item_name'] ) );
+
+					if ( $item_name === $tmp_item_name ) {
+						$license = $give_license;
+						break;
+					}
+				}
+			}
+
+			return $license;
 		}
 
 	}
