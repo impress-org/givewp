@@ -902,8 +902,9 @@ function give_get_plugins() {
 			$plugins[ $plugin_path ]['Status'] = 'inactive';
 		}
 
-		$dirname = strtolower( dirname( $plugin_path ) );
-		$plugins[$plugin_path]['Dir'] = $dirname;
+		$dirname                         = strtolower( dirname( $plugin_path ) );
+		$plugins[ $plugin_path ]['Dir']  = $dirname;
+		$plugins[ $plugin_path ]['Path'] = $plugin_path;
 
 		// Is the plugin a Give add-on?
 		if (

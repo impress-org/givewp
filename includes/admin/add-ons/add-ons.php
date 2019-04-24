@@ -213,25 +213,22 @@ class Give_Addons {
 				echo self::get_instance()->html_license_row( $license );
 
 				foreach ( $license['download'] as $addon ) {
-					$item_name = str_replace( ' ', '-', strtolower( $addon['name'] ) );
-
 					$default_plugin = array(
 						'Name'          => $addon['name'],
-						// We found that each gateway addon does not have `-gateway` in changelog file slug
-						'ChangeLogSlug' => str_replace( '-gateway', '', "give-{$item_name}" ),
+						'ChangeLogSlug' => $addon['plugin_slug'],
 						'Version'       => $addon['current_version'],
 						'Status'        => 'not installed',
 						'DownloadURL'   => $addon['file'],
 					);
 
 					$plugin = wp_parse_args(
-						self::get_plugin_by_item_name( $item_name ),
+						self::get_plugin_by_slug( $addon['plugin_slug'] ),
 						$default_plugin
 					);
 
-					$plugin['Name'] = false === strpos( $plugin['Name'], 'Give -' )
+					$plugin['Name'] = false !== strpos( $plugin['Name'], 'Give' )
 						? $plugin['Name']
-						: "Give  - {$addon['name']}";
+						: $this->build_plugin_name_from_slug( $addon['plugin_slug'] );
 
 					$plugin['License'] = $license;
 
@@ -426,28 +423,34 @@ class Give_Addons {
 	 * Get plugin information by id.
 	 * Note: only for internal use
 	 *
-	 * @param $plugin_id
+	 * @param string $plugin_slug
 	 *
 	 * @return array
 	 * @since 2.5.0
 	 *
 	 */
-	public static function get_plugin_by_item_name( $plugin_id ) {
-		$give_plugins = give_get_plugins();
-		$plugin       = array();
+	private static function get_plugin_by_slug( $plugin_slug ) {
+		$give_plugins   = give_get_plugins();
+		$matching_list  = wp_list_pluck( $give_plugins, 'Dir', 'Path' );
+		$is_match_found = array_search( $plugin_slug, $matching_list, true );
 
-		foreach ( $give_plugins as $give_plugin ) {
-			$addon_shortname = Give_License::get_short_name( $give_plugin['Name'] );
-			$addon_slug      = str_replace( '_', '-', $addon_shortname );
-			$addon_id        = str_replace( 'give-', '', $addon_slug );
+		return $is_match_found ? $give_plugins[ $is_match_found ] : array();
+	}
 
-			if ( $addon_id === $plugin_id ) {
-				$plugin = $give_plugin;
-				break;
-			}
-		}
+	/**
+	 * Get plugin information by id.
+	 * Note: only for internal use
+	 *
+	 * @param string $plugin_slug
+	 *
+	 * @return string
+	 * @since 2.5.0
+	 *
+	 */
+	public static function build_plugin_name_from_slug( $plugin_slug ) {
+		$plugin_name = str_replace( array( '-', 'give '), array( ' ', 'Give - '), $plugin_slug );
 
-		return $plugin;
+		return ucwords( $plugin_name );
 	}
 }
 
