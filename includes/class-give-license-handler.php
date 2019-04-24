@@ -299,6 +299,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 */
 		public function auto_updater() {
+			// @todo: test auto updater with all access pass
 
 			if ( ! empty( $this->item_id ) ) {
 				$args['item_id'] = $this->item_id;
