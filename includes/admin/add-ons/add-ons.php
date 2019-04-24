@@ -84,7 +84,7 @@ class Give_Addons {
 				$all_access_pass_licenses[ $key ] = $give_license;
 
 				foreach ( $give_license['download'] as $download ) {
-					$all_access_pass_addon_list[] = str_replace( ' ', '-', strtolower( $download['name'] ) );
+					$all_access_pass_addon_list[] = $download['plugin_slug'];
 				}
 			}
 		}
@@ -103,15 +103,13 @@ class Give_Addons {
 				continue;
 			}
 
-
 			/* @var  stdClass $addon_license */
 			$addon_shortname   = Give_License::get_short_name( $give_plugin['Name'] );
 			$addon_slug        = str_replace( '_', '-', $addon_shortname );
 			$item_name         = str_replace( 'give-', '', $addon_slug );
-			$addon_id          = str_replace( 'give-', '', $addon_slug );
 			$addon_license_key = Give_License::get_license_by_item_name( $item_name );
 
-			if ( in_array( $addon_id, $all_access_pass_addon_list ) ) {
+			if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 				continue;
 			}
 

@@ -903,6 +903,7 @@ function give_get_plugins() {
 		}
 
 		$dirname = strtolower( dirname( $plugin_path ) );
+		$plugins[$plugin_path]['Dir'] = $dirname;
 
 		// Is the plugin a Give add-on?
 		if (
