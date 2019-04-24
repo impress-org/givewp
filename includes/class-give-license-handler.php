@@ -261,10 +261,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		private function hooks() {
-
-			// Register settings.
-			add_filter( 'give_get_settings_licenses', array( $this, 'settings' ), 1 );
-
 			// Activate license key on settings save.
 			add_action( 'admin_init', array( $this, 'activate_license' ), 10 );
 
@@ -316,41 +312,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 					'author'    => $this->author,
 				)
 			);
-		}
-
-		/**
-		 * License Settings
-		 *
-		 * Add license field to settings.
-		 *
-		 * @access public
-		 * @since  1.0
-		 *
-		 * @param  array $settings License settings.
-		 *
-		 * @return array           License settings.
-		 */
-		public function settings( $settings ) {
-
-			$give_license_settings = array(
-				array(
-					'name'    => $this->item_name,
-					'id'      => $this->item_shortname . '_license_key',
-					'desc'    => '',
-					'type'    => 'license_key',
-					'options' => array(
-						'license'      => get_option( $this->item_shortname . '_license_active' ),
-						'shortname'    => $this->item_shortname,
-						'item_name'    => $this->item_name,
-						'api_url'      => $this->api_url,
-						'checkout_url' => $this->checkout_url,
-						'account_url'  => $this->account_url,
-					),
-					'size'    => 'regular',
-				),
-			);
-
-			return array_merge( $settings, $give_license_settings );
 		}
 
 		/**
