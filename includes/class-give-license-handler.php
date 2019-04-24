@@ -705,6 +705,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Get license by item name
+		 * @todo use plugin slud and Dir if possible
 		 *
 		 * @param $item_name
 		 *
