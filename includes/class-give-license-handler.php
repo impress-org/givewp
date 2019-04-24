@@ -356,7 +356,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Do not show licenses notices on license tab.
-			if ( 'licenses' === give_get_current_setting_tab() ) {
+			if ( 'give-addons' === give_get_current_setting_page() ) {
 				return;
 			}
 
