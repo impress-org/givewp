@@ -261,21 +261,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		private function hooks() {
-			// Activate license key on settings save.
-			add_action( 'admin_init', array( $this, 'activate_license' ), 10 );
-
-			// Deactivate license key.
-			add_action( 'admin_init', array( $this, 'deactivate_license' ), 11 );
-
 			// Updater.
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 			add_action( 'admin_notices', array( $this, 'notices' ) );
 
 			// Check license weekly.
 			Give_Cron::add_weekly_event( array( $this, 'weekly_license_check' ) );
-
-			// Check subscription weekly.
-			Give_Cron::add_weekly_event( array( $this, 'weekly_subscription_check' ) );
 
 			// Show addon notice on plugin page.
 			$plugin_name = explode( 'plugins/', $this->file );
@@ -315,32 +306,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * License Settings Content
-		 *
-		 * Add Some Content to the Licensing Settings.
-		 *
-		 * @access public
-		 * @since  1.0
-		 *
-		 * @param  array $settings License settings content.
-		 *
-		 * @return array           License settings content.
-		 */
-		public function license_settings_content( $settings ) {
-
-			$give_license_settings = array(
-				array(
-					'name' => __( 'Add-on Licenses', 'give' ),
-					'desc' => '<hr>',
-					'type' => 'give_title',
-					'id'   => 'give_title',
-				),
-			);
-
-			return array_merge( $settings, $give_license_settings );
-		}
-
-		/**
 		 * Activate License
 		 *
 		 * Activate the license key.
@@ -350,74 +315,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return void
 		 */
-		public function activate_license() {
-
-			// Bailout.
-			if ( ! $this->can_user_edit_license() ) {
-				return;
-			}
-
-			// Allow third party addon developers to handle license activation.
-			if ( $this->is_third_party_addon() ) {
-				do_action( 'give_activate_license', $this );
-
-				return;
-			}
-
-			// Delete previous license setting if a empty license key submitted.
-//			if ( empty( $_POST["{$this->item_shortname}_license_key"] ) ) {
-//				$this->unset_license();
-//
-//				return;
-//			}
-
-			// Do not simultaneously activate add-ons if the user wants to deactivate a specific add-on.
-			if ( $this->is_deactivating_license() ) {
-				return;
-			}
-
-			// Check if plugin previously installed.
-			if ( $this->is_valid_license() ) {
-				return;
-			}
-
-			// Get license key.
-			$this->license = sanitize_text_field( $_POST[ 'give_license_key' ] );
-
-			// Delete previous license key from subscription if previously added.
-			$this->remove_license_key_from_subscriptions();
-
-			// Make sure there are no api errors.
-			if ( ! ( $license_data = $this->get_license_info( 'activate_license' ) ) ) {
-				return;
-			}
-//			echo '<pre>';
-//			var_dump($this->item_name);
-//			var_dump($this->item_id);
-//			var_dump($license_data);
-//			echo '</pre>';
-//			die();
-			// Make sure license is valid.
-			// return because admin will want to activate license again.
-			if ( ! $this->is_license( $license_data ) ) {
-				// Add license key.
-				give_update_option( "{$this->item_shortname}_license_key", $this->license );
-
-				return;
-			}
-
-			// Tell WordPress to look for updates.
-			set_site_transient( 'update_plugins', null );
-
-			// Add license data.
-			update_option( "{$this->item_shortname}_license_active", $license_data, false );
-
-			// Add license key.
-			give_update_option( "{$this->item_shortname}_license_key", $this->license );
-
-			// Check subscription for license key and store this to db (if any).
-			$this->single_subscription_check();
-		}
+		public function activate_license() {}
 
 		/**
 		 * Deactivate License
@@ -429,24 +327,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return void
 		 */
-		public function deactivate_license() {
-			// Bailout.
-			if ( ! $this->can_user_edit_license() ) {
-				return;
-			}
-
-			// Allow third party add-on developers to handle license deactivation.
-			if ( $this->is_third_party_addon() ) {
-				do_action( 'give_deactivate_license', $this );
-
-				return;
-			}
-
-			// Run on deactivate button press.
-			if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate' ] ) ) {
-				$this->unset_license();
-			}
-		}
+		public function deactivate_license() {}
 
 		/**
 		 * Check if license key is valid once per week.
@@ -456,112 +337,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return void
 		 */
-		public function weekly_license_check() {
+		public function weekly_license_check() {}
 
-			if (
-				! empty( $_POST['give_settings'] ) ||
-				empty( $this->license )
-			) {
-				return;
-			}
 
-			// Allow third party add-on developers to handle their license check.
-			if ( $this->is_third_party_addon() ) {
-				do_action( 'give_weekly_license_check', $this );
-
-				return;
-			}
-
-			// Make sure there are no api errors.
-			if ( ! ( $license_data = $this->get_license_info( 'check_license' ) ) ) {
-				return;
-			}
-
-			// Bailout.
-			if ( ! $this->is_license( $license_data ) ) {
-				return;
-			}
-
-			update_option( $this->item_shortname . '_license_active', $license_data, false );
-
-			return;
-		}
-
-		/**
-		 * Check subscription validation once per week
-		 *
-		 * @access public
-		 * @since  1.7
-		 *
-		 * @return void
-		 */
-		public function weekly_subscription_check() {
-			// Bailout.
-			if (
-				! empty( $_POST['give_settings'] )
-				|| empty( $this->license )
-			) {
-				return;
-			}
-
-			// Remove old subscription data.
-			if ( absint( get_option( '_give_subscriptions_edit_last', true ) ) < current_time( 'timestamp', 1 ) ) {
-				delete_option( 'give_subscriptions' );
-				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp', 1 ) ), false );
-			}
-
-			// Allow third party add-on developers to handle their subscription check.
-			if ( $this->is_third_party_addon() ) {
-				do_action( 'give_weekly_subscription_check', $this );
-
-				return;
-			}
-
-			$this->single_subscription_check();
-		}
-
-		/**
-		 * Check if license key is part of subscription or not
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @return void
-		 */
-		private function single_subscription_check() {
-			if ( empty( $this->license ) ) {
-				return;
-			}
-
-			/**
-			 * Make sure there are no api errors.
-			 *
-			 * Do not get confused with edd_action check_subscription.
-			 * By default edd software licensing api does not have api to check subscription.
-			 * This is a custom feature to check subscriptions.
-			 */
-			$subscription_data = $this->get_license_info( 'check_subscription', true );
-
-			if ( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
-
-				$subscriptions = get_option( 'give_subscriptions', array() );
-
-				// Update subscription data only if subscription does not exist already.
-				$subscriptions[ $subscription_data['id'] ] = $subscription_data;
-
-				// Initiate default set of license for subscription.
-				if ( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
-				}
-
-				// Store licenses for subscription.
-				if ( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
-				}
-
-				update_option( 'give_subscriptions', $subscriptions, false );
-			}
-		}
 
 		/**
 		 * Admin notices for errors
@@ -759,55 +537,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Check if license is valid or not.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @return bool
-		 */
-		private function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
-		}
-
-		/**
-		 * Remove license key from subscription.
-		 *
-		 * This function is mainly used when admin user deactivates a license key,
-		 * then we do not need subscription information for that license key.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @return bool
-		 */
-		private function remove_license_key_from_subscriptions() {
-			$subscriptions = get_option( 'give_subscriptions', array() );
-
-			// Bailout.
-			if ( empty( $this->license ) ) {
-				return false;
-			}
-
-			if ( ! empty( $subscriptions ) ) {
-				foreach ( $subscriptions as $subscription_id => $subscription ) {
-					$license_index = array_search( $this->license, $subscription['licenses'] );
-					if ( false !== $license_index ) {
-						// Remove license key.
-						unset( $subscriptions[ $subscription_id ]['licenses'][ $license_index ] );
-
-						// Rearrange license keys.
-						$subscriptions[ $subscription_id ]['licenses'] = array_values( $subscriptions[ $subscription_id ]['licenses'] );
-
-						// Update subscription information.
-						update_option( 'give_subscriptions', $subscriptions, false );
-						break;
-					}
-				}
-			}
-		}
-
-		/**
 		 * Display plugin page licenses status notices.
 		 *
 		 * @param $plugin_file
@@ -855,39 +584,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 		/**
-		 * Check if admin can edit license or not.
-		 *
-		 * @since   1.8.9
-		 * @updated 2.5.0 - Updated logic for single license key field to activate add-ons. Also moved from Licenses tab under settings to Add-ons screen.
-		 * @access  private
-		 */
-		private function can_user_edit_license() {
-
-			// Pre-checks.
-			if (
-				! isset( $_POST[ 'license_activator-nonce' ] )
-				|| ! current_user_can( 'manage_give_settings' )
-				|| isset( $_GET['page'] ) && 'give-addons' !== $_GET['page']
-			) {
-				return false;
-			}
-
-
-			// Security check.
-			if ( ! wp_verify_nonce( $_REQUEST[ 'license_activator-nonce' ], 'license_activator-nonce' ) ) {
-				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
-			}
-
-			return true;
-
-		}
-
-
-		/**
 		 * Get license information.
 		 *
 		 * @since  1.8.9
 		 * @access public
+		 * @deprecated 2.5.0 Use Give_License::request_license_api instead.
 		 *
 		 * @param string $edd_action
 		 * @param bool   $response_in_array
@@ -900,73 +601,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
+			give_doing_it_wrong( __FUNCTION__, 'Use Give_License::request_license_api instead', '2.5.0' );
+
 			// Data to send to the API.
 			$api_params = array(
 				'edd_action' => $edd_action, // never change from "edd_" to "give_"!
 				'license'    => $this->license,
 				'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
 			);
 
-			// Call the API.
-			$response = wp_remote_post(
-				$this->api_url,
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
-				)
-			);
-
-			// Make sure there are no errors.
-			if ( is_wp_error( $response ) ) {
-				return false;
-			}
-
-			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
-		}
-
-
-		/**
-		 * Unset license
-		 *
-		 * @since  1.8.14
-		 * @access private
-		 */
-		private function unset_license() {
-
-			// Remove license key from subscriptions if exist.
-			$this->remove_license_key_from_subscriptions();
-
-			// Remove license from database.
-			delete_option( "{$this->item_shortname}_license_active" );
-			give_delete_option( "{$this->item_shortname}_license_key" );
-			unset( $_POST["{$this->item_shortname}_license_key"] );
-
-			// Unset license param.
-			$this->license = '';
-		}
-
-
-		/**
-		 * Check if deactivating any license key or not.
-		 *
-		 * @since  1.8.17
-		 * @access private
-		 *
-		 * @return bool
-		 */
-		private function is_deactivating_license() {
-			$status = false;
-
-			foreach ( $_POST as $key => $value ) {
-				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
-					$status = true;
-					break;
-				}
-			}
-
-			return $status;
+			return self::request_license_api( $api_params, $response_in_array );
 		}
 
 		/**
