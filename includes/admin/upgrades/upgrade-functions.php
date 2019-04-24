@@ -3457,7 +3457,7 @@ function give_v250_upgrades() {
 			'license' => $key
 		), true );
 
-		if( is_wp_error( $tmp ) ) {
+		if( is_wp_error( $tmp ) || ! $tmp['success']) {
 			continue;
 		}
 

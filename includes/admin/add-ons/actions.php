@@ -365,6 +365,11 @@ function give_refresh_all_licenses_handler() {
 			continue;
 		}
 
+		if( ! $tmp['success'] ) {
+			unset( $give_licenses[$key] );
+			continue;
+		}
+
 		$give_licenses[$key] = $tmp;
 	}
 
