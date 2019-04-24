@@ -1209,6 +1209,10 @@ function give_license_notices() {
 			$notices['invalid-license'] = $invalid_license_notice_args;
 		}
 
+		if( $give_license['is_all_access_pass'] ){
+			continue;
+		}
+
 		// Backward compatibility for subscription.
 		if (
 			! $give_license['subscription']
