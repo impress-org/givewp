@@ -265,9 +265,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 			add_action( 'admin_notices', array( $this, 'notices' ) );
 
-			// Check license weekly.
-			Give_Cron::add_weekly_event( array( $this, 'weekly_license_check' ) );
-
 			// Show addon notice on plugin page.
 			$plugin_name = explode( 'plugins/', $this->file );
 			$plugin_name = end( $plugin_name );
@@ -328,18 +325,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function deactivate_license() {}
-
-		/**
-		 * Check if license key is valid once per week.
-		 *
-		 * @access public
-		 * @since  1.7
-		 *
-		 * @return void
-		 */
-		public function weekly_license_check() {}
-
-
 
 		/**
 		 * Admin notices for errors
