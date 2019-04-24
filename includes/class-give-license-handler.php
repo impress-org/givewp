@@ -234,6 +234,23 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
+		 * Get license sanitize name
+		 *
+		 * @param $plugin_name
+		 *
+		 * @return string
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 */
+		public static function license_dashed_name( $plugin_name ) {
+			$plugin_name = self::get_short_name( $plugin_name );
+			$plugin_name = str_replace( array( 'give_', '_', ' ' ), array( '', '-' ), $plugin_name ) ;
+
+			return $plugin_name;
+		}
+
+		/**
 		 * Includes
 		 *
 		 * Include the updater class.
