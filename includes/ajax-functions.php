@@ -831,9 +831,8 @@ function give_get_content_by_ajax_handler() {
 
 		$response = wp_remote_get( $url );
 
-
 		if ( is_wp_error( $response ) ) {
-			echo $msg;
+			echo "$msg<br><br><code>Error: {$response->get_error_message()}</code>" ;
 			exit;
 		}
 
