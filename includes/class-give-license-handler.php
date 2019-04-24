@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private $account_url = 'https://givewp.com/my-account/';
+		private static $account_url = 'https://givewp.com/my-account/';
 
 		/**
 		 * Checkout URL
@@ -144,7 +144,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private $checkout_url = 'https://givewp.com/checkout/';
+		private static $checkout_url = 'https://givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
@@ -195,8 +195,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;
 			$this->api_url          = is_null( $_api_url ) ? $this->api_url : $_api_url;
-			$this->checkout_url     = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
-			$this->account_url      = is_null( $_account_url ) ? $this->account_url : $_account_url;
+			self::$checkout_url     = is_null( $_checkout_url ) ? self::$checkout_url : $_checkout_url;
+			self::$account_url      = is_null( $_account_url ) ? self::$account_url : $_account_url;
 			$this->auto_updater_obj = null;
 
 			// Add Setting for Give Add-on activation status.
@@ -738,6 +738,25 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			return $license;
+		}
+
+
+		/**
+		 * Get checkout url
+		 * @return string|null
+		 * @since 2.5.0
+		 */
+		public static function get_checkout_url() {
+			return self::$checkout_url;
+		}
+
+		/**
+		 * Get account url
+		 * @return string|null
+		 * @since 2.5.0
+		 */
+		public static function get_account_url() {
+			return self::$account_url;
 		}
 
 	}
