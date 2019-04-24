@@ -190,7 +190,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
 			$this->item_shortname   = self::get_short_name( $this->item_name );
-			$this->license_data     = self::get_license_by_item_name( str_replace( 'give-', '', $this->item_shortname ) );
+			$this->license_data     = self::get_license_by_item_name( str_replace( 'give-', '', $this->license_dashed_name( $this->item_name ) ) );
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;

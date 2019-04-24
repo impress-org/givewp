@@ -913,14 +913,11 @@ function give_get_plugins() {
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
 			/* @var stdClass $license_active */
-			$license_active = __give_get_active_license_info( Give_License::get_short_name( $plugin_data['Name'] ) );
+			$license_active = Give_License::get_license_by_item_name( Give_License::license_dashed_name( $plugin_data['Name'] ) );
 
 			// Does a valid license exist?
-			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
-				$plugins[ $plugin_path ]['License'] = true;
-			} else {
-				$plugins[ $plugin_path ]['License'] = false;
-			}
+			$plugins[ $plugin_path ]['License'] = $license_active && 'valid' === $license_active['license'] ;
+
 		} else {
 			// Plugin is not a Give add-on.
 			$plugins[ $plugin_path ]['Type'] = 'other';
