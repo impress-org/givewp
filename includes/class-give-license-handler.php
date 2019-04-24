@@ -706,11 +706,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Get license by item name
-		 * @todo use plugin slud and Dir if possible
 		 *
 		 * @param $item_name
 		 *
 		 * @return array
+		 * @todo   use plugin slud and Dir if possible
+		 *
 		 * @since  2.5.0
 		 * @access public
 		 */
@@ -726,7 +727,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						? $give_license['download']
 						: array( array( 'name' => $give_license['item_name'] ) );
 
-					foreach ( $compares as $compare ){
+					foreach ( $compares as $compare ) {
 						$tmp_item_name = str_replace( ' ', '-', strtolower( $compare['name'] ) );
 
 						if ( $item_name === $tmp_item_name ) {
