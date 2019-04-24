@@ -3413,7 +3413,7 @@ function give_v241_remove_sale_logs_callback() {
 
 /**
  * DB upgrades for Give 2.5.0
- * @todo: remove exiting licenses
+ * @todo: remove exiting licenses and subscriptions data
  *
  * !since 2.5.0
  */
