@@ -718,11 +718,19 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! empty( $give_licenses ) ) {
 				foreach ( $give_licenses as $give_license ) {
-					$tmp_item_name = str_replace( ' ', '-', strtolower( $give_license['item_name'] ) );
 
-					if ( $item_name === $tmp_item_name ) {
-						$license = $give_license;
-						break;
+					// Logic to match all access pass license to addon.
+					$compares = is_array( $give_license['download'] )
+						? $give_license['download']
+						: array( array( 'name' => $give_license['item_name'] ) );
+
+					foreach ( $compares as $compare ){
+						$tmp_item_name = str_replace( ' ', '-', strtolower( $compare['name'] ) );
+
+						if ( $item_name === $tmp_item_name ) {
+							$license = $give_license;
+							break;
+						}
 					}
 				}
 			}
