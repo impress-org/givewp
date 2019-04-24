@@ -1186,7 +1186,7 @@ function give_license_notices() {
 		return;
 	}
 
-	$give_licenses               = get_option( 'give_license', array() );
+	$give_licenses               = get_option( 'give_licenses', array() );
 	$notices                     = array();
 	$checkout_url                = Give_License::get_checkout_url();
 	$invalid_license_notice_args = array(
