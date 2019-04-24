@@ -693,7 +693,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return array
 		 * @since  2.5.0
-		 * @access private
+		 * @access public
 		 */
 		public static function get_license_by_item_name( $item_name ) {
 			$license       = array();
