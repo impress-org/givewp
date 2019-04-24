@@ -166,10 +166,15 @@ class Give_Addons {
 		}
 
 		if ( $license ) {
-			$addon_license_key             = give_get_option( "{$addon_shortname}_license_key" );
-			$subscription                  = $addon_license_key ? Give_License::is_subscription( $addon_license_key ) : array();
-			$license['expires']            = $subscription ? $subscription['expires'] : $license['expires'];
-			$default_plugin['DownloadURL'] = $license['download'];
+			$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+
+			// Backward compatibility.
+			if( ! empty( $license['subscription']) ) {
+				$license['expires']            = $license['subscription']['expires'];
+				$default_plugin['DownloadURL'] = $license['download'];
+
+				$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['subscription']['subscription_key']}";
+			}
 		}
 
 		$plugin['License'] = $license = wp_parse_args( $license, array(
@@ -201,6 +206,8 @@ class Give_Addons {
 	 */
 	private function html_by_license( $license ) {
 		ob_start();
+
+		$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
 		?>
 		<div class="give-addon-wrap">
 			<div class="give-addon-inner">
@@ -286,7 +293,7 @@ class Give_Addons {
 						// @todo: need to test renew license link
 						echo sprintf(
 							'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a></span>',
-							"https://givewp.com/checkout/?edd_license_key={$license_key}",
+							$license['renew_url'],
 							__( 'Renew to manage sites', 'give' )
 						);
 					} elseif ( $license_key ) {
