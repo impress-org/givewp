@@ -48,3 +48,23 @@ function get_give_stripe_connect_options() {
 
 	return give_stripe_get_connect_settings();
 }
+
+/**
+ * This function is used to get stripe statement descriptor.
+ *
+ * @param \Stripe\Subscription $subscription Subscription object from Stripe.
+ *
+ * @since      1.0.0
+ * @deprecated 2.5.0
+ *
+ * @return string
+ */
+function give_get_stripe_statement_descriptor( $subscription ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_statement_descriptor', $backtrace );
+
+	return give_stripe_get_statement_descriptor( $subscription );
+
+}
