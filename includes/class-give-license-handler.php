@@ -245,7 +245,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		public static function license_dashed_name( $plugin_name ) {
 			$plugin_name = self::get_short_name( $plugin_name );
-			$plugin_name = str_replace( array( 'give_', '_', ' ' ), array( '', '-', '-' ), $plugin_name ) ;
+			$plugin_name = str_replace( array( 'give_', '_', ' ' ), array( '', '-', '-' ), $plugin_name );
 
 			return $plugin_name;
 		}
