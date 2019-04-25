@@ -88,6 +88,10 @@
 		}
 	}
 
+	.give-setting-tab-body {
+		max-width: 1260px;
+	}
+
 	div.give-submit-wrap {
 		margin: 20px 0;
 	}
@@ -189,9 +193,14 @@
 
 p.give-field-description,
 div.give-field-description {
-	color: #aaaaaa;
+	color: #959595;
 	font-style: italic;
-	font-size: 13px !important;
+	font-size: 14px !important;
+	line-height: 22px;
+
+	strong {
+		color: #777777;
+	}
 }
 
 .give-setting-tab-header h2 {
@@ -351,20 +360,20 @@ div.give-field-description {
 	}
 }
 
+.give-setting-tab-header-emails {
+	margin: 0 0 20px;
+
+	hr {
+		display: none;
+	}
+}
+
 .give-settings-email-settings-section,
 .give-settings-donor-email-section,
 .give-settings-admin-email-section {
 	// Nothing in table nav so hide it.
 	.tablenav {
 		display: none;
-	}
-
-	.give-setting-tab-header-emails {
-		margin: 0 0 20px;
-
-		hr {
-			display: none;
-		}
 	}
 
 	.tablenav.bottom + .give-setting-tab-header-emails {
