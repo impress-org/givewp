@@ -416,10 +416,7 @@ class Give_Stripe_Customer {
 	 * @return bool
 	 */
 	public function is_card( $id ) {
-		return (
-			$id &&
-			preg_match( '/card_/i', $id )
-		);
+		return give_stripe_is_source_type( $id, 'card' );
 	}
 
 	/**
@@ -433,10 +430,7 @@ class Give_Stripe_Customer {
 	 * @return bool
 	 */
 	public function is_source( $id ) {
-		return (
-			$id &&
-			preg_match( '/src_/i', $id )
-		);
+		return give_stripe_is_source_type( $id, 'src' );
 	}
 
 	/**
@@ -450,9 +444,6 @@ class Give_Stripe_Customer {
 	 * @return bool
 	 */
 	public function is_bank_account( $id ) {
-		return (
-			$id &&
-			preg_match( '/ba_/i', $id )
-		);
+		return give_stripe_is_source_type( $id, 'ba' );
 	}
 }
