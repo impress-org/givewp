@@ -153,7 +153,7 @@ function give_get_license_info_handler() {
 	check_admin_referer( 'give-license-activator-nonce' );
 
 	// check user permission.
-	if( ! current_user_can( 'manage_give_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
 	}
 
@@ -188,14 +188,14 @@ function give_get_license_info_handler() {
 	}
 
 	// Check if license valid or not.
-	if( ! $check_license_res['success'] ) {
-		wp_send_json_error(array(
+	if ( ! $check_license_res['success'] ) {
+		wp_send_json_error( array(
 			'errorMsg' => sprintf(
 				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
 				'http://staging.givewp.com/my-account/',
 				$check_license_res['license']
-			)
-		));
+			),
+		) );
 	}
 
 	// Activate license.
@@ -212,14 +212,14 @@ function give_get_license_info_handler() {
 	}
 
 	// Check if license activated or not.
-	if( ! $activate_license_res['success'] ) {
-		wp_send_json_error(array(
+	if ( ! $activate_license_res['success'] ) {
+		wp_send_json_error( array(
 			'errorMsg' => sprintf(
 				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
 				'http://staging.givewp.com/my-account/',
 				$activate_license_res['license']
-			)
-		));
+			),
+		) );
 	}
 
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
@@ -253,7 +253,7 @@ function give_activate_addon_handler() {
 	check_admin_referer( "give_activate-{$plugin_path}" );
 
 	// check user permission.
-	if( ! current_user_can( 'manage_give_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
 	}
 
@@ -315,8 +315,6 @@ function give_deactivate_license_handler() {
 		) );
 	}
 
-	$give_licenses = get_option( 'give_licenses', array() );
-
 	if ( ! empty( $give_licenses[ $license ] ) ) {
 		unset( $give_licenses[ $license ] );
 		update_option( 'give_licenses', $give_licenses );
@@ -326,14 +324,14 @@ function give_deactivate_license_handler() {
 	$response['html'] = Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) );
 
 	// Check if license deactivated or not.
-	if( ! $response['success'] ) {
-		wp_send_json_error(array(
+	if ( ! $response['success'] ) {
+		wp_send_json_error( array(
 			'errorMsg' => sprintf(
 				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
 				'http://staging.givewp.com/my-account/',
 				$response['license']
-			)
-		));
+			),
+		) );
 	}
 
 	// Tell WordPress to look for updates.
@@ -355,16 +353,16 @@ add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler'
  * @since 2.5.0
  */
 function give_refresh_all_licenses_handler() {
-	check_admin_referer('give-refresh-all-licenses' );
+	check_admin_referer( 'give-refresh-all-licenses' );
 
 	// check user permission.
-	if( ! current_user_can( 'manage_give_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
 	}
 
 	give_refresh_licenses();
 
-	wp_send_json_success(array( 'html' => Give_Addons::render_license_section() ));
+	wp_send_json_success( array( 'html' => Give_Addons::render_license_section() ) );
 }
 
 add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );
