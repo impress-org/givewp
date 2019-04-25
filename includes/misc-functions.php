@@ -810,7 +810,9 @@ function give_get_plugins() {
 			$plugins[ $plugin_path ]['Status'] = 'inactive';
 		}
 
-		$dirname = strtolower( dirname( $plugin_path ) );
+		$dirname                         = strtolower( dirname( $plugin_path ) );
+		$plugins[ $plugin_path ]['Dir']  = $dirname;
+		$plugins[ $plugin_path ]['Path'] = $plugin_path;
 
 		// Is the plugin a Give add-on?
 		if (
@@ -820,15 +822,11 @@ function give_get_plugins() {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
-			/* @var stdClass $license_active */
-			$license_active = __give_get_active_license_info( Give_License::get_short_name( $plugin_data['Name'] ) );
+			$license_active = Give_License::get_license_by_item_name( Give_License::license_dashed_name( $plugin_data['Name'] ) );
 
 			// Does a valid license exist?
-			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
-				$plugins[ $plugin_path ]['License'] = true;
-			} else {
-				$plugins[ $plugin_path ]['License'] = false;
-			}
+			$plugins[ $plugin_path ]['License'] = $license_active && 'valid' === $license_active['license'] ;
+
 		} else {
 			// Plugin is not a Give add-on.
 			$plugins[ $plugin_path ]['Type'] = 'other';
@@ -1789,49 +1787,6 @@ function give_is_donor_comment_field_enabled( $form_id ) {
  *
  * @since 2.1.0
  *
- * @param string $license_id
- *
- * @return array
- */
-function __give_get_active_license_info( $license_id ) {
-	global $wpdb;
-	$option_name = "{$license_id}_license_active";
-	$data        = array();
-
-	if ( ! isset( $GLOBALS['give_active_licenses_info'] ) ) {
-		$GLOBALS['give_active_licenses_info'] = array();
-
-		$licenses_info = $wpdb->get_results(
-			"
-			SELECT option_name, option_value
-			FROM {$wpdb->options}
-			WHERE option_name LIKE '%_license_active%'
-			AND option_name LIKE '%give_%'
-			",
-			ARRAY_A
-		);
-
-		if ( ! empty( $licenses_info ) ) {
-			$GLOBALS['give_active_licenses_info'] = array_combine(
-				wp_list_pluck( $licenses_info, 'option_name' ),
-				wp_list_pluck( $licenses_info, 'option_value' )
-			);
-		}
-	}
-
-	if ( in_array( $option_name, array_keys( $GLOBALS['give_active_licenses_info'] ) ) ) {
-		$data = maybe_unserialize( $GLOBALS['give_active_licenses_info'][ $option_name ] );
-	}
-
-	return $data;
-}
-
-/**
- * Get add-on user meta value information
- * Note: only for internal use.
- *
- * @since 2.1.0
- *
  * @param string $banner_addon_name Give add-on name.
  *
  * @return array
@@ -2360,4 +2315,74 @@ function give_display_donation_receipt( $args ) {
 	give_get_template_part( 'shortcode', 'receipt' );
 
 	return ob_get_clean();
+}
+
+
+/**
+ * Get plugin add-on readme.txt path
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ *
+ * @param      $plugin_slug
+ * @param bool $by_plugin_name
+ *
+ * @return mixed|void
+ */
+function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
+
+	if( $by_plugin_name ) {
+		$plugin_slug = Give_License::get_short_name( $plugin_slug );
+	}
+
+	/**
+	 * Filter the addon readme.txt url
+	 *
+	 * @since 2.1.4
+	 */
+	$url = apply_filters(
+		'give_addon_readme_file_url',
+		"http://staging.givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
+		$plugin_slug,
+		$by_plugin_name
+	);
+
+	return $url;
+}
+
+/**
+ * Refresh all givewp license.
+ *
+ * @access public
+ * @since  2.5.0
+ *
+ * @return array
+ */
+function give_refresh_licenses() {
+	$give_licenses = get_option( 'give_licenses', array() );
+
+	if( ! empty( $give_licenses ) ) {
+		/* @var stdClass $data */
+		foreach ( $give_licenses as $key => $data ) {
+			$tmp = Give_License::request_license_api(array(
+				'edd_action' => 'check_license',
+				'license' => $key
+			), true );
+
+			if( is_wp_error( $tmp ) ) {
+				continue;
+			}
+
+			if( ! $tmp['success'] ) {
+				unset( $give_licenses[$key] );
+				continue;
+			}
+
+			$give_licenses[$key] = $tmp;
+		}
+
+		update_option( 'give_licenses', $give_licenses );
+	}
+
+	return $give_licenses;
 }

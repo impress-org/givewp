@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Check license weekly.
+Give_Cron::add_weekly_event( 'give_refresh_licenses' );
+
 /**
  * Hooks Give actions, when present in the $_GET superglobal. Every give_action
  * present in $_GET is called using WordPress's do_action function. These
@@ -320,16 +323,7 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	$plugin_base = strtolower( $plugin_base );
 	$plugin_slug = str_replace( '.php', '', basename( $plugin_base ) );
 
-	/**
-	 * Filter the addon readme.txt url
-	 *
-	 * @since 2.1.4
-	 */
-	$url = apply_filters(
-		'give_addon_readme_file_url',
-		"https://givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
-		$plugin_slug
-	);
+	$url = give_get_addon_readme_url( $plugin_slug );
 
 	$parser           = new Give_Readme_Parser( $url );
 	$give_min_version = $parser->requires_at_least();

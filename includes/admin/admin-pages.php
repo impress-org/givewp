@@ -255,9 +255,6 @@ function give_settings_page_pages( $settings ) {
 		// Addons settings.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-addon.php' ),
 
-		// License settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php' ),
-
 		// Advanced settings.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' ),
 	);

@@ -1156,12 +1156,152 @@ function give_cache_flush() {
 	if ( $result ) {
 		wp_send_json_success( array(
 			'message' => __( 'Cache flushed successfully.', 'give' ),
-		));
+		) );
 	} else {
 		wp_send_json_error( array(
 			'message' => __( 'An error occured while flushing the cache.', 'give' ),
-		));
+		) );
 	}
 }
 
 add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
+
+/**
+ * Admin notices for errors
+ * note: only for internal use
+ *
+ * @access public
+ * @return void
+ * @since  2.5.0
+ *
+ */
+function give_license_notices() {
+
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		return;
+	}
+
+	// Do not show licenses notices on license tab.
+	if ( 'give-addons' === give_get_current_setting_page() ) {
+		return;
+	}
+
+	$give_licenses               = get_option( 'give_licenses', array() );
+	$notices                     = array();
+	$checkout_url                = Give_License::get_checkout_url();
+	$invalid_license_notice_args = array(
+		'id'               => 'give-invalid-license',
+		'type'             => 'error',
+		'description'      => sprintf(
+			__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">add-ons page</a> to correct this issue.', 'give' ),
+			admin_url( 'edit.php?post_type=give_forms&page=give-addons' )
+		),
+		'dismissible_type' => 'user',
+		'dismiss_interval' => 'shortly',
+	);
+
+	foreach ( $give_licenses as $give_license ) {
+		if (
+			! array_key_exists( 'invalid-license', $notices )
+			&& 'valid' !== $give_license['license']
+		) {
+			// @todo this message must apear after 24 hours of addon activation.
+			$notices['invalid-license'] = $invalid_license_notice_args;
+		}
+
+		if( $give_license['is_all_access_pass'] ){
+			continue;
+		}
+
+		// Backward compatibility for subscription.
+		if (
+			! $give_license['subscription']
+			|| array_key_exists( "subscription-{$give_license['subscription']['id']}", $notices )
+
+			// Start showing subscriptions message before one week of renewal date.
+			|| strtotime( '- 7 days', strtotime( $give_license['subscription']['expires'] ) ) > current_time( 'timestamp', 1 )
+		) {
+			continue;
+		}
+
+		// Subscription expires timestamp.
+		$subscription_expires = strtotime( $give_license['subscription']['expires'] );
+
+		// Check if license already expired.
+		if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
+			$notices["subscription-{$give_license['subscription']['id']}"] = array(
+				'id'               => "give-expired-subscription-{$give_license['subscription']['id']}",
+				'type'             => 'error',
+				'description'      => sprintf(
+					__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
+					urldecode( $give_license['subscription']['invoice_url'] ),
+					$give_license['subscription']['payment_id'],
+					"{$checkout_url}?edd_license_key={$give_license['subscription']['subscription_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+					Give()->notices->get_dismiss_link(
+						array(
+							'title'            => __( 'Click here if already renewed', 'give' ),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'permanent',
+						)
+					)
+				),
+				'dismissible_type' => 'user',
+				'dismiss_interval' => 'shortly',
+			);
+		} else {
+			$notices["subscription-{$give_license['subscription']['id']}"] = array(
+				'id'               => "give-expires-subscription-{$give_license['subscription']['id']}",
+				'type'             => 'error',
+				'description'      => sprintf(
+					__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
+					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $give_license['subscription']['expires'] ) ),
+					urldecode( $give_license['subscription']['invoice_url'] ),
+					$give_license['subscription']['payment_id'],
+					"{$checkout_url}?edd_license_key={$give_license['subscription']['subscription_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+					Give()->notices->get_dismiss_link(
+						array(
+							'title'            => __( 'Click here if already renewed', 'give' ),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'permanent',
+						)
+					)
+				),
+				'dismissible_type' => 'user',
+				'dismiss_interval' => 'shortly',
+			);
+		}
+	}
+
+	// Check by addon if any give addon activated without license.
+	if ( ! array_key_exists( 'invalid-license', $notices ) ) {
+		foreach ( give_get_plugins() as $give_plugin ) {
+			if (
+				'add-on' !== $give_plugin['Type']
+				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
+			) {
+				continue;
+			}
+
+			/* @var  stdClass $addon_license */
+			$addon_shortname = Give_License::get_short_name( $give_plugin['Name'] );
+			$addon_slug      = str_replace( '_', '-', $addon_shortname );
+			$item_name       = str_replace( 'give-', '', $addon_slug );
+			$addon_license   = Give_License::get_license_by_item_name( $item_name );
+
+			if ( ! $addon_license ) {
+				$notices['invalid-license'] = $invalid_license_notice_args;
+				break;
+			}
+		}
+	}
+
+	// Register notices.
+	if( $notices ) {
+		foreach ( $notices as $notice ){
+			Give()->notices->register_notice($notice);
+		}
+	}
+}
+
+add_action( 'admin_notices', 'give_license_notices' );
+
