@@ -874,6 +874,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 
 /**
  * Get plugin info including status, type, and license validation.
+ * @todo update this function to query give addon and additionnal
  *
  * This is an enhanced version of get_plugins() that returns the status
  * (`active` or `inactive`) of all plugins, type of plugin (`add-on` or `other`
