@@ -32,12 +32,12 @@ function give_upload_addon_handler() {
 
 	// Bailout if user does not has permission.
 	if ( ! current_user_can( 'upload_plugins' ) ) {
-		wp_send_json_error( __( 'Sorry, you are not allowed to upload add-ons on this site.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' => __( 'Sorry, you are not allowed to upload add-ons on this site.', 'give' ) ) );
 	}
 
 	// Bailout if not upload file or not uploading Give addon
 	if ( empty( $_FILES ) || false === stripos( $filename, 'Give' ) ) {
-		wp_send_json_error( __( 'Please upload a valid add-on file.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' => __( 'Please upload a valid add-on file.', 'give' ) ) );
 	}
 
 	$access_type = get_filesystem_method();
@@ -56,7 +56,7 @@ function give_upload_addon_handler() {
 	$file_type = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
 
 	if ( empty( $file_type['ext'] ) ) {
-		wp_send_json_error( __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' =>  __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ) );
 	}
 
 	$give_addons_list   = give_get_plugins();
