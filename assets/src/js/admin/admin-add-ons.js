@@ -178,13 +178,18 @@
 
 					if ( true === response.success ) {
 						if (
-							response.data.hasOwnProperty( 'download' ) &&
+							response.data.hasOwnProperty('download') &&
 							response.data.download
 						) {
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download ) }</p></div>` );
-							$licensesContainer.html( response.data.html );
+
+							let msg = 'string' === typeof response.data.download
+								? give_addon_var.notices.download_file.replace('{link}', response.data.download)
+								: give_addon_var.notices.download_file.substring(0, give_addon_var.notices.download_file.indexOf('.') + 1 );
+
+							$noticeContainer.html(`<div class="give-notice notice notice-success"><p>${msg}</p></div>`);
+							$licensesContainer.html(response.data.html);
 						} else {
-							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p></div>` );
+							$noticeContainer.html(`<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p></div>`);
 						}
 
 						return;
