@@ -302,7 +302,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-				<p class="give-welcome-content-intro"><?php printf(__( 'See what\'s new in version 2.5.0 of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%s" target="_blank">contact support</a>.', 'give' ), 'https://givewp.com/support/'); ?></p>
+				<p class="give-welcome-content-intro"><?php printf(__( 'See what\'s new in version %s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/'); ?></p>
 
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>

@@ -14,11 +14,18 @@
 
 #give-updates {
 
-	max-width: 1200px;
-
 	.give-settings-header {
-		border-bottom: $borders;
-		margin:0 0 20px;
+		border-bottom: 1px solid #DBDBDB;
+	}
+
+	.give-update-panel-content {
+		margin: 0 0 30px;
+
+		p {
+			font-size: 17px;
+			font-style: italic;
+			margin: 0;
+		}
 	}
 
 	.dashicons-no-alt {
@@ -31,6 +38,17 @@
 
 	#give-db-updates .spinner {
 		margin-top:0;
+	}
+
+	#give-updates-content {
+		max-width: 1200px;
+	}
+
+	.give-update-paused-text-p {
+		margin: 0 20px 0 0;
+		line-height: 30px;
+		font-style: italic;
+		font-size: 14px;
 	}
 
 }

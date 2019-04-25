@@ -1,6 +1,8 @@
 <?php
 /**
- * Upgrade Screen
+ * Upgrade/Updates Screen
+ *
+ * Displays both add-on updates for files and database upgrades
  *
  * @package     Give
  * @subpackage  Admin/Upgrades
@@ -26,7 +28,14 @@ $give_updates = Give_Updates::get_instance();
 	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
 
 	<div id="give-updates-content">
-		<?php if ( ! empty( $db_updates ) ) : ?>
+
+		<div id="poststuff">
+
+		<?php
+		/**
+		 * Database Upgrades
+		 */
+		if ( ! empty( $db_updates ) ) : ?>
 			<?php
 			$is_doing_updates = $give_updates->is_doing_updates();
 			$db_update_url    = add_query_arg( array( 'type' => 'database' ) );
@@ -34,7 +43,7 @@ $give_updates = Give_Updates::get_instance();
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
+				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url('') ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -132,8 +141,12 @@ $give_updates = Give_Updates::get_instance();
 			include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php';
 		endif; ?>
 
-		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
-		<?php if ( ! empty( $plugin_updates ) ) : ?>
+		<?php
+		/**
+		 * Add-on Updates
+		 */
+		$plugin_updates = $give_updates->get_total_plugin_update_count();
+		if ( ! empty( $plugin_updates ) ) : ?>
 			<?php
 			$plugin_update_url = add_query_arg(
 				array(
@@ -170,6 +183,8 @@ $give_updates = Give_Updates::get_instance();
 			</div>
 		<?php endif; ?>
 
-	</div>
+		</div><!-- /#poststuff -->
 
-</div>
+	</div><!-- /#give-updates-content -->
+
+</div><!-- /#give-updates -->

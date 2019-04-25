@@ -14,14 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="wrap" id="poststuff">
-	<div id="give-updates">
-		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates Complete', 'give' ); ?></h1>
-		<hr class="wp-header-end">
+<div id="give-updates" class="wrap give-settings-page">
 
-		<div class="give-update-panel-content">
-			<p><?php esc_html_e( 'Congratulations! You are running the latest versions of Give and its add-ons.', 'give' ); ?></p>
-		</div>
-
+	<div class="give-settings-header">
+		<h1 id="give-updates-h1"
+		    class="wp-heading-inline"><?php echo sprintf( __( 'Give %s Updates Complete', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
+
+	<div id="give-updates-content">
+		<div id="poststuff" class="give-update-panel-content">
+			<p>
+				<?php echo '🎉 '; ?>
+				<?php echo esc_html_e( 'Congratulations! You are all up to date and running the latest versions of Give and its add-ons.', 'give' ); ?>
+			</p>
+		</div>
+	</div>
+
 </div>
