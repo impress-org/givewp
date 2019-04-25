@@ -1283,10 +1283,7 @@ function give_license_notices() {
 			}
 
 			/* @var  stdClass $addon_license */
-			$addon_shortname = Give_License::get_short_name( $give_plugin['Name'] );
-			$addon_slug      = str_replace( '_', '-', $addon_shortname );
-			$item_name       = str_replace( 'give-', '', $addon_slug );
-			$addon_license   = Give_License::get_license_by_item_name( $item_name );
+			$addon_license   = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
 
 			if ( ! $addon_license ) {
 				$notices['invalid-license'] = $invalid_license_notice_args;
