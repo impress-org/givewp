@@ -143,7 +143,7 @@ class Give_Addons {
 		}
 
 		ob_start();
-		$license         = Give_License::get_license_by_plugin_dirname( $plugin['Dir'] );
+		$license = Give_License::get_license_by_plugin_dirname( $plugin['Dir'] );
 
 		$default_plugin = array(
 			'ChangeLogSlug' => $plugin['Dir'],
@@ -156,7 +156,8 @@ class Give_Addons {
 		}
 
 		if ( $license ) {
-			$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+			$license['renew_url']            = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+			$default_plugin['ChangeLogSlug'] = $license['readme'];
 
 			// Backward compatibility.
 			if ( ! empty( $license['subscription'] ) ) {
@@ -207,7 +208,7 @@ class Give_Addons {
 				foreach ( $license['download'] as $addon ) {
 					$default_plugin = array(
 						'Name'          => $addon['name'],
-						'ChangeLogSlug' => $addon['plugin_slug'],
+						'ChangeLogSlug' => $addon['readme'],
 						'Version'       => $addon['current_version'],
 						'Status'        => 'not installed',
 						'DownloadURL'   => $addon['file'],
@@ -220,7 +221,7 @@ class Give_Addons {
 
 					$plugin['Name'] = false !== strpos( $plugin['Name'], 'Give' )
 						? $plugin['Name']
-						: $this->build_plugin_name_from_slug( $addon['plugin_slug'] );
+						: self::build_plugin_name_from_slug( $addon['plugin_slug'] );
 
 					$plugin['License'] = $license;
 
@@ -374,7 +375,9 @@ class Give_Addons {
 						echo sprintf(
 							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
 							give_modal_ajax_url( array(
-								'url'            => urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
+								'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
+									? urldecode_deep( $plugin['ChangeLogSlug'] )
+									: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
 								'show_changelog' => 1,
 							) ),
 							__( 'changelog', 'give' ),
