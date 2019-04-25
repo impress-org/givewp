@@ -547,7 +547,7 @@ function give_add_ons_page() {
 		<section id="give-licenses-container">
 			<?php echo Give_Addons::render_license_section(); ?>
 		</section>
-		<?php //give_add_ons_feed(); @todo: enabled this function when create pr ?>
+		<?php give_add_ons_feed(); ?>
 	</div>
 	<?php
 
