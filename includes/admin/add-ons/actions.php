@@ -231,7 +231,7 @@ function give_get_license_info_handler() {
 	// Get license section HTML.
 	$response         = $check_license_res;
 	$response['html'] = $item_name
-		? Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) )
+		? Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $item_name ) )
 		: Give_Addons::render_license_section();
 
 	wp_send_json_success( $response );
