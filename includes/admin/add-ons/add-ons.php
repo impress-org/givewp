@@ -493,7 +493,7 @@ function give_add_ons_page() {
 						<div class="give-notices"></div>
 						<div class="give-addon-dropzone-text-wrap">
 
-							<span class="give-addon-dropzone-text"><span class="dashicons dashicons-download"></span><?php _e( 'Drop an add-on plugin zip file here to upload and activate it.', 'give' ); ?></span>
+							<span class="give-addon-dropzone-text"><span class="dashicons dashicons-download"></span><?php _e( 'Drag an add-on file here to upload and activate it.', 'give' ); ?></span>
 							<form method="post" enctype="multipart/form-data" class="give-upload-form" action="/">
 								<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
 								<label for="give-addon-file-button" class="button button-secondary">Select file</label>
@@ -556,7 +556,7 @@ function give_add_ons_page() {
 		<section id="give-licenses-container">
 			<?php echo Give_Addons::render_license_section(); ?>
 		</section>
-		<?php give_add_ons_feed(); ?>
+		<?php // give_add_ons_feed(); ?>
 	</div>
 	<?php
 

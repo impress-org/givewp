@@ -226,7 +226,7 @@
 			e.stopPropagation();
 			e.preventDefault();
 
-			$( this ).removeClass( 'thick-border' );
+			$( this ).removeClass( 'give-dropzone-active' );
 
 			const file = e.originalEvent.dataTransfer.files,
 				  fd = new FormData();
@@ -238,9 +238,9 @@
 
 		// Drag over
 		$container.on( 'dragover', function( e ) {
-			$( this ).addClass( 'thick-border' );
+			$( this ).addClass( 'give-dropzone-active' );
 		} ).on( 'dragleave', function( e ) {
-			$( this ).removeClass( 'thick-border' );
+			$( this ).removeClass( 'give-dropzone-active' );
 		} );
 
 		/**
@@ -294,7 +294,7 @@
 					) {
 						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p></div>` );
 					} else {
-						$noticeContainer.html( '<div class="give-notice notice notice-error"><p>Plugin does not activated successfully.</p></div>' );
+						$noticeContainer.html( '<div class="give-notice notice notice-error"><p><strong>Error:</strong> The plugin did not activate successfully.</p></div>' );
 					}
 				},
 			} ).always( function() {
