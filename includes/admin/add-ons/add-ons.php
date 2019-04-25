@@ -442,7 +442,7 @@ class Give_Addons {
 	 * @since 2.5.0
 	 *
 	 */
-	public static function build_plugin_name_from_slug( $plugin_slug ) {
+	private static function build_plugin_name_from_slug( $plugin_slug ) {
 		$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
 
 		return ucwords( $plugin_name );
