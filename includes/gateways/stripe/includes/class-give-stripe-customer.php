@@ -310,28 +310,28 @@ class Give_Stripe_Customer {
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_checkout_enabled() && 'stripe' === $this->stripe_gateway->id ) {
+			if ( give_stripe_is_source_type( $this->source_id, 'tok' ) || give_stripe_is_source_type( $this->source_id, 'card' ) ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->source_id );
-				$new_card = $token_details->card;
-			} elseif( 'stripe_ach' === give_clean( $_POST['give-gateway'] ) ) {
-				$token_details = $this->stripe_gateway->get_token_details( $this->source_id );
-				$new_card = $token_details->bank_account;
-			} else {
+				$new_card      = $token_details->card;
+			} elseif ( give_stripe_is_source_type( $this->source_id, 'src' ) ) {
 				$source_details = $this->stripe_gateway->get_source_details( $this->source_id );
-				$new_card = $source_details->card;
+				$new_card       = $source_details->card;
 			}
+
+			/**
+			 * This filter hook is used to get new card details.
+			 *
+			 * @since 2.5.0
+			 */
+			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->source_id, $this->stripe_gateway );
 
 			// Check to ensure that new card is already attached with customer or not.
 			if ( count( $all_sources->data ) > 0 ) {
 				foreach ( $all_sources->data as $source_item ) {
 
-					if (
-						( $this->is_card( $source_item->id ) && $source_item->fingerprint === $new_card->fingerprint ) ||
-						(
-							$source_item->card->fingerprint === $new_card->fingerprint &&
-							( $this->is_source( $source_item->id ) || $this->is_bank_account( $source_item->id ))
-						)
-					) {
+					$source_fingerprint = isset( $source_item->card ) ? $source_item->card->fingerprint : $source_item->fingerprint;
+
+					if ( $source_fingerprint === $new_card->fingerprint ) {
 
 						// Set the existing card as default source.
 						$this->customer_data->default_source = $source_item->id;
@@ -455,5 +455,4 @@ class Give_Stripe_Customer {
 			preg_match( '/ba_/i', $id )
 		);
 	}
-
 }
