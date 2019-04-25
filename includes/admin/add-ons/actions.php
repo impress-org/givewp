@@ -157,9 +157,9 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
-	$license_key = give_clean( $_POST['license'] );
-	$item_name   = isset( $_POST['item_name'] ) ? give_clean( $_POST['item_name'] ) : '';
-	$licenses    = get_option( 'give_licenses', array() );
+	$license_key                  = give_clean( $_POST['license'] );
+	$is_activating_single_license = isset( $_POST['single'] ) ? ! ! absint( $_POST['single'] ) : '';
+	$licenses                     = get_option( 'give_licenses', array() );
 
 
 	if ( ! $license_key ) {
@@ -177,7 +177,6 @@ function give_get_license_info_handler() {
 	$check_license_res = Give_License::request_license_api( array(
 		'edd_action' => 'check_license',
 		'license'    => $license_key,
-		'item_name'  => $item_name,
 	), true );
 
 	// Make sure there are no errors.
@@ -230,8 +229,8 @@ function give_get_license_info_handler() {
 
 	// Get license section HTML.
 	$response         = $check_license_res;
-	$response['html'] = $item_name
-		? Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $item_name ) )
+	$response['html'] = $is_activating_single_license
+		? Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_Addons::render_license_section();
 
 	wp_send_json_success( $response );

@@ -45,7 +45,7 @@
 				data: {
 					action: 'give_get_license_info',
 					license: $this.prev( '.give-license__key input[type="text"]' ).val().trim(),
-					item_name: $this.attr( 'data-item-name' ),
+					single: 1,
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
 				},
 				beforeSend: function() {
