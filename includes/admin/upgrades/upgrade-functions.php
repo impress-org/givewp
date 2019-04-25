@@ -3418,6 +3418,8 @@ function give_v241_remove_sale_logs_callback() {
  * !since 2.5.0
  */
 function give_v250_upgrades() {
+	global $wpdb;
+
 	$give_plugins = give_get_plugins();
 	$old_license  = array();
 	$new_license  = array();
@@ -3472,4 +3474,25 @@ function give_v250_upgrades() {
 	$give_licenses += $new_license;
 
 	update_option( 'give_licenses', $give_licenses );
+
+	/**
+	 * Delete data.
+	 */
+
+	// 1. license keys
+	foreach ( get_option( 'give_settings' ) as $index => $setting ) {
+		if( false !== strpos( $index, '_license_key' ) ) {
+			give_delete_option( $index );
+		}
+	}
+
+	// 2. license api data
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name like '%_license_active%' AND option_name like 'give_%'" );
+
+	// 3. subscriptions data
+	delete_option( '_give_subscriptions_edit_last' );
+	delete_option( 'give_subscriptions' );
+
+	// 4. misc
+	delete_option( 'give_is_addon_activated' );
 }
