@@ -46,7 +46,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error(
 			array(
 				'errorMsg' => sprintf(
-					__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
+					__( 'Sorry, you can not upload plugins because Give does not have direct access to the file system. Please <a href="%1$s" target="_blank">click here</a> to upload the add-on.', 'give' ),
 					admin_url( 'plugin-install.php?tab=upload' )
 				),
 			)
@@ -215,7 +215,7 @@ function give_get_license_info_handler() {
 	if( ! $activate_license_res['success'] ) {
 		wp_send_json_error(array(
 			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check the license details.' ),
 				'http://staging.givewp.com/my-account/',
 				$activate_license_res['license']
 			)
@@ -319,7 +319,7 @@ function give_deactivate_license_handler() {
 	if( ! $response['success'] ) {
 		wp_send_json_error(array(
 			'errorMsg' => sprintf(
-				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because the license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check the license details.' ),
 				'http://staging.givewp.com/my-account/',
 				$response['license']
 			)
