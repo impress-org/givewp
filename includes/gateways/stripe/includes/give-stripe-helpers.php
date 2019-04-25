@@ -963,3 +963,21 @@ function give_stripe_is_connect_banner_dismissed() {
 
 	return $is_notice_dismissed;
 }
+
+/**
+ * This function will check whether the ID exists or not based on type.
+ *
+ * @param string $id   Source ID.
+ * @param string $type Source type.
+ *
+ * @since  2.5.0
+ * @access public
+ *
+ * @return bool
+ */
+function give_stripe_is_source_type( $id, $type = 'src' ) {
+	return (
+		$id &&
+		preg_match( "/{$type}_/i", $id )
+	);
+}
