@@ -81,6 +81,7 @@
 	font-size: 22px;
 	font-style:italic;
 	color: #8E8E8E;
+	margin: 10px 0 40px;
 }
 
 // Feature section
@@ -187,7 +188,7 @@
 
 	.give-changelog {
 		max-height: 510px;
-		padding: 10px 20px;
+		padding: 20px;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		font-size: 18px;
@@ -195,9 +196,25 @@
 		background: #fff;
 		border: 1px solid #DDD;
 
-		//br {
-		//	display:none;
-		//}
+		br:first-child {
+			display: none;
+
+			+ br {
+				display:none;
+			}
+		}
+
+		h4 {
+			margin: 0 0 10px;
+			border-bottom: 1px solid #e2e2e2;
+			padding: 0 0 6px;
+			font-size:20px;
+
+			+ br {
+				display:none;
+			}
+
+		}
 
 	}
 }

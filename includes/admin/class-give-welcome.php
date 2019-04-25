@@ -307,23 +307,9 @@ class Give_Welcome {
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>
 				</div>
+
 			</div>
 
-			<div class="return-to-dashboard">
-				<a href="
-				<?php
-				echo esc_url(
-					admin_url(
-						add_query_arg(
-							array(
-								'post_type' => 'give_forms',
-								'page'      => 'give-settings',
-							), 'edit.php'
-						)
-					)
-				);
-				?> "><?php esc_html_e( 'Give Settings', 'give' ); ?></a>
-			</div>
 		</div>
 		<?php
 	}
