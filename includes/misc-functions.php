@@ -914,7 +914,7 @@ function give_get_plugins() {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
-			$license_active = Give_License::get_license_by_item_name( Give_License::license_dashed_name( $plugin_data['Name'] ) );
+			$license_active = Give_License::get_license_by_plugin_dirname(  $dirname );
 
 			// Does a valid license exist?
 			$plugins[ $plugin_path ]['License'] = $license_active && 'valid' === $license_active['license'] ;

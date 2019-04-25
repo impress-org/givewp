@@ -190,7 +190,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
 			$this->item_shortname   = self::get_short_name( $this->item_name );
-			$this->license_data     = self::get_license_by_item_name( str_replace( 'give-', '', $this->license_dashed_name( $this->item_name ) ) );
+			$this->license_data     = self::get_license_by_plugin_dirname( basename( dirname( $_file ) ) );
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;
@@ -229,23 +229,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function get_short_name( $plugin_name ) {
 			$plugin_name = trim( str_replace( 'Give - ', '', $plugin_name ) );
 			$plugin_name = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) );
-
-			return $plugin_name;
-		}
-
-		/**
-		 * Get license sanitize name
-		 *
-		 * @param $plugin_name
-		 *
-		 * @return string
-		 * @since  2.1.0
-		 * @access public
-		 *
-		 */
-		public static function license_dashed_name( $plugin_name ) {
-			$plugin_name = self::get_short_name( $plugin_name );
-			$plugin_name = str_replace( array( 'give_', '_', ' ' ), array( '', '-', '-' ), $plugin_name );
 
 			return $plugin_name;
 		}
@@ -551,32 +534,31 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Get license by item name
+		 * Get license by plugin dirname
 		 *
-		 * @param $item_name
+		 * @param string $plugin_dirname
 		 *
 		 * @return array
-		 * @todo   use plugin slud and Dir if possible
 		 *
 		 * @since  2.5.0
 		 * @access public
 		 */
-		public static function get_license_by_item_name( $item_name ) {
-			$license       = array();
-			$give_licenses = get_option( 'give_licenses', array() );
+		public static function get_license_by_plugin_dirname( $plugin_dirname ) {
+			$license        = array();
+			$give_licenses  = get_option( 'give_licenses', array() );
+			$plugin_dirname = strtolower( $plugin_dirname );
+
 
 			if ( ! empty( $give_licenses ) ) {
 				foreach ( $give_licenses as $give_license ) {
 
-					// Logic to match all access pass license to addon.
+					// Logic to match all access pass license to add-on.
 					$compares = is_array( $give_license['download'] )
 						? $give_license['download']
-						: array( array( 'name' => $give_license['item_name'] ) );
+						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
 
 					foreach ( $compares as $compare ) {
-						$tmp_item_name = str_replace( ' ', '-', strtolower( $compare['name'] ) );
-
-						if ( $item_name === $tmp_item_name ) {
+						if ( $plugin_dirname === strtolower( $compare['plugin_slug'] ) ) {
 							$license = $give_license;
 							break;
 						}

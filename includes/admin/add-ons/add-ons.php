@@ -103,19 +103,14 @@ class Give_Addons {
 				continue;
 			}
 
-			/* @var  stdClass $addon_license */
-			$addon_shortname   = Give_License::get_short_name( $give_plugin['Name'] );
-			$addon_slug        = str_replace( '_', '-', $addon_shortname );
-			$item_name         = str_replace( 'give-', '', $addon_slug );
-			$addon_license_key = Give_License::get_license_by_item_name( $item_name );
-
 			if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 				continue;
 			}
 
-			$html_arr_key = 'unlicensed';
+			$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+			$html_arr_key  = 'unlicensed';
 
-			if ( $addon_license_key ) {
+			if ( $addon_license ) {
 				$html_arr_key = 'licensed';
 			}
 
@@ -148,13 +143,10 @@ class Give_Addons {
 		}
 
 		ob_start();
-		$addon_shortname = Give_License::get_short_name( $plugin['Name'] );
-		$addon_slug      = str_replace( '_', '-', $addon_shortname );
-		$item_name       = str_replace( 'give-', '', $addon_slug );
-		$license         = Give_License::get_license_by_item_name( $item_name );
+		$license         = Give_License::get_license_by_plugin_dirname( $plugin['Dir'] );
 
 		$default_plugin = array(
-			'ChangeLogSlug' => $addon_slug,
+			'ChangeLogSlug' => $plugin['Dir'],
 			'DownloadURL'   => '',
 		);
 
@@ -176,7 +168,7 @@ class Give_Addons {
 		}
 
 		$plugin['License'] = $license = wp_parse_args( $license, array(
-			'item_name' => $item_name,
+			'item_name' => str_replace( 'give-', '', $plugin['Dir'] ),
 		) );
 
 		$plugin = wp_parse_args( $plugin, $default_plugin )
@@ -448,7 +440,7 @@ class Give_Addons {
 	 *
 	 */
 	public static function build_plugin_name_from_slug( $plugin_slug ) {
-		$plugin_name = str_replace( array( '-', 'give '), array( ' ', 'Give - '), $plugin_slug );
+		$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
 
 		return ucwords( $plugin_name );
 	}
