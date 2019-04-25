@@ -103,19 +103,14 @@ class Give_Addons {
 				continue;
 			}
 
-			/* @var  stdClass $addon_license */
-			$addon_shortname   = Give_License::get_short_name( $give_plugin['Name'] );
-			$addon_slug        = str_replace( '_', '-', $addon_shortname );
-			$item_name         = str_replace( 'give-', '', $addon_slug );
-			$addon_license_key = Give_License::get_license_by_item_name( $item_name );
-
 			if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 				continue;
 			}
 
-			$html_arr_key = 'unlicensed';
+			$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+			$html_arr_key  = 'unlicensed';
 
-			if ( $addon_license_key ) {
+			if ( $addon_license ) {
 				$html_arr_key = 'licensed';
 			}
 
@@ -148,13 +143,10 @@ class Give_Addons {
 		}
 
 		ob_start();
-		$addon_shortname = Give_License::get_short_name( $plugin['Name'] );
-		$addon_slug      = str_replace( '_', '-', $addon_shortname );
-		$item_name       = str_replace( 'give-', '', $addon_slug );
-		$license         = Give_License::get_license_by_item_name( $item_name );
+		$license = Give_License::get_license_by_plugin_dirname( $plugin['Dir'] );
 
 		$default_plugin = array(
-			'ChangeLogSlug' => $addon_slug,
+			'ChangeLogSlug' => $plugin['Dir'],
 			'DownloadURL'   => '',
 		);
 
@@ -164,7 +156,8 @@ class Give_Addons {
 		}
 
 		if ( $license ) {
-			$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+			$license['renew_url']            = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+			$default_plugin['ChangeLogSlug'] = $license['readme'];
 
 			// Backward compatibility.
 			if ( ! empty( $license['subscription'] ) ) {
@@ -176,7 +169,7 @@ class Give_Addons {
 		}
 
 		$plugin['License'] = $license = wp_parse_args( $license, array(
-			'item_name' => $item_name,
+			'item_name' => str_replace( 'give-', '', $plugin['Dir'] ),
 		) );
 
 		$plugin = wp_parse_args( $plugin, $default_plugin )
@@ -215,7 +208,7 @@ class Give_Addons {
 				foreach ( $license['download'] as $addon ) {
 					$default_plugin = array(
 						'Name'          => $addon['name'],
-						'ChangeLogSlug' => $addon['plugin_slug'],
+						'ChangeLogSlug' => $addon['readme'],
 						'Version'       => $addon['current_version'],
 						'Status'        => 'not installed',
 						'DownloadURL'   => $addon['file'],
@@ -228,7 +221,7 @@ class Give_Addons {
 
 					$plugin['Name'] = false !== strpos( $plugin['Name'], 'Give' )
 						? $plugin['Name']
-						: $this->build_plugin_name_from_slug( $addon['plugin_slug'] );
+						: self::build_plugin_name_from_slug( $addon['plugin_slug'] );
 
 					$plugin['License'] = $license;
 
@@ -384,7 +377,9 @@ class Give_Addons {
 						echo sprintf(
 							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
 							give_modal_ajax_url( array(
-								'url'            => urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
+								'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
+									? urldecode_deep( $plugin['ChangeLogSlug'] )
+									: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
 								'show_changelog' => 1,
 							) ),
 							__( 'changelog', 'give' ),
@@ -449,7 +444,7 @@ class Give_Addons {
 	 * @since 2.5.0
 	 *
 	 */
-	public static function build_plugin_name_from_slug( $plugin_slug ) {
+	private static function build_plugin_name_from_slug( $plugin_slug ) {
 		$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
 
 		return ucwords( $plugin_name );
@@ -562,7 +557,7 @@ function give_add_ons_page() {
 		<section id="give-licenses-container">
 			<?php echo Give_Addons::render_license_section(); ?>
 		</section>
-		<?php //give_add_ons_feed(); @todo: enabled this function when create pr ?>
+		<?php give_add_ons_feed(); ?>
 	</div>
 	<?php
 
