@@ -212,7 +212,7 @@
 
 	$( document ).ready( function() {
 		const $container = $( '#give-addon-uploader-wrap' ),
-			  $formContainer = $( '.give-form-wrap', $container ),
+			  $formContainer = $( '.give-upload-addon-wrap', $container ),
 			  $form = $( 'form', $container ),
 			  $file = $( 'input[type="file"]', $form ),
 			  $activateBtnContainer = $( '.give-activate-addon-wrap', $container ),

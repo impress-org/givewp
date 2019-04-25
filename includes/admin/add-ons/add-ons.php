@@ -267,7 +267,9 @@ class Give_Addons {
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 						<?php if ( ! $license_key ) : ?>
 							&nbsp;&nbsp;
-							<button class="give-button__license-activate button-secondary" data-item-name="<?php echo $license['item_name']; ?>" disabled><?php _e( 'Activate License' ); ?></button>
+							<button class="give-button__license-activate button-secondary"
+							        data-item-name="<?php echo $license['item_name']; ?>"
+							        disabled><?php _e( 'Activate License' ); ?></button>
 						<?php endif; ?>
 					</span>
 
@@ -448,7 +450,7 @@ class Give_Addons {
 	 *
 	 */
 	public static function build_plugin_name_from_slug( $plugin_slug ) {
-		$plugin_name = str_replace( array( '-', 'give '), array( ' ', 'Give - '), $plugin_slug );
+		$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
 
 		return ucwords( $plugin_name );
 	}
@@ -469,49 +471,61 @@ function give_add_ons_page() {
 	add_thickbox();
 	// @todo: show plugin activate button if plugin uploaded successfully.
 	?>
-	<div class="wrap" id="give-add-ons">
-		<h1><?php echo esc_html( get_admin_page_title() ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all"
-			                      target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
-				<span class="dashicons dashicons-external"></span></a>
-		</h1>
+	<div class="wrap" id="give-addons">
 
-		<hr class="wp-header-end">
+		<div class="give-addons-header">
 
-		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
-
-		<div id="give-addon-uploader-wrap" ondragover="event.preventDefault()">
-			<div id="give-addon-uploader-inner">
-				<?php if ( 'direct' !== get_filesystem_method() ) : ?>
-					<div class="give-notice notice notice-error inline">
-						<p>
-							<?php
-							echo sprintf(
-								__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
-								admin_url( 'plugin-install.php?tab=upload' )
-							);
-							?>
-						</p>
-					</div>
-				<?php else: ?>
-					<div class="give-notices"></div>
-					<div class="give-form-wrap">
-						<?php _e( '<h1>Drop files here </br>or</h1>', 'give' ); ?>
-						<form method="post" enctype="multipart/form-data" class="give-upload-form" action="/">
-							<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
-							<input type="file" name="addon" value="<?php _e( 'Select File', 'give' ); ?>">
-						</form>
-					</div>
-					<div class="give-activate-addon-wrap" style="display: none">
-						<button
-							class="give-activate-addon-btn button-primary"
-							data-activate="<?php _e( 'Activate Addon', 'give' ); ?>"
-							data-activating="<?php _e( 'Activateing Addon...', 'give' ); ?>"
-						><?php _e( 'Activate Addon', 'give' ); ?></button>
-					</div>
-				<?php endif; ?>
+			<div class="give-admin-logo give-addon-h1">
+				<a href="https://givewp.com/&utm_campaign=admin&utm_source=addons&utm_medium=imagelogo"
+				   class="give-admin-logo-link" target="_blank"><img
+						src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-large-no-tagline.png'; ?>"
+						alt="<?php _e( 'Click to Visit GiveWP in a new tab.', 'give' ); ?>"/><span><?php echo esc_html( get_admin_page_title() ); ?></span></a>
 			</div>
+
+			<div id="give-addon-uploader-wrap" ondragover="event.preventDefault()">
+				<div id="give-addon-uploader-inner">
+					<?php if ( 'direct' !== get_filesystem_method() ) : ?>
+						<div class="give-notice notice notice-error inline">
+							<p>
+								<?php
+								echo sprintf(
+									__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload your Give Add-on.', 'give' ),
+									admin_url( 'plugin-install.php?tab=upload' )
+								);
+								?>
+							</p>
+						</div>
+					<?php else: ?>
+						<div class="give-notices"></div>
+						<div class="give-upload-addon-wrap">
+							<?php _e( 'Drop files here or', 'give' ); ?>
+							<form method="post" enctype="multipart/form-data" class="give-upload-form" action="/">
+								<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
+								<label for="give-addon-file-button" class="button button-secondary">Select file</label>
+								<input id="give-addon-file-button" type="file" name="addon" value="<?php _e( 'Select File', 'give' ); ?>">
+							</form>
+						</div>
+						<div class="give-activate-addon-wrap" style="display: none">
+							<button
+								class="give-activate-addon-btn button-primary"
+								data-activate="<?php _e( 'Activate Addon', 'give' ); ?>"
+								data-activating="<?php _e( 'Activating Addon...', 'give' ); ?>"
+							><?php _e( 'Activate Addon', 'give' ); ?></button>
+						</div>
+					<?php endif; ?>
+				</div>
+			</div>
+
 		</div>
+
+		<div class="give-subheader give-clearfix">
+
+			<h1>GiveWP Add-ons</h1>
+
+			<p class="give-subheader-right-text"><?php esc_html_e( 'Maximize your fundraising potential with official add-ons from GiveWP.com.', 'give' ); ?></p>
+
+		</div>
+
 
 		<div id="give-license-activator-wrap">
 			<div id="give-license-activator-inner">
@@ -519,7 +533,8 @@ function give_add_ons_page() {
 				<form method="post">
 					<?php wp_nonce_field( 'give-license-activator-nonce', 'give_license_activator_nonce' ); ?>
 					<label for="give-license-activator"><?php _e( 'Activate License', 'give' ); ?></label>
-					<input id="give-license-activator" type="text" name="give_license_key" placeholder="<?php _e( 'Enter a valid license key', 'give' ) ?>">
+					<input id="give-license-activator" type="text" name="give_license_key"
+					       placeholder="<?php _e( 'Enter a valid license key', 'give' ) ?>">
 					<input
 						data-activate="<?php _e( 'Activate License', 'give' ); ?>"
 						data-activating="<?php _e( 'Verifying License...', 'give' ); ?>"
