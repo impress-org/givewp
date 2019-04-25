@@ -97,7 +97,7 @@
 				success: function( response ) {
 					if ( true === response.success ) {
 						if( is_all_access_pass  ) {
-							$licensesContainer.replaceWith( response.data.html );
+							$licensesContainer.html( response.data.html );
 						} else{
 							$container.replaceWith( response.data.html );
 						}
