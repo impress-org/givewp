@@ -41,38 +41,80 @@
 }
 
 .give-subheader {
-	background:#FFF;
+	background: #FFF;
+	margin: 0 0 0 -22px;
+	padding: 12px 20px;
 
 	.give-subheader-right-text {
 		float: right;
 		font-style: italic;
-		color: #333;
+		color: #555555;
+		margin: 5px 0 0;
+		padding: 0;
 	}
 
 	h1 {
-		float:left;
-		font-size: 14px;
+		float: left;
+		font-size: 15px;
+		color: #555555;
+		font-weight: 600;
+		margin: 0;
+		padding: 0;
+	}
+
+	@media(max-width: 700px) {
+		text-align: center;
+
+		.give-subheader-right-text,
+		h1 {
+			float: none;
+		}
 	}
 
 }
 
 
-#give-addon-uploader-wrap {
-	border: 1px dashed #000000;
+#give-addon-header-dropzone {
 	background: rgba(0, 0, 0, 0.7);
-	padding: 10px 20px;
+	outline: 2px dashed #9e9e9e;
+	outline-offset: -5px;
+	padding: 20px;
 	margin: 0;
-	color: #FFF;
 	float: right;
+	transition: outline-offset .15s ease-in-out, background-color .15s linear;
+
+	.give-addon-dropzone-text-wrap {
+		color: #FFF;
+
+		.dashicons {
+			line-height: 30px;
+			padding: 0 13px 0 0;
+			position: relative;
+			top: 2px;
+			font-size: 24px;
+		}
+
+		.give-addon-dropzone-text {
+			line-height: 30px;
+			padding: 0 20px 0 0;
+		}
+
+		form {
+			display: inline;
+		}
+
+	}
 
 	&.thick-border {
-		border: 4px dashed green;
+		background: rgba(0, 0, 0, 1);
+		outline-offset: -10px;
+		outline-color:#FFF;
 	}
 
 	// Hide the native upload field and add a button label for it instead
 	// see: https://stackoverflow.com/a/17949302/684352
 	#give-addon-file-button {
-		display:none;
+		display: none;
 	}
 
 	.button {

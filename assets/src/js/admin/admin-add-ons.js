@@ -211,7 +211,7 @@
 	} );
 
 	$( document ).ready( function() {
-		const $container = $( '#give-addon-uploader-wrap' ),
+		const $container = $( '#give-addon-header-dropzone' ),
 			  $formContainer = $( '.give-upload-addon-wrap', $container ),
 			  $form = $( 'form', $container ),
 			  $file = $( 'input[type="file"]', $form ),

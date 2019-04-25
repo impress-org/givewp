@@ -477,8 +477,7 @@ function give_add_ons_page() {
 						alt="<?php _e( 'Click to Visit GiveWP in a new tab.', 'give' ); ?>"/><span><?php echo esc_html( get_admin_page_title() ); ?></span></a>
 			</div>
 
-			<div id="give-addon-uploader-wrap" ondragover="event.preventDefault()">
-				<div id="give-addon-uploader-inner">
+			<div id="give-addon-header-dropzone" ondragover="event.preventDefault()">
 					<?php if ( 'direct' !== get_filesystem_method() ) : ?>
 						<div class="give-notice notice notice-error inline">
 							<p>
@@ -492,8 +491,9 @@ function give_add_ons_page() {
 						</div>
 					<?php else: ?>
 						<div class="give-notices"></div>
-						<div class="give-upload-addon-wrap">
-							<?php _e( 'Drop files here or', 'give' ); ?>
+						<div class="give-addon-dropzone-text-wrap">
+
+							<span class="give-addon-dropzone-text"><span class="dashicons dashicons-download"></span><?php _e( 'Drop an add-on plugin zip file here to upload and activate it.', 'give' ); ?></span>
 							<form method="post" enctype="multipart/form-data" class="give-upload-form" action="/">
 								<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
 								<label for="give-addon-file-button" class="button button-secondary">Select file</label>
@@ -508,7 +508,6 @@ function give_add_ons_page() {
 							><?php _e( 'Activate Addon', 'give' ); ?></button>
 						</div>
 					<?php endif; ?>
-				</div>
 			</div>
 
 		</div>
