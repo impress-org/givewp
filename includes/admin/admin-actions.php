@@ -1273,7 +1273,13 @@ function give_license_notices() {
 	}
 
 	// Check by addon if any give addon activated without license.
-	if ( ! array_key_exists( 'invalid-license', $notices ) ) {
+	// do not show this notice if add-on activated with in 24 hours.
+	$is_day_past = HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option('give_addon_last_activated' ) );
+	if (
+		$is_day_past
+		&& ! array_key_exists( 'invalid-license', $notices )
+		&& false === Give_Cache::get( 'give_cache_hide_license_notice_after_activation' )
+	) {
 		foreach ( give_get_plugins() as $give_plugin ) {
 			if (
 				'add-on' !== $give_plugin['Type']
@@ -1301,4 +1307,33 @@ function give_license_notices() {
 }
 
 add_action( 'admin_notices', 'give_license_notices' );
+
+
+/**
+ * Log give addon activation time
+ *
+ * @param $plugin
+ * @param $network_wide
+ *
+ * @since 2.5.0
+ *
+ */
+function give_log_addon_activation_time( $plugin, $network_wide ) {
+	if( $network_wide ) {
+		return;
+	}
+
+	$plugin_data = give_get_plugins();
+	$plugin_data = ! empty( $plugin_data[$plugin] ) ? $plugin_data[$plugin] : '';
+
+	if(
+		$plugin_data
+		&& 'add-on' === $plugin_data['Type']
+		&& false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
+	) {
+		update_option( 'give_addon_last_activated', current_time( 'timestamp' ), 'no' );
+	}
+}
+
+add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
 

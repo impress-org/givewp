@@ -37,7 +37,7 @@
 				$container = $this.parents( '.give-addon-wrap' );
 
 			// Remove errors if any.
-			$('.give-notice', $container).remove();
+			$( '.give-notice', $container ).remove();
 
 			$.ajax( {
 				url: ajaxurl,
@@ -45,7 +45,7 @@
 				data: {
 					action: 'give_get_license_info',
 					license: $this.prev( '.give-license__key input[type="text"]' ).val().trim(),
-					item_name: $this.attr( 'data-item-name' ),
+					single: 1,
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
 				},
 				beforeSend: function() {
@@ -57,7 +57,7 @@
 						return;
 					}
 
-					$('.give-addon-inner', $container).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					$( '.give-addon-inner', $container ).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				loader( $container, false );
@@ -71,10 +71,11 @@
 			e.preventDefault();
 
 			const $this = $( this ),
-				  $container = $this.parents( '.give-addon-wrap' );
+				  $container = $this.parents( '.give-addon-wrap' ),
+				  is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-plugin__info' ).length;
 
 			// Remove errors if any.
-			$('.give-notice', $container).remove();
+			$( '.give-notice', $container ).remove();
 
 			$.ajax( {
 				url: ajaxurl,
@@ -83,31 +84,44 @@
 					action: 'give_deactivate_license',
 					license: $this.attr( 'data-license-key' ),
 					item_name: $this.attr( 'data-item-name' ),
+					plugin_dirname: $this.attr( 'data-plugin-dirname' ),
 					_wpnonce: $this.attr( 'data-nonce' ),
 				},
 				beforeSend: function() {
-					loader( $container );
+					if ( is_all_access_pass ) {
+						loader( $licensesContainer );
+					} else {
+						loader( $container );
+					}
 				},
 				success: function( response ) {
 					if ( true === response.success ) {
-						$container.replaceWith( response.data.html );
+						if ( is_all_access_pass ) {
+							$licensesContainer.html( response.data.html );
+						} else {
+							$container.replaceWith( response.data.html );
+						}
 						return;
 					}
 
-					$('.give-addon-inner', $container).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					$( '.give-addon-inner', $container ).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
-				loader( $container, false );
+				if ( is_all_access_pass ) {
+					loader( $licensesContainer, false );
+				} else {
+					loader( $container, false );
+				}
 			} );
 		} );
 
 		/**
 		 * Refresh all licenses
 		 */
-		$('#give-button__refresh-licenses').on( 'click', function( e ) {
+		$( '#give-button__refresh-licenses' ).on( 'click', function( e ) {
 			e.preventDefault();
 
-			const $this = $(this);
+			const $this = $( this );
 
 			$.ajax( {
 				url: ajaxurl,
@@ -167,7 +181,11 @@
 							response.data.hasOwnProperty( 'download' ) &&
 							response.data.download
 						) {
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ give_addon_var.notices.download_file.replace( '{link}', response.data.download ) }</p></div>` );
+							const msg = 'string' === typeof response.data.download ?
+								give_addon_var.notices.download_file.replace( '{link}', response.data.download ) :
+								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
+
+							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ msg }</p></div>` );
 							$licensesContainer.html( response.data.html );
 						} else {
 							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p></div>` );

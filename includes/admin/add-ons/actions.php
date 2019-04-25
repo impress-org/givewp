@@ -32,12 +32,12 @@ function give_upload_addon_handler() {
 
 	// Bailout if user does not has permission.
 	if ( ! current_user_can( 'upload_plugins' ) ) {
-		wp_send_json_error( __( 'Sorry, you are not allowed to upload add-ons on this site.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' => __( 'Sorry, you are not allowed to upload add-ons on this site.', 'give' ) ) );
 	}
 
 	// Bailout if not upload file or not uploading Give addon
 	if ( empty( $_FILES ) || false === stripos( $filename, 'Give' ) ) {
-		wp_send_json_error( __( 'Please upload a valid add-on file.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' => __( 'Please upload a valid add-on file.', 'give' ) ) );
 	}
 
 	$access_type = get_filesystem_method();
@@ -56,7 +56,7 @@ function give_upload_addon_handler() {
 	$file_type = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
 
 	if ( empty( $file_type['ext'] ) ) {
-		wp_send_json_error( __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) );
+		wp_send_json_error( array( 'errorMsg' =>  __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ) );
 	}
 
 	$give_addons_list   = give_get_plugins();
@@ -157,9 +157,9 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
-	$license_key = give_clean( $_POST['license'] );
-	$item_name   = isset( $_POST['item_name'] ) ? give_clean( $_POST['item_name'] ) : '';
-	$licenses    = get_option( 'give_licenses', array() );
+	$license_key                  = give_clean( $_POST['license'] );
+	$is_activating_single_license = isset( $_POST['single'] ) ? ! ! absint( $_POST['single'] ) : '';
+	$licenses                     = get_option( 'give_licenses', array() );
 
 
 	if ( ! $license_key ) {
@@ -177,7 +177,6 @@ function give_get_license_info_handler() {
 	$check_license_res = Give_License::request_license_api( array(
 		'edd_action' => 'check_license',
 		'license'    => $license_key,
-		'item_name'  => $item_name,
 	), true );
 
 	// Make sure there are no errors.
@@ -230,8 +229,8 @@ function give_get_license_info_handler() {
 
 	// Get license section HTML.
 	$response         = $check_license_res;
-	$response['html'] = $item_name
-		? Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) )
+	$response['html'] = $is_activating_single_license
+		? Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_Addons::render_license_section();
 
 	wp_send_json_success( $response );
@@ -277,9 +276,9 @@ add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
  * @since 2.5.0
  */
 function give_deactivate_license_handler() {
-	$license   = give_clean( $_POST['license'] );
-	$item_name = give_clean( $_POST['item_name'] );
-	$response  = array();
+	$license        = give_clean( $_POST['license'] );
+	$item_name      = give_clean( $_POST['item_name'] );
+	$plugin_dirname = give_clean( $_POST['plugin_dirname'] );
 
 	if ( ! $license || ! $item_name ) {
 		wp_send_json_error();
@@ -315,14 +314,6 @@ function give_deactivate_license_handler() {
 		) );
 	}
 
-	if ( ! empty( $give_licenses[ $license ] ) ) {
-		unset( $give_licenses[ $license ] );
-		update_option( 'give_licenses', $give_licenses );
-	}
-
-	$item_name        = str_replace( ' ', '-', strtolower( $item_name ) );
-	$response['html'] = Give_Addons::html_by_plugin( Give_Addons::get_plugin_by_item_name( $item_name ) );
-
 	// Check if license deactivated or not.
 	if ( ! $response['success'] ) {
 		wp_send_json_error( array(
@@ -334,12 +325,21 @@ function give_deactivate_license_handler() {
 		) );
 	}
 
+	$is_all_access_pass = $give_licenses[ $license ]['is_all_access_pass'];
+
+	if ( ! empty( $give_licenses[ $license ] ) ) {
+		unset( $give_licenses[ $license ] );
+		update_option( 'give_licenses', $give_licenses );
+	}
+
+	$response['html'] = $is_all_access_pass
+		? Give_Addons::render_license_section()
+		: Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
+
 	// Tell WordPress to look for updates.
 	set_site_transient( 'update_plugins', null );
 
 	wp_send_json_success( $response );
-
-	// @todo update whole license section when all access pass deactivated.
 }
 
 add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler' );

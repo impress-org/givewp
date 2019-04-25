@@ -199,13 +199,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			self::$account_url      = is_null( $_account_url ) ? self::$account_url : $_account_url;
 			$this->auto_updater_obj = null;
 
-			// Add Setting for Give Add-on activation status.
-			$is_addon_activated = Give_Cache_Setting::get_option( 'give_is_addon_activated' );
-			if ( ! $is_addon_activated && is_object( $this ) ) {
-				update_option( 'give_is_addon_activated', true, false );
-				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
-			}
-
 			// Add plugin to registered licenses list.
 			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
 
@@ -588,6 +581,39 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return self::$account_url;
 		}
 
+		/**
+		 * Get plugin information by id.
+		 * Note: only for internal use
+		 *
+		 * @param string $plugin_slug
+		 *
+		 * @return array
+		 * @since 2.5.0
+		 *
+		 */
+		public static function get_plugin_by_slug( $plugin_slug ) {
+			$give_plugins   = give_get_plugins();
+			$matching_list  = wp_list_pluck( $give_plugins, 'Dir', 'Path' );
+			$is_match_found = array_search( $plugin_slug, $matching_list, true );
+
+			return $is_match_found ? $give_plugins[ $is_match_found ] : array();
+		}
+
+		/**
+		 * Get plugin information by id.
+		 * Note: only for internal use
+		 *
+		 * @param string $plugin_slug
+		 *
+		 * @return string
+		 * @since 2.5.0
+		 *
+		 */
+		public static function build_plugin_name_from_slug( $plugin_slug ) {
+			$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
+
+			return ucwords( $plugin_name );
+		}
 	}
 
 endif; // end class_exists check.
