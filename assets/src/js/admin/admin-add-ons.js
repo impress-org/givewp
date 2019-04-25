@@ -217,7 +217,8 @@
 			  $file = $( 'input[type="file"]', $form ),
 			  $activateBtnContainer = $( '.give-activate-addon-wrap', $container ),
 			  $activateBtn = $( 'button', $activateBtnContainer ),
-			  $noticeContainer = $( '.give-notices', $container );
+			  $noticeContainer = $( '.give-notices', $container ),
+			  $dropzoneTextWrap = $( '.give-addon-dropzone-text-wrap', $container );
 
 		/**
 		 * File drop handler
@@ -323,8 +324,12 @@
 				dataType: 'json',
 				beforeSend: function() {
 					$noticeContainer.html( `<div class="give-notice notice notice-info"><p>${ give_addon_var.notices.uploading }</p></div>` );
+					$dropzoneTextWrap.css('visibility', 'hidden');
 				},
 				success: function( response ) {
+
+					$dropzoneTextWrap.css('visibility', 'visible');
+					
 					if ( true === response.success ) {
 						$activateBtnContainer.show();
 						$formContainer.hide();
@@ -336,7 +341,6 @@
 
 						return;
 					}
-
 					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p></div>` );
 				},
 			} );
