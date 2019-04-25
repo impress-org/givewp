@@ -215,13 +215,13 @@ class Give_Addons {
 					);
 
 					$plugin = wp_parse_args(
-						self::get_plugin_by_slug( $addon['plugin_slug'] ),
+						Give_License::get_plugin_by_slug( $addon['plugin_slug'] ),
 						$default_plugin
 					);
 
 					$plugin['Name'] = false !== strpos( $plugin['Name'], 'Give' )
 						? $plugin['Name']
-						: self::build_plugin_name_from_slug( $addon['plugin_slug'] );
+						: Give_License::build_plugin_name_from_slug( $addon['plugin_slug'] );
 
 					$plugin['License'] = $license;
 
@@ -304,7 +304,7 @@ class Give_Addons {
 
 					if ( ! $is_license_expired ) {
 						echo sprintf(
-							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s">%2$s</a> </span>',
+							'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
 							// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
 							__( 'Visit site', 'give' ),
 							__( 'Deactivate', 'give' ),
@@ -312,7 +312,8 @@ class Give_Addons {
 							$license['payment_id'],
 							$license['license_key'],
 							$license['item_name'],
-							wp_create_nonce( "give-deactivate-license-{$license['item_name']}" )
+							wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
+							! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : ''
 						);
 					}
 				}
@@ -413,41 +414,6 @@ class Give_Addons {
 		<?php
 
 		return ob_get_clean();
-	}
-
-
-	/**
-	 * Get plugin information by id.
-	 * Note: only for internal use
-	 *
-	 * @param string $plugin_slug
-	 *
-	 * @return array
-	 * @since 2.5.0
-	 *
-	 */
-	private static function get_plugin_by_slug( $plugin_slug ) {
-		$give_plugins   = give_get_plugins();
-		$matching_list  = wp_list_pluck( $give_plugins, 'Dir', 'Path' );
-		$is_match_found = array_search( $plugin_slug, $matching_list, true );
-
-		return $is_match_found ? $give_plugins[ $is_match_found ] : array();
-	}
-
-	/**
-	 * Get plugin information by id.
-	 * Note: only for internal use
-	 *
-	 * @param string $plugin_slug
-	 *
-	 * @return string
-	 * @since 2.5.0
-	 *
-	 */
-	private static function build_plugin_name_from_slug( $plugin_slug ) {
-		$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
-
-		return ucwords( $plugin_name );
 	}
 }
 

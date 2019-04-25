@@ -588,6 +588,39 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return self::$account_url;
 		}
 
+		/**
+		 * Get plugin information by id.
+		 * Note: only for internal use
+		 *
+		 * @param string $plugin_slug
+		 *
+		 * @return array
+		 * @since 2.5.0
+		 *
+		 */
+		public static function get_plugin_by_slug( $plugin_slug ) {
+			$give_plugins   = give_get_plugins();
+			$matching_list  = wp_list_pluck( $give_plugins, 'Dir', 'Path' );
+			$is_match_found = array_search( $plugin_slug, $matching_list, true );
+
+			return $is_match_found ? $give_plugins[ $is_match_found ] : array();
+		}
+
+		/**
+		 * Get plugin information by id.
+		 * Note: only for internal use
+		 *
+		 * @param string $plugin_slug
+		 *
+		 * @return string
+		 * @since 2.5.0
+		 *
+		 */
+		public static function build_plugin_name_from_slug( $plugin_slug ) {
+			$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
+
+			return ucwords( $plugin_name );
+		}
 	}
 
 endif; // end class_exists check.

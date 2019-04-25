@@ -71,7 +71,8 @@
 			e.preventDefault();
 
 			const $this = $( this ),
-				  $container = $this.parents( '.give-addon-wrap' );
+				  $container = $this.parents( '.give-addon-wrap' ),
+				  is_all_access_pass = 1 < $this.parents('.give-addon-inner').find('.give-plugin__info').length;
 
 			// Remove errors if any.
 			$('.give-notice', $container).remove();
@@ -83,21 +84,34 @@
 					action: 'give_deactivate_license',
 					license: $this.attr( 'data-license-key' ),
 					item_name: $this.attr( 'data-item-name' ),
-					_wpnonce: $this.attr( 'data-nonce' ),
+					plugin_dirname: $this.attr( 'data-plugin-dirname' ),
+					_wpnonce: $this.attr( 'data-nonce' )
 				},
 				beforeSend: function() {
-					loader( $container );
+					if( is_all_access_pass ) {
+						loader( $licensesContainer );
+					} else{
+						loader( $container );
+					}
 				},
 				success: function( response ) {
 					if ( true === response.success ) {
-						$container.replaceWith( response.data.html );
+						if( is_all_access_pass  ) {
+							$licensesContainer.replaceWith( response.data.html );
+						} else{
+							$container.replaceWith( response.data.html );
+						}
 						return;
 					}
 
 					$('.give-addon-inner', $container).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
-				loader( $container, false );
+				if( is_all_access_pass ) {
+					loader( $licensesContainer, false );
+				} else{
+					loader( $container, false );
+				}
 			} );
 		} );
 
