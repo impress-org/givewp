@@ -586,6 +586,11 @@ class Give_Updates {
 	 */
 	public function __show_notice() {
 		$current_screen = get_current_screen();
+		$hide_on_pages = array(
+			'give_forms_page_give-updates',
+			'update-core',
+			'give_forms_page_give-addons'
+		);
 
 		// Bailout.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -597,9 +602,8 @@ class Give_Updates {
 			$this->run_db_update();
 		}
 
-
 		// Bailout.
-		if ( in_array( $current_screen->base, array( 'give_forms_page_give-updates', 'update-core' ) ) ) {
+		if ( in_array( $current_screen->base, $hide_on_pages ) ) {
 			return;
 		}
 
