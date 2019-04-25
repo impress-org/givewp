@@ -215,13 +215,13 @@ class Give_Addons {
 					);
 
 					$plugin = wp_parse_args(
-						self::get_plugin_by_slug( $addon['plugin_slug'] ),
+						Give_License::get_plugin_by_slug( $addon['plugin_slug'] ),
 						$default_plugin
 					);
 
 					$plugin['Name'] = false !== strpos( $plugin['Name'], 'Give' )
 						? $plugin['Name']
-						: self::build_plugin_name_from_slug( $addon['plugin_slug'] );
+						: Give_License::build_plugin_name_from_slug( $addon['plugin_slug'] );
 
 					$plugin['License'] = $license;
 
