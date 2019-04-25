@@ -279,7 +279,6 @@ add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
 function give_deactivate_license_handler() {
 	$license   = give_clean( $_POST['license'] );
 	$item_name = give_clean( $_POST['item_name'] );
-	$response  = array();
 
 	if ( ! $license || ! $item_name ) {
 		wp_send_json_error();
