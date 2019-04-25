@@ -260,7 +260,7 @@ class Give_Addons {
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 						<?php if ( ! $license_key ) : ?>
 							&nbsp;&nbsp;
-							<button class="give-button__license-activate button-secondary" data-item-name="<?php echo $license['item_name']; ?>" disabled><?php _e( 'Activate License' ); ?></button>
+							<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
 						<?php endif; ?>
 					</span>
 
