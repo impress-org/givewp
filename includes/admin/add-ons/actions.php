@@ -279,16 +279,26 @@ add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
 function give_deactivate_license_handler() {
 	$license   = give_clean( $_POST['license'] );
 	$item_name = give_clean( $_POST['item_name'] );
+	$response  = array();
 
 	if ( ! $license || ! $item_name ) {
 		wp_send_json_error();
 	}
 
-	check_admin_referer("give-deactivate-license-{$item_name}" );
+	check_admin_referer( "give-deactivate-license-{$item_name}" );
 
 	// check user permission.
-	if( ! current_user_can( 'manage_give_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
+	}
+
+	$give_licenses = get_option( 'give_licenses', array() );
+
+	if ( empty( $give_licenses[ $license ] ) ) {
+		wp_send_json_error( array(
+				'errorMsg' => __( 'We are unable to deactivate invalid license', 'give' ),
+			)
+		);
 	}
 
 	/* @var array|WP_Error $response */
