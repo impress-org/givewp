@@ -478,7 +478,7 @@ function give_add_ons_page() {
 
 		<div class="give-subheader give-clearfix">
 
-			<h1>GiveWP Add-ons</h1>
+			<h1>Give Add-ons</h1>
 
 			<p class="give-subheader-right-text"><?php esc_html_e( 'Maximize your fundraising potential with official add-ons from GiveWP.com.', 'give' ); ?></p>
 
