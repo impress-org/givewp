@@ -81,7 +81,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 				$message = sprintf(
 					/* translators: 1. Processing result. */
 					__( 'Processed event: %s', 'give' ),
-					$result
+					$processed_event
 				);
 			}
 
