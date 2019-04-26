@@ -2447,35 +2447,45 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
  * Refresh all givewp license.
  *
  * @access public
+ * @return array
  * @since  2.5.0
  *
- * @return array
  */
 function give_refresh_licenses() {
 	$give_licenses = get_option( 'give_licenses', array() );
 
-	if( ! empty( $give_licenses ) ) {
-		/* @var stdClass $data */
-		foreach ( $give_licenses as $key => $data ) {
-			$tmp = Give_License::request_license_api(array(
-				'edd_action' => 'check_license',
-				'license' => $key
-			), true );
+	if ( ! $give_licenses ) {
+		return $give_licenses;
+	}
 
-			if( is_wp_error( $tmp ) ) {
-				continue;
-			}
+	$license_keys = implode( ',', array_keys( $give_licenses ) );
+	$tmp          = Give_License::request_license_api( array(
+		'edd_action' => 'check_licenses',
+		'licenses'   => $license_keys,
+	));
 
-			if( ! $tmp['success'] ) {
-				unset( $give_licenses[$key] );
-				continue;
-			}
 
-			$give_licenses[$key] = $tmp;
+	if( is_wp_error( $tmp ) ) {
+		return $give_licenses;
+	}
+
+	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
+
+	/* @var stdClass $data */
+	foreach ( $check_licenses as $key => $data ) {
+		if ( is_wp_error( $data ) ) {
+			continue;
 		}
 
-		update_option( 'give_licenses', $give_licenses );
+		if ( ! $data['success'] ) {
+			unset( $give_licenses[ $key ] );
+			continue;
+		}
+
+		$give_licenses[ $key ] = $data;
 	}
+
+	update_option( 'give_licenses', $give_licenses );
 
 	return $give_licenses;
 }
