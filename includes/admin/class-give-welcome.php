@@ -231,8 +231,25 @@ class Give_Welcome {
 							<p><?php esc_html_e( 'Having trouble? Our team is here to help if you have any questions or simply need assistance setting up your payment gateway.', 'give' ); ?></p>
 
 							<div class="give-welcome-connect-gateways">
-								<?php echo give_stripe_connect_button(); ?>
+
+								<ul class="give-feature-btns">
+									<li>
+										<?php echo give_stripe_connect_button(); ?>
+									</li>
+									<li>
+										<?php echo give_stripe_connect_button(); ?>
+									</li>
+									<li style="display: block; margin: 20px 0 0;">
+										<a href="https://givewp.com/addons/category/payment-gateways/" class="give-feature-btn-link"
+										   target="_blank"
+										   title="<?php esc_attr_e( 'View Premium Gateways', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateways', 'give' ); ?></a>
+									</li>
+								</ul>
+
+								<p class="give-welcome-gateway-notice give-field-description"><?php esc_html_e('Note:  The free version of Stripe does not include Apple or Google Pay and includes an additional 2% fee for one-time donations to the standard Stripe processing fee. Stripe Premium does not include any additional fees. PayPal Standard does not include any additional fee, however the donor will be taken to PayPal to process their donation before being redirected back to your site.', 'give'); ?></p>
+
 							</div>
+
 
 
 						</div>
@@ -265,6 +282,20 @@ class Give_Welcome {
 							</h3>
 
 							<p><?php esc_html_e( 'Donations are accepted through customizable forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. You can create multi-level forms which allow donors to choose from preconfigured donation amount, allow for custom amounts, and even set a fundraising goal. Customizing your forms with content and images is a breeze. You can also allow donors to leave comments, embed the form throughout your site and more.', 'give' ); ?></p>
+
+							<ul class="give-feature-btns">
+								<li>
+									<a href="<?php echo admin_url( 'post-new.php?post_type=give_forms' ); ?>"
+									   class="button button-primary button-large"
+									   title="<?php esc_attr_e( 'Add new donation form', 'give' ) ?>"><?php esc_html_e( 'Add Donation Form', 'give' ) ?></a>
+								</li>
+								<li>
+									<a href="#" class="give-feature-btn-link"
+									   target="_blank"
+									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
+								</li>
+							</ul>
+
 						</div>
 					</div>
 
@@ -284,8 +315,8 @@ class Give_Welcome {
 
 							<ul class="give-feature-btns">
 								<li>
-									<a href="<?php admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ); ?>"
-									   class="button button-large"
+									<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ); ?>"
+									   class="button button-primary button-large"
 									   title="<?php esc_attr_e( 'Configure Test Mode', 'give' ) ?>"><?php esc_html_e( 'Configure Test Mode', 'give' ) ?></a>
 								</li>
 								<li>
