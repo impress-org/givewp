@@ -2445,9 +2445,10 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
 
 /**
  * Refresh all givewp license.
+ * @return array
+ * @todo   write logic of all access pass
  *
  * @access public
- * @return array
  * @since  2.5.0
  *
  */
@@ -2462,10 +2463,10 @@ function give_refresh_licenses() {
 	$tmp          = Give_License::request_license_api( array(
 		'edd_action' => 'check_licenses',
 		'licenses'   => $license_keys,
-	));
+	) );
 
 
-	if( is_wp_error( $tmp ) ) {
+	if ( is_wp_error( $tmp ) ) {
 		return $give_licenses;
 	}
 
@@ -2485,7 +2486,33 @@ function give_refresh_licenses() {
 		$give_licenses[ $key ] = $data;
 	}
 
+	$tmp_update_plugins = json_decode( json_encode( wp_list_pluck( $tmp, 'get_version' ) ), true );
+	$update_plugins     = get_site_transient( 'update_plugins' );
+
+	foreach ( $tmp_update_plugins as $key => $plugin ) {
+		if ( is_array( $check_licenses[ $key ]['download'] ) ) {
+			continue;
+		}
+
+		$tmp_plugin = Give_License::get_plugin_by_slug( $check_licenses[ $key ]['plugin_slug'] );
+
+		// Continue if version > newer version.
+		if ( -1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
+			continue;
+		}
+
+		$tmp           = $plugin;
+		$tmp['icon']   = (array) $plugin['icon'];
+		$tmp['banner'] = (array) $plugin['banner'];
+
+		$update_plugins->response[ $tmp_plugin['Path'] ] = (object) $tmp;
+		$update_plugins->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
+	}
+
+	$update_plugins->last_checked = time();
+
 	update_option( 'give_licenses', $give_licenses );
+	set_site_transient( 'update_plugins', $update_plugins );
 
 	return $give_licenses;
 }
