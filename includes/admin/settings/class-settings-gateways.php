@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name' => __( 'PayPal Email', 'give' ),
-							'desc' => __( 'Enter your PayPal account\'s email.', 'give' ),
+							'desc' => __( 'Enter the email address associated with your PayPal account to connect with the gateway.', 'give' ),
 							'id'   => 'paypal_email',
 							'type' => 'email',
 						),

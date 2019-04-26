@@ -17,6 +17,7 @@
 .give-welcome-header {
 	background: #FFF;
 	height: 100%;
+	min-width: 1000px;
 
 	.give-welcome-header-inner {
 		max-width: 900px;
@@ -26,7 +27,7 @@
 	}
 
 	.give-welcome-h1 {
-		margin: .2em 200px 0 0;
+		margin: 0 200px 0 0;
 		padding: 0;
 		color: #32373c;
 		line-height: 1.2em;
@@ -75,9 +76,13 @@
 }
 
 .give-welcome-content-wrap {
-	max-width: 1120px;
-	min-width: 1000px;
-	padding: 30px;
+	padding: 0;
+	margin: 0;
+
+	&.give-changelog-wrap {
+		width: 1140px;
+	}
+
 }
 
 // Getting Started
@@ -85,7 +90,9 @@
 	font-size: 22px;
 	font-style: italic;
 	color: #8E8E8E;
-	margin: 30px 0 60px;
+	margin: 50px 30px 60px;
+	max-width: 1400px;
+	min-width: 1000px;
 }
 
 // iPad showcase.
@@ -111,12 +118,26 @@
 
 // Feature section
 .give-feature-section {
-	display: flex;
-	flex-direction: row;
 	margin: 0;
-	padding: 0 0 160px;
-	align-items: center;
-	justify-content: center;
+	padding: 120px 30px;
+
+	&__inner {
+		display: flex;
+		flex-direction: row;
+		margin: 0;
+		align-items: center;
+		justify-content: center;
+		max-width: 1400px;
+		min-width: 1000px;
+	}
+
+	&:first-of-type {
+		padding-top: 0;
+	}
+
+	&__step2 {
+		background: #FFF;
+	}
 
 	span.dashicons {
 		width: 16px;
@@ -128,6 +149,7 @@
 	.give-feature-section-item {
 		display: flex;
 		width: 50%;
+
 
 		&__container {
 			padding: 0 60px 0 0;
@@ -201,6 +223,92 @@
 	.twitter-item-wrap {
 		margin: 0 20px 10px 0;
 	}
+}
+
+
+// Welcome widgets on Changelog and Getting Started
+.give-welcome-widgets {
+	background: #FFF;
+	text-align: center;
+	padding: 100px 0 160px;
+
+	p {
+		font-size: 16px;
+	}
+
+	&__inner {
+		max-width: 1400px;
+	}
+
+	&__heading {
+		max-width: 500px;
+		margin: 0 auto 100px;
+
+		h2 {
+			font-size: 26px;
+			font-weight: 500;
+		}
+
+		.button {
+			margin-top: 10px;
+			font-size: 15px;
+		}
+
+	}
+
+
+	&__col {
+		float: left;
+		width: 33.33%;
+		box-sizing: border-box;
+		padding: 0 20px;
+
+		h3 {
+			font-size: 22px;
+			font-weight: 500;
+
+			&:before {
+				background: url('../../images/admin/happy-face.svg') no-repeat center top transparent;
+				opacity: 0.3;
+				content: ' ';
+				width: 100%;
+				height: 85px;
+				display: inline-block;
+				font-size: 80px;
+				@include easing-transition();
+			}
+
+		}
+
+		p {
+			font-size: 13px;
+		}
+
+		&:hover h3:before {
+			opacity: 0.45;
+		}
+
+	}
+
+	&__addons h3:before {
+		background: url('../../images/admin/shopping-cart.svg') no-repeat center top transparent;
+	}
+
+	&__documentation h3:before {
+		background: url('../../images/admin/docs-book.svg') no-repeat center top transparent;
+	}
+
+	&__col-inner {
+		max-width: 300px;
+		margin: 0 auto;
+	}
+
+	&__link {
+		font-weight: bold;
+		font-size: 15px;
+	}
+
+
 }
 
 //Credits
@@ -278,12 +386,12 @@
 
 }
 
-
 // Changelog.
 .give-changelog-wrap {
 
 	.give-changelog {
 		max-height: 510px;
+		margin: 0 0 100px 30px;
 		padding: 20px;
 		overflow-y: scroll;
 		overflow-x: hidden;
@@ -312,5 +420,42 @@
 
 		}
 
+	}
+}
+
+// Removes the bottom gray border added by WP core.
+.dashboard_page_give-getting-started,
+.dashboard_page_give-changelog {
+
+	#wpbody-content {
+		padding-bottom: 0;
+	}
+
+}
+
+// Connect with PayPal button.
+#give-paypal-connect {
+
+	background: #039CDE;
+	color: #FFF;
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: bold;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	box-shadow: none;
+	text-decoration: none;
+	padding: 8px 20px;
+	border-radius: 40px;
+
+	span:before {
+		content: ' ';
+		width: 16px;
+		height: 16px;
+		display: inline-block;
+		margin: 0 8px 0 0;
+		background-image: url(../../images/admin/paypal-48.png);
+		background-size: 16px;
+		position: relative;
+		top: 2px;
 	}
 }

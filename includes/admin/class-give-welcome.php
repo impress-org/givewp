@@ -63,7 +63,7 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Give %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
@@ -73,7 +73,7 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Give %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
@@ -156,7 +156,7 @@ class Give_Welcome {
 			case 'give-credits':
 				$title   = sprintf( __( 'GitHub Contributors', 'give' ) );
 				$content = sprintf(
-				/* translators: %s: https://github.com/impress-org/give */
+					/* translators: %s: https://github.com/impress-org/give */
 					__( 'Give is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
@@ -186,7 +186,7 @@ class Give_Welcome {
 				<div class="give-badge">
 					<?php
 					printf(
-					/* translators: %s: Give version */
+						/* translators: %s: Give version */
 						esc_html__( 'Version %s', 'give' ),
 						$display_version
 					);
@@ -219,128 +219,145 @@ class Give_Welcome {
 				<p class="give-welcome-content-intro"><?php esc_html_e( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
 
 				<div class="give-feature-section give-clearfix">
-					<div class="give-feature-section-item">
-						<div class="give-feature-section-item__container">
-							<h3>
-								<span class="give-feature-section-item-number">1</span>
-								<?php esc_html_e( 'Configure your payment methods', 'give' ); ?>
-							</h3>
+					<div class="give-feature-section__inner">
+						<div class="give-feature-section-item">
+							<div class="give-feature-section-item__container">
+								<h3>
+									<span class="give-feature-section-item-number">1</span>
+									<?php esc_html_e( 'Configure your payment methods', 'give' ); ?>
+								</h3>
 
-							<p><?php esc_html_e( 'Before you can beging fundraising you will first need to be able to accept payments through your online donation forms. Give supports many of the top payment processors and includes Stripe and PayPal Standard for free in the core plugin. Please ensure that your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'Before you can begin fundraising, first you need to set up your payment gateway. Payment gateways allow you to accept payment methods through your donation forms. Give supports many of the top payment processors through our add-ons. Stripe and PayPal Standard are included for free in the core plugin. Please ensure your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
 
-							<p><?php esc_html_e( 'Having trouble? Our team is here to help if you have any questions or simply need assistance setting up your payment gateway.', 'give' ); ?></p>
+								<p><?php echo sprintf( __( 'Having Trouble? Our team is here to help if you need to ask any questions. If you need help setting up your payment gateway, contact our <a href="%s" target="_blank">support team</a>.', 'give' ), 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
 
-							<div class="give-welcome-connect-gateways">
+								<div class="give-welcome-connect-gateways">
+
+									<ul class="give-feature-btns">
+										<li>
+											<?php echo give_stripe_connect_button(); ?>
+										</li>
+										<li>
+											<?php echo give_paypal_connect_button(); ?>
+										</li>
+										<li style="display: block; margin: 20px 0 0;">
+											<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=welcome-screen&utm_medium=getting-started"
+											   class="give-feature-btn-link"
+											   target="_blank"
+											   title="<?php esc_attr_e( 'View Premium Gateways', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateways', 'give' ); ?></a>
+										</li>
+									</ul>
+
+									<p class="give-welcome-gateway-notice give-field-description"><?php esc_html_e( 'Note: The free version of the Stripe payment gateway for Give does not include Apple or Google Pay. In the core plugin, using the free version of Stripe includes an additional 2% fee for a one-time donation in addition to the standard Stripe processing fee. Stripe Premium (the Stripe Add-on for Give) does not include this additional fee. Using PayPal standard does not include any additional fees. However, the donor will be taken to PayPal’s website to process their donation before being redirected back to your site.', 'give' ); ?></p>
+
+								</div>
+
+
+							</div>
+						</div>
+
+						<div class="give-feature-section-item">
+							<div class="give-ipad-showcase-wrap">
+								<div class="give-ipad-showcase-inner">
+									<img
+										src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-1.gif">
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /.give-feature-section__inner -->
+				</div>
+				<!-- /.give-feature-section -->
+
+				<div class="give-feature-section give-feature-section__step2 give-clearfix">
+					<div class="give-feature-section__inner">
+						<div class="give-feature-section-item">
+							<div class=" give-ipad-showcase-wrap">
+								<div class="give-ipad-showcase-inner">
+									<img
+										src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-2.gif">
+								</div>
+							</div>
+						</div>
+
+						<div class="give-feature-section-item">
+							<div
+								class="give-feature-section-item__container give-feature-section-item__container-right">
+								<h3>
+									<span class="give-feature-section-item-number">2</span>
+									<?php esc_html_e( 'Create your first donation form', 'give' ); ?>
+								</h3>
+
+								<p><?php esc_html_e( 'Donations are accepted through customizable forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. You can create multi-level forms which allow donors to choose from preconfigured donation amount, allow for custom amounts, and even set a fundraising goal. Customizing your forms with content and images is a breeze. You can also allow donors to leave comments, embed the form throughout your site and more.', 'give' ); ?></p>
 
 								<ul class="give-feature-btns">
 									<li>
-										<?php echo give_stripe_connect_button(); ?>
+										<a href="<?php echo admin_url( 'post-new.php?post_type=give_forms' ); ?>"
+										   class="button button-primary button-large"
+										   title="<?php esc_attr_e( 'Add new donation form', 'give' ); ?>"><?php esc_html_e( 'Add Donation Form', 'give' ); ?></a>
 									</li>
 									<li>
-										<?php echo give_stripe_connect_button(); ?>
-									</li>
-									<li style="display: block; margin: 20px 0 0;">
-										<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=welcome-screen&utm_medium=getting-started" class="give-feature-btn-link"
+										<a href="http://docs.givewp.com/give-forms" class="give-feature-btn-link"
 										   target="_blank"
-										   title="<?php esc_attr_e( 'View Premium Gateways', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateways', 'give' ); ?></a>
+										   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ); ?></a>
 									</li>
 								</ul>
 
-								<p class="give-welcome-gateway-notice give-field-description"><?php esc_html_e('Note:  The free version of Stripe does not include Apple or Google Pay and includes an additional 2% fee for one-time donations to the standard Stripe processing fee. Stripe Premium does not include any additional fees. PayPal Standard does not include any additional fee, however the donor will be taken to PayPal to process their donation before being redirected back to your site.', 'give'); ?></p>
+							</div>
+						</div>
+
+					</div>
+					<!-- /.give-feature-section__inner -->
+				</div>
+				<!-- /.give-feature-section -->
+
+				<div class="give-feature-section give-clearfix">
+					<div class="give-feature-section__inner">
+
+						<div class="give-feature-section-item">
+							<div class="give-feature-section-item__container">
+								<h3>
+									<span class="give-feature-section-item-number">3</span>
+									<?php esc_html_e( 'Test and launch your campaign!', 'give' ); ?>
+								</h3>
+
+								<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+
+								<ul class="give-feature-btns">
+									<li>
+										<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ); ?>"
+										   class="button button-primary button-large"
+										   title="<?php esc_attr_e( 'Configure Test Mode', 'give' ); ?>"><?php esc_html_e( 'Configure Test Mode', 'give' ); ?></a>
+									</li>
+									<li>
+										<a href="http://docs.givewp.com/test-mode" class="give-feature-btn-link"
+										   target="_blank"
+										   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ); ?></a>
+									</li>
+								</ul>
 
 							</div>
-
-
-
 						</div>
-					</div>
 
-					<div class="give-feature-section-item give-ipad-showcase-wrap">
-						<div class="give-ipad-showcase-inner">
-							<img
-								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-1.gif">
+						<div class="give-feature-section-item">
+							<div class="give-ipad-showcase-wrap">
+								<div class="give-ipad-showcase-inner">
+									<img
+										src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-3.gif">
+								</div>
+							</div>
 						</div>
+
 					</div>
-
-				</div>
-				<!-- /.give-feature-section -->
-
-				<div class="give-feature-section give-clearfix">
-
-					<div class="give-feature-section-item give-ipad-showcase-wrap">
-						<div class="give-ipad-showcase-inner">
-							<img
-								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-2.gif">
-						</div>
-					</div>
-
-					<div class="give-feature-section-item">
-						<div class="give-feature-section-item__container give-feature-section-item__container-right">
-							<h3>
-								<span class="give-feature-section-item-number">2</span>
-								<?php esc_html_e( 'Create your first donation form', 'give' ); ?>
-							</h3>
-
-							<p><?php esc_html_e( 'Donations are accepted through customizable forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. You can create multi-level forms which allow donors to choose from preconfigured donation amount, allow for custom amounts, and even set a fundraising goal. Customizing your forms with content and images is a breeze. You can also allow donors to leave comments, embed the form throughout your site and more.', 'give' ); ?></p>
-
-							<ul class="give-feature-btns">
-								<li>
-									<a href="<?php echo admin_url( 'post-new.php?post_type=give_forms' ); ?>"
-									   class="button button-primary button-large"
-									   title="<?php esc_attr_e( 'Add new donation form', 'give' ) ?>"><?php esc_html_e( 'Add Donation Form', 'give' ) ?></a>
-								</li>
-								<li>
-									<a href="http://docs.givewp.com/give-forms" class="give-feature-btn-link"
-									   target="_blank"
-									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
-								</li>
-							</ul>
-
-						</div>
-					</div>
-
-				</div>
-				<!-- /.give-feature-section -->
-
-				<div class="give-feature-section give-clearfix">
-
-					<div class="give-feature-section-item">
-						<div class="give-feature-section-item__container">
-							<h3>
-								<span class="give-feature-section-item-number">3</span>
-								<?php esc_html_e( 'Test and launch your campaign!', 'give' ); ?>
-							</h3>
-
-							<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
-
-							<ul class="give-feature-btns">
-								<li>
-									<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ); ?>"
-									   class="button button-primary button-large"
-									   title="<?php esc_attr_e( 'Configure Test Mode', 'give' ) ?>"><?php esc_html_e( 'Configure Test Mode', 'give' ) ?></a>
-								</li>
-								<li>
-									<a href="http://docs.givewp.com/test-mode" class="give-feature-btn-link"
-									   target="_blank"
-									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
-								</li>
-							</ul>
-
-						</div>
-					</div>
-
-					<div class="give-feature-section-item give-ipad-showcase-wrap">
-						<div class="give-ipad-showcase-inner">
-							<img
-								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-3.gif">
-						</div>
-					</div>
-
+					<!-- /.give-feature-section__inner -->
 				</div>
 				<!-- /.give-feature-section -->
 
 			</div>
 			<!-- /.give-welcome-content-wrap -->
+
+			<?php $this->support_widgets(); ?>
 
 		</div>
 		<?php
@@ -363,13 +380,15 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-				<p class="give-welcome-content-intro"><?php printf( __( 'See what\'s new in version %1$s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%2$s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/' ); ?></p>
+				<p class="give-welcome-content-intro"><?php printf( __( 'See what\'s new in version %1$s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%2$s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
 
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>
 				</div>
 
 			</div>
+
+			<?php $this->support_widgets(); ?>
 
 		</div>
 		<?php
@@ -396,7 +415,7 @@ class Give_Welcome {
 
 					<?php
 					printf(
-					/* translators: %s: https://github.com/impress-org/give */
+						/* translators: %s: https://github.com/impress-org/give */
 						__( 'Give is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 						esc_url( 'https://github.com/impress-org/give' )
 					);
@@ -521,7 +540,7 @@ class Give_Welcome {
 			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">
 				<?php
 				printf(
-				/* translators: %s: Give twitter user @givewp */
+					/* translators: %s: Give twitter user @givewp */
 					esc_html_e( 'Follow %s', 'give' ),
 					'@givewp'
 				);
@@ -544,10 +563,60 @@ class Give_Welcome {
 		<?php
 	}
 
+	/**
+	 * Support widgets.
+	 *
+	 * @since 2.5.0
+	 */
+	public function support_widgets() {
+	?>
+
+			<div class="give-welcome-widgets give-clearfix">
+			<div class="give-welcome-widgets__inner">
+
+				<div class="give-welcome-widgets__heading">
+					<h2><?php esc_html_e( 'Start off on the right foot', 'give' ); ?></h2>
+					<p><?php esc_html_e( 'If you aren’t quite sure how to get started or you want to see the best ways to use Give for your fundraising needs, book a demo. Our Customer Success Team is happy to help.', 'give' ); ?></p>
+
+					<a href="https://givewp.com/schedule-a-demo/?utm_source=welcome-screen&utm_medium=getting-started"
+					   class="give-welcome-widgets__demo-btn button button-large"
+					   target="_blank"><?php esc_html_e( 'Schedule a Demo', 'give' ); ?></a>
+				</div>
+
+				<div class="give-welcome-widgets__col give-welcome-widgets__support">
+					<div class="give-welcome-widgets__col-inner">
+						<h3><?php esc_html_e( 'Support', 'give' ); ?></h3>
+						<p><?php esc_html_e( 'Inevitably questions arise when building great fundraising websites. That’s exactly why we have a dedicated support staff of Give experts to help you succeed with your campaign. ', 'give' ); ?></p>
+
+						<a href="https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started" class="give-welcome-widgets__link"
+						   target="_blank"><?php esc_html_e( 'How support works', 'give' ); ?></a>
+
+					</div>
+				</div>
+				<div class="give-welcome-widgets__col give-welcome-widgets__addons">
+					<div class="give-welcome-widgets__col-inner">
+						<h3><?php esc_html_e( 'Add-ons', 'give' ); ?></h3>
+						<p><?php esc_html_e( 'Accept recurring donations, add custom donation form fields, ask donors to cover processing fees and more! Level up your fundraisers by extending Give with add-ons.', 'give' ); ?></p>
+						<a href="https://givewp.com/addons/?utm_source=welcome-screen&utm_medium=getting-started" class="give-welcome-widgets__link"
+						   target="_blank"><?php esc_html_e( 'Power up my fundraising', 'give' ); ?></a>
+					</div>
+				</div>
+				<div class="give-welcome-widgets__col give-welcome-widgets__documentation">
+					<div class="give-welcome-widgets__col-inner">
+						<h3><?php esc_html_e( 'Documentation', 'give' ); ?></h3>
+						<p><?php esc_html_e( 'Learn the ins and outs of Give with well organized and clearly written documentation. You can search using a keyword to find articles for Give Core and each add-on. ', 'give' ); ?></p>
+						<a href="https://givewp.com/documentation/?utm_source=welcome-screen&utm_medium=getting-started" class="give-welcome-widgets__link"
+						   target="_blank"><?php esc_html_e( 'Check out the docs', 'give' ); ?></a>
+					</div>
+				</div>
+
+			</div>
+			</div>
+	<?php
+	}
 
 	/**
-	 * Sends user to the Welcome page on first activation of GIVE as well as each
-	 * time GIVE is upgraded to a new version
+	 * Sends user to the Welcome page on first activation of Give.
 	 *
 	 * @access public
 	 * @return void
@@ -595,9 +664,9 @@ class Give_Welcome {
 			<p class="give-newsletter-intro"><?php esc_html_e( 'Sign up for the below to stay informed about important updates, release notes, fundraising tips, and more! We\'ll never spam you.', 'give' ); ?></p>
 
 			<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-			      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
-			      class="give-newsletter-form validate"
-			      target="_blank">
+				  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
+				  class="give-newsletter-form validate"
+				  target="_blank">
 				<div class="give-newsletter-confirmation">
 					<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
 				</div>
@@ -606,29 +675,29 @@ class Give_Welcome {
 					<tr valign="middle">
 						<td>
 							<label for="mce-EMAIL"
-							       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+								   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 							<input type="email" name="EMAIL" id="mce-EMAIL"
-							       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-							       class="required email" value="<?php echo $current_user->user_email; ?>" required>
+								   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+								   class="required email" value="<?php echo $current_user->user_email; ?>" required>
 						</td>
 						<td>
 							<label for="mce-FNAME"
-							       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+								   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 							<input type="text" name="FNAME" id="mce-FNAME"
-							       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class=""
-							       value="<?php echo $current_user->user_firstname; ?>" required>
+								   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class=""
+								   value="<?php echo $current_user->user_firstname; ?>" required>
 						</td>
 						<td>
 							<label for="mce-LNAME"
-							       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+								   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 							<input type="text" name="LNAME" id="mce-LNAME"
-							       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class=""
-							       value="<?php echo $current_user->user_lastname; ?>">
+								   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class=""
+								   value="<?php echo $current_user->user_lastname; ?>">
 						</td>
 						<td>
 							<input type="submit" name="subscribe" id="mc-embedded-subscribe"
-							       class="button button-primary"
-							       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+								   class="button button-primary"
+								   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 						</td>
 					</tr>
 				</table>
