@@ -196,7 +196,7 @@ class Give_Scripts {
 		$this->admin_localize_scripts();
 
 
-		if ( give_is_admin_page( 'addons' ) ) {
+		if ( Give_Admin_Settings::is_setting_page( 'licenses'  ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(

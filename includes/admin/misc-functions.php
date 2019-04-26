@@ -106,6 +106,7 @@ function give_slug_to_title( $string, $filters = array() ) {
 
 }
 
+
 /**
  * Display the API Keys
  *
