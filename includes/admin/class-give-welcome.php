@@ -223,7 +223,7 @@ class Give_Welcome {
 						<div class="give-feature-section-item__container">
 							<h3>
 								<span class="give-feature-section-item-number">1</span>
-								<?php esc_html_e( 'Configure Your Payment Methods', 'give' ); ?>
+								<?php esc_html_e( 'Configure your payment methods', 'give' ); ?>
 							</h3>
 
 							<p><?php esc_html_e( 'Before you can beging fundraising you will first need to be able to accept payments through your online donation forms. Give supports many of the top payment processors and includes Stripe and PayPal Standard for free in the core plugin. Please ensure that your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
@@ -259,9 +259,12 @@ class Give_Welcome {
 
 					<div class="give-feature-section-item">
 						<div class="give-feature-section-item__container give-feature-section-item__container-right">
-							<h3><?php esc_html_e( 'Customize Your Donation Forms', 'give' ); ?></h3>
+							<h3>
+								<span class="give-feature-section-item-number">2</span>
+								<?php esc_html_e( 'Create your first donation form', 'give' ); ?>
+							</h3>
 
-							<p><?php esc_html_e( 'Each donation form you create can be customized to receive either a pre-determined set donation amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the donation levels view where you can add as many levels as you\'d like with your own custom names and suggested amounts. As well, you can allow donors to give a custom amount and even set up donation goals.', 'give' ); ?></p>
+							<p><?php esc_html_e( 'Donations are accepted through customizable forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. You can create multi-level forms which allow donors to choose from preconfigured donation amount, allow for custom amounts, and even set a fundraising goal. Customizing your forms with content and images is a breeze. You can also allow donors to leave comments, embed the form throughout your site and more.', 'give' ); ?></p>
 						</div>
 					</div>
 
@@ -272,11 +275,26 @@ class Give_Welcome {
 
 					<div class="give-feature-section-item">
 						<div class="give-feature-section-item__container">
-							<h3><?php esc_html_e( 'STEP 3: Add Additional Content', 'give' ); ?></h3>
-
-							<p><?php esc_html_e( 'Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
+							<h3>
+								<span class="give-feature-section-item-number">3</span>
+								<?php esc_html_e( 'Test and launch your campaign!', 'give' ); ?>
+							</h3>
 
 							<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+
+							<ul class="give-feature-btns">
+								<li>
+									<a href="<?php admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ); ?>"
+									   class="button button-large"
+									   title="<?php esc_attr_e( 'Configure Test Mode', 'give' ) ?>"><?php esc_html_e( 'Configure Test Mode', 'give' ) ?></a>
+								</li>
+								<li>
+									<a href="#" class="give-feature-btn-link"
+									   target="_blank"
+									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
+								</li>
+							</ul>
+
 						</div>
 					</div>
 

@@ -85,7 +85,7 @@
 	font-size: 22px;
 	font-style: italic;
 	color: #8E8E8E;
-	margin: 10px 0 40px;
+	margin: 30px 0 60px;
 }
 
 // iPad showcase.
@@ -93,11 +93,13 @@
 	border: 3px solid #9199a5;
 	border-radius: 10px;
 	position: relative;
+	box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.40);
 
 	.give-ipad-showcase-inner {
 		background: #fafbfb;
 		border: 10px solid #1e2026;
 		border-radius: 7px;
+		display: grid;
 	}
 
 	img {
@@ -112,7 +114,7 @@
 	display: flex;
 	flex-direction: row;
 	margin: 0;
-	padding: 60px 0;
+	padding: 0 0 120px;
 
 	span.dashicons {
 		width: 16px;
@@ -159,6 +161,22 @@
 
 		p {
 			font-size: 16px;
+		}
+
+	}
+
+
+	.give-feature-btns {
+		margin: 30px 0;
+
+		li {
+			display: inline;
+			margin: 0 25px 0 0;
+		}
+
+		.give-feature-btn-link {
+			font-size: 15px;
+			line-height: 30px;
 		}
 
 	}
@@ -215,7 +233,7 @@
 	max-width: 900px;
 
 	.give-newsletter-intro {
-		font-size: 13px;
+		font-size: 14px;
 		font-style: italic;
 		color: #777;
 		margin: 0;
