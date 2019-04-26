@@ -77,8 +77,6 @@ Give_Addons::get_instance();
  * @since 1.0
  */
 function give_add_ons_page() {
-	add_thickbox();
-	// @todo: show plugin activate button if plugin uploaded successfully.
 	?>
 	<div class="wrap" id="give-addons">
 
