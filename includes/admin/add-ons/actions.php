@@ -130,9 +130,6 @@ function give_upload_addon_handler() {
 		}
 	}
 
-	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
-
 	wp_send_json_success( array(
 		'pluginPath' => $installed_addon['path'],
 		'pluginName' => $installed_addon['Name'],
@@ -335,9 +332,6 @@ function give_deactivate_license_handler() {
 	$response['html'] = $is_all_access_pass
 		? Give_License::render_licenses_list()
 		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
-
-	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
 
 	wp_send_json_success( $response );
 }

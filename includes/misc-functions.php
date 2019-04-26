@@ -17,9 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Is Test Mode Enabled.
  *
- * @since 1.0
- *
  * @return bool $ret True if return mode is enabled, false otherwise
+ * @since 1.0
  */
 function give_is_test_mode() {
 
@@ -32,8 +31,8 @@ function give_is_test_mode() {
 /**
  * Get the current page URL.
  *
- * @since 1.0
  * @return string $current_url Current page URL.
+ * @since 1.0
  */
 function give_get_current_page_url() {
 
@@ -56,9 +55,9 @@ function give_get_current_page_url() {
 	/**
 	 * Filter the current page url
 	 *
-	 * @since 1.0
-	 *
 	 * @param string $current_uri
+	 *
+	 * @since 1.0
 	 */
 	return apply_filters( 'give_get_current_page_url', $current_uri );
 
@@ -68,9 +67,8 @@ function give_get_current_page_url() {
 /**
  * Verify credit card numbers live?
  *
- * @since 1.0
- *
  * @return bool $ret True is verify credit cards is live
+ * @since 1.0
  */
 function give_is_cc_verify_enabled() {
 
@@ -93,9 +91,9 @@ function give_is_cc_verify_enabled() {
 	/**
 	 * Fire the filter
 	 *
-	 * @since 1.0
-	 *
 	 * @param bool $ret
+	 *
+	 * @since 1.0
 	 */
 	return (bool) apply_filters( 'give_is_cc_verify_enabled', $ret );
 }
@@ -103,8 +101,8 @@ function give_is_cc_verify_enabled() {
 /**
  * Retrieve timezone.
  *
- * @since 1.0
  * @return string $timezone The timezone ID.
+ * @since 1.0
  */
 function give_get_timezone_id() {
 
@@ -145,8 +143,8 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
- * @since 1.0
  * @return string $ip User's IP address
+ * @since 1.0
  */
 function give_get_ip() {
 
@@ -187,9 +185,9 @@ function give_get_ip() {
  *
  * Used for storing info about donation
  *
- * @since 1.0
- *
  * @param $purchase_data
+ *
+ * @since 1.0
  *
  * @uses  Give()->session->set()
  */
@@ -204,9 +202,9 @@ function give_set_purchase_session( $purchase_data = array() ) {
  * Used for retrieving info about donation
  * after completing a donation
  *
- * @since 1.0
- * @uses  Give()->session->get()
  * @return mixed array | false
+ * @uses  Give()->session->get()
+ * @since 1.0
  */
 function give_get_purchase_session() {
 	return Give()->session->get( 'give_purchase' );
@@ -215,9 +213,8 @@ function give_get_purchase_session() {
 /**
  * Retrieve Payment Key of the Receipt Access Session.
  *
- * @since 1.8.17
- *
  * @return array|string
+ * @since 1.8.17
  */
 function give_get_receipt_session() {
 	return Give()->session->get( 'receipt_access' );
@@ -226,9 +223,8 @@ function give_get_receipt_session() {
 /**
  * Retrieve Payment Key of the History Access Session.
  *
- * @since 1.8.17
- *
  * @return array|string
+ * @since 1.8.17
  */
 function give_get_history_session() {
 	return (bool) Give()->session->get( 'history_access' );
@@ -239,9 +235,8 @@ function give_get_history_session() {
  *
  * @param array $payment_data Payment Data.
  *
- * @since 1.8.14
- *
  * @return string By default, the name of the form. Then the price level text if any is found.
+ * @since 1.8.14
  */
 function give_payment_gateway_item_title( $payment_data ) {
 
@@ -273,9 +268,8 @@ function give_payment_gateway_item_title( $payment_data ) {
 	 * @param int    $form_id      Donation Form ID.
 	 * @param array  $payment_data Payment Data.
 	 *
-	 * @since 1.8.14
-	 *
 	 * @return string
+	 * @since 1.8.14
 	 */
 	return apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
 }
@@ -285,13 +279,12 @@ function give_payment_gateway_item_title( $payment_data ) {
  *
  * Creates a donation summary for payment gateways from the donation data before the payment is created in the database.
  *
- * @since       1.8.12
- *
  * @param array $donation_data
  * @param bool  $name_and_email
  * @param int   $length
  *
  * @return string
+ * @since       1.8.12
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
 
@@ -333,8 +326,8 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  *
  * Returns the webhost this site is using if possible
  *
- * @since 1.0
  * @return string $host if detected, false otherwise
+ * @since 1.0
  */
 function give_get_host() {
 	$find_host = gethostname();
@@ -345,8 +338,8 @@ function give_get_host() {
 		$host = 'WP Engine';
 	} elseif ( defined( 'PAGELYBIN' ) || strpos( $find_host, 'pagelyhosting.com' ) ) {
 		$host = 'Pagely';
-	} elseif ( strpos( $find_host, 'secureserver.net') ) {
-		$host = "GoDaddy/Media Temple";
+	} elseif ( strpos( $find_host, 'secureserver.net' ) ) {
+		$host = 'GoDaddy/Media Temple';
 	} elseif ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
 		$host = 'ICDSoft';
 	} elseif ( DB_HOST == 'mysqlv5' ) {
@@ -384,15 +377,15 @@ function give_get_host() {
  *
  * This function is to be used in every function that is deprecated.
  *
- * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
- *   and the version the function was deprecated in.
- * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
- *   trigger or false to not trigger error.
- *
  * @param string $function    The function that was called.
  * @param string $version     The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
  * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
+ *
+ * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
+ *       and the version the function was deprecated in.
+ * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
+ *       trigger or false to not trigger error.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -401,11 +394,11 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	 *
 	 * Allow you to hook to deprecated function call.
 	 *
-	 * @since 1.0
-	 *
 	 * @param string $function    The function that was called.
 	 * @param string $replacement Optional. The function that should have been called.
 	 * @param string $version     The plugin version that deprecated the function.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
@@ -445,8 +438,8 @@ function give_get_admin_post_id() {
 /**
  * Get PHP Arg Separator Output
  *
- * @since 1.0
  * @return string Arg separator output
+ * @since 1.0
  */
 function give_get_php_arg_separator_output() {
 	return ini_get( 'arg_separator.output' );
@@ -458,11 +451,10 @@ function give_get_php_arg_separator_output() {
  *
  * Takes a month number and returns the name three letter name of it.
  *
- * @since 1.0
- *
  * @param int $n
  *
  * @return string Short month name
+ * @since 1.0
  */
 function give_month_num_to_name( $n ) {
 	$timestamp = mktime( 0, 0, 0, $n, 1, 2005 );
@@ -473,11 +465,10 @@ function give_month_num_to_name( $n ) {
 /**
  * Checks whether function is disabled.
  *
- * @since 1.0
- *
  * @param string $function Name of the function.
  *
  * @return bool Whether or not function is disabled.
+ * @since 1.0
  */
 function give_is_func_disabled( $function ) {
 	$disabled = explode( ',', ini_get( 'disable_functions' ) );
@@ -511,11 +502,10 @@ function give_svg_icons( $icon ) {
 /**
  * Modify Admin Nav Menu Label
  *
- * @since 1.3
- *
  * @param object $post_type The current object to add a menu items meta box for.
  *
  * @return mixed
+ * @since 1.3
  */
 function modify_nav_menu_meta_box_object( $post_type ) {
 	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
@@ -530,11 +520,10 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 /**
  * Show Donation Forms Post Type in Appearance > Menus by default on fresh install.
  *
- * @since 1.8.14
- *
+ * @return bool
  * @todo  Remove this, when WordPress Core ticket is resolved (https://core.trac.wordpress.org/ticket/16828).
  *
- * @return bool
+ * @since 1.8.14
  */
 function give_donation_metabox_menu() {
 
@@ -675,11 +664,10 @@ if ( ! function_exists( 'array_column' ) ) {
 /**
  * Determines the receipt visibility status.
  *
- * @since 1.3.2
- *
  * @param int $donation_id Donation ID.
  *
  * @return bool Whether the receipt is visible or not.
+ * @since 1.3.2
  */
 function give_can_view_receipt( $donation_id ) {
 
@@ -782,17 +770,17 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 
 /**
  * Get plugin info including status, type, and license validation.
- * @todo update this function to query give addon and additionnal
+ *
+ * @return array Plugin info plus status, type, and license validation if
+ *               available.
+ * @since 1.8.0
+ *
+ * @todo  update this function to query give addon and additionnal
  *
  * This is an enhanced version of get_plugins() that returns the status
  * (`active` or `inactive`) of all plugins, type of plugin (`add-on` or `other`
  * and license validation for Give add-ons (`true` or `false`). Does not include
  * MU plugins.
- *
- * @since 1.8.0
- *
- * @return array Plugin info plus status, type, and license validation if
- *               available.
  */
 function give_get_plugins() {
 	$plugins             = get_plugins();
@@ -823,10 +811,10 @@ function give_get_plugins() {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
 
-			$license_active = Give_License::get_license_by_plugin_dirname(  $dirname );
+			$license_active = Give_License::get_license_by_plugin_dirname( $dirname );
 
 			// Does a valid license exist?
-			$plugins[ $plugin_path ]['License'] = $license_active && 'valid' === $license_active['license'] ;
+			$plugins[ $plugin_path ]['License'] = $license_active && 'valid' === $license_active['license'];
 
 		} else {
 			// Plugin is not a Give add-on.
@@ -840,11 +828,10 @@ function give_get_plugins() {
 /**
  * Check if terms enabled or not for form.
  *
- * @since 1.8
- *
  * @param $form_id
  *
  * @return bool
+ * @since 1.8
  */
 function give_is_terms_enabled( $form_id ) {
 	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
@@ -863,10 +850,6 @@ function give_is_terms_enabled( $form_id ) {
 /**
  * Delete donation stats cache.
  *
- * @todo  Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
- *
- * @since 1.8.7
- *
  * @param string|array $date_range Date for stats.
  *                                 Date value should be in today, yesterday, this_week, last_week, this_month,
  *                                 last_month, this_quarter, last_quarter, this_year, last_year. For date value other,
@@ -875,6 +858,9 @@ function give_is_terms_enabled( $form_id ) {
  * @param array        $args
  *
  * @return WP_Error|bool
+ * @since 1.8.7
+ *
+ * @todo  Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
  */
 function give_delete_donation_stats( $date_range = '', $args = array() ) {
 
@@ -884,10 +870,10 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	/**
 	 * Fire the action when donation stats delete.
 	 *
-	 * @since 1.8.7
-	 *
 	 * @param string|array $date_range
 	 * @param array        $args
+	 *
+	 * @since 1.8.7
 	 */
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
@@ -897,8 +883,8 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 /**
  * Check if admin creating new donation form or not.
  *
- * @since 2.0
  * @return bool
+ * @since 2.0
  */
 function give_is_add_new_form_page() {
 	$status = false;
@@ -917,8 +903,6 @@ function give_is_add_new_form_page() {
  *       If you want to get meta for donors then use get_meta of Give_Donor and
  *       If you want to get meta for logs then use get_meta of Give_Logging->logmeta_db.
  *
- * @since 1.8.8
- *
  * @param int    $id
  * @param string $meta_key
  * @param bool   $single
@@ -926,6 +910,7 @@ function give_is_add_new_form_page() {
  * @param string $meta_type
  *
  * @return mixed
+ * @since 1.8.8
  */
 function give_get_meta( $id, $meta_key = '', $single = false, $default = false, $meta_type = '' ) {
 	switch ( $meta_type ) {
@@ -962,15 +947,14 @@ function give_get_meta( $id, $meta_key = '', $single = false, $default = false, 
 /**
  * Update Form/Payment meta.
  *
- * @since 1.8.8
- *
  * @param int    $id
  * @param string $meta_key
  * @param mixed  $meta_value
  * @param mixed  $prev_value
- * @param string  $meta_type
+ * @param string $meta_type
  *
  * @return mixed
+ * @since 1.8.8
  */
 function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '', $meta_type = '' ) {
 	switch ( $meta_type ) {
@@ -1001,14 +985,13 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '', $meta_
 /**
  * Delete Form/Payment meta.
  *
- * @since 1.8.8
- *
  * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
  * @param string $meta_type
  *
  * @return mixed
+ * @since 1.8.8
  */
 function give_delete_meta( $id, $meta_key, $meta_value = '', $meta_type = '' ) {
 	switch ( $meta_type ) {
@@ -1039,11 +1022,10 @@ function give_delete_meta( $id, $meta_key, $meta_value = '', $meta_type = '' ) {
 /**
  * Check if the upgrade routine has been run for a specific action
  *
- * @since  1.0
- *
- * @param  string $upgrade_action The upgrade action to check completion for
+ * @param string $upgrade_action The upgrade action to check completion for
  *
  * @return bool                   If the action has been added to the completed actions array
+ * @since  1.0
  */
 function give_has_upgrade_completed( $upgrade_action = '' ) {
 	// Bailout.
@@ -1067,9 +1049,8 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 /**
  * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
  *
- * @since 1.8
- *
  * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
+ * @since 1.8
  */
 function give_maybe_resume_upgrade() {
 	$doing_upgrade = get_option( 'give_doing_upgrade', false );
@@ -1083,11 +1064,10 @@ function give_maybe_resume_upgrade() {
 /**
  * Adds an upgrade action to the completed upgrades array
  *
- * @since  1.0
- *
- * @param  string $upgrade_action The action to add to the completed upgrades array
+ * @param string $upgrade_action The action to add to the completed upgrades array
  *
  * @return bool                   If the function was successfully added
+ * @since  1.0
  */
 function give_set_upgrade_complete( $upgrade_action = '' ) {
 
@@ -1114,8 +1094,8 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 /**
  * Get's the array of completed upgrade actions
  *
- * @since  1.0
  * @return array The array of completed upgrades
+ * @since  1.0
  */
 function give_get_completed_upgrades() {
 	return (array) Give_Cache_Setting::get_option( 'give_completed_upgrades' );
@@ -1126,12 +1106,11 @@ function give_get_completed_upgrades() {
  *
  * Note: internal purpose only.
  *
- * @since 2.0
- * @global wpdb  $wpdb
- *
  * @param string $type Context for table
  *
  * @return null|array
+ * @since 2.0
+ * @global wpdb  $wpdb
  */
 function __give_v20_bc_table_details( $type ) {
 	global $wpdb;
@@ -1166,9 +1145,9 @@ function __give_v20_bc_table_details( $type ) {
 /**
  * Remove the Give transaction pages from WP search results.
  *
- * @since 1.8.13
- *
  * @param WP_Query $query
+ *
+ * @since 1.8.13
  */
 function give_remove_pages_from_search( $query ) {
 
@@ -1178,10 +1157,12 @@ function give_remove_pages_from_search( $query ) {
 		$success_page       = give_get_option( 'success_page', 0 );
 
 		$args = apply_filters(
-			'give_remove_pages_from_search', array(
+			'give_remove_pages_from_search',
+			array(
 				$transaction_failed,
 				$success_page,
-			), $query
+			),
+			$query
 		);
 		$query->set( 'post__not_in', $args );
 	}
@@ -1192,14 +1173,14 @@ add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
 /**
  * Inserts a new key/value before a key in the array.
  *
- * @since 1.8.13
- *
  * @param string       $key       The key to insert before.
  * @param array        $array     An array to insert in to.
  * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @since 1.8.13
  *
  * @see   array_insert_before()
  */
@@ -1222,14 +1203,14 @@ function give_array_insert_before( $key, array &$array, $new_key, $new_value ) {
 /**
  * Inserts a new key/value after a key in the array.
  *
- * @since 1.8.13
- *
  * @param string       $key       The key to insert after.
  * @param array        $array     An array to insert in to.
  * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @since 1.8.13
  *
  * @see   array_insert_before()
  */
@@ -1255,8 +1236,6 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
  * This has the same functionality and prototype of
  * array_column() (PHP 5.5) but also supports objects.
  *
- * @since 1.8.13
- *
  * @param array      $list      List of objects or arrays
  * @param int|string $field     Field from the object to place instead of the entire object
  * @param int|string $index_key Optional. Field from the object to use as keys for the new array.
@@ -1265,6 +1244,7 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
  * @return array Array of found values. If `$index_key` is set, an array of found values with keys
  *               corresponding to `$index_key`. If `$index_key` is null, array keys from the original
  *               `$list` will be preserved in the results.
+ * @since 1.8.13
  */
 function give_list_pluck( $list, $field, $index_key = null ) {
 
@@ -1317,8 +1297,6 @@ function give_list_pluck( $list, $field, $index_key = null ) {
 /**
  * Add meta data field to a donor.
  *
- * @since 1.8.13
- *
  * @param int    $donor_id   Donor ID.
  * @param string $meta_key   Metadata name.
  * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
@@ -1326,6 +1304,7 @@ function give_list_pluck( $list, $field, $index_key = null ) {
  *                           Default false.
  *
  * @return int|false Meta ID on success, false on failure.
+ * @since 1.8.13
  */
 function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
 	return add_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $unique );
@@ -1338,13 +1317,12 @@ function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
  * value, will keep from removing duplicate metadata with the same key. It also
  * allows removing all metadata matching key, if needed.
  *
- * @since 1.8.13
- *
  * @param int    $donor_id   Donor ID
  * @param string $meta_key   Metadata name.
  * @param mixed  $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
+ * @since 1.8.13
  */
 function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'give_customer', $donor_id, $meta_key, $meta_value );
@@ -1353,14 +1331,13 @@ function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 /**
  * Retrieve donor meta field for a donor meta table.
  *
- * @since 1.8.13
- *
  * @param int    $donor_id Donor ID.
  * @param string $key      Optional. The meta key to retrieve. By default, returns data for all keys.
  * @param bool   $single   Whether to return a single value.
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
+ * @since 1.8.13
  */
 function get_donor_meta( $donor_id, $key = '', $single = false ) {
 	return get_metadata( 'give_customer', $donor_id, $key, $single );
@@ -1371,14 +1348,13 @@ function get_donor_meta( $donor_id, $key = '', $single = false ) {
  *
  * If the meta field for the donor does not exist, it will be added.
  *
- * @since 1.8.13
- *
  * @param int    $donor_id   Donor ID.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value Metadata value.
  * @param mixed  $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+ * @since 1.8.13
  */
 function update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $prev_value );
@@ -1388,11 +1364,10 @@ function update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' 
 /**
  * Give recalculate income and donation of the donation from ID
  *
- * @since 1.8.13
- *
  * @param int $form_id Form id of which recalculation needs to be done.
  *
  * @return void
+ * @since 1.8.13
  */
 function give_recount_form_income_donation( $form_id = 0 ) {
 	// Check if form id is not empty.
@@ -1410,7 +1385,8 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 		 * @since 1.8.13
 		 */
 		$args = apply_filters(
-			'give_recount_form_stats_args', array(
+			'give_recount_form_stats_args',
+			array(
 				'give_forms' => $form_id,
 				'status'     => $accepted_statuses,
 				'number'     => - 1,
@@ -1452,12 +1428,11 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 /**
  * Get attribute string
  *
- * @since 1.8.17
- *
  * @param array $attributes
  * @param array $default_attributes
  *
  * @return string
+ * @since 1.8.17
  */
 function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 	$attribute_str = '';
@@ -1488,9 +1463,8 @@ function give_get_attribute_str( $attributes, $default_attributes = array() ) {
 /**
  * Get the upload dir path
  *
- * @since 1.8.17
- *
  * @return string $wp_upload_dir;
+ * @since 1.8.17
  */
 function give_get_wp_upload_dir() {
 	$wp_upload_dir = wp_upload_dir();
@@ -1501,11 +1475,10 @@ function give_get_wp_upload_dir() {
 /**
  * Get the data from uploaded JSON file
  *
- * @since 1.8.17
- *
  * @param string $file_name filename of the json file that is being uploaded
  *
  * @return string|bool $file_contents File content
+ * @since 1.8.17
  */
 function give_get_core_settings_json( $file_name ) {
 	$upload_dir = give_get_wp_upload_dir();
@@ -1523,9 +1496,8 @@ function give_get_core_settings_json( $file_name ) {
 /**
  * Get number of donation to show when user is not login.
  *
- * @since 1.8.17
- *
  * @return int $country The two letter country code for the site's base country
+ * @since 1.8.17
  */
 function give_get_limit_display_donations() {
 	return give_get_option( 'limit_display_donations', 1 );
@@ -1540,24 +1512,24 @@ function give_donation_history_table_end() {
 	$email = Give()->session->get( 'give_email' );
 	?>
 	<tfoot>
-	<tr>
-		<td colspan="9999">
-			<div class="give-security-wrap">
-				<div class="give-security-column give-security-description-wrap">
-					<?php
-					echo sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email );
-					?>
+		<tr>
+			<td colspan="9999">
+				<div class="give-security-wrap">
+					<div class="give-security-column give-security-description-wrap">
+						<?php
+						echo sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email );
+						?>
+					</div>
+					<div class="give-security-column give-security-button-wrap">
+						<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn"
+						   class="give-confirm-email-btn give-btn">
+							<?php _e( 'Confirm Email', 'give' ); ?>
+						</a>
+						<span><?php _e( 'Email Sent!', 'give' ); ?></span>
+					</div>
 				</div>
-				<div class="give-security-column give-security-button-wrap">
-					<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn"
-					   class="give-confirm-email-btn give-btn">
-						<?php _e( 'Confirm Email', 'give' ); ?>
-					</a>
-					<span><?php _e( 'Email Sent!', 'give' ); ?></span>
-				</div>
-			</div>
-		</td>
-	</tr>
+			</td>
+		</tr>
 	</tfoot>
 	<?php
 }
@@ -1566,13 +1538,12 @@ function give_donation_history_table_end() {
 /**
  * Wrapper for _doing_it_wrong.
  *
- * @since  1.8.18
- *
- * @param  string $function
- * @param  string $message
- * @param  string $version
+ * @param string $function
+ * @param string $message
+ * @param string $version
  *
  * @return void
+ * @since  1.8.18
  */
 function give_doing_it_wrong( $function, $message, $version ) {
 	$message .= "\nBacktrace:" . wp_debug_backtrace_summary();
@@ -1597,12 +1568,11 @@ function give_ignore_user_abort() {
 /**
  * Get post type count.
  *
- * @since 2.0.2
- *
  * @param string $post_type
  * @param array  $args
  *
  * @return int
+ * @since 2.0.2
  */
 function give_get_total_post_type_count( $post_type = '', $args = array() ) {
 	global $wpdb;
@@ -1631,12 +1601,11 @@ function give_get_total_post_type_count( $post_type = '', $args = array() ) {
 /**
  * Define a constant if it is not already defined.
  *
- * @since  2.0.5
- *
  * @param string $name  Constant name.
  * @param string $value Value.
  *
  * @credit WooCommerce
+ * @since  2.0.5
  */
 function give_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
@@ -1647,12 +1616,11 @@ function give_maybe_define_constant( $name, $value ) {
 /**
  * Decode time short tag in string
  *
- * @since 2.1.0
- *
  * @param string $string
  * @param int    $timestamp
  *
  * @return string
+ * @since 2.1.0
  */
 function give_time_do_tags( $string, $timestamp = 0 ) {
 	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
@@ -1669,7 +1637,8 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 			'{HH}',
 			'{N}',
 			'{S}',
-		), array(
+		),
+		array(
 			date( 'j', $current_time ),
 			date( 'd', $current_time ),
 			date( 'n', $current_time ),
@@ -1679,7 +1648,8 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 			date( 'G', $current_time ),
 			date( 'H', $current_time ),
 			date( 's', $current_time ),
-		), $string
+		),
+		$string
 	);
 
 	/**
@@ -1694,11 +1664,10 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 /**
  * Check if Company field enabled or not for form or globally.
  *
- * @since 2.1
- *
  * @param $form_id
  *
  * @return bool
+ * @since 2.1
  */
 function give_is_company_field_enabled( $form_id ) {
 	$form_setting_val   = give_get_meta( $form_id, '_give_company_field', true );
@@ -1708,7 +1677,8 @@ function give_is_company_field_enabled( $form_id ) {
 		if ( give_is_setting_enabled( $form_setting_val, array( 'required', 'optional' ) ) ) {
 			return true;
 		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled(
-			$global_setting_val, array(
+			$global_setting_val,
+			array(
 				'required',
 				'optional',
 			)
@@ -1728,11 +1698,10 @@ function give_is_company_field_enabled( $form_id ) {
 /**
  * Check if anonymous donation field enabled or not for form or globally.
  *
- * @since 2.1
- *
  * @param $form_id
  *
  * @return bool
+ * @since 2.1
  */
 function give_is_anonymous_donation_field_enabled( $form_id ) {
 	$form_setting_val   = give_get_meta( $form_id, '_give_anonymous_donation', true, 'global' );
@@ -1756,11 +1725,10 @@ function give_is_anonymous_donation_field_enabled( $form_id ) {
 /**
  * Check if donor comment field enabled or not for form or globally.
  *
- * @since 2.1
- *
  * @param $form_id
  *
  * @return bool
+ * @since 2.1
  */
 function give_is_donor_comment_field_enabled( $form_id ) {
 	$form_setting_val   = give_get_meta( $form_id, '_give_donor_comment', true, 'global' );
@@ -1786,11 +1754,10 @@ function give_is_donor_comment_field_enabled( $form_id ) {
  * Get add-on user meta value information
  * Note: only for internal use.
  *
- * @since 2.1.0
- *
  * @param string $banner_addon_name Give add-on name.
  *
  * @return array
+ * @since 2.1.0
  */
 function __give_get_active_by_user_meta( $banner_addon_name ) {
 	global $wpdb;
@@ -1834,9 +1801,8 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 /**
  * Get time interval for which nonce is valid
  *
- * @since 2.1.3
- *
  * @return int
+ * @since 2.1.3
  */
 function give_get_nonce_life() {
 	/**
@@ -1850,13 +1816,12 @@ function give_get_nonce_life() {
 /**
  * Get nonce field without id
  *
- * @since 2.1.3
- *
- * @param  string $action
- * @param  string $name
+ * @param string $action
+ * @param string $name
  * @param bool   $referer
  *
  * @return string
+ * @since 2.1.3
  */
 function give_get_nonce_field( $action, $name, $referer = false ) {
 	return str_replace(
@@ -1871,9 +1836,8 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
- * @since 2.1
- *
  * @return array
+ * @since 2.1
  */
 function give_goal_progress_stats( $form ) {
 
@@ -1905,13 +1869,12 @@ function give_goal_progress_stats( $form ) {
 			/**
 			 * Filter to modify total number if donor for the donation form.
 			 *
-			 * @since 2.1.3
-			 *
 			 * @param int              $donors  Total number of donors that donated to the form.
 			 * @param int              $form_id Donation Form ID.
 			 * @param Give_Donate_Form $form    instances of Give_Donate_Form.
 			 *
 			 * @return int $donors Total number of donors that donated to the form.
+			 * @since 2.1.3
 			 */
 			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
@@ -1974,9 +1937,8 @@ function give_goal_progress_stats( $form ) {
 /**
  * Get the admin messages key to show the notices.
  *
- * @since 2.1.4
- *
  * @return array $message admin message key.
+ * @since 2.1.4
  */
 function give_get_admin_messages_key() {
 	$messages = empty( $_GET['give-messages'] ) ? array() : give_clean( $_GET['give-messages'] );
@@ -1989,11 +1951,10 @@ function give_get_admin_messages_key() {
 	/**
 	 * Filter to modify the admin messages key.
 	 *
-	 * @since 2.1.4
-	 *
 	 * @param array $message admin message key.
 	 *
 	 * @return array $message admin message key.
+	 * @since 2.1.4
 	 */
 	return (array) apply_filters( 'give_get_admin_messages_key', $messages );
 }
@@ -2001,9 +1962,8 @@ function give_get_admin_messages_key() {
 /**
  * Get User Agent String.
  *
- * @since 2.1.4
- *
  * @return array|string
+ * @since 2.1.4
  */
 function give_get_user_agent() {
 
@@ -2016,17 +1976,22 @@ function give_get_user_agent() {
 /**
  * Set a cookie - wrapper for setcookie using WP constants.
  *
- * @since 2.2.0
+ * @param string  $name   Name of the cookie being set.
+ * @param string  $value  Value of the cookie.
+ * @param integer $expire Expiry of the cookie.
+ * @param bool    $secure Whether the cookie should be served only over https.
  *
- * @param  string  $name   Name of the cookie being set.
- * @param  string  $value  Value of the cookie.
- * @param  integer $expire Expiry of the cookie.
- * @param  bool    $secure Whether the cookie should be served only over https.
+ * @since 2.2.0
  */
 function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
 		setcookie(
-			$name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure,
+			$name,
+			$value,
+			$expire,
+			COOKIEPATH ? COOKIEPATH : '/',
+			COOKIE_DOMAIN,
+			$secure,
 			apply_filters( 'give_cookie_httponly', false, $name, $value, $expire, $secure )
 		);
 	}
@@ -2035,11 +2000,10 @@ function give_setcookie( $name, $value, $expire = 0, $secure = false ) {
 /**
  * Get formatted billing address.
  *
- * @since 2.2.0
- *
  * @param array $address
  *
  * @return string Formatted address.
+ * @since 2.2.0
  */
 function give_get_formatted_address( $address = array() ) {
 	$formatted_address = '';
@@ -2069,10 +2033,10 @@ function give_get_formatted_address( $address = array() ) {
 	/**
 	 * Give get formatted address.
 	 *
-	 * @since 2.2.0
-	 *
 	 * @param string $formatted_address Formatted address.
 	 * @param string $address_format    Format of the address.
+	 *
+	 * @since 2.2.0
 	 */
 	$formatted_address = apply_filters( 'give_get_formatted_address', $formatted_address, $address_format, $address );
 
@@ -2083,11 +2047,10 @@ function give_get_formatted_address( $address = array() ) {
  * Get safe url for assets
  * Note: this function will return url without http protocol
  *
- * @since 2.2.0
- *
  * @param string $url URL
  *
  * @return string
+ * @since 2.2.0
  */
 function give_get_safe_asset_url( $url ) {
 
@@ -2112,13 +2075,12 @@ function give_get_safe_asset_url( $url ) {
  * Give get formatted date.
  * Note: This function does not work well with localize translated  date strings
  *
- * @since 2.3.0
- *
  * @param string $date           Date.
  * @param string $format         Date Format.
  * @param string $current_format Current date Format.
  *
  * @return string
+ * @since 2.3.0
  */
 function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
@@ -2129,10 +2091,10 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
 	/**
 	 * Give get formatted date.
 	 *
-	 * @since 2.3.0
-	 *
 	 * @param string $formatted_date Formatted date.
 	 * @param array
+	 *
+	 * @since 2.3.0
 	 */
 	return apply_filters( 'give_get_formatted_date', $formatted_date, array( $date, $format, $current_format ) );
 }
@@ -2142,9 +2104,8 @@ function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = ''
  *
  * @param int $donation_id Donation ID.
  *
- * @since 2.3.1
- *
  * @return string
+ * @since 2.3.1
  */
 function give_get_receipt_link( $donation_id ) {
 
@@ -2159,11 +2120,10 @@ function give_get_receipt_link( $donation_id ) {
 /**
  * Get receipt_url
  *
- * @since 2.0
- *
  * @param int $donation_id Donation ID.
  *
  * @return string
+ * @since 2.0
  */
 function give_get_receipt_url( $donation_id ) {
 
@@ -2171,7 +2131,8 @@ function give_get_receipt_url( $donation_id ) {
 		add_query_arg(
 			array(
 				'donation_id' => $donation_id,
-			), give_get_history_page_uri()
+			),
+			give_get_history_page_uri()
 		)
 	);
 
@@ -2183,9 +2144,8 @@ function give_get_receipt_url( $donation_id ) {
  *
  * @param int $donation_id Donation ID.
  *
- * @since 2.4.1
- *
  * @return string
+ * @since 2.4.1
  */
 function give_get_view_receipt_link( $donation_id ) {
 
@@ -2200,11 +2160,10 @@ function give_get_view_receipt_link( $donation_id ) {
 /**
  * Get "View in browser" Receipt URL for email.
  *
- * @since 2.4.1
- *
  * @param int $donation_id Donation ID.
  *
  * @return string
+ * @since 2.4.1
  */
 function give_get_view_receipt_url( $donation_id ) {
 
@@ -2213,7 +2172,8 @@ function give_get_view_receipt_url( $donation_id ) {
 			array(
 				'action'     => 'view_in_browser',
 				'_give_hash' => give_get_payment_key( $donation_id ),
-			), give_get_history_page_uri()
+			),
+			give_get_history_page_uri()
 		)
 	);
 
@@ -2225,9 +2185,8 @@ function give_get_view_receipt_url( $donation_id ) {
  *
  * @param $args
  *
- * @since 2.4.1
- *
  * @return bool|mixed
+ * @since 2.4.1
  */
 function give_display_donation_receipt( $args ) {
 
@@ -2323,16 +2282,15 @@ function give_display_donation_receipt( $args ) {
  * Get plugin add-on readme.txt path
  * Note: only for internal use
  *
- * @since 2.5.0
- *
  * @param      $plugin_slug
- * @param bool $by_plugin_name
+ * @param bool        $by_plugin_name
  *
  * @return mixed|void
+ * @since 2.5.0
  */
-function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
+function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 
-	if( $by_plugin_name ) {
+	if ( $by_plugin_name ) {
 		$plugin_slug = Give_License::get_short_name( $plugin_slug );
 	}
 
@@ -2354,36 +2312,74 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ){
 /**
  * Refresh all givewp license.
  *
+ * @return array
+ * @todo   write logic of all access pass
+ *
  * @access public
  * @since  2.5.0
- *
- * @return array
  */
 function give_refresh_licenses() {
 	$give_licenses = get_option( 'give_licenses', array() );
 
-	if( ! empty( $give_licenses ) ) {
-		/* @var stdClass $data */
-		foreach ( $give_licenses as $key => $data ) {
-			$tmp = Give_License::request_license_api(array(
-				'edd_action' => 'check_license',
-				'license' => $key
-			), true );
+	if ( ! $give_licenses ) {
+		return $give_licenses;
+	}
 
-			if( is_wp_error( $tmp ) ) {
-				continue;
-			}
+	$license_keys = implode( ',', array_keys( $give_licenses ) );
+	$tmp          = Give_License::request_license_api(
+		array(
+			'edd_action' => 'check_licenses',
+			'licenses'   => $license_keys,
+		)
+	);
 
-			if( ! $tmp['success'] ) {
-				unset( $give_licenses[$key] );
-				continue;
-			}
+	if ( is_wp_error( $tmp ) ) {
+		return $give_licenses;
+	}
 
-			$give_licenses[$key] = $tmp;
+	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
+
+	/* @var stdClass $data */
+	foreach ( $check_licenses as $key => $data ) {
+		if ( is_wp_error( $data ) ) {
+			continue;
 		}
 
-		update_option( 'give_licenses', $give_licenses );
+		if ( ! $data['success'] ) {
+			unset( $give_licenses[ $key ] );
+			continue;
+		}
+
+		$give_licenses[ $key ] = $data;
 	}
+
+	$tmp_update_plugins = json_decode( json_encode( wp_list_pluck( $tmp, 'get_version' ) ), true );
+	$update_plugins     = get_site_transient( 'update_plugins' );
+
+	foreach ( $tmp_update_plugins as $key => $plugin ) {
+		if ( is_array( $check_licenses[ $key ]['download'] ) ) {
+			continue;
+		}
+
+		$tmp_plugin = Give_License::get_plugin_by_slug( $check_licenses[ $key ]['plugin_slug'] );
+
+		// Continue if version > newer version.
+		if ( -1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
+			continue;
+		}
+
+		$tmp           = $plugin;
+		$tmp['icon']   = (array) $plugin['icon'];
+		$tmp['banner'] = (array) $plugin['banner'];
+
+		$update_plugins->response[ $tmp_plugin['Path'] ] = (object) $tmp;
+		$update_plugins->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
+	}
+
+	$update_plugins->last_checked = time();
+
+	update_option( 'give_licenses', $give_licenses );
+	set_site_transient( 'update_plugins', $update_plugins );
 
 	return $give_licenses;
 }

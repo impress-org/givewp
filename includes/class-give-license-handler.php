@@ -511,10 +511,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$response = wp_remote_post(
 			// 'https://givewp.com/checkout/',
 				'http://staging.givewp.com/chekout/', // For testing purpose
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
+				apply_filters(
+					'give_request_license_api_args',
+					array(
+						'timeout'   => 15,
+						'sslverify' => false,
+						'body'      => $api_params,
+					)
 				)
 			);
 
