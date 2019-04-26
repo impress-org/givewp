@@ -144,15 +144,23 @@ class Give_Welcome {
 
 		switch ( $page ) {
 			case 'give-getting-started':
-
 				$title   = sprintf( __( 'Welcome to Give %s', 'give' ), $display_version );
 				$content = __( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
 				break;
 
 			case 'give-changelog':
-
 				$title   = sprintf( __( 'What\'s New in Give %s', 'give' ), $display_version );
 				$content = __( 'Give is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping Give up to date with the latest version.', 'give' );
+				break;
+
+			case 'give-credits':
+				$title   = sprintf( __( 'GitHub Contributors', 'give' ) );
+				$content = sprintf(
+				/* translators: %s: https://github.com/impress-org/give */
+					__( 'Give is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+					esc_url( 'https://github.com/impress-org/give' )
+				);
+
 				break;
 
 			default:
@@ -171,7 +179,7 @@ class Give_Welcome {
 
 				<?php $this->social_media_elements(); ?>
 
-				<p class="give-welcome-text"><?php esc_html_e( $content ); ?></p>
+				<p class="give-welcome-text"><?php _e( $content ); ?></p>
 
 				<?php $this->get_newsletter(); ?>
 
@@ -210,71 +218,74 @@ class Give_Welcome {
 
 				<p class="give-welcome-content-intro"><?php esc_html_e( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
 
-				<div class="give-feature-section clearfix">
+				<div class="give-feature-section give-clearfix">
+					<div class="give-feature-section-item">
+						<div class="give-feature-section-item__container">
+							<h3>
+								<span class="give-feature-section-item-number">1</span>
+								<?php esc_html_e( 'Configure Your Payment Methods', 'give' ); ?>
+							</h3>
+
+							<p><?php esc_html_e( 'Before you can beging fundraising you will first need to be able to accept payments through your online donation forms. Give supports many of the top payment processors and includes Stripe and PayPal Standard for free in the core plugin. Please ensure that your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
+
+							<p><?php esc_html_e( 'Having trouble? Our team is here to help if you have any questions or simply need assistance setting up your payment gateway.', 'give' ); ?></p>
+
+							<div class="give-welcome-connect-gateways">
+								<?php echo give_stripe_connect_button(); ?>
+							</div>
+
+
+						</div>
+					</div>
+
+					<div class="give-feature-section-item give-ipad-showcase-wrap">
+						<div class="give-ipad-showcase-inner">
+							<img
+								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-1.gif">
+						</div>
+					</div>
+
+				</div>
+				<!-- /.give-feature-section -->
+
+				<div class="give-feature-section give-clearfix">
+
+					<div class="give-feature-section-item give-ipad-showcase-wrap">
+						<div class="give-ipad-showcase-inner">
+							<img
+								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-2.gif">
+						</div>
+					</div>
 
 					<div class="give-feature-section-item">
-						<h3><?php esc_html_e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
+						<div class="give-feature-section-item__container give-feature-section-item__container-right">
+							<h3><?php esc_html_e( 'Customize Your Donation Forms', 'give' ); ?></h3>
 
-						<p><?php esc_html_e( 'Give is driven by its powerful donation form building features. However, it is much more than just a "donation form." From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You will also be able to set the preferred donation amounts.', 'give' ); ?></p>
-
-						<p><?php esc_html_e( 'All of these features begin by simply going to the menu and choosing "Donations > Add Form."', 'give' ); ?></p>
-					</div>
-
-					<div class="give-feature-section-item last-feature">
-						<img
-							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-new-form.png">
+							<p><?php esc_html_e( 'Each donation form you create can be customized to receive either a pre-determined set donation amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the donation levels view where you can add as many levels as you\'d like with your own custom names and suggested amounts. As well, you can allow donors to give a custom amount and even set up donation goals.', 'give' ); ?></p>
+						</div>
 					</div>
 
 				</div>
 				<!-- /.give-feature-section -->
 
-				<div class="give-feature-section clearfix">
+				<div class="give-feature-section give-clearfix">
 
-					<div class="give-feature-section-item multi-level-gif">
-						<img
-							src="<?php echo GIVE_PLUGIN_URL ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
+					<div class="give-feature-section-item">
+						<div class="give-feature-section-item__container">
+							<h3><?php esc_html_e( 'STEP 3: Add Additional Content', 'give' ); ?></h3>
+
+							<p><?php esc_html_e( 'Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
+
+							<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+						</div>
 					</div>
 
-					<div class="give-feature-section-item last-feature">
-						<h3><?php esc_html_e( 'STEP 2: Customize Your Donation Forms', 'give' ); ?></h3>
-
-						<p><?php esc_html_e( 'Each donation form you create can be customized to receive either a pre-determined set donation amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the donation levels view where you can add as many levels as you\'d like with your own custom names and suggested amounts. As well, you can allow donors to give a custom amount and even set up donation goals.', 'give' ); ?></p>
+					<div class="give-feature-section-item give-ipad-showcase-wrap">
+						<div class="give-ipad-showcase-inner">
+							<img
+								src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-step-3.gif">
+						</div>
 					</div>
-
-				</div>
-				<!-- /.give-feature-section -->
-
-				<div class="give-feature-section clearfix">
-
-					<div class="give-feature-section-item add-content">
-						<h3><?php esc_html_e( 'STEP 3: Add Additional Content', 'give' ); ?></h3>
-
-						<p><?php esc_html_e( 'Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
-
-						<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
-					</div>
-
-					<div class="give-feature-section-item last-feature">
-						<img
-							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-content.png">
-					</div>
-
-				</div>
-				<!-- /.give-feature-section -->
-
-				<div class="give-feature-section clearfix">
-
-					<div class="give-feature-section-item display-options">
-						<img
-							src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-display-options.png">
-					</div>
-
-					<div class="give-feature-section-item last-feature">
-						<h3><?php esc_html_e( 'STEP 4: Configure Your Display Options', 'give' ); ?></h3>
-
-						<p><?php esc_html_e( 'Lastly, you can present the form in a number of different ways that each create their own unique donor experience. The "Modal" display mode opens the credit card fieldset within a popup window. The "Reveal" mode will slide into place the additional fields. If you\'re looking for a simple button, then "Button" more is the way to go. This allows you to create a customizable "Donate Now" button which will open the donation form upon clicking. There\'s tons of possibilities here, give it a try!', 'give' ); ?></p>
-					</div>
-
 
 				</div>
 				<!-- /.give-feature-section -->
@@ -293,7 +304,8 @@ class Give_Welcome {
 	 * @return void
 	 * @since  1.0
 	 */
-	public function changelog_screen() { ?>
+	public function changelog_screen() {
+		?>
 		<div class="give-welcome-wrap">
 
 			<?php $this->get_welcome_header(); ?>
@@ -302,7 +314,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-				<p class="give-welcome-content-intro"><?php printf(__( 'See what\'s new in version %s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/'); ?></p>
+				<p class="give-welcome-content-intro"><?php printf( __( 'See what\'s new in version %1$s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%2$s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/' ); ?></p>
 
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>
@@ -329,17 +341,23 @@ class Give_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description">
-				<?php
-				printf(
-				/* translators: %s: https://github.com/impress-org/give */
-					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
-					esc_url( 'https://github.com/impress-org/give' )
-				);
-				?>
-			</p>
+			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-			<?php echo $this->contributors(); ?>
+				<p class="give-welcome-content-intro">
+
+					<?php
+					printf(
+					/* translators: %s: https://github.com/impress-org/give */
+						__( 'Give is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+						esc_url( 'https://github.com/impress-org/give' )
+					);
+					?>
+				</p>
+
+				<?php echo $this->contributors(); ?>
+
+			</div>
+
 		</div>
 		<?php
 	}
@@ -387,20 +405,15 @@ class Give_Welcome {
 			return '';
 		}
 
-		$contributor_list = '<ul class="wp-people-group">';
+		$contributor_list = '<ul class="give-contributor-group">';
 
 		foreach ( $contributors as $contributor ) {
-			$contributor_list .= '<li class="wp-person">';
+			$contributor_list .= '<li class="give-contributor">';
 			$contributor_list .= sprintf(
-				'<a href="%1$s" target="_blank"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /></a>',
+				'<a href="%1$s" target="_blank"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /><span>%3$s</span></a>',
 				esc_url( 'https://github.com/' . $contributor->login ),
 				esc_url( $contributor->avatar_url ),
 				esc_attr( $contributor->login )
-			);
-			$contributor_list .= sprintf(
-				'<a class="web" target="_blank" href="%1$s">%2$s</a>',
-				esc_url( 'https://github.com/' . $contributor->login ),
-				esc_html( $contributor->login )
 			);
 			$contributor_list .= '</li>';
 		}
@@ -533,7 +546,8 @@ class Give_Welcome {
 			<p class="give-newsletter-intro"><?php esc_html_e( 'Sign up for the below to stay informed about important updates, release notes, fundraising tips, and more! We\'ll never spam you.', 'give' ); ?></p>
 
 			<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-			      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="give-newsletter-form validate"
+			      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
+			      class="give-newsletter-form validate"
 			      target="_blank">
 				<div class="give-newsletter-confirmation">
 					<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
@@ -552,16 +566,19 @@ class Give_Welcome {
 							<label for="mce-FNAME"
 							       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 							<input type="text" name="FNAME" id="mce-FNAME"
-							       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="<?php echo $current_user->user_firstname; ?>" required>
+							       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class=""
+							       value="<?php echo $current_user->user_firstname; ?>" required>
 						</td>
 						<td>
 							<label for="mce-LNAME"
 							       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 							<input type="text" name="LNAME" id="mce-LNAME"
-							       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="<?php echo $current_user->user_lastname; ?>">
+							       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class=""
+							       value="<?php echo $current_user->user_lastname; ?>">
 						</td>
 						<td>
-							<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button button-primary"
+							<input type="submit" name="subscribe" id="mc-embedded-subscribe"
+							       class="button button-primary"
 							       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 						</td>
 					</tr>
@@ -592,7 +609,7 @@ class Give_Welcome {
 					$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
 						var email_field = $( this ).find( '#mce-EMAIL' ).val();
-						if ( ! email_field ) {
+						if ( !email_field ) {
 							return false;
 						}
 						$( this ).find( '.give-newsletter-confirmation' ).show();

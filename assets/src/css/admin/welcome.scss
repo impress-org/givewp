@@ -13,6 +13,7 @@
 	padding: 0;
 }
 
+// Welcome header
 .give-welcome-header {
 	background: #FFF;
 	height: 100%;
@@ -56,6 +57,7 @@
 
 }
 
+// Version Badge
 .give-badge {
 	background: url('../../images/give-badge.png') no-repeat 0 0 transparent;
 	padding-top: 150px;
@@ -73,20 +75,44 @@
 }
 
 .give-welcome-content-wrap {
-	max-width: 1200px;
+	max-width: 1120px;
+	min-width: 1000px;
+	padding: 30px;
 }
 
 // Getting Started
 .give-welcome-content-intro {
 	font-size: 22px;
-	font-style:italic;
+	font-style: italic;
 	color: #8E8E8E;
 	margin: 10px 0 40px;
 }
 
+// iPad showcase.
+.give-ipad-showcase-wrap {
+	border: 3px solid #9199a5;
+	border-radius: 10px;
+	position: relative;
+
+	.give-ipad-showcase-inner {
+		background: #fafbfb;
+		border: 10px solid #1e2026;
+		border-radius: 7px;
+	}
+
+	img {
+		height: auto;
+		max-width: 100%;
+	}
+
+}
+
 // Feature section
 .give-feature-section {
-	margin-top: 40px;
+	display: flex;
+	flex-direction: row;
+	margin: 0;
+	padding: 60px 0;
 
 	span.dashicons {
 		width: 16px;
@@ -96,13 +122,45 @@
 	}
 
 	.give-feature-section-item {
-		width: 48%;
-		float: left;
-	}
+		display: flex;
+		width: 50%;
 
-	div.last-feature {
-		margin-right: 0;
-		margin-left: 4%;
+		&__container {
+			padding: 0 60px 0 0;
+			margin: 0;
+		}
+
+		&__container-right {
+			padding-left: 60px;
+			padding-right: 20px;
+		}
+
+		h3 {
+			font-size: 24px;
+			font-weight: 500;
+
+			> .give-feature-section-item-number {
+				background: #FFF;
+				width: 40px;
+				height: 40px;
+				margin: 0 10px 0 0;
+				padding: 0;
+				line-height: 40px;
+				text-align: center;
+				color: #777777;
+				box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+				border-radius: 50%;
+				display: inline-block;
+				font-size: 22px;
+			}
+
+		}
+
+
+		p {
+			font-size: 16px;
+		}
+
 	}
 
 }
@@ -121,15 +179,30 @@
 }
 
 //Credits
-.wp-person {
+.give-contributor-group {
+	list-style: none;
+
 	img {
 		border-radius: 50%;
 	}
 
-	a.web {
-		margin: 17px 0 0;
-		font-weight: bold;
-		font-style: italic;
+	.give-contributor {
+		margin: 0 10px 45px 0;
+		display: inline-block;
+		width: 140px;
+		text-align: center;
+
+		a {
+			outline: none;
+			box-shadow: none;
+		}
+
+		span {
+			display: block;
+			margin: 3px 0 0;
+			font-weight: bold;
+		}
+
 	}
 }
 
@@ -183,8 +256,6 @@
 
 // Changelog.
 .give-changelog-wrap {
-	max-width: 1120px;
-	padding: 30px;
 
 	.give-changelog {
 		max-height: 510px;
@@ -200,7 +271,7 @@
 			display: none;
 
 			+ br {
-				display:none;
+				display: none;
 			}
 		}
 
@@ -208,10 +279,10 @@
 			margin: 0 0 10px;
 			border-bottom: 1px solid #e2e2e2;
 			padding: 0 0 6px;
-			font-size:20px;
+			font-size: 20px;
 
 			+ br {
-				display:none;
+				display: none;
 			}
 
 		}
