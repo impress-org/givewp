@@ -240,7 +240,7 @@ class Give_Welcome {
 										<?php echo give_stripe_connect_button(); ?>
 									</li>
 									<li style="display: block; margin: 20px 0 0;">
-										<a href="https://givewp.com/addons/category/payment-gateways/" class="give-feature-btn-link"
+										<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=welcome-screen&utm_medium=getting-started" class="give-feature-btn-link"
 										   target="_blank"
 										   title="<?php esc_attr_e( 'View Premium Gateways', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateways', 'give' ); ?></a>
 									</li>
@@ -290,7 +290,7 @@ class Give_Welcome {
 									   title="<?php esc_attr_e( 'Add new donation form', 'give' ) ?>"><?php esc_html_e( 'Add Donation Form', 'give' ) ?></a>
 								</li>
 								<li>
-									<a href="#" class="give-feature-btn-link"
+									<a href="http://docs.givewp.com/give-forms" class="give-feature-btn-link"
 									   target="_blank"
 									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
 								</li>
@@ -320,7 +320,7 @@ class Give_Welcome {
 									   title="<?php esc_attr_e( 'Configure Test Mode', 'give' ) ?>"><?php esc_html_e( 'Configure Test Mode', 'give' ) ?></a>
 								</li>
 								<li>
-									<a href="#" class="give-feature-btn-link"
+									<a href="http://docs.givewp.com/test-mode" class="give-feature-btn-link"
 									   target="_blank"
 									   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ) ?></a>
 								</li>
