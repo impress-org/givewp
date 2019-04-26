@@ -4,11 +4,10 @@
 	$( document ).ready( function() {
 		const $licensesContainer = $( '#give-licenses-container' ),
 			  $licenseActivationFormContainer = $( '#give-license-activator-wrap' ),
-			  $container = $( '#give-license-activator-wrap' ),
-			  $form = $( 'form', $container ),
-			  $license = $( 'input[name="give_license_key"]', $container ),
+			  $form = $( 'form', $licenseActivationFormContainer ),
+			  $license = $( 'input[name="give_license_key"]', $licenseActivationFormContainer ),
 			  $submitBtn = $( 'input[type="submit"]', $form ),
-			  $noticeContainer = $( '.give-notices', $container );
+			  $noticeContainer = $( '.give-notices', $licenseActivationFormContainer );
 
 		/**
 		 * License form submit button handler

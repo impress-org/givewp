@@ -230,8 +230,8 @@ function give_get_license_info_handler() {
 	// Get license section HTML.
 	$response         = $check_license_res;
 	$response['html'] = $is_activating_single_license
-		? Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
-		: Give_Addons::render_license_section();
+		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
+		: Give_License::render_licenses_list();
 
 	wp_send_json_success( $response );
 }
@@ -333,8 +333,8 @@ function give_deactivate_license_handler() {
 	}
 
 	$response['html'] = $is_all_access_pass
-		? Give_Addons::render_license_section()
-		: Give_Addons::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
+		? Give_License::render_licenses_list()
+		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
 
 	// Tell WordPress to look for updates.
 	set_site_transient( 'update_plugins', null );
@@ -362,7 +362,7 @@ function give_refresh_all_licenses_handler() {
 
 	give_refresh_licenses();
 
-	wp_send_json_success( array( 'html' => Give_Addons::render_license_section() ) );
+	wp_send_json_success( array( 'html' => Give_License::render_licenses_list() ) );
 }
 
 add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );
