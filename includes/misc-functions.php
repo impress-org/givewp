@@ -2488,6 +2488,7 @@ function give_refresh_licenses() {
 	update_option( 'give_licenses_last_checked', time(), 'no' );
 
 	// @todo: log requests.
+	// @todo prevent plugin update check done by wordpress
 
 	return $give_licenses;
 }
