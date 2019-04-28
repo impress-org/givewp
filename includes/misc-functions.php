@@ -2473,5 +2473,9 @@ function give_refresh_licenses() {
 	update_option( 'give_licenses', $give_licenses );
 	set_site_transient( 'update_plugins', $update_plugins );
 
+	update_option( 'give_licenses_last_checked', time(), 'no');
+
+	// @todo: log requests.
+
 	return $give_licenses;
 }
