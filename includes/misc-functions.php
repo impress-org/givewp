@@ -2458,14 +2458,14 @@ function give_refresh_licenses() {
 
 			foreach ( $plugins as $plugin ) {
 				// Thi value will be empty if any error occurred when varifing version of add-on.
-				if( ! $plugin['new_version'] ) {
+				if ( ! $plugin['new_version'] ) {
 					continue;
 				}
 
 				$plugin     = array_map( 'maybe_unserialize', $plugin );
 				$tmp_plugin = Give_License::get_plugin_by_slug( $plugin['slug'] );
 
-				if( ! $tmp_plugin ) {
+				if ( ! $tmp_plugin ) {
 					continue;
 				}
 
@@ -2485,7 +2485,7 @@ function give_refresh_licenses() {
 	update_option( 'give_licenses', $give_licenses );
 	set_site_transient( 'update_plugins', $update_plugins );
 
-	update_option( 'give_licenses_last_checked', time(), 'no');
+	update_option( 'give_licenses_last_checked', time(), 'no' );
 
 	// @todo: log requests.
 
