@@ -222,6 +222,7 @@ class Give_Stripe_Customer {
 		$customer     = false;
 		$post_data    = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
+		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : false;
 
 		// Set Application Info.
 		give_stripe_set_app_info();
@@ -242,6 +243,11 @@ class Give_Stripe_Customer {
 				$metadata['address_state']   = isset( $post_data['card_state'] ) ? $post_data['card_state'] : '';
 				$metadata['address_country'] = isset( $post_data['billing_country'] ) ? $post_data['billing_country'] : '';
 				$metadata['address_zip']     = isset( $post_data['card_zip'] ) ? $post_data['card_zip'] : '';
+			}
+
+			// Add company name to customer metadata.
+			if ( give_is_company_field_enabled( $form_id ) ) {
+				$metadata['company_name'] = ! empty( $post_data['give_company_name'] ) ? $post_data['give_company_name'] : '';
 			}
 
 			/**
