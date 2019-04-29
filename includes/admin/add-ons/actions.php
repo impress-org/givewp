@@ -360,3 +360,53 @@ function give_refresh_all_licenses_handler() {
 }
 
 add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );
+
+
+/**
+ * Updates information on the "View version x.x details" page with custom data.
+ * Note: only for internal use
+ *
+ * @param mixed  $_data
+ * @param string $_action
+ * @param object $_args
+ *
+ * @return object $_data
+ * @since 2.5.0
+ * @uses  api_request()
+ *
+ */
+function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
+	$plugin = Give_License::get_plugin_by_slug( $_args->slug );
+
+	// Exit.
+	if (
+		'plugin_information' !== $_action
+		|| ! $plugin
+		|| 'add-on' !== $plugin['Type']
+		|| false === strpos( $_args->slug, 'give-' )
+	) {
+		return $_data;
+	}
+
+	$plugin_path = "{$_args->slug}/{$_args->slug}.php";
+	$plugin_data = get_site_transient( 'update_plugins' );
+
+	if ( ! $plugin_data ) {
+		return $_data;
+	}
+
+	$plugin_data = ! empty( $plugin_data->response[ $plugin_path ] )
+		? $plugin_data->response[ $plugin_path ]
+		: array();
+
+	if ( ! $plugin_data ) {
+		return $_data;
+	}
+
+	$_data = $plugin_data;
+
+	return $_data;
+}
+
+add_filter( 'plugins_api', 'give_plugins_api_filter', 10, 3 );
+
