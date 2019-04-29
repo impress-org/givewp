@@ -107,6 +107,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $author;
 
 		/**
+		 * Plugin directory name
+		 *
+		 * @access private
+		 * @since  2.5.0
+		 *
+		 * @var    string
+		 */
+		private $plugin_dirname;
+
+		/**
 		 * API URL
 		 *
 		 * @access private
@@ -189,8 +199,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
+			$this->plugin_dirname   = plugin_basename( $this->file );
 			$this->item_shortname   = self::get_short_name( $this->item_name );
-			$this->license_data     = self::get_license_by_plugin_dirname( basename( dirname( $_file ) ) );
+			$this->license_data     = self::get_license_by_plugin_dirname( $this->plugin_dirname );
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;
@@ -258,10 +269,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 
 			// Show addon notice on plugin page.
-			$plugin_name = explode( 'plugins/', $this->file );
-			$plugin_name = end( $plugin_name );
-			add_action( "after_plugin_row_{$plugin_name}", array( $this, 'plugin_page_notices' ), 10, 3 );
-
+			add_action( "after_plugin_row_{$this->plugin_dirname}", array( $this, 'plugin_page_notices' ), 10, 3 );
 		}
 
 
@@ -542,8 +550,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function get_license_by_plugin_dirname( $plugin_dirname ) {
 			$license        = array();
 			$give_licenses  = get_option( 'give_licenses', array() );
-			$plugin_dirname = strtolower( $plugin_dirname );
-
 
 			if ( ! empty( $give_licenses ) ) {
 				foreach ( $give_licenses as $give_license ) {
@@ -554,7 +560,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
 
 					foreach ( $compares as $compare ) {
-						if ( $plugin_dirname === strtolower( $compare['plugin_slug'] ) ) {
+						if ( $plugin_dirname === $compare['plugin_slug'] ) {
 							$license = $give_license;
 							break;
 						}
