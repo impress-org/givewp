@@ -81,13 +81,13 @@ class Give_Cron {
 	 */
 	public function __add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
-		$schedules['give_weekly'] = array(
+		$schedules['weekly'] = array(
 			'interval' => 604800, // 7 * 24 * 3600
 			'display'  => __( 'Once Weekly', 'give' ),
 		);
 
 		// Adds once weekly to the existing schedules.
-		$schedules['give_monthly'] = array(
+		$schedules['monthly'] = array(
 			'interval' => 2592000, // 30 * 24 * 3600
 			'display'  => __( 'Once Monthly', 'give' ),
 		);
@@ -117,7 +117,7 @@ class Give_Cron {
 	 */
 	private function monthly_events() {
 		if ( ! wp_next_scheduled( 'give_monthly_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'give_monthly', 'give_monthly_scheduled_events' );
+			wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'give_monthly_scheduled_events' );
 		}
 	}
 
@@ -130,7 +130,7 @@ class Give_Cron {
 	 */
 	private function weekly_events() {
 		if ( ! wp_next_scheduled( 'give_weekly_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'give_weekly', 'give_weekly_scheduled_events' );
+			wp_schedule_event( current_time( 'timestamp' ), 'weekly', 'give_weekly_scheduled_events' );
 		}
 	}
 
