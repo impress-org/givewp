@@ -2483,6 +2483,7 @@ function give_refresh_licenses() {
 	$update_plugins->last_checked = time();
 
 	update_option( 'give_licenses', $give_licenses );
+	update_option( 'give_get_versions', $tmp_update_plugins );
 	set_site_transient( 'update_plugins', $update_plugins );
 
 	update_option( 'give_licenses_last_checked', time(), 'no' );
