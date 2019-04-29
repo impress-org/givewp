@@ -269,10 +269,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 
 			// Show addon notice on plugin page.
-			$plugin_name = explode( 'plugins/', $this->file );
-			$plugin_name = end( $plugin_name );
-			add_action( "after_plugin_row_{$plugin_name}", array( $this, 'plugin_page_notices' ), 10, 3 );
-
+			add_action( "after_plugin_row_{$this->plugin_dirname}", array( $this, 'plugin_page_notices' ), 10, 3 );
 		}
 
 
