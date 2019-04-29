@@ -550,8 +550,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function get_license_by_plugin_dirname( $plugin_dirname ) {
 			$license        = array();
 			$give_licenses  = get_option( 'give_licenses', array() );
-			$plugin_dirname = strtolower( $plugin_dirname );
-
 
 			if ( ! empty( $give_licenses ) ) {
 				foreach ( $give_licenses as $give_license ) {
@@ -562,7 +560,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
 
 					foreach ( $compares as $compare ) {
-						if ( $plugin_dirname === strtolower( $compare['plugin_slug'] ) ) {
+						if ( $plugin_dirname === $compare['plugin_slug'] ) {
 							$license = $give_license;
 							break;
 						}
