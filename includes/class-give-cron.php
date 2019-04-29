@@ -82,9 +82,15 @@ class Give_Cron {
 	 */
 	public function __add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
-		$schedules['weekly'] = array(
-			'interval' => 604800,
+		$schedules['give_weekly'] = array(
+			'interval' => 604800, // 7 * 24 * 3600
 			'display'  => __( 'Once Weekly', 'give' ),
+		);
+
+		// Adds once weekly to the existing schedules.
+		$schedules['give_monthly'] = array(
+			'interval' => 2592000, // 30 * 24 * 3600
+			'display'  => __( 'Once Monthly', 'give' ),
 		);
 
 		return $schedules;
@@ -99,8 +105,23 @@ class Give_Cron {
 	 * @return void
 	 */
 	public function __schedule_events() {
+		$this->monthly_events();
 		$this->weekly_events();
 		$this->daily_events();
+	}
+
+	/**
+	 * Schedule monthly events
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function monthly_events() {
+		if ( ! wp_next_scheduled( 'give_monthly_scheduled_events' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'give_monthly', 'give_monthly_scheduled_events' );
+		}
 	}
 
 	/**
@@ -113,7 +134,7 @@ class Give_Cron {
 	 */
 	private function weekly_events() {
 		if ( ! wp_next_scheduled( 'give_weekly_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'weekly', 'give_weekly_scheduled_events' );
+			wp_schedule_event( current_time( 'timestamp' ), 'give_weekly', 'give_weekly_scheduled_events' );
 		}
 	}
 
@@ -142,12 +163,18 @@ class Give_Cron {
 	 * @return string
 	 */
 	public static function get_cron_action( $type = 'weekly' ) {
+		$cron_action = '';
+
 		switch ( $type ) {
 			case 'daily':
 				$cron_action = 'give_daily_scheduled_events';
 				break;
 
-			default:
+			case 'monthly':
+				$cron_action = 'give_monthly_scheduled_events';
+				break;
+
+			case 'weekly':
 				$cron_action = 'give_weekly_scheduled_events';
 				break;
 		}
@@ -178,7 +205,7 @@ class Give_Cron {
 	 * @param $action
 	 */
 	public static function add_weekly_event( $action ) {
-		self::add_event( $action, 'weekly' );
+		self::add_event( $action );
 	}
 
 	/**
@@ -191,6 +218,18 @@ class Give_Cron {
 	 */
 	public static function add_daily_event( $action ) {
 		self::add_event( $action, 'daily' );
+	}
+
+	/**
+	 * Add monthly event
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 *
+	 * @param $action
+	 */
+	public static function add_monthly_event( $action ) {
+		self::add_event( $action, 'monthly' );
 	}
 }
 
