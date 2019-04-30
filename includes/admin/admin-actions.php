@@ -1205,7 +1205,6 @@ function give_license_notices() {
 			! array_key_exists( 'invalid-license', $notices )
 			&& 'valid' !== $give_license['license']
 		) {
-			// @todo this message must apear after 24 hours of addon activation.
 			$notices['invalid-license'] = $invalid_license_notice_args;
 		}
 

@@ -881,7 +881,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<span class="give-text"><?php _e( 'Not receiving updates or support' ) ?></span>
 						<span>
 						<?php
-						// @todo: confirm do we need to redirect user to addon page or direct to cart with current addon.
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
