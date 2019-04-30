@@ -230,6 +230,10 @@ function give_get_license_info_handler() {
 		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_License::render_licenses_list();
 
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( $response );
 }
 
@@ -333,6 +337,9 @@ function give_deactivate_license_handler() {
 		? Give_License::render_licenses_list()
 		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
 
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( $response );
 }
 
@@ -368,6 +375,9 @@ function give_refresh_all_licenses_handler() {
 	}
 
 	give_refresh_licenses();
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
 
 	// Update date and reset counter.
 	if ( $data['time'] < date( 'Ymd' ) ) {
@@ -439,52 +449,10 @@ add_filter( 'plugins_api', 'give_plugins_api_filter', 10, 3 );
 
 
 /**
- * Check add-ons updates
- * Note: only for internal use
+ * Check add-ons updates when WordPress check plugin updates
  *
- * @param stdClass $_transient_data Plugin updates information
- *
- * @return stdClass
  * @since 2.5.0
  */
-function give_check_addon_updates( $_transient_data ){
-	$update_plugins = get_option( 'give_get_versions', array() );
-	$check_licenses = get_option( 'give_licenses', array() );
-
-	if ( ! $update_plugins ) {
-		return $_transient_data;
-	}
-
-	foreach ( $update_plugins as $key => $data ) {
-		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
-
-		foreach ( $plugins as $plugin ) {
-			// Thi value will be empty if any error occurred when varifing version of add-on.
-			if ( ! $plugin['new_version'] ) {
-				continue;
-			}
-
-			$plugin     = array_map( 'maybe_unserialize', $plugin );
-			$tmp_plugin = Give_License::get_plugin_by_slug( $plugin['slug'] );
-
-			if ( ! $tmp_plugin ) {
-				continue;
-			}
-
-			// Continue if version > newer version.
-			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
-				continue;
-			}
-
-			$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
-			$_transient_data->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
-		}
-	}
-
-	$_transient_data->last_checked = time();
-
-	return $_transient_data;
-}
-add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates', 10, 1 );
+add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates', 999, 1 );
 
 

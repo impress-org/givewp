@@ -3495,4 +3495,9 @@ function give_v250_upgrades() {
 
 	// 4. misc
 	delete_option( 'give_is_addon_activated' );
+
+	give_refresh_licenses();
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
 }

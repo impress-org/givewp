@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+Give_Cron::add_monthly_event( 'give_refresh_licenses' );
+
 /**
  * Hooks Give actions, when present in the $_GET superglobal. Every give_action
  * present in $_GET is called using WordPress's do_action function. These

@@ -494,7 +494,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param array $api_params
 		 * @param bool  $response_in_array
 		 *
-		 * @return mixed
+		 * @return array|WP_Error
 		 * @since  1.8.9
 		 * @access public
 		 *
@@ -502,7 +502,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function request_license_api( $api_params = array(), $response_in_array = false ) {
 			// Bailout.
 			if ( empty( $api_params['edd_action'] ) ) {
-				return false;
+				return new WP_Error( 'give-invalid-edd-action', __( 'Valid edd_action not defined', 'give' ) );
 			}
 
 			// Data to send to the API.
