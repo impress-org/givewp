@@ -117,6 +117,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $plugin_dirname;
 
 		/**
+		 * Website URL
+		 *
+		 * @access private
+		 * @since  1.0
+		 *
+		 * @var    string
+		 */
+		private static $site_url = 'https://givewp.com/';
+
+		/**
 		 * API URL
 		 *
 		 * @access private
@@ -589,6 +599,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function get_account_url() {
 			return self::$account_url;
 		}
+
+		/**
+		 * Get account url
+		 * @return string|null
+		 * @since 2.5.0
+		 */
+		public static function get_website_url() {
+			return self::$site_url;
+		}
+
 
 		/**
 		 * Get plugin information by id.
