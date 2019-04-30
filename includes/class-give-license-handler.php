@@ -117,6 +117,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $plugin_dirname;
 
 		/**
+		 * Website URL
+		 *
+		 * @access private
+		 * @since  1.0
+		 *
+		 * @var    string
+		 */
+		private static $site_url = 'http://staging.givewp.com/';
+
+		/**
 		 * API URL
 		 *
 		 * @access private
@@ -124,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'https://givewp.com/edd-sl-api/';
+		private $api_url = 'http://staging.givewp.com/edd-sl-api/';
 
 		/**
 		 * array of licensed addons
@@ -144,7 +154,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $account_url = 'https://givewp.com/my-account/';
+		private static $account_url = 'http://staging.givewp.com/my-account/';
 
 		/**
 		 * Checkout URL
@@ -154,7 +164,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $checkout_url = 'https://givewp.com/checkout/';
+		private static $checkout_url = 'http://staging.givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
@@ -517,8 +527,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Call the API.
 			$response = wp_remote_post(
-			// 'https://givewp.com/checkout/',
-				'http://staging.givewp.com/chekout/', // For testing purpose
+				self::$checkout_url,
 				apply_filters(
 					'give_request_license_api_args',
 					array(
@@ -589,6 +598,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public static function get_account_url() {
 			return self::$account_url;
 		}
+
+		/**
+		 * Get account url
+		 * @return string|null
+		 * @since 2.5.0
+		 */
+		public static function get_website_url() {
+			return self::$site_url;
+		}
+
 
 		/**
 		 * Get plugin information by id.
@@ -715,7 +734,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			if ( $license ) {
-				$license['renew_url']            = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+				$license['renew_url']            = self::$checkout_url . "?edd_license_key={$license['license_key']}";
 				$default_plugin['ChangeLogSlug'] = $license['readme'];
 
 				// Backward compatibility.
@@ -723,7 +742,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 					$license['expires']            = $license['subscription']['expires'];
 					$default_plugin['DownloadURL'] = $license['download'];
 
-					$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['subscription']['subscription_key']}";
+					$license['renew_url'] = self::$checkout_url . "?edd_license_key={$license['subscription']['subscription_key']}";
 				}
 			}
 
@@ -757,7 +776,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private static function html_by_license( $license ) {
 			ob_start();
 
-			$license['renew_url'] = "https://givewp.com/checkout/?edd_license_key={$license['license_key']}";
+			$license['renew_url'] = self::$checkout_url . "?edd_license_key={$license['license_key']}";
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
@@ -861,8 +880,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 						if ( ! $is_license_expired ) {
 							echo sprintf(
-								'<span class="give-text"><a href="http://staging.givewp.com/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
-								// demo url: http://staging.givewp.com/purchase-history/?license_id=175279&action=manage_licenses&payment_id=355748
+								'<span class="give-text"><a href="%9$s/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
 								__( 'Visit site', 'give' ),
 								__( 'Deactivate', 'give' ),
 								$license['license_id'],
@@ -870,7 +888,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 								$license['license_key'],
 								$license['item_name'],
 								wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
-								! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : ''
+								! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
+								Give_License::get_website_url()
 							);
 						}
 					}
@@ -884,7 +903,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-							'https://givewp.com/addons/' . $license['item_name'] . '/',
+							self::$site_url . $license['item_name'] . '/',
 							__( 'Purchase license', 'give' )
 						);
 						?>

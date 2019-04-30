@@ -188,7 +188,7 @@ function give_get_license_info_handler() {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
 				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
-				'http://staging.givewp.com/my-account/',
+				Give_License::get_account_url(),
 				$check_license_res['license']
 			),
 		) );
@@ -211,8 +211,8 @@ function give_get_license_info_handler() {
 	if ( ! $activate_license_res['success'] ) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check the license details.' ),
-				'http://staging.givewp.com/my-account/',
+				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				Give_License::get_account_url(),
 				$activate_license_res['license']
 			),
 		) );
@@ -319,8 +319,8 @@ function give_deactivate_license_handler() {
 	if ( ! $response['success'] ) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
-				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because the license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check the license details.' ),
-				'http://staging.givewp.com/my-account/',
+				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				Give_License::get_account_url(),
 				$response['license']
 			),
 		) );

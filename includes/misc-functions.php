@@ -2294,6 +2294,8 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 		$plugin_slug = Give_License::get_short_name( $plugin_slug );
 	}
 
+	$website_url = Give_License::get_website_url();
+
 	/**
 	 * Filter the addon readme.txt url
 	 *
@@ -2301,7 +2303,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 	 */
 	$url = apply_filters(
 		'give_addon_readme_file_url',
-		"http://staging.givewp.com/downloads/plugins/{$plugin_slug}/readme.txt",
+		"{$website_url}/downloads/plugins/{$plugin_slug}/readme.txt",
 		$plugin_slug,
 		$by_plugin_name
 	);
