@@ -2313,7 +2313,6 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
  * Refresh all givewp license.
  *
  * @return array
- * @todo   write logic of all access pass
  *
  * @access public
  * @since  2.5.0
@@ -2358,46 +2357,10 @@ function give_refresh_licenses() {
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
 	);
 
-	$update_plugins = get_site_transient( 'update_plugins' );
-
-	if ( $tmp_update_plugins ) {
-		foreach ( $tmp_update_plugins as $key => $data ) {
-			$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
-
-			foreach ( $plugins as $plugin ) {
-				// Thi value will be empty if any error occurred when varifing version of add-on.
-				if ( ! $plugin['new_version'] ) {
-					continue;
-				}
-
-				$plugin     = array_map( 'maybe_unserialize', $plugin );
-				$tmp_plugin = Give_License::get_plugin_by_slug( $plugin['slug'] );
-
-				if ( ! $tmp_plugin ) {
-					continue;
-				}
-
-				// Continue if version > newer version.
-				if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
-					continue;
-				}
-
-				$update_plugins->response[ $tmp_plugin['Path'] ] = (object) $plugin;
-				$update_plugins->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
-			}
-		}
-	}
-
-	$update_plugins->last_checked = time();
-
 	update_option( 'give_licenses', $give_licenses );
 	update_option( 'give_get_versions', $tmp_update_plugins );
-	set_site_transient( 'update_plugins', $update_plugins );
 
 	update_option( 'give_licenses_last_checked', time(), 'no' );
-
-	// @todo: log requests.
-	// @todo prevent plugin update check done by wordpress
 
 	return $give_licenses;
 }
