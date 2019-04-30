@@ -2404,7 +2404,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @return array
+ * @return array|WP_Error
  *
  * @access public
  * @since  2.5.0
@@ -2417,7 +2417,8 @@ function give_refresh_licenses() {
 	}
 
 	$license_keys = implode( ',', array_keys( $give_licenses ) );
-	$tmp          = Give_License::request_license_api(
+
+	$tmp = Give_License::request_license_api(
 		array(
 			'edd_action' => 'check_licenses',
 			'licenses'   => $license_keys,
@@ -2425,7 +2426,7 @@ function give_refresh_licenses() {
 	);
 
 	if ( is_wp_error( $tmp ) ) {
-		return $give_licenses;
+		return $tmp;
 	}
 
 	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
@@ -2454,5 +2455,65 @@ function give_refresh_licenses() {
 
 	update_option( 'give_licenses_last_checked', time(), 'no' );
 
-	return $give_licenses;
+	return array(
+		'give_licenses'     => $give_licenses,
+		'give_get_versions' => $tmp_update_plugins,
+	);
+}
+
+/**
+ * Check add-ons updates
+ * Note: only for internal use
+ *
+ * @param stdClass $_transient_data Plugin updates information
+ *
+ * @return stdClass
+ * @since 2.5.0
+ */
+function give_check_addon_updates( $_transient_data ){
+	$update_plugins = get_option( 'give_get_versions', array() );
+	$check_licenses = get_option( 'give_licenses', array() );
+
+	if ( ! $update_plugins ) {
+		$data = give_refresh_licenses();
+
+		if(
+			empty( $data['give_get_versions'] )
+			|| is_wp_error( $data )
+		) {
+			return $_transient_data;
+		}
+
+		$update_plugins = $data['give_get_versions'];
+	}
+
+	foreach ( $update_plugins as $key => $data ) {
+		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
+
+		foreach ( $plugins as $plugin ) {
+			// Thi value will be empty if any error occurred when varifing version of add-on.
+			if ( ! $plugin['new_version'] ) {
+				continue;
+			}
+
+			$plugin     = array_map( 'maybe_unserialize', $plugin );
+			$tmp_plugin = Give_License::get_plugin_by_slug( $plugin['slug'] );
+
+			if ( ! $tmp_plugin ) {
+				continue;
+			}
+
+			// Continue if version > newer version.
+			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
+				continue;
+			}
+
+			$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
+			$_transient_data->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
+		}
+	}
+
+	$_transient_data->last_checked = time();
+
+	return $_transient_data;
 }
