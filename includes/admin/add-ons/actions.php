@@ -230,6 +230,10 @@ function give_get_license_info_handler() {
 		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_License::render_licenses_list();
 
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( $response );
 }
 
@@ -333,6 +337,9 @@ function give_deactivate_license_handler() {
 		? Give_License::render_licenses_list()
 		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
 
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( $response );
 }
 
@@ -368,6 +375,9 @@ function give_refresh_all_licenses_handler() {
 	}
 
 	give_refresh_licenses();
+
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
 
 	// Update date and reset counter.
 	if ( $data['time'] < date( 'Ymd' ) ) {
