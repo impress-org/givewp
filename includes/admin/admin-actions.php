@@ -1194,7 +1194,7 @@ function give_license_notices() {
 		'type'             => 'error',
 		'description'      => sprintf(
 			__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">add-ons page</a> to correct this issue.', 'give' ),
-			admin_url( 'edit.php?post_type=give_forms&page=give-addons' )
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 		),
 		'dismissible_type' => 'user',
 		'dismiss_interval' => 'shortly',
