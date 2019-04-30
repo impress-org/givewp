@@ -178,12 +178,26 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			</div>
 
 			<h2><?php _e( 'License and Downloads', 'give' ); ?></h2>
+			<?php
+			$refresh_status = get_option(
+				'give_licenses_refreshed_last_checked',
+				array(
+					'time'  => date( 'Ymd' ),
+					'count' => 0,
+				)
+			);
+
+			$is_allow_refresh = $refresh_status['time'] === date( 'Ymd' ) && 5 > $refresh_status['count'];
+			$button_title = __( 'You can not refresh licenses because exceed limit. Only 5 times allowed per day', 'give' );
+			?>
 			<button
 				id="give-button__refresh-licenses"
 				class="button-secondary"
 				data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
 				data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
 				data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
+				<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
+				<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>
 			>
 				<?php _e( 'Refresh All Licenses', 'give' ); ?>
 			</button>
