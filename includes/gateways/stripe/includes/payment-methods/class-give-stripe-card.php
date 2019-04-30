@@ -87,21 +87,21 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					} catch ( Exception $e ) {
 
 						give_record_gateway_error(
-							__( 'Stripe Error', 'give-stripe' ),
+							__( 'Stripe Error', 'give' ),
 							sprintf(
 								/* translators: %s Exception Message Body */
-								__( 'The Stripe Gateway returned an error while creating the customer payment source. Details: %s', 'give-stripe' ),
+								__( 'The Stripe Gateway returned an error while creating the customer payment source. Details: %s', 'give' ),
 								$e->getMessage()
 							)
 						);
-						give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give-stripe' ) );
+						give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
 						give_send_back_to_checkout( "?payment-mode={$this->id}&form_id={$donation_data['post_data']['give-form-id']}" );
 					}
 				} elseif ( ! $this->is_stripe_popup_enabled() ) {
 
 					// No Stripe source and fallback mode is disabled.
-					give_set_error( 'no_token', __( 'Missing Stripe Source. Please contact support.', 'give-stripe' ) );
-					give_record_gateway_error( __( 'Missing Stripe Source', 'give-stripe' ), __( 'A Stripe token failed to be generated. Please check Stripe logs for more information.', 'give-stripe' ) );
+					give_set_error( 'no_token', __( 'Missing Stripe Source. Please contact support.', 'give' ) );
+					give_record_gateway_error( __( 'Missing Stripe Source', 'give' ), __( 'A Stripe token failed to be generated. Please check Stripe logs for more information.', 'give' ) );
 
 				}
 			} // End if().
@@ -362,7 +362,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					give_update_payment_status( $donation_id, 'failed' );
 
 					give_record_gateway_error(
-						__( 'Stripe Error', 'give-stripe' ),
+						__( 'Stripe Error', 'give' ),
 						sprintf(
 							/* translators: Exception Message Body */
 							__( 'The Stripe Gateway returned an error while processing a donation. Details: %s', 'give' ),

@@ -516,7 +516,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			} else {
 
-				give_set_error( 'payment_not_recorded', __( 'Your donation could not be recorded, please contact the site administrator.', 'give-stripe' ) );
+				give_set_error( 'payment_not_recorded', __( 'Your donation could not be recorded, please contact the site administrator.', 'give' ) );
 
 				// If errors are present, send the user back to the purchase page so they can be corrected.
 				$this->send_back_to_checkout();

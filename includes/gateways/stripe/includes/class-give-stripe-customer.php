@@ -185,7 +185,7 @@ class Give_Stripe_Customer {
 
 					// Record Log.
 					give_stripe_record_log(
-						__( 'Stripe - Customer Creation Error', 'give-stripe' ),
+						__( 'Stripe - Customer Creation Error', 'give' ),
 						$e->getMessage()
 					);
 				}
@@ -289,11 +289,11 @@ class Give_Stripe_Customer {
 				__( 'Stripe Error', 'give' ),
 				sprintf(
 					/* translators: %s Exception Message Body */
-					__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give-stripe' ),
+					__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
 					$e->getMessage()
 				)
 			);
-			give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give-stripe' ) );
+			give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
 			give_send_back_to_checkout( "?payment-mode={$payment_mode}&form_id={$post_data['post_data']['give-form-id']}" );
 		} // End try().
 

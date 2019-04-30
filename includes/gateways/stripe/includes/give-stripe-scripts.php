@@ -49,7 +49,7 @@ function give_stripe_frontend_scripts() {
 		'publishable_key'              => $publishable_key,
 		'checkout_image'               => give_get_option( 'stripe_checkout_image' ),
 		'checkout_address'             => give_get_option( 'stripe_collect_billing' ),
-		'checkout_processing_text'     => give_get_option( 'stripe_checkout_processing_text', __( 'Donation Processing...', 'give-stripe' ) ),
+		'checkout_processing_text'     => give_get_option( 'stripe_checkout_processing_text', __( 'Donation Processing...', 'give' ) ),
 		'zipcode_option'               => $zip_option,
 		'remember_option'              => $remember_option,
 		'give_version'                 => get_option( 'give_version' ),
