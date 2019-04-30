@@ -209,7 +209,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
-			$this->plugin_dirname   = plugin_basename( $this->file );
+			$this->plugin_dirname   = dirname( plugin_basename( $this->file ) );
 			$this->item_shortname   = self::get_short_name( $this->item_name );
 			$this->license_data     = self::get_license_by_plugin_dirname( $this->plugin_dirname );
 			$this->version          = $_version;
@@ -278,8 +278,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Updater.
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 
+			$plugin_file = plugin_basename( $this->file );
+
 			// Show addon notice on plugin page.
-			add_action( "after_plugin_row_{$this->plugin_dirname}", array( $this, 'plugin_page_notices' ), 10, 3 );
+			add_action( "after_plugin_row_{$plugin_file}", array( $this, 'plugin_page_notices' ), 10, 3 );
 		}
 
 
@@ -341,90 +343,39 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 		/**
-		 * Check if license is valid or not.
-		 *
-		 * @param null|object $licence_data
-		 *
-		 * @return bool
-		 * @since  1.7
-		 * @access public
-		 *
-		 */
-		public function is_valid_license( $licence_data = null ) {
-			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
-
-			if ( apply_filters( 'give_is_valid_license', ( $this->is_license( $license_data ) && 'valid' === $license_data->license ) ) ) {
-				return true;
-			}
-
-			return false;
-		}
-
-
-		/**
-		 * Check if license is license object or not.
-		 *
-		 * @param null|object $licence_data
-		 *
-		 * @return bool
-		 * @since  1.7
-		 * @access public
-		 *
-		 */
-		public function is_license( $licence_data = null ) {
-			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
-
-			if ( apply_filters( 'give_is_license', ( is_object( $license_data ) && ! empty( $license_data ) && property_exists( $license_data, 'license' ) ) ) ) {
-				return true;
-			}
-
-			return false;
-		}
-
-		/**
 		 * Display plugin page licenses status notices.
 		 *
 		 * @param $plugin_file
 		 * @param $plugin_data
 		 * @param $status
-		 *
-		 * @return bool
 		 */
 		public function plugin_page_notices( $plugin_file, $plugin_data, $status ) {
-			// Bailout.
-			if ( $this->is_valid_license() ) {
-				return false;
+			if( ! $this->license ) {
+				return;
 			}
 
 			$update_notice_wrap = '<tr class="give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="notice inline notice-warning notice-alt give-invalid-license"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
-			$message            = $this->license_state_message();
+			$message            = $this->license_nag_msg();
 
-			if ( ! empty( $message['message'] ) ) {
-				echo sprintf( $update_notice_wrap, $message['message'] );
-			}
+			echo sprintf( $update_notice_wrap, $message );
 		}
 
 
 		/**
 		 * Get message related to license state.
 		 *
-		 * @return array
-		 * @since  1.8.7
+		 * @return string
+		 * @since  2.5.0
 		 * @access public
 		 */
-		public function license_state_message() {
-			$message_data = array();
+		private function license_nag_msg() {
+			$message= sprintf(
+				'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
+				esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
+				$this->item_name
+			);
 
-			if ( ! $this->is_valid_license() ) {
-
-				$message_data['message'] = sprintf(
-					'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
-					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
-					$this->item_name
-				);
-			}
-
-			return $message_data;
+			return $message;
 		}
 
 
