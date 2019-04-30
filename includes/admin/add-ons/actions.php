@@ -354,9 +354,36 @@ function give_refresh_all_licenses_handler() {
 		give_die();
 	}
 
+	$data = get_option(
+		'give_licenses_refreshed_last_checked',
+		array(
+			'time'  => date( 'Ymd' ),
+			'count' => 0,
+		)
+	);
+
+	// Update date and reset counter.
+	if ( $data['time'] === date( 'Ymd' ) && 5 <= $data['count'] ) {
+		wp_send_json_error();
+	}
+
 	give_refresh_licenses();
 
-	wp_send_json_success( array( 'html' => Give_License::render_licenses_list() ) );
+	// Update date and reset counter.
+	if ( $data['time'] < date( 'Ymd' ) ) {
+		$data['time']  = date( 'Ymd' );
+		$data['count'] = 0;
+	}
+
+	++ $data['count'];
+
+	update_option( 'give_licenses_refreshed_last_checked', $data, 'no' );
+
+	wp_send_json_success( array(
+		'html'          => Give_License::render_licenses_list(),
+		'refreshButton' => 5 <= $data['count'],
+		'refreshStatus' => $data
+	) );
 }
 
 add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );

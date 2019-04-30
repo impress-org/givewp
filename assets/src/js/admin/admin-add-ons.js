@@ -137,6 +137,10 @@
 					if ( true === response.success ) {
 						$licensesContainer.html( response.data.html );
 					}
+
+					if( ! response.success || response.data.refreshButton ) {
+						$this.prop( 'disabled', true );
+					}
 				},
 			} ).done( function() {
 				loader( $licensesContainer, false );
