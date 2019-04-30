@@ -187,7 +187,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				)
 			);
 
-			$is_allow_refresh = $refresh_status['time'] === date( 'Ymd' ) && 5 > $refresh_status['count'];
+			$is_allow_refresh = ( $refresh_status['time'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['time'] < date( 'Ymd' ) );
 			$button_title = __( 'You can not refresh licenses because exceed limit. Only 5 times allowed per day', 'give' );
 			?>
 			<button
