@@ -854,7 +854,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-							self::$site_url . "downloads/{$license['item_name']}/",
+							self::$site_url . "addons/{$license['item_name']}/",
 							__( 'Purchase license', 'give' )
 						);
 						?>
