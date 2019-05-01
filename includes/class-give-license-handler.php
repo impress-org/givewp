@@ -350,7 +350,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param $status
 		 */
 		public function plugin_page_notices( $plugin_file, $plugin_data, $status ) {
-			if( ! $this->license ) {
+			if( $this->license ) {
 				return;
 			}
 
