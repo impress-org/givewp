@@ -361,7 +361,7 @@ function give_get_default_settings() {
 		'paypal_verification'                         => 'enabled',
 
 		// Default is manual gateway.
-		'gateways'                                    => array( 'manual' => 1, 'offline' => 1 ),
+		'gateways'                                    => array( 'manual' => 1, 'offline' => 1, 'stripe' => 1 ),
 		'default_gateway'                             => 'manual',
 
 		// Offline gateway setup.
