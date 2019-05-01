@@ -29,7 +29,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function __construct() {
 
-			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+			add_filter( 'give_register_gateway', array( $this, 'register_gateway' ) );
 
 			$this->includes();
 		}
