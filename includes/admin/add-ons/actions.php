@@ -413,17 +413,21 @@ add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_hand
  *
  */
 function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
+	// Exit.
+	if ( 'plugin_information' !== $_action ) {
+		return $_data;
+	}
+
 	$plugin = Give_License::get_plugin_by_slug( $_args->slug );
 
-	// Exit.
 	if (
-		'plugin_information' !== $_action
-		|| ! $plugin
+		! $plugin
 		|| 'add-on' !== $plugin['Type']
 		|| false === strpos( $_args->slug, 'give-' )
 	) {
 		return $_data;
 	}
+
 
 	$plugin_path = "{$_args->slug}/{$_args->slug}.php";
 	$plugin_data = get_site_transient( 'update_plugins' );
