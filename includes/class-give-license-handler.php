@@ -350,7 +350,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param $status
 		 */
 		public function plugin_page_notices( $plugin_file, $plugin_data, $status ) {
-			if( ! $this->license ) {
+			if( $this->license ) {
 				return;
 			}
 
@@ -854,7 +854,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-							self::$site_url . $license['item_name'] . '/',
+							self::$site_url . "addons/{$license['item_name']}/",
 							__( 'Purchase license', 'give' )
 						);
 						?>
