@@ -2413,6 +2413,8 @@ function give_check_addon_updates( $_transient_data ){
 				continue;
 			}
 
+			$plugin['plugin'] = $tmp_plugin['Path'];
+
 			// Continue if version > newer version.
 			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
 				continue;
