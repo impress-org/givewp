@@ -315,17 +315,6 @@ function give_deactivate_license_handler() {
 		) );
 	}
 
-	// Check if license deactivated or not.
-	if ( ! $response['success'] ) {
-		wp_send_json_error( array(
-			'errorMsg' => sprintf(
-				__( 'This license has been deactivated on this site but we are unable to deactivate this on <code>givewp.com</code> because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
-				Give_License::get_account_url(),
-				$response['license']
-			),
-		) );
-	}
-
 	$is_all_access_pass = $give_licenses[ $license ]['is_all_access_pass'];
 
 	if ( ! empty( $give_licenses[ $license ] ) ) {
