@@ -81,9 +81,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			// Set secret key received from Stripe.
 			$this->secret_key = give_stripe_get_secret_key();
 
-			// Set API Key.
-			$this->set_api_key();
-
 			// Set API Version.
 			$this->set_api_version();
 
@@ -138,18 +135,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				// Send donor back to checkout page on error.
 				$this->send_back_to_checkout();
 			}
-		}
-
-		/**
-		 * This function will help you to set API Key and its related errors are shown.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function set_api_key() {
-			give_stripe_set_api_key();
 		}
 
 		/**
