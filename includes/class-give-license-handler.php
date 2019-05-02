@@ -699,6 +699,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$plugin['License'] = $license = wp_parse_args( $license, array(
 				'item_name' => str_replace( 'give-', '', $plugin['Dir'] ),
+				'purchase_link' => $plugin['PluginURI']
 			) );
 
 			$plugin = wp_parse_args( $plugin, $default_plugin )
@@ -854,7 +855,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 						echo sprintf(
 							'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-							self::$site_url . "addons/{$license['item_name']}/",
+							$license['purchase_link'],
 							__( 'Purchase license', 'give' )
 						);
 						?>
