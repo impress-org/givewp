@@ -320,12 +320,12 @@ add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
  */
 function give_stripe_connect_dismiss_banner() {
 
-	$user_id = get_current_user_id();
-	set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
+	$user_id             = get_current_user_id();
+	$is_banner_dismissed = set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
 
-	return true;
-
+	echo $is_banner_dismissed ? 'success' : 'failed';
+	give_die();
 }
 
-add_action( 'give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
+add_action( 'wp_ajax_give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
 
