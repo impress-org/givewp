@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @var string
 		 */
-		public $id = '';
+		public $id;
 
 		/**
 		 * Set Latest Stripe Version.

@@ -28,22 +28,14 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 	class Give_Stripe_Card extends Give_Stripe_Gateway {
 
 		/**
-		 * Override Payment Method ID.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @var string
-		 */
-		public $id = 'stripe';
-
-		/**
 		 * Give_Stripe_Card constructor.
 		 *
 		 * @since  2.5.0
 		 * @access public
 		 */
 		public function __construct() {
+
+			$this->id = 'stripe';
 
 			parent::__construct();
 
