@@ -97,7 +97,11 @@ function give_add_ons_page() {
 			<p class="give-subheader-right-text"><?php esc_html_e( 'Maximize your fundraising potential with official add-ons from GiveWP.com.', 'give' ); ?></p>
 
 		</div>
-		<?php // give_add_ons_feed(); ?>
+
+		<div class="give-price-bundle">
+			<?php give_add_ons_feed( 'price-bundle' );?>
+		</div>
+		<?php  //give_add_ons_feed(); ?>
 	</div>
 	<?php
 
@@ -108,25 +112,36 @@ function give_add_ons_page() {
  *
  * Renders the add-ons page feed.
  *
+ * @param string $feed_type
+ *
  * @return void
  * @since 1.0
  */
-function give_add_ons_feed() {
+function give_add_ons_feed( $feed_type = '' ) {
 
 	$addons_debug = false; // set to true to debug
-	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
+	$cache_key = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
+	$cache        = Give_Cache::get( $cache_key, true );
+
+	$feed_url = Give_License::get_website_url() . 'downloads/feed/';
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
-		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
-			$feed = vip_safe_wp_remote_get( 'https://givewp.com/downloads/feed/', false, 3, 1, 20, array( 'sslverify' => false ) );
-		} else {
-			$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
+
+		switch ( $feed_type ) {
+			case 'price-bundle':
+				$feed_url = Give_License::get_website_url() .'downloads/feed/addons-price-bundle.php';
 		}
 
-		if ( ! is_wp_error( $feed ) && ! empty( $feed ) ) {
-			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$feed = vip_safe_wp_remote_get( $feed_url, false, 3, 1, 20, array( 'sslverify' => false ) );
+		} else {
+			$feed = wp_remote_get( $feed_url, array( 'sslverify' => false ) );
+		}
+
+		if ( ! is_wp_error( $feed ) ) {
+			if ( ! empty( $feed['body'] ) ) {
 				$cache = wp_remote_retrieve_body( $feed );
-				Give_Cache::set( 'give_add_ons_feed', $cache, HOUR_IN_SECONDS, true );
+				Give_Cache::set( $cache_key, $cache, HOUR_IN_SECONDS, true );
 			}
 		} else {
 			$cache = sprintf(
