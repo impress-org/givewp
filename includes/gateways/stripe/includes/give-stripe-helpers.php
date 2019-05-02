@@ -688,6 +688,9 @@ function give_stripe_set_app_info() {
 		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
 	} // End try().
 
+	// Set API Key after setting app info to ensure that API key is set on every Stripe call.
+	give_stripe_set_api_key();
+
 }
 
 /**
@@ -759,9 +762,6 @@ function give_stripe_set_api_key() {
 
 		// Fetch secret key.
         $secret_key = give_stripe_get_secret_key();
-
-		// Set App Info.
-		give_stripe_set_app_info();
 
         // Set secret key.
 		\Stripe\Stripe::setApiKey( $secret_key );
