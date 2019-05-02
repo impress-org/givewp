@@ -2490,6 +2490,11 @@ function give_check_addon_updates( $_transient_data ){
 	}
 
 	foreach ( $update_plugins as $key => $data ) {
+		// Maybe add-on license deactivate already.
+		if( empty( $check_licenses[ $key ] ) ) {
+			continue;
+		}
+
 		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
 
 		foreach ( $plugins as $plugin ) {
