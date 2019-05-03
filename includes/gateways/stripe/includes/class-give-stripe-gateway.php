@@ -89,11 +89,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
 
-			// Add hidden field for source only if the gateway is not Stripe ACH.
-			if ( 'stripe_ach' !== $this->id ) {
-				add_action( 'give_donation_form_top', array( $this, 'add_hidden_source_field' ), 10, 2 );
-			}
-
 		}
 
 		/**
@@ -270,29 +265,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				// Send donor back to checkout page on error.
 				$this->send_back_to_checkout();
 			}
-		}
-
-		/**
-		 * This function will add hidden source field.
-		 *
-		 * @param int   $form_id Donation Form ID.
-		 * @param array $args    List of arguments.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 */
-		public function add_hidden_source_field( $form_id, $args ) {
-
-			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : 0;
-
-			echo sprintf(
-				'<input id="give-%1$s-source-%2$s" type="hidden" name="give_%1$s_source" value="">',
-				esc_attr( $this->id ),
-				esc_html( $id_prefix )
-			);
-			?>
-
-			<?php
 		}
 
 		/**
