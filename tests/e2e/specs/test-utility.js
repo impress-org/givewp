@@ -182,7 +182,7 @@ const helpers = {
 		verifyInteraction: function( page, elementArray ) {
 			for( let object of elementArray ) {
 
-				let screenshot = ''
+				let screenshot = '';
 
 				if( object.hasOwnProperty( 'screenshot' ) ) {
 					screenshot = object.screenshot
@@ -192,11 +192,16 @@ const helpers = {
 				}
 
 				it( `INTERACTION: ${object.desc}`, async () => {
-					const element = await page.$( object.selector )
+					// Submit the donation form and wait for navigation.
+					await page.waitForSelector(object.selector, {visible: true});
+
+					const element = await page.$( object.selector );
 
 					switch( object.event ) {
 						case 'click':
-							await element.click()
+							await page.evaluate( (item) => {
+								item.click()
+							}, element);
 
 							if ( screenshot ) {
 								await helpers.fn.takeScreenshot( page )
