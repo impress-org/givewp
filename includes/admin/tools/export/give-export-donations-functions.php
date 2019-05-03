@@ -189,34 +189,31 @@ function give_export_donation_form_search_args( $args ) {
 		return $args;
 	}
 
-	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : '';
+	$fields = array_map( 'give_clean', wp_parse_args( $fields, array() ) );
 
-	// Using parse_str() function without the result parameter is highly DISCOURAGED and DEPRECATED as of PHP 7.2.
-	$fields_result_array = array();
-	parse_str( $fields, $fields_result_array );
-
-	if ( ! empty( $give_forms_categories ) || ! empty( $give_forms_tags ) ) {
+	if ( ! empty( $fields['give_forms_categories'] ) || ! empty( $fields['give_forms_tags'] ) ) {
 		$args['posts_per_page'] = - 1;
 	}
 
-	if ( ! empty( $give_forms_categories ) && ! empty( $give_forms_tags ) ) {
+	if ( ! empty( $fields['give_forms_categories'] ) && ! empty( $fields['give_forms_tags'] ) ) {
 		$args['tax_query']['relation'] = 'AND';
 	}
 
-	if ( ! empty( $give_forms_categories ) ) {
+	if ( ! empty( $fields['give_forms_categories'] ) ) {
 		$args['tax_query'][] = array(
 			'taxonomy' => 'give_forms_category',
 			'field'    => 'term_id',
-			'terms'    => $give_forms_categories,
+			'terms'    => $fields['give_forms_categories'],
 			'operator' => 'AND',
 		);
 	}
 
-	if ( ! empty( $give_forms_tags ) ) {
+	if ( ! empty( $fields['give_forms_tags'] ) ) {
 		$args['tax_query'][] = array(
 			'taxonomy' => 'give_forms_tag',
 			'field'    => 'term_id',
-			'terms'    => $give_forms_tags,
+			'terms'    => $fields['give_forms_tags'],
 			'operator' => 'AND',
 		);
 	}
