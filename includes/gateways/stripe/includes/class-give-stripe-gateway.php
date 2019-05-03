@@ -73,11 +73,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function __construct() {
 
-			// Bailout, if current gateway is not enabled.
-			if ( ! give_is_gateway_active( $this->id ) ) {
-				return false;
-			}
-
 			// Set secret key received from Stripe.
 			$this->secret_key = give_stripe_get_secret_key();
 
