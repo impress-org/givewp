@@ -128,10 +128,11 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 					<div id="give-license-activator-wrap">
 						<div id="give-license-activator-inner">
 							<div class="give-notices"></div>
+							<h2><?php _e( 'Activate a license key', 'give' ); ?></h2>
 							<form method="post" action="">
 								<?php wp_nonce_field( 'give-license-activator-nonce', 'give_license_activator_nonce' ); ?>
 								<label for="give-license-activator" class="screen-reader-text"><?php _e( 'Activate License', 'give' ); ?></label>
-								<input id="give-license-activator" type="text" name="give_license_key" placeholder="<?php _e( 'Enter a valid license key', 'give' ) ?>">
+								<input id="give-license-activator" type="text" name="give_license_key" placeholder="<?php _e( 'Enter your license key', 'give' ) ?>">
 								<input
 									data-activate="<?php _e( 'Activate License', 'give' ); ?>"
 									data-activating="<?php _e( 'Verifying License...', 'give' ); ?>"
@@ -143,7 +144,14 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 							</form>
 						</div>
 
-						<p class="give-field-description"><?php _e( 'Enter a license key above to unlock your GiveWP add-ons. You can access your licenses anytime from the My Account section on the GiveWP website.' ); ?></p>
+						<p class="give-field-description">
+							<?php
+							printf(
+								__( 'Enter your license key above to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give' ),
+								Give_License::get_account_url()
+							);
+							?>
+						</p>
 					</div>
 				</div>
 
@@ -163,10 +171,14 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 								</div>
 							<?php else: ?>
 								<div class="give-notices"></div>
+								<h2><?php _e( 'Upload and activate an add-on', 'give' ); ?></h2>
 								<div class="give-form-wrap">
-									<?php _e( '<h1>Drop files here </br>or</h1>', 'give' ); ?>
 									<form method="post" enctype="multipart/form-data" class="give-upload-form" action="/">
 										<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
+										<i class="dashicons dashicons-upload"></i>
+										<h2 class="give-instruction">
+											<?php _e( 'Drag plugin zip file here to upload', 'give' ); ?>
+										</h2>
 										<input type="file" name="addon" value="<?php _e( 'Select File', 'give' ); ?>">
 									</form>
 								</div>
