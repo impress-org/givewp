@@ -66,7 +66,8 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			// Get the Stripe SDK autoloader.
 			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-			$this->stripe_gateway->set_api_key();
+			// Set App Info, API Key, and API Version.
+			give_stripe_set_app_info();
 			$this->stripe_gateway->set_api_version();
 
 			// Retrieve the request's body and parse it as JSON.
