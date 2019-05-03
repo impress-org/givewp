@@ -922,7 +922,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			: date( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )
 			? sanitize_text_field( $_GET['end-date'] )
-			: date( give_date_format(), current_time( 'timestamp' ) );
+			: date( 'Y-m-d', current_time( 'timestamp' ) );
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
