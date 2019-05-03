@@ -43,3 +43,4 @@ function give_stripe_get_payment_txn_id_fallback( $payment_id ) {
 }
 
 add_filter( 'give_get_payment_transaction_id-stripe', 'give_stripe_get_payment_txn_id_fallback', 10, 1 );
+add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payment_txn_id_fallback', 10, 1 );
