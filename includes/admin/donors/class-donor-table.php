@@ -237,7 +237,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		// Get donor's initials for non-gravatars
 		$title_prefix                 = Give()->donor_meta->get_meta( $donor['id'], '_give_donor_title_prefix', true );
 		$donor_name_without_prefix    = trim( str_replace( $title_prefix, '', $donor['name'] ) );
-		$donor_name_array             = explode( " ", $donor_name_without_prefix );
+		$donor_name_array             = explode( ' ', $donor_name_without_prefix );
 		$donor_name_args['firstname'] = ! empty( $donor_name_array[0] ) ? $donor_name_array[0] : '';
 		$donor_name_args['lastname']  = ! empty( $donor_name_array[1] ) ? $donor_name_array[1] : '';
 		$donor_name_initial           = give_get_name_initial( $donor_name_args );
