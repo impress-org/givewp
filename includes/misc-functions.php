@@ -2427,8 +2427,8 @@ function give_refresh_licenses() {
 		)
 	);
 
-	if ( is_wp_error( $tmp ) ) {
-		return $tmp;
+	if ( ! $tmp || is_wp_error( $tmp ) ) {
+		return array();
 	}
 
 	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
