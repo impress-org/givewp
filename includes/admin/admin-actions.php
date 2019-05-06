@@ -1182,7 +1182,7 @@ function give_license_notices() {
 	}
 
 	// Do not show licenses notices on license tab.
-	if ( 'give-addons' === give_get_current_setting_page() ) {
+	if ( Give_Admin_Settings::is_setting_page('licenses') ) {
 		return;
 	}
 
