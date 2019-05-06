@@ -2473,6 +2473,10 @@ function give_refresh_licenses() {
  * @since 2.5.0
  */
 function give_check_addon_updates( $_transient_data ){
+	if ( ! is_object( $_transient_data ) ) {
+		$_transient_data = new stdClass;
+	}
+
 	$update_plugins = get_option( 'give_get_versions', array() );
 	$check_licenses = get_option( 'give_licenses', array() );
 
