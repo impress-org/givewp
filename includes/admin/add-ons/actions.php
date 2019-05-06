@@ -417,16 +417,14 @@ function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
 		return $_data;
 	}
 
-
-	$plugin_path = "{$_args->slug}/{$_args->slug}.php";
 	$plugin_data = get_site_transient( 'update_plugins' );
 
 	if ( ! $plugin_data ) {
 		return $_data;
 	}
 
-	$plugin_data = ! empty( $plugin_data->response[ $plugin_path ] )
-		? $plugin_data->response[ $plugin_path ]
+	$plugin_data = ! empty( $plugin_data->response[ $plugin['Path'] ] )
+		? $plugin_data->response[ $plugin['Path'] ]
 		: array();
 
 	if ( ! $plugin_data ) {
