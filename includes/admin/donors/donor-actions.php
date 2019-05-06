@@ -40,6 +40,13 @@ function give_edit_donor( $args ) {
 	// Sanitize Data.
 	$args = give_clean( $args );
 
+	$args = wp_parse_args(
+		$args,
+		array(
+			'give_anonymous_donor' => 0
+		)
+	);
+
 	// Verify Nonce.
 	if ( ! wp_verify_nonce( $args['_wpnonce'], 'edit-donor' ) ) {
 		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
