@@ -263,6 +263,9 @@ function give_activate_addon_handler() {
 		wp_send_json_error( array( 'errorMsg' => $status->get_error_message() ) );
 	}
 
+	// Tell WordPress to look for updates.
+	set_site_transient( 'update_plugins', null );
+
 	wp_send_json_success( $status );
 }
 
