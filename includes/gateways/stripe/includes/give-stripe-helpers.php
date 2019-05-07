@@ -1078,21 +1078,13 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			);
 			$intent      = $stripe_gateway->payment_intent->create( $intent_args );
 
-			// Save Payment Intent ID to donation note and DB.
-			give_insert_payment_note( $donation_id, 'Stripe Payment Intent ID: ' . $intent->id );
-			give_update_meta( $donation_id, '_give_stripe_payment_intent_id', $intent->id );
-
 			// Save Payment Intent Client Secret to donation note and DB.
 			give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
 			give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
 
-			$charge_id = $intent->charges['data'][0]->id;
-
-			if ( ! empty( $charge_id ) ) {
-				// Set Charge ID as transaction ID for the donation.
-				give_set_payment_transaction_id( $donation_id, $charge_id );
-				give_insert_payment_note( $donation_id, 'Stripe Charge ID: ' . $charge_id );
-			}
+			// Set Payment Intent ID as transaction ID for the donation.
+			give_set_payment_transaction_id( $donation_id, $intent->id );
+			give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
 
 			// Additional steps required when payment intent status is set to `requires_action`.
 			if ( 'requires_action' === $intent->status ) {
