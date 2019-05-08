@@ -205,7 +205,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.5.0: =
+= 2.5.0: May 15th, 2019=
+* Fix: Redesigned license setting page [#2058](https://github.com/impress-org/give/issues/2058)
 
 = 2.4.5: April 16th, 2019 =
 * Fix: Resolved two issues with donor and donation exporters not working properly when filters (Date and Donation Forms) were set. [#4078](https://github.com/impress-org/give/issues/4078), [#4079](https://github.com/impress-org/give/issues/4079)
