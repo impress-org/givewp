@@ -37,6 +37,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				// Remove default parent form.
 				add_action( "give-settings_open_form", '__return_empty_string' );
 				add_action( "give-settings_close_form", '__return_empty_string' );
+
+				// Refresh licenses when visit license setting page.
+				give_refresh_licenses();
 			}
 		}
 
