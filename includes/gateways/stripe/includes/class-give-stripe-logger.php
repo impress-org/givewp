@@ -52,7 +52,7 @@ class Give_Stripe_Logger {
 		$translated_error_message = self::get_card_error_message( $error_code );
 		$error['message']           = ! empty( $translated_error_message ) ? $translated_error_message : $error['message'];
 
-		$message = __( 'The payment gateway returned an error while processing the donation.', 'give-stripe' ) . '<br><br>';
+		$message = __( 'The payment gateway returned an error while processing the donation.', 'give' ) . '<br><br>';
 
 		// Bad Request of some sort.
 		if ( isset( $error['message'] ) ) {

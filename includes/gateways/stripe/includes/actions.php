@@ -227,3 +227,25 @@ function give_stripe_add_stripe_errors( $form_id, $args ) {
 }
 
 add_action( 'give_donation_form_after_cc_form', 'give_stripe_add_stripe_errors', 8899, 2 );
+
+/**
+ * Add secret source field to apply the source generated on donation submit.
+ *
+ * @param int   $form_id Donation Form ID.
+ * @param array $args    List of arguments.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_add_secret_source_field( $form_id, $args ) {
+
+	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : 0;
+
+	echo sprintf(
+		'<input id="give-stripe-source-%1$s" type="hidden" name="give_stripe_source" value="">',
+		esc_html( $id_prefix )
+	);
+
+}
+add_action( 'give_donation_form_top', 'give_stripe_add_secret_source_field', 10, 2 );

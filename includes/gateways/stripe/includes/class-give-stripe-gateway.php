@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @var string
 		 */
-		public $id = '';
+		public $id;
 
 		/**
 		 * Set Latest Stripe Version.
@@ -73,16 +73,8 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function __construct() {
 
-			// Bailout, if current gateway is not enabled.
-			if ( ! give_is_gateway_active( $this->id ) ) {
-				return false;
-			}
-
 			// Set secret key received from Stripe.
 			$this->secret_key = give_stripe_get_secret_key();
-
-			// Set API Key.
-			$this->set_api_key();
 
 			// Set API Version.
 			$this->set_api_version();
@@ -91,11 +83,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			$this->payment_intent = new Give_Stripe_Payment_Intent();
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
-
-			// Add hidden field for source only if the gateway is not Stripe ACH.
-			if ( 'stripe_ach' !== $this->id ) {
-				add_action( 'give_donation_form_top', array( $this, 'add_hidden_source_field' ), 10, 2 );
-			}
 
 		}
 
@@ -138,18 +125,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				// Send donor back to checkout page on error.
 				$this->send_back_to_checkout();
 			}
-		}
-
-		/**
-		 * This function will help you to set API Key and its related errors are shown.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function set_api_key() {
-			give_stripe_set_api_key();
 		}
 
 		/**
@@ -285,29 +260,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				// Send donor back to checkout page on error.
 				$this->send_back_to_checkout();
 			}
-		}
-
-		/**
-		 * This function will add hidden source field.
-		 *
-		 * @param int   $form_id Donation Form ID.
-		 * @param array $args    List of arguments.
-		 *
-		 * @since  2.5.0
-		 * @access public
-		 */
-		public function add_hidden_source_field( $form_id, $args ) {
-
-			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : 0;
-
-			echo sprintf(
-				'<input id="give-%1$s-source-%2$s" type="hidden" name="give_%1$s_source" value="">',
-				esc_attr( $this->id ),
-				esc_html( $id_prefix )
-			);
-			?>
-
-			<?php
 		}
 
 		/**
@@ -516,7 +468,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			} else {
 
-				give_set_error( 'payment_not_recorded', __( 'Your donation could not be recorded, please contact the site administrator.', 'give-stripe' ) );
+				give_set_error( 'payment_not_recorded', __( 'Your donation could not be recorded, please contact the site administrator.', 'give' ) );
 
 				// If errors are present, send the user back to the purchase page so they can be corrected.
 				$this->send_back_to_checkout();

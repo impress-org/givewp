@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_payment_gateways() {
 	// Default, built-in gateways
-	$gateways = Give_Cache_Setting::get_option( 'gateways' );
+	$gateways = Give_Cache_Setting::get_option( 'gateways', array() );
 
 	return apply_filters( 'give_payment_gateways', $gateways );
 

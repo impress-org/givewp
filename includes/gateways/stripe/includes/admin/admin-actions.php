@@ -223,7 +223,14 @@ add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 )
  */
 function give_stripe_show_connect_banner() {
 
-	$status = true;
+	$status                       = true;
+	$stripe_payment_methods       = array( 'stripe', 'stripe_ach', 'stripe_google_pay', 'stripe_apple_pay', 'stripe_ideal' );
+	$is_any_stripe_gateway_active = array_map( 'give_is_gateway_active', $stripe_payment_methods );
+
+	// Don't show banner, if all the stripe gateways are disabled.
+	if ( ! in_array( true, $is_any_stripe_gateway_active, true ) ) {
+		$status = false;
+	}
 
 	// Don't show if already connected.
 	if ( give_stripe_is_connected() ) {
@@ -237,10 +244,16 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
-	$hide_on_sections = array( 'stripe-settings', 'gateways-settings' );
+	$hide_on_sections = array( 'stripe-settings', 'gateways-settings', 'stripe-ach-settings' );
 
 	// Don't show if on the payment settings section.
-	if ( in_array( give_get_current_setting_section(), $hide_on_sections, true ) ) {
+	if (
+		'gateways' === give_get_current_setting_tab() &&
+		(
+			empty( give_get_current_setting_section() ) ||
+			in_array( give_get_current_setting_section(), $hide_on_sections, true )
+		)
+	) {
 		$status = false;
 	}
 
@@ -307,12 +320,12 @@ add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
  */
 function give_stripe_connect_dismiss_banner() {
 
-	$user_id = get_current_user_id();
-	set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
+	$user_id             = get_current_user_id();
+	$is_banner_dismissed = set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
 
-	return true;
-
+	echo $is_banner_dismissed ? 'success' : 'failed';
+	give_die();
 }
 
-add_action( 'give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
+add_action( 'wp_ajax_give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
 

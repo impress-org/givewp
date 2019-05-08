@@ -58,6 +58,34 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	const dismissConnectBanner = document.querySelector( '.give-stripe-connect-temp-dismiss' );
+	if ( null !== dismissConnectBanner ) {
+		dismissConnectBanner.addEventListener( 'click', function( e ) {
+
+			// Prevent reload.
+			e.preventDefault();
+
+			// Proceed with AJAX.
+			const dismissBanner = new XMLHttpRequest();
+			const formData = new FormData();
+
+			formData.append( 'action', 'give_stripe_connect_dismiss' );
+
+			dismissBanner.onreadystatechange = function() {
+				if (
+					4 === this.readyState &&
+					200 === this.status &&
+					'success' === this.responseText
+				) {
+					const connectBanner = document.querySelector( '.give-stripe-connect-message' );
+					connectBanner.remove();
+				}
+			};
+			dismissBanner.open( 'POST', ajaxurl, false );
+			dismissBanner.send( formData );
+		} );
+	}
+
 	// Bail out, if modal or enable apple/google pay option is null.
 	if ( null === modalOption ) {
 		return;
@@ -81,22 +109,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			}
 		} );
 	} );
-
-	const dismissConnectBanner = document.querySelector( '.give-stripe-connect-temp-dismiss' );
-	if ( null !== dismissConnectBanner ) {
-		dismissConnectBanner.on( 'click', function() {
-			const dismissBanner = new XMLHttpRequest();
-			const formData = new FormData();
-
-			formData.append( 'give_action', 'stripe_connect_dismiss' );
-
-			dismissBanner.onreadystatechange = function() {
-				// Do nothing.
-			};
-			dismissBanner.open( 'POST', give_global_vars.ajaxurl, false );
-			dismissBanner.send( formData );
-		} );
-	}
 } );
 
 /**
