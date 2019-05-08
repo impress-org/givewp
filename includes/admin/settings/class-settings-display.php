@@ -88,7 +88,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 									'href'   => array(),
 									'target' => array(),
 								),
-							) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							) ), esc_url( admin_url( 'index.php?page=give-getting-started' ) ) ),
 							'id'      => 'welcome',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',

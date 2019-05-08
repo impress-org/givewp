@@ -9,6 +9,7 @@ $blue: #2ea2cc;
 $dark: #333;
 $borders: #ccc;
 $light-gray: #EDEDED;
+$give-green: #66BB6A;
 
 //Status
 $status-default: #777;
@@ -16,6 +17,11 @@ $status-complete: $green;
 $status-refunded: $status-default;
 $status-subscription: #5bc0de;
 $status-revoked: #d9534f;
+
+// Settings
+$settings-tabs-bg: #DDDDDD;
+$settings-tabs-tg-hover: #ebebeb;
+$settings-tabs-tg-active: #f1f1f1;
 
 // Borders.
 $give-card-border: #e5e5e5;
@@ -44,17 +50,17 @@ $subtext: #777;
 // small, breadcrumbs etc
 
 $float-labels: (
-		base-height : 30px,
-		border-radius : 0,
-		margin-bottom : 0,
-		color-background : inherit,
-		color-background-active : inherit,
-		color-background-focus : inherit,
-		color-border : #ccc,
-		color-border-active : #ccc,
-		color-border-focus : #ccc,
-		color-text : #333,
-		line-height : normal,
-		font-weight : 700,
-		parent : '[id*="give-form"]',
+	base-height : 30px,
+	border-radius : 0,
+	margin-bottom : 0,
+	color-background : inherit,
+	color-background-active : inherit,
+	color-background-focus : inherit,
+	color-border : #ccc,
+	color-border-active : #ccc,
+	color-border-focus : #ccc,
+	color-text : #333,
+	line-height : normal,
+	font-weight : 700,
+	parent : '[id*="give-form"]',
 );

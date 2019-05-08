@@ -130,7 +130,7 @@ function give_stripe_get_connected_account_options() {
  *
  * @since 2.5.0
  *
- * @return void
+ * @return string
  */
 function give_stripe_connect_button() {
 

@@ -364,9 +364,6 @@ var gravatar = require('gravatar');
 			});
 		}
 
-
-
-
 		// Fix: Chosen JS - Zero Width Issue.
 		// @see https://github.com/harvesthq/chosen/issues/472#issuecomment-344414059
 		$('.chosen-container').each(function () {
@@ -379,8 +376,6 @@ var gravatar = require('gravatar');
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
-
-
 
 	};
 
@@ -411,7 +406,6 @@ var gravatar = require('gravatar');
 	/**
 	 * List donation screen JS
 	 */
-
 	var GiveListDonation = {
 
 		init: function () {
@@ -3367,11 +3361,11 @@ jQuery(window).resize(function () {
  */
 function give_render_responsive_tabs() {
 	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
+		$main_tab_nav = jQuery('.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
 		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
 		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('div.give-nav-tab-wrapper > a:not(give-not-tab)'),
+		$setting_tab_links = jQuery('.give-nav-tab-wrapper > a:not(give-not-tab)'),
 		$show_tabs = [],
 		$hide_tabs = [],
 		tab_width = 0;

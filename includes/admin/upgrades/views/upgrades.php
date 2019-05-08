@@ -1,6 +1,8 @@
 <?php
 /**
- * Upgrade Screen
+ * Upgrade/Updates Screen
+ *
+ * Displays both add-on updates for files and database upgrades
  *
  * @package     Give
  * @subpackage  Admin/Upgrades
@@ -16,21 +18,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $give_updates = Give_Updates::get_instance();
 ?>
-<div class="wrap" id="poststuff">
-	<div id="give-updates">
-		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
-		<hr class="wp-header-end">
+<div id="give-updates" class="wrap give-settings-page">
 
-		<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
-		<?php if ( ! empty( $db_updates ) ) : ?>
+	<div class="give-settings-header">
+		<h1 id="give-updates-h1"
+		    class="wp-heading-inline"><?php echo sprintf( __( 'Give %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+	</div>
+
+	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
+
+	<div id="give-updates-content">
+
+		<div id="poststuff">
+
+		<?php
+		/**
+		 * Database Upgrades
+		 */
+		if ( ! empty( $db_updates ) ) : ?>
 			<?php
 			$is_doing_updates = $give_updates->is_doing_updates();
-			$db_update_url    = add_query_arg( array( 'type' => 'database', ) );
+			$db_update_url    = add_query_arg( array( 'type' => 'database' ) );
 			$resume_updates   = get_option( 'give_doing_upgrade' );
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
+				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url('') ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -41,23 +54,24 @@ $give_updates = Give_Updates::get_instance();
 							<div class="panel-content">
 								<p class="give-update-button">
 									<?php
-									if( ! give_test_ajax_works() ) {
+									if ( ! give_test_ajax_works() ) {
 										echo sprintf(
 											'<div class="notice notice-warning inline"><p>%s</p></div>',
 											__( 'Give is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
 										);
 									}
 									?>
-									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
+									<span
+										class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
 										<?php
 										echo sprintf(
 											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 											$is_doing_updates
 												? sprintf(
-													'%s%s',
-													__( 'Give is currently updating the database', 'give' ),
-													give_test_ajax_works() ?  ' ' . __( 'in the background.', 'give' ) : '.'
-												)
+												'%s%s',
+												__( 'Give is currently updating the database', 'give' ),
+												give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
+											)
 												: __( 'Give needs to update the database.', 'give' ),
 											$db_update_url,
 											( $is_doing_updates ? 'give-hidden' : '' ),
@@ -65,7 +79,8 @@ $give_updates = Give_Updates::get_instance();
 										);
 										?>
 									</span>
-									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
+									<span
+										class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
 										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
 											&nbsp<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
 										<?php else : ?>
@@ -77,7 +92,7 @@ $give_updates = Give_Updates::get_instance();
 										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright"
 										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
-									<?php elseif ( $give_updates->is_doing_updates() ): ?>
+									<?php elseif ( $give_updates->is_doing_updates() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-pause-upgrades" class="button button-primary alignright"
 										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
@@ -91,7 +106,7 @@ $give_updates = Give_Updates::get_instance();
 									<strong>
 										<?php
 										echo sprintf(
-											__( 'Update %s of %s', 'give' ),
+											__( 'Update %1$s of %2$s', 'give' ),
 											$give_updates->get_running_db_update(),
 											$give_updates->get_total_new_db_update_count()
 										);
@@ -107,7 +122,7 @@ $give_updates = Give_Updates::get_instance();
 											<?php endif; ?>
 
 											<div class="give-progress">
-												<div style="width: <?php echo $width ?>%;"></div>
+												<div style="width: <?php echo $width; ?>%;"></div>
 											</div>
 										</div>
 									<?php endif; ?>
@@ -121,14 +136,24 @@ $give_updates = Give_Updates::get_instance();
 					</div><!-- .postbox -->
 				</div> <!-- .post-container -->
 			</div>
-		<?php else: include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php'; ?>
-		<?php endif; ?>
+		<?php else :
 
-		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
-		<?php if ( ! empty( $plugin_updates ) ) : ?>
-			<?php $plugin_update_url = add_query_arg( array(
-				'plugin_status' => 'give',
-			), admin_url( '/plugins.php' ) ); ?>
+			include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php';
+		endif; ?>
+
+		<?php
+		/**
+		 * Add-on Updates
+		 */
+		$plugin_updates = $give_updates->get_total_plugin_update_count();
+		if ( ! empty( $plugin_updates ) ) : ?>
+			<?php
+			$plugin_update_url = add_query_arg(
+				array(
+					'plugin_status' => 'give',
+				), admin_url( '/plugins.php' )
+			);
+			?>
 			<div id="give-plugin-updates">
 				<div class="postbox-container">
 					<div class="postbox">
@@ -158,5 +183,8 @@ $give_updates = Give_Updates::get_instance();
 			</div>
 		<?php endif; ?>
 
-	</div>
-</div>
+		</div><!-- /#poststuff -->
+
+	</div><!-- /#give-updates-content -->
+
+</div><!-- /#give-updates -->

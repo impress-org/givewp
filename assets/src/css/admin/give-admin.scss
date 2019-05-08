@@ -26,6 +26,7 @@
 @import 'welcome';
 @import 'logs';
 @import 'settings';
+@import 'setting-license';
 @import 'payment-history';
 @import 'dashboard';
 @import 'donors';
@@ -38,6 +39,7 @@
 @import 'importer';
 @import 'export';
 @import 'goals';
+@import 'tabs';
 
 // Stripe Core
 @import 'stripe-admin';

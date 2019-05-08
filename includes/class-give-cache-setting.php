@@ -63,7 +63,7 @@ class Give_Cache_Setting {
 		'give_paused_batches'                  => array(),
 		'give_install_pages_created'           => '',
 		'give_show_db_upgrade_complete_notice' => '',
-		'give_is_addon_activated'              => '',
+		'give_addon_last_activated'            => '',
 		'currencies'                           => array(),
 		'gateways'                             => array(),
 	);
@@ -82,7 +82,7 @@ class Give_Cache_Setting {
 		'give_doing_upgrade',
 		'give_install_pages_created',
 		'give_show_db_upgrade_complete_notice',
-		'give_is_addon_activated',
+		'give_addon_last_activated',
 		'give_paused_batches',
 	);
 

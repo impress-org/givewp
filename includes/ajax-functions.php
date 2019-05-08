@@ -783,3 +783,78 @@ function __give_get_receipt(){
 }
 add_action( 'wp_ajax_get_receipt', '__give_get_receipt' );
 add_action( 'wp_ajax_nopriv_get_receipt', '__give_get_receipt' );
+
+/**
+ * Get ajax url to render content from other website into thickbox
+ * Note: only for internal use
+ *
+ * @param array $args
+ *
+ * @return string
+ * @since 2.5.0
+ */
+function give_modal_ajax_url( $args = array() ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'action'   => 'give_get_content_by_ajax',
+			'_wpnonce' => wp_create_nonce( 'give_get_content_by_ajax' ),
+		)
+	);
+
+	return add_query_arg( $args, admin_url( '/admin-ajax.php' ) );
+}
+
+
+/**
+ * Return content from url
+ * Note: only for internal use
+ * @todo use get_version endpoint to read changelog
+ *
+ * @return string
+ * @since 2.5.0
+ *
+ */
+function give_get_content_by_ajax_handler() {
+	check_admin_referer( 'give_get_content_by_ajax' );
+
+	if ( empty( $_GET['url'] ) ) {
+		die();
+	}
+
+	// Handle changelog render request.
+	if(
+		! empty( $_GET['show_changelog'] )
+		&& (int) give_clean( $_GET['show_changelog'] )
+	) {
+		$msg = __( 'Sorry, unable to load changelog.', 'give' );
+		$url = urldecode_deep( give_clean( $_GET['url'] ) );
+
+		$response = wp_remote_get( $url );
+
+		if ( is_wp_error( $response ) ) {
+			echo "$msg<br><br><code>Error: {$response->get_error_message()}</code>" ;
+			exit;
+		}
+
+		$response = wp_remote_retrieve_body( $response );
+
+
+		if( false === strpos( $response,  '== Changelog ==' ) ) {
+			echo $msg;
+			exit;
+		}
+
+		$changelog = explode( '== Changelog ==', $response );
+		$changelog = end( $changelog );
+
+		echo give_get_format_md( $changelog );
+	}
+
+	do_action( 'give_get_content_by_ajax_handler' );
+
+	exit;
+}
+
+add_action( 'wp_ajax_give_get_content_by_ajax', 'give_get_content_by_ajax_handler' );
+
