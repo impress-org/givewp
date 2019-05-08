@@ -99,9 +99,9 @@ function give_add_ons_page() {
 		</div>
 
 		<div class="give-price-bundle">
-			<?php give_add_ons_feed( 'price-bundle' );?>
+			<?php give_add_ons_feed( 'price-bundle' ); ?>
 		</div>
-		<?php  //give_add_ons_feed(); ?>
+		<?php // give_add_ons_feed(); ?>
 	</div>
 	<?php
 
@@ -120,7 +120,7 @@ function give_add_ons_page() {
 function give_add_ons_feed( $feed_type = '' ) {
 
 	$addons_debug = false; // set to true to debug
-	$cache_key = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
+	$cache_key    = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
 	$cache        = Give_Cache::get( $cache_key, true );
 
 	$feed_url = Give_License::get_website_url() . 'downloads/feed/';
@@ -129,7 +129,7 @@ function give_add_ons_feed( $feed_type = '' ) {
 
 		switch ( $feed_type ) {
 			case 'price-bundle':
-				$feed_url = Give_License::get_website_url() .'downloads/feed/addons-price-bundle.php';
+				$feed_url = Give_License::get_website_url() . 'downloads/feed/addons-price-bundle.php';
 		}
 
 		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
