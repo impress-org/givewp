@@ -1389,22 +1389,23 @@ function __give_211_bc_email_template_tag_param( &$args, $func_args = array() ) 
  * @return array
  */
 function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
-
-	$reset_password_url = '';
+	$user_id = 0;
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment_id = Give()->seq_donation_number->get_serial_code( $tag_args['payment_id'] );
+			$user_id = give_get_payment_user_id( $tag_args['payment_id'] );
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
-			$reset_password_url = give_get_reset_password_url( $tag_args['user_id'] );
+			$user_id = $tag_args['user_id'];
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
-			$reset_password_url = give_get_reset_password_url( Give()->donors->get_column( 'user_id', $tag_args['donor_id'] ) );
+			$user_id = Give()->donors->get_column( 'user_id', $tag_args['donor_id'] );
 			break;
 	}
+
+	$reset_password_url = give_get_reset_password_url( absint( $user_id ) );
 
 	if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 		// Generate link, if Email content type is html.
