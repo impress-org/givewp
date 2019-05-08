@@ -85,6 +85,7 @@ Layout
 		.give-btn {
 			margin: 0 0 15px;
 		}
+
 		#give-payment-mode-select, #give_purchase_form_wrap {
 			display: none;
 		}
@@ -149,21 +150,24 @@ form.give-form {
 		display: none;
 	}
 
-  .give-title-prefix-wrap{
+	@media (min-width: 481px) {
+		.give-title-prefix-wrap {
 
-	.form-row-first,
-	.form-row-last {
-	  float: left;
-	  width: 40%;
+			.form-row-first,
+			.form-row-last {
+				float: left;
+				width: 40%;
+			}
+
+			.form-row-title {
+				float: left;
+				width: 15%;
+			}
+
+		}
 	}
 
-	.form-row-title {
-	  float: left;
-	  width: 15%;
-	}
-  }
-
-  .give-tooltip {
+	.give-tooltip {
 		margin: 0 3px;
 		padding: 0;
 		font-size: 14px;
@@ -217,7 +221,13 @@ form.give-form {
 
 		}
 
-		select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="url"] {
+		select,
+		textarea,
+		input[type="text"],
+		input[type="tel"],
+		input[type="email"],
+		input[type="password"],
+		input[type="url"] {
 			@include box-sizing(border-box);
 			width: 100%;
 			border-radius: 0;
@@ -231,6 +241,7 @@ form.give-form {
 			&:focus {
 				background-color: #fff;
 			}
+
 			&.required {
 				color: $dark;
 			}
@@ -239,20 +250,20 @@ form.give-form {
 
 	}
 
-    .form-row-title,
+	.form-row-title,
 	.form-row-first {
-	  margin-right: 2.5%;
+		margin-right: 2.5%;
 	}
 
-  .form-row-first,
-  .form-row-last {
-	float: left;
-	width: 48.5%;
-  }
+	.form-row-first,
+	.form-row-last {
+		float: left;
+		width: 48.5%;
+	}
 
-  .form-row-last {
-	float: right;
-  }
+	.form-row-last {
+		float: right;
+	}
 
 	.form-row-wide {
 		@include clearfix();
@@ -297,6 +308,7 @@ form.give-form {
 			width: 44%;
 			margin: 0;
 		}
+
 		> span.exp-divider {
 			display: inline;
 			text-align: center;
@@ -307,6 +319,7 @@ form.give-form {
 		}
 
 	}
+
 	.give-disabled, [disabled] {
 		cursor: not-allowed;
 	}
@@ -329,6 +342,7 @@ form[id*='give-form'] {
 				border-left: 1px solid $borders;
 				border-right: none;
 			}
+
 			&.give-currency-position-after {
 				border-left: none;
 				border-right: 1px solid $borders;
@@ -568,6 +582,7 @@ CC Validation
 		background-repeat: no-repeat;
 		background-position: right 10px top 50%;
 		background-size: 16px;
+
 		&.fl-input:not(.card-cvc):not(.card-expiry) {
 			background-position: right 55px top 50%;
 		}
@@ -592,30 +607,39 @@ CC Validation
 	span.card-type.off {
 		display: none;
 	}
+
 	span.card-type.visa {
 		background: url('../../images/visa.svg') no-repeat;
 	}
+
 	span.card-type.mastercard {
 		background: url('../../images/mastercard.svg') no-repeat;
 	}
+
 	span.card-type.discover {
 		background: url('../../images/discover.svg') no-repeat;
 	}
+
 	span.card-type.amex {
 		background: url('../../images/amex.svg') no-repeat;
 	}
+
 	span.card-type.maestro {
 		background: url('../../images/maestro.svg') no-repeat;
 	}
+
 	span.card-type.dinersclub {
 		background: url('../../images/diners-club.svg') no-repeat;
 	}
+
 	span.card-type.jcb {
 		background: url('../../images/jcb.svg') no-repeat;
 	}
+
 	span.card-type.dankort {
 		background: url('../../images/dankort.png') no-repeat;
 	}
+
 	span.card-type.unionpay {
 		background: url('../../images/unionpay.svg') no-repeat;
 	}
@@ -731,6 +755,7 @@ User Login
 		margin: 0 0 0 .5em;
 		display: none;
 	}
+
 	.give-submit {
 		float: left;
 	}
@@ -819,6 +844,7 @@ form#give-email-access-form {
 	div.g-recaptcha, input#give-email {
 		margin: 0 0 15px;
 	}
+
 	input#give-email {
 		width: 305px;
 	}
@@ -888,7 +914,7 @@ Button with Loader
 }
 
 
-.give-active{
+.give-active {
 	span.give-loading-animation {
 		display: inline;
 	}

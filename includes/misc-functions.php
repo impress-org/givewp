@@ -2360,10 +2360,13 @@ function give_refresh_licenses() {
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
 	);
 
-	update_option( 'give_licenses', $give_licenses );
-	update_option( 'give_get_versions', $tmp_update_plugins );
+	update_option( 'give_licenses', $give_licenses, 'no' );
+	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
 
-	update_option( 'give_licenses_last_checked', time(), 'no' );
+	$refresh            = Give_License::refresh_license_status();
+	$refresh['time']    = time();
+
+	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
 	return array(
 		'give_licenses'     => $give_licenses,

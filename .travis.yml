@@ -16,7 +16,7 @@ matrix:
   include:
   - php: 5.6
     env: WP_VERSION=latest WP_MULTISITE=1 PHP_LATEST_STABLE=7.1
-  - php: 5.3
+  - php: 5.4
     env: WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
     dist: precise
 
