@@ -238,14 +238,14 @@ add_action( 'give_donation_form_after_cc_form', 'give_stripe_add_stripe_errors',
  *
  * @return void
  */
-function give_stripe_add_secret_source_field( $form_id, $args ) {
+function give_stripe_add_secret_payment_method_field( $form_id, $args ) {
 
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : 0;
 
 	echo sprintf(
-		'<input id="give-stripe-source-%1$s" type="hidden" name="give_stripe_source" value="">',
+		'<input id="give-stripe-payment-method-%1$s" type="hidden" name="give_stripe_payment_method" value="">',
 		esc_html( $id_prefix )
 	);
 
 }
-add_action( 'give_donation_form_top', 'give_stripe_add_secret_source_field', 10, 2 );
+add_action( 'give_donation_form_top', 'give_stripe_add_secret_payment_method_field', 10, 2 );
