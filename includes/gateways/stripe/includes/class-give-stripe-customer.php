@@ -273,7 +273,6 @@ class Give_Stripe_Customer {
 					'name'           => $full_name,
 					'email'          => $this->donor_email,
 					'metadata'       => apply_filters( 'give_stripe_customer_metadata', $metadata, $post_data ),
-					'payment_method' => $this->payment_method_id,
 				)
 			);
 
@@ -367,15 +366,21 @@ class Give_Stripe_Customer {
 			if ( ! $card_exists ) {
 				try {
 					$customer_args = array();
-					if ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
-						$customer_args['source'] = $this->payment_method_id;
-					} else {
-						$customer_args['payment_method'] = $this->payment_method_id;
-					}
-					$card = $this->customer_data->sources->create( $customer_args );
 
-					$this->customer_data->default_source = $card->id;
-					$this->customer_data->save();
+					if ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) || give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
+						$customer_args['source'] = $this->payment_method_id;
+						$card = $this->customer_data->sources->create( $customer_args );
+						$this->customer_data->default_source = $card->id;
+						$this->customer_data->save();
+					} else {
+
+						$card = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
+						$card->attach(
+							array(
+								'customer' => $this->id,
+							)
+						);
+					}
 
 				} catch ( \Stripe\Error\Base $e ) {
 
