@@ -64,6 +64,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $payment_intent;
 
 		/**
+		 * Stripe Payment Method Object.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var Give_Stripe_Payment_Method
+		 */
+		public $payment_method;
+
+		/**
 		 * Give_Stripe_Gateway constructor.
 		 *
 		 * @since  2.5.0
@@ -81,6 +91,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			// Call Payment Intent Class to utilize.
 			$this->payment_intent = new Give_Stripe_Payment_Intent();
+			$this->payment_method = new Give_Stripe_Payment_Method();
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
 
