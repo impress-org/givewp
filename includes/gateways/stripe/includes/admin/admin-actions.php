@@ -245,13 +245,14 @@ function give_stripe_show_connect_banner() {
 	}
 
 	$hide_on_sections = array( 'stripe-settings', 'gateways-settings', 'stripe-ach-settings' );
+	$current_section  = give_get_current_setting_section();
 
 	// Don't show if on the payment settings section.
 	if (
 		'gateways' === give_get_current_setting_tab() &&
 		(
-			empty( give_get_current_setting_section() ) ||
-			in_array( give_get_current_setting_section(), $hide_on_sections, true )
+			empty( $current_section ) ||
+			in_array( $current_section, $hide_on_sections, true )
 		)
 	) {
 		$status = false;
