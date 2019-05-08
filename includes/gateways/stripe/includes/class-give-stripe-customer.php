@@ -360,10 +360,13 @@ class Give_Stripe_Customer {
 			// Create the card, if none found above.
 			if ( ! $card_exists ) {
 				try {
-
-					$card = $this->customer_data->sources->create( array(
-						'source' => $this->source_id,
-					) );
+					$customer_args = array();
+					if ( give_stripe_is_source_type( $this->source_id, 'src' ) ) {
+						$customer_args['source'] = $this->source_id;
+					} else {
+						$customer_args['payment_method'] = $this->source_id;
+					}
+					$card = $this->customer_data->sources->create( $customer_args );
 
 					$this->customer_data->default_source = $card->id;
 					$this->customer_data->save();
