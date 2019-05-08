@@ -213,13 +213,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	/**
 	 * Create required card elements.
 	 *
-	 * @param {object} elements     Stripe Element.
 	 * @param {object} form_element Form Element.
+	 * @param {object} elements     Stripe Element.
 	 * @param {string} idPrefix     ID Prefix.
 	 *
 	 * @since 1.6
 	 *
-	 * @returns {array}
+	 * @return {array} elements
 	 */
 	function giveStripePrepareCardElements( form_element, elements, idPrefix ) {
 		const prepareCardElements = [];
@@ -305,7 +305,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 */
 	function give_stripe_response_handler( $form, response ) {
 		// Add Source to hidden field for form submission.
-		$form.find( 'input[name="give_stripe_source"]' ).val( response.id );
+		$form.find( 'input[name="give_stripe_payment_method"]' ).val( response.id );
 
 		// Submit the form.
 		$form.get( 0 ).submit();
@@ -321,8 +321,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 */
 	function give_stripe_process_card( $form, card ) {
 		const additionalData = {
-			type: 'card',
-			owner: {},
+			billing_details: {},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
 		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
@@ -333,7 +332,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		// Set Card Name to Source.
 		if ( 'multi' === give_stripe_vars.cc_fields_format && '' !== card_name ) {
-			additionalData.owner.name = card_name;
+			additionalData.billing_details.name = card_name;
 		}
 
 		// Gather additional customer data we may have collected in our form.
@@ -345,7 +344,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			const zip = $form.find( '.card-zip' ).val();
 			const country = $form.find( '.billing-country' ).val();
 
-			additionalData.owner.address = {
+			additionalData.billing_details.address = {
 				line1: address1 ? address1 : '',
 				line2: address2 ? address2 : '',
 				city: city ? city : '',
@@ -355,8 +354,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			};
 		}
 
-		// createSource returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createSource( card, additionalData ).then( function( result ) {
+		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
+		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 
@@ -376,8 +375,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 					$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
 				}
 			} else {
-				// Send source to server for processing payment.
-				give_stripe_response_handler( $form, result.source );
+				// Send payment method to server for processing payment.
+				give_stripe_response_handler( $form, result.paymentMethod );
 			}
 		} );
 
