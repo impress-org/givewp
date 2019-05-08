@@ -944,6 +944,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			return ob_get_clean();
 		}
+
+
+		/**
+		 * Get refresh license status
+		 *
+		 * @since 2.5.0
+		 * @return mixed|void
+		 */
+		public static function refresh_license_status(){
+			return get_option(
+				'give_licenses_refreshed_last_checked',
+				array(
+					'compare' => date( 'Ymd' ),
+					'time'    => time(),
+					'count'   => 0,
+				)
+			);
+		}
 	}
 
 endif; // end class_exists check.
