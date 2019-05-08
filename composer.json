@@ -7,7 +7,7 @@
   "require": {
     "composer/installers": "~1.2",
     "tecnickcom/tcpdf": "^6.2",
-    "stripe/stripe-php": "^6.30"
+    "stripe/stripe-php": "^6.34.5"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
