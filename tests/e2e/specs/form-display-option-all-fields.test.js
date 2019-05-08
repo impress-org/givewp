@@ -252,6 +252,7 @@ describe( 'Display Option: All fields', () => {
 	// Click the radio button related to Offline Payment Method.
 	it( 'INTERACTION: verify select offline payment method', async () => {
 		await page.click( 'label[id="give-gateway-option-offline"]' )
+		await page.waitFor( 2000 );
 	})
 
 	// Verify the content after clicking the offline payment button radio.
@@ -261,7 +262,8 @@ describe( 'Display Option: All fields', () => {
 
 	// Click the radio button related to PayPal Payment Method.
 	it( 'INTERACTION: verify select paypal payment method', async () => {
-		await page.click( 'label[id="give-gateway-option-paypal"]' )
+		await page.click( 'label[id="give-gateway-option-paypal"]' );
+		await page.waitFor( 2000 );
 	})
 
 	// Verify the content after clicking the PayPal payment button radio.

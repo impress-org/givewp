@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,12 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.4.6: May 7th, 2019 =
+* Fix: Resolved an issue displaying donations in WP-Admin made when the WordPress install's date format is set to "d/m/Y". [#4088](https://github.com/impress-org/give/issues/4088)
+* Fix: The Donations Exporter tool was not properly respecting the category or tag filters when creating the CSV file. [#4085](https://github.com/impress-org/give/issues/4085)
+* Fix: When the "Personal Info" fieldset within donation forms was not going full width for mobile views and was difficult to view. The fields properly default to full width for mobile views. [#3751](https://github.com/impress-org/give/issues/3751)
+* Fix: The `{reset_password_link}` email tag was not working properly for "New Donation" and "Donation Receipt" emails. [#3510](https://github.com/impress-org/give/issues/3510)
 
 = 2.4.5: April 16th, 2019 =
 * Fix: Resolved two issues with donor and donation exporters not working properly when filters (Date and Donation Forms) were set. [#4078](https://github.com/impress-org/give/issues/4078), [#4079](https://github.com/impress-org/give/issues/4079)

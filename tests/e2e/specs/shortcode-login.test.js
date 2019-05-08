@@ -71,7 +71,7 @@ describe( 'Shortcode Login', () => {
 			page.click( '#give_login_submit' ),
 			page.waitForNavigation()
 		])
-	})
+	}, 100000 )
 
 	it( 'EXISTENCE: verify login success', async () => {
 		await expect( page ).toMatchElement( '.display-name', { text: 'Samuel' }, { timeout: 10000 } )
