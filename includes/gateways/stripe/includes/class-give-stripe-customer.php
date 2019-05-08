@@ -205,7 +205,7 @@ class Give_Stripe_Customer {
 		$this->set_customer_data( $customer );
 
 		// Attach source to customer.
-		$this->attach_source();
+		$this->attach_payment_method();
 
 		return $customer;
 
@@ -317,7 +317,7 @@ class Give_Stripe_Customer {
 	 *
 	 * @return void
 	 */
-	public function attach_source() {
+	public function attach_payment_method() {
 
 		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
 
@@ -397,14 +397,14 @@ class Give_Stripe_Customer {
 
 			// Return Card Details, if exists.
 			if ( ! empty( $card->id ) ) {
-				$this->attached_source = $card;
+				$this->attached_payment_method = $card;
 			} else {
 
 				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
 				give_record_gateway_error( __( 'Stripe Error', 'give' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
 				give_send_back_to_checkout( '?payment-mode=stripe' );
 
-				$this->attached_source = false;
+				$this->attached_payment_method = false;
 			}
 		} // End if().
 	}
