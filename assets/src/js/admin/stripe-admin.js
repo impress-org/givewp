@@ -61,7 +61,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const dismissConnectBanner = document.querySelector( '.give-stripe-connect-temp-dismiss' );
 	if ( null !== dismissConnectBanner ) {
 		dismissConnectBanner.addEventListener( 'click', function( e ) {
-
 			// Prevent reload.
 			e.preventDefault();
 
