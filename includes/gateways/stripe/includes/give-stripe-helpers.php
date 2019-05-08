@@ -996,8 +996,8 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 	// Make sure we don't have any left over errors present.
 	give_clear_errors();
 
-	$source_id = ! empty( $donation_data['post_data']['give_stripe_source'] )
-		? $donation_data['post_data']['give_stripe_source']
+	$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
+		? $donation_data['post_data']['give_stripe_payment_method']
 		: $stripe_gateway->check_for_source( $donation_data );
 
 	// Any errors?
@@ -1009,20 +1009,19 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 		$form_id          = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
 		$price_id         = ! empty( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : 0;
 		$donor_email      = ! empty( $donation_data['post_data']['give_email'] ) ? $donation_data['post_data']['give_email'] : 0;
-		$intent_id        = ! empty( $donation_data['post_data']['give_stripe_intent_id'] ) ? $donation_data['post_data']['give_stripe_intent_id'] : 0;
 		$donation_summary = give_payment_gateway_donation_summary( $donation_data, false );
 
 		// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
-		$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $source_id );
+		$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $payment_method_id );
 		$stripe_customer      = $give_stripe_customer->customer_data;
 		$stripe_customer_id   = $give_stripe_customer->get_id();
 
 		// We have a Stripe customer, charge them.
 		if ( $stripe_customer_id ) {
 
-			// Proceed to get stripe source details on if stripe checkout is not enabled.
-			$source    = $give_stripe_customer->attached_source;
-			$source_id = $source->id;
+			// Proceed to get stripe source details.
+			$payment_method    = $give_stripe_customer->attached_payment_method;
+			$payment_method_id = $payment_method->id;
 
 			// Setup the payment details.
 			$payment_data = array(
@@ -1048,8 +1047,8 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
 
 			// Save Source ID to donation note and DB.
-			give_insert_payment_note( $donation_id, 'Stripe Source ID: ' . $source_id );
-			give_update_meta( $donation_id, '_give_stripe_source_id', $source_id );
+			give_insert_payment_note( $donation_id, 'Stripe Source/Payment Method ID: ' . $payment_method_id );
+			give_update_meta( $donation_id, '_give_stripe_source_id', $payment_method_id );
 
 			// Save donation summary to donation.
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
@@ -1070,7 +1069,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 					'description'          => give_payment_gateway_donation_summary( $donation_data ),
 					'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
 					'customer'             => $stripe_customer_id,
-					'source'               => $source_id,
+					'payment_method'       => $payment_method_id,
 					'save_payment_method'  => true,
 					'confirm'              => true,
 					'return_url'           => give_get_success_page_uri(),
@@ -1104,11 +1103,11 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 				)
 			);
 			give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
-			give_send_back_to_checkout( "?payment-mode={$stripe_gateway->id}" );
+			give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
 
 		} // End if().
 	} else {
-		give_send_back_to_checkout( "?payment-mode={$stripe_gateway->id}" );
+		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
 	} // End if().
 }
 
