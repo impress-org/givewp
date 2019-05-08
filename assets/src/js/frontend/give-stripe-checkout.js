@@ -51,7 +51,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				form_element.insertAdjacentElement( 'afterend', processingHtml );
 
 				// Assign token to its hidden field for submitting it to the server.
-				form_element.querySelector( '#give-stripe-source-' + idPrefix ).value = token.id;
+				form_element.querySelector( '#give-stripe-payment-method-' + idPrefix ).value = token.id;
 
 				// // Add billing address fields?
 				if ( checkoutAddress ) {
