@@ -14,19 +14,74 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Class Give_Admin
+ */
+class Give_Addons {
+	/**
+	 * Instance.
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 * @var
+	 */
+	static private $instance;
+
+	/**
+	 * Singleton pattern.
+	 *
+	 * @since  2.5.0
+	 * @access private
+	 */
+	private function __construct() {
+	}
+
+
+	/**
+	 * Get instance.
+	 *
+	 * @return Give_Addons
+	 * @since  2.5.0
+	 * @access public
+	 */
+	public static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+			self::$instance->setup();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Setup Admin
+	 *
+	 * @sinve  2.5.0
+	 * @access private
+	 */
+	private function setup() {
+
+	}
+}
+
+Give_Addons::get_instance();
+
+
 /**
  * Add-ons Page
  *
  * Renders the add-ons page content.
  *
- * @since 1.0
  * @return void
+ * @since 1.0
  */
 function give_add_ons_page() {
 	?>
 	<div class="wrap" id="give-add-ons">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all"
+			                      target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
 
@@ -36,6 +91,7 @@ function give_add_ons_page() {
 		<?php give_add_ons_feed(); ?>
 	</div>
 	<?php
+
 }
 
 /**
@@ -43,12 +99,12 @@ function give_add_ons_page() {
  *
  * Renders the add-ons page feed.
  *
- * @since 1.0
  * @return void
+ * @since 1.0
  */
 function give_add_ons_feed() {
 
-	$addons_debug = false; //set to true to debug
+	$addons_debug = false; // set to true to debug
 	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
@@ -73,3 +129,6 @@ function give_add_ons_feed() {
 
 	echo wp_kses_post( $cache );
 }
+
+// @todo: convert all staging site link to live site
+// @todo check if all plugin follow download file and github repo naming standards
