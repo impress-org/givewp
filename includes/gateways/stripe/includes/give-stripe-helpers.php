@@ -1086,18 +1086,8 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			give_set_payment_transaction_id( $donation_id, $intent->id );
 			give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
 
-			// Additional steps required when payment intent status is set to `requires_action`.
-			if ( 'requires_action' === $intent->status ) {
-
-				$action_url = $intent->next_action->redirect_to_url->url;
-
-				// Save Payment Intent requires action related information to donation note and DB.
-				give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
-				give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
-
-				wp_redirect( $action_url );
-				exit;
-			}
+			// Process additional steps for SCA or 3D secure.
+			give_stripe_process_additional_authentication( $donation_id, $intent );
 
 			// Send them to success page.
 			give_send_to_success_page();
@@ -1120,4 +1110,31 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 	} else {
 		give_send_back_to_checkout( "?payment-mode={$stripe_gateway->id}" );
 	} // End if().
+}
+
+/**
+ * Process additional authentication.
+ *
+ * @param int                   $donation_id    Donation ID.
+ * @param \Stripe\PaymentIntent $payment_intent Stripe Payment Intent Object.
+ *
+ * @since 2.5.0
+ *
+ * @return void
+ */
+function give_stripe_process_additional_authentication( $donation_id, $payment_intent ) {
+
+	// Additional steps required when payment intent status is set to `requires_action`.
+	if ( 'requires_action' === $payment_intent->status ) {
+
+		$action_url = $payment_intent->next_action->redirect_to_url->url;
+
+		// Save Payment Intent requires action related information to donation note and DB.
+		give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
+		give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
+
+		wp_redirect( $action_url );
+		exit;
+	}
+
 }
