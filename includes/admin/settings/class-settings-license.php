@@ -200,18 +200,19 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			<h2><?php _e( 'License and Downloads', 'give' ); ?></h2>
 			<?php
-			$refresh_status = get_option(
-				'give_licenses_refreshed_last_checked',
-				array(
-					'compare' => date( 'Ymd' ),
-					'count'   => 0,
-				)
-			);
+			$refresh_status = Give_License::refresh_license_status();
 
 			$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
 			$button_title     = __( 'You can not refresh licenses because exceed limit. Only 5 times allowed per day', 'give' );
+			$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
+
+			printf(
+				__( 'Last refreshed on %1$s at %2$s', 'give' ),
+				date( give_date_format(), $local_date ),
+				date( 'g:i a', $local_date )
+			)
 			?>
-			<button
+			&nbsp;&nbsp;<button
 				id="give-button__refresh-licenses"
 				class="button-secondary"
 				data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
