@@ -218,7 +218,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		return sprintf(
 			'<input class="donor-selector" type="checkbox" name="donor[]" value="%1$d" data-name="%2$s" />',
 			$donor['id'],
-			$donor['name']
+			esc_attr( $donor['name'] )
 		);
 	}
 
@@ -237,7 +237,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		// Get donor's initials for non-gravatars
 		$title_prefix                 = Give()->donor_meta->get_meta( $donor['id'], '_give_donor_title_prefix', true );
 		$donor_name_without_prefix    = trim( str_replace( $title_prefix, '', $donor['name'] ) );
-		$donor_name_array             = explode( " ", $donor_name_without_prefix );
+		$donor_name_array             = explode( ' ', $donor_name_without_prefix );
 		$donor_name_args['firstname'] = ! empty( $donor_name_array[0] ) ? $donor_name_array[0] : '';
 		$donor_name_args['lastname']  = ! empty( $donor_name_array[1] ) ? $donor_name_array[1] : '';
 		$donor_name_initial           = give_get_name_initial( $donor_name_args );
@@ -246,14 +246,29 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'<span class="give-donor__image give-donor-admin-avatar" data-donor_email="%1$s" data-has-valid-gravatar="%2$s">%3$s</span>',
 			md5( strtolower( trim( $donor['email'] ) ) ),
 			absint( give_validate_gravatar( $donor['email'] ) ),
-			$donor_name_initial
+			esc_attr( $donor_name_initial )
 		);
 
-		$name     = ! empty( $donor['name'] ) ? ( $donation_gravatar_image . '<span class="give-donor-name-text">' . $donor['name'] . '</span>' ) : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+		$name = ! empty( $donor['name'] )
+			? sprintf(
+				'%1$s<span class="give-donor-name-text">%2$s</span>',
+				$donation_gravatar_image,
+				esc_attr( $donor['name'] )
+			)
+			: sprintf(
+				'<em>%1$s</em>',
+				__( 'Unnamed Donor', 'give' )
+			);
+
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 
-		return '<a href="' . esc_url( $view_url ) . '" class="give-donor-name">' . $name . '</a>' . $this->row_actions( $actions );
+		return sprintf(
+			'<a href="%1$s" class="give-donor-name">%2$s</a>%3$s',
+			esc_url( $view_url ),
+			$name,
+			$this->row_actions( $actions )
+		);
 	}
 
 	/**
