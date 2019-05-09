@@ -461,7 +461,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				$upload = wp_handle_upload( $_FILES['json'], array( 'test_form' => false ) );
 
 				remove_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
-				remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ), 10, 4 );
+				remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ) );
 
 			} else {
 				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
@@ -498,11 +498,22 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 */
 		public static function filetype_mod(  $check, $file, $filename, $mimes ) {
 			if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
-				// Allow JSON uploads
-				$secondary_mime = array( 'json' => 'text/plain' );
-				// Run another check, but only for our secondary mime and not on core mime types.
-				$check = wp_check_filetype_and_ext( $file, $filename, $secondary_mime );
+				$finfo     = finfo_open( FILEINFO_MIME_TYPE );
+				$real_mime = finfo_file( $finfo, $file );
+				finfo_close( $finfo );
+
+				if( in_array( $real_mime, array( 'text/plain', 'text/html' ) ) ) {
+					remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ) );
+
+					// Allow JSON uploads
+					$secondary_mime = array( 'json' => $real_mime );
+					// Run another check, but only for our secondary mime and not on core mime types.
+					$check = wp_check_filetype_and_ext( $file, $filename, $secondary_mime );
+
+					add_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ), 10, 4 );
+				}
 			}
+
 			return $check;
 		}
 	}
