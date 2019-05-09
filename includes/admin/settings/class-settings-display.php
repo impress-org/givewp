@@ -81,23 +81,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Welcome Screen', 'give' ),
-							/* translators: %s: about page URL */
-							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that displays each time Give is activated or updated.', 'give' ), array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
-								),
-							) ), esc_url( admin_url( 'index.php?page=give-getting-started' ) ) ),
-							'id'      => 'welcome',
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
 							'name'    => __( 'Name Title Prefix', 'give' ),
 							'desc'    => __( 'Do you want a Name Title Prefix field to appear before First Name?', 'give' ),
 							'id'      => 'name_title_prefix',
