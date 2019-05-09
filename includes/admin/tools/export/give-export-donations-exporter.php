@@ -604,7 +604,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		$args = $this->get_donation_argument( array( 'number' => - 1 ) );
+		$args = $this->get_donation_argument( array( 'number' => - 1, 'output' => '' ) );
 		if ( isset( $args['page'] ) ) {
 			unset( $args['page'] );
 		}

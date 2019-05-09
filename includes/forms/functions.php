@@ -1373,7 +1373,7 @@ function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
  *
  * @since 2.2.0
  *
- * @return mixed
+ * @return array
  */
 function give_get_name_title_prefixes( $form_id = 0 ) {
 
@@ -1394,7 +1394,7 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
 		}
 	}
 
-	return $title_prefixes;
+	return array_filter( (array) $title_prefixes );
 }
 
 /**
