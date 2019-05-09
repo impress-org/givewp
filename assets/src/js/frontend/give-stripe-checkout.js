@@ -8,7 +8,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 
 	// Loop through the number of forms on the page.
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
-		let token_created = false;
+		let tokenCreated = false;
 		const form_element = formWrap.querySelector( '.give-form' );
 		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
 		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
@@ -39,7 +39,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				processingHtml.style.display = 'none';
 				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#333; font-size: 18px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
 
-				token_created = true;
+				tokenCreated = true;
 
 				// For Stripe Connect API Users.
 				if ( '' !== give_stripe_vars.stripe_account_id ) {
@@ -50,7 +50,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				// @see: https://github.com/WordImpress/Give-Stripe/issues/79
 				form_element.insertAdjacentElement( 'afterend', processingHtml );
 
-				// Assign token to its hidden field for submitting it to the server.
+				// Assign source to its hidden field for submitting it to the server.
 				form_element.querySelector( '#give-stripe-payment-method-' + idPrefix ).value = token.id;
 
 				// // Add billing address fields?
@@ -141,7 +141,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			},
 			closed: function() {
 				// Close button click behavior goes here.
-				if ( ! token_created ) {
+				if ( ! tokenCreated ) {
 					give_stripe_refresh_donate_button( form_element );
 
 					// Close handler if it is still open.
