@@ -95,22 +95,43 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				$goal   = give_human_format_large_amount( give_format_amount( $goal, $goal_format_args ), array( 'currency' => $form_currency ) );
 
 				echo sprintf( /* translators: 1: amount of income raised 2: goal target amount. */
-					__( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> raised', 'give' ), give_currency_filter( $income, array( 'form_id' => $form_id ) ), give_currency_filter( $goal, array( 'form_id' => $form_id ) ) );
+					__( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> raised', 'give' ),
+					give_currency_filter( $income, array( 'form_id' => $form_id ) ),
+					give_currency_filter( $goal, array( 'form_id' => $form_id ) )
+				);
 
             elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
-					__( '<span class="give-percentage">%s%%</span> funded', 'give' ), round( $progress ) );
+					__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
+					round( $progress )
+				);
 
             elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
-					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations', $goal, 'give' ), $income, $goal );
+					_n(
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations',
+						$goal,
+						'give'
+					),
+					$income,
+					$goal
+				);
 
             elseif ( 'donors' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
-					_n( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation', '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors', $goal, 'give' ), $income, $goal );
+					_n(
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors',
+						$goal,
+						'give'
+					),
+					$income,
+					$goal
+				);
 
 			endif;
 			?>
