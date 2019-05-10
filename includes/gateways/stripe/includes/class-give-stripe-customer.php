@@ -423,7 +423,7 @@ class Give_Stripe_Customer {
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) || give_stripe_is_source_type( $this->payment_method_id, 'card' ) ) {
+			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
 				$new_card      = $token_details->card;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
@@ -458,35 +458,6 @@ class Give_Stripe_Customer {
 						break;
 					}
 				}
-			} else {
-
-				try {
-					$source_item = \Stripe\Customer::createSource(
-						$this->id,
-						array(
-							'source' => $this->payment_method_id,
-						)
-					);
-
-					// Set the existing card as default source.
-					$this->customer_data->default_source = $source_item->id;
-					$this->customer_data->save();
-					$card                 = $source_item;
-					$card_exists          = true;
-					$this->is_card_exists = true;
-				} catch( Exception $e ) {
-					give_record_gateway_error(
-						__( 'Stripe Error', 'give' ),
-						sprintf(
-							/* translators: %s Exception Message Body */
-							__( 'The Stripe Gateway returned an error while attaching source to the customer. Details: %s', 'give' ),
-							$e->getMessage()
-						)
-					);
-					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode']) );
-					return false;
-				}
 			}
 
 			// Create the card, if none found above.
@@ -502,11 +473,15 @@ class Give_Stripe_Customer {
 					} else {
 
 						$card = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
-						$card->attach(
-							array(
-								'customer' => $this->id,
-							)
-						);
+
+						// If payment method is not attached to customer then attach it now.
+						if ( empty( $card->customer ) ) {
+							$card->attach(
+								array(
+									'customer' => $this->id,
+								)
+							);
+						}
 					}
 
 				} catch ( \Stripe\Error\Base $e ) {
