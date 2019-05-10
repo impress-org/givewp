@@ -183,6 +183,9 @@ function give_process_donation_form() {
 		// Revert to manual.
 		$donation_data['gateway'] = 'manual';
 		$_POST['give-gateway']    = 'manual';
+
+		// This will update/refresh super global cache which can we use anywhere.
+		$post_data = give_get_super_global( 'POST', '', true );
 	}
 
 	/**
