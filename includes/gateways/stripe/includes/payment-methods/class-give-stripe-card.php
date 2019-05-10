@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 */
 		public function check_for_source( $donation_data ) {
 
-			$source_id          = $donation_data['post_data']['give_stripe_source'];
+			$source_id          = $donation_data['post_data']['give_stripe_payment_method'];
 			$stripe_js_fallback = give_get_option( 'stripe_js_fallback' );
 
 			if ( ! isset( $source_id ) ) {
