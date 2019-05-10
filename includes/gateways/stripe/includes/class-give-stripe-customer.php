@@ -204,8 +204,12 @@ class Give_Stripe_Customer {
 		$this->set_id( $customer->id );
 		$this->set_customer_data( $customer );
 
-		// Attach source to customer.
-		$this->attach_payment_method();
+		// Attach source/payment method to customer.
+		if ( give_stripe_is_checkout_enabled() ) {
+			$this->attach_source();
+		} else {
+			$this->attach_payment_method();
+		}
 
 		return $customer;
 
@@ -276,6 +280,12 @@ class Give_Stripe_Customer {
 				)
 			);
 
+			if ( give_stripe_is_checkout_enabled() ) {
+				$args['source'] = $this->payment_method_id;
+			} else {
+				$args['payment_method'] = $this->payment_method_id;
+			}
+
 			// Create a customer first so we can retrieve them later for future payments.
 			$customer = \Stripe\Customer::create( $args, give_stripe_get_connected_account_options() );
 
@@ -306,6 +316,94 @@ class Give_Stripe_Customer {
 			return false;
 		}
 
+	}
+
+	/**
+	 * This function is used to attach source to the customer, if not exists.
+	 *
+	 * @since  2.1
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function attach_source() {
+
+		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
+
+			$card        = '';
+			$card_exists = false;
+			$all_sources = $this->customer_data->sources->all();
+
+			// Fetch the new card or source object to match with customer attached card fingerprint.
+			if ( give_is_stripe_checkout_enabled() ) {
+				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
+				$new_card = $token_details->card;
+			} else {
+				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
+				$new_card = $source_details->card;
+			}
+
+			// Check to ensure that new card is already attached with customer or not.
+			if ( count( $all_sources->data ) > 0 ) {
+				foreach ( $all_sources->data as $source_item ) {
+
+					if (
+						( give_stripe_is_source_type( $source_item->id, 'card' ) && $source_item->fingerprint === $new_card->fingerprint ) ||
+						(
+							$source_item->card->fingerprint === $new_card->fingerprint &&
+							( give_stripe_is_source_type( $source_item->id, 'src' ) || give_stripe_is_source_type( $source_item->id, 'btok' ) )
+						)
+					) {
+
+						// Set the existing card as default source.
+						$this->customer_data->default_source = $source_item->id;
+						$this->customer_data->save();
+						$card                 = $source_item;
+						$card_exists          = true;
+						$this->is_card_exists = true;
+						break;
+					}
+				}
+			}
+
+			// Create the card, if none found above.
+			if ( ! $card_exists ) {
+				try {
+
+					$card = $this->customer_data->sources->create( array(
+						'source' => $this->payment_method_id,
+					) );
+
+					$this->customer_data->default_source = $card->id;
+					$this->customer_data->save();
+
+				} catch ( \Stripe\Error\Base $e ) {
+					Give_Stripe_Logger::log_error( $e, 'stripe' );
+				} catch ( Exception $e ) {
+					give_record_gateway_error(
+						__( 'Stripe Error', 'give' ),
+						sprintf(
+							/* translators: %s Exception Message Body */
+							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
+							$e->getMessage()
+						)
+					);
+					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
+					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+					return false;
+				}
+			}
+
+			// Return Card Details, if exists.
+			if ( ! empty( $card->id ) ) {
+				$this->attached_payment_method = $card;
+			} else {
+				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
+				give_record_gateway_error( __( 'Stripe Error', 'give-stripe' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				$this->attached_payment_method = false;
+			}
+		} // End if().
 	}
 
 	/**
