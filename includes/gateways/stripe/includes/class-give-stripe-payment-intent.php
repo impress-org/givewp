@@ -95,7 +95,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 					sprintf(
 						/* translators: %s Exception Error Message */
 						__( 'Unable to retrieve a payment intent. Details: %s', 'give' ),
-						$e->getMessage()
+						$e
 					)
 				);
 
