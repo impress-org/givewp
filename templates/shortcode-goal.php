@@ -129,8 +129,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 						$goal,
 						'give'
 					),
-					$income,
-					$goal
+					give_format_amount( $income, array( 'decimal' => false ) ),
+					give_format_amount( $goal, array( 'decimal' => false ) )
 				);
 
 			endif;
