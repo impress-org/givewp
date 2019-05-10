@@ -530,7 +530,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
 
-		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+		$get_data = give_get_super_global( 'GET' );
 
 		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';

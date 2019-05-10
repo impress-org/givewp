@@ -1547,7 +1547,7 @@ function give_handle_form_meta_on_delete( $id ) {
 	global $wpdb;
 
 	$form     = get_post( $id );
-	$get_data = give_clean( $_GET );
+	$get_data = give_get_super_global( 'GET' );
 
 	if (
 		'give_forms' === $form->post_type &&

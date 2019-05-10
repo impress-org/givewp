@@ -127,7 +127,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			}
 
 			// Payment receipt switcher
-			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
+			$user_id = give_check_variable( give_get_super_global( 'GET' ), 'isset', 0, 'user_id' );
 
 			// Get payments.
 			$donors  = new Give_API();

@@ -27,7 +27,7 @@ Give_Cron::add_monthly_event( 'give_refresh_licenses' );
  */
 function give_get_actions() {
 
-	$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$get_data = give_get_super_global( 'GET' );
 
 	$_get_action = ! empty( $get_data['give_action'] ) ? $get_data['give_action'] : null;
 
@@ -62,7 +62,7 @@ add_action( 'init', 'give_get_actions' );
  */
 function give_post_actions() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_get_super_global( 'POST' );
 
 	$_post_action = ! empty( $post_data['give_action'] ) ? $post_data['give_action'] : null;
 
