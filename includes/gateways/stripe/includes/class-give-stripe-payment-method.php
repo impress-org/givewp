@@ -25,6 +25,40 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 	class Give_Stripe_Payment_Method {
 
 		/**
+		 * Create Payment Method.
+		 *
+		 * @param array $args Payment Method Arguments.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @return \Stripe\PaymentMethod
+		 */
+		public function create( $args ) {
+
+			try {
+
+				give_stripe_set_app_info();
+
+				$payment_method = \Stripe\PaymentMethod::create( $args, give_stripe_get_connected_account_options() );
+
+			} catch( Exception $e ) {
+				give_record_gateway_error(
+					__( 'Stripe Payment Method Error', 'give' ),
+					sprintf(
+						/* translators: %s Exception Message Body */
+						__( 'The Stripe Gateway returned an error while creating the payment method. Details: %s', 'give' ),
+						$e
+					)
+				);
+				give_set_error( 'stripe_error', __( 'An occurred while creating the payment method. Please try again.', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode']) );
+				return false;
+			}
+
+			return $payment_method;
+		}
+
+		/**
 		 * Retrieves the payment method.
 		 *
 		 * @param string $id Payment Intent ID.
@@ -35,7 +69,9 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 
 			try {
 
-				$payment_method_details = \Stripe\PaymentMethod::retrieve( $id );
+				give_stripe_set_app_info();
+
+				$payment_method_details = \Stripe\PaymentMethod::retrieve( $id, give_stripe_get_connected_account_options() );
 
 			} catch( Exception $e ) {
 				give_record_gateway_error(
@@ -47,7 +83,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while retrieving the payment method of the customer. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode']) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode']) );
 				return false;
 			}
 
@@ -68,12 +104,15 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 
 			try {
 
+				give_stripe_set_app_info();
+
 				$all_payment_methods = \Stripe\PaymentMethod::all(
 					array(
 						'customer' => $customer_id,
 						'type'     => $type,
 						'limit'    => 100,
-					)
+					),
+					give_stripe_get_connected_account_options()
 				);
 
 			} catch( Exception $e ) {
@@ -86,7 +125,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while fetching the list of payment methods of the customer. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode']) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode']) );
 				return false;
 			}
 
