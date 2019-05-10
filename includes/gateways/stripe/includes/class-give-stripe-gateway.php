@@ -577,19 +577,15 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
-					__( 'Stripe Error', 'give' ),
+					__( 'Stripe Charge Error', 'give' ),
 					sprintf(
 						/* translators: %s Exception Error Message */
 						__( 'Unable to create a successful charge. Details: %s', 'give' ),
-						$e->getMessage()
+						$e
 					)
 				);
-
-				give_set_error( 'stripe_charge_error', __( 'Error processing charge with Stripe. Please try again.', 'give' ) );
-
-				// Redirect to donation failed page.
-				wp_safe_redirect( give_get_failed_transaction_uri() );
-
+				give_set_error( 'stripe_charge_error', __( 'Error processing donation with Stripe. Please try again.', 'give' ) );
+				return false;
 			} // End try().
 		}
 
@@ -669,6 +665,44 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Process One Time Charge.
+		 *
+		 * @param array  $donation_data      List of donation data.
+		 * @param string $stripe_customer_id Customer ID.
+		 *
+		 * @return bool|\Stripe\Charge
+		 */
+		public function process_charge( $donation_data, $stripe_customer_id ) {
+
+			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
+			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
+			$source_id   = ! empty( $donation_data['source_id'] ) ? $donation_data['source_id'] : 0;
+
+			// Process the charge.
+			$amount = $this->format_amount( $donation_data['price'] );
+
+			$charge_args = array(
+				'amount'               => $amount,
+				'currency'             => give_get_currency( $form_id ),
+				'customer'             => $stripe_customer_id,
+				'description'          => html_entity_decode( $donation_data['description'], ENT_COMPAT, 'UTF-8' ),
+				'statement_descriptor' => give_get_stripe_statement_descriptor( $donation_data ),
+				'metadata'             => $this->prepare_metadata( $donation_id ),
+				'source'               => $source_id,
+			);
+
+			// Create charge with general gateway fn.
+			$charge = $this->create_charge( $donation_id, $charge_args );
+
+			// Return charge if set.
+			if ( isset( $charge ) ) {
+				return $charge;
+			} else {
+				return false;
+			}
 		}
 	}
 }
