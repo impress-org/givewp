@@ -697,6 +697,8 @@ function give_get_cache_key( $action, $query_args ) {
  * @since 2.5.0
  */
 function give_get_super_global( $type, $single_key = '' ) {
+	$result = array();
+
 	switch ( $type ) {
 		case 'POST':
 			$result = filter_input_array( INPUT_POST );
