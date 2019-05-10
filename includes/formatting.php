@@ -687,9 +687,9 @@ function give_get_cache_key( $action, $query_args ) {
 function give_clean( $var ) {
 	if ( is_array( $var ) ) {
 		return array_map( 'give_clean', $var );
-	} else {
-		return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 	}
+
+	return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 }
 
 /**
