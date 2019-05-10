@@ -1955,7 +1955,7 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 2.1
 			 */
-			$actual = $donations = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
+			$actual = apply_filters( 'give_goal_donations_raised_output', $form->sales, $form->ID, $form );
 			break;
 		case 'donors':
 			/**
@@ -1968,7 +1968,7 @@ function give_goal_progress_stats( $form ) {
 			 * @return int $donors Total number of donors that donated to the form.
 			 * @since 2.1.3
 			 */
-			$actual = $donors = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
+			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default:
 			/**
@@ -1976,7 +1976,7 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 1.8.8
 			 */
-			$actual = $income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+			$actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 			break;
 	}
 
