@@ -124,7 +124,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
-						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donor',
 						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors',
 						$goal,
 						'give'
