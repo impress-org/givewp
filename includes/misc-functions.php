@@ -1937,8 +1937,6 @@ function give_goal_progress_stats( $form ) {
 		$form = new Give_Donate_Form( $form );
 	}
 
-	$donors = '';
-
 	$goal_format = give_get_form_goal_format( $form->ID );
 
 	/**
@@ -1995,17 +1993,21 @@ function give_goal_progress_stats( $form ) {
 	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
 
 	// Define Actual Goal based on the goal format.
-	if ( 'percentage' === $goal_format ) {
-		$actual = "{$actual}%";
-	} elseif ( 'amount' === $goal_format ) {
-		$actual = give_currency_filter( give_format_amount( $actual ) );
-	}
+	switch ( $goal_format ) {
+		case 'percentage':
+			$actual     = "{$actual}%";
+			$total_goal = '';
+			break;
 
-	// Define Total Goal based on the goal format.
-	if ( 'percentage' === $goal_format ) {
-		$total_goal = '';
-	} elseif ( 'amount' === $goal_format ) {
-		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+		case 'amount' === $goal_format:
+			$actual     = give_currency_filter( give_format_amount( $actual ) );
+			$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+			break;
+
+		default:
+			$actual     = give_format_amount( $actual, array( 'decimal' => false ) );
+			$total_goal = give_format_amount( $total_goal, array( 'decimal' => false ) );
+			break;
 	}
 
 	$stats_array = array_merge(
