@@ -1265,7 +1265,7 @@ function give_admin_form_goal_stats( $form_id ) {
 		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
 		$goal_stats['goal'],
-		( 'donors' === $goal_stats['format'] ? __( 'Donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'Donations', 'give' ) : '' ) )
+		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
 	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
