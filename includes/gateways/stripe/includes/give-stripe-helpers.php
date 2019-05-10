@@ -1155,3 +1155,29 @@ function give_stripe_process_additional_authentication( $donation_id, $payment_i
 	}
 
 }
+
+/**
+ * Converts Cents to Dollars
+ *
+ * @param string $cents Amount in cents.
+ *
+ * @since  2.5.0
+ *
+ * @return string
+ */
+function give_stripe_cents_to_dollars( $cents ) {
+	return ( $cents / 100 );
+}
+
+/**
+ * Converts Dollars to Cents
+ *
+ * @param string $dollars Amount in dollars.
+ *
+ * @since  2.5.0
+ *
+ * @return string
+ */
+function give_stripe_dollars_to_cents( $dollars ) {
+	return round( $dollars, give_currency_decimal_filter() ) * 100;
+}
