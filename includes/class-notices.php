@@ -213,13 +213,21 @@ class Give_Notices {
 			return;
 		}
 
-		// Do not render notice on Gutenberg editor page.
+		// Do not render notices on Gutenberg editor page.
 		if (
 			method_exists( $wp_screen, 'is_block_editor' )
 			&& $wp_screen->is_block_editor()
 		) {
 			return;
 		}
+
+		// Do not render notices on these pages as well.
+		if (
+			''
+		) {
+			return;
+		}
+
 
 		$output = '';
 
