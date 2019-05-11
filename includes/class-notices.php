@@ -223,11 +223,10 @@ class Give_Notices {
 
 		// Do not render notices on these pages as well.
 		if (
-			''
+			'update-core' === $wp_screen->id
 		) {
 			return;
 		}
-
 
 		$output = '';
 
