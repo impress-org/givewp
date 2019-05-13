@@ -1336,3 +1336,23 @@ function give_log_addon_activation_time( $plugin, $network_wide ) {
 
 add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
 
+
+/**
+ * Hide all admin notice from add-ons page
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_hide_notices_on_add_ons_page(){
+	$page = give_get_super_global( 'GET', 'page' );
+
+	// Bailout.
+	if( 'give-addons' !== $page ) {
+		return;
+	}
+
+	remove_all_actions( 'admin_notices' );
+}
+add_action( 'in_admin_header', 'give_hide_notices_on_add_ons_page', 999 );
+

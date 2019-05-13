@@ -42,8 +42,10 @@ function give_add_ons_page() {
 
 			<p class="give-subheader-right-text"><?php esc_html_e( 'Maximize your fundraising potential with official add-ons from GiveWP.com.', 'give' ); ?></p>
 
+			<div class="give-hidden">
+				<hr class="wp-header-end">
+			</div>
 		</div>
-
 		<div class="give-price-bundles-wrap give-clearfix">
 			<?php give_add_ons_feed( 'price-bundle' ); ?>
 		</div>
