@@ -197,7 +197,7 @@ class Give_Stripe_Customer {
 		}
 
 		// Create the Stripe customer if not present.
-		if ( empty( $customer ) ) {
+		if ( ! $customer ) {
 			$customer = $this->create_customer();
 		}
 
@@ -226,7 +226,7 @@ class Give_Stripe_Customer {
 	public function create_customer() {
 
 		$customer     = false;
-		$post_data    = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+		$post_data    = give_get_super_global( 'POST' );
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
 		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : false;
 		$first_name   = ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : '';
@@ -280,10 +280,13 @@ class Give_Stripe_Customer {
 				)
 			);
 
-			if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
-				$args['source'] = $this->payment_method_id;
-			} else {
-				$args['payment_method'] = $this->payment_method_id;
+			// Add these parameters when payment method/source id exists.
+			if ( ! empty( $this->payment_method_id ) ) {
+				if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
+					$args['source'] = $this->payment_method_id;
+				} else {
+					$args['payment_method'] = $this->payment_method_id;
+				}
 			}
 
 			// Create a customer first so we can retrieve them later for future payments.
