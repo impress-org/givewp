@@ -213,10 +213,19 @@ class Give_Notices {
 			return;
 		}
 
-		// Do not render notice on Gutenberg editor page.
+		// Do not render notices on Gutenberg editor page.
 		if (
 			method_exists( $wp_screen, 'is_block_editor' )
 			&& $wp_screen->is_block_editor()
+		) {
+			return;
+		}
+
+		// Do not render notices on these pages as well.
+		// We don't want to annoy admins with notices on important screens like updates, etc.
+		if (
+			'update-core' === $wp_screen->id
+			|| 'give_forms_page_give-addons' === $wp_screen->id
 		) {
 			return;
 		}

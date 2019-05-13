@@ -14,60 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-/**
- * Class Give_Admin
- */
-class Give_Addons {
-	/**
-	 * Instance.
-	 *
-	 * @since  2.5.0
-	 * @access private
-	 * @var
-	 */
-	static private $instance;
-
-	/**
-	 * Singleton pattern.
-	 *
-	 * @since  2.5.0
-	 * @access private
-	 */
-	private function __construct() {
-	}
-
-
-	/**
-	 * Get instance.
-	 *
-	 * @return Give_Addons
-	 * @since  2.5.0
-	 * @access public
-	 */
-	public static function get_instance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
-			self::$instance->setup();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Setup Admin
-	 *
-	 * @sinve  2.5.0
-	 * @access private
-	 */
-	private function setup() {
-
-	}
-}
-
-Give_Addons::get_instance();
-
-
 /**
  * Add-ons Page
  *
@@ -98,14 +44,36 @@ function give_add_ons_page() {
 
 		</div>
 
-		<div class="give-price-bundle">
+		<div class="give-price-bundles-wrap give-clearfix">
 			<?php give_add_ons_feed( 'price-bundle' ); ?>
 		</div>
-		<?php // give_add_ons_feed(); ?>
+
+		<div class="give-addons-directory-wrap give-clearfix">
+			<?php give_add_ons_feed( 'addons-directory' ); ?>
+		</div>
 	</div>
 	<?php
 
 }
+
+/**
+ * Enqueue GiveWP font family for just the add-ons page.
+ *
+ * @param $hook
+ */
+function give_addons_enqueue_scripts( $hook ) {
+
+	// Only enqueue on the addons page.
+	if ( 'give_forms_page_give-addons' !== $hook ) {
+		return;
+	}
+
+	// https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat:400,400i,600,600i,700,700i,800,800i
+	wp_register_style( 'give_addons_font_families', 'https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,600i,700,700i,800,800i', false );
+	wp_enqueue_style( 'give_addons_font_families' );
+}
+
+add_action( 'admin_enqueue_scripts', 'give_addons_enqueue_scripts' );
 
 /**
  * Add-ons Render Feed
@@ -119,17 +87,21 @@ function give_add_ons_page() {
  */
 function give_add_ons_feed( $feed_type = '' ) {
 
-	$addons_debug = false; // set to true to debug
+	$addons_debug = true; // set to true to debug
 	$cache_key    = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
-	$cache        = Give_Cache::get( $cache_key, true );
-
+	// $cache        = Give_Cache::get( $cache_key, true );
+	$cache    = false;
 	$feed_url = Give_License::get_website_url() . 'downloads/feed/';
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
 
 		switch ( $feed_type ) {
 			case 'price-bundle':
-				$feed_url = Give_License::get_website_url() . 'downloads/feed/addons-price-bundle.php';
+				$feed_url = Give_License::get_website_url() . 'downloads/feed/addons-price-bundles.php';
+				break;
+			case 'addons-directory':
+				$feed_url = Give_License::get_website_url() . 'downloads/feed/index.php';
+				break;
 		}
 
 		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
