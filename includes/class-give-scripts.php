@@ -195,7 +195,6 @@ class Give_Scripts {
 		// Localize admin scripts
 		$this->admin_localize_scripts();
 
-
 		if ( Give_Admin_Settings::is_setting_page( 'licenses'  ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
@@ -213,7 +212,7 @@ class Give_Scripts {
 	}
 
 	/**
-	 * Load admin plugin page related scripts, styles andd localize param
+	 * Load admin plugin page related scripts, styles and localize param.
 	 *
 	 * @since  2.2.0
 	 * @access private

@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private static $site_url = 'https://givewp.com/';
+		private static $site_url = 'http://givewp.test/';
 
 		/**
 		 * API URL

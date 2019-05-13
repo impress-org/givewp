@@ -222,8 +222,10 @@ class Give_Notices {
 		}
 
 		// Do not render notices on these pages as well.
+		// We don't want to annoy admins with notices on important screens like updates, etc.
 		if (
 			'update-core' === $wp_screen->id
+			|| 'give_forms_page_give-addons' === $wp_screen->id
 		) {
 			return;
 		}
