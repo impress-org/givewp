@@ -23,15 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global $give_settings_page
  * @global $give_payments_page
  * @global $give_reports_page
- * @global $give_add_ons_page
  * @global $give_donors_page
  *
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_donors_page, $give_tools_page;
+	global $give_settings_page, $give_payments_page, $give_reports_page, $give_donors_page, $give_tools_page;
 
 	//Payments
+	/* @var WP_Post_Type $give_payment */
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
@@ -90,6 +90,24 @@ function give_add_options_links() {
 			'output',
 		)
 	);
+}
+
+add_action( 'admin_menu', 'give_add_options_links', 10 );
+
+
+
+/**
+ * Creates the admin add-ons submenu page under the Give menu and assigns their
+ * link to global variable
+ *
+ * @since 2.5.0
+ *
+ * @global $give_add_ons_page
+ *
+ * @return void
+ */
+function give_add_add_ons_option_link(){
+	global $give_add_ons_page;
 
 	//Add-ons
 	$give_add_ons_page = add_submenu_page(
@@ -100,9 +118,9 @@ function give_add_options_links() {
 		'give-addons',
 		'give_add_ons_page'
 	);
-}
 
-add_action( 'admin_menu', 'give_add_options_links', 10 );
+}
+add_action( 'admin_menu', 'give_add_add_ons_option_link', 999999 );
 
 /**
  *  Determines whether the current admin page is a Give admin page.
