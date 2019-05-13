@@ -205,7 +205,7 @@ class Give_Stripe_Customer {
 		$this->set_customer_data( $customer );
 
 		// Attach source/payment method to customer.
-		if ( give_stripe_is_checkout_enabled() ) {
+		if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
 			$this->attach_source();
 		} else {
 			$this->attach_payment_method();
@@ -280,7 +280,7 @@ class Give_Stripe_Customer {
 				)
 			);
 
-			if ( give_stripe_is_checkout_enabled() ) {
+			if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
 				$args['source'] = $this->payment_method_id;
 			} else {
 				$args['payment_method'] = $this->payment_method_id;
@@ -332,26 +332,37 @@ class Give_Stripe_Customer {
 
 			$card        = '';
 			$card_exists = false;
+			$new_card    = '';
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
 			if ( give_is_stripe_checkout_enabled() ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
 				$new_card = $token_details->card;
-			} else {
+			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
 				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
 				$new_card = $source_details->card;
 			}
+
+			/**
+			 * This filter hook is used to get new card details.
+			 *
+			 * @since 2.5.0
+			 */
+			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->payment_method_id, $this->stripe_gateway );
 
 			// Check to ensure that new card is already attached with customer or not.
 			if ( count( $all_sources->data ) > 0 ) {
 				foreach ( $all_sources->data as $source_item ) {
 
 					if (
-						( give_stripe_is_source_type( $source_item->id, 'card' ) && $source_item->fingerprint === $new_card->fingerprint ) ||
 						(
-							$source_item->card->fingerprint === $new_card->fingerprint &&
-							( give_stripe_is_source_type( $source_item->id, 'src' ) || give_stripe_is_source_type( $source_item->id, 'btok' ) )
+							isset( $source_item->card->fingerprint ) &&
+							$source_item->card->fingerprint === $new_card->fingerprint
+						) ||
+						(
+							isset( $source_item->fingerprint ) &&
+							$source_item->fingerprint === $new_card->fingerprint
 						)
 					) {
 
