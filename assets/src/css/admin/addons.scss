@@ -12,9 +12,12 @@
 	margin: 0;
 }
 
-.give-addons-header {
+.give-wrap{
 	padding: 10px 20px;
 	margin: 0 0 0 -22px;
+}
+
+.give-addons-header {
 	background: url('../../images/admin/give-faces-bg.png') repeat 0 0 #0e0e0e;
 	overflow: hidden;
 
@@ -42,8 +45,6 @@
 
 .give-subheader {
 	background: #FFF;
-	margin: 0 0 0 -22px;
-	padding: 12px 20px;
 	border-bottom: 1px solid #DBDBDB;
 
 	.give-subheader-right-text {
@@ -55,7 +56,6 @@
 	}
 
 	h1 {
-		float: left;
 		font-size: 15px;
 		color: #555555;
 		font-weight: 600;
@@ -74,6 +74,10 @@
 
 }
 
+
+#give-price-bundle{
+	margin-top: 35px;
+}
 
 div.bundle {
 	float: left;

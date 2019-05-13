@@ -80,7 +80,7 @@ function give_add_ons_page() {
 	?>
 	<div class="wrap" id="give-addons">
 
-		<div class="give-addons-header">
+		<div class="give-addons-header give-wrap">
 
 			<div class="give-admin-logo give-addon-h1">
 				<a href="https://givewp.com/&utm_campaign=admin&utm_source=addons&utm_medium=imagelogo"
@@ -90,15 +90,16 @@ function give_add_ons_page() {
 			</div>
 		</div>
 
-		<div class="give-subheader give-clearfix">
-
-			<h1>Give Add-ons</h1>
-
+		<div class="give-subheader give-clearfix give-wrap">
+			<h1 class="wp-heading-inline">Give Add-ons</h1>
 			<p class="give-subheader-right-text"><?php esc_html_e( 'Maximize your fundraising potential with official add-ons from GiveWP.com.', 'give' ); ?></p>
-
 		</div>
 
-		<div class="give-price-bundle">
+		<div class="give-wrap">
+			<hr class="wp-header-end">
+		</div>
+
+		<div id="give-price-bundle">
 			<?php give_add_ons_feed( 'price-bundle' ); ?>
 		</div>
 		<?php // give_add_ons_feed(); ?>
