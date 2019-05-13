@@ -117,7 +117,7 @@ function give_add_ons_feed( $feed_type = '' ) {
 			}
 		} else {
 			$cache = sprintf(
-				'<div class="error"><p>%s</p></div>',
+				'<div class="error inline"><p>%s</p></div>',
 				esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' )
 			);
 		}
