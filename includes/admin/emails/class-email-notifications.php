@@ -338,8 +338,8 @@ class Give_Email_Notifications {
 	 * @return array
 	 */
 	public function email_preview_data( $email_preview_data ) {
-		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
-		$email_preview_data['user_id']    = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
+		$email_preview_data['payment_id'] = absint( give_check_variable( give_get_super_global( 'GET' ), 'isset', 0, 'preview_id' ) );
+		$email_preview_data['user_id']    = absint( give_check_variable( give_get_super_global( 'GET' ), 'isset', 0, 'user_id' ) );
 
 		return $email_preview_data;
 	}
@@ -383,7 +383,7 @@ class Give_Email_Notifications {
 		give_validate_nonce( $_GET['_wpnonce'], 'give-send-preview-email' );
 
 		// Get email type.
-		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type' );
+		$email_type = give_check_variable( give_get_super_global( 'GET' ), 'isset', '', 'email_type' );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
