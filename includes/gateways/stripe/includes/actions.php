@@ -66,13 +66,11 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 		}
 
 		if (
+				! is_ssl() &&
+				! give_is_test_mode() &&
 				(
-					! is_ssl() &&
-					! give_is_test_mode() &&
-					(
-						empty( $publishable_key ) ||
-						empty( $secret_key )
-					)
+					empty( $publishable_key ) ||
+					empty( $secret_key )
 				)
 			) {
 					Give()->notices->print_frontend_notice(
