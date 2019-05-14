@@ -205,6 +205,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.4.7: May 14th, 2019 =
+* Fix: Added additional escaping to ensure certain donor input is secure when being viewed as records in wp-admin.
+
 = 2.4.6: May 7th, 2019 =
 * Fix: Resolved an issue displaying donations in WP-Admin made when the WordPress install's date format is set to "d/m/Y". [#4088](https://github.com/impress-org/give/issues/4088)
 * Fix: The Donations Exporter tool was not properly respecting the category or tag filters when creating the CSV file. [#4085](https://github.com/impress-org/give/issues/4085)
