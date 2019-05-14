@@ -15,11 +15,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
 	const donationStatus = document.getElementById( 'give-payment-status' );
 
-	jsonFormattedTextarea( stripeStylesBase );
-	jsonFormattedTextarea( stripeStylesEmpty );
-	jsonFormattedTextarea( stripeStylesInvalid );
-	jsonFormattedTextarea( stripeStylesComplete );
-	jsonFormattedTextarea( stripeCustomFonts );
+	giveStripeJsonFormattedTextarea( stripeStylesBase );
+	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
+	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
+	giveStripeJsonFormattedTextarea( stripeStylesComplete );
+	giveStripeJsonFormattedTextarea( stripeCustomFonts );
 
 	if ( null !== donationStatus ) {
 		donationStatus.addEventListener( 'change', ( event ) => {
@@ -118,7 +118,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
  *
  * @since 2.5.0
  */
-function prettyJson( element, value ) {
+function giveStripePrettyJson( element, value ) {
 	let jsonData = '';
 	const saveButton = document.querySelector( '.give-save-button' );
 
@@ -140,12 +140,12 @@ function prettyJson( element, value ) {
  *
  * @since 2.5.0
  */
-function jsonFormattedTextarea( element ) {
+function giveStripeJsonFormattedTextarea( element ) {
 	if ( null !== element ) {
-		prettyJson( element, element.value );
+		giveStripePrettyJson( element, element.value );
 
 		element.addEventListener( 'blur', ( event ) => {
-			prettyJson( element, event.target.value );
+			giveStripePrettyJson( element, event.target.value );
 		} );
 	}
 }
