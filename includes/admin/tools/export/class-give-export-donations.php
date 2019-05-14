@@ -217,6 +217,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
+									'class'       => 'give-width-25em',
 									'chosen'      => true,
 									'placeholder' => __( 'All Forms', 'give' ),
 									'data'        => array( 'no-form' => __( 'No donation forms found', 'give' ) ),

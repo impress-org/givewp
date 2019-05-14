@@ -37,15 +37,12 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 		return false;
 	}
 
-	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-
-	$fallback_option    = give_get_option( 'stripe_js_fallback' );
-	$stripe_js_fallback = ! empty( $fallback_option );
-
+	$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
+	$publishable_key        = give_stripe_get_publishable_key();
+	$secret_key             = give_stripe_get_secret_key();
+	$fallback_option        = give_get_option( 'stripe_js_fallback' );
+	$stripe_js_fallback     = ! empty( $fallback_option );
 	$stripe_cc_field_format = give_get_option( 'stripe_cc_fields_format', 'multi' );
-
-	// Get User Agent.
-	$user_agent = give_get_user_agent();
 
 	ob_start();
 
@@ -73,8 +70,8 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 					! is_ssl() &&
 					! give_is_test_mode() &&
 					(
-						empty( give_stripe_get_publishable_key() ) ||
-						empty( give_stripe_get_secret_key() )
+						empty( $publishable_key ) ||
+						empty( $secret_key )
 					)
 				)
 			) {
@@ -86,8 +83,8 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 						)
 					);
 		} elseif (
-			empty( give_stripe_get_publishable_key() ) ||
-			empty( give_stripe_get_secret_key() )
+			empty( $publishable_key ) ||
+			empty( $secret_key )
 		) {
 			Give()->notices->print_frontend_notice(
 				sprintf(

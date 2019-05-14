@@ -993,8 +993,11 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
  * @return void
  */
 function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
+
 	// Make sure we don't have any left over errors present.
 	give_clear_errors();
+
+	$stripe_gateway = new Give_Stripe_Gateway();
 
 	$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
 		? $donation_data['post_data']['give_stripe_payment_method']
@@ -1019,7 +1022,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 		// We have a Stripe customer, charge them.
 		if ( $stripe_customer_id ) {
 
-			// Proceed to get stripe source details.
+			// Proceed to get stripe source/payment method details.
 			$payment_method    = $give_stripe_customer->attached_payment_method;
 			$payment_method_id = $payment_method->id;
 
@@ -1041,6 +1044,11 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			// Record the pending payment in Give.
 			$donation_id = give_insert_payment( $payment_data );
 
+			// Assign required data to array of donation data for future reference.
+			$donation_data['donation_id'] = $donation_id;
+			$donation_data['description'] = $donation_summary;
+			$donation_data['source_id']   = $payment_method_id;
+
 			// Save Stripe Customer ID to Donation note, Donor and Donation for future reference.
 			give_insert_payment_note( $donation_id, 'Stripe Customer ID: ' . $stripe_customer_id );
 			$stripe_gateway->save_stripe_customer_id( $stripe_customer_id, $donation_id );
@@ -1053,44 +1061,54 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			// Save donation summary to donation.
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
-			/**
-			 * This filter hook is used to update the payment intent arguments.
-			 *
-			 * @since 2.5.0
-			 */
-			$intent_args = apply_filters(
-				'give_stripe_create_intent_args',
-				array(
-					'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
-					'currency'             => give_get_currency( $form_id ),
-					'payment_method_types' => [ 'card' ],
-					'statement_descriptor' => give_stripe_get_statement_descriptor(),
-					'receipt_email'        => $donation_data['user_email'],
-					'description'          => give_payment_gateway_donation_summary( $donation_data ),
-					'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
-					'customer'             => $stripe_customer_id,
-					'payment_method'       => $payment_method_id,
-					'save_payment_method'  => true,
-					'confirm'              => true,
-					'return_url'           => give_get_success_page_uri(),
-				)
-			);
-			$intent      = $stripe_gateway->payment_intent->create( $intent_args );
 
-			// Save Payment Intent Client Secret to donation note and DB.
-			give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
-			give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+			if ( give_stripe_is_checkout_enabled() ) {
 
-			// Set Payment Intent ID as transaction ID for the donation.
-			give_set_payment_transaction_id( $donation_id, $intent->id );
-			give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+				// Process charge w/ support for preapproval.
+				$charge = $stripe_gateway->process_charge( $donation_data, $stripe_customer_id );
 
-			// Process additional steps for SCA or 3D secure.
-			give_stripe_process_additional_authentication( $donation_id, $intent );
+				// Verify the Stripe payment.
+				$stripe_gateway->verify_payment( $donation_id, $stripe_customer_id, $charge );
+			} else {
 
-			// Send them to success page.
-			give_send_to_success_page();
+				/**
+				 * This filter hook is used to update the payment intent arguments.
+				 *
+				 * @since 2.5.0
+				 */
+				$intent_args = apply_filters(
+					'give_stripe_create_intent_args',
+					array(
+						'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
+						'currency'             => give_get_currency( $form_id ),
+						'payment_method_types' => [ 'card' ],
+						'statement_descriptor' => give_stripe_get_statement_descriptor(),
+						'receipt_email'        => $donation_data['user_email'],
+						'description'          => give_payment_gateway_donation_summary( $donation_data ),
+						'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
+						'customer'             => $stripe_customer_id,
+						'payment_method'       => $payment_method_id,
+						'confirm'              => true,
+						'return_url'           => give_get_success_page_uri(),
+					)
+				);
+				$intent     = $stripe_gateway->payment_intent->create( $intent_args );
 
+				// Save Payment Intent Client Secret to donation note and DB.
+				give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+				give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
+				// Set Payment Intent ID as transaction ID for the donation.
+				give_set_payment_transaction_id( $donation_id, $intent->id );
+				give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+				// Process additional steps for SCA or 3D secure.
+				give_stripe_process_additional_authentication( $donation_id, $intent );
+
+				// Send them to success page.
+				give_send_to_success_page();
+
+			}
 		} else {
 
 			// No customer, failed.
@@ -1136,4 +1154,30 @@ function give_stripe_process_additional_authentication( $donation_id, $payment_i
 		exit;
 	}
 
+}
+
+/**
+ * Converts Cents to Dollars
+ *
+ * @param string $cents Amount in cents.
+ *
+ * @since  2.5.0
+ *
+ * @return string
+ */
+function give_stripe_cents_to_dollars( $cents ) {
+	return ( $cents / 100 );
+}
+
+/**
+ * Converts Dollars to Cents
+ *
+ * @param string $dollars Amount in dollars.
+ *
+ * @since  2.5.0
+ *
+ * @return string
+ */
+function give_stripe_dollars_to_cents( $dollars ) {
+	return round( $dollars, give_currency_decimal_filter() ) * 100;
 }

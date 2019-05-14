@@ -143,7 +143,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						$intent = $event->data->object;
 
 						if ( 'succeeded' === $intent->status ) {
-							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+							$donation_id = give_get_purchase_id_by_transaction_id( $intent->id );
 
 							// Update payment status to donation.
 							give_update_payment_status( $donation_id, 'publish' );
@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 
 					case 'payment_intent.payment_failed':
 							$intent      = $event->data->object;
-							$donation_id = give_stripe_get_donation_id_by( $intent->id, 'intent_id' );
+							$donation_id = give_get_purchase_id_by_transaction_id( $intent->id );
 
 							// Update payment status to donation.
 							give_update_payment_status( $donation_id, 'failed' );

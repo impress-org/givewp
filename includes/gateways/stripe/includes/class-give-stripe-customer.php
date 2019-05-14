@@ -197,15 +197,19 @@ class Give_Stripe_Customer {
 		}
 
 		// Create the Stripe customer if not present.
-		if ( empty( $customer ) ) {
+		if ( ! $customer ) {
 			$customer = $this->create_customer();
 		}
 
 		$this->set_id( $customer->id );
 		$this->set_customer_data( $customer );
 
-		// Attach source to customer.
-		$this->attach_payment_method();
+		// Attach source/payment method to customer.
+		if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
+			$this->attach_source();
+		} else {
+			$this->attach_payment_method();
+		}
 
 		return $customer;
 
@@ -222,7 +226,7 @@ class Give_Stripe_Customer {
 	public function create_customer() {
 
 		$customer     = false;
-		$post_data    = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+		$post_data    = give_get_super_global( 'POST' );
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
 		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : false;
 		$first_name   = ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : '';
@@ -273,9 +277,17 @@ class Give_Stripe_Customer {
 					'name'           => $full_name,
 					'email'          => $this->donor_email,
 					'metadata'       => apply_filters( 'give_stripe_customer_metadata', $metadata, $post_data ),
-					'payment_method' => $this->payment_method_id,
 				)
 			);
+
+			// Add these parameters when payment method/source id exists.
+			if ( ! empty( $this->payment_method_id ) ) {
+				if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
+					$args['source'] = $this->payment_method_id;
+				} else {
+					$args['payment_method'] = $this->payment_method_id;
+				}
+			}
 
 			// Create a customer first so we can retrieve them later for future payments.
 			$customer = \Stripe\Customer::create( $args, give_stripe_get_connected_account_options() );
@@ -312,6 +324,105 @@ class Give_Stripe_Customer {
 	/**
 	 * This function is used to attach source to the customer, if not exists.
 	 *
+	 * @since  2.1
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function attach_source() {
+
+		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
+
+			$card        = '';
+			$card_exists = false;
+			$new_card    = '';
+			$all_sources = $this->customer_data->sources->all();
+
+			// Fetch the new card or source object to match with customer attached card fingerprint.
+			if ( give_is_stripe_checkout_enabled() ) {
+				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
+				$new_card = $token_details->card;
+			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
+				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
+				$new_card = $source_details->card;
+			}
+
+			/**
+			 * This filter hook is used to get new card details.
+			 *
+			 * @since 2.5.0
+			 */
+			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->payment_method_id, $this->stripe_gateway );
+
+			// Check to ensure that new card is already attached with customer or not.
+			if ( count( $all_sources->data ) > 0 ) {
+				foreach ( $all_sources->data as $source_item ) {
+
+					if (
+						(
+							isset( $source_item->card->fingerprint ) &&
+							$source_item->card->fingerprint === $new_card->fingerprint
+						) ||
+						(
+							isset( $source_item->fingerprint ) &&
+							$source_item->fingerprint === $new_card->fingerprint
+						)
+					) {
+
+						// Set the existing card as default source.
+						$this->customer_data->default_source = $source_item->id;
+						$this->customer_data->save();
+						$card                 = $source_item;
+						$card_exists          = true;
+						$this->is_card_exists = true;
+						break;
+					}
+				}
+			}
+
+			// Create the card, if none found above.
+			if ( ! $card_exists ) {
+				try {
+
+					$card = $this->customer_data->sources->create( array(
+						'source' => $this->payment_method_id,
+					) );
+
+					$this->customer_data->default_source = $card->id;
+					$this->customer_data->save();
+
+				} catch ( \Stripe\Error\Base $e ) {
+					Give_Stripe_Logger::log_error( $e, 'stripe' );
+				} catch ( Exception $e ) {
+					give_record_gateway_error(
+						__( 'Stripe Error', 'give' ),
+						sprintf(
+							/* translators: %s Exception Message Body */
+							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
+							$e->getMessage()
+						)
+					);
+					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
+					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+					return false;
+				}
+			}
+
+			// Return Card Details, if exists.
+			if ( ! empty( $card->id ) ) {
+				$this->attached_payment_method = $card;
+			} else {
+				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
+				give_record_gateway_error( __( 'Stripe Error', 'give-stripe' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				$this->attached_payment_method = false;
+			}
+		} // End if().
+	}
+
+	/**
+	 * This function is used to attach source to the customer, if not exists.
+	 *
 	 * @since  2.5.0
 	 * @access public
 	 *
@@ -326,7 +437,7 @@ class Give_Stripe_Customer {
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) || give_stripe_is_source_type( $this->payment_method_id, 'card' ) ) {
+			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
 				$new_card      = $token_details->card;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
@@ -367,15 +478,25 @@ class Give_Stripe_Customer {
 			if ( ! $card_exists ) {
 				try {
 					$customer_args = array();
-					if ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
-						$customer_args['source'] = $this->payment_method_id;
-					} else {
-						$customer_args['payment_method'] = $this->payment_method_id;
-					}
-					$card = $this->customer_data->sources->create( $customer_args );
 
-					$this->customer_data->default_source = $card->id;
-					$this->customer_data->save();
+					if ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) || give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
+						$customer_args['source'] = $this->payment_method_id;
+						$card = $this->customer_data->sources->create( $customer_args );
+						$this->customer_data->default_source = $card->id;
+						$this->customer_data->save();
+					} else {
+
+						$card = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
+
+						// If payment method is not attached to customer then attach it now.
+						if ( empty( $card->customer ) ) {
+							$card->attach(
+								array(
+									'customer' => $this->id,
+								)
+							);
+						}
+					}
 
 				} catch ( \Stripe\Error\Base $e ) {
 
