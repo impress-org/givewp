@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_stripe_connect_save_options() {
 
-	$get_vars = give_clean( filter_input_array( INPUT_GET ) );
+	$get_vars = give_get_super_global( 'GET' );
 
 	// If we don't have values here, bounce.
 	if (
@@ -56,7 +56,7 @@ add_action( 'admin_init', 'give_stripe_connect_save_options' );
  */
 function give_stripe_connect_deauthorize() {
 
-	$get_vars = give_clean( $_GET ); // WPCS: input var ok.
+	$get_vars = give_get_super_global( 'GET' );
 
 	// Be sure only to deauthorize when param present.
 	if ( ! isset( $get_vars['stripe_disconnected'] ) ) {
@@ -134,7 +134,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
 function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
 	// Only move forward if refund requested.
-	$can_process_refund = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : false;
+	$can_process_refund = ! empty( give_get_super_global( 'POST', 'give_stripe_opt_refund' ) ) ? give_get_super_global( 'POST', 'give_stripe_opt_refund' ) : false;
 	if ( ! $can_process_refund ) {
 		return;
 	}
