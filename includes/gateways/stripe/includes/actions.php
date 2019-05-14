@@ -173,6 +173,8 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 			 *
 			 * Note: Kept this hook as it is.
 			 *
+			 * @since 2.5.0
+			 *
 			 * @param int   $form_id Donation Form ID.
 			 * @param array $args    List of additional arguments.
 			 */
@@ -180,6 +182,8 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 
 			/**
 			 * This action hook is used to display content after the Credit Card expiration field.
+			 *
+			 * @since 2.5.0
 			 *
 			 * @param int   $form_id Donation Form ID.
 			 * @param array $args    List of additional arguments.
