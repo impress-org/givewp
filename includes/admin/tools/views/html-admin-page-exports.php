@@ -122,8 +122,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 									'name'   => 'forms',
 									'id'     => 'give_donor_export_form',
 									'chosen' => true,
+									'class'  => 'give-width-25em',
 								) );
 								?>
+								<br>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
 								<div id="export-donor-options-wrap" class="give-clearfix">

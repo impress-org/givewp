@@ -241,7 +241,15 @@ class Give_Payments_Query extends Give_Stats {
 		);
 
 		if ( $query->have_posts() ) {
-			$this->update_meta_cache( wp_list_pluck( $query->posts, 'ID' ) );
+
+			// Update meta cache only if query is not for all donations.
+			// @see https://github.com/impress-org/give/issues/4104
+			if (
+				( isset( $this->args['nopaging'] ) && true !== (bool) $this->args['nopaging'] )
+				|| ( isset( $this->args['posts_per_page'] ) && 0 < $this->args['posts_per_page'] )
+			) {
+				self::update_meta_cache( wp_list_pluck( $query->posts, 'ID' ) );
+			}
 
 			if ( ! in_array( $this->args['output'], $custom_output ) ) {
 				$results = $query->posts;
