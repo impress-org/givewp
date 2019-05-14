@@ -575,6 +575,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 
+			// This conditional check will add backward compatibility to older Stripe versions (i.e. < 2.2.0) when used with Give 2.5.0.
 			if (
 				! defined( 'GIVE_STRIPE_VERSION' ) ||
 				(
