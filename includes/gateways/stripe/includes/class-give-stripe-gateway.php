@@ -574,7 +574,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 				return $charge;
 
-			}  catch ( Exception $e ) {
+			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
 					__( 'Stripe Charge Error', 'give' ),
@@ -680,7 +680,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
 			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
 			$source_id   = ! empty( $donation_data['source_id'] ) ? $donation_data['source_id'] : 0;
-			$description = ! empty( $donation_data['description'] ) ? $donation_data['sourcdescription_id'] : false;
+			$description = ! empty( $donation_data['description'] ) ? $donation_data['description'] : false;
 
 			// Process the charge.
 			$amount = $this->format_amount( $donation_data['price'] );
