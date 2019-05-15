@@ -595,6 +595,11 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 		// Loop through ffm fields.
 		foreach ( $ffm_fields as $field ) {
 
+			// Continue, if field name is empty which means the input type is not submitable.
+			if ( empty( $field['name'] ) ) {
+				continue;
+			}
+
 			if ( $donation_id > 0 ) {
 				$field_value = give_get_meta( $donation_id, $field['name'], true );
 			} elseif ( ! empty( $_POST[ $field['name'] ] ) ) { // WPCS: input var ok, sanitization ok, CSRF ok.
@@ -633,7 +638,7 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 		} // End foreach().
 	} // End if().
 
-	return $ffm_meta;
+	return array_filter( $ffm_meta );
 
 }
 
