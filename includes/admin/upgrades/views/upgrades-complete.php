@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div id="poststuff" class="give-update-panel-content">
 			<p>
 				<?php echo '🎉 '; ?>
-				<?php echo esc_html_e( 'Congratulations! You are all up to date and running the latest versions of Give and its add-ons.', 'give' ); ?>
+				<?php esc_html_e( 'Congratulations! You are all up to date and running the latest versions of Give and its add-ons.', 'give' ); ?>
 			</p>
 		</div>
 	</div>
