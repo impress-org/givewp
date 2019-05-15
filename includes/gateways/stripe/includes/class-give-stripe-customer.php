@@ -339,7 +339,7 @@ class Give_Stripe_Customer {
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_is_stripe_checkout_enabled() ) {
+			if ( give_stripe_is_checkout_enabled() ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
 				$new_card = $token_details->card;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
