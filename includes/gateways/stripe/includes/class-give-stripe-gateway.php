@@ -574,6 +574,8 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 				return $charge;
 
+			} catch ( \Stripe\Error\Base $e ) {
+				Give_Stripe_Logger::log_error( $e, $this->id );
 			} catch ( Exception $e ) {
 
 				give_record_gateway_error(
