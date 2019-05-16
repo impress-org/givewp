@@ -600,12 +600,12 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 				continue;
 			}
 
+			$input_field_name = give_get_super_global( 'POST', $field['name'] );
+
 			if ( $donation_id > 0 ) {
 				$field_value = give_get_meta( $donation_id, $field['name'], true );
-			} elseif ( ! empty( give_get_super_global( 'POST', $field['name'] ) ) ) {
-				$field_value = give_get_super_global( 'POST', $field['name'] );
-				$field_value = give_stripe_ffm_field_value_to_str( $field_value );
-
+			} elseif ( ! empty( $input_field_name ) ) {
+				$field_value = give_stripe_ffm_field_value_to_str( $input_field_name );
 			} else {
 				$field_value = __( '-- N/A --', 'give' );
 			}
