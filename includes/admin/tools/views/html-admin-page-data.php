@@ -18,7 +18,7 @@ if ( ! current_user_can( 'manage_give_settings' ) ) {
  */
 do_action( 'give_tools_recount_stats_before' );
 ?>
-	<div id="poststuff">
+	<div id="poststuff" class="give-clearfix">
 		<div class="postbox">
 
 			<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Recount Stats', 'give' ); ?></span></h2>

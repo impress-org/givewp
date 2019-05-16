@@ -29,7 +29,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<div id="give-updates-content">
 
-		<div id="poststuff">
+		<div id="poststuff" class="give-clearfix">
 
 		<?php
 		/**
