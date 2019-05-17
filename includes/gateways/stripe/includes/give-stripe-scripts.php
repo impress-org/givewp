@@ -92,15 +92,17 @@ function give_stripe_frontend_scripts() {
 		return;
 	}
 
-	// Load Stripe on-page checkout scripts.
+	// Load third-party stripe js when required gateways are active.
 	if ( apply_filters( 'give_stripe_js_loading_conditions', give_is_gateway_active( 'stripe' ) ) ) {
-
-		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array( 'jquery' ), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array(), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-js' );
+		wp_localize_script( 'give-stripe-js', 'give_stripe_vars', $stripe_vars );
+	}
 
+	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
+	if ( give_is_gateway_active( 'stripe' ) ) {
 		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
-		wp_localize_script( 'give-stripe-onpage-js', 'give_stripe_vars', $stripe_vars );
 	}
 }
 
