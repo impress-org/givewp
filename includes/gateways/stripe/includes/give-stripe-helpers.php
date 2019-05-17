@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 2.5.0
  *
- * @return void
+ * @return string
  */
 function give_stripe_get_secret_key() {
 
