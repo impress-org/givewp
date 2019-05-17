@@ -4,12 +4,12 @@
  * @description Add-on Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2016, GiveWP
+ * @copyright   Copyright (c) 2019, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-#give-addons {
-	margin: 0;
+#give-addons.wrap {
+	margin: 0 !important;
 }
 
 .give-addons-header {
@@ -19,7 +19,6 @@
 	overflow: hidden;
 
 	.give-admin-logo {
-
 		float: left;
 
 		a {
@@ -36,39 +35,6 @@
 			display: none;
 		}
 
-	}
-
-}
-
-.give-subheader {
-	background: #FFF;
-	margin: 0 0 0 -22px;
-	padding: 12px 20px;
-
-	.give-subheader-right-text {
-		float: right;
-		font-style: italic;
-		color: #555555;
-		margin: 5px 0 0;
-		padding: 0;
-	}
-
-	h1 {
-		float: left;
-		font-size: 15px;
-		color: #555555;
-		font-weight: 600;
-		margin: 0;
-		padding: 0;
-	}
-
-	@media(max-width: 700px) {
-		text-align: center;
-
-		.give-subheader-right-text,
-		h1 {
-			float: none;
-		}
 	}
 
 }
@@ -128,7 +94,7 @@ div.bundle {
 
 	}
 
-	//Title
+	// Title
 	div.bundle-title-wrap {
 		background-color: #8f8f8f;
 		text-align: center;
