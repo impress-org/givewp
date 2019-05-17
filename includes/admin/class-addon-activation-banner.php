@@ -50,11 +50,12 @@ class Give_Addon_Activation_Banner {
 			// Set up hooks.
 			$this->init();
 
-			// Store user id who activated plugin.
-			$this->add_addon_activate_meta();
 
 			// Check if notice callback is already hooked.
 			if ( ! $this->is_banner_notice_hooked() ) {
+				// Store user id who activated plugin.
+				$this->add_addon_activate_meta();
+
 				// If multiple add-on are activated then show activation banner in tab view.
 				add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
 			}
