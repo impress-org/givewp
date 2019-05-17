@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Give - Stripe Core | Admin Filters
