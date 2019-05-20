@@ -56,7 +56,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 				// Backward compatibility.
 				echo sprintf(
-					'<h1 class="wp-heading-inline">%s</h1><hr class="wp-header-end">',
+					'<h1 class="wp-heading-inline">%s</h1>',
 					esc_html( $tabs[ $current_tab ] )
 				);
 			}

@@ -210,6 +210,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * New: Stripe credit card processing is now available for free!
 * Fix: Redesigned license setting page [#2058](https://github.com/impress-org/give/issues/2058)
 
+= 2.4.7: May 14th, 2019 =
+* Security Patch: Prevent Stored XSS vulnerability in donor names by adding additional escaping to ensure security when viewing donor records in WP-Admin. We take security seriously and would like to thank GoDaddy and Sucuri for reporting and assisting with this fix. Thanks also to the WordPress Plugin Review Team for allowing a force push of all security patches to protect all Give users. For more detailed information see here: https://blog.sucuri.net/2019/05/wordpress-plugin-give-stored-xss-for-donors.html
+
 = 2.4.6: May 7th, 2019 =
 * Fix: Resolved an issue displaying donations in WP-Admin made when the WordPress install's date format is set to "d/m/Y". [#4088](https://github.com/impress-org/give/issues/4088)
 * Fix: The Donations Exporter tool was not properly respecting the category or tag filters when creating the CSV file. [#4085](https://github.com/impress-org/give/issues/4085)

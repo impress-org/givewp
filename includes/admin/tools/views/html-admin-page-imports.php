@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
 
-<div id="poststuff">
+<div id="poststuff" class="give-clearfix">
 	<div id="give-dashboard-widgets-wrap">
 		<div id="post-body">
 			<div id="post-body-content">

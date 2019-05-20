@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers and sets up the Donation Forms (give_forms) custom post type
  *
- * @since 1.0
  * @return void
+ * @since 1.0
  */
 function give_setup_post_types() {
 
@@ -88,19 +88,19 @@ function give_setup_post_types() {
 	}
 
 	$give_forms_args = array(
-		'labels'             => $give_forms_labels,
-		'public'             => $give_forms_singular,
-		'show_ui'            => true,
-		'show_in_menu'       => true,
-		'show_in_rest' 		 => true,
-		'query_var'          => true,
-		'rewrite'            => $give_forms_rewrite,
-		'map_meta_cap'       => true,
-		'capability_type'    => 'give_form',
-		'has_archive'        => $give_forms_archives,
-		'menu_icon'          => 'dashicons-give',
-		'hierarchical'       => false,
-		'supports'           => apply_filters( 'give_forms_supports', $give_form_supports ),
+		'labels'          => $give_forms_labels,
+		'public'          => $give_forms_singular,
+		'show_ui'         => true,
+		'show_in_menu'    => true,
+		'show_in_rest'    => true,
+		'query_var'       => true,
+		'rewrite'         => $give_forms_rewrite,
+		'map_meta_cap'    => true,
+		'capability_type' => 'give_form',
+		'has_archive'     => $give_forms_archives,
+		'menu_icon'       => 'dashicons-give',
+		'hierarchical'    => false,
+		'supports'        => apply_filters( 'give_forms_supports', $give_form_supports ),
 	);
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
 
@@ -143,8 +143,8 @@ add_action( 'init', 'give_setup_post_types', 1 );
  *
  * Registers the custom taxonomies for the give_forms custom post type
  *
- * @since      1.0
  * @return void
+ * @since      1.0
  */
 function give_setup_taxonomies() {
 
@@ -251,8 +251,8 @@ add_action( 'init', 'give_setup_taxonomies', 0 );
 /**
  * Get Default Form Labels
  *
- * @since 1.0
  * @return array $defaults Default labels
+ * @since 1.0
  */
 function give_get_default_form_labels() {
 	$defaults = array(
@@ -266,11 +266,11 @@ function give_get_default_form_labels() {
 /**
  * Get Singular Forms Label
  *
- * @since 1.0
- *
  * @param bool $lowercase
  *
  * @return string $defaults['singular'] Singular label
+ * @since 1.0
+ *
  */
 function give_get_forms_label_singular( $lowercase = false ) {
 	$defaults = give_get_default_form_labels();
@@ -281,8 +281,8 @@ function give_get_forms_label_singular( $lowercase = false ) {
 /**
  * Get Plural Forms Label
  *
- * @since 1.0
  * @return string $defaults['plural'] Plural label
+ * @since 1.0
  */
 function give_get_forms_label_plural( $lowercase = false ) {
 	$defaults = give_get_default_form_labels();
@@ -293,11 +293,11 @@ function give_get_forms_label_plural( $lowercase = false ) {
 /**
  * Change default "Enter title here" input
  *
- * @since 1.0
- *
  * @param string $title Default title placeholder text
  *
  * @return string $title New placeholder text
+ * @since 1.0
+ *
  */
 function give_change_default_title( $title ) {
 	// If a frontend plugin uses this filter (check extensions before changing this function)
@@ -321,8 +321,8 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
 /**
  * Registers Custom Post Statuses which are used by the Payments
  *
- * @since 1.0
  * @return void
+ * @since 1.0
  */
 function give_register_post_type_statuses() {
 	// Payment Statuses
@@ -373,7 +373,7 @@ function give_register_post_type_statuses() {
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' )
-	)  );
+	) );
 
 	register_post_status( 'preapproval', array(
 		'label'                     => _x( 'Preapproval', 'Preapproval payment status', 'give' ),
@@ -393,11 +393,11 @@ add_action( 'init', 'give_register_post_type_statuses' );
  *
  * Returns an array of with all updated messages.
  *
- * @since 1.0
- *
  * @param array $messages Post updated message
  *
  * @return array $messages New post updated messages
+ * @since 1.0
+ *
  */
 function give_updated_messages( $messages ) {
 	global $post, $post_ID;
@@ -478,12 +478,12 @@ add_action( 'widgets_init', 'give_widgets_init', 999 );
 /**
  * Remove "Quick Edit" for the give_forms CPT.
  *
- * @since 2.3.0
- *
  * @param array $actions
  * @param null  $post
  *
  * @return array
+ * @since 2.3.0
+ *
  */
 function give_forms_disable_quick_edit( $actions = array(), $post = null ) {
 
@@ -503,3 +503,46 @@ function give_forms_disable_quick_edit( $actions = array(), $post = null ) {
 }
 
 add_filter( 'post_row_actions', 'give_forms_disable_quick_edit', 10, 2 );
+
+/**
+ * Removes the screen options pull down. It is reset later in a different position.
+ *
+ * @param bool      $display_boolean  Whether to display screen options.
+ * @param WP_Screen $wp_screen_object The screen object.
+ *
+ * @return bool Whether to display screen options.
+ * @since 2.5.0
+ *
+ */
+function give_remove_screen_options( $display_boolean, $wp_screen_object ) {
+
+	if ( false !== strpos( $wp_screen_object->id, 'give' ) ) {
+		return false;
+	}
+
+	// Don't mess with other screens.
+	return $display_boolean;
+}
+
+//add_filter( 'screen_options_show_screen', 'give_remove_screen_options', 10, 2 );
+
+/**
+ * Renders the screen options back after admin bar to ensure it pushes down the banner rather than overlaps them as is default in WordPress.
+ *
+ * @since  2.5.0
+ */
+function give_render_screen_options() {
+
+	$current_screen = get_current_screen();
+
+	if ( empty ( $current_screen ) ) {
+		return;
+	}
+
+	if ( false !== strpos( $current_screen->id, 'give' ) ) {
+		// Render Screen Options above the banner.
+		$current_screen->render_screen_meta();
+	}
+}
+
+add_action( 'wp_after_admin_bar_render', 'give_render_screen_options' );

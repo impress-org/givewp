@@ -22,10 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<div id="give-updates-content">
-		<div id="poststuff" class="give-update-panel-content">
+		<div id="poststuff" class="give-update-panel-content give-clearfix">
 			<p>
 				<?php echo '🎉 '; ?>
-				<?php echo esc_html_e( 'Congratulations! You are all up to date and running the latest versions of Give and its add-ons.', 'give' ); ?>
+				<?php esc_html_e( 'Congratulations! You are all up to date and running the latest versions of Give and its add-ons.', 'give' ); ?>
 			</p>
 		</div>
 	</div>

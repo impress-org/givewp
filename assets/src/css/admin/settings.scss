@@ -23,25 +23,6 @@
 		background: #FFF;
 		padding: 10px 20px;
 		margin: 0 -20px 0 -22px;
-
-		// Main heading.
-		h1.wp-heading-inline {
-			margin:0;
-			padding: 10px 0;
-
-			// Give icon.
-			&:before {
-				background: url('../../images/give-icon-full-circle.svg');
-				width: 30px;
-				height: 30px;
-				content: ' ';
-				display: block;
-				float: left;
-				margin-right: 12px;
-			}
-
-		}
-
 	}
 
 	.give-settings-heading-sep {
@@ -53,6 +34,7 @@
 	.nav-tab-wrapper {
 		height: 54px;
 		margin: 0 -20px 0 -22px;
+
 	}
 
 	.give-subsubsub {
