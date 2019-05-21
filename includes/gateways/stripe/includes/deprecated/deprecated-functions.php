@@ -85,3 +85,22 @@ function give_is_stripe_checkout_enabled() {
 
 	return give_stripe_is_checkout_enabled();
 }
+
+/**
+ * This function is used to fetch the connect options for Stripe.
+ *
+ * @since      1.0.0
+ * @deprecated 2.5.0
+ *
+ * @return bool
+ */
+if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
+	function get_give_stripe_connect_options() {
+
+		$backtrace = debug_backtrace();
+
+		_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings', $backtrace );
+
+		return give_stripe_get_connect_settings();
+	}
+}
