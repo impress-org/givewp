@@ -42,9 +42,9 @@ function give_donation_history( $atts, $content = false ) {
 
 	// Set Donation History Shortcode Arguments in session variable.
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
-	
+
 	$get_data = give_clean( filter_input_array( INPUT_GET ) );
-	
+
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if (
         ! empty( $get_data['donation_id'] ) ||
@@ -267,14 +267,14 @@ function give_receipt_shortcode( $atts ) {
 		'company_name'   => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
-	
+
 	ob_start();
-	
+
 	$donation_id  = false;
 	$receipt_type = false;
 	$get_data     = give_clean( filter_input_array( INPUT_GET ) );
 	$session      = give_get_purchase_session();
-	
+
 	if ( ! empty( $get_data['donation_id'] ) ) {
 	    $donation_id = $get_data['donation_id'];
     } else if ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
@@ -285,7 +285,7 @@ function give_receipt_shortcode( $atts ) {
 	} else if ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
 	}
-	
+
 	// Display donation receipt placeholder while loading receipt via AJAX.
 	if ( ! wp_doing_ajax() ) {
 		give_get_template_part( 'receipt/placeholder' );
@@ -325,11 +325,27 @@ function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
+	$user_id       = get_current_user_id();
+	$donor_id      = get_user_meta( $user_id, '_give_disconnected_donor_id', true ); // This is disconnected donor id.
+	$is_email_sent = Give_Cache::get( "give_cache_is_user_donor_disconnection_email_sent_{$user_id}" );
+
 	// Restrict access to donor profile, if donor and user are disconnected.
-	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
+	$is_donor_disconnected = get_user_meta( $user_id, '_give_is_donor_disconnected', true );
+
 	if ( is_user_logged_in() && $is_donor_disconnected ) {
+
+		// Display notice that Donor and User profiles are disconnected.
 		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
 
+		// Send email to admin to notify about the disconnection, if the user is active and login to user account.
+		if ( ! $is_email_sent ) {
+
+			// Send Email.
+			give_admin_email_user_donor_disconnection( $user_id, $donor_id );
+
+			// Set Cache with expiration of 24 hours to ensure that email are not sent on every refresh.
+			Give_Cache::set( "give_cache_is_user_donor_disconnection_email_sent_{$user_id}", true, strtotime( '+1 day', current_time( 'timestamp', 1 ) ) );
+		}
 		return false;
 	}
 
@@ -836,7 +852,7 @@ function give_form_grid_shortcode( $atts ) {
 		);
 		$form_args['tax_query'][] = $tax_query;
 	}
-	
+
 	/**
 	 * Filter to modify WP Query for Total Goal.
 	 *
