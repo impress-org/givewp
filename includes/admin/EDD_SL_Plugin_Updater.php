@@ -71,7 +71,7 @@ class EDD_SL_Plugin_Updater {
 	 */
 	public function init() {
 
-		// We are commeting below hook because this will allow us to reduce edd rest api query.
+		// We are commenting below hook because this will allow us to reduce edd rest api query.
 		// instead checking plugin update like wp does we will do it monthly with give_refresh_licenses fn
 		// add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 		// add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
