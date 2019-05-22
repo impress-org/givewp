@@ -210,6 +210,8 @@ function give_get_email_names( $user_info, $payment = false ) {
  * @param int $donor_id Donor ID.
  *
  * @since 1.8.14
+ *
+ * @return bool
  */
 function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 
@@ -218,12 +220,12 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 
 	// Bail Out, if user id doesn't exists.
 	if ( empty( $user_id ) ) {
-		return;
+		return false;
 	}
 
 	// Bail Out, if donor id doesn't exists.
 	if ( empty( $donor_id ) ) {
-		return;
+		return false;
 	}
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
@@ -231,7 +233,7 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 
 	/* translators: %s: payment id */
-	$subject = __( 'Attention: User tries to login whose Donor profile is disconnected!', 'give' );
+	$subject = __( 'Attention: User tried to login whose Donor profile is disconnected!', 'give' );
 
 	/**
 	 * Filters the Donor-User Disconnection notification subject.
@@ -268,6 +270,6 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	$emails->__set( 'headers', $headers );
 	$emails->__set( 'heading', __( 'User - Donor Profile Disconnection', 'give' ) );
 
-	$emails->send( give_get_admin_notice_emails(), $subject, give_do_email_tags( $message ) );
+	return $emails->send( give_get_admin_notice_emails(), $subject, give_do_email_tags( $message, array() ) );
 
 }
