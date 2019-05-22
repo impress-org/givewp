@@ -429,6 +429,15 @@ function _give_register_admin_notices() {
 						) );
 						break;
 
+					case 'disconnect-user' :
+						Give()->notices->register_notice( array(
+							'id'          => 'give-disconnect-user',
+							'type'        => 'updated',
+							'description' => __( 'User has been successfully disconnected from donor.', 'give' ),
+							'show'        => true,
+						) );
+						break;
+
 					case 'profile-updated' :
 						Give()->notices->register_notice( array(
 							'id'          => 'give-profile-updated',
