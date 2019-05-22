@@ -233,7 +233,7 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 
 	/* translators: %s: payment id */
-	$subject = __( 'Attention: User tries to login whose Donor profile is disconnected!', 'give' );
+	$subject = __( 'Attention: User tried to login whose Donor profile is disconnected!', 'give' );
 
 	/**
 	 * Filters the Donor-User Disconnection notification subject.
