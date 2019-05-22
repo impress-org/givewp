@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private static $site_url = 'http://givewp.com/';
+		private static $site_url = 'https://givewp.test/';
 
 		/**
 		 * API URL
@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $account_url = 'http://staging.givewp.com/my-account/';
+		private static $account_url = 'https://givewp.com/my-account/';
 
 		/**
 		 * Checkout URL
@@ -164,7 +164,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $checkout_url = 'http://staging.givewp.com/checkout/';
+		private static $checkout_url = 'https://givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
