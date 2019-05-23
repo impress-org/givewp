@@ -224,7 +224,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
 
 			// Setup hooks
-			$this->includes();
 			$this->hooks();
 
 		}
@@ -248,23 +247,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Includes
-		 *
-		 * Include the updater class.
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		private function includes() {
-
-			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-				require_once 'admin/EDD_SL_Plugin_Updater.php';
-			}
-		}
-
-		/**
 		 * Hooks
 		 *
 		 * Setup license hooks.
@@ -275,44 +257,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 */
 		private function hooks() {
-			// Updater.
-			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
-
 			$plugin_file = plugin_basename( $this->file );
 
-			// Show addon notice on plugin page.
+			// Show add-on notice on plugin page.
 			add_action( "after_plugin_row_{$plugin_file}", array( $this, 'plugin_page_notices' ), 10, 3 );
-		}
-
-
-		/**
-		 * Auto Updater
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		public function auto_updater() {
-			// @todo: test auto updater with all access pass
-
-			if ( ! empty( $this->item_id ) ) {
-				$args['item_id'] = $this->item_id;
-			} else {
-				$args['item_name'] = $this->item_name;
-			}
-
-			// Setup the updater.
-			$this->auto_updater_obj = new EDD_SL_Plugin_Updater(
-				$this->api_url,
-				$this->file,
-				array(
-					'version'   => $this->version,
-					'license'   => $this->license,
-					'item_name' => $this->item_name,
-					'author'    => $this->author,
-				)
-			);
 		}
 
 		/**
