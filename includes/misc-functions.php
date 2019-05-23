@@ -2471,12 +2471,12 @@ function give_check_addon_updates( $_transient_data ){
 
 			$plugin['plugin'] = $tmp_plugin['Path'];
 
-			// Continue if version > newer version.
 			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
-				continue;
+				$_transient_data->no_update[ $tmp_plugin['Path'] ] = (object) $plugin;
+			} else{
+				$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
 			}
 
-			$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
 			$_transient_data->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
 		}
 	}
