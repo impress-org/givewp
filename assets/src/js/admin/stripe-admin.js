@@ -14,12 +14,33 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeStylesComplete = document.getElementById( 'stripe_styles_complete' );
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
 	const donationStatus = document.getElementById( 'give-payment-status' );
+	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== stripeDisconnect ) {
+		document.querySelector( '.give-stripe-disconnect' ).addEventListener( 'click', ( e ) => {
+			e.preventDefault();
+
+			new Give.modal.GiveConfirmModal( {
+				type: 'alert',
+				classes: {
+					modalWrapper: 'give-modal--warning',
+				},
+				modalContent: {
+					title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
+					desc: Give.fn.getGlobalVar( 'disconnect_stripe_message' ),
+				},
+				successConfirm: function( args ) {
+					console.log( e.target.getAttribute( 'href' ), 'this is it' );
+				},
+			} ).render();
+		} );
+	}
 
 	if ( null !== donationStatus ) {
 		donationStatus.addEventListener( 'change', ( event ) => {
