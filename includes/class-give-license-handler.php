@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private static $site_url = 'https://givewp.com/';
+		private static $site_url = 'http://staging.givewp.com/';
 
 		/**
 		 * API URL
@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'https://givewp.com/edd-sl-api/';
+		private $api_url = 'http://staging.givewp.com/edd-sl-api/';
 
 		/**
 		 * array of licensed addons
