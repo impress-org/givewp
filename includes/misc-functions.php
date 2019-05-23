@@ -2415,7 +2415,7 @@ function give_check_addon_updates( $_transient_data ){
 		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
 
 		foreach ( $plugins as $plugin ) {
-			// Thi value will be empty if any error occurred when varifing version of add-on.
+			// This value will be empty if any error occurred when verifying version of add-on.
 			if ( ! $plugin['new_version'] ) {
 				continue;
 			}
