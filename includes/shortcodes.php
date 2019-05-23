@@ -320,8 +320,8 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * Outputs the Give Profile Editor to allow users to amend their details from the
  * front-end. This function uses the Give templating system allowing users to
  * override the default profile editor template. The profile editor template is located
- * under templates/profile-editor.php, however, it can be altered by creating a
- * file called profile-editor.php in the give_template directory in your active theme's
+ * under templates/shortcode-profile-editor.php, however, it can be altered by creating a
+ * file called shortcode-profile-editor.php in the give_template directory in your active theme's
  * folder. Please visit the Give Documentation for more information on how the
  * templating system is used.
  *
@@ -334,19 +334,6 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
 function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
-	$user_id = get_current_user_id();
-
-	// Restrict access to donor profile, if donor and user are disconnected.
-	$is_donor_disconnected = get_user_meta( $user_id, '_give_is_donor_disconnected', true );
-
-	if ( is_user_logged_in() && $is_donor_disconnected ) {
-
-		// Display notice that Donor and User profiles are disconnected.
-		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
-
-		return false;
-
-	}
 
 	give_get_template_part( 'shortcode', 'profile-editor' );
 
