@@ -17,6 +17,7 @@
 	padding-bottom: 0;
 }
 
+// Top-most header
 .give-addons-header {
 	padding: 10px 20px;
 	margin: 0 0 0 -22px;
@@ -44,26 +45,46 @@
 
 }
 
+// Intro
+.give-core-bundles-container {
+	text-align: center;
+	margin: 80px 0 120px;
+
+	h2.give-core-bundles-intro-heading {
+		font-size: 42px;
+		line-height: 1.2em;
+		margin: 0 0 20px;
+		padding: 0;
+	}
+	p.give-core-bundles-intro-subheading {
+		font-size: 20px;
+		margin: 0;
+	}
+
+}
+
 // Bundles Wrap
 .give-price-bundles-wrap {
-	padding: 100px 80px;
+	padding: 0 40px 100px;
 	font-family: 'Montserrat', sans-serif;
 	max-width: 1200px;
 	margin: 0 auto;
 
 	.dashicons-yes {
 		color: $give-green;
+		position: relative;
+		top: -2px;
 	}
 
 	.dashicons-no-alt {
 		color: #d75a4a;
+		position: relative;
+		top: -2px;
 	}
 
 	.dashicons-star-filled {
 		color: #ff960e;
 		font-size: 16px;
-		position: relative;
-		top: 2px;
 	}
 
 }
@@ -108,8 +129,12 @@ div.bundle {
 		}
 
 		.bundle-cta-wrap {
-			margin-top: 38px;
-			padding: 38px 0;
+			bottom: 50px;
+
+			> a {
+				padding: 20px 0;
+				font-size: 23px;
+			}
 		}
 
 	}
@@ -188,7 +213,7 @@ div.bundle {
 	.bundle-quote {
 		text-align: center;
 		color: #999688;
-		padding: 25px;
+		padding: 25px 0;
 		margin: 0;
 		font-style: italic;
 		font-size: 16px;
@@ -225,12 +250,16 @@ ul.bundle-features {
 	> li {
 		margin: 10px 0 0;
 		padding: 5px 0 0;
-		font-size: 16px;
+		font-size: 15px;
 
 		&:first-child {
 			margin-top: 0;
 			padding-top: 0;
 		}
+	}
+
+	.initial-bundle-feature > span {
+		font-weight: 600;
 	}
 
 	.highlighted-addons {
@@ -241,24 +270,60 @@ ul.bundle-features {
 
 		> li {
 			list-style-type: none;
-			margin: 3px 0 15px;
+			margin: 10px 0 0;
 			padding: 0;
 			line-height: 1em;
 		}
 	}
 
+	// Hide modal links
+	.magnific-inline {
+		text-decoration: none;
+		color: #000;
+		box-shadow: none;
+		outline: none;
+		cursor: default;
+
+		.hint, &:before, &:after {
+			display: none;
+		}
+	}
+
+}
+
+// Bundle Buy Buttons
+.bundle-cta-wrap {
+	position: absolute;
+	bottom: 36px;
+	left: 0;
+	right: 0;
+
+	a {
+		text-decoration: none;
+		text-transform: uppercase;
+		color: #FFF;
+		background: $give-green;
+		border-radius: 500px;
+		padding: 15px 0;
+		display: block;
+		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
+		line-height: 1.2em;
+	}
 }
 
 
+// Directory below bundles.
 .give-addons-directory-wrap {
 	background: #FFF;
 	margin: 0 0 0 -20px;
-	padding: 20px;
+	padding: 70px 20px 60px;
 	font-family: 'Montserrat', sans-serif;
+	text-align: center;
 
 	// Add-ons
 	.type-download {
-		float: left;
+		display: inline-block;
+		text-align: left;
 		margin: 0 2em 2em 0 !important;
 		padding: 0;
 		vertical-align: top;
@@ -266,8 +331,7 @@ ul.bundle-features {
 		text-decoration: none;
 		color: inherit;
 		border: 1px solid #ddd;
-		display: block;
-		min-height: 400px;
+		min-height: 420px;
 		overflow: hidden;
 		background: #fcfcfc;
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), inset 0 -1px 0 rgba(0, 0, 0, .1);
@@ -318,25 +382,64 @@ ul.bundle-features {
 }
 
 
+
+
+@media (min-width: 1350px) {
+	div.bundle {
+		.bundle-quote {
+			padding-left: 45px;
+			padding-right: 45px;
+		}
+
+		.bundle-cta-wrap {
+			margin: 0 40px;
+
+			a {
+				font-size: 20px;
+			}
+		}
+	}
+}
+
+
+@media (max-width: 1349px) {
+
+	.give-price-bundles-wrap {
+		margin-left: -20px;
+	}
+
+	div.bundle {
+		.bundle-quote {
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		.bundle-cta-wrap {
+			margin: 0 25px;
+
+			a {
+				font-size: 18px;
+			}
+		}
+	}
+
+}
+
+
 @media (max-width: 850px) {
 
 	.give-price-bundles-wrap {
 		padding: 40px 30px;
 	}
 
+	.give-core-bundles-container {
+		margin: 30px 0 60px;
+	}
+
 	div.bundle,
 	div.bundle.featured-bundle {
 		width: 100%;
 		margin: 0 0 30px;
-	}
-
-}
-
-
-@media (max-width: 1250px) {
-
-	.give-price-bundles-wrap {
-		padding: 100px 50px 100px 50px;
 	}
 
 }
