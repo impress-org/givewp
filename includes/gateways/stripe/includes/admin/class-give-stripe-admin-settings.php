@@ -452,8 +452,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								$stripe_user_id
 							);
 							?>
-							<a href="<?php give_stripe_disconnect_url(); ?>" class="give-stripe-disconnect"
-								onclick="return confirm('<?php echo esc_html( $disconnect_confirmation_message ); ?>');">[Disconnect]</a>
+							<a href="<?php give_stripe_disconnect_url(); ?>" class="give-stripe-disconnect">
+								<?php esc_attr_e( '[Disconnect]', 'give' ); ?>
+							</a>
 						</p>
 					<?php else : ?>
 						<?php echo give_stripe_connect_button(); ?>
