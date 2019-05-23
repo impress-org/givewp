@@ -782,7 +782,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
  * and license validation for Give add-ons (`true` or `false`). Does not include
  * MU plugins.
  */
-function give_get_plugins() {
+function give_get_plugins( $args = array() ) {
 	$plugins             = get_plugins();
 	$active_plugin_paths = (array) get_option( 'active_plugins', array() );
 
@@ -819,6 +819,14 @@ function give_get_plugins() {
 		} else {
 			// Plugin is not a Give add-on.
 			$plugins[ $plugin_path ]['Type'] = 'other';
+		}
+	}
+
+	if( ! empty( $args['only_premium_add_ons'] ) ) {
+		foreach ( $plugins as $key => $plugin ){
+			if( 'add-on' !== $plugin['Type'] || false === strpos( $plugin['PluginURI'], 'givewp.com' ) ) {
+				unset( $plugins[$key] );
+			}
 		}
 	}
 
