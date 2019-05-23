@@ -444,3 +444,88 @@ add_filter( 'plugins_api', 'give_plugins_api_filter', 9999, 3 );
 add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates', 999, 1 );
 
 
+/**
+ * show plugin update notification on multisite
+ *
+ * @param string $file
+ * @param array  $plugin
+ *
+ * @since 2.5.0
+ */
+function give_show_update_notification_on_multisite( $file, $plugin ) {
+	if ( is_network_admin() ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'update_plugins' ) ) {
+		return;
+	}
+
+	if ( ! is_multisite() ) {
+		return;
+	}
+
+	if (
+		! $plugin
+		|| empty( $plugin['slug'] )
+		|| false === strpos( $plugin['slug'], 'give-' )
+	) {
+		return;
+	}
+
+	$plugin_data = Give_License::get_plugin_by_slug( $plugin['slug'] );
+
+	// Only show notices for Give add-ons
+	if ( 'add-on' !== $plugin_data['Type']  ) {
+		return;
+	}
+
+	$update_cache = get_site_transient( 'update_plugins' );
+
+	if( ! $update_cache ) {
+		return;
+	}
+
+	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
+
+		printf(
+			'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
+			$plugin['slug'],
+			$file
+		);
+
+		echo '<td colspan="3" class="plugin-update colspanchange">';
+		echo '<div class="update-message notice inline notice-warning notice-alt"><p>';
+
+		$changelog_link = self_admin_url( "plugin-install.php?tab=plugin-information&plugin={$plugin['slug']}&section=changelog&TB_iframe=true&width=772&height=299" );
+
+		if ( empty( $plugin['download_link'] ) ) {
+			printf(
+				__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'give' ),
+				esc_html( $plugin_data['Name'] ),
+				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
+				esc_html( $plugin['new_version'] ),
+				'</a>'
+			);
+		} else {
+			printf(
+				__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'give' ),
+				esc_html( $plugin_data['Name'] ),
+				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
+				esc_html( $plugin['new_version'] ),
+				'</a>',
+				'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $plugin_data['Name'], 'upgrade-plugin_' . $plugin_data['Name'] ) ) . '">',
+				'</a>'
+			);
+		}
+
+		do_action( "in_plugin_update_message-{$file}", $plugin, $plugin );
+
+		echo '</p></div></td></tr>';
+	}
+}
+
+add_action( 'after_plugin_row', 'give_show_update_notification_on_multisite', 10, 2 );
+
+
+
