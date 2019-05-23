@@ -2396,6 +2396,9 @@ function give_display_donation_receipt( $args ) {
 		if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $args ) ) {
 			return Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
 		}
+	} else{
+		$donation_id =  give_get_donation_id_by_key( $get_data['donation_id'] );
+		$give_receipt_args['id'] = $donation_id;
 	}
 
 	give_get_template_part( 'shortcode', 'receipt' );
