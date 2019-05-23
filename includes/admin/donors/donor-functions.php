@@ -101,7 +101,6 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 	$donor_id         = $donor->id;
-	$previous_user_id = $donor->user_id;
 
 	/**
 	 * Fires before editing a donor.
@@ -129,19 +128,6 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 		if ( ! empty( $donor_data['title'] ) ) {
 			$donor->update_meta( '_give_donor_title_prefix', $donor_data['title'] );
-		}
-
-		// Fetch disconnected user id, if exists.
-		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
-
-		// Flag User and Donor Disconnection.
-		delete_user_meta( $disconnected_user_id, '_give_is_donor_disconnected' );
-
-		// Check whether the disconnected user id and the reconnected user id are same or not.
-		// If both are same then delete user id store in donor meta.
-		if ( $donor_data['user_id'] === $disconnected_user_id ) {
-			delete_user_meta( $disconnected_user_id, '_give_disconnected_donor_id' );
-			$donor->delete_meta( '_give_disconnected_user_id' );
 		}
 
 		$output['success']       = true;
