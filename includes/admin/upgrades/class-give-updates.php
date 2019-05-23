@@ -167,11 +167,11 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_plugin_addon_updates() {
-		$addons         = give_get_plugins();
+		$addons         = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 		$plugin_updates = get_plugin_updates();
 
 		foreach ( $addons as $key => $info ) {
-			if ( 'active' != $info['Status'] || 'add-on' != $info['Type'] || empty( $plugin_updates[ $key ] ) ) {
+			if ( empty( $plugin_updates[ $key ] ) ) {
 				continue;
 			}
 

@@ -2331,22 +2331,53 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
  */
 function give_refresh_licenses() {
 	$give_licenses = get_option( 'give_licenses', array() );
+	$give_addons   = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 
-	if ( ! $give_licenses ) {
-		return $give_licenses;
+	if ( ! $give_licenses && ! $give_addons ) {
+		return array();
 	}
 
-	$license_keys = implode( ',', array_keys( $give_licenses ) );
+	$license_keys = $give_licenses ? implode( ',', array_keys( $give_licenses ) ) : '';
+
+	$unlicensed_give_addon = $give_addons
+		? array_values(
+			array_diff(
+				array_map(
+					function ( $plugin_name ) {
+						return trim( str_replace( 'Give - ', '', $plugin_name ) );
+					},
+					wp_list_pluck( $give_addons, 'Name', true )
+				),
+				wp_list_pluck( $give_licenses, 'item_name', true )
+			)
+		)
+		: '';
 
 	$tmp = Give_License::request_license_api(
 		array(
 			'edd_action' => 'check_licenses',
 			'licenses'   => $license_keys,
+			'unlicensed' => implode( ',', $unlicensed_give_addon ),
 		)
 	);
 
 	if ( ! $tmp || is_wp_error( $tmp ) ) {
 		return array();
+	}
+
+
+	// Remove unlicensed add-on from reposnse.
+	$tmp_unlicensed = array();
+	foreach ( $tmp as $key => $data ){
+		if( empty( $data ) ) {
+			unset( $tmp->{"{$key}"} );
+			continue;
+		}
+
+		if( ! isset( $data->check_license ) ) {
+			$tmp_unlicensed[$key] = $data;
+			unset( $tmp->{"{$key}"} );
+		}
 	}
 
 	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
@@ -2369,6 +2400,11 @@ function give_refresh_licenses() {
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_version' ) ), true ) ),
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
 	);
+
+	if( $tmp_unlicensed ) {
+		$tmp_unlicensed = json_decode( json_encode( $tmp_unlicensed ), true );
+		$tmp_update_plugins = array_merge( $tmp_update_plugins, $tmp_unlicensed );
+	}
 
 	update_option( 'give_licenses', $give_licenses, 'no' );
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
@@ -2415,12 +2451,10 @@ function give_check_addon_updates( $_transient_data ){
 	}
 
 	foreach ( $update_plugins as $key => $data ) {
-		// Maybe add-on license deactivate already.
-		if( empty( $check_licenses[ $key ] ) ) {
-			continue;
-		}
+		$plugins = ! empty( $check_licenses[ $key ] )
+			?  ( ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data ) )
+			: array( $data );
 
-		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
 
 		foreach ( $plugins as $plugin ) {
 			// This value will be empty if any error occurred when verifying version of add-on.
