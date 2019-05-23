@@ -136,10 +136,7 @@ $give_updates = Give_Updates::get_instance();
 					</div><!-- .postbox -->
 				</div> <!-- .post-container -->
 			</div>
-		<?php else :
-
-			include GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/db-upgrades-complete-metabox.php';
-		endif; ?>
+		<?php endif; ?>
 
 		<?php
 		/**
