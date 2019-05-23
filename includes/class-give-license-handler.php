@@ -222,10 +222,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Add plugin to registered licenses list.
 			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
-
-			// Setup hooks
-			$this->hooks();
-
 		}
 
 
@@ -244,23 +240,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$plugin_name = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) );
 
 			return $plugin_name;
-		}
-
-		/**
-		 * Hooks
-		 *
-		 * Setup license hooks.
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		private function hooks() {
-			$plugin_file = plugin_basename( $this->file );
-
-			// Show add-on notice on plugin page.
-			add_action( "after_plugin_row_{$plugin_file}", array( $this, 'plugin_page_notices' ), 10, 3 );
 		}
 
 		/**
@@ -287,43 +266,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 */
 		public function deactivate_license() {
-		}
-
-
-		/**
-		 * Display plugin page licenses status notices.
-		 *
-		 * @param $plugin_file
-		 * @param $plugin_data
-		 * @param $status
-		 */
-		public function plugin_page_notices( $plugin_file, $plugin_data, $status ) {
-			if( $this->license ) {
-				return;
-			}
-
-			$update_notice_wrap = '<tr class="give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="notice inline notice-warning notice-alt give-invalid-license"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
-			$message            = $this->license_nag_msg();
-
-			echo sprintf( $update_notice_wrap, $message );
-		}
-
-
-		/**
-		 * Get message related to license state.
-		 *
-		 * @return string
-		 * @since  2.5.0
-		 * @access public
-		 */
-		private function license_nag_msg() {
-			$message= sprintf(
-				'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
-				esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
-				$this->item_name
-			);
-
-			return $message;
 		}
 
 

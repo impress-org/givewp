@@ -451,7 +451,7 @@ add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates',
 
 
 /**
- * show plugin update notification on multisite
+ * Show plugin update notification on multi-site
  *
  * @param string $file
  * @param array  $plugin
@@ -495,7 +495,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
 
 		printf(
-			'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
+			'<tr class="plugin-update-tr give-addon-notice-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
 			$plugin['slug'],
 			$file
 		);
@@ -532,6 +532,64 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 }
 
 add_action( 'after_plugin_row', 'give_show_update_notification_on_multisite', 10, 2 );
+
+/**
+ * Show plugin update notification on single site
+ *
+ * @param $file
+ * @param $plugin
+ *
+ * @since 2.5.0
+ */
+function give_show_update_notification_on_single_site( $file, $plugin ) {
+	if ( ! current_user_can( 'update_plugins' ) ) {
+		return;
+	}
+
+
+	if (
+		! $plugin
+		|| empty( $plugin['slug'] )
+		|| false === strpos( $plugin['slug'], 'give-' )
+	) {
+		return;
+	}
+
+	$plugin_data = Give_License::get_plugin_by_slug( $plugin['slug'] );
+
+	// Only show notices for Give add-ons
+	if (
+		'add-on' !== $plugin_data['Type']
+		|| $plugin_data['License']
+	) {
+		return;
+	}
+
+
+	// Remove core update notice.
+	remove_action( "after_plugin_row_{$file}", 'wp_plugin_update_row' );
+
+	$update_notice_wrap = '<tr class="plugin-update-tr give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="update-message notice inline notice-warning notice-alt give-invalid-license"><p>%1$s %2$s</p></div></td></tr>';
+	$changelog_link     = self_admin_url( "plugin-install.php?tab=plugin-information&plugin={$plugin['slug']}&section=changelog&TB_iframe=true&width=772&height=299" );
+
+	echo sprintf(
+		$update_notice_wrap,
+		sprintf(
+			__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'give' ),
+			esc_html( $plugin_data['Name'] ),
+			'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
+			esc_html( $plugin['new_version'] ),
+			'</a>'
+		),
+		sprintf(
+			'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
+			esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
+			$plugin_data['Name']
+		)
+	);
+}
+
+add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 1, 3 );
 
 
 
