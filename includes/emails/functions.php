@@ -19,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Email the donation confirmation to the donor via the customizable "Donation Receipt" settings.
  *
- * @since 1.0
- *
  * @param int  $payment_id   Payment ID.
  * @param bool $admin_notice Whether to send the admin email notification or not (default: true).
  *
  * @return void
+ * @since 1.0
+ *
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
@@ -33,16 +33,17 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	do_action( 'give_donation-receipt_email_notification', $payment_id );
 
 	// If admin notifications are on, send the admin notice.
-	if ( $admin_notice && give_is_setting_enabled( Give_Email_Notification::get_instance('new-donation' )->get_notification_status() ) ) {
+	if ( $admin_notice && give_is_setting_enabled( Give_Email_Notification::get_instance( 'new-donation' )->get_notification_status() ) ) {
 		/**
 		 * Fires in the donation email receipt.
 		 *
 		 * When admin email notices are not disabled, you can add new email notices.
 		 *
-		 * @since 1.0
-		 *
 		 * @param int   $payment_id   Payment id.
 		 * @param mixed $payment_data Payment meta data.
+		 *
+		 * @since 1.0
+		 *
 		 */
 		do_action( 'give_new-donation_email_notification', $payment_id, give_get_payment_meta( $payment_id ) );
 	}
@@ -51,11 +52,11 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 /**
  * Sends the Admin Sale Notification Email
  *
- * @since 1.0
- *
  * @param int $payment_id Payment ID (default: 0)
  *
  * @return void
+ * @since 1.0
+ *
  */
 function give_admin_email_notice( $payment_id ) {
 	/**
@@ -63,10 +64,11 @@ function give_admin_email_notice( $payment_id ) {
 	 *
 	 * When admin email notices are not disabled, you can add new email notices.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int   $payment_id   Payment id.
 	 * @param mixed $payment_data Payment meta data.
+	 *
+	 * @since 1.0
+	 *
 	 */
 	do_action( 'give_new-donation_email_notification', $payment_id );
 }
@@ -79,8 +81,8 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
  *
  * Returns the stored email text if available, the standard email text if not
  *
- * @since  1.0
  * @return string $message
+ * @since  1.0
  */
 function give_get_default_donation_notification_email() {
 
@@ -102,8 +104,8 @@ function give_get_default_donation_notification_email() {
  *
  * Returns the stored email text if available, the standard email text if not
  *
- * @since  1.3.7
  * @return string $message
+ * @since  1.3.7
  */
 function give_get_default_donation_receipt_email() {
 
@@ -126,12 +128,12 @@ function give_get_default_donation_receipt_email() {
 /**
  * Get various correctly formatted names used in emails
  *
- * @since 1.0
- *
  * @param array             $user_info List of User Information.
  * @param Give_Payment|bool $payment   Payment Object.
  *
  * @return array $email_names
+ * @since 1.0
+ *
  */
 function give_get_email_names( $user_info, $payment = false ) {
 	$email_names = array();
