@@ -206,11 +206,15 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$button_title     = __( 'You can not refresh licenses because exceed limit. Only 5 times allowed per day', 'give' );
 			$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
 
-			printf(
+			echo  '<div id="give-refresh-button-wrap"><span id="give-last-refresh-notice">';
+
+			echo sprintf(
 				__( 'Last refreshed on %1$s at %2$s', 'give' ),
 				date( give_date_format(), $local_date ),
 				date( 'g:i a', $local_date )
-			)
+			);
+
+			echo '</span>';
 			?>
 			&nbsp;&nbsp;<button
 				id="give-button__refresh-licenses"
@@ -223,6 +227,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			>
 				<?php _e( 'Refresh All Licenses', 'give' ); ?>
 			</button>
+			</div>
 			<section id="give-licenses-container"><?php echo Give_License::render_licenses_list(); ?></section>
 			<?php
 			echo ob_get_clean();

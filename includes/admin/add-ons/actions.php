@@ -375,10 +375,16 @@ function give_refresh_all_licenses_handler() {
 
 	give_refresh_licenses();
 
+	$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $data['time'] ) ) );
 	wp_send_json_success( array(
 		'html'          => Give_License::render_licenses_list(),
 		'refreshButton' => 5 <= $data['count'],
 		'refreshStatus' => $data,
+		'lastUpdateMsg' => sprintf(
+			__( 'Last refreshed on %1$s at %2$s', 'give' ),
+			date( give_date_format(), $local_date ),
+			date( 'g:i a', $local_date )
+		)
 	) );
 }
 

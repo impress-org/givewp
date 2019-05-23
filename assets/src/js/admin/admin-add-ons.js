@@ -136,6 +136,8 @@
 				success: function( response ) {
 					if ( true === response.success ) {
 						$licensesContainer.html( response.data.html );
+
+						$('#give-last-refresh-notice').text( response.data.lastUpdateMsg );
 					}
 
 					if( ! response.success || response.data.refreshButton ) {
