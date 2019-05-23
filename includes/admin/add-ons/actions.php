@@ -433,7 +433,7 @@ function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
 	return $_data;
 }
 
-add_filter( 'plugins_api', 'give_plugins_api_filter', 10, 3 );
+add_filter( 'plugins_api', 'give_plugins_api_filter', 9999, 3 );
 
 
 /**
