@@ -520,7 +520,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $plugin['new_version'] ),
 				'</a>',
-				'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $plugin_data['Name'], 'upgrade-plugin_' . $plugin_data['Name'] ) ) . '">',
+				'<a target="_blank" href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $plugin_data['Name'], 'upgrade-plugin_' . $plugin_data['Name'] ) ) . '">',
 				'</a>'
 			);
 		}
@@ -582,14 +582,14 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 			'</a>'
 		),
 		sprintf(
-			'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
+			'Please <a href="%1$s" target="_blank">activate your license</a> to receive updates and support for the %2$s add-on.',
 			esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
 			$plugin_data['Name']
 		)
 	);
 }
 
-add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 1, 3 );
+add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 1, 2 );
 
 
 
