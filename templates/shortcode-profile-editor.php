@@ -219,13 +219,13 @@ else :
 			switch ( $_GET['update_code'] ) {
 				case '2':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile and password has been updated.', 'give' ) );
-					_e( 'Login with your new credentials.', 'give' );
+					_e( 'Log in with your new credentials.', 'give' );
 					echo give_login_form();
 					break;
 
 				case '3':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your password has been updated.', 'give' ) );
-					_e( 'Login with your new credentials.', 'give' );
+					_e( 'Log in with your new credentials.', 'give' );
 					echo give_login_form();
 					break;
 
@@ -234,7 +234,7 @@ else :
 			}
 		}
 	} else {
-		_e( 'You need to login to edit your profile.', 'give' );
+		_e( 'You need to log in to edit your profile.', 'give' );
 		echo give_login_form();
 	}
 endif;

@@ -50,12 +50,10 @@ function give_register_default_donor_tabs( $tabs ) {
 
 	$default_tabs = array(
 		'overview' => array(
-			'dashicon' => 'dashicons-admin-users',
-			'title'    => __( 'Donor Profile', 'give' ),
+			'title'    => __( 'Donor Profile', 'give' )
 		),
 		'notes'    => array(
-			'dashicon' => 'dashicons-admin-comments',
-			'title'    => __( 'Donor Notes', 'give' ),
+			'title'    => __( 'Donor Notes', 'give' )
 		),
 	);
 
@@ -76,8 +74,7 @@ add_filter( 'give_donor_tabs', 'give_register_default_donor_tabs', 1, 1 );
 function give_register_delete_donor_tab( $tabs ) {
 
 	$tabs['delete'] = array(
-		'dashicon' => 'dashicons-trash',
-		'title'    => __( 'Delete Donor', 'give' ),
+		'title'    => __( 'Delete Donor', 'give' )
 	);
 
 	return $tabs;
