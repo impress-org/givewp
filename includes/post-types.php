@@ -532,6 +532,9 @@ function give_remove_screen_options( $display_boolean, $wp_screen_object ) {
  * @since  2.5.0
  */
 function give_render_screen_options() {
+	if( ! is_admin() ) {
+		return;
+	}
 
 	$current_screen = get_current_screen();
 
