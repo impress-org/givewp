@@ -247,6 +247,13 @@ class Give_Scripts {
 		$decimal_separator  = give_get_price_decimal_separator();
 		$number_decimals    = give_get_price_decimals();
 
+		$stripe_user_id            = give_get_option( 'give_stripe_user_id', false );
+		$disconnect_stripe_message = sprintf(
+			/* translators: %s Stripe User ID */
+			__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
+			$stripe_user_id
+		);
+
 		// Localize strings & variables for JS.
 		$localized_data = array(
 			'post_id'                           => isset( $post->ID ) ? $post->ID : null,
@@ -368,6 +375,8 @@ class Give_Scripts {
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
 				)
 			),
+			'disconnect_stripe_title'      => __( 'Confirm Disconnect?', 'give' ),
+			'disconnect_stripe_message'    => $disconnect_stripe_message,
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
