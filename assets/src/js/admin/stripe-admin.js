@@ -35,8 +35,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
 					desc: Give.fn.getGlobalVar( 'disconnect_stripe_message' ),
 				},
-				successConfirm: function( args ) {
-					console.log( e.target.getAttribute( 'href' ), 'this is it' );
+				successConfirm: () => {
+					window.location.href = e.target.getAttribute( 'href' );
 				},
 			} ).render();
 		} );
