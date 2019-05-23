@@ -14,7 +14,7 @@
 
 // Remove padding from footer bottom so entire white bg displays.
 .give_forms_page_give-addons #wpbody-content {
-	padding-bottom:0;
+	padding-bottom: 0;
 }
 
 .give-addons-header {
@@ -50,6 +50,22 @@
 	font-family: 'Montserrat', sans-serif;
 	max-width: 1200px;
 	margin: 0 auto;
+
+	.dashicons-yes {
+		color: $give-green;
+	}
+
+	.dashicons-no-alt {
+		color: #d75a4a;
+	}
+
+	.dashicons-star-filled {
+		color: #ff960e;
+		font-size: 16px;
+		position: relative;
+		top: 2px;
+	}
+
 }
 
 // Individual Bundles.
@@ -234,21 +250,6 @@ ul.bundle-features {
 }
 
 
-
-.dashicons-yes {
-	color:$give-green;
-}
-
-.dashicons-no-alt {
-	color: #d75a4a;
-}
-.dashicons-star-filled {
-	color: #ff960e;
-	font-size: 16px;
-	position: relative;
-	top: 2px;
-}
-
 .give-addons-directory-wrap {
 	background: #FFF;
 	margin: 0 0 0 -20px;
@@ -293,7 +294,7 @@ ul.bundle-features {
 				line-height: 30px;
 
 				a {
-					color:$give-green;
+					color: $give-green;
 					outline: none;
 					text-decoration: none;
 					box-shadow: none;

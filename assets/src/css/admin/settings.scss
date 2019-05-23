@@ -144,6 +144,7 @@
 	}
 
 	p {
+		margin-top: 0;
 		margin-bottom: 0;
 	}
 }
@@ -343,7 +344,7 @@ div.give-field-description {
 }
 
 .give-setting-tab-header-emails {
-	margin: 0 0 20px;
+	margin: 20px 0;
 
 	hr {
 		display: none;
