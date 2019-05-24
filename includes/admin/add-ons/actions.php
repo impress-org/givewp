@@ -484,9 +484,10 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 		return;
 	}
 
-	$update_cache = get_site_transient( 'update_plugins' );
+	// Do not print any message if updates does not exist.
 
-	if( ! $update_cache ) {
+	$update_cache = get_site_transient( 'update_plugins' );
+	if( ! isset( $update_plugins->response[$file] ) ) {
 		return;
 	}
 
@@ -560,6 +561,12 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 		'add-on' !== $plugin_data['Type']
 		|| $plugin_data['License']
 	) {
+		return;
+	}
+
+	// Do not print any message if updates does not exist.
+	$update_plugins = get_site_transient( 'update_plugins' );
+	if( ! isset( $update_plugins->response[$file] ) ) {
 		return;
 	}
 
