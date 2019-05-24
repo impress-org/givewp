@@ -485,11 +485,15 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 	}
 
 	// Do not print any message if updates does not exist.
-
 	$update_cache = get_site_transient( 'update_plugins' );
-	if( ! isset( $update_plugins->response[$file] ) ) {
+
+	if( ! isset( $update_cache->response[$file] ) ) {
 		return;
 	}
+
+	// Remove core update notice.
+	remove_action( "after_plugin_row_{$file}", 'wp_plugin_update_row' );
+
 
 	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
 
