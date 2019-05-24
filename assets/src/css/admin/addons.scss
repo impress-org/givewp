@@ -308,6 +308,10 @@ ul.bundle-features {
 		display: block;
 		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
 		line-height: 1.2em;
+
+		&:hover {
+			background: lighten($give-green, 3%);
+		}
 	}
 }
 
@@ -318,6 +322,13 @@ ul.bundle-features {
 	padding: 70px 20px 60px;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
+
+	title {
+		display: block;
+		font-size: 30px;
+		margin: 0 0 50px;
+		line-height: 1.2em;
+	}
 
 	// Add-ons
 	.type-download {
