@@ -2324,12 +2324,14 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @return array|WP_Error
+ * @param bool $wp_check_updates
  *
  * @access public
+ * @return array|WP_Error
+ *
  * @since  2.5.0
  */
-function give_refresh_licenses() {
+function give_refresh_licenses( $wp_check_updates = true ) {
 	$give_licenses = get_option( 'give_licenses', array() );
 	$give_addons   = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 
@@ -2414,6 +2416,11 @@ function give_refresh_licenses() {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
+	// Tell WordPress to look for updates.
+	if( $wp_check_updates ) {
+		set_site_transient( 'update_plugins', null );
+	}
+
 	return array(
 		'give_licenses'     => $give_licenses,
 		'give_get_versions' => $tmp_update_plugins,
@@ -2438,7 +2445,7 @@ function give_check_addon_updates( $_transient_data ){
 	$check_licenses = get_option( 'give_licenses', array() );
 
 	if ( ! $update_plugins ) {
-		$data = give_refresh_licenses();
+		$data = give_refresh_licenses( false );
 
 		if(
 			empty( $data['give_get_versions'] )

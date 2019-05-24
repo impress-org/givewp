@@ -370,9 +370,6 @@ function give_refresh_all_licenses_handler() {
 
 	update_option( 'give_licenses_refreshed_last_checked', $data, 'no' );
 
-	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
-
 	give_refresh_licenses();
 
 	$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $data['time'] ) ) );
@@ -410,6 +407,7 @@ function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
 		return $_data;
 	}
 
+
 	$plugin = Give_License::get_plugin_by_slug( $_args->slug );
 
 	if (
@@ -423,7 +421,7 @@ function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
 	$plugin_data = get_site_transient( 'update_plugins' );
 
 	if ( ! $plugin_data ) {
-		return $_data;
+		give_refresh_licenses();
 	}
 
 	$plugin_data = ! empty( $plugin_data->response[ $plugin['Path'] ] )
