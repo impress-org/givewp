@@ -95,20 +95,6 @@ $license-widget-border-color: #DBDBDB;
 		margin: 0;
 	}
 
-
-	@media(max-width: 850px) {
-		#give-license-activator {
-			margin-right: 0;
-			margin-bottom: 20px;
-		}
-
-		.button, #give-license-activator {
-			width: 100%;
-		}
-
-
-	}
-
 }
 
 // Uploader / Activator Widget
@@ -224,6 +210,33 @@ $license-widget-border-color: #DBDBDB;
 //-----------------------------------
 // Add-ons list
 //-----------------------------------
+
+.give-licenses-list-header {
+	margin: 20px 0 30px 0;
+	padding: 0;
+
+	h2 {
+		float: left;
+		margin: 0 0 20px;
+		padding: 0;
+		font-size: 18px;
+	}
+
+	#give-refresh-button-wrap {
+		float: left;
+		margin: -6px 0 0 25px;
+
+		#give-last-refresh-notice {
+			margin: 0 0 0 10px;
+			line-height: 28px;
+			color: #959595;
+		}
+	}
+
+	hr {
+		clear: both;
+	}
+}
 
 .give-addon-wrap {
 	border: 1px solid $license-widget-border-color;

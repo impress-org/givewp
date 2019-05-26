@@ -263,7 +263,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				<div class="give-grid-row">
 					<div class="give-grid-col-12">
 
-						<div class="give-licenses-list-header">
+						<div class="give-licenses-list-header give-clearfix">
 							<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
 
 							<?php
@@ -276,8 +276,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 							<div id="give-refresh-button-wrap">
 								<button id="give-button__refresh-licenses"
 								        class="button-secondary"
-								        data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
-								        data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
+								        data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
+								        data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
 								        data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
 									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
 									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
@@ -291,6 +291,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 								); ?>
 								</span>
 							</div>
+
+							<hr>
+							<p class="give-field-description"><?php _e('The following list displays your add-ons and their corresponding activation and license statuses.', 'give'); ?></p>
 
 						</div>
 
