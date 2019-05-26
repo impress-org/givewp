@@ -165,7 +165,7 @@ function give_get_license_info_handler() {
 		) );
 	} else if ( array_key_exists( $license_key, $licenses ) ) {
 		wp_send_json_error( array(
-			'errorMsg' => __( 'Sorry, this license key is already in use on this website.', 'give' ),
+			'errorMsg' => __( 'This license key is already in use on this website.', 'give' ),
 		) );
 	}
 
@@ -187,7 +187,7 @@ function give_get_license_info_handler() {
 	if ( ! $check_license_res['success'] ) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
+				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
 				Give_License::get_account_url(),
 				$check_license_res['license']
 			),

@@ -7,7 +7,7 @@
 			$form = $( 'form', $licenseActivationFormContainer ),
 			$license = $( 'input[name="give_license_key"]', $licenseActivationFormContainer ),
 			$submitBtn = $( 'input[type="submit"]', $form ),
-			$noticeContainer = $( '.give-notices', $licenseActivationFormContainer );
+			$noticeContainer = $( '.give-license-notices', $licenseActivationFormContainer );
 
 		/**
 		 * License form submit button handler
@@ -27,7 +27,86 @@
 		$licenseActivationFormContainer.on( 'change keyup', 'input[name="give_license_key"]', giveDisableActivateLicenseButton ).change();
 
 		/**
-		 * Deactivate license
+		 * Allow dismissing upload notices for license widget.
+		 */
+		$( document ).on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
+			$noticeContainer.empty().hide();
+		} );
+
+
+		/**
+		 * License form validation handler
+		 */
+		$form.on( 'submit', function() {
+			const license = $license.val().trim(),
+				action = 'give_get_license_info',
+				_wpnonce = $( 'input[name="give_license_activator_nonce"]', $( this ) ).val().trim();
+
+			// Remove all errors.
+			$noticeContainer.empty();
+
+			// Must have entered a license key.
+			if ( ! license ) {
+				$noticeContainer.show();
+				$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+				return false;
+			}
+
+			$.ajax( {
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action,
+					license,
+					_wpnonce,
+				},
+				beforeSend: function() {
+					$submitBtn.val( $submitBtn.attr( 'data-activating' ) );
+					loader( $licensesContainer );
+				},
+				success: function( response ) {
+					$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
+					// Show notice container.
+					$noticeContainer.show();
+					$license.val('');
+
+					if ( true === response.success ) {
+						if (
+							response.data.hasOwnProperty( 'download' )
+							&& response.data.download
+						) {
+							const msg = 'string' === typeof response.data.download
+								? give_addon_var.notices.download_file.replace( '{link}', response.data.download )
+								:  give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
+
+							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${msg}</p><span class="notice-dismiss"></span></div>` );
+							$licensesContainer.html( response.data.html );
+						} else {
+							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+						}
+
+						return;
+					}
+
+					if (
+						response.data.hasOwnProperty( 'errorMsg' )
+						&& response.data.errorMsg
+					) {
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${response.data.errorMsg}</p><span class="notice-dismiss"></span></div>` );
+					} else {
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+					}
+				},
+			} ).always( function() {
+				loader( $licensesContainer, false );
+				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
+			} );
+
+			return false;
+		} );
+
+		/**
+		 * Activate license
 		 */
 		$licensesContainer.on( 'click', '.give-button__license-activate', function( e ) {
 			e.preventDefault();
@@ -36,7 +115,7 @@
 				$container = $this.parents( '.give-addon-wrap' );
 
 			// Remove errors if any.
-			$( '.give-notice', $container ).remove();
+			$noticeContainer.empty();
 
 			$.ajax( {
 				url: ajaxurl,
@@ -150,71 +229,6 @@
 			} );
 		} );
 
-		/**
-		 * License form validation handler
-		 */
-		$form.on( 'submit', function() {
-			const license = $license.val().trim(),
-				action = 'give_get_license_info',
-				_wpnonce = $( 'input[name="give_license_activator_nonce"]', $( this ) ).val().trim();
-
-			// Remove all errors.
-			$noticeContainer.empty();
-
-			if ( !license ) {
-				$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p></div>` );
-				return false;
-			}
-
-			$.ajax( {
-				url: ajaxurl,
-				method: 'POST',
-				data: {
-					action,
-					license,
-					_wpnonce,
-				},
-				beforeSend: function() {
-					$submitBtn.val( $submitBtn.attr( 'data-activating' ) );
-					loader( $licensesContainer );
-				},
-				success: function( response ) {
-					$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
-
-					if ( true === response.success ) {
-						if (
-							response.data.hasOwnProperty( 'download' ) &&
-							response.data.download
-						) {
-							const msg = 'string' === typeof response.data.download ?
-								give_addon_var.notices.download_file.replace( '{link}', response.data.download ) :
-								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
-
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${msg}</p></div>` );
-							$licensesContainer.html( response.data.html );
-						} else {
-							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p></div>` );
-						}
-
-						return;
-					}
-
-					if (
-						response.data.hasOwnProperty( 'errorMsg' ) &&
-						response.data.errorMsg
-					) {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${response.data.errorMsg}</p></div>` );
-					} else {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p></div>` );
-					}
-				},
-			} ).always( function() {
-				loader( $licensesContainer, false );
-				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
-			} );
-
-			return false;
-		} );
 
 		/**
 		 * Show/Hide loader
@@ -271,13 +285,13 @@
 		} );
 
 		/**
-		 * Allow dismissing upload notices
+		 * Allow dismissing upload notices for the upload add-on widget.
 		 */
 		$( document ).on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
 			$noticeContainer.empty().hide();
 			$form.removeClass( 'give-dropzone-active' );
 		} );
-
+		
 		/**
 		 * File change handler
 		 */
@@ -380,4 +394,5 @@
 		} );
 
 	} );
+
 }( jQuery ) );

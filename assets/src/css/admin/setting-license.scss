@@ -54,21 +54,44 @@ $license-widget-border-color: #DBDBDB;
 	margin: 0;
 	padding: 30px;
 
+	.give-license-activation-form {
+		background: $license-widget-bg;
+		padding: 10px;
+		position: relative;
+	}
+
+	.give-license-notices {
+		position: absolute;
+		background: $license-widget-bg;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		padding: 20px;
+		z-index: 3;
+		box-sizing: border-box;
+		display: none;
+
+		.notice {
+			position: relative;
+		}
+
+	}
+
 	#give-license-activator {
 		font-size: 22px;
-		height: 60px;
+		height: 55px;
 		padding: 0 15px;
-		margin: 0 0 20px;
+		margin: 0 0 10px;
 		width: 100%;
 	}
 
 	.button {
-		height: 50px;
+		height: 45px;
 		width: 100%;
 		font-size: 18px;
 		display: block;
 		clear: both;
-		padding: 10px;
 		margin: 0;
 	}
 

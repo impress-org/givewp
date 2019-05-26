@@ -146,9 +146,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									?>
 								</p>
 
-								<div class="give-notices"></div>
+								<form method="post" action="" class="give-license-activation-form">
 
-								<form method="post" action="">
+									<div class="give-license-notices"></div>
 
 									<?php wp_nonce_field( 'give-license-activator-nonce', 'give_license_activator_nonce' ); ?>
 
@@ -222,7 +222,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 											<div class="give-addon-upload-notices"></div>
 
 											<div class="give-activate-addon-wrap">
-												<p><span class="dashicons dashicons-yes"></span> <?php _e( 'Add-on succesfully uploaded.', 'give' ); ?></p>
+												<p><span
+														class="dashicons dashicons-yes"></span> <?php _e( 'Add-on succesfully uploaded.', 'give' ); ?>
+												</p>
 												<button
 													class="give-activate-addon-btn button-primary"
 													data-activate="<?php _e( 'Activate Add-on', 'give' ); ?>"
@@ -260,36 +262,36 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				<?php // @TODO: this section should only display if one or more Give add-on are installed regardless of license status. ?>
 				<div class="give-grid-row">
 					<div class="give-grid-col-12">
-						<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
-						<?php
-						$refresh_status   = Give_License::refresh_license_status();
-						$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
-						$button_title     = __( 'Refresh limit reached. Licenses can only be refreshed 5 times per day.', 'give' );
-						$local_date       = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
-						?>
 
-						<div id="give-refresh-button-wrap">
-						<span id="give-last-refresh-notice">
+						<div class="give-licenses-list-header">
+							<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
+
 							<?php
-							echo sprintf(
-								__( 'Last refreshed on %1$s at %2$s', 'give' ),
-								date( give_date_format(), $local_date ),
-								date( 'g:i a', $local_date )
-							);
+							$refresh_status   = Give_License::refresh_license_status();
+							$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
+							$button_title     = __( 'Refresh limit reached. Licenses can only be refreshed 5 times per day.', 'give' );
+							$local_date       = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
 							?>
-						</span>
 
-							&nbsp;&nbsp;<button
-								id="give-button__refresh-licenses"
-								class="button-secondary"
-								data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
-								data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
-								data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
-								<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
-								<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>
-							>
-								<?php _e( 'Refresh All Licenses', 'give' ); ?>
-							</button>
+							<div id="give-refresh-button-wrap">
+								<button id="give-button__refresh-licenses"
+								        class="button-secondary"
+								        data-activate="<?php _e( 'Refresh all licenses', 'give' ); ?>"
+								        data-activating="<?php _e( 'Refreshing all licenses...', 'give' ); ?>"
+								        data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
+									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
+									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
+									<?php _e( 'Refresh All Licenses', 'give' ); ?>
+								</button>
+								<span id="give-last-refresh-notice">
+								<?php echo sprintf(
+									__( 'Last refreshed on %1$s at %2$s', 'give' ),
+									date( give_date_format(), $local_date ),
+									date( 'g:i a', $local_date )
+								); ?>
+								</span>
+							</div>
+
 						</div>
 
 						<section id="give-licenses-container">
