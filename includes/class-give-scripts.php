@@ -199,11 +199,11 @@ class Give_Scripts {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(
-					'uploading'       => __( 'Uploading', 'give' ),
-					'uploaded'        => __( 'Uploaded', 'give' ),
-					'invalid_license' => __( 'Sorry, you entered a invalid key.', 'give' ),
-					'download_file'   => __( 'Success! You\'ve activated your license key and are receiving updates and priority support. <a href="{link}" target="_blank">Click here</a> to download addon zip file.', 'give' ),
-					'addon_activated'   => __( '{pluginName} addon Activated successfully.', 'give' ),
+					'uploading'       => __( 'Uploading...', 'give' ),
+					'invalid_license' => __( 'Sorry, you entered an invalid key.', 'give' ),
+					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}" target="_blank">Click here</a> to download your add-on.', 'give' ),
+					'addon_activated'   => __( '{pluginName} add-on activated successfully.', 'give' ),
+					'addon_activation_error'   => __( 'The add-on did not activate successfully.', 'give' ),
 				),
 			);
 
@@ -226,8 +226,8 @@ class Give_Scripts {
 			'cancel'                          => __( 'Cancel', 'give' ),
 			'deactivation_no_option_selected' => __( 'Error: Please select at least one option.', 'give' ),
 			'submit_and_deactivate'           => __( 'Submit and Deactivate', 'give' ),
-			'skip_and_deactivate'             => __( 'Skip & Deactivate', 'give' ),
-			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
+			'skip_and_deactivate'             => __( 'Skip and Deactivate', 'give' ),
+			'please_fill_field'               => __( 'Error: Please complete the required field.', 'give' ),
 
 		);
 

@@ -78,7 +78,7 @@ function give_upload_addon_handler() {
 	// Bailout  if addon already installed
 	if ( ! empty( $is_addon_installed ) ) {
 		wp_send_json_error( array(
-			'errorMsg'   => __( 'This addon is already installed', 'give' ),
+			'errorMsg'   => __( 'This add-on is already installed.', 'give' ),
 			'pluginInfo' => $is_addon_installed,
 		) );
 	}
