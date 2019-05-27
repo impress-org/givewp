@@ -793,7 +793,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$is_license         = $plugin['License'] && ! empty( $plugin['License']['license_key'] );
 			$expires_timestamp  = $is_license ? strtotime( $plugin['License']['expires'] ) : '';
 			$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
-
 			ob_start();
 			?>
 			<div class="give-row give-border give-plugin__info">

@@ -1,4 +1,4 @@
-/* globals jQuery, ajaxurl, give_addon_var */
+/* globals jQuery, ajaxurl, give_addon_var, Give */
 
 ( function( $ ) {
 	$( document ).ready( function() {
@@ -30,14 +30,12 @@
 		$( '.give-license__key input[type="text"]', $licensesContainer ).change();
 		$( 'input[name="give_license_key"]', $licenseActivationFormContainer ).change();
 
-
 		/**
 		 * Allow dismissing upload notices for license widget.
 		 */
 		$( document ).on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
 			$noticeContainer.empty().hide();
 		} );
-
 
 		/**
 		 * License form validation handler
@@ -53,7 +51,7 @@
 			// Must have entered a license key.
 			if ( ! license ) {
 				$noticeContainer.show();
-				$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+				$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
 				return false;
 			}
 
@@ -67,43 +65,43 @@
 				},
 				beforeSend: function() {
 					$submitBtn.val( $submitBtn.attr( 'data-activating' ) );
-					loader( $licensesContainer );
+					Give.fn.loader( $licensesContainer );
 				},
 				success: function( response ) {
 					$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 					// Show notice container.
 					$noticeContainer.show();
-					$license.val('');
+					$license.val( '' );
 
 					if ( true === response.success ) {
 						if (
-							response.data.hasOwnProperty( 'download' )
-							&& response.data.download
+							response.data.hasOwnProperty( 'download' ) &&
+							response.data.download
 						) {
-							const msg = 'string' === typeof response.data.download
-								? give_addon_var.notices.download_file.replace( '{link}', response.data.download )
-								:  give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
+							const msg = 'string' === typeof response.data.download ?
+								give_addon_var.notices.download_file.replace( '{link}', response.data.download ) :
+								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
 
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${msg}</p><span class="notice-dismiss"></span></div>` );
+							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ msg }</p><span class="notice-dismiss"></span></div>` );
 							$licensesContainer.html( response.data.html );
 						} else {
-							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
 						}
 
 						return;
 					}
 
 					if (
-						response.data.hasOwnProperty( 'errorMsg' )
-						&& response.data.errorMsg
+						response.data.hasOwnProperty( 'errorMsg' ) &&
+						response.data.errorMsg
 					) {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${response.data.errorMsg}</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
 					} else {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.invalid_license}</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
 					}
 				},
 			} ).always( function() {
-				loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, false );
 				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 			} );
 
@@ -132,7 +130,7 @@
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
 				},
 				beforeSend: function() {
-					loader( $container );
+					Give.fn.loader( $container );
 				},
 				success: function( response ) {
 					if ( true === response.success ) {
@@ -143,7 +141,7 @@
 					$( '.give-addon-inner', $container ).prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
-				loader( $container, false );
+				Give.fn.loader( $container, false );
 			} );
 		} );
 
@@ -172,9 +170,9 @@
 				},
 				beforeSend: function() {
 					if ( is_all_access_pass ) {
-						loader( $licensesContainer );
+						Give.fn.loader( $licensesContainer );
 					} else {
-						loader( $container );
+						Give.fn.loader( $container );
 					}
 				},
 				success: function( response ) {
@@ -191,9 +189,9 @@
 				},
 			} ).done( function() {
 				if ( is_all_access_pass ) {
-					loader( $licensesContainer, false );
+					Give.fn.loader( $licensesContainer, false );
 				} else {
-					loader( $container, false );
+					Give.fn.loader( $container, false );
 				}
 			} );
 		} );
@@ -215,7 +213,7 @@
 				},
 				beforeSend: function() {
 					$this.text( $this.attr( 'data-activating' ) );
-					loader( $licensesContainer );
+					Give.fn.loader( $licensesContainer );
 				},
 				success: function( response ) {
 					if ( true === response.success ) {
@@ -224,44 +222,28 @@
 						$( '#give-last-refresh-notice' ).text( response.data.lastUpdateMsg );
 					}
 
-					if ( !response.success || response.data.refreshButton ) {
+					if ( ! response.success || response.data.refreshButton ) {
 						$this.prop( 'disabled', true );
 					}
 				},
 			} ).done( function() {
-				loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, false );
 				$this.text( $this.attr( 'data-activate' ) );
 			} );
 		} );
-
-
-		/**
-		 * Show/Hide loader
-		 *
-		 * @since 2.5.0
-		 * @param {object} $container
-		 * @param {boolean} set
-		 */
-		function loader( $container, set = true ) {
-			if ( set ) {
-				$container.prepend( '<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>' );
-				return;
-			}
-
-			$( '.give-spinner-wrap', $container ).remove();
-		}
 	} );
 
 	/**
-	 * Add-on uploader and activator.
+	 * Add-on upGive.fn.loader and activator.
 	 */
 	$( document ).ready( function() {
 		const $container = $( '.give-upload-addon-form-wrap' ),
-			$form = $( 'form', $container ),
-			$file = $( 'input[type="file"]', $form ),
-			$activateBtnContainer = $( '.give-activate-addon-wrap', $form ),
-			$activateBtn = $( 'button', $form ),
-			$noticeContainer = $( '.give-addon-upload-notices', $form );
+			  $form = $( 'form', $container ),
+			  $file = $( 'input[type="file"]', $form ),
+			  $activateBtnContainer = $( '.give-activate-addon-wrap', $form ),
+			  $activateBtn = $( 'button', $form ),
+			  $noticeContainer = $( '.give-addon-upload-notices', $form ),
+			  $licensesContainer = $( '#give-licenses-container' );
 
 		/**
 		 * File drop handler
@@ -296,7 +278,7 @@
 			$noticeContainer.empty().hide();
 			$form.removeClass( 'give-dropzone-active' );
 		} );
-		
+
 		/**
 		 * File change handler
 		 */
@@ -307,14 +289,13 @@
 			const fd = new FormData(),
 				files = $file[ 0 ].files[ 0 ];
 
-			if ( !files ) {
+			if ( ! files ) {
 				return false;
 			}
 
 			fd.append( 'file', files );
 			giveUploadData( fd );
 		} );
-
 
 		/**
 		 * Send AJAX request and upload file
@@ -326,30 +307,32 @@
 			$noticeContainer.empty();
 
 			$.ajax( {
-				url: `${ajaxurl}?action=give_upload_addon&_wpnonce=${$( 'input[name="_give_upload_addon"]', $form ).val().trim()}`,
+				url: `${ ajaxurl }?action=give_upload_addon&_wpnonce=${ $( 'input[name="_give_upload_addon"]', $form ).val().trim() }`,
 				method: 'POST',
 				data: formData,
 				contentType: false,
 				processData: false,
 				dataType: 'json',
 				beforeSend: function() {
+					Give.fn.loader( $licensesContainer );
 					$noticeContainer.show();
-					$noticeContainer.html( `<div class="give-notice notice notice-info"><p>${give_addon_var.notices.uploading}<span class="spinner"></span></p></div>` );
+					$noticeContainer.html( `<div class="give-notice notice notice-info"><p>${ give_addon_var.notices.uploading }<span class="spinner"></span></p></div>` );
 				},
 				success: function( response ) {
-
 					if ( true === response.success ) {
 						$noticeContainer.hide();
 						$activateBtnContainer.show();
 						$activateBtn.attr( 'data-pluginPath', response.data.pluginPath );
 						$activateBtn.attr( 'data-pluginName', response.data.pluginName );
 						$activateBtn.attr( 'data-nonce', response.data.nonce );
-
+						$licensesContainer.html( response.data.licenseSectionHtml );
 
 						return;
 					}
-					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${response.data.errorMsg}</p><span class="notice-dismiss"></span></div>` );
+					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
 				},
+			} ).always( function() {
+				Give.fn.loader( $licensesContainer, false );
 			} );
 		}
 
@@ -371,33 +354,33 @@
 				},
 				beforeSend: function() {
 					$noticeContainer.show();
+					Give.fn.loader( $licensesContainer );
 					$activateBtn.text( $activateBtn.attr( 'data-activating' ) );
 				},
 				success: function( response ) {
-
 					if ( true === response.success ) {
 						const msg = give_addon_var.notices.addon_activated.replace( '{pluginName}', $activateBtn.attr( 'data-pluginName' ) );
 						$noticeContainer.show();
-						$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${msg}</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ msg }</p><span class="notice-dismiss"></span></div>` );
+						$licensesContainer.html( response.data.licenseSectionHtml );
 
 						return;
 					}
 
 					if (
-						response.data.hasOwnProperty( 'errorMsg' )
-						&& response.data.errorMsg
+						response.data.hasOwnProperty( 'errorMsg' ) &&
+						response.data.errorMsg
 					) {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${response.data.errorMsg}</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
 					} else {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${give_addon_var.notices.addon_activation_error}</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.addon_activation_error }</p><span class="notice-dismiss"></span></div>` );
 					}
 				},
 			} ).always( function() {
 				$activateBtn.text( $activateBtn.attr( 'data-activate' ) );
 				$activateBtnContainer.hide();
+				Give.fn.loader( $licensesContainer, false );
 			} );
 		} );
-
 	} );
-
 }( jQuery ) );

@@ -131,9 +131,10 @@ function give_upload_addon_handler() {
 	}
 
 	wp_send_json_success( array(
-		'pluginPath' => $installed_addon['path'],
-		'pluginName' => $installed_addon['Name'],
-		'nonce'      => wp_create_nonce( "give_activate-{$installed_addon['path']}" ),
+		'pluginPath'         => $installed_addon['path'],
+		'pluginName'         => $installed_addon['Name'],
+		'nonce'              => wp_create_nonce( "give_activate-{$installed_addon['path']}" ),
+		'licenseSectionHtml' => Give_License::render_licenses_list(),
 	) );
 }
 
@@ -266,7 +267,9 @@ function give_activate_addon_handler() {
 	// Tell WordPress to look for updates.
 	set_site_transient( 'update_plugins', null );
 
-	wp_send_json_success( $status );
+	wp_send_json_success( array(
+		'licenseSectionHtml' => Give_License::render_licenses_list(),
+	) );
 }
 
 add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
