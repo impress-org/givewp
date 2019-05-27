@@ -200,7 +200,11 @@ function give_get_license_info_handler() {
 		) );
 	}
 
-	if( $is_activating_single_license && $plugin_slug !== $check_license_res['plugin_slug'] ) {
+	if(
+		$is_activating_single_license
+		&& ! empty( $check_license_res['plugin_slug'] )
+		&& $plugin_slug !== $check_license_res['plugin_slug']
+	) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
 				__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
