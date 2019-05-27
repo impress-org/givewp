@@ -2353,7 +2353,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 				wp_list_pluck( $give_licenses, 'item_name', true )
 			)
 		)
-		: '';
+		: array();
 
 	$tmp = Give_License::request_license_api(
 		array(
