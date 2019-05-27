@@ -126,6 +126,3 @@ function give_add_ons_feed( $feed_type = '' ) {
 
 	echo wp_kses_post( $cache );
 }
-
-// @todo: convert all staging site link to live site
-// @todo check if all plugin follow download file and github repo naming standards
