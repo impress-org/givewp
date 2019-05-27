@@ -591,9 +591,8 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 			'</a>'
 		),
 		sprintf(
-			'Please <a href="%1$s" target="_blank">activate your license</a> to receive updates and support for the %2$s add-on.',
-			esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
-			$plugin_data['Name']
+			'Please <a href="%1$s" target="_blank">activate your license</a> to receive updates and support.',
+			esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) )
 		)
 	);
 }
