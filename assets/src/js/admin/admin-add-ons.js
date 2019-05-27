@@ -118,7 +118,7 @@
 				$container = $this.parents( '.give-addon-wrap' );
 
 			// Remove errors if any.
-			$noticeContainer.empty();
+			$('.give-notice', $container ).remove();
 
 			$.ajax( {
 				url: ajaxurl,
