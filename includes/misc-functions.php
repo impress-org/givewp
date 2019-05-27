@@ -2465,7 +2465,7 @@ function give_check_addon_updates( $_transient_data ){
 
 		foreach ( $plugins as $plugin ) {
 			// This value will be empty if any error occurred when verifying version of add-on.
-			if ( ! $plugin['new_version'] ) {
+			if ( empty( $plugin['new_version'] ) ) {
 				continue;
 			}
 
