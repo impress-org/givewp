@@ -719,35 +719,31 @@ if ( ! class_exists( 'Give_License' ) ) :
 								$license['renew_url'],
 								__( 'Renew to manage sites', 'give' )
 							);
-						} elseif ( $license_key ) {
-							if ( ! $license['activations_left'] ) {
-								echo sprintf(
-									'<span class="give-text give-license__activation-left">%1$s</span>',
-									__( 'No activation remaining', 'give' )
-								);
-							} else {
-								echo sprintf(
-									'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
-									$license['activations_left'],
-									_n( 'activation remaining', 'activations remaining', $license['activations_left'], 'give' )
-								);
-							}
-						}
-
-						if ( ! $is_license_expired ) {
+						} elseif ( ! $license['activations_left'] ) {
 							echo sprintf(
-								'<span class="give-text"><a href="%9$s/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
-								__( 'Visit site', 'give' ),
-								__( 'Deactivate', 'give' ),
-								$license['license_id'],
-								$license['payment_id'],
-								$license['license_key'],
-								$license['item_name'],
-								wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
-								! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
-								Give_License::get_website_url()
+								'<span class="give-text give-license__activation-left">%1$s</span>',
+								__( 'No activation remaining', 'give' )
+							);
+						} else {
+							echo sprintf(
+								'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
+								$license['activations_left'],
+								_n( 'activation remaining', 'activations remaining', $license['activations_left'], 'give' )
 							);
 						}
+
+						echo sprintf(
+							'<span class="give-text"><a href="%9$spurchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
+							__( 'Visit site', 'give' ),
+							__( 'Deactivate', 'give' ),
+							$license['license_id'],
+							$license['payment_id'],
+							$license['license_key'],
+							$license['item_name'],
+							wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
+							! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
+							Give_License::get_website_url()
+						);
 					}
 					?>
 				</div>
