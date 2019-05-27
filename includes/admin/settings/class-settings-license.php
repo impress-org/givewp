@@ -188,71 +188,76 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<?php _e( 'Upload and Activate an Add-on', 'give' ); ?>
 								</h2>
 
-								<p class="give-field-description">
-									<?php
+								<?php if( ! is_multisite() ) :  ?>
+
+									<p class="give-field-description">
+										<?php
+										printf(
+											__( 'Drag an add-on zip file below to upload and activate it. Access your downloads by activating a license or via the <a href="%1$s" target="_blank">My Downloads</a> section on the GiveWP website. ', 'give' ),
+											Give_License::get_downloads_url()
+										);
+										?>
+									</p>
+
+									<?php if ( 'direct' !== get_filesystem_method() ) : ?>
+										<div class="give-notice notice notice-error inline">
+											<p>
+												<?php
+												echo sprintf(
+													__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
+													admin_url( 'plugin-install.php?tab=upload' )
+												);
+												?>
+											</p>
+										</div>
+									<?php else : ?>
+										<div class="give-upload-addon-form-wrap">
+											<form
+												method="post"
+												enctype="multipart/form-data"
+												class="give-upload-addon-form"
+												action="/">
+
+												<div class="give-addon-upload-notices"></div>
+
+												<div class="give-activate-addon-wrap">
+													<p><span
+															class="dashicons dashicons-yes"></span> <?php _e( 'Add-on succesfully uploaded.', 'give' ); ?>
+													</p>
+													<button
+														class="give-activate-addon-btn button-primary"
+														data-activate="<?php _e( 'Activate Add-on', 'give' ); ?>"
+														data-activating="<?php _e( 'Activating Add-on...', 'give' ); ?>"
+													><?php _e( 'Activate Add-on', 'give' ); ?></button>
+												</div>
+
+												<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
+
+												<p class="give-upload-addon-instructions">
+													<?php _e( 'Drag a plugin zip file here to upload', 'give' ); ?><br>
+													<span><?php _e( 'or', 'give' ); ?></span>
+												</p>
+
+												<label for="give-upload-addon-file-select" class="button button-small">
+													<?php _e( 'Select a File', 'give' ); ?>
+												</label>
+
+												<input
+													id="give-upload-addon-file-select"
+													type="file"
+													name="addon"
+													value="<?php _e( 'Select File', 'give' ); ?>"
+												/>
+
+											</form>
+										</div>
+									<?php endif; ?>
+									<?php else:
 									printf(
-										__( 'Drag an add-on zip file below to upload and activate it. Access your downloads by activating a license or via the <a href="%1$s" target="_blank">My Downloads</a> section on the GiveWP website. ', 'give' ),
-										Give_License::get_downloads_url()
+										__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.' ),
+										network_admin_url( 'plugin-install.php' )
 									);
 									?>
-								</p>
-
-								<?php if ( 'direct' !== get_filesystem_method() ) : ?>
-									<div class="give-notice notice notice-error inline">
-										<p>
-											<?php
-											echo sprintf(
-												__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
-												admin_url( 'plugin-install.php?tab=upload' )
-											);
-											?>
-										</p>
-									</div>
-								<?php else : ?>
-
-
-									<div class="give-upload-addon-form-wrap">
-
-										<form
-											method="post"
-											enctype="multipart/form-data"
-											class="give-upload-addon-form"
-											action="/">
-
-											<div class="give-addon-upload-notices"></div>
-
-											<div class="give-activate-addon-wrap">
-												<p><span
-														class="dashicons dashicons-yes"></span> <?php _e( 'Add-on succesfully uploaded.', 'give' ); ?>
-												</p>
-												<button
-													class="give-activate-addon-btn button-primary"
-													data-activate="<?php _e( 'Activate Add-on', 'give' ); ?>"
-													data-activating="<?php _e( 'Activating Add-on...', 'give' ); ?>"
-												><?php _e( 'Activate Add-on', 'give' ); ?></button>
-											</div>
-
-											<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
-
-											<p class="give-upload-addon-instructions">
-												<?php _e( 'Drag a plugin zip file here to upload', 'give' ); ?><br>
-												<span><?php _e( 'or', 'give' ); ?></span>
-											</p>
-
-											<label for="give-upload-addon-file-select" class="button button-small">
-												<?php _e( 'Select a File', 'give' ); ?>
-											</label>
-
-											<input
-												id="give-upload-addon-file-select"
-												type="file"
-												name="addon"
-												value="<?php _e( 'Select File', 'give' ); ?>"
-											/>
-
-										</form>
-									</div>
-
 								<?php endif; ?>
 							</div>
 						</div>
