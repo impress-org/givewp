@@ -65,6 +65,7 @@
 				},
 				beforeSend: function() {
 					$submitBtn.val( $submitBtn.attr( 'data-activating' ) );
+					$submitBtn.prop( 'disabled', true );
 					Give.fn.loader( $licensesContainer );
 				},
 				success: function( response ) {
