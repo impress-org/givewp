@@ -254,6 +254,24 @@ let Give = {
 
 			return cookie;
 		},
+
+		/**
+		 * Show and hide spinner
+		 *
+		 * @since 2.5.0
+		 * @public
+		 *
+		 * @param {object} $container Container where you wan to prepend spinner.
+		 * @param {boolean} show Flag to check whether to show or hide spinner.
+		 */
+		loader: function ($container, show = true) {
+			if (show) {
+				$container.prepend('<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>');
+				return;
+			}
+
+			jQuery('.give-spinner-wrap', $container).remove();
+		}
 	},
 
 	/**
