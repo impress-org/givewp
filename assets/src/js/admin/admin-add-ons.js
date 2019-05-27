@@ -321,6 +321,8 @@
 					$noticeContainer.html( `<div class="give-notice notice notice-info"><p>${ give_addon_var.notices.uploading }<span class="spinner"></span></p></div>` );
 				},
 				success: function( response ) {
+					let errorMsg;
+
 					if ( true === response.success ) {
 						$noticeContainer.hide();
 						$activateBtnContainer.show();
@@ -331,7 +333,17 @@
 
 						return;
 					}
-					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
+
+					if (
+						response.data.hasOwnProperty( 'errorMsg' ) &&
+						response.data.errorMsg
+					) {
+						errorMsg = response.data.errorMsg;
+					} else {
+						errorMsg = response.data.error;
+					}
+
+					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ errorMsg }</p><span class="notice-dismiss"></span></div>` );
 				},
 			} ).always( function() {
 				Give.fn.loader( $licensesContainer, false );

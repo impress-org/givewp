@@ -98,7 +98,9 @@ function give_upload_addon_handler() {
 	/* initialize the API */
 	if ( ! WP_Filesystem( $creds ) ) {
 		/* any problems and we exit */
-		wp_send_json_error();
+		wp_send_json_error(array(
+			'errorMsg' => __( 'File system does not load correctly.', 'give' )
+		));
 	}
 
 	$unzip_status = unzip_file( $upload_status['file'], $wp_filesystem->wp_plugins_dir() );
@@ -108,7 +110,9 @@ function give_upload_addon_handler() {
 
 	// Bailout if not able to unzip file successfully
 	if ( is_wp_error( $unzip_status ) ) {
-		wp_send_json_error( $unzip_status );
+		wp_send_json_error( array(
+			'errorMsg' => $unzip_status
+		) );
 	}
 
 	// Delete cache and get current installed addon plugin path.
