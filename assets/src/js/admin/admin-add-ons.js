@@ -15,7 +15,7 @@
 		function giveDisableActivateLicenseButton() {
 			const $btn = $( this ).next();
 
-			if ( !$( this ).val().trim() ) {
+			if ( ! $( this ).val().trim() ) {
 				$btn.prop( 'disabled', true );
 				return;
 			}
@@ -23,8 +23,13 @@
 			$btn.prop( 'disabled', false );
 		}
 
-		$licensesContainer.on( 'change keyup', '.give-license__key input[type="text"]', giveDisableActivateLicenseButton ).change();
-		$licenseActivationFormContainer.on( 'change keyup', 'input[name="give_license_key"]', giveDisableActivateLicenseButton ).change();
+		$licensesContainer.on( 'change keyup', '.give-license__key input[type="text"]', giveDisableActivateLicenseButton );
+		$licenseActivationFormContainer.on( 'change keyup', 'input[name="give_license_key"]', giveDisableActivateLicenseButton );
+
+		// Auto trigger change event.
+		$( '.give-license__key input[type="text"]', $licensesContainer ).change();
+		$( 'input[name="give_license_key"]', $licenseActivationFormContainer ).change();
+
 
 		/**
 		 * Allow dismissing upload notices for license widget.
