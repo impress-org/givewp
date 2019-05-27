@@ -279,7 +279,7 @@ function give_receipt_shortcode( $atts ) {
 	    $donation_id = $get_data['donation_id'];
     } else if ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
 		$receipt_type = 'view_in_browser';
-	    $donation_id  = give_get_donation_id_by_key( $get_data['_give_hash'] );
+	    $donation_id  = $get_data['_give_hash'];
     } else if ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
 	} else if ( ! empty( $give_receipt_args['id'] ) ) {
