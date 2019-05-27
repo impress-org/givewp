@@ -155,8 +155,9 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
-	$license_key                  = give_clean( $_POST['license'] );
-	$is_activating_single_license = isset( $_POST['single'] ) ? ! ! absint( $_POST['single'] ) : '';
+	$license_key                  = give_get_super_global( 'POST', 'license' );
+	$is_activating_single_license = absint( give_get_super_global( 'POST', 'single' ) );
+	$plugin_slug                  = $is_activating_single_license ? give_get_super_global( 'POST', 'addon' ) : '';
 	$licenses                     = get_option( 'give_licenses', array() );
 
 
@@ -191,6 +192,15 @@ function give_get_license_info_handler() {
 				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
 				Give_License::get_account_url(),
 				$check_license_res['license']
+			),
+		) );
+	}
+
+	if( $is_activating_single_license && $plugin_slug !== $check_license_res['plugin_slug'] ) {
+		wp_send_json_error( array(
+			'errorMsg' => sprintf(
+				__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+				Give_License::get_account_url()
 			),
 		) );
 	}

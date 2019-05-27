@@ -610,7 +610,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
-					<?php echo self::html_license_row( $license ); ?>
+					<?php echo self::html_license_row( $license, $plugin ); ?>
 					<?php echo self::html_plugin_row( $plugin ); ?>
 				</div>
 			</div>
@@ -692,8 +692,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 						<?php if ( ! $license_key ) : ?>
-							&nbsp;&nbsp;
-							<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
+							&nbsp;&nbsp
+							<button class="give-button__license-activate button-secondary" disabled data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate License' ); ?></button>
 						<?php endif; ?>
 					</span>
 

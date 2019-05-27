@@ -128,6 +128,7 @@
 					action: 'give_get_license_info',
 					license: $this.prev( '.give-license__key input[type="text"]' ).val().trim(),
 					single: 1,
+					addon: $this.attr('data-addon'),
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
 				},
 				beforeSend: function() {
