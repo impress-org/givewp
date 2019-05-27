@@ -2368,7 +2368,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 	}
 
 
-	// Remove unlicensed add-on from reposnse.
+	// Remove unlicensed add-on from response.
 	$tmp_unlicensed = array();
 	foreach ( $tmp as $key => $data ){
 		if( empty( $data ) ) {
