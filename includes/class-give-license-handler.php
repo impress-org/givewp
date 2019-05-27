@@ -854,7 +854,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				'give_licenses_refreshed_last_checked',
 				array(
 					'compare' => date( 'Ymd' ),
-					'time'    => time(),
+					'time'    => current_time( 'timestamp', 1 ),
 					'count'   => 0,
 				)
 			);

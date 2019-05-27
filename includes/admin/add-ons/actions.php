@@ -383,6 +383,9 @@ function give_refresh_all_licenses_handler() {
 		$data['count']   = 0;
 	}
 
+	// Update time.
+	$data['time'] = current_time( 'timestamp', 1 );
+
 	++ $data['count'];
 
 	update_option( 'give_licenses_refreshed_last_checked', $data, 'no' );
@@ -398,7 +401,7 @@ function give_refresh_all_licenses_handler() {
 			__( 'Last refreshed on %1$s at %2$s', 'give' ),
 			date( give_date_format(), $local_date ),
 			date( 'g:i a', $local_date )
-		)
+		),
 	) );
 }
 

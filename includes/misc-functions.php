@@ -2412,7 +2412,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
 
 	$refresh            = Give_License::refresh_license_status();
-	$refresh['time']    = time();
+	$refresh['time']    = current_time( 'timestamp', 1 );
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
