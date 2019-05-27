@@ -799,25 +799,23 @@ if ( ! class_exists( 'Give_License' ) ) :
 			<div class="give-row give-border give-plugin__info">
 				<div class="give-left">
 					<span class="give-text give-plugin__name"><?php echo $plugin['Name']; ?></span>
-					<?php if ( $is_license ) : ?>
-						<span class="give-text">
-							<?php
-							echo sprintf(
-								'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
-								give_modal_ajax_url(
-									array(
-										'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
-											? urldecode_deep( $plugin['ChangeLogSlug'] )
-											: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
-										'show_changelog' => 1,
-									)
-								),
-								__( 'changelog', 'give' ),
-								__( 'Changelog of' ) . " {$plugin['Name']}"
-							);
-							?>
-						</span>
-					<?php endif; ?>
+					<span class="give-text">
+						<?php
+						echo sprintf(
+							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
+							give_modal_ajax_url(
+								array(
+									'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
+										? urldecode_deep( $plugin['ChangeLogSlug'] )
+										: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
+									'show_changelog' => 1,
+								)
+							),
+							__( 'changelog', 'give' ),
+							__( 'Changelog of' ) . " {$plugin['Name']}"
+						);
+						?>
+					</span>
 				</div>
 				<div class="give-right">
 					<span class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ); ?></span>
