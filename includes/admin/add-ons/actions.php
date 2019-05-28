@@ -481,7 +481,7 @@ add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates',
  * @since 2.5.0
  */
 function give_show_update_notification_on_multisite( $file, $plugin ) {
-	if ( is_network_admin() || is_blog_admin() ) {
+	if ( is_network_admin() ) {
 		return;
 	}
 
@@ -518,7 +518,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 
 	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
 		printf(
-			'<tr class="plugin-update-tr %3$s" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
+			'<tr class="plugin-update-tr %3$s" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">',
 			$plugin['slug'],
 			$file,
 			'active' === $plugin_data['Status'] ? 'active' : 'inactive'
@@ -544,7 +544,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $plugin['new_version'] ),
 				'</a>',
-				'<a target="_blank" href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $plugin_data['Name'], 'upgrade-plugin_' . $plugin_data['Name'] ) ) . '">',
+				'<a target="_blank" class="update-link" href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file, 'upgrade-plugin_' . $file ) ) . '">',
 				'</a>'
 			);
 		}
