@@ -146,10 +146,9 @@ $give_updates = Give_Updates::get_instance();
 		if ( ! empty( $plugin_updates ) ) : ?>
 			<?php
 			$plugin_update_url = add_query_arg(
-				array( 'plugin_status' => 'give', ),
-				is_multisite()
-					? network_admin_url( '/plugins.php' )
-					: admin_url( '/plugins.php' )
+				array(
+					'plugin_status' => 'give',
+				), admin_url( '/plugins.php' )
 			);
 			?>
 			<div id="give-plugin-updates">
@@ -162,8 +161,8 @@ $give_updates = Give_Updates::get_instance();
 									<?php
 									printf(
 										_n(
-											'There is %1$d Give addon that needs to be updated. <a href="%2$s" target="_blank">Update now</a>',
-											'There are %1$d Give addons that need to be updated. <a href="%2$s" target="_blank">Update now</a>',
+											'There is %1$d Give addon that needs to be updated. <a href="%2$s">Update now</a>',
+											'There are %1$d Give addons that need to be updated. <a href="%2$s">Update now</a>',
 											$plugin_updates,
 											'give'
 										),
