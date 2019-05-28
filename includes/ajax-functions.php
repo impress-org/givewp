@@ -347,7 +347,7 @@ function give_ajax_form_search() {
 	 *
 	 * @return array $results Contain the Donation Form id
 	 */
-	$results = (array) apply_filters( 'give_ajax_form_search_responce', $results );
+	$results = (array) apply_filters( 'give_ajax_form_search_response', $results );
 
 	wp_send_json( $results );
 }
