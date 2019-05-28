@@ -251,7 +251,7 @@ function give_get_license_info_handler() {
 
 
 	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
+	give_refresh_licenses();
 
 	wp_send_json_success( $response );
 }
@@ -283,7 +283,7 @@ function give_activate_addon_handler() {
 	}
 
 	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
+	give_refresh_licenses();
 
 	wp_send_json_success( array(
 		'licenseSectionHtml' => Give_License::render_licenses_list(),
@@ -352,6 +352,8 @@ function give_deactivate_license_handler() {
 
 	// Tell WordPress to look for updates.
 	set_site_transient( 'update_plugins', null );
+
+	give_refresh_licenses();
 
 	wp_send_json_success( $response );
 }
