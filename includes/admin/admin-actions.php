@@ -1365,3 +1365,29 @@ function give_hide_notices_on_add_ons_page(){
 }
 add_action( 'in_admin_header', 'give_hide_notices_on_add_ons_page', 999 );
 
+
+/**
+ * Admin JS
+ * @since 2.5.0
+ */
+function give_admin_quick_js(){
+	if( is_multisite() && is_blog_admin() ) {
+		?>
+		<script>
+			jQuery(document).ready(function($){
+				var $updateNotices = $('[id$="-update"] ', '.wp-list-table' );
+
+				if( $updateNotices.length ) {
+					$.each( $updateNotices, function( index, $updateNotice ){
+						$updateNotice = $($updateNotice);
+						$updateNotice.prev().addClass('update');
+					});
+				}
+			});
+		</script>
+		<?php
+	}
+}
+add_action( 'admin_head', 'give_admin_quick_js' );
+
+
