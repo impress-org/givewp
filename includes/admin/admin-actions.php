@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.8
  */
 function give_load_wp_editor() {
-	if ( ! isset( $_POST['wp_editor'] ) ) {
+	if ( ! isset( $_POST['wp_editor'] ) || ! current_user_can('edit_give_forms' ) ) {
 		die();
 	}
 
