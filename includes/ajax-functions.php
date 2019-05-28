@@ -578,7 +578,7 @@ function give_check_for_form_price_variations() {
 		die( '-1' );
 	}
 
-	$form_id = intval( $_POST['form_id'] );
+	$form_id = absint( $_POST['form_id'] );
 	$form    = get_post( $form_id );
 
 	if ( 'give_forms' !== $form->post_type ) {
@@ -624,8 +624,8 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
-	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : false;
+	$form_id    = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : false;
+	$payment_id = ! empty( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : false;
 	if ( empty( $form_id ) || empty( $payment_id ) ) {
 		wp_die();
 	}
