@@ -246,16 +246,20 @@ $license-widget-border-color: #DBDBDB;
 	margin: 0 0 20px;
 	position: relative;
 
-	.give-license-row {
-
-	}
-
-
 	.give-license-top {
 		background: $license-widget-bg;
 		border-bottom: 1px solid $license-widget-border-color;
 		display: flex;
 		color: $dark;
+	}
+
+	.give-license-notice-container.give-addon-notice-shown {
+		background: $license-widget-bg;
+		border-bottom: 1px solid $license-widget-border-color;
+		padding: 30px;
+		.notice {
+			margin: 0;
+		}
 	}
 
 	.give-license-top-header {
@@ -455,7 +459,6 @@ $license-widget-border-color: #DBDBDB;
 	.give-addon-view-changelog {
 		font-size: 12px;
 	}
-
 
 }
 

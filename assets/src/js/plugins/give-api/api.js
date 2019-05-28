@@ -16,7 +16,7 @@ let Give = {
 
 		// Initialize all init methods of sub helper objects.
 		while ( counter < subHelperObjs.length ) {
-			if ( ! ! Give[ subHelperObjs[ counter ] ].init ) {
+			if ( !!Give[ subHelperObjs[ counter ] ].init ) {
 				Give[ subHelperObjs[ counter ] ].init();
 			}
 			counter ++;
@@ -67,11 +67,11 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price    = parseFloat(price).toFixed(format_args.precision),
+				let actual_price = parseFloat( price ).toFixed( format_args.precision ),
 					afterPoint = args.precision ? '.0' : '',
-					lastThree       = '',
-					otherNumbers    = '',
-					result          = '',
+					lastThree = '',
+					otherNumbers = '',
+					result = '',
 					lastDotPosition = '';
 
 				actual_price = accounting.unformat( actual_price, '.' ).toString();
@@ -82,17 +82,17 @@ let Give = {
 				}
 
 				actual_price = Math.floor( actual_price ).toString();
-				lastThree    = actual_price.substring( actual_price.length - 3 );
+				lastThree = actual_price.substring( actual_price.length - 3 );
 				otherNumbers = actual_price.substring( 0, actual_price.length - 3 );
 
 				if ( '' !== otherNumbers ) {
 					lastThree = format_args.thousand + lastThree;
 				}
 
-				result          = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, format_args.thousand) + lastThree + afterPoint;
-				lastDotPosition = result.lastIndexOf('.');
-				result          = result.slice(0, lastDotPosition) + ((result.slice(lastDotPosition) + '000000000000').substr(0, args.precision + 1));
-				price           = result;
+				result = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
+				lastDotPosition = result.lastIndexOf( '.' );
+				result = result.slice( 0, lastDotPosition ) + ( ( result.slice( lastDotPosition ) + '000000000000' ).substr( 0, args.precision + 1 ) );
+				price = result;
 
 				if ( undefined !== args.symbol && args.symbol.length ) {
 					if ( 'after' === args.position ) {
@@ -129,7 +129,7 @@ let Give = {
 
 				if ( 0 === price.indexOf( decimal_separator ) ) {
 					price = price.substr( 1 );
-				} else if ( (price.length - 1) === price.indexOf( decimal_separator ) ) {
+				} else if ( ( price.length - 1 ) === price.indexOf( decimal_separator ) ) {
 					price = price.slice( 0, - 1 );
 				}
 			}
@@ -147,7 +147,7 @@ let Give = {
 		 * @returns {*}
 		 */
 		getParameterByName: function( name, url ) {
-			if ( ! url ) {
+			if ( !url ) {
 				url = window.location.href;
 			}
 
@@ -156,11 +156,11 @@ let Give = {
 			let regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
 				results = regex.exec( url );
 
-			if ( ! results ) {
+			if ( !results ) {
 				return null;
 			}
 
-			if ( ! results[ 2 ] ) {
+			if ( !results[ 2 ] ) {
 				return '';
 			}
 
@@ -189,7 +189,7 @@ let Give = {
 		 * @return {object} WordPress localized global param.
 		 */
 		getGlobal: function() {
-			return ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
+			return ( 'undefined' === typeof give_global_vars ) ? give_vars : give_global_vars;
 		},
 
 		/**
@@ -249,7 +249,7 @@ let Give = {
 			let cookie = '';
 
 			if ( 2 === parts.length ) {
-				cookie = parts.pop().split(';').shift();
+				cookie = parts.pop().split( ';' ).shift();
 			}
 
 			return cookie;
@@ -264,13 +264,13 @@ let Give = {
 		 * @param {object} $container Container where you wan to prepend spinner.
 		 * @param {boolean} show Flag to check whether to show or hide spinner.
 		 */
-		loader: function ($container, show = true) {
-			if (show) {
-				$container.prepend('<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>');
+		loader: function( $container, show = true ) {
+			if ( show ) {
+				$container.prepend( '<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>' );
 				return;
 			}
 
-			jQuery('.give-spinner-wrap', $container).remove();
+			jQuery( '.give-spinner-wrap', $container ).remove();
 		}
 	},
 

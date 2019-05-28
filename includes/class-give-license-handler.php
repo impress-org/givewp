@@ -687,7 +687,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$is_license_expired = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
 			?>
 			<div class="give-license-row give-clearfix">
-
+				<div class="give-license-notice-container"></div>
 				<div class="give-license-top give-clearfix">
 
 					<div class="give-license-top-column give-license-key-field-wrap">
