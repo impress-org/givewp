@@ -190,7 +190,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
  */
 function give_ajax_get_form_title() {
 	if ( isset( $_POST['form_id'] ) ) {
-		$title = get_the_title( $_POST['form_id'] );
+		$title = get_the_title( absint( give_clean( $_POST['form_id'] ) ) );
 		if ( $title ) {
 			echo $title;
 		} else {
