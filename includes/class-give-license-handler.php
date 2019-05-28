@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private static $site_url = 'http://givewp.com/';
+		private static $site_url = 'http://staging.givewp.com/';
 
 		/**
 		 * API URL
@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'http://givewp.com/edd-sl-api/';
+		private $api_url = 'https://staging.givewp.com/edd-sl-api/';
 
 		/**
 		 * array of licensed addons
@@ -154,7 +154,17 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $account_url = 'http://givewp.com/my-account/';
+		private static $account_url = 'http://staging.givewp.com/my-account/';
+
+		/**
+		 * Downloads URL
+		 *
+		 * @access private
+		 * @since  2.5.0
+		 *
+		 * @var null|string
+		 */
+		private static $downloads_url = 'http://staging.givewp.com/my-downloads/';
 
 		/**
 		 * Checkout URL
@@ -164,7 +174,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $checkout_url = 'http://givewp.com/checkout/';
+		private static $checkout_url = 'http://staging.givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
@@ -184,7 +194,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param int    $_item_id
 		 *
 		 * @since  1.0
-		 *
 		 */
 		public function __construct(
 			$_file,
@@ -222,11 +231,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Add plugin to registered licenses list.
 			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
-
-			// Setup hooks
-			$this->includes();
-			$this->hooks();
-
 		}
 
 
@@ -238,81 +242,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return string
 		 * @since  2.1.0
 		 * @access public
-		 *
 		 */
 		public static function get_short_name( $plugin_name ) {
 			$plugin_name = trim( str_replace( 'Give - ', '', $plugin_name ) );
 			$plugin_name = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) );
 
 			return $plugin_name;
-		}
-
-		/**
-		 * Includes
-		 *
-		 * Include the updater class.
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		private function includes() {
-
-			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-				require_once 'admin/EDD_SL_Plugin_Updater.php';
-			}
-		}
-
-		/**
-		 * Hooks
-		 *
-		 * Setup license hooks.
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		private function hooks() {
-			// Updater.
-			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
-
-			$plugin_file = plugin_basename( $this->file );
-
-			// Show addon notice on plugin page.
-			add_action( "after_plugin_row_{$plugin_file}", array( $this, 'plugin_page_notices' ), 10, 3 );
-		}
-
-
-		/**
-		 * Auto Updater
-		 *
-		 * @access private
-		 * @return void
-		 * @since  1.0
-		 *
-		 */
-		public function auto_updater() {
-			// @todo: test auto updater with all access pass
-
-			if ( ! empty( $this->item_id ) ) {
-				$args['item_id'] = $this->item_id;
-			} else {
-				$args['item_name'] = $this->item_name;
-			}
-
-			// Setup the updater.
-			$this->auto_updater_obj = new EDD_SL_Plugin_Updater(
-				$this->api_url,
-				$this->file,
-				array(
-					'version'   => $this->version,
-					'license'   => $this->license,
-					'item_name' => $this->item_name,
-					'author'    => $this->author,
-				)
-			);
 		}
 
 		/**
@@ -323,7 +258,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @return void
 		 * @since  1.0
-		 *
 		 */
 		public function activate_license() {
 		}
@@ -336,46 +270,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @return void
 		 * @since  1.0
-		 *
 		 */
 		public function deactivate_license() {
-		}
-
-
-		/**
-		 * Display plugin page licenses status notices.
-		 *
-		 * @param $plugin_file
-		 * @param $plugin_data
-		 * @param $status
-		 */
-		public function plugin_page_notices( $plugin_file, $plugin_data, $status ) {
-			if( $this->license ) {
-				return;
-			}
-
-			$update_notice_wrap = '<tr class="give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="notice inline notice-warning notice-alt give-invalid-license"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
-			$message            = $this->license_nag_msg();
-
-			echo sprintf( $update_notice_wrap, $message );
-		}
-
-
-		/**
-		 * Get message related to license state.
-		 *
-		 * @return string
-		 * @since  2.5.0
-		 * @access public
-		 */
-		private function license_nag_msg() {
-			$message= sprintf(
-				'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
-				esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
-				$this->item_name
-			);
-
-			return $message;
 		}
 
 
@@ -416,7 +312,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return array
 		 * @since 2.1.4
-		 *
 		 */
 		static function get_licensed_addons() {
 			return self::$licensed_addons;
@@ -430,7 +325,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return array
 		 * @since 2.5.0
-		 *
 		 */
 		static function is_subscription( $license_key = '' ) {
 			// Check if current license is part of subscription or not.
@@ -458,7 +352,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return array|WP_Error
 		 * @since  1.8.9
 		 * @access public
-		 *
 		 */
 		public static function request_license_api( $api_params = array(), $response_in_array = false ) {
 			// Bailout.
@@ -508,8 +401,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 */
 		public static function get_license_by_plugin_dirname( $plugin_dirname ) {
-			$license        = array();
-			$give_licenses  = get_option( 'give_licenses', array() );
+			$license       = array();
+			$give_licenses = get_option( 'give_licenses', array() );
 
 			if ( ! empty( $give_licenses ) ) {
 				foreach ( $give_licenses as $give_license ) {
@@ -534,6 +427,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Get checkout url
+		 *
 		 * @return string|null
 		 * @since 2.5.0
 		 */
@@ -543,6 +437,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Get account url
+		 *
 		 * @return string|null
 		 * @since 2.5.0
 		 */
@@ -551,7 +446,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
+		 * Get downloads url
+		 *
+		 * @return string|null
+		 * @since 2.5.0
+		 */
+		public static function get_downloads_url() {
+			return self::$downloads_url;
+		}
+
+		/**
 		 * Get account url
+		 *
 		 * @return string|null
 		 * @since 2.5.0
 		 */
@@ -568,7 +474,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return array
 		 * @since 2.5.0
-		 *
 		 */
 		public static function get_plugin_by_slug( $plugin_slug ) {
 			$give_plugins   = give_get_plugins();
@@ -586,7 +491,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return string
 		 * @since 2.5.0
-		 *
 		 */
 		public static function build_plugin_name_from_slug( $plugin_slug ) {
 			$plugin_name = str_replace( array( '-', 'give ' ), array( ' ', 'Give - ' ), $plugin_slug );
@@ -599,7 +503,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return string
 		 * @since 2.5.0
-		 *
 		 */
 		public static function render_licenses_list() {
 			$give_plugins  = give_get_plugins();
@@ -643,7 +546,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 					$html_arr_key = 'licensed';
 				}
 
-				$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
+				$html[ "{$html_arr_key}" ] .= self::html_by_plugin( $give_plugin );
 			}
 
 			if ( ! empty( $all_access_pass_licenses ) ) {
@@ -663,7 +566,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return string
 		 * @since 2.5.0
-		 *
 		 */
 		public static function html_by_plugin( $plugin ) {
 			// Bailout.
@@ -697,16 +599,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 				}
 			}
 
-			$plugin['License'] = $license = wp_parse_args( $license, array(
-				'item_name' => str_replace( 'give-', '', $plugin['Dir'] ),
-				'purchase_link' => $plugin['PluginURI']
-			) );
+			$plugin['License'] = $license = wp_parse_args(
+				$license, array(
+					'item_name'     => str_replace( 'give-', '', $plugin['Dir'] ),
+					'purchase_link' => $plugin['PluginURI'],
+				)
+			);
 
 			$plugin = wp_parse_args( $plugin, $default_plugin )
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
-					<?php echo self::html_license_row( $license ); ?>
+					<?php echo self::html_license_row( $license, $plugin ); ?>
 					<?php echo self::html_plugin_row( $plugin ); ?>
 				</div>
 			</div>
@@ -723,7 +627,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return string
 		 * @since 2.5.0
-		 *
 		 */
 		private static function html_by_license( $license ) {
 			ob_start();
@@ -789,12 +692,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
 						<input type="text" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 						<?php if ( ! $license_key ) : ?>
-							&nbsp;&nbsp;
-							<button class="give-button__license-activate button-secondary" disabled><?php _e( 'Activate License' ); ?></button>
+							&nbsp;&nbsp
+							<button class="give-button__license-activate button-secondary" disabled data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate License' ); ?></button>
 						<?php endif; ?>
 					</span>
 
-					<?php //@todo: handle all license status;
+					<?php
+					// @todo: handle all license status;
 					?>
 					<?php
 					if ( $license_key ) {
@@ -815,41 +719,37 @@ if ( ! class_exists( 'Give_License' ) ) :
 								$license['renew_url'],
 								__( 'Renew to manage sites', 'give' )
 							);
-						} elseif ( $license_key ) {
-							if ( ! $license['activations_left'] ) {
-								echo sprintf(
-									'<span class="give-text give-license__activation-left">%1$s</span>',
-									__( 'No activation remaining', 'give' )
-								);
-							} else {
-								echo sprintf(
-									'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
-									$license['activations_left'],
-									_n( 'activation remaining', 'activations remaining', $license['activations_left'], 'give' )
-								);
-							}
-						}
-
-						if ( ! $is_license_expired ) {
+						} elseif ( ! $license['activations_left'] ) {
 							echo sprintf(
-								'<span class="give-text"><a href="%9$s/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
-								__( 'Visit site', 'give' ),
-								__( 'Deactivate', 'give' ),
-								$license['license_id'],
-								$license['payment_id'],
-								$license['license_key'],
-								$license['item_name'],
-								wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
-								! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
-								Give_License::get_website_url()
+								'<span class="give-text give-license__activation-left">%1$s</span>',
+								__( 'No activation remaining', 'give' )
+							);
+						} else {
+							echo sprintf(
+								'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
+								$license['activations_left'],
+								_n( 'activation remaining', 'activations remaining', $license['activations_left'], 'give' )
 							);
 						}
+
+						echo sprintf(
+							'<span class="give-text"><a href="%9$spurchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
+							__( 'Visit site', 'give' ),
+							__( 'Deactivate', 'give' ),
+							$license['license_id'],
+							$license['payment_id'],
+							$license['license_key'],
+							$license['item_name'],
+							wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
+							! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
+							Give_License::get_website_url()
+						);
 					}
 					?>
 				</div>
 				<div class="give-right">
 					<?php if ( ! $license_key ) : ?>
-						<span class="give-text"><?php _e( 'Not receiving updates or support' ) ?></span>
+						<span class="give-text"><?php _e( 'Not receiving updates or support' ); ?></span>
 						<span>
 						<?php
 						// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
@@ -860,7 +760,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						);
 						?>
 					</span>
-					<?php else: ?>
+					<?php else : ?>
 						<?php
 						echo sprintf(
 							'<span><strong>%1$s %2$s</strong></span>',
@@ -881,7 +781,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @param array $plugin
 		 *
-		 *
 		 * @return string
 		 * @since 2.5.0
 		 */
@@ -894,32 +793,30 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$is_license         = $plugin['License'] && ! empty( $plugin['License']['license_key'] );
 			$expires_timestamp  = $is_license ? strtotime( $plugin['License']['expires'] ) : '';
 			$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
-
 			ob_start();
 			?>
 			<div class="give-row give-border give-plugin__info">
 				<div class="give-left">
 					<span class="give-text give-plugin__name"><?php echo $plugin['Name']; ?></span>
-					<?php if( $is_license ) :  ?>
-						<span class="give-text">
-							<?php
-							echo sprintf(
-								'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
-								give_modal_ajax_url( array(
+					<span class="give-text">
+						<?php
+						echo sprintf(
+							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
+							give_modal_ajax_url(
+								array(
 									'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
 										? urldecode_deep( $plugin['ChangeLogSlug'] )
 										: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
 									'show_changelog' => 1,
-								) ),
-								__( 'changelog', 'give' ),
-								__( 'Changelog of' ) . " {$plugin['Name']}"
-							);
-							?>
-						</span>
-					<?php endif; ?>
+								)
+							),
+							__( 'changelog', 'give' ),
+							__( 'Changelog of' ) . " {$plugin['Name']}"
+						);
+						?>
+					</span>
 				</div>
 				<div class="give-right">
-					<span class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ) ?></span>
 					<?php
 					if ( in_array( $plugin['Status'], array( 'active', 'inactive' ) ) ) {
 						echo sprintf(
@@ -929,6 +826,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 						);
 					}
 
+					printf(
+						'<span class="give-text">%1$s %2$s</span>',
+						__( 'Version', 'give' ),
+						$plugin['Version']
+					);
 
 					printf(
 						'<span><%3$s class="give-button button-secondary" target="_blank" href="%1$s"%4$s><i class="dashicons dashicons-download"></i>%2$s</%3$s></span>',
@@ -952,12 +854,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since 2.5.0
 		 * @return mixed|void
 		 */
-		public static function refresh_license_status(){
+		public static function refresh_license_status() {
 			return get_option(
 				'give_licenses_refreshed_last_checked',
 				array(
 					'compare' => date( 'Ymd' ),
-					'time'    => time(),
+					'time'    => current_time( 'timestamp', 1 ),
 					'count'   => 0,
 				)
 			);

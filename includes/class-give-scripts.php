@@ -29,7 +29,7 @@ class Give_Scripts {
 	 * @var    bool
 	 * @access private
 	 */
-	private $scripts_footer;
+	private static $scripts_footer;
 
 	/**
 	 * Instantiates the Assets class.
@@ -38,7 +38,7 @@ class Give_Scripts {
 	 */
 	public function __construct() {
 		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
-		$this->scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
+		self::$scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
 		$this->init();
 	}
 
@@ -64,6 +64,21 @@ class Give_Scripts {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
 		}
+	}
+
+	/**
+	 * Register plugin script.
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 *
+	 * @param string $handle Script Handle.
+	 * @param string $src    Script Source URL.
+	 * @param array  $dep    Dependency on a script.
+	 * @param mixed  $ver    Script Version
+	 */
+	public static function register_script( $handle, $src, $dep = array(), $ver = false ) {
+		wp_register_script( $handle, $src, $dep, $ver, self::$scripts_footer );
 	}
 
 	/**
@@ -122,7 +137,7 @@ class Give_Scripts {
 		);
 
 		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, self::$scripts_footer );
 	}
 
 	/**
@@ -180,16 +195,15 @@ class Give_Scripts {
 		// Localize admin scripts
 		$this->admin_localize_scripts();
 
-
 		if ( Give_Admin_Settings::is_setting_page( 'licenses'  ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(
-					'uploading'       => __( 'Uploading', 'give' ),
-					'uploaded'        => __( 'Uploaded', 'give' ),
-					'invalid_license' => __( 'Sorry, you entered a invalid key.', 'give' ),
-					'download_file'   => __( '<a href="{link}" target="_blank">Click here</a> to download addon zip file.', 'give' ),
-					'addon_activated'   => __( '{pluginName} addon Activated successfully.', 'give' ),
+					'uploading'       => __( 'Uploading...', 'give' ),
+					'invalid_license' => __( 'Sorry, you entered an invalid key.', 'give' ),
+					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}" target="_blank">Click here</a> to download your add-on.', 'give' ),
+					'addon_activated'   => __( '{pluginName} add-on activated successfully.', 'give' ),
+					'addon_activation_error'   => __( 'The add-on did not activate successfully.', 'give' ),
 				),
 			);
 
@@ -198,7 +212,7 @@ class Give_Scripts {
 	}
 
 	/**
-	 * Load admin plugin page related scripts, styles andd localize param
+	 * Load admin plugin page related scripts, styles and localize param.
 	 *
 	 * @since  2.2.0
 	 * @access private
@@ -212,8 +226,8 @@ class Give_Scripts {
 			'cancel'                          => __( 'Cancel', 'give' ),
 			'deactivation_no_option_selected' => __( 'Error: Please select at least one option.', 'give' ),
 			'submit_and_deactivate'           => __( 'Submit and Deactivate', 'give' ),
-			'skip_and_deactivate'             => __( 'Skip & Deactivate', 'give' ),
-			'please_fill_field'               => __( 'Error: Please fill the field.', 'give' ),
+			'skip_and_deactivate'             => __( 'Skip and Deactivate', 'give' ),
+			'please_fill_field'               => __( 'Error: Please complete the required field.', 'give' ),
 
 		);
 
@@ -232,6 +246,13 @@ class Give_Scripts {
 		$thousand_separator = give_get_price_thousand_separator();
 		$decimal_separator  = give_get_price_decimal_separator();
 		$number_decimals    = give_get_price_decimals();
+
+		$stripe_user_id            = give_get_option( 'give_stripe_user_id', false );
+		$disconnect_stripe_message = sprintf(
+			/* translators: %s Stripe User ID */
+			__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
+			$stripe_user_id
+		);
 
 		// Localize strings & variables for JS.
 		$localized_data = array(
@@ -354,6 +375,8 @@ class Give_Scripts {
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
 				)
 			),
+			'disconnect_stripe_title'      => __( 'Confirm Disconnect?', 'give' ),
+			'disconnect_stripe_message'    => $disconnect_stripe_message,
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );

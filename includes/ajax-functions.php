@@ -809,7 +809,7 @@ function give_modal_ajax_url( $args = array() ) {
 /**
  * Return content from url
  * Note: only for internal use
- * @todo use get_version endpoint to read changelog
+ * @todo use get_version endpoint to read changelog or cache add-ons infro from update_plugins option
  *
  * @return string
  * @since 2.5.0

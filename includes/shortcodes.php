@@ -28,14 +28,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_donation_history( $atts, $content = false ) {
 
-	$donation_history_args = shortcode_atts( array(
-		'id'             => true,
-		'date'           => true,
-		'donor'          => false,
-		'amount'         => true,
-		'status'         => false,
-		'payment_method' => false,
-	), $atts, 'donation_history' );
+	$donation_history_args = shortcode_atts(
+		array(
+			'id'             => true,
+			'date'           => true,
+			'donor'          => false,
+			'amount'         => true,
+			'status'         => false,
+			'payment_method' => false,
+		), $atts, 'donation_history'
+	);
 
 	// Always show receipt link.
 	$donation_history_args['details'] = true;
@@ -47,15 +49,15 @@ function give_donation_history( $atts, $content = false ) {
 
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if (
-        ! empty( $get_data['donation_id'] ) ||
-        (
-            ! empty( $get_data['action'] ) &&
-            'view_in_browser' === $get_data['action']
-        )
-    ) {
+		! empty( $get_data['donation_id'] ) ||
+		(
+			! empty( $get_data['action'] ) &&
+			'view_in_browser' === $get_data['action']
+		)
+	) {
 		ob_start();
 
-		echo give_receipt_shortcode( array( ) );
+		echo give_receipt_shortcode( array() );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
@@ -156,11 +158,13 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  * @return string
  */
 function give_goal_shortcode( $atts ) {
-	$atts = shortcode_atts( array(
-		'id'        => '',
-		'show_text' => true,
-		'show_bar'  => true,
-	), $atts, 'give_goal' );
+	$atts = shortcode_atts(
+		array(
+			'id'        => '',
+			'show_text' => true,
+			'show_bar'  => true,
+		), $atts, 'give_goal'
+	);
 
 	// get the Give Form.
 	ob_start();
@@ -203,12 +207,14 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  */
 function give_login_form_shortcode( $atts ) {
 
-	$atts = shortcode_atts( array(
-		// Add backward compatibility for redirect attribute.
-		'redirect'        => '',
-		'login-redirect'  => '',
-		'logout-redirect' => '',
-	), $atts, 'give_login' );
+	$atts = shortcode_atts(
+		array(
+			// Add backward compatibility for redirect attribute.
+			'redirect'        => '',
+			'login-redirect'  => '',
+			'logout-redirect' => '',
+		), $atts, 'give_login'
+	);
 
 	// Check login-redirect attribute first, if it empty or not found then check for redirect attribute and add value of this to login-redirect attribute.
 	$atts['login-redirect'] = ! empty( $atts['login-redirect'] ) ? $atts['login-redirect'] : ( ! empty( $atts['redirect'] ) ? $atts['redirect'] : '' );
@@ -232,9 +238,11 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  * @return string
  */
 function give_register_form_shortcode( $atts ) {
-	$atts = shortcode_atts( array(
-		'redirect' => '',
-	), $atts, 'give_register' );
+	$atts = shortcode_atts(
+		array(
+			'redirect' => '',
+		), $atts, 'give_register'
+	);
 
 	return give_register_form( $atts['redirect'] );
 }
@@ -256,17 +264,19 @@ function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args;
 
-	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'You are missing the donation id to view this donation receipt.', 'give' ),
-		'price'          => true,
-		'donor'          => true,
-		'date'           => true,
-		'payment_method' => true,
-		'payment_id'     => true,
-		'payment_status' => false,
-		'company_name'   => false,
-		'status_notice'  => true,
-	), $atts, 'give_receipt' );
+	$give_receipt_args = shortcode_atts(
+		array(
+			'error'          => __( 'You are missing the donation id to view this donation receipt.', 'give' ),
+			'price'          => true,
+			'donor'          => true,
+			'date'           => true,
+			'payment_method' => true,
+			'payment_id'     => true,
+			'payment_status' => false,
+			'company_name'   => false,
+			'status_notice'  => true,
+		), $atts, 'give_receipt'
+	);
 
 	ob_start();
 
@@ -276,13 +286,13 @@ function give_receipt_shortcode( $atts ) {
 	$session      = give_get_purchase_session();
 
 	if ( ! empty( $get_data['donation_id'] ) ) {
-	    $donation_id = $get_data['donation_id'];
-    } else if ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
+		$donation_id = $get_data['donation_id'];
+	} elseif ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
 		$receipt_type = 'view_in_browser';
-	    $donation_id  = give_get_donation_id_by_key( $get_data['_give_hash'] );
-    } else if ( isset( $session['donation_id'] ) ) {
+		$donation_id  = give_get_donation_id_by_key( $get_data['_give_hash'] );
+	} elseif ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
-	} else if ( ! empty( $give_receipt_args['id'] ) ) {
+	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
 	}
 
@@ -292,7 +302,7 @@ function give_receipt_shortcode( $atts ) {
 
 		return sprintf(
 			'<div id="give-receipt" data-shortcode="%1$s" data-receipt-type="%2$s" data-donation-key="%3$s" >%4$s</div>',
-            htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
+			htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
 			$receipt_type,
 			$donation_id,
 			ob_get_clean()
@@ -310,8 +320,8 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * Outputs the Give Profile Editor to allow users to amend their details from the
  * front-end. This function uses the Give templating system allowing users to
  * override the default profile editor template. The profile editor template is located
- * under templates/profile-editor.php, however, it can be altered by creating a
- * file called profile-editor.php in the give_template directory in your active theme's
+ * under templates/shortcode-profile-editor.php, however, it can be altered by creating a
+ * file called shortcode-profile-editor.php in the give_template directory in your active theme's
  * folder. Please visit the Give Documentation for more information on how the
  * templating system is used.
  *
@@ -324,30 +334,6 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
 function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
-
-	$user_id       = get_current_user_id();
-	$donor_id      = get_user_meta( $user_id, '_give_disconnected_donor_id', true ); // This is disconnected donor id.
-	$is_email_sent = Give_Cache::get( "give_cache_is_user_donor_disconnection_email_sent_{$user_id}" );
-
-	// Restrict access to donor profile, if donor and user are disconnected.
-	$is_donor_disconnected = get_user_meta( $user_id, '_give_is_donor_disconnected', true );
-
-	if ( is_user_logged_in() && $is_donor_disconnected ) {
-
-		// Display notice that Donor and User profiles are disconnected.
-		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
-
-		// Send email to admin to notify about the disconnection, if the user is active and login to user account.
-		if ( ! $is_email_sent ) {
-
-			// Send Email.
-			give_admin_email_user_donor_disconnection( $user_id, $donor_id );
-
-			// Set Cache with expiration of 24 hours to ensure that email are not sent on every refresh.
-			Give_Cache::set( "give_cache_is_user_donor_disconnection_email_sent_{$user_id}", true, strtotime( '+1 day', current_time( 'timestamp', 1 ) ) );
-		}
-		return false;
-	}
 
 	give_get_template_part( 'shortcode', 'profile-editor' );
 
@@ -452,9 +438,11 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update Donor First Name and Last Name.
-	Give()->donors->update( $donor->id, array(
-		'name' => trim( "{$first_name} {$last_name}" ),
-	) );
+	Give()->donors->update(
+		$donor->id, array(
+			'name' => trim( "{$first_name} {$last_name}" ),
+		)
+	);
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_company', $company_name );
@@ -553,16 +541,18 @@ function give_totals_shortcode( $atts ) {
 
 	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
 
-	$atts = shortcode_atts( array(
-		'total_goal'   => 0, // integer.
-		'ids'          => 0, // integer|array.
-		'cats'         => 0, // integer|array.
-		'tags'         => 0, // integer|array.
-		'message'      => $message,
-		'link'         => '', // URL.
-		'link_text'    => __( 'Donate Now', 'give' ), // string,
-		'progress_bar' => true, // boolean.
-	), $atts, 'give_totals' );
+	$atts = shortcode_atts(
+		array(
+			'total_goal'   => 0, // integer.
+			'ids'          => 0, // integer|array.
+			'cats'         => 0, // integer|array.
+			'tags'         => 0, // integer|array.
+			'message'      => $message,
+			'link'         => '', // URL.
+			'link_text'    => __( 'Donate Now', 'give' ), // string,
+			'progress_bar' => true, // boolean.
+		), $atts, 'give_totals'
+	);
 
 	// Total Goal.
 	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
@@ -658,18 +648,24 @@ function give_totals_shortcode( $atts ) {
 	}
 
 	// Replace {total} in message.
-	$message = str_replace( '{total}', give_currency_filter(
-		give_format_amount( $total,
-			array( 'sanitize' => false )
-		)
-	), esc_html( $atts['message'] ) );
+	$message = str_replace(
+		'{total}', give_currency_filter(
+			give_format_amount(
+				$total,
+				array( 'sanitize' => false )
+			)
+		), esc_html( $atts['message'] )
+	);
 
 	// Replace {total_goal} in message.
-	$message = str_replace( '{total_goal}', give_currency_filter(
-		give_format_amount( $total_goal,
-			array( 'sanitize' => true )
-		)
-	), $message );
+	$message = str_replace(
+		'{total_goal}', give_currency_filter(
+			give_format_amount(
+				$total_goal,
+				array( 'sanitize' => true )
+			)
+		), $message
+	);
 
 	/**
 	 * Update Give totals shortcode output.
@@ -696,7 +692,6 @@ function give_totals_shortcode( $atts ) {
 	</div>
 	<?php
 	$give_totals_output = ob_get_clean();
-
 
 	/**
 	 * Give Action fire after the total goal shortcode rendering is end.
@@ -754,26 +749,28 @@ function give_form_grid_shortcode( $atts ) {
 
 	$give_settings = give_get_settings();
 
-	$atts = shortcode_atts( array(
-		'forms_per_page'      => 12,
-		'paged'               => true,
-		'ids'                 => '',
-		'exclude'             => '',
-		'orderby'             => 'date',
-		'order'               => 'DESC',
-		'cats'                => '',
-		'tags'                => '',
-		'columns'             => 'best-fit',
-		'show_title'          => true,
-		'show_goal'           => true,
-		'show_excerpt'        => true,
-		'show_featured_image' => true,
-		'image_size'          => 'medium',
-		'image_height'        => 'auto',
-		'excerpt_length'      => 16,
-		'display_style'       => 'modal_reveal',
-		'status'              => '', // open or closed.
-	), $atts );
+	$atts = shortcode_atts(
+		array(
+			'forms_per_page'      => 12,
+			'paged'               => true,
+			'ids'                 => '',
+			'exclude'             => '',
+			'orderby'             => 'date',
+			'order'               => 'DESC',
+			'cats'                => '',
+			'tags'                => '',
+			'columns'             => 'best-fit',
+			'show_title'          => true,
+			'show_goal'           => true,
+			'show_excerpt'        => true,
+			'show_featured_image' => true,
+			'image_size'          => 'medium',
+			'image_height'        => 'auto',
+			'excerpt_length'      => 16,
+			'display_style'       => 'modal_reveal',
+			'status'              => '', // open or closed.
+		), $atts
+	);
 
 	// Validate integer attributes.
 	$atts['forms_per_page'] = intval( $atts['forms_per_page'] );
@@ -828,9 +825,13 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Convert comma-separated form IDs into array.
 	if ( ! empty( $atts['exclude'] ) ) {
-		$form_args['post__not_in'] = array_filter( array_map( function( $item ) {
-			return intval( trim( $item ) );
-		}, explode( ',', $atts['exclude'] ) ) );
+		$form_args['post__not_in'] = array_filter(
+			array_map(
+				function( $item ) {
+					return intval( trim( $item ) );
+				}, explode( ',', $atts['exclude'] )
+			)
+		);
 	}
 
 	// Maybe filter by form category.
@@ -875,7 +876,7 @@ function give_form_grid_shortcode( $atts ) {
 			$form_args['orderby']  = 'meta_value_num';
 			break;
 		case 'closest_to_goal':
-			if( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
+			if ( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
 				$form_args['meta_key'] = '_give_form_goal_progress';
 				$form_args['orderby']  = 'meta_value_num';
 			}

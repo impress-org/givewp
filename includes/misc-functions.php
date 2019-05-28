@@ -462,7 +462,6 @@ function give_month_num_to_name( $n ) {
 	return date_i18n( 'M', $timestamp );
 }
 
-
 /**
  * Checks whether function is disabled.
  *
@@ -475,97 +474,6 @@ function give_is_func_disabled( $function ) {
 	$disabled = explode( ',', ini_get( 'disable_functions' ) );
 
 	return in_array( $function, $disabled );
-}
-
-/**
- * Give Newsletter
- *
- * Returns the main Give newsletter form
- */
-function give_get_newsletter() {
-	?>
-
-	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
-
-	<div class="give-newsletter-form-wrap">
-
-		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-			  target="_blank">
-			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'To complete your subscription, click the confirmation link in your email. Thank you!', 'give' ); ?></p>
-			</div>
-
-			<table class="form-table give-newsletter-form">
-				<tr valign="middle">
-					<td>
-						<label for="mce-EMAIL"
-							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
-						<input type="email" name="EMAIL" id="mce-EMAIL"
-							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-							   class="required email" value="" required>
-					</td>
-					<td>
-						<label for="mce-FNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-						<input type="text" name="FNAME" id="mce-FNAME"
-							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="" required>
-					</td>
-					<td>
-						<label for="mce-LNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-						<input type="text" name="LNAME" id="mce-LNAME"
-							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
-					</td>
-					<td>
-						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
-					</td>
-				</tr>
-			</table>
-		</form>
-
-		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
-		</div>
-
-	</div>
-
-	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(
-			function ($) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[0]     = 'EMAIL';
-				ftypes[0]     = 'email';
-				fnames[1]     = 'FNAME';
-				ftypes[1]     = 'text';
-				fnames[2]     = 'LNAME';
-				ftypes[2]     = 'text';
-
-				$('form[name="mc-embedded-subscribe-form"]').removeAttr('novalidate');
-
-				//Successful submission
-				$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
-
-					var email_field = $(this).find('#mce-EMAIL').val();
-					if (!email_field) {
-						return false;
-					}
-					$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
-					$(this).find('.give-newsletter-form').hide();
-
-				});
-
-			}(jQuery)
-		);
-		var $mcj = jQuery.noConflict(true);
-
-
-	</script>
-	<!--End mc_embed_signup-->
-
-	<?php
 }
 
 
@@ -867,14 +775,14 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
  *               available.
  * @since 1.8.0
  *
- * @todo  update this function to query give addon and additionnal
+ * @todo  update this function to query give addon and additional
  *
  * This is an enhanced version of get_plugins() that returns the status
  * (`active` or `inactive`) of all plugins, type of plugin (`add-on` or `other`
  * and license validation for Give add-ons (`true` or `false`). Does not include
  * MU plugins.
  */
-function give_get_plugins() {
+function give_get_plugins( $args = array() ) {
 	$plugins             = get_plugins();
 	$active_plugin_paths = (array) get_option( 'active_plugins', array() );
 
@@ -911,6 +819,14 @@ function give_get_plugins() {
 		} else {
 			// Plugin is not a Give add-on.
 			$plugins[ $plugin_path ]['Type'] = 'other';
+		}
+	}
+
+	if( ! empty( $args['only_premium_add_ons'] ) ) {
+		foreach ( $plugins as $key => $plugin ){
+			if( 'add-on' !== $plugin['Type'] || false === strpos( $plugin['PluginURI'], 'givewp.com' ) ) {
+				unset( $plugins[$key] );
+			}
 		}
 	}
 
@@ -2408,29 +2324,62 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @return array|WP_Error
+ * @param bool $wp_check_updates
  *
  * @access public
+ * @return array|WP_Error
+ *
  * @since  2.5.0
  */
-function give_refresh_licenses() {
+function give_refresh_licenses( $wp_check_updates = true ) {
 	$give_licenses = get_option( 'give_licenses', array() );
+	$give_addons   = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 
-	if ( ! $give_licenses ) {
-		return $give_licenses;
+	if ( ! $give_licenses && ! $give_addons ) {
+		return array();
 	}
 
-	$license_keys = implode( ',', array_keys( $give_licenses ) );
+	$license_keys = $give_licenses ? implode( ',', array_keys( $give_licenses ) ) : '';
+
+	$unlicensed_give_addon = $give_addons
+		? array_values(
+			array_diff(
+				array_map(
+					function ( $plugin_name ) {
+						return trim( str_replace( 'Give - ', '', $plugin_name ) );
+					},
+					wp_list_pluck( $give_addons, 'Name', true )
+				),
+				wp_list_pluck( $give_licenses, 'item_name', true )
+			)
+		)
+		: array();
 
 	$tmp = Give_License::request_license_api(
 		array(
 			'edd_action' => 'check_licenses',
 			'licenses'   => $license_keys,
+			'unlicensed' => implode( ',', $unlicensed_give_addon ),
 		)
 	);
 
 	if ( ! $tmp || is_wp_error( $tmp ) ) {
 		return array();
+	}
+
+
+	// Remove unlicensed add-on from response.
+	$tmp_unlicensed = array();
+	foreach ( $tmp as $key => $data ){
+		if( empty( $data ) ) {
+			unset( $tmp->{"{$key}"} );
+			continue;
+		}
+
+		if( ! isset( $data->check_license ) ) {
+			$tmp_unlicensed[$key] = $data;
+			unset( $tmp->{"{$key}"} );
+		}
 	}
 
 	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
@@ -2454,13 +2403,23 @@ function give_refresh_licenses() {
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
 	);
 
+	if( $tmp_unlicensed ) {
+		$tmp_unlicensed = json_decode( json_encode( $tmp_unlicensed ), true );
+		$tmp_update_plugins = array_merge( $tmp_update_plugins, $tmp_unlicensed );
+	}
+
 	update_option( 'give_licenses', $give_licenses, 'no' );
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
 
 	$refresh            = Give_License::refresh_license_status();
-	$refresh['time']    = time();
+	$refresh['time']    = current_time( 'timestamp', 1 );
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
+
+	// Tell WordPress to look for updates.
+	if( $wp_check_updates ) {
+		set_site_transient( 'update_plugins', null );
+	}
 
 	return array(
 		'give_licenses'     => $give_licenses,
@@ -2486,7 +2445,7 @@ function give_check_addon_updates( $_transient_data ){
 	$check_licenses = get_option( 'give_licenses', array() );
 
 	if ( ! $update_plugins ) {
-		$data = give_refresh_licenses();
+		$data = give_refresh_licenses( false );
 
 		if(
 			empty( $data['give_get_versions'] )
@@ -2499,16 +2458,14 @@ function give_check_addon_updates( $_transient_data ){
 	}
 
 	foreach ( $update_plugins as $key => $data ) {
-		// Maybe add-on license deactivate already.
-		if( empty( $check_licenses[ $key ] ) ) {
-			continue;
-		}
+		$plugins = ! empty( $check_licenses[ $key ] )
+			?  ( ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data ) )
+			: array( $data );
 
-		$plugins = ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data );
 
 		foreach ( $plugins as $plugin ) {
-			// Thi value will be empty if any error occurred when varifing version of add-on.
-			if ( ! $plugin['new_version'] ) {
+			// This value will be empty if any error occurred when verifying version of add-on.
+			if ( empty( $plugin['new_version'] ) ) {
 				continue;
 			}
 
@@ -2521,12 +2478,12 @@ function give_check_addon_updates( $_transient_data ){
 
 			$plugin['plugin'] = $tmp_plugin['Path'];
 
-			// Continue if version > newer version.
 			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
-				continue;
+				$_transient_data->no_update[ $tmp_plugin['Path'] ] = (object) $plugin;
+			} else{
+				$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
 			}
 
-			$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
 			$_transient_data->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
 		}
 	}

@@ -41,49 +41,57 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	);
 	?>
 	<div class="wrap give-settings-page <?php echo $wrapper_class; ?>">
-		<?php
-		echo $form_open_tag;
 
-		/* @var Give_Settings_Page $current_setting_obj */
-		if (
-			! empty( $current_setting_obj ) &&
-			method_exists( $current_setting_obj, 'get_heading_html' )
-		) {
-			echo $current_setting_obj->get_heading_html();
-		} else {
+		<?php echo $form_open_tag; ?>
 
-			// Backward compatibility.
-			echo sprintf(
-				'<h1 class="wp-heading-inline">%s</h1><hr class="wp-header-end">',
-				esc_html( $tabs[ $current_tab ] )
-			);
-		}
-
-		self::show_messages();
-		?>
-		<div class="nav-tab-wrapper give-nav-tab-wrapper">
+		<div class="give-settings-header">
 			<?php
-			foreach ( $tabs as $name => $label ) {
-				echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
+			/* @var Give_Settings_Page $current_setting_obj */
+			if (
+				! empty( $current_setting_obj )
+				&& method_exists( $current_setting_obj, 'get_heading_html' )
+			) {
+				echo $current_setting_obj->get_heading_html();
+			} else {
+
+				// Backward compatibility.
+				echo sprintf(
+					'<h1 class="wp-heading-inline">%s</h1>',
+					esc_html( $tabs[ $current_tab ] )
+				);
 			}
 
-			/**
-			 * Trigger Action.
-			 *
-			 * Note: action dynamically fire on basis of setting page slug.
-			 * For example: if you register a setting page with give-settings menu slug
-			 *              then action will be give-settings_tabs
-			 *
-			 * @since 1.8
-			 */
-			do_action( self::$setting_filter_prefix . '_tabs' );
+			self::show_messages();
 			?>
-			<div class="give-sub-nav-tab-wrapper">
-				<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
-				</a>
-				<nav class="give-sub-nav-tab give-hidden"></nav>
-			</div>
+
 		</div>
+
+		<div class="nav-tab-wrapper give-nav-tab-wrapper">
+				<?php
+				foreach ( $tabs as $name => $label ) {
+					echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
+				}
+
+				/**
+				 * Trigger Action.
+				 *
+				 * Note: action dynamically fire on basis of setting page slug.
+				 * For example: if you register a setting page with give-settings menu slug
+				 *              then action will be give-settings_tabs
+				 *
+				 * @since 1.8
+				 */
+				do_action( self::$setting_filter_prefix . '_tabs' );
+				?>
+				<div class="give-sub-nav-tab-wrapper">
+					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab"
+					   title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span
+							class="dashicons dashicons-arrow-down-alt2"></span></span>
+					</a>
+					<nav class="give-sub-nav-tab give-hidden"></nav>
+				</div>
+			</div>
+
 		<?php
 
 		/**
@@ -112,7 +120,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
-				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>"/>
+				<input name="save" class="button-primary give-save-button" type="submit"
+				       value="<?php _e( 'Save changes', 'give' ); ?>"/>
 			</div>
 		<?php endif; ?>
 		<?php echo $form_close_tag; ?>

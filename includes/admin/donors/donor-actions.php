@@ -313,12 +313,9 @@ function give_disconnect_donor_user_id( $args ) {
 
 	if ( $is_donor_updated ) {
 
-		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
+		// Set meta for disconnected donor id and user id for future reference if needed.
 		update_user_meta( $user_id, '_give_disconnected_donor_id', $donor->id );
 		$donor->update_meta( '_give_disconnected_user_id', $user_id );
-
-		// Delete the cache if any exists.
-		Give_Cache::delete( "give_cache_is_user_donor_disconnection_email_sent_{$user_id}" );
 
 		$redirect_url = add_query_arg(
 			'give-messages[]',

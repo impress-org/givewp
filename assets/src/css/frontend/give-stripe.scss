@@ -1,0 +1,41 @@
+.form-row .give-stripe-cc-field {
+	box-sizing: border-box;
+	width: 100%;
+	border-radius: 0;
+	outline: none;
+	color: #333;
+	background-color: #fdfdfd;
+	border: 1px solid #ccc;
+	margin: 0;
+	padding: .5em;
+  }
+
+  .give-stripe-cc-field.give-fl-input {
+	height: auto;
+	min-height: 50px;
+	line-height: inherit;
+	padding: 14px 10px;
+	background-color: #FFF;
+  }
+
+  .give-stripe-cc-field-wrap .give-fl-is-active .give-fl-input {
+	padding: 20px 12px 4px;
+	transition: padding 0.2s ease-in-out, border 0.2s ease-in-out;
+  }
+
+  .give-stripe-cc-field-wrap .give-fl-label span {
+	display: none;
+  }
+
+  .give-stripe-single-cc-field-wrap {
+	border: 1px solid #CCCCCC;
+	background-color: #FDFDFD;
+	padding: 10px;
+	height: 40px;
+	margin: 0 0 15px 0;
+  }
+
+  .give-form .give-stripe-cc-field.focus,
+  .give-form .give-stripe-cc-field:focus {
+	background-color: #FFFFFF;
+  }

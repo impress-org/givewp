@@ -18,7 +18,7 @@ if ( ! current_user_can( 'manage_give_settings' ) ) {
  */
 do_action( 'give_tools_import_donations_main_before' );
 ?>
-    <div id="poststuff">
+    <div id="poststuff" class="give-clearfix">
         <div class="postbox">
             <h1 class="give-importer-h1" align="center">
 	            <?php

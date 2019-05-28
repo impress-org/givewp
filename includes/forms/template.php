@@ -1610,25 +1610,29 @@ function give_payment_mode_select( $form_id, $args ) {
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					// Determine the default gateway.
-					$checked       = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' class="give-gateway-option-selected"' : '';
-					?>
-					<li<?php echo $checked_class; ?>>
-						<input type="radio" name="payment-mode" class="give-gateway"
-							   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+					$checked                   = checked( $gateway_id, $selected_gateway, false );
+					$checked_class             = $checked ? ' class="give-gateway-option-selected"' : '';
+					$is_payment_method_visible = isset( $gateway['is_visible'] ) ? $gateway['is_visible'] : true;
 
-						<?php
-						$label = $gateway['checkout_label'];
-						if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
-							$label = $gateways_label[ $gateway_id ];
-						}
+					if ( true === $is_payment_method_visible ) {
 						?>
-						<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
-					</li>
-				<?php
+						<li<?php echo $checked_class; ?>>
+							<input type="radio" name="payment-mode" class="give-gateway"
+								id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+							<?php
+							$label = $gateway['checkout_label'];
+							if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
+								$label = $gateways_label[ $gateway_id ];
+							}
+							?>
+							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								class="give-gateway-option"
+								id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+						</li>
+					<?php
+					}
 				endforeach;
 				?>
 			</ul>
@@ -1858,7 +1862,7 @@ function give_checkout_submit( $form_id, $args ) {
 
 		give_checkout_hidden_fields( $form_id );
 
-		echo give_get_donation_form_submit_button( $form_id );
+		echo give_get_donation_form_submit_button( $form_id, $args );
 
 		/**
 		 * Fire after donation form submit.
@@ -1882,7 +1886,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
  *
  * @return string
  */
-function give_get_donation_form_submit_button( $form_id ) {
+function give_get_donation_form_submit_button( $form_id, $args ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
@@ -1894,7 +1898,7 @@ function give_get_donation_form_submit_button( $form_id ) {
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
-	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id );
+	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id, $args );
 }
 
 /**

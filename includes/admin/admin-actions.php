@@ -1202,7 +1202,7 @@ function give_license_notices() {
 		'id'               => 'give-invalid-license',
 		'type'             => 'error',
 		'description'      => sprintf(
-			__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">add-ons page</a> to correct this issue.', 'give' ),
+			__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">license settings page</a> to correct this issue.', 'give' ),
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 		),
 		'dismissible_type' => 'user',
@@ -1344,4 +1344,50 @@ function give_log_addon_activation_time( $plugin, $network_wide ) {
 }
 
 add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
+
+
+/**
+ * Hide all admin notice from add-ons page
+ *
+ * Note: only for internal use
+ *
+ * @since 2.5.0
+ */
+function give_hide_notices_on_add_ons_page(){
+	$page = give_get_super_global( 'GET', 'page' );
+
+	// Bailout.
+	if( 'give-addons' !== $page ) {
+		return;
+	}
+
+	remove_all_actions( 'admin_notices' );
+}
+add_action( 'in_admin_header', 'give_hide_notices_on_add_ons_page', 999 );
+
+
+/**
+ * Admin JS
+ * @since 2.5.0
+ */
+function give_admin_quick_js(){
+	if( is_multisite() && is_blog_admin() ) {
+		?>
+		<script>
+			jQuery(document).ready(function($){
+				var $updateNotices = $('[id$="-update"] ', '.wp-list-table' );
+
+				if( $updateNotices.length ) {
+					$.each( $updateNotices, function( index, $updateNotice ){
+						$updateNotice = $($updateNotice);
+						$updateNotice.prev().addClass('update');
+					});
+				}
+			});
+		</script>
+		<?php
+	}
+}
+add_action( 'admin_head', 'give_admin_quick_js' );
+
 

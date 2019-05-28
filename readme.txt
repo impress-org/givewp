@@ -205,7 +205,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.5.0: May 15th, 2019=
+= 2.5.0: May 15th, 2019 =
+* New: Upgraded licensing to be much more user friendly and reliable. [#2058](https://github.com/impress-org/give/issues/2058)
+* New: Stripe credit card processing is now available for free!
 * Fix: Redesigned license setting page [#2058](https://github.com/impress-org/give/issues/2058)
 
 = 2.4.7: May 14th, 2019 =
