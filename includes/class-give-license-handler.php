@@ -817,7 +817,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 					</span>
 				</div>
 				<div class="give-right">
-					<span class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ); ?></span>
 					<?php
 					if ( in_array( $plugin['Status'], array( 'active', 'inactive' ) ) ) {
 						echo sprintf(
@@ -826,6 +825,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 							'active' === $plugin['Status'] ? __( 'activated', 'give' ) : __( 'installed', 'give' )
 						);
 					}
+
+					printf(
+						'<span class="give-text">%1$s %2$s</span>',
+						__( 'Version', 'give' ),
+						$plugin['Version']
+					);
 
 					printf(
 						'<span><%3$s class="give-button button-secondary" target="_blank" href="%1$s"%4$s><i class="dashicons dashicons-download"></i>%2$s</%3$s></span>',
