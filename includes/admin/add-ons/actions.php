@@ -483,7 +483,7 @@ add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates',
  * @since 2.5.0
  */
 function give_show_update_notification_on_multisite( $file, $plugin ) {
-	if ( is_network_admin() ) {
+	if ( is_network_admin() || is_blog_admin() ) {
 		return;
 	}
 
@@ -517,16 +517,13 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 		return;
 	}
 
-	// Remove core update notice.
-	remove_action( "after_plugin_row_{$file}", 'wp_plugin_update_row' );
-
 
 	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
-
 		printf(
-			'<tr class="plugin-update-tr give-addon-notice-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
+			'<tr class="plugin-update-tr %3$s" id="%1$s-update" data-slug="%1$s" data-plugin="%1$s/%2$s">',
 			$plugin['slug'],
-			$file
+			$file,
+			'active' === $plugin_data['Status'] ? 'active' : 'inactive'
 		);
 
 		echo '<td colspan="3" class="plugin-update colspanchange">';
@@ -604,7 +601,7 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 	// Remove core update notice.
 	remove_action( "after_plugin_row_{$file}", 'wp_plugin_update_row' );
 
-	$update_notice_wrap = '<tr class="plugin-update-tr give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="update-message notice inline notice-warning notice-alt give-invalid-license"><p>%1$s %2$s</p></div></td></tr>';
+	$update_notice_wrap = '<tr class="plugin-update-tr %3$s"><td colspan="3" class="colspanchange"><div class="update-message notice inline notice-warning notice-alt give-invalid-license"><p>%1$s %2$s</p></div></td></tr>';
 	$changelog_link     = self_admin_url( "plugin-install.php?tab=plugin-information&plugin={$plugin['slug']}&section=changelog&TB_iframe=true&width=772&height=299" );
 
 	echo sprintf(
@@ -619,7 +616,8 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 		sprintf(
 			'Please <a href="%1$s" target="_blank">activate your license</a> to receive updates and support.',
 			esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) )
-		)
+		),
+		'active' === $plugin_data['Status'] ? 'active' : 'inactive'
 	);
 }
 
