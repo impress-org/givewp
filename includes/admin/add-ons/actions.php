@@ -351,8 +351,6 @@ function give_deactivate_license_handler() {
 		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
 
 	// Tell WordPress to look for updates.
-	set_site_transient( 'update_plugins', null );
-
 	give_refresh_licenses();
 
 	wp_send_json_success( $response );
