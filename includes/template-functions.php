@@ -55,7 +55,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 
 	if ( ! file_exists( $located ) ) {
 		/* translators: %s: the template */
-		Give()->notices->print_frontend_notice( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
+		Give_Notices::print_frontend_notice( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
 
 		return;
 	}

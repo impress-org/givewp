@@ -300,7 +300,7 @@ function give_process_form_login() {
 	give_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
-		$message = Give()->notices->print_frontend_notice(
+		$message = Give_Notices::print_frontend_notice(
 			sprintf(
 				/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),

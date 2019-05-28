@@ -12,7 +12,7 @@ if ( empty( $donation ) ) {
 
 // Double-Validation: Check for $donation global.
 if ( empty( $donation ) ) {
-	Give()->notices->print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
+	Give_Notices::print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
 	return;
 }
 
@@ -207,7 +207,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 	 * @param string $status Payment status.
 	 * @param int $donation_id Donation ID.
 	 */
-	echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
+	echo apply_filters( 'give_receipt_status_notice', Give_Notices::print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
 
 }// End if().
 

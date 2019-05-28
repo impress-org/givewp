@@ -190,7 +190,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
  */
 function give_ajax_get_form_title() {
 	if ( isset( $_POST['form_id'] ) ) {
-		$title = get_the_title( $_POST['form_id'] );
+		$title = get_the_title( absint( give_clean( $_POST['form_id'] ) ) );
 		if ( $title ) {
 			echo $title;
 		} else {
@@ -347,7 +347,7 @@ function give_ajax_form_search() {
 	 *
 	 * @return array $results Contain the Donation Form id
 	 */
-	$results = (array) apply_filters( 'give_ajax_form_search_responce', $results );
+	$results = (array) apply_filters( 'give_ajax_form_search_response', $results );
 
 	wp_send_json( $results );
 }
@@ -578,7 +578,7 @@ function give_check_for_form_price_variations() {
 		die( '-1' );
 	}
 
-	$form_id = intval( $_POST['form_id'] );
+	$form_id = absint( $_POST['form_id'] );
 	$form    = get_post( $form_id );
 
 	if ( 'give_forms' !== $form->post_type ) {
@@ -624,8 +624,8 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
-	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : false;
+	$form_id    = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : false;
+	$payment_id = ! empty( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : false;
 	if ( empty( $form_id ) || empty( $payment_id ) ) {
 		wp_die();
 	}
@@ -697,16 +697,16 @@ function give_confirm_email_for_donation_access() {
 		$return     = array();
 		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
+		$return['status']  = 'success';
+
 		if ( ! $email_sent ) {
 			$return['status']  = 'error';
-			$return['message'] = Give()->notices->print_frontend_notice(
+			$return['message'] = Give_Notices::print_frontend_notice(
 				__( 'Unable to send email. Please try again.', 'give' ),
 				false,
 				'error'
 			);
 		}
-
-		$return['status']  = 'success';
 
 		/**
 		 * Filter to modify access mail send notice
@@ -719,7 +719,7 @@ function give_confirm_email_for_donation_access() {
 		 */
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
-		$return['message'] = Give()->notices->print_frontend_notice(
+		$return['message'] = Give_Notices::print_frontend_notice(
 			$message,
 			false,
 			'success'
@@ -749,7 +749,7 @@ function give_confirm_email_for_donation_access() {
 			$value
 		);
 
-		$return['message'] = Give()->notices->print_frontend_notice(
+		$return['message'] = Give_Notices::print_frontend_notice(
 			$message,
 			false,
 			'error'
