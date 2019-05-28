@@ -5,30 +5,33 @@
 
 
 /**
- * AJAX
+ * Return of meta keys for a donation form.
  *
  * @see http://wordpress.stackexchange.com/questions/58834/echo-all-meta-keys-of-a-custom-post-type
- *
- * @return string
  */
 function give_export_donations_get_custom_fields() {
-
 	global $wpdb;
-	$post_type = 'give_payment';
-	$responses = array();
-	$donationmeta_table_key = Give()->payment_meta->get_meta_type() . '_id';
 
-	$form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : '';
-
-	if ( empty( $form_id ) ) {
-		return false;
+	if( ! current_user_can( 'export_give_reports' ) ){
+		wp_send_json_error();
 	}
 
-	$args          = array(
+	$post_type              = 'give_payment';
+	$responses              = array();
+	$donationmeta_table_key = Give()->payment_meta->get_meta_type() . '_id';
+
+	$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : '';
+
+	if ( empty( $form_id ) ) {
+		wp_send_json_error();
+	}
+
+	$args = array(
 		'give_forms'     => array( $form_id ),
 		'posts_per_page' => - 1,
 		'fields'         => 'ids',
 	);
+
 	$donation_list = implode( ',', (array) give_get_payments( $args ) );
 
 	$query_and = sprintf(
@@ -67,17 +70,17 @@ function give_export_donations_get_custom_fields() {
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 
-	$hidden_meta_keys   = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+	$hidden_meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
 
 	/**
 	 * Filter to modify hidden keys that are going to be ignore when displaying the hidden keys
 	 *
-	 * @since 2.1
-	 *
 	 * @param array $ignore_hidden_keys Hidden keys that are going to be ignore
-	 * @param array $form_id Donation form id
+	 * @param array $form_id            Donation form id
 	 *
 	 * @return array $ignore_hidden_keys Hidden keys that are going to be ignore
+	 * @since 2.1
+	 *
 	 */
 	$ignore_hidden_keys = apply_filters( 'give_export_donations_ignore_hidden_keys', array(
 		'_give_payment_meta',
@@ -127,12 +130,12 @@ function give_export_donations_get_custom_fields() {
 	/**
 	 * Filter to modify custom fields when select donation forms,
 	 *
-	 * @since 2.1
-	 *
 	 * @param array $responses Contain all the fields that need to be display when donation form is display
-	 * @param int $form_id Donation Form ID
+	 * @param int   $form_id   Donation Form ID
 	 *
 	 * @return array $responses
+	 * @since 2.1
+	 *
 	 */
 	wp_send_json( (array) apply_filters( 'give_export_donations_get_custom_fields', $responses, $form_id ) );
 
