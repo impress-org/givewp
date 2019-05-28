@@ -579,10 +579,7 @@ function give_deactivation_popup() {
 	<?php
 
 	// Echo content (deactivation form) from the output buffer.
-	$output = ob_get_contents();
-
-	// Erase and stop output buffer.
-	ob_end_clean();
+	$output = ob_get_clean();
 
 	$results['html'] = $output;
 
@@ -601,7 +598,6 @@ function give_deactivation_form_submit() {
 
 	if ( ! check_ajax_referer( 'deactivation_survey_nonce', 'nonce', false ) ) {
 		wp_send_json_error();
-		wp_die();
 	}
 
 	$form_data = give_clean( wp_parse_args( $_POST['form-data'] ) );
@@ -656,8 +652,6 @@ function give_deactivation_form_submit() {
 	} else {
 		wp_send_json_error();
 	}
-
-	wp_die();
 }
 
 add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );

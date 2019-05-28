@@ -57,6 +57,7 @@ function give_deprecated_filters() {
 		'give_decrease_donors_donation_count_on_refunded'  => 'give_decrease_customer_purchase_count_on_refund',
 		'give_should_process_refunded'                     => 'give_should_process_refund',
 		'give_settings_export_excludes'                    => 'settings_export_excludes',
+		'give_ajax_form_search_response'                   => 'give_ajax_form_search_responce'
 	);
 
 	return $give_deprecated_filters;

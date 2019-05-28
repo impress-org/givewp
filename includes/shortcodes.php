@@ -98,7 +98,7 @@ function give_donation_history( $atts, $content = false ) {
 
 	} else {
 
-		echo apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo apply_filters( 'give_donation_history_nonuser_message', Give_Notices::print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
 		echo do_shortcode( '[give_login]' );
 	}
 
@@ -171,13 +171,13 @@ function give_goal_shortcode( $atts ) {
 
 	// Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
-		Give()->notices->print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
+		Give_Notices::print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
 	// Sanity check 2: Check the form even has Goals enabled.
 	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
 
-		Give()->notices->print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
+		Give_Notices::print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		// Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
@@ -289,8 +289,8 @@ function give_receipt_shortcode( $atts ) {
 		$donation_id = $get_data['donation_id'];
 	} elseif ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
 		$receipt_type = 'view_in_browser';
-		$donation_id  = give_get_donation_id_by_key( $get_data['_give_hash'] );
-	} elseif ( isset( $session['donation_id'] ) ) {
+	    $donation_id  = $get_data['_give_hash'];
+    } else if ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
 	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
@@ -335,11 +335,17 @@ function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
+	// Restrict access to donor profile, if donor and user are disconnected.
+	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
+	if ( is_user_logged_in() && $is_donor_disconnected ) {
+		Give_Notices::print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+
+		return false;
+	}
+
 	give_get_template_part( 'shortcode', 'profile-editor' );
 
-	$display = ob_get_clean();
-
-	return $display;
+	return ob_get_clean();
 }
 
 add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
