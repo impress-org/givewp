@@ -853,7 +853,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				<div class="give-addon-info-right">
 					<?php
 					echo sprintf(
-						'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
+						'<a href="%1$s" class="give-ajax-modal give-addon-view-changelog" title="%3$s">%2$s</a>',
 						give_modal_ajax_url(
 							array(
 								'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
