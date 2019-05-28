@@ -706,15 +706,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<div class="give-license__status">
 								<?php
 
-								echo sprintf(
-									'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
-									$is_license_expired
-										? __( 'License is expired', 'give' )
-										: __( 'License is active and you are receiving updates and support', 'give' ),
-									$is_license_expired
-										? 'no'
-										: 'yes'
-								); ?>
+								echo $license_key
+									? sprintf(
+										'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
+										$is_license_expired
+											? __( 'License is expired', 'give' )
+											: __( 'License is active and you are receiving updates and support', 'give' ),
+										$is_license_expired
+											? 'no'
+											: 'yes'
+									)
+									: 'Invalid License';
+								?>
 							</div>
 
 						</div>
