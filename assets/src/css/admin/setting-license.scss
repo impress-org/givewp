@@ -241,90 +241,63 @@ $license-widget-border-color: #DBDBDB;
 .give-addon-wrap {
 	border: 1px solid $license-widget-border-color;
 	background: #FFF;
-	padding: 30px;
+	padding: 0;
 	margin: 0 0 20px;
 	position: relative;
 
-	span {
-		display: inline-block;
-		vertical-align: top;
+	.give-license-row {
 
-		i {
-			line-height: inherit;
-		}
 	}
 
-	.give-text {
-		vertical-align: middle;
-		line-height: 26px;
+
+	.give-license-top {
+		background: $license-widget-bg;
+		border-bottom: 1px solid $license-widget-border-color;
+		display: flex;
 	}
 
-	.give-row {
-		clear: both;
-		overflow: auto;
-		margin-bottom: 15px;
-
-		&:first-child {
-			margin-bottom: 20px;
-		}
-
-		&:last-child {
-			margin-bottom: 0;
-		}
+	.give-license-top-header {
+		display: block;
+		font-size: 15px;
+		margin: 0 0 20px;
 	}
 
-	.give-right {
-		span {
-			margin-right: 15px;
-		}
-
-		span:last-child {
-			margin-right: 0;
-		}
-	}
-
-	.give-left {
-		span {
-			margin-left: 15px;
-		}
-
-		span:first-child {
-			margin-left: 0;
-		}
-	}
-
-	.give-border {
-		border: 2px solid #444;
-	}
-
-	.give-left {
+	.give-license-top-column {
 		float: left;
+		padding: 30px;
+		flex: 1;
+
+		&.give-license-key-field-wrap,
+		&.give-license-info-field-wrap {
+			border-right: 1px solid $license-widget-border-color;
+		}
+
+		&.give-license-key-field-wrap {
+			flex: 1.25;
+		}
+
 	}
 
-	.give-right {
-		float: right;
-	}
+	// License key top.
+	.give-license-addon-key-field {
 
-	.give-text_small {
-		font-size: 11px;
-	}
-
-	.give-background__gray {
-		background: #eee;
 	}
 
 	.give-license__status {
-		background: #444;
-		color: white;
-		border-radius: 30px;
-		vertical-align: middle;
-		line-height: 18px;
-		width: 18px;
-		height: 18px;
+		margin: 10px 0 0;
+		padding:0;
+
+		.dashicons-yes {
+			color: $give-green;
+		}
+		.dashicons-no {
+			color: $red;
+		}
 	}
 
 	.give-license__key {
 		display: inline-block;
+
 
 		input[type="text"] {
 			min-width: 225px;
