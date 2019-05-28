@@ -32,8 +32,12 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			parent::__construct();
 
+			// Filter to remove the license tab.
+			add_filter( 'give-settings_tabs_array', array( $this, 'remove_license_tab' ), 9999999, 1 );
+
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
+
 				// Remove default parent form.
 				add_action( 'give-settings_open_form', '__return_empty_string' );
 				add_action( 'give-settings_close_form', '__return_empty_string' );
