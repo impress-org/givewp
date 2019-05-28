@@ -594,7 +594,7 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice', $backtrace );
 
-	Give()->notices->print_frontend_notice( $message, $echo, $error_id );
+	Give_Notices::print_frontend_notice( $message, $echo, $error_id );
 }
 
 

@@ -697,16 +697,16 @@ function give_confirm_email_for_donation_access() {
 		$return     = array();
 		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
+		$return['status']  = 'success';
+
 		if ( ! $email_sent ) {
 			$return['status']  = 'error';
-			$return['message'] = Give()->notices->print_frontend_notice(
+			$return['message'] = Give_Notices::print_frontend_notice(
 				__( 'Unable to send email. Please try again.', 'give' ),
 				false,
 				'error'
 			);
 		}
-
-		$return['status']  = 'success';
 
 		/**
 		 * Filter to modify access mail send notice
@@ -719,7 +719,7 @@ function give_confirm_email_for_donation_access() {
 		 */
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
-		$return['message'] = Give()->notices->print_frontend_notice(
+		$return['message'] = Give_Notices::print_frontend_notice(
 			$message,
 			false,
 			'success'
@@ -749,7 +749,7 @@ function give_confirm_email_for_donation_access() {
 			$value
 		);
 
-		$return['message'] = Give()->notices->print_frontend_notice(
+		$return['message'] = Give_Notices::print_frontend_notice(
 			$message,
 			false,
 			'error'

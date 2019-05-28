@@ -2339,7 +2339,7 @@ function give_display_donation_receipt( $args ) {
 			if ( $is_email_access ) {
 				give_get_template_part( 'email-login-form' );
 			} else {
-				echo Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
+				echo Give_Notices::print_frontend_notice( $args['error'], false, 'error' );
 			}
 
 			return ob_get_clean();
@@ -2357,7 +2357,7 @@ function give_display_donation_receipt( $args ) {
 				 */
 				$donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
 
-				echo Give()->notices->print_frontend_notice(
+				echo Give_Notices::print_frontend_notice(
 					$donor_mismatch_text,
 					false,
 					'error'
@@ -2373,7 +2373,7 @@ function give_display_donation_receipt( $args ) {
 
 				$give_login_redirect = give_get_current_page_url();
 
-				Give()->notices->print_frontend_notice(
+				Give_Notices::print_frontend_notice(
 					apply_filters(
 						'give_must_be_logged_in_error_message',
 						__( 'You must be logged in to view this donation receipt.', 'give' )
@@ -2394,7 +2394,7 @@ function give_display_donation_receipt( $args ) {
 		 * or if user is logged in and the user can view sensitive shop data.
 		 */
 		if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $args ) ) {
-			return Give()->notices->print_frontend_notice( $args['error'], false, 'error' );
+			return Give_Notices::print_frontend_notice( $args['error'], false, 'error' );
 		}
 	} else{
 		$donation_id =  give_get_donation_id_by_key( $get_data['donation_id'] );
