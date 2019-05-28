@@ -59,7 +59,7 @@ final class Give_Shortcode_Button {
 	 * @since 2.3.0
 	 */
 	public function ajax_handler(){
-		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
+		add_action( 'wp_ajax_give_shortcode', array( $this, 'shortcode_ajax' ) );
 	}
 
 	/**
