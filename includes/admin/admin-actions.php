@@ -96,7 +96,7 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  */
 function give_hide_outdated_php_notice() {
 
-	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) ) {
+	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) || ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
 	}
 
@@ -1151,6 +1151,10 @@ add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
  * Flushes Give's cache.
  */
 function give_cache_flush() {
+	if( ! current_user_can( 'manage_give_settings' ) ){
+		wp_die();
+	}
+
 	$result = Give_Cache::flush_cache();
 
 	if ( $result ) {

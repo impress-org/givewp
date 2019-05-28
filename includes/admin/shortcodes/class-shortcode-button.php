@@ -198,12 +198,16 @@ final class Give_Shortcode_Button {
 
 	/**
 	 * Load the shortcode dialog fields via AJAX
+	 * @todo: handle error
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
 	public function shortcode_ajax() {
+		if( ! current_user_can( 'edit_give_forms' ) ) {
+			wp_die();
+		}
 
 		$shortcode = isset( $_POST['shortcode'] ) ? $_POST['shortcode'] : false;
 		$response  = false;
@@ -224,7 +228,6 @@ final class Give_Shortcode_Button {
 				'title'     => $data['title'],
 			);
 		} else {
-			// todo: handle error
 			error_log( print_r( 'AJAX error!', 1 ) );
 		}
 
