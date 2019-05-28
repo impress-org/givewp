@@ -699,12 +699,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<input id="give-license-addon-key-field" type="text"
 							       value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-secondary"
-								        disabled><?php _e( 'Activate License' ); ?></button>
+								<button
+									class="give-button__license-activate button-primary"><?php _e( 'Activate License' ); ?></button>
 							<?php endif; ?>
 
 							<div class="give-license__status">
-								<?php echo sprintf(
+								<?php
+
+								echo sprintf(
 									'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
 									$is_license_expired
 										? __( 'License is expired', 'give' )
