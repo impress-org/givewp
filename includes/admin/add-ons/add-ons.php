@@ -89,7 +89,7 @@ add_action( 'admin_enqueue_scripts', 'give_addons_enqueue_scripts' );
  */
 function give_add_ons_feed( $feed_type = '' ) {
 
-	$addons_debug = true; // set to true to debug
+	$addons_debug = false; // set to true to debug. NEVER LEAVE TRUE IN PRODUCTION.
 	$cache_key    = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
 	$cache        = Give_Cache::get( $cache_key, true );
 	$feed_url     = Give_License::get_website_url() . 'downloads/feed/';
