@@ -571,10 +571,7 @@ function give_deactivation_popup() {
 	<?php
 
 	// Echo content (deactivation form) from the output buffer.
-	$output = ob_get_contents();
-
-	// Erase and stop output buffer.
-	ob_end_clean();
+	$output = ob_get_clean();
 
 	$results['html'] = $output;
 
