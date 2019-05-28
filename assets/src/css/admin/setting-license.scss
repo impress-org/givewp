@@ -74,11 +74,7 @@ $license-widget-border-color: #DBDBDB;
 
 		.notice {
 			position: relative;
-		}
-
-		.notice-dismiss{
-			top: -19px;
-			right: -19px;
+			padding-right: 40px;
 		}
 
 	}
@@ -259,12 +255,15 @@ $license-widget-border-color: #DBDBDB;
 		background: $license-widget-bg;
 		border-bottom: 1px solid $license-widget-border-color;
 		display: flex;
+		color: $dark;
 	}
 
 	.give-license-top-header {
 		display: block;
 		font-size: 15px;
 		margin: 0 0 20px;
+		font-weight: bold;
+		color: #23282d;
 	}
 
 	.give-license-top-column {
@@ -278,7 +277,13 @@ $license-widget-border-color: #DBDBDB;
 		}
 
 		&.give-license-key-field-wrap {
-			flex: 1.25;
+			flex: 1.45;
+		}
+
+		&.give-license-info-field-wrap {
+			.give-field-description {
+				padding-top: 0;
+			}
 		}
 
 	}
@@ -289,12 +294,13 @@ $license-widget-border-color: #DBDBDB;
 	}
 
 	.give-license__status {
-		margin: 10px 0 0;
-		padding:0;
+		margin: 10px 0 0 -4px;
+		padding: 0;
 
 		.dashicons-yes {
 			color: $give-green;
 		}
+
 		.dashicons-no {
 			color: $red;
 		}
@@ -303,24 +309,70 @@ $license-widget-border-color: #DBDBDB;
 	.give-license__key {
 		display: inline-block;
 
-
 		input[type="text"] {
-			min-width: 225px;
-			background-color: #eee;
-			height: 28px;
+			margin: 0 10px 0 0;
 		}
 
-		input[type="text"]:focus {
-			background-color: white;
+		button {
+			font-size: 15px;
+			position: relative;
+			top: -1px;
+		}
+
+		@media(min-width: 1391px) {
+			input[type="text"] {
+				min-width: 290px;
+				height: 40px;
+				font-size: 18px;
+				padding: 10px;
+			}
+			button {
+				width: 110px;
+				height: 40px;
+			}
+		}
+
+		@media(max-width: 1390px) {
+			input[type="text"] {
+				min-width: 230px;
+				height: 35px;
+				font-size: 15px;
+				padding: 8px;
+			}
+			button {
+				width: 85px;
+				height: 35px;
+			}
+		}
+
+	}
+
+	.give-license-action-link {
+		display: block;
+		margin: 0 0 15px;
+		box-shadow: none;
+	}
+
+	.give-license-renewal-date {
+		.dashicons {
+			opacity: 0.8;
+			margin: 0 3px 0 0;
+			position: relative;
+			top: -2px;
 		}
 	}
 
-	.give-license__activation-left {
-		i {
-			font-style: normal;
-			padding: 1px 5px;
-			border-radius: 25px;
-		}
+	.give-license-activations-remaining-icon {
+		border-radius: 100%;
+		height: 20px;
+		width: 20px;
+		display: inline-block;
+		padding: 1px;
+		font-size: 12px;
+		line-height: 20px;
+		text-align: center;
+		font-weight: bold;
+		margin: 0 2px 0 0;
 	}
 
 	.give-plugin__info {
@@ -333,9 +385,6 @@ $license-widget-border-color: #DBDBDB;
 		line-height: 20px !important;
 	}
 
-	.give-plugin__name {
-		font-weight: bold;
-	}
 
 	.give-spinner-wrap {
 		.spinner {
@@ -344,6 +393,48 @@ $license-widget-border-color: #DBDBDB;
 			margin-top: 30px;
 		}
 	}
+
+}
+
+// Individual add-ons
+.give-addon-info-wrap {
+	margin: 30px;
+	padding: 20px;
+	background: $license-widget-bg;
+	border: 1px solid $license-widget-border-color;
+	color: $dark;
+
+	.give-addon-info-left {
+		float: left;
+	}
+
+	.give-addon-name {
+		font-weight: bold;
+		font-size: 14px;
+	}
+
+	.give-addon-version {
+		font-size: 11px;
+		margin: 0 0 0 20px;
+	}
+
+	.give-addon-info-right {
+		float: right;
+
+		.give-button {
+			margin: 0 0 0 10px;
+			.dashicons {
+				font-size: 14px;
+				width: 14px;
+				height: 14px;
+				margin-right: 3px;
+				margin-top: 5px;
+			}
+		}
+	}
+
+
+
 }
 
 .give-view-addons-all, .type-download {

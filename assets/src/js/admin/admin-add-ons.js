@@ -9,22 +9,6 @@
 			$submitBtn = $( 'input[type="submit"]', $form ),
 			$noticeContainer = $( '.give-license-notices', $licenseActivationFormContainer );
 
-		/**
-		 * License form submit button handler
-		 */
-		function giveDisableActivateLicenseButton() {
-			const $btn = $( this ).next();
-
-			if ( ! $( this ).val().trim() ) {
-				$btn.prop( 'disabled', true );
-				return;
-			}
-
-			$btn.prop( 'disabled', false );
-		}
-
-		$licensesContainer.on( 'change keyup', '.give-license__key input[type="text"]', giveDisableActivateLicenseButton );
-		$licenseActivationFormContainer.on( 'change keyup', 'input[name="give_license_key"]', giveDisableActivateLicenseButton );
 
 		// Auto trigger change event.
 		$( '.give-license__key input[type="text"]', $licensesContainer ).change();
@@ -33,7 +17,7 @@
 		/**
 		 * Allow dismissing upload notices for license widget.
 		 */
-		$( document ).on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
+		$noticeContainer.on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
 			$noticeContainer.empty().hide();
 		} );
 
@@ -155,7 +139,7 @@
 
 			const $this = $( this ),
 				$container = $this.parents( '.give-addon-wrap' ),
-				is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-plugin__info' ).length;
+				is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-addon-info-wrap' ).length;
 
 			// Remove errors if any.
 			$( '.give-notice', $container ).remove();
@@ -276,7 +260,7 @@
 		/**
 		 * Allow dismissing upload notices for the upload add-on widget.
 		 */
-		$( document ).on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
+		$noticeContainer.on( 'click', $( '.notice-dismiss', $noticeContainer ), function( event ) {
 			$noticeContainer.empty().hide();
 			$form.removeClass( 'give-dropzone-active' );
 		} );

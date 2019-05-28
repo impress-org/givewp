@@ -700,7 +700,19 @@ if ( ! class_exists( 'Give_License' ) ) :
 							       value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
 								<button
-									class="give-button__license-activate button-primary"><?php _e( 'Activate License' ); ?></button>
+									class="give-button__license-activate button-primary"><?php _e( 'Activate', 'give' ); ?></button>
+							<?php else : ?>
+
+								<?php
+								echo sprintf(
+									'<button class="give-license__deactivate button button-secondary" data-license-key="%2$s" data-item-name="%3$s"  data-plugin-dirname="%5$s" data-nonce="%4$s">%1$s</button>',
+									__( 'Deactivate', 'give' ),
+									$license['license_key'],
+									$license['item_name'],
+									wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
+									! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : ''
+								); ?>
+
 							<?php endif; ?>
 
 							<div class="give-license__status">
@@ -710,13 +722,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 									? sprintf(
 										'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
 										$is_license_expired
-											? __( 'License is expired', 'give' )
-											: __( 'License is active and you are receiving updates and support', 'give' ),
+											? __( 'License is expired. Please activate your license key.', 'give' )
+											: __( 'License is active and you are receiving updates and support.', 'give' ),
 										$is_license_expired
 											? 'no'
 											: 'yes'
 									)
-									: 'Invalid License';
+									: '<span class="dashicons dashicons-no"></span> ' . __( 'License is inactive. Please activate your license key.', 'give' );
 								?>
 							</div>
 						</div>
@@ -726,70 +738,79 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<h3 class="give-license-top-header"><?php _e( 'License Information', 'give' ); ?></h3>
 						<?php
 						// @todo: handle all license status;
-						if ( $license_key ) {
+						if ( $license_key ) : ?>
 
-							if ( $is_license_expired ) {
+							<?php if ( $license_key ) : ?>
+								<?php
+								echo sprintf(
+									'<p class="give-license-renewal-date"><span class="dashicons dashicons-calendar-alt"></span> <strong>%1$s</strong> %2$s</p>',
+									$is_license_expired ? __( 'Expired:' ) : __( 'Renews:' ),
+									date( give_date_format(), $expires_timestamp )
+								);
+								?>
+							<?php endif; ?>
+
+							<?php if ( $is_license_expired ) {
 								// @todo: need to test renew license link
 								echo sprintf(
-									'<span class="give-text"><a href="%1$s" target="_blank">%2$s</a></span>',
+									'<a href="%1$s" target="_blank">%2$s</a>',
 									$license['renew_url'],
 									__( 'Renew to manage sites', 'give' )
 								);
 							} elseif ( $license_key ) {
 								if ( ! $license['activations_left'] ) {
 									echo sprintf(
-										'<span class="give-text give-license__activation-left">%1$s</span>',
+										'<span class="give-license-activations-left">%1$s</span>',
 										__( 'No activation remaining', 'give' )
 									);
 								} else {
 									echo sprintf(
-										'<span class="give-text give-license__activation-left"><i class="give-background__gray">%1$s</i> %2$s</span>',
+										'<span class="give-license-activations-left"><span class="give-license-activations-remaining-icon wp-ui-highlight">%1$s</span> %2$s</span>',
 										$license['activations_left'],
-										_n( 'activation remaining', 'activations remaining', $license['activations_left'], 'give' )
+										_n( 'Activation Remaining', 'Activations Remaining', $license['activations_left'], 'give' )
 									);
 								}
-							}
+							} ?>
+						<?php else : ?>
 
-							if ( ! $is_license_expired ) {
-								echo sprintf(
-									'<span class="give-text"><a href="%9$s/purchase-history/?license_id=%3$s&action=manage_licenses&payment_id=%4$s" target="_blank">%1$s</a> | <a href="javascript:void(0)" target="_blank" class="give-license__deactivate" data-license-key="%5$s" data-item-name= "%6$s" data-nonce="%7$s" data-plugin-dirname="%8$s">%2$s</a> </span>',
-									__( 'Visit site', 'give' ),
-									__( 'Deactivate', 'give' ),
-									$license['license_id'],
-									$license['payment_id'],
-									$license['license_key'],
-									$license['item_name'],
-									wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
-									! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '',
-									Give_License::get_website_url()
-								);
-							}
-						}
-						?>
+							<p class="give-field-description"><?php _e( 'This is an unlicensed add-on and is not receiving updates or support. Please activate your license key to fix the issue.', 'give' ); ?></p>
+
+						<?php endif; ?>
 					</div>
 
 					<div class="give-license-top-column">
 						<h3 class="give-license-top-header"><?php _e( 'License Actions', 'give' ); ?></h3>
 
-						<?php if ( ! $license_key ) : ?>
-							<span class="give-text"><?php _e( 'Not receiving updates or support' ); ?></span>
+						<?php
+						// Purchase license link.
+						if ( ! $license_key ) : ?>
 							<?php
 							// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 							echo sprintf(
 								'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
 								$license['purchase_link'],
-								__( 'Purchase license', 'give' )
-							);
-							?>
-						<?php else : ?>
-							<?php
-							echo sprintf(
-								'<span><strong>%1$s %2$s</strong></span>',
-								$is_license_expired ? __( 'Expired:' ) : __( 'Renew:' ),
-								date( give_date_format(), $expires_timestamp )
+								__( 'Purchase License', 'give' )
 							);
 							?>
 						<?php endif; ?>
+
+						<?php
+						// Manage license link on GiveWP.com
+						if ( ! $is_license_expired && $license_key ) {
+							echo sprintf(
+								'<a href="%1$s/purchase-history/?license_id=%2$s&action=manage_licenses&payment_id=%3$s" target="_blank" class="give-license-action-link">%4$s</a>',
+								Give_License::get_website_url(),
+								$license['license_id'],
+								$license['payment_id'],
+								__( 'Manage License', 'give' )
+							);
+							echo sprintf(
+								'<a href="%1$s/priority-support/" target="_blank" class="give-license-action-link">%2$s</a>',
+								Give_License::get_website_url(),
+								__( 'Access Support', 'give' )
+							);
+						}
+						?>
 
 					</div>
 				</div>
@@ -818,47 +839,45 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
 			ob_start();
 			?>
-			<div class="give-row give-border give-plugin__info">
-				<div class="give-left">
-					<span class="give-text give-plugin__name"><?php echo $plugin['Name']; ?></span>
-					<span class="give-text">
-						<?php
-						echo sprintf(
-							'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
-							give_modal_ajax_url(
-								array(
-									'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
-										? urldecode_deep( $plugin['ChangeLogSlug'] )
-										: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
-									'show_changelog' => 1,
-								)
-							),
-							__( 'changelog', 'give' ),
-							__( 'Changelog of' ) . " {$plugin['Name']}"
-						);
-						?>
+			<div class="give-addon-info-wrap give-clearfix">
+
+				<div class="give-addon-info-left">
+					<span class="give-addon-name">
+						<?php echo $plugin['Name']; ?>
+					</span>
+					<span class="give-addon-version">
+						<?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ); ?>
 					</span>
 				</div>
-				<div class="give-right">
-					<span
-						class="give-text"><?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ); ?></span>
+
+				<div class="give-addon-info-right">
 					<?php
+					echo sprintf(
+						'<a href="%1$s" class="give-ajax-modal" title="%3$s">%2$s</a>',
+						give_modal_ajax_url(
+							array(
+								'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
+									? urldecode_deep( $plugin['ChangeLogSlug'] )
+									: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
+								'show_changelog' => 1,
+							)
+						),
+						__( 'View Changelog', 'give' ),
+						__( 'Changelog of' ) . " {$plugin['Name']}"
+					);
+					?>
+
+					<?php
+					// Activation status.
 					if ( in_array( $plugin['Status'], array( 'active', 'inactive' ) ) ) {
 						echo sprintf(
-							'<span class="give-background__gray give-border give-text give-text_small give-plugin__status">%1$s %2$s</span>',
-							__( 'currently', 'give' ),
+							'<span class="give-addon-activation-status give-addon-activation-status__%1$s">%1$s</span>',
 							'active' === $plugin['Status'] ? __( 'activated', 'give' ) : __( 'installed', 'give' )
 						);
 					}
 
 					printf(
-						'<span class="give-text">%1$s %2$s</span>',
-						__( 'Version', 'give' ),
-						$plugin['Version']
-					);
-
-					printf(
-						'<span><%3$s class="give-button button-secondary" target="_blank" href="%1$s"%4$s><i class="dashicons dashicons-download"></i>%2$s</%3$s></span>',
+						'<%3$s class="give-button button button-secondary button-small" target="_blank" href="%1$s"%4$s><span class="dashicons dashicons-download"></span>%2$s</%3$s>',
 						$plugin['DownloadURL'],
 						__( 'Download', 'give' ),
 						$is_license_expired || ! $plugin['DownloadURL'] ? 'button' : 'a',

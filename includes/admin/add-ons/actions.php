@@ -167,7 +167,7 @@ function give_get_license_info_handler() {
 
 	if ( ! $license_key ) {
 		wp_send_json_error( array(
-			'errorMsg' => __( 'Sorry, you entered a invalid key.', 'give' ),
+			'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
 		) );
 	} else if ( array_key_exists( $license_key, $licenses ) ) {
 		wp_send_json_error( array(
