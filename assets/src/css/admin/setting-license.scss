@@ -278,6 +278,7 @@ $license-widget-border-color: #DBDBDB;
 
 		&.give-license-key-field-wrap {
 			flex: 1.45;
+			padding-right: 10px;
 		}
 
 		&.give-license-info-field-wrap {
@@ -319,7 +320,7 @@ $license-widget-border-color: #DBDBDB;
 			top: -1px;
 		}
 
-		@media(min-width: 1391px) {
+		@media(min-width: 1400px) {
 			input[type="text"] {
 				min-width: 290px;
 				height: 40px;
@@ -332,7 +333,7 @@ $license-widget-border-color: #DBDBDB;
 			}
 		}
 
-		@media(max-width: 1390px) {
+		@media(max-width: 1399px) {
 			input[type="text"] {
 				min-width: 230px;
 				height: 35px;
@@ -422,7 +423,10 @@ $license-widget-border-color: #DBDBDB;
 		float: right;
 
 		.give-button {
-			margin: 0 0 0 10px;
+			margin: -5px 0 0;
+			position: relative;
+			top: 2px;
+
 			.dashicons {
 				font-size: 14px;
 				width: 14px;
@@ -433,6 +437,20 @@ $license-widget-border-color: #DBDBDB;
 		}
 	}
 
+	.give-addon-activation-status {
+		border-radius: 4px;
+		color: #FFF;
+		background: $status-default;
+		padding: 3px 8px;
+		margin: 0 15px;
+		font-size: 11px;
+
+		&__activated {
+			background: $status-complete;
+			text-shadow: 0px 0px 1px darken($status-complete, 20%);
+		}
+
+	}
 
 
 }
