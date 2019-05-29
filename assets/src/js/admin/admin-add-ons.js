@@ -102,12 +102,12 @@
 			// Remove errors if any.
 			$noticeContainer
 				.empty()
-				.removeClass('give-addon-notice-shown');
+				.removeClass( 'give-addon-notice-shown' );
 
 			// Must have entered a license key.
 			if ( ! license ) {
 				$noticeContainer
-					.addClass('give-addon-notice-shown')
+					.addClass( 'give-addon-notice-shown' )
 					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
 
 				return false;
@@ -120,7 +120,7 @@
 					action: 'give_get_license_info',
 					license: license,
 					single: 1,
-					addon: $this.attr('data-addon'),
+					addon: $this.attr( 'data-addon' ),
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
 				},
 				beforeSend: function() {
@@ -133,7 +133,7 @@
 					}
 
 					$noticeContainer
-						.addClass('give-addon-notice-shown')
+						.addClass( 'give-addon-notice-shown' )
 						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
@@ -153,12 +153,12 @@
 				$noticeContainer = $( '.give-license-notice-container', $container );
 
 			const is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-addon-info-wrap' ).length,
-				  index = $('.give-addon-wrap').index( $container ); // Preserve select position to reset $container selector after replace it with new HTML;
+				  index = $( '.give-addon-wrap' ).index( $container ); // Preserve select position to reset $container selector after replace it with new HTML;
 
 			// Remove errors if any.
 			$noticeContainer
 				.empty()
-				.removeClass('give-addon-notice-shown');
+				.removeClass( 'give-addon-notice-shown' );
 
 			$.ajax( {
 				url: ajaxurl,
