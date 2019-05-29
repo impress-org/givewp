@@ -1,4 +1,4 @@
-/* globals Give, jQuery */
+/* globals Give, jQuery, commonL10n */
 export default {
 	fn: {
 		/**
@@ -90,11 +90,13 @@ export default {
 		 * @since 2.5.0
 		 * @param {string} notice Notice description.
 		 * @param {string} type   Notice type.
+		 * @param {object} args   Notice type.
 		 *
 		 * @return {string} Notice HTML.
 		 */
-		getAdminNoticeHTML: function( notice, type = 'info' ){
-			return `<div class="give-notice notice notice-${type}"><p>${ notice }</p></div>`;
+		getAdminNoticeHTML: function( notice, type = 'info', args = { dismissible: true } ){
+			const btnText = commonL10n.dismiss || '';
+			return `<div class="give-notice notice notice-${type}${args.dismissible ? ' is-dismissible' : '' }"><p>${ notice }${args.dismissible ? ` <button type="button" class="notice-dismiss"><span class="screen-reader-text">${btnText}</span></button>` : '' }</p</div>`;
 		}
 	}
 };

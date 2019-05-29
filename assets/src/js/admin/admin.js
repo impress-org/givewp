@@ -10,6 +10,7 @@ import '../plugins/give-ajaxify-fields';
 import '../plugins/selector-cache';
 import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
+import '../plugins/notice';
 import GiveAPI from '../plugins/give-api/api';
 
 import * as Modals from '../plugins/modal.js';
