@@ -95,17 +95,30 @@
 			e.preventDefault();
 
 			const $this = $( this ),
-				$container = $this.parents( '.give-addon-wrap' );
+				$container = $this.parents( '.give-addon-wrap' ),
+				$noticeContainer = $( '.give-license-notice-container', $container ),
+				license = $this.prev( '.give-license__key input[type="text"]' ).val().trim();
 
 			// Remove errors if any.
-			$('.give-license-notice-container' ).empty().removeClass('give-addon-notice-shown');
+			$noticeContainer
+				.empty()
+				.removeClass('give-addon-notice-shown');
+
+			// Must have entered a license key.
+			if ( ! license ) {
+				$noticeContainer
+					.addClass('give-addon-notice-shown')
+					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
+
+				return false;
+			}
 
 			$.ajax( {
 				url: ajaxurl,
 				method: 'POST',
 				data: {
 					action: 'give_get_license_info',
-					license: $this.prev( '.give-license__key input[type="text"]' ).val().trim(),
+					license: license,
 					single: 1,
 					addon: $this.attr('data-addon'),
 					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
@@ -119,7 +132,9 @@
 						return;
 					}
 
-					$( '.give-license-notice-container', $container ).addClass('give-addon-notice-shown').prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					$noticeContainer
+						.addClass('give-addon-notice-shown')
+						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				Give.fn.loader( $container, false );
