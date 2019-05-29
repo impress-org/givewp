@@ -87,6 +87,8 @@ export default {
 
 		/**
 		 * Print notice
+		 * Note: use only in WP Backend
+		 *
 		 * @since 2.5.0
 		 * @param {string} notice Notice description.
 		 * @param {string} type   Notice type.
