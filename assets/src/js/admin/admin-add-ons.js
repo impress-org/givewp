@@ -109,36 +109,38 @@
 				$noticeContainer
 					.addClass( 'give-addon-notice-shown' )
 					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
+			} else{
+				$.ajax( {
+					url: ajaxurl,
+					method: 'POST',
+					data: {
+						action: 'give_get_license_info',
+						license: license,
+						single: 1,
+						addon: $this.attr( 'data-addon' ),
+						_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
+					},
+					beforeSend: function() {
+						Give.fn.loader( $container );
+					},
+					success: function( response ) {
+						if ( true === response.success ) {
+							$container.replaceWith( response.data.html );
+							return;
+						}
 
-				return false;
+						$noticeContainer
+							.addClass( 'give-addon-notice-shown' )
+							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					},
+				} ).done( function() {
+					Give.fn.loader( $container, { show: false } );
+				} );
 			}
 
-			$.ajax( {
-				url: ajaxurl,
-				method: 'POST',
-				data: {
-					action: 'give_get_license_info',
-					license: license,
-					single: 1,
-					addon: $this.attr( 'data-addon' ),
-					_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
-				},
-				beforeSend: function() {
-					Give.fn.loader( $container );
-				},
-				success: function( response ) {
-					if ( true === response.success ) {
-						$container.replaceWith( response.data.html );
-						return;
-					}
-
-					$noticeContainer
-						.addClass( 'give-addon-notice-shown' )
-						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
-				},
-			} ).done( function() {
-				Give.fn.loader( $container, { show: false } );
-			} );
+			$licensesContainer.on( 'click', '.notice-dismiss', function () {
+				$noticeContainer.removeClass('give-addon-notice-shown');
+			});
 		} );
 
 		/**
