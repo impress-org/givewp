@@ -380,6 +380,7 @@ class Give_Scripts {
 			'disconnect_stripe_message'         => $disconnect_stripe_message,
 			'loader_translation'                => array(
 				'updating'   => __( 'Updating...', 'give' ),
+				'loading'    => __( 'Loading...', 'give' ),
 				'uploading'  => __( 'Uploading...', 'give' ),
 				'processing' => __( 'Processing...', 'give' ),
 				'activating' => __( 'Activating...', 'give' ),
