@@ -699,8 +699,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<input id="give-license-addon-key-field" type="text"
 							       value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button
-									class="give-button__license-activate button-primary"><?php _e( 'Activate', 'give' ); ?></button>
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate', 'give' ); ?></button>
 							<?php else : ?>
 
 								<?php
