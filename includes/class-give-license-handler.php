@@ -783,7 +783,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// Purchase license link.
 						if ( ! $license_key ) : ?>
 							<?php
-							// help: https://docs.easydigitaldownloads.com/article/268-creating-custom-add-to-cart-links
 							echo sprintf(
 								'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
 								$license['purchase_link'],
