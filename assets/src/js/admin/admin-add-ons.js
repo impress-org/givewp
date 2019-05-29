@@ -147,11 +147,12 @@
 		$licensesContainer.on( 'click', '.give-license__deactivate', function( e ) {
 			e.preventDefault();
 
+			const $this = $( this );
+
 			let $container = $this.parents( '.give-addon-wrap' ),
 				$noticeContainer = $( '.give-license-notice-container', $container );
 
-			const $this = $( this ),
-				  is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-addon-info-wrap' ).length,
+			const is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-addon-info-wrap' ).length,
 				  index = $('.give-addon-wrap').index( $container ); // Preserve select position to reset $container selector after replace it with new HTML;
 
 			// Remove errors if any.
