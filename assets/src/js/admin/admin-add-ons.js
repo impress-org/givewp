@@ -148,11 +148,16 @@
 			e.preventDefault();
 
 			const $this = $( this ),
-				$container = $this.parents( '.give-addon-wrap' ),
 				is_all_access_pass = 1 < $this.parents( '.give-addon-inner' ).find( '.give-addon-info-wrap' ).length;
 
+			let $container = $this.parents( '.give-addon-wrap' ),
+				index = $('.give-addon-wrap').index( $container ), // Preserve select position to reset $container selector after replace it with new HTML
+				$noticeContainer = $( '.give-license-notice-container', $container );
+
 			// Remove errors if any.
-			$( '.give-license-notice-container', $container ).empty().removeClass('give-addon-notice-shown');
+			$noticeContainer
+				.empty()
+				.removeClass('give-addon-notice-shown');
 
 			$.ajax( {
 				url: ajaxurl,
@@ -178,10 +183,21 @@
 						} else {
 							$container.replaceWith( response.data.html );
 						}
+
+						// Update selector.
+						$container = $('.give-addon-wrap').get(index);
+						$noticeContainer = $( '.give-license-notice-container', $container );
+
+						$noticeContainer
+							.addClass('give-addon-notice-shown')
+							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.msg, 'success' ) );
+
 						return;
 					}
 
-					$( '.give-license-notice-container', $container ).removeClass('give-addon-notice-shown').prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					$noticeContainer
+						.removeClass('give-addon-notice-shown')
+						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				if ( is_all_access_pass ) {

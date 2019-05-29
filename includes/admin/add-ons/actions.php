@@ -350,6 +350,8 @@ function give_deactivate_license_handler() {
 		? Give_License::render_licenses_list()
 		: Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $plugin_dirname ) );
 
+	$response['msg'] = __( 'You have successfully deactivated the license.', 'give' );
+
 	// Tell WordPress to look for updates.
 	give_refresh_licenses();
 
