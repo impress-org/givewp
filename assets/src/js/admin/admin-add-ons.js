@@ -186,19 +186,17 @@
 						}
 
 						// Update selector.
-						$container = $('.give-addon-wrap').get(index);
+						$container = $( '.give-addon-wrap' ).get( index );
 						$noticeContainer = $( '.give-license-notice-container', $container );
 
 						$noticeContainer
-							.addClass('give-addon-notice-shown')
+							.addClass( 'give-addon-notice-shown' )
 							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.msg, 'success' ) );
-
-						return;
+					} else{
+						$noticeContainer
+							.addClass( 'give-addon-notice-shown' )
+							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 					}
-
-					$noticeContainer
-						.removeClass('give-addon-notice-shown')
-						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
 				if ( is_all_access_pass ) {
@@ -207,6 +205,10 @@
 					Give.fn.loader( $container, false );
 				}
 			} );
+
+			$licensesContainer.on( 'click', '.notice-dismiss', function () {
+				$noticeContainer.removeClass('give-addon-notice-shown');
+			});
 		} );
 
 		/**
