@@ -697,10 +697,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 						<div class="give-license__key<?php echo $license_key ? ' give-has-license-key' : ''; ?>">
 							<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
-							<label for="give-license-addon-key-field"
-							       class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
-							<input id="give-license-addon-key-field" type="text"
-							       value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
+							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
+							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
 								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate', 'give' ); ?></button>
 							<?php else : ?>

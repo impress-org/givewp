@@ -8,7 +8,7 @@ import GiveDonor from './donor';
  *
  *  Currently used only for internal purpose.
  */
-let Give = {
+const Give = {
 	init: function() {
 		let subHelperObjs = [ 'form' ],
 			counter = 0;
@@ -16,10 +16,10 @@ let Give = {
 
 		// Initialize all init methods of sub helper objects.
 		while ( counter < subHelperObjs.length ) {
-			if ( !!Give[ subHelperObjs[ counter ] ].init ) {
+			if ( !! Give[ subHelperObjs[ counter ] ].init ) {
 				Give[ subHelperObjs[ counter ] ].init();
 			}
-			counter ++;
+			counter++;
 		}
 
 		jQuery( document ).trigger( 'give:postInit' );
@@ -43,7 +43,7 @@ let Give = {
 				decimal: this.getGlobalVar( 'decimal_separator' ),
 				thousand: this.getGlobalVar( 'thousands_separator' ),
 				precision: parseInt( this.getGlobalVar( 'number_decimals' ) ),
-				currency: this.getGlobalVar( 'currency' )
+				currency: this.getGlobalVar( 'currency' ),
 			};
 
 			price = price.toString().trim();
@@ -111,7 +111,6 @@ let Give = {
 			}
 
 			return price;
-
 		},
 
 		/**
@@ -123,14 +122,14 @@ let Give = {
 		 */
 		unFormatCurrency: function( price, decimal_separator ) {
 			if ( 'string' === typeof price ) {
-				let regex = ',' === decimal_separator.trim() ? /[^0-9\,-]+/g : /[^0-9\.-]+/g;
+				const regex = ',' === decimal_separator.trim() ? /[^0-9\,-]+/g : /[^0-9\.-]+/g;
 
 				price = price.replace( regex, '' );
 
 				if ( 0 === price.indexOf( decimal_separator ) ) {
 					price = price.substr( 1 );
 				} else if ( ( price.length - 1 ) === price.indexOf( decimal_separator ) ) {
-					price = price.slice( 0, - 1 );
+					price = price.slice( 0, -1 );
 				}
 			}
 
@@ -147,20 +146,20 @@ let Give = {
 		 * @returns {*}
 		 */
 		getParameterByName: function( name, url ) {
-			if ( !url ) {
+			if ( ! url ) {
 				url = window.location.href;
 			}
 
 			name = name.replace( /[\[\]]/g, '\\$&' );
 
-			let regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
+			const regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
 				results = regex.exec( url );
 
-			if ( !results ) {
+			if ( ! results ) {
 				return null;
 			}
 
-			if ( !results[ 2 ] ) {
+			if ( ! results[ 2 ] ) {
 				return '';
 			}
 
@@ -257,21 +256,31 @@ let Give = {
 
 		/**
 		 * Show and hide spinner
+		 * Note: use only in WP Backend
 		 *
 		 * @since 2.5.0
 		 * @public
 		 *
 		 * @param {object} $container Container where you wan to prepend spinner.
-		 * @param {boolean} show Flag to check whether to show or hide spinner.
+		 * @param {object} args argument to change loader output.
 		 */
-		loader: function( $container, show = true ) {
-			if ( show ) {
-				$container.prepend( '<div class="give-spinner-wrap"><span class="is-active spinner"></span></div>' );
+		loader: function( $container, args = { show: true, loadingAnimation: true, loadingText: null } ) {
+			const spinner = args.loadingAnimation ? '<span class="is-active spinner"></span>' : '',
+				  text = null !== args.loadingText ? args.loadingText : Give.fn.getGlobalVar( 'loader_translation' ).updating;
+
+			let classes;
+
+			if ( args.show ) {
+				classes = spinner.length ? 'give-has-spinner' : '';
+				classes += text.length ? ' give-has-text' : '';
+				classes = classes.length ? ' ' + classes.trim() : '';
+
+				$container.prepend( `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>` );
 				return;
 			}
 
 			jQuery( '.give-spinner-wrap', $container ).remove();
-		}
+		},
 	},
 
 	/**
@@ -279,7 +288,7 @@ let Give = {
 	 *
 	 * @since 1.8.17
 	 */
-	cache: {}
+	cache: {},
 };
 
 Give.notice = GiveNotice;

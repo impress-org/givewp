@@ -80,7 +80,7 @@
 					}
 				},
 			} ).always( function() {
-				Give.fn.loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, { show: false } );
 				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 				$submitBtn.prop( 'disabled', false );
 			} );
@@ -137,7 +137,7 @@
 						.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 				},
 			} ).done( function() {
-				Give.fn.loader( $container, false );
+				Give.fn.loader( $container, { show: false } );
 			} );
 		} );
 
@@ -200,9 +200,9 @@
 				},
 			} ).done( function() {
 				if ( is_all_access_pass ) {
-					Give.fn.loader( $licensesContainer, false );
+					Give.fn.loader( $licensesContainer, { show: false } );
 				} else {
-					Give.fn.loader( $container, false );
+					Give.fn.loader( $container, { show: false } );
 				}
 			} );
 
@@ -242,7 +242,7 @@
 					}
 				},
 			} ).done( function() {
-				Give.fn.loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, { show: false } );
 				$this.text( $this.attr( 'data-activate' ) );
 			} );
 		} );
@@ -359,7 +359,7 @@
 					$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( errorMsg, 'error' ) );
 				},
 			} ).always( function() {
-				Give.fn.loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, { show: false } );
 			} );
 		}
 
@@ -406,7 +406,7 @@
 			} ).always( function() {
 				$activateBtn.text( $activateBtn.attr( 'data-activate' ) );
 				$activateBtnContainer.hide();
-				Give.fn.loader( $licensesContainer, false );
+				Give.fn.loader( $licensesContainer, { show: false } );
 			} );
 		} );
 	} );

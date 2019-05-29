@@ -197,8 +197,9 @@ $license-widget-border-color: #DBDBDB;
 		z-index: 99;
 		background-color: white;
 
-		.spinner {
-			float: left;
+		.give-spinner-inner{
+			margin-top: 5%;
+			margin-left: 45%;
 		}
 	}
 }
@@ -386,16 +387,6 @@ $license-widget-border-color: #DBDBDB;
 		padding: 0 5px;
 		line-height: 20px !important;
 	}
-
-
-	.give-spinner-wrap {
-		.spinner {
-			float: none;
-			margin-left: 50%;
-			margin-top: 30px;
-		}
-	}
-
 }
 
 // Individual add-ons

@@ -260,8 +260,10 @@ class Give_Scripts {
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
 			'decimal_separator'                 => $decimal_separator,
-			'number_decimals'                   => $number_decimals, // Use this for number of decimals instead of `currency_decimals`.
-			'currency_decimals'                 => $number_decimals, // If you find usage of this variable then replace it with `number_decimals`.
+			'number_decimals'                   => $number_decimals,
+			// Use this for number of decimals instead of `currency_decimals`.
+			'currency_decimals'                 => $number_decimals,
+			// If you find usage of this variable then replace it with `number_decimals`.
 			'currency_sign'                     => give_currency_filter( '' ),
 			'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 			'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
@@ -370,13 +372,16 @@ class Give_Scripts {
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
 			'donor_note_confirm_msg'            => __( 'Please confirm you would like to add a donor note. An email notification will be sent to the donor with the note. If you do not want to notify the donor you may add a private note or disable the donor note email.', 'give' ),
-			'email_notification'            => array(
+			'email_notification'                => array(
 				'donor_note' => array(
-					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance('donor-note' ) )
-				)
+					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance( 'donor-note' ) ),
+				),
 			),
-			'disconnect_stripe_title'      => __( 'Confirm Disconnect?', 'give' ),
-			'disconnect_stripe_message'    => $disconnect_stripe_message,
+			'disconnect_stripe_title'           => __( 'Confirm Disconnect?', 'give' ),
+			'disconnect_stripe_message'         => $disconnect_stripe_message,
+			'loader_translation'                => array(
+				'updating' => __( 'Updating...', 'give' ),
+			),
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
@@ -453,11 +458,11 @@ class Give_Scripts {
 		/**
 		 * Filter to modify access mail send notice
 		 *
-		 * @since 2.1.3
-		 *
 		 * @param string Send notice message for email access.
 		 *
 		 * @return  string $message Send notice message for email access.
+		 * @since 2.1.3
+		 *
 		 */
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 

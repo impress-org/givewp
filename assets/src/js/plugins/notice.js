@@ -1,3 +1,4 @@
+// Use only in WP Backend.
 jQuery( document ).ready( function($) {
 	$('body').on( 'click', '.notice-dismiss', function( event ) {
 		const $el = $( this ).parent().parent();
