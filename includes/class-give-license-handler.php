@@ -796,15 +796,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// Manage license link on GiveWP.com
 						if ( ! $is_license_expired && $license_key ) {
 							echo sprintf(
-								'<a href="%1$s/purchase-history/?license_id=%2$s&action=manage_licenses&payment_id=%3$s" target="_blank" class="give-license-action-link">%4$s</a>',
-								Give_License::get_website_url(),
+								'<a href="%1$spurchase-history/?license_id=%2$s&action=manage_licenses&payment_id=%3$s" target="_blank" class="give-license-action-link">%4$s</a>',
+								trailingslashit( Give_License::get_website_url() ),
 								$license['license_id'],
 								$license['payment_id'],
 								__( 'Manage License', 'give' )
 							);
 							echo sprintf(
-								'<a href="%1$s/priority-support/" target="_blank" class="give-license-action-link">%2$s</a>',
-								Give_License::get_website_url(),
+								'<a href="%1$spriority-support/" target="_blank" class="give-license-action-link">%2$s</a>',
+								trailingslashit( Give_License::get_website_url() ),
 								__( 'Access Support', 'give' )
 							);
 						}
