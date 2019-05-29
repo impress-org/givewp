@@ -30,7 +30,7 @@
 			// Must have entered a license key.
 			if ( ! license ) {
 				$noticeContainer.show();
-				$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
+				$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
 				return false;
 			}
 
@@ -61,10 +61,10 @@
 								give_addon_var.notices.download_file.replace( '{link}', response.data.download ) :
 								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
 
-							$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ msg }</p><span class="notice-dismiss"></span></div>` );
+							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( msg, 'success' ) );
 							$licensesContainer.html( response.data.html );
 						} else {
-							$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
+							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
 						}
 
 						return;
@@ -74,9 +74,9 @@
 						response.data.hasOwnProperty( 'errorMsg' ) &&
 						response.data.errorMsg
 					) {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 					} else {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.invalid_license }</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
 					}
 				},
 			} ).always( function() {
@@ -328,7 +328,7 @@
 				beforeSend: function() {
 					Give.fn.loader( $licensesContainer );
 					$noticeContainer.show();
-					$noticeContainer.html( `<div class="give-notice notice notice-info"><p>${ give_addon_var.notices.uploading }<span class="spinner"></span></p></div>` );
+					$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.uploading ) );
 				},
 				success: function( response ) {
 					let errorMsg;
@@ -353,7 +353,7 @@
 						errorMsg = response.data.error;
 					}
 
-					$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ errorMsg }</p><span class="notice-dismiss"></span></div>` );
+					$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( errorMsg, 'error' ) );
 				},
 			} ).always( function() {
 				Give.fn.loader( $licensesContainer, false );
@@ -385,7 +385,7 @@
 					if ( true === response.success ) {
 						const msg = give_addon_var.notices.addon_activated.replace( '{pluginName}', $activateBtn.attr( 'data-pluginName' ) );
 						$noticeContainer.show();
-						$noticeContainer.html( `<div class="give-notice notice notice-success"><p>${ msg }</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( msg, 'success' ) );
 						$licensesContainer.html( response.data.licenseSectionHtml );
 
 						return;
@@ -395,9 +395,9 @@
 						response.data.hasOwnProperty( 'errorMsg' ) &&
 						response.data.errorMsg
 					) {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ response.data.errorMsg }</p><span class="notice-dismiss"></span></div>` );
+						$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
 					} else {
-						$noticeContainer.html( `<div class="give-notice notice notice-error"><p>${ give_addon_var.notices.addon_activation_error }</p><span class="notice-dismiss"></span></div>` );
+						Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.addon_activation_error, 'error' );
 					}
 				},
 			} ).always( function() {
