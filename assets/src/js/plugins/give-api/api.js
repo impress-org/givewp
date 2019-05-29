@@ -270,18 +270,28 @@ const Give = {
 			const spinner = args.loadingAnimation ? '<span class="is-active spinner"></span>' : '',
 				  text = null !== args.loadingText ? args.loadingText : Give.fn.getGlobalVar( 'loader_translation' ).updating;
 
-			let classes;
+			let classes, spinnerHTML;
 
-			if ( args.show ) {
-				classes = spinner.length ? 'give-has-spinner' : '';
-				classes += text.length ? ' give-has-text' : '';
-				classes = classes.length ? ' ' + classes.trim() : '';
+			if ( false === args.show ) {
+				jQuery( '.give-spinner-wrap', $container ).remove();
 
-				$container.prepend( `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>` );
-				return;
+				return false;
 			}
 
-			jQuery( '.give-spinner-wrap', $container ).remove();
+			classes = spinner.length ? 'give-has-spinner' : '';
+			classes += text.length ? ' give-has-text' : '';
+			classes = classes.length ? ' ' + classes.trim() : '';
+
+			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>`;
+
+			// return spinner HTML.
+			if( null === args.show ) {
+				return spinnerHTML;
+			}
+
+			$container.prepend( spinnerHTML );
+
+			return true;
 		},
 	},
 
