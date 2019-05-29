@@ -555,6 +555,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 				}
 			}
 
+			ksort( $html );
+
+			// After sorting order will be all_access_licensed -> licensed ->  unlicensed
+
 			return implode( '', $html );
 		}
 
