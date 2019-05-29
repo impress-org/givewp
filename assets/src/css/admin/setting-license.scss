@@ -107,6 +107,7 @@ $license-widget-border-color: #DBDBDB;
 
 // Upload field.
 .give-upload-addon-form-wrap {
+	position: relative;
 
 	.give-upload-addon-instructions {
 		margin: 0;
@@ -124,6 +125,21 @@ $license-widget-border-color: #DBDBDB;
 	// Hide actual file select field and use label.
 	#give-upload-addon-file-select {
 		display: none;
+	}
+
+	.give-spinner-wrap {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99;
+		background-color: white;
+
+		.give-spinner-inner{
+			margin-top: 5%;
+			margin-left: 42%;
+		}
 	}
 
 }
@@ -176,13 +192,6 @@ $license-widget-border-color: #DBDBDB;
 			color: $give-green;
 		}
 	}
-
-	// Show spinner for upload field.
-	.give-notice .spinner {
-		visibility: visible;
-		margin: 0;
-	}
-
 }
 
 #give-licenses-container {

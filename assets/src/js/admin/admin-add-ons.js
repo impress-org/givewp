@@ -329,9 +329,8 @@
 				processData: false,
 				dataType: 'json',
 				beforeSend: function() {
-					Give.fn.loader( $licensesContainer );
 					$noticeContainer.show();
-					$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.uploading ) );
+					Give.fn.loader( $container, { loadingText: Give.fn.getGlobalVar( 'loader_translation' ).uploading } );
 				},
 				success: function( response ) {
 					let errorMsg;
@@ -359,7 +358,7 @@
 					$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( errorMsg, 'error' ) );
 				},
 			} ).always( function() {
-				Give.fn.loader( $licensesContainer, { show: false } );
+				Give.fn.loader( $container, { show: false } );
 			} );
 		}
 
@@ -381,7 +380,6 @@
 				},
 				beforeSend: function() {
 					$noticeContainer.show();
-					Give.fn.loader( $licensesContainer );
 					$activateBtn.text( $activateBtn.attr( 'data-activating' ) );
 				},
 				success: function( response ) {
@@ -406,7 +404,6 @@
 			} ).always( function() {
 				$activateBtn.text( $activateBtn.attr( 'data-activate' ) );
 				$activateBtnContainer.hide();
-				Give.fn.loader( $licensesContainer, { show: false } );
 			} );
 		} );
 	} );

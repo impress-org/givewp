@@ -199,7 +199,6 @@ class Give_Scripts {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(
-					'uploading'       => __( 'Uploading...', 'give' ),
 					'invalid_license' => __( 'Sorry, you entered an invalid key.', 'give' ),
 					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}" target="_blank">Click here</a> to download your add-on.', 'give' ),
 					'addon_activated'   => __( '{pluginName} add-on activated successfully.', 'give' ),
@@ -380,7 +379,10 @@ class Give_Scripts {
 			'disconnect_stripe_title'           => __( 'Confirm Disconnect?', 'give' ),
 			'disconnect_stripe_message'         => $disconnect_stripe_message,
 			'loader_translation'                => array(
-				'updating' => __( 'Updating...', 'give' ),
+				'updating'   => __( 'Updating...', 'give' ),
+				'uploading'  => __( 'Uploading...', 'give' ),
+				'processing' => __( 'Processing...', 'give' ),
+				'activating' => __( 'Activating...', 'give' ),
 			),
 		);
 

@@ -264,7 +264,9 @@ const Give = {
 		 * @param {object} $container Container where you wan to prepend spinner.
 		 * @param {object} args argument to change loader output.
 		 */
-		loader: function( $container, args = { show: true, loadingAnimation: true, loadingText: null } ) {
+		loader: function( $container, args = {} ) {
+			args = Object.assign( { show: true, loadingAnimation: true, loadingText: null }, args );
+
 			const spinner = args.loadingAnimation ? '<span class="is-active spinner"></span>' : '',
 				  text = null !== args.loadingText ? args.loadingText : Give.fn.getGlobalVar( 'loader_translation' ).updating;
 
