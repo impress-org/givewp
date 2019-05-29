@@ -9,11 +9,6 @@
 			$submitBtn = $( 'input[type="submit"]', $form ),
 			$noticeContainer = $( '.give-license-notices', $licenseActivationFormContainer );
 
-
-		// Auto trigger change event.
-		$( '.give-license__key input[type="text"]', $licensesContainer ).change();
-		$( 'input[name="give_license_key"]', $licenseActivationFormContainer ).change();
-
 		/**
 		 * Allow dismissing upload notices for license widget.
 		 */
