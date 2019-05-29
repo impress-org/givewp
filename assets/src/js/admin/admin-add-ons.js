@@ -48,7 +48,6 @@
 					Give.fn.loader( $licensesContainer );
 				},
 				success: function( response ) {
-					$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
 					// Show notice container.
 					$noticeContainer.show();
 					$license.val( '' );
@@ -83,6 +82,7 @@
 			} ).always( function() {
 				Give.fn.loader( $licensesContainer, false );
 				$submitBtn.val( $submitBtn.attr( 'data-activate' ) );
+				$submitBtn.prop( 'disabled', false );
 			} );
 
 			return false;
