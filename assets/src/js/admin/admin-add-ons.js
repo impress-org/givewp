@@ -102,7 +102,8 @@
 			// Remove errors if any.
 			$noticeContainer
 				.empty()
-				.removeClass( 'give-addon-notice-shown' );
+				.removeClass( 'give-addon-notice-shown' )
+				.show();
 
 			// Must have entered a license key.
 			if ( ! license ) {
@@ -138,8 +139,10 @@
 				} );
 			}
 
-			$licensesContainer.on( 'click', '.notice-dismiss', function () {
-				$noticeContainer.removeClass('give-addon-notice-shown');
+			$licensesContainer.on('click', '.notice-dismiss', function () {
+				$noticeContainer.slideUp(150, function () {
+					$noticeContainer.removeClass('give-addon-notice-shown');
+				});
 			});
 		} );
 
@@ -160,7 +163,8 @@
 			// Remove errors if any.
 			$noticeContainer
 				.empty()
-				.removeClass( 'give-addon-notice-shown' );
+				.removeClass( 'give-addon-notice-shown' )
+				.show();
 
 			$.ajax( {
 				url: ajaxurl,
@@ -208,8 +212,10 @@
 				}
 			} );
 
-			$licensesContainer.on( 'click', '.notice-dismiss', function () {
-				$noticeContainer.removeClass('give-addon-notice-shown');
+			$licensesContainer.on('click', '.notice-dismiss', function () {
+				$noticeContainer.slideUp(150, function () {
+					$noticeContainer.removeClass('give-addon-notice-shown');
+				});
 			});
 		} );
 
