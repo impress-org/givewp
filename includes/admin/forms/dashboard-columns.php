@@ -359,35 +359,6 @@ function give_price_save_quick_edit( $post_id ) {
 add_action( 'save_post', 'give_price_save_quick_edit' );
 
 /**
- * Process bulk edit actions via AJAX
- *
- * @since 1.0
- * @return void
- */
-function give_save_bulk_edit() {
-
-	$post_ids = ( isset( $_POST['post_ids'] ) && ! empty( $_POST['post_ids'] ) ) ? $_POST['post_ids'] : array();
-
-	if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
-		$price = isset( $_POST['price'] ) ? strip_tags( stripslashes( $_POST['price'] ) ) : 0;
-		foreach ( $post_ids as $post_id ) {
-
-			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				continue;
-			}
-
-			if ( ! empty( $price ) ) {
-				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( $price ) );
-			}
-		}
-	}
-
-	die();
-}
-
-add_action( 'wp_ajax_give_save_bulk_edit', 'give_save_bulk_edit' );
-
-/**
  * Function is used to filter the query for search result.
  *
  * @since 2.4.0

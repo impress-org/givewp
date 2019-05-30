@@ -181,27 +181,6 @@ function give_load_checkout_fields() {
 add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields' );
 add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields' );
 
-/**
- * Get Form Title via AJAX (used only in WordPress Admin)
- *
- * @since  1.0
- *
- * @return void
- */
-function give_ajax_get_form_title() {
-	if ( isset( $_POST['form_id'] ) ) {
-		$title = get_the_title( absint( give_clean( $_POST['form_id'] ) ) );
-		if ( $title ) {
-			echo $title;
-		} else {
-			echo 'fail';
-		}
-	}
-	give_die();
-}
-
-add_action( 'wp_ajax_give_get_form_title', 'give_ajax_get_form_title' );
-add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 
 /**
  * Retrieve a states drop down
