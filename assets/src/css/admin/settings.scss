@@ -12,10 +12,10 @@
 //--------------------------------------------------------------
 
 .give-settings-page {
-	margin:0 20px 0 2px;
+	margin: 0 20px 0 2px;
 
 	#poststuff {
-		padding-top:25px;
+		padding-top: 25px;
 	}
 
 	// White bg header.
@@ -50,17 +50,17 @@
 			white-space: nowrap;
 			color: #d3d3d3;
 			font-weight: 300;
-			font-size:16px;
+			font-size: 16px;
 		}
 
 		a {
 			line-height: 2;
 			padding: .2em;
-			margin:0 3px 0 0;
+			margin: 0 3px 0 0;
 			text-decoration: none;
 			font-size: 14px;
 			box-shadow: none;
-			font-weight:normal;
+			font-weight: normal;
 		}
 
 		a.current {
@@ -276,7 +276,7 @@ div.give-field-description {
 .give-gateways-notice {
 	display: table;
 	width: 100%;
-	overflow: hidden;
+	max-width: 1240px;
 	background: #FFF;
 	margin: 15px 0 0;
 	padding: 0;
@@ -284,7 +284,7 @@ div.give-field-description {
 
 	.give-gateways-cc-icon {
 		margin: 0;
-		padding: 0 0 0 15px;
+		padding: 0 15px 0 25px;
 		height: 30px;
 		width: 30px;
 		display: table-cell;
@@ -293,14 +293,22 @@ div.give-field-description {
 		svg {
 			position: relative;
 			top: 2px;
+			width: 50px;
+			height: 40px;
 		}
 
 	}
 
+	.give-gateways-notice-title {
+		font-size: 16px;
+		margin: 20px 20px 0;
+		padding: 0;
+	}
+
 	.give-gateways-notice-message {
 		line-height: 24px;
-		font-size: 16px;
-		margin: 15px 20px;
+		font-size: 14px;
+		margin: 5px 20px 20px;
 	}
 
 	.give-gateways-notice-button {
@@ -309,6 +317,17 @@ div.give-field-description {
 		text-align: right;
 		margin: 0;
 		padding: 0 15px 0 0;
+		width: 200px;
+
+		#give-stripe-connect {
+			margin: 0 0 10px;
+		}
+
+		.give-view-gateways-btn {
+			text-align: center;
+			width: 190px;
+		}
+
 	}
 
 }
