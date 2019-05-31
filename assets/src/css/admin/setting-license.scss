@@ -443,7 +443,7 @@ $license-widget-border-color: #DBDBDB;
 		color: #FFF;
 		background: $status-default;
 		padding: 3px 8px;
-		margin: 0 15px;
+		margin: 0 15px 0 0;
 		font-size: 11px;
 
 		&__activated {
@@ -454,6 +454,7 @@ $license-widget-border-color: #DBDBDB;
 	}
 
 	.give-addon-view-changelog {
+		margin: 0 15px 0 0;
 		font-size: 12px;
 	}
 
