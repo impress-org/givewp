@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.8
  */
 function give_load_wp_editor() {
-	if ( ! isset( $_POST['wp_editor'] ) || ! current_user_can('edit_give_forms' ) ) {
+	if ( ! isset( $_POST['wp_editor'] ) || ! current_user_can( 'edit_give_forms' ) ) {
 		die();
 	}
 
@@ -38,9 +38,9 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
+ * @return bool
  * @since 1.8
  *
- * @return bool
  */
 function give_redirect_to_clean_url_admin_pages() {
 	// Give admin pages.
@@ -90,9 +90,9 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * This code is used with AJAX call to hide outdated PHP notice for a short period of time
  *
+ * @return void
  * @since 1.8.9
  *
- * @return void
  */
 function give_hide_outdated_php_notice() {
 
@@ -143,59 +143,66 @@ function _give_register_admin_notices() {
 
 			switch ( $_GET['action'] ) {
 				case 'delete':
-					Give()->notices->register_notice( array(
-						'id'          => 'bulk_action_delete',
-						'type'        => 'updated',
-						'description' => sprintf(
-							_n(
-								'Successfully deleted one donation.',
-								'Successfully deleted %d donations.',
-								$payment_count,
-								'give'
+					Give()->notices->register_notice(
+						array(
+							'id'          => 'bulk_action_delete',
+							'type'        => 'updated',
+							'description' => sprintf(
+								_n(
+									'Successfully deleted one donation.',
+									'Successfully deleted %d donations.',
+									$payment_count,
+									'give'
+								),
+								$payment_count
 							),
-							$payment_count ),
-						'show'        => true,
-					) );
+							'show'        => true,
+						)
+					);
 
 					break;
 
 				case 'resend-receipt':
-					Give()->notices->register_notice( array(
-						'id'          => 'bulk_action_resend_receipt',
-						'type'        => 'updated',
-						'description' => sprintf(
-							_n(
-								'Successfully sent email receipt to one recipient.',
-								'Successfully sent email receipts to %d recipients.',
+					Give()->notices->register_notice(
+						array(
+							'id'          => 'bulk_action_resend_receipt',
+							'type'        => 'updated',
+							'description' => sprintf(
+								_n(
+									'Successfully sent email receipt to one recipient.',
+									'Successfully sent email receipts to %d recipients.',
+									$payment_count,
+									'give'
+								),
+								$payment_count
+							),
+							'show'        => true,
+						)
+					);
+					break;
+
+				case 'set-status-publish':
+				case 'set-status-pending':
+				case 'set-status-processing':
+				case 'set-status-refunded':
+				case 'set-status-revoked':
+				case 'set-status-failed':
+				case 'set-status-cancelled':
+				case 'set-status-abandoned':
+				case 'set-status-preapproval':
+					Give()->notices->register_notice(
+						array(
+							'id'          => 'bulk_action_status_change',
+							'type'        => 'updated',
+							'description' => _n(
+								'Donation status updated successfully.',
+								'Donation statuses updated successfully.',
 								$payment_count,
 								'give'
 							),
-							$payment_count
-						),
-						'show'        => true,
-					) );
-					break;
-
-				case 'set-status-publish' :
-				case 'set-status-pending' :
-				case 'set-status-processing' :
-				case 'set-status-refunded' :
-				case 'set-status-revoked' :
-				case 'set-status-failed' :
-				case 'set-status-cancelled' :
-				case 'set-status-abandoned' :
-				case 'set-status-preapproval' :
-					Give()->notices->register_notice( array(
-						'id'          => 'bulk_action_status_change',
-						'type'        => 'updated',
-						'description' => _n(
-							'Donation status updated successfully.',
-							'Donation statuses updated successfully.',
-							$payment_count,
-							'give'
-						),
-						'show'        => true,
-					) );
+							'show'        => true,
+						)
+					);
 					break;
 			}// End switch().
 		}// End if().
@@ -208,37 +215,45 @@ function _give_register_admin_notices() {
 			// Donation reports errors.
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $message_notice ) {
-					case 'donation-deleted' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-donation-deleted',
-							'type'        => 'updated',
-							'description' => __( 'The donation has been deleted.', 'give' ),
-							'show'        => true,
-						) );
+					case 'donation-deleted':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-donation-deleted',
+								'type'        => 'updated',
+								'description' => __( 'The donation has been deleted.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'email-sent' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-email-sent',
-							'type'        => 'updated',
-							'description' => __( 'The donation receipt has been resent.', 'give' ),
-							'show'        => true,
-						) );
+					case 'email-sent':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-email-sent',
+								'type'        => 'updated',
+								'description' => __( 'The donation receipt has been resent.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'refreshed-reports' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-refreshed-reports',
-							'type'        => 'updated',
-							'description' => __( 'The reports cache has been cleared.', 'give' ),
-							'show'        => true,
-						) );
+					case 'refreshed-reports':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-refreshed-reports',
+								'type'        => 'updated',
+								'description' => __( 'The reports cache has been cleared.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'donation-note-deleted' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-donation-note-deleted',
-							'type'        => 'updated',
-							'description' => __( 'The donation note has been deleted.', 'give' ),
-							'show'        => true,
-						) );
+					case 'donation-note-deleted':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-donation-note-deleted',
+								'type'        => 'updated',
+								'description' => __( 'The donation note has been deleted.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 				}// End switch().
 			}// End if().
@@ -246,61 +261,75 @@ function _give_register_admin_notices() {
 			// Give settings notices and errors.
 			if ( current_user_can( 'manage_give_settings' ) ) {
 				switch ( $message_notice ) {
-					case 'settings-imported' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-settings-imported',
-							'type'        => 'updated',
-							'description' => __( 'The settings have been imported.', 'give' ),
-							'show'        => true,
-						) );
+					case 'settings-imported':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-settings-imported',
+								'type'        => 'updated',
+								'description' => __( 'The settings have been imported.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'api-key-generated' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-api-key-generated',
-							'type'        => 'updated',
-							'description' => __( 'API keys have been generated.', 'give' ),
-							'show'        => true,
-						) );
+					case 'api-key-generated':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-api-key-generated',
+								'type'        => 'updated',
+								'description' => __( 'API keys have been generated.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'api-key-exists' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-api-key-exists',
-							'type'        => 'updated',
-							'description' => __( 'The specified user already has API keys.', 'give' ),
-							'show'        => true,
-						) );
+					case 'api-key-exists':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-api-key-exists',
+								'type'        => 'updated',
+								'description' => __( 'The specified user already has API keys.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'api-key-regenerated' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-api-key-regenerated',
-							'type'        => 'updated',
-							'description' => __( 'API keys have been regenerated.', 'give' ),
-							'show'        => true,
-						) );
+					case 'api-key-regenerated':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-api-key-regenerated',
+								'type'        => 'updated',
+								'description' => __( 'API keys have been regenerated.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'api-key-revoked' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-api-key-revoked',
-							'type'        => 'updated',
-							'description' => __( 'API keys have been revoked.', 'give' ),
-							'show'        => true,
-						) );
+					case 'api-key-revoked':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-api-key-revoked',
+								'type'        => 'updated',
+								'description' => __( 'API keys have been revoked.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'sent-test-email' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-sent-test-email',
-							'type'        => 'updated',
-							'description' => __( 'The test email has been sent.', 'give' ),
-							'show'        => true,
-						) );
+					case 'sent-test-email':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-sent-test-email',
+								'type'        => 'updated',
+								'description' => __( 'The test email has been sent.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 					case 'matched-success-failure-page':
-						Give()->notices->register_notice( array(
-							'id'          => 'give-matched-success-failure-page',
-							'type'        => 'updated',
-							'description' => __( 'You cannot set the success and failed pages to the same page', 'give' ),
-							'show'        => true,
-						) );
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-matched-success-failure-page',
+								'type'        => 'updated',
+								'description' => __( 'You cannot set the success and failed pages to the same page', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 				}// End switch().
 			}// End if().
@@ -308,21 +337,25 @@ function _give_register_admin_notices() {
 			// Payments errors.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $message_notice ) {
-					case 'note-added' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-note-added',
-							'type'        => 'updated',
-							'description' => __( 'The donation note has been added.', 'give' ),
-							'show'        => true,
-						) );
+					case 'note-added':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-note-added',
+								'type'        => 'updated',
+								'description' => __( 'The donation note has been added.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
-					case 'payment-updated' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-payment-updated',
-							'type'        => 'updated',
-							'description' => __( 'The donation has been updated.', 'give' ),
-							'show'        => true,
-						) );
+					case 'payment-updated':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-payment-updated',
+								'type'        => 'updated',
+								'description' => __( 'The donation has been updated.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 				}// End switch().
 			}// End if().
@@ -330,121 +363,147 @@ function _give_register_admin_notices() {
 			// Donor Notices.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $message_notice ) {
-					case 'donor-deleted' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-deleted',
-							'type'        => 'updated',
-							'description' => __( 'The selected donor(s) has been deleted.', 'give' ),
-							'show'        => true,
-						) );
+					case 'donor-deleted':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-donor-deleted',
+								'type'        => 'updated',
+								'description' => __( 'The selected donor(s) has been deleted.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'donor-donations-deleted' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-donations-deleted',
-							'type'        => 'updated',
-							'description' => __( 'The selected donor(s) and the associated donation(s) has been deleted.', 'give' ),
-							'show'        => true,
-						) );
+					case 'donor-donations-deleted':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-donor-donations-deleted',
+								'type'        => 'updated',
+								'description' => __( 'The selected donor(s) and the associated donation(s) has been deleted.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'confirm-delete-donor' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-confirm-delete-donor',
-							'type'        => 'updated',
-							'description' => __( 'You must confirm to delete the selected donor(s).', 'give' ),
-							'show'        => true,
-						) );
+					case 'confirm-delete-donor':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-confirm-delete-donor',
+								'type'        => 'updated',
+								'description' => __( 'You must confirm to delete the selected donor(s).', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'invalid-donor-id' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-invalid-donor-id',
-							'type'        => 'updated',
-							'description' => __( 'Invalid Donor ID.', 'give' ),
-							'show'        => true,
-						) );
+					case 'invalid-donor-id':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-invalid-donor-id',
+								'type'        => 'updated',
+								'description' => __( 'Invalid Donor ID.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'donor-delete-failed' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-donor-delete-failed',
-							'type'        => 'error',
-							'description' => __( 'Unable to delete selected donor(s).', 'give' ),
-							'show'        => true,
-						) );
+					case 'donor-delete-failed':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-donor-delete-failed',
+								'type'        => 'error',
+								'description' => __( 'Unable to delete selected donor(s).', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'email-added' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-email-added',
-							'type'        => 'updated',
-							'description' => __( 'Donor email added.', 'give' ),
-							'show'        => true,
-						) );
+					case 'email-added':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-email-added',
+								'type'        => 'updated',
+								'description' => __( 'Donor email added.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'email-removed' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-email-removed',
-							'type'        => 'updated',
-							'description' => __( 'Donor email removed.', 'give' ),
-							'show'        => true,
-						) );
+					case 'email-removed':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-email-removed',
+								'type'        => 'updated',
+								'description' => __( 'Donor email removed.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'email-remove-failed' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-email-remove-failed',
-							'type'        => 'updated',
-							'description' => __( 'Failed to remove donor email.', 'give' ),
-							'show'        => true,
-						) );
+					case 'email-remove-failed':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-email-remove-failed',
+								'type'        => 'updated',
+								'description' => __( 'Failed to remove donor email.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'primary-email-updated' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-primary-email-updated',
-							'type'        => 'updated',
-							'description' => __( 'Primary email updated for donor.', 'give' ),
-							'show'        => true,
-						) );
+					case 'primary-email-updated':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-primary-email-updated',
+								'type'        => 'updated',
+								'description' => __( 'Primary email updated for donor.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'primary-email-failed' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-primary-email-failed',
-							'type'        => 'updated',
-							'description' => __( 'Failed to set primary email.', 'give' ),
-							'show'        => true,
-						) );
+					case 'primary-email-failed':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-primary-email-failed',
+								'type'        => 'updated',
+								'description' => __( 'Failed to set primary email.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'reconnect-user' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-reconnect-user',
-							'type'        => 'updated',
-							'description' => __( 'User has been successfully connected with Donor.', 'give' ),
-							'show'        => true,
-						) );
+					case 'reconnect-user':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-reconnect-user',
+								'type'        => 'updated',
+								'description' => __( 'User has been successfully connected with Donor.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'disconnect-user' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-disconnect-user',
-							'type'        => 'updated',
-							'description' => __( 'User has been successfully disconnected from donor.', 'give' ),
-							'show'        => true,
-						) );
+					case 'disconnect-user':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-disconnect-user',
+								'type'        => 'updated',
+								'description' => __( 'User has been successfully disconnected from donor.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 
-					case 'profile-updated' :
-						Give()->notices->register_notice( array(
-							'id'          => 'give-profile-updated',
-							'type'        => 'updated',
-							'description' => __( 'Donor information updated successfully.', 'give' ),
-							'show'        => true,
-						) );
+					case 'profile-updated':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-profile-updated',
+								'type'        => 'updated',
+								'description' => __( 'Donor information updated successfully.', 'give' ),
+								'show'        => true,
+							)
+						);
 						break;
 				}// End switch().
 			}// End if().
@@ -475,15 +534,17 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 	}
 
 	// Add the main site admin menu item.
-	$wp_admin_bar->add_menu( array(
-		'id'     => 'give-test-notice',
-		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
-		'parent' => 'top-secondary',
-		'title'  => __( 'Give Test Mode Active', 'give' ),
-		'meta'   => array(
-			'class' => 'give-test-mode-active',
-		),
-	) );
+	$wp_admin_bar->add_menu(
+		array(
+			'id'     => 'give-test-notice',
+			'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
+			'parent' => 'top-secondary',
+			'title'  => __( 'Give Test Mode Active', 'give' ),
+			'meta'   => array(
+				'class' => 'give-test-mode-active',
+			),
+		)
+	);
 
 	return true;
 }
@@ -591,10 +652,12 @@ function give_donation_import_callback() {
 	if ( ! empty( $output['dry_run'] ) ) {
 		$import_setting['csv_raw_data'] = give_get_donation_data_from_csv( $output['csv'], 1, $end, $delimiter );
 
-		$import_setting['donors_list'] = Give()->donors->get_donors( array(
-			'number' => - 1,
-			'fields' => array( 'id', 'user_id', 'email' ),
-		) );
+		$import_setting['donors_list'] = Give()->donors->get_donors(
+			array(
+				'number' => - 1,
+				'fields' => array( 'id', 'user_id', 'email' ),
+			)
+		);
 	}
 
 	// Prevent normal emails.
@@ -644,15 +707,17 @@ function give_donation_import_callback() {
 		);
 	}
 
-	$url              = give_import_page_url( array(
-		'step'          => '4',
-		'importer-type' => 'import_donations',
-		'csv'           => $output['csv'],
-		'total'         => $total,
-		'delete_csv'    => $import_setting['delete_csv'],
-		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
-		'dry_run'       => $output['dry_run'],
-	) );
+	$url              = give_import_page_url(
+		array(
+			'step'          => '4',
+			'importer-type' => 'import_donations',
+			'csv'           => $output['csv'],
+			'total'         => $total,
+			'delete_csv'    => $import_setting['delete_csv'],
+			'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+			'dry_run'       => $output['dry_run'],
+		)
+	);
 	$json_data['url'] = $url;
 
 	$current ++;
@@ -693,11 +758,11 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since  1.8.17
-	 *
 	 * @param array $fields
 	 *
 	 * @return array $fields
+	 * @since  1.8.17
+	 *
 	 */
 	$fields = (array) apply_filters( 'give_import_core_settings_fields', $fields );
 
@@ -721,14 +786,14 @@ function give_core_settings_import_callback() {
 		 *
 		 * @access public
 		 *
-		 * @since  1.8.17
-		 *
 		 * @param array $json_to_array     Setting that are being going to get imported
 		 * @param array $type              Type of Import
 		 * @param array $host_give_options Setting old setting that used to be in the options table.
 		 * @param array $fields            Data that is being send from the ajax
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
+		 * @since  1.8.17
+		 *
 		 */
 		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
@@ -744,15 +809,19 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
+	 * @return array $url
 	 * @since  1.8.17
 	 *
-	 * @return array $url
 	 */
-	$json_data['url'] = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
-		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
-		'importer-type' => 'import_core_setting',
-		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
-	) ) );
+	$json_data['url'] = give_import_page_url(
+		(array) apply_filters(
+			'give_import_core_settings_success_url', array(
+				'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
+				'importer-type' => 'import_core_setting',
+				'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
+			)
+		)
+	);
 
 	wp_send_json( $json_data );
 }
@@ -778,9 +847,9 @@ add_action( 'current_screen', 'give_blank_slate' );
  * @param int|bool $update True or False.
  * @param object   $user   WP User Data.
  *
+ * @return mixed
  * @since 2.0
  *
- * @return mixed
  */
 function give_validate_user_profile( $errors, $update, $user ) {
 
@@ -843,9 +912,9 @@ add_action( 'personal_options', 'give_donor_information_profile_fields' );
 /**
  * Get Array of WP User Roles.
  *
+ * @return array
  * @since 1.8.13
  *
- * @return array
  */
 function give_get_user_roles() {
 	$user_roles = array();
@@ -862,9 +931,9 @@ function give_get_user_roles() {
 /**
  * Ajax handle for donor address.
  *
+ * @return string
  * @since 2.0
  *
- * @return string
  */
 function __give_ajax_donor_manage_addresses() {
 	// Bailout.
@@ -872,9 +941,11 @@ function __give_ajax_donor_manage_addresses() {
 		empty( $_POST['form'] ) ||
 		empty( $_POST['donorID'] )
 	) {
-		wp_send_json_error( array(
-			'error' => 1,
-		) );
+		wp_send_json_error(
+			array(
+				'error' => 1,
+			)
+		);
 	}
 
 	$post                  = give_clean( wp_parse_args( $_POST ) );
@@ -895,7 +966,8 @@ function __give_ajax_donor_manage_addresses() {
 
 	// Security check.
 	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
-		wp_send_json_error( array(
+		wp_send_json_error(
+			array(
 				'error'     => 1,
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
@@ -909,9 +981,11 @@ function __give_ajax_donor_manage_addresses() {
 
 	// Verify donor.
 	if ( ! $donor->id ) {
-		wp_send_json_error( array(
-			'error' => 3,
-		) );
+		wp_send_json_error(
+			array(
+				'error' => 3,
+			)
+		);
 	}
 
 	// Unset all data except address.
@@ -926,7 +1000,8 @@ function __give_ajax_donor_manage_addresses() {
 
 		case 'add':
 			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
-				wp_send_json_error( array(
+				wp_send_json_error(
+					array(
 						'error'     => 1,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
@@ -970,7 +1045,8 @@ function __give_ajax_donor_manage_addresses() {
 
 		case 'remove':
 			if ( ! $donor->remove_address( $response_data['id'] ) ) {
-				wp_send_json_error( array(
+				wp_send_json_error(
+					array(
 						'error'     => 2,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
@@ -989,7 +1065,8 @@ function __give_ajax_donor_manage_addresses() {
 
 		case 'update':
 			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
-				wp_send_json_error( array(
+				wp_send_json_error(
+					array(
 						'error'     => 3,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
@@ -1025,11 +1102,11 @@ add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresse
 /**
  * Admin donor billing address label
  *
- * @since 2.0
- *
  * @param string $address_label
  *
  * @return string
+ * @since 2.0
+ *
  */
 function __give_donor_billing_address_label( $address_label ) {
 	$address_label = __( 'Billing Address', 'give' );
@@ -1042,11 +1119,11 @@ add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_la
 /**
  * Admin donor personal address label
  *
- * @since 2.0
- *
  * @param string $address_label
  *
  * @return string
+ * @since 2.0
+ *
  */
 function __give_donor_personal_address_label( $address_label ) {
 	$address_label = __( 'Personal Address', 'give' );
@@ -1063,9 +1140,9 @@ add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_
  * @param int $user_id
  *
  * @access public
+ * @return bool
  * @since  2.0
  *
- * @return bool
  */
 function give_update_donor_name_on_user_update( $user_id = 0 ) {
 
@@ -1084,9 +1161,11 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		// Assign User First name and Last name to Donor.
-		Give()->donors->update( $donor->id, array(
-			'name' => $full_name,
-		) );
+		Give()->donors->update(
+			$donor->id, array(
+				'name' => $full_name,
+			)
+		);
 		Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 		Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
@@ -1101,13 +1180,13 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * Updates the email address of a donor record when the email on a user is updated
  * Note: for internal use only.
  *
+ * @param int          $user_id       User ID.
+ * @param WP_User|bool $old_user_data User data.
+ *
+ * @return bool
  * @since  1.4.3
  * @access public
  *
- * @param  int          $user_id       User ID.
- * @param  WP_User|bool $old_user_data User data.
- *
- * @return bool
  */
 function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
 
@@ -1121,9 +1200,11 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
-		$success = Give()->donors->update( $donor->id, array(
-			'email' => $user->user_email,
-		) );
+		$success = Give()->donors->update(
+			$donor->id, array(
+				'email' => $user->user_email,
+			)
+		);
 
 		if ( $success ) {
 			// Update some payment meta if we need to
@@ -1141,10 +1222,11 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 			/**
 			 * Fires after updating donor email on user update.
 			 *
+			 * @param WP_User    $user  WordPress User object.
+			 * @param Give_Donor $donor Give donor object.
+			 *
 			 * @since 1.4.3
 			 *
-			 * @param  WP_User    $user  WordPress User object.
-			 * @param  Give_Donor $donor Give donor object.
 			 */
 			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
@@ -1160,20 +1242,24 @@ add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
  * Flushes Give's cache.
  */
 function give_cache_flush() {
-	if( ! current_user_can( 'manage_give_settings' ) ){
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die();
 	}
 
 	$result = Give_Cache::flush_cache();
 
 	if ( $result ) {
-		wp_send_json_success( array(
-			'message' => __( 'Cache flushed successfully.', 'give' ),
-		) );
+		wp_send_json_success(
+			array(
+				'message' => __( 'Cache flushed successfully.', 'give' ),
+			)
+		);
 	} else {
-		wp_send_json_error( array(
-			'message' => __( 'An error occured while flushing the cache.', 'give' ),
-		) );
+		wp_send_json_error(
+			array(
+				'message' => __( 'An error occured while flushing the cache.', 'give' ),
+			)
+		);
 	}
 }
 
@@ -1186,7 +1272,6 @@ add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
  * @access public
  * @return void
  * @since  2.5.0
- *
  */
 function give_license_notices() {
 
@@ -1195,7 +1280,7 @@ function give_license_notices() {
 	}
 
 	// Do not show licenses notices on license tab.
-	if ( Give_Admin_Settings::is_setting_page('licenses') ) {
+	if ( Give_Admin_Settings::is_setting_page( 'licenses' ) ) {
 		return;
 	}
 
@@ -1206,7 +1291,7 @@ function give_license_notices() {
 		'id'               => 'give-invalid-license',
 		'type'             => 'error',
 		'description'      => sprintf(
-			__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">license settings page</a> to correct this issue.', 'give' ),
+			__( 'You have invalid or expired license keys for one or more GiveWP add-ons. Please go to the <a href="%s">license settings page</a> to correct this issue.', 'give' ),
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 		),
 		'dismissible_type' => 'user',
@@ -1221,7 +1306,7 @@ function give_license_notices() {
 			$notices['invalid-license'] = $invalid_license_notice_args;
 		}
 
-		if( $give_license['is_all_access_pass'] ){
+		if ( $give_license['is_all_access_pass'] ) {
 			continue;
 		}
 
@@ -1245,7 +1330,7 @@ function give_license_notices() {
 				'id'               => "give-expired-subscription-{$give_license['subscription']['id']}",
 				'type'             => 'error',
 				'description'      => sprintf(
-					__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
+					__( 'Your GiveWP add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
 					urldecode( $give_license['subscription']['invoice_url'] ),
 					$give_license['subscription']['payment_id'],
 					"{$checkout_url}?edd_license_key={$give_license['subscription']['subscription_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
@@ -1265,7 +1350,7 @@ function give_license_notices() {
 				'id'               => "give-expires-subscription-{$give_license['subscription']['id']}",
 				'type'             => 'error',
 				'description'      => sprintf(
-					__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
+					__( 'Your GiveWP add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
 					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $give_license['subscription']['expires'] ) ),
 					urldecode( $give_license['subscription']['invoice_url'] ),
 					$give_license['subscription']['payment_id'],
@@ -1286,7 +1371,7 @@ function give_license_notices() {
 
 	// Check by addon if any give addon activated without license.
 	// do not show this notice if add-on activated with in 24 hours.
-	$is_day_past = HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option('give_addon_last_activated' ) );
+	$is_day_past = HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
 	if (
 		$is_day_past
 		&& ! array_key_exists( 'invalid-license', $notices )
@@ -1301,7 +1386,7 @@ function give_license_notices() {
 			}
 
 			/* @var  stdClass $addon_license */
-			$addon_license   = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+			$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
 
 			if ( ! $addon_license ) {
 				$notices['invalid-license'] = $invalid_license_notice_args;
@@ -1311,9 +1396,9 @@ function give_license_notices() {
 	}
 
 	// Register notices.
-	if( $notices ) {
-		foreach ( $notices as $notice ){
-			Give()->notices->register_notice($notice);
+	if ( $notices ) {
+		foreach ( $notices as $notice ) {
+			Give()->notices->register_notice( $notice );
 		}
 	}
 }
@@ -1328,17 +1413,16 @@ add_action( 'admin_notices', 'give_license_notices' );
  * @param $network_wide
  *
  * @since 2.5.0
- *
  */
 function give_log_addon_activation_time( $plugin, $network_wide ) {
-	if( $network_wide ) {
+	if ( $network_wide ) {
 		return;
 	}
 
 	$plugin_data = give_get_plugins();
-	$plugin_data = ! empty( $plugin_data[$plugin] ) ? $plugin_data[$plugin] : '';
+	$plugin_data = ! empty( $plugin_data[ $plugin ] ) ? $plugin_data[ $plugin ] : '';
 
-	if(
+	if (
 		$plugin_data
 		&& 'add-on' === $plugin_data['Type']
 		&& false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
@@ -1357,41 +1441,44 @@ add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
  *
  * @since 2.5.0
  */
-function give_hide_notices_on_add_ons_page(){
+function give_hide_notices_on_add_ons_page() {
 	$page = give_get_super_global( 'GET', 'page' );
 
 	// Bailout.
-	if( 'give-addons' !== $page ) {
+	if ( 'give-addons' !== $page ) {
 		return;
 	}
 
 	remove_all_actions( 'admin_notices' );
 }
+
 add_action( 'in_admin_header', 'give_hide_notices_on_add_ons_page', 999 );
 
 
 /**
  * Admin JS
+ *
  * @since 2.5.0
  */
-function give_admin_quick_js(){
-	if( is_multisite() && is_blog_admin() ) {
+function give_admin_quick_js() {
+	if ( is_multisite() && is_blog_admin() ) {
 		?>
 		<script>
-			jQuery(document).ready(function($){
-				var $updateNotices = $('[id$="-update"] ', '.wp-list-table' );
+			jQuery( document ).ready( function( $ ) {
+				var $updateNotices = $( '[id$="-update"] ', '.wp-list-table' );
 
-				if( $updateNotices.length ) {
-					$.each( $updateNotices, function( index, $updateNotice ){
-						$updateNotice = $($updateNotice);
-						$updateNotice.prev().addClass('update');
-					});
+				if ( $updateNotices.length ) {
+					$.each( $updateNotices, function( index, $updateNotice ) {
+						$updateNotice = $( $updateNotice );
+						$updateNotice.prev().addClass( 'update' );
+					} );
 				}
-			});
+			} );
 		</script>
 		<?php
 	}
 }
+
 add_action( 'admin_head', 'give_admin_quick_js' );
 
 
