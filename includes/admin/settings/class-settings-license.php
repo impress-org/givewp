@@ -32,9 +32,6 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			parent::__construct();
 
-			// Filter to remove the license tab.
-			add_filter( 'give-settings_tabs_array', array( $this, 'remove_license_tab' ), 9999999, 1 );
-
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
 
@@ -74,51 +71,6 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			// Output.
 			return $settings;
 		}
-
-		/**
-		 * Remove the license tab if no Give addon
-		 * is activated.
-		 *
-		 * @param array $tabs Give Settings Tabs.
-		 *
-		 * @return array
-		 * @since 2.1.4
-		 */
-		public function remove_license_tab( $tabs ) {
-			/**
-			 * Remove the license tab if no Give licensed addon
-			 * is activated.
-			 */
-			if ( ! $this->is_show_setting_page() ) {
-				unset( $tabs['licenses'] );
-			}
-
-			return $tabs;
-		}
-
-		/**
-		 * Returns if at least one Give addon is activated.
-		 * Note: note only for internal logic
-		 *
-		 * @return bool
-		 * @since  2.1.4
-		 * @access private
-		 */
-		private function is_show_setting_page() {
-			$licensed_addons   = Give_License::get_licensed_addons();
-			$activated_plugins = get_option( 'active_plugins', array() );
-
-			// Get list of network enabled plugin.
-			if ( is_multisite() ) {
-				$sitewide_activated_plugins = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
-				$activated_plugins          = ! empty( $activated_plugins )
-					? array_merge( $sitewide_activated_plugins, $activated_plugins )
-					: $sitewide_activated_plugins;
-			}
-
-			return (bool) count( array_intersect( $activated_plugins, $licensed_addons ) );
-		}
-
 
 		/**
 		 * Render  license key field
