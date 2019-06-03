@@ -245,7 +245,7 @@ function give_get_license_info_handler() {
 
 	// Get license section HTML.
 	$response         = $check_license_res;
-	$response['html'] = $is_activating_single_license
+	$response['html'] = empty( $check_license_res['is_all_access_pass'] )
 		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_License::render_licenses_list();
 

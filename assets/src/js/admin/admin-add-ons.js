@@ -126,7 +126,11 @@
 					},
 					success: function( response ) {
 						if ( true === response.success ) {
-							$container.replaceWith( response.data.html );
+							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+								$licensesContainer.html( response.data.html );
+							} else{
+								$container.replaceWith( response.data.html );
+							}
 							return;
 						}
 
