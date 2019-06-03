@@ -1369,8 +1369,8 @@ function give_license_notices() {
 		}
 	}
 
-	// Check by addon if any give addon activated without license.
-	// do not show this notice if add-on activated with in 24 hours.
+	// Check by add-on if any give add-on activated without license.
+	// Do not show this notice if add-on activated with in 24 hours.
 	$is_day_past = HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
 	if (
 		$is_day_past
