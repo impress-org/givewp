@@ -1305,68 +1305,6 @@ function give_license_notices() {
 		) {
 			$notices['invalid-license'] = $invalid_license_notice_args;
 		}
-
-		if ( $give_license['is_all_access_pass'] ) {
-			continue;
-		}
-
-		// Backward compatibility for subscription.
-		if (
-			! $give_license['subscription']
-			|| array_key_exists( "subscription-{$give_license['subscription']['id']}", $notices )
-
-			// Start showing subscriptions message before one week of renewal date.
-			|| strtotime( '- 7 days', strtotime( $give_license['subscription']['expires'] ) ) > current_time( 'timestamp', 1 )
-		) {
-			continue;
-		}
-
-		// Subscription expires timestamp.
-		$subscription_expires = strtotime( $give_license['subscription']['expires'] );
-
-		// Check if license already expired.
-		if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
-			$notices["subscription-{$give_license['subscription']['id']}"] = array(
-				'id'               => "give-expired-subscription-{$give_license['subscription']['id']}",
-				'type'             => 'error',
-				'description'      => sprintf(
-					__( 'Your GiveWP add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
-					urldecode( $give_license['subscription']['invoice_url'] ),
-					$give_license['subscription']['payment_id'],
-					"{$checkout_url}?edd_license_key={$give_license['subscription']['subscription_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-					Give()->notices->get_dismiss_link(
-						array(
-							'title'            => __( 'Click here if already renewed', 'give' ),
-							'dismissible_type' => 'user',
-							'dismiss_interval' => 'permanent',
-						)
-					)
-				),
-				'dismissible_type' => 'user',
-				'dismiss_interval' => 'shortly',
-			);
-		} else {
-			$notices["subscription-{$give_license['subscription']['id']}"] = array(
-				'id'               => "give-expires-subscription-{$give_license['subscription']['id']}",
-				'type'             => 'error',
-				'description'      => sprintf(
-					__( 'Your GiveWP add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
-					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $give_license['subscription']['expires'] ) ),
-					urldecode( $give_license['subscription']['invoice_url'] ),
-					$give_license['subscription']['payment_id'],
-					"{$checkout_url}?edd_license_key={$give_license['subscription']['subscription_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-					Give()->notices->get_dismiss_link(
-						array(
-							'title'            => __( 'Click here if already renewed', 'give' ),
-							'dismissible_type' => 'user',
-							'dismiss_interval' => 'permanent',
-						)
-					)
-				),
-				'dismissible_type' => 'user',
-				'dismiss_interval' => 'shortly',
-			);
-		}
 	}
 
 	// Check by add-on if any give add-on activated without license.

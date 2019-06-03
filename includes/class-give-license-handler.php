@@ -594,12 +594,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$license['renew_url']            = self::$checkout_url . "?edd_license_key={$license['license_key']}";
 				$default_plugin['ChangeLogSlug'] = $license['readme'];
 				$default_plugin['DownloadURL']   = $license['download'];
-
-				// Backward compatibility.
-				if ( ! empty( $license['subscription'] ) ) {
-					$license['expires']   = $license['subscription']['expires'];
-					$license['renew_url'] = self::$checkout_url . "?edd_license_key={$license['subscription']['subscription_key']}";
-				}
 			}
 
 			$plugin['License'] = $license = wp_parse_args(
