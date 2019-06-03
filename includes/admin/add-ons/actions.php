@@ -169,7 +169,18 @@ function give_get_license_info_handler() {
 		wp_send_json_error( array(
 			'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
 		) );
+
 	} else if ( array_key_exists( $license_key, $licenses ) ) {
+		$license = $licenses[$license_key];
+		if( empty( $license['is_all_access_pass'] ) ) {
+			$plugin_data = Give_License::get_plugin_by_slug( $license['plugin_slug' ] );
+
+			// Plugin license activated but does not install, sent notice which allow admin to download add-on.
+			if( empty( $plugin_data ) ) {
+				wp_send_json_success( $license );
+			}
+		}
+
 		wp_send_json_error( array(
 			'errorMsg' => __( 'This license key is already in use on this website.', 'give' ),
 		) );
