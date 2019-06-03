@@ -200,7 +200,7 @@ class Give_Scripts {
 			$localized_data = array(
 				'notices' => array(
 					'invalid_license' => __( 'Sorry, you entered an invalid key.', 'give' ),
-					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}" target="_blank">Click here</a> to download your add-on.', 'give' ),
+					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}">Click here</a> to download your add-on.', 'give' ),
 					'addon_activated'   => __( '{pluginName} add-on activated successfully.', 'give' ),
 					'addon_activation_error'   => __( 'The add-on did not activate successfully.', 'give' ),
 				),

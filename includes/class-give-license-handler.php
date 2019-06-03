@@ -876,7 +876,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 					}
 
 					printf(
-						'<%3$s class="give-button button button-secondary button-small" target="_blank" href="%1$s"%4$s><span class="dashicons dashicons-download"></span>%2$s</%3$s>',
+						'<%3$s class="give-button button button-secondary button-small" href="%1$s"%4$s><span class="dashicons dashicons-download"></span>%2$s</%3$s>',
 						$plugin['DownloadURL'],
 						__( 'Download', 'give' ),
 						$is_license_expired || ! $plugin['DownloadURL'] ? 'button' : 'a',
