@@ -712,11 +712,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 							<div class="give-license__status">
 								<?php
-								if( $license_is_inactive ) {
-									error_log( print_r( $license_is_inactive, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-									error_log( print_r( $license, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
-								}
 								echo $license_key && ! $license_is_inactive
 									? sprintf(
 										'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
