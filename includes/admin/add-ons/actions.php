@@ -248,6 +248,7 @@ function give_get_license_info_handler() {
 		) );
 	}
 
+	$check_license_res['license']          = $activate_license_res['license'];
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
 	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
 
