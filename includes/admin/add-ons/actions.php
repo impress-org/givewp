@@ -242,6 +242,18 @@ function give_get_license_info_handler() {
 		) );
 	}
 
+	// Return error if license activation is not success and admin is not reactivating add-on.
+	if ( ! $is_reactivating_license && ! $activate_license_res['success']  ) {
+
+		$response['errorMsg'] = sprintf(
+			__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+			Give_License::get_account_url(),
+			$check_license_res['license']
+		);
+
+		wp_send_json_error( $response );
+	}
+
 	$check_license_res['license']          = $activate_license_res['license'];
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
 	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
@@ -255,8 +267,8 @@ function give_get_license_info_handler() {
 		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_License::render_licenses_list();
 
-	// Check if license activated or not.
-	if ( ! $activate_license_res['success'] ) {
+	// Return error if license activation is not success and admin is reactivating add-on.
+	if ( $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
 			__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
