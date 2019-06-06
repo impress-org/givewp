@@ -2221,7 +2221,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-form-id" value="<?php echo intval( $form_id ); ?>"/>
 	<input type="hidden" name="give-form-title" value="<?php echo esc_html( $form->post_title ); ?>"/>
 	<input type="hidden" name="give-current-url" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
-	<input type="hidden" name="give-form-url" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-url" value="<?php echo esc_url( get_the_permalink( $form_id ) ); ?>"/>
 	<?php
 	// Get the custom option amount.
 	$custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
