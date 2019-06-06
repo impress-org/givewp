@@ -161,6 +161,7 @@ function give_get_license_info_handler() {
 
 	$license_key                  = give_get_super_global( 'POST', 'license' );
 	$is_activating_single_license = absint( give_get_super_global( 'POST', 'single' ) );
+	$is_reactivating_license      = absint( give_get_super_global( 'POST', 'reactivate' ) );
 	$plugin_slug                  = $is_activating_single_license ? give_get_super_global( 'POST', 'addon' ) : '';
 	$licenses                     = get_option( 'give_licenses', array() );
 
@@ -170,7 +171,11 @@ function give_get_license_info_handler() {
 			'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
 		) );
 
-	} else if ( array_key_exists( $license_key, $licenses ) ) {
+	} else if (
+		! $is_reactivating_license
+		&& array_key_exists( $license_key, $licenses )
+	) {
+		// If admin already activated license but did not install add-on then send license info show notice to admin with download link.
 		$license = $licenses[$license_key];
 		if( empty( $license['is_all_access_pass'] ) ) {
 			$plugin_data = Give_License::get_plugin_by_slug( $license['plugin_slug' ] );
@@ -237,17 +242,6 @@ function give_get_license_info_handler() {
 		) );
 	}
 
-	// Check if license activated or not.
-	if ( ! $activate_license_res['success'] ) {
-		wp_send_json_error( array(
-			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details.' ),
-				Give_License::get_account_url(),
-				$activate_license_res['license']
-			),
-		) );
-	}
-
 	$check_license_res['license']          = $activate_license_res['license'];
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
 	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
@@ -260,6 +254,18 @@ function give_get_license_info_handler() {
 	$response['html'] = $is_activating_single_license && empty( $check_license_res['is_all_access_pass'] )
 		? Give_License::html_by_plugin( Give_License::get_plugin_by_slug( $check_license_res['plugin_slug'] ) )
 		: Give_License::render_licenses_list();
+
+	// Check if license activated or not.
+	if ( ! $activate_license_res['success'] ) {
+
+		$response['errorMsg'] = sprintf(
+			__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+			Give_License::get_account_url(),
+			$check_license_res['license']
+		);
+
+		wp_send_json_error( $response );
+	}
 
 
 	// Tell WordPress to look for updates.

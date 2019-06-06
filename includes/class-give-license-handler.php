@@ -408,7 +408,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				foreach ( $give_licenses as $give_license ) {
 
 					// Logic to match all access pass license to add-on.
-					$compares = is_array( $give_license['download'] )
+					$compares = $give_license['is_all_access_pass']
 						? $give_license['download']
 						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
 
@@ -695,7 +695,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
 							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate', 'give' ); ?></button>
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>">
+									<?php _e( 'Activate', 'give' ); ?>
+								</button>
+							<?php elseif ( $license_is_inactive ): ?>
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $plugin['Dir']; ?>" data-license="<?php echo $license['license_key'] ?>">
+									<?php _e( 'Reactivate', 'give' ); ?>
+								</button>
 							<?php else : ?>
 
 								<?php
