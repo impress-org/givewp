@@ -29,7 +29,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_donation_form() {
 
 	// Sanitize Posted Data.
-	$post_data  = give_get_super_global( 'POST' );
+	$post_data    = give_get_super_global( 'POST' );
+	$http_referer = give_get_super_global( 'SERVER', 'HTTP_REFERER' );
+
+	if ( $http_referer !== $post_data['give-current-url'] ) {
+		give_set_error(
+			'give-manipulate-spam-submission-error',
+			__( 'Our system has detected that you\'re trying to manipulate data and submit spam details.', 'give' )
+		);
+	}
+
+	$form_id  = ! empty( $post_data['give-form-id'] ) ? intval( $post_data['give-form-id'] ) : false;
+	$form_url = get_the_permalink( $form_id );
+
+	if ( $form_url !== $post_data['give-form-url'] ) {
+		give_set_error(
+			'give-donation-form-spam-submission-error',
+			__( 'Our system has detected that you\'ve manipulated donation form details to submit spam.', 'give' )
+		);
+	}
 
 	// Check whether the form submitted via AJAX or not.
 	$is_ajax = isset( $post_data['give_ajax'] );
@@ -47,6 +65,7 @@ function give_process_donation_form() {
 		} else {
 			give_send_back_to_checkout();
 		}
+		wp_die('cheating huh?');
 	}
 
 	/**
@@ -594,13 +613,13 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
 	}
-	
+
 	// If credit card fields related actions exists then check for the cc fields validations.
 	if (
 		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
 		has_action('give_cc_form', 'give_get_cc_form' )
 	) {
-		
+
 		// Validate card number field for empty check.
 		if (
 			isset( $posted_data['card_number'] ) &&
@@ -611,7 +630,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card number.', 'give' ),
 			);
 		}
-		
+
 		// Validate card cvc field for empty check.
 		if (
 			isset( $posted_data['card_cvc'] ) &&
@@ -622,7 +641,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
 			);
 		}
-		
+
 		// Validate card name field for empty check.
 		if (
 			isset( $posted_data['card_name'] ) &&
@@ -633,7 +652,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
 			);
 		}
-		
+
 		// Validate card expiry field for empty check.
 		if (
 			isset( $posted_data['card_expiry'] ) &&
