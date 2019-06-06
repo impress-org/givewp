@@ -32,6 +32,7 @@ function give_process_donation_form() {
 	$post_data    = give_get_super_global( 'POST' );
 	$http_referer = give_get_super_global( 'SERVER', 'HTTP_REFERER' );
 
+	// Check whether the HTTP referrer matches the current url.
 	if ( $http_referer !== $post_data['give-current-url'] ) {
 		give_set_error(
 			'give-manipulate-spam-submission-error',
@@ -42,6 +43,7 @@ function give_process_donation_form() {
 	$form_id  = ! empty( $post_data['give-form-id'] ) ? intval( $post_data['give-form-id'] ) : false;
 	$form_url = get_the_permalink( $form_id );
 
+	// Ensure that form url via form id matches form url via form submission.
 	if ( $form_url !== $post_data['give-form-url'] ) {
 		give_set_error(
 			'give-donation-form-spam-submission-error',
