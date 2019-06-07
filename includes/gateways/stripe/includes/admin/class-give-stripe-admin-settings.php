@@ -506,18 +506,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 				<td class="give-forminp give-forminp-api_key">
 					<div class="give-stripe-webhook-sync-wrap">
-						<p>
+						<p class="give-stripe-webhook-explanation" style="margin-bottom: 15px;">
 							<?php
-							esc_html_e( 'In order for Stripe to function completely, you must configure your Stripe webhooks.', 'give' );
+							esc_html_e( 'In order for Stripe to function properly, you must configure your Stripe webhooks.', 'give' );
 							echo sprintf(
 								/* translators: 1. Webhook settings page. */
-								__( ' Visit your <a href="%1$s" target="_blank">account dashboard</a> to configure them. ', 'give' ),
+								__( ' You can  visit your <a href="%1$s" target="_blank">Stripe Account Dashboard</a> to add a new webhook. ', 'give' ),
 								esc_url_raw( 'https://dashboard.stripe.com/account/webhooks' )
 							);
-							esc_html_e( 'Please add a webhook endpoint for the URL below.', 'give' );
+							esc_html_e( 'Please add a new webhook endpoint for the following URL:', 'give' );
 							?>
 						</p>
-						<p>
+						<p style="margin-bottom: 15px;">
 							<strong><?php echo esc_html__( 'Webhook URL:', 'give' ); ?></strong>
 							<input style="width: 400px;" type="text" readonly="true" value="<?php echo site_url() . '/?give-listener=stripe'; ?>"/>
 						</p>
