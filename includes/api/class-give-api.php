@@ -1865,7 +1865,7 @@ class Give_API {
 	public function process_api_key( $args ) {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
-			wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array(
+			wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), array(
 				'response' => 403,
 			) );
 		}

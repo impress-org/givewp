@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_batch_export_form() {
 
 	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'give-batch-export' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
