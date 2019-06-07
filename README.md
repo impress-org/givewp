@@ -60,6 +60,8 @@ Give relies on several npm commands to get you started:
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
 
+##### Note only compatible with Node 10
+
 ### Development Notes
 
 * Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
