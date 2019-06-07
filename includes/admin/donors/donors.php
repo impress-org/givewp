@@ -249,6 +249,8 @@ function give_render_donor_view( $view, $callbacks ) {
 			?>
 		</h1>
 
+		<hr class="wp-header-end">
+
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
 				<?php Give()->notices->render_frontend_notices( 0 ); ?>
