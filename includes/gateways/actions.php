@@ -80,6 +80,10 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  * @return void
  */
 function give_donation_form_nonce() {
+
+	// Security check.
+	check_ajax_referer( 'give_ajax_nonce', 'security' );
+
 	if ( isset( $_POST['give_form_id'] ) ) {
 
 		// Get donation form id.
@@ -103,6 +107,10 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * @return void
  */
 function __give_donation_form_reset_all_nonce() {
+
+	// Security check.
+	check_ajax_referer( 'give_ajax_nonce', 'security' );
+
 	if ( isset( $_POST['give_form_id'] ) ) {
 
 		// Get donation form id.

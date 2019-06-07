@@ -369,9 +369,11 @@ export default {
 		 * @since 2.0
 		 *
 		 * @param {object} $form Donation form object.
-		 * @returns {boolean}
+		 *
+		 * @returns {boolean} Return form nonce.
 		 */
 		resetNonce: function( $form ) {
+
 			// Return false, if form is missing.
 			if ( ! $form.length || ! jQuery( 'input[name="give-form-hash"]', $form ).length ) {
 				return false;
@@ -379,10 +381,12 @@ export default {
 
 			Give.form.fn.disable( $form, true );
 
-			//Post via AJAX to Give
-			jQuery.post( Give.fn.getGlobalVar('ajaxurl'), {
+			// Post via AJAX to Give.
+			jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ),
+				{
 					action: 'give_donation_form_nonce',
-					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
+					give_form_id: Give.form.fn.getInfo( 'form-id', $form ),
+					security: Give.fn.getGlobalVar( 'ajaxNonce' ),
 				},
 				function( response ) {
 					// Update nonce field.
@@ -400,7 +404,7 @@ export default {
 		 *
 		 * @param {object} $form Donation form object.
 		 *
-		 * @returns {object}
+		 * @returns {object} New generated nonces.
 		 */
 		resetAllNonce: function( $form ) {
 			// Return false, if form is missing.
@@ -410,18 +414,19 @@ export default {
 
 			Give.form.fn.disable( $form, true );
 
-			return new Promise( (resolve, reject ) => {
-				//Post via AJAX to Give
+			return new Promise( ( resolve, reject ) => {
+				// Post via AJAX to Give.
 				jQuery.post(
-					Give.fn.getGlobalVar('ajaxurl'),
+					Give.fn.getGlobalVar( 'ajaxurl' ),
 					{
 						action: 'give_donation_form_reset_all_nonce',
-						give_form_id: Give.form.fn.getInfo( 'form-id', $form )
+						give_form_id: Give.form.fn.getInfo( 'form-id', $form ),
+						security: Give.fn.getGlobalVar( 'ajaxNonce' ),
 					},
 					function( response ) {
 						// Process only if get response successfully.
-						if( ! response.success ) {
-							return reject(response);
+						if ( ! response.success ) {
+							return reject( response );
 						}
 
 						const createUserNonceField = $form.find( 'input[name="give-form-user-register-hash"]' );
@@ -430,7 +435,7 @@ export default {
 						Give.form.fn.setInfo( 'nonce', response.data.give_form_hash, $form, '' );
 
 						// Update create user nonce field.
-						if( createUserNonceField.length ){
+						if ( createUserNonceField.length ) {
 							createUserNonceField.val( response.data.give_form_user_register_hash );
 						}
 
@@ -442,13 +447,13 @@ export default {
 						 * @since  2.2.0
 						 * @access access
 						 */
-						jQuery(document).trigger( 'give_reset_all_nonce', [response.data] );
+						jQuery( document ).trigger( 'give_reset_all_nonce', [ response.data ] );
 
-						return resolve(response);
+						return resolve( response );
 					}
-				).done(function(){
+				).done( function() {
 					Give.form.fn.disable( $form, false );
-				});
+				} );
 			} );
 		},
 
