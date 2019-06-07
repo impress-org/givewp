@@ -224,6 +224,83 @@
 		} );
 
 		/**
+		 * Reactivate license
+		 */
+		$licensesContainer.on( 'click', '.give-button__license-reactivate', function( e ) {
+			e.preventDefault();
+
+			const $this = $( this ),
+				  license = $this.attr('data-license').trim(),
+				  index = $( '.give-addon-wrap' ).index( $container ); // Preserve select position to reset $container selector after replace it with new HTML;;
+
+			let $container = $this.parents( '.give-addon-wrap' ),
+				$noticeContainer = $( '.give-license-notice-container', $container );
+
+			// Remove errors if any.
+			$noticeContainer
+				.empty()
+				.removeClass( 'give-addon-notice-shown' )
+				.show();
+
+			// Must have entered a license key.
+			if ( ! license ) {
+				$noticeContainer
+					.addClass( 'give-addon-notice-shown' )
+					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
+			} else{
+				$.ajax( {
+					url: ajaxurl,
+					method: 'POST',
+					data: {
+						action: 'give_get_license_info',
+						license: license,
+						single: 1,
+						reactivate: 1,
+						addon: $this.attr( 'data-addon' ),
+						_wpnonce: $( '#give_license_activator_nonce' ).val().trim(),
+					},
+					beforeSend: function() {
+						Give.fn.loader( $container );
+					},
+					success: function( response ) {
+						if ( true === response.success ) {
+							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+								$licensesContainer.html( response.data.html );
+							} else{
+								$container.replaceWith( response.data.html );
+							}
+							return;
+						}
+
+						if( response.data.hasOwnProperty( 'html' ) && response.data.html.length ){
+							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+								$licensesContainer.html( response.data.html );
+							} else{
+								$container.replaceWith( response.data.html );
+							}
+						}
+
+						// Update selector.
+						$container = $( '.give-addon-wrap' ).get( index );
+						$noticeContainer = $( '.give-license-notice-container', $container );
+
+						$noticeContainer
+							.addClass( 'give-addon-notice-shown' )
+							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
+					},
+				} ).done( function() {
+					Give.fn.loader( $container, { show: false } );
+				} );
+			}
+
+			$licensesContainer.on('click', '.notice-dismiss', function () {
+				$noticeContainer.slideUp(150, function () {
+					$noticeContainer.removeClass('give-addon-notice-shown');
+				});
+			});
+		} );
+
+		/**
 		 * Refresh all licenses
 		 */
 		$( '#give-button__refresh-licenses' ).on( 'click', function( e ) {

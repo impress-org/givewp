@@ -408,7 +408,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				foreach ( $give_licenses as $give_license ) {
 
 					// Logic to match all access pass license to add-on.
-					$compares = is_array( $give_license['download'] )
+					$compares = $give_license['is_all_access_pass']
 						? $give_license['download']
 						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
 
@@ -678,10 +678,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private static function html_license_row( $license, $plugin = array() ) {
 			ob_start();
 
-			$is_license         = $license && ! empty( $license['license_key'] );
-			$license_key        = $is_license ? $license['license_key'] : '';
-			$expires_timestamp  = $is_license ? strtotime( $license['expires'] ) : '';
-			$is_license_expired = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+			$is_license          = $license && ! empty( $license['license_key'] );
+			$license_key         = $is_license ? $license['license_key'] : '';
+			$license_is_inactive = $license_key && ! in_array( $license['license'], array( 'valid', 'expired' ) );
+			$expires_timestamp   = $is_license ? strtotime( $license['expires'] ) : '';
+			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
 			?>
 			<div class="give-license-row give-clearfix">
 				<div class="give-license-notice-container"></div>
@@ -694,7 +695,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
 							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>"><?php _e( 'Activate', 'give' ); ?></button>
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>">
+									<?php _e( 'Activate', 'give' ); ?>
+								</button>
+							<?php elseif ( $license_is_inactive ): ?>
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $plugin['Dir']; ?>" data-license="<?php echo $license['license_key'] ?>">
+									<?php _e( 'Reactivate', 'give' ); ?>
+								</button>
 							<?php else : ?>
 
 								<?php
@@ -711,8 +718,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 							<div class="give-license__status">
 								<?php
-
-								echo $license_key
+								echo $license_key && ! $license_is_inactive
 									? sprintf(
 										'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
 										$is_license_expired
@@ -722,7 +728,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 											? 'no'
 											: 'yes'
 									)
-									: '<span class="dashicons dashicons-no"></span> ' . __( 'License is inactive. Please activate your license key.', 'give' );
+									: sprintf(
+										'<span class="dashicons dashicons-no"></span> %1$s %2$s',
+										__( 'License is inactive.', 'give' ),
+										$license_is_inactive
+											? sprintf(
+												__( 'Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details and activate this license to receive updates and support.', 'give' ),
+												self::get_account_url()
+											)
+											: __( 'Please activate your license key.', 'give' )
+									);
 								?>
 							</div>
 						</div>

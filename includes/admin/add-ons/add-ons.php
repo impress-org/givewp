@@ -117,10 +117,11 @@ function give_add_ons_feed( $feed_type = '' ) {
 				Give_Cache::set( $cache_key, $cache, HOUR_IN_SECONDS, true );
 			}
 		} else {
-			$cache = sprintf(
+			 printf(
 				'<div class="error inline"><p>%s</p></div>',
-				esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' )
+				esc_html__( 'There was an error retrieving the GiveWP add-ons list from the server. Please try again.', 'give' )
 			);
+			return;
 		}
 	}
 
