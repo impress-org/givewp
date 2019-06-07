@@ -136,6 +136,11 @@ const config = {
 
 		new CopyWebpackPlugin([{from: 'assets/src/images', to: 'images'}]),
 
+		// Move supported tcpdf fonts to vendor folder.
+		new CleanWebpackPlugin( [ 'vendor/tecnickcom/tcpdf/fonts/*' ] ),
+
+		new CopyWebpackPlugin( [ { from: 'assets/src/tcpdf-fonts/', to: '../../vendor/tecnickcom/tcpdf/fonts/' } ] ),
+
 		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
 		new BrowserSyncPlugin({
 			files: [
