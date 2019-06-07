@@ -36,7 +36,7 @@ function give_process_donation_form() {
 	if ( $http_referer !== $post_data['give-current-url'] ) {
 		give_set_error(
 			'give-manipulate-spam-submission-error',
-			__( 'Our system has detected that you\'re trying to manipulate data and submit spam details.', 'give' )
+			__( 'Our system has detected that you have manipulated the donation form details.', 'give' )
 		);
 	}
 
