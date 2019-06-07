@@ -12,6 +12,12 @@
 //--------------------------------------------------------------
 .give_forms_page_give-donors {
 
+	// This is here so the WP admin notices don't jam into the white header bar that's new in 2.5.0.
+	// Remove this after we release a notification center.
+	.wp-heading-inline + .notice:first-of-type {
+		margin-top: 25px;
+	}
+
 	.give-nav-tab-wrapper {
 		margin: 10px -20px 20px -20px;
 	}
