@@ -54,7 +54,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		//Test Hidden fields.
 		$this->assertContains( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
+		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( get_the_permalink( $this->_post->ID ) ) . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-current-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
 		$this->assertNotContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
 		$this->assertContains( '<input id="give-form-honeypot-' . $this->_post->ID . '" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>', $form );
