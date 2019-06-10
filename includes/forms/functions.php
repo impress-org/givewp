@@ -213,8 +213,18 @@ function give_send_back_to_checkout( $args = array() ) {
 	$new_query        = array_merge( $args, $query );
 	$new_query_string = http_build_query( $new_query );
 
+	$path = $url_data['path'];
+
+	if( is_multisite() && ! is_subdomain_install() ) {
+		/* @var  WP_Site $site_info */
+		$site_info = get_site();
+		$path = 0 === strpos( $path, $site_info->path )
+			? str_replace( untrailingslashit( $site_info->path ), '', $path )
+			: $path ;
+	}
+
 	// Assemble URL parts.
-	$redirect = home_url( '/' . $url_data['path'] . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
+	$redirect = home_url( '/' . $path . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
 
 	// Redirect them.
 	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
