@@ -132,7 +132,7 @@ function give_api_callback() {
 	$api_keys_table->prepare_items();
 	$api_keys_table->display();
 	?>
-	<span class="cmb2-metabox-description api-description">
+	<span class="give-metabox-description api-description">
 		<?php
 		echo sprintf(
 		/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */

@@ -265,5 +265,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<?php Give()->notices->print_frontend_notice( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
+	<?php Give_Notices::print_frontend_notice( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
 <?php endif;

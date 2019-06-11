@@ -32,7 +32,7 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	 */
 	$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
-	Give()->notices->print_frontend_notice(
+	Give_Notices::print_frontend_notice(
 		$message,
 		true,
 		'success'
@@ -64,7 +64,7 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	);
 
 	// Too many emails sent?
-	Give()->notices->print_frontend_notice(
+	Give_Notices::print_frontend_notice(
 		$message,
 		true,
 		'error'

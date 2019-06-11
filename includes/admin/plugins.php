@@ -177,16 +177,24 @@ add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 function give_filter_addons_do_filter_addons( $plugin_menu ) {
 	global $plugins;
 
-	foreach ( $plugins['all'] as $plugin_slug => $plugin_data ) {
+	foreach ( $plugins['all'] as $file => $plugin_data ) {
 
-		if ( false !== strpos( $plugin_data['Name'], 'Give' ) && ( false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) || false !== strpos( $plugin_data['AuthorName'], 'GiveWP' ) ) ) {
-			$plugins['give'][ $plugin_slug ]           = $plugins['all'][ $plugin_slug ];
-			$plugins['give'][ $plugin_slug ]['plugin'] = $plugin_slug;
-			// replicate the next step.
+		if (
+			false !== strpos( $plugin_data['Name'], 'Give' )
+			&& ( false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) || false !== strpos( $plugin_data['AuthorName'], 'GiveWP' ) )
+		) {
+			$plugins['give'][ $file ]           = $plugins['all'][ $file ];
+			$plugins['give'][ $file ]['plugin'] = $file;
+
+			// Replicate the next step.
 			if ( current_user_can( 'update_plugins' ) ) {
 				$current = get_site_transient( 'update_plugins' );
-				if ( isset( $current->response[ $plugin_slug ] ) ) {
-					$plugins['give'][ $plugin_slug ]['update'] = true;
+
+				if ( isset( $current->response[ $file ] ) ) {
+					$plugins['give'][ $file ]['update'] = true;
+					$plugins['give'][ $file ] = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
+				} elseif ( isset( $current->no_update[ $file ] ) ){
+					$plugins['give'][ $file ] = array_merge( (array) $current->no_update[ $file ], $plugins['give'][ $file ] );
 				}
 			}
 		}
@@ -571,10 +579,7 @@ function give_deactivation_popup() {
 	<?php
 
 	// Echo content (deactivation form) from the output buffer.
-	$output = ob_get_contents();
-
-	// Erase and stop output buffer.
-	ob_end_clean();
+	$output = ob_get_clean();
 
 	$results['html'] = $output;
 
@@ -593,7 +598,6 @@ function give_deactivation_form_submit() {
 
 	if ( ! check_ajax_referer( 'deactivation_survey_nonce', 'nonce', false ) ) {
 		wp_send_json_error();
-		wp_die();
 	}
 
 	$form_data = give_clean( wp_parse_args( $_POST['form-data'] ) );
@@ -648,8 +652,6 @@ function give_deactivation_form_submit() {
 	} else {
 		wp_send_json_error();
 	}
-
-	wp_die();
 }
 
 add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );

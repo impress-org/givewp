@@ -226,6 +226,20 @@ class Give_Donor_Wall {
 			$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
 		}
 
+		// Validate numeric attributes.
+		$numeric_attributes = array(
+			'donors_per_page',
+			'form_id',
+			'paged',
+			'comment_length',
+			'avatar_size',
+		);
+
+		foreach ( $numeric_attributes as $att ) {
+			// It will prevent condition check against numeric value.
+			$atts[ $att ] = absint( $atts[ $att ] );
+		}
+
 		return $atts;
 	}
 

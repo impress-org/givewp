@@ -1,4 +1,4 @@
-/* globals Give, jQuery */
+/* globals Give, jQuery, commonL10n */
 export default {
 	fn: {
 		/**
@@ -55,7 +55,7 @@ export default {
 				return null;
 			}
 
-			var notice, notice_msg, formatted_amount;
+			let notice, notice_msg, formatted_amount;
 			notice = notice_msg = formatted_amount = '';
 
 			if ( $form.length ) {
@@ -76,7 +76,7 @@ export default {
 					formatted_amount,
 					{
 						symbol: Give.form.fn.getInfo( 'currency_symbol', $form ),
-						position: Give.form.fn.getInfo( 'currency_position', $form )
+						position: Give.form.fn.getInfo( 'currency_position', $form ),
 					},
 					$form
 				);
@@ -87,14 +87,18 @@ export default {
 
 		/**
 		 * Print notice
+		 * Note: use only in WP Backend
+		 *
 		 * @since 2.5.0
 		 * @param {string} notice Notice description.
 		 * @param {string} type   Notice type.
+		 * @param {object} args   Notice type.
 		 *
 		 * @return {string} Notice HTML.
 		 */
-		getAdminNoticeHTML: function( notice, type = 'info' ){
-			return `<div class="give-notice notice notice-${type}"><p>${ notice }</p></div>`;
-		}
-	}
+		getAdminNoticeHTML: function( notice, type = 'info', args = { dismissible: true } ) {
+			const btnText = commonL10n.dismiss || '';
+			return `<div class="give-notice notice notice-${ type }${ args.dismissible ? ' is-dismissible' : '' }"><p>${ notice }${ args.dismissible ? ` <button type="button" class="notice-dismiss"><span class="screen-reader-text">${ btnText }</span></button>` : '' }</p</div>`;
+		},
+	},
 };

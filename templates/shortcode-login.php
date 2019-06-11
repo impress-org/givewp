@@ -66,13 +66,13 @@ if ( ! is_user_logged_in() ) {
 	<?php
 } elseif ( isset( $get_data['give-login-success'] ) && true === (bool) $get_data['give-login-success'] ) {
 
-	Give()->notices->print_frontend_notice(
+	Give_Notices::print_frontend_notice(
 		apply_filters( 'give_successful_login_message', esc_html__( 'Login successful. Welcome!', 'give' ) ),
 		true,
 		'success'
 	);
 } else {
-	Give()->notices->print_frontend_notice(
+	Give_Notices::print_frontend_notice(
 		apply_filters( 'give_already_logged_in_message', sprintf(
 			/* translators: %s Redirect URL. */
 			__( 'You are already logged in to the site. <a href="%s">Click here</a> to log out.', 'give' ),

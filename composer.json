@@ -6,7 +6,8 @@
   "homepage": "https://givewp.com/",
   "require": {
     "composer/installers": "~1.2",
-    "tecnickcom/tcpdf": "^6.2"
+    "tecnickcom/tcpdf": "^6.2",
+    "stripe/stripe-php": "^6.34.5"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
@@ -23,14 +24,10 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "[ -f vendor/bin/phpcs ] && \"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
-      "rm -rf ./vendor/tecnickcom/tcpdf/fonts/*",
-      "cp ./assets/src/tcpdf-fonts/* ./vendor/tecnickcom/tcpdf/fonts/"
+      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
     ],
     "post-update-cmd": [
-      "[ -f vendor/bin/phpcs ] && \"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
-      "rm -rf ./vendor/tecnickcom/tcpdf/fonts/*",
-      "cp ./assets/src/tcpdf-fonts/* ./vendor/tecnickcom/tcpdf/fonts/"
+      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
     ]
   }
 }

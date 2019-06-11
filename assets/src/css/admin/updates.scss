@@ -8,25 +8,48 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-#give-updates-h1 {
-  padding-top: 0;
-}
-
 .give-update-panel-content p {
   font-size: 16px;
 }
 
-#give-updates .dashicons-no-alt {
-  color: red;
+#give-updates {
+
+	.give-update-panel-content {
+		margin: 0 0 30px;
+
+		p {
+			font-size: 17px;
+			font-style: italic;
+			margin: 0;
+		}
+	}
+
+	.dashicons-no-alt {
+		color: red;
+	}
+
+	.dashicons-yes {
+		color: green;
+	}
+
+	#give-db-updates .spinner {
+		margin-top:0;
+	}
+
+	#give-updates-content {
+		max-width: 1200px;
+	}
+
+	.give-update-paused-text-p {
+		margin: 0 20px 0 0;
+		line-height: 30px;
+		font-style: italic;
+		font-size: 14px;
+	}
+
 }
 
-#give-updates .dashicons-yes {
-  color: green;
-}
 
-#give-db-updates .spinner {
-  margin-top:0;
-}
 
 body.give_forms_page_give-updates {
 	.give-run-update-containt {

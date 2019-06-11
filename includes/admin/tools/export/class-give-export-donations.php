@@ -317,7 +317,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			 */
 			do_action( 'give_tools_export_donations_main_before' );
 			?>
-			<div id="poststuff">
+			<div id="poststuff" class="give-clearfix">
 				<div class="postbox">
 					<h1 class="give-export-h1" align="center"><?php _e( 'Export Donations', 'give' ); ?></h1>
 					<div class="inside give-tools-setting-page-export give-export_donations">

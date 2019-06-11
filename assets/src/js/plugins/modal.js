@@ -195,7 +195,7 @@ class GiveModal {
 			beforeSend: function(){
 				new Give.modal.GiveSuccessAlert({
 					modalContent:{
-						desc: '<span class="give-modal__spinner spinner is-active"></span>',
+						desc: Give.fn.loader( {}, { show: null, loadingText: Give.fn.getGlobalVar( 'loader_translation' ).loading } ),
 					}
 				}).render();
 			},

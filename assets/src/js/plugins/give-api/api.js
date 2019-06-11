@@ -8,7 +8,7 @@ import GiveDonor from './donor';
  *
  *  Currently used only for internal purpose.
  */
-let Give = {
+const Give = {
 	init: function() {
 		let subHelperObjs = [ 'form' ],
 			counter = 0;
@@ -16,10 +16,10 @@ let Give = {
 
 		// Initialize all init methods of sub helper objects.
 		while ( counter < subHelperObjs.length ) {
-			if ( ! ! Give[ subHelperObjs[ counter ] ].init ) {
+			if ( !! Give[ subHelperObjs[ counter ] ].init ) {
 				Give[ subHelperObjs[ counter ] ].init();
 			}
-			counter ++;
+			counter++;
 		}
 
 		jQuery( document ).trigger( 'give:postInit' );
@@ -43,7 +43,7 @@ let Give = {
 				decimal: this.getGlobalVar( 'decimal_separator' ),
 				thousand: this.getGlobalVar( 'thousands_separator' ),
 				precision: parseInt( this.getGlobalVar( 'number_decimals' ) ),
-				currency: this.getGlobalVar( 'currency' )
+				currency: this.getGlobalVar( 'currency' ),
 			};
 
 			price = price.toString().trim();
@@ -67,11 +67,11 @@ let Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price    = parseFloat(price).toFixed(format_args.precision),
+				let actual_price = parseFloat( price ).toFixed( format_args.precision ),
 					afterPoint = args.precision ? '.0' : '',
-					lastThree       = '',
-					otherNumbers    = '',
-					result          = '',
+					lastThree = '',
+					otherNumbers = '',
+					result = '',
 					lastDotPosition = '';
 
 				actual_price = accounting.unformat( actual_price, '.' ).toString();
@@ -82,17 +82,17 @@ let Give = {
 				}
 
 				actual_price = Math.floor( actual_price ).toString();
-				lastThree    = actual_price.substring( actual_price.length - 3 );
+				lastThree = actual_price.substring( actual_price.length - 3 );
 				otherNumbers = actual_price.substring( 0, actual_price.length - 3 );
 
 				if ( '' !== otherNumbers ) {
 					lastThree = format_args.thousand + lastThree;
 				}
 
-				result          = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, format_args.thousand) + lastThree + afterPoint;
-				lastDotPosition = result.lastIndexOf('.');
-				result          = result.slice(0, lastDotPosition) + ((result.slice(lastDotPosition) + '000000000000').substr(0, args.precision + 1));
-				price           = result;
+				result = otherNumbers.replace( /\B(?=(\d{2})+(?!\d))/g, format_args.thousand ) + lastThree + afterPoint;
+				lastDotPosition = result.lastIndexOf( '.' );
+				result = result.slice( 0, lastDotPosition ) + ( ( result.slice( lastDotPosition ) + '000000000000' ).substr( 0, args.precision + 1 ) );
+				price = result;
 
 				if ( undefined !== args.symbol && args.symbol.length ) {
 					if ( 'after' === args.position ) {
@@ -111,7 +111,6 @@ let Give = {
 			}
 
 			return price;
-
 		},
 
 		/**
@@ -123,14 +122,14 @@ let Give = {
 		 */
 		unFormatCurrency: function( price, decimal_separator ) {
 			if ( 'string' === typeof price ) {
-				let regex = ',' === decimal_separator.trim() ? /[^0-9\,-]+/g : /[^0-9\.-]+/g;
+				const regex = ',' === decimal_separator.trim() ? /[^0-9\,-]+/g : /[^0-9\.-]+/g;
 
 				price = price.replace( regex, '' );
 
 				if ( 0 === price.indexOf( decimal_separator ) ) {
 					price = price.substr( 1 );
-				} else if ( (price.length - 1) === price.indexOf( decimal_separator ) ) {
-					price = price.slice( 0, - 1 );
+				} else if ( ( price.length - 1 ) === price.indexOf( decimal_separator ) ) {
+					price = price.slice( 0, -1 );
 				}
 			}
 
@@ -153,7 +152,7 @@ let Give = {
 
 			name = name.replace( /[\[\]]/g, '\\$&' );
 
-			let regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
+			const regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
 				results = regex.exec( url );
 
 			if ( ! results ) {
@@ -189,7 +188,7 @@ let Give = {
 		 * @return {object} WordPress localized global param.
 		 */
 		getGlobal: function() {
-			return ( 'undefined' === typeof  give_global_vars ) ? give_vars : give_global_vars;
+			return ( 'undefined' === typeof give_global_vars ) ? give_vars : give_global_vars;
 		},
 
 		/**
@@ -249,10 +248,50 @@ let Give = {
 			let cookie = '';
 
 			if ( 2 === parts.length ) {
-				cookie = parts.pop().split(';').shift();
+				cookie = parts.pop().split( ';' ).shift();
 			}
 
 			return cookie;
+		},
+
+		/**
+		 * Show and hide spinner
+		 * Note: use only in WP Backend
+		 *
+		 * @since 2.5.0
+		 * @public
+		 *
+		 * @param {object} $container Container where you wan to prepend spinner.
+		 * @param {object} args argument to change loader output.
+		 */
+		loader: function( $container, args = {} ) {
+			args = Object.assign( { show: true, loadingAnimation: true, loadingText: null }, args );
+
+			const spinner = args.loadingAnimation ? '<span class="is-active spinner"></span>' : '',
+				  text = null !== args.loadingText ? args.loadingText : Give.fn.getGlobalVar( 'loader_translation' ).updating;
+
+			let classes, spinnerHTML;
+
+			if ( false === args.show ) {
+				jQuery( '.give-spinner-wrap', $container ).remove();
+
+				return false;
+			}
+
+			classes = spinner.length ? 'give-has-spinner' : '';
+			classes += text.length ? ' give-has-text' : '';
+			classes = classes.length ? ' ' + classes.trim() : '';
+
+			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>`;
+
+			// return spinner HTML.
+			if( null === args.show ) {
+				return spinnerHTML;
+			}
+
+			$container.prepend( spinnerHTML );
+
+			return true;
 		},
 	},
 
@@ -261,7 +300,7 @@ let Give = {
 	 *
 	 * @since 1.8.17
 	 */
-	cache: {}
+	cache: {},
 };
 
 Give.notice = GiveNotice;

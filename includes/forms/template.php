@@ -1610,25 +1610,29 @@ function give_payment_mode_select( $form_id, $args ) {
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					// Determine the default gateway.
-					$checked       = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' class="give-gateway-option-selected"' : '';
-					?>
-					<li<?php echo $checked_class; ?>>
-						<input type="radio" name="payment-mode" class="give-gateway"
-							   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+					$checked                   = checked( $gateway_id, $selected_gateway, false );
+					$checked_class             = $checked ? ' class="give-gateway-option-selected"' : '';
+					$is_payment_method_visible = isset( $gateway['is_visible'] ) ? $gateway['is_visible'] : true;
 
-						<?php
-						$label = $gateway['checkout_label'];
-						if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
-							$label = $gateways_label[ $gateway_id ];
-						}
+					if ( true === $is_payment_method_visible ) {
 						?>
-						<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
-					</li>
-				<?php
+						<li<?php echo $checked_class; ?>>
+							<input type="radio" name="payment-mode" class="give-gateway"
+								id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+							<?php
+							$label = $gateway['checkout_label'];
+							if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
+								$label = $gateways_label[ $gateway_id ];
+							}
+							?>
+							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								class="give-gateway-option"
+								id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+						</li>
+					<?php
+					}
 				endforeach;
 				?>
 			</ul>
@@ -1858,7 +1862,7 @@ function give_checkout_submit( $form_id, $args ) {
 
 		give_checkout_hidden_fields( $form_id );
 
-		echo give_get_donation_form_submit_button( $form_id );
+		echo give_get_donation_form_submit_button( $form_id, $args );
 
 		/**
 		 * Fire after donation form submit.
@@ -1876,13 +1880,14 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
 /**
  * Give Donation form submit button.
  *
- * @since  1.8.8
- *
- * @param  int $form_id The form ID.
+ * @param int   $form_id The form ID.
+ * @param array $args
  *
  * @return string
+ * @since  1.8.8
+ *
  */
-function give_get_donation_form_submit_button( $form_id ) {
+function give_get_donation_form_submit_button( $form_id, $args = array() ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
@@ -1890,11 +1895,11 @@ function give_get_donation_form_submit_button( $form_id ) {
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-			   value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
+		       value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
-	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id );
+	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id, $args );
 }
 
 /**
@@ -2187,7 +2192,7 @@ function give_members_only_form( $final_output, $args ) {
 	// Logged in only and Register / Login set to none.
 	if ( give_logged_in_only( $form_id ) && give_show_login_register_option( $form_id ) == 'none' ) {
 
-		$final_output = Give()->notices->print_frontend_notice( esc_html__( 'Please log in in order to complete your donation.', 'give' ), false );
+		$final_output = Give_Notices::print_frontend_notice( esc_html__( 'Please log in in order to complete your donation.', 'give' ), false );
 
 		return apply_filters( 'give_members_only_output', $final_output, $form_id );
 

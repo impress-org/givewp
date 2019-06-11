@@ -308,12 +308,20 @@ function give_disconnect_donor_user_id( $args ) {
 		'user_id' => 0,
 	);
 
+	$redirect_url     = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' ) . $donor_id;
+	$is_donor_updated = $donor->update( $donor_args );
 
-	$output['success'] = true;
-	if ( ! $donor->update( $donor_args ) ) {
-		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
+	if ( $is_donor_updated ) {
+
+		// Set meta for disconnected donor id and user id for future reference if needed.
 		update_user_meta( $user_id, '_give_disconnected_donor_id', $donor->id );
 		$donor->update_meta( '_give_disconnected_user_id', $user_id );
+
+		$redirect_url = add_query_arg(
+			'give-messages[]',
+			'disconnect-user',
+			$redirect_url
+		);
 
 		$output['success'] = true;
 
@@ -322,7 +330,7 @@ function give_disconnect_donor_user_id( $args ) {
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
-	$output['redirect'] = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' ) . $donor_id;
+	$output['redirect'] = $redirect_url;
 
 	/**
 	 * Fires after disconnecting user ID from a donor.
