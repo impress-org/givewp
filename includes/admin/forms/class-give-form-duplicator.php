@@ -84,7 +84,7 @@ if ( ! class_exists( 'Give_Form_Duplicator' ) ) {
 
 			} elseif ( ! wp_verify_nonce( give_clean( $_REQUEST['_wpnonce'] ), 'give-duplicate-form' ) ) {
 
-				wp_die( esc_html__( 'Nonce verification failed', 'give' ) );
+				wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 			}
 			// @codingStandardsIgnoreEnd
 

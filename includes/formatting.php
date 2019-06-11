@@ -793,7 +793,7 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 		$wp_die_args = wp_parse_args(
 			$wp_die_args,
 			array(
-				'message' => __( 'Nonce verification has failed.', 'give' ),
+				'message' => __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 				'title'   => __( 'Error', 'give' ),
 				'args'    => array(
 					'response' => 403,
@@ -830,7 +830,7 @@ function give_verify_donation_form_nonce( $nonce = '', $form_id ) {
 	$verify_nonce = give_validate_nonce( $nonce, $nonce_action );
 
 	if ( ! $verify_nonce ) {
-		give_set_error( 'donation_form_nonce', __( 'Nonce verification has failed.', 'give' ) );
+		give_set_error( 'donation_form_nonce', __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 	}
 
 	return $verify_nonce;

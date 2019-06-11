@@ -846,7 +846,7 @@ function give_donation_form_validate_new_user() {
 
 	// Validate user creation nonce.
 	if ( ! wp_verify_nonce( $nonce, "give_form_create_user_nonce_{$form_id}" ) ) {
-		give_set_error( 'invalid_nonce', __( 'Nonce verification has failed.', 'give' ) );
+		give_set_error( 'invalid_nonce', __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 	}
 
 	$registering_new_user = false;
