@@ -1774,8 +1774,8 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 	$option_name = Give_Addon_Activation_Banner::get_banner_user_meta_key( $banner_addon_name );
 	$data        = array();
 
-	if ( ! isset( $GLOBALS['give_addon_activated_by_user'] ) ) {
-		$GLOBALS['give_addon_activated_by_user'][ $banner_addon_name ] = array();
+	if ( empty( $GLOBALS['give_addon_activated_by_user'] ) ) {
+		$GLOBALS['give_addon_activated_by_user'] = array();
 
 		// Get the meta of activation banner by user.
 		$activation_banners = $wpdb->get_results(
@@ -1794,9 +1794,11 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 				wp_list_pluck( $activation_banners, 'option_value' )
 			);
 		}
+
+		error_log( print_r( $GLOBALS['give_addon_activated_by_user'], true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	}
 
-	if ( in_array( $option_name, array_keys( $GLOBALS['give_addon_activated_by_user'] ) ) ) {
+	if ( array_key_exists( $option_name, $GLOBALS['give_addon_activated_by_user'] ) ) {
 		$data = maybe_unserialize( $GLOBALS['give_addon_activated_by_user'][ $option_name ] );
 	}
 
