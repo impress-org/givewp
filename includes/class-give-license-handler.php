@@ -410,10 +410,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 					// Logic to match all access pass license to add-on.
 					$compares = $give_license['is_all_access_pass']
 						? $give_license['download']
-						: array( array( 'plugin_slug' => $give_license['plugin_slug'] ) );
+
+						// Prevent PHP notice if somehow automatic update does not run properly.
+						// Because plugin_slug will only define in updated license rest api response.
+						: array( array( 'plugin_slug' => ! empty( $give_license['plugin_slug'] ) ? $give_license['plugin_slug'] : '' ) );
 
 					foreach ( $compares as $compare ) {
-						if ( $plugin_dirname === $compare['plugin_slug'] ) {
+						if ( ! empty( $compare['plugin_slug'] ) && $plugin_dirname === $compare['plugin_slug'] ) {
 							$license = $give_license;
 							break;
 						}
