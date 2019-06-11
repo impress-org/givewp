@@ -1794,8 +1794,6 @@ function __give_get_active_by_user_meta( $banner_addon_name ) {
 				wp_list_pluck( $activation_banners, 'option_value' )
 			);
 		}
-
-		error_log( print_r( $GLOBALS['give_addon_activated_by_user'], true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	}
 
 	if ( array_key_exists( $option_name, $GLOBALS['give_addon_activated_by_user'] ) ) {

@@ -55,7 +55,6 @@ class Give_Addon_Activation_Banner {
 
 			// Check if notice callback is already hooked.
 			if ( ! $this->is_banner_notice_hooked() ) {
-
 				// If multiple add-on are activated then show activation banner in tab view.
 				add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
 			}
