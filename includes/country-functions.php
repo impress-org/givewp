@@ -293,7 +293,7 @@ function give_get_country_list() {
 		'SD' => esc_html__( 'Sudan', 'give' ),
 		'SR' => esc_html__( 'Suriname', 'give' ),
 		'SJ' => esc_html__( 'Svalbard and Jan Mayen Islands', 'give' ),
-		'SZ' => esc_html__( 'Swaziland', 'give' ),
+		'SZ' => esc_html__( 'Eswatini', 'give' ),
 		'SE' => esc_html__( 'Sweden', 'give' ),
 		'CH' => esc_html__( 'Switzerland', 'give' ),
 		'SY' => esc_html__( 'Syrian Arab Republic', 'give' ),

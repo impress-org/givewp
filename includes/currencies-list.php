@@ -711,8 +711,8 @@ return array(
 		),
 	),
 	'SZL' => array(
-		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#76;' ),
-		'symbol'      => '&#76;',
+		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#69;' ),
+		'symbol'      => '&#69;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',
