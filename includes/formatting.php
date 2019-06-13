@@ -697,10 +697,6 @@ function give_get_super_global( $type ) {
 		case 'GET':
 			$cache_key = Give_Cache::get_key( 'give_clean', $_GET, false );
 			break;
-
-		case 'SERVER':
-			$cache_key = Give_Cache::get_key( 'give_clean', $_SERVER, false );
-			break;
 	}
 
 	// Return from cache.
@@ -710,15 +706,11 @@ function give_get_super_global( $type ) {
 
 	switch ( $type ) {
 		case 'POST':
-			$result = filter_input_array(INPUT_POST );
+			$result = give_clean( $_POST );  // WPCS: input var ok, sanitization ok, CSRF ok.
 			break;
 
 		case 'GET':
-			$result = filter_input_array(INPUT_GET );
-			break;
-
-		case 'SERVER':
-			$result = filter_input_array(INPUT_SERVER );
+			$result = give_clean( $_GET );  // WPCS: input var ok, sanitization ok, CSRF ok.
 			break;
 	}
 
