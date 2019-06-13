@@ -733,7 +733,6 @@ function give_get_super_global( $type ) {
 			break;
 	}
 
-	$result                          = give_clean( $result );
 	$give_super_global[ $cache_key ] = $result;
 
 	return $result;
