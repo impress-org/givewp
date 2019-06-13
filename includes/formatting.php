@@ -690,14 +690,13 @@ function give_get_cache_key( $action, $query_args ) {
 /**
  * Get sanitized super global param
  *
- * @param string $type         Type of super global.
- * @param string $single_key   Specific key name in super global. Default empty.
- * @param bool   $ignore_cache Flag to get or ignore cached result.
+ * @param string $type       Type of super global.
+ * @param string $single_key Specific key name in super global. Default empty.
  *
  * @return mixed
  * @since 2.5.0
  */
-function give_get_super_global( $type, $single_key = '', $ignore_cache = false ) {
+function give_get_super_global( $type, $single_key = '' ) {
 	static $give_super_global = array();
 	$result    = array();
 	$cache_key = '';
@@ -717,11 +716,7 @@ function give_get_super_global( $type, $single_key = '', $ignore_cache = false )
 	}
 
 	// Return from cache.
-	if (
-		! $ignore_cache
-		&& $cache_key
-		&& isset( $give_super_global[ $cache_key ] )
-	) {
+	if ( $cache_key && isset( $give_super_global[ $cache_key ] ) ) {
 		$result = $give_super_global[ $cache_key ];
 
 	} else {
