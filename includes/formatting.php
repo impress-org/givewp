@@ -674,51 +674,6 @@ function give_get_cache_key( $action, $query_args ) {
 	return Give_Cache::get_key( $action, $query_args );
 }
 
-
-/**
- * Get sanitized super global param
- *
- * @param string $type
- *
- * @return mixed
- * @since 2.5.0
- *
- */
-function give_get_super_global( $type ) {
-	static $give_super_global = array();
-	$result    = array();
-	$cache_key = '';
-
-	switch ( $type ) {
-		case 'POST':
-			$cache_key = Give_Cache::get_key( 'give_clean', $_POST, false );
-			break;
-
-		case 'GET':
-			$cache_key = Give_Cache::get_key( 'give_clean', $_GET, false );
-			break;
-	}
-
-	// Return from cache.
-	if ( $cache_key && isset( $give_super_global[ $cache_key ] ) ) {
-		return $give_super_global[ $cache_key ];
-	}
-
-	switch ( $type ) {
-		case 'POST':
-			$result = give_clean( $_POST );  // WPCS: input var ok, sanitization ok, CSRF ok.
-			break;
-
-		case 'GET':
-			$result = give_clean( $_GET );  // WPCS: input var ok, sanitization ok, CSRF ok.
-			break;
-	}
-
-	$give_super_global[ $cache_key ] = $result;
-
-	return $result;
-}
-
 /**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
