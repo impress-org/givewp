@@ -690,28 +690,58 @@ function give_get_cache_key( $action, $query_args ) {
 /**
  * Get sanitized super global param
  *
- * @param string $type       Type of super global.
- * @param string $single_key Specific key name in super global. Default empty.
+ * @param string $type         Type of super global.
+ * @param string $single_key   Specific key name in super global. Default empty.
+ * @param bool   $ignore_cache Flag to get or ignore cached result.
  *
  * @return mixed
  * @since 2.5.0
  */
-function give_get_super_global( $type, $single_key = '' ) {
+function give_get_super_global( $type, $single_key = '', $ignore_cache = false ) {
+	static $give_super_global = array();
+	$result    = array();
+	$cache_key = '';
+
 	switch ( $type ) {
 		case 'POST':
-			$result = filter_input_array( INPUT_POST );
+			$cache_key = Give_Cache::get_key( 'give_clean', $_POST, false );
 			break;
 
 		case 'GET':
-			$result = filter_input_array( INPUT_GET );
+			$cache_key = Give_Cache::get_key( 'give_clean', $_GET, false );
 			break;
 
 		case 'SERVER':
-			$result = filter_input_array( INPUT_SERVER );
+			$cache_key = Give_Cache::get_key( 'give_clean', $_SERVER, false );
 			break;
 	}
 
-	$result = give_clean( $result );
+	// Return from cache.
+	if (
+		! $ignore_cache
+		&& $cache_key
+		&& isset( $give_super_global[ $cache_key ] )
+	) {
+		$result = $give_super_global[ $cache_key ];
+
+	} else {
+		switch ( $type ) {
+			case 'POST':
+				$result = filter_input_array( INPUT_POST );
+				break;
+
+			case 'GET':
+				$result = filter_input_array( INPUT_GET );
+				break;
+
+			case 'SERVER':
+				$result = filter_input_array( INPUT_SERVER );
+				break;
+		}
+
+		$result                          = give_clean( $result );
+		$give_super_global[ $cache_key ] = $result;
+	}
 
 	if ( ! empty( $single_key ) ) {
 		$result = isset( $result[ $single_key ] ) ? $result[ $single_key ] : null;
