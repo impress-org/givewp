@@ -159,10 +159,10 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
-	$license_key                  = give_get_super_global( 'POST', 'license' );
-	$is_activating_single_license = absint( give_get_super_global( 'POST', 'single' ) );
-	$is_reactivating_license      = absint( give_get_super_global( 'POST', 'reactivate' ) );
-	$plugin_slug                  = $is_activating_single_license ? give_get_super_global( 'POST', 'addon' ) : '';
+	$license_key                  = ! empty( $_POST['license'] ) ? give_clean( 'license' ) : '';
+	$is_activating_single_license = ! empty( $_POST['single'] ) ? absint( 'single' ) : '';
+	$is_reactivating_license      = ! empty( $_POST['reactivate'] ) ? absint( 'reactivate' ) : '';
+	$plugin_slug                  = $is_activating_single_license ? give_clean( $_POST['addon'] ) : '';
 	$licenses                     = get_option( 'give_licenses', array() );
 
 
