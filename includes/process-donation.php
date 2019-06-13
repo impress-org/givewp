@@ -278,7 +278,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  */
 function give_process_form_login() {
 
-	$is_ajax   = give_get_super_global( 'POST', 'give_ajax' ) ?: 0;
+	$is_ajax   = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0;
 	$referrer  = wp_get_referer();
 	$user_data = give_donation_form_validate_user_login();
 
@@ -554,7 +554,8 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
  * @return void
  */
 function give_donation_form_validate_agree_to_terms() {
-	$agree_to_terms = give_get_super_global( 'POST', 'give_agree_to_terms' ) ?: 0;
+
+	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0;
 
 	// Proceed only, if donor agreed to terms.
 	if ( ! $agree_to_terms ) {
@@ -675,7 +676,7 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
 
-		$country = give_get_super_global( 'POST', 'billing_country' ) ?: 0;
+		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0;
 
 		// Check if billing country already exists.
 		if ( $country ) {
@@ -742,7 +743,7 @@ function give_get_required_fields( $form_id ) {
 function give_require_billing_address( $payment_mode ) {
 
 	$return          = false;
-	$billing_country = give_get_super_global( 'POST', 'billing_country' ) ?: 0;
+	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0;
 
 	if ( $billing_country || did_action( "give_{$payment_mode}_cc_form" ) || did_action( 'give_cc_form' ) ) {
 		$return = true;
