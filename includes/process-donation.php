@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_donation_form() {
 
 	// Sanitize Posted Data.
-	$post_data  = give_get_super_global( 'POST' );
+	$post_data  = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
 	// Check whether the form submitted via AJAX or not.
 	$is_ajax = isset( $post_data['give_ajax'] );
@@ -275,7 +275,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  */
 function give_process_form_login() {
 
-	$is_ajax   = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0;
+	$is_ajax   = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 	$referrer  = wp_get_referer();
 	$user_data = give_donation_form_validate_user_login();
 
@@ -329,7 +329,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  */
 function give_donation_form_validate_fields() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Validate Honeypot First.
 	if ( ! empty( $post_data['give-honeypot'] ) ) {
@@ -431,7 +431,7 @@ function give_is_spam_donation() {
  */
 function give_donation_form_validate_gateway() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
 	$gateway   = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : 0;
@@ -501,7 +501,7 @@ function give_donation_form_validate_gateway() {
  */
 function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) : 0;
 	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
@@ -552,7 +552,7 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
  */
 function give_donation_form_validate_agree_to_terms() {
 
-	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0;
+	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Proceed only, if donor agreed to terms.
 	if ( ! $agree_to_terms ) {
@@ -673,7 +673,7 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
 
-		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0;
+		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
 		// Check if billing country already exists.
 		if ( $country ) {
@@ -740,7 +740,7 @@ function give_get_required_fields( $form_id ) {
 function give_require_billing_address( $payment_mode ) {
 
 	$return          = false;
-	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0;
+	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	if ( $billing_country || did_action( "give_{$payment_mode}_cc_form" ) || did_action( 'give_cc_form' ) ) {
 		$return = true;
@@ -761,7 +761,7 @@ function give_require_billing_address( $payment_mode ) {
  */
 function give_donation_form_validate_logged_in_user() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$user_id   = get_current_user_id();
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
@@ -839,7 +839,7 @@ function give_donation_form_validate_new_user() {
 	);
 
 	// Get data.
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$user_data = wp_parse_args( $post_data, $default_user_data );
 
 	$form_id = absint( $user_data['give-form-id'] );
@@ -894,7 +894,7 @@ function give_donation_form_validate_new_user() {
  */
 function give_donation_form_validate_user_login() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Start an array to collect valid user data.
 	$valid_user_data = array(
@@ -978,7 +978,7 @@ function give_donation_form_validate_user_login() {
  */
 function give_donation_form_validate_guest_user() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start an array to collect valid user data.
@@ -1117,7 +1117,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
 	// Initialize user.
 	$user      = false;
 	$is_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX;
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	if ( $is_ajax ) {
 
@@ -1238,7 +1238,7 @@ function give_donation_form_validate_cc() {
 function give_get_donation_cc_info() {
 
 	// Sanitize the values submitted with donation form.
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	$cc_info                   = array();
 	$cc_info['card_name']      = ! empty( $post_data['card_name'] ) ? $post_data['card_name'] : '';
@@ -1452,7 +1452,7 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  */
 function give_validate_donation_amount( $valid_data ) {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $post_data['give-form-id'] );
@@ -1543,7 +1543,7 @@ add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1
 function give_validate_required_form_fields( $form_id ) {
 
 	// Sanitize values submitted with donation form.
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Loop through required fields and show error messages.
 	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
