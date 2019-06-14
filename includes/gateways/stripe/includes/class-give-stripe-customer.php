@@ -226,7 +226,7 @@ class Give_Stripe_Customer {
 	public function create_customer() {
 
 		$customer     = false;
-		$post_data    = give_get_super_global( 'POST' );
+		$post_data    = give_clean( $_POST );
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
 		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : false;
 		$first_name   = ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : '';

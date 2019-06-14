@@ -442,7 +442,7 @@ class Give_Notices {
 	 * @access public
 	 */
 	public function dismiss_notices() {
-		$_post     = give_get_super_global( 'POST' );
+		$_post     = give_clean( $_POST );
 		$notice_id = esc_attr( $_post['notice_id'] );
 
 		// Bailout.

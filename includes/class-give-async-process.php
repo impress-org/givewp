@@ -52,7 +52,7 @@ class Give_Async_Process extends WP_Async_Request {
 		 * )
 		 */
 
-		$_post = give_get_super_global( 'POST' );
+		$_post = give_clean( $_POST );
 
 		if ( empty( $_post ) || empty( $_post['data'] ) || empty( $_post['hook'] ) ) {
 			exit();
