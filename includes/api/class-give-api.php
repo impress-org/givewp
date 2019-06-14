@@ -1611,7 +1611,7 @@ class Give_API {
 						);
 
 						// Don't clutter up results with dupes
-						if ( in_array( $meta_key, $exceptions ) ) {
+						if ( ! is_string( $meta_value ) || in_array( $meta_key, $exceptions ) ) {
 							continue;
 						}
 
