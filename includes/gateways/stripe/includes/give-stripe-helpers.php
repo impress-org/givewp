@@ -600,7 +600,7 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 				continue;
 			}
 
-			$input_field_value = give_get_super_global( 'POST', $field['name'] );
+			$input_field_value = ! empty( $_POST[$field['name']] ) ? give_clean( $_POST[$field['name']] ) : '';
 
 			if ( $donation_id > 0 ) {
 				$field_value = give_get_meta( $donation_id, $field['name'], true );
@@ -1126,11 +1126,11 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 				)
 			);
 			give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
-			give_send_back_to_checkout( '?payment-mode=' . give_get_super_global( 'GET', 'payment-mode' ) );
+			give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
 
 		} // End if().
 	} else {
-		give_send_back_to_checkout( '?payment-mode=' . give_get_super_global( 'GET', 'payment-mode' ) );
+		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
 	} // End if().
 }
 

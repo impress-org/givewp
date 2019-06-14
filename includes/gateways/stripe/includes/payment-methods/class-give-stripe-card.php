@@ -270,11 +270,11 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						)
 					);
 					give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
-					give_send_back_to_checkout( '?payment-mode=' . give_get_super_global( 'GET', 'payment-mode' ) );
+					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 
 				} // End if().
 			} else {
-				give_send_back_to_checkout( '?payment-mode=' . give_get_super_global( 'GET', 'payment-mode' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 			} // End if().
 		}
 

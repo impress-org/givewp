@@ -1379,7 +1379,7 @@ add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
  * @since 2.5.0
  */
 function give_hide_notices_on_add_ons_page() {
-	$page = give_get_super_global( 'GET', 'page' );
+	$page = ! empty( $_GET['page'] ) ? give_clean( $_GET['page'] ) : '';
 
 	// Bailout.
 	if ( 'give-addons' !== $page ) {

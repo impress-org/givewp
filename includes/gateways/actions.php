@@ -39,7 +39,7 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  */
 function give_load_ajax_gateway() {
 
-	$post_data = give_get_super_global( 'POST' );
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
 	if (
 		! isset( $post_data['nonce'] )

@@ -51,7 +51,7 @@ if ( ! class_exists( 'Give_Stripe_Invoice' ) ) {
 					)
 				);
 				give_set_error( 'Stripe Error', __( 'An error occurred while retrieving invoice. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_get_super_global( 'GET', 'payment-mode' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 
 				 return false;
 			}
