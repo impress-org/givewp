@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private static $site_url = 'http://staging.givewp.com/';
+		private static $site_url = 'https://givewp.com/';
 
 		/**
 		 * API URL
@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'https://staging.givewp.com/edd-sl-api/';
+		private $api_url = 'https://givewp.com/edd-sl-api/';
 
 		/**
 		 * array of licensed addons
@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $account_url = 'http://staging.givewp.com/my-account/';
+		private static $account_url = 'http://givewp.com/my-account/';
 
 		/**
 		 * Downloads URL
@@ -164,7 +164,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $downloads_url = 'http://staging.givewp.com/my-downloads/';
+		private static $downloads_url = 'https://givewp.com/my-downloads/';
 
 		/**
 		 * Checkout URL
@@ -174,7 +174,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $checkout_url = 'http://staging.givewp.com/checkout/';
+		private static $checkout_url = 'https://givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
