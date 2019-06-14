@@ -159,9 +159,9 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
-	$license_key                  = ! empty( $_POST['license'] ) ? give_clean( 'license' ) : '';
-	$is_activating_single_license = ! empty( $_POST['single'] ) ? absint( 'single' ) : '';
-	$is_reactivating_license      = ! empty( $_POST['reactivate'] ) ? absint( 'reactivate' ) : '';
+	$license_key                  = ! empty( $_POST['license'] ) ? give_clean( $_POST['license'] ) : '';
+	$is_activating_single_license = ! empty( $_POST['single'] ) ? absint( $_POST['single'] ) : '';
+	$is_reactivating_license      = ! empty( $_POST['reactivate'] ) ? absint( $_POST['reactivate'] ) : '';
 	$plugin_slug                  = $is_activating_single_license ? give_clean( $_POST['addon'] ) : '';
 	$licenses                     = get_option( 'give_licenses', array() );
 
