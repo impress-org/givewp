@@ -1801,22 +1801,29 @@ var gravatar = require('gravatar');
 			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
-				if (!confirm(Give.fn.getGlobalVar('disconnect_user'))) {
-					return false;
-				}
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('disconnect_user')
+						},
+						successConfirm: function () {
+							var donorID = $('input[name="donor_info[id]"]').val();
 
-				var donorID = $('input[name="donor_info[id]"]').val();
+							var postData = {
+								give_action: 'disconnect-userid',
+								customer_id: donorID,
+								_wpnonce: $('#edit-donor-info #_wpnonce').val()
+							};
 
-				var postData = {
-					give_action: 'disconnect-userid',
-					customer_id: donorID,
-					_wpnonce: $('#edit-donor-info #_wpnonce').val()
-				};
+							$.post(ajaxurl, postData, function (response) {
+								window.location.href = response.redirect;
+							}, 'json');
+						}
+					}
+				).render();
 
-				$.post(ajaxurl, postData, function (response) {
-					window.location.href = response.redirect;
-				}, 'json');
-
+				return false;
 			});
 		},
 
@@ -2323,12 +2330,42 @@ var gravatar = require('gravatar');
 
 		revoke_api_key: function () {
 			$('body').on('click', '.give-revoke-api-key', function (e) {
-				return confirm(Give.fn.getGlobalVar('revoke_api_key'));
+				e.preventDefault();
+
+				const url = $(this).attr('href');
+
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('revoke_api_key')
+						},
+						successConfirm: function () {
+							window.location.assign( url )
+						}
+					}
+				).render();
+
+				return false;
 			});
 		},
 		regenerate_api_key: function () {
 			$('body').on('click', '.give-regenerate-api-key', function (e) {
-				return confirm(Give.fn.getGlobalVar('regenerate_api_key'));
+				const url = $(this).attr('href');
+
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('regenerate_api_key')
+						},
+						successConfirm: function () {
+							window.location.assign( url )
+						}
+					}
+				).render();
+
+				return false;
 			});
 		}
 	};
