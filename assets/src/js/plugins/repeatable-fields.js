@@ -6,6 +6,8 @@
  * License MIT
  */
 
+import {GiveConfirmModal} from "./modal";
+
 (function ($) {
 	$.fn.repeatable_fields = function (custom_settings) {
 		var default_settings = {
@@ -76,23 +78,25 @@
 				$(wrapper).on('click', settings.remove, function (event) {
 					event.stopImmediatePropagation();
 
-					if (settings.confirm_before_remove_row && settings.confirm_before_remove_row_text) {
-						if (!confirm(settings.confirm_before_remove_row_text)) {
-							return false;
+					let $this = $(this);
+
+					if ( !settings.confirm_before_remove_row || !settings.confirm_before_remove_row_text ) {
+						remove_row( $this, container );
+					}
+
+					new GiveConfirmModal(
+						{
+							modalWrapper : 'give-modal--warning',
+							modalContent: {
+								desc: settings.confirm_before_remove_row_text
+							},
+							successConfirm: function () {
+								remove_row( $this, container );
+							}
 						}
-					}
+					).render();
 
-					var row = $(this).parents(settings.row).first();
-
-					if (typeof settings.before_remove === 'function') {
-						settings.before_remove(container, row);
-					}
-
-					row.remove();
-
-					if (typeof settings.after_remove === 'function') {
-						settings.after_remove(container);
-					}
+					return false;
 				});
 
 				if (settings.is_sortable === true && typeof $.ui !== 'undefined' && typeof $.ui.sortable !== 'undefined') {
@@ -103,6 +107,20 @@
 					$(wrapper).find(settings.container).sortable(sortable_options);
 				}
 			});
+		}
+
+		function remove_row( $removeButton, container ){
+			var row = $removeButton.parents(settings.row).first();
+
+			if (typeof settings.before_remove === 'function') {
+				settings.before_remove(container, row);
+			}
+
+			row.remove();
+
+			if (typeof settings.after_remove === 'function') {
+				settings.after_remove(container);
+			}
 		}
 
 		function after_add(container, new_row) {
