@@ -113,20 +113,25 @@ class GiveModal {
 	 * @private
 	 */
 	popupConfig() {
-		if ( 'magnificPopup' === this.config.externalPlugin ) {
+		if ('magnificPopup' === this.config.externalPlugin) {
 			this.config.items = this.config.items || {
 				src: this.config.template,
 				type: 'inline',
 			};
 
-			this.config.removalDelay = 300;
-			this.config.fixedContentPos = true;
-			this.config.fixedBgPos = true;
-			this.config.alignTop = true;
-			this.config.showCloseBtn = false;
-			this.config.closeOnBgClick = false;
-			this.config.enableEscapeKey = true;
-			this.config.focus = '.give-popup-close-button';
+			this.config = Object.assign(
+				{
+					removalDelay: 300,
+					fixedContentPos: true,
+					fixedBgPos: true,
+					alignTop: true,
+					showCloseBtn: false,
+					closeOnBgClick: false,
+					enableEscapeKey: true,
+					focus: '.give-popup-close-button',
+				},
+				this.config
+			);
 		}
 	}
 
