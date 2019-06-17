@@ -187,8 +187,9 @@ class GiveModal {
 			new Give.modal.GiveSuccessAlert({
 				modalContent:{
 					title: $this.attr('title'),
-					desc: cache
-				}
+					desc: cache,
+				},
+				closeOnBgClick: true,
 			}).render();
 
 			return;
@@ -201,7 +202,8 @@ class GiveModal {
 				new Give.modal.GiveSuccessAlert({
 					modalContent:{
 						desc: Give.fn.loader( {}, { show: null, loadingText: Give.fn.getGlobalVar( 'loader_translation' ).loading } ),
-					}
+					},
+					closeOnBgClick: true,
 				}).render();
 			},
 			success: function( response ){
@@ -209,11 +211,18 @@ class GiveModal {
 					$this.attr( 'data-cache', encodeURI( response ) );
 				}
 
+				// Do not re-open modal after successfully ajax response if modal already closed.
+				if( ! jQuery('.mfp-wrap').length ){
+					return;
+				}
+
 				new Give.modal.GiveSuccessAlert({
 					modalContent:{
 						title: $this.attr('title'),
-						desc: response
-					}
+						desc: response,
+
+					},
+					closeOnBgClick: true,
 				}).render();
 			}
 		});
