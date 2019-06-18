@@ -823,6 +823,11 @@ function give_get_country_locale() {
 				'label' => __( 'Province', 'give' ),
 			),
 		),
+		'PA' => array(
+			'state' => array(
+				'required' => true,
+			),
+		),
 	) );
 }
 
