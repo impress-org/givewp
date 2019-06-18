@@ -1230,7 +1230,9 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+					placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"
+					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				/>
 			<?php endif; ?>
 		</p>
 
