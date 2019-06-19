@@ -31,6 +31,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 			$this->default_tab = 'donor-email';
 
+			$this->enable_save = ! ( Give_Admin_Settings::is_setting_page( 'emails', 'donor-email' ) || Give_Admin_Settings::is_setting_page( 'emails', 'admin-email' ) );
+
 			parent::__construct();
 
 			add_action( 'give_admin_field_email_notification', array( $this, 'email_notification_setting' ) );
