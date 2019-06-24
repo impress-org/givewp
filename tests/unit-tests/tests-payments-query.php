@@ -79,7 +79,5 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 			$this->assertContains( $donation_status, $this->donation_statuses );
 			$this->assertInternalType( 'array', $value );
 		}
-
-
 	}
 }
