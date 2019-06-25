@@ -377,7 +377,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 			'status' => 'pending',
 		);
 
-		$default_args11                 = $default_args;
+		$default_args11                = $default_args;
 		$default_args11['post_status'] = $query11['status'];
 
 		unset( $default_args11['status'] );
@@ -426,12 +426,47 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 			'orderby' => 'ID',
 		);
 
-		$default_args14             = $default_args;
-		$default_args14['orderby']  = $query14['orderby'];
+		$default_args14            = $default_args;
+		$default_args14['orderby'] = $query14['orderby'];
 
 		$payment14 = new Give_Payments_Query( $query14 );
 		$payment14->get_payments();
 
 		$this->assertEquals( serialize( $default_args14 ), serialize( $payment14->args ) );
+
+		/**
+		 * Case 5a
+		 */
+		$query15 = array(
+			'post_parent' => 12,
+			'children'    => true,
+		);
+
+		$default_args15 = $default_args;
+		unset( $default_args15['children'], $default_args15['post_parent'] );
+
+		$default_args15 = give_array_insert_after( 'count', $default_args15, 'post_parent', $query15['post_parent'] );
+
+		$payment15 = new Give_Payments_Query( $query15 );
+		$payment15->get_payments();
+
+		$this->assertEquals( serialize( $default_args15 ), serialize( $payment15->args ) );
+
+		/**
+		 * Case 5b
+		 */
+		$query16 = array(
+			'post_parent' => 12,
+		);
+
+		$default_args16 = $default_args;
+		unset( $default_args16['children'], $default_args16['post_parent'] );
+
+		$default_args16 = give_array_insert_after( 'count', $default_args16, 'post_parent', 0 );
+
+		$payment16 = new Give_Payments_Query( $query16 );
+		$payment16->get_payments();
+
+		$this->assertEquals( serialize( $default_args16 ), serialize( $payment16->args ) );
 	}
 }
