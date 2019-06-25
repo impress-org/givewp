@@ -4,6 +4,8 @@
  * Class Test_Payments_Query
  */
 class Test_Payments_Query extends Give_Unit_Test_Case {
+	private $_payment_id = 0;
+
 	/**
 	 * Set it up
 	 *
@@ -11,6 +13,8 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 */
 	public function setUp() {
 		parent::setUp();
+
+		$this->_payment_id = Give_Helper_Payment::create_simple_payment();
 	}
 
 	/**
@@ -19,6 +23,8 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 */
 	public function tearDown() {
 		parent::tearDown();
+
+		Give_Helper_Payment::delete_payment( $this->_payment_id );
 	}
 
 	/**
@@ -480,7 +486,6 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$payment = new Give_Payments_Query();
 		$result = $payment->get_payments();
 
-
 		$this->assertInstanceOf( 'Give_Payment', current( $result ) );
 
 		/*
@@ -488,7 +493,6 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		 */
 		$payment = new Give_Payments_Query(array( 'output' => '' ));
 		$result = $payment->get_payments();
-
 
 		$this->assertInstanceOf( 'WP_Post', current( $result ) );
 	}
