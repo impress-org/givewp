@@ -787,11 +787,9 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set(
 			'meta_query', array(
-				array(
-					'key'     => '_give_payment_gateway',
-					'value'   => $this->args['gateway'],
-					'compare' => $compare,
-				),
+				'key'     => '_give_payment_gateway',
+				'value'   => $this->args['gateway'],
+				'compare' => $compare,
 			)
 		);
 
