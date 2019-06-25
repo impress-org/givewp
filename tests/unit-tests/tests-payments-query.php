@@ -5,22 +5,6 @@
  */
 class Test_Payments_Query extends Give_Unit_Test_Case {
 	/**
-	 * Donation status list
-	 * @var array
-	 */
-	private $donation_statuses = array(
-		'pending',
-		'abandoned',
-		'cancelled',
-		'failed',
-		'preapproval',
-		'processing',
-		'publish',
-		'refunded',
-		'revoked',
-	);
-
-	/**
 	 * Set it up
 	 *
 	 * @since 2.5.1
@@ -41,6 +25,8 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 * @cover Give_Payments_Query::get_payment_by_group
 	 */
 	public function test_get_payment_by_group() {
+		$donation_statuses = give_get_payment_status_keys();
+
 		/*
 		 * Case 1
 		 */
@@ -62,7 +48,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 
 		$payment2 = new Give_Payments_Query( $query2 );
 		$result   = $payment2->get_payment_by_group();
-		foreach ( $this->donation_statuses as $donation_status ) {
+		foreach ( $donation_statuses as $donation_status ) {
 			$this->assertArrayHasKey( $donation_status, $result );
 		}
 
@@ -76,8 +62,312 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$payment3 = new Give_Payments_Query( $query3 );
 		$result   = $payment3->get_payment_by_group();
 		foreach ( $result as $donation_status => $value ) {
-			$this->assertContains( $donation_status, $this->donation_statuses );
+			$this->assertContains( $donation_status, $donation_statuses );
 			$this->assertInternalType( 'array', $value );
 		}
+	}
+
+
+	/**
+	 * @cover Give_Payments_Query::set_filters
+	 */
+	public function test_set_filters() {
+		/*
+		 * Case 1
+		 * Default query arguments
+		 */
+		$default_args = array(
+			'output'                 => 'payments',
+			'post_type'              => array( 'give_payment' ),
+			'start_date'             => false,
+			'end_date'               => false,
+			'page'                   => null,
+			'orderby'                => 'ID',
+			'order'                  => 'DESC',
+			'user'                   => null,
+			'donor'                  => null,
+			'meta_key'               => null,
+			'year'                   => null,
+			'month'                  => null,
+			'day'                    => null,
+			's'                      => null,
+			'search_in_notes'        => false,
+			'fields'                 => null,
+			'gateway'                => null,
+			'give_forms'             => null,
+			'offset'                 => null,
+			'group_by'               => '',
+			'count'                  => false,
+			'update_post_meta_cache' => false,
+			'post_status'            => give_get_payment_status_keys(),
+			'posts_per_page'         => 20,
+			'post_parent'            => 0,
+		);
+
+		$payment = new Give_Payments_Query( array() );
+		$payment->get_payments();
+
+		$this->assertEquals( serialize( $default_args ), serialize( $payment->args ) );
+
+		/**
+		 * Case 2a
+		 * meta query
+		 */
+		$query1 = array(
+			'give_forms' => 44,
+		);
+
+		$default_args1               = $default_args;
+		$default_args1['meta_query'] = array(
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => 44,
+				'compare' => '=',
+			),
+		);
+
+		unset( $default_args1['give_forms'] );
+
+		$payment1 = new Give_Payments_Query( $query1 );
+		$payment1->get_payments();
+
+		$this->assertEquals( serialize( $default_args1 ), serialize( $payment1->args ) );
+
+		/**
+		 * Case 2b
+		 * meta query
+		 */
+		$query2 = array(
+			'give_forms' => array( 44, 33 ),
+		);
+
+		$default_args2               = $default_args;
+		$default_args2['meta_query'] = array(
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => array( 44, 33 ),
+				'compare' => 'IN',
+			),
+		);
+
+		unset( $default_args2['give_forms'] );
+
+		$payment2 = new Give_Payments_Query( $query2 );
+		$payment2->get_payments();
+
+		$this->assertEquals( serialize( $default_args2 ), serialize( $payment2->args ) );
+
+		/**
+		 * Case 2c
+		 * meta query
+		 */
+		$query3 = array(
+			'gateway' => 'paypal',
+		);
+
+		$default_args3               = $default_args;
+		$default_args3['meta_query'] = array(
+			array(
+				'key'     => '_give_payment_gateway',
+				'value'   => 'paypal',
+				'compare' => '=',
+			),
+		);
+
+		unset( $default_args3['gateway'] );
+
+		$payment3 = new Give_Payments_Query( $query3 );
+		$payment3->get_payments();
+
+		$this->assertEquals( serialize( $default_args3 ), serialize( $payment3->args ) );
+
+		/**
+		 * Case 2d
+		 * meta query
+		 */
+		$query4 = array(
+			'gateway' => array( 'paypal', 'stripe' ),
+		);
+
+		$default_args4               = $default_args;
+		$default_args4['meta_query'] = array(
+			array(
+				'key'     => '_give_payment_gateway',
+				'value'   => array( 'paypal', 'stripe' ),
+				'compare' => 'IN',
+			),
+		);
+
+		unset( $default_args4['gateway'] );
+
+		$payment4 = new Give_Payments_Query( $query4 );
+		$payment4->get_payments();
+
+		$this->assertEquals( serialize( $default_args4 ), serialize( $payment4->args ) );
+
+		/**
+		 * Case 2e
+		 * meta query
+		 */
+		$query5 = array(
+			'donor' => 11,
+		);
+
+		$default_args5               = $default_args;
+		$default_args5['donor']      = $query5['donor'];
+		$default_args5['meta_query'] = array(
+			array(
+				'key'   => '_give_payment_donor_id',
+				'value' => $default_args5['donor'],
+			),
+		);
+
+		// reorder post_parent to pass test.
+		$tmp = $default_args5['post_parent'];
+		unset( $default_args5['post_parent'] );
+		$default_args5['post_parent'] = $tmp;
+
+		$payment5 = new Give_Payments_Query( $query5 );
+		$payment5->get_payments();
+
+		$this->assertEquals( serialize( $default_args5 ), serialize( $payment5->args ) );
+
+		/**
+		 * Case 2f
+		 * meta query
+		 */
+		$query6 = array(
+			'donor' => array( 11, 12 ),
+		);
+
+		$default_args6          = $default_args;
+		$default_args6['donor'] = $query6['donor'];
+
+		$payment6 = new Give_Payments_Query( $query6 );
+		$payment6->get_payments();
+
+		$this->assertEquals( serialize( $default_args6 ), serialize( $payment6->args ) );
+
+
+		/**
+		 * Case 2g
+		 * meta query
+		 */
+		$query7 = array(
+			'user' => 11,
+		);
+
+		$default_args7               = $default_args;
+		$default_args7['user']       = $query7['user'];
+		$default_args7['meta_query'] = array(
+			array(
+				'key'   => '_give_payment_donor_id',
+				'value' => 0,
+			),
+		);
+
+		// reorder post_parent to pass test.
+		$tmp = $default_args7['post_parent'];
+		unset( $default_args7['post_parent'] );
+		$default_args7['post_parent'] = $tmp;
+
+		$payment7 = new Give_Payments_Query( $query7 );
+		$payment7->get_payments();
+
+		$this->assertEquals( serialize( $default_args7 ), serialize( $payment7->args ) );
+
+		/**
+		 * Case 2h
+		 * meta query
+		 */
+		$query8 = array(
+			'donor'      => 11,
+			'give_forms' => 12,
+			'gateway'    => 'paypal',
+		);
+
+		$default_args8               = $default_args;
+		$default_args8['donor']      = $query8['donor'];
+		$default_args8['meta_query'] = array(
+			array(
+				'key'   => '_give_payment_donor_id',
+				'value' => 11,
+			),
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => 12,
+				'compare' => '=',
+			),
+			array(
+				'key'     => '_give_payment_gateway',
+				'value'   => 'paypal',
+				'compare' => '=',
+			),
+		);
+
+		// reorder post_parent to pass test.
+		$tmp = $default_args8['post_parent'];
+		unset( $default_args8['post_parent'], $default_args8['give_forms'], $default_args8['gateway'] );
+		$default_args8['post_parent'] = $tmp;
+
+		$payment8 = new Give_Payments_Query( $query8 );
+		$payment8->get_payments();
+
+		$this->assertEquals( serialize( $default_args8 ), serialize( $payment8->args ) );
+
+		/**
+		 * Case 2i
+		 * meta query
+		 */
+		$query9 = array(
+			'mode' => 'test',
+		);
+
+		$default_args9               = $default_args;
+		$default_args9['meta_query'] = array(
+			array(
+				'key'   => '_give_payment_mode',
+				'value' => $query9['mode'],
+			),
+		);
+
+		$default_args9 = give_array_insert_after( 'count', $default_args9, 'mode', $query9['mode'] );
+
+		// reorder post_parent to pass test.
+		$tmp = $default_args9['post_parent'];
+		unset( $default_args9['post_parent'] );
+		$default_args9['post_parent'] = $tmp;
+
+		$payment9 = new Give_Payments_Query( $query9 );
+		$payment9->get_payments();
+
+		$this->assertEquals( serialize( $default_args9 ), serialize( $payment9->args ) );
+
+		/**
+		 * Case 2j
+		 * meta query
+		 */
+		$query10 = array(
+			'user' => 'test@gmail.com',
+		);
+
+		$default_args10               = $default_args;
+		$default_args10['user']       = $query10['user'];
+		$default_args10['meta_query'] = array(
+			array(
+				'key'   => '_give_payment_donor_email',
+				'value' => $default_args10['user'],
+			),
+		);
+
+		// reorder post_parent to pass test.
+		$tmp = $default_args10['post_parent'];
+		unset( $default_args10['post_parent'] );
+		$default_args10['post_parent'] = $tmp;
+
+		$payment10 = new Give_Payments_Query( $query10 );
+		$payment10->get_payments();
+
+		$this->assertEquals( serialize( $default_args10 ), serialize( $payment10->args ) );
 	}
 }
