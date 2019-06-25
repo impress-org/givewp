@@ -369,5 +369,23 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$payment10->get_payments();
 
 		$this->assertEquals( serialize( $default_args10 ), serialize( $payment10->args ) );
+
+		/**
+		 * Case 3
+		 */
+		$query11 = array(
+			'status' => 'pending',
+		);
+
+		$default_args11                 = $default_args;
+		$default_args11['post_status'] = $query11['status'];
+
+		// reorder post_parent to pass test.
+		unset( $default_args11['status'] );
+
+		$payment11 = new Give_Payments_Query( $query11 );
+		$payment11->get_payments();
+
+		$this->assertEquals( serialize( $default_args11 ), serialize( $payment11->args ) );
 	}
 }
