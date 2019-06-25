@@ -380,12 +380,58 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$default_args11                 = $default_args;
 		$default_args11['post_status'] = $query11['status'];
 
-		// reorder post_parent to pass test.
 		unset( $default_args11['status'] );
 
 		$payment11 = new Give_Payments_Query( $query11 );
 		$payment11->get_payments();
 
 		$this->assertEquals( serialize( $default_args11 ), serialize( $payment11->args ) );
+
+		/**
+		 * Case 4a
+		 */
+		$query12 = array(
+			'orderby' => 'amount',
+		);
+
+		$default_args12             = $default_args;
+		$default_args12['orderby']  = 'meta_value_num';
+		$default_args12['meta_key'] = '_give_payment_total';
+
+		$payment12 = new Give_Payments_Query( $query12 );
+		$payment12->get_payments();
+
+		$this->assertEquals( serialize( $default_args12 ), serialize( $payment12->args ) );
+
+		/**
+		 * Case 4b
+		 */
+		$query13 = array(
+			'orderby' => 'donation_form',
+		);
+
+		$default_args13             = $default_args;
+		$default_args13['orderby']  = 'meta_value';
+		$default_args13['meta_key'] = '_give_payment_form_title';
+
+		$payment13 = new Give_Payments_Query( $query13 );
+		$payment13->get_payments();
+
+		$this->assertEquals( serialize( $default_args13 ), serialize( $payment13->args ) );
+
+		/**
+		 * Case 4c
+		 */
+		$query14 = array(
+			'orderby' => 'ID',
+		);
+
+		$default_args14             = $default_args;
+		$default_args14['orderby']  = $query14['orderby'];
+
+		$payment14 = new Give_Payments_Query( $query14 );
+		$payment14->get_payments();
+
+		$this->assertEquals( serialize( $default_args14 ), serialize( $payment14->args ) );
 	}
 }
