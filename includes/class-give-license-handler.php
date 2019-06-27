@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var null|string
 		 */
-		private static $account_url = 'http://givewp.com/my-account/';
+		private static $account_url = 'https://givewp.com/my-account/';
 
 		/**
 		 * Downloads URL
