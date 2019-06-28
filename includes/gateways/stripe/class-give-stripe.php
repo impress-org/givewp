@@ -112,29 +112,28 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function display_old_recurring_compatibility_notice() {
 
-			// Bailout early, if Give 2.5.0 and recurring 1.8.13 is compatible.
+			// Show notice, if incompatibility found.
 			if (
 				defined( 'GIVE_RECURRING_VERSION' ) &&
-				version_compare( GIVE_RECURRING_VERSION, '1.9.0', '>=' )
+				version_compare( GIVE_RECURRING_VERSION, '1.9.0', '<' ) &&
+				! defined( 'GIVE_STRIPE_VERSION' )
 			) {
-				return;
+
+				$message = sprintf(
+					__( '<strong>Attention:</strong> Give 2.5.0 requires the latest version of the Recurring donations add-on to process donations properly. Please update to the latest version of Recurring donations add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the Give website.', 'give' ),
+					esc_url( 'https://givewp.com/wp-login.php' ),
+					esc_url( 'https://givewp.com/my-account/#tab_downloads' )
+				);
+
+				Give()->notices->register_notice(
+					array(
+						'id'          => 'give-compatibility-with-old-recurring',
+						'type'        => 'error',
+						'description' => $message,
+						'show'        => true,
+					)
+				);
 			}
-
-			$message = sprintf(
-				__( '<strong>Attention:</strong> Give 2.5.0 requires the latest version of the Recurring donations add-on to process donations properly. Please update to the latest version of Recurring donations add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the Give website.', 'give' ),
-				esc_url( 'https://givewp.com/wp-login.php' ),
-				esc_url( 'https://givewp.com/my-account/#tab_downloads' )
-			);
-
-			// Show notice, if incompatibility found.
-			Give()->notices->register_notice(
-				array(
-					'id'          => 'give-compatibility-with-old-recurring',
-					'type'        => 'error',
-					'description' => $message,
-					'show'        => true,
-				)
-			);
 
 		}
 	}
