@@ -31,6 +31,19 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
 
+			/**
+			 * Using hardcoded constant for backward compatibility of Give 2.5.0 with Recurring 1.8.13 when Stripe Premium is not active.
+			 *
+			 * This code will handle extreme rare scenario.
+			 *
+			 * @since 2.5.0
+			 *
+			 * @todo Remove this contant declaration after 2-3 Give core minor releases.
+			 */
+			if ( ! defined( 'GIVE_STRIPE_BASENAME' ) ) {
+				define( 'GIVE_STRIPE_BASENAME', 'give-stripe/give-stripe.php' );
+			}
+
 			$this->includes();
 		}
 
