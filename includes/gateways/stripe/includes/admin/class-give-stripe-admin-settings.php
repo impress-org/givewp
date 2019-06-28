@@ -206,7 +206,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings[] = array(
 						'name' => __( 'Enable Stripe Checkout', 'give' ),
-						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page. Note: Apple and Google pay do not work with the modal checkout option.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
+						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
 						'id'   => 'stripe_checkout_enabled',
 						'type' => 'checkbox',
 					);
