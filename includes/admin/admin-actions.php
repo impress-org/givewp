@@ -1284,27 +1284,101 @@ function give_license_notices() {
 		return;
 	}
 
+	$give_plugins                = give_get_plugins();
 	$give_licenses               = get_option( 'give_licenses', array() );
 	$notices                     = array();
+	$notices_data                = array();
+	$license_data                = array();
+	$notice_description          = array();
+
+	// Get all access pass licenses.
+	$all_access_pass_addon_list = array();
+
+	// Loop through Give licenses.
+	foreach ( $give_licenses as $key => $give_license ) {
+		// Setup data for all access pass.
+		if ( $give_license['is_all_access_pass'] ) {
+			$all_access_pass_licenses[ $key ] = $give_license;
+
+			foreach ( $give_license['download'] as $download ) {
+				$all_access_pass_addon_list[] = $download['plugin_slug'];
+			}
+		}
+	}
+
+	$license_data['active'] = array(
+		'count' => 0,
+		'add-ons' => array(),
+	);
+
+	$license_data['inactive'] = array(
+		'count' => 0,
+		'add-ons' => array(),
+	);
+
+	$license_data['expired'] = array(
+		'count' => 0,
+		'add-ons' => array(),
+	);
+
+	// Loop through Give plugins list.
+	foreach ( $give_plugins as $give_plugin ) {
+		if (
+			'add-on' !== $give_plugin['Type']
+			|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
+		) {
+			continue;
+		}
+
+		if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
+			continue;
+		}
+
+		$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+		$license_type  = 'inactive';
+
+		if ( is_array( $addon_license ) && ! empty( $addon_license['license'] ) ) {
+			switch ( $addon_license['license'] ) {
+				case 'valid':
+					$license_type = 'active';
+					break;
+
+				case 'expired':
+					$license_type = 'expired';
+					break;
+			}
+		}
+
+		$license_data[ $license_type ]['count']     = $license_data[ $license_type ]['count'] + 1;
+		$license_data[ $license_type ]['add-ons'][] = $give_plugin['Name'];
+	}
+
+	unset( $license_data['active'] );
+
+	foreach( $license_data as $key => $license ) {
+
+		if ( 0 < $license['count'] ) {
+			$notice_data[ $key ] = sprintf(
+				_n( '%1$s %2$s license (%3$s)', '%1$s %2$s licenses (%3$s)', $license['count'], 'give' ),
+				$license['count'],
+				$key,
+				implode( ', ', $license['add-ons'] )
+			);
+		}
+	}
+
+	$notice_description = sprintf(
+		'You have %1$s. Please purchase and activate the licenses to receive updates and support.',
+		implode( ' and ', $notice_data )
+	);
+
 	$invalid_license_notice_args = array(
-		'id'               => 'give-invalid-license',
+		'id'               => 'give-invalid-expired-license',
 		'type'             => 'error',
-		'description'      => sprintf(
-			__( 'You have invalid or expired license keys for one or more GiveWP add-ons. Please go to the <a href="%s">license settings page</a> to correct this issue.', 'give' ),
-			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-		),
+		'description'      => $notice_description,
 		'dismissible_type' => 'user',
 		'dismiss_interval' => 'shortly',
 	);
-
-	foreach ( $give_licenses as $give_license ) {
-		if (
-			! array_key_exists( 'invalid-license', $notices )
-			&& 'valid' !== $give_license['license']
-		) {
-			$notices['invalid-license'] = $invalid_license_notice_args;
-		}
-	}
 
 	// Check by add-on if any give add-on activated without license.
 	// Do not show this notice if add-on activated with in 3 days.
@@ -1332,12 +1406,8 @@ function give_license_notices() {
 		}
 	}
 
-	// Register notices.
-	if ( $notices ) {
-		foreach ( $notices as $notice ) {
-			Give()->notices->register_notice( $notice );
-		}
-	}
+	// Register Notices.
+	Give()->notices->register_notice( $invalid_license_notice_args );
 }
 
 add_action( 'admin_notices', 'give_license_notices' );
