@@ -606,7 +606,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				)
 			);
 
-			$plugin = wp_parse_args( $plugin, $default_plugin )
+			$plugin = wp_parse_args( $plugin, $default_plugin );
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
