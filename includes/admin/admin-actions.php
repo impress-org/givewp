@@ -1307,10 +1307,10 @@ function give_license_notices() {
 	}
 
 	// Check by add-on if any give add-on activated without license.
-	// Do not show this notice if add-on activated with in 24 hours.
-	$is_day_past = HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
+	// Do not show this notice if add-on activated with in 3 days.
+	$is_required_days_past = 3 * HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
 	if (
-		$is_day_past
+		$is_required_days_past
 		&& ! array_key_exists( 'invalid-license', $notices )
 		&& false === Give_Cache::get( 'give_cache_hide_license_notice_after_activation' )
 	) {
