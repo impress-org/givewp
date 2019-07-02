@@ -1359,6 +1359,7 @@ function give_license_notices() {
 		$license_data[ $license_type ]['add-ons'][] = $give_plugin['Name'];
 	}
 
+	// Unset active license addons as not required.
 	unset( $license_data['active'] );
 
 	foreach( $license_data as $key => $license ) {
