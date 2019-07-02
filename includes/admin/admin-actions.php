@@ -1286,7 +1286,7 @@ function give_license_notices() {
 
 	$give_plugins                = give_get_plugins();
 	$give_licenses               = get_option( 'give_licenses', array() );
-	$notices                     = array();
+	$notice                      = '';
 	$notices_data                = array();
 	$license_data                = array();
 	$notice_description          = array();
@@ -1297,6 +1297,7 @@ function give_license_notices() {
 
 	// Loop through Give licenses.
 	foreach ( $give_licenses as $key => $give_license ) {
+
 		// Setup data for all access pass.
 		if ( $give_license['is_all_access_pass'] ) {
 			$all_access_pass_licenses[ $key ] = $give_license;
@@ -1362,6 +1363,7 @@ function give_license_notices() {
 	// Unset active license addons as not required.
 	unset( $license_data['active'] );
 
+	// Loop througn license data.
 	foreach( $license_data as $key => $license ) {
 
 		if ( 'inactive' === $key ) {
@@ -1379,6 +1381,7 @@ function give_license_notices() {
 		}
 	}
 
+	// Prepare license notice description.
 	$notice_description = sprintf(
 		__( 'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>', 'give' ),
 		implode( ' and ', $notice_data ),
@@ -1388,7 +1391,8 @@ function give_license_notices() {
 		__( 'Priority Support', 'give' )
 	);
 
-	$invalid_license_notice_args = array(
+	// Default license notice arguments.
+	$license_notice_args = array(
 		'id'               => 'give-invalid-expired-license',
 		'type'             => 'error',
 		'description'      => $notice_description,
@@ -1396,34 +1400,26 @@ function give_license_notices() {
 		'dismiss_interval' => 'shortly',
 	);
 
-	// Check by add-on if any give add-on activated without license.
-	// Do not show this notice if add-on activated with in 3 days.
-	$is_required_days_past = 3 * HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
-	if (
-		$is_required_days_past
-		&& ! array_key_exists( 'invalid-license', $notices )
-		&& false === Give_Cache::get( 'give_cache_hide_license_notice_after_activation' )
-	) {
-		foreach ( give_get_plugins() as $give_plugin ) {
-			if (
-				'add-on' !== $give_plugin['Type']
-				|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
-			) {
-				continue;
-			}
+	// Loop through Give licenses.
+	foreach ( $give_licenses as $key => $give_license ) {
 
-			/* @var  stdClass $addon_license */
-			$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
-
-			if ( ! $addon_license ) {
-				$notices['invalid-license'] = $invalid_license_notice_args;
-				break;
-			}
+		if (
+			empty( $notice ) &&
+			'valid' !== $give_license['license']
+		) {
+			$notice = $license_notice_args;
 		}
 	}
 
-	// Register Notices.
-	Give()->notices->register_notice( $invalid_license_notice_args );
+	// Check by add-on if any give add-on activated without license.
+	// Do not show this notice if add-on activated with in 3 days.
+	$is_required_days_past = 3 * HOUR_IN_SECONDS < ( current_time( 'timestamp' ) - Give_Cache_Setting::get_option( 'give_addon_last_activated' ) );
+
+	// Show license notice only.
+	if ( $is_required_days_past ) {
+		// Register Notices.
+		Give()->notices->register_notice( $notice );
+	}
 }
 
 add_action( 'admin_notices', 'give_license_notices' );
