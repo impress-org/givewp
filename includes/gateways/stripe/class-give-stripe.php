@@ -29,7 +29,21 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function __construct() {
 
+			add_action( 'admin_notices', array( $this, 'display_old_recurring_compatibility_notice' ) );
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+
+			/**
+			 * Using hardcoded constant for backward compatibility of Give 2.5.0 with Recurring 1.8.13 when Stripe Premium is not active.
+			 *
+			 * This code will handle extreme rare scenario.
+			 *
+			 * @since 2.5.0
+			 *
+			 * @todo Remove this constant declaration after 2-3 Give core minor releases.
+			 */
+			if ( ! defined( 'GIVE_STRIPE_BASENAME' ) ) {
+				define( 'GIVE_STRIPE_BASENAME', 'give-stripe/give-stripe.php' );
+			}
 
 			$this->includes();
 		}
@@ -89,6 +103,39 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			return $gateways;
 		}
 
+		/**
+		 * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @return void
+		 */
+		public function display_old_recurring_compatibility_notice() {
+
+			// Show notice, if incompatibility found.
+			if (
+				defined( 'GIVE_RECURRING_VERSION' )
+				&& version_compare( GIVE_RECURRING_VERSION, '1.9.0', '<' )
+				&& ! defined( 'GIVE_STRIPE_VERSION' )
+			) {
+
+				$message = sprintf(
+					__( '<strong>Attention:</strong> Give 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.', 'give' ),
+					esc_url( 'https://givewp.com/wp-login.php' ),
+					esc_url( 'https://givewp.com/my-account/#tab_downloads' )
+				);
+
+				Give()->notices->register_notice(
+					array(
+						'id'          => 'give-compatibility-with-old-recurring',
+						'type'        => 'error',
+						'description' => $message,
+						'show'        => true,
+					)
+				);
+			}
+
+		}
 	}
 }
 

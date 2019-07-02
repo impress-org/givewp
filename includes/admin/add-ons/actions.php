@@ -209,7 +209,7 @@ function give_get_license_info_handler() {
 	if ( ! $check_license_res['success'] ) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+				__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
 				Give_License::get_account_url(),
 				$check_license_res['license']
 			),
@@ -223,7 +223,7 @@ function give_get_license_info_handler() {
 	) {
 		wp_send_json_error( array(
 			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+				__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
 				Give_License::get_account_url()
 			),
 		) );
@@ -246,7 +246,7 @@ function give_get_license_info_handler() {
 	if ( ! $is_reactivating_license && ! $activate_license_res['success']  ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);
@@ -271,7 +271,7 @@ function give_get_license_info_handler() {
 	if ( $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, we are unable to activate this license because license status is <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check details.' ),
+			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);

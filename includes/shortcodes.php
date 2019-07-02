@@ -842,22 +842,52 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter by form category.
 	if ( ! empty( $atts['cats'] ) ) {
-		$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
-		$tax_query                = array(
-			'taxonomy' => 'give_forms_category',
-			'terms'    => $cats,
-		);
-		$form_args['tax_query'][] = $tax_query;
+		$cats = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+
+		// Backward compatibility for term_ids.
+		$term_ids = array_unique( array_filter( $cats, 'is_numeric' ) );
+		if ( $term_ids ) {
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $term_ids,
+			);
+
+		}
+
+		$term_slug = array_unique( array_filter( array_diff( $cats, $term_ids ) ) );
+		if ( $term_slug ) {
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'field'    => 'slug',
+				'terms'    => $term_slug,
+			);
+
+		}
 	}
 
 	// Maybe filter by form tag.
 	if ( ! empty( $atts['tags'] ) ) {
-		$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
-		$tax_query                = array(
-			'taxonomy' => 'give_forms_tag',
-			'terms'    => $tags,
-		);
-		$form_args['tax_query'][] = $tax_query;
+		$tags = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+
+		// Backward compatibility for term_ids.
+		$tag_ids = array_unique( array_filter( $tags, 'is_numeric' ) );
+		if ( $tag_ids ) {
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $tag_ids,
+			);
+
+		}
+
+		$tag_slug = array_unique( array_filter( array_diff( $tags, $tag_ids ) ) );
+		if ( $tag_slug ) {
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'field'    => 'slug',
+				'terms'    => $tag_slug,
+			);
+
+		}
 	}
 
 	/**
