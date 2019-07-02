@@ -1359,10 +1359,9 @@ function give_license_notices() {
 
 		if ( 0 < $license['count'] ) {
 			$notice_data[ $key ] = sprintf(
-				_n( '%1$s %2$s license (%3$s)', '%1$s %2$s licenses (%3$s)', $license['count'], 'give' ),
+				_n( '%1$s %2$s license', '%1$s %2$s licenses', $license['count'], 'give' ),
 				$license['count'],
-				$key,
-				implode( ', ', $license['add-ons'] )
+				$key
 			);
 		}
 	}
