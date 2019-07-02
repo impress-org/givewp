@@ -1292,6 +1292,7 @@ function give_license_notices() {
 	$notice_description          = array();
 
 	// Get all access pass licenses.
+	$all_access_pass_licenses   = array();
 	$all_access_pass_addon_list = array();
 
 	// Loop through Give licenses.
@@ -1335,6 +1336,11 @@ function give_license_notices() {
 		}
 
 		$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+
+		if ( isset($addon_license['plugin_slug']) && $addon_license['plugin_slug'] === 'give-mollie') {
+			$addon_license['license'] = 'expired';
+		}
+
 		$license_type  = 'inactive';
 
 		if ( is_array( $addon_license ) && ! empty( $addon_license['license'] ) ) {
@@ -1357,9 +1363,15 @@ function give_license_notices() {
 
 	foreach( $license_data as $key => $license ) {
 
-		if ( 0 < $license['count'] ) {
+		if ( 'inactive' === $key ) {
 			$notice_data[ $key ] = sprintf(
 				_n( '%1$s %2$s license', '%1$s %2$s licenses', $license['count'], 'give' ),
+				$license['count'],
+				$key
+			);
+		} elseif ( 'expired' === $key ) {
+			$notice_data[ $key ] = sprintf(
+				_n( '%1$s %2$s license key', '%1$s %2$s license keys', $license['count'], 'give' ),
 				$license['count'],
 				$key
 			);
@@ -1367,8 +1379,12 @@ function give_license_notices() {
 	}
 
 	$notice_description = sprintf(
-		'You have %1$s. Please purchase and activate the licenses to receive updates and support.',
-		implode( ' and ', $notice_data )
+		__( 'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>', 'give' ),
+		implode( ' and ', $notice_data ),
+		admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ),
+		__( 'Activate License', 'give' ),
+		esc_url( 'https://givewp.com/priority-support/' ),
+		__( 'Priority Support', 'give' )
 	);
 
 	$invalid_license_notice_args = array(
