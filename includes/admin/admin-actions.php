@@ -1289,6 +1289,7 @@ function give_license_notices() {
 	$notice                      = '';
 	$notices_data                = array();
 	$license_data                = array();
+	$license_count               = 0;
 	$notice_description          = array();
 
 	// Get all access pass licenses.
@@ -1338,10 +1339,6 @@ function give_license_notices() {
 
 		$addon_license = Give_License::get_license_by_plugin_dirname( $give_plugin['Dir'] );
 
-		if ( isset($addon_license['plugin_slug']) && $addon_license['plugin_slug'] === 'give-mollie') {
-			$addon_license['license'] = 'expired';
-		}
-
 		$license_type  = 'inactive';
 
 		if ( is_array( $addon_license ) && ! empty( $addon_license['license'] ) ) {
@@ -1366,25 +1363,28 @@ function give_license_notices() {
 	// Loop througn license data.
 	foreach( $license_data as $key => $license ) {
 
-		if ( 'inactive' === $key ) {
+		if ( 0 < $license['count'] ) {
 			$notice_data[ $key ] = sprintf(
-				_n( '%1$s %2$s license', '%1$s %2$s licenses', $license['count'], 'give' ),
+				'%1$s %2$s',
 				$license['count'],
 				$key
 			);
-		} elseif ( 'expired' === $key ) {
-			$notice_data[ $key ] = sprintf(
-				_n( '%1$s %2$s license key', '%1$s %2$s license keys', $license['count'], 'give' ),
-				$license['count'],
-				$key
-			);
+
+			// Add license count only when license count is not zero.
+			$license_count = $license['count'];
 		}
 	}
 
 	// Prepare license notice description.
+	$prepared_notice_status = implode( ' and ', $notice_data );
 	$notice_description = sprintf(
-		__( 'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>', 'give' ),
-		implode( ' and ', $notice_data ),
+		_n(
+			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
+			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
+			$license_count,
+			'give'
+		),
+		$prepared_notice_status,
 		admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ),
 		__( 'Activate License', 'give' ),
 		esc_url( 'https://givewp.com/priority-support/' ),
