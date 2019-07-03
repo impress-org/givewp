@@ -1400,14 +1400,10 @@ function give_log_addon_activation_time( $plugin, $network_wide ) {
 		return;
 	}
 
-	$plugin_data = give_get_plugins();
+	$plugin_data = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 	$plugin_data = ! empty( $plugin_data[ $plugin ] ) ? $plugin_data[ $plugin ] : array();
 
-	if (
-		$plugin_data
-		&& 'add-on' === $plugin_data['Type']
-		&& false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
-	) {
+	if ( $plugin_data ) {
 		update_option( 'give_addon_last_activated', current_time( 'timestamp' ), 'no' );
 	}
 }
