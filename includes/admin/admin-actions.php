@@ -1307,8 +1307,7 @@ function give_license_notices() {
 				$license_data[ $give_license['license'] ]['add-ons'][] = $addons_with_license[] = $item;
 			}
 		} else {
-			$license_data[ $give_license['license'] ]['add-ons'][] = $give_license['plugin_slug'];
-			$addons_with_license[]                                 = $give_license['plugin_slug'];
+			$license_data[ $give_license['license'] ]['add-ons'][] = $addons_with_license[] = $give_license['plugin_slug'];
 		}
 
 		$license_data[ $give_license['license'] ]['count'] += 1;
