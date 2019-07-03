@@ -1324,7 +1324,7 @@ function give_license_notices() {
 	// Unset active license add-ons as not required.
 	unset( $license_data['valid'] );
 
-	// Combine site inactive with inactive and site_inactive because already merged information with inactive
+	// Combine site inactive with inactive and unset site_inactive because already merged information with inactive
 	if( ! empty( $license_data['site_inactive'] ) ) {
 		$license_data['inactive']['count']   += $license_data['site_inactive']['count'];
 		$license_data['inactive']['add-ons'] += $license_data['site_inactive']['add-ons'];
