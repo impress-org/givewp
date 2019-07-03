@@ -285,7 +285,7 @@ function give_stripe_show_connect_banner() {
 	$connect_link = give_stripe_connect_button();
 
 	// Default message.
-	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website. <a href="#" class="give-stripe-connect-temp-dismiss">Not right now <span class="dashicons dashicons-dismiss"></span></a>', 'give' );
+	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website.', 'give' );
 
 	/**
 	 * This filter hook is used to change the text of the connect banner.
@@ -303,13 +303,14 @@ function give_stripe_show_connect_banner() {
 		$connect_link
 	);
 
-	?>
-	<div class="notice notice-warning give-stripe-connect-message">
-		<p>
-			<?php echo $message; ?>
-		</p>
-	</div>
-	<?php
+	// Register Notice.
+	Give()->notices->register_notice( array(
+		'id'               => 'give-stripe-connect-banner',
+		'description'      => $message,
+		'type'             => 'warning',
+		'dismissible_type' => 'user',
+		'dismiss_interval' => 'shortly',
+	) );
 }
 
 add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
