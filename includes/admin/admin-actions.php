@@ -1348,7 +1348,7 @@ function give_license_notices() {
 	// Prepare license notice description.
 	$prepared_notice_status = implode( ' , ', $notice_data );
 	$prepared_notice_status = 2 <= count( $notice_data )
-		? substr_replace( $prepared_notice_status, 'and', strpos( $prepared_notice_status, ',' ), 1 )
+		? substr_replace( $prepared_notice_status, 'and', strrpos( $prepared_notice_status, ',' ), 1 )
 		: $prepared_notice_status;
 
 	$notice_description = sprintf(
