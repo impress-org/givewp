@@ -1365,6 +1365,10 @@ function give_license_notices() {
 		__( 'Priority Support', 'give' )
 	);
 
+	// Check by add-on if any give add-on activated without license.
+	// Do not show this notice if add-on activated with in 3 days.
+	$is_required_days_past = current_time( 'timestamp' ) > ( Give_Cache_Setting::get_option( 'give_addon_last_activated' ) + ( 3 * DAY_IN_SECONDS ) );
+
 	// Default license notice arguments.
 	$license_notice_args = array(
 		'id'               => 'give-invalid-expired-license',
@@ -1374,13 +1378,8 @@ function give_license_notices() {
 		'dismiss_interval' => 'shortly',
 	);
 
-	// Check by add-on if any give add-on activated without license.
-	// Do not show this notice if add-on activated with in 3 days.
-	$is_required_days_past = current_time( 'timestamp' ) > ( Give_Cache_Setting::get_option( 'give_addon_last_activated' ) + 3 * DAY_IN_SECONDS );
-
-	// Show license notice only.
-	if ( $license_count && $is_required_days_past ) {
-		// Register Notices.
+	// Register Notices.
+	if( $license_count && $is_required_days_past ) {
 		Give()->notices->register_notice( $license_notice_args );
 	}
 }
