@@ -1257,7 +1257,7 @@ function give_cache_flush() {
 	} else {
 		wp_send_json_error(
 			array(
-				'message' => __( 'An error occured while flushing the cache.', 'give' ),
+				'message' => __( 'An error occurred while flushing the cache.', 'give' ),
 			)
 		);
 	}
