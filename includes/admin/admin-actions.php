@@ -1360,7 +1360,7 @@ function give_license_notices() {
 	// Unset active license addons as not required.
 	unset( $license_data['active'] );
 
-	// Loop througn license data.
+	// Loop through license data.
 	foreach( $license_data as $key => $license ) {
 
 		if ( 0 < $license['count'] ) {
@@ -1379,7 +1379,7 @@ function give_license_notices() {
 	$prepared_notice_status = implode( ' and ', $notice_data );
 	$notice_description = sprintf(
 		_n(
-			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
+			'Your GiveWP add-on are not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
 			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
 			$license_count,
 			'give'
