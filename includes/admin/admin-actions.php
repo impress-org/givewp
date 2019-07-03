@@ -1401,7 +1401,7 @@ function give_log_addon_activation_time( $plugin, $network_wide ) {
 	}
 
 	$plugin_data = give_get_plugins();
-	$plugin_data = ! empty( $plugin_data[ $plugin ] ) ? $plugin_data[ $plugin ] : '';
+	$plugin_data = ! empty( $plugin_data[ $plugin ] ) ? $plugin_data[ $plugin ] : array();
 
 	if (
 		$plugin_data
