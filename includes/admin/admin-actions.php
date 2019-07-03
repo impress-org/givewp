@@ -1321,12 +1321,16 @@ function give_license_notices() {
 		'add-ons' => array_values( $inactive_addons ),
 	);
 
-	// Combine site inactive with inactive.
-	$license_data['inactive']['count']   += $license_data['site_inactive']['count'];
-	$license_data['inactive']['add-ons'] += $license_data['site_inactive']['add-ons'];
+	// Unset active license add-ons as not required.
+	unset( $license_data['valid'] );
 
-	// Unset active license add-ons as not required and site_inactive because already merged information with inactive.
-	unset( $license_data['valid'], $license_data['site_inactive'] );
+	// Combine site inactive with inactive and site_inactive because already merged information with inactive
+	if( ! empty( $license_data['site_inactive'] ) ) {
+		$license_data['inactive']['count']   += $license_data['site_inactive']['count'];
+		$license_data['inactive']['add-ons'] += $license_data['site_inactive']['add-ons'];
+
+		unset( $license_data['site_inactive'] );
+	}
 
 	// Loop through license data.
 	foreach ( $license_data as $key => $license ) {
