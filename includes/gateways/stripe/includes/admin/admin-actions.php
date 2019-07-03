@@ -314,22 +314,3 @@ function give_stripe_show_connect_banner() {
 }
 
 add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
-
-/**
- * Dismiss connect banner temporarily.
- *
- * Sets transient via AJAX callback.
- *
- * @since 2.5.0
- */
-function give_stripe_connect_dismiss_banner() {
-
-	$user_id             = get_current_user_id();
-	$is_banner_dismissed = set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
-
-	echo $is_banner_dismissed ? 'success' : 'failed';
-	give_die();
-}
-
-add_action( 'wp_ajax_give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
-
