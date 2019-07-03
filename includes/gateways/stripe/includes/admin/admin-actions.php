@@ -265,11 +265,6 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
-	// Is the notice temporarily dismissed?
-	if ( give_stripe_is_connect_banner_dismissed() ) {
-		$status = false;
-	}
-
 	/**
 	 * This filter hook is used to decide whether the connect button banner need to be displayed or not.
 	 *
