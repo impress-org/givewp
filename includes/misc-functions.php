@@ -825,6 +825,12 @@ function give_get_plugins( $args = array() ) {
 		}
 	}
 
+	if( ! empty( $args['only_add_on'] ) ) {
+		$plugins = array_filter( $plugins, function( $plugin ){
+			return 'add-on' === $plugin['Type'];
+		});
+	}
+
 	if( ! empty( $args['only_premium_add_ons'] ) ) {
 		$premium_addons_list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
 		$premium_addons_list = array_values(  array_filter( $premium_addons_list, function( $url ){
