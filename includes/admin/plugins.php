@@ -179,21 +179,23 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 
 	$give_addons = wp_list_pluck( give_get_plugins( array( 'only_add_on' => true ) ), 'Name' );
 
-	foreach ( $plugins['all'] as $file => $plugin_data ) {
+	if( ! empty( $give_addons ) ) {
+		foreach ( $plugins['all'] as $file => $plugin_data ) {
 
-		if ( in_array( $plugin_data['Name'], $give_addons ) ) {
-			$plugins['give'][ $file ]           = $plugins['all'][ $file ];
-			$plugins['give'][ $file ]['plugin'] = $file;
+			if ( in_array( $plugin_data['Name'], $give_addons ) ) {
+				$plugins['give'][ $file ]           = $plugins['all'][ $file ];
+				$plugins['give'][ $file ]['plugin'] = $file;
 
-			// Replicate the next step.
-			if ( current_user_can( 'update_plugins' ) ) {
-				$current = get_site_transient( 'update_plugins' );
+				// Replicate the next step.
+				if ( current_user_can( 'update_plugins' ) ) {
+					$current = get_site_transient( 'update_plugins' );
 
-				if ( isset( $current->response[ $file ] ) ) {
-					$plugins['give'][ $file ]['update'] = true;
-					$plugins['give'][ $file ] = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
-				} elseif ( isset( $current->no_update[ $file ] ) ){
-					$plugins['give'][ $file ] = array_merge( (array) $current->no_update[ $file ], $plugins['give'][ $file ] );
+					if ( isset( $current->response[ $file ] ) ) {
+						$plugins['give'][ $file ]['update'] = true;
+						$plugins['give'][ $file ] = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
+					} elseif ( isset( $current->no_update[ $file ] ) ){
+						$plugins['give'][ $file ] = array_merge( (array) $current->no_update[ $file ], $plugins['give'][ $file ] );
+					}
 				}
 			}
 		}
