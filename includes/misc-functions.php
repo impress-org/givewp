@@ -823,8 +823,27 @@ function give_get_plugins( $args = array() ) {
 	}
 
 	if( ! empty( $args['only_premium_add_ons'] ) ) {
+		$premium_addons_list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
+		$premium_addons_list = array_values(  array_filter( $premium_addons_list, function( $url ){
+			return false !== strpos( $url, 'givewp.com/addons' );
+		}) );
+
+		$premium_addons_list = array_map( function( $url ){
+			$path = wp_parse_url( untrailingslashit( $url ) )['path'];
+			return str_replace( '/addons/', '', $path );
+		}, $premium_addons_list );
+
 		foreach ( $plugins as $key => $plugin ){
-			if( 'add-on' !== $plugin['Type'] || false === strpos( $plugin['PluginURI'], 'givewp.com' ) ) {
+			$addon_shortname = str_replace( 'give-', '', $plugin['Dir'] );
+			$tmp = $premium_addons_list;
+			$is_premium = count( array_filter( $tmp, function( $plugin ) use ($addon_shortname){
+				return false !== strpos( $plugin, $addon_shortname );
+			}) );
+
+			if(
+				'add-on' !== $plugin['Type']
+				|| ( false === strpos( $plugin['PluginURI'], 'givewp.com' ) && ! $is_premium )
+			) {
 				unset( $plugins[$key] );
 			}
 		}
