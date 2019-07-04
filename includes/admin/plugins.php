@@ -177,12 +177,11 @@ add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 function give_filter_addons_do_filter_addons( $plugin_menu ) {
 	global $plugins;
 
+	$give_addons = wp_list_pluck( give_get_plugins( array( 'only_add_on' => true ) ), 'Name' );
+
 	foreach ( $plugins['all'] as $file => $plugin_data ) {
 
-		if (
-			false !== strpos( $plugin_data['Name'], 'Give' )
-			&& ( false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) || false !== strpos( $plugin_data['AuthorName'], 'GiveWP' ) )
-		) {
+		if ( in_array( $plugin_data['Name'], $give_addons ) ) {
 			$plugins['give'][ $file ]           = $plugins['all'][ $file ];
 			$plugins['give'][ $file ]['plugin'] = $file;
 
