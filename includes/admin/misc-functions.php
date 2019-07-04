@@ -228,7 +228,7 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 		if ( ! is_wp_error( $feed ) ) {
 			if ( ! empty( $feed['body'] ) ) {
 				$cache = wp_remote_retrieve_body( $feed );
-				Give_Cache::set( $cache_key, $cache, HOUR_IN_SECONDS, true );
+				Give_Cache::set( $cache_key, $cache, DAY_IN_SECONDS, true );
 			}
 		} else {
 			$cache = sprintf(
