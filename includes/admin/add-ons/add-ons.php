@@ -83,11 +83,12 @@ add_action( 'admin_enqueue_scripts', 'give_addons_enqueue_scripts' );
  * Renders the add-ons page feed.
  *
  * @param string $feed_type
+ * @param bool   $echo
  *
- * @return void
+ * @return string
  * @since 1.0
  */
-function give_add_ons_feed( $feed_type = '' ) {
+function give_add_ons_feed( $feed_type = '', $echo = true ) {
 
 	$addons_debug = false; // set to true to debug. NEVER LEAVE TRUE IN PRODUCTION.
 	$cache_key    = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
@@ -95,7 +96,6 @@ function give_add_ons_feed( $feed_type = '' ) {
 	$feed_url     = Give_License::get_website_url() . 'downloads/feed/';
 
 	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
-
 		switch ( $feed_type ) {
 			case 'price-bundle':
 				$feed_url = Give_License::get_website_url() . 'downloads/feed/addons-price-bundles.php';
@@ -117,13 +117,20 @@ function give_add_ons_feed( $feed_type = '' ) {
 				Give_Cache::set( $cache_key, $cache, HOUR_IN_SECONDS, true );
 			}
 		} else {
-			 printf(
+			printf(
 				'<div class="error inline"><p>%s</p></div>',
 				esc_html__( 'There was an error retrieving the GiveWP add-ons list from the server. Please try again.', 'give' )
 			);
+
 			return;
 		}
 	}
 
-	echo wp_kses_post( $cache );
+	$cache = wp_kses_post( $cache );
+
+	if ( $echo ) {
+		echo $cache;
+	}
+
+	return $cache;
 }
