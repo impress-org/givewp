@@ -806,7 +806,10 @@ function give_get_plugins( $args = array() ) {
 		// Is the plugin a Give add-on?
 		if (
 			false !== strpos( $dirname, 'give-' )
-			&& in_array( $plugin_data['Author'], array( 'WordImpress', 'GiveWP' ) )
+			&& (
+				false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
+				|| in_array( $plugin_data['Author'], array( 'WordImpress', 'GiveWP' ) )
+			)
 		) {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
