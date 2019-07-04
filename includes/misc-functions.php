@@ -806,7 +806,10 @@ function give_get_plugins( $args = array() ) {
 		// Is the plugin a Give add-on?
 		if (
 			false !== strpos( $dirname, 'give-' )
-			&& in_array( $plugin_data['Author'], array( 'WordImpress', 'GiveWP' ) )
+			&& (
+				false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
+				|| in_array( $plugin_data['Author'], array( 'WordImpress', 'GiveWP' ) )
+			)
 		) {
 			// Plugin is a Give-addon.
 			$plugins[ $plugin_path ]['Type'] = 'add-on';
@@ -822,9 +825,26 @@ function give_get_plugins( $args = array() ) {
 		}
 	}
 
+	if( ! empty( $args['only_add_on'] ) ) {
+		$plugins = array_filter( $plugins, function( $plugin ){
+			return 'add-on' === $plugin['Type'];
+		});
+	}
+
 	if( ! empty( $args['only_premium_add_ons'] ) ) {
+		$premium_addons_list = give_get_premium_add_ons();
+
 		foreach ( $plugins as $key => $plugin ){
-			if( 'add-on' !== $plugin['Type'] || false === strpos( $plugin['PluginURI'], 'givewp.com' ) ) {
+			$addon_shortname = str_replace( 'give-', '', $plugin['Dir'] );
+			$tmp = $premium_addons_list;
+			$is_premium = count( array_filter( $tmp, function( $plugin ) use ($addon_shortname){
+				return false !== strpos( $plugin, $addon_shortname );
+			}) );
+
+			if(
+				'add-on' !== $plugin['Type']
+				|| ( false === strpos( $plugin['PluginURI'], 'givewp.com' ) && ! $is_premium )
+			) {
 				unset( $plugins[$key] );
 			}
 		}

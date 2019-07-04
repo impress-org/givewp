@@ -508,7 +508,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
-			$give_plugins  = give_get_plugins();
+			$give_plugins  = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 			$give_licenses = get_option( 'give_licenses', array() );
 
 			// Get all access pass licenses
@@ -531,13 +531,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			);
 
 			foreach ( $give_plugins as $give_plugin ) {
-				if (
-					'add-on' !== $give_plugin['Type']
-					|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' )
-				) {
-					continue;
-				}
-
 				if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 					continue;
 				}
@@ -606,7 +599,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				)
 			);
 
-			$plugin = wp_parse_args( $plugin, $default_plugin )
+			$plugin = wp_parse_args( $plugin, $default_plugin );
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">

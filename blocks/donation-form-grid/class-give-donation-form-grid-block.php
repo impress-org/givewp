@@ -164,7 +164,7 @@ class Give_Donation_Form_Grid_Block {
 			'show_goal'           => $attributes['showGoal'],
 			'show_excerpt'        => $attributes['showExcerpt'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
-			'display_type'        => $attributes['displayType'],
+			'display_style'       => $attributes['displayType'],
 		);
 
 		$html = give_form_grid_shortcode( $parameters );

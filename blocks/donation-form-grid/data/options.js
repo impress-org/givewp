@@ -37,7 +37,7 @@ giveFormOptions.columns = [
 // Form Display Styles
 giveFormOptions.displayType = [
 	{ value: 'redirect', label: __( 'Redirect' ) },
-	{ value: 'modal', label: __( 'Modal' ) },
+	{ value: 'modal_reveal', label: __( 'Modal' ) },
 ];
 
 export default giveFormOptions;
