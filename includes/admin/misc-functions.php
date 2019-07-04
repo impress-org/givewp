@@ -190,3 +190,60 @@ function give_get_format_md( $readme ) {
 
 	return $readme;
 }
+
+/**
+ * Add-ons Render Feed
+ *
+ * Renders the add-ons page feed.
+ *
+ * @param string $feed_type
+ * @param bool   $echo
+ *
+ * @return string
+ * @since 1.0
+ */
+function give_add_ons_feed( $feed_type = '', $echo = true ) {
+
+	$addons_debug = false; // set to true to debug. NEVER LEAVE TRUE IN PRODUCTION.
+	$cache_key    = $feed_type ? "give_add_ons_feed_{$feed_type}" : 'give_add_ons_feed';
+	$cache        = Give_Cache::get( $cache_key, true );
+	$feed_url     = Give_License::get_website_url() . 'downloads/feed/';
+
+	if ( false === $cache || ( true === $addons_debug && true === WP_DEBUG ) ) {
+		switch ( $feed_type ) {
+			case 'price-bundle':
+				$feed_url = Give_License::get_website_url() . 'downloads/feed/addons-price-bundles.php';
+				break;
+			case 'addons-directory':
+				$feed_url = Give_License::get_website_url() . 'downloads/feed/index.php';
+				break;
+		}
+
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$feed = vip_safe_wp_remote_get( $feed_url, false, 3, 1, 20, array( 'sslverify' => false ) );
+		} else {
+			$feed = wp_remote_get( $feed_url, array( 'sslverify' => false ) );
+		}
+
+		if ( ! is_wp_error( $feed ) ) {
+			if ( ! empty( $feed['body'] ) ) {
+				$cache = wp_remote_retrieve_body( $feed );
+				Give_Cache::set( $cache_key, $cache, HOUR_IN_SECONDS, true );
+			}
+		} else {
+			$cache = sprintf(
+				'<div class="error inline"><p>%s</p></div>',
+				esc_html__( 'There was an error retrieving the GiveWP add-ons list from the server. Please try again.', 'give' )
+			);
+		}
+	}
+
+	$cache = wp_kses_post( $cache );
+
+	if ( $echo ) {
+		echo $cache;
+	}
+
+	return $cache;
+}
+
