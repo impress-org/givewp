@@ -3419,58 +3419,68 @@ function give_v241_remove_sale_logs_callback() {
 function give_v250_upgrades() {
 	global $wpdb;
 
-	$give_plugins = give_get_plugins();
-	$old_license  = array();
-	$new_license  = array();
+	$old_license   = array();
+	$new_license   = array();
 	$give_licenses = get_option( 'give_licenses', array() );
+	$give_options  = give_get_settings();
 
-	foreach ( $give_plugins as $give_plugin ) {
-		if (
-			'add-on' !== $give_plugin['Type']
-			|| false === strpos( $give_plugin['PluginURI'], 'givewp.com' ) // Exclude public add-ons
-		) {
-			continue;
+	// Get add-ons license key.
+	$addons = array();
+	foreach ( $give_options as $key => $value ) {
+		if ( false !== strpos( $key, '_license_key' ) ) {
+			$addons[ $key ] = $value;
 		}
+	}
 
-		$addon_shortname    = Give_License::get_short_name( $give_plugin['Name'] );
-		$addon_license_key  = give_get_option( "{$addon_shortname}_license_key", '' );
+	// Bailout: We do not have any add-on license data to upgrade.
+	if ( empty( $addons ) ) {
+		return false;
+	}
+
+	foreach ( $addons as $key => $license_key ) {
+
+		// Get addon shortname.
+		$addon_shortname = str_replace( '_license_key', '', $key );
+
+		// Addon license option name.
+		$addon_shortname    = "{$addon_shortname}_license_active";
 		$addon_license_data = get_option( "{$addon_shortname}_license_active", array() );
 
 		if (
-			! $addon_license_key
-			|| array_key_exists( $addon_license_key, $give_licenses )
+			! $license_key
+			|| array_key_exists( $license_key, $give_licenses )
 		) {
 			continue;
 		}
 
-		$old_license[ $addon_license_key ] = $addon_license_data;
+		$old_license[ $license_key ] = $addon_license_data;
 	}
 
 	// Bailout.
-	if( empty( $old_license ) ) {
-		return;
+	if ( empty( $old_license ) ) {
+		return false;
 	}
 
 	/* @var stdClass $data */
 	foreach ( $old_license as $key => $data ) {
-		$tmp = Give_License::request_license_api(array(
+		$tmp = Give_License::request_license_api( array(
 			'edd_action' => 'check_license',
-			'license' => $key
+			'license'    => $key,
 		), true );
 
-		if( is_wp_error( $tmp ) || ! $tmp['success']) {
+		if ( is_wp_error( $tmp ) || ! $tmp['success'] ) {
 			continue;
 		}
 
-		$new_license[$key] = $tmp;
+		$new_license[ $key ] = $tmp;
 	}
 
 	// Bailout.
-	if( empty( $new_license ) ) {
-		return;
+	if ( empty( $new_license ) ) {
+		return false;
 	}
 
-	$give_licenses += $new_license;
+	$give_licenses = array_merge( $give_licenses, $new_license );
 
 	update_option( 'give_licenses', $give_licenses );
 
@@ -3480,7 +3490,7 @@ function give_v250_upgrades() {
 
 	// 1. license keys
 	foreach ( get_option( 'give_settings' ) as $index => $setting ) {
-		if( false !== strpos( $index, '_license_key' ) ) {
+		if ( false !== strpos( $index, '_license_key' ) ) {
 			give_delete_option( $index );
 		}
 	}

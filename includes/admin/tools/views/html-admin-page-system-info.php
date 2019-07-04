@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpdb;
 $give_options = give_get_settings();
 $plugins      = give_get_plugins();
+$give_add_ons = give_get_plugins( array( 'only_add_on' => true ) );
 
 $give_plugin_authors = array( 'WordImpress', 'GiveWP' );
 
@@ -703,12 +704,11 @@ $give_updates = Give_Updates::get_instance();
 	</thead>
 	<tbody>
 		<?php
-		foreach ( $plugins as $plugin_data ) {
+		foreach ( $give_add_ons as $plugin_data ) {
 			// Only show Give Core Activated Add-Ons.
 			if (
 				'active' !== $plugin_data['Status']
 				|| false !== strpos( $plugin_data['Name'], 'Give - Donation Plugin' )
-				|| ! in_array( $plugin_data['AuthorName'], $give_plugin_authors )
 			) {
 				continue;
 			}
@@ -773,6 +773,7 @@ $give_updates = Give_Updates::get_instance();
 			if (
 				'active' !== $plugin_data['Status']
 				|| in_array( $plugin_data['AuthorName'], $give_plugin_authors )
+				|| false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
 			) {
 				continue;
 			}
