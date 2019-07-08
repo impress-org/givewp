@@ -241,8 +241,8 @@ return array(
 		),
 	),
 	'CHF' => array(
-		'admin_label' => sprintf( __( 'Swiss Franc (%1$s)', 'give' ), '&#70;&#114;' ),
-		'symbol'      => '&#70;&#114;',
+		'admin_label' => sprintf( __( 'Swiss Franc (%1$s)', 'give' ), '&#67;&#72;&#70;' ),
+		'symbol'      => '&#67;&#72;&#70;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ' ',
