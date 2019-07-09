@@ -951,25 +951,6 @@ function give_stripe_record_log( $title = '', $message = '', $parent = 0 ) {
 }
 
 /**
- * Check if notice dismissed by admin user or not.
- *
- * @since  2.5.0
- *
- * @return bool
- */
-function give_stripe_is_connect_banner_dismissed() {
-
-	$current_user        = wp_get_current_user();
-	$is_notice_dismissed = false;
-
-	if ( get_transient( "give_hide_stripe_connect_notice_{$current_user->ID}" ) ) {
-		$is_notice_dismissed = true;
-	}
-
-	return $is_notice_dismissed;
-}
-
-/**
  * This function will check whether the ID exists or not based on type.
  *
  * @param string $id   Source ID.

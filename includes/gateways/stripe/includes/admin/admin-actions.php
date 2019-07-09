@@ -265,11 +265,6 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
-	// Is the notice temporarily dismissed?
-	if ( give_stripe_is_connect_banner_dismissed() ) {
-		$status = false;
-	}
-
 	/**
 	 * This filter hook is used to decide whether the connect button banner need to be displayed or not.
 	 *
@@ -285,7 +280,7 @@ function give_stripe_show_connect_banner() {
 	$connect_link = give_stripe_connect_button();
 
 	// Default message.
-	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website. <a href="#" class="give-stripe-connect-temp-dismiss">Not right now <span class="dashicons dashicons-dismiss"></span></a>', 'give' );
+	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website.', 'give' );
 
 	/**
 	 * This filter hook is used to change the text of the connect banner.
@@ -303,32 +298,14 @@ function give_stripe_show_connect_banner() {
 		$connect_link
 	);
 
-	?>
-	<div class="notice notice-warning give-stripe-connect-message">
-		<p>
-			<?php echo $message; ?>
-		</p>
-	</div>
-	<?php
+	// Register Notice.
+	Give()->notices->register_notice( array(
+		'id'               => 'give-stripe-connect-banner',
+		'description'      => $message,
+		'type'             => 'warning',
+		'dismissible_type' => 'user',
+		'dismiss_interval' => 'shortly',
+	) );
 }
 
 add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
-
-/**
- * Dismiss connect banner temporarily.
- *
- * Sets transient via AJAX callback.
- *
- * @since 2.5.0
- */
-function give_stripe_connect_dismiss_banner() {
-
-	$user_id             = get_current_user_id();
-	$is_banner_dismissed = set_transient( "give_hide_stripe_connect_notice_{$user_id}", '1', DAY_IN_SECONDS );
-
-	echo $is_banner_dismissed ? 'success' : 'failed';
-	give_die();
-}
-
-add_action( 'wp_ajax_give_stripe_connect_dismiss', 'give_stripe_connect_dismiss_banner' );
-
