@@ -1284,12 +1284,12 @@ function give_license_notices() {
 		return;
 	}
 
-	$give_plugins        = give_get_plugins( array( 'only_premium_add_ons' => true ) );
-	$give_licenses       = get_option( 'give_licenses', array() );
-	$notice_data         = array();
-	$license_data        = array();
-	$license_count       = 0;
-	$addons_with_license = array();
+	$give_plugins          = give_get_plugins( array( 'only_premium_add_ons' => true ) );
+	$give_licenses         = get_option( 'give_licenses', array() );
+	$notice_data           = array();
+	$license_data          = array();
+	$invalid_license_count = 0;
+	$addons_with_license   = array();
 
 	// Loop through Give licenses to find license status.
 	foreach ( $give_licenses as $key => $give_license ) {
@@ -1325,7 +1325,7 @@ function give_license_notices() {
 	unset( $license_data['valid'] );
 
 	// Combine site inactive with inactive and unset site_inactive because already merged information with inactive
-	if( ! empty( $license_data['site_inactive'] ) ) {
+	if ( ! empty( $license_data['site_inactive'] ) ) {
 		$license_data['inactive']['count']   += $license_data['site_inactive']['count'];
 		$license_data['inactive']['add-ons'] += $license_data['site_inactive']['add-ons'];
 
@@ -1344,8 +1344,8 @@ function give_license_notices() {
 			$key
 		);
 
-		// Add license count only when license count is not zero.
-		$license_count += $license['count'];
+		// This will contain sum of count expect license with valid status.
+		$invalid_license_count += $license['count'];
 	}
 
 	// Prepare license notice description.
@@ -1356,9 +1356,9 @@ function give_license_notices() {
 
 	$notice_description = sprintf(
 		_n(
-			'Your GiveWP add-on are not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
+			'Your GiveWP add-on is not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
 			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
-			$license_count,
+			$invalid_license_count,
 			'give'
 		),
 		$prepared_notice_status,
@@ -1382,7 +1382,7 @@ function give_license_notices() {
 	);
 
 	// Register Notices.
-	if( $license_count && $is_required_days_past ) {
+	if ( $invalid_license_count && $is_required_days_past ) {
 		Give()->notices->register_notice( $license_notice_args );
 	}
 }

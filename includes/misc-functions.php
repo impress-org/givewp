@@ -803,12 +803,17 @@ function give_get_plugins( $args = array() ) {
 		$plugins[ $plugin_path ]['Dir']  = $dirname;
 		$plugins[ $plugin_path ]['Path'] = $plugin_path;
 
+		// A third party add-on may contain more then one author like sofort, so it is better to compare array.
+		$author                          = false !== strpos( $plugin_data['Author'], ',' )
+			? array_map( 'trim', explode( ',', $plugin_data['Author'] ) )
+			: array( $plugin_data['Author'] );
+
 		// Is the plugin a Give add-on?
 		if (
 			false !== strpos( $dirname, 'give-' )
 			&& (
 				false !== strpos( $plugin_data['PluginURI'], 'givewp.com' )
-				|| in_array( $plugin_data['Author'], array( 'WordImpress', 'GiveWP' ) )
+				|| array_intersect( $author, array( 'WordImpress', 'GiveWP' ) )
 			)
 		) {
 			// Plugin is a Give-addon.
