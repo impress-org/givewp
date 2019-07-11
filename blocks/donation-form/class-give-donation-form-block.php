@@ -68,6 +68,7 @@ class Give_Donation_Form_Block {
 	 */
 	private function init() {
 		add_action( 'init', array( $this, 'register_block' ), 999 );
+		add_action( 'wp_ajax_give_block_donation_form_search_results', array( $this, 'block_donation_form_search_results' ) );
 	}
 
 	/**
@@ -148,6 +149,28 @@ class Give_Donation_Form_Block {
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
 		return give_form_shortcode( $parameters );
+	}
+
+	public function block_donation_form_search_results() {
+
+		$post_data      = give_clean( $_POST );
+		$search_keyword = ! empty( $post_data['search'] ) ? $post_data['search'] : '';
+
+		$forms_query = new Give_Forms_Query( array(
+			's' => $search_keyword,
+		) );
+
+		$forms = $forms_query->get_forms();
+		$result = array();
+		foreach( $forms as $form ) {
+			$result[] = array(
+				'id' => $form->ID,
+				'name' => $form->post_title,
+			);
+		}
+
+		echo wp_json_encode( $result );
+		give_die();
 	}
 }
 
