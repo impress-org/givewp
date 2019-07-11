@@ -205,10 +205,31 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.5.0: May 15th, 2019 =
-* New: Upgraded licensing to be much more user friendly and reliable. [#2058](https://github.com/impress-org/give/issues/2058)
-* New: Stripe credit card processing is now available for free!
-* Fix: Redesigned license setting page [#2058](https://github.com/impress-org/give/issues/2058)
+= 2.5.0: July 10th, 2019 =
+* New: Stripe credit card processing is now available in Give Core for processing one-time (non-recurring) donations! [#4010](https://github.com/impress-org/give/issues/4010), [#4011](https://github.com/impress-org/give/issues/4011), [#4012](https://github.com/impress-org/give/issues/4012), [#4013](https://github.com/impress-org/give/issues/4013), [#4013](https://github.com/impress-org/give/issues/4013), [#4034](https://github.com/impress-org/give/issues/4034), [#4051](https://github.com/impress-org/give/issues/4051), [#4076](https://github.com/impress-org/give/issues/4076), [#4093](https://github.com/impress-org/give/issues/4093)
+* New: The licensing interface has been upgraded to provide easier license and add-on activation and to be much more user friendly and reliable. [#2058](https://github.com/impress-org/give/issues/2058), [#4008](https://github.com/impress-org/give/issues/4008)
+* New: The currency setting will now display a preview displaying how it will appear on your donation forms when you update the options. [#3187](https://github.com/impress-org/give/issues/3187)
+* New: Documentation links have been added to the shortcode builder. [#3233](https://github.com/impress-org/give/issues/3233)
+* New: The "notes" field has been added to the fields to be exported in the donation export tool. [#3979](https://github.com/impress-org/give/issues/3979)
+* New: The "Donation Form Grid" block and shortcode can now be filtered by category or tag. [#4056](https://github.com/impress-org/give/issues/4056)
+* New: Adjusted the headers in Give Core admin styles and adjusted setting screens legibility.
+* New: The Give Modal API now supports an option to close the modal when clicking the background. [#4142](https://github.com/impress-org/give/issues/4142)
+* Fix: Prevent multiple admin ajax calls on the Tools > Exports screen. [#3351](https://github.com/impress-org/give/issues/3351)
+* Fix: Resolved the "Settings" importer failing when using the JSON format option. [#4097](https://github.com/impress-org/give/issues/4097)
+* Fix: Added number formatting to goals with a large number of donors. [#4100](https://github.com/impress-org/give/issues/4100)
+* Fix: Added a max-width to chosen select boxes to prevent them from breaking styles when options have very long titles. [#4099](https://github.com/impress-org/give/issues/4099)
+* Fix: Improved the logic when an admin disconnects the Give Donor and WP user profiles [#4113](https://github.com/impress-org/give/issues/4113)
+* Fix: The `give_send_back_to_checkout()` function now works as expected on multisite installs. [#4032](https://github.com/impress-org/give/issues/4032)
+* Fix: Ensured there are no PHP notices when doing REST API queries. [#4038](https://github.com/impress-org/give/issues/4038)
+* Fix: Resolved an issue where the state field would appear incorrectly as not required for the default country. [#4144](https://github.com/impress-org/give/issues/4144)
+* Fix: Admin styles were not appearing correctly if using WP in the French language. [#4146](https://github.com/impress-org/give/issues/4146)
+* Fix: Resolved an issue with the "Display Type" option for the "Donation Form Grid" not working as expected. [#4159](https://github.com/impress-org/give/issues/4159)
+* Tweak: The Swiss Franc symbol has been updated to "CHF" instead of "Fr." [#4086](https://github.com/impress-org/give/issues/4086)
+* Tweak: Removed the word "nonce" from all front end error messages and updated them to be more user friendly and less technically confusing. [#4129](https://github.com/impress-org/give/issues/4129), [#4031](https://github.com/impress-org/give/issues/4031)
+* Tweak: Changed "Swaziland" to "Eswatini". [#4120](https://github.com/impress-org/give/issues/4120)
+* Optimization: Improved various database option calls and general meta query performance throughout the plugin to speed up queries and reduce server load. [#3359](https://github.com/impress-org/give/issues/3359), [#3382](https://github.com/impress-org/give/issues/3382), [#3383](https://github.com/impress-org/give/issues/3383), [#3872](https://app.zenhub.com/workspace/o/impress-org/give/issues/3872), [#3994](https://app.zenhub.com/workspace/o/impress-org/give/issues/3994), [#4104](https://github.com/impress-org/give/issues/4104)
+* Refactor: Pre-2.0.0 backward compatibility code has been removed because it has reached end of life for support. [#3033](https://github.com/impress-org/give/issues/3033)
+
 
 = 2.4.7: May 14th, 2019 =
 * Security Patch: Prevent Stored XSS vulnerability in donor names by adding additional escaping to ensure security when viewing donor records in WP-Admin. We take security seriously and would like to thank GoDaddy and Sucuri for reporting and assisting with this fix. Thanks also to the WordPress Plugin Review Team for allowing a force push of all security patches to protect all Give users. For more detailed information see here: https://blog.sucuri.net/2019/05/wordpress-plugin-give-stored-xss-for-donors.html

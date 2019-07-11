@@ -47,7 +47,7 @@ msgstr ""
 msgid "If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don't want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s."
 msgstr ""
 
-#: blocks/load.php:16, includes/admin/plugins.php:254, includes/admin/welcome.php:179
+#: blocks/load.php:16, includes/admin/plugins.php:255, includes/admin/welcome.php:179
 msgid "Give"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgstr ""
 msgid "PayPal"
 msgstr ""
 
-#: includes/class-give-cache-setting.php:241, includes/class-give-cache-setting.php:242, includes/gateways/functions.php:121, includes/gateways/functions.php:141, includes/admin/payments/view-payment-details.php:74, includes/admin/tools/views/html-admin-page-system-info.php:617
+#: includes/class-give-cache-setting.php:241, includes/class-give-cache-setting.php:242, includes/gateways/functions.php:121, includes/gateways/functions.php:141, includes/admin/payments/view-payment-details.php:74, includes/admin/tools/views/html-admin-page-system-info.php:618
 msgid "Test Donation"
 msgstr ""
 
@@ -181,11 +181,11 @@ msgstr ""
 msgid "Test Mode: "
 msgstr ""
 
-#: includes/class-give-cli-commands.php:138, includes/admin/payments/view-payment-details.php:482, includes/admin/tools/views/html-admin-page-system-info.php:942
+#: includes/class-give-cli-commands.php:138, includes/admin/payments/view-payment-details.php:482, includes/admin/tools/views/html-admin-page-system-info.php:943
 msgid "Yes"
 msgstr ""
 
-#: includes/class-give-cli-commands.php:138, includes/admin/payments/view-payment-details.php:492, includes/admin/tools/views/html-admin-page-system-info.php:942
+#: includes/class-give-cli-commands.php:138, includes/admin/payments/view-payment-details.php:492, includes/admin/tools/views/html-admin-page-system-info.php:943
 msgid "No"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 msgid "s_no"
 msgstr ""
 
-#: includes/class-give-cli-commands.php:621, includes/post-types.php:118, includes/admin/class-blank-slate.php:273, includes/admin/class-blank-slate.php:277, includes/admin/class-give-html-elements.php:104, includes/emails/template.php:169, includes/admin/donors/donors.php:891
+#: includes/class-give-cli-commands.php:621, includes/post-types.php:118, includes/admin/class-blank-slate.php:273, includes/admin/class-blank-slate.php:277, includes/admin/class-give-html-elements.php:104, includes/emails/template.php:169, includes/admin/donors/donors.php:893
 msgid "No donations found."
 msgstr ""
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: includes/class-give-cli-commands.php:1265, includes/post-types.php:338, includes/payments/functions.php:545, includes/admin/payments/class-payments-table.php:325
+#: includes/class-give-cli-commands.php:1265, includes/post-types.php:338, includes/payments/functions.php:543, includes/admin/payments/class-payments-table.php:325
 msgid "Failed"
 msgstr ""
 
@@ -327,93 +327,93 @@ msgstr ""
 msgid "Valid edd_action not defined"
 msgstr ""
 
-#: includes/class-give-license-handler.php:695
+#: includes/class-give-license-handler.php:691
 msgid "License Key"
 msgstr ""
 
-#: includes/class-give-license-handler.php:699
+#: includes/class-give-license-handler.php:695
 msgid "Activate"
 msgstr ""
 
-#: includes/class-give-license-handler.php:703
+#: includes/class-give-license-handler.php:699
 msgid "Reactivate"
 msgstr ""
 
-#: includes/class-give-license-handler.php:710
+#: includes/class-give-license-handler.php:706
 msgid "Deactivate"
 msgstr ""
 
-#: includes/class-give-license-handler.php:725
+#: includes/class-give-license-handler.php:721
 msgid "License is expired. Please activate your license key."
 msgstr ""
 
-#: includes/class-give-license-handler.php:726
+#: includes/class-give-license-handler.php:722
 msgid "License is active and you are receiving updates and support."
 msgstr ""
 
-#: includes/class-give-license-handler.php:733
+#: includes/class-give-license-handler.php:729
 msgid "License is inactive."
 msgstr ""
 
-#: includes/class-give-license-handler.php:736
+#: includes/class-give-license-handler.php:732
 msgid "Please <a href=\"%1$s\" target=\"_blank\">Visit your dashboard</a> to check this license details and activate this license to receive updates and support."
 msgstr ""
 
-#: includes/class-give-license-handler.php:739
+#: includes/class-give-license-handler.php:735
 msgid "Please activate your license key."
 msgstr ""
 
-#: includes/class-give-license-handler.php:747
+#: includes/class-give-license-handler.php:743
 msgid "License Information"
 msgstr ""
 
-#: includes/class-give-license-handler.php:767
+#: includes/class-give-license-handler.php:763
 msgid "Renew to manage sites"
 msgstr ""
 
-#: includes/class-give-license-handler.php:773
+#: includes/class-give-license-handler.php:769
 msgid "No activation remaining"
 msgstr ""
 
-#: includes/class-give-license-handler.php:779
+#: includes/class-give-license-handler.php:775
 msgid "Activation Remaining"
 msgid_plural "Activations Remaining"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-give-license-handler.php:785
+#: includes/class-give-license-handler.php:781
 msgid "This is an unlicensed add-on and is not receiving updates or support. Please activate your license key to fix the issue."
 msgstr ""
 
-#: includes/class-give-license-handler.php:791
+#: includes/class-give-license-handler.php:787
 msgid "License Actions"
 msgstr ""
 
-#: includes/class-give-license-handler.php:800
+#: includes/class-give-license-handler.php:796
 msgid "Purchase License"
 msgstr ""
 
-#: includes/class-give-license-handler.php:813
+#: includes/class-give-license-handler.php:809
 msgid "Manage License"
 msgstr ""
 
-#: includes/class-give-license-handler.php:818
+#: includes/class-give-license-handler.php:814
 msgid "Access Support"
 msgstr ""
 
-#: includes/class-give-license-handler.php:873
+#: includes/class-give-license-handler.php:869
 msgid "View Changelog"
 msgstr ""
 
-#: includes/class-give-license-handler.php:883
+#: includes/class-give-license-handler.php:879
 msgid "activated"
 msgstr ""
 
-#: includes/class-give-license-handler.php:883
+#: includes/class-give-license-handler.php:879
 msgid "installed"
 msgstr ""
 
-#: includes/class-give-license-handler.php:890
+#: includes/class-give-license-handler.php:886
 msgid "Download"
 msgstr ""
 
@@ -453,7 +453,7 @@ msgstr ""
 msgid "The add-on did not activate successfully."
 msgstr ""
 
-#: includes/class-give-scripts.php:225, includes/class-give-scripts.php:278, includes/forms/template.php:1517, includes/admin/donors/class-donor-table.php:585, includes/admin/donors/donors.php:499, includes/admin/donors/donors.php:726, includes/admin/donors/donors.php:1113, includes/admin/payments/view-payment-details.php:674
+#: includes/class-give-scripts.php:225, includes/class-give-scripts.php:278, includes/forms/template.php:1515, includes/admin/donors/class-donor-table.php:585, includes/admin/donors/donors.php:501, includes/admin/donors/donors.php:728, includes/admin/donors/donors.php:1115, includes/admin/payments/view-payment-details.php:674
 msgid "Cancel"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:797, includes/api/class-give-api.php:1868, includes/api/class-give-api.php:1874, includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:498, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:205, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
+#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:749, includes/api/class-give-api.php:1868, includes/api/class-give-api.php:1874, includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:498, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:205, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
 msgid "Error"
 msgstr ""
 
@@ -799,11 +799,11 @@ msgstr ""
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:500, includes/process-donation.php:586, includes/shortcodes.php:413, includes/admin/admin-actions.php:871
+#: includes/class-give-scripts.php:500, includes/process-donation.php:587, includes/shortcodes.php:413, includes/admin/admin-actions.php:871
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:501, includes/process-donation.php:582
+#: includes/class-give-scripts.php:501, includes/process-donation.php:583
 msgid "Please enter a valid email address."
 msgstr ""
 
@@ -811,7 +811,7 @@ msgstr ""
 msgid "Invalid email address or username."
 msgstr ""
 
-#: includes/class-give-scripts.php:503, includes/process-donation.php:960, includes/user-functions.php:413
+#: includes/class-give-scripts.php:503, includes/process-donation.php:961, includes/user-functions.php:413
 msgid "Enter a password."
 msgstr ""
 
@@ -819,7 +819,7 @@ msgstr ""
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:505, includes/process-donation.php:560
+#: includes/class-give-scripts.php:505, includes/process-donation.php:561
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
@@ -1535,7 +1535,7 @@ msgstr ""
 msgid "Nicaragua"
 msgstr ""
 
-#: includes/country-functions.php:246, includes/country-functions.php:1201
+#: includes/country-functions.php:246, includes/country-functions.php:1206
 msgid "Niger"
 msgstr ""
 
@@ -1736,7 +1736,7 @@ msgid "Svalbard and Jan Mayen Islands"
 msgstr ""
 
 #: includes/country-functions.php:296
-msgid "Swaziland"
+msgid "Eswatini"
 msgstr ""
 
 #: includes/country-functions.php:297
@@ -1907,2943 +1907,2943 @@ msgstr ""
 msgid "Municipality"
 msgstr ""
 
-#: includes/country-functions.php:838
+#: includes/country-functions.php:843
 msgid "Adana"
 msgstr ""
 
-#: includes/country-functions.php:839
+#: includes/country-functions.php:844
 msgid "Ad&#305;yaman"
 msgstr ""
 
-#: includes/country-functions.php:840
+#: includes/country-functions.php:845
 msgid "Afyon"
 msgstr ""
 
-#: includes/country-functions.php:841
+#: includes/country-functions.php:846
 msgid "A&#287;r&#305;"
 msgstr ""
 
-#: includes/country-functions.php:842
+#: includes/country-functions.php:847
 msgid "Amasya"
 msgstr ""
 
-#: includes/country-functions.php:843
+#: includes/country-functions.php:848
 msgid "Ankara"
 msgstr ""
 
-#: includes/country-functions.php:844
+#: includes/country-functions.php:849
 msgid "Antalya"
 msgstr ""
 
-#: includes/country-functions.php:845
+#: includes/country-functions.php:850
 msgid "Artvin"
 msgstr ""
 
-#: includes/country-functions.php:846
+#: includes/country-functions.php:851
 msgid "Ayd&#305;n"
 msgstr ""
 
-#: includes/country-functions.php:847
+#: includes/country-functions.php:852
 msgid "Bal&#305;kesir"
 msgstr ""
 
-#: includes/country-functions.php:848
+#: includes/country-functions.php:853
 msgid "Bilecik"
 msgstr ""
 
-#: includes/country-functions.php:849
+#: includes/country-functions.php:854
 msgid "Bing&#246;l"
 msgstr ""
 
-#: includes/country-functions.php:850
+#: includes/country-functions.php:855
 msgid "Bitlis"
 msgstr ""
 
-#: includes/country-functions.php:851
+#: includes/country-functions.php:856
 msgid "Bolu"
 msgstr ""
 
-#: includes/country-functions.php:852
+#: includes/country-functions.php:857
 msgid "Burdur"
 msgstr ""
 
-#: includes/country-functions.php:853
+#: includes/country-functions.php:858
 msgid "Bursa"
 msgstr ""
 
-#: includes/country-functions.php:854
+#: includes/country-functions.php:859
 msgid "&#199;anakkale"
 msgstr ""
 
-#: includes/country-functions.php:855
+#: includes/country-functions.php:860
 msgid "&#199;ank&#305;r&#305;"
 msgstr ""
 
-#: includes/country-functions.php:856
+#: includes/country-functions.php:861
 msgid "&#199;orum"
 msgstr ""
 
-#: includes/country-functions.php:857
+#: includes/country-functions.php:862
 msgid "Denizli"
 msgstr ""
 
-#: includes/country-functions.php:858
+#: includes/country-functions.php:863
 msgid "Diyarbak&#305;r"
 msgstr ""
 
-#: includes/country-functions.php:859
+#: includes/country-functions.php:864
 msgid "Edirne"
 msgstr ""
 
-#: includes/country-functions.php:860
+#: includes/country-functions.php:865
 msgid "Elaz&#305;&#287;"
 msgstr ""
 
-#: includes/country-functions.php:861
+#: includes/country-functions.php:866
 msgid "Erzincan"
 msgstr ""
 
-#: includes/country-functions.php:862
+#: includes/country-functions.php:867
 msgid "Erzurum"
 msgstr ""
 
-#: includes/country-functions.php:863
+#: includes/country-functions.php:868
 msgid "Eski&#351;ehir"
 msgstr ""
 
-#: includes/country-functions.php:864
+#: includes/country-functions.php:869
 msgid "Gaziantep"
 msgstr ""
 
-#: includes/country-functions.php:865
+#: includes/country-functions.php:870
 msgid "Giresun"
 msgstr ""
 
-#: includes/country-functions.php:866
+#: includes/country-functions.php:871
 msgid "G&#252;m&#252;&#351;hane"
 msgstr ""
 
-#: includes/country-functions.php:867
+#: includes/country-functions.php:872
 msgid "Hakkari"
 msgstr ""
 
-#: includes/country-functions.php:868
+#: includes/country-functions.php:873
 msgid "Hatay"
 msgstr ""
 
-#: includes/country-functions.php:869
+#: includes/country-functions.php:874
 msgid "Isparta"
 msgstr ""
 
-#: includes/country-functions.php:870
+#: includes/country-functions.php:875
 msgid "&#304;&#231;el"
 msgstr ""
 
-#: includes/country-functions.php:871
+#: includes/country-functions.php:876
 msgid "&#304;stanbul"
 msgstr ""
 
-#: includes/country-functions.php:872
+#: includes/country-functions.php:877
 msgid "&#304;zmir"
 msgstr ""
 
-#: includes/country-functions.php:873
+#: includes/country-functions.php:878
 msgid "Kars"
 msgstr ""
 
-#: includes/country-functions.php:874
+#: includes/country-functions.php:879
 msgid "Kastamonu"
 msgstr ""
 
-#: includes/country-functions.php:875
+#: includes/country-functions.php:880
 msgid "Kayseri"
 msgstr ""
 
-#: includes/country-functions.php:876
+#: includes/country-functions.php:881
 msgid "K&#305;rklareli"
 msgstr ""
 
-#: includes/country-functions.php:877
+#: includes/country-functions.php:882
 msgid "K&#305;r&#351;ehir"
 msgstr ""
 
-#: includes/country-functions.php:878
+#: includes/country-functions.php:883
 msgid "Kocaeli"
 msgstr ""
 
-#: includes/country-functions.php:879
+#: includes/country-functions.php:884
 msgid "Konya"
 msgstr ""
 
-#: includes/country-functions.php:880
+#: includes/country-functions.php:885
 msgid "K&#252;tahya"
 msgstr ""
 
-#: includes/country-functions.php:881
+#: includes/country-functions.php:886
 msgid "Malatya"
 msgstr ""
 
-#: includes/country-functions.php:882
+#: includes/country-functions.php:887
 msgid "Manisa"
 msgstr ""
 
-#: includes/country-functions.php:883
+#: includes/country-functions.php:888
 msgid "Kahramanmara&#351;"
 msgstr ""
 
-#: includes/country-functions.php:884
+#: includes/country-functions.php:889
 msgid "Mardin"
 msgstr ""
 
-#: includes/country-functions.php:885
+#: includes/country-functions.php:890
 msgid "Mu&#287;la"
 msgstr ""
 
-#: includes/country-functions.php:886
+#: includes/country-functions.php:891
 msgid "Mu&#351;"
 msgstr ""
 
-#: includes/country-functions.php:887
+#: includes/country-functions.php:892
 msgid "Nev&#351;ehir"
 msgstr ""
 
-#: includes/country-functions.php:888
+#: includes/country-functions.php:893
 msgid "Ni&#287;de"
 msgstr ""
 
-#: includes/country-functions.php:889
+#: includes/country-functions.php:894
 msgid "Ordu"
 msgstr ""
 
-#: includes/country-functions.php:890
+#: includes/country-functions.php:895
 msgid "Rize"
 msgstr ""
 
-#: includes/country-functions.php:891
+#: includes/country-functions.php:896
 msgid "Sakarya"
 msgstr ""
 
-#: includes/country-functions.php:892
+#: includes/country-functions.php:897
 msgid "Samsun"
 msgstr ""
 
-#: includes/country-functions.php:893
+#: includes/country-functions.php:898
 msgid "Siirt"
 msgstr ""
 
-#: includes/country-functions.php:894
+#: includes/country-functions.php:899
 msgid "Sinop"
 msgstr ""
 
-#: includes/country-functions.php:895
+#: includes/country-functions.php:900
 msgid "Sivas"
 msgstr ""
 
-#: includes/country-functions.php:896
+#: includes/country-functions.php:901
 msgid "Tekirda&#287;"
 msgstr ""
 
-#: includes/country-functions.php:897
+#: includes/country-functions.php:902
 msgid "Tokat"
 msgstr ""
 
-#: includes/country-functions.php:898
+#: includes/country-functions.php:903
 msgid "Trabzon"
 msgstr ""
 
-#: includes/country-functions.php:899
+#: includes/country-functions.php:904
 msgid "Tunceli"
 msgstr ""
 
-#: includes/country-functions.php:900
+#: includes/country-functions.php:905
 msgid "&#350;anl&#305;urfa"
 msgstr ""
 
-#: includes/country-functions.php:901
+#: includes/country-functions.php:906
 msgid "U&#351;ak"
 msgstr ""
 
-#: includes/country-functions.php:902
+#: includes/country-functions.php:907
 msgid "Van"
 msgstr ""
 
-#: includes/country-functions.php:903
+#: includes/country-functions.php:908
 msgid "Yozgat"
 msgstr ""
 
-#: includes/country-functions.php:904
+#: includes/country-functions.php:909
 msgid "Zonguldak"
 msgstr ""
 
-#: includes/country-functions.php:905
+#: includes/country-functions.php:910
 msgid "Aksaray"
 msgstr ""
 
-#: includes/country-functions.php:906
+#: includes/country-functions.php:911
 msgid "Bayburt"
 msgstr ""
 
-#: includes/country-functions.php:907
+#: includes/country-functions.php:912
 msgid "Karaman"
 msgstr ""
 
-#: includes/country-functions.php:908
+#: includes/country-functions.php:913
 msgid "K&#305;r&#305;kkale"
 msgstr ""
 
-#: includes/country-functions.php:909
+#: includes/country-functions.php:914
 msgid "Batman"
 msgstr ""
 
-#: includes/country-functions.php:910
+#: includes/country-functions.php:915
 msgid "&#350;&#305;rnak"
 msgstr ""
 
-#: includes/country-functions.php:911
+#: includes/country-functions.php:916
 msgid "Bart&#305;n"
 msgstr ""
 
-#: includes/country-functions.php:912
+#: includes/country-functions.php:917
 msgid "Ardahan"
 msgstr ""
 
-#: includes/country-functions.php:913
+#: includes/country-functions.php:918
 msgid "I&#287;d&#305;r"
 msgstr ""
 
-#: includes/country-functions.php:914
+#: includes/country-functions.php:919
 msgid "Yalova"
 msgstr ""
 
-#: includes/country-functions.php:915
+#: includes/country-functions.php:920
 msgid "Karab&#252;k"
 msgstr ""
 
-#: includes/country-functions.php:916
+#: includes/country-functions.php:921
 msgid "Kilis"
 msgstr ""
 
-#: includes/country-functions.php:917
+#: includes/country-functions.php:922
 msgid "Osmaniye"
 msgstr ""
 
-#: includes/country-functions.php:918
+#: includes/country-functions.php:923
 msgid "D&#252;zce"
 msgstr ""
 
-#: includes/country-functions.php:933
+#: includes/country-functions.php:938
 msgid "Alba"
 msgstr ""
 
-#: includes/country-functions.php:934
+#: includes/country-functions.php:939
 msgid "Arad"
 msgstr ""
 
-#: includes/country-functions.php:935
+#: includes/country-functions.php:940
 msgid "Arges"
 msgstr ""
 
-#: includes/country-functions.php:936
+#: includes/country-functions.php:941
 msgid "Bacau"
 msgstr ""
 
-#: includes/country-functions.php:937
+#: includes/country-functions.php:942
 msgid "Bihor"
 msgstr ""
 
-#: includes/country-functions.php:938
+#: includes/country-functions.php:943
 msgid "Bistrita-Nasaud"
 msgstr ""
 
-#: includes/country-functions.php:939
+#: includes/country-functions.php:944
 msgid "Botosani"
 msgstr ""
 
-#: includes/country-functions.php:940
+#: includes/country-functions.php:945
 msgid "Braila"
 msgstr ""
 
-#: includes/country-functions.php:941
+#: includes/country-functions.php:946
 msgid "Brasov"
 msgstr ""
 
-#: includes/country-functions.php:942
+#: includes/country-functions.php:947
 msgid "Bucuresti"
 msgstr ""
 
-#: includes/country-functions.php:943
+#: includes/country-functions.php:948
 msgid "Buzau"
 msgstr ""
 
-#: includes/country-functions.php:944
+#: includes/country-functions.php:949
 msgid "Calarasi"
 msgstr ""
 
-#: includes/country-functions.php:945
+#: includes/country-functions.php:950
 msgid "Caras-Severin"
 msgstr ""
 
-#: includes/country-functions.php:946
+#: includes/country-functions.php:951
 msgid "Cluj"
 msgstr ""
 
-#: includes/country-functions.php:947
+#: includes/country-functions.php:952
 msgid "Constanta"
 msgstr ""
 
-#: includes/country-functions.php:948
+#: includes/country-functions.php:953
 msgid "Covasna"
 msgstr ""
 
-#: includes/country-functions.php:949
+#: includes/country-functions.php:954
 msgid "Dambovita"
 msgstr ""
 
-#: includes/country-functions.php:950
+#: includes/country-functions.php:955
 msgid "Dolj"
 msgstr ""
 
-#: includes/country-functions.php:951
+#: includes/country-functions.php:956
 msgid "Galati"
 msgstr ""
 
-#: includes/country-functions.php:952
+#: includes/country-functions.php:957
 msgid "Giurgiu"
 msgstr ""
 
-#: includes/country-functions.php:953
+#: includes/country-functions.php:958
 msgid "Gorj"
 msgstr ""
 
-#: includes/country-functions.php:954
+#: includes/country-functions.php:959
 msgid "Harghita"
 msgstr ""
 
-#: includes/country-functions.php:955
+#: includes/country-functions.php:960
 msgid "Hunedoara"
 msgstr ""
 
-#: includes/country-functions.php:956
+#: includes/country-functions.php:961
 msgid "Ialomita"
 msgstr ""
 
-#: includes/country-functions.php:957
+#: includes/country-functions.php:962
 msgid "Iasi"
 msgstr ""
 
-#: includes/country-functions.php:958
+#: includes/country-functions.php:963
 msgid "Ilfov"
 msgstr ""
 
-#: includes/country-functions.php:959
+#: includes/country-functions.php:964
 msgid "Maramures"
 msgstr ""
 
-#: includes/country-functions.php:960
+#: includes/country-functions.php:965
 msgid "Mehedinti"
 msgstr ""
 
-#: includes/country-functions.php:961
+#: includes/country-functions.php:966
 msgid "Mures"
 msgstr ""
 
-#: includes/country-functions.php:962
+#: includes/country-functions.php:967
 msgid "Neamt"
 msgstr ""
 
-#: includes/country-functions.php:963
+#: includes/country-functions.php:968
 msgid "Olt"
 msgstr ""
 
-#: includes/country-functions.php:964
+#: includes/country-functions.php:969
 msgid "Prahova"
 msgstr ""
 
-#: includes/country-functions.php:965
+#: includes/country-functions.php:970
 msgid "Salaj"
 msgstr ""
 
-#: includes/country-functions.php:966
+#: includes/country-functions.php:971
 msgid "Satu Mare"
 msgstr ""
 
-#: includes/country-functions.php:967
+#: includes/country-functions.php:972
 msgid "Sibiu"
 msgstr ""
 
-#: includes/country-functions.php:968
+#: includes/country-functions.php:973
 msgid "Suceava"
 msgstr ""
 
-#: includes/country-functions.php:969
+#: includes/country-functions.php:974
 msgid "Teleorman"
 msgstr ""
 
-#: includes/country-functions.php:970
+#: includes/country-functions.php:975
 msgid "Timis"
 msgstr ""
 
-#: includes/country-functions.php:971
+#: includes/country-functions.php:976
 msgid "Tulcea"
 msgstr ""
 
-#: includes/country-functions.php:972
+#: includes/country-functions.php:977
 msgid "Valcea"
 msgstr ""
 
-#: includes/country-functions.php:973
+#: includes/country-functions.php:978
 msgid "Vaslui"
 msgstr ""
 
-#: includes/country-functions.php:974
+#: includes/country-functions.php:979
 msgid "Vrancea"
 msgstr ""
 
-#: includes/country-functions.php:989
+#: includes/country-functions.php:994
 msgid "Azad Kashmir"
 msgstr ""
 
-#: includes/country-functions.php:990
+#: includes/country-functions.php:995
 msgid "Balochistan"
 msgstr ""
 
-#: includes/country-functions.php:991
+#: includes/country-functions.php:996
 msgid "FATA"
 msgstr ""
 
-#: includes/country-functions.php:992
+#: includes/country-functions.php:997
 msgid "Gilgit Baltistan"
 msgstr ""
 
-#: includes/country-functions.php:993
+#: includes/country-functions.php:998
 msgid "Islamabad Capital Territory"
 msgstr ""
 
-#: includes/country-functions.php:994
+#: includes/country-functions.php:999
 msgid "Khyber Pakhtunkhwa"
 msgstr ""
 
-#: includes/country-functions.php:995
+#: includes/country-functions.php:1000
 msgid "Punjab"
 msgstr ""
 
-#: includes/country-functions.php:996
+#: includes/country-functions.php:1001
 msgid "Sindh"
 msgstr ""
 
-#: includes/country-functions.php:1011
+#: includes/country-functions.php:1016
 msgid "Abra"
 msgstr ""
 
-#: includes/country-functions.php:1012
+#: includes/country-functions.php:1017
 msgid "Agusan del Norte"
 msgstr ""
 
-#: includes/country-functions.php:1013
+#: includes/country-functions.php:1018
 msgid "Agusan del Sur"
 msgstr ""
 
-#: includes/country-functions.php:1014
+#: includes/country-functions.php:1019
 msgid "Aklan"
 msgstr ""
 
-#: includes/country-functions.php:1015
+#: includes/country-functions.php:1020
 msgid "Albay"
 msgstr ""
 
-#: includes/country-functions.php:1016
+#: includes/country-functions.php:1021
 msgid "Antique"
 msgstr ""
 
-#: includes/country-functions.php:1017
+#: includes/country-functions.php:1022
 msgid "Apayao"
 msgstr ""
 
-#: includes/country-functions.php:1018
+#: includes/country-functions.php:1023
 msgid "Aurora"
 msgstr ""
 
-#: includes/country-functions.php:1019
+#: includes/country-functions.php:1024
 msgid "Basilan"
 msgstr ""
 
-#: includes/country-functions.php:1020
+#: includes/country-functions.php:1025
 msgid "Bataan"
 msgstr ""
 
-#: includes/country-functions.php:1021
+#: includes/country-functions.php:1026
 msgid "Batanes"
 msgstr ""
 
-#: includes/country-functions.php:1022
+#: includes/country-functions.php:1027
 msgid "Batangas"
 msgstr ""
 
-#: includes/country-functions.php:1023
+#: includes/country-functions.php:1028
 msgid "Benguet"
 msgstr ""
 
-#: includes/country-functions.php:1024
+#: includes/country-functions.php:1029
 msgid "Biliran"
 msgstr ""
 
-#: includes/country-functions.php:1025
+#: includes/country-functions.php:1030
 msgid "Bohol"
 msgstr ""
 
-#: includes/country-functions.php:1026
+#: includes/country-functions.php:1031
 msgid "Bukidnon"
 msgstr ""
 
-#: includes/country-functions.php:1027
+#: includes/country-functions.php:1032
 msgid "Bulacan"
 msgstr ""
 
-#: includes/country-functions.php:1028
+#: includes/country-functions.php:1033
 msgid "Cagayan"
 msgstr ""
 
-#: includes/country-functions.php:1029
+#: includes/country-functions.php:1034
 msgid "Camarines Norte"
 msgstr ""
 
-#: includes/country-functions.php:1030
+#: includes/country-functions.php:1035
 msgid "Camarines Sur"
 msgstr ""
 
-#: includes/country-functions.php:1031
+#: includes/country-functions.php:1036
 msgid "Camiguin"
 msgstr ""
 
-#: includes/country-functions.php:1032
+#: includes/country-functions.php:1037
 msgid "Capiz"
 msgstr ""
 
-#: includes/country-functions.php:1033
+#: includes/country-functions.php:1038
 msgid "Catanduanes"
 msgstr ""
 
-#: includes/country-functions.php:1034
+#: includes/country-functions.php:1039
 msgid "Cavite"
 msgstr ""
 
-#: includes/country-functions.php:1035
+#: includes/country-functions.php:1040
 msgid "Cebu"
 msgstr ""
 
-#: includes/country-functions.php:1036
+#: includes/country-functions.php:1041
 msgid "Compostela Valley"
 msgstr ""
 
-#: includes/country-functions.php:1037
+#: includes/country-functions.php:1042
 msgid "Cotabato"
 msgstr ""
 
-#: includes/country-functions.php:1038
+#: includes/country-functions.php:1043
 msgid "Davao del Norte"
 msgstr ""
 
-#: includes/country-functions.php:1039
+#: includes/country-functions.php:1044
 msgid "Davao del Sur"
 msgstr ""
 
-#: includes/country-functions.php:1040
+#: includes/country-functions.php:1045
 msgid "Davao Occidental"
 msgstr ""
 
-#: includes/country-functions.php:1041
+#: includes/country-functions.php:1046
 msgid "Davao Oriental"
 msgstr ""
 
-#: includes/country-functions.php:1042
+#: includes/country-functions.php:1047
 msgid "Dinagat Islands"
 msgstr ""
 
-#: includes/country-functions.php:1043
+#: includes/country-functions.php:1048
 msgid "Eastern Samar"
 msgstr ""
 
-#: includes/country-functions.php:1044
+#: includes/country-functions.php:1049
 msgid "Guimaras"
 msgstr ""
 
-#: includes/country-functions.php:1045
+#: includes/country-functions.php:1050
 msgid "Ifugao"
 msgstr ""
 
-#: includes/country-functions.php:1046
+#: includes/country-functions.php:1051
 msgid "Ilocos Norte"
 msgstr ""
 
-#: includes/country-functions.php:1047
+#: includes/country-functions.php:1052
 msgid "Ilocos Sur"
 msgstr ""
 
-#: includes/country-functions.php:1048
+#: includes/country-functions.php:1053
 msgid "Iloilo"
 msgstr ""
 
-#: includes/country-functions.php:1049
+#: includes/country-functions.php:1054
 msgid "Isabela"
 msgstr ""
 
-#: includes/country-functions.php:1050
+#: includes/country-functions.php:1055
 msgid "Kalinga"
 msgstr ""
 
-#: includes/country-functions.php:1051
+#: includes/country-functions.php:1056
 msgid "La Union"
 msgstr ""
 
-#: includes/country-functions.php:1052
+#: includes/country-functions.php:1057
 msgid "Laguna"
 msgstr ""
 
-#: includes/country-functions.php:1053
+#: includes/country-functions.php:1058
 msgid "Lanao del Norte"
 msgstr ""
 
-#: includes/country-functions.php:1054
+#: includes/country-functions.php:1059
 msgid "Lanao del Sur"
 msgstr ""
 
-#: includes/country-functions.php:1055
+#: includes/country-functions.php:1060
 msgid "Leyte"
 msgstr ""
 
-#: includes/country-functions.php:1056
+#: includes/country-functions.php:1061
 msgid "Maguindanao"
 msgstr ""
 
-#: includes/country-functions.php:1057
+#: includes/country-functions.php:1062
 msgid "Marinduque"
 msgstr ""
 
-#: includes/country-functions.php:1058
+#: includes/country-functions.php:1063
 msgid "Masbate"
 msgstr ""
 
-#: includes/country-functions.php:1059
+#: includes/country-functions.php:1064
 msgid "Misamis Occidental"
 msgstr ""
 
-#: includes/country-functions.php:1060
+#: includes/country-functions.php:1065
 msgid "Misamis Oriental"
 msgstr ""
 
-#: includes/country-functions.php:1061
+#: includes/country-functions.php:1066
 msgid "Mountain Province"
 msgstr ""
 
-#: includes/country-functions.php:1062
+#: includes/country-functions.php:1067
 msgid "Negros Occidental"
 msgstr ""
 
-#: includes/country-functions.php:1063
+#: includes/country-functions.php:1068
 msgid "Negros Oriental"
 msgstr ""
 
-#: includes/country-functions.php:1064
+#: includes/country-functions.php:1069
 msgid "Northern Samar"
 msgstr ""
 
-#: includes/country-functions.php:1065
+#: includes/country-functions.php:1070
 msgid "Nueva Ecija"
 msgstr ""
 
-#: includes/country-functions.php:1066
+#: includes/country-functions.php:1071
 msgid "Nueva Vizcaya"
 msgstr ""
 
-#: includes/country-functions.php:1067
+#: includes/country-functions.php:1072
 msgid "Occidental Mindoro"
 msgstr ""
 
-#: includes/country-functions.php:1068
+#: includes/country-functions.php:1073
 msgid "Oriental Mindoro"
 msgstr ""
 
-#: includes/country-functions.php:1069
+#: includes/country-functions.php:1074
 msgid "Palawan"
 msgstr ""
 
-#: includes/country-functions.php:1070
+#: includes/country-functions.php:1075
 msgid "Pampanga"
 msgstr ""
 
-#: includes/country-functions.php:1071
+#: includes/country-functions.php:1076
 msgid "Pangasinan"
 msgstr ""
 
-#: includes/country-functions.php:1072
+#: includes/country-functions.php:1077
 msgid "Quezon"
 msgstr ""
 
-#: includes/country-functions.php:1073
+#: includes/country-functions.php:1078
 msgid "Quirino"
 msgstr ""
 
-#: includes/country-functions.php:1074
+#: includes/country-functions.php:1079
 msgid "Rizal"
 msgstr ""
 
-#: includes/country-functions.php:1075
+#: includes/country-functions.php:1080
 msgid "Romblon"
 msgstr ""
 
-#: includes/country-functions.php:1076
+#: includes/country-functions.php:1081
 msgid "Samar"
 msgstr ""
 
-#: includes/country-functions.php:1077
+#: includes/country-functions.php:1082
 msgid "Sarangani"
 msgstr ""
 
-#: includes/country-functions.php:1078
+#: includes/country-functions.php:1083
 msgid "Siquijor"
 msgstr ""
 
-#: includes/country-functions.php:1079
+#: includes/country-functions.php:1084
 msgid "Sorsogon"
 msgstr ""
 
-#: includes/country-functions.php:1080
+#: includes/country-functions.php:1085
 msgid "South Cotabato"
 msgstr ""
 
-#: includes/country-functions.php:1081
+#: includes/country-functions.php:1086
 msgid "Southern Leyte"
 msgstr ""
 
-#: includes/country-functions.php:1082
+#: includes/country-functions.php:1087
 msgid "Sultan Kudarat"
 msgstr ""
 
-#: includes/country-functions.php:1083
+#: includes/country-functions.php:1088
 msgid "Sulu"
 msgstr ""
 
-#: includes/country-functions.php:1084
+#: includes/country-functions.php:1089
 msgid "Surigao del Norte"
 msgstr ""
 
-#: includes/country-functions.php:1085
+#: includes/country-functions.php:1090
 msgid "Surigao del Sur"
 msgstr ""
 
-#: includes/country-functions.php:1086
+#: includes/country-functions.php:1091
 msgid "Tarlac"
 msgstr ""
 
-#: includes/country-functions.php:1087
+#: includes/country-functions.php:1092
 msgid "Tawi-Tawi"
 msgstr ""
 
-#: includes/country-functions.php:1088
+#: includes/country-functions.php:1093
 msgid "Zambales"
 msgstr ""
 
-#: includes/country-functions.php:1089
+#: includes/country-functions.php:1094
 msgid "Zamboanga del Norte"
 msgstr ""
 
-#: includes/country-functions.php:1090
+#: includes/country-functions.php:1095
 msgid "Zamboanga del Sur"
 msgstr ""
 
-#: includes/country-functions.php:1091
+#: includes/country-functions.php:1096
 msgid "Zamboanga Sibugay"
 msgstr ""
 
-#: includes/country-functions.php:1092
+#: includes/country-functions.php:1097
 msgid "Metro Manila"
 msgstr ""
 
-#: includes/country-functions.php:1107
+#: includes/country-functions.php:1112
 msgid "El Callao"
 msgstr ""
 
-#: includes/country-functions.php:1108
+#: includes/country-functions.php:1113
 msgid "Municipalidad Metropolitana de Lima"
 msgstr ""
 
-#: includes/country-functions.php:1109
+#: includes/country-functions.php:1114
 msgid "Amazonas"
 msgstr ""
 
-#: includes/country-functions.php:1110
+#: includes/country-functions.php:1115
 msgid "Ancash"
 msgstr ""
 
-#: includes/country-functions.php:1111
+#: includes/country-functions.php:1116
 msgid "Apur&iacute;mac"
 msgstr ""
 
-#: includes/country-functions.php:1112
+#: includes/country-functions.php:1117
 msgid "Arequipa"
 msgstr ""
 
-#: includes/country-functions.php:1113
+#: includes/country-functions.php:1118
 msgid "Ayacucho"
 msgstr ""
 
-#: includes/country-functions.php:1114
+#: includes/country-functions.php:1119
 msgid "Cajamarca"
 msgstr ""
 
-#: includes/country-functions.php:1115
+#: includes/country-functions.php:1120
 msgid "Cusco"
 msgstr ""
 
-#: includes/country-functions.php:1116
+#: includes/country-functions.php:1121
 msgid "Huancavelica"
 msgstr ""
 
-#: includes/country-functions.php:1117
+#: includes/country-functions.php:1122
 msgid "Hu&aacute;nuco"
 msgstr ""
 
-#: includes/country-functions.php:1118
+#: includes/country-functions.php:1123
 msgid "Ica"
 msgstr ""
 
-#: includes/country-functions.php:1119
+#: includes/country-functions.php:1124
 msgid "Jun&iacute;n"
 msgstr ""
 
-#: includes/country-functions.php:1120
+#: includes/country-functions.php:1125
 msgid "La Libertad"
 msgstr ""
 
-#: includes/country-functions.php:1121
+#: includes/country-functions.php:1126
 msgid "Lambayeque"
 msgstr ""
 
-#: includes/country-functions.php:1122
+#: includes/country-functions.php:1127
 msgid "Lima"
 msgstr ""
 
-#: includes/country-functions.php:1123
+#: includes/country-functions.php:1128
 msgid "Loreto"
 msgstr ""
 
-#: includes/country-functions.php:1124
+#: includes/country-functions.php:1129
 msgid "Madre de Dios"
 msgstr ""
 
-#: includes/country-functions.php:1125
+#: includes/country-functions.php:1130
 msgid "Moquegua"
 msgstr ""
 
-#: includes/country-functions.php:1126
+#: includes/country-functions.php:1131
 msgid "Pasco"
 msgstr ""
 
-#: includes/country-functions.php:1127
+#: includes/country-functions.php:1132
 msgid "Piura"
 msgstr ""
 
-#: includes/country-functions.php:1128
+#: includes/country-functions.php:1133
 msgid "Puno"
 msgstr ""
 
-#: includes/country-functions.php:1129
+#: includes/country-functions.php:1134
 msgid "San Mart&iacute;n"
 msgstr ""
 
-#: includes/country-functions.php:1130
+#: includes/country-functions.php:1135
 msgid "Tacna"
 msgstr ""
 
-#: includes/country-functions.php:1131
+#: includes/country-functions.php:1136
 msgid "Tumbes"
 msgstr ""
 
-#: includes/country-functions.php:1132
+#: includes/country-functions.php:1137
 msgid "Ucayali"
 msgstr ""
 
-#: includes/country-functions.php:1147
+#: includes/country-functions.php:1152
 msgid "Bagmati"
 msgstr ""
 
-#: includes/country-functions.php:1148
+#: includes/country-functions.php:1153
 msgid "Bheri"
 msgstr ""
 
-#: includes/country-functions.php:1149
+#: includes/country-functions.php:1154
 msgid "Dhaulagiri"
 msgstr ""
 
-#: includes/country-functions.php:1150
+#: includes/country-functions.php:1155
 msgid "Gandaki"
 msgstr ""
 
-#: includes/country-functions.php:1151
+#: includes/country-functions.php:1156
 msgid "Janakpur"
 msgstr ""
 
-#: includes/country-functions.php:1152
+#: includes/country-functions.php:1157
 msgid "Karnali"
 msgstr ""
 
-#: includes/country-functions.php:1153
+#: includes/country-functions.php:1158
 msgid "Koshi"
 msgstr ""
 
-#: includes/country-functions.php:1154
+#: includes/country-functions.php:1159
 msgid "Lumbini"
 msgstr ""
 
-#: includes/country-functions.php:1155
+#: includes/country-functions.php:1160
 msgid "Mahakali"
 msgstr ""
 
-#: includes/country-functions.php:1156
+#: includes/country-functions.php:1161
 msgid "Mechi"
 msgstr ""
 
-#: includes/country-functions.php:1157
+#: includes/country-functions.php:1162
 msgid "Narayani"
 msgstr ""
 
-#: includes/country-functions.php:1158
+#: includes/country-functions.php:1163
 msgid "Rapti"
 msgstr ""
 
-#: includes/country-functions.php:1159
+#: includes/country-functions.php:1164
 msgid "Sagarmatha"
 msgstr ""
 
-#: includes/country-functions.php:1160
+#: includes/country-functions.php:1165
 msgid "Seti"
 msgstr ""
 
-#: includes/country-functions.php:1175
+#: includes/country-functions.php:1180
 msgid "Abia"
 msgstr ""
 
-#: includes/country-functions.php:1176
+#: includes/country-functions.php:1181
 msgid "Abuja"
 msgstr ""
 
-#: includes/country-functions.php:1177
+#: includes/country-functions.php:1182
 msgid "Adamawa"
 msgstr ""
 
-#: includes/country-functions.php:1178
+#: includes/country-functions.php:1183
 msgid "Akwa Ibom"
 msgstr ""
 
-#: includes/country-functions.php:1179
+#: includes/country-functions.php:1184
 msgid "Anambra"
 msgstr ""
 
-#: includes/country-functions.php:1180
+#: includes/country-functions.php:1185
 msgid "Bauchi"
 msgstr ""
 
-#: includes/country-functions.php:1181
+#: includes/country-functions.php:1186
 msgid "Bayelsa"
 msgstr ""
 
-#: includes/country-functions.php:1182
+#: includes/country-functions.php:1187
 msgid "Benue"
 msgstr ""
 
-#: includes/country-functions.php:1183
+#: includes/country-functions.php:1188
 msgid "Borno"
 msgstr ""
 
-#: includes/country-functions.php:1184
+#: includes/country-functions.php:1189
 msgid "Cross River"
 msgstr ""
 
-#: includes/country-functions.php:1185
+#: includes/country-functions.php:1190
 msgid "Delta"
 msgstr ""
 
-#: includes/country-functions.php:1186
+#: includes/country-functions.php:1191
 msgid "Ebonyi"
 msgstr ""
 
-#: includes/country-functions.php:1187
+#: includes/country-functions.php:1192
 msgid "Edo"
 msgstr ""
 
-#: includes/country-functions.php:1188
+#: includes/country-functions.php:1193
 msgid "Ekiti"
 msgstr ""
 
-#: includes/country-functions.php:1189
+#: includes/country-functions.php:1194
 msgid "Enugu"
 msgstr ""
 
-#: includes/country-functions.php:1190
+#: includes/country-functions.php:1195
 msgid "Gombe"
 msgstr ""
 
-#: includes/country-functions.php:1191
+#: includes/country-functions.php:1196
 msgid "Imo"
 msgstr ""
 
-#: includes/country-functions.php:1192
+#: includes/country-functions.php:1197
 msgid "Jigawa"
 msgstr ""
 
-#: includes/country-functions.php:1193
+#: includes/country-functions.php:1198
 msgid "Kaduna"
 msgstr ""
 
-#: includes/country-functions.php:1194
+#: includes/country-functions.php:1199
 msgid "Kano"
 msgstr ""
 
-#: includes/country-functions.php:1195
+#: includes/country-functions.php:1200
 msgid "Katsina"
 msgstr ""
 
-#: includes/country-functions.php:1196
+#: includes/country-functions.php:1201
 msgid "Kebbi"
 msgstr ""
 
-#: includes/country-functions.php:1197
+#: includes/country-functions.php:1202
 msgid "Kogi"
 msgstr ""
 
-#: includes/country-functions.php:1198
+#: includes/country-functions.php:1203
 msgid "Kwara"
 msgstr ""
 
-#: includes/country-functions.php:1199
+#: includes/country-functions.php:1204
 msgid "Lagos"
 msgstr ""
 
-#: includes/country-functions.php:1200
+#: includes/country-functions.php:1205
 msgid "Nasarawa"
 msgstr ""
 
-#: includes/country-functions.php:1202
+#: includes/country-functions.php:1207
 msgid "Ogun"
 msgstr ""
 
-#: includes/country-functions.php:1203
+#: includes/country-functions.php:1208
 msgid "Ondo"
 msgstr ""
 
-#: includes/country-functions.php:1204
+#: includes/country-functions.php:1209
 msgid "Osun"
 msgstr ""
 
-#: includes/country-functions.php:1205
+#: includes/country-functions.php:1210
 msgid "Oyo"
 msgstr ""
 
-#: includes/country-functions.php:1206
+#: includes/country-functions.php:1211
 msgid "Plateau"
 msgstr ""
 
-#: includes/country-functions.php:1207
+#: includes/country-functions.php:1212
 msgid "Rivers"
 msgstr ""
 
-#: includes/country-functions.php:1208
+#: includes/country-functions.php:1213
 msgid "Sokoto"
 msgstr ""
 
-#: includes/country-functions.php:1209
+#: includes/country-functions.php:1214
 msgid "Taraba"
 msgstr ""
 
-#: includes/country-functions.php:1210
+#: includes/country-functions.php:1215
 msgid "Yobe"
 msgstr ""
 
-#: includes/country-functions.php:1211
+#: includes/country-functions.php:1216
 msgid "Zamfara"
 msgstr ""
 
-#: includes/country-functions.php:1226
+#: includes/country-functions.php:1231
 msgid "Distrito Federal"
 msgstr ""
 
-#: includes/country-functions.php:1227
+#: includes/country-functions.php:1232
 msgid "Jalisco"
 msgstr ""
 
-#: includes/country-functions.php:1228
+#: includes/country-functions.php:1233
 msgid "Nuevo León"
 msgstr ""
 
-#: includes/country-functions.php:1229
+#: includes/country-functions.php:1234
 msgid "Aguascalientes"
 msgstr ""
 
-#: includes/country-functions.php:1230
+#: includes/country-functions.php:1235
 msgid "Baja California"
 msgstr ""
 
-#: includes/country-functions.php:1231
+#: includes/country-functions.php:1236
 msgid "Baja California Sur"
 msgstr ""
 
-#: includes/country-functions.php:1232
+#: includes/country-functions.php:1237
 msgid "Campeche"
 msgstr ""
 
-#: includes/country-functions.php:1233
+#: includes/country-functions.php:1238
 msgid "Chiapas"
 msgstr ""
 
-#: includes/country-functions.php:1234
+#: includes/country-functions.php:1239
 msgid "Chihuahua"
 msgstr ""
 
-#: includes/country-functions.php:1235
+#: includes/country-functions.php:1240
 msgid "Coahuila"
 msgstr ""
 
-#: includes/country-functions.php:1236
+#: includes/country-functions.php:1241
 msgid "Colima"
 msgstr ""
 
-#: includes/country-functions.php:1237
+#: includes/country-functions.php:1242
 msgid "Durango"
 msgstr ""
 
-#: includes/country-functions.php:1238
+#: includes/country-functions.php:1243
 msgid "Guanajuato"
 msgstr ""
 
-#: includes/country-functions.php:1239
+#: includes/country-functions.php:1244
 msgid "Guerrero"
 msgstr ""
 
-#: includes/country-functions.php:1240
+#: includes/country-functions.php:1245
 msgid "Hidalgo"
 msgstr ""
 
-#: includes/country-functions.php:1241
+#: includes/country-functions.php:1246
 msgid "Edo. de México"
 msgstr ""
 
-#: includes/country-functions.php:1242
+#: includes/country-functions.php:1247
 msgid "Michoacán"
 msgstr ""
 
-#: includes/country-functions.php:1243
+#: includes/country-functions.php:1248
 msgid "Morelos"
 msgstr ""
 
-#: includes/country-functions.php:1244
+#: includes/country-functions.php:1249
 msgid "Nayarit"
 msgstr ""
 
-#: includes/country-functions.php:1245
+#: includes/country-functions.php:1250
 msgid "Oaxaca"
 msgstr ""
 
-#: includes/country-functions.php:1246
+#: includes/country-functions.php:1251
 msgid "Puebla"
 msgstr ""
 
-#: includes/country-functions.php:1247
+#: includes/country-functions.php:1252
 msgid "Querétaro"
 msgstr ""
 
-#: includes/country-functions.php:1248
+#: includes/country-functions.php:1253
 msgid "Quintana Roo"
 msgstr ""
 
-#: includes/country-functions.php:1249
+#: includes/country-functions.php:1254
 msgid "San Luis Potosí"
 msgstr ""
 
-#: includes/country-functions.php:1250
+#: includes/country-functions.php:1255
 msgid "Sinaloa"
 msgstr ""
 
-#: includes/country-functions.php:1251
+#: includes/country-functions.php:1256
 msgid "Sonora"
 msgstr ""
 
-#: includes/country-functions.php:1252
+#: includes/country-functions.php:1257
 msgid "Tabasco"
 msgstr ""
 
-#: includes/country-functions.php:1253
+#: includes/country-functions.php:1258
 msgid "Tamaulipas"
 msgstr ""
 
-#: includes/country-functions.php:1254
+#: includes/country-functions.php:1259
 msgid "Tlaxcala"
 msgstr ""
 
-#: includes/country-functions.php:1255
+#: includes/country-functions.php:1260
 msgid "Veracruz"
 msgstr ""
 
-#: includes/country-functions.php:1256
+#: includes/country-functions.php:1261
 msgid "Yucatán"
 msgstr ""
 
-#: includes/country-functions.php:1257
+#: includes/country-functions.php:1262
 msgid "Zacatecas"
 msgstr ""
 
-#: includes/country-functions.php:1272
+#: includes/country-functions.php:1277
 msgid "Hokkaido"
 msgstr ""
 
-#: includes/country-functions.php:1273
+#: includes/country-functions.php:1278
 msgid "Aomori"
 msgstr ""
 
-#: includes/country-functions.php:1274
+#: includes/country-functions.php:1279
 msgid "Iwate"
 msgstr ""
 
-#: includes/country-functions.php:1275
+#: includes/country-functions.php:1280
 msgid "Miyagi"
 msgstr ""
 
-#: includes/country-functions.php:1276
+#: includes/country-functions.php:1281
 msgid "Akita"
 msgstr ""
 
-#: includes/country-functions.php:1277
+#: includes/country-functions.php:1282
 msgid "Yamagata"
 msgstr ""
 
-#: includes/country-functions.php:1278
+#: includes/country-functions.php:1283
 msgid "Fukushima"
 msgstr ""
 
-#: includes/country-functions.php:1279
+#: includes/country-functions.php:1284
 msgid "Ibaraki"
 msgstr ""
 
-#: includes/country-functions.php:1280
+#: includes/country-functions.php:1285
 msgid "Tochigi"
 msgstr ""
 
-#: includes/country-functions.php:1281
+#: includes/country-functions.php:1286
 msgid "Gunma"
 msgstr ""
 
-#: includes/country-functions.php:1282
+#: includes/country-functions.php:1287
 msgid "Saitama"
 msgstr ""
 
-#: includes/country-functions.php:1283
+#: includes/country-functions.php:1288
 msgid "Chiba"
 msgstr ""
 
-#: includes/country-functions.php:1284
+#: includes/country-functions.php:1289
 msgid "Tokyo"
 msgstr ""
 
-#: includes/country-functions.php:1285
+#: includes/country-functions.php:1290
 msgid "Kanagawa"
 msgstr ""
 
-#: includes/country-functions.php:1286
+#: includes/country-functions.php:1291
 msgid "Niigata"
 msgstr ""
 
-#: includes/country-functions.php:1287
+#: includes/country-functions.php:1292
 msgid "Toyama"
 msgstr ""
 
-#: includes/country-functions.php:1288
+#: includes/country-functions.php:1293
 msgid "Ishikawa"
 msgstr ""
 
-#: includes/country-functions.php:1289
+#: includes/country-functions.php:1294
 msgid "Fukui"
 msgstr ""
 
-#: includes/country-functions.php:1290
+#: includes/country-functions.php:1295
 msgid "Yamanashi"
 msgstr ""
 
-#: includes/country-functions.php:1291
+#: includes/country-functions.php:1296
 msgid "Nagano"
 msgstr ""
 
-#: includes/country-functions.php:1292
+#: includes/country-functions.php:1297
 msgid "Gifu"
 msgstr ""
 
-#: includes/country-functions.php:1293
+#: includes/country-functions.php:1298
 msgid "Shizuoka"
 msgstr ""
 
-#: includes/country-functions.php:1294
+#: includes/country-functions.php:1299
 msgid "Aichi"
 msgstr ""
 
-#: includes/country-functions.php:1295
+#: includes/country-functions.php:1300
 msgid "Mie"
 msgstr ""
 
-#: includes/country-functions.php:1296
+#: includes/country-functions.php:1301
 msgid "Shiga"
 msgstr ""
 
-#: includes/country-functions.php:1297
+#: includes/country-functions.php:1302
 msgid "Kyoto"
 msgstr ""
 
-#: includes/country-functions.php:1298
+#: includes/country-functions.php:1303
 msgid "Osaka"
 msgstr ""
 
-#: includes/country-functions.php:1299
+#: includes/country-functions.php:1304
 msgid "Hyogo"
 msgstr ""
 
-#: includes/country-functions.php:1300
+#: includes/country-functions.php:1305
 msgid "Nara"
 msgstr ""
 
-#: includes/country-functions.php:1301
+#: includes/country-functions.php:1306
 msgid "Wakayama"
 msgstr ""
 
-#: includes/country-functions.php:1302
+#: includes/country-functions.php:1307
 msgid "Tottori"
 msgstr ""
 
-#: includes/country-functions.php:1303
+#: includes/country-functions.php:1308
 msgid "Shimane"
 msgstr ""
 
-#: includes/country-functions.php:1304
+#: includes/country-functions.php:1309
 msgid "Okayama"
 msgstr ""
 
-#: includes/country-functions.php:1305
+#: includes/country-functions.php:1310
 msgid "Hiroshima"
 msgstr ""
 
-#: includes/country-functions.php:1306
+#: includes/country-functions.php:1311
 msgid "Yamaguchi"
 msgstr ""
 
-#: includes/country-functions.php:1307
+#: includes/country-functions.php:1312
 msgid "Tokushima"
 msgstr ""
 
-#: includes/country-functions.php:1308
+#: includes/country-functions.php:1313
 msgid "Kagawa"
 msgstr ""
 
-#: includes/country-functions.php:1309
+#: includes/country-functions.php:1314
 msgid "Ehime"
 msgstr ""
 
-#: includes/country-functions.php:1310
+#: includes/country-functions.php:1315
 msgid "Kochi"
 msgstr ""
 
-#: includes/country-functions.php:1311
+#: includes/country-functions.php:1316
 msgid "Fukuoka"
 msgstr ""
 
-#: includes/country-functions.php:1312
+#: includes/country-functions.php:1317
 msgid "Saga"
 msgstr ""
 
-#: includes/country-functions.php:1313
+#: includes/country-functions.php:1318
 msgid "Nagasaki"
 msgstr ""
 
-#: includes/country-functions.php:1314
+#: includes/country-functions.php:1319
 msgid "Kumamoto"
 msgstr ""
 
-#: includes/country-functions.php:1315
+#: includes/country-functions.php:1320
 msgid "Oita"
 msgstr ""
 
-#: includes/country-functions.php:1316
+#: includes/country-functions.php:1321
 msgid "Miyazaki"
 msgstr ""
 
-#: includes/country-functions.php:1317
+#: includes/country-functions.php:1322
 msgid "Kagoshima"
 msgstr ""
 
-#: includes/country-functions.php:1318
+#: includes/country-functions.php:1323
 msgid "Okinawa"
 msgstr ""
 
-#: includes/country-functions.php:1333
+#: includes/country-functions.php:1338
 msgid "Agrigento"
 msgstr ""
 
-#: includes/country-functions.php:1334
+#: includes/country-functions.php:1339
 msgid "Alessandria"
 msgstr ""
 
-#: includes/country-functions.php:1335
+#: includes/country-functions.php:1340
 msgid "Ancona"
 msgstr ""
 
-#: includes/country-functions.php:1336
+#: includes/country-functions.php:1341
 msgid "Aosta"
 msgstr ""
 
-#: includes/country-functions.php:1337
+#: includes/country-functions.php:1342
 msgid "Arezzo"
 msgstr ""
 
-#: includes/country-functions.php:1338
+#: includes/country-functions.php:1343
 msgid "Ascoli Piceno"
 msgstr ""
 
-#: includes/country-functions.php:1339
+#: includes/country-functions.php:1344
 msgid "Asti"
 msgstr ""
 
-#: includes/country-functions.php:1340
+#: includes/country-functions.php:1345
 msgid "Avellino"
 msgstr ""
 
-#: includes/country-functions.php:1341
+#: includes/country-functions.php:1346
 msgid "Bari"
 msgstr ""
 
-#: includes/country-functions.php:1342
+#: includes/country-functions.php:1347
 msgid "Barletta-Andria-Trani"
 msgstr ""
 
-#: includes/country-functions.php:1343
+#: includes/country-functions.php:1348
 msgid "Belluno"
 msgstr ""
 
-#: includes/country-functions.php:1344
+#: includes/country-functions.php:1349
 msgid "Benevento"
 msgstr ""
 
-#: includes/country-functions.php:1345
+#: includes/country-functions.php:1350
 msgid "Bergamo"
 msgstr ""
 
-#: includes/country-functions.php:1346
+#: includes/country-functions.php:1351
 msgid "Biella"
 msgstr ""
 
-#: includes/country-functions.php:1347
+#: includes/country-functions.php:1352
 msgid "Bologna"
 msgstr ""
 
-#: includes/country-functions.php:1348
+#: includes/country-functions.php:1353
 msgid "Bolzano"
 msgstr ""
 
-#: includes/country-functions.php:1349
+#: includes/country-functions.php:1354
 msgid "Brescia"
 msgstr ""
 
-#: includes/country-functions.php:1350
+#: includes/country-functions.php:1355
 msgid "Brindisi"
 msgstr ""
 
-#: includes/country-functions.php:1351
+#: includes/country-functions.php:1356
 msgid "Cagliari"
 msgstr ""
 
-#: includes/country-functions.php:1352
+#: includes/country-functions.php:1357
 msgid "Caltanissetta"
 msgstr ""
 
-#: includes/country-functions.php:1353
+#: includes/country-functions.php:1358
 msgid "Campobasso"
 msgstr ""
 
-#: includes/country-functions.php:1354
+#: includes/country-functions.php:1359
 msgid "Carbonia-Iglesias"
 msgstr ""
 
-#: includes/country-functions.php:1355
+#: includes/country-functions.php:1360
 msgid "Caserta"
 msgstr ""
 
-#: includes/country-functions.php:1356
+#: includes/country-functions.php:1361
 msgid "Catania"
 msgstr ""
 
-#: includes/country-functions.php:1357
+#: includes/country-functions.php:1362
 msgid "Catanzaro"
 msgstr ""
 
-#: includes/country-functions.php:1358
+#: includes/country-functions.php:1363
 msgid "Chieti"
 msgstr ""
 
-#: includes/country-functions.php:1359
+#: includes/country-functions.php:1364
 msgid "Como"
 msgstr ""
 
-#: includes/country-functions.php:1360
+#: includes/country-functions.php:1365
 msgid "Cosenza"
 msgstr ""
 
-#: includes/country-functions.php:1361
+#: includes/country-functions.php:1366
 msgid "Cremona"
 msgstr ""
 
-#: includes/country-functions.php:1362
+#: includes/country-functions.php:1367
 msgid "Crotone"
 msgstr ""
 
-#: includes/country-functions.php:1363
+#: includes/country-functions.php:1368
 msgid "Cuneo"
 msgstr ""
 
-#: includes/country-functions.php:1364
+#: includes/country-functions.php:1369
 msgid "Enna"
 msgstr ""
 
-#: includes/country-functions.php:1365
+#: includes/country-functions.php:1370
 msgid "Fermo"
 msgstr ""
 
-#: includes/country-functions.php:1366
+#: includes/country-functions.php:1371
 msgid "Ferrara"
 msgstr ""
 
-#: includes/country-functions.php:1367
+#: includes/country-functions.php:1372
 msgid "Firenze"
 msgstr ""
 
-#: includes/country-functions.php:1368
+#: includes/country-functions.php:1373
 msgid "Foggia"
 msgstr ""
 
-#: includes/country-functions.php:1369
+#: includes/country-functions.php:1374
 msgid "Forlì-Cesena"
 msgstr ""
 
-#: includes/country-functions.php:1370
+#: includes/country-functions.php:1375
 msgid "Frosinone"
 msgstr ""
 
-#: includes/country-functions.php:1371
+#: includes/country-functions.php:1376
 msgid "Genova"
 msgstr ""
 
-#: includes/country-functions.php:1372
+#: includes/country-functions.php:1377
 msgid "Gorizia"
 msgstr ""
 
-#: includes/country-functions.php:1373
+#: includes/country-functions.php:1378
 msgid "Grosseto"
 msgstr ""
 
-#: includes/country-functions.php:1374
+#: includes/country-functions.php:1379
 msgid "Imperia"
 msgstr ""
 
-#: includes/country-functions.php:1375
+#: includes/country-functions.php:1380
 msgid "Isernia"
 msgstr ""
 
-#: includes/country-functions.php:1376
+#: includes/country-functions.php:1381
 msgid "La Spezia"
 msgstr ""
 
-#: includes/country-functions.php:1377
+#: includes/country-functions.php:1382
 msgid "L'Aquila"
 msgstr ""
 
-#: includes/country-functions.php:1378
+#: includes/country-functions.php:1383
 msgid "Latina"
 msgstr ""
 
-#: includes/country-functions.php:1379
+#: includes/country-functions.php:1384
 msgid "Lecce"
 msgstr ""
 
-#: includes/country-functions.php:1380
+#: includes/country-functions.php:1385
 msgid "Lecco"
 msgstr ""
 
-#: includes/country-functions.php:1381
+#: includes/country-functions.php:1386
 msgid "Livorno"
 msgstr ""
 
-#: includes/country-functions.php:1382
+#: includes/country-functions.php:1387
 msgid "Lodi"
 msgstr ""
 
-#: includes/country-functions.php:1383
+#: includes/country-functions.php:1388
 msgid "Lucca"
 msgstr ""
 
-#: includes/country-functions.php:1384
+#: includes/country-functions.php:1389
 msgid "Macerata"
 msgstr ""
 
-#: includes/country-functions.php:1385
+#: includes/country-functions.php:1390
 msgid "Mantova"
 msgstr ""
 
-#: includes/country-functions.php:1386
+#: includes/country-functions.php:1391
 msgid "Massa-Carrara"
 msgstr ""
 
-#: includes/country-functions.php:1387
+#: includes/country-functions.php:1392
 msgid "Matera"
 msgstr ""
 
-#: includes/country-functions.php:1388
+#: includes/country-functions.php:1393
 msgid "Messina"
 msgstr ""
 
-#: includes/country-functions.php:1389
+#: includes/country-functions.php:1394
 msgid "Milano"
 msgstr ""
 
-#: includes/country-functions.php:1390
+#: includes/country-functions.php:1395
 msgid "Modena"
 msgstr ""
 
-#: includes/country-functions.php:1391
+#: includes/country-functions.php:1396
 msgid "Monza e della Brianza"
 msgstr ""
 
-#: includes/country-functions.php:1392
+#: includes/country-functions.php:1397
 msgid "Napoli"
 msgstr ""
 
-#: includes/country-functions.php:1393
+#: includes/country-functions.php:1398
 msgid "Novara"
 msgstr ""
 
-#: includes/country-functions.php:1394
+#: includes/country-functions.php:1399
 msgid "Nuoro"
 msgstr ""
 
-#: includes/country-functions.php:1395
+#: includes/country-functions.php:1400
 msgid "Olbia-Tempio"
 msgstr ""
 
-#: includes/country-functions.php:1396
+#: includes/country-functions.php:1401
 msgid "Oristano"
 msgstr ""
 
-#: includes/country-functions.php:1397
+#: includes/country-functions.php:1402
 msgid "Padova"
 msgstr ""
 
-#: includes/country-functions.php:1398
+#: includes/country-functions.php:1403
 msgid "Palermo"
 msgstr ""
 
-#: includes/country-functions.php:1399
+#: includes/country-functions.php:1404
 msgid "Parma"
 msgstr ""
 
-#: includes/country-functions.php:1400
+#: includes/country-functions.php:1405
 msgid "Pavia"
 msgstr ""
 
-#: includes/country-functions.php:1401
+#: includes/country-functions.php:1406
 msgid "Perugia"
 msgstr ""
 
-#: includes/country-functions.php:1402
+#: includes/country-functions.php:1407
 msgid "Pesaro e Urbino"
 msgstr ""
 
-#: includes/country-functions.php:1403
+#: includes/country-functions.php:1408
 msgid "Pescara"
 msgstr ""
 
-#: includes/country-functions.php:1404
+#: includes/country-functions.php:1409
 msgid "Piacenza"
 msgstr ""
 
-#: includes/country-functions.php:1405
+#: includes/country-functions.php:1410
 msgid "Pisa"
 msgstr ""
 
-#: includes/country-functions.php:1406
+#: includes/country-functions.php:1411
 msgid "Pistoia"
 msgstr ""
 
-#: includes/country-functions.php:1407
+#: includes/country-functions.php:1412
 msgid "Pordenone"
 msgstr ""
 
-#: includes/country-functions.php:1408
+#: includes/country-functions.php:1413
 msgid "Potenza"
 msgstr ""
 
-#: includes/country-functions.php:1409
+#: includes/country-functions.php:1414
 msgid "Prato"
 msgstr ""
 
-#: includes/country-functions.php:1410
+#: includes/country-functions.php:1415
 msgid "Ragusa"
 msgstr ""
 
-#: includes/country-functions.php:1411
+#: includes/country-functions.php:1416
 msgid "Ravenna"
 msgstr ""
 
-#: includes/country-functions.php:1412
+#: includes/country-functions.php:1417
 msgid "Reggio Calabria"
 msgstr ""
 
-#: includes/country-functions.php:1413
+#: includes/country-functions.php:1418
 msgid "Reggio Emilia"
 msgstr ""
 
-#: includes/country-functions.php:1414
+#: includes/country-functions.php:1419
 msgid "Rieti"
 msgstr ""
 
-#: includes/country-functions.php:1415
+#: includes/country-functions.php:1420
 msgid "Rimini"
 msgstr ""
 
-#: includes/country-functions.php:1416
+#: includes/country-functions.php:1421
 msgid "Roma"
 msgstr ""
 
-#: includes/country-functions.php:1417
+#: includes/country-functions.php:1422
 msgid "Rovigo"
 msgstr ""
 
-#: includes/country-functions.php:1418
+#: includes/country-functions.php:1423
 msgid "Salerno"
 msgstr ""
 
-#: includes/country-functions.php:1419
+#: includes/country-functions.php:1424
 msgid "Medio Campidano"
 msgstr ""
 
-#: includes/country-functions.php:1420
+#: includes/country-functions.php:1425
 msgid "Sassari"
 msgstr ""
 
-#: includes/country-functions.php:1421
+#: includes/country-functions.php:1426
 msgid "Savona"
 msgstr ""
 
-#: includes/country-functions.php:1422
+#: includes/country-functions.php:1427
 msgid "Siena"
 msgstr ""
 
-#: includes/country-functions.php:1423
+#: includes/country-functions.php:1428
 msgid "Siracusa"
 msgstr ""
 
-#: includes/country-functions.php:1424
+#: includes/country-functions.php:1429
 msgid "Sondrio"
 msgstr ""
 
-#: includes/country-functions.php:1425
+#: includes/country-functions.php:1430
 msgid "Taranto"
 msgstr ""
 
-#: includes/country-functions.php:1426
+#: includes/country-functions.php:1431
 msgid "Teramo"
 msgstr ""
 
-#: includes/country-functions.php:1427
+#: includes/country-functions.php:1432
 msgid "Terni"
 msgstr ""
 
-#: includes/country-functions.php:1428
+#: includes/country-functions.php:1433
 msgid "Torino"
 msgstr ""
 
-#: includes/country-functions.php:1429
+#: includes/country-functions.php:1434
 msgid "Ogliastra"
 msgstr ""
 
-#: includes/country-functions.php:1430
+#: includes/country-functions.php:1435
 msgid "Trapani"
 msgstr ""
 
-#: includes/country-functions.php:1431
+#: includes/country-functions.php:1436
 msgid "Trento"
 msgstr ""
 
-#: includes/country-functions.php:1432
+#: includes/country-functions.php:1437
 msgid "Treviso"
 msgstr ""
 
-#: includes/country-functions.php:1433
+#: includes/country-functions.php:1438
 msgid "Trieste"
 msgstr ""
 
-#: includes/country-functions.php:1434
+#: includes/country-functions.php:1439
 msgid "Udine"
 msgstr ""
 
-#: includes/country-functions.php:1435
+#: includes/country-functions.php:1440
 msgid "Varese"
 msgstr ""
 
-#: includes/country-functions.php:1436
+#: includes/country-functions.php:1441
 msgid "Venezia"
 msgstr ""
 
-#: includes/country-functions.php:1437
+#: includes/country-functions.php:1442
 msgid "Verbano-Cusio-Ossola"
 msgstr ""
 
-#: includes/country-functions.php:1438
+#: includes/country-functions.php:1443
 msgid "Vercelli"
 msgstr ""
 
-#: includes/country-functions.php:1439
+#: includes/country-functions.php:1444
 msgid "Verona"
 msgstr ""
 
-#: includes/country-functions.php:1440
+#: includes/country-functions.php:1445
 msgid "Vibo Valentia"
 msgstr ""
 
-#: includes/country-functions.php:1441
+#: includes/country-functions.php:1446
 msgid "Vicenza"
 msgstr ""
 
-#: includes/country-functions.php:1442
+#: includes/country-functions.php:1447
 msgid "Viterbo"
 msgstr ""
 
-#: includes/country-functions.php:1457
+#: includes/country-functions.php:1462
 msgid "Khuzestan  (خوزستان)"
 msgstr ""
 
-#: includes/country-functions.php:1458
+#: includes/country-functions.php:1463
 msgid "Tehran  (تهران)"
 msgstr ""
 
-#: includes/country-functions.php:1459
+#: includes/country-functions.php:1464
 msgid "Ilaam (ایلام)"
 msgstr ""
 
-#: includes/country-functions.php:1460
+#: includes/country-functions.php:1465
 msgid "Bushehr (بوشهر)"
 msgstr ""
 
-#: includes/country-functions.php:1461
+#: includes/country-functions.php:1466
 msgid "Ardabil (اردبیل)"
 msgstr ""
 
-#: includes/country-functions.php:1462
+#: includes/country-functions.php:1467
 msgid "Isfahan (اصفهان)"
 msgstr ""
 
-#: includes/country-functions.php:1463
+#: includes/country-functions.php:1468
 msgid "Yazd (یزد)"
 msgstr ""
 
-#: includes/country-functions.php:1464
+#: includes/country-functions.php:1469
 msgid "Kermanshah (کرمانشاه)"
 msgstr ""
 
-#: includes/country-functions.php:1465
+#: includes/country-functions.php:1470
 msgid "Kerman (کرمان)"
 msgstr ""
 
-#: includes/country-functions.php:1466
+#: includes/country-functions.php:1471
 msgid "Hamadan (همدان)"
 msgstr ""
 
-#: includes/country-functions.php:1467
+#: includes/country-functions.php:1472
 msgid "Ghazvin (قزوین)"
 msgstr ""
 
-#: includes/country-functions.php:1468
+#: includes/country-functions.php:1473
 msgid "Zanjan (زنجان)"
 msgstr ""
 
-#: includes/country-functions.php:1469
+#: includes/country-functions.php:1474
 msgid "Luristan (لرستان)"
 msgstr ""
 
-#: includes/country-functions.php:1470
+#: includes/country-functions.php:1475
 msgid "Alborz (البرز)"
 msgstr ""
 
-#: includes/country-functions.php:1471
+#: includes/country-functions.php:1476
 msgid "East Azarbaijan (آذربایجان شرقی)"
 msgstr ""
 
-#: includes/country-functions.php:1472
+#: includes/country-functions.php:1477
 msgid "West Azarbaijan (آذربایجان غربی)"
 msgstr ""
 
-#: includes/country-functions.php:1473
+#: includes/country-functions.php:1478
 msgid "Chaharmahal and Bakhtiari (چهارمحال و بختیاری)"
 msgstr ""
 
-#: includes/country-functions.php:1474
+#: includes/country-functions.php:1479
 msgid "South Khorasan (خراسان جنوبی)"
 msgstr ""
 
-#: includes/country-functions.php:1475
+#: includes/country-functions.php:1480
 msgid "Razavi Khorasan (خراسان رضوی)"
 msgstr ""
 
-#: includes/country-functions.php:1476
+#: includes/country-functions.php:1481
 msgid "North Khorasan (خراسان جنوبی)"
 msgstr ""
 
-#: includes/country-functions.php:1477
+#: includes/country-functions.php:1482
 msgid "Semnan (سمنان)"
 msgstr ""
 
-#: includes/country-functions.php:1478
+#: includes/country-functions.php:1483
 msgid "Fars (فارس)"
 msgstr ""
 
-#: includes/country-functions.php:1479
+#: includes/country-functions.php:1484
 msgid "Qom (قم)"
 msgstr ""
 
-#: includes/country-functions.php:1480
+#: includes/country-functions.php:1485
 msgid "Kurdistan / کردستان)"
 msgstr ""
 
-#: includes/country-functions.php:1481
+#: includes/country-functions.php:1486
 msgid "Kohgiluyeh and BoyerAhmad (کهگیلوییه و بویراحمد)"
 msgstr ""
 
-#: includes/country-functions.php:1482
+#: includes/country-functions.php:1487
 msgid "Golestan (گلستان)"
 msgstr ""
 
-#: includes/country-functions.php:1483
+#: includes/country-functions.php:1488
 msgid "Gilan (گیلان)"
 msgstr ""
 
-#: includes/country-functions.php:1484
+#: includes/country-functions.php:1489
 msgid "Mazandaran (مازندران)"
 msgstr ""
 
-#: includes/country-functions.php:1485
+#: includes/country-functions.php:1490
 msgid "Markazi (مرکزی)"
 msgstr ""
 
-#: includes/country-functions.php:1486
+#: includes/country-functions.php:1491
 msgid "Hormozgan (هرمزگان)"
 msgstr ""
 
-#: includes/country-functions.php:1487
+#: includes/country-functions.php:1492
 msgid "Sistan and Baluchestan (سیستان و بلوچستان)"
 msgstr ""
 
-#: includes/country-functions.php:1502
+#: includes/country-functions.php:1507
 msgid "Clare"
 msgstr ""
 
-#: includes/country-functions.php:1503
+#: includes/country-functions.php:1508
 msgid "Cork"
 msgstr ""
 
-#: includes/country-functions.php:1504
+#: includes/country-functions.php:1509
 msgid "Cavan"
 msgstr ""
 
-#: includes/country-functions.php:1505
+#: includes/country-functions.php:1510
 msgid "Carlow"
 msgstr ""
 
-#: includes/country-functions.php:1506
+#: includes/country-functions.php:1511
 msgid "Donegal"
 msgstr ""
 
-#: includes/country-functions.php:1507
+#: includes/country-functions.php:1512
 msgid "Dublin"
 msgstr ""
 
-#: includes/country-functions.php:1508
+#: includes/country-functions.php:1513
 msgid "Galway"
 msgstr ""
 
-#: includes/country-functions.php:1509
+#: includes/country-functions.php:1514
 msgid "Kildare"
 msgstr ""
 
-#: includes/country-functions.php:1510
+#: includes/country-functions.php:1515
 msgid "Kilkenny"
 msgstr ""
 
-#: includes/country-functions.php:1511
+#: includes/country-functions.php:1516
 msgid "Kerry"
 msgstr ""
 
-#: includes/country-functions.php:1512
+#: includes/country-functions.php:1517
 msgid "Longford"
 msgstr ""
 
-#: includes/country-functions.php:1513
+#: includes/country-functions.php:1518
 msgid "Louth"
 msgstr ""
 
-#: includes/country-functions.php:1514
+#: includes/country-functions.php:1519
 msgid "Limerick"
 msgstr ""
 
-#: includes/country-functions.php:1515
+#: includes/country-functions.php:1520
 msgid "Leitrim"
 msgstr ""
 
-#: includes/country-functions.php:1516
+#: includes/country-functions.php:1521
 msgid "Laois"
 msgstr ""
 
-#: includes/country-functions.php:1517
+#: includes/country-functions.php:1522
 msgid "Meath"
 msgstr ""
 
-#: includes/country-functions.php:1518
+#: includes/country-functions.php:1523
 msgid "Monaghan"
 msgstr ""
 
-#: includes/country-functions.php:1519
+#: includes/country-functions.php:1524
 msgid "Mayo"
 msgstr ""
 
-#: includes/country-functions.php:1520
+#: includes/country-functions.php:1525
 msgid "Offaly"
 msgstr ""
 
-#: includes/country-functions.php:1521
+#: includes/country-functions.php:1526
 msgid "Roscommon"
 msgstr ""
 
-#: includes/country-functions.php:1522
+#: includes/country-functions.php:1527
 msgid "Sligo"
 msgstr ""
 
-#: includes/country-functions.php:1523
+#: includes/country-functions.php:1528
 msgid "Tipperary"
 msgstr ""
 
-#: includes/country-functions.php:1524
+#: includes/country-functions.php:1529
 msgid "Waterford"
 msgstr ""
 
-#: includes/country-functions.php:1525
+#: includes/country-functions.php:1530
 msgid "Westmeath"
 msgstr ""
 
-#: includes/country-functions.php:1526
+#: includes/country-functions.php:1531
 msgid "Wicklow"
 msgstr ""
 
-#: includes/country-functions.php:1527
+#: includes/country-functions.php:1532
 msgid "Wexford"
 msgstr ""
 
-#: includes/country-functions.php:1542
+#: includes/country-functions.php:1547
 msgid "Αττική"
 msgstr ""
 
-#: includes/country-functions.php:1543
+#: includes/country-functions.php:1548
 msgid "Ανατολική Μακεδονία και Θράκη"
 msgstr ""
 
-#: includes/country-functions.php:1544
+#: includes/country-functions.php:1549
 msgid "Κεντρική Μακεδονία"
 msgstr ""
 
-#: includes/country-functions.php:1545
+#: includes/country-functions.php:1550
 msgid "Δυτική Μακεδονία"
 msgstr ""
 
-#: includes/country-functions.php:1546
+#: includes/country-functions.php:1551
 msgid "Ήπειρος"
 msgstr ""
 
-#: includes/country-functions.php:1547
+#: includes/country-functions.php:1552
 msgid "Θεσσαλία"
 msgstr ""
 
-#: includes/country-functions.php:1548
+#: includes/country-functions.php:1553
 msgid "Ιόνιοι Νήσοι"
 msgstr ""
 
-#: includes/country-functions.php:1549
+#: includes/country-functions.php:1554
 msgid "Δυτική Ελλάδα"
 msgstr ""
 
-#: includes/country-functions.php:1550
+#: includes/country-functions.php:1555
 msgid "Στερεά Ελλάδα"
 msgstr ""
 
-#: includes/country-functions.php:1551
+#: includes/country-functions.php:1556
 msgid "Πελοπόννησος"
 msgstr ""
 
-#: includes/country-functions.php:1552
+#: includes/country-functions.php:1557
 msgid "Βόρειο Αιγαίο"
 msgstr ""
 
-#: includes/country-functions.php:1553
+#: includes/country-functions.php:1558
 msgid "Νότιο Αιγαίο"
 msgstr ""
 
-#: includes/country-functions.php:1554
+#: includes/country-functions.php:1559
 msgid "Κρήτη"
 msgstr ""
 
-#: includes/country-functions.php:1569
+#: includes/country-functions.php:1574
 msgid "Chuquisaca"
 msgstr ""
 
-#: includes/country-functions.php:1570
+#: includes/country-functions.php:1575
 msgid "Beni"
 msgstr ""
 
-#: includes/country-functions.php:1571
+#: includes/country-functions.php:1576
 msgid "Cochabamba"
 msgstr ""
 
-#: includes/country-functions.php:1572
+#: includes/country-functions.php:1577
 msgid "La Paz"
 msgstr ""
 
-#: includes/country-functions.php:1573
+#: includes/country-functions.php:1578
 msgid "Oruro"
 msgstr ""
 
-#: includes/country-functions.php:1574
+#: includes/country-functions.php:1579
 msgid "Pando"
 msgstr ""
 
-#: includes/country-functions.php:1575
+#: includes/country-functions.php:1580
 msgid "Potosí"
 msgstr ""
 
-#: includes/country-functions.php:1576, includes/country-functions.php:1731
+#: includes/country-functions.php:1581, includes/country-functions.php:1736
 msgid "Santa Cruz"
 msgstr ""
 
-#: includes/country-functions.php:1577
+#: includes/country-functions.php:1582
 msgid "Tarija"
 msgstr ""
 
-#: includes/country-functions.php:1592
+#: includes/country-functions.php:1597
 msgid "Blagoevgrad"
 msgstr ""
 
-#: includes/country-functions.php:1593
+#: includes/country-functions.php:1598
 msgid "Burgas"
 msgstr ""
 
-#: includes/country-functions.php:1594
+#: includes/country-functions.php:1599
 msgid "Dobrich"
 msgstr ""
 
-#: includes/country-functions.php:1595
+#: includes/country-functions.php:1600
 msgid "Gabrovo"
 msgstr ""
 
-#: includes/country-functions.php:1596
+#: includes/country-functions.php:1601
 msgid "Haskovo"
 msgstr ""
 
-#: includes/country-functions.php:1597
+#: includes/country-functions.php:1602
 msgid "Kardzhali"
 msgstr ""
 
-#: includes/country-functions.php:1598
+#: includes/country-functions.php:1603
 msgid "Kyustendil"
 msgstr ""
 
-#: includes/country-functions.php:1599
+#: includes/country-functions.php:1604
 msgid "Lovech"
 msgstr ""
 
-#: includes/country-functions.php:1600
+#: includes/country-functions.php:1605
 msgid "Montana"
 msgstr ""
 
-#: includes/country-functions.php:1601
+#: includes/country-functions.php:1606
 msgid "Pazardzhik"
 msgstr ""
 
-#: includes/country-functions.php:1602
+#: includes/country-functions.php:1607
 msgid "Pernik"
 msgstr ""
 
-#: includes/country-functions.php:1603
+#: includes/country-functions.php:1608
 msgid "Pleven"
 msgstr ""
 
-#: includes/country-functions.php:1604
+#: includes/country-functions.php:1609
 msgid "Plovdiv"
 msgstr ""
 
-#: includes/country-functions.php:1605
+#: includes/country-functions.php:1610
 msgid "Razgrad"
 msgstr ""
 
-#: includes/country-functions.php:1606
+#: includes/country-functions.php:1611
 msgid "Ruse"
 msgstr ""
 
-#: includes/country-functions.php:1607
+#: includes/country-functions.php:1612
 msgid "Shumen"
 msgstr ""
 
-#: includes/country-functions.php:1608
+#: includes/country-functions.php:1613
 msgid "Silistra"
 msgstr ""
 
-#: includes/country-functions.php:1609
+#: includes/country-functions.php:1614
 msgid "Sliven"
 msgstr ""
 
-#: includes/country-functions.php:1610
+#: includes/country-functions.php:1615
 msgid "Smolyan"
 msgstr ""
 
-#: includes/country-functions.php:1611
+#: includes/country-functions.php:1616
 msgid "Sofia"
 msgstr ""
 
-#: includes/country-functions.php:1612
+#: includes/country-functions.php:1617
 msgid "Sofia-Grad"
 msgstr ""
 
-#: includes/country-functions.php:1613
+#: includes/country-functions.php:1618
 msgid "Stara Zagora"
 msgstr ""
 
-#: includes/country-functions.php:1614
+#: includes/country-functions.php:1619
 msgid "Targovishte"
 msgstr ""
 
-#: includes/country-functions.php:1615
+#: includes/country-functions.php:1620
 msgid "Varna"
 msgstr ""
 
-#: includes/country-functions.php:1616
+#: includes/country-functions.php:1621
 msgid "Veliko Tarnovo"
 msgstr ""
 
-#: includes/country-functions.php:1617
+#: includes/country-functions.php:1622
 msgid "Vidin"
 msgstr ""
 
-#: includes/country-functions.php:1618
+#: includes/country-functions.php:1623
 msgid "Vratsa"
 msgstr ""
 
-#: includes/country-functions.php:1619
+#: includes/country-functions.php:1624
 msgid "Yambol"
 msgstr ""
 
-#: includes/country-functions.php:1634
+#: includes/country-functions.php:1639
 msgid "Bagerhat"
 msgstr ""
 
-#: includes/country-functions.php:1635
+#: includes/country-functions.php:1640
 msgid "Bandarban"
 msgstr ""
 
-#: includes/country-functions.php:1636
+#: includes/country-functions.php:1641
 msgid "Barguna"
 msgstr ""
 
-#: includes/country-functions.php:1637
+#: includes/country-functions.php:1642
 msgid "Barisal"
 msgstr ""
 
-#: includes/country-functions.php:1638
+#: includes/country-functions.php:1643
 msgid "Bhola"
 msgstr ""
 
-#: includes/country-functions.php:1639
+#: includes/country-functions.php:1644
 msgid "Bogra"
 msgstr ""
 
-#: includes/country-functions.php:1640
+#: includes/country-functions.php:1645
 msgid "Brahmanbaria"
 msgstr ""
 
-#: includes/country-functions.php:1641
+#: includes/country-functions.php:1646
 msgid "Chandpur"
 msgstr ""
 
-#: includes/country-functions.php:1642
+#: includes/country-functions.php:1647
 msgid "Chittagong"
 msgstr ""
 
-#: includes/country-functions.php:1643
+#: includes/country-functions.php:1648
 msgid "Chuadanga"
 msgstr ""
 
-#: includes/country-functions.php:1644
+#: includes/country-functions.php:1649
 msgid "Comilla"
 msgstr ""
 
-#: includes/country-functions.php:1645
+#: includes/country-functions.php:1650
 msgid "Cox's Bazar"
 msgstr ""
 
-#: includes/country-functions.php:1646
+#: includes/country-functions.php:1651
 msgid "Dhaka"
 msgstr ""
 
-#: includes/country-functions.php:1647
+#: includes/country-functions.php:1652
 msgid "Dinajpur"
 msgstr ""
 
-#: includes/country-functions.php:1648
+#: includes/country-functions.php:1653
 msgid "Faridpur "
 msgstr ""
 
-#: includes/country-functions.php:1649
+#: includes/country-functions.php:1654
 msgid "Feni"
 msgstr ""
 
-#: includes/country-functions.php:1650
+#: includes/country-functions.php:1655
 msgid "Gaibandha"
 msgstr ""
 
-#: includes/country-functions.php:1651
+#: includes/country-functions.php:1656
 msgid "Gazipur"
 msgstr ""
 
-#: includes/country-functions.php:1652
+#: includes/country-functions.php:1657
 msgid "Gopalganj"
 msgstr ""
 
-#: includes/country-functions.php:1653
+#: includes/country-functions.php:1658
 msgid "Habiganj"
 msgstr ""
 
-#: includes/country-functions.php:1654
+#: includes/country-functions.php:1659
 msgid "Jamalpur"
 msgstr ""
 
-#: includes/country-functions.php:1655
+#: includes/country-functions.php:1660
 msgid "Jessore"
 msgstr ""
 
-#: includes/country-functions.php:1656
+#: includes/country-functions.php:1661
 msgid "Jhalokati"
 msgstr ""
 
-#: includes/country-functions.php:1657
+#: includes/country-functions.php:1662
 msgid "Jhenaidah"
 msgstr ""
 
-#: includes/country-functions.php:1658
+#: includes/country-functions.php:1663
 msgid "Joypurhat"
 msgstr ""
 
-#: includes/country-functions.php:1659
+#: includes/country-functions.php:1664
 msgid "Khagrachhari"
 msgstr ""
 
-#: includes/country-functions.php:1660
+#: includes/country-functions.php:1665
 msgid "Khulna"
 msgstr ""
 
-#: includes/country-functions.php:1661
+#: includes/country-functions.php:1666
 msgid "Kishoreganj"
 msgstr ""
 
-#: includes/country-functions.php:1662
+#: includes/country-functions.php:1667
 msgid "Kurigram"
 msgstr ""
 
-#: includes/country-functions.php:1663
+#: includes/country-functions.php:1668
 msgid "Kushtia"
 msgstr ""
 
-#: includes/country-functions.php:1664
+#: includes/country-functions.php:1669
 msgid "Lakshmipur"
 msgstr ""
 
-#: includes/country-functions.php:1665
+#: includes/country-functions.php:1670
 msgid "Lalmonirhat"
 msgstr ""
 
-#: includes/country-functions.php:1666
+#: includes/country-functions.php:1671
 msgid "Madaripur"
 msgstr ""
 
-#: includes/country-functions.php:1667
+#: includes/country-functions.php:1672
 msgid "Magura"
 msgstr ""
 
-#: includes/country-functions.php:1668
+#: includes/country-functions.php:1673
 msgid "Manikganj "
 msgstr ""
 
-#: includes/country-functions.php:1669
+#: includes/country-functions.php:1674
 msgid "Meherpur"
 msgstr ""
 
-#: includes/country-functions.php:1670
+#: includes/country-functions.php:1675
 msgid "Moulvibazar"
 msgstr ""
 
-#: includes/country-functions.php:1671
+#: includes/country-functions.php:1676
 msgid "Munshiganj"
 msgstr ""
 
-#: includes/country-functions.php:1672
+#: includes/country-functions.php:1677
 msgid "Mymensingh"
 msgstr ""
 
-#: includes/country-functions.php:1673
+#: includes/country-functions.php:1678
 msgid "Naogaon"
 msgstr ""
 
-#: includes/country-functions.php:1674
+#: includes/country-functions.php:1679
 msgid "Narail"
 msgstr ""
 
-#: includes/country-functions.php:1675
+#: includes/country-functions.php:1680
 msgid "Narayanganj"
 msgstr ""
 
-#: includes/country-functions.php:1676
+#: includes/country-functions.php:1681
 msgid "Narsingdi"
 msgstr ""
 
-#: includes/country-functions.php:1677
+#: includes/country-functions.php:1682
 msgid "Natore"
 msgstr ""
 
-#: includes/country-functions.php:1678
+#: includes/country-functions.php:1683
 msgid "Nawabganj"
 msgstr ""
 
-#: includes/country-functions.php:1679
+#: includes/country-functions.php:1684
 msgid "Netrakona"
 msgstr ""
 
-#: includes/country-functions.php:1680
+#: includes/country-functions.php:1685
 msgid "Nilphamari"
 msgstr ""
 
-#: includes/country-functions.php:1681
+#: includes/country-functions.php:1686
 msgid "Noakhali"
 msgstr ""
 
-#: includes/country-functions.php:1682
+#: includes/country-functions.php:1687
 msgid "Pabna"
 msgstr ""
 
-#: includes/country-functions.php:1683
+#: includes/country-functions.php:1688
 msgid "Panchagarh"
 msgstr ""
 
-#: includes/country-functions.php:1684
+#: includes/country-functions.php:1689
 msgid "Patuakhali"
 msgstr ""
 
-#: includes/country-functions.php:1685
+#: includes/country-functions.php:1690
 msgid "Pirojpur"
 msgstr ""
 
-#: includes/country-functions.php:1686
+#: includes/country-functions.php:1691
 msgid "Rajbari"
 msgstr ""
 
-#: includes/country-functions.php:1687
+#: includes/country-functions.php:1692
 msgid "Rajshahi"
 msgstr ""
 
-#: includes/country-functions.php:1688
+#: includes/country-functions.php:1693
 msgid "Rangamati"
 msgstr ""
 
-#: includes/country-functions.php:1689
+#: includes/country-functions.php:1694
 msgid "Rangpur"
 msgstr ""
 
-#: includes/country-functions.php:1690
+#: includes/country-functions.php:1695
 msgid "Satkhira"
 msgstr ""
 
-#: includes/country-functions.php:1691
+#: includes/country-functions.php:1696
 msgid "Shariatpur"
 msgstr ""
 
-#: includes/country-functions.php:1692
+#: includes/country-functions.php:1697
 msgid "Sherpur"
 msgstr ""
 
-#: includes/country-functions.php:1693
+#: includes/country-functions.php:1698
 msgid "Sirajganj"
 msgstr ""
 
-#: includes/country-functions.php:1694
+#: includes/country-functions.php:1699
 msgid "Sunamganj"
 msgstr ""
 
-#: includes/country-functions.php:1695
+#: includes/country-functions.php:1700
 msgid "Sylhet"
 msgstr ""
 
-#: includes/country-functions.php:1696
+#: includes/country-functions.php:1701
 msgid "Tangail"
 msgstr ""
 
-#: includes/country-functions.php:1697
+#: includes/country-functions.php:1702
 msgid "Thakurgaon"
 msgstr ""
 
-#: includes/country-functions.php:1712
+#: includes/country-functions.php:1717
 msgid "Ciudad Aut&oacute;noma de Buenos Aires"
 msgstr ""
 
-#: includes/country-functions.php:1713
+#: includes/country-functions.php:1718
 msgid "Buenos Aires"
 msgstr ""
 
-#: includes/country-functions.php:1714
+#: includes/country-functions.php:1719
 msgid "Catamarca"
 msgstr ""
 
-#: includes/country-functions.php:1715
+#: includes/country-functions.php:1720
 msgid "Chaco"
 msgstr ""
 
-#: includes/country-functions.php:1716
+#: includes/country-functions.php:1721
 msgid "Chubut"
 msgstr ""
 
-#: includes/country-functions.php:1717, includes/country-functions.php:2307
+#: includes/country-functions.php:1722, includes/country-functions.php:2312
 msgid "C&oacute;rdoba"
 msgstr ""
 
-#: includes/country-functions.php:1718
+#: includes/country-functions.php:1723
 msgid "Corrientes"
 msgstr ""
 
-#: includes/country-functions.php:1719
+#: includes/country-functions.php:1724
 msgid "Entre R&iacute;os"
 msgstr ""
 
-#: includes/country-functions.php:1720
+#: includes/country-functions.php:1725
 msgid "Formosa"
 msgstr ""
 
-#: includes/country-functions.php:1721
+#: includes/country-functions.php:1726
 msgid "Jujuy"
 msgstr ""
 
-#: includes/country-functions.php:1722
+#: includes/country-functions.php:1727
 msgid "La Pampa"
 msgstr ""
 
-#: includes/country-functions.php:1723, includes/country-functions.php:2316
+#: includes/country-functions.php:1728, includes/country-functions.php:2321
 msgid "La Rioja"
 msgstr ""
 
-#: includes/country-functions.php:1724
+#: includes/country-functions.php:1729
 msgid "Mendoza"
 msgstr ""
 
-#: includes/country-functions.php:1725
+#: includes/country-functions.php:1730
 msgid "Misiones"
 msgstr ""
 
-#: includes/country-functions.php:1726
+#: includes/country-functions.php:1731
 msgid "Neuqu&eacute;n"
 msgstr ""
 
-#: includes/country-functions.php:1727
+#: includes/country-functions.php:1732
 msgid "R&iacute;o Negro"
 msgstr ""
 
-#: includes/country-functions.php:1728
+#: includes/country-functions.php:1733
 msgid "Salta"
 msgstr ""
 
-#: includes/country-functions.php:1729
+#: includes/country-functions.php:1734
 msgid "San Juan"
 msgstr ""
 
-#: includes/country-functions.php:1730
+#: includes/country-functions.php:1735
 msgid "San Luis"
 msgstr ""
 
-#: includes/country-functions.php:1732
+#: includes/country-functions.php:1737
 msgid "Santa Fe"
 msgstr ""
 
-#: includes/country-functions.php:1733
+#: includes/country-functions.php:1738
 msgid "Santiago del Estero"
 msgstr ""
 
-#: includes/country-functions.php:1734
+#: includes/country-functions.php:1739
 msgid "Tierra del Fuego"
 msgstr ""
 
-#: includes/country-functions.php:1735
+#: includes/country-functions.php:1740
 msgid "Tucum&aacute;n"
 msgstr ""
 
-#: includes/country-functions.php:1832
+#: includes/country-functions.php:1837
 msgid "Alberta"
 msgstr ""
 
-#: includes/country-functions.php:1833
+#: includes/country-functions.php:1838
 msgid "British Columbia"
 msgstr ""
 
-#: includes/country-functions.php:1834
+#: includes/country-functions.php:1839
 msgid "Manitoba"
 msgstr ""
 
-#: includes/country-functions.php:1835
+#: includes/country-functions.php:1840
 msgid "New Brunswick"
 msgstr ""
 
-#: includes/country-functions.php:1836
+#: includes/country-functions.php:1841
 msgid "Newfoundland and Labrador"
 msgstr ""
 
-#: includes/country-functions.php:1837
+#: includes/country-functions.php:1842
 msgid "Nova Scotia"
 msgstr ""
 
-#: includes/country-functions.php:1838
+#: includes/country-functions.php:1843
 msgid "Northwest Territories"
 msgstr ""
 
-#: includes/country-functions.php:1839
+#: includes/country-functions.php:1844
 msgid "Nunavut"
 msgstr ""
 
-#: includes/country-functions.php:1840
+#: includes/country-functions.php:1845
 msgid "Ontario"
 msgstr ""
 
-#: includes/country-functions.php:1841
+#: includes/country-functions.php:1846
 msgid "Prince Edward Island"
 msgstr ""
 
-#: includes/country-functions.php:1842
+#: includes/country-functions.php:1847
 msgid "Quebec"
 msgstr ""
 
-#: includes/country-functions.php:1843
+#: includes/country-functions.php:1848
 msgid "Saskatchewan"
 msgstr ""
 
-#: includes/country-functions.php:1844
+#: includes/country-functions.php:1849
 msgid "Yukon"
 msgstr ""
 
-#: includes/country-functions.php:2290
+#: includes/country-functions.php:2295
 msgid "A Coru&ntilde;a"
 msgstr ""
 
-#: includes/country-functions.php:2291
+#: includes/country-functions.php:2296
 msgid "Álava"
 msgstr ""
 
-#: includes/country-functions.php:2292
+#: includes/country-functions.php:2297
 msgid "Albacete"
 msgstr ""
 
-#: includes/country-functions.php:2293
+#: includes/country-functions.php:2298
 msgid "Alicante"
 msgstr ""
 
-#: includes/country-functions.php:2294
+#: includes/country-functions.php:2299
 msgid "Almer&iacute;a"
 msgstr ""
 
-#: includes/country-functions.php:2295
+#: includes/country-functions.php:2300
 msgid "Asturias"
 msgstr ""
 
-#: includes/country-functions.php:2296
+#: includes/country-functions.php:2301
 msgid "&Aacute;vila"
 msgstr ""
 
-#: includes/country-functions.php:2297
+#: includes/country-functions.php:2302
 msgid "Badajoz"
 msgstr ""
 
-#: includes/country-functions.php:2298
+#: includes/country-functions.php:2303
 msgid "Baleares"
 msgstr ""
 
-#: includes/country-functions.php:2299
+#: includes/country-functions.php:2304
 msgid "Barcelona"
 msgstr ""
 
-#: includes/country-functions.php:2300
+#: includes/country-functions.php:2305
 msgid "Burgos"
 msgstr ""
 
-#: includes/country-functions.php:2301
+#: includes/country-functions.php:2306
 msgid "C&aacute;ceres"
 msgstr ""
 
-#: includes/country-functions.php:2302
+#: includes/country-functions.php:2307
 msgid "C&aacute;diz"
 msgstr ""
 
-#: includes/country-functions.php:2303
+#: includes/country-functions.php:2308
 msgid "Cantabria"
 msgstr ""
 
-#: includes/country-functions.php:2304
+#: includes/country-functions.php:2309
 msgid "Castell&oacute;n"
 msgstr ""
 
-#: includes/country-functions.php:2305
+#: includes/country-functions.php:2310
 msgid "Ceuta"
 msgstr ""
 
-#: includes/country-functions.php:2306
+#: includes/country-functions.php:2311
 msgid "Ciudad Real"
 msgstr ""
 
-#: includes/country-functions.php:2308
+#: includes/country-functions.php:2313
 msgid "Cuenca"
 msgstr ""
 
-#: includes/country-functions.php:2309
+#: includes/country-functions.php:2314
 msgid "Girona"
 msgstr ""
 
-#: includes/country-functions.php:2310
+#: includes/country-functions.php:2315
 msgid "Granada"
 msgstr ""
 
-#: includes/country-functions.php:2311
+#: includes/country-functions.php:2316
 msgid "Guadalajara"
 msgstr ""
 
-#: includes/country-functions.php:2312
+#: includes/country-functions.php:2317
 msgid "Gipuzkoa"
 msgstr ""
 
-#: includes/country-functions.php:2313
+#: includes/country-functions.php:2318
 msgid "Huelva"
 msgstr ""
 
-#: includes/country-functions.php:2314
+#: includes/country-functions.php:2319
 msgid "Huesca"
 msgstr ""
 
-#: includes/country-functions.php:2315
+#: includes/country-functions.php:2320
 msgid "Ja&eacute;n"
 msgstr ""
 
-#: includes/country-functions.php:2317
+#: includes/country-functions.php:2322
 msgid "Las Palmas"
 msgstr ""
 
-#: includes/country-functions.php:2318
+#: includes/country-functions.php:2323
 msgid "Le&oacute;n"
 msgstr ""
 
-#: includes/country-functions.php:2319
+#: includes/country-functions.php:2324
 msgid "Lleida"
 msgstr ""
 
-#: includes/country-functions.php:2320
+#: includes/country-functions.php:2325
 msgid "Lugo"
 msgstr ""
 
-#: includes/country-functions.php:2321
+#: includes/country-functions.php:2326
 msgid "Madrid"
 msgstr ""
 
-#: includes/country-functions.php:2322
+#: includes/country-functions.php:2327
 msgid "M&aacute;laga"
 msgstr ""
 
-#: includes/country-functions.php:2323
+#: includes/country-functions.php:2328
 msgid "Melilla"
 msgstr ""
 
-#: includes/country-functions.php:2324
+#: includes/country-functions.php:2329
 msgid "Murcia"
 msgstr ""
 
-#: includes/country-functions.php:2325
+#: includes/country-functions.php:2330
 msgid "Navarra"
 msgstr ""
 
-#: includes/country-functions.php:2326
+#: includes/country-functions.php:2331
 msgid "Ourense"
 msgstr ""
 
-#: includes/country-functions.php:2327
+#: includes/country-functions.php:2332
 msgid "Palencia"
 msgstr ""
 
-#: includes/country-functions.php:2328
+#: includes/country-functions.php:2333
 msgid "Pontevedra"
 msgstr ""
 
-#: includes/country-functions.php:2329
+#: includes/country-functions.php:2334
 msgid "Salamanca"
 msgstr ""
 
-#: includes/country-functions.php:2330
+#: includes/country-functions.php:2335
 msgid "Santa Cruz de Tenerife"
 msgstr ""
 
-#: includes/country-functions.php:2331
+#: includes/country-functions.php:2336
 msgid "Segovia"
 msgstr ""
 
-#: includes/country-functions.php:2332
+#: includes/country-functions.php:2337
 msgid "Sevilla"
 msgstr ""
 
-#: includes/country-functions.php:2333
+#: includes/country-functions.php:2338
 msgid "Soria"
 msgstr ""
 
-#: includes/country-functions.php:2334
+#: includes/country-functions.php:2339
 msgid "Tarragona"
 msgstr ""
 
-#: includes/country-functions.php:2335
+#: includes/country-functions.php:2340
 msgid "Teruel"
 msgstr ""
 
-#: includes/country-functions.php:2336
+#: includes/country-functions.php:2341
 msgid "Toledo"
 msgstr ""
 
-#: includes/country-functions.php:2337
+#: includes/country-functions.php:2342
 msgid "Valencia"
 msgstr ""
 
-#: includes/country-functions.php:2338
+#: includes/country-functions.php:2343
 msgid "Valladolid"
 msgstr ""
 
-#: includes/country-functions.php:2339
+#: includes/country-functions.php:2344
 msgid "Bizkaia"
 msgstr ""
 
-#: includes/country-functions.php:2340
+#: includes/country-functions.php:2345
 msgid "Zamora"
 msgstr ""
 
-#: includes/country-functions.php:2341
+#: includes/country-functions.php:2346
 msgid "Zaragoza"
 msgstr ""
 
@@ -5487,35 +5487,35 @@ msgstr ""
 msgid "Zambian kwacha (%1$s)"
 msgstr ""
 
-#: includes/formatting.php:539
+#: includes/formatting.php:533
 msgid "%s arab"
 msgstr ""
 
-#: includes/formatting.php:541
+#: includes/formatting.php:535
 msgid "%s crore"
 msgstr ""
 
-#: includes/formatting.php:543
+#: includes/formatting.php:537
 msgid "%s lakh"
 msgstr ""
 
-#: includes/formatting.php:549
+#: includes/formatting.php:543
 msgid "%s trillion"
 msgstr ""
 
-#: includes/formatting.php:551
+#: includes/formatting.php:545
 msgid "%s billion"
 msgstr ""
 
-#: includes/formatting.php:553
+#: includes/formatting.php:547
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:796, includes/formatting.php:833, includes/process-donation.php:849, includes/gateways/actions.php:48
-msgid "Nonce verification has failed."
+#: includes/formatting.php:748, includes/formatting.php:785, includes/process-donation.php:850, includes/api/class-give-api.php:1868, includes/forms/functions.php:330, includes/gateways/actions.php:48, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
+msgid "We're unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance."
 msgstr ""
 
-#: includes/install.php:356, includes/forms/template.php:1714, includes/forms/template.php:1719, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:305
+#: includes/install.php:356, includes/forms/template.php:1712, includes/forms/template.php:1717, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:305
 msgid "Agree to Terms?"
 msgstr ""
 
@@ -5535,11 +5535,11 @@ msgstr ""
 msgid "Donation History"
 msgstr ""
 
-#: includes/login-register.php:122, includes/process-donation.php:940
+#: includes/login-register.php:122, includes/process-donation.php:941
 msgid "The password you entered is incorrect."
 msgstr ""
 
-#: includes/login-register.php:125, includes/process-donation.php:964
+#: includes/login-register.php:125, includes/process-donation.php:965
 msgid "The username you entered does not exist."
 msgstr ""
 
@@ -5555,7 +5555,7 @@ msgstr ""
 msgid "Email address already taken."
 msgstr ""
 
-#: includes/login-register.php:267, includes/process-donation.php:805, includes/process-donation.php:1005, includes/user-functions.php:367, includes/admin/donors/donor-actions.php:394
+#: includes/login-register.php:267, includes/process-donation.php:806, includes/process-donation.php:1006, includes/user-functions.php:367, includes/admin/donors/donor-actions.php:394
 msgid "Invalid email."
 msgstr ""
 
@@ -5627,35 +5627,35 @@ msgstr ""
 msgid "array_column(): The index key should be either a string or an integer."
 msgstr ""
 
-#: includes/misc-functions.php:1496, includes/admin/tools/import/class-give-import-core-settings.php:467
+#: includes/misc-functions.php:1521, includes/admin/tools/import/class-give-import-core-settings.php:467
 msgid "Please upload or provide a valid JSON file."
 msgstr ""
 
-#: includes/misc-functions.php:1528
+#: includes/misc-functions.php:1553
 msgid "For security reasons, please confirm your email address (%s) to view your complete donation history."
 msgstr ""
 
-#: includes/misc-functions.php:1534, includes/admin/emails/class-email-access-email.php:45
+#: includes/misc-functions.php:1559, includes/admin/emails/class-email-access-email.php:45
 msgid "Confirm Email"
 msgstr ""
 
-#: includes/misc-functions.php:1536
+#: includes/misc-functions.php:1561
 msgid "Email Sent!"
 msgstr ""
 
-#: includes/misc-functions.php:2125, includes/misc-functions.php:2165
+#: includes/misc-functions.php:2147, includes/misc-functions.php:2187
 msgid "View the receipt in your browser &raquo;"
 msgstr ""
 
-#: includes/misc-functions.php:2242
+#: includes/misc-functions.php:2264
 msgid "You are trying to access invalid donation receipt. Please try again."
 msgstr ""
 
-#: includes/misc-functions.php:2263
+#: includes/misc-functions.php:2285
 msgid "You must be logged in to view this donation receipt."
 msgstr ""
 
-#: includes/post-types.php:55, includes/post-types.php:259, includes/admin/donors/class-donor-table.php:118, includes/admin/donors/donors.php:905, includes/admin/payments/class-payments-table.php:194, includes/admin/reports/class-form-reports-table.php:120
+#: includes/post-types.php:55, includes/post-types.php:259, includes/admin/donors/class-donor-table.php:118, includes/admin/donors/donors.php:907, includes/admin/payments/class-payments-table.php:194, includes/admin/reports/class-form-reports-table.php:120
 msgid "Form"
 msgstr ""
 
@@ -5679,7 +5679,7 @@ msgstr ""
 msgid "All Forms"
 msgstr ""
 
-#: includes/post-types.php:61, includes/post-types.php:418, includes/post-types.php:419, includes/post-types.php:420, includes/post-types.php:421, includes/post-types.php:422, includes/admin/donors/donors.php:924
+#: includes/post-types.php:61, includes/post-types.php:418, includes/post-types.php:419, includes/post-types.php:420, includes/post-types.php:421, includes/post-types.php:422, includes/admin/donors/donors.php:926
 msgid "View Form"
 msgstr ""
 
@@ -5729,7 +5729,7 @@ msgstr ""
 msgid "All Donations"
 msgstr ""
 
-#: includes/post-types.php:116, includes/admin/donors/donors.php:869
+#: includes/post-types.php:116, includes/admin/donors/donors.php:871
 msgid "View Donation"
 msgstr ""
 
@@ -5845,7 +5845,7 @@ msgstr ""
 msgid "Enter form title here"
 msgstr ""
 
-#: includes/post-types.php:330, includes/payments/functions.php:544, includes/admin/payments/class-payments-table.php:317
+#: includes/post-types.php:330, includes/payments/functions.php:542, includes/admin/payments/class-payments-table.php:317
 msgid "Refunded"
 msgstr ""
 
@@ -5861,7 +5861,7 @@ msgid_plural "Failed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:346, includes/payments/functions.php:550, includes/admin/payments/class-payments-table.php:321
+#: includes/post-types.php:346, includes/payments/functions.php:548, includes/admin/payments/class-payments-table.php:321
 msgid "Revoked"
 msgstr ""
 
@@ -5871,7 +5871,7 @@ msgid_plural "Revoked <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:354, includes/payments/functions.php:546, includes/admin/payments/class-payments-table.php:329
+#: includes/post-types.php:354, includes/payments/functions.php:544, includes/admin/payments/class-payments-table.php:329
 msgid "Cancelled"
 msgstr ""
 
@@ -5881,7 +5881,7 @@ msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:362, includes/payments/functions.php:547, includes/admin/payments/class-payments-table.php:333
+#: includes/post-types.php:362, includes/payments/functions.php:545, includes/admin/payments/class-payments-table.php:333
 msgid "Abandoned"
 msgstr ""
 
@@ -5977,76 +5977,76 @@ msgstr ""
 msgid "This form has a maximum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:594
+#: includes/process-donation.php:595
 msgid "Please enter your title."
 msgstr ""
 
-#: includes/process-donation.php:611
+#: includes/process-donation.php:612
 msgid "Please enter a credit card number."
 msgstr ""
 
-#: includes/process-donation.php:622
+#: includes/process-donation.php:623
 msgid "Please enter a credit card CVC information."
 msgstr ""
 
-#: includes/process-donation.php:633
+#: includes/process-donation.php:634
 msgid "Please enter a name of your credit card account holder."
 msgstr ""
 
-#: includes/process-donation.php:644
+#: includes/process-donation.php:645
 msgid "Please enter a credit card expiry date."
 msgstr ""
 
-#: includes/process-donation.php:654
+#: includes/process-donation.php:655
 msgid "Please enter your primary billing address."
 msgstr ""
 
-#: includes/process-donation.php:658
+#: includes/process-donation.php:659
 msgid "Please enter your zip / postal code."
 msgstr ""
 
-#: includes/process-donation.php:662
+#: includes/process-donation.php:663
 msgid "Please enter your billing city."
 msgstr ""
 
-#: includes/process-donation.php:666
+#: includes/process-donation.php:667
 msgid "Please select your billing country."
 msgstr ""
 
-#: includes/process-donation.php:672
+#: includes/process-donation.php:673
 msgid "Please enter billing state / province / County."
 msgstr ""
 
-#: includes/process-donation.php:714
+#: includes/process-donation.php:715
 msgid "Please enter Company Name."
 msgstr ""
 
-#: includes/process-donation.php:810
+#: includes/process-donation.php:811
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:907
+#: includes/process-donation.php:908
 msgid "Please enter your username or email to log in."
 msgstr ""
 
-#: includes/process-donation.php:942, templates/shortcode-login.php:51, includes/forms/template.php:1505
+#: includes/process-donation.php:943, templates/shortcode-login.php:51, includes/forms/template.php:1503
 msgid "Reset Password"
 msgstr ""
 
-#: includes/process-donation.php:1031, includes/user-functions.php:357
+#: includes/process-donation.php:1032, includes/user-functions.php:357
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:1215
+#: includes/process-donation.php:1216
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
 #. translators: %s: invalid donation amount
-#: includes/process-donation.php:1524
+#: includes/process-donation.php:1525
 msgid "Donation amount %s is invalid."
 msgstr ""
 
-#: includes/process-donation.php:1575
+#: includes/process-donation.php:1576
 msgid "The First Name and Last Name fields cannot contain an email address or numbers."
 msgstr ""
 
@@ -6094,15 +6094,15 @@ msgstr ""
 msgid "Hey! We've raised {total} of the {total_goal} we are trying to raise for this campaign!"
 msgstr ""
 
-#: includes/shortcodes.php:558, includes/forms/template.php:686, includes/forms/template.php:1893, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
+#: includes/shortcodes.php:558, includes/forms/template.php:686, includes/forms/template.php:1891, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
 msgid "Donate Now"
 msgstr ""
 
-#: includes/shortcodes.php:931
+#: includes/shortcodes.php:961
 msgid "« Previous"
 msgstr ""
 
-#: includes/shortcodes.php:932
+#: includes/shortcodes.php:962
 msgid "Next »"
 msgstr ""
 
@@ -6151,7 +6151,7 @@ msgstr ""
 msgid "Donation Email:"
 msgstr ""
 
-#: templates/email-login-form.php:108, templates/shortcode-profile-editor.php:118, includes/admin/import-functions.php:473, includes/forms/template.php:831, includes/forms/template.php:842, includes/admin/donors/donors.php:809, includes/admin/tools/export/give-export-donations-exporter.php:189, includes/admin/tools/import/class-give-import-donations.php:483
+#: templates/email-login-form.php:108, templates/shortcode-profile-editor.php:118, includes/admin/import-functions.php:473, includes/forms/template.php:831, includes/forms/template.php:842, includes/admin/donors/donors.php:811, includes/admin/tools/export/give-export-donations-exporter.php:189, includes/admin/tools/import/class-give-import-donations.php:483
 msgid "Email Address"
 msgstr ""
 
@@ -6159,11 +6159,11 @@ msgstr ""
 msgid "Verify Email"
 msgstr ""
 
-#: templates/history-donations.php:67, includes/admin/donors/donors.php:840, includes/admin/forms/class-metabox-form-data.php:195, includes/admin/tools/export/class-export.php:80
+#: templates/history-donations.php:67, includes/admin/donors/donors.php:842, includes/admin/forms/class-metabox-form-data.php:195, includes/admin/tools/export/class-export.php:80
 msgid "ID"
 msgstr ""
 
-#: templates/history-donations.php:68, templates/shortcode-receipt.php:63, includes/admin/import-functions.php:423, includes/admin/donors/donors.php:842, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:407, includes/admin/payments/view-payment-details.php:180, includes/admin/tools/export/class-export-earnings.php:60, includes/admin/tools/export/class-export.php:81, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:139, includes/admin/tools/logs/class-update-logs-list-table.php:80, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:88
+#: templates/history-donations.php:68, templates/shortcode-receipt.php:63, includes/admin/import-functions.php:423, includes/admin/donors/donors.php:844, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:407, includes/admin/payments/view-payment-details.php:180, includes/admin/tools/export/class-export-earnings.php:60, includes/admin/tools/export/class-export.php:81, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:139, includes/admin/tools/logs/class-update-logs-list-table.php:80, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:88
 msgid "Date"
 msgstr ""
 
@@ -6171,11 +6171,11 @@ msgstr ""
 msgid "Donor"
 msgstr ""
 
-#: templates/history-donations.php:70, includes/admin/import-functions.php:410, includes/admin/donors/donors.php:841, includes/admin/forms/class-metabox-form-data.php:200, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:408
+#: templates/history-donations.php:70, includes/admin/import-functions.php:410, includes/admin/donors/donors.php:843, includes/admin/forms/class-metabox-form-data.php:200, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:408
 msgid "Amount"
 msgstr ""
 
-#: templates/history-donations.php:71, includes/admin/import-functions.php:477, includes/admin/donors/donors.php:843, includes/admin/payments/class-payments-table.php:406
+#: templates/history-donations.php:71, includes/admin/import-functions.php:477, includes/admin/donors/donors.php:845, includes/admin/payments/class-payments-table.php:406
 msgid "Status"
 msgstr ""
 
@@ -6245,7 +6245,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: templates/shortcode-login.php:38, templates/shortcode-register.php:44, includes/forms/template.php:1489
+#: templates/shortcode-login.php:38, templates/shortcode-register.php:44, includes/forms/template.php:1487
 msgid "Password"
 msgstr ""
 
@@ -6278,11 +6278,11 @@ msgstr ""
 msgid "Change your Name"
 msgstr ""
 
-#: templates/shortcode-profile-editor.php:52, includes/admin/class-give-welcome.php:685, includes/admin/class-give-welcome.php:687, includes/admin/import-functions.php:435, includes/forms/template.php:760, includes/forms/template.php:771, includes/admin/donors/donors.php:372, includes/admin/tools/export/give-export-donations-exporter.php:183, includes/admin/tools/import/class-give-import-donations.php:493
+#: templates/shortcode-profile-editor.php:52, includes/admin/class-give-welcome.php:685, includes/admin/class-give-welcome.php:687, includes/admin/import-functions.php:435, includes/forms/template.php:760, includes/forms/template.php:771, includes/admin/donors/donors.php:374, includes/admin/tools/export/give-export-donations-exporter.php:183, includes/admin/tools/import/class-give-import-donations.php:493
 msgid "First Name"
 msgstr ""
 
-#: templates/shortcode-profile-editor.php:60, includes/admin/class-give-welcome.php:692, includes/admin/class-give-welcome.php:694, includes/admin/import-functions.php:441, includes/forms/template.php:780, includes/forms/template.php:793, includes/admin/donors/donors.php:381, includes/admin/tools/export/give-export-donations-exporter.php:186
+#: templates/shortcode-profile-editor.php:60, includes/admin/class-give-welcome.php:692, includes/admin/class-give-welcome.php:694, includes/admin/import-functions.php:441, includes/forms/template.php:780, includes/forms/template.php:793, includes/admin/donors/donors.php:383, includes/admin/tools/export/give-export-donations-exporter.php:186
 msgid "Last Name"
 msgstr ""
 
@@ -6394,7 +6394,7 @@ msgstr ""
 msgid "Register a New Account"
 msgstr ""
 
-#: templates/shortcode-register.php:39, includes/admin/import-functions.php:472, includes/admin/donors/class-donor-table.php:286, includes/admin/donors/donors.php:766, includes/admin/emails/class-email-notification-table.php:64, includes/admin/emails/class-email-setting-field.php:327, includes/admin/reports/class-donor-reports-table.php:216, includes/admin/tools/export/export-functions.php:141
+#: templates/shortcode-register.php:39, includes/admin/import-functions.php:472, includes/admin/donors/class-donor-table.php:286, includes/admin/donors/donors.php:768, includes/admin/emails/class-email-notification-table.php:64, includes/admin/emails/class-email-setting-field.php:327, includes/admin/reports/class-donor-reports-table.php:216, includes/admin/tools/export/export-functions.php:141
 msgid "Email"
 msgstr ""
 
@@ -6625,11 +6625,21 @@ msgid "Cache flushed successfully."
 msgstr ""
 
 #: includes/admin/admin-actions.php:1260
-msgid "An error occured while flushing the cache."
+msgid "An error occurred while flushing the cache."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1293
-msgid "You have invalid or expired license keys for one or more GiveWP add-ons. Please go to the <a href=\"%s\">license settings page</a> to correct this issue."
+#: includes/admin/admin-actions.php:1358
+msgid "Your GiveWP add-on is not receiving critical updates and new features because you have %1$s license key. Please <a href=\"%2$s\" title=\"%3$s\">activate your license</a> to receive updates and <a href=\"%4$s\" target=\"_blank\" title=\"%5$s\">priority support</a>"
+msgid_plural "Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href=\"%2$s\" title=\"%3$s\">activate your license</a> to receive updates and <a href=\"%4$s\" target=\"_blank\" title=\"%5$s\">priority support</a>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/admin-actions.php:1366, includes/admin/settings/class-settings-license.php:114, includes/admin/settings/class-settings-license.php:125, includes/admin/settings/class-settings-license.php:127
+msgid "Activate License"
+msgstr ""
+
+#: includes/admin/admin-actions.php:1368
+msgid "Priority Support"
 msgstr ""
 
 #: includes/admin/admin-filters.php:41
@@ -6697,7 +6707,7 @@ msgstr ""
 msgid "Donation Failed Page"
 msgstr ""
 
-#: includes/admin/admin-pages.php:400, includes/admin/settings/class-settings-general.php:297, includes/admin/tools/views/html-admin-page-system-info.php:597
+#: includes/admin/admin-pages.php:400, includes/admin/settings/class-settings-general.php:297, includes/admin/tools/views/html-admin-page-system-info.php:598
 msgid "Donation History Page"
 msgstr ""
 
@@ -7174,7 +7184,7 @@ msgstr ""
 msgid "Currencies Code"
 msgstr ""
 
-#: includes/admin/import-functions.php:418, includes/admin/tools/export/give-export-donations-exporter.php:209, includes/admin/tools/export/give-export-donations-functions.php:286, includes/admin/tools/views/html-admin-page-system-info.php:567
+#: includes/admin/import-functions.php:418, includes/admin/tools/export/give-export-donations-exporter.php:209, includes/admin/tools/export/give-export-donations-functions.php:286, includes/admin/tools/views/html-admin-page-system-info.php:568
 msgid "Currency Code"
 msgstr ""
 
@@ -7206,7 +7216,7 @@ msgstr ""
 msgid "Donor First Name"
 msgstr ""
 
-#: includes/admin/import-functions.php:436, includes/admin/donors/class-donor-table.php:285, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/export-functions.php:140, includes/admin/tools/views/html-admin-page-system-info.php:924
+#: includes/admin/import-functions.php:436, includes/admin/donors/class-donor-table.php:285, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/export-functions.php:140, includes/admin/tools/views/html-admin-page-system-info.php:925
 msgid "Name"
 msgstr ""
 
@@ -7290,7 +7300,7 @@ msgstr ""
 msgid "Gateway"
 msgstr ""
 
-#: includes/admin/import-functions.php:485, includes/admin/donors/donors.php:985
+#: includes/admin/import-functions.php:485, includes/admin/donors/donors.php:987
 msgid "Notes"
 msgstr ""
 
@@ -7302,7 +7312,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: includes/admin/import-functions.php:489, includes/admin/settings/class-settings-gateways.php:181, includes/admin/tools/views/html-admin-page-system-info.php:562
+#: includes/admin/import-functions.php:489, includes/admin/settings/class-settings-gateways.php:181, includes/admin/tools/views/html-admin-page-system-info.php:563
 msgid "Test Mode"
 msgstr ""
 
@@ -7330,7 +7340,7 @@ msgstr ""
 msgid "Form Name"
 msgstr ""
 
-#: includes/admin/import-functions.php:533, includes/forms/template.php:737, includes/admin/donors/donors.php:356
+#: includes/admin/import-functions.php:533, includes/forms/template.php:737, includes/admin/donors/donors.php:358
 msgid "Title"
 msgstr ""
 
@@ -7371,63 +7381,67 @@ msgstr ""
 msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href=\"%1$s\" target=\"_blank\">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%2$s\" target=\"_blank\">Zapier</a>."
 msgstr ""
 
-#: includes/admin/plugins.php:468
+#: includes/admin/misc-functions.php:236
+msgid "There was an error retrieving the GiveWP add-ons list from the server. Please try again."
+msgstr ""
+
+#: includes/admin/plugins.php:469
 msgid "Give Deactivation"
 msgstr ""
 
-#: includes/admin/plugins.php:471
+#: includes/admin/plugins.php:472
 msgid "If you have a moment, please let us know why you are deactivating Give. All submissions are anonymous and we only use this feedback to improve this plugin."
 msgstr ""
 
-#: includes/admin/plugins.php:476
+#: includes/admin/plugins.php:477
 msgid "I'm only deactivating temporarily"
 msgstr ""
 
-#: includes/admin/plugins.php:483
+#: includes/admin/plugins.php:484
 msgid "I no longer need the plugin"
 msgstr ""
 
-#: includes/admin/plugins.php:490
+#: includes/admin/plugins.php:491
 msgid "I found a better plugin"
 msgstr ""
 
-#: includes/admin/plugins.php:494
+#: includes/admin/plugins.php:495
 msgid "What is the name of the plugin?"
 msgstr ""
 
-#: includes/admin/plugins.php:502
+#: includes/admin/plugins.php:503
 msgid "I only needed the plugin for a short period"
 msgstr ""
 
-#: includes/admin/plugins.php:509
+#: includes/admin/plugins.php:510
 msgid "The plugin broke my site"
 msgstr ""
 
-#: includes/admin/plugins.php:516, includes/admin/plugins.php:536
+#: includes/admin/plugins.php:517, includes/admin/plugins.php:537
 msgid "We're sorry to hear that, check"
 msgstr ""
 
-#: includes/admin/plugins.php:518, includes/admin/plugins.php:538
+#: includes/admin/plugins.php:519, includes/admin/plugins.php:539
 msgid "Can you describe the issue?"
 msgstr ""
 
-#: includes/admin/plugins.php:529
+#: includes/admin/plugins.php:530
 msgid "The plugin suddenly stopped working"
 msgstr ""
 
-#: includes/admin/plugins.php:549
+#: includes/admin/plugins.php:550
 msgid "Other"
 msgstr ""
 
-#: includes/admin/plugins.php:553
+#: includes/admin/plugins.php:554
 msgid "Please describe why you're deactivating Give"
 msgstr ""
 
-#: includes/admin/plugins.php:562
+#: includes/admin/plugins.php:563
 msgid "Would you like to delete all Give data?"
 msgstr ""
 
-#: includes/admin/plugins.php:565
+#: includes/admin/plugins.php:566
 msgid "By default the custom roles, Give options, and database entries are not deleted when you deactivate Give. If you are deleting Give completely from your website and want those items removed as well check this option. Note: This will permanently delete all Give data from your database."
 msgstr ""
 
@@ -7604,10 +7618,6 @@ msgstr ""
 
 #: includes/api/class-give-api.php:1846
 msgid "Revoke API Keys"
-msgstr ""
-
-#: includes/api/class-give-api.php:1868, includes/forms/functions.php:320, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
-msgid "Nonce verification failed."
 msgstr ""
 
 #: includes/api/class-give-api.php:1874
@@ -7824,31 +7834,31 @@ msgstr ""
 msgid "Preview email with a donation:"
 msgstr ""
 
-#: includes/forms/functions.php:1265
+#: includes/forms/functions.php:1275
 msgid "of"
 msgstr ""
 
-#: includes/forms/functions.php:1268, includes/admin/tools/import/class-give-import-donations.php:253, includes/admin/tools/import/class-give-import-donations.php:259
+#: includes/forms/functions.php:1278, includes/admin/tools/import/class-give-import-donations.php:253, includes/admin/tools/import/class-give-import-donations.php:259
 msgid "donors"
 msgstr ""
 
-#: includes/forms/functions.php:1268, includes/admin/tools/import/class-give-import-donations.php:271, includes/admin/tools/import/class-give-import-donations.php:277
+#: includes/forms/functions.php:1278, includes/admin/tools/import/class-give-import-donations.php:271, includes/admin/tools/import/class-give-import-donations.php:277
 msgid "donations"
 msgstr ""
 
-#: includes/forms/functions.php:1272
+#: includes/forms/functions.php:1282
 msgid "Goal achieved"
 msgstr ""
 
-#: includes/forms/functions.php:1497
+#: includes/forms/functions.php:1507
 msgid "Mr."
 msgstr ""
 
-#: includes/forms/functions.php:1498
+#: includes/forms/functions.php:1508
 msgid "Mrs."
 msgstr ""
 
-#: includes/forms/functions.php:1499
+#: includes/forms/functions.php:1509
 msgid "Ms."
 msgstr ""
 
@@ -7992,103 +8002,103 @@ msgstr ""
 msgid "The city for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1217
+#: includes/forms/template.php:1213
 msgid "The state, province, or county for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1243, includes/forms/template.php:1257
+#: includes/forms/template.php:1241, includes/forms/template.php:1255
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: includes/forms/template.php:1247
+#: includes/forms/template.php:1245
 msgid "The ZIP Code or postal code for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1342
+#: includes/forms/template.php:1340
 msgid "Registration is required to donate."
 msgstr ""
 
-#: includes/forms/template.php:1352
+#: includes/forms/template.php:1350
 msgid "Create an account"
 msgstr ""
 
-#: includes/forms/template.php:1353
+#: includes/forms/template.php:1351
 msgid "Create an account on the site to see and manage donation history."
 msgstr ""
 
-#: includes/forms/template.php:1365
+#: includes/forms/template.php:1363
 msgid "Already have an account?"
 msgstr ""
 
-#: includes/forms/template.php:1367, includes/forms/template.php:1513, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
+#: includes/forms/template.php:1365, includes/forms/template.php:1511, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
 msgid "Login"
 msgstr ""
 
-#: includes/forms/template.php:1437
+#: includes/forms/template.php:1435
 msgid "Log In to Your Account"
 msgstr ""
 
-#: includes/forms/template.php:1439
+#: includes/forms/template.php:1437
 msgid "(optional)"
 msgstr ""
 
-#: includes/forms/template.php:1445
+#: includes/forms/template.php:1443
 msgid "Don't have an account?"
 msgstr ""
 
-#: includes/forms/template.php:1450
+#: includes/forms/template.php:1448
 msgid "Register as a part of your donation &raquo;"
 msgstr ""
 
-#: includes/forms/template.php:1452
+#: includes/forms/template.php:1450
 msgid "Register or donate as a guest &raquo;"
 msgstr ""
 
-#: includes/forms/template.php:1474
+#: includes/forms/template.php:1472
 msgid "Username or Email Address"
 msgstr ""
 
-#: includes/forms/template.php:1483
+#: includes/forms/template.php:1481
 msgid "Your username or email"
 msgstr ""
 
-#: includes/forms/template.php:1496
+#: includes/forms/template.php:1494
 msgid "Your password"
 msgstr ""
 
-#: includes/forms/template.php:1585
+#: includes/forms/template.php:1583
 msgid "Select Payment Method"
 msgstr ""
 
-#: includes/forms/template.php:1730
+#: includes/forms/template.php:1728
 msgid "Please enter valid terms and conditions in <a href=\"%s\">this form's settings</a>."
 msgstr ""
 
-#: includes/forms/template.php:1745
+#: includes/forms/template.php:1743
 msgid "Terms"
 msgstr ""
 
-#: includes/forms/template.php:1766
+#: includes/forms/template.php:1764
 msgid "Show Terms"
 msgstr ""
 
-#: includes/forms/template.php:1768
+#: includes/forms/template.php:1766
 msgid "Hide Terms"
 msgstr ""
 
-#: includes/forms/template.php:1813, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
+#: includes/forms/template.php:1811, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
 msgid "Donation Total:"
 msgstr ""
 
-#: includes/forms/template.php:2165, includes/gateways/stripe/includes/actions.php:79, includes/gateways/stripe/includes/actions.php:90, includes/gateways/stripe/includes/actions.php:98
+#: includes/forms/template.php:2163, includes/gateways/stripe/includes/actions.php:79, includes/gateways/stripe/includes/actions.php:90, includes/gateways/stripe/includes/actions.php:98
 msgid "Notice:"
 msgstr ""
 
-#: includes/forms/template.php:2165
+#: includes/forms/template.php:2163
 msgid "Test mode is enabled. While in test mode no live donations are processed."
 msgstr ""
 
-#: includes/forms/template.php:2195
+#: includes/forms/template.php:2193
 msgid "Please log in in order to complete your donation."
 msgstr ""
 
@@ -8156,11 +8166,11 @@ msgstr ""
 msgid "Global Option"
 msgstr ""
 
-#: includes/forms/widget.php:187, includes/gateways/offline-donations.php:299, includes/admin/emails/class-email-setting-field.php:166, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:327, includes/admin/forms/class-metabox-form-data.php:339, includes/admin/forms/class-metabox-form-data.php:350, includes/admin/forms/class-metabox-form-data.php:375, includes/admin/forms/class-metabox-form-data.php:408, includes/admin/forms/class-metabox-form-data.php:475, includes/admin/forms/class-metabox-form-data.php:515, includes/admin/settings/class-settings-advanced.php:88, includes/admin/settings/class-settings-advanced.php:110, includes/admin/settings/class-settings-advanced.php:121, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-advanced.php:178, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:124, includes/admin/settings/class-settings-display.php:135, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:182, includes/admin/settings/class-settings-display.php:193, includes/admin/settings/class-settings-display.php:204, includes/admin/settings/class-settings-display.php:223, includes/admin/settings/class-settings-display.php:254, includes/admin/settings/class-settings-display.php:265, includes/admin/settings/class-settings-display.php:296, includes/admin/settings/class-settings-gateways.php:91, includes/admin/settings/class-settings-gateways.php:102, includes/admin/settings/class-settings-gateways.php:141, includes/admin/settings/class-settings-gateways.php:187, includes/admin/settings/class-settings-gateways.php:368, includes/admin/settings/class-settings-general.php:93, includes/admin/settings/class-settings-general.php:104, includes/admin/settings/class-settings-general.php:372, includes/admin/tools/import/class-give-import-donations.php:939, includes/admin/tools/import/class-give-import-donations.php:950, includes/admin/tools/import/class-give-import-donations.php:961, includes/admin/tools/views/html-admin-page-system-info.php:460, includes/admin/tools/views/html-admin-page-system-info.php:527, includes/admin/tools/views/html-admin-page-system-info.php:564, includes/admin/tools/views/html-admin-page-system-info.php:642, includes/admin/tools/views/html-admin-page-system-info.php:678
+#: includes/forms/widget.php:187, includes/gateways/offline-donations.php:299, includes/admin/emails/class-email-setting-field.php:166, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:327, includes/admin/forms/class-metabox-form-data.php:339, includes/admin/forms/class-metabox-form-data.php:350, includes/admin/forms/class-metabox-form-data.php:375, includes/admin/forms/class-metabox-form-data.php:408, includes/admin/forms/class-metabox-form-data.php:475, includes/admin/forms/class-metabox-form-data.php:515, includes/admin/settings/class-settings-advanced.php:88, includes/admin/settings/class-settings-advanced.php:110, includes/admin/settings/class-settings-advanced.php:121, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-advanced.php:178, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:124, includes/admin/settings/class-settings-display.php:135, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:182, includes/admin/settings/class-settings-display.php:193, includes/admin/settings/class-settings-display.php:204, includes/admin/settings/class-settings-display.php:223, includes/admin/settings/class-settings-display.php:254, includes/admin/settings/class-settings-display.php:265, includes/admin/settings/class-settings-display.php:296, includes/admin/settings/class-settings-gateways.php:91, includes/admin/settings/class-settings-gateways.php:102, includes/admin/settings/class-settings-gateways.php:141, includes/admin/settings/class-settings-gateways.php:187, includes/admin/settings/class-settings-gateways.php:368, includes/admin/settings/class-settings-general.php:93, includes/admin/settings/class-settings-general.php:104, includes/admin/settings/class-settings-general.php:372, includes/admin/tools/import/class-give-import-donations.php:939, includes/admin/tools/import/class-give-import-donations.php:950, includes/admin/tools/import/class-give-import-donations.php:961, includes/admin/tools/views/html-admin-page-system-info.php:461, includes/admin/tools/views/html-admin-page-system-info.php:528, includes/admin/tools/views/html-admin-page-system-info.php:565, includes/admin/tools/views/html-admin-page-system-info.php:643, includes/admin/tools/views/html-admin-page-system-info.php:679
 msgid "Enabled"
 msgstr ""
 
-#: includes/forms/widget.php:188, includes/gateways/offline-donations.php:300, includes/admin/emails/class-email-setting-field.php:167, includes/admin/emails/class-email-setting-field.php:177, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:291, includes/admin/forms/class-metabox-form-data.php:315, includes/admin/forms/class-metabox-form-data.php:328, includes/admin/forms/class-metabox-form-data.php:340, includes/admin/forms/class-metabox-form-data.php:351, includes/admin/forms/class-metabox-form-data.php:376, includes/admin/forms/class-metabox-form-data.php:409, includes/admin/forms/class-metabox-form-data.php:476, includes/admin/forms/class-metabox-form-data.php:516, includes/admin/settings/class-settings-advanced.php:89, includes/admin/settings/class-settings-advanced.php:111, includes/admin/settings/class-settings-advanced.php:122, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-advanced.php:179, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:90, includes/admin/settings/class-settings-display.php:112, includes/admin/settings/class-settings-display.php:125, includes/admin/settings/class-settings-display.php:136, includes/admin/settings/class-settings-display.php:167, includes/admin/settings/class-settings-display.php:183, includes/admin/settings/class-settings-display.php:194, includes/admin/settings/class-settings-display.php:205, includes/admin/settings/class-settings-display.php:224, includes/admin/settings/class-settings-display.php:255, includes/admin/settings/class-settings-display.php:266, includes/admin/settings/class-settings-display.php:297, includes/admin/settings/class-settings-gateways.php:92, includes/admin/settings/class-settings-gateways.php:103, includes/admin/settings/class-settings-gateways.php:142, includes/admin/settings/class-settings-gateways.php:188, includes/admin/settings/class-settings-general.php:94, includes/admin/settings/class-settings-general.php:105, includes/admin/settings/class-settings-general.php:373, includes/admin/tools/import/class-give-import-donations.php:940, includes/admin/tools/import/class-give-import-donations.php:951, includes/admin/tools/import/class-give-import-donations.php:962, includes/admin/tools/views/html-admin-page-system-info.php:460, includes/admin/tools/views/html-admin-page-system-info.php:527, includes/admin/tools/views/html-admin-page-system-info.php:564, includes/admin/tools/views/html-admin-page-system-info.php:642, includes/admin/tools/views/html-admin-page-system-info.php:678
+#: includes/forms/widget.php:188, includes/gateways/offline-donations.php:300, includes/admin/emails/class-email-setting-field.php:167, includes/admin/emails/class-email-setting-field.php:177, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:291, includes/admin/forms/class-metabox-form-data.php:315, includes/admin/forms/class-metabox-form-data.php:328, includes/admin/forms/class-metabox-form-data.php:340, includes/admin/forms/class-metabox-form-data.php:351, includes/admin/forms/class-metabox-form-data.php:376, includes/admin/forms/class-metabox-form-data.php:409, includes/admin/forms/class-metabox-form-data.php:476, includes/admin/forms/class-metabox-form-data.php:516, includes/admin/settings/class-settings-advanced.php:89, includes/admin/settings/class-settings-advanced.php:111, includes/admin/settings/class-settings-advanced.php:122, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-advanced.php:179, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:90, includes/admin/settings/class-settings-display.php:112, includes/admin/settings/class-settings-display.php:125, includes/admin/settings/class-settings-display.php:136, includes/admin/settings/class-settings-display.php:167, includes/admin/settings/class-settings-display.php:183, includes/admin/settings/class-settings-display.php:194, includes/admin/settings/class-settings-display.php:205, includes/admin/settings/class-settings-display.php:224, includes/admin/settings/class-settings-display.php:255, includes/admin/settings/class-settings-display.php:266, includes/admin/settings/class-settings-display.php:297, includes/admin/settings/class-settings-gateways.php:92, includes/admin/settings/class-settings-gateways.php:103, includes/admin/settings/class-settings-gateways.php:142, includes/admin/settings/class-settings-gateways.php:188, includes/admin/settings/class-settings-general.php:94, includes/admin/settings/class-settings-general.php:105, includes/admin/settings/class-settings-general.php:373, includes/admin/tools/import/class-give-import-donations.php:940, includes/admin/tools/import/class-give-import-donations.php:951, includes/admin/tools/import/class-give-import-donations.php:962, includes/admin/tools/views/html-admin-page-system-info.php:461, includes/admin/tools/views/html-admin-page-system-info.php:528, includes/admin/tools/views/html-admin-page-system-info.php:565, includes/admin/tools/views/html-admin-page-system-info.php:643, includes/admin/tools/views/html-admin-page-system-info.php:679
 msgid "Disabled"
 msgstr ""
 
@@ -8414,39 +8424,39 @@ msgstr ""
 msgid "This custom meta key has been deprecated for performance reasons. Your custom meta data will still be stored but we recommend updating your code to store meta keys individually."
 msgstr ""
 
-#: includes/payments/functions.php:542, includes/admin/payments/class-payments-table.php:309
+#: includes/payments/functions.php:540, includes/admin/payments/class-payments-table.php:309
 msgid "Pending"
 msgstr ""
 
-#: includes/payments/functions.php:543
+#: includes/payments/functions.php:541
 msgid "Complete"
 msgstr ""
 
-#: includes/payments/functions.php:548
+#: includes/payments/functions.php:546
 msgid "Pre-Approved"
 msgstr ""
 
-#: includes/payments/functions.php:549, includes/admin/payments/class-payments-table.php:313
+#: includes/payments/functions.php:547, includes/admin/payments/class-payments-table.php:313
 msgid "Processing"
 msgstr ""
 
-#: includes/payments/functions.php:1432, includes/admin/donors/donor-actions.php:422, includes/admin/donors/donor-actions.php:476, includes/admin/donors/donor-actions.php:524
+#: includes/payments/functions.php:1430, includes/admin/donors/donor-actions.php:422, includes/admin/donors/donor-actions.php:476, includes/admin/donors/donor-actions.php:524
 msgid "System"
 msgstr ""
 
-#: includes/payments/functions.php:1451
+#: includes/payments/functions.php:1449
 msgid "Delete this donation note."
 msgstr ""
 
-#: includes/payments/functions.php:1451, includes/admin/donors/class-donor-table.php:330, includes/admin/donors/class-donor-table.php:371, includes/admin/donors/class-donor-table.php:588, includes/admin/payments/class-payments-table.php:618, includes/admin/payments/class-payments-table.php:742
+#: includes/payments/functions.php:1449, includes/admin/donors/class-donor-table.php:330, includes/admin/donors/class-donor-table.php:371, includes/admin/donors/class-donor-table.php:588, includes/admin/payments/class-payments-table.php:618, includes/admin/payments/class-payments-table.php:742
 msgid "Delete"
 msgstr ""
 
-#: includes/payments/functions.php:1540, includes/admin/forms/class-metabox-form-data.php:143
+#: includes/payments/functions.php:1538, includes/admin/forms/class-metabox-form-data.php:143
 msgid "Custom Amount"
 msgstr ""
 
-#: includes/payments/functions.php:1672
+#: includes/payments/functions.php:1670
 msgctxt "custom donation dropdown item"
 msgid "Custom"
 msgstr ""
@@ -8631,10 +8641,6 @@ msgstr ""
 msgid "Maximize your fundraising potential with official add-ons from GiveWP.com."
 msgstr ""
 
-#: includes/admin/add-ons/add-ons.php:122
-msgid "There was an error retrieving the Give Add-ons list from the server. Please try again later."
-msgstr ""
-
 #: includes/admin/donors/class-donor-table.php:86
 msgid "Name, Email, or Donor ID"
 msgstr ""
@@ -8691,7 +8697,7 @@ msgstr ""
 msgid "Are you sure you want to delete the selected donor(s)?"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:575, includes/admin/donors/donors.php:1088
+#: includes/admin/donors/class-donor-table.php:575, includes/admin/donors/donors.php:1090
 msgid "Delete all associated donations and records?"
 msgstr ""
 
@@ -8753,10 +8759,6 @@ msgstr ""
 msgid "Email address %1$s set as primary by %2$s"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87
-msgid "Nonce verification failed"
-msgstr ""
-
 #: includes/admin/donors/donor-actions.php:477
 msgid "Email address %1$s removed by %2$s"
 msgstr ""
@@ -8773,7 +8775,7 @@ msgstr ""
 msgid "Donor Notes"
 msgstr ""
 
-#: includes/admin/donors/donor-functions.php:77, includes/admin/donors/donors.php:1110
+#: includes/admin/donors/donor-functions.php:77, includes/admin/donors/donors.php:1112
 msgid "Delete Donor"
 msgstr ""
 
@@ -8781,7 +8783,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/donors/donors.php:75, includes/admin/donors/donors.php:797
+#: includes/admin/donors/donors.php:75, includes/admin/donors/donors.php:799
 msgid "Remove"
 msgstr ""
 
@@ -8794,155 +8796,155 @@ msgstr ""
 msgid "Edit Donor: %s %s"
 msgstr ""
 
-#: includes/admin/donors/donors.php:393
+#: includes/admin/donors/donors.php:395
 msgid "Donor since"
 msgstr ""
 
-#: includes/admin/donors/donors.php:398
+#: includes/admin/donors/donors.php:400
 msgid "Edit Donor"
 msgstr ""
 
-#: includes/admin/donors/donors.php:409, includes/admin/payments/view-payment-details.php:576
+#: includes/admin/donors/donors.php:411, includes/admin/payments/view-payment-details.php:576
 msgid "Donor ID:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:414
+#: includes/admin/donors/donors.php:416
 msgid "User ID:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:447
+#: includes/admin/donors/donors.php:449
 msgid "Unregistered"
 msgstr ""
 
-#: includes/admin/donors/donors.php:458
+#: includes/admin/donors/donors.php:460
 msgid "Disconnects the current user ID from this donor record."
 msgstr ""
 
-#: includes/admin/donors/donors.php:459
+#: includes/admin/donors/donors.php:461
 msgid "Disconnect User"
 msgstr ""
 
-#: includes/admin/donors/donors.php:461
+#: includes/admin/donors/donors.php:463
 msgid "View User Profile of current user ID."
 msgstr ""
 
-#: includes/admin/donors/donors.php:462
+#: includes/admin/donors/donors.php:464
 msgid "View User Profile"
 msgstr ""
 
-#: includes/admin/donors/donors.php:475, includes/admin/payments/view-payment-details.php:643, includes/admin/shortcodes/shortcode-give-receipt.php:94
+#: includes/admin/donors/donors.php:477, includes/admin/payments/view-payment-details.php:643, includes/admin/shortcodes/shortcode-give-receipt.php:94
 msgid "Company Name:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:498
+#: includes/admin/donors/donors.php:500
 msgid "Update Donor"
 msgstr ""
 
-#: includes/admin/donors/donors.php:524
+#: includes/admin/donors/donors.php:526
 msgid "%d Completed Donation"
 msgid_plural "%d Completed Donations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donors/donors.php:531
+#: includes/admin/donors/donors.php:533
 msgid "Lifetime Donations"
 msgstr ""
 
-#: includes/admin/donors/donors.php:560
+#: includes/admin/donors/donors.php:562
 msgid "Addresses"
 msgstr ""
 
-#: includes/admin/donors/donors.php:609
+#: includes/admin/donors/donors.php:611
 msgid "This donor does not have any addresses saved."
 msgstr ""
 
-#: includes/admin/donors/donors.php:612
+#: includes/admin/donors/donors.php:614
 msgid "Add Address"
 msgstr ""
 
-#: includes/admin/donors/donors.php:622, includes/admin/payments/view-payment-details.php:740
+#: includes/admin/donors/donors.php:624, includes/admin/payments/view-payment-details.php:740
 msgid "Country:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:633, includes/admin/payments/view-payment-details.php:750
+#: includes/admin/donors/donors.php:635, includes/admin/payments/view-payment-details.php:750
 msgid "Select a country"
 msgstr ""
 
-#: includes/admin/donors/donors.php:642, includes/admin/payments/view-payment-details.php:761
+#: includes/admin/donors/donors.php:644, includes/admin/payments/view-payment-details.php:761
 msgid "Address 1:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:650, includes/admin/payments/view-payment-details.php:768
+#: includes/admin/donors/donors.php:652, includes/admin/payments/view-payment-details.php:768
 msgid "Address 2:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:659, includes/admin/payments/view-payment-details.php:775
+#: includes/admin/donors/donors.php:661, includes/admin/payments/view-payment-details.php:775
 msgid "City:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:673, includes/admin/payments/view-payment-details.php:786
+#: includes/admin/donors/donors.php:675, includes/admin/payments/view-payment-details.php:786
 msgid "State / Province / County:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:700, includes/admin/payments/view-payment-details.php:798
+#: includes/admin/donors/donors.php:702, includes/admin/payments/view-payment-details.php:798
 msgid "Select a state"
 msgstr ""
 
-#: includes/admin/donors/donors.php:713, includes/admin/payments/view-payment-details.php:814
+#: includes/admin/donors/donors.php:715, includes/admin/payments/view-payment-details.php:814
 msgid "Zip / Postal Code:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:725
+#: includes/admin/donors/donors.php:727
 msgid "Save"
 msgstr ""
 
-#: includes/admin/donors/donors.php:761, includes/admin/settings/class-settings-email.php:199
+#: includes/admin/donors/donors.php:763, includes/admin/settings/class-settings-email.php:201
 msgid "Donor Emails"
 msgstr ""
 
-#: includes/admin/donors/donors.php:767, includes/admin/donors/donors.php:844, includes/admin/donors/donors.php:906
+#: includes/admin/donors/donors.php:769, includes/admin/donors/donors.php:846, includes/admin/donors/donors.php:908
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/donors/donors.php:795, includes/admin/donors/donors.php:812
+#: includes/admin/donors/donors.php:797, includes/admin/donors/donors.php:814
 msgid "Make Primary"
 msgstr ""
 
-#: includes/admin/donors/donors.php:814, includes/admin/emails/class-email-setting-field.php:336
+#: includes/admin/donors/donors.php:816, includes/admin/emails/class-email-setting-field.php:336
 msgid "Add Email"
 msgstr ""
 
-#: includes/admin/donors/donors.php:822
+#: includes/admin/donors/donors.php:824
 msgid "No Emails Found"
 msgstr ""
 
-#: includes/admin/donors/donors.php:829
+#: includes/admin/donors/donors.php:831
 msgid "Recent Donations"
 msgstr ""
 
 #. translators: %s: Donation ID
-#: includes/admin/donors/donors.php:866
+#: includes/admin/donors/donors.php:868
 msgid "View Donation %s."
 msgstr ""
 
-#: includes/admin/donors/donors.php:898
+#: includes/admin/donors/donors.php:900
 msgid "Completed Forms"
 msgstr ""
 
 #. translators: %s: form name
-#: includes/admin/donors/donors.php:921
+#: includes/admin/donors/donors.php:923
 msgid "View Form %s."
 msgstr ""
 
-#: includes/admin/donors/donors.php:932
+#: includes/admin/donors/donors.php:934
 msgid "No completed donations found."
 msgstr ""
 
-#: includes/admin/donors/donors.php:1024
+#: includes/admin/donors/donors.php:1026
 msgid "No donor notes found."
 msgstr ""
 
-#: includes/admin/donors/donors.php:1077
+#: includes/admin/donors/donors.php:1079
 msgid "Are you sure you want to delete this donor?"
 msgstr ""
 
@@ -9055,14 +9057,6 @@ msgstr ""
 msgid "Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}."
 msgstr ""
 
-#: includes/admin/emails/class-email-notification-table.php:40
-msgid "Give Email Notification"
-msgstr ""
-
-#: includes/admin/emails/class-email-notification-table.php:41
-msgid "Give Email Notifications"
-msgstr ""
-
 #: includes/admin/emails/class-email-notification-table.php:63
 msgid "Email Status"
 msgstr ""
@@ -9099,35 +9093,35 @@ msgstr ""
 msgid "Email Options"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:136, includes/admin/settings/class-settings-email.php:60
+#: includes/admin/emails/class-email-notifications.php:136, includes/admin/settings/class-settings-email.php:62
 msgid "Email Template"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:137, includes/admin/settings/class-settings-email.php:61
+#: includes/admin/emails/class-email-notifications.php:137, includes/admin/settings/class-settings-email.php:63
 msgid "Choose your template from the available registered template types."
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:144, includes/admin/settings/class-settings-email.php:67
+#: includes/admin/emails/class-email-notifications.php:144, includes/admin/settings/class-settings-email.php:69
 msgid "Logo"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:145, includes/admin/settings/class-settings-email.php:68
+#: includes/admin/emails/class-email-notifications.php:145, includes/admin/settings/class-settings-email.php:70
 msgid "Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only."
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:150, includes/admin/settings/class-settings-email.php:73
+#: includes/admin/emails/class-email-notifications.php:150, includes/admin/settings/class-settings-email.php:75
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:151, includes/admin/settings/class-settings-email.php:74
+#: includes/admin/emails/class-email-notifications.php:151, includes/admin/settings/class-settings-email.php:76
 msgid "The name which appears in the \"From\" field in all Give donation emails."
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:157, includes/admin/settings/class-settings-email.php:80
+#: includes/admin/emails/class-email-notifications.php:157, includes/admin/settings/class-settings-email.php:82
 msgid "From Email"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:158, includes/admin/settings/class-settings-email.php:81
+#: includes/admin/emails/class-email-notifications.php:158, includes/admin/settings/class-settings-email.php:83
 msgid "Email address from which all Give emails are sent from. This will act as the \"from\" and \"reply-to\" email address."
 msgstr ""
 
@@ -9393,7 +9387,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:219, includes/admin/settings/class-settings-gateways.php:367, includes/admin/tools/views/html-admin-page-system-info.php:118
+#: includes/admin/forms/class-metabox-form-data.php:219, includes/admin/settings/class-settings-gateways.php:367, includes/admin/tools/views/html-admin-page-system-info.php:119
 msgid "Default"
 msgstr ""
 
@@ -10386,55 +10380,55 @@ msgstr ""
 msgid "Emails"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:86
+#: includes/admin/settings/class-settings-email.php:88
 msgid "Donation Notification Settings Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:89
+#: includes/admin/settings/class-settings-email.php:91
 msgid "Donation Notification Settings"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:104
+#: includes/admin/settings/class-settings-email.php:106
 msgid "Email notifications sent from Give for donor are listed below. Click on an email to configure it."
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:125
+#: includes/admin/settings/class-settings-email.php:127
 msgid "Email notifications sent from Give for admin are listed below. Click on an email to configure it."
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:149
+#: includes/admin/settings/class-settings-email.php:151
 msgid "Admin Email Address"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:151
+#: includes/admin/settings/class-settings-email.php:153
 msgid "By default, the"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:151
+#: includes/admin/settings/class-settings-email.php:153
 msgid "tag will use your WordPress admin email. If you would like to customize this address you can do so in the field above."
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:157
+#: includes/admin/settings/class-settings-email.php:159
 msgid "Offline Mailing Address"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:159
+#: includes/admin/settings/class-settings-email.php:161
 msgid "Set the mailing address to where you would like your donors to send their offline donations. This will customize the"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:159
+#: includes/admin/settings/class-settings-email.php:161
 msgid "email tag for the Offline Donations payment gateway."
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:200
+#: includes/admin/settings/class-settings-email.php:202
 msgid "Admin Emails"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:201
+#: includes/admin/settings/class-settings-email.php:203
 msgid "Email Settings"
 msgstr ""
 
-#: includes/admin/settings/class-settings-email.php:202
+#: includes/admin/settings/class-settings-email.php:204
 msgid "Contact Information"
 msgstr ""
 
@@ -10474,7 +10468,7 @@ msgstr ""
 msgid "This option will enable the billing details section for PayPal Standard which requires the donor's address to complete the donation. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data."
 msgstr ""
 
-#: includes/admin/settings/class-settings-gateways.php:96, includes/admin/tools/views/html-admin-page-system-info.php:640
+#: includes/admin/settings/class-settings-gateways.php:96, includes/admin/tools/views/html-admin-page-system-info.php:641
 msgid "PayPal IPN Verification"
 msgstr ""
 
@@ -10659,7 +10653,7 @@ msgstr ""
 msgid "The donation currency. Note that some payment gateways have currency restrictions."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:166, includes/admin/tools/views/html-admin-page-system-info.php:572
+#: includes/admin/settings/class-settings-general.php:166, includes/admin/tools/views/html-admin-page-system-info.php:573
 msgid "Currency Position"
 msgstr ""
 
@@ -10667,7 +10661,7 @@ msgstr ""
 msgid "The position of the currency symbol."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:183, includes/admin/tools/views/html-admin-page-system-info.php:582
+#: includes/admin/settings/class-settings-general.php:183, includes/admin/tools/views/html-admin-page-system-info.php:583
 msgid "Thousands Separator"
 msgstr ""
 
@@ -10675,7 +10669,7 @@ msgstr ""
 msgid "The symbol (typically , or .) to separate thousands."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:191, includes/admin/tools/views/html-admin-page-system-info.php:577
+#: includes/admin/settings/class-settings-general.php:191, includes/admin/tools/views/html-admin-page-system-info.php:578
 msgid "Decimal Separator"
 msgstr ""
 
@@ -10707,7 +10701,7 @@ msgstr ""
 msgid "General Settings"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:266, includes/admin/tools/views/html-admin-page-system-info.php:587
+#: includes/admin/settings/class-settings-general.php:266, includes/admin/tools/views/html-admin-page-system-info.php:588
 msgid "Success Page"
 msgstr ""
 
@@ -10827,10 +10821,6 @@ msgstr ""
 
 #: includes/admin/settings/class-settings-license.php:99
 msgid "Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href=\"%1$s\" target=\"_blank\">My Account</a> section on the GiveWP website. "
-msgstr ""
-
-#: includes/admin/settings/class-settings-license.php:114, includes/admin/settings/class-settings-license.php:125, includes/admin/settings/class-settings-license.php:127
-msgid "Activate License"
 msgstr ""
 
 #: includes/admin/settings/class-settings-license.php:121
@@ -11500,12 +11490,16 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:85
+#: includes/gateways/stripe/class-give-stripe.php:99
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:86
+#: includes/gateways/stripe/class-give-stripe.php:100
 msgid "Credit Card"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe.php:123
+msgid "<strong>Attention:</strong> Give 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href=\"%1$s\" target=\"_blank\">logging into your account</a> and visiting <a href=\"%1$s\" target=\"_blank\">your downloads</a> page on the GiveWP website."
 msgstr ""
 
 #: tests/framework/helpers/class-helper-form.php:166
@@ -12363,576 +12357,576 @@ msgstr ""
 msgid "Import JSON"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:30
+#: includes/admin/tools/views/html-admin-page-system-info.php:31
 msgid "Please copy and paste this information in your ticket when contacting support:"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:32
+#: includes/admin/tools/views/html-admin-page-system-info.php:33
 msgid "Get System Report"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:33
+#: includes/admin/tools/views/html-admin-page-system-info.php:34
 msgid "Understanding the System Report"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:43
+#: includes/admin/tools/views/html-admin-page-system-info.php:44
 msgid "WordPress Environment"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:48
+#: includes/admin/tools/views/html-admin-page-system-info.php:49
 msgid "Home URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:49
+#: includes/admin/tools/views/html-admin-page-system-info.php:50
 msgid "The URL of your site's homepage."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:53
+#: includes/admin/tools/views/html-admin-page-system-info.php:54
 msgid "Site URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:54
+#: includes/admin/tools/views/html-admin-page-system-info.php:55
 msgid "The root URL of your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:58
+#: includes/admin/tools/views/html-admin-page-system-info.php:59
 msgid "WP Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:59
+#: includes/admin/tools/views/html-admin-page-system-info.php:60
 msgid "The version of WordPress installed on your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:63
+#: includes/admin/tools/views/html-admin-page-system-info.php:64
 msgid "WP Multisite"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:64
+#: includes/admin/tools/views/html-admin-page-system-info.php:65
 msgid "Whether or not you have WordPress Multisite enabled."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:69
+#: includes/admin/tools/views/html-admin-page-system-info.php:70
 msgid "WP Memory Limit"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:70
+#: includes/admin/tools/views/html-admin-page-system-info.php:71
 msgid "The maximum amount of memory (RAM) that your site can use at one time."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:81
+#: includes/admin/tools/views/html-admin-page-system-info.php:82
 msgid "%s - We recommend setting memory to at least 64 MB. See: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:81
+#: includes/admin/tools/views/html-admin-page-system-info.php:82
 msgid "Increasing memory allocated to PHP"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:89
+#: includes/admin/tools/views/html-admin-page-system-info.php:90
 msgid "WP Debug Mode"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:90
+#: includes/admin/tools/views/html-admin-page-system-info.php:91
 msgid "Displays whether or not WordPress is in Debug Mode."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:100
+#: includes/admin/tools/views/html-admin-page-system-info.php:101
 msgid "WP Cron"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:101
+#: includes/admin/tools/views/html-admin-page-system-info.php:102
 msgid "Displays whether or not WP Cron Jobs are enabled."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:111
+#: includes/admin/tools/views/html-admin-page-system-info.php:112
 msgid "Language"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:112
+#: includes/admin/tools/views/html-admin-page-system-info.php:113
 msgid "The current language used by WordPress. Default = English"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:116
+#: includes/admin/tools/views/html-admin-page-system-info.php:117
 msgid "Permalink Structure"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:117
+#: includes/admin/tools/views/html-admin-page-system-info.php:118
 msgid "The permalink structure as defined in Settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:121
+#: includes/admin/tools/views/html-admin-page-system-info.php:122
 msgid "Show on Front"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:122
+#: includes/admin/tools/views/html-admin-page-system-info.php:123
 msgid "Whether your front page is set to show posts or a static page."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:131
+#: includes/admin/tools/views/html-admin-page-system-info.php:132
 msgid "Page on Front"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:132
+#: includes/admin/tools/views/html-admin-page-system-info.php:133
 msgid "The page set to display as your front page."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:133, includes/admin/tools/views/html-admin-page-system-info.php:138
+#: includes/admin/tools/views/html-admin-page-system-info.php:134, includes/admin/tools/views/html-admin-page-system-info.php:139
 msgid "Unset"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:136
+#: includes/admin/tools/views/html-admin-page-system-info.php:137
 msgid "Page for Posts"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:137
+#: includes/admin/tools/views/html-admin-page-system-info.php:138
 msgid "The page set to display your posts."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:142
+#: includes/admin/tools/views/html-admin-page-system-info.php:143
 msgid "Table Prefix"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:143
+#: includes/admin/tools/views/html-admin-page-system-info.php:144
 msgid "The table prefix used in your WordPress database."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:147
+#: includes/admin/tools/views/html-admin-page-system-info.php:148
 msgid "Table Prefix Length"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:148
+#: includes/admin/tools/views/html-admin-page-system-info.php:149
 msgid "The length of the table prefix used in your WordPress database."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:152
+#: includes/admin/tools/views/html-admin-page-system-info.php:153
 msgid "Table Prefix Status"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:153
+#: includes/admin/tools/views/html-admin-page-system-info.php:154
 msgid "The status of the table prefix used in your WordPress database."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:157
+#: includes/admin/tools/views/html-admin-page-system-info.php:158
 msgid "Admin AJAX"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:158
+#: includes/admin/tools/views/html-admin-page-system-info.php:159
 msgid "Whether Admin AJAX is accessible."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:159
+#: includes/admin/tools/views/html-admin-page-system-info.php:160
 msgid "Accessible"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:159
+#: includes/admin/tools/views/html-admin-page-system-info.php:160
 msgid "Inaccessible"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:162
+#: includes/admin/tools/views/html-admin-page-system-info.php:163
 msgid "Registered Post Statuses"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:163
+#: includes/admin/tools/views/html-admin-page-system-info.php:164
 msgid "A list of all registered post statuses."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:172
+#: includes/admin/tools/views/html-admin-page-system-info.php:173
 msgid "Server Environment"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:177
+#: includes/admin/tools/views/html-admin-page-system-info.php:178
 msgid "Hosting Provider"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:178
+#: includes/admin/tools/views/html-admin-page-system-info.php:179
 msgid "The hosting provider for this WordPress installation."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:179
+#: includes/admin/tools/views/html-admin-page-system-info.php:180
 msgid "Unknown"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:182
+#: includes/admin/tools/views/html-admin-page-system-info.php:183
 msgid "TLS Connection"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:183
+#: includes/admin/tools/views/html-admin-page-system-info.php:184
 msgid "Most payment gateway APIs only support connections using the TLS 1.2 security protocol."
 msgstr ""
 
 #. translators: %s: SSL connection response
-#: includes/admin/tools/views/html-admin-page-system-info.php:196
+#: includes/admin/tools/views/html-admin-page-system-info.php:197
 msgid "Connection uses %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:202
+#: includes/admin/tools/views/html-admin-page-system-info.php:203
 msgid "TLS Rating"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:203
+#: includes/admin/tools/views/html-admin-page-system-info.php:204
 msgid "The server's connection as rated by https://www.howsmyssl.com/"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:213
+#: includes/admin/tools/views/html-admin-page-system-info.php:214
 msgid "Server Info"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:214
+#: includes/admin/tools/views/html-admin-page-system-info.php:215
 msgid "Information about the web server that is currently hosting your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:218
+#: includes/admin/tools/views/html-admin-page-system-info.php:219
 msgid "PHP Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:219
+#: includes/admin/tools/views/html-admin-page-system-info.php:220
 msgid "The version of PHP installed on your hosting server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:227
+#: includes/admin/tools/views/html-admin-page-system-info.php:228
 msgid "%s - We recommend a minimum PHP version of 5.6. See: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:227
+#: includes/admin/tools/views/html-admin-page-system-info.php:228
 msgid "PHP Requirements in Give"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:232
+#: includes/admin/tools/views/html-admin-page-system-info.php:233
 msgid "Couldn't determine PHP version because phpversion() doesn't exist."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:238
+#: includes/admin/tools/views/html-admin-page-system-info.php:239
 msgid "PHP Post Max Size"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:239
+#: includes/admin/tools/views/html-admin-page-system-info.php:240
 msgid "The largest filesize that can be contained in one post."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:243
+#: includes/admin/tools/views/html-admin-page-system-info.php:244
 msgid "PHP Time Limit"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:244
+#: includes/admin/tools/views/html-admin-page-system-info.php:245
 msgid "The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups)."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:248
+#: includes/admin/tools/views/html-admin-page-system-info.php:249
 msgid "PHP Max Input Vars"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:249
+#: includes/admin/tools/views/html-admin-page-system-info.php:250
 msgid "The maximum number of variables your server can use for a single function to avoid overloads."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:253
+#: includes/admin/tools/views/html-admin-page-system-info.php:254
 msgid "PHP Max Upload Size"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:254
+#: includes/admin/tools/views/html-admin-page-system-info.php:255
 msgid "The largest filesize that can be uploaded to your WordPress installation."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:258
+#: includes/admin/tools/views/html-admin-page-system-info.php:259
 msgid "cURL Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:259
+#: includes/admin/tools/views/html-admin-page-system-info.php:260
 msgid "The version of cURL installed on your server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:266
+#: includes/admin/tools/views/html-admin-page-system-info.php:267
 msgid "%s - We recommend a minimum cURL version of 7.40."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:277
+#: includes/admin/tools/views/html-admin-page-system-info.php:278
 msgid "SUHOSIN Installed"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:278
+#: includes/admin/tools/views/html-admin-page-system-info.php:279
 msgid "Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:291
+#: includes/admin/tools/views/html-admin-page-system-info.php:292
 msgid "MySQL Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:292
+#: includes/admin/tools/views/html-admin-page-system-info.php:293
 msgid "The version of MySQL installed on your hosting server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:298
+#: includes/admin/tools/views/html-admin-page-system-info.php:299
 msgid "%s - We recommend a minimum MySQL version of 5.6. See: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:298
+#: includes/admin/tools/views/html-admin-page-system-info.php:299
 msgid "WordPress Requirements"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:307
+#: includes/admin/tools/views/html-admin-page-system-info.php:308
 msgid "Default Timezone is UTC"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:308
+#: includes/admin/tools/views/html-admin-page-system-info.php:309
 msgid "The default timezone for your server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:312
+#: includes/admin/tools/views/html-admin-page-system-info.php:313
 msgid "Default timezone is %s - it should be UTC"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:323
+#: includes/admin/tools/views/html-admin-page-system-info.php:324
 msgid "Payment gateways can use cURL to communicate with remote servers to authorize payments, other plugins may also use it when communicating with remote services."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:329
+#: includes/admin/tools/views/html-admin-page-system-info.php:330
 msgid "Your server does not have fsockopen or cURL enabled - PayPal IPN and other scripts which communicate with other servers will not work. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:334
+#: includes/admin/tools/views/html-admin-page-system-info.php:335
 msgid "Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:340
+#: includes/admin/tools/views/html-admin-page-system-info.php:341
 msgid "Your server does not have the %s class enabled - some gateway plugins which use SOAP may not work as expected."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:345
+#: includes/admin/tools/views/html-admin-page-system-info.php:346
 msgid "HTML/Multipart emails use DOMDocument to generate inline CSS in templates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:351
+#: includes/admin/tools/views/html-admin-page-system-info.php:352
 msgid "Your server does not have the %s class enabled - HTML/Multipart emails, and also some extensions, will not work without DOMDocument."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:356
+#: includes/admin/tools/views/html-admin-page-system-info.php:357
 msgid "gzip is used for file compression and decompression."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:362
+#: includes/admin/tools/views/html-admin-page-system-info.php:363
 msgid "Your server does not support the %s function - this is used for file compression and decompression."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:368
+#: includes/admin/tools/views/html-admin-page-system-info.php:369
 msgid "GD Graphics Library is used for dynamically manipulating images."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:373
+#: includes/admin/tools/views/html-admin-page-system-info.php:374
 msgid "Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:379
+#: includes/admin/tools/views/html-admin-page-system-info.php:380
 msgid "Your server does not support the %s functions - this is required for better character encoding. Some fallbacks will be used instead for it."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:383
+#: includes/admin/tools/views/html-admin-page-system-info.php:384
 msgid "Remote Post"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:384
+#: includes/admin/tools/views/html-admin-page-system-info.php:385
 msgid "PayPal uses this method of communicating when sending back transaction information."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:398
+#: includes/admin/tools/views/html-admin-page-system-info.php:399
 msgid "wp_remote_post() failed. PayPal IPN won't work with your server. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:400, includes/admin/tools/views/html-admin-page-system-info.php:418
+#: includes/admin/tools/views/html-admin-page-system-info.php:401, includes/admin/tools/views/html-admin-page-system-info.php:419
 msgid "Error: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:402, includes/admin/tools/views/html-admin-page-system-info.php:420
+#: includes/admin/tools/views/html-admin-page-system-info.php:403, includes/admin/tools/views/html-admin-page-system-info.php:421
 msgid "Status code: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:408
+#: includes/admin/tools/views/html-admin-page-system-info.php:409
 msgid "Remote Get"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:409
+#: includes/admin/tools/views/html-admin-page-system-info.php:410
 msgid "Give plugins may use this method of communication when checking for plugin updates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:416
+#: includes/admin/tools/views/html-admin-page-system-info.php:417
 msgid "wp_remote_get() failed. The Give plugin updater won't work with your server. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:448
+#: includes/admin/tools/views/html-admin-page-system-info.php:449
 msgid "Give Configuration"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:453
+#: includes/admin/tools/views/html-admin-page-system-info.php:454
 msgid "Give Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:454
+#: includes/admin/tools/views/html-admin-page-system-info.php:455
 msgid "The version of Give installed on your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:458, includes/admin/tools/views/html-admin-page-system-info.php:525
+#: includes/admin/tools/views/html-admin-page-system-info.php:459, includes/admin/tools/views/html-admin-page-system-info.php:526
 msgid "Give Cache"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:459, includes/admin/tools/views/html-admin-page-system-info.php:526
+#: includes/admin/tools/views/html-admin-page-system-info.php:460, includes/admin/tools/views/html-admin-page-system-info.php:527
 msgid "Whether cache is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:463, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:4, includes/admin/upgrades/views/upgrades.php:52
+#: includes/admin/tools/views/html-admin-page-system-info.php:464, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:4, includes/admin/upgrades/views/upgrades.php:52
 msgid "Database Updates"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:464
+#: includes/admin/tools/views/html-admin-page-system-info.php:465
 msgid "This will show the number of pending database updates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:467
+#: includes/admin/tools/views/html-admin-page-system-info.php:468
 msgid "All DB Updates Completed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:474
+#: includes/admin/tools/views/html-admin-page-system-info.php:475
 msgid "%1$s updates still need to run. (Paused) "
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:481
+#: includes/admin/tools/views/html-admin-page-system-info.php:482
 msgid "%1$s updates still need to run."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:488
+#: includes/admin/tools/views/html-admin-page-system-info.php:489
 msgid "%1$s of %2$s updates still need to run."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:499
+#: includes/admin/tools/views/html-admin-page-system-info.php:500
 msgid "Database Tables"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:500
+#: includes/admin/tools/views/html-admin-page-system-info.php:501
 msgid "This will show list of installed database tables."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:530
+#: includes/admin/tools/views/html-admin-page-system-info.php:531
 msgid "Give Emails"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:531
+#: includes/admin/tools/views/html-admin-page-system-info.php:532
 msgid "Whether emails is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:557
+#: includes/admin/tools/views/html-admin-page-system-info.php:558
 msgid "Upgraded From"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:558
+#: includes/admin/tools/views/html-admin-page-system-info.php:559
 msgid "The version of Give installed prior to the last update."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:563
+#: includes/admin/tools/views/html-admin-page-system-info.php:564
 msgid "Whether Test Mode is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:568
+#: includes/admin/tools/views/html-admin-page-system-info.php:569
 msgid "The currency code selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:573
+#: includes/admin/tools/views/html-admin-page-system-info.php:574
 msgid "The currency position selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:574
+#: includes/admin/tools/views/html-admin-page-system-info.php:575
 msgid "Before"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:574
+#: includes/admin/tools/views/html-admin-page-system-info.php:575
 msgid "After"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:578
+#: includes/admin/tools/views/html-admin-page-system-info.php:579
 msgid "The decimal separator defined in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:583
+#: includes/admin/tools/views/html-admin-page-system-info.php:584
 msgid "The thousands separator defined in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:588
+#: includes/admin/tools/views/html-admin-page-system-info.php:589
 msgid "The page where donors land following a successful transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:592
+#: includes/admin/tools/views/html-admin-page-system-info.php:593
 msgid "Failure Page"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:593
+#: includes/admin/tools/views/html-admin-page-system-info.php:594
 msgid "The page where donors land following a failed transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:598
+#: includes/admin/tools/views/html-admin-page-system-info.php:599
 msgid "The page where past donations are listed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:602
+#: includes/admin/tools/views/html-admin-page-system-info.php:603
 msgid "Give Forms Slug"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:603
+#: includes/admin/tools/views/html-admin-page-system-info.php:604
 msgid "The slug used for Give donation forms."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:630
+#: includes/admin/tools/views/html-admin-page-system-info.php:631
 msgid "Enabled Payment Gateways"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:631
+#: includes/admin/tools/views/html-admin-page-system-info.php:632
 msgid "All payment gateways enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:635
+#: includes/admin/tools/views/html-admin-page-system-info.php:636
 msgid "Default Payment Gateway"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:636
+#: includes/admin/tools/views/html-admin-page-system-info.php:637
 msgid "The default payment gateway selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:641
+#: includes/admin/tools/views/html-admin-page-system-info.php:642
 msgid "Whether admins requires verification of IPN notifications with PayPal."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:645
+#: includes/admin/tools/views/html-admin-page-system-info.php:646
 msgid "PayPal IPN Notifications"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:646
+#: includes/admin/tools/views/html-admin-page-system-info.php:647
 msgid "Displays whether when last PayPal IPN is received with which donation or transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:660
+#: includes/admin/tools/views/html-admin-page-system-info.php:661
 msgid "IPN received for <a href=\"%s\">#%s</a> ( <a href=\"%s\" target=\"_blank\">%s</a> ) on %s at %s. Status %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:676
+#: includes/admin/tools/views/html-admin-page-system-info.php:677
 msgid "Donor Email Access"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:677
+#: includes/admin/tools/views/html-admin-page-system-info.php:678
 msgid "Whether donors can access their donation history using only email."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:681
+#: includes/admin/tools/views/html-admin-page-system-info.php:682
 msgid "Stripe Webhook Notifications"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:682
+#: includes/admin/tools/views/html-admin-page-system-info.php:683
 msgid "Displays whether when last Stripe Webhook is received with which donation or transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:701
+#: includes/admin/tools/views/html-admin-page-system-info.php:702
 msgid "Active Give Add-ons"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:724, includes/admin/tools/views/html-admin-page-system-info.php:788, includes/admin/tools/views/html-admin-page-system-info.php:835, includes/admin/tools/views/html-admin-page-system-info.php:883, includes/admin/upgrades/views/plugins-update-section.php:18
+#: includes/admin/tools/views/html-admin-page-system-info.php:724, includes/admin/tools/views/html-admin-page-system-info.php:789, includes/admin/tools/views/html-admin-page-system-info.php:836, includes/admin/tools/views/html-admin-page-system-info.php:884, includes/admin/upgrades/views/plugins-update-section.php:18
 msgid "Visit plugin homepage"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:734, includes/admin/tools/views/html-admin-page-system-info.php:798, includes/admin/tools/views/html-admin-page-system-info.php:845, includes/admin/upgrades/views/plugins-update-section.php:29
+#: includes/admin/tools/views/html-admin-page-system-info.php:734, includes/admin/tools/views/html-admin-page-system-info.php:799, includes/admin/tools/views/html-admin-page-system-info.php:846, includes/admin/upgrades/views/plugins-update-section.php:29
 msgid "Visit author homepage"
 msgstr ""
 
@@ -12944,7 +12938,7 @@ msgstr ""
 msgid "Unlicensed"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:751, includes/admin/tools/views/html-admin-page-system-info.php:806, includes/admin/tools/views/html-admin-page-system-info.php:853, includes/admin/tools/views/html-admin-page-system-info.php:902, includes/admin/upgrades/views/plugins-update-section.php:51
+#: includes/admin/tools/views/html-admin-page-system-info.php:751, includes/admin/tools/views/html-admin-page-system-info.php:807, includes/admin/tools/views/html-admin-page-system-info.php:854, includes/admin/tools/views/html-admin-page-system-info.php:903, includes/admin/upgrades/views/plugins-update-section.php:51
 msgctxt "by author"
 msgid "by %s"
 msgstr ""
@@ -12953,71 +12947,71 @@ msgstr ""
 msgid "Other Active Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:817
+#: includes/admin/tools/views/html-admin-page-system-info.php:818
 msgid "Inactive Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:868
+#: includes/admin/tools/views/html-admin-page-system-info.php:869
 msgid "Active MU Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:915
+#: includes/admin/tools/views/html-admin-page-system-info.php:916
 msgid "Theme"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:925
+#: includes/admin/tools/views/html-admin-page-system-info.php:926
 msgid "The name of the current active theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:929
+#: includes/admin/tools/views/html-admin-page-system-info.php:930
 msgid "Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:930
+#: includes/admin/tools/views/html-admin-page-system-info.php:931
 msgid "The installed version of the current active theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:934
+#: includes/admin/tools/views/html-admin-page-system-info.php:935
 msgid "Author URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:935
+#: includes/admin/tools/views/html-admin-page-system-info.php:936
 msgid "The theme developer's URL."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:939
+#: includes/admin/tools/views/html-admin-page-system-info.php:940
 msgid "Child Theme"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:940
+#: includes/admin/tools/views/html-admin-page-system-info.php:941
 msgid "Whether the current theme is a child theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:942
+#: includes/admin/tools/views/html-admin-page-system-info.php:943
 msgid "If you're modifying Give on a parent theme you didn't build personally, then we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to Create a Child Theme</a>"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:950
+#: includes/admin/tools/views/html-admin-page-system-info.php:951
 msgid "Parent Theme Name"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:951
+#: includes/admin/tools/views/html-admin-page-system-info.php:952
 msgid "The name of the parent theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:955
+#: includes/admin/tools/views/html-admin-page-system-info.php:956
 msgid "Parent Theme Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:956
+#: includes/admin/tools/views/html-admin-page-system-info.php:957
 msgid "The installed version of the parent theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:960
+#: includes/admin/tools/views/html-admin-page-system-info.php:961
 msgid "Parent Theme Author URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:961
+#: includes/admin/tools/views/html-admin-page-system-info.php:962
 msgid "The parent theme developers URL."
 msgstr ""
 
@@ -13389,17 +13383,17 @@ msgstr ""
 msgid "Unable to set Stripe API Key. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1121, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:265
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:1102, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:265
 msgid "Stripe Customer Creation Failed"
 msgstr ""
 
 #. translators: %s Donation Data
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1124, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:268
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:1105, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:268
 msgid "Customer creation failed while processing the donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1128, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:272
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:1109, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:272
 msgid "The Stripe Gateway returned an error while processing the donation."
 msgstr ""
 
@@ -13429,12 +13423,12 @@ msgstr ""
 msgid "Something went wrong while refunding the charge in Stripe."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/admin-actions.php:288
-msgid "The Stripe gateway is enabled but you're not connected. Connect to Stripe to start accepting credit card donations directly on your website. <a href=\"#\" class=\"give-stripe-connect-temp-dismiss\">Not right now <span class=\"dashicons dashicons-dismiss\"></span></a>"
+#: includes/gateways/stripe/includes/admin/admin-actions.php:283
+msgid "The Stripe gateway is enabled but you're not connected. Connect to Stripe to start accepting credit card donations directly on your website."
 msgstr ""
 
 #. translators: 1. Main Text, 2. Connect Link
-#: includes/gateways/stripe/includes/admin/admin-actions.php:301
+#: includes/gateways/stripe/includes/admin/admin-actions.php:296
 msgid "<strong>Stripe Connect:</strong> %1$s %2$s"
 msgstr ""
 
@@ -13487,7 +13481,7 @@ msgid "Enable Stripe Checkout"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:209
-msgid "This option will enable <a href=\"%s\" target=\"_blank\">Stripe's modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page. Note: Apple and Google pay do not work with the modal checkout option."
+msgid "This option will enable <a href=\"%s\" target=\"_blank\">Stripe's modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:215
@@ -13599,20 +13593,20 @@ msgid "Stripe is NOT connected."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:477
-msgid "The Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium add-on <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
+msgid "The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:511
-msgid "In order for Stripe to function completely, you must configure your Stripe webhooks."
+msgid "In order for Stripe to function properly, you must configure your Stripe webhooks."
 msgstr ""
 
 #. translators: 1. Webhook settings page.
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:514
-msgid " Visit your <a href=\"%1$s\" target=\"_blank\">account dashboard</a> to configure them. "
+msgid " You can  visit your <a href=\"%1$s\" target=\"_blank\">Stripe Account Dashboard</a> to add a new webhook. "
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:517
-msgid "Please add a webhook endpoint for the URL below."
+msgid "Please add a new webhook endpoint for the following URL:"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:521
