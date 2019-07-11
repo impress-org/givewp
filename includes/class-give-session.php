@@ -260,7 +260,7 @@ class Give_Session {
 
 		// @see https://github.com/impress-org/give/issues/3705
 		if (
-			empty( $cookie_value )
+			empty( $cookie )
 			&& wp_doing_ajax()
 			&& isset( $_GET['action'] )
 			&& 'get_receipt' === $_GET['action']

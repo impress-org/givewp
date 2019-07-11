@@ -177,16 +177,25 @@ add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 function give_filter_addons_do_filter_addons( $plugin_menu ) {
 	global $plugins;
 
-	foreach ( $plugins['all'] as $plugin_slug => $plugin_data ) {
+	$give_addons = wp_list_pluck( give_get_plugins( array( 'only_add_on' => true ) ), 'Name' );
 
-		if ( false !== strpos( $plugin_data['Name'], 'Give' ) && ( false !== strpos( $plugin_data['AuthorName'], 'WordImpress' ) || false !== strpos( $plugin_data['AuthorName'], 'GiveWP' ) ) ) {
-			$plugins['give'][ $plugin_slug ]           = $plugins['all'][ $plugin_slug ];
-			$plugins['give'][ $plugin_slug ]['plugin'] = $plugin_slug;
-			// replicate the next step.
-			if ( current_user_can( 'update_plugins' ) ) {
-				$current = get_site_transient( 'update_plugins' );
-				if ( isset( $current->response[ $plugin_slug ] ) ) {
-					$plugins['give'][ $plugin_slug ]['update'] = true;
+	if( ! empty( $give_addons ) ) {
+		foreach ( $plugins['all'] as $file => $plugin_data ) {
+
+			if ( in_array( $plugin_data['Name'], $give_addons ) ) {
+				$plugins['give'][ $file ]           = $plugins['all'][ $file ];
+				$plugins['give'][ $file ]['plugin'] = $file;
+
+				// Replicate the next step.
+				if ( current_user_can( 'update_plugins' ) ) {
+					$current = get_site_transient( 'update_plugins' );
+
+					if ( isset( $current->response[ $file ] ) ) {
+						$plugins['give'][ $file ]['update'] = true;
+						$plugins['give'][ $file ] = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
+					} elseif ( isset( $current->no_update[ $file ] ) ){
+						$plugins['give'][ $file ] = array_merge( (array) $current->no_update[ $file ], $plugins['give'][ $file ] );
+					}
 				}
 			}
 		}

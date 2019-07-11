@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_do_automatic_upgrades() {
 	$did_upgrade  = false;
-	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
+	$give_version = preg_replace( '/[^0-9.].*/', '', Give_Cache_Setting::get_option( 'give_version' ) );
 
 	if ( ! $give_version ) {
 		// 1.0 is the first version to use this option so we must add it.
@@ -129,6 +129,10 @@ function give_do_automatic_upgrades() {
 
 		case version_compare( $give_version, '2.3.0', '<' ):
 			give_v230_upgrades();
+			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.5.0', '<' ):
+			give_v250_upgrades();
 			$did_upgrade = true;
 	}
 
@@ -3404,4 +3408,102 @@ function give_v241_remove_sale_logs_callback() {
 	$wpdb->query( $sql );
 
 	give_set_upgrade_complete( 'v241_remove_sale_logs' );
+}
+
+
+/**
+ * DB upgrades for Give 2.5.0
+ *
+ * !since 2.5.0
+ */
+function give_v250_upgrades() {
+	global $wpdb;
+
+	$old_license   = array();
+	$new_license   = array();
+	$give_licenses = get_option( 'give_licenses', array() );
+	$give_options  = give_get_settings();
+
+	// Get add-ons license key.
+	$addons = array();
+	foreach ( $give_options as $key => $value ) {
+		if ( false !== strpos( $key, '_license_key' ) ) {
+			$addons[ $key ] = $value;
+		}
+	}
+
+	// Bailout: We do not have any add-on license data to upgrade.
+	if ( empty( $addons ) ) {
+		return false;
+	}
+
+	foreach ( $addons as $key => $license_key ) {
+
+		// Get addon shortname.
+		$addon_shortname = str_replace( '_license_key', '', $key );
+
+		// Addon license option name.
+		$addon_shortname    = "{$addon_shortname}_license_active";
+		$addon_license_data = get_option( "{$addon_shortname}_license_active", array() );
+
+		if (
+			! $license_key
+			|| array_key_exists( $license_key, $give_licenses )
+		) {
+			continue;
+		}
+
+		$old_license[ $license_key ] = $addon_license_data;
+	}
+
+	// Bailout.
+	if ( empty( $old_license ) ) {
+		return false;
+	}
+
+	/* @var stdClass $data */
+	foreach ( $old_license as $key => $data ) {
+		$tmp = Give_License::request_license_api( array(
+			'edd_action' => 'check_license',
+			'license'    => $key,
+		), true );
+
+		if ( is_wp_error( $tmp ) || ! $tmp['success'] ) {
+			continue;
+		}
+
+		$new_license[ $key ] = $tmp;
+	}
+
+	// Bailout.
+	if ( empty( $new_license ) ) {
+		return false;
+	}
+
+	$give_licenses = array_merge( $give_licenses, $new_license );
+
+	update_option( 'give_licenses', $give_licenses );
+
+	/**
+	 * Delete data.
+	 */
+
+	// 1. license keys
+	foreach ( get_option( 'give_settings' ) as $index => $setting ) {
+		if ( false !== strpos( $index, '_license_key' ) ) {
+			give_delete_option( $index );
+		}
+	}
+
+	// 2. license api data
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name like '%_license_active%' AND option_name like 'give_%'" );
+
+	// 3. subscriptions data
+	delete_option( '_give_subscriptions_edit_last' );
+	delete_option( 'give_subscriptions' );
+
+	// 4. misc
+	delete_option( 'give_is_addon_activated' );
+
+	give_refresh_licenses();
 }

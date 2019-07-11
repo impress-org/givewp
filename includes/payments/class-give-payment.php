@@ -513,6 +513,8 @@ final class Give_Payment {
 			return false;
 		}
 
+		Give_Payments_Query::update_meta_cache( array( $payment_id ) );
+
 		/**
 		 * Fires before payment setup.
 		 *
@@ -1695,7 +1697,7 @@ final class Give_Payment {
 	 */
 	private function setup_user_id() {
 
-		$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
+		$donor   = Give()->donors->get_donor_by( 'id', $this->donor_id );
 		$user_id = $donor ? absint( $donor->user_id ) : 0;
 
 

@@ -17,6 +17,10 @@ If you're looking to contribute or actively develop on Give then skip ahead to t
 * cURL version 5.40 or higher
 * An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
 
+### Development Requirements
+* Node 10 (not compatible with 11+)
+* Composer
+
 ### Automatic installation
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New".
@@ -59,6 +63,8 @@ Give relies on several npm commands to get you started:
 * `npm run watch` - Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run. 
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
+
+##### Note only compatible with Node 10
 
 ### Development Notes
 

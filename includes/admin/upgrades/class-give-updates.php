@@ -167,11 +167,11 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_plugin_addon_updates() {
-		$addons         = give_get_plugins();
+		$addons         = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 		$plugin_updates = get_plugin_updates();
 
 		foreach ( $addons as $key => $info ) {
-			if ( 'active' != $info['Status'] || 'add-on' != $info['Type'] || empty( $plugin_updates[ $key ] ) ) {
+			if ( empty( $plugin_updates[ $key ] ) ) {
 				continue;
 			}
 
@@ -294,7 +294,7 @@ class Give_Updates {
 		if (
 			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
-			get_option( 'give_show_db_upgrade_complete_notice' ) &&
+			Give_Cache_Setting::get_option( 'give_show_db_upgrade_complete_notice' ) &&
 			! isset( $_GET['give-db-update-completed'] )
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
@@ -586,6 +586,11 @@ class Give_Updates {
 	 */
 	public function __show_notice() {
 		$current_screen = get_current_screen();
+		$hide_on_pages = array(
+			'give_forms_page_give-updates',
+			'update-core',
+			'give_forms_page_give-addons'
+		);
 
 		// Bailout.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -597,9 +602,8 @@ class Give_Updates {
 			$this->run_db_update();
 		}
 
-
 		// Bailout.
-		if ( in_array( $current_screen->base, array( 'give_forms_page_give-updates', 'update-core' ) ) ) {
+		if ( in_array( $current_screen->base, $hide_on_pages ) ) {
 			return;
 		}
 
@@ -919,7 +923,7 @@ class Give_Updates {
 	 * @return bool
 	 */
 	public function is_doing_updates() {
-		return (bool) get_option( 'give_doing_upgrade' );
+		return (bool) Give_Cache_Setting::get_option( 'give_doing_upgrade' );
 	}
 
 

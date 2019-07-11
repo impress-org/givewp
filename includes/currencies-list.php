@@ -241,8 +241,8 @@ return array(
 		),
 	),
 	'CHF' => array(
-		'admin_label' => sprintf( __( 'Swiss Franc (%1$s)', 'give' ), '&#70;&#114;' ),
-		'symbol'      => '&#70;&#114;',
+		'admin_label' => sprintf( __( 'Swiss Franc (%1$s)', 'give' ), '&#67;&#72;&#70;' ),
+		'symbol'      => '&#67;&#72;&#70;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ' ',
@@ -711,8 +711,8 @@ return array(
 		),
 	),
 	'SZL' => array(
-		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#76;' ),
-		'symbol'      => '&#76;',
+		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#69;' ),
+		'symbol'      => '&#69;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',

@@ -18,7 +18,7 @@ if ( ! current_user_can( 'manage_give_settings' ) ) {
  */
 do_action( 'give_tools_import_core_settings_main_before' );
 ?>
-	<div id="poststuff">
+	<div id="poststuff" class="give-clearfix">
 		<div class="postbox">
 			<h1 class="give-importer-h1" align="center"><?php esc_html_e( 'Import Settings', 'give' ); ?></h1>
 			<div class="inside give-tools-setting-page-import give-import-core-settings">

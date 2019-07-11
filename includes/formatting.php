@@ -687,9 +687,9 @@ function give_get_cache_key( $action, $query_args ) {
 function give_clean( $var ) {
 	if ( is_array( $var ) ) {
 		return array_map( 'give_clean', $var );
-	} else {
-		return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 	}
+
+	return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 }
 
 /**
@@ -745,7 +745,7 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 		$wp_die_args = wp_parse_args(
 			$wp_die_args,
 			array(
-				'message' => __( 'Nonce verification has failed.', 'give' ),
+				'message' => __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 				'title'   => __( 'Error', 'give' ),
 				'args'    => array(
 					'response' => 403,
@@ -782,7 +782,7 @@ function give_verify_donation_form_nonce( $nonce = '', $form_id ) {
 	$verify_nonce = give_validate_nonce( $nonce, $nonce_action );
 
 	if ( ! $verify_nonce ) {
-		give_set_error( 'donation_form_nonce', __( 'Nonce verification has failed.', 'give' ) );
+		give_set_error( 'donation_form_nonce', __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 	}
 
 	return $verify_nonce;

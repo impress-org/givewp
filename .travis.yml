@@ -16,18 +16,15 @@ matrix:
   include:
   - php: 5.6
     env: WP_VERSION=latest WP_MULTISITE=1 PHP_LATEST_STABLE=7.1
-  - php: 5.3
-    env: WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
-    dist: precise
+  - php: 5.4
+    env: WP_VERSION=5.1.1 WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
 
 before_install:
-  - |
-    if [ ${TRAVIS_PHP_VERSION:0:3} != "5.3" ]; then
-      npm i npm@latest -g
-      chmod +x docker-compose.yml
-      sudo docker-compose up -d
-      sudo chmod 777 -R ~/wordpress_data/
-    fi
+  - npm i npm@latest -g
+  - chmod +x docker-compose.yml
+  - docker-compose --version
+  - sudo docker-compose up -d
+  - sudo chmod 777 -R ~/wordpress_data/
 
 before_script:
   - phpenv config-rm xdebug.ini

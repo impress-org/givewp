@@ -106,7 +106,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 		 */
 		do_action( 'give_view_donation_details_form_top', $payment_id );
 		?>
-		<div id="poststuff">
+		<div id="poststuff" class="give-clearfix">
 			<div id="give-dashboard-widgets-wrap">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="postbox-container-1" class="postbox-container">

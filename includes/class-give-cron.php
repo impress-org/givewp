@@ -46,9 +46,9 @@ class Give_Cron {
 	/**
 	 * Get instance.
 	 *
+	 * @return static
 	 * @since  1.8.13
 	 * @access public
-	 * @return static
 	 */
 	public static function get_instance() {
 		if ( null === static::$instance ) {
@@ -73,18 +73,23 @@ class Give_Cron {
 	/**
 	 * Registers new cron schedules
 	 *
-	 * @since  1.3.2
-	 * @access public
-	 *
-	 * @param  array $schedules An array of non-default cron schedules.
+	 * @param array $schedules An array of non-default cron schedules.
 	 *
 	 * @return array            An array of non-default cron schedules.
+	 * @since  1.3.2
+	 * @access public
 	 */
 	public function __add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
-			'interval' => 604800,
+			'interval' => 604800, // 7 * 24 * 3600
 			'display'  => __( 'Once Weekly', 'give' ),
+		);
+
+		// Adds once weekly to the existing schedules.
+		$schedules['monthly'] = array(
+			'interval' => 2592000, // 30 * 24 * 3600
+			'display'  => __( 'Once Monthly', 'give' ),
 		);
 
 		return $schedules;
@@ -93,23 +98,35 @@ class Give_Cron {
 	/**
 	 * Schedules our events
 	 *
+	 * @return void
 	 * @since  1.3.2
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __schedule_events() {
+		$this->monthly_events();
 		$this->weekly_events();
 		$this->daily_events();
 	}
 
 	/**
-	 * Schedule weekly events
-	 *
-	 * @since  1.3.2
-	 * @access private
+	 * Schedule monthly events
 	 *
 	 * @return void
+	 * @since  2.5.0
+	 * @access private
+	 */
+	private function monthly_events() {
+		if ( ! wp_next_scheduled( 'give_monthly_scheduled_events' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'give_monthly_scheduled_events' );
+		}
+	}
+
+	/**
+	 * Schedule weekly events
+	 *
+	 * @return void
+	 * @since  1.3.2
+	 * @access private
 	 */
 	private function weekly_events() {
 		if ( ! wp_next_scheduled( 'give_weekly_scheduled_events' ) ) {
@@ -120,10 +137,9 @@ class Give_Cron {
 	/**
 	 * Schedule daily events
 	 *
+	 * @return void
 	 * @since  1.3.2
 	 * @access private
-	 *
-	 * @return void
 	 */
 	private function daily_events() {
 		if ( ! wp_next_scheduled( 'give_daily_scheduled_events' ) ) {
@@ -134,20 +150,25 @@ class Give_Cron {
 	/**
 	 * get cron job action name
 	 *
-	 * @since  1.8.13
-	 * @access public
-	 *
 	 * @param string $type
 	 *
 	 * @return string
+	 * @since  1.8.13
+	 * @access public
 	 */
 	public static function get_cron_action( $type = 'weekly' ) {
+		$cron_action = '';
+
 		switch ( $type ) {
 			case 'daily':
 				$cron_action = 'give_daily_scheduled_events';
 				break;
 
-			default:
+			case 'monthly':
+				$cron_action = 'give_monthly_scheduled_events';
+				break;
+
+			case 'weekly':
 				$cron_action = 'give_weekly_scheduled_events';
 				break;
 		}
@@ -158,39 +179,51 @@ class Give_Cron {
 	/**
 	 * Add action to cron action
 	 *
+	 * @param string $callback
+	 * @param string $type
+	 *
 	 * @since  1.8.13
 	 * @access private
-	 *
-	 * @param        $action
-	 * @param string $type
 	 */
-	private static function add_event( $action, $type = 'weekly' ) {
+	private static function add_event( $callback, $type = 'weekly' ) {
 		$cron_event = self::get_cron_action( $type );
-		add_action( $cron_event, $action );
+		add_action( $cron_event, $callback );
 	}
 
 	/**
 	 * Add weekly event
 	 *
+	 * @param string $callback
+	 *
 	 * @since  1.8.13
 	 * @access public
-	 *
-	 * @param $action
 	 */
-	public static function add_weekly_event( $action ) {
-		self::add_event( $action, 'weekly' );
+	public static function add_weekly_event( $callback ) {
+		self::add_event( $callback );
 	}
 
 	/**
 	 * Add daily event
 	 *
+	 * @param $callback
+	 *
 	 * @since  1.8.13
 	 * @access public
-	 *
-	 * @param $action
 	 */
-	public static function add_daily_event( $action ) {
-		self::add_event( $action, 'daily' );
+	public static function add_daily_event( $callback ) {
+		self::add_event( $callback, 'daily' );
+	}
+
+	/**
+	 * Add monthly event
+	 *
+	 * @param $callback
+	 *
+	 * @since  2.5.0
+	 * @access public
+	 */
+	public static function add_monthly_event( $callback ) {
+		self::add_event( $callback, 'monthly' );
 	}
 }
 

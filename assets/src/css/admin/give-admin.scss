@@ -17,6 +17,7 @@
 @import '../frontend/fonts';
 @import '../plugins/modal';
 @import '../plugins/button';
+@import '../plugins/notice';
 
 @import 'fonts';
 @import 'grids';
@@ -26,6 +27,7 @@
 @import 'welcome';
 @import 'logs';
 @import 'settings';
+@import 'setting-license';
 @import 'payment-history';
 @import 'dashboard';
 @import 'donors';
@@ -38,3 +40,8 @@
 @import 'importer';
 @import 'export';
 @import 'goals';
+@import 'tabs';
+@import '_components.admin-header';
+
+// Stripe Core
+@import 'stripe-admin';

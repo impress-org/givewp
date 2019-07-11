@@ -10,6 +10,7 @@ import '../plugins/give-ajaxify-fields';
 import '../plugins/selector-cache';
 import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
+import '../plugins/notice';
 import GiveAPI from '../plugins/give-api/api';
 
 import * as Modals from '../plugins/modal.js';
@@ -23,6 +24,9 @@ import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
 
+// Stripe core.
+import './stripe-admin';
+
 GiveAPI.modal = Modals;
-const { init, fn, cache, modal } = GiveAPI;
-window.Give={ init, fn, cache, modal };
+const { init, fn, cache, modal, notice } = GiveAPI;
+window.Give = { init, fn, cache, modal, notice };

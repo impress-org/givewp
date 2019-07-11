@@ -25,6 +25,9 @@
 @import 'modal';
 @import '_components.donor';
 
+// Stripe Core
+@import 'give-stripe';
+
 // Wrapper increases specificity for defensive styling against themes.
 .give-wrap {
 	@import 'grid';

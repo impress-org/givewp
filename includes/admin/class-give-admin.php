@@ -66,17 +66,19 @@ class Give_Admin {
 	 * @access private
 	 */
 	private function admin_loading() {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/misc-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be loaded only on the form edit screen. review possibilities
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-welcome.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-filters.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons/add-ons.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons/actions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-blank-slate.php';

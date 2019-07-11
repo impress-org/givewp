@@ -217,6 +217,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 								$args = array(
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
+									'class'       => 'give-width-25em',
 									'chosen'      => true,
 									'placeholder' => __( 'All Forms', 'give' ),
 									'data'        => array( 'no-form' => __( 'No donation forms found', 'give' ) ),
@@ -316,7 +317,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			 */
 			do_action( 'give_tools_export_donations_main_before' );
 			?>
-			<div id="poststuff">
+			<div id="poststuff" class="give-clearfix">
 				<div class="postbox">
 					<h1 class="give-export-h1" align="center"><?php _e( 'Export Donations', 'give' ); ?></h1>
 					<div class="inside give-tools-setting-page-export give-export_donations">

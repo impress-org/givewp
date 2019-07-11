@@ -37,8 +37,8 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => __( 'Give Email Notification', 'give' ),
-			'plural'   => __( 'Give Email Notifications', 'give' ),
+			'singular' => 'giveemailnotification',
+			'plural'   => 'giveemailnotifications',
 		) );
 
 		$this->email_notifications = Give_Email_Notifications::get_instance();

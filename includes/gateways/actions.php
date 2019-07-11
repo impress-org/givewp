@@ -45,7 +45,7 @@ function give_load_ajax_gateway() {
 		! isset( $post_data['nonce'] )
 		|| ! give_verify_donation_form_nonce( $post_data['nonce'], $post_data['give_form_id'] )
 	) {
-		Give_Notices::print_frontend_notice( __( 'Nonce verification has failed.', 'give' ), true, 'error' );
+		Give_Notices::print_frontend_notice( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), true, 'error' );
 		exit();
 
 	}elseif ( isset( $post_data['give_payment_mode'] ) ) {

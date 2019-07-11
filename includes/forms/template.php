@@ -1207,14 +1207,10 @@ function give_default_cc_address_fields( $form_id ) {
 		   class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
 				<span class="state-label-text"><?php echo $label; ?></span>
-				<?php
-				if ( give_field_is_required( 'card_state', $form_id ) ) :
-				?>
-					<span
-						class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ); ?> ">*</span>
+				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :?>
+					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ); ?> ">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
 			</label>
 			<?php
 
@@ -1234,7 +1230,9 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+					placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"
+					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				/>
 			<?php endif; ?>
 		</p>
 
@@ -1610,25 +1608,29 @@ function give_payment_mode_select( $form_id, $args ) {
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					// Determine the default gateway.
-					$checked       = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' class="give-gateway-option-selected"' : '';
-					?>
-					<li<?php echo $checked_class; ?>>
-						<input type="radio" name="payment-mode" class="give-gateway"
-							   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+					$checked                   = checked( $gateway_id, $selected_gateway, false );
+					$checked_class             = $checked ? ' class="give-gateway-option-selected"' : '';
+					$is_payment_method_visible = isset( $gateway['is_visible'] ) ? $gateway['is_visible'] : true;
 
-						<?php
-						$label = $gateway['checkout_label'];
-						if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
-							$label = $gateways_label[ $gateway_id ];
-						}
+					if ( true === $is_payment_method_visible ) {
 						?>
-						<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
-					</li>
-				<?php
+						<li<?php echo $checked_class; ?>>
+							<input type="radio" name="payment-mode" class="give-gateway"
+								id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+							<?php
+							$label = $gateway['checkout_label'];
+							if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
+								$label = $gateways_label[ $gateway_id ];
+							}
+							?>
+							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								class="give-gateway-option"
+								id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+						</li>
+					<?php
+					}
 				endforeach;
 				?>
 			</ul>
@@ -1858,7 +1860,7 @@ function give_checkout_submit( $form_id, $args ) {
 
 		give_checkout_hidden_fields( $form_id );
 
-		echo give_get_donation_form_submit_button( $form_id );
+		echo give_get_donation_form_submit_button( $form_id, $args );
 
 		/**
 		 * Fire after donation form submit.
@@ -1876,13 +1878,14 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
 /**
  * Give Donation form submit button.
  *
- * @since  1.8.8
- *
- * @param  int $form_id The form ID.
+ * @param int   $form_id The form ID.
+ * @param array $args
  *
  * @return string
+ * @since  1.8.8
+ *
  */
-function give_get_donation_form_submit_button( $form_id ) {
+function give_get_donation_form_submit_button( $form_id, $args = array() ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
@@ -1890,11 +1893,11 @@ function give_get_donation_form_submit_button( $form_id ) {
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-			   value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
+		       value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
-	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id );
+	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id, $args );
 }
 
 /**
@@ -1993,9 +1996,6 @@ function give_get_form_content_placement( $form_id, $args ) {
 	} elseif ( give_is_setting_enabled( give_get_meta( $form_id, '_give_display_content', true ) ) ) {
 		$show_content = give_get_meta( $form_id, '_give_content_placement', true );
 
-	} elseif ( 'none' !== give_get_meta( $form_id, '_give_content_option', true ) ) {
-		// Backward compatibility for _give_content_option for v18.
-		$show_content = give_get_meta( $form_id, '_give_content_option', true );
 	}
 
 	return $show_content;

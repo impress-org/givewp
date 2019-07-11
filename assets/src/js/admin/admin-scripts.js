@@ -223,7 +223,6 @@ var gravatar = require('gravatar');
 				$no_results_li.html(error_string);
 
 				// Variables for setting up the typing timer.
-				var typingTimer;               // Timer identifier.
 				var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
 
 				// Replace options with search results.
@@ -283,10 +282,10 @@ var gravatar = require('gravatar');
 						return;
 					}
 
-					clearTimeout(typingTimer);
+					clearTimeout(Give.cache['chosenSearchTypingTimer']);
 					$container.addClass('give-select-chosen-ajax');
 
-					typingTimer = setTimeout(
+					Give.cache['chosenSearchTypingTimer'] = setTimeout(
 						function () {
 							$.ajax({
 								type: 'POST',
@@ -365,9 +364,6 @@ var gravatar = require('gravatar');
 			});
 		}
 
-
-
-
 		// Fix: Chosen JS - Zero Width Issue.
 		// @see https://github.com/harvesthq/chosen/issues/472#issuecomment-344414059
 		$('.chosen-container').each(function () {
@@ -380,8 +376,6 @@ var gravatar = require('gravatar');
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
-
-
 
 	};
 
@@ -412,7 +406,6 @@ var gravatar = require('gravatar');
 	/**
 	 * List donation screen JS
 	 */
-
 	var GiveListDonation = {
 
 		init: function () {
@@ -1808,22 +1801,29 @@ var gravatar = require('gravatar');
 			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
-				if (!confirm(Give.fn.getGlobalVar('disconnect_user'))) {
-					return false;
-				}
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('disconnect_user')
+						},
+						successConfirm: function () {
+							var donorID = $('input[name="donor_info[id]"]').val();
 
-				var donorID = $('input[name="donor_info[id]"]').val();
+							var postData = {
+								give_action: 'disconnect-userid',
+								customer_id: donorID,
+								_wpnonce: $('#edit-donor-info #_wpnonce').val()
+							};
 
-				var postData = {
-					give_action: 'disconnect-userid',
-					customer_id: donorID,
-					_wpnonce: $('#edit-donor-info #_wpnonce').val()
-				};
+							$.post(ajaxurl, postData, function (response) {
+								window.location.href = response.redirect;
+							}, 'json');
+						}
+					}
+				).render();
 
-				$.post(ajaxurl, postData, function (response) {
-					window.location.href = response.redirect;
-				}, 'json');
-
+				return false;
 			});
 		},
 
@@ -2330,12 +2330,42 @@ var gravatar = require('gravatar');
 
 		revoke_api_key: function () {
 			$('body').on('click', '.give-revoke-api-key', function (e) {
-				return confirm(Give.fn.getGlobalVar('revoke_api_key'));
+				e.preventDefault();
+
+				const url = $(this).attr('href');
+
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('revoke_api_key')
+						},
+						successConfirm: function () {
+							window.location.assign( url )
+						}
+					}
+				).render();
+
+				return false;
 			});
 		},
 		regenerate_api_key: function () {
 			$('body').on('click', '.give-regenerate-api-key', function (e) {
-				return confirm(Give.fn.getGlobalVar('regenerate_api_key'));
+				const url = $(this).attr('href');
+
+				new GiveConfirmModal(
+					{
+						modalWrapper : 'give-modal--warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar('regenerate_api_key')
+						},
+						successConfirm: function () {
+							window.location.assign( url )
+						}
+					}
+				).render();
+
+				return false;
 			});
 		}
 	};
@@ -3368,11 +3398,11 @@ jQuery(window).resize(function () {
  */
 function give_render_responsive_tabs() {
 	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
+		$main_tab_nav = jQuery('.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
 		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
 		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('div.give-nav-tab-wrapper > a:not(give-not-tab)'),
+		$setting_tab_links = jQuery('.give-nav-tab-wrapper > a:not(give-not-tab)'),
 		$show_tabs = [],
 		$hide_tabs = [],
 		tab_width = 0;

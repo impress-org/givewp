@@ -92,3 +92,20 @@ ul.give-radio-inline{
 		transition: none;
 	}
 }
+
+
+.give-width-25em{
+	width: 25em;
+}
+
+/**
+ * Give loader
+ */
+.give-spinner-wrap{
+	position: relative;
+	.spinner{
+		float: none;
+		margin-top: 0;
+		margin-right: 0;
+	}
+}

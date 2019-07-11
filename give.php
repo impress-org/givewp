@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.4.7
+ * Version: 2.5.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -279,6 +279,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $comment;
 
 		/**
+		 * Give_Stripe Object.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var Give_Stripe
+		 */
+		public $stripe;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -306,7 +316,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public function __construct() {
 			// PHP version
 			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
-				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.4.0' );
 			}
 
 			// Bailout: Need minimum php version to load plugin.
@@ -426,7 +436,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.4.7' );
+				define( 'GIVE_VERSION', '2.5.0' );
 			}
 
 			// Plugin Root File.
@@ -497,7 +507,6 @@ if ( ! class_exists( 'Give' ) ) :
 			 * Load plugin files
 			 */
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
@@ -539,6 +548,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
 
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
@@ -564,6 +574,17 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
+
+			// This conditional check will add backward compatibility to older Stripe versions (i.e. < 2.2.0) when used with Give 2.5.0.
+			if (
+				! defined( 'GIVE_STRIPE_VERSION' ) ||
+				(
+					defined( 'GIVE_STRIPE_VERSION' ) &&
+					version_compare( '2.2.0', GIVE_STRIPE_VERSION, '>=' )
+				)
+			) {
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
+			}
 
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';

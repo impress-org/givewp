@@ -1,0 +1,461 @@
+/**
+ * Give License Setting Page SCSS
+ *
+ * @description Add-on Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2019, GiveWP
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+// License vars
+$license-widget-bg: #F4F4F4;
+$license-widget-border-color: #DBDBDB;
+
+.give-license-settings-wrap {
+	max-width: 1240px;
+	min-width: 1000px; // Restrict responsiveness - no one is activating licenses on mobile.
+	margin: 20px 0 0 -10px;
+	padding: 0;
+}
+
+// Top licensing widgets shared styles.
+.give-license-top-widget {
+	border: 1px solid $license-widget-border-color;
+	min-height: 250px;
+
+	.give-license-widget-heading {
+		font-size: 20px;
+		margin: 0 0 15px;
+		padding: 0 0 15px;
+		border-bottom: 1px solid $license-widget-border-color;
+		line-height: 1.2em;
+
+		.dashicons {
+			height: 25px;
+			width: 25px;
+			font-size: 28px;
+			margin: -5px 10px 0 0;
+		}
+
+	}
+
+	.give-field-description {
+		margin: 0 0 20px;
+		padding: 0;
+	}
+
+}
+
+
+// License activator
+#give-license-activator-wrap {
+	background: #FFF;
+	margin: 0;
+	padding: 30px;
+
+	.give-license-activation-form {
+		background: $license-widget-bg;
+		padding: 10px;
+		position: relative;
+	}
+
+	.give-license-notices {
+		position: absolute;
+		background: $license-widget-bg;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		padding: 20px;
+		z-index: 3;
+		box-sizing: border-box;
+		display: none;
+
+		.notice {
+			position: relative;
+			padding-right: 40px;
+		}
+
+	}
+
+	#give-license-activator {
+		font-size: 22px;
+		height: 55px;
+		padding: 0 15px;
+		margin: 0 0 10px;
+		width: 100%;
+	}
+
+	.button {
+		height: 45px;
+		width: 100%;
+		font-size: 18px;
+		display: block;
+		clear: both;
+		margin: 0;
+	}
+
+}
+
+// Uploader / Activator Widget
+#give-addon-uploader-wrap {
+	background: #FFF;
+	padding: 30px 25px 25px;
+	margin: 0;
+}
+
+// Upload field.
+.give-upload-addon-form-wrap {
+	position: relative;
+
+	.give-upload-addon-instructions {
+		margin: 0;
+		padding: 0;
+		opacity: 0.4;
+		font-size: 16px;
+
+		span {
+			display: block;
+			margin: 8px 0;
+			font-size: 14px;
+		}
+	}
+
+	// Hide actual file select field and use label.
+	#give-upload-addon-file-select {
+		display: none;
+	}
+
+	.give-spinner-wrap {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99;
+		background-color: white;
+
+		.give-spinner-inner{
+			margin-top: 5%;
+			margin-left: 42%;
+		}
+	}
+
+}
+
+// Upload add-on form animations
+.give-upload-addon-form {
+	background: $license-widget-bg;
+	padding: 25px;
+	text-align: center;
+	outline: 2px dashed darken($license-widget-bg, 7%);
+	outline-offset: -10px;
+	transition: outline-offset .15s ease-in-out, background-color .15s linear;
+	position: relative;
+
+	// Active file hover animation
+	&.give-dropzone-active {
+		outline-offset: -13px;
+		outline: 2px dashed darken($license-widget-bg, 18%);
+		background: #eaeaea;
+	}
+
+	.give-addon-upload-notices {
+		position: absolute;
+		background: #ffffffa8;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		padding: 20px;
+		z-index: 3;
+		text-align: left;
+		box-sizing: border-box;
+		display: none;
+	}
+
+	.give-activate-addon-wrap {
+		display: none;
+		border: 1px solid $license-widget-border-color;
+		background: #ffffff;
+		position: absolute;
+		padding-top: 20px;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		z-index: 4;
+		box-sizing: border-box;
+
+		.dashicons {
+			color: $give-green;
+		}
+	}
+}
+
+#give-licenses-container {
+	position: relative;
+
+	.give-spinner-wrap {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99;
+		background-color: white;
+
+		.give-spinner-inner{
+			margin-top: 5%;
+			margin-left: 45%;
+		}
+	}
+}
+
+
+//-----------------------------------
+// Add-ons list
+//-----------------------------------
+
+.give-licenses-list-header {
+	margin: 20px 0 30px 0;
+	padding: 0;
+
+	h2 {
+		float: left;
+		margin: 0 0 20px;
+		padding: 0;
+		font-size: 18px;
+	}
+
+	#give-refresh-button-wrap {
+		float: left;
+		margin: -6px 0 0 25px;
+
+		#give-last-refresh-notice {
+			margin: 0 0 0 10px;
+			line-height: 28px;
+			color: #666666;
+		}
+	}
+
+	hr {
+		clear: both;
+	}
+}
+
+.give-addon-wrap {
+	border: 1px solid $license-widget-border-color;
+	background: #FFF;
+	padding: 0;
+	margin: 0 0 20px;
+	position: relative;
+
+	.give-license-top {
+		background: $license-widget-bg;
+		border-bottom: 1px solid $license-widget-border-color;
+		display: flex;
+		color: $dark;
+	}
+
+	.give-license-notice-container.give-addon-notice-shown {
+		background: $license-widget-bg;
+		border-bottom: 1px solid $license-widget-border-color;
+		padding: 30px;
+		.notice {
+			margin: 0;
+		}
+	}
+
+	.give-license-top-header {
+		display: block;
+		font-size: 15px;
+		margin: 0 0 20px;
+		font-weight: bold;
+		color: #23282d;
+	}
+
+	.give-license-top-column {
+		float: left;
+		padding: 30px;
+		flex: 1;
+
+		&.give-license-key-field-wrap,
+		&.give-license-info-field-wrap {
+			border-right: 1px solid $license-widget-border-color;
+		}
+
+		&.give-license-key-field-wrap {
+			flex: 1.45;
+			padding-right: 10px;
+		}
+
+		&.give-license-info-field-wrap {
+			.give-field-description {
+				padding-top: 0;
+			}
+		}
+
+	}
+
+	// License key top.
+	.give-license-addon-key-field {
+
+	}
+
+	.give-license__status {
+		margin: 10px 0 0 -4px;
+		padding: 0;
+
+		.dashicons-yes {
+			color: $give-green;
+		}
+
+		.dashicons-no {
+			color: $red;
+		}
+	}
+
+	.give-license__key {
+		display: inline-block;
+
+		input[type="text"] {
+			margin: 0 10px 0 0;
+		}
+
+		button {
+			font-size: 15px;
+			position: relative;
+			top: -1px;
+		}
+
+		@media(min-width: 1400px) {
+			input[type="text"] {
+				min-width: 290px;
+				height: 40px;
+				font-size: 18px;
+				padding: 10px;
+			}
+			button {
+				width: 110px;
+				height: 40px;
+			}
+		}
+
+		@media(max-width: 1399px) {
+			input[type="text"] {
+				min-width: 230px;
+				height: 35px;
+				font-size: 15px;
+				padding: 8px;
+			}
+			button {
+				width: 85px;
+				height: 35px;
+				font-size: 1em;
+			}
+		}
+
+	}
+
+	.give-license-action-link {
+		display: block;
+		margin: 0 0 15px;
+		box-shadow: none;
+	}
+
+	.give-license-renewal-date {
+		.dashicons {
+			opacity: 0.8;
+			margin: 0 3px 0 0;
+			position: relative;
+			top: -2px;
+		}
+	}
+
+	.give-license-activations-remaining-icon {
+		border-radius: 100%;
+		height: 20px;
+		width: 20px;
+		display: inline-block;
+		padding: 1px;
+		font-size: 12px;
+		line-height: 20px;
+		text-align: center;
+		font-weight: bold;
+		margin: 0 2px 0 0;
+	}
+
+	.give-plugin__info {
+		padding: 6px 9px;
+	}
+
+	.give-plugin__status {
+		border: none;
+		padding: 0 5px;
+		line-height: 20px !important;
+	}
+}
+
+// Individual add-ons
+.give-addon-info-wrap {
+	margin: 30px;
+	padding: 20px;
+	background: $license-widget-bg;
+	border: 1px solid $license-widget-border-color;
+	color: $dark;
+
+	.give-addon-info-left {
+		float: left;
+	}
+
+	.give-addon-name {
+		font-weight: bold;
+		font-size: 14px;
+	}
+
+	.give-addon-version {
+		font-size: 11px;
+		margin: 0 0 0 20px;
+	}
+
+	.give-addon-info-right {
+		float: right;
+
+		.give-button {
+			margin: -5px 0 0;
+			position: relative;
+			top: 2px;
+
+			.dashicons {
+				font-size: 14px;
+				width: 14px;
+				height: 14px;
+				margin-right: 3px;
+				margin-top: 5px;
+			}
+		}
+	}
+
+	.give-addon-activation-status {
+		border-radius: 4px;
+		color: #FFF;
+		background: $status-default;
+		padding: 3px 8px;
+		margin: 0 15px 0 0;
+		font-size: 11px;
+
+		&__activated {
+			background: $status-complete;
+			text-shadow: 0px 0px 1px darken($status-complete, 20%);
+		}
+
+	}
+
+	.give-addon-view-changelog {
+		margin: 0 15px 0 0;
+		font-size: 12px;
+	}
+
+}

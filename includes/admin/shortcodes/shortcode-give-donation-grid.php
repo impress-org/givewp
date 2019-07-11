@@ -140,6 +140,11 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'tooltip' => esc_attr__( 'Sets the number of forms to display per page.', 'give' ),
 				'value'   => 12,
 			),
+			array(
+				'type' => 'docs_link',
+				'text' => esc_html__( 'Learn more about the Donation Form Grid Shortcode', 'give' ),
+				'link' => 'http://docs.givewp.com/shortcode-form-grid',
+			),
 		);
 	}
 }

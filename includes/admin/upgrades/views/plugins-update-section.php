@@ -7,10 +7,6 @@ if ( empty( $plugins ) ) {
 
 ob_start();
 foreach ( $plugins as $plugin_data ) {
-	if ( 'active' != $plugin_data['Status'] || 'add-on' != $plugin_data['Type'] ) {
-		continue;
-	}
-
 	$plugin_name = $plugin_data['Name'];
 	$author_name = $plugin_data['Author'];
 

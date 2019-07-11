@@ -213,8 +213,18 @@ function give_send_back_to_checkout( $args = array() ) {
 	$new_query        = array_merge( $args, $query );
 	$new_query_string = http_build_query( $new_query );
 
+	$path = $url_data['path'];
+
+	if( is_multisite() && ! is_subdomain_install() ) {
+		/* @var  WP_Site $site_info */
+		$site_info = get_site();
+		$path = 0 === strpos( $path, $site_info->path )
+			? str_replace( untrailingslashit( $site_info->path ), '', $path )
+			: $path ;
+	}
+
 	// Assemble URL parts.
-	$redirect = home_url( '/' . $url_data['path'] . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
+	$redirect = home_url( '/' . $path . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
 
 	// Redirect them.
 	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
@@ -317,7 +327,7 @@ function give_listen_for_failed_payments() {
 
 	// Security check.
 	if ( ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
-		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ) );
+		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ) );
 	}
 
 	// Set payment status to failure
@@ -1265,7 +1275,7 @@ function give_admin_form_goal_stats( $form_id ) {
 		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
 		$goal_stats['goal'],
-		( 'donors' === $goal_stats['format'] ? __( 'Donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'Donations', 'give' ) : '' ) )
+		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
 	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
@@ -1373,7 +1383,7 @@ function give_is_default_level_id( $price_or_level_id, $form_id = 0 ) {
  *
  * @since 2.2.0
  *
- * @return mixed
+ * @return array
  */
 function give_get_name_title_prefixes( $form_id = 0 ) {
 
@@ -1394,7 +1404,7 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
 		}
 	}
 
-	return $title_prefixes;
+	return array_filter( (array) $title_prefixes );
 }
 
 /**

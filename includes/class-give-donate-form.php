@@ -349,7 +349,6 @@ class Give_Donate_Form {
 	 * @param  array    $_args Arguments passed.
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
-
 		$donation_form = WP_Post::get_instance( $_id );
 
 		$this->setup_donation_form( $donation_form );
@@ -375,6 +374,8 @@ class Give_Donate_Form {
 			return false;
 		}
 
+
+		Give_Forms_Query::update_meta_cache( array( $donation_form->ID ) );
 
 		foreach ( $donation_form as $key => $value ) {
 			$this->$key = $value;

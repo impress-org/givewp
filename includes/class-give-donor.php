@@ -121,7 +121,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $notes;
+	protected $notes = null;
 
 	/**
 	 * Donor address.
@@ -201,8 +201,9 @@ class Give_Donor {
 
 				switch ( $key ) {
 
+					// @todo We will remove this statement when we will remove notes column from donor table
+					// https://github.com/impress-org/give/issues/3632
 					case 'notes':
-						$this->$key = $this->get_notes();
 						break;
 
 					default:
@@ -245,7 +246,11 @@ class Give_Donor {
 		global $wpdb;
 		$meta_type = Give()->donor_meta->meta_type;
 
-		$addresses = $wpdb->get_results( $wpdb->prepare( "
+		$addresses = $this->get_addresses_from_meta_cache();
+
+		$addresses = ! empty( $addresses )
+			? $addresses
+			: $wpdb->get_results( $wpdb->prepare( "
 				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%%%s%%'
@@ -266,6 +271,30 @@ class Give_Donor {
 				$this->address[ $address[0][0] ][ $address[0][1] ] = $address[1];
 			}
 		}
+	}
+
+
+	/**
+	 * Get addresses from meta cache
+	 *
+	 * @since 2.5.0
+	 * @return array
+	 */
+	private function get_addresses_from_meta_cache() {
+		$meta      = wp_cache_get( $this->id, 'donor_meta' );
+		$addresses = array();
+
+		if ( ! empty( $meta ) ) {
+			foreach ( $meta as $meta_key => $meta_value ) {
+				if ( false === strpos( $meta_key, 'give_donor_address' ) ) {
+					continue;
+				}
+
+				$addresses[] = array( $meta_key, current( $meta_value ) );
+			}
+		}
+
+		return $addresses;
 	}
 
 	/**
@@ -1398,9 +1427,10 @@ class Give_Donor {
 		// Get address type.
 		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
 
-		$address_type = false !== strpos( $address_id, '_' ) ? array_shift( explode( '_', $address_id ) ) : $address_id;
+		$address_key_arr = explode( '_', $address_id );
 
-		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( explode( '_', $address_id ) ) : null;
+		$address_type  = false !== strpos( $address_id, '_' ) ? array_shift( $address_key_arr ) : $address_id;
+		$address_count = false !== strpos( $address_id, '_' ) ? array_pop( $address_key_arr ) : null;
 
 		// Set meta key prefix.
 		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
@@ -1417,6 +1447,10 @@ class Give_Donor {
 				LIKE '%s'
 				AND {$meta_type}_id=%d
 				", $meta_key_prefix, $this->id ) );
+
+		// Delete cache.
+		Give_Cache::delete_group( $this->id, 'give-donors' );
+		wp_cache_delete( $this->id,  "{$meta_type}_meta" );
 
 		$this->setup_address();
 
