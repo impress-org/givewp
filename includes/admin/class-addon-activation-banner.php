@@ -162,7 +162,7 @@ class Give_Addon_Activation_Banner {
 
 		if ( ! empty( $give_addons ) ) {
 
-			// Go through rach add-ons and add meta data.
+			// Go through each add-ons and add meta data.
 			foreach ( $give_addons as $banner_addon_name => $addon ) {
 
 				// User meta key.
