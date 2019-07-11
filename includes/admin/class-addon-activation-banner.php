@@ -169,7 +169,13 @@ class Give_Addon_Activation_Banner {
 				$user_id = __give_get_active_by_user_meta( $banner_addon_name );
 
 				if ( ! $user_id ) {
-					update_option( self::get_banner_user_meta_key( $banner_addon_name ), $this->user_id, false );
+					$option_key = self::get_banner_user_meta_key( $banner_addon_name );
+
+					// store user id who activated add-on.
+					update_option( $option_key, $this->user_id, false );
+
+					// Update global cache.
+					$GLOBALS['give_addon_activated_by_user'][$option_key] = $this->user_id;
 				}
 			}
 		}
