@@ -466,6 +466,7 @@ class Give_Donors_Query {
 		foreach ( $ordersby as $orderby => $order ) {
 			if( ! array_key_exists( $orderby, $table_columns ) ) {
 				unset( $ordersby[$orderby] );
+				continue;
 			}
 
 			$ordersby[ esc_sql( $orderby ) ] = esc_sql( $order );
