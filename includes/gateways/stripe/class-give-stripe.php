@@ -116,7 +116,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			if (
 				defined( 'GIVE_RECURRING_VERSION' )
 				&& version_compare( GIVE_RECURRING_VERSION, '1.9.0', '<' )
-				&& ! defined( 'GIVE_STRIPE_VERSION' )
+				&& defined( 'GIVE_STRIPE_VERSION' )
+				&& version_compare( GIVE_STRIPE_VERSION, '2.2.0', '<' )
 			) {
 
 				$message = sprintf(
