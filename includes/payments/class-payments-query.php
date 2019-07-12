@@ -157,6 +157,9 @@ class Give_Payments_Query extends Give_Stats {
 		// While set filters $args will get override and multiple get_payments call will not work.
 		$this->args = $this->_args;
 
+		// Whitelist order.
+		$this->args['order'] = in_array( strtoupper( $this->args['order'] ), array( 'ASC', 'DESC' ) ) ? $this->args['order'] : 'DESC' ;
+
 		$this->date_filter_pre();
 		$this->orderby();
 		$this->status();
