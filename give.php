@@ -702,7 +702,6 @@ if ( ! class_exists( 'Give' ) ) :
 					array(
 						'id'               => 'give-compatibility-with-old-recurring',
 						'description'      => $message,
-						'show'             => true,
 						'dismissible_type' => 'user',
 						'dismiss_interval' => 'shortly',
 					)
