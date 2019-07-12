@@ -220,52 +220,49 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 					</div>
 				</div>
 
-				<?php if( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ): ?>
-					<div class="give-grid-row">
-						<div class="give-grid-col-12">
+				<div class="give-grid-row<?php echo get_option( 'give_licenses', array() ) ? '' : ' give-hidden' ?>">
+					<div class="give-grid-col-12">
 
-							<div class="give-licenses-list-header give-clearfix">
-								<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
+						<div class="give-licenses-list-header give-clearfix">
+							<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
 
-								<?php
-								$refresh_status   = Give_License::refresh_license_status();
-								$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
-								$button_title     = __( 'Refresh limit reached. Licenses can only be refreshed 5 times per day.', 'give' );
-								$local_date       = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
-								?>
+							<?php
+							$refresh_status   = Give_License::refresh_license_status();
+							$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
+							$button_title     = __( 'Refresh limit reached. Licenses can only be refreshed 5 times per day.', 'give' );
+							$local_date       = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
+							?>
 
-								<div id="give-refresh-button-wrap">
-									<button id="give-button__refresh-licenses"
-									        class="button-secondary"
-									        data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
-									        data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
-									        data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
-										<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
-										<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
-										<?php _e( 'Refresh All Licenses', 'give' ); ?>
-									</button>
-									<span id="give-last-refresh-notice">
+							<div id="give-refresh-button-wrap">
+								<button id="give-button__refresh-licenses"
+								        class="button-secondary"
+								        data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
+								        data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
+								        data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
+									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
+									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
+									<?php _e( 'Refresh All Licenses', 'give' ); ?>
+								</button>
+								<span id="give-last-refresh-notice">
 									<?php echo sprintf(
 										__( 'Last refreshed on %1$s at %2$s', 'give' ),
 										date( give_date_format(), $local_date ),
 										date( 'g:i a', $local_date )
 									); ?>
 									</span>
-								</div>
-
-								<hr>
-								<p class="give-field-description"><?php _e('The following list displays your add-ons and their corresponding activation and license statuses.', 'give'); ?></p>
-
 							</div>
 
-							<section id="give-licenses-container">
-								<?php echo Give_License::render_licenses_list(); ?>
-							</section>
+							<hr>
+							<p class="give-field-description"><?php _e('The following list displays your add-ons and their corresponding activation and license statuses.', 'give'); ?></p>
 
 						</div>
-					</div>
-				<?php endif; ?>
 
+						<section id="give-licenses-container">
+							<?php echo Give_License::render_licenses_list(); ?>
+						</section>
+
+					</div>
+				</div>
 			</div>
 
 			<?php
