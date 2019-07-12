@@ -648,13 +648,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 					<?php
 					echo self::html_license_row( $license );
 
-					foreach ( $license['download'] as $addon ) {
+					$addons = $license['download'];
+
+					if( empty( $license['is_all_access_pass'] ) ) {
+						$addons = array( $license );
+					}
+
+					foreach ( $addons as $addon ) {
 						$default_plugin = array(
-							'Name'          => $addon['name'],
+							// In single license key we will get item_name instead of name.
+							'Name'          => ! empty( $addon['item_name'] ) ? $addon['item_name'] : $addon['name'],
+
 							'ChangeLogSlug' => $addon['readme'],
 							'Version'       => $addon['current_version'],
 							'Status'        => 'not installed',
-							'DownloadURL'   => $addon['file'],
+
+							// In single license key we will get download instead of file.
+							'DownloadURL'   => ! empty( $addon['download'] ) ? $addon['download'] : $addon['file'],
+
 						);
 
 						$plugin = wp_parse_args(
@@ -696,7 +707,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$license_is_inactive = $license_key && ! in_array( $license['license'], array( 'valid', 'expired' ) );
 			$expires_timestamp   = $is_license ? strtotime( $license['expires'] ) : '';
 			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
-			$addon_dir           = ! empty( $plugin['Dir'] ) ? $plugin['Dir'] : $license['plugin_slug'];
+			$addon_dir           = ! empty( $plugin['Dir'] ) ? $plugin['Dir'] : ( ! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '' );
 			?>
 			<div class="give-license-row give-clearfix">
 				<div class="give-license-notice-container"></div>
