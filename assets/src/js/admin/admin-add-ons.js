@@ -62,6 +62,7 @@
 								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
 
 							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( msg, 'success' ) );
+							$licensesContainer.parent().parent().removeClass('give-hidden');
 							$licensesContainer.html( response.data.html );
 						} else {
 							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
@@ -202,6 +203,11 @@
 						$noticeContainer
 							.addClass( 'give-addon-notice-shown' )
 							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.msg, 'success' ) );
+
+						// Hide license container if not any licens eexists.
+						if( ! $licensesContainer.html().trim().length ){
+							$licensesContainer.parent().parent().addClass('give-hidden');
+						}
 					} else{
 						$noticeContainer
 							.addClass( 'give-addon-notice-shown' )
