@@ -508,8 +508,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
-			$give_plugins  = give_get_plugins( array( 'only_premium_add_ons' => true ) );
-			$give_licenses = get_option( 'give_licenses', array() );
+			$give_plugins           = give_get_plugins( array( 'only_premium_add_ons' => true ) );
+			$give_licenses          = get_option( 'give_licenses', array() );
+			$licenses_without_addon = $give_licenses;
+
 
 			// Get all access pass licenses
 			$all_access_pass_licenses   = array();
@@ -518,6 +520,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 				if ( $give_license['is_all_access_pass'] ) {
 					$all_access_pass_licenses[ $key ] = $give_license;
 
+					unset( $licenses_without_addon[$key] );
+
 					foreach ( $give_license['download'] as $download ) {
 						$all_access_pass_addon_list[] = $download['plugin_slug'];
 					}
@@ -525,29 +529,42 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			$html = array(
-				'unlicensed'          => '',
-				'licensed'            => '',
-				'all_access_licensed' => '',
+				'unlicensed'             => '',
+				'licensed'               => '',
+				'licenses_without_addon' => '',
+				'all_access_licensed'    => '',
 			);
 
-			foreach ( $give_plugins as $give_plugin ) {
-				if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
-					continue;
+			if( ! empty( $give_plugins ) ) {
+				foreach ( $give_plugins as $give_plugin ) {
+					if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
+						continue;
+					}
+
+					$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+					$html_arr_key  = 'unlicensed';
+
+					if ( $addon_license ) {
+						$html_arr_key = 'licensed';
+						unset( $licenses_without_addon[$addon_license['license_key']] );
+					}
+
+					$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
 				}
-
-				$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
-				$html_arr_key  = 'unlicensed';
-
-				if ( $addon_license ) {
-					$html_arr_key = 'licensed';
-				}
-
-				$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
 			}
 
 			if ( ! empty( $all_access_pass_licenses ) ) {
 				foreach ( $all_access_pass_licenses as $key => $all_access_pass_license ) {
 					$html['all_access_licensed'] .= self::html_by_license( $all_access_pass_license );
+				}
+			}
+
+			if ( ! empty( $licenses_without_addon ) ) {
+				foreach ( $licenses_without_addon as $key => $license ) {
+					if ( in_array( $license['plugin_slug'], $all_access_pass_addon_list ) ) {
+						continue;
+					}
+					$html['licenses_without_addon'] .= self::html_by_license( $license );
 				}
 			}
 
