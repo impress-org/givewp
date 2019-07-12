@@ -679,6 +679,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$license_is_inactive = $license_key && ! in_array( $license['license'], array( 'valid', 'expired' ) );
 			$expires_timestamp   = $is_license ? strtotime( $license['expires'] ) : '';
 			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+			$addon_dir           = ! empty( $plugin['Dir'] ) ? $plugin['Dir'] : $license['plugin_slug'];
 			?>
 			<div class="give-license-row give-clearfix">
 				<div class="give-license-notice-container"></div>
@@ -691,11 +692,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
 							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>">
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo $addon_dir; ?>">
 									<?php _e( 'Activate', 'give' ); ?>
 								</button>
 							<?php elseif ( $license_is_inactive ): ?>
-								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $plugin['Dir']; ?>" data-license="<?php echo $license['license_key'] ?>">
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $addon_dir; ?>" data-license="<?php echo $license['license_key'] ?>">
 									<?php _e( 'Reactivate', 'give' ); ?>
 								</button>
 							<?php else : ?>
