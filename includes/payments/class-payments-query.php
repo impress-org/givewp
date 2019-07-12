@@ -815,6 +815,26 @@ class Give_Payments_Query extends Give_Stats {
 	private function get_sql() {
 		global $wpdb;
 
+		$allowed_keys = array(
+			'post_name',
+			'post_author',
+			'post_date',
+			'post_title',
+			'post_status',
+			'post_modified',
+			'post_parent',
+			'post_type',
+			'menu_order',
+			'comment_count',
+		);
+
+		$this->args['orderby'] = 'post_parent__in';
+
+		// Whitelist orderby.
+		if( ! in_array( $this->args['orderby'], $allowed_keys ) ) {
+			$this->args['orderby'] = 'ID';
+		}
+
 		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
 		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
 
