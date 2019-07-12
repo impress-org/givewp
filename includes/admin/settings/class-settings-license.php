@@ -220,7 +220,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 					</div>
 				</div>
 
-				<?php if( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ): ?>
+				<?php if( get_option( 'give_licenses', array() ) ): ?>
 					<div class="give-grid-row">
 						<div class="give-grid-col-12">
 
