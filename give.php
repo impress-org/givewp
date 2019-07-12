@@ -701,10 +701,9 @@ if ( ! class_exists( 'Give' ) ) :
 				Give()->notices->register_notice(
 					array(
 						'id'               => 'give-compatibility-with-old-recurring',
-						'type'             => 'error',
 						'description'      => $message,
 						'show'             => true,
-						'dismissible_type' => 'all',
+						'dismissible_type' => 'user',
 						'dismiss_interval' => 'shortly',
 					)
 				);
