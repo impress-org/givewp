@@ -2380,30 +2380,33 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		)
 		: array();
 
-	$tmp = Give_License::request_license_api(
-		array(
-			'edd_action' => 'check_licenses',
-			'licenses'   => $license_keys,
-			'unlicensed' => implode( ',', $unlicensed_give_addon ),
-		)
+	$tmp = Give_License::request_license_api( array(
+		'edd_action' => 'check_licenses',
+		'licenses'   => $license_keys,
+		'unlicensed' => implode( ',', $unlicensed_give_addon ),
+	), true
 	);
 
 	if ( ! $tmp || is_wp_error( $tmp ) ) {
 		return array();
 	}
 
+	// Prevent fatal error on WP 4.9.10
+	// Because wp_list_pluck accept only array or array of array in that version.
+	// @see https://github.com/impress-org/give/issues/4176
+	$tmp = json_decode( json_encode( $tmp ), true );
 
 	// Remove unlicensed add-on from response.
 	$tmp_unlicensed = array();
-	foreach ( $tmp as $key => $data ){
-		if( empty( $data ) ) {
-			unset( $tmp->{"{$key}"} );
+	foreach ( $tmp as $key => $data ) {
+		if ( empty( $data ) ) {
+			unset( $tmp["{$key}"] );
 			continue;
 		}
 
-		if( ! isset( $data->check_license ) ) {
-			$tmp_unlicensed[$key] = $data;
-			unset( $tmp->{"{$key}"} );
+		if ( empty( $data['check_license'] ) ) {
+			$tmp_unlicensed[ $key ] = $data;
+			unset( $tmp["{$key}"] );
 		}
 	}
 
@@ -2428,21 +2431,20 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
 	);
 
-	if( $tmp_unlicensed ) {
-		$tmp_unlicensed = json_decode( json_encode( $tmp_unlicensed ), true );
+	if ( $tmp_unlicensed ) {
 		$tmp_update_plugins = array_merge( $tmp_update_plugins, $tmp_unlicensed );
 	}
 
 	update_option( 'give_licenses', $give_licenses, 'no' );
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
 
-	$refresh            = Give_License::refresh_license_status();
-	$refresh['time']    = current_time( 'timestamp', 1 );
+	$refresh         = Give_License::refresh_license_status();
+	$refresh['time'] = current_time( 'timestamp', 1 );
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
 	// Tell WordPress to look for updates.
-	if( $wp_check_updates ) {
+	if ( $wp_check_updates ) {
 		set_site_transient( 'update_plugins', null );
 	}
 
