@@ -2384,8 +2384,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		'edd_action' => 'check_licenses',
 		'licenses'   => $license_keys,
 		'unlicensed' => implode( ',', $unlicensed_give_addon ),
-	), true
-	);
+	), true );
 
 	if ( ! $tmp || is_wp_error( $tmp ) ) {
 		return array();
