@@ -2409,7 +2409,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		}
 	}
 
-	$check_licenses = json_decode( json_encode( wp_list_pluck( $tmp, 'check_license' ) ), true );
+	$check_licenses = wp_list_pluck( $tmp, 'check_license' );
 
 	/* @var stdClass $data */
 	foreach ( $check_licenses as $key => $data ) {
@@ -2426,8 +2426,8 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 	}
 
 	$tmp_update_plugins = array_merge(
-		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_version' ) ), true ) ),
-		array_filter( json_decode( json_encode( wp_list_pluck( $tmp, 'get_versions' ) ), true ) )
+		array_filter( wp_list_pluck( $tmp, 'get_version' ) ),
+		array_filter( wp_list_pluck( $tmp, 'get_versions' ) )
 	);
 
 	if ( $tmp_unlicensed ) {
