@@ -280,7 +280,7 @@ function give_text_input( $field ) {
 			name="<?php echo give_get_field_name( $field ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php echo $field['after_field']; ?>
 	<?php
@@ -489,7 +489,7 @@ function give_donation_limit( $field ) {
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
 					value="<?php echo give_format_decimal( esc_attr( $field_options['value'][ $amount_range ] ) ); ?>"
 					placeholder="<?php echo give_format_decimal( $field_options['options'][ $amount_range ] ); ?>"
-				<?php echo give_get_custom_attributes( $field_options ); ?>
+				<?php echo give_get_attribute_str( $field_options ); ?>
 			/>
 			<?php
 			echo isset( $after_html ) ? $after_html : '';
@@ -542,7 +542,7 @@ function give_hidden_input( $field ) {
 			name="<?php echo give_get_field_name( $field ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php
 }
@@ -687,7 +687,7 @@ function give_checkbox( $field ) {
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['cbvalue'] ); ?>"
 		<?php echo checked( $field['value'], $field['cbvalue'], false ); ?>
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php
 	echo give_get_field_description( $field );
@@ -731,7 +731,7 @@ function give_select( $field ) {
 	id="<?php echo esc_attr( $field['id'] ); ?>"
 	name="<?php echo give_get_field_name( $field ); ?>"
 	style="<?php echo esc_attr( $field['style'] ) ?>"
-	<?php echo give_get_custom_attributes( $field ); ?>
+	<?php echo give_get_attribute_str( $field ); ?>
 	>
 	<?php
 	foreach ( $field['options'] as $key => $value ) {
@@ -784,7 +784,7 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-		     . give_get_custom_attributes( $field ) . '
+		     . give_get_attribute_str( $field ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
@@ -831,7 +831,7 @@ function give_colorpicker( $field ) {
 			style="<?php echo esc_attr( $field['style'] ); ?>"
 			name="<?php echo give_get_field_name( $field ); ?>"
 			id="' . esc_attr( $field['id'] ) . '" value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_custom_attributes( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php
 	echo give_get_field_description( $field );
@@ -885,7 +885,7 @@ function give_media( $field ) {
 				type="text"
 				value="<?php echo $field['value']; ?>"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-			<?php echo give_get_custom_attributes( $field ); ?>
+			<?php echo give_get_attribute_str( $field ); ?>
 		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo $button_label; ?>" data-fvalue="<?php echo $field['fvalue']; ?>" data-field-type="<?php echo $field['type']; ?>">
 		<?php echo give_get_field_description( $field ); ?>
 		<div class="give-image-thumb<?php echo ! $field['value'] || ! $is_show_preview ? ' give-hidden' : ''; ?>">
