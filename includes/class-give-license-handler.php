@@ -508,8 +508,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
-			$give_plugins  = give_get_plugins( array( 'only_premium_add_ons' => true ) );
-			$give_licenses = get_option( 'give_licenses', array() );
+			$give_plugins           = give_get_plugins( array( 'only_premium_add_ons' => true ) );
+			$give_licenses          = get_option( 'give_licenses', array() );
+			$licenses_without_addon = $give_licenses;
+
 
 			// Get all access pass licenses
 			$all_access_pass_licenses   = array();
@@ -518,6 +520,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 				if ( $give_license['is_all_access_pass'] ) {
 					$all_access_pass_licenses[ $key ] = $give_license;
 
+					unset( $licenses_without_addon[$key] );
+
 					foreach ( $give_license['download'] as $download ) {
 						$all_access_pass_addon_list[] = $download['plugin_slug'];
 					}
@@ -525,29 +529,42 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			$html = array(
-				'unlicensed'          => '',
-				'licensed'            => '',
-				'all_access_licensed' => '',
+				'unlicensed'             => '',
+				'licensed'               => '',
+				'licenses_without_addon' => '',
+				'all_access_licensed'    => '',
 			);
 
-			foreach ( $give_plugins as $give_plugin ) {
-				if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
-					continue;
+			if( ! empty( $give_plugins ) ) {
+				foreach ( $give_plugins as $give_plugin ) {
+					if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
+						continue;
+					}
+
+					$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+					$html_arr_key  = 'unlicensed';
+
+					if ( $addon_license ) {
+						$html_arr_key = 'licensed';
+						unset( $licenses_without_addon[$addon_license['license_key']] );
+					}
+
+					$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
 				}
-
-				$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
-				$html_arr_key  = 'unlicensed';
-
-				if ( $addon_license ) {
-					$html_arr_key = 'licensed';
-				}
-
-				$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
 			}
 
 			if ( ! empty( $all_access_pass_licenses ) ) {
 				foreach ( $all_access_pass_licenses as $key => $all_access_pass_license ) {
 					$html['all_access_licensed'] .= self::html_by_license( $all_access_pass_license );
+				}
+			}
+
+			if ( ! empty( $licenses_without_addon ) ) {
+				foreach ( $licenses_without_addon as $key => $license ) {
+					if ( in_array( $license['plugin_slug'], $all_access_pass_addon_list ) ) {
+						continue;
+					}
+					$html['licenses_without_addon'] .= self::html_by_license( $license );
 				}
 			}
 
@@ -631,13 +648,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 					<?php
 					echo self::html_license_row( $license );
 
-					foreach ( $license['download'] as $addon ) {
+					$addons = $license['download'];
+
+					if( empty( $license['is_all_access_pass'] ) ) {
+						$addons = array( $license );
+					}
+
+					foreach ( $addons as $addon ) {
 						$default_plugin = array(
-							'Name'          => $addon['name'],
+							// In single license key we will get item_name instead of name.
+							'Name'          => ! empty( $addon['item_name'] ) ? $addon['item_name'] : $addon['name'],
+
 							'ChangeLogSlug' => $addon['readme'],
 							'Version'       => $addon['current_version'],
 							'Status'        => 'not installed',
-							'DownloadURL'   => $addon['file'],
+
+							// In single license key we will get download instead of file.
+							'DownloadURL'   => ! empty( $addon['download'] ) ? $addon['download'] : $addon['file'],
+
 						);
 
 						$plugin = wp_parse_args(
@@ -679,6 +707,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$license_is_inactive = $license_key && ! in_array( $license['license'], array( 'valid', 'expired' ) );
 			$expires_timestamp   = $is_license ? strtotime( $license['expires'] ) : '';
 			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+			$addon_dir           = ! empty( $plugin['Dir'] ) ? $plugin['Dir'] : ( ! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '' );
 			?>
 			<div class="give-license-row give-clearfix">
 				<div class="give-license-notice-container"></div>
@@ -691,11 +720,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
 							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-primary" data-addon="<?php echo $plugin['Dir']; ?>">
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo $addon_dir; ?>">
 									<?php _e( 'Activate', 'give' ); ?>
 								</button>
 							<?php elseif ( $license_is_inactive ): ?>
-								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $plugin['Dir']; ?>" data-license="<?php echo $license['license_key'] ?>">
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $addon_dir; ?>" data-license="<?php echo $license['license_key'] ?>">
 									<?php _e( 'Reactivate', 'give' ); ?>
 								</button>
 							<?php else : ?>
