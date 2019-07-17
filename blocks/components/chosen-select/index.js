@@ -67,8 +67,6 @@ class ChosenSelect extends Component {
 							jQuery( '.give-block-chosen-select' ).append( '<option value="' + item.id + '">' + item.name + '</option>' );
 						} ) );
 						jQuery( '.give-block-chosen-select' ).trigger( 'chosen:updated' );
-
-						$searchField.prop( 'disabled', false );
 						$searchField.val( request.term );
 					}
 				} );
