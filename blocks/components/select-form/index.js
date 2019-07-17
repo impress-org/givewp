@@ -99,6 +99,6 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
  */
 export default withSelect( ( select ) => {
 	return {
-		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
+		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms', { per_page: 30 } ),
 	};
 } )( SelectForm );
