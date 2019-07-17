@@ -37,7 +37,7 @@ class ChosenSelect extends Component {
 
 		this.handleChange = this.handleChange.bind( this );
 
-		this.$input.search_field.on( 'change', this.handleChange );
+		this.$el.on( 'change', this.handleChange );
 	}
 
 	componentWillUnmount() {
@@ -46,7 +46,6 @@ class ChosenSelect extends Component {
 	}
 
 	handleChange( e ) {
-		this.search = e.target.value;
 		this.props.onChange( e.target.value );
 	}
 
