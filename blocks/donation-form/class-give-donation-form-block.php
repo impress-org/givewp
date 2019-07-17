@@ -151,6 +151,14 @@ class Give_Donation_Form_Block {
 		return give_form_shortcode( $parameters );
 	}
 
+	/**
+	 * This function is used to fetch donation forms based on the chosen search in the donation form block.
+	 *
+	 * @since  2.5.3
+	 * @access public
+	 *
+	 * @return void
+	 */
 	public function block_donation_form_search_results() {
 
 		$post_data      = give_clean( $_POST );
@@ -158,6 +166,7 @@ class Give_Donation_Form_Block {
 
 		$forms_query = new Give_Forms_Query( array(
 			's' => $search_keyword,
+			'number' => 30,
 		) );
 
 		$forms = $forms_query->get_forms();
