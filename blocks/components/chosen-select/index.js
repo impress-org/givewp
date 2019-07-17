@@ -76,7 +76,7 @@ class ChosenSelect extends Component {
 
 	render() {
 		return (
-			<BaseControl className="chosen-base-control">
+			<BaseControl className="give-chosen-base-control">
 				<select className="give-select give-select-chosen give-block-chosen-select" ref={ el => this.el = el }>
 					{ this.props.options.map( ( option, index ) =>
 						<option
