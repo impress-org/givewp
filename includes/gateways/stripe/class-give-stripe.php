@@ -29,6 +29,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function __construct() {
 
+			global $give_stripe;
+
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
 
 			/**
@@ -57,7 +59,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function includes() {
 
-			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			// Load Stripe SDK manually.
+			require_once GIVE_PLUGIN_DIR . 'stripe/init.php';
 
 			// Include admin files.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
