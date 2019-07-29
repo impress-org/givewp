@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		public function includes() {
 
 			// Load Stripe SDK manually.
-			require_once GIVE_PLUGIN_DIR . 'stripe/init.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/stripe-sdk/init.php';
 
 			// Include admin files.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
