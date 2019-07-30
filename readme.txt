@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,10 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.2: July 16th, 2019 =
+* Fix: Prevent "PHP Fatal error: Uncaught Error: Cannot use object of type stdClass as array" when updating to 2.5+ on a pre WP 5.0 version.  [#4176](https://github.com/impress-org/give/issues/4176)
+* Fix: Resolved minor appearance issues with the Stripe Connect notice appearance. [#4175](https://github.com/impress-org/give/issues/4175)
 
 = 2.5.1: July 12th, 2019 =
 * New: Added PHPUnit tests for the important `Give_Payments_Query` query. [#1893](https://github.com/impress-org/give/issues/1893)

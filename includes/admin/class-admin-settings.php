@@ -1095,7 +1095,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function is_setting_page( $tab = '', $section = '' ) {
 			$is_setting_page = false;
 
+			// Are we accessing admin?
 			if( ! is_admin() ) {
+				return $is_setting_page;
+			}
+
+			// Are we accessing any give page?
+			if(
+				! isset( $_GET['post_type'], $_GET['page'] )
+				|| 'give_forms' !== give_clean( $_GET['post_type'] )
+			) {
 				return $is_setting_page;
 			}
 
