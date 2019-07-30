@@ -161,19 +161,27 @@ class Give_Donation_Form_Block {
 	 */
 	public function block_donation_form_search_results() {
 
+		// Define variables.
+		$result         = array();
 		$post_data      = give_clean( $_POST );
 		$search_keyword = ! empty( $post_data['search'] ) ? $post_data['search'] : '';
 
-		$forms_query = new Give_Forms_Query( array(
-			's' => $search_keyword,
-			'number' => 30,
-		) );
+		// Setup the arguments to fetch the donation forms.
+		$forms_query = new Give_Forms_Query(
+			array(
+				's'           => $search_keyword,
+				'number'      => 30,
+				'post_status' => 'publish',
+			)
+		);
 
+		// Fetch the donation forms.
 		$forms = $forms_query->get_forms();
-		$result = array();
-		foreach( $forms as $form ) {
+
+		// Loop through each donation form.
+		foreach ( $forms as $form ) {
 			$result[] = array(
-				'id' => $form->ID,
+				'id'   => $form->ID,
 				'name' => $form->post_title,
 			);
 		}
