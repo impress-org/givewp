@@ -563,10 +563,13 @@ Donations forms filter
 
 	}
 
-	.bulkactions {
+	.actions{
 		position: absolute;
-		left: 0;
+		left: 230px;
 		bottom: 10px;
-	}
 
+		&.bulkactions {
+			left: 0;
+		}
+	}
 }

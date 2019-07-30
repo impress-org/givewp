@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'https://givewp.com/edd-sl-api/';
+		private static $api_url = 'https://givewp.com/edd-sl-api/';
 
 		/**
 		 * array of licensed addons
@@ -224,7 +224,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
 			$this->author           = $_author;
-			$this->api_url          = is_null( $_api_url ) ? $this->api_url : $_api_url;
+			self::$api_url          = is_null( $_api_url ) ? self::$api_url : $_api_url;
 			self::$checkout_url     = is_null( $_checkout_url ) ? self::$checkout_url : $_checkout_url;
 			self::$account_url      = is_null( $_account_url ) ? self::$account_url : $_account_url;
 			$this->auto_updater_obj = null;
@@ -371,7 +371,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Call the API.
 			$response = wp_remote_post(
-				self::$checkout_url,
+				self::$api_url,
 				apply_filters(
 					'give_request_license_api_args',
 					array(
