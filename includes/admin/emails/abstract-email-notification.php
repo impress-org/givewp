@@ -783,7 +783,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				? absint( $email_tag_args['form_id'] )
 				: ( ! empty( $email_tag_args['payment_id'] ) ? give_get_payment_form_id( $email_tag_args['payment_id'] ) : null );
 
-			// Do not send email if notification is disable.
+			// Do not send email if notification is disabled.
 			if ( ! Give_Email_Notification_Util::is_email_notification_active( $this, $form_id ) ) {
 				return false;
 			}
