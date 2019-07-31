@@ -18,7 +18,7 @@ If you're looking to contribute or actively develop on Give then skip ahead to t
 * SSL certificate - Required for Stripe to accept on site donations using a credit card. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
 
 ### Development Requirements
-* Node 10 (not compatible with 11+)
+* Node 10+
 * Composer
 
 ### Automatic installation
