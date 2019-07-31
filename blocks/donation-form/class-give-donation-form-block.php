@@ -68,6 +68,7 @@ class Give_Donation_Form_Block {
 	 */
 	private function init() {
 		add_action( 'init', array( $this, 'register_block' ), 999 );
+		add_action( 'wp_ajax_give_block_donation_form_search_results', array( $this, 'block_donation_form_search_results' ) );
 	}
 
 	/**
@@ -148,6 +149,45 @@ class Give_Donation_Form_Block {
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
 		return give_form_shortcode( $parameters );
+	}
+
+	/**
+	 * This function is used to fetch donation forms based on the chosen search in the donation form block.
+	 *
+	 * @since  2.5.3
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function block_donation_form_search_results() {
+
+		// Define variables.
+		$result         = array();
+		$post_data      = give_clean( $_POST );
+		$search_keyword = ! empty( $post_data['search'] ) ? $post_data['search'] : '';
+
+		// Setup the arguments to fetch the donation forms.
+		$forms_query = new Give_Forms_Query(
+			array(
+				's'           => $search_keyword,
+				'number'      => 30,
+				'post_status' => 'publish',
+			)
+		);
+
+		// Fetch the donation forms.
+		$forms = $forms_query->get_forms();
+
+		// Loop through each donation form.
+		foreach ( $forms as $form ) {
+			$result[] = array(
+				'id'   => $form->ID,
+				'name' => $form->post_title,
+			);
+		}
+
+		echo wp_json_encode( $result );
+		give_die();
 	}
 }
 

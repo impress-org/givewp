@@ -336,7 +336,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// Gather additional customer data we may have collected in our form.
-		if ( give_stripe_vars.checkout_address ) {
+		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
 			const address1 = $form.find( '.card-address' ).val();
 			const address2 = $form.find( '.card-address-2' ).val();
 			const city = $form.find( '.card-city' ).val();

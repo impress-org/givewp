@@ -84,18 +84,18 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 					__( 'Processed event: %s', 'give' ),
 					$processed_event
 				);
-			}
 
-			give_stripe_record_log(
-				__( 'Stripe - Webhook Received', 'give' ),
-				sprintf(
-					/* translators: 1. Event ID 2. Event Type 3. Message */
-					__( 'Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s.', 'give' ),
-					$event_json->id,
-					$event_json->type,
-					$message
-				)
-			);
+				give_stripe_record_log(
+					__( 'Stripe - Webhook Received', 'give' ),
+					sprintf(
+						/* translators: 1. Event ID 2. Event Type 3. Message */
+						__( 'Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s.', 'give' ),
+						$event_json->id,
+						$event_json->type,
+						$message
+					)
+				);
+			}
 
 			status_header( 200 );
 			exit( $message );
