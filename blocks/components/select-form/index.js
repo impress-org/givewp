@@ -16,6 +16,7 @@ const { SelectControl, Button, Placeholder, Spinner } = wp.components;
 import { getSiteUrl } from '../../utils';
 import GiveBlankSlate from '../blank-slate';
 import NoForms from '../no-form';
+import ChosenSelect from '../chosen-select';
 
 /**
  * Render form select UI
@@ -42,6 +43,7 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
 				}
 			);
 		}
+
 		// Add Default option
 		formOptions.unshift( giveFormOptionsDefault );
 
@@ -61,13 +63,13 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
 	let componentUI;
 
 	if ( ! forms ) {
-		componentUI = <Placeholder><Spinner/></Placeholder>;
+		componentUI = <Placeholder><Spinner /></Placeholder>;
 	} else if ( forms && forms.length === 0 ) {
 		componentUI = <NoForms />;
 	} else {
 		componentUI = (
 			<GiveBlankSlate title={ __( 'Give Donation form' ) }>
-				<SelectControl
+				<ChosenSelect
 					className="give-blank-slate__select"
 					options={ getFormOptions() }
 					onChange={ setFormIdTo }
@@ -97,6 +99,6 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
  */
 export default withSelect( ( select ) => {
 	return {
-		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
+		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms', { per_page: 30 } ),
 	};
 } )( SelectForm );

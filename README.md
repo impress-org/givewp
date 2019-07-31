@@ -11,11 +11,11 @@ If you're looking to contribute or actively develop on Give then skip ahead to t
 ### Minimum Requirements
 
 * WordPress 4.8 or greater
-* PHP version 7.0 or greater
+* PHP version 5.4 or greater
 * MySQL version 5.6 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
-* An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
+* SSL certificate - Required for Stripe to accept on site donations using a credit card. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
 
 ### Development Requirements
 * Node 10 (not compatible with 11+)
