@@ -205,8 +205,16 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.5.3: July 30th, 2019 =
+* Fix: The Gutenberg Block for Donation Forms embedding was only displaying the most recent 10 donation forms. Now you can search for additional forms and they will for embedding. [#4137](https://github.com/impress-org/give/issues/4137)
+* Fix: iThemes Sync was again having an issue with our plugin due to a change we reverted in a previous version. That change has been resolved and now syncing can commence again. Rejoice! [#4195](https://github.com/impress-org/give/issues/4195)
+* Fix: Resolved compatibility issues with other plugins using the Stripe SDK by initializing it manually within the included GiveWP Core Stripe gateway class. We tested this alongside many of the most popular plugins to ensure smooth sailing alongside eachother. [#4193](https://github.com/impress-org/give/issues/4193)
+* Fix: Resolved an issue with editing a donation form when it has thousands of donations. To prevent this issue we now are deleting the group cache of the donation and donor instead of individual IDs.
+* Fix: Several deprecation notices were displaying for our Gutenberg Blocks. They are now all updated with the latest version of the WP Block Editor. [#4137](https://github.com/impress-org/give/issues/4137)
+* Fix: The "Empty Trash" button was in a stange location on the donation form edit screen and now has been placed in it's proper position. [#4075](https://github.com/impress-org/give/issues/4075)
+
 = 2.5.2: July 16th, 2019 =
-* Fix: Prevent "PHP Fatal error: Uncaught Error: Cannot use object of type stdClass as array" when updating to 2.5+ on a pre WP 5.0 version.  [#4176](https://github.com/impress-org/give/issues/4176)
+* Fix: Prevent "PHP Fatal error: Uncaught Error: Cannot use object of type stdClass as array" when updating to 2.5+ on a pre WP 5.0 version. [#4176](https://github.com/impress-org/give/issues/4176)
 * Fix: Resolved minor appearance issues with the Stripe Connect notice appearance. [#4175](https://github.com/impress-org/give/issues/4175)
 
 = 2.5.1: July 12th, 2019 =

@@ -11518,11 +11518,11 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:98
+#: includes/gateways/stripe/class-give-stripe.php:101
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:99
+#: includes/gateways/stripe/class-give-stripe.php:102
 msgid "Credit Card"
 msgstr ""
 
@@ -13360,12 +13360,12 @@ msgstr ""
 msgid "Processed event: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:90
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:89
 msgid "Stripe - Webhook Received"
 msgstr ""
 
 #. translators: 1. Event ID 2. Event Type 3. Message
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:93
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:92
 msgid "Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s."
 msgstr ""
 
