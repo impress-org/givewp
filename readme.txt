@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.4: =
+
 
 = 2.5.3: July 30th, 2019 =
 * Fix: The Gutenberg Block for Donation Forms embedding was only displaying the most recent 10 donation forms. Now you can search for additional forms and they will for embedding. [#4137](https://github.com/impress-org/give/issues/4137)
