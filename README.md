@@ -1,4 +1,4 @@
-# [GiveWP](https://givewp.com "Give - Democratizing Generosity") #
+# [GiveWP - The #1 WordPress Donation Plugin](https://givewp.com "Give - Democratizing Generosity") #
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/impress-org/give.svg?branch=master)](https://travis-ci.org/impress-org/give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/impress-org/give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) 
 
