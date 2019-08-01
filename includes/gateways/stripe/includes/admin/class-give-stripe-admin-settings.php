@@ -333,6 +333,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
 					$settings[] = array(
+						'name'    => __( 'Stripe SDK Incompatibility', 'give' ),
+						'desc'    => __( 'If your site has problems with processing donations using Stripe, Try switching the options or else contact our support team.', 'give' ),
+						'id'      => 'stripe_sdk_incompatibility',
+						'type'    => 'radio_inline',
+						'options' => array(
+							'composer' => __( 'Composer Autoloading', 'give' ),
+							'manual'   => __( 'Manual Initialization', 'give' ),
+						),
+						'default' => 'composer',
+					);
+
+					$settings[] = array(
 						'name' => __( 'Stripe JS Incompatibility', 'give' ),
 						'desc' => __( 'If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing.', 'give' ),
 						'id'   => 'stripe_js_fallback',
