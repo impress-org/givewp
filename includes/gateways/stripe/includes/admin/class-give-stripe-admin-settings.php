@@ -334,7 +334,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings[] = array(
 						'name'    => __( 'Stripe SDK Incompatibility', 'give' ),
-						'desc'    => __( 'If your site has problems with processing donations using Stripe, Try switching the options or else contact our support team.', 'give' ),
+						'desc'    => sprintf(
+							__( 'If you are using another plugin that utilizes Stripe there is a chance that it may include the Stripe SDK (Software development kit) either through composer or manually. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend Manual Initialization. If both options do not work please <a href="%1$s" target="_blank">contact support</a>.', 'give' ),
+							esc_url_raw( 'https://givewp.com/support' )
+						),
 						'id'      => 'stripe_sdk_incompatibility',
 						'type'    => 'radio_inline',
 						'options' => array(
