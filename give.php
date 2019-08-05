@@ -530,18 +530,18 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-comments.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-comments-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-comments.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-comments-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donors.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donor-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-form-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sequential-ordering.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sessions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-payment-meta.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
