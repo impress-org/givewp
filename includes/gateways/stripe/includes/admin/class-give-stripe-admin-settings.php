@@ -336,7 +336,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name'    => __( 'Stripe SDK Incompatibility', 'give' ),
 						'desc'    => sprintf(
 							/* translators: 1. GiveWP Support URL */
-							__( 'If you are using another plugin that utilizes Stripe there is a chance that it may include the Stripe SDK (Software development kit) either through composer or manually. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend Manual Initialization. If both options do not work please <a href="%1$s" target="_blank">contact support</a>.', 'give' ),
+							__( 'If you are using another plugin that uses Stripe to accept payment there is a chance that it may include the Stripe SDK (Software Development Kit) either through composer or manually. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend Manual Initialization. If both options do not work please <a href="%1$s" target="_blank">contact support</a>.', 'give' ),
 							esc_url_raw( 'https://givewp.com/support' )
 						),
 						'id'      => 'stripe_sdk_incompatibility',
@@ -352,8 +352,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name' => __( 'Stripe Receipt Emails', 'give' ),
 						'desc' => sprintf(
 							/* translators: 1. GiveWP Support URL */
-							__( 'If you are receiving emails from Stripe in addition to the emails from Give. Then, uncheck this option to stop Stripe emails. If unchecking this option do not work please <a href="%1$s" target="_blank">contact support</a>.', 'give' ),
-							esc_url_raw( 'https://givewp.com/support' )
+							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
+							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
 						),
 						'id'   => 'stripe_receipt_emails',
 						'type' => 'checkbox',
