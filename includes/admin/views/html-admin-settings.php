@@ -110,6 +110,18 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		 *
 		 * Note: action dynamically fire on basis of setting page slug.
 		 * For example: if you register a setting page with give-settings menu slug and general current tab
+		 *              then action will be give-settings_sections_general_page
+		 *
+		 * @since 2.6.0
+		 */
+		do_action( self::$setting_filter_prefix . "_subsections_{$current_tab}_{$current_section}_page" );
+
+
+		/**
+		 * Trigger Action.
+		 *
+		 * Note: action dynamically fire on basis of setting page slug.
+		 * For example: if you register a setting page with give-settings menu slug and general current tab
 		 *              then action will be give-settings_settings_general_page
 		 *
 		 * @since 1.8
