@@ -226,7 +226,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 */
 			do_action( self::$setting_filter_prefix . '_start' );
 
-			$current_tab = give_get_current_setting_tab();
+			$current_tab     = give_get_current_setting_tab();
+			$current_section = give_get_current_setting_section();
 
 			// Include settings pages.
 			$all_setting = self::get_settings_pages();
