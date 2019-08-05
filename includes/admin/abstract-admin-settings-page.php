@@ -70,18 +70,30 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			// Get current setting page.
 			$this->current_setting_page = give_get_current_setting_page();
 
+			// Get current section.
+			$this->current_section = give_get_current_setting_section();
+
 			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( "{$this->current_setting_page}_tabs_array", array( $this, 'add_settings_page' ), 20 );
 			add_action( "{$this->current_setting_page}_settings_{$this->id}_page", array( $this, 'output' ) );
 
-			// Output section only if exist.
-			$sections = $this->get_sections();
-			if ( ! empty( $sections ) ) {
-				add_action( "{$this->current_setting_page}_sections_{$this->id}_page", array(
+			// Output sections.
+			add_action(
+				"{$this->current_setting_page}_sections_{$this->id}_page",
+				array(
 					$this,
 					'output_sections',
-				) );
-			}
+				)
+			);
+
+			// Output sub-sections.
+			add_action(
+				"{$this->current_setting_page}_subsections_{$this->id}_{$this->current_section}_page",
+				array(
+					$this,
+					'output_subsections',
+				)
+			);
 
 			// Save hide button by default.
 			$GLOBALS['give_hide_save_button'] = true;
@@ -163,6 +175,18 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		}
 
 		/**
+		 * Get subsections.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function get_subsections() {
+			return apply_filters( 'give_get_subsections_' . $this->id, array() );
+		}
+
+		/**
 		 * Output sections.
 		 *
 		 * @since  1.8
@@ -204,6 +228,58 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				}
 
 				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . $label . '</a>';
+			}
+
+			echo wp_kses_post( sprintf(
+				'<ul class="give-subsubsub">%s</ul><br class="clear" /><hr>',
+				implode( ' | </li>', $section_list )
+			) );
+		}
+
+		/**
+		 * Output sections.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function output_subsections() {
+			// Get current section.
+			$current_subsection = give_get_current_setting_subsection();
+
+			// Get all sections.
+			$sub_sections = $this->get_subsections();
+
+			// Bailout.
+			if ( empty( $sub_sections ) ) {
+				return;
+			}
+
+			// Show section settings only if setting section exist.
+			if ( $current_subsection && ! in_array( $current_subsection, array_keys( $sub_sections ), true ) ) {
+				echo wp_kses_post( '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>' );
+				$GLOBALS['give_hide_save_button'] = true;
+
+				return;
+			}
+
+			if ( is_null( $this->current_setting_page ) ) {
+				$this->current_setting_page = give_get_current_setting_page();
+			}
+
+			$section_list = array();
+			foreach ( $sub_sections as $id => $label ) {
+				/**
+				 * Fire the filter to hide particular section on tab.
+				 *
+				 * @since 2.0
+				 */
+				if ( apply_filters( "give_hide_section_{$id}_on_{$this->id}_page", false, $sub_sections, $this->id ) ) {
+					continue;
+				}
+
+				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_subsection === $id ? 'current' : '' ) . '">' . $label . '</a>';
 			}
 
 			echo wp_kses_post( sprintf(
