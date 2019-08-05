@@ -90,8 +90,8 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 					sprintf(
 						/* translators: 1. Event ID 2. Event Type 3. Message */
 						__( 'Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s.', 'give' ),
-						$event_json->id,
-						$event_json->type,
+						$event->id,
+						$event->type,
 						$message
 					)
 				);

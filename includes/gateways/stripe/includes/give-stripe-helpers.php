@@ -1069,7 +1069,6 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 						'currency'             => give_get_currency( $form_id ),
 						'payment_method_types' => [ 'card' ],
 						'statement_descriptor' => give_stripe_get_statement_descriptor(),
-						'receipt_email'        => $donation_data['user_email'],
 						'description'          => give_payment_gateway_donation_summary( $donation_data ),
 						'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
 						'customer'             => $stripe_customer_id,
@@ -1078,7 +1077,13 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 						'return_url'           => give_get_success_page_uri(),
 					)
 				);
-				$intent     = $stripe_gateway->payment_intent->create( $intent_args );
+
+				// Send Stripe Receipt emails when enabled.
+				if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+					$intent_args['receipt_email'] = $donation_data['user_email'];
+				}
+
+				$intent = $stripe_gateway->payment_intent->create( $intent_args );
 
 				// Save Payment Intent Client Secret to donation note and DB.
 				give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );

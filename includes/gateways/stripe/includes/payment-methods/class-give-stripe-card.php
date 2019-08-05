@@ -232,7 +232,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 								'currency'             => give_get_currency( $form_id ),
 								'payment_method_types' => [ 'card' ],
 								'statement_descriptor' => give_stripe_get_statement_descriptor(),
-								'receipt_email'        => $donation_data['user_email'],
 								'description'          => give_payment_gateway_donation_summary( $donation_data ),
 								'metadata'             => $this->prepare_metadata( $donation_id ),
 								'customer'             => $stripe_customer_id,
@@ -241,7 +240,13 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 								'return_url'           => give_get_success_page_uri(),
 							)
 						);
-						$intent     = $this->payment_intent->create( $intent_args );
+
+						// Send Stripe Receipt emails when enabled.
+						if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+							$intent_args['receipt_email'] = $donation_data['user_email'];
+						}
+
+						$intent = $this->payment_intent->create( $intent_args );
 
 						// Save Payment Intent Client Secret to donation note and DB.
 						give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
