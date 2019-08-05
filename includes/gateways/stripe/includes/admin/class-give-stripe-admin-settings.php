@@ -72,6 +72,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			}
 
 			add_filter( 'give_get_sections_gateways', array( $this, 'register_sections' ) );
+			add_filter( 'give_get_subsections_gateways', array( $this, 'register_subsections' ) );
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
@@ -92,6 +93,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function register_sections( $sections ) {
 			$sections['stripe-settings'] = __( 'Stripe Settings', 'give' );
+
+			return $sections;
+		}
+
+		public function register_subsections( $sections ) {
+
+			$sections = array(
+				'general'         => __( 'General', 'give' ),
+				'credit-card'     => __( 'Credit Card', 'give' ),
+				'checkout'        => __( 'Checkout', 'give' ),
+				'payment-request' => __( 'Apple/Google Pay', 'give' ),
+				'plaid-ach'       => __( 'Plaid', 'give' ),
+			);
 
 			return $sections;
 		}
