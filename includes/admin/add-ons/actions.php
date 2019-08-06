@@ -25,7 +25,6 @@ function give_upload_addon_handler() {
 	/* @var WP_Filesystem_Direct $wp_filesystem */
 	global $wp_filesystem;
 
-	$addon_authors = array( 'WordImpress', 'GiveWP' );
 	$filename      = basename( $_FILES['file']['name'], '.zip' );
 
 	check_admin_referer( 'give-upload-addon' );
@@ -59,16 +58,11 @@ function give_upload_addon_handler() {
 		wp_send_json_error( array( 'errorMsg' =>  __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ) );
 	}
 
-	$give_addons_list   = give_get_plugins();
+	$give_addons_list   = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 	$is_addon_installed = array();
 
 	if ( ! empty( $give_addons_list ) ) {
 		foreach ( $give_addons_list as $addon => $give_addon ) {
-			// Only show Give Core Activated Add-Ons.
-			if ( ! in_array( $give_addon['AuthorName'], $addon_authors ) ) {
-				continue;
-			}
-
 			if ( false !== stripos( $addon, $filename ) ) {
 				$is_addon_installed = $give_addon;
 			}
@@ -117,16 +111,11 @@ function give_upload_addon_handler() {
 
 	// Delete cache and get current installed addon plugin path.
 	wp_cache_delete( 'plugins', 'plugins' );
-	$give_addons_list = get_plugins();
+	$give_addons_list   = give_get_plugins( array( 'only_premium_add_ons' => true ) );
 	$installed_addon  = array();
 
 	if ( ! empty( $give_addons_list ) ) {
 		foreach ( $give_addons_list as $addon => $give_addon ) {
-			// Only show Give Core Activated Add-Ons.
-			if ( ! in_array( $give_addon['AuthorName'], $addon_authors ) ) {
-				continue;
-			}
-
 			if ( false !== stripos( $addon, $filename ) ) {
 				$installed_addon         = $give_addon;
 				$installed_addon['path'] = $addon;
