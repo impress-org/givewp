@@ -557,7 +557,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				// Charge application fee, only if the Stripe premium add-on is not active.
 				if ( ! defined( 'GIVE_STRIPE_VERSION' ) ) {
 					// Set Application Fee Amount.
-					$charge_args['application_fee_amount'] = give_stripe_get_application_fee_amount( $charge_args['amount'] );
+					$charge_args['application_fee_amount'] = give_stripe_dollars_to_cents( give_stripe_get_application_fee_amount( $charge_args['amount'] ) );
 				}
 
 				$charge = \Stripe\Charge::create(
