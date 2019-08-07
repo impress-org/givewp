@@ -260,4 +260,31 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		$amount = give_stripe_get_application_fee_amount( 2500 );
 		$this->assertEquals( 50.00, round( $amount, 2 ) );
 	}
+
+	/**
+	 * Unit test for function give_stripe_is_source_type();
+	 *
+	 * @since  2.5.4
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_is_source_type() {
+
+		/**
+		 * Case 1: Ensure that the id matches the type of source.
+		 *
+		 * @since 2.5.4
+		 */
+		$is_valid = give_stripe_is_source_type( 'src_xxxxxx', 'src' );
+		$this->assertTrue( $is_valid );
+
+		/**
+		 * Case 1: Ensure that the random id doesn't matches the type of source.
+		 *
+		 * @since 2.5.4
+		 */
+		$is_valid = give_stripe_is_source_type( 'pm_xxxxxx', 'src' );
+		$this->assertFalse( $is_valid );
+	}
 }
