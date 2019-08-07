@@ -1193,7 +1193,7 @@ function give_stripe_format_amount( $amount ) {
 
 	// Return donation amount based on whether the currency is zero decimal or not.
 	if ( give_stripe_is_zero_decimal_currency() ) {
-		return $amount;
+		return round( $amount );
 	}
 
 	return give_stripe_dollars_to_cents( $amount );
