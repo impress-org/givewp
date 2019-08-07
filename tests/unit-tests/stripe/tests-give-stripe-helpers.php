@@ -173,4 +173,36 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		$amount = give_stripe_cents_to_dollars( 1078 );
 		$this->assertEquals( 10.78, $amount );
 	}
+
+	/**
+	 * Unit test for function give_stripe_get_application_fee_percentage();
+	 *
+	 * @since  2.5.4
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_get_application_fee_percentage() {
+
+		/**
+		 * Case 1: Non zero-decimal currency.
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'USD' );
+		$fee_percentage = give_stripe_get_application_fee_percentage();
+
+		// We're asserting with `0.02` as the percentage are based on units and not sub-units.
+		// So, converting the fee percentage to be compatible with units is more sensible.
+		$this->assertEquals( 0.02, $fee_percentage );
+
+		/**
+		 * Case 2: Zero-decimal currency.
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'JPY' );
+		$fee_percentage = give_stripe_get_application_fee_percentage();
+		$this->assertEquals( 2, $fee_percentage );
+	}
 }
