@@ -205,4 +205,59 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		$fee_percentage = give_stripe_get_application_fee_percentage();
 		$this->assertEquals( 2, $fee_percentage );
 	}
+
+	/**
+	 * Unit test for function give_stripe_get_application_fee_amount();
+	 *
+	 * @since  2.5.4
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_get_application_fee_amount() {
+
+		/**
+		 * Case 1: Non zero-decimal currency with decimal value.
+		 *
+		 * Example: $13.24 = 1324 cents
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'USD' );
+		$amount = give_stripe_get_application_fee_amount( 1324 );
+		$this->assertEquals( 0.26, round( $amount, 2 ) );
+
+		/**
+		 * Case 2: Non zero-decimal currency without decimal value.
+		 *
+		 * Example: $25.00 = 2500 cents
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'USD' );
+		$amount = give_stripe_get_application_fee_amount( 2500 );
+		$this->assertEquals( 0.50, round( $amount, 2 ) );
+
+		/**
+		 * Case 3: Zero-decimal currency with decimal value.
+		 *
+		 * Example: 1324 Yen = 1324 Yen as Yen is sub-unit
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'JPY' );
+		$amount = give_stripe_get_application_fee_amount( 1324 );
+		$this->assertEquals( 26.48, round( $amount, 2 ) );
+
+		/**
+		 * Case 4: Non zero-decimal currency without decimal value.
+		 *
+		 * Example: 2500 Yen = 2500 Yen as Yen is sub-unit
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'JPY' );
+		$amount = give_stripe_get_application_fee_amount( 2500 );
+		$this->assertEquals( 50.00, round( $amount, 2 ) );
+	}
 }
