@@ -708,7 +708,12 @@ function give_stripe_set_app_info() {
  * @return int
  */
 function give_stripe_get_application_fee_percentage() {
-	return 2;
+
+	// Set Application Fee Percentage.
+	$fee_percentage = 2;
+
+	// Return the fee percentage based on the currency used.
+	return give_stripe_is_zero_decimal_currency() ? $fee_percentage : give_stripe_cents_to_dollars( $fee_percentage );
 }
 
 /**
@@ -1069,7 +1074,6 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 						'currency'             => give_get_currency( $form_id ),
 						'payment_method_types' => [ 'card' ],
 						'statement_descriptor' => give_stripe_get_statement_descriptor(),
-						'receipt_email'        => $donation_data['user_email'],
 						'description'          => give_payment_gateway_donation_summary( $donation_data ),
 						'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
 						'customer'             => $stripe_customer_id,
@@ -1078,7 +1082,13 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 						'return_url'           => give_get_success_page_uri(),
 					)
 				);
-				$intent     = $stripe_gateway->payment_intent->create( $intent_args );
+
+				// Send Stripe Receipt emails when enabled.
+				if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+					$intent_args['receipt_email'] = $donation_data['user_email'];
+				}
+
+				$intent = $stripe_gateway->payment_intent->create( $intent_args );
 
 				// Save Payment Intent Client Secret to donation note and DB.
 				give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
@@ -1166,4 +1176,25 @@ function give_stripe_cents_to_dollars( $cents ) {
  */
 function give_stripe_dollars_to_cents( $dollars ) {
 	return round( $dollars, give_currency_decimal_filter() ) * 100;
+}
+
+/**
+ * Format currency for Stripe.
+ *
+ * @see https://support.stripe.com/questions/which-zero-decimal-currencies-does-stripe-support
+ *
+ * @param float $amount Donation amount.
+ *
+ * @since 2.5.4
+ *
+ * @return mixed
+ */
+function give_stripe_format_amount( $amount ) {
+
+	// Return donation amount based on whether the currency is zero decimal or not.
+	if ( give_stripe_is_zero_decimal_currency() ) {
+		return round( $amount );
+	}
+
+	return give_stripe_dollars_to_cents( $amount );
 }

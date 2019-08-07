@@ -356,6 +356,7 @@ function give_donor_view( $donor ) {
 						<span class="donor-name info-item edit-item">
 							<select name="donor_info[title]">
 								<option disabled value="0"><?php esc_html_e( 'Title', 'give' ); ?></option>
+								<option value=""><?php esc_html_e( '', 'give' ); ?></option>
 								<?php
 								if ( is_array( $title_prefixes ) && count( $title_prefixes ) > 0 ) {
 									foreach ( $title_prefixes as $title ) {
@@ -1036,7 +1037,7 @@ function give_donor_notes_view( $donor ) {
 }
 
 /**
- * Thw donor delete view.
+ * The donor delete view.
  *
  * @since  1.0
  *

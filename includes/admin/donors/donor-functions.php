@@ -119,11 +119,11 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 			$donor->update_meta( '_give_donor_first_name', $donor_data['first_name'] );
 		}
 
-		if ( ! empty( $donor_data['last_name'] ) ) {
+		if ( isset( $donor_data['last_name'] ) ) {
 			$donor->update_meta( '_give_donor_last_name', $donor_data['last_name'] );
 		}
 
-		if ( ! empty( $donor_data['title'] ) ) {
+		if ( isset( $donor_data['title'] ) ) {
 			$donor->update_meta( '_give_donor_title_prefix', $donor_data['title'] );
 		}
 

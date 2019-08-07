@@ -52,18 +52,23 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-roles.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-comments.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-comments-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-comments.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-comments-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donor-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donors.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-form-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-payment-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sequential-ordering.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sessions.php' );
+
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donor.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-session.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-sessions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-logging.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php' );

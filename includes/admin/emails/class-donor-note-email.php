@@ -39,8 +39,8 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 
 			$this->load( array(
 				'id'                    => 'donor-note',
-				'label'                 => __( 'Donor Note', 'give' ),
-				'description'           => __( 'Sent to the donor when new donation note added to there donation.', 'give' ),
+				'label'                 => __( 'Donation Note', 'give' ),
+				'description'           => __( 'Sent when a donation note is added to a donation payment.', 'give' ),
 				'notification_status'   => 'enabled',
 				'recipient_group_name'  => __( 'Donor', 'give' ),
 				'default_email_subject' => sprintf(

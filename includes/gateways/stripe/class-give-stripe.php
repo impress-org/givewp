@@ -59,8 +59,14 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function includes() {
 
-			// Load Stripe SDK manually.
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/stripe-sdk/init.php';
+			// Load Stripe SDK.
+			$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
+
+			if ( 'composer' === $stripe_sdk_compatibility ) {
+				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			} elseif ( 'manual' === $stripe_sdk_compatibility ) {
+				require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
+			}
 
 			// Include admin files.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';

@@ -55,7 +55,7 @@ function give_get_states( $country = null ) {
 
 	// Check if Country Code is empty or not.
 	if ( empty( $country ) ) {
-		// Get defalut country code that is being set by the admin.
+		// Get default country code that is being set by the admin.
 		$country = give_get_country();
 	}
 

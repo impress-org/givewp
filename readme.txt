@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,13 +205,22 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.5.4: =
+* New: Stripe compatiblity solution - There is now a setting under `Donations > Settings > Advanced > Stripe` that allows you select which implementation of Stripe you wish to use. If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the [Stripe SDK](https://github.com/stripe/stripe-php) (Software Development Kit) either through [Composer](http://getcomposer.org/) or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts and the other plugins may be using outdated versions compared to GiveWP's. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please [contact support](https://givewp.com/support). [#4193](https://github.com/impress-org/give/issues/4193)
+* Fix: When using Stripe there was a chance your donors would get a receipt from Stripe and from GiveWP. There is now a setting to set whether you want to send Stripe generated receipt emails or use GiveWP's. We recommend using ours if you're using multiple gateways, but if you're only using Stripe you may enable this new option and disable the default receipts. [#4203](https://github.com/impress-org/give/issues/4203)
+* Fix: There was an issue with converting dollars to cents and back within Stripe free which has been resolved and now has unit tests to ensure no more issues crop up with the functional conversions. [#4200](https://github.com/impress-org/give/issues/4220)
+* Fix: When editing a donor you can now properly remove the "Title" for the donor (such as "Mr", "Mrs", etc). [#4211](https://github.com/impress-org/give/issues/4211)
+* Fix: Ensure the requirement on the state field is removed from hidden state fields for certain countries and regions. [#4201](https://github.com/impress-org/give/issues/4201)
+* Fix: Resolved a compatibility issue with the Tickera plugin's implementation of QR codes within the PDF generator. The issue was with our shared library of TCPDF and now the QR codes display correctly due to a constant change on our end. [#3880](https://github.com/impress-org/give/issues/3880)
+* Tweak: You can now activate any plugin under `Settings > Licenses`. Previously we were requiring the author to only be GiveWP which caused an "this plugin does not have a valid header" error message to annoyingly display. [#4217](https://github.com/impress-org/give/issues/4217)
+
 = 2.5.3: July 30th, 2019 =
 * Fix: The Gutenberg Block for Donation Forms embedding was only displaying the most recent 10 donation forms. Now you can search for additional forms and they will for embedding. [#4137](https://github.com/impress-org/give/issues/4137)
 * Fix: iThemes Sync was again having an issue with our plugin due to a change we reverted in a previous version. That change has been resolved and now syncing can commence again. Rejoice! [#4195](https://github.com/impress-org/give/issues/4195)
 * Fix: Resolved compatibility issues with other plugins using the Stripe SDK by initializing it manually within the included GiveWP Core Stripe gateway class. We tested this alongside many of the most popular plugins to ensure smooth sailing alongside eachother. [#4193](https://github.com/impress-org/give/issues/4193)
 * Fix: Resolved an issue with editing a donation form when it has thousands of donations. To prevent this issue we now are deleting the group cache of the donation and donor instead of individual IDs.
 * Fix: Several deprecation notices were displaying for our Gutenberg Blocks. They are now all updated with the latest version of the WP Block Editor. [#4137](https://github.com/impress-org/give/issues/4137)
-* Fix: The "Empty Trash" button was in a stange location on the donation form edit screen and now has been placed in it's proper position. [#4075](https://github.com/impress-org/give/issues/4075)
+* Fix: The "Empty Trash" button was in an incorrect location on the donation form edit screen and now has been placed in it's proper position. [#4075](https://github.com/impress-org/give/issues/4075)
 
 = 2.5.2: July 16th, 2019 =
 * Fix: Prevent "PHP Fatal error: Uncaught Error: Cannot use object of type stdClass as array" when updating to 2.5+ on a pre WP 5.0 version. [#4176](https://github.com/impress-org/give/issues/4176)
@@ -246,7 +255,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: The Swiss Franc symbol has been updated to "CHF" instead of "Fr." [#4086](https://github.com/impress-org/give/issues/4086)
 * Tweak: Removed the word "nonce" from all front end error messages and updated them to be more user friendly and less technically confusing. [#4129](https://github.com/impress-org/give/issues/4129), [#4031](https://github.com/impress-org/give/issues/4031)
 * Tweak: Changed "Swaziland" to "Eswatini". [#4120](https://github.com/impress-org/give/issues/4120)
-* Optimization: Improved various database option calls and general meta query performance throughout the plugin to speed up queries and reduce server load. [#3359](https://github.com/impress-org/give/issues/3359), [#3382](https://github.com/impress-org/give/issues/3382), [#3383](https://github.com/impress-org/give/issues/3383), [#3872](https://app.zenhub.com/workspace/o/impress-org/give/issues/3872), [#3994](https://app.zenhub.com/workspace/o/impress-org/give/issues/3994), [#4104](https://github.com/impress-org/give/issues/4104)
+* Optimization: Improved various database option calls and general meta query performance throughout the plugin to speed up queries and reduce server load. [#3359](https://github.com/impress-org/give/issues/3359), [#3382](https://github.com/impress-org/give/issues/3382), [#3383](https://github.com/impress-org/give/issues/3383), [#3872](https://github.com/impress-org/give/issues/3872), [#3994](https://github.com/impress-org/give/issues/3994), [#4104](https://github.com/impress-org/give/issues/4104)
 * Refactor: Pre-2.0.0 backward compatibility code has been removed because it has reached end of life for support. [#3033](https://github.com/impress-org/give/issues/3033)
 
 
