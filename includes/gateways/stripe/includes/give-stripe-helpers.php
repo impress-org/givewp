@@ -708,7 +708,7 @@ function give_stripe_set_app_info() {
  * @return int
  */
 function give_stripe_get_application_fee_percentage() {
-	return 2;
+	return give_stripe_is_zero_decimal_currency() ? 2 : 0.02;
 }
 
 /**
