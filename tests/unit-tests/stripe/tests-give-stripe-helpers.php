@@ -103,4 +103,39 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		$amount = give_stripe_format_amount( 1324 );
 		$this->assertEquals( 1324, $amount );
 	}
+
+	/**
+	 * Unit test for function give_stripe_dollars_to_cents();
+	 *
+	 * @since  2.5.4
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_dollars_to_cents() {
+
+		/**
+		 * Case 1: Amount with decimal to `.00`.
+		 *
+		 * @since 2.5.4
+		 */
+		$amount = give_stripe_dollars_to_cents( 25.00 );
+		$this->assertEquals( 2500, $amount );
+
+		/**
+		 * Case 2: Amount with decimal to less than `.50`.
+		 *
+		 * @since 2.5.4
+		 */
+		$amount = give_stripe_dollars_to_cents( 13.24 );
+		$this->assertEquals( 1324, $amount );
+
+		/**
+		 * Case 3: Amount with decimal to greater than `.50`.
+		 *
+		 * @since 2.5.4
+		 */
+		$amount = give_stripe_dollars_to_cents( 10.78 );
+		$this->assertEquals( 1078, $amount );
+	}
 }
