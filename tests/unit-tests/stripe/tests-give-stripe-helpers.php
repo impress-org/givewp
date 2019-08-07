@@ -74,4 +74,33 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 
 		$this->assertStringStartsWith( 'pk_live_', give_stripe_get_publishable_key() );
 	}
+
+	/**
+	 * Unit test for function give_stripe_format_amount();
+	 *
+	 * @since  2.5.4
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_format_amount() {
+
+		/**
+		 * Case 1: Non zero-decimal currency.
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'USD' );
+		$amount = give_stripe_format_amount( 13.24 );
+		$this->assertEquals( 1324, $amount );
+
+		/**
+		 * Case 2: Zero-decimal currency.
+		 *
+		 * @since 2.5.4
+		 */
+		give_update_option( 'currency', 'JPY' );
+		$amount = give_stripe_format_amount( 1324 );
+		$this->assertEquals( 1324, $amount );
+	}
 }
