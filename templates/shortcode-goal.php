@@ -115,7 +115,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				 * @param int   $form_id Donation Form ID.
 				 */
 				$income_amounts = apply_filters(
-					'give_income_amounts',
+					'give_goal_raised_amounts',
 					array(
 						$form_currency => $income,
 					),
