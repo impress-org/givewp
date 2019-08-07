@@ -708,7 +708,12 @@ function give_stripe_set_app_info() {
  * @return int
  */
 function give_stripe_get_application_fee_percentage() {
-	return give_stripe_is_zero_decimal_currency() ? 2 : 0.02;
+
+	// Set Application Fee Percentage.
+	$fee_percentage = 2;
+
+	// Return the fee percentage based on the currency used.
+	return give_stripe_is_zero_decimal_currency() ? $fee_percentage : give_stripe_cents_to_dollars( $fee_percentage );
 }
 
 /**
