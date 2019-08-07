@@ -250,9 +250,8 @@ class Give_Email_Setting_Field {
 
 		if ( $email_tag_list = $email->get_allowed_email_tags( true ) ) {
 			$desc = sprintf(
-				'%1$s <br> %2$s: %3$s %4$s',
-				__( 'The email that is sent to users after completing a successful donation. HTML is accepted.', 'give' ),
-				__( 'Available template tags', 'give' ),
+				'%1$s <br> %2$s %3$s',
+				__( 'Available template tags for this email. HTML is accepted.', 'give' ),
 				$email_tag_list,
 				sprintf(
 					'<br><a href="%1$s" target="_blank">%2$s</a> %3$s',
