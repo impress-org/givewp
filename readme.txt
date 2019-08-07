@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,7 +205,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.5.4: =
+= 2.5.5: =
+
+= 2.5.4: August 7th, 2019 =
 * New: Stripe compatiblity solution - There is now a setting under `Donations > Settings > Advanced > Stripe` that allows you select which implementation of Stripe you wish to use. If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the [Stripe SDK](https://github.com/stripe/stripe-php) (Software Development Kit) either through [Composer](http://getcomposer.org/) or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts and the other plugins may be using outdated versions compared to GiveWP's. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please [contact support](https://givewp.com/support). [#4193](https://github.com/impress-org/give/issues/4193)
 * Fix: When using Stripe there was a chance your donors would get a receipt from Stripe and from GiveWP. There is now a setting to set whether you want to send Stripe generated receipt emails or use GiveWP's. We recommend using ours if you're using multiple gateways, but if you're only using Stripe you may enable this new option and disable the default receipts. [#4203](https://github.com/impress-org/give/issues/4203)
 * Fix: There was an issue with converting dollars to cents and back within Stripe free which has been resolved and now has unit tests to ensure no more issues crop up with the functional conversions. [#4200](https://github.com/impress-org/give/issues/4220)
