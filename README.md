@@ -10,11 +10,11 @@
 
 Welcome to the GiveWP GitHub repository. This is the code source and the center of active development. Here you can browse the source, look at open issues, and contribute to the project. We recommend all developers follow the GiveWP development blog to stay up to date on the latest features and changes.
  
-## Getting Started 
+## 🚵 Getting Started 
 
 If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/impress-org/give/#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
 
-### Minimum Requirements
+### ✅ Minimum Requirements
 
 * WordPress 4.8 or greater
 * PHP version 5.4 or greater
@@ -36,7 +36,6 @@ In the search field type "Give" and click Search Plugins. Once you have found th
 ### Manual installation
 
 The manual installation method involves downloading our donation plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
-
 
 ### Support
 This repository is not suitable for support. Please don't use GitHub issues for support requests. To get support please use the following channels:
