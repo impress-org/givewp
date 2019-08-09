@@ -12,7 +12,9 @@ Welcome to the GiveWP GitHub repository. This is the code source and the center 
  
 ## 🌱 Getting Started 
 
-If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/impress-org/give/#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
+If you're looking to contribute or actively develop on Give, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
+
+Most of us are using Local by Flywheel to develop on WordPress, which makes set up quick and easy.
 
 ### ✅ Minimum Requirements
 
@@ -49,7 +51,7 @@ To get started developing on the Give platform you will need to perform the foll
 
 That's it. You're now ready to start development.
 
-### NPM Commands
+*NPM Commands*
 
 Give relies on several npm commands to get you started:
 
@@ -57,7 +59,7 @@ Give relies on several npm commands to get you started:
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
 
-###  Development Notes
+*Development Notes:*
 
 * Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
     ```
