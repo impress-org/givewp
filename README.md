@@ -27,10 +27,10 @@ If you're looking to contribute or actively develop on Give, welcome! We're glad
 Most of us are using Local by Flywheel to develop on WordPress, which makes set up quick and easy.
 
 ## ✅ Prerequesits
-* Node.js as JavaScript engine
-* NPM npm command globally available in CLI
-* Composer composer command globally available in CLI
-* Docker docker and docker-compose command globally available in CLI
+* [Node.js](https://nodejs.org/en/) as JavaScript engine
+* [NPM](https://docs.npmjs.com/) npm command globally available in CLI
+* [Composer](https://getcomposer.org/) composer command globally available in CLI
+* [Docker](https://docs.docker.com/install/) docker and docker-compose command globally available in CLI
 
 ## 💻 Local Development 
 
