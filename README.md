@@ -24,7 +24,7 @@ Many of our add-ons are in public repositories, however the majority are private
 
 If you're looking to contribute or actively develop on Give, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
 
-Most of us are using Local by Flywheel to develop on WordPress, which makes set up quick and easy.
+Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develop on WordPress, which makes set up quick and easy. If you prefer [Docker](https://www.docker.com/), [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV), or another flavor of local development that's cool too!
 
 ## ✅ Prerequesits
 * [Node.js](https://nodejs.org/en/) as JavaScript engine
@@ -37,16 +37,11 @@ Most of us are using Local by Flywheel to develop on WordPress, which makes set 
 To get started developing on the Give platform you will need to perform the following steps:
 
 1. Create a new WordPress site with `give.test` as the URL
-
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
-
-3. Clone this repository from GitHub into your plugins directory: `https://github.com/impress-org/give.git`
-
-4. Run composer to set up dependancies: `composer install`
-
-5. Run npm install to get the necessary npm packages: `npm install`
-
-6. Run npm run dev to build the style and script files: `npm run dev`
+3. Fork this this repository from GitHub and then clone that into your plugins directory in a new `give` directory
+4. Run `composer install` to set up dependancies
+5. Run `npm install` to get the necessary npm packages
+6. Run `npm run dev` to build the style and script files
 
 7. Activate the plugin in WordPress
 
