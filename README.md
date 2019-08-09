@@ -27,11 +27,12 @@ Most of us are using Local by Flywheel to develop on WordPress, which makes set 
 * Node 10+
 * Composer
 
-### Support
-This repository is not suitable for support. Please don't use GitHub issues for support requests. To get support please use the following channels:
+## 🙋 Support
 
-* [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all users
-* [GiveWP.com Priority Support](https://givewp.com/priority-support/) - exclusively for customers
+This repository is not suitable for WordPress admin or donor support. Please don't use GitHub issues for non-development related support requests. Don't get us wrong, we're more than happy to help you! However, to get the support you need please use the following channels:
+
+* [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users
+* [GiveWP.com Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
 
 ## 💻 Local Development 
 
@@ -51,7 +52,7 @@ To get started developing on the Give platform you will need to perform the foll
 
 That's it. You're now ready to start development.
 
-*NPM Commands*
+**NPM Commands**
 
 Give relies on several npm commands to get you started:
 
@@ -59,7 +60,7 @@ Give relies on several npm commands to get you started:
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
 
-*Development Notes:*
+**Development Notes**
 
 * Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
     ```
