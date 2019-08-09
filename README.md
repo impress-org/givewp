@@ -8,7 +8,14 @@
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/impress-org/give.svg?branch=master)](https://travis-ci.org/impress-org/give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/impress-org/give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) 
 
-Welcome to the GiveWP GitHub repository. This is the code source and the center of active development. Here you can browse the source, look at open issues, and contribute to the project. We recommend all developers follow the GiveWP development blog to stay up to date on the latest features and changes.
+Welcome to the GiveWP GitHub repository. This is the core repository and heart of ecosystem of active development. Here you can browse the source, look at open issues, and contribute to the project. 
+
+Many of our add-ons are in public repositories, however the majority are private. If you have a legitimate need for access, please [reach out to us](https://givewp.com/contact-us/) and we'll be happy to grant you access. As well, we recommend all developers follow the [GiveWP development blog](https://developers.givewp.com) to stay up to date on the latest features and changes. Happy coding!
+ 
+ ## 🙋 Support
+ 
+ This repository is not suitable for WordPress admin or donor support. Please don't use GitHub issues for non-development related support requests. Don't get us wrong, we're more than happy to help you! However, to get the support you need please use the following channels:
+
  
 ## 🌱 Getting Started 
 
@@ -16,23 +23,10 @@ If you're looking to contribute or actively develop on Give, welcome! We're glad
 
 Most of us are using Local by Flywheel to develop on WordPress, which makes set up quick and easy.
 
-### ✅ Minimum Requirements
-
-* WordPress 4.8 or greater
-* PHP version 5.4 or greater
-* MySQL version 5.6 or greater
-* Some payment gateways require fsockopen support (for IPN access)
-* cURL version 5.40 or higher
-* SSL certificate - Required for Stripe to accept on site donations using a credit card. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
-* Node 10+
-* Composer
-
-## 🙋 Support
-
-This repository is not suitable for WordPress admin or donor support. Please don't use GitHub issues for non-development related support requests. Don't get us wrong, we're more than happy to help you! However, to get the support you need please use the following channels:
 
 * [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users
-* [GiveWP.com Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
+* [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
+* [GiveWP Documentation](https://givewp.com/docs/) - for all **admins**. 
 
 ## 💻 Local Development 
 
