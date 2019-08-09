@@ -16,17 +16,15 @@ Many of our add-ons are in public repositories, however the majority are private
  
  This repository is not suitable for WordPress admin or donor support. Please don't use GitHub issues for non-development related support requests. Don't get us wrong, we're more than happy to help you! However, to get the support you need please use the following channels:
 
+* [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users
+* [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
+* [GiveWP Documentation](https://givewp.com/docs/) - for all **admins**. 
  
 ## 🌱 Getting Started 
 
 If you're looking to contribute or actively develop on Give, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
 
 Most of us are using Local by Flywheel to develop on WordPress, which makes set up quick and easy.
-
-
-* [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users
-* [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
-* [GiveWP Documentation](https://givewp.com/docs/) - for all **admins**. 
 
 ## 💻 Local Development 
 
