@@ -46,7 +46,9 @@ To get started developing on the Give platform you will need to perform the foll
 
 5. Run npm install to get the necessary npm packages: `npm install`
 
-6. Activate the plugin in WordPress
+6. Run npm run dev to builds the style and script files: `npm run dev`
+
+7. Activate the plugin in WordPress
 
 That's it. You're now ready to start development.
 
