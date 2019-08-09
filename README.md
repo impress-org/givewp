@@ -1,4 +1,4 @@
-<h1><p align="center">[GiveWP - The #1 WordPress Donation Plugin](https://givewp.com "Give - Democratizing Generosity") :sparkling_heart: </p></h1> 
+<h1><p align="center">GiveWP - The #1 WordPress Donation and Fundraising Plugin 💚</p></h1> 
 
 <p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, Give provides you with a powerful donation platform optimized for online giving.</p>
 
