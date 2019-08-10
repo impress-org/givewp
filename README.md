@@ -26,11 +26,10 @@ If you're looking to contribute or actively develop on Give, welcome! We're glad
 
 Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develop on WordPress, which makes set up quick and easy. If you prefer [Docker](https://www.docker.com/), [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV), or another flavor of local development that's cool too!
 
-## ✅ Prerequesits
+## ✅ Prerequisites
 * [Node.js](https://nodejs.org/en/) as JavaScript engine
 * [NPM](https://docs.npmjs.com/) npm command globally available in CLI
 * [Composer](https://getcomposer.org/) composer command globally available in CLI
-* [Docker](https://docs.docker.com/install/) docker and docker-compose command globally available in CLI
 
 ## 💻 Local Development 
 
@@ -41,9 +40,8 @@ To get started developing on the Give platform you will need to perform the foll
 3. Fork this this repository from GitHub and then clone that into your plugins directory in a new `give` directory
 4. Run `composer install` to set up dependancies
 5. Run `npm install` to get the necessary npm packages
-6. Run `npm run dev` to build the style and script files
-
-7. Activate the plugin in WordPress
+6. Activate the plugin in WordPress
+7. Run `npm run dev` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)  
 
 That's it. You're now ready to start development.
 
