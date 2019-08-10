@@ -1,5 +1,5 @@
 === Give - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, kevinwhoffman, mehul0810
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, mikehale, jason_the_adams
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
@@ -205,8 +205,16 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.5.4: =
+= 2.5.5: =
 
+= 2.5.4: August 7th, 2019 =
+* New: Stripe compatibility solution - There is now a setting under `Donations > Settings > Advanced > Stripe` that allows you select which implementation of Stripe you wish to use. If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the [Stripe SDK](https://github.com/stripe/stripe-php) (Software Development Kit) either through [Composer](http://getcomposer.org/) or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts and the other plugins may be using outdated versions compared to GiveWP's. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialized. If both options do not work please [contact support](https://givewp.com/support). [#4193](https://github.com/impress-org/give/issues/4193)
+* Fix: When using Stripe there was a chance your donors would get a receipt from Stripe and from GiveWP. There is now a setting to set whether you want to send Stripe generated receipt emails or use GiveWP's. We recommend using ours if you're using multiple gateways, but if you're only using Stripe you may enable this new option and disable the default receipts. [#4203](https://github.com/impress-org/give/issues/4203)
+* Fix: There was an issue with converting dollars to cents and back within Stripe free which has been resolved and now has unit tests to ensure no more issues crop up with the functional conversions. [#4200](https://github.com/impress-org/give/issues/4220)
+* Fix: When editing a donor you can now properly remove the "Title" for the donor (such as "Mr", "Mrs", etc). [#4211](https://github.com/impress-org/give/issues/4211)
+* Fix: Ensure the requirement on the state field is removed from hidden state fields for certain countries and regions. [#4201](https://github.com/impress-org/give/issues/4201)
+* Fix: Resolved a compatibility issue with the Tickera plugin's implementation of QR codes within the PDF generator. The issue was with our shared library of TCPDF and now the QR codes display correctly due to a constant change on our end. [#3880](https://github.com/impress-org/give/issues/3880)
+* Tweak: You can now activate any plugin under `Settings > Licenses`. Previously we were requiring the author to only be GiveWP which caused an "this plugin does not have a valid header" error message to annoyingly display. [#4217](https://github.com/impress-org/give/issues/4217)
 
 = 2.5.3: July 30th, 2019 =
 * Fix: The Gutenberg Block for Donation Forms embedding was only displaying the most recent 10 donation forms. Now you can search for additional forms and they will for embedding. [#4137](https://github.com/impress-org/give/issues/4137)
@@ -249,7 +257,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: The Swiss Franc symbol has been updated to "CHF" instead of "Fr." [#4086](https://github.com/impress-org/give/issues/4086)
 * Tweak: Removed the word "nonce" from all front end error messages and updated them to be more user friendly and less technically confusing. [#4129](https://github.com/impress-org/give/issues/4129), [#4031](https://github.com/impress-org/give/issues/4031)
 * Tweak: Changed "Swaziland" to "Eswatini". [#4120](https://github.com/impress-org/give/issues/4120)
-* Optimization: Improved various database option calls and general meta query performance throughout the plugin to speed up queries and reduce server load. [#3359](https://github.com/impress-org/give/issues/3359), [#3382](https://github.com/impress-org/give/issues/3382), [#3383](https://github.com/impress-org/give/issues/3383), [#3872](https://app.zenhub.com/workspace/o/impress-org/give/issues/3872), [#3994](https://app.zenhub.com/workspace/o/impress-org/give/issues/3994), [#4104](https://github.com/impress-org/give/issues/4104)
+* Optimization: Improved various database option calls and general meta query performance throughout the plugin to speed up queries and reduce server load. [#3359](https://github.com/impress-org/give/issues/3359), [#3382](https://github.com/impress-org/give/issues/3382), [#3383](https://github.com/impress-org/give/issues/3383), [#3872](https://github.com/impress-org/give/issues/3872), [#3994](https://github.com/impress-org/give/issues/3994), [#4104](https://github.com/impress-org/give/issues/4104)
 * Refactor: Pre-2.0.0 backward compatibility code has been removed because it has reached end of life for support. [#3033](https://github.com/impress-org/give/issues/3033)
 
 
