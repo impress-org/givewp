@@ -1,6 +1,6 @@
 <h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1> 
 
-<p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving that's both easy-to-use yet flexible for developers to make craft their own unique experiences.</p>
+<p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving that's both easy-to-use for beginners yet flexible for developers to craft their own unique giving experiences.</p>
 
 ---
 
