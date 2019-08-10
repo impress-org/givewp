@@ -1,6 +1,6 @@
 <h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1> 
 
-<p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, Give provides you with a powerful donation platform optimized for online giving.</p>
+<p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving.</p>
 
 ---
 
@@ -22,7 +22,7 @@ Many of our add-ons are in public repositories, however the majority are private
  
 ## 🌱 Getting Started 
 
-If you're looking to contribute or actively develop on Give, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
+If you're looking to contribute or actively develop on GiveWP, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
 
 Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develop on WordPress, which makes set up quick and easy. If you prefer [Docker](https://www.docker.com/), [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV), or another flavor of local development that's cool too!
 
@@ -33,7 +33,7 @@ Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develo
 
 ## 💻 Local Development 
 
-To get started developing on the Give platform you will need to perform the following steps:
+To get started developing on the GiveWP platform you will need to perform the following steps:
 
 1. Create a new WordPress site with `give.test` as the URL
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
