@@ -7,6 +7,51 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
+// Typical SCSS for vertical tabs.
+.give-settings-page {
+	.give-settings-section-content {
+		.give-settings-section-group-menu {
+			float: left;
+			width: 15%;
+
+			ul {
+				margin: 0;
+
+				li {
+					margin: 0;
+
+					a {
+						display: block;
+						padding: 20px;
+						text-decoration: none;
+						color: #222222;
+						font-weight: 600;
+						background-color: #DDDDDD;
+
+						&:hover {
+							background-color: #ebebeb;
+						}
+
+						&.active {
+							background-color: #ffffff;
+							border-left: 4px solid #66BB6A;
+						}
+					}
+				}
+			}
+		}
+
+		.give-settings-section-group-content {
+			float: left;
+			width: 80%;
+			background: #ffffff;
+			padding: 0 30px;
+			border-bottom-right-radius: 8px;
+			border-top-right-radius: 8px;
+		}
+	}
+}
+
 //--------------------------------------------------------------
 // General Settings
 //--------------------------------------------------------------
