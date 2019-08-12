@@ -234,6 +234,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: Updated the list of counties / states in Ireland to be more accurate. [#4145](https://github.com/impress-org/give/issues/4145)
 * Tweak: Polished some minor user workflow issues with the license activation functionality. [#4172](https://github.com/impress-org/give/issues/4172)
 * Fix: Ensured that the notice checking Recurring and Stripe versions would only display for users of Stripe on the particular outdated version and not incorrectly for non-Stripe users. [#4169](https://github.com/impress-org/give/issues/4169)
+* Fix: Resolve SQL injection vulnerability discovered by Tin Duong from Fortinet's FortiGuard Labs. [Read more](https://fortiguard.com/zeroday/FG-VD-19-098) about the patch and the disclosure. Thanks Tin for responsibly disclosing
 
 = 2.5.0: July 10th, 2019 =
 * New: Stripe credit card processing is now available in Give Core for processing one-time (non-recurring) donations! [#4010](https://github.com/impress-org/give/issues/4010), [#4011](https://github.com/impress-org/give/issues/4011), [#4012](https://github.com/impress-org/give/issues/4012), [#4013](https://github.com/impress-org/give/issues/4013), [#4013](https://github.com/impress-org/give/issues/4013), [#4034](https://github.com/impress-org/give/issues/4034), [#4051](https://github.com/impress-org/give/issues/4051), [#4076](https://github.com/impress-org/give/issues/4076), [#4093](https://github.com/impress-org/give/issues/4093)
