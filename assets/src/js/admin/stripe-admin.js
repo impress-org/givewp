@@ -81,27 +81,27 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 	// Bail out, if modal or enable apple/google pay option is null.
 	if ( null === modalOption ) {
-		return;
+		
 	}
 
-	modalCheckout.forEach( function( element, index ) {
-		if ( modalOption.checked ) {
-			modalCheckout[ index ].style.display = 'table-row';
-			ccFormatSettings.style.display = 'none';
-		}
-	} );
+	// modalCheckout.forEach( function( element, index ) {
+	// 	if ( modalOption.checked ) {
+	// 		modalCheckout[ index ].style.display = 'table-row';
+	// 		ccFormatSettings.style.display = 'none';
+	// 	}
+	// } );
 
-	modalOption.addEventListener( 'click', function() {
-		modalCheckout.forEach( function( element, index ) {
-			if ( modalOption.checked ) {
-				modalCheckout[ index ].style.display = 'table-row';
-				ccFormatSettings.style.display = 'none';
-			} else {
-				modalCheckout[ index ].style.display = 'none';
-				ccFormatSettings.style.display = 'table-row';
-			}
-		} );
-	} );
+	// modalOption.addEventListener( 'click', function() {
+	// 	modalCheckout.forEach( function( element, index ) {
+	// 		if ( modalOption.checked ) {
+	// 			modalCheckout[ index ].style.display = 'table-row';
+	// 			ccFormatSettings.style.display = 'none';
+	// 		} else {
+	// 			modalCheckout[ index ].style.display = 'none';
+	// 			ccFormatSettings.style.display = 'table-row';
+	// 		}
+	// 	} );
+	// } );
 } );
 
 /**
