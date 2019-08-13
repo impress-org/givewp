@@ -10,6 +10,8 @@
 // Typical SCSS for vertical tabs.
 .give-settings-page {
 	.give-settings-section-content {
+		background-color: #f4f4f4;
+
 		.give-settings-section-group-menu {
 			float: left;
 			width: 15%;
@@ -24,17 +26,19 @@
 						display: block;
 						padding: 20px;
 						text-decoration: none;
-						color: #222222;
+						color: #333333;
 						font-weight: 600;
-						background-color: #DDDDDD;
+						// background-color: #DDDDDD;
 
 						&:hover {
 							background-color: #ebebeb;
 						}
 
 						&.active {
+							color: #222222;
 							background-color: #ffffff;
 							border-left: 4px solid #66BB6A;
+							color: #333333;
 						}
 					}
 				}
