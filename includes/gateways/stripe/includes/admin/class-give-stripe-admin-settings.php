@@ -92,7 +92,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 */
 		public function register_sections( $sections ) {
-			$sections['stripe-settings'] = __( 'Stripe Settings', 'give' );
+			$sections['stripe-settings'] = __( 'Stripe', 'give' );
 
 			return $sections;
 		}
@@ -138,25 +138,28 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function register_settings( $settings ) {
 
-			switch ( give_get_current_setting_section() ) {
+			$section     = give_get_current_setting_section();
+			$sub_section = give_get_current_setting_subsection();
+			$settings    = array();
+
+			switch ( $section ) {
 
 				case 'stripe-settings':
-					// Stripe Admin Settings - Header
-					$settings = array(
-						array(
-							'id'   => 'give_title_stripe',
-							'type' => 'title',
-						),
+					// Stripe Admin Settings - Header.
+					$settings['general'][] = array(
+						'id'   => 'give_title_stripe_general',
+						'type' => 'title',
 					);
 
 					if ( apply_filters( 'give_stripe_show_connect_button', true ) ) {
 						// Stripe Admin Settings - Configuration Fields.
-						$settings[] = array(
+						$settings['general'][] = array(
 							'name'          => __( 'Stripe Connect', 'give' ),
 							'desc'          => '',
 							'wrapper_class' => 'give-stripe-connect-tr',
 							'id'            => 'stripe_connect',
 							'type'          => 'stripe_connect',
+							'group'         => 'general',
 						);
 					}
 
@@ -169,15 +172,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name'          => __( 'Stripe Webhooks', 'give' ),
 						'desc'          => '',
 						'wrapper_class' => 'give-stripe-webhooks-tr',
 						'id'            => 'stripe_webhooks',
 						'type'          => 'stripe_webhooks',
+						'group'         => 'general',
 					);
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name'       => __( 'Statement Descriptor', 'give' ),
 						'desc'       => __( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
 						'id'         => 'stripe_statement_descriptor',
@@ -187,16 +191,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'placeholder' => get_bloginfo( 'name' ),
 						),
 						'default'    => get_bloginfo( 'name' ),
+						'group'         => 'general',
 					);
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name' => __( 'Collect Billing Details', 'give' ),
 						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
+						'group'         => 'general',
 					);
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name'          => __( 'Credit Card Fields Format', 'give' ),
 						'desc'          => __( 'This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
@@ -207,6 +213,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'single' => __( 'Single Field', 'give' ),
 							'multi'  => __( 'Multi Field', 'give' ),
 						),
+						'group'         => 'general',
+					);
+
+					// Stripe Admin Settings - Footer.
+					$settings['general'][] = array(
+						'id'   => 'give_title_stripe_general',
+						'type' => 'sectionend',
 					);
 
 					/**
@@ -218,23 +231,32 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_checkout_fields', $settings );
 
-					$settings[] = array(
+					// Checkout.
+					$settings['checkout'][] = array(
+						'id'   => 'give_title_stripe_checkout',
+						'type' => 'title',
+					);
+
+
+					$settings['checkout'][] = array(
 						'name' => __( 'Enable Stripe Checkout', 'give' ),
 						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
 						'id'   => 'stripe_checkout_enabled',
 						'type' => 'checkbox',
+						'group'         => 'checkout',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Checkout Heading', 'give' ),
 						'desc'          => __( 'This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website.', 'give' ),
 						'id'            => 'stripe_checkout_name',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => get_bloginfo( 'name' ),
 						'type'          => 'text',
+						'group'         => 'checkout',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Stripe Checkout Image', 'give' ),
 						'desc'          => __( 'This image appears in when the Stripe checkout modal window opens and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
 						'id'            => 'stripe_checkout_image',
@@ -247,33 +269,37 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'text'          => array(
 							'add_upload_file_text' => __( 'Add or Upload Image', 'give' ),
 						),
+						'group'         => 'checkout',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Processing Text', 'give' ),
 						'desc'          => __( 'This text appears briefly after the donor has made a successful donation while Give is confirming the payment with the Stripe API.', 'give' ),
 						'id'            => 'stripe_checkout_processing_text',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => __( 'Donation Processing...', 'give' ),
 						'type'          => 'text',
+						'group'         => 'checkout',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Verify Zip Code', 'give' ),
 						'desc'          => __( 'Specify whether Checkout should validate the billing ZIP code of the donor for added fraud protection.', 'give' ),
 						'id'            => 'stripe_checkout_zip_verify',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => 'on',
 						'type'          => 'checkbox',
+						'group'         => 'checkout',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Remember Me', 'give' ),
 						'desc'          => __( 'Specify whether to include the option to "Remember Me" for future donations.', 'give' ),
 						'id'            => 'stripe_checkout_remember_me',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => 'on',
 						'type'          => 'checkbox',
+						'group'         => 'checkout',
 					);
 
 					/**
@@ -285,7 +311,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
@@ -294,8 +320,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					);
 
 					// Stripe Admin Settings - Footer.
-					$settings[] = array(
-						'id'   => 'give_title_stripe',
+					$settings['checkout'][] = array(
+						'id'   => 'give_title_stripe_checkout',
 						'type' => 'sectionend',
 					);
 					break;
@@ -456,7 +482,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				( $stripe_checkout && 'disabled' === $status ) ||
 				( ! $stripe_checkout && 'enabled' === $status )
 			) {
-				return 'give-hidden';
+				// return 'give-hidden';
 			}
 
 			return '';
