@@ -87,13 +87,13 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			);
 
 			// Output sub-sections.
-			add_action(
-				"{$this->current_setting_page}_subsections_{$this->id}_{$this->current_section}_page",
-				array(
-					$this,
-					'output_subsections',
-				)
-			);
+			// add_action(
+			// 	"{$this->current_setting_page}_subsections_{$this->id}_{$this->current_section}_page",
+			// 	array(
+			// 		$this,
+			// 		'output_subsections',
+			// 	)
+			// );
 
 			// Save hide button by default.
 			$GLOBALS['give_hide_save_button'] = true;
