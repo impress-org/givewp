@@ -16,23 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * This function will check whether any of the Stripe payment method is active or not.
- *
- * @since 2.5.5
- *
- * @return bool
- */
-function give_stripe_is_any_payment_method_active() {
-
-	// Bailout, if any of the Stripe gateway is not active.
-	if ( give_is_gateway_active( substr( 'stripe', 0, 6 ) ) ) {
-		return false;
-	}
-
-	return true;
-}
-
-/**
  * Get Settings for the Stripe account connected via Connect API.
  *
  * @since 2.5.0
