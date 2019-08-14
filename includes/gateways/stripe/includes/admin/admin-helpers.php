@@ -23,7 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function give_stripe_is_any_payment_method_active() {
-	return give_is_gateway_active( substr( 'stripe', 0, 6 ) );
+
+	// Bailout, if any of the Stripe gateway is not active.
+	if ( give_is_gateway_active( substr( 'stripe', 0, 6 ) ) ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
