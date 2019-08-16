@@ -1,4 +1,4 @@
-<h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1> 
+﻿<h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1>
 
 <p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving that's both easy-to-use for beginners yet flexible for developers to craft their own unique giving experiences.</p>
 
@@ -38,7 +38,7 @@ To get started developing on the GiveWP platform you will need to perform the fo
 1. Create a new WordPress site with `give.test` as the URL
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
 3. Fork this this repository from GitHub and then clone that into your plugins directory in a new `give` directory
-4. Run `composer install` to set up dependancies
+4. Run `composer install` to set up dependencies
 5. Run `npm install` to get the necessary npm packages
 6. Activate the plugin in WordPress
 7. Run `npm run dev` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)  
