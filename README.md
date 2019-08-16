@@ -52,7 +52,7 @@ That's it. You're now ready to start development.
 | `npm run watch`      | Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run.  |
 | `npm run dev`      |    Runs a one time build for development. No production files are created. |
 | `npm run production` |  Builds the minified production files for release. |
-| `npm run test` |  Run jest tests. Make sure that your docker container is running before running this command. [Read more](https://github.com/impress-org/give/tree/readme-spice/tests/e2e) |
+| `npm run test` |  Run jest tests. Make sure that your docker container is running before running this command. [Read more](https://github.com/impress-org/give/tree/master/tests/e2e) |
 
 **Development Notes**
 
