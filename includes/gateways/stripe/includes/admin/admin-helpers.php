@@ -16,6 +16,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * This function is used to get a list of slug which are supported by payment gateways.
+ *
+ * @since 2.5.5
+ *
+ * @return array
+ */
+function give_stripe_supported_payment_methods() {
+	return array(
+		'stripe',
+		'stripe_ach',
+		'stripe_ideal',
+		'stripe_google_pay',
+		'stripe_apple_pay',
+	);
+}
+
+/**
  * Get Settings for the Stripe account connected via Connect API.
  *
  * @since 2.5.0
