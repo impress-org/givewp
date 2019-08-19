@@ -33,6 +33,30 @@ function give_stripe_supported_payment_methods() {
 }
 
 /**
+ * This function is used to check whether a payment method supported by Stripe with Give is active or not.
+ *
+ * @since 2.5.5
+ *
+ * @return bool
+ */
+function give_stripe_is_any_payment_method_active() {
+
+	// Get settings.
+	$settings = give_get_settings();
+
+	// Loop through gateways list
+	foreach ( array_keys( $settings['gateways'] ) as $gateway ) {
+
+		// Return true, if even single payment method is active.
+		if ( in_array( $gateway, give_stripe_supported_payment_methods(), true ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Get Settings for the Stripe account connected via Connect API.
  *
  * @since 2.5.0
