@@ -67,7 +67,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
 
 			// Bailout, if any of the Stripe gateway is not active.
-			if ( ! give_is_gateway_active( substr( 'stripe', 0, 6 ) ) ) {
+			if ( ! give_stripe_is_any_payment_method_active() ) {
 				return;
 			}
 
