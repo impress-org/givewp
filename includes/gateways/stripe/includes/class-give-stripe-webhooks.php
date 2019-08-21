@@ -63,8 +63,14 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 				return;
 			}
 
-			// Get the Stripe SDK autoloader.
-			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			// Load Stripe SDK.
+			$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
+
+			if ( 'composer' === $stripe_sdk_compatibility ) {
+				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			} elseif ( 'manual' === $stripe_sdk_compatibility ) {
+				require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
+			}
 
 			// Set App Info, API Key, and API Version.
 			give_stripe_set_app_info();
