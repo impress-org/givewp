@@ -42,7 +42,8 @@ function give_stripe_supported_payment_methods() {
 function give_stripe_is_any_payment_method_active() {
 
 	// Get settings.
-	$gateways = give_get_option( 'gateways', array() );
+	$settings = give_get_settings();
+	$gateways = isset( $settings['gateways'] ) ? $settings['gateways'] : array();
 
 	// Loop through gateways list.
 	foreach ( array_keys( $gateways ) as $gateway ) {
