@@ -31,4 +31,24 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		$this->assertTrue( give_stripe_is_connected() );
 
 	}
+
+	/**
+	 * This unit test function will check whether the supported payment method list for Stripe is changed or not.
+	 *
+	 * @since  2.5.5
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_supported_payment_methods() {
+
+		$supported_payment_methods = give_stripe_supported_payment_methods();
+
+		$this->assertTrue( in_array( 'stripe', $supported_payment_methods, true ) );
+		$this->assertTrue( in_array( 'stripe_ach', $supported_payment_methods, true ) );
+		$this->assertTrue( in_array( 'stripe_ideal', $supported_payment_methods, true ) );
+		$this->assertTrue( in_array( 'stripe_google_pay', $supported_payment_methods, true ) );
+		$this->assertTrue( in_array( 'stripe_apple_pay', $supported_payment_methods, true ) );
+
+	}
 }
