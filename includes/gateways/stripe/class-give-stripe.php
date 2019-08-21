@@ -66,6 +66,9 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
 
+			// Load Stripe Helper files.
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
+
 			// Bailout, if any of the Stripe gateway is not active.
 			if ( ! give_stripe_is_any_payment_method_active() ) {
 				return;
@@ -81,7 +84,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			}
 
 			// Include frontend files.
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-logger.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-invoice.php';
