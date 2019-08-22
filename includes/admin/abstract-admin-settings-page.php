@@ -218,6 +218,12 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 			$section_list = array();
 			foreach ( $sections as $id => $label ) {
+
+				// If the `$label` return array then get title from the array as a label.
+				if ( is_array( $label ) && ! empty( $label['title'] ) ) {
+					$label = $label['title'];
+				}
+
 				/**
 				 * Fire the filter to hide particular section on tab.
 				 *
