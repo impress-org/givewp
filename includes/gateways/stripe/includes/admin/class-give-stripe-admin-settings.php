@@ -144,9 +144,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function register_settings( $settings ) {
 
-			$section     = give_get_current_setting_section();
-			$sub_section = give_get_current_setting_subsection();
-			$settings    = array();
+			$section = give_get_current_setting_section();
 
 			switch ( $section ) {
 
@@ -197,14 +195,26 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'default'    => get_bloginfo( 'name' ),
 					);
 
+					// Stripe Admin Settings - Footer.
 					$settings['general'][] = array(
+						'id'   => 'give_title_stripe_general',
+						'type' => 'sectionend',
+					);
+
+					// Stripe Admin Settings - Header.
+					$settings['credit-card'][] = array(
+						'id'   => 'give_title_stripe_credit_card',
+						'type' => 'title',
+					);
+
+					$settings['credit-card'][] = array(
 						'name' => __( 'Collect Billing Details', 'give' ),
 						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
 					);
 
-					$settings['general'][] = array(
+					$settings['credit-card'][] = array(
 						'name'          => __( 'Credit Card Fields Format', 'give' ),
 						'desc'          => __( 'This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
@@ -218,8 +228,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					);
 
 					// Stripe Admin Settings - Footer.
-					$settings['general'][] = array(
-						'id'   => 'give_title_stripe_general',
+					$settings['credit-card'][] = array(
+						'id'   => 'give_title_stripe_credit_card',
 						'type' => 'sectionend',
 					);
 
