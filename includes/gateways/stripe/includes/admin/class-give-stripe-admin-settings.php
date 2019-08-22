@@ -72,7 +72,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			}
 
 			add_filter( 'give_get_sections_gateways', array( $this, 'register_sections' ) );
-			add_filter( 'give_get_subsections_gateways', array( $this, 'register_subsections' ) );
+			add_filter( 'give_get_groups_stripe-settings', array( $this, 'register_groups' ) );
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
@@ -97,17 +97,23 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			return $sections;
 		}
 
-		public function register_subsections( $sections ) {
+		/**
+		 * Register groups of a section.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function register_groups() {
 
-			$sections = array(
-				'general'         => __( 'General', 'give' ),
-				'credit-card'     => __( 'Credit Card', 'give' ),
-				'checkout'        => __( 'Checkout', 'give' ),
-				'payment-request' => __( 'Apple/Google Pay', 'give' ),
-				'plaid-ach'       => __( 'Plaid', 'give' ),
+			$groups = array(
+				'general'     => __( 'General', 'give' ),
+				'credit-card' => __( 'Credit Card', 'give' ),
+				'checkout'    => __( 'Checkout', 'give' ),
 			);
 
-			return $sections;
+			return apply_filters( 'give_stripe_register_groups', $groups );
 		}
 
 		/**
@@ -159,7 +165,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'wrapper_class' => 'give-stripe-connect-tr',
 							'id'            => 'stripe_connect',
 							'type'          => 'stripe_connect',
-							'group'         => 'general',
 						);
 					}
 
@@ -178,7 +183,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'give-stripe-webhooks-tr',
 						'id'            => 'stripe_webhooks',
 						'type'          => 'stripe_webhooks',
-						'group'         => 'general',
 					);
 
 					$settings['general'][] = array(
@@ -191,7 +195,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'placeholder' => get_bloginfo( 'name' ),
 						),
 						'default'    => get_bloginfo( 'name' ),
-						'group'         => 'general',
 					);
 
 					$settings['general'][] = array(
@@ -199,7 +202,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
-						'group'         => 'general',
 					);
 
 					$settings['general'][] = array(
@@ -213,7 +215,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'single' => __( 'Single Field', 'give' ),
 							'multi'  => __( 'Multi Field', 'give' ),
 						),
-						'group'         => 'general',
 					);
 
 					// Stripe Admin Settings - Footer.
@@ -243,7 +244,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
 						'id'   => 'stripe_checkout_enabled',
 						'type' => 'checkbox',
-						'group'         => 'checkout',
 					);
 
 					$settings['checkout'][] = array(
@@ -253,7 +253,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => get_bloginfo( 'name' ),
 						'type'          => 'text',
-						'group'         => 'checkout',
 					);
 
 					$settings['checkout'][] = array(
@@ -269,7 +268,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'text'          => array(
 							'add_upload_file_text' => __( 'Add or Upload Image', 'give' ),
 						),
-						'group'         => 'checkout',
 					);
 
 					$settings['checkout'][] = array(
@@ -279,7 +277,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => __( 'Donation Processing...', 'give' ),
 						'type'          => 'text',
-						'group'         => 'checkout',
 					);
 
 					$settings['checkout'][] = array(
@@ -289,7 +286,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => 'on',
 						'type'          => 'checkbox',
-						'group'         => 'checkout',
 					);
 
 					$settings['checkout'][] = array(
@@ -299,7 +295,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => 'on',
 						'type'          => 'checkbox',
-						'group'         => 'checkout',
 					);
 
 					/**
