@@ -1049,3 +1049,21 @@ function give_stripe_format_amount( $amount ) {
 
 	return give_stripe_dollars_to_cents( $amount );
 }
+
+/**
+ * This function will help you load Stripe SDK based on the conditions.
+ *
+ * @since 2.6.0
+ *
+ * @return void
+ */
+function give_stripe_load_stripe_sdk() {
+
+	$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
+
+	if ( 'composer' === $stripe_sdk_compatibility ) {
+		require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+	} elseif ( 'manual' === $stripe_sdk_compatibility ) {
+		require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
+	}
+}

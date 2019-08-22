@@ -77,13 +77,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			}
 
 			// Load Stripe SDK.
-			$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
-
-			if ( 'composer' === $stripe_sdk_compatibility ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-			} elseif ( 'manual' === $stripe_sdk_compatibility ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
-			}
+			give_stripe_load_stripe_sdk();
 
 			// Include frontend files.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
