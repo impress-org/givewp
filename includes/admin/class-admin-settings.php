@@ -373,21 +373,31 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			<?php
 		}
 
-
-		public function prepare_settings_field( $value ) {
+		/**
+		 * This function will help you prepare the admin settings field.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @param array  $value       Settings Field Array.
+		 * @param string $option_name Option Name.
+		 *
+		 * @return mixed
+		 */
+		public static function prepare_settings_field( $value, $option_name ) {
 
 			$current_tab = give_get_current_setting_tab();
 
 			// Field Default values.
 			$defaults = array(
-				'id'                  => '',
-				'class'               => '',
-				'css'                 => '',
-				'default'             => '',
-				'desc'                => '',
-				'table_html'          => true,
-				'repeat'              => false,
-				'repeat_btn_title'    => __( 'Add Field', 'give' ),
+				'id'               => '',
+				'class'            => '',
+				'css'              => '',
+				'default'          => '',
+				'desc'             => '',
+				'table_html'       => true,
+				'repeat'           => false,
+				'repeat_btn_title' => __( 'Add Field', 'give' ),
 			);
 
 			// Set title.
