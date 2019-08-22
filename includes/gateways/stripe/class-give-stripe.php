@@ -61,11 +61,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 			// Include admin files.
 			if ( is_admin() ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-helpers.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
+				$this->include_admin_files();
 			}
 
 			// Load files which are necessary for front as well as admin end.
@@ -80,6 +76,34 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			give_stripe_load_stripe_sdk();
 
 			// Include frontend files.
+			$this->include_frontend_files();
+		}
+
+		/**
+		 * This function is used to include admin files.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function include_admin_files() {
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-helpers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
+		}
+
+		/**
+		 * This function will be used to load frontend files.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function include_frontend_files() {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-logger.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-invoice.php';
@@ -92,9 +116,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-filters.php';
-
-			do_action( 'give_stripe_core_init' );
-
 		}
 
 		/**
