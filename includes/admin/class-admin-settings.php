@@ -316,61 +316,85 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
-		 * @todo   : Refactor this function
-		 * @since  1.8
+		 * @todo Refactor this function
 		 *
-		 * @param  array  $options     Opens array to output.
-		 * @param  string $option_name Opens array to output.
+		 * @since  1.8
+		 * @access public
+		 *
+		 * @param array  $sections     Opens array to output.
+		 * @param string $option_name Opens array to output.
 		 *
 		 * @return void
 		 */
 		public static function output_fields( $sections, $option_name = '' ) {
 
-			$groups = array_keys( $sections );
-			?>
-			<div class="give-settings-section-content">
-				<div class="give-settings-section-group-menu">
-					<ul>
-					<?php
-					if ( is_array( $groups ) && count( $groups ) > 0 ) {
-						$count = 1;
-						foreach ( $groups as $group ) {
+			$current_page = give_get_current_setting_page();
+			$current_tab = give_get_current_setting_tab();
+			$current_section     = give_get_current_setting_section();
+			$groups = give_get_settings_groups();
+//			$groups              = array_keys( $sections );
 
-							$active_class = 1 === $count ? 'active' : '';
-
-							echo sprintf(
-								'<li><a class="%1$s" href="#">%2$s</a></li>',
-								$active_class,
-								esc_html( $group )
-							);
-							$count++;
-						}
-					}
-					?>
-				</ul>
-			</div>
-			<div class="give-settings-section-group-content">
-				<?php
-				foreach ( $sections as $group => $fields ) {
-					if ( ! empty( $group ) ) {
-						?>
-						<div id="give-settings-section-group-<?php echo esc_attr( $group ); ?>" class="give-settings-section-group">
+			if ( is_array( $groups ) && count( $groups ) > 0 ) {
+				?>
+				<div class="give-settings-section-content">
+					<div class="give-settings-section-group-menu">
+						<ul>
 							<?php
-							foreach ( $fields as $value ) {
-								if ( ! isset( $value['type'] ) ) {
-									continue;
+							if ( is_array( $groups ) && count( $groups ) > 0 ) {
+								$count = 1;
+								foreach ( $groups as $slug => $group ) {
+
+									$active_class = 1 === $count ? 'active' : '';
+
+									echo sprintf(
+										'<li><a class="%1$s" href="%2$s">%3$s</a></li>',
+										esc_html( $active_class ),
+										esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}#{$slug}" ) ),
+										esc_html( $group )
+									);
+									$count++;
 								}
-								self::prepare_settings_field( $value );
 							}
 							?>
-						</div>
+						</ul>
+					</div>
+					<div class="give-settings-section-group-content">
 						<?php
-					}
-				}
-				?>
+						$count = 1;
+						foreach ( $sections as $group => $fields ) {
+							if ( ! empty( $group ) ) {
+								$hide_class = 1 < $count ? 'give-hidden' : '';
+								?>
+								<div id="give-settings-section-group-<?php echo esc_attr( $group ); ?>" class="give-settings-section-group <?php echo esc_html( $hide_class ); ?>">
+									<?php
+									foreach ( $fields as $value ) {
+										if ( ! isset( $value['type'] ) ) {
+											continue;
+										}
+										self::prepare_settings_field( $value, $option_name );
+									}
+									?>
+								</div>
+								<?php
+							}
+
+							$count++;
+						}
+						?>
+					</div>
 				</div>
-			</div>
-			<?php
+				<?php
+			} else {
+
+				// Loop through each section.
+				foreach ( $sections as $value ) {
+					if ( ! isset( $value['type'] ) ) {
+						continue;
+					}
+					self::prepare_settings_field( $value, $option_name );
+				}
+			}
+
 		}
 
 		/**
