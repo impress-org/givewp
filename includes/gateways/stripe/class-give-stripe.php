@@ -60,10 +60,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function includes() {
 
-			// Include admin files.
-			if ( is_admin() ) {
-				$this->include_admin_files();
-			}
+			// Include files which are necessary to load in admin but not in context of `is_admin`.
+			$this->include_admin_files();
 
 			// Load files which are necessary for front as well as admin end.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
