@@ -17,6 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Give_Stripe' ) ) {
 
+	/**
+	 * Class Give_Stripe
+	 */
 	class Give_Stripe {
 
 		/**
@@ -28,8 +31,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 * @return void
 		 */
 		public function __construct() {
-
-			global $give_stripe;
 
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
 
