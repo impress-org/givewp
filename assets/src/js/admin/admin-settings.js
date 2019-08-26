@@ -296,3 +296,35 @@ jQuery(document).ready(function ($) {
 		preview.val( Give.fn.formatCurrency( '123456.12345', formatterArgs, {} ) );
 	});
 });
+
+// Vertical tabs feature.
+document.addEventListener( 'DOMContentLoaded', () => {
+	const mainContentWrap = document.querySelector( '.give-settings-section-content' );
+	const menuContentWrap = mainContentWrap.querySelector( '.give-settings-section-group-menu' );
+	const menuButtons     = Array.prototype.slice.call( menuContentWrap.querySelectorAll( 'ul li a' ) );
+
+	menuButtons.forEach( ( element ) => {
+		element.addEventListener( 'click', ( e ) => {
+			const selectedGroup = e.target.getAttribute( 'data-group' );
+			const selectedContent = mainContentWrap.querySelector( '#give-settings-section-group-' + selectedGroup );
+			const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
+
+			// Loop through menu button and remove `active` class.
+			menuButtons.forEach( ( element ) => {
+				element.classList.remove( 'active' );
+			});
+
+			// Loop through content sections and add `give-hidden` class.
+			allContent.forEach( ( contentElement ) => {
+				contentElement.classList.add( 'give-hidden' );
+			});
+
+
+			// Add `active` class to menu buttons of selected element.
+			e.target.classList.add( 'active' );
+
+			// Remove `give-hidden` class from content section of selected element.
+			selectedContent.classList.remove( 'give-hidden' );
+		});
+	});
+});
