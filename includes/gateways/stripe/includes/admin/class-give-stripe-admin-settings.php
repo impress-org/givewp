@@ -329,6 +329,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'id'   => 'give_title_stripe_checkout',
 						'type' => 'sectionend',
 					);
+
+					/**
+					 * This filter is used to add setting fields for additional groups.
+					 *
+					 * @since 2.6.0
+					 */
+					$settings = apply_filters( 'give_stripe_add_additional_group_fields', $settings );
+
 					break;
 			} // End switch().
 
