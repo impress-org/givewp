@@ -146,15 +146,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						break;
 
 					case 'payment_intent.payment_failed':
-							$intent      = $event->data->object;
-							$donation_id = give_get_purchase_id_by_transaction_id( $intent->id );
-
-							// Update payment status to donation.
-							give_update_payment_status( $donation_id, 'failed' );
-
-							// Insert donation note to inform admin that charge succeeded.
-							give_insert_payment_note( $donation_id, __( 'Charge failed in Stripe.', 'give' ) );
-
+						$this->process_payment_intent_failed( $event );
 						break;
 
 					case 'charge.refunded':
@@ -221,6 +213,36 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			 * @since 2.5.5
 			 */
 			do_action( 'give_stripe_process_payment_intent_succeeded', $event );
+		}
+
+		/**
+		 * This function will process `payment_intent.failed` webhook event.
+		 *
+		 * @param \Stripe\Event $event Stripe Event.
+		 *
+		 * @since  2.5.5
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function process_payment_intent_failed( $event ) {
+
+			// Get Payment Intent data from Event.
+			$intent      = $event->data->object;
+			$donation_id = give_get_purchase_id_by_transaction_id( $intent->id );
+
+			// Update payment status to donation.
+			give_update_payment_status( $donation_id, 'failed' );
+
+			// Insert donation note to inform admin that charge succeeded.
+			give_insert_payment_note( $donation_id, __( 'Charge failed in Stripe.', 'give' ) );
+
+			/**
+			 * This action hook will be used to extend processing the payment intent failed event.
+			 *
+			 * @since 2.5.5
+			 */
+			do_action( 'give_stripe_process_payment_intent_failed', $event );
 		}
 	}
 }
