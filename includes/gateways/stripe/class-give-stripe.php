@@ -17,6 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Give_Stripe' ) ) {
 
+	/**
+	 * Class Give_Stripe
+	 */
 	class Give_Stripe {
 
 		/**
@@ -28,8 +31,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 * @return void
 		 */
 		public function __construct() {
-
-			global $give_stripe;
 
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
 
@@ -59,23 +60,53 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function includes() {
 
-			// Load Stripe SDK.
-			$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
+			// Include files which are necessary to load in admin but not in context of `is_admin`.
+			$this->include_admin_files();
 
-			if ( 'composer' === $stripe_sdk_compatibility ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-			} elseif ( 'manual' === $stripe_sdk_compatibility ) {
-				require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
+			// Load files which are necessary for front as well as admin end.
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
+
+			// Bailout, if any of the Stripe gateway is not active.
+			if ( ! give_stripe_is_any_payment_method_active() ) {
+				return;
 			}
 
-			// Include admin files.
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
+			// Load Stripe SDK.
+			give_stripe_load_stripe_sdk();
 
 			// Include frontend files.
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
+			$this->include_frontend_files();
+		}
+
+		/**
+		 * This function is used to include admin files.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function include_admin_files() {
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-helpers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/admin-filters.php';
+
+			// Load these files when accessed from admin.
+			if ( is_admin() ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
+			}
+		}
+
+		/**
+		 * This function will be used to load frontend files.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function include_frontend_files() {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-logger.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-invoice.php';
@@ -88,7 +119,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-filters.php';
-
 		}
 
 		/**

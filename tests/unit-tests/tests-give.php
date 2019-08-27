@@ -184,6 +184,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
-
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php' );
 	}
 }

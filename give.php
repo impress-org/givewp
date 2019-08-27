@@ -575,18 +575,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
-
-			// This conditional check will add backward compatibility to older Stripe versions (i.e. < 2.2.0) when used with Give 2.5.0.
-			if (
-				! defined( 'GIVE_STRIPE_VERSION' ) ||
-				(
-					defined( 'GIVE_STRIPE_VERSION' ) &&
-					version_compare( GIVE_STRIPE_VERSION, '2.2.0', '>=' )
-				)
-			) {
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
-			}
-
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notifications.php';
@@ -619,6 +607,17 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
+
+			// This conditional check will add backward compatibility to older Stripe versions (i.e. < 2.2.0) when used with Give 2.5.0.
+			if (
+				! defined( 'GIVE_STRIPE_VERSION' ) ||
+				(
+					defined( 'GIVE_STRIPE_VERSION' ) &&
+					version_compare( GIVE_STRIPE_VERSION, '2.2.0', '>=' )
+				)
+			) {
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
+			}
 
 		}
 

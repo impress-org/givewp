@@ -63,8 +63,8 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 				return;
 			}
 
-			// Get the Stripe SDK autoloader.
-			require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+			// Load Stripe SDK.
+			give_stripe_load_stripe_sdk();
 
 			// Set App Info, API Key, and API Version.
 			give_stripe_set_app_info();
