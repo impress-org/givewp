@@ -1042,8 +1042,28 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return bool
 		 */
 		public static function save_fields( $options, $option_name = '' ) {
-			if ( empty( $_POST ) ) {
+
+			// Fetch form posted super global data.
+			$post_data = give_clean( $_POST );
+
+			// Bailout, if posted data doesn't exists.
+			if ( empty( $post_data ) ) {
 				return false;
+			}
+
+			$new_options      = array();
+			$options_keys     = array_keys( $options );
+			$is_vertical_tabs = is_array( $options_keys ) && count( $options_keys ) > 0 ? ctype_alnum( $options_keys[0] ) : false;
+
+			if ( $is_vertical_tabs ) {
+
+				// Loop through each vertical tabs related field options to destructure into single array.
+				foreach( $options as $option ) {
+					$new_options = array_merge( $new_options, $option );
+				}
+
+				// Assign new field options.
+				$options = $new_options;
 			}
 
 			// Options to update will be stored here and saved later.
