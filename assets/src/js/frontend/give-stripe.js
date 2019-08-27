@@ -2,14 +2,11 @@
  * Give - Stripe Gateway Add-on JS
  */
 
-let stripe = Stripe( give_stripe_vars.publishable_key, {
-	betas: [ 'payment_intent_beta_3' ],
-} );
+let stripe = Stripe( give_stripe_vars.publishable_key );
 
 if ( give_stripe_vars.stripe_account_id ) {
 	stripe = Stripe( give_stripe_vars.publishable_key, {
-		stripeAccount: give_stripe_vars.stripe_account_id,
-		betas: [ 'payment_intent_beta_3' ],
+		stripeAccount: give_stripe_vars.stripe_account_id
 	} );
 }
 
