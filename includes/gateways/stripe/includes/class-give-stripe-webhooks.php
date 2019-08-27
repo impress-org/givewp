@@ -108,6 +108,8 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 		 * @access public
 		 *
 		 * @param \Stripe\Event $event_json Stripe Event.
+		 *
+		 * @return bool|string
 		 */
 		public function process( $event_json ) {
 
