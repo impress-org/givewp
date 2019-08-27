@@ -150,22 +150,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 						break;
 
 					case 'charge.refunded':
-						global $wpdb;
-
-						$charge = $event->data->object;
-
-						if ( $charge->refunded ) {
-
-							$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
-
-							if ( $payment_id ) {
-
-								give_update_payment_status( $payment_id, 'refunded' );
-								give_insert_payment_note( $payment_id, __( 'Charge refunded in Stripe.', 'give' ) );
-
-							}
-						}
-
+						$this->process_charge_refunded( $event );
 						break;
 				}
 
@@ -243,6 +228,41 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			 * @since 2.5.5
 			 */
 			do_action( 'give_stripe_process_payment_intent_failed', $event );
+		}
+
+		/**
+		 * This function will process `charge.refunded` webhook event.
+		 *
+		 * @param \Stripe\Event $event Stripe Event.
+		 *
+		 * @since  2.5.5
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function process_charge_refunded( $event ) {
+			global $wpdb;
+
+			$charge = $event->data->object;
+
+			if ( $charge->refunded ) {
+
+				$payment_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $charge->id ) );
+
+				if ( $payment_id ) {
+
+					give_update_payment_status( $payment_id, 'refunded' );
+					give_insert_payment_note( $payment_id, __( 'Charge refunded in Stripe.', 'give' ) );
+
+				}
+			}
+
+			/**
+			 * This action hook will be used to extend processing the charge refunded event.
+			 *
+			 * @since 2.5.5
+			 */
+			do_action( 'give_stripe_process_charge_refunded', $event );
 		}
 	}
 }
