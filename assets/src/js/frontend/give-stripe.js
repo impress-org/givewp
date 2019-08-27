@@ -71,18 +71,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		// Mount and Un-Mount Stripe CC Fields on gateway load.
 		jQuery( document ).on( 'give_gateway_loaded', function( event, xhr, settings ) {
+
 			// Un-mount card elements when stripe is not the selected gateway.
 			giveStripeUnmountCardElements( globalCardElements[ idPrefix ] );
 
-			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe' ) {
-				// Disable the donate button of the form.
-				donateButton.setAttribute( 'disabled', 'disabled' );
-
+			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway').value === 'stripe' ) {
 				// Mount card elements when stripe is the selected gateway.
 				giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
-
-				// Enable the donate button of the form after successful mounting of CC fields.
-				donateButton.removeAttribute( 'disabled' );
 			}
 
 			// Convert normal fields to float labels.
