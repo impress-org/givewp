@@ -195,6 +195,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'default'    => get_bloginfo( 'name' ),
 					);
 
+					/**
+					 * This filter hook is used to add fields after Stripe General fields.
+					 *
+					 * @since 2.6.0
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
+
 					// Stripe Admin Settings - Footer.
 					$settings['general'][] = array(
 						'id'   => 'give_title_stripe_general',
@@ -206,6 +215,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'id'   => 'give_title_stripe_credit_card',
 						'type' => 'title',
 					);
+
+					/**
+					 * This filter hook is used to add fields before Stripe Credit Card fields.
+					 *
+					 * @since 2.6.0
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
 
 					$settings['credit-card'][] = array(
 						'name' => __( 'Collect Billing Details', 'give' ),
@@ -226,6 +244,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'multi'  => __( 'Multi Field', 'give' ),
 						),
 					);
+
+					/**
+					 * This filter hook is used to add fields after Stripe Credit Card fields.
+					 *
+					 * @since 2.6.0
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
 
 					// Stripe Admin Settings - Footer.
 					$settings['credit-card'][] = array(
