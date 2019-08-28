@@ -101,30 +101,48 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					// Record the pending payment in Give.
 					$donation_id = give_insert_payment( $payment_data );
 
+					// Return error, if donation id doesn't exists.
+					if ( ! $donation_id ) {
+						give_record_gateway_error(
+							__( 'Donation creating error', 'give' ),
+							sprintf(
+							/* translators: %s Donation Data */
+								__( 'Unable to create a pending donation. Details: %s', 'give' ),
+								wp_json_encode( $donation_data )
+							)
+						);
+						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while creating a pending donation.', 'give' ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						return;
+					}
+
 					// Assign required data to array of donation data for future reference.
 					$donation_data['donation_id'] = $donation_id;
 					$donation_data['description'] = $donation_summary;
 					$donation_data['customer_id'] = $stripe_customer_id;
-
-					// Create Checkout Session.
-					$session = $this->create_checkout_session( $donation_data );
 
 					// Save Stripe Customer ID to Donation note, Donor and Donation for future reference.
 					give_insert_payment_note( $donation_id, 'Stripe Customer ID: ' . $stripe_customer_id );
 					$this->save_stripe_customer_id( $stripe_customer_id, $donation_id );
 					give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
 
-					// Save donation summary to donation.
-					give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
-
-					// Redirect to show loading area to trigger redirectToCheckout client side.
-					wp_safe_redirect( add_query_arg(
-						array(
-							'action'  => 'checkout_processing',
-							'session' => $session->id
-						),
-						site_url()
-					) );
+					if ( 'modal' === give_stripe_get_checkout_type() ) {
+						$this->process_legacy_checkout( $donation_id, $donation_data );
+					} elseif ( 'redirect' === give_stripe_get_checkout_type() ) {
+						$this->process_checkout( $donation_id, $donation_data );
+					} else {
+						give_record_gateway_error(
+							__( 'Invalid Checkout Error', 'give' ),
+							sprintf(
+								/* translators: %s Donation Data */
+								__( 'Invalid Checkout type passed to process the donation. Details: %s', 'give' ),
+								wp_json_encode( $donation_data )
+							)
+						);
+						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						return;
+					}
 
 					// Don't execute code further.
 					give_die();
@@ -139,18 +157,43 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @since  2.6.0
 		 * @access public
 		 */
-		public function process_legacy_checkout() {
+		public function process_legacy_checkout( $donation_id, $donation_data ) {
 
 		}
 
 		/**
 		 * This function is used to process donations via Stripe Checkout 2.0.
 		 *
+		 * @param int   $donation_id   Donation ID.
+		 * @param array $donation_data List of submitted data for donation processing.
+		 *
 		 * @since  2.6.0
 		 * @access public
+		 *
+		 * @return void
 		 */
-		public function process_checkout() {
+		public function process_checkout( $donation_id, $donation_data ) {
 
+			$donation_summary = ! empty( $donation_data['description'] ) ? $donation_data['description'] : '';
+
+			// Create Checkout Session.
+			$session    = $this->create_checkout_session( $donation_data );
+			$session_id = ! empty( $session->id ) ? $session->id : false;
+
+			// Save donation summary to donation.
+			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
+
+			// Redirect to show loading area to trigger redirectToCheckout client side.
+			wp_safe_redirect( add_query_arg(
+				array(
+					'action'  => 'checkout_processing',
+					'session' => $session_id,
+				),
+				site_url()
+			) );
+
+			// Don't execute code further.
+			give_die();
 		}
 
 		/**
