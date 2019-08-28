@@ -204,6 +204,17 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
+					$settings['general'][] = array(
+						'name' => __( 'Receipt Emails', 'give' ),
+						'desc' => sprintf(
+							/* translators: 1. GiveWP Support URL */
+							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
+							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
+						),
+						'id'   => 'stripe_receipt_emails',
+						'type' => 'checkbox',
+					);
+
 					// Stripe Admin Settings - Footer.
 					$settings['general'][] = array(
 						'id'   => 'give_title_stripe_general',
@@ -434,17 +445,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'manual'   => __( 'Manual Initialization', 'give' ),
 						),
 						'default' => 'composer',
-					);
-
-					$settings[] = array(
-						'name' => __( 'Stripe Receipt Emails', 'give' ),
-						'desc' => sprintf(
-							/* translators: 1. GiveWP Support URL */
-							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
-							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
-						),
-						'id'   => 'stripe_receipt_emails',
-						'type' => 'checkbox',
 					);
 
 					$settings[] = array(
