@@ -215,6 +215,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type' => 'checkbox',
 					);
 
+					$settings['general'][] = array(
+						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'id'    => 'display_settings_general_docs_link',
+						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'type'  => 'give_docs_link',
+					);
+
 					// Stripe Admin Settings - Footer.
 					$settings['general'][] = array(
 						'id'   => 'give_title_stripe_general',
@@ -264,6 +272,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
+
+					$settings['credit-card'][] = array(
+						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'id'    => 'display_settings_credit_card_docs_link',
+						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'type'  => 'give_docs_link',
+					);
 
 					// Stripe Admin Settings - Footer.
 					$settings['credit-card'][] = array(
@@ -362,7 +378,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = array(
 						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
-						'id'    => 'display_settings_docs_link',
+						'id'    => 'display_settings_checkout_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
 						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
