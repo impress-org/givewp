@@ -103,8 +103,15 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function register_gateway( $gateways ) {
 
+			// Stripe - On page credit card.
 			$gateways['stripe'] = array(
 				'admin_label'    => __( 'Stripe - Credit Card', 'give' ),
+				'checkout_label' => __( 'Credit Card', 'give' ),
+			);
+
+			// Stripe - Off page credit card (also known as Checkout).
+			$gateways['stripe_checkout'] = array(
+				'admin_label'    => __( 'Stripe - Checkout', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
 			);
 
