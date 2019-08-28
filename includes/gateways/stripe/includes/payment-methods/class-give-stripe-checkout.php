@@ -134,6 +134,26 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		}
 
 		/**
+		 * This function is used to process donations via legacy Stripe Checkout which will be deprecated soon.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 */
+		public function process_legacy_checkout() {
+
+		}
+
+		/**
+		 * This function is used to process donations via Stripe Checkout 2.0.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 */
+		public function process_checkout() {
+
+		}
+
+		/**
 		 * Redirect to Checkout.
 		 *
 		 * @since  2.6.0
