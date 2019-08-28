@@ -193,6 +193,21 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Record the pending payment in Give.
 					$donation_id = give_insert_payment( $payment_data );
 
+					// Return error, if donation id doesn't exists.
+					if ( ! $donation_id ) {
+						give_record_gateway_error(
+							__( 'Donation creating error', 'give' ),
+							sprintf(
+								/* translators: %s Donation Data */
+								__( 'Unable to create a pending donation. Details: %s', 'give' ),
+								wp_json_encode( $donation_data )
+							)
+						);
+						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while creating a pending donation.', 'give' ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						return false;
+					}
+
 					// Assign required data to array of donation data for future reference.
 					$donation_data['donation_id'] = $donation_id;
 					$donation_data['description'] = $donation_summary;

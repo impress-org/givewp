@@ -386,10 +386,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
 					$settings[] = array(
-						'name'    => __( 'Stripe SDK Incompatibility', 'give' ),
+						'name'    => __( 'Stripe SDK Compatibility', 'give' ),
 						'desc'    => sprintf(
 							/* translators: 1. GiveWP Support URL */
-							__( 'If you are using another plugin that uses Stripe to accept payment there is a chance that it may include the Stripe SDK (Software Development Kit) either through composer or manually. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend Manual Initialization. If both options do not work please <a href="%1$s" target="_blank">contact support</a>.', 'give' ),
+							__( 'If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href="%1$s" target="_blank">Stripe SDK</a> (Software Development Kit) either through <a href="%2$s" target="_blank">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href="%3$s" target="_blank">contact support</a>.', 'give' ),
+							esc_url_raw( 'https://github.com/stripe/stripe-php' ),
+							esc_url_raw( 'http://getcomposer.org/' ),
 							esc_url_raw( 'https://givewp.com/support' )
 						),
 						'id'      => 'stripe_sdk_incompatibility',
@@ -617,7 +619,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							echo sprintf(
 								/* translators: 1. Documentation on webhook setup. */
 								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
-								esc_url_raw( 'https://givewp.com/documentation/add-ons/recurring-donations/supported-payment-gateways/stripe/ ' )
+								esc_url_raw( 'http://docs.givewp.com/stripe-webhooks ' )
 							);
 							?>
 						</p>
