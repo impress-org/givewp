@@ -154,10 +154,23 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * This function is used to process donations via legacy Stripe Checkout which will be deprecated soon.
 		 *
+		 * @param int   $donation_id   Donation ID.
+		 * @param array $donation_data List of submitted data for donation processing.
+		 *
 		 * @since  2.6.0
 		 * @access public
+		 *
+		 * @return void
 		 */
 		public function process_legacy_checkout( $donation_id, $donation_data ) {
+
+			$stripe_customer_id = ! empty( $donation_data['customer_id'] ) ? $donation_data['customer_id'] : '';
+
+			// Process charge w/ support for preapproval.
+			$charge = $this->process_charge( $donation_data, $stripe_customer_id );
+
+			// Verify the Stripe payment.
+			$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
 
 		}
 
