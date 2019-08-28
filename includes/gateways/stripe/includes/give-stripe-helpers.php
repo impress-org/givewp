@@ -1198,3 +1198,16 @@ function give_stripe_format_amount( $amount ) {
 
 	return give_stripe_dollars_to_cents( $amount );
 }
+
+/**
+ * This function is used to return the checkout type.
+ *
+ * Note: This function is for internal purposes only and will get deprecated with legacy Stripe Checkout.
+ *
+ * @since 2.6.0
+ *
+ * @return string
+ */
+function give_stripe_get_checkout_type() {
+	return give_get_option( 'stripe_checkout_type', 'modal' );
+}
