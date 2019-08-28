@@ -277,10 +277,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 
 					$settings['checkout'][] = array(
-						'name' => __( 'Enable Stripe Checkout', 'give' ),
-						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
-						'id'   => 'stripe_checkout_enabled',
-						'type' => 'checkbox',
+						'name'          => __( 'Checkout Type', 'give' ),
+						'desc'          => __( 'This option will enable you to select from the types of Stripe Checkout methods available for processing donation. Note: Modal option is the legacy Stripe Checkout which will get discontinued soon.', 'give' ),
+						'id'            => 'stripe_checkout_type',
+						'wrapper_class' => 'stripe-checkout-type',
+						'type'          => 'radio_inline',
+						'default'       => 'modal',
+						'options'       => array(
+							'modal'    => __( 'Modal', 'give' ),
+							'redirect' => __( 'Redirect', 'give' ),
+						),
 					);
 
 					$settings['checkout'][] = array(
