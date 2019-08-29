@@ -71,8 +71,8 @@ function give_stripe_frontend_scripts() {
 		'preferred_locale'             => give_stripe_get_preferred_locale(),
 	);
 
-	// Is Stripe's checkout enabled?
-	if ( give_stripe_is_checkout_enabled() ) {
+	// Load legacy Stripe checkout when the checkout type is `modal`.
+	if ( 'modal' === give_stripe_get_checkout_type() ) {
 
 		// Stripe checkout js.
 		Give_Scripts::register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION );
