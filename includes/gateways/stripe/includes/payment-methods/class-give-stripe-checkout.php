@@ -80,6 +80,9 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
 				$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $payment_method );
 				$stripe_customer_id   = $give_stripe_customer->get_id();
+				$payment_method       = ! empty( $give_stripe_customer->attached_payment_method ) ?
+					$give_stripe_customer->attached_payment_method->id :
+					$payment_method;
 
 				// We have a Stripe customer, charge them.
 				if ( $stripe_customer_id ) {
@@ -188,7 +191,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
 			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
-			$source_id   = ! empty( $donation_data['source_id'] ) ? $donation_data['source_id'] : 0;
 			$description = ! empty( $donation_data['description'] ) ? $donation_data['description'] : false;
 
 			// Format the donation amount as required by Stripe.
@@ -197,11 +199,11 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			// Prepare charge arguments.
 			$charge_args = array(
 				'amount'               => $amount,
+				'customer'             => $stripe_customer_id,
 				'currency'             => give_get_currency( $form_id ),
 				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
 				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
 				'metadata'             => $this->prepare_metadata( $donation_id ),
-				'source'               => $source_id,
 			);
 
 			// Process the charge.
