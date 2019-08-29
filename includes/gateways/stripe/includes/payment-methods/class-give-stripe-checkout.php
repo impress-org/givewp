@@ -41,7 +41,11 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			// Remove CC fieldset.
 			add_action( 'give_stripe_checkout_cc_form', '__return_false' );
-			add_action( 'wp_footer', array( $this, 'redirect_to_checkout' ) );
+
+			// Load the `redirect_to_checkout` function only when `redirect` is set as checkout type.
+			if ( 'redirect' === give_stripe_get_checkout_type() ) {
+				add_action('wp_footer', array($this, 'redirect_to_checkout'));
+			}
 
 		}
 
