@@ -74,10 +74,11 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				$form_id          = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
 				$price_id         = ! empty( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : 0;
 				$donor_email      = ! empty( $donation_data['post_data']['give_email'] ) ? $donation_data['post_data']['give_email'] : 0;
+				$payment_method   = ! empty( $donation_data['post_data']['give_stripe_payment_method'] ) ? $donation_data['post_data']['give_stripe_payment_method'] : 0;
 				$donation_summary = give_payment_gateway_donation_summary( $donation_data, false );
 
 				// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
-				$give_stripe_customer = new Give_Stripe_Customer( $donor_email );
+				$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $payment_method );
 				$stripe_customer_id   = $give_stripe_customer->get_id();
 
 				// We have a Stripe customer, charge them.
@@ -120,6 +121,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					$donation_data['donation_id'] = $donation_id;
 					$donation_data['description'] = $donation_summary;
 					$donation_data['customer_id'] = $stripe_customer_id;
+					$donation_data['source_id']   = $payment_method;
 
 					// Save Stripe Customer ID to Donation note, Donor and Donation for future reference.
 					give_insert_payment_note( $donation_id, 'Stripe Customer ID: ' . $stripe_customer_id );
