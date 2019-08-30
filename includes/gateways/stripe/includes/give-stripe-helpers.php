@@ -572,7 +572,7 @@ function give_stripe_get_application_fee_percentage() {
  * @return int
  */
 function give_stripe_get_application_fee_amount( $amount ) {
-	return $amount * give_stripe_get_application_fee_percentage() / 100;
+	return round( $amount * give_stripe_get_application_fee_percentage() / 100, 0 );
 }
 
 /**
