@@ -321,7 +321,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				$donation_id      = ! empty( $data['donation_id'] ) ? intval( $data['donation_id'] ) : 0;
 
 				// Format the donation amount as required by Stripe.
-				$amount = give_stripeformat_amount( $data['price'] );
+				$amount = give_stripe_format_amount( $data['price'] );
 
 				$session_args = array(
 					'customer'             => $data['customer_id'],
