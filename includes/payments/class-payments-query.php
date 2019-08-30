@@ -544,7 +544,7 @@ class Give_Payments_Query extends Give_Stats {
 
 			$args = array(
 				'key'   => '_give_payment_donor_id',
-				'value' => absint( $donor_id ),
+				'value' => $donor_id ?: -1,
 			);
 		} elseif ( is_email( $this->args['user'] ) ) {
 			$args = array(
