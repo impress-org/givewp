@@ -235,6 +235,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		public function process_checkout( $donation_id, $donation_data ) {
 
 			$donation_summary = ! empty( $donation_data['description'] ) ? $donation_data['description'] : '';
+			$redirect_to_url  = ! empty( $donation_data['post_data']['give-current-url'] ) ? $donation_data['post_data']['give-current-url'] : site_url();
 
 			// Create Checkout Session.
 			$session    = $this->create_checkout_session( $donation_data );
@@ -249,7 +250,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					'action'  => 'checkout_processing',
 					'session' => $session_id,
 				),
-				site_url()
+				$redirect_to_url
 			) );
 
 			// Don't execute code further.
