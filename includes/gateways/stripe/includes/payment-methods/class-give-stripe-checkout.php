@@ -309,7 +309,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @since  2.6.0
 		 * @access public
 		 *
-		 * @return \Checkout\Session|bool
+		 * @return \Stripe\Checkout\Session|bool
 		 */
 		public function create_checkout_session( $data ) {
 
