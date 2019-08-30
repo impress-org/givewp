@@ -319,34 +319,40 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				$form_name = ! empty( $data['post_data']['give-form-title'] ) ? $data['post_data']['give-form-title'] : false;
 				$amount    = ! empty( $data['post_data']['give-amount'] ) ? $data['post_data']['give-amount'] : 0;
 
-				$session = \Stripe\Checkout\Session::create(
+				$session_args = array(
+					'customer'             => $data['customer_id'],
+					'client_reference_id'  => $data['purchase_key'],
+					'payment_method_types' => array( 'card' ),
+					'line_items'           => array(
+						array(
+							'name'        => $form_name,
+							'description' => $data['description'],
+							'images'      => [ get_the_post_thumbnail( $form_id ) ],
+							'amount'      => give_stripe_dollars_to_cents( $amount ),
+							'currency'    => give_get_currency( $form_id ),
+							'quantity'    => 1,
+						),
+					),
+					'submit_type'          => 'donate',
+					'success_url'          => give_get_success_page_uri(),
+					'cancel_url'           => give_get_failed_transaction_uri(),
+				);
+
+				// If featured image exists, then add it to checkout session.
+				if ( ! empty( get_the_post_thumbnail( $form_id ) ) ) {
+					$session_args['line_items']['images'] = [get_the_post_thumbnail($form_id)];
+				}
+
 				/**
 				 * This filter will be used to modify create checkout arguments.
 				 *
 				 * @since 2.5.1
 				 */
-					apply_filters(
-						'give_stripe_create_checkout_session_args',
-						array(
-							// 'customer_email'       => $data['user_email'],
-							'customer'             => $data['customer_id'],
-							'client_reference_id'  => $data['purchase_key'],
-							'payment_method_types' => array( 'card' ),
-							'line_items'           => array(
-								array(
-									'name'        => $form_name,
-									'description' => $data['description'],
-									'images'      => [ get_the_post_thumbnail( $form_id ) ],
-									'amount'      => give_stripe_dollars_to_cents( $amount ),
-									'currency'    => give_get_currency( $form_id ),
-									'quantity'    => 1,
-								),
-							),
-							'submit_type'          => 'donate',
-							'success_url'          => give_get_success_page_uri(),
-							'cancel_url'           => give_get_failed_transaction_uri(),
-						)
-					),
+				$session_args = apply_filters( 'give_stripe_create_checkout_session_args', $session_args );
+
+				// Process Checkout session.
+				$session = \Stripe\Checkout\Session::create(
+					$session_args,
 					give_stripe_get_connected_account_options()
 				);
 
