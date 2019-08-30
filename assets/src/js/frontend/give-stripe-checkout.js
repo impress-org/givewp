@@ -154,7 +154,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			const selectedGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 
 			// If Stripe Checkout is enabled, then restrict default form submission.
-			if ( 'stripe' === selectedGateway ) {
+			if ( 'stripe_checkout' === selectedGateway ) {
 				evt.preventDefault();
 
 				const donationAmount = form_element.querySelector( '.give-final-total-amount' ).getAttribute( 'data-total' );
