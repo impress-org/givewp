@@ -327,7 +327,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 						array(
 							'name'        => $form_name,
 							'description' => $data['description'],
-							'images'      => [ get_the_post_thumbnail( $form_id ) ],
 							'amount'      => give_stripe_dollars_to_cents( $amount ),
 							'currency'    => give_get_currency( $form_id ),
 							'quantity'    => 1,
