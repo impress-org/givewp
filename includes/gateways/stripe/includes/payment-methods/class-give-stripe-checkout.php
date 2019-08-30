@@ -315,23 +315,35 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			try {
 
-				$form_id   = ! empty( $data['post_data']['give-form-id'] ) ? intval( $data['post_data']['give-form-id'] ) : 0;
-				$form_name = ! empty( $data['post_data']['give-form-title'] ) ? $data['post_data']['give-form-title'] : false;
-				$amount    = ! empty( $data['post_data']['give-amount'] ) ? $data['post_data']['give-amount'] : 0;
+				$form_id          = ! empty( $data['post_data']['give-form-id'] ) ? intval( $data['post_data']['give-form-id'] ) : 0;
+				$form_name        = ! empty( $data['post_data']['give-form-title'] ) ? $data['post_data']['give-form-title'] : false;
+				$donation_summary = ! empty( $data['description'] ) ? $data['description'] : 0;
+				$donation_id      = ! empty( $data['donation_id'] ) ? intval( $data['donation_id'] ) : 0;
+
+				// Format the donation amount as required by Stripe.
+				$amount = give_stripeformat_amount( $data['price'] );
 
 				$session_args = array(
 					'customer'             => $data['customer_id'],
 					'client_reference_id'  => $data['purchase_key'],
 					'payment_method_types' => array( 'card' ),
+					'mode'                 => 'payment',
 					'line_items'           => array(
 						array(
 							'name'        => $form_name,
 							'description' => $data['description'],
-							'amount'      => give_stripe_dollars_to_cents( $amount ),
+							'amount'      => $amount,
 							'currency'    => give_get_currency( $form_id ),
 							'quantity'    => 1,
 						),
 					),
+					'payment_intent_data'  => [
+						'application_fee_amount' => give_stripe_get_application_fee_amount( $amount ),
+						'capture_method'         => 'automatic',
+						'description'            => $donation_summary,
+						'metadata'               => $this->prepare_metadata( $donation_id ),
+						'statement_descriptor'   => give_stripe_get_statement_descriptor(),
+					],
 					'submit_type'          => 'donate',
 					'success_url'          => give_get_success_page_uri(),
 					'cancel_url'           => give_get_failed_transaction_uri(),
