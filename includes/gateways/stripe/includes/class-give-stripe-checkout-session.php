@@ -46,7 +46,9 @@ class Give_Stripe_Checkout_Session {
 				give_stripe_get_connected_account_options()
 			);
 
+			// Return Checkout Session Object.
 			return $session;
+
 		} catch ( Exception $e ) {
 
 			give_record_gateway_error(
