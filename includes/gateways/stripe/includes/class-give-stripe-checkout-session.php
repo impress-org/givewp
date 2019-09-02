@@ -23,7 +23,7 @@ class Give_Stripe_Checkout_Session {
 	/**
 	 * This function is used to create a new Checkout session.
 	 *
-	 * @param array $data List of arguments to create Checkout session.
+	 * @param array $args List of arguments to create Checkout session.
 	 *
 	 * @since  2.5.5
 	 * @access public
