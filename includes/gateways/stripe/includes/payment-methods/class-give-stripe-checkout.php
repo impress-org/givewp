@@ -28,6 +28,16 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 	class Give_Stripe_Checkout extends Give_Stripe_Gateway {
 
 		/**
+		 * Checkout Session of Stripe.
+		 *
+		 * @since  2.5.5
+		 * @access public
+		 *
+		 * @var $stripe_checkout_session
+		 */
+		public $stripe_checkout_session;
+
+		/**
 		 * Give_Stripe_Checkout constructor.
 		 *
 		 * @since  2.6.0
@@ -38,6 +48,9 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$this->id = 'stripe_checkout';
 
 			parent::__construct();
+
+			// Create object for Stripe Checkout Session for usage.
+			$this->stripe_checkout_session = new Give_Stripe_Checkout_Session();
 
 			// Remove CC fieldset.
 			add_action( 'give_stripe_checkout_cc_form', '__return_false' );
@@ -224,8 +237,8 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * This function is used to process donations via Stripe Checkout 2.0.
 		 *
-		 * @param int   $donation_id   Donation ID.
-		 * @param array $donation_data List of submitted data for donation processing.
+		 * @param int   $donation_id Donation ID.
+		 * @param array $data        List of submitted data for donation processing.
 		 *
 		 * @since  2.6.0
 		 * @access public
