@@ -245,13 +245,51 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 *
 		 * @return void
 		 */
-		public function process_checkout( $donation_id, $donation_data ) {
+		public function process_checkout( $donation_id, $data ) {
 
-			$donation_summary = ! empty( $donation_data['description'] ) ? $donation_data['description'] : '';
-			$redirect_to_url  = ! empty( $donation_data['post_data']['give-current-url'] ) ? $donation_data['post_data']['give-current-url'] : site_url();
+			// Define essential variables.
+			$form_id          = ! empty( $data['post_data']['give-form-id'] ) ? intval( $data['post_data']['give-form-id'] ) : 0;
+			$form_name        = ! empty( $data['post_data']['give-form-title'] ) ? $data['post_data']['give-form-title'] : false;
+			$donation_summary = ! empty( $data['description'] ) ? $data['description'] : '';
+			$donation_id      = ! empty( $data['donation_id'] ) ? intval( $data['donation_id'] ) : 0;
+			$redirect_to_url  = ! empty( $data['post_data']['give-current-url'] ) ? $data['post_data']['give-current-url'] : site_url();
+
+			// Format the donation amount as required by Stripe.
+			$amount = give_stripe_format_amount( $data['price'] );
+
+			$session_args = array(
+				'customer'             => $data['customer_id'],
+				'client_reference_id'  => $data['purchase_key'],
+				'payment_method_types' => array( 'card' ),
+				'mode'                 => 'payment',
+				'line_items'           => array(
+					array(
+						'name'        => $form_name,
+						'description' => $data['description'],
+						'amount'      => $amount,
+						'currency'    => give_get_currency( $form_id ),
+						'quantity'    => 1,
+					),
+				),
+				'payment_intent_data'  => [
+					'application_fee_amount' => give_stripe_get_application_fee_amount( $amount ),
+					'capture_method'         => 'automatic',
+					'description'            => $donation_summary,
+					'metadata'               => $this->prepare_metadata( $donation_id ),
+					'statement_descriptor'   => give_stripe_get_statement_descriptor(),
+				],
+				'submit_type'          => 'donate',
+				'success_url'          => give_get_success_page_uri(),
+				'cancel_url'           => give_get_failed_transaction_uri(),
+			);
+
+			// If featured image exists, then add it to checkout session.
+			if ( ! empty( get_the_post_thumbnail( $form_id ) ) ) {
+				$session_args['line_items']['images'] = [get_the_post_thumbnail($form_id)];
+			}
 
 			// Create Checkout Session.
-			$session    = $this->create_checkout_session( $donation_data );
+			$session    = $this->stripe_checkout_session->create( $data );
 			$session_id = ! empty( $session->id ) ? $session->id : false;
 
 			// Save donation summary to donation.
