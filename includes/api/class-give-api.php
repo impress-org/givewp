@@ -392,8 +392,7 @@ class Give_API {
 			return false;
 		}
 
-		// $user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
-		$user = false;
+		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
 			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) );
