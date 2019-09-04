@@ -289,7 +289,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			}
 
 			// Create Checkout Session.
-			$session    = $this->stripe_checkout_session->create( $data );
+			$session    = $this->stripe_checkout_session->create( $session_args );
 			$session_id = ! empty( $session->id ) ? $session->id : false;
 
 			// Save donation summary to donation.
