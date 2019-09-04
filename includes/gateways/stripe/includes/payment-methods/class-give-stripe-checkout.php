@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Check for Give_Stripe_Checkout existence.
  *
- * @since 2.6.0
+ * @since 2.5.5
  */
 if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 	/**
 	 * Class Give_Stripe_Checkout.
 	 *
-	 * @since 2.6.0
+	 * @since 2.5.5
 	 */
 	class Give_Stripe_Checkout extends Give_Stripe_Gateway {
 
@@ -40,7 +40,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * Give_Stripe_Checkout constructor.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 */
 		public function __construct() {
@@ -67,7 +67,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 *
 		 * @param array $donation_data List of donation data.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 *
 		 * @return void
@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @param int   $donation_id   Donation ID.
 		 * @param array $donation_data List of submitted data for donation processing.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 *
 		 * @return void
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @param int   $donation_id Donation ID.
 		 * @param array $data        List of submitted data for donation processing.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 *
 		 * @return void
@@ -311,7 +311,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * Redirect to Checkout.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 *
 		 * @return void

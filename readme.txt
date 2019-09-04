@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.6.0
+Stable tag: 2.5.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -77,7 +77,7 @@ GiveWP comes with several payment gateway options:
 * **Stripe** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our [Stripe Premium add-on](https://givewp.com/addons/stripe-gateway/).
 * **PayPal Standard** -- Allow worldwide donations with PayPal Standard. No additional fees applied.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
-* **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process. 
+* **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 
 = Extend GiveWP with Powerful Add-ons =
 
@@ -191,9 +191,9 @@ Use GiveWP for donations, and let yourWooCommerce or WP eCommerce pluginor the l
 
 Additionally, you can use our [Donation Upsells for WooCommerce](https://givewp.com/addons/donation-upsells-for-woocommerce/) GiveWP add-on to allow your customers to do a donation upsell in the cart or checkout as well.
 
-= How do I eliminated the 2% fee on Stripe donations? = 
+= How do I eliminated the 2% fee on Stripe donations? =
 
-The 2% fee on Stripe donations only applies to donations taken via our free Stripe integration in GiveWP Core. If you purchase the premium Stripe add-on you will not have any additional fees at all. Additionally, even with the free Stripe plugin, the fees only apply to one-time donations, never to recurring donations. 
+The 2% fee on Stripe donations only applies to donations taken via our free Stripe integration in GiveWP Core. If you purchase the premium Stripe add-on you will not have any additional fees at all. Additionally, even with the free Stripe plugin, the fees only apply to one-time donations, never to recurring donations.
 
 [Read our release announcement](https://givewp.com/give2-5/) for all the details, and if you have further questions feel free to reach out via [our contact page](https://givewp.com/contact-us).
 

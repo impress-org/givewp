@@ -67,7 +67,7 @@ function give_get_current_setting_subsection() {
 	/**
 	 * Filter the default section for current setting page tab.
 	 *
-	 * @since 2.6.0
+	 * @since 2.5.5
 	 *
 	 * @param string
 	 */
@@ -97,7 +97,7 @@ function give_get_current_setting_page() {
 /**
  * This function will fetch all the groups of a current section.
  *
- * @since 2.6.0
+ * @since 2.5.5
  *
  * @return array
  */

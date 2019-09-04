@@ -198,7 +198,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe General fields.
 					 *
-					 * @since 2.6.0
+					 * @since 2.5.5
 					 *
 					 * @return array
 					 */
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields before Stripe Credit Card fields.
 					 *
-					 * @since 2.6.0
+					 * @since 2.5.5
 					 *
 					 * @return array
 					 */
@@ -267,7 +267,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe Credit Card fields.
 					 *
-					 * @since 2.6.0
+					 * @since 2.5.5
 					 *
 					 * @return array
 					 */
@@ -393,7 +393,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter is used to add setting fields for additional groups.
 					 *
-					 * @since 2.6.0
+					 * @since 2.5.5
 					 */
 					$settings = apply_filters( 'give_stripe_add_additional_group_fields', $settings );
 

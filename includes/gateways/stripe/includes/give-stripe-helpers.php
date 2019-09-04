@@ -1050,7 +1050,7 @@ function give_stripe_format_amount( $amount ) {
  *
  * Note: This function is for internal purposes only and will get deprecated with legacy Stripe Checkout.
  *
- * @since 2.6.0
+ * @since 2.5.5
  *
  * @return string
  */
@@ -1061,7 +1061,7 @@ function give_stripe_get_checkout_type() {
 /**
  * This function will help you load Stripe SDK based on the conditions.
  *
- * @since 2.6.0
+ * @since 2.5.5
  *
  * @return void
  */
