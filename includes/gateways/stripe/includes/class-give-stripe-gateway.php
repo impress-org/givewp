@@ -498,40 +498,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return array
 		 */
 		public function prepare_metadata( $donation_id = 0 ) {
-
-			if ( ! $donation_id ) {
-				return array();
-			}
-
-			$form_id = give_get_payment_form_id( $donation_id );
-			$email   = give_get_payment_user_email( $donation_id );
-
-			$args = array(
-				'Email'            => $email,
-				'Donation Post ID' => $donation_id,
-			);
-
-			// Add Sequential Metadata.
-			$seq_donation_id = give_stripe_get_sequential_id( $donation_id );
-			if ( $seq_donation_id ) {
-				$args['Sequential ID'] = $seq_donation_id;
-			}
-
-			// Add custom FFM fields to Stripe metadata.
-			$args = array_merge( $args, give_stripe_get_custom_ffm_fields( $form_id, $donation_id ) );
-
-			// Limit metadata passed to Stripe as maximum of 20 metadata is only allowed.
-			if ( count( $args ) > 20 ) {
-				$args = array_slice( $args, 0, 19, false );
-				$args = array_merge(
-					$args,
-					array(
-						'More Details' => esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id ) ),
-					)
-				);
-			}
-
-			return $args;
+			return give_stripe_prepare_metadata( $donation_id );
 		}
 
 		/**
