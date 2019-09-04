@@ -354,6 +354,11 @@ class Give_API {
 				$secret = $this->get_user_secret_key( $user );
 				$public = urldecode( $wp_query->query_vars['key'] );
 
+				// Verify that if user has secret key or not
+				if( ! $secret ) {
+					$this->invalid_auth();
+				}
+
 				if ( hash_equals( md5( $secret . $public ), $token ) ) {
 					$this->is_valid_request = true;
 				} else {
