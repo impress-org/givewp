@@ -195,6 +195,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'default'    => get_bloginfo( 'name' ),
 					);
 
+					$settings['general'][] = array(
+						'name' => __( 'Collect Billing Details', 'give' ),
+						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
+						'id'   => 'stripe_collect_billing',
+						'type' => 'checkbox',
+					);
+
 					/**
 					 * This filter hook is used to add fields after Stripe General fields.
 					 *
@@ -243,13 +250,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
-
-					$settings['credit-card'][] = array(
-						'name' => __( 'Collect Billing Details', 'give' ),
-						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
-						'id'   => 'stripe_collect_billing',
-						'type' => 'checkbox',
-					);
 
 					$settings['credit-card'][] = array(
 						'name'          => __( 'Credit Card Fields Format', 'give' ),
