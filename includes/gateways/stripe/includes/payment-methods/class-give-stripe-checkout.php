@@ -257,12 +257,16 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			// Format the donation amount as required by Stripe.
 			$amount = give_stripe_format_amount( $data['price'] );
 
+			// Fetch whether the billing address collection is enabled in admin settings or not.
+			$is_billing_enabled = give_is_setting_enabled( give_get_option( 'stripe_collect_billing' ) );
+
 			$session_args = array(
-				'customer'             => $data['customer_id'],
-				'client_reference_id'  => $data['purchase_key'],
-				'payment_method_types' => array( 'card' ),
-				'mode'                 => 'payment',
-				'line_items'           => array(
+				'customer'                   => $data['customer_id'],
+				'client_reference_id'        => $data['purchase_key'],
+				'payment_method_types'       => array( 'card' ),
+				'billing_address_collection' => $is_billing_enabled ? 'required' : 'auto',
+				'mode'                       => 'payment',
+				'line_items'                 => array(
 					array(
 						'name'        => $form_name,
 						'description' => $data['description'],
@@ -271,16 +275,16 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 						'quantity'    => 1,
 					),
 				),
-				'payment_intent_data'  => [
+				'payment_intent_data'        => [
 					'application_fee_amount' => give_stripe_get_application_fee_amount( $amount ),
 					'capture_method'         => give_stripe_is_preapproved_enabled() ? 'manual' : 'automatic',
 					'description'            => $donation_summary,
 					'metadata'               => $this->prepare_metadata( $donation_id ),
 					'statement_descriptor'   => give_stripe_get_statement_descriptor(),
 				],
-				'submit_type'          => 'donate',
-				'success_url'          => give_get_success_page_uri(),
-				'cancel_url'           => give_get_failed_transaction_uri(),
+				'submit_type'                => 'donate',
+				'success_url'                => give_get_success_page_uri(),
+				'cancel_url'                 => give_get_failed_transaction_uri(),
 			);
 
 			// If featured image exists, then add it to checkout session.
