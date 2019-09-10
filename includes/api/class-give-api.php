@@ -343,7 +343,7 @@ class Give_API {
 			}
 
 			// Retrieve the user by public API key and ensure they exist
-			if ( ! ctype_alnum( $wp_query->query_vars['key'] ) || ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
+			if ( ! preg_match( '/^[a-f0-9]{32}$/i',$wp_query->query_vars['key'] ) || ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
 				$this->invalid_key();
 
