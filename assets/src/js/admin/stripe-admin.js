@@ -4,9 +4,7 @@
  * @since 2.5.0
  */
 window.addEventListener( 'DOMContentLoaded', function() {
-	const modalCheckout = document.querySelectorAll( '.stripe-checkout-field' );
 	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
-	const modalOption = document.getElementById( 'stripe_checkout_enabled' );
 	const stripeFonts = document.querySelectorAll( 'input[name="stripe_fonts"]' );
 	const stripeStylesBase = document.getElementById( 'stripe_styles_base' );
 	const stripeStylesEmpty = document.getElementById( 'stripe_styles_empty' );
@@ -78,30 +76,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			} );
 		} );
 	}
-
-	// Bail out, if modal or enable apple/google pay option is null.
-	if ( null === modalOption ) {
-		
-	}
-
-	// modalCheckout.forEach( function( element, index ) {
-	// 	if ( modalOption.checked ) {
-	// 		modalCheckout[ index ].style.display = 'table-row';
-	// 		ccFormatSettings.style.display = 'none';
-	// 	}
-	// } );
-
-	// modalOption.addEventListener( 'click', function() {
-	// 	modalCheckout.forEach( function( element, index ) {
-	// 		if ( modalOption.checked ) {
-	// 			modalCheckout[ index ].style.display = 'table-row';
-	// 			ccFormatSettings.style.display = 'none';
-	// 		} else {
-	// 			modalCheckout[ index ].style.display = 'none';
-	// 			ccFormatSettings.style.display = 'table-row';
-	// 		}
-	// 	} );
-	// } );
 } );
 
 /**
