@@ -300,8 +300,25 @@ jQuery(document).ready(function ($) {
 // Vertical tabs feature.
 document.addEventListener( 'DOMContentLoaded', () => {
 	const mainContentWrap = document.querySelector( '.give-settings-section-content' );
+
+	// Bailout, if main content wrap not exists.
+	if ( null === mainContentWrap ) {
+		return;
+	}
+
 	const menuContentWrap = mainContentWrap.querySelector( '.give-settings-section-group-menu' );
-	const menuButtons     = Array.prototype.slice.call( menuContentWrap.querySelectorAll( 'ul li a' ) );
+
+	// Bailout, if menu content wrap not exists.
+	if ( null === menuContentWrap ) {
+		return;
+	}
+
+	const menuButtons = Array.prototype.slice.call( menuContentWrap.querySelectorAll( 'ul li a' ) );
+
+	// Bailout, if menu content wrap not exists.
+	if ( null === menuButtons ) {
+		return;
+	}
 
 	menuButtons.forEach( ( element ) => {
 		element.addEventListener( 'click', ( e ) => {
