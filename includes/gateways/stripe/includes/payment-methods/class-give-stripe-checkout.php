@@ -296,6 +296,12 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$session    = $this->stripe_checkout_session->create( $session_args );
 			$session_id = ! empty( $session->id ) ? $session->id : false;
 
+			// Set Checkout Session ID as Transaction ID.
+			if ( ! empty( $session_id ) ) {
+				give_insert_payment_note( $donation_id, 'Stripe Checkout Session ID: ' . $session_id );
+				give_set_payment_transaction_id( $donation_id, $session_id );
+			}
+
 			// Save donation summary to donation.
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
