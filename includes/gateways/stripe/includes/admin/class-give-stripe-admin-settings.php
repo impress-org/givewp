@@ -540,13 +540,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function stripe_modal_checkout_status( $status = 'enabled' ) {
 
-			$stripe_checkout = give_stripe_is_checkout_enabled();
+			$checkout_type = give_stripe_get_checkout_type();
 
-			if (
-				( $stripe_checkout && 'disabled' === $status ) ||
-				( ! $stripe_checkout && 'enabled' === $status )
-			) {
-				// return 'give-hidden';
+			if ( 'redirect' === $checkout_type ) {
+				 return 'give-hidden';
 			}
 
 			return '';
