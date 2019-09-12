@@ -204,11 +204,14 @@ class Give_Stripe_Customer {
 		$this->set_id( $customer->id );
 		$this->set_customer_data( $customer );
 
-		// Attach source/payment method to customer.
-		if ( give_stripe_is_source_type( $this->payment_method_id, 'pm' ) ) {
-			$this->attach_payment_method();
-		} else {
-			$this->attach_source();
+		// Proceed only, if the source is not empty.
+		if ( ! empty( $this->payment_method_id ) ) {
+			// Attach source/payment method to customer.
+			if (give_stripe_is_source_type($this->payment_method_id, 'pm')) {
+				$this->attach_payment_method();
+			} else {
+				$this->attach_source();
+			}
 		}
 
 		return $customer;
