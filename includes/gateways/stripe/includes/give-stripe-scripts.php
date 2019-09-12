@@ -93,7 +93,7 @@ function give_stripe_frontend_scripts() {
 	}
 
 	// Load third-party stripe js when required gateways are active.
-	if ( apply_filters( 'give_stripe_js_loading_conditions', give_is_gateway_active( 'stripe' ) ) ) {
+	if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
 		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array(), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-js' );
 		wp_localize_script( 'give-stripe-js', 'give_stripe_vars', $stripe_vars );
