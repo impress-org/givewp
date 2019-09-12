@@ -141,6 +141,10 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 
 				switch ( $event->type ) {
 
+					case 'checkout.session.completed':
+						$this->process_checkout_session_completed( $event );
+						break;
+
 					case 'payment_intent.succeeded':
 						$this->process_payment_intent_succeeded( $event );
 						break;
@@ -164,6 +168,38 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 				give_record_gateway_error( __( 'Stripe Error', 'give' ), sprintf( __( 'An error occurred while processing a webhook.', 'give' ) ) );
 				die( '-1' ); // Failed.
 			} // End if().
+		}
+
+		/**
+		 * This function will process `checkout.session.completed` webhook event.
+		 *
+		 * @param \Stripe\Event $event Stripe Event.
+		 *
+		 * @since  2.5.5
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function process_checkout_session_completed( $event ) {
+
+			// Get Payment Intent data from Event.
+			$checkout_session = $event->data->object;
+
+			// Process when Payment Intent status is succeeded.
+			$donation_id = give_get_purchase_id_by_transaction_id( $checkout_session->id );
+
+			// Update payment status to donation.
+			give_update_payment_status( $donation_id, 'publish' );
+
+			// Insert donation note to inform admin that charge succeeded.
+			give_insert_payment_note( $donation_id, __( 'Charge succeeded in Stripe.', 'give' ) );
+
+			/**
+			 * This action hook will be used to extend processing the payment intent succeeded event.
+			 *
+			 * @since 2.5.5
+			 */
+			do_action( 'give_stripe_process_checkout_session_completed', $event );
 		}
 
 		/**
