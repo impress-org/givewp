@@ -343,17 +343,21 @@ class Give_API {
 			}
 
 			// Retrieve the user by public API key and ensure they exist
-			if ( ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
+			if ( ! preg_match( '/^[a-f0-9]{32}$/i',$wp_query->query_vars['key'] ) || ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
 				$this->invalid_key();
 
 				return false;
 
 			} else {
-
 				$token  = urldecode( $wp_query->query_vars['token'] );
 				$secret = $this->get_user_secret_key( $user );
 				$public = urldecode( $wp_query->query_vars['key'] );
+
+				// Verify that if user has secret key or not
+				if( ! $secret ) {
+					$this->invalid_auth();
+				}
 
 				if ( hash_equals( md5( $secret . $public ), $token ) ) {
 					$this->is_valid_request = true;
@@ -396,7 +400,7 @@ class Give_API {
 		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
-			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s LIMIT 1", $key ) );
+			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) );
 			Give_Cache::set( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS, true );
 		}
 
