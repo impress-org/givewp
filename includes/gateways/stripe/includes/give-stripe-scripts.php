@@ -79,7 +79,7 @@ function give_stripe_frontend_scripts() {
 	}
 
 	// Load legacy Stripe checkout when the checkout type is `modal`.
-	if ( 'stripe_checkout' === give_get_chosen_gateway( get_the_ID() ) && 'modal' === give_stripe_get_checkout_type() ) {
+	if ( 'modal' === give_stripe_get_checkout_type() ) {
 
 		// Stripe checkout js.
 		Give_Scripts::register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION );
