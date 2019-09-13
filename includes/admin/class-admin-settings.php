@@ -328,11 +328,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function output_fields( $sections, $option_name = '' ) {
 
-			$current_page = give_get_current_setting_page();
-			$current_tab = give_get_current_setting_tab();
-			$current_section     = give_get_current_setting_section();
-			$groups = give_get_settings_groups();
-//			$groups              = array_keys( $sections );
+			$current_page    = give_get_current_setting_page();
+			$current_tab     = give_get_current_setting_tab();
+			$current_section = give_get_current_setting_section();
+			$groups          = give_get_settings_groups();
 
 			if ( is_array( $groups ) && count( $groups ) > 0 ) {
 				?>
