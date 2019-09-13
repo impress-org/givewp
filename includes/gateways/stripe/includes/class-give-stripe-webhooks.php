@@ -199,7 +199,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			 *
 			 * @since 2.5.5
 			 */
-			do_action( 'give_stripe_process_checkout_session_completed', $event );
+			do_action( 'give_stripe_process_checkout_session_completed', $donation_id, $event );
 		}
 
 		/**
