@@ -299,6 +299,9 @@ jQuery(document).ready(function ($) {
 
 // Vertical tabs feature.
 document.addEventListener( 'DOMContentLoaded', () => {
+
+	const currentUrl      = window.location.href.split( '#' );
+	const currentGroup    = currentUrl[1];
 	const mainContentWrap = document.querySelector( '.give-settings-section-content' );
 
 	// Bailout, if main content wrap not exists.
@@ -307,6 +310,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	const menuContentWrap = mainContentWrap.querySelector( '.give-settings-section-group-menu' );
+	const allContent      = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuContentWrap ) {
@@ -321,10 +325,25 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	menuButtons.forEach( ( element ) => {
+		const group = element.getAttribute( 'data-group' );
+
+		if ( group !== currentGroup ) {
+			element.classList.remove( 'active' );
+		} else {
+			// Loop through content sections and add `give-hidden` class.
+			allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+
+			// Set current group menu as active.
+			element.classList.add( 'active' );
+
+			// Set current group content as active.
+			mainContentWrap.querySelector( '#give-settings-section-group-' + currentGroup ).classList.remove( 'give-hidden' );
+		}
+
 		element.addEventListener( 'click', ( e ) => {
 			const selectedGroup = e.target.getAttribute( 'data-group' );
 			const selectedContent = mainContentWrap.querySelector( '#give-settings-section-group-' + selectedGroup );
-			const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
+
 
 			// Loop through menu button and remove `active` class.
 			menuButtons.forEach( ( element ) => {
@@ -332,10 +351,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			});
 
 			// Loop through content sections and add `give-hidden` class.
-			allContent.forEach( ( contentElement ) => {
-				contentElement.classList.add( 'give-hidden' );
-			});
-
+			allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
 
 			// Add `active` class to menu buttons of selected element.
 			e.target.classList.add( 'active' );
