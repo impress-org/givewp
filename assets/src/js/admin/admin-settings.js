@@ -325,19 +325,23 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	menuButtons.forEach( ( element ) => {
-		const group = element.getAttribute( 'data-group' );
 
-		if ( group !== currentGroup ) {
-			element.classList.remove( 'active' );
-		} else {
-			// Loop through content sections and add `give-hidden` class.
-			allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+		// Load this JS when currentGroup exists.
+		if ( currentGroup ) {
+			const group = element.getAttribute('data-group');
 
-			// Set current group menu as active.
-			element.classList.add( 'active' );
+			if (group !== currentGroup) {
+				element.classList.remove('active');
+			} else {
+				// Loop through content sections and add `give-hidden` class.
+				allContent.map(contentElement => contentElement.classList.add('give-hidden'));
 
-			// Set current group content as active.
-			mainContentWrap.querySelector( '#give-settings-section-group-' + currentGroup ).classList.remove( 'give-hidden' );
+				// Set current group menu as active.
+				element.classList.add('active');
+
+				// Set current group content as active.
+				mainContentWrap.querySelector('#give-settings-section-group-' + currentGroup).classList.remove('give-hidden');
+			}
 		}
 
 		element.addEventListener( 'click', ( e ) => {
