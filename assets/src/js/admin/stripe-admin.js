@@ -13,12 +13,26 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
 	const donationStatus = document.getElementById( 'give-payment-status' );
 	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
+	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
+	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== checkoutTypes ) {
+		checkoutTypes.forEach( ( checkoutType ) => {
+			checkoutType.addEventListener( 'change', ( e ) => {
+				if ( 'modal' === e.target.value ) {
+					legacyCheckoutFields.map( field => field.classList.remove( 'give-hidden' ) );
+				} else {
+					legacyCheckoutFields.map( field => field.classList.add( 'give-hidden' ) );
+				}
+			});
+		});
+	}
 
 	if ( null !== stripeDisconnect ) {
 		document.querySelector( '.give-stripe-disconnect' ).addEventListener( 'click', ( e ) => {
