@@ -400,7 +400,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
-		 * @since  2.6.0
+		 * @since  2.5.5
 		 * @access public
 		 *
 		 * @param array  $value       Settings Field Array.
