@@ -53,34 +53,6 @@ function give_get_current_setting_section() {
 }
 
 /**
- * Get current setting sub-section.
- *
- * @since  2.6.0
- * @access public
- *
- * @return string
- */
-function give_get_current_setting_subsection() {
-	// Get current section.
-	$current_section = give_get_current_setting_section();
-
-	/**
-	 * Filter the default section for current setting page tab.
-	 *
-	 * @since 2.5.5
-	 *
-	 * @param string
-	 */
-	$default_current_subsection = apply_filters( "give_default_setting_tab_subsection_{$current_section}", '' );
-
-	// Get current sub-section.
-	$current_subsection = empty( $_REQUEST['subsection'] ) ? $default_current_subsection : urldecode( $_REQUEST['subsection'] );
-
-	// Output.
-	return $current_subsection;
-}
-
-/**
  * Get current setting page.
  *
  * @since  1.8
