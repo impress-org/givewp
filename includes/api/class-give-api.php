@@ -1823,7 +1823,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php _e( 'Give API Keys', 'give' ); ?>
+						<?php _e( 'GiveWP API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php

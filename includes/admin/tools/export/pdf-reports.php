@@ -79,8 +79,8 @@ function give_generate_pdf( $data ) {
 	$pdf->AddPage( 'L', 'A4' );
 	$pdf->setImageScale( 1.5 );
 	$pdf->SetTitle( utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ) );
-	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
-	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
+	$pdf->SetAuthor( utf8_decode( __( 'GiveWP - Democratizing Generosity', 'give' ) ) );
+	$pdf->SetCreator( utf8_decode( __( 'GiveWP - Democratizing Generosity', 'give' ) ) );
 
 	// Image URL should have absolute path. @see https://tcpdf.org/examples/example_009/.
 	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_DIR . 'assets/dist/images/give-logo-small.png' ), 247, 8 );
@@ -313,7 +313,7 @@ function give_draw_chart_image() {
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
 
-	$chart->setTitle( __( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
+	$chart->setTitle( __( 'Donations by Month for all GiveWP Forms', 'give' ), '336699', 18 );
 
 	$chart->setScale( 0, $max_earnings );
 

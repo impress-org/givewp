@@ -275,7 +275,7 @@ class Give_MetaBox_Form_Data {
 						),
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
-							'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
+							'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under GiveWP > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
 							'id'   => $prefix . 'default_gateway',
 							'type' => 'default_gateway',
 						),
@@ -367,7 +367,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'    => __( 'Floating Labels', 'give' ),
 							/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
-							'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+							'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 							'id'      => $prefix . 'form_floating_labels',
 							'type'    => 'radio_inline',
 							'options' => array(

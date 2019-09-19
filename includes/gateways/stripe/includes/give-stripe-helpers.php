@@ -511,7 +511,7 @@ function give_stripe_set_app_info() {
 		 *
 		 * @since 2.5.0
 		 */
-		$application_name = apply_filters( 'give_stripe_get_application_name', 'Give Core' );
+		$application_name = apply_filters( 'give_stripe_get_application_name', 'GiveWP Core' );
 
 		/**
 		 * This filter hook is used to chnage the application version when Stripe add-on is used.

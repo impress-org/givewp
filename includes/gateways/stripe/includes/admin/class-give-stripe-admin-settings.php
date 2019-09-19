@@ -342,7 +342,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = array(
 						'name'          => __( 'Processing Text', 'give' ),
-						'desc'          => __( 'This text appears briefly after the donor has made a successful donation while Give is confirming the payment with the Stripe API.', 'give' ),
+						'desc'          => __( 'This text appears briefly after the donor has made a successful donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
 						'id'            => 'stripe_checkout_processing_text',
 						'default'       => __( 'Donation Processing...', 'give' ),
 						'type'          => 'text',
@@ -575,7 +575,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							esc_attr_e( 'Stripe is connected.', 'give' );
 							$disconnect_confirmation_message = sprintf(
 								/* translators: %s Stripe User ID */
-								__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
+								__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
 								$stripe_user_id
 							);
 							?>
@@ -671,7 +671,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					</div>
 
 					<p class="give-field-description">
-						<?php esc_html_e( 'Stripe webhooks are important to setup so Give can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
+						<?php esc_html_e( 'Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
 					</p>
 				</td>
 			</tr>

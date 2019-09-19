@@ -572,7 +572,7 @@ function give_export_donation_hidden_fields() {
 		<td class="give-field-wrap">
 			<div class="give-clearfix">
 				<ul class="give-export-option-ul"></ul>
-				<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by Give Core, a Give Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export.', 'give' ); ?></p>
+				<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export.', 'give' ); ?></p>
 			</div>
 		</td>
 	</tr>

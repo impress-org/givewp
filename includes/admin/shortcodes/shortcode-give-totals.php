@@ -23,8 +23,8 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = __( 'Give Totals', 'give' );
-		$this->shortcode['label'] = __( 'Give Totals', 'give' );
+		$this->shortcode['title'] = __( 'GiveWP Totals', 'give' );
+		$this->shortcode['label'] = __( 'GiveWP Totals', 'give' );
 
 		parent::__construct( 'give_totals' );
 	}

@@ -183,7 +183,7 @@ function give_dashboard_at_a_glance_widget( $items ) {
 
 		$text = sprintf(
 			/* translators: %s: number of posts published */
-			_n( '%s Give Form', '%s Give Forms', $num_posts->publish, 'give' ),
+			_n( '%s GiveWP Form', '%s GiveWP Forms', $num_posts->publish, 'give' ),
 			$num_posts->publish
 		);
 

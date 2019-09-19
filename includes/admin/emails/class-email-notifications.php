@@ -148,14 +148,14 @@ class Give_Email_Notifications {
 				array(
 					'id'      => '_give_from_name',
 					'name'    => esc_html__( 'From Name', 'give' ),
-					'desc'    => esc_html__( 'The name which appears in the "From" field in all Give donation emails.', 'give' ),
+					'desc'    => esc_html__( 'The name which appears in the "From" field in all GiveWP donation emails.', 'give' ),
 					'default' => get_bloginfo( 'name' ),
 					'type'    => 'text',
 				),
 				array(
 					'id'      => '_give_from_email',
 					'name'    => esc_html__( 'From Email', 'give' ),
-					'desc'    => esc_html__( 'Email address from which all Give emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
+					'desc'    => esc_html__( 'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
 					'default' => get_bloginfo( 'admin_email' ),
 					'type'    => 'text',
 				),

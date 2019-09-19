@@ -8,7 +8,7 @@
 					<div class="progress-content">
 						<div class="notice-wrap give-clearfix">
 							<div class="notice notice-success is-dismissible inline">
-								<p><?php esc_html_e( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ) ?>
+								<p><?php esc_html_e( 'GiveWP database updates completed successfully. Thank you for updating to the latest version!', 'give' ) ?>
 								</p>
 								<button type="button" class="notice-dismiss"></button>
 							</div>

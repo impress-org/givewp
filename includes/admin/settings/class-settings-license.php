@@ -160,7 +160,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 											<p>
 												<?php
 												echo sprintf(
-													__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload Give Add-on.', 'give' ),
+													__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload GiveWP Add-on.', 'give' ),
 													admin_url( 'plugin-install.php?tab=upload' )
 												);
 												?>

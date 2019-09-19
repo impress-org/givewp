@@ -189,7 +189,7 @@ final class Give_Shortcode_Button {
 					'<div class="sc-menu mce-menu">%s</div>' .
 					'</div>',
 					$img,
-					__( 'Give Shortcodes', 'give' ),
+					__( 'GiveWP Shortcodes', 'give' ),
 					implode( '', array_values( $shortcodes ) )
 				);
 			}

@@ -250,7 +250,7 @@ class Give_Updates {
 				// Upgrades
 				add_submenu_page(
 					'edit.php?post_type=give_forms',
-					esc_html__( 'Give Updates Complete', 'give' ),
+					esc_html__( 'GiveWP Updates Complete', 'give' ),
 					__( 'Updates', 'give' ),
 					'manage_give_settings',
 					'give-updates',
@@ -266,7 +266,7 @@ class Give_Updates {
 		// Upgrades
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
-			esc_html__( 'Give Updates', 'give' ),
+			esc_html__( 'GiveWP Updates', 'give' ),
 			sprintf(
 				'%1$s <span class="update-plugins"%2$s><span class="plugin-count give-update-progress-count">%3$s%4$s</span></span>',
 				__( 'Updates', 'give' ),
@@ -646,7 +646,7 @@ class Give_Updates {
 			Give()->notices->register_notice( array(
 				'id'          => 'give_db_upgrade_completed',
 				'type'        => 'updated',
-				'description' => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
+				'description' => __( 'GiveWP database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'show'        => true,
 			) );
 
@@ -811,7 +811,7 @@ class Give_Updates {
 
 		} elseif ( empty( $update_info ) || ! $this->get_total_new_db_update_count( true ) ) {
 			$update_info   = array(
-				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
+				'message'    => __( 'GiveWP database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
 				'percentage' => 0,
 			);

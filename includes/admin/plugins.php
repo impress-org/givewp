@@ -466,7 +466,7 @@ function give_deactivation_popup() {
 
 	<h2 id="deactivation-survey-title">
 		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ) ?>/assets/dist/images/give-icon-full-circle.svg">
-		<span><?php esc_html_e( 'Give Deactivation', 'give' ); ?></span>
+		<span><?php esc_html_e( 'GiveWP Deactivation', 'give' ); ?></span>
 	</h2>
 	<form class="deactivation-survey-form" method="POST">
 		<p><?php esc_html_e( 'If you have a moment, please let us know why you are deactivating Give. All submissions are anonymous and we only use this feedback to improve this plugin.', 'give' ); ?></p>
@@ -515,7 +515,7 @@ function give_deactivation_popup() {
 					printf(
 						'%1$s %2$s %3$s',
 						__( "We're sorry to hear that, check", 'give' ),
-						'<a href="https://wordpress.org/support/plugin/give">Give Support</a>.',
+						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
 						__( 'Can you describe the issue?', 'give' )
 					);
 					?>
@@ -535,7 +535,7 @@ function give_deactivation_popup() {
 					printf(
 						'%1$s %2$s %3$s',
 						__( "We're sorry to hear that, check", 'give' ),
-						'<a href="https://wordpress.org/support/plugin/give">Give Support</a>.',
+						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
 						__( 'Can you describe the issue?', 'give' )
 					);
 					?>
@@ -560,10 +560,10 @@ function give_deactivation_popup() {
 			<p>
 				<label>
 					<input type="checkbox" name="confirm_reset_store" value="1">
-					<?php esc_html_e( 'Would you like to delete all Give data?', 'give' ); ?>
+					<?php esc_html_e( 'Would you like to delete all GiveWP data?', 'give' ); ?>
 				</label>
 				<section class="give-field-description">
-					<?php esc_html_e( 'By default the custom roles, Give options, and database entries are not deleted when you deactivate Give. If you are deleting Give completely from your website and want those items removed as well check this option. Note: This will permanently delete all Give data from your database.', 'give' ); ?>
+					<?php esc_html_e( 'By default the custom roles, GiveWP options, and database entries are not deleted when you deactivate Give. If you are deleting GiveWP completely from your website and want those items removed as well check this option. Note: This will permanently delete all GiveWP data from your database.', 'give' ); ?>
 				</section>
 			</p>
 		</div>

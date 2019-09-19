@@ -43,7 +43,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error(
 			array(
 				'errorMsg' => sprintf(
-					__( 'Sorry, you can not upload plugins because Give does not have direct access to the file system. Please <a href="%1$s" target="_blank">click here</a> to upload the add-on.', 'give' ),
+					__( 'Sorry, you can not upload plugins because GiveWP does not have direct access to the file system. Please <a href="%1$s" target="_blank">click here</a> to upload the add-on.', 'give' ),
 					admin_url( 'plugin-install.php?tab=upload' )
 				),
 			)
