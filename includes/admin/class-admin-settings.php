@@ -341,14 +341,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							<?php
 							if ( is_array( $groups ) && count( $groups ) > 0 ) {
 								$count = 1;
-								foreach ( $groups as $slug => $group ) {
 
-									$active_class = 1 === $count ? 'active' : '';
+								foreach ( $groups as $slug => $group ) {
+									$default_group = ( 1 === $count && empty( $_GET['group'] ) ) ? $slug : '';
+									$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $default_group;
+									$active_class  = ( $slug === $current_group ) ? 'active' : '';
 
 									echo sprintf(
 										'<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
 										esc_html( $active_class ),
-										esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}#{$slug}" ) ),
+										esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}" ) ),
 										esc_html( $slug ),
 										esc_html( $group )
 									);
