@@ -10,17 +10,15 @@
 // Typical SCSS for vertical tabs.
 .give-settings-page {
 	.give-settings-section-content {
+		display: flex;
 		background-color: #f4f4f4;
-		display: block;
-		overflow: hidden;
 		border-radius: 8px;
 		-webkit-box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
 		-moz-box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
 		box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
 
 		.give-settings-section-group-menu {
-			float: left;
-			width: 15%;
+			width: 250px;
 
 			ul {
 				margin: 0;
@@ -52,13 +50,28 @@
 		}
 
 		.give-settings-section-group-content {
-			float: left;
-			width: 80%;
+			width: 100%;
 			background: #ffffff;
 			padding: 10px 30px;
 			border-bottom-right-radius: 8px;
 			border-top-right-radius: 8px;
 			min-height: 400px;
+		}
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.give-settings-page {
+		.give-settings-section-content {
+			flex-flow: row wrap;
+
+			.give-settings-section-group-menu {
+				width: 100%;
+			}
+
+			.give-settings-section-group-content {
+				padding: 10px;
+			}
 		}
 	}
 }
