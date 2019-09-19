@@ -362,6 +362,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			// Remove `give-hidden` class from content section of selected element.
 			selectedContent.classList.remove( 'give-hidden' );
+
+			// Update URL in browser address without reloading the page.
+			history.pushState( { urlPath: e.target.getAttribute( 'href' ) },"",e.target.getAttribute( 'href' ));
+
+			// Don't redirect the page.
+			e.preventDefault();
 		});
 	});
 });
