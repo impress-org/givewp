@@ -365,7 +365,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$count = 1;
 						foreach ( $sections as $group => $fields ) {
 							if ( ! empty( $group ) ) {
-								$hide_class = 1 < $count ? 'give-hidden' : '';
+
+								$default_group = ( 1 === $count && empty( $_GET['group'] ) ) ? $group : '';
+								$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $default_group;
+								$hide_class    = $group !== $current_group ? 'give-hidden' : '';
 								?>
 								<div id="give-settings-section-group-<?php echo esc_attr( $group ); ?>" class="give-settings-section-group <?php echo esc_html( $hide_class ); ?>">
 									<?php
