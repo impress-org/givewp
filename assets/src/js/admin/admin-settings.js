@@ -329,7 +329,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const selectedGroup = e.target.getAttribute( 'data-group' );
 			const selectedContent = mainContentWrap.querySelector( '#give-settings-section-group-' + selectedGroup );
 
-
 			// Loop through menu button and remove `active` class.
 			menuButtons.forEach( ( element ) => {
 				element.classList.remove( 'active' );
