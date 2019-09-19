@@ -70,18 +70,21 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			// Get current setting page.
 			$this->current_setting_page = give_get_current_setting_page();
 
+			// Get current section.
+			$this->current_section = give_get_current_setting_section();
+
 			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( "{$this->current_setting_page}_tabs_array", array( $this, 'add_settings_page' ), 20 );
 			add_action( "{$this->current_setting_page}_settings_{$this->id}_page", array( $this, 'output' ) );
 
-			// Output section only if exist.
-			$sections = $this->get_sections();
-			if ( ! empty( $sections ) ) {
-				add_action( "{$this->current_setting_page}_sections_{$this->id}_page", array(
+			// Output sections.
+			add_action(
+				"{$this->current_setting_page}_sections_{$this->id}_page",
+				array(
 					$this,
 					'output_sections',
-				) );
-			}
+				)
+			);
 
 			// Save hide button by default.
 			$GLOBALS['give_hide_save_button'] = true;
@@ -194,6 +197,12 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 			$section_list = array();
 			foreach ( $sections as $id => $label ) {
+
+				// If the `$label` return array then get title from the array as a label.
+				if ( is_array( $label ) && ! empty( $label['title'] ) ) {
+					$label = $label['title'];
+				}
+
 				/**
 				 * Fire the filter to hide particular section on tab.
 				 *

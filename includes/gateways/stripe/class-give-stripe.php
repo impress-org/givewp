@@ -107,16 +107,26 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 * @return void
 		 */
 		public function include_frontend_files() {
+
+			// General.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-scripts.php';
+
+			// Classes.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-logger.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-invoice.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-intent.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-method.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-checkout-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-webhooks.php';
+
+			// Payment Methods.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-scripts.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php';
+
+			// Deprecations.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-filters.php';
 		}
@@ -133,8 +143,15 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function register_gateway( $gateways ) {
 
+			// Stripe - On page credit card.
 			$gateways['stripe'] = array(
 				'admin_label'    => __( 'Stripe - Credit Card', 'give' ),
+				'checkout_label' => __( 'Credit Card', 'give' ),
+			);
+
+			// Stripe - Off page credit card (also known as Checkout).
+			$gateways['stripe_checkout'] = array(
+				'admin_label'    => __( 'Stripe - Checkout', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
 			);
 

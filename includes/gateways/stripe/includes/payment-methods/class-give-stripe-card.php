@@ -225,59 +225,49 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Save donation summary to donation.
 					give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
+					/**
+					 * This filter hook is used to update the payment intent arguments.
+					 *
+					 * @since 2.5.0
+					 */
+					$intent_args = apply_filters(
+						'give_stripe_create_intent_args',
+						array(
+							'amount'               => $this->format_amount( $donation_data['price'] ),
+							'currency'             => give_get_currency( $form_id ),
+							'payment_method_types' => [ 'card' ],
+							'statement_descriptor' => give_stripe_get_statement_descriptor(),
+							'description'          => give_payment_gateway_donation_summary( $donation_data ),
+							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'customer'             => $stripe_customer_id,
+							'payment_method'       => $payment_method_id,
+							'confirm'              => true,
+							'return_url'           => give_get_success_page_uri(),
+						)
+					);
 
-					if ( give_stripe_is_checkout_enabled() ) {
-
-						// Process charge w/ support for preapproval.
-						$charge = $this->process_charge( $donation_data, $stripe_customer_id );
-
-						// Verify the Stripe payment.
-						$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
-					} else {
-
-						/**
-						 * This filter hook is used to update the payment intent arguments.
-						 *
-						 * @since 2.5.0
-						 */
-						$intent_args = apply_filters(
-							'give_stripe_create_intent_args',
-							array(
-								'amount'               => $this->format_amount( $donation_data['price'] ),
-								'currency'             => give_get_currency( $form_id ),
-								'payment_method_types' => [ 'card' ],
-								'statement_descriptor' => give_stripe_get_statement_descriptor(),
-								'description'          => give_payment_gateway_donation_summary( $donation_data ),
-								'metadata'             => $this->prepare_metadata( $donation_id ),
-								'customer'             => $stripe_customer_id,
-								'payment_method'       => $payment_method_id,
-								'confirm'              => true,
-								'return_url'           => give_get_success_page_uri(),
-							)
-						);
-
-						// Send Stripe Receipt emails when enabled.
-						if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
-							$intent_args['receipt_email'] = $donation_data['user_email'];
-						}
-
-						$intent = $this->payment_intent->create( $intent_args );
-
-						// Save Payment Intent Client Secret to donation note and DB.
-						give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
-						give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
-
-						// Set Payment Intent ID as transaction ID for the donation.
-						give_set_payment_transaction_id( $donation_id, $intent->id );
-						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
-
-						// Process additional steps for SCA or 3D secure.
-						give_stripe_process_additional_authentication( $donation_id, $intent );
-
-						// Send them to success page.
-						give_send_to_success_page();
-
+					// Send Stripe Receipt emails when enabled.
+					if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+						$intent_args['receipt_email'] = $donation_data['user_email'];
 					}
+
+					$intent = $this->payment_intent->create( $intent_args );
+
+					// Save Payment Intent Client Secret to donation note and DB.
+					give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+					give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
+					// Set Payment Intent ID as transaction ID for the donation.
+					give_set_payment_transaction_id( $donation_id, $intent->id );
+					give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+					// Process additional steps for SCA or 3D secure.
+					give_stripe_process_additional_authentication( $donation_id, $intent );
+
+					// Send them to success page.
+					give_send_to_success_page();
+
+
 				} else {
 
 					// No customer, failed.
@@ -296,96 +286,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			} else {
 				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 			} // End if().
-		}
-
-		/**
-		 * Authorise Donation to successfully complete the donation.
-		 *
-		 * @since  1.6
-		 * @access public
-		 *
-		 * @todo remove this function when payment intent is supported with subscriptions.
-		 *
-		 * @return void
-		 */
-		public function listen_stripe_3dsecure_payment() {
-
-			// Sanitize the parameter received from query string.
-			$data = give_clean( $_GET ); // WPCS: input var ok.
-
-			// Must be a stripe three-d-secure listener to proceed.
-			if ( ! isset( $data['give-listener'] ) || 'stripe_three_d_secure' !== $data['give-listener'] ) {
-				return;
-			}
-
-			$donation_id = ! empty( $data['donation_id'] ) ? $data['donation_id'] : '';
-			$source_id   = ! empty( $data['source'] ) ? $data['source'] : '';
-			$description = give_get_meta( $donation_id, '_give_stripe_donation_summary', true );
-			$customer_id = give_get_meta( $donation_id, '_give_stripe_customer_id', true );
-
-			// Get Source Object from source id.
-			$source_object = $this->get_source_details( $source_id );
-
-			// Proceed to charge, if the 3D secure source is chargeable.
-			if ( 'chargeable' === $source_object->status ) {
-				$charge_args = array(
-					'amount'               => $source_object->amount,
-					'currency'             => $source_object->currency,
-					'customer'             => $customer_id,
-					'source'               => $source_object->id,
-					'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
-					'statement_descriptor' => $source_object->statement_descriptor,
-					'metadata'             => $this->prepare_metadata( $donation_id ),
-				);
-
-				// If preapproval enabled, only capture the charge
-				// @see: https://stripe.com/docs/api#create_charge-capture.
-				if ( give_stripe_is_preapproved_enabled() ) {
-					$charge_args['capture'] = false;
-				}
-
-				try {
-					$charge = $this->create_charge( $donation_id, $charge_args );
-
-					if ( $charge ) {
-						/**
-						 * This action hook will help to perform additional steps when 3D secure payments are processed.
-						 *
-						 * @since 2.1
-						 *
-						 * @param int            $donation_id Donation ID.
-						 * @param \Stripe\Charge $charge      Stripe Charge Object.
-						 * @param string         $customer_id Stripe Customer ID.
-						 */
-						do_action( 'give_stripe_verify_3dsecure_payment', $donation_id, $charge, $customer_id );
-
-						// Verify Payment.
-						$this->verify_payment( $donation_id, $customer_id, $charge );
-					}
-				} catch ( \Stripe\Error\Base $e ) {
-					$this->log_error( $e );
-				} catch ( Exception $e ) {
-					give_update_payment_status( $donation_id, 'failed' );
-
-					give_record_gateway_error(
-						__( 'Stripe Error', 'give' ),
-						sprintf(
-							/* translators: Exception Message Body */
-							__( 'The Stripe Gateway returned an error while processing a donation. Details: %s', 'give' ),
-							$e->getMessage()
-						)
-					);
-
-					wp_safe_redirect( give_get_failed_transaction_uri() );
-				} // End try().
-			} else {
-
-				give_update_payment_status( $donation_id, 'failed' );
-				give_record_gateway_error( __( 'Donor Error', 'give' ), sprintf( __( 'Donor has cancelled the payment during authorization process.', 'give' ) ) );
-				wp_safe_redirect( give_get_failed_transaction_uri() );
-			} // End if().
-
-			give_die();
 		}
 	}
 }

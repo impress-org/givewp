@@ -71,8 +71,15 @@ function give_stripe_frontend_scripts() {
 		'preferred_locale'             => give_stripe_get_preferred_locale(),
 	);
 
-	// Is Stripe's checkout enabled?
-	if ( give_stripe_is_checkout_enabled() ) {
+	// Load third-party stripe js when required gateways are active.
+	if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
+		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array(), GIVE_VERSION );
+		wp_enqueue_script( 'give-stripe-js' );
+		wp_localize_script( 'give-stripe-js', 'give_stripe_vars', $stripe_vars );
+	}
+
+	// Load legacy Stripe checkout when the checkout type is `modal`.
+	if ( 'modal' === give_stripe_get_checkout_type() ) {
 
 		// Stripe checkout js.
 		Give_Scripts::register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION );
@@ -88,15 +95,6 @@ function give_stripe_frontend_scripts() {
 		Give_Scripts::register_script( 'give-stripe-popup-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-popup-js' );
 		wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
-
-		return;
-	}
-
-	// Load third-party stripe js when required gateways are active.
-	if ( apply_filters( 'give_stripe_js_loading_conditions', give_is_gateway_active( 'stripe' ) ) ) {
-		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array(), GIVE_VERSION );
-		wp_enqueue_script( 'give-stripe-js' );
-		wp_localize_script( 'give-stripe-js', 'give_stripe_vars', $stripe_vars );
 	}
 
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.

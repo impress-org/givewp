@@ -559,12 +559,7 @@ function give_stripe_set_app_info() {
  * @return int
  */
 function give_stripe_get_application_fee_percentage() {
-
-	// Set Application Fee Percentage.
-	$fee_percentage = 2;
-
-	// Return the fee percentage based on the currency used.
-	return give_stripe_is_zero_decimal_currency() ? $fee_percentage : give_stripe_cents_to_dollars( $fee_percentage );
+	return 2;
 }
 
 /**
@@ -577,7 +572,7 @@ function give_stripe_get_application_fee_percentage() {
  * @return int
  */
 function give_stripe_get_application_fee_amount( $amount ) {
-	return $amount * give_stripe_get_application_fee_percentage() / 100;
+	return round( $amount * give_stripe_get_application_fee_percentage() / 100, 0 );
 }
 
 /**
@@ -1051,9 +1046,22 @@ function give_stripe_format_amount( $amount ) {
 }
 
 /**
+ * This function is used to return the checkout type.
+ *
+ * Note: This function is for internal purposes only and will get deprecated with legacy Stripe Checkout.
+ *
+ * @since 2.5.5
+ *
+ * @return string
+ */
+function give_stripe_get_checkout_type() {
+	return give_get_option( 'stripe_checkout_type', 'modal' );
+}
+
+/**
  * This function will help you load Stripe SDK based on the conditions.
  *
- * @since 2.6.0
+ * @since 2.5.5
  *
  * @return void
  */
@@ -1067,3 +1075,52 @@ function give_stripe_load_stripe_sdk() {
 		require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
 	}
 }
+
+/**
+ * This function will prepare metadata to send to Stripe.
+ *
+ * @param int $donation_id Donation ID.
+ *
+ * @since  2.5.5
+ * @access public
+ *
+ * @return array
+ */
+function give_stripe_prepare_metadata( $donation_id = 0 ) {
+
+	// Bailout, if donation id doesn't exists.
+	if ( ! $donation_id ) {
+		return array();
+	}
+
+	$form_id = give_get_payment_form_id( $donation_id );
+	$email   = give_get_payment_user_email( $donation_id );
+
+	$args = array(
+		'Email'            => $email,
+		'Donation Post ID' => $donation_id,
+	);
+
+	// Add Sequential Metadata.
+	$seq_donation_id = give_stripe_get_sequential_id( $donation_id );
+	if ( $seq_donation_id ) {
+		$args['Sequential ID'] = $seq_donation_id;
+	}
+
+	// Add custom FFM fields to Stripe metadata.
+	$args = array_merge( $args, give_stripe_get_custom_ffm_fields( $form_id, $donation_id ) );
+
+	// Limit metadata passed to Stripe as maximum of 20 metadata is only allowed.
+	if ( count( $args ) > 20 ) {
+		$args = array_slice( $args, 0, 19, false );
+		$args = array_merge(
+			$args,
+			array(
+				'More Details' => esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id ) ),
+			)
+		);
+	}
+
+	return $args;
+}
+
