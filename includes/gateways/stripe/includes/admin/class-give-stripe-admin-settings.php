@@ -108,9 +108,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		public function register_groups() {
 
 			$groups = array(
-				'general'     => __( 'General', 'give' ),
-				'credit-card' => __( 'Credit Card', 'give' ),
-				'checkout'    => __( 'Checkout', 'give' ),
+				'general'     => __( 'General Settings', 'give' ),
+				'credit-card' => __( 'Credit Card On Site', 'give' ),
+				'checkout'    => __( 'Stripe Checkout', 'give' ),
 			);
 
 			return apply_filters( 'give_stripe_register_groups', $groups );
@@ -212,7 +212,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
 					$settings['general'][] = array(
-						'name' => __( 'Receipt Emails', 'give' ),
+						'name' => __( 'Stripe Receipt Emails', 'give' ),
 						'desc' => sprintf(
 							/* translators: 1. GiveWP Support URL */
 							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
@@ -305,14 +305,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = array(
 						'name'          => __( 'Checkout Type', 'give' ),
-						'desc'          => __( 'This option will enable you to select from the types of Stripe Checkout methods available for processing donation. Note: Modal option is the legacy Stripe Checkout which will get discontinued soon.', 'give' ),
+						'desc'          => sprintf(__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout'),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
 						'type'          => 'radio_inline',
 						'default'       => 'modal',
 						'options'       => array(
-							'modal'    => __( 'Modal', 'give' ),
-							'redirect' => __( 'Redirect', 'give' ),
+							'modal'    => __( 'Modal (Legacy Checkout)', 'give' ),
+							'redirect' => __( 'Redirect (Checkout 2.0)', 'give' ),
 						),
 					);
 
@@ -342,7 +342,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = array(
 						'name'          => __( 'Processing Text', 'give' ),
-						'desc'          => __( 'This text appears briefly after the donor has made a successful donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
+						'desc'          => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
 						'id'            => 'stripe_checkout_processing_text',
 						'default'       => __( 'Donation Processing...', 'give' ),
 						'type'          => 'text',
@@ -601,7 +601,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<p class="give-field-description">
 							<?php
 							echo sprintf(
-								__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
+								__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
 								esc_url( 'https://givewp.com/addons/stripe-gateway/' ),
 								esc_url( 'https://givewp.com/addons/recurring-donations/' ),
 								esc_url( 'http://docs.givewp.com/addon-stripe' )

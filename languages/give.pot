@@ -8170,7 +8170,7 @@ msgstr ""
 msgid "Reveal"
 msgstr ""
 
-#: includes/forms/widget.php:169, includes/admin/forms/class-metabox-form-data.php:251, includes/admin/shortcodes/shortcode-give-donation-grid.php:134, includes/admin/shortcodes/shortcode-give-form.php:104, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:314
+#: includes/forms/widget.php:169, includes/admin/forms/class-metabox-form-data.php:251, includes/admin/shortcodes/shortcode-give-donation-grid.php:134, includes/admin/shortcodes/shortcode-give-form.php:104
 msgid "Modal"
 msgstr ""
 
@@ -10580,7 +10580,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:30, includes/admin/settings/class-settings-general.php:462, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:111
+#: includes/admin/settings/class-settings-general.php:30, includes/admin/settings/class-settings-general.php:462
 msgid "General"
 msgstr ""
 
@@ -10721,7 +10721,7 @@ msgstr ""
 msgid "Currency Options Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:260
+#: includes/admin/settings/class-settings-general.php:260, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:111
 msgid "General Settings"
 msgstr ""
 
@@ -11068,7 +11068,7 @@ msgstr ""
 msgid "Show form as modal window or redirect to a new page?"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-donation-grid.php:132, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:315
+#: includes/admin/shortcodes/shortcode-give-donation-grid.php:132
 msgid "Redirect"
 msgstr ""
 
@@ -11518,7 +11518,7 @@ msgstr ""
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:149, includes/gateways/stripe/class-give-stripe.php:155, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:112
+#: includes/gateways/stripe/class-give-stripe.php:149, includes/gateways/stripe/class-give-stripe.php:155
 msgid "Credit Card"
 msgstr ""
 
@@ -13469,8 +13469,12 @@ msgstr ""
 msgid "Stripe"
 msgstr ""
 
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:112
+msgid "Credit Card On Site"
+msgstr ""
+
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:113
-msgid "Checkout"
+msgid "Stripe Checkout"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:161
@@ -13494,7 +13498,7 @@ msgid "This option will enable the billing details section for Stripe which requ
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:215
-msgid "Receipt Emails"
+msgid "Stripe Receipt Emails"
 msgstr ""
 
 #. translators: 1. GiveWP Support URL
@@ -13527,7 +13531,15 @@ msgid "Checkout Type"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:308
-msgid "This option will enable you to select from the types of Stripe Checkout methods available for processing donation. Note: Modal option is the legacy Stripe Checkout which will get discontinued soon."
+msgid "This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The \"Modal\" option is the <a href=\"%s\" target=\"_blank\">legacy Stripe Checkout</a> and is not SCA compatible. The \"Redirect\" option uses Stripe's new <a href=\"%s\" target=\"_blank\">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:314
+msgid "Modal (Legacy Checkout)"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:315
+msgid "Redirect (Checkout 2.0)"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:320
@@ -13555,7 +13567,7 @@ msgid "Processing Text"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:345
-msgid "This text appears briefly after the donor has made a successful donation while GiveWP is confirming the payment with the Stripe API."
+msgid "This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:352
@@ -13652,7 +13664,7 @@ msgid "Stripe is NOT connected."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:604
-msgid "The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
+msgid "The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:638

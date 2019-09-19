@@ -223,7 +223,12 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
-= 2.5.5: =
+= 2.5.5: September 19th, 2019 =
+* New: Added support for Stripe's new Checkout payment method. Now you can accept payments that support Strong Customer Authentication, Google and Apple Pay, Credit Cards and more! [#4207](https://github.com/impress-org/givewp/issues/4207)
+* New: Added the ability to add tabs to settings to more easily break up sections. You can see this within the new Stripe payment gateway settings. [#4202](https://github.com/impress-org/givewp/issues/4202), [#4204](https://github.com/impress-org/givewp/issues/4204)
+* New: New hooks have been added to the Stripe gateway for developers to more easily extend. [#4244](https://github.com/impress-org/givewp/issues/4244)
+* Tweak: Improved documentation description for the Stripe payment gateway. [#4206](https://github.com/impress-org/givewp/issues/4206)
+* Fix: The Stripe SDK only loads now when the gateway is enabled to improve performance and further prevent conflicts. [#4237](https://github.com/impress-org/givewp/issues/4237)
 
 = 2.5.4: August 7th, 2019 =
 * New: Stripe compatibility solution - There is now a setting under `Donations > Settings > Advanced > Stripe` that allows you select which implementation of Stripe you wish to use. If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the [Stripe SDK](https://github.com/stripe/stripe-php) (Software Development Kit) either through [Composer](http://getcomposer.org/) or manually initializedinitalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts and the other plugins may be using outdated versions compared to GiveWP's. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialized. If both options do not work please [contact support](https://givewp.com/support). [#4193](https://github.com/impress-org/givewp/issues/4193)
