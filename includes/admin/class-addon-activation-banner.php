@@ -365,7 +365,7 @@ class Give_Addon_Activation_Banner {
 				printf(
 					/* translators: %s: Add-on name */
 					'%s<span>%s</span>',
-					__( 'New Give Add-on Activated: ', 'give' ),
+					__( 'New GiveWP Add-on Activated: ', 'give' ),
 					esc_html( $banner_arr['name'] )
 				);
 				?>
