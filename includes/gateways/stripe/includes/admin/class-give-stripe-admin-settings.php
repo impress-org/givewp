@@ -255,7 +255,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name'          => __( 'Credit Card Fields Format', 'give' ),
 						'desc'          => __( 'This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
-						'wrapper_class' => 'stripe-cc-field-format-settings ' . $this->stripe_modal_checkout_status( 'disabled' ),
+						'wrapper_class' => 'stripe-cc-field-format-settings',
 						'type'          => 'radio_inline',
 						'default'       => 'multi',
 						'options'       => array(
