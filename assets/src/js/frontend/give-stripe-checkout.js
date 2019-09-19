@@ -29,7 +29,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				const processingHtml = document.createElement( 'div' );
 				processingHtml.setAttribute( 'class', 'stripe-checkout-process' );
 				processingHtml.style.background = '#FFFFFF';
-				processingHtml.style.opacity = '0.75';
+				processingHtml.style.opacity = '0.9';
 				processingHtml.style.position = 'fixed';
 				processingHtml.style.top = '0';
 				processingHtml.style.left = '0';
@@ -37,7 +37,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				processingHtml.style.right = '0';
 				processingHtml.style.zIndex = '2147483646';
 				processingHtml.style.display = 'none';
-				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#333; font-size: 18px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
+				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
 
 				tokenCreated = true;
 
