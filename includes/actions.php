@@ -279,7 +279,7 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 		return new WP_Error(
 			'Give_Addon_Update_Error',
 			sprintf(
-				__( 'Give version %s is required to update this add-on.', 'give' ),
+				__( 'GiveWP version %s is required to update this add-on.', 'give' ),
 				$give_min_version
 			)
 		);

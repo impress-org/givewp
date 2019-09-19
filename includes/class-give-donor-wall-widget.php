@@ -44,10 +44,10 @@ class Give_Donor_Wall_Widget extends WP_Widget {
 			'id_base' => 'give_gravatars_widget'
 		);
 
-		// create the widget
+		// Create the widget
 		parent::__construct(
 			'give_donors_gravatars_widget',
-			esc_html__( 'Give Donors Gravatars', 'give' ),
+			esc_html__( 'GiveWP Donor Gravatars', 'give' ),
 			$widget_ops,
 			$control_ops
 		);

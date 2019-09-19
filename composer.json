@@ -2,7 +2,7 @@
   "name": "impress-org/give",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
-  "description": "Give - a WordPress Donation Plugin and Fundraising Platform",
+  "description": "GiveWP - a WordPress Donation Plugin and Fundraising Platform",
   "homepage": "https://givewp.com/",
   "require": {
     "composer/installers": "~1.2",

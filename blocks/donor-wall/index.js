@@ -16,8 +16,8 @@ import GiveDonorWallGrid from './edit/block';
  */
 
 export default registerBlockType( 'give/donor-wall', {
-	title: __( 'Give Donor Wall' ),
-	description: __( 'The Give Donor Wall block inserts an existing donation form into the page. Each form\'s presentation can be customized below.' ),
+	title: __( 'Donor Wall' ),
+	description: __( 'The GiveWP Donor Wall block inserts an existing donation form into the page. Each form\'s presentation can be customized below.' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [

@@ -460,9 +460,9 @@ function give_widgets_init() {
 	) {
 
 		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
-			'name'          => __( 'Give Single Form Sidebar', 'give' ),
+			'name'          => __( 'GiveWP Single Form Sidebar', 'give' ),
 			'id'            => 'give-forms-sidebar',
-			'description'   => __( 'Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms.', 'give' ),
+			'description'   => __( 'Widgets in this area will be shown on the single GiveWP forms aside area. This sidebar will not display for embedded forms.', 'give' ),
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="widgettitle widget-title">',

@@ -1,10 +1,10 @@
-# Contributing to Give
+# Contributing to GiveWP
 
-Contributions to Give are more than welcome.
+Contributions to GiveWP are more than welcome.
 
 ## License
 
-By contributing code to Give, you agree to license your contribution under the [GPL License](license.txt).
+By contributing code to GiveWP, you agree to license your contribution under the [GPL License](license.txt).
 
 ## Before reporting a bug
 
@@ -14,11 +14,11 @@ Search our [issue tracker](https://github.com/impress-org/give/issues) for simil
 
 ## How to report a bug
 
-1. Specify the version number for Give. 
+1. Specify the version number for GiveWP. 
 2. Describe the problem in detail. Explain what happened, and what you expected would happen.
 3. If helpful, include a screenshot. Annotate the screenshot for clarity.
 
-## How to contribute to Give
+## How to contribute to GiveWP
 
 If you would like to submit a pull request, please follow the steps below:
 
@@ -27,13 +27,13 @@ If you would like to submit a pull request, please follow the steps below:
 * Make changes to your fork of the repository
 * Ensure you stick to the [WordPress Coding Standards](https://codex.wordpress.org/WordPress_Coding_Standards)
  *  When committing, reference your issue (if present) and include a note about the fix
-* Push the changes to your fork and [submit a pull request](https://help.github.com/articles/creating-a-pull-request) to the 'master' branch of the Give repository
+* Push the changes to your fork and [submit a pull request](https://help.github.com/articles/creating-a-pull-request) to the 'master' branch of the GiveWP repository
 
 ## Code Documentation
 
-* We ensure that every Give function is documented well and follows the standards set by phpDoc
+* We ensure that every GiveWP function is documented well and follows the standards set by phpDoc
 * If you're adding/editing a function in a class, make sure to add `@access {private|public|protected}`
-* Finally, please use tabs and not spaces. The tab indent size should be 4 for all Give code.
+* Finally, please use tabs and not spaces. The tab indent size should be 4 for all GiveWP code.
 
 At this point, you're waiting for us to merge your pull request. We'll review all pull requests, and make suggestions and changes if necessary.
 

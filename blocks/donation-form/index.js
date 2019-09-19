@@ -18,8 +18,8 @@ import GiveForm from './edit/block';
 
 export default registerBlockType( 'give/donation-form', {
 
-	title: __( 'Give Form' ),
-	description: __( 'The Give Donation Form block inserts an existing donation form into the page. Each form\'s presentation can be customized below.' ),
+	title: __( 'Donation Form' ),
+	description: __( 'The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form\'s presentation can be customized below.' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [

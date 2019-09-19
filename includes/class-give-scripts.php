@@ -249,7 +249,7 @@ class Give_Scripts {
 		$stripe_user_id            = give_get_option( 'give_stripe_user_id', false );
 		$disconnect_stripe_message = sprintf(
 			/* translators: %s Stripe User ID */
-			__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
+			__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
 			$stripe_user_id
 		);
 
