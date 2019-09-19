@@ -8824,9 +8824,6 @@ msgstr ""
 msgid "Edit Donor: %s %s"
 msgstr ""
 
-#: includes/admin/donors/donors.php:359
-msgstr ""
-
 #: includes/admin/donors/donors.php:396
 msgid "Donor since"
 msgstr ""
