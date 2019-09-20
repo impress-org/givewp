@@ -66,8 +66,43 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Load files which are necessary for front as well as admin end.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-helpers.php';
 
-			// Bailout, if any of the Stripe gateway is not active.
+			// Bailout, if any of the Stripe gateways are not active.
 			if ( ! give_stripe_is_any_payment_method_active() ) {
+
+				// If `get_plugin_data` fn not exists then include the file.
+				if ( ! function_exists( 'get_plugin_data' ) ) {
+					require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				}
+
+				// Hardcoded recurring plugin basename to show notice even when recurring addon is deactivated.
+				$recurring_plugin_basename = 'give-recurring/give-recurring.php';
+				$recurring_plugin_data     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $recurring_plugin_basename );
+
+				// Avoid fatal error for smooth update for customers.
+				if (
+					isset( $recurring_plugin_data['Version'] ) &&
+					version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
+				) {
+					add_action( 'admin_notices', function() {
+
+						// Register error notice.
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-recurring-fatal-error',
+								'type'        => 'error',
+								'description' => sprintf(__( '<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give' ), 'https://wordpress.org/plugins/wp-rollback/', 'https://givewp.com/support/'),
+								'show'        => true,
+							)
+						);
+					});
+
+					// Deactivate recurring addon to avoid fatal error.
+					deactivate_plugins( $recurring_plugin_basename );
+					if ( isset( $_GET['activate'] ) ) {
+						unset( $_GET['activate'] );
+					}
+				}
+
 				return;
 			}
 
