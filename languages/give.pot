@@ -11514,19 +11514,19 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:93
+#: includes/gateways/stripe/class-give-stripe.php:99
 msgid "<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the <a href=\"%s\" target=\"_blank\">WP Rollback</a> plugin and <a href=\"%s\" target=\"_blank\">contact support</a> for prompt assistance."
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:183
+#: includes/gateways/stripe/class-give-stripe.php:193
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:184, includes/gateways/stripe/class-give-stripe.php:190
+#: includes/gateways/stripe/class-give-stripe.php:194, includes/gateways/stripe/class-give-stripe.php:200
 msgid "Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:189
+#: includes/gateways/stripe/class-give-stripe.php:199
 msgid "Stripe - Checkout"
 msgstr ""
 

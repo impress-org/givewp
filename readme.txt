@@ -223,6 +223,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.5.7: September 20th, 2019 =
+* Fix: Resolved issues with the notice added in the previous version displaying incorrectly for sites that do not have Recurring Donations installed or activated. [#4257](https://github.com/impress-org/givewp/pull/4257)
+
 = 2.5.6: September 19th, 2019 =
 * Notice: Please update the Recurring Donations add-on to version `1.9.4+` in order to use GiveWP 2.5.5+.
 * Fix: Resolved a fatal error occuring if using an outdated version of the Recurring Donations add-on. The plugin will now display a message and deactivate the add-on to prevent the error. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the [WP Rollback](https://wordpress.org/plugins/wp-rollback/) plugin and [contact support](https://givewp.com/support/) for prompt assistance. [#4255](https://github.com/impress-org/givewp/pull/4255)
