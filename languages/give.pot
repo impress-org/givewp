@@ -19,36 +19,36 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: give.php:662
+#: give.php:663
 msgid "Your site could be faster and more secure with a newer PHP version."
 msgstr ""
 
-#: give.php:663
-msgid "Hey, we've noticed that you're running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we're sending you this notice."
-msgstr ""
-
 #: give.php:664
-msgid "Hosts have the ability to update your PHP version, but sometimes they don't dare to do that because they're afraid they'll break your site."
+msgid "Hey, we've noticed that you're running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we're sending you this notice."
 msgstr ""
 
 #: give.php:665
-msgid "To which version should I update?"
+msgid "Hosts have the ability to update your PHP version, but sometimes they don't dare to do that because they're afraid they'll break your site."
 msgstr ""
 
 #: give.php:666
-msgid "You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It's also the only PHP version still in active development and therefore the better option for your site in the long run."
+msgid "To which version should I update?"
 msgstr ""
 
 #: give.php:667
-msgid "Can't update? Ask your host!"
+msgid "You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It's also the only PHP version still in active development and therefore the better option for your site in the long run."
 msgstr ""
 
 #: give.php:668
+msgid "Can't update? Ask your host!"
+msgstr ""
+
+#: give.php:669
 msgid "If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don't want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s."
 msgstr ""
 
-#: give.php:694
-msgid "<strong>Attention:</strong> Give 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href=\"%1$s\" target=\"_blank\">logging into your account</a> and visiting <a href=\"%1$s\" target=\"_blank\">your downloads</a> page on the GiveWP website."
+#: give.php:695
+msgid "<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href=\"%1$s\" target=\"_blank\">logging into your account</a> and visiting <a href=\"%1$s\" target=\"_blank\">your downloads</a> page on the GiveWP website."
 msgstr ""
 
 #: blocks/load.php:16, includes/admin/plugins.php:255, includes/admin/welcome.php:179
@@ -60,7 +60,7 @@ msgid "WordPress user #%d is connected to #%d"
 msgstr ""
 
 #: includes/actions.php:282
-msgid "Give version %s is required to update this add-on."
+msgid "GiveWP version %s is required to update this add-on."
 msgstr ""
 
 #: includes/ajax-functions.php:202, includes/country-functions.php:502, includes/country-functions.php:550, includes/country-functions.php:801, includes/admin/import-functions.php:457, includes/forms/template.php:1219, includes/admin/settings/class-settings-general.php:246, includes/admin/tools/export/class-batch-export-donors.php:189, includes/admin/tools/export/give-export-donations-exporter.php:198
@@ -114,7 +114,7 @@ msgid "Offline Donation"
 msgstr ""
 
 #: includes/class-give-cache.php:152
-msgid "In order for <strong>database caching</strong> to work with Give you must add %1$s to the \"Ignored query stems\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
+msgid "In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the \"Ignored query stems\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
 msgstr ""
 
 #: includes/class-give-cache.php:172
@@ -130,7 +130,7 @@ msgid "Cache key format should be give_cache_*"
 msgstr ""
 
 #: includes/class-give-cli-commands.php:110
-msgid "Give Version: "
+msgid "GiveWP Version: "
 msgstr ""
 
 #: includes/class-give-cli-commands.php:115
@@ -233,7 +233,7 @@ msgstr ""
 msgid "%1$d donors created in %2$d seconds"
 msgstr ""
 
-#: includes/class-give-cli-commands.php:470, blocks/donor-wall/class-give-donor-wall.php:212, includes/admin/class-blank-slate.php:293, includes/admin/class-give-html-elements.php:266, includes/api/class-give-api.php:995
+#: includes/class-give-cli-commands.php:470, blocks/donor-wall/class-give-donor-wall.php:212, includes/admin/class-blank-slate.php:293, includes/admin/class-give-html-elements.php:266, includes/api/class-give-api.php:999
 msgid "No donors found."
 msgstr ""
 
@@ -270,7 +270,7 @@ msgid "Too many associative arguments."
 msgstr ""
 
 #: includes/class-give-cli-commands.php:1161
-msgid "The Give addon '%s' does not exist."
+msgid "The GiveWP add-on '%s' does not exist."
 msgstr ""
 
 #: includes/class-give-cli-commands.php:1169
@@ -316,7 +316,7 @@ msgid "Displays gravatars of people who have donated using your your form. Will 
 msgstr ""
 
 #: includes/class-give-donor-wall-widget.php:50
-msgid "Give Donors Gravatars"
+msgid "GiveWP Donor Gravatars"
 msgstr ""
 
 #: includes/class-give-donor-wall-widget.php:143, includes/forms/widget.php:145
@@ -426,19 +426,19 @@ msgid "Logs"
 msgstr ""
 
 #: includes/class-give-roles.php:54
-msgid "Give Manager"
+msgid "GiveWP Manager"
 msgstr ""
 
 #: includes/class-give-roles.php:85
-msgid "Give Accountant"
+msgid "GiveWP Accountant"
 msgstr ""
 
 #: includes/class-give-roles.php:91
-msgid "Give Worker"
+msgid "GiveWP Worker"
 msgstr ""
 
 #: includes/class-give-roles.php:99
-msgid "Give Donor"
+msgid "GiveWP Donor"
 msgstr ""
 
 #: includes/class-give-scripts.php:202, includes/admin/add-ons/actions.php:158
@@ -479,8 +479,8 @@ msgstr ""
 
 #. translators: %s Stripe User ID
 #. translators: %s Stripe User ID
-#: includes/class-give-scripts.php:252, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:480
-msgid "Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments."
+#: includes/class-give-scripts.php:252, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:578
+msgid "Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments."
 msgstr ""
 
 #: includes/class-give-scripts.php:268
@@ -523,7 +523,7 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1868, includes/api/class-give-api.php:1874, includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:498, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:205, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
+#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1872, includes/api/class-give-api.php:1878, includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:498, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:205, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
 msgid "Error"
 msgstr ""
 
@@ -5539,7 +5539,7 @@ msgstr ""
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:754, includes/formatting.php:791, includes/process-donation.php:850, includes/api/class-give-api.php:1868, includes/forms/functions.php:330, includes/gateways/actions.php:48, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
+#: includes/formatting.php:754, includes/formatting.php:791, includes/process-donation.php:850, includes/api/class-give-api.php:1872, includes/forms/functions.php:330, includes/gateways/actions.php:48, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
 msgid "We're unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance."
 msgstr ""
 
@@ -5628,11 +5628,11 @@ msgid "Untitled donation form"
 msgstr ""
 
 #: includes/misc-functions.php:410
-msgid "%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead."
+msgid "%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead."
 msgstr ""
 
 #: includes/misc-functions.php:414
-msgid "%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available."
+msgid "%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available."
 msgstr ""
 
 #: includes/misc-functions.php:512, includes/post-types.php:54
@@ -5958,11 +5958,11 @@ msgid "Form submitted."
 msgstr ""
 
 #: includes/post-types.php:463
-msgid "Give Single Form Sidebar"
+msgid "GiveWP Single Form Sidebar"
 msgstr ""
 
 #: includes/post-types.php:465
-msgid "Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms."
+msgid "Widgets in this area will be shown on the single GiveWP forms aside area. This sidebar will not display for embedded forms."
 msgstr ""
 
 #. translators: 1. Donor Email, 2. Submitted Email
@@ -6140,7 +6140,7 @@ msgid "The %s template was not found."
 msgstr ""
 
 #: includes/template-functions.php:403
-msgid "Give Placeholder Image"
+msgid "GiveWP Placeholder Image"
 msgstr ""
 
 #: includes/user-functions.php:308
@@ -6434,7 +6434,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: blocks/donation-form-grid/class-give-donation-form-grid-block.php:192, blocks/donor-wall/class-give-donor-wall.php:211, includes/admin/class-blank-slate.php:257
+#: blocks/donation-form-grid/class-give-donation-form-grid-block.php:192
 msgid "Give Icon"
 msgstr ""
 
@@ -6464,13 +6464,17 @@ msgstr ""
 msgid "Load more"
 msgstr ""
 
+#: blocks/donor-wall/class-give-donor-wall.php:211, includes/admin/class-blank-slate.php:257
+msgid "GiveWP Icon"
+msgstr ""
+
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
 #: blocks/donor-wall/class-give-donor-wall.php:215, includes/admin/class-blank-slate.php:299
 msgid "Need help? Learn more about %1$sDonors%2$s."
 msgstr ""
 
-#: includes/admin/abstract-admin-settings-page.php:185, includes/admin/views/html-admin-settings.php:129
+#: includes/admin/abstract-admin-settings-page.php:188, includes/admin/views/html-admin-settings.php:133
 msgid "Oops, this settings page does not exist."
 msgstr ""
 
@@ -6593,7 +6597,7 @@ msgid "Donor information updated successfully."
 msgstr ""
 
 #: includes/admin/admin-actions.php:542
-msgid "Give Test Mode Active"
+msgid "GiveWP Test Mode Active"
 msgstr ""
 
 #: includes/admin/admin-actions.php:587, includes/admin/tools/views/html-admin-page-import-donations.php:25, includes/admin/tools/views/html-admin-page-imports.php:47
@@ -6704,7 +6708,7 @@ msgid "Reports"
 msgstr ""
 
 #: includes/admin/admin-pages.php:71, includes/admin/welcome.php:272
-msgid "Give Settings"
+msgid "GiveWP Settings"
 msgstr ""
 
 #: includes/admin/admin-pages.php:72, includes/admin/plugins.php:31
@@ -6712,7 +6716,7 @@ msgid "Settings"
 msgstr ""
 
 #: includes/admin/admin-pages.php:84
-msgid "Give Tools"
+msgid "GiveWP Tools"
 msgstr ""
 
 #: includes/admin/admin-pages.php:85, includes/admin/tools/class-settings-data.php:65
@@ -6720,7 +6724,7 @@ msgid "Tools"
 msgstr ""
 
 #: includes/admin/admin-pages.php:115
-msgid "Give Add-ons"
+msgid "GiveWP Add-ons"
 msgstr ""
 
 #: includes/admin/admin-pages.php:116, includes/admin/class-give-welcome.php:121, includes/admin/class-give-welcome.php:598, includes/admin/plugins.php:81, includes/admin/welcome.php:135, includes/admin/settings/class-settings-addon.php:29
@@ -6741,7 +6745,7 @@ msgstr ""
 
 #. translators: %s: Add-on name
 #: includes/admin/class-addon-activation-banner.php:368
-msgid "New Give Add-on Activated: "
+msgid "New GiveWP Add-on Activated: "
 msgstr ""
 
 #: includes/admin/class-addon-activation-banner.php:389
@@ -6765,28 +6769,28 @@ msgstr ""
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:338
+#: includes/admin/class-admin-settings.php:429
 msgid "Add Field"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:473
+#: includes/admin/class-admin-settings.php:559
 msgid "Remove setting field"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:685, includes/admin/give-metabox-functions.php:864
+#: includes/admin/class-admin-settings.php:771, includes/admin/give-metabox-functions.php:864
 msgid "Add or Upload %s"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:685, includes/admin/give-metabox-functions.php:864
+#: includes/admin/class-admin-settings.php:771, includes/admin/give-metabox-functions.php:864
 msgid "File"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:685, includes/admin/give-metabox-functions.php:864
+#: includes/admin/class-admin-settings.php:771, includes/admin/give-metabox-functions.php:864
 msgid "Image"
 msgstr ""
 
 #. translators: %s Title
-#: includes/admin/class-admin-settings.php:883, includes/admin/give-metabox-functions.php:956
+#: includes/admin/class-admin-settings.php:969, includes/admin/give-metabox-functions.php:956
 msgid "Need Help? See docs on \"%s\""
 msgstr ""
 
@@ -6895,7 +6899,7 @@ msgstr ""
 #. translators: %s: Give version
 #. translators: %s: Give version
 #: includes/admin/class-give-welcome.php:67, includes/admin/welcome.php:76
-msgid "Give %s - Getting Started Guide"
+msgid "GiveWP %s - Getting Started Guide"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:68, includes/admin/welcome.php:77
@@ -6905,7 +6909,7 @@ msgstr ""
 #. translators: %s: Give version
 #. translators: %s: Give version
 #: includes/admin/class-give-welcome.php:77, includes/admin/welcome.php:86
-msgid "Give %s - Credits"
+msgid "GiveWP %s - Credits"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:78, includes/admin/welcome.php:87
@@ -6922,7 +6926,7 @@ msgstr ""
 
 #. translators: %s: Give version
 #: includes/admin/class-give-welcome.php:147, includes/admin/welcome.php:57
-msgid "Welcome to Give %s"
+msgid "Welcome to GiveWP %s"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:148
@@ -6930,11 +6934,11 @@ msgid "Thank you for activating the latest version of Give! Welcome to the best 
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:152
-msgid "What's New in Give %s"
+msgid "What's New in GiveWP %s"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:153
-msgid "Give is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping Give up to date with the latest version."
+msgid "GiveWP is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping GiveWP up to date with the latest version."
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:157
@@ -6944,7 +6948,7 @@ msgstr ""
 #. translators: %s: https://github.com/impress-org/give
 #. translators: %s: https://github.com/impress-org/give
 #: includes/admin/class-give-welcome.php:160, includes/admin/class-give-welcome.php:419
-msgid "Give is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href=\"%s\" target=\"_blank\">GitHub Repo</a>."
+msgid "GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href=\"%s\" target=\"_blank\">GitHub Repo</a>."
 msgstr ""
 
 #. translators: %s: Give version
@@ -6957,7 +6961,7 @@ msgid "Version %s"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:219, includes/admin/welcome.php:306
-msgid "Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let's begin!"
+msgid "Getting started with GiveWP is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let's begin!"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:227
@@ -6965,7 +6969,7 @@ msgid "Configure your payment methods"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:230
-msgid "Before you can begin fundraising, first you need to set up your payment gateway. Payment gateways allow you to accept payment methods through your donation forms. Give supports many of the top payment processors through our add-ons. Stripe and PayPal Standard are included for free in the core plugin. Please ensure your site is running securely with a valid SSL certificate before accepting online payments."
+msgid "Before you can begin fundraising, first you need to set up your payment gateway. Payment gateways allow you to accept payment methods through your donation forms. GiveWP supports many of the top payment processors through our add-ons. Stripe and PayPal Standard are included for free in the core plugin. Please ensure your site is running securely with a valid SSL certificate before accepting online payments."
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:232
@@ -6977,7 +6981,7 @@ msgid "View Premium Gateways"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:251
-msgid "Note: The free version of the Stripe payment gateway for Give does not include Apple or Google Pay. In the core plugin, using the free version of Stripe includes an additional 2% fee for a one-time donation in addition to the standard Stripe processing fee. Stripe Premium (the Stripe Add-on for Give) does not include this additional fee. Using PayPal standard does not include any additional fees. However, the donor will be taken to PayPal’s website to process their donation before being redirected back to your site."
+msgid "Note: The free version of the Stripe payment gateway for GiveWP does not include Apple or Google Pay. In the core plugin, using the free version of Stripe includes an additional 2% fee for a one-time donation in addition to the standard Stripe processing fee. Stripe Premium (the Stripe Add-on for Give) does not include this additional fee. Using PayPal standard does not include any additional fees. However, the donor will be taken to PayPal’s website to process their donation before being redirected back to your site."
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:289
@@ -7035,7 +7039,7 @@ msgid "Start off on the right foot"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:579
-msgid "If you aren’t quite sure how to get started or you want to see the best ways to use Give for your fundraising needs, book a demo. Our Customer Success Team is happy to help."
+msgid "If you aren’t quite sure how to get started or you want to see the best ways to use GiveWP for your fundraising needs, book a demo. Our Customer Success Team is happy to help."
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:583
@@ -7047,7 +7051,7 @@ msgid "Support"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:589
-msgid "Inevitably questions arise when building great fundraising websites. That’s exactly why we have a dedicated support staff of Give experts to help you succeed with your campaign. "
+msgid "Inevitably questions arise when building great fundraising websites. That’s exactly why we have a dedicated support staff of GiveWP experts to help you succeed with your campaign. "
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:592
@@ -7055,7 +7059,7 @@ msgid "How support works"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:599
-msgid "Accept recurring donations, add custom donation form fields, ask donors to cover processing fees and more! Level up your fundraisers by extending Give with add-ons."
+msgid "Accept recurring donations, add custom donation form fields, ask donors to cover processing fees and more! Level up your fundraisers by extending GiveWP with add-ons."
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:601
@@ -7067,7 +7071,7 @@ msgid "Documentation"
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:607
-msgid "Learn the ins and outs of Give with well organized and clearly written documentation. You can search using a keyword to find articles for Give Core and each add-on. "
+msgid "Learn the ins and outs of GiveWP with well organized and clearly written documentation. You can search using a keyword to find articles for GiveWP Core and each add-on. "
 msgstr ""
 
 #: includes/admin/class-give-welcome.php:609
@@ -7111,7 +7115,7 @@ msgid "complete the translation"
 msgstr ""
 
 #: includes/admin/class-i18n-module.php:178
-msgid "Help Translate Give to %s"
+msgid "Help Translate GiveWP to %s"
 msgstr ""
 
 #: includes/admin/class-i18n-module.php:181
@@ -7143,8 +7147,8 @@ msgstr ""
 
 #. translators: %s: number of posts published
 #: includes/admin/dashboard-widgets.php:186
-msgid "%s Give Form"
-msgid_plural "%s Give Forms"
+msgid "%s GiveWP Form"
+msgid_plural "%s GiveWP Forms"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -7406,7 +7410,7 @@ msgstr ""
 
 #. translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier
 #: includes/admin/misc-functions.php:139
-msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href=\"%1$s\" target=\"_blank\">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%2$s\" target=\"_blank\">Zapier</a>."
+msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href=\"%1$s\" target=\"_blank\">GiveWP REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%2$s\" target=\"_blank\">Zapier</a>."
 msgstr ""
 
 #: includes/admin/misc-functions.php:236
@@ -7414,7 +7418,7 @@ msgid "There was an error retrieving the GiveWP add-ons list from the server. Pl
 msgstr ""
 
 #: includes/admin/plugins.php:469
-msgid "Give Deactivation"
+msgid "GiveWP Deactivation"
 msgstr ""
 
 #: includes/admin/plugins.php:472
@@ -7466,11 +7470,11 @@ msgid "Please describe why you're deactivating Give"
 msgstr ""
 
 #: includes/admin/plugins.php:563
-msgid "Would you like to delete all Give data?"
+msgid "Would you like to delete all GiveWP data?"
 msgstr ""
 
 #: includes/admin/plugins.php:566
-msgid "By default the custom roles, Give options, and database entries are not deleted when you deactivate Give. If you are deleting Give completely from your website and want those items removed as well check this option. Note: This will permanently delete all Give data from your database."
+msgid "By default the custom roles, GiveWP options, and database entries are not deleted when you deactivate Give. If you are deleting GiveWP completely from your website and want those items removed as well check this option. Note: This will permanently delete all GiveWP data from your database."
 msgstr ""
 
 #: includes/admin/welcome.php:58
@@ -7478,7 +7482,7 @@ msgid "Welcome to Give"
 msgstr ""
 
 #: includes/admin/welcome.php:66, includes/admin/welcome.php:67
-msgid "Give Changelog"
+msgid "GiveWP Changelog"
 msgstr ""
 
 #: includes/admin/welcome.php:123
@@ -7491,11 +7495,11 @@ msgid "Thank you for activating or updating to the latest version of Give! If yo
 msgstr ""
 
 #: includes/admin/welcome.php:184, includes/admin/tools/export/pdf-reports.php:82, includes/admin/tools/export/pdf-reports.php:83
-msgid "Give - Democratizing Generosity"
+msgid "GiveWP - Democratizing Generosity"
 msgstr ""
 
 #: includes/admin/welcome.php:186
-msgid "Give empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created Give to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause."
+msgid "GiveWP empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created GiveWP to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause."
 msgstr ""
 
 #: includes/admin/welcome.php:188
@@ -7507,15 +7511,15 @@ msgid "Getting to Know Give"
 msgstr ""
 
 #: includes/admin/welcome.php:203
-msgid "Before you get started with Give we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have a question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause."
+msgid "Before you get started with GiveWP we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have a question, issue or bug with the Core plugin please submit an issue on the GiveWP website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause."
 msgstr ""
 
 #: includes/admin/welcome.php:208
-msgid "Visit the Give Website"
+msgid "Visit the GiveWP Website"
 msgstr ""
 
 #: includes/admin/welcome.php:210
-msgid "View the Give Features"
+msgid "View the GiveWP Features"
 msgstr ""
 
 #: includes/admin/welcome.php:212
@@ -7523,12 +7527,12 @@ msgid "Read the Documentation"
 msgstr ""
 
 #: includes/admin/welcome.php:219
-msgid "A Give donation form"
+msgid "A GiveWP donation form"
 msgstr ""
 
 #. translators: %s: Give version
 #: includes/admin/welcome.php:246
-msgid "Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!"
+msgid "Thank you for updating to the latest version! GiveWP %s is ready to make your online store faster, safer, and better!"
 msgstr ""
 
 #: includes/admin/welcome.php:261
@@ -7544,7 +7548,7 @@ msgid "STEP 1: Create a New Form"
 msgstr ""
 
 #: includes/admin/welcome.php:313
-msgid "Give is driven by its powerful donation form building features. However, it is much more than just a \"donation form.\" From the \"Add Form\" page you'll be able to choose how and where you want to receive your donations. You will also be able to set the preferred donation amounts."
+msgid "GiveWP is driven by its powerful donation form building features. However, it is much more than just a \"donation form.\" From the \"Add Form\" page you'll be able to choose how and where you want to receive your donations. You will also be able to set the preferred donation amounts."
 msgstr ""
 
 #: includes/admin/welcome.php:315
@@ -7564,7 +7568,7 @@ msgid "STEP 3: Add Additional Content"
 msgstr ""
 
 #: includes/admin/welcome.php:345
-msgid "Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget."
+msgid "Every donation form you create with GiveWP can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget."
 msgstr ""
 
 #: includes/admin/welcome.php:364
@@ -7581,80 +7585,80 @@ msgstr ""
 
 #. translators: %s: https://github.com/impress-org/give
 #: includes/admin/welcome.php:409
-msgid "Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href=\"%s\" target=\"_blank\">GitHub Repo</a>."
+msgid "GiveWP is created by a dedicated team of developers. If you are interested in contributing please visit the <a href=\"%s\" target=\"_blank\">GitHub Repo</a>."
 msgstr ""
 
-#: includes/api/class-give-api.php:472
+#: includes/api/class-give-api.php:476
 msgid "You must specify both a token and API key."
 msgstr ""
 
-#: includes/api/class-give-api.php:489
+#: includes/api/class-give-api.php:493
 msgid "Your request could not be authenticated."
 msgstr ""
 
-#: includes/api/class-give-api.php:506
+#: includes/api/class-give-api.php:510
 msgid "Invalid API key."
 msgstr ""
 
-#: includes/api/class-give-api.php:522
+#: includes/api/class-give-api.php:526
 msgid "Invalid API version."
 msgstr ""
 
-#: includes/api/class-give-api.php:672
+#: includes/api/class-give-api.php:676
 msgid "Invalid query."
 msgstr ""
 
 #. translators: %s: donor
-#: includes/api/class-give-api.php:987
+#: includes/api/class-give-api.php:991
 msgid "Donor %s not found."
 msgstr ""
 
 #. translators: %s: form
 #. translators: %s: form
 #. translators: %s: form
-#: includes/api/class-give-api.php:1044, includes/api/class-give-api.php:1290, includes/api/class-give-api.php:1419
+#: includes/api/class-give-api.php:1048, includes/api/class-give-api.php:1294, includes/api/class-give-api.php:1423
 msgid "Form %s not found."
 msgstr ""
 
-#: includes/api/class-give-api.php:1177, includes/api/class-give-api.php:1308
+#: includes/api/class-give-api.php:1181, includes/api/class-give-api.php:1312
 msgid "The end date must be later than the start date."
 msgstr ""
 
-#: includes/api/class-give-api.php:1182, includes/api/class-give-api.php:1313
+#: includes/api/class-give-api.php:1186, includes/api/class-give-api.php:1317
 msgid "Invalid or no date range specified."
 msgstr ""
 
-#: includes/api/class-give-api.php:1822
-msgid "Give API Keys"
+#: includes/api/class-give-api.php:1826
+msgid "GiveWP API Keys"
 msgstr ""
 
-#: includes/api/class-give-api.php:1831
+#: includes/api/class-give-api.php:1835
 msgid "Generate API Key"
 msgstr ""
 
-#: includes/api/class-give-api.php:1833
+#: includes/api/class-give-api.php:1837
 msgid "Public key:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1837
+#: includes/api/class-give-api.php:1841
 msgid "Secret key:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1841
+#: includes/api/class-give-api.php:1845
 msgid "Token:"
 msgstr ""
 
-#: includes/api/class-give-api.php:1846
+#: includes/api/class-give-api.php:1850
 msgid "Revoke API Keys"
 msgstr ""
 
-#: includes/api/class-give-api.php:1874
+#: includes/api/class-give-api.php:1878
 msgid "User ID Required."
 msgstr ""
 
 #. translators: %s: process
 #. translators: %s: process
-#: includes/api/class-give-api.php:1889, includes/api/class-give-api.php:1894
+#: includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898
 msgid "You do not have permission to %s API keys for this user."
 msgstr ""
 
@@ -8131,11 +8135,11 @@ msgid "Please log in in order to complete your donation."
 msgstr ""
 
 #: includes/forms/widget.php:39
-msgid "Give - Donation Form"
+msgid "GiveWP - Donation Form"
 msgstr ""
 
 #: includes/forms/widget.php:41
-msgid "Display a Give Donation Form in your theme's widget powered sidebar."
+msgid "Display a GiveWP Donation Form in your theme's widget powered sidebar."
 msgstr ""
 
 #: includes/forms/widget.php:147
@@ -8143,7 +8147,7 @@ msgid "Leave blank to hide the widget title."
 msgstr ""
 
 #: includes/forms/widget.php:152
-msgid "Give Form:"
+msgid "GiveWP Form:"
 msgstr ""
 
 #: includes/forms/widget.php:154, includes/admin/shortcodes/abstract-shortcode-generator.php:301
@@ -8151,7 +8155,7 @@ msgid "- Select -"
 msgstr ""
 
 #: includes/forms/widget.php:161
-msgid "Select a Give Form to embed in this widget."
+msgid "Select a GiveWP Form to embed in this widget."
 msgstr ""
 
 #: includes/forms/widget.php:166, includes/admin/shortcodes/shortcode-give-donation-grid.php:129
@@ -8175,7 +8179,7 @@ msgid "Button"
 msgstr ""
 
 #: includes/forms/widget.php:172
-msgid "Select a Give Form style."
+msgid "Select a GiveWP donation form style."
 msgstr ""
 
 #: includes/forms/widget.php:178
@@ -8204,7 +8208,7 @@ msgstr ""
 
 #. translators: %s: Documentation link to http://docs.givewp.com/form-floating-labels
 #: includes/forms/widget.php:193
-msgid "Override the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this Give form."
+msgid "Override the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this GiveWP form."
 msgstr ""
 
 #: includes/forms/widget.php:202
@@ -8220,7 +8224,7 @@ msgid "Below"
 msgstr ""
 
 #: includes/forms/widget.php:206
-msgid "Override the display content setting for this Give form."
+msgid "Override the display content setting for this GiveWP form."
 msgstr ""
 
 #: includes/gateways/actions.php:146
@@ -8618,7 +8622,7 @@ msgid "Sorry, you are not allowed to upload add-ons on this site."
 msgstr ""
 
 #: includes/admin/add-ons/actions.php:46
-msgid "Sorry, you can not upload plugins because Give does not have direct access to the file system. Please <a href=\"%1$s\" target=\"_blank\">click here</a> to upload the add-on."
+msgid "Sorry, you can not upload plugins because GiveWP does not have direct access to the file system. Please <a href=\"%1$s\" target=\"_blank\">click here</a> to upload the add-on."
 msgstr ""
 
 #: includes/admin/add-ons/actions.php:56
@@ -8818,9 +8822,6 @@ msgstr ""
 #. translators: %s: donor first name
 #: includes/admin/donors/donors.php:245
 msgid "Edit Donor: %s %s"
-msgstr ""
-
-#: includes/admin/donors/donors.php:359
 msgstr ""
 
 #: includes/admin/donors/donors.php:396
@@ -9141,7 +9142,7 @@ msgid "From Name"
 msgstr ""
 
 #: includes/admin/emails/class-email-notifications.php:151, includes/admin/settings/class-settings-email.php:76
-msgid "The name which appears in the \"From\" field in all Give donation emails."
+msgid "The name which appears in the \"From\" field in all GiveWP donation emails."
 msgstr ""
 
 #: includes/admin/emails/class-email-notifications.php:157, includes/admin/settings/class-settings-email.php:82
@@ -9149,7 +9150,7 @@ msgid "From Email"
 msgstr ""
 
 #: includes/admin/emails/class-email-notifications.php:158, includes/admin/settings/class-settings-email.php:83
-msgid "Email address from which all Give emails are sent from. This will act as the \"from\" and \"reply-to\" email address."
+msgid "Email address from which all GiveWP emails are sent from. This will act as the \"from\" and \"reply-to\" email address."
 msgstr ""
 
 #: includes/admin/emails/class-email-notifications.php:166
@@ -9161,7 +9162,7 @@ msgid "Choose whether you want this email enabled or not."
 msgstr ""
 
 #: includes/admin/emails/class-email-setting-field.php:183
-msgid "Global Options are set <a href=\"%s\">in Give settings</a>. You may override them for this form here."
+msgid "Global Options are set <a href=\"%s\">in GiveWP settings</a>. You may override them for this form here."
 msgstr ""
 
 #: includes/admin/emails/class-email-setting-field.php:186
@@ -9197,7 +9198,7 @@ msgid "See our documentation"
 msgstr ""
 
 #: includes/admin/emails/class-email-setting-field.php:260
-msgid "for examples of how to use custom meta email tags to output additional donor or donation information in your Give emails."
+msgid "for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails."
 msgstr ""
 
 #: includes/admin/emails/class-email-setting-field.php:268
@@ -9443,7 +9444,7 @@ msgid "Default Gateway"
 msgstr ""
 
 #: includes/admin/forms/class-metabox-form-data.php:278
-msgid "By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only."
+msgid "By default, the gateway for this form will inherit the global default gateway (set under GiveWP > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only."
 msgstr ""
 
 #: includes/admin/forms/class-metabox-form-data.php:283, includes/admin/settings/class-settings-display.php:84
@@ -9520,7 +9521,7 @@ msgstr ""
 
 #. translators: %s: forms http://docs.givewp.com/form-floating-labels
 #: includes/admin/forms/class-metabox-form-data.php:370
-msgid "Select the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this Give form. Be aware that if you have the \"Disable CSS\" option enabled, you will need to style the floating labels yourself."
+msgid "Select the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this GiveWP form. Be aware that if you have the \"Disable CSS\" option enabled, you will need to style the floating labels yourself."
 msgstr ""
 
 #: includes/admin/forms/class-metabox-form-data.php:397, includes/admin/forms/class-metabox-form-data.php:402, includes/admin/forms/class-metabox-form-data.php:441, includes/admin/forms/class-metabox-form-data.php:492
@@ -10148,7 +10149,7 @@ msgid "Remove Data on Uninstall"
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:62
-msgid "When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything."
+msgid "When the plugin is deleted, completely remove all GiveWP data. This includes all GiveWP settings, forms, form meta, donor, donor data, donations. Everything."
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:67
@@ -10156,7 +10157,7 @@ msgid "Yes, Remove all data"
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:68
-msgid "No, keep my Give settings and donation data"
+msgid "No, keep my GiveWP settings and donation data"
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:72
@@ -10182,7 +10183,7 @@ msgid "Script Loading Location"
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:94
-msgid "This allows you to load your Give scripts either in the <code>&lt;head&gt;</code> or footer of your website."
+msgid "This allows you to load your GiveWP scripts either in the <code>&lt;head&gt;</code> or footer of your website."
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:99
@@ -10215,7 +10216,7 @@ msgstr ""
 
 #. translators: %s: about page URL
 #: includes/admin/settings/class-settings-advanced.php:128
-msgid "Enable this option if you would like to disable the <a href=\"%s\" target=\"_blank\">Give Welcome screen</a> that displays each time Give is activated or updated."
+msgid "Enable this option if you would like to disable the <a href=\"%s\" target=\"_blank\">GiveWP Welcome screen</a> that displays each time GiveWP is activated or updated."
 msgstr ""
 
 #: includes/admin/settings/class-settings-advanced.php:145
@@ -10251,7 +10252,7 @@ msgid "Please properly configure Akismet to enable SPAM protection."
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:56
-msgid "Default Give Styles"
+msgid "Default GiveWP Styles"
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:57
@@ -10328,7 +10329,7 @@ msgid "Single Form Sidebar"
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:218
-msgid "The sidebar allows you to add additional widgets to the Give single form view. If you don't plan on using the sidebar you may disable it with this option."
+msgid "The sidebar allows you to add additional widgets to the GiveWP single form view. If you don't plan on using the sidebar you may disable it with this option."
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:228
@@ -10344,7 +10345,7 @@ msgid "Form Categories"
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:249
-msgid "Enable Categories for all Give forms."
+msgid "Enable Categories for all GiveWP forms."
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:259
@@ -10352,7 +10353,7 @@ msgid "Form Tags"
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:260
-msgid "Enable Tags for all Give forms."
+msgid "Enable Tags for all GiveWP forms."
 msgstr ""
 
 #: includes/admin/settings/class-settings-display.php:270
@@ -10412,11 +10413,11 @@ msgid "Donation Notification Settings"
 msgstr ""
 
 #: includes/admin/settings/class-settings-email.php:106
-msgid "Email notifications sent from Give for donor are listed below. Click on an email to configure it."
+msgid "Email notifications sent from GiveWP for donor are listed below. Click on an email to configure it."
 msgstr ""
 
 #: includes/admin/settings/class-settings-email.php:127
-msgid "Email notifications sent from Give for admin are listed below. Click on an email to configure it."
+msgid "Email notifications sent from GiveWP for admin are listed below. Click on an email to configure it."
 msgstr ""
 
 #: includes/admin/settings/class-settings-email.php:151
@@ -10480,7 +10481,7 @@ msgid "PayPal Transaction Type"
 msgstr ""
 
 #: includes/admin/settings/class-settings-gateways.php:75
-msgid "Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal's donation requirements."
+msgid "Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal's donation requirements."
 msgstr ""
 
 #: includes/admin/settings/class-settings-gateways.php:80
@@ -10515,7 +10516,7 @@ msgstr ""
 msgid "PayPal Standard Gateway Settings"
 msgstr ""
 
-#: includes/admin/settings/class-settings-gateways.php:135, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:179
+#: includes/admin/settings/class-settings-gateways.php:135, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:199
 msgid "Collect Billing Details"
 msgstr ""
 
@@ -10588,7 +10589,7 @@ msgid "Session Lifetime"
 msgstr ""
 
 #: includes/admin/settings/class-settings-general.php:65
-msgid "The length of time a user's session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in."
+msgid "The length of time a user's session is kept alive. GiveWP starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in."
 msgstr ""
 
 #: includes/admin/settings/class-settings-general.php:68
@@ -10720,7 +10721,7 @@ msgstr ""
 msgid "Currency Options Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:260
+#: includes/admin/settings/class-settings-general.php:260, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:111
 msgid "General Settings"
 msgstr ""
 
@@ -10863,7 +10864,7 @@ msgid "Drag an add-on zip file below to upload and activate it. Access your down
 msgstr ""
 
 #: includes/admin/settings/class-settings-license.php:163
-msgid "Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href=\"%1$s\" target=\"_blank\">click here</a> to upload Give Add-on."
+msgid "Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href=\"%1$s\" target=\"_blank\">click here</a> to upload GiveWP Add-on."
 msgstr ""
 
 #: includes/admin/settings/class-settings-license.php:181
@@ -10932,7 +10933,7 @@ msgid "Insert"
 msgstr ""
 
 #: includes/admin/shortcodes/class-shortcode-button.php:192
-msgid "Give Shortcodes"
+msgid "GiveWP Shortcodes"
 msgstr ""
 
 #: includes/admin/shortcodes/class-shortcode-button.php:220
@@ -11342,7 +11343,7 @@ msgid "Learn more about the Register Shortcode"
 msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-totals.php:26, includes/admin/shortcodes/shortcode-give-totals.php:27
-msgid "Give Totals"
+msgid "GiveWP Totals"
 msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-totals.php:50
@@ -11454,11 +11455,11 @@ msgid "System Info"
 msgstr ""
 
 #: includes/admin/upgrades/class-give-updates.php:253
-msgid "Give Updates Complete"
+msgid "GiveWP Updates Complete"
 msgstr ""
 
 #: includes/admin/upgrades/class-give-updates.php:269
-msgid "Give Updates"
+msgid "GiveWP Updates"
 msgstr ""
 
 #: includes/admin/upgrades/class-give-updates.php:616, includes/admin/upgrades/class-give-updates.php:624, includes/admin/upgrades/class-give-updates.php:662
@@ -11482,7 +11483,7 @@ msgid "Read More"
 msgstr ""
 
 #: includes/admin/upgrades/class-give-updates.php:649, includes/admin/upgrades/class-give-updates.php:814, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:11
-msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
+msgid "GiveWP database updates completed successfully. Thank you for updating to the latest version!"
 msgstr ""
 
 #: includes/admin/upgrades/class-give-updates.php:663
@@ -11502,23 +11503,27 @@ msgid "Updates Completed."
 msgstr ""
 
 #: includes/admin/upgrades/upgrade-functions.php:498
-msgid "You do not have permission to do Give upgrades."
+msgid "You do not have permission to do GiveWP upgrades."
 msgstr ""
 
 #: includes/admin/views/html-admin-settings.php:88
 msgid "View remaining setting tabs"
 msgstr ""
 
-#: includes/admin/views/html-admin-settings.php:124
+#: includes/admin/views/html-admin-settings.php:123
 msgid "Save changes"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:107
+#: includes/gateways/stripe/class-give-stripe.php:148
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:108
+#: includes/gateways/stripe/class-give-stripe.php:149, includes/gateways/stripe/class-give-stripe.php:155
 msgid "Credit Card"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe.php:154
+msgid "Stripe - Checkout"
 msgstr ""
 
 #: tests/framework/helpers/class-helper-form.php:166
@@ -11757,7 +11762,7 @@ msgid "Hidden Custom Field Columns:"
 msgstr ""
 
 #: includes/admin/tools/export/give-export-donations-functions.php:575
-msgid "The following hidden custom fields contain data created by Give Core, a Give Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export."
+msgid "The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export."
 msgstr ""
 
 #: includes/admin/tools/export/pdf-reports.php:31
@@ -11799,7 +11804,7 @@ msgid "Graph View"
 msgstr ""
 
 #: includes/admin/tools/export/pdf-reports.php:316
-msgid "Donations by Month for all Give Forms"
+msgid "Donations by Month for all GiveWP Forms"
 msgstr ""
 
 #: includes/admin/tools/export/pdf-reports.php:327
@@ -11895,7 +11900,7 @@ msgid "Import Core Settings from a JSON file"
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:354
-msgid "This tool allows you to import Give settings from another Give installation. Settings imported contain data from Give core as well as any of our Premium Add-ons."
+msgid "This tool allows you to import GiveWP settings from another GiveWP installation. Settings imported contain data from GiveWP core as well as any of our Premium Add-ons."
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:360
@@ -12325,7 +12330,7 @@ msgid "Export Columns:"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-exports.php:165
-msgid "Export Give Settings"
+msgid "Export GiveWP Settings"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-exports.php:167
@@ -12365,7 +12370,7 @@ msgid "Import CSV"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-imports.php:61
-msgid "Import Give Settings"
+msgid "Import GiveWP Settings"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-imports.php:63
@@ -12762,31 +12767,31 @@ msgid "Remote Get"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:410
-msgid "Give plugins may use this method of communication when checking for plugin updates."
+msgid "GiveWP plugins may use this method of communication when checking for plugin updates."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:417
-msgid "wp_remote_get() failed. The Give plugin updater won't work with your server. Contact your hosting provider."
+msgid "wp_remote_get() failed. The GiveWP plugin updater won't work with your server. Contact your hosting provider."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:449
-msgid "Give Configuration"
+msgid "GiveWP Configuration"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:454
-msgid "Give Version"
+msgid "GiveWP Version"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:455
-msgid "The version of Give installed on your site."
+msgid "The version of GiveWP installed on your site."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:459, includes/admin/tools/views/html-admin-page-system-info.php:526
-msgid "Give Cache"
+msgid "GiveWP Cache"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:460, includes/admin/tools/views/html-admin-page-system-info.php:527
-msgid "Whether cache is enabled in Give settings."
+msgid "Whether cache is enabled in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:464, includes/admin/upgrades/views/db-upgrades-complete-metabox.php:4, includes/admin/upgrades/views/upgrades.php:52
@@ -12822,11 +12827,11 @@ msgid "This will show list of installed database tables."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:531
-msgid "Give Emails"
+msgid "GiveWP Emails"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:532
-msgid "Whether emails is enabled in Give settings."
+msgid "Whether emails is enabled in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:558
@@ -12834,19 +12839,19 @@ msgid "Upgraded From"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:559
-msgid "The version of Give installed prior to the last update."
+msgid "The version of GiveWP installed prior to the last update."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:564
-msgid "Whether Test Mode is enabled in Give settings."
+msgid "Whether Test Mode is enabled in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:569
-msgid "The currency code selected in Give settings."
+msgid "The currency code selected in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:574
-msgid "The currency position selected in Give settings."
+msgid "The currency position selected in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:575
@@ -12858,11 +12863,11 @@ msgid "After"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:579
-msgid "The decimal separator defined in Give settings."
+msgid "The decimal separator defined in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:584
-msgid "The thousands separator defined in Give settings."
+msgid "The thousands separator defined in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:589
@@ -12882,11 +12887,11 @@ msgid "The page where past donations are listed."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:603
-msgid "Give Forms Slug"
+msgid "GiveWP Forms Slug"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:604
-msgid "The slug used for Give donation forms."
+msgid "The slug used for GiveWP donation forms."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:631
@@ -12894,7 +12899,7 @@ msgid "Enabled Payment Gateways"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:632
-msgid "All payment gateways enabled in Give settings."
+msgid "All payment gateways enabled in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:636
@@ -12902,7 +12907,7 @@ msgid "Default Payment Gateway"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:637
-msgid "The default payment gateway selected in Give settings."
+msgid "The default payment gateway selected in GiveWP settings."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:642
@@ -12938,7 +12943,7 @@ msgid "Displays whether when last Stripe Webhook is received with which donation
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:702
-msgid "Active Give Add-ons"
+msgid "Active GiveWP Add-ons"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:724, includes/admin/tools/views/html-admin-page-system-info.php:789, includes/admin/tools/views/html-admin-page-system-info.php:836, includes/admin/tools/views/html-admin-page-system-info.php:884, includes/admin/upgrades/views/plugins-update-section.php:18
@@ -13007,7 +13012,7 @@ msgid "Whether the current theme is a child theme."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:943
-msgid "If you're modifying Give on a parent theme you didn't build personally, then we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to Create a Child Theme</a>"
+msgid "If you're modifying GiveWP on a parent theme you didn't build personally, then we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to Create a Child Theme</a>"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:951
@@ -13039,23 +13044,23 @@ msgid "Unlicensed add-ons cannot be updated. Please purchase or renew a valid li
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades-complete.php:21
-msgid "Give %s Updates Complete"
+msgid "GiveWP %s Updates Complete"
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades-complete.php:28
-msgid "Congratulations! You are all up to date and running the latest versions of Give and its add-ons."
+msgid "Congratulations! You are all up to date and running the latest versions of GiveWP and its add-ons."
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:25
-msgid "Give %s Updates"
+msgid "GiveWP %s Updates"
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:46
-msgid "Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
+msgid "GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:60
-msgid "Give is currently updating the database. Please do not refresh or leave this page while the update is in progress."
+msgid "GiveWP is currently updating the database. Please do not refresh or leave this page while the update is in progress."
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:68
@@ -13063,7 +13068,7 @@ msgid "%1$s <a href=\"%2$s\" class=\"give-update-now %3$s\">%4$s</a>"
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:72
-msgid "Give is currently updating the database"
+msgid "GiveWP is currently updating the database"
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:73
@@ -13071,7 +13076,7 @@ msgid "in the background."
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:75
-msgid "Give needs to update the database."
+msgid "GiveWP needs to update the database."
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:78
@@ -13095,8 +13100,8 @@ msgid "Add-on Updates"
 msgstr ""
 
 #: includes/admin/upgrades/views/upgrades.php:163
-msgid "There is %1$d Give addon that needs to be updated. <a href=\"%2$s\">Update now</a>"
-msgid_plural "There are %1$d Give addons that need to be updated. <a href=\"%2$s\">Update now</a>"
+msgid "There is %1$d GiveWP addon that needs to be updated. <a href=\"%2$s\">Update now</a>"
+msgid_plural "There are %1$d GiveWP addons that need to be updated. <a href=\"%2$s\">Update now</a>"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -13112,35 +13117,45 @@ msgstr ""
 msgid "Credit card fields are disabled because your site is not running securely over HTTPS."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:298
-msgid "Stripe - Customer Creation Error"
-msgstr ""
-
-#. translators: %s Site URL
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:274
-msgid "Stripe Customer generated by GiveWP via %s"
-msgstr ""
-
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:304, includes/gateways/stripe/includes/class-give-stripe-customer.php:398, includes/gateways/stripe/includes/class-give-stripe-customer.php:416, includes/gateways/stripe/includes/class-give-stripe-customer.php:507, includes/gateways/stripe/includes/class-give-stripe-customer.php:525, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:196, includes/gateways/stripe/includes/give-stripe-helpers.php:685, includes/gateways/stripe/includes/give-stripe-helpers.php:788, includes/gateways/stripe/includes/give-stripe-helpers.php:953, includes/gateways/stripe/includes/admin/admin-actions.php:191, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:371
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:55, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:95, includes/gateways/stripe/includes/class-give-stripe-customer.php:307, includes/gateways/stripe/includes/class-give-stripe-customer.php:401, includes/gateways/stripe/includes/class-give-stripe-customer.php:419, includes/gateways/stripe/includes/class-give-stripe-customer.php:510, includes/gateways/stripe/includes/class-give-stripe-customer.php:528, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:191, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
 msgid "Stripe Error"
 msgstr ""
 
 #. translators: %s Exception Message Body
-#. translators: %s Exception Message Body
-#. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:307, includes/gateways/stripe/includes/class-give-stripe-customer.php:401, includes/gateways/stripe/includes/class-give-stripe-customer.php:510
-msgid "The Stripe Gateway returned an error while creating the customer. Details: %s"
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:58
+msgid "The Stripe Gateway returned an error while creating the Checkout Session. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:311, includes/gateways/stripe/includes/class-give-stripe-customer.php:405, includes/gateways/stripe/includes/class-give-stripe-customer.php:514, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:62, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:102, includes/gateways/stripe/includes/class-give-stripe-customer.php:314, includes/gateways/stripe/includes/class-give-stripe-customer.php:408, includes/gateways/stripe/includes/class-give-stripe-customer.php:517, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
 msgid "An occurred while processing the donation with the gateway. Please try your donation again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:415, includes/gateways/stripe/includes/class-give-stripe-customer.php:524, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:795
+#. translators: %s Exception Message Body
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:98
+msgid "The Stripe Gateway returned an error while retrieving the Checkout Session. Details: %s"
+msgstr ""
+
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:301
+msgid "Stripe - Customer Creation Error"
+msgstr ""
+
+#. translators: %s Site URL
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:277
+msgid "Stripe Customer generated by GiveWP via %s"
+msgstr ""
+
+#. translators: %s Exception Message Body
+#. translators: %s Exception Message Body
+#. translators: %s Exception Message Body
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:310, includes/gateways/stripe/includes/class-give-stripe-customer.php:404, includes/gateways/stripe/includes/class-give-stripe-customer.php:513
+msgid "The Stripe Gateway returned an error while creating the customer. Details: %s"
+msgstr ""
+
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:418, includes/gateways/stripe/includes/class-give-stripe-customer.php:527, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
 msgid "An error occurred while processing the donation. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:416, includes/gateways/stripe/includes/class-give-stripe-customer.php:525, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:419, includes/gateways/stripe/includes/class-give-stripe-customer.php:528, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
 msgid "An error occurred retrieving or creating the "
 msgstr ""
 
@@ -13177,8 +13192,7 @@ msgid "Stripe Card Error"
 msgstr ""
 
 #. translators: %s Exception Error Message
-#. translators: Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:324, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:374
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:324
 msgid "The Stripe Gateway returned an error while processing a donation. Details: %s"
 msgstr ""
 
@@ -13206,16 +13220,16 @@ msgstr ""
 msgid "Your donation could not be recorded, please contact the site administrator."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:582
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:549
 msgid "Stripe Charge Error"
 msgstr ""
 
 #. translators: %s Exception Error Message
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:585
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:552
 msgid "Unable to create a successful charge. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:589
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:556
 msgid "Error processing donation with Stripe. Please try again."
 msgstr ""
 
@@ -13364,65 +13378,61 @@ msgstr ""
 msgid "Webhook received with ID %1$s and TYPE %2$s which processed and returned a message %3$s."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:152
-msgid "Charge succeeded in Stripe."
-msgstr ""
-
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:165
-msgid "Charge failed in Stripe."
-msgstr ""
-
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:181
-msgid "Charge refunded in Stripe."
-msgstr ""
-
-#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:196
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168
 msgid "An error occurred while processing a webhook."
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:154
-msgid "Connect with Stripe"
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:195, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:228
+msgid "Charge succeeded in Stripe."
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:610
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:259
+msgid "Charge failed in Stripe."
+msgstr ""
+
+#: includes/gateways/stripe/includes/class-give-stripe-webhooks.php:291
+msgid "Charge refunded in Stripe."
+msgstr ""
+
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:461
 msgid "-- N/A --"
 msgstr ""
 
 #. translators: %s Exception Error Message
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:688
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:539
 msgid "Unable to set application information to Stripe. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:693
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:544
 msgid "Unable to set application information to Stripe. Please try again."
 msgstr ""
 
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:791
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:637
 msgid "Unable to set Stripe API Key. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1112, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:285
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:958, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:275
 msgid "Stripe Customer Creation Failed"
 msgstr ""
 
 #. translators: %s Donation Data
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1115, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:288
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:961, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:278
 msgid "Customer creation failed while processing the donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:1119, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:292
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:965, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:282, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:164
 msgid "The Stripe Gateway returned an error while processing the donation."
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-scripts.php:52, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:243
+#: includes/gateways/stripe/includes/give-stripe-scripts.php:52, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:347
 msgid "Donation Processing..."
 msgstr ""
 
 #. translators: %s Error Message
 #: includes/gateways/stripe/includes/admin/admin-actions.php:75
-msgid "<strong>Error:</strong> Give could not disconnect from the Stripe API. Reason: %s"
+msgid "<strong>Error:</strong> GiveWP could not disconnect from the Stripe API. Reason: %s"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/admin-actions.php:112
@@ -13451,235 +13461,251 @@ msgstr ""
 msgid "<strong>Stripe Connect:</strong> %1$s %2$s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:67, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:110, includes/gateways/stripe/includes/admin/class-give-stripe-logs.php:101
+#: includes/gateways/stripe/includes/admin/admin-helpers.php:160
+msgid "Connect with Stripe"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:67, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:95, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:130, includes/gateways/stripe/includes/admin/class-give-stripe-logs.php:101
 msgid "Stripe"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:94
-msgid "Stripe Settings"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:112
+msgid "Credit Card On Site"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:141
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:113
+msgid "Stripe Checkout"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:161
 msgid "Stripe Connect"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:159, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:533
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:179, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:631
 msgid "Stripe Webhooks"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:167
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:187
 msgid "Statement Descriptor"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:168
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:188
 msgid "This is the text that appears on your donor's bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>'</code>, or <code>\"</code>, and must not consist solely of numbers. This is typically the name of your website or organization."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:180
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:200
 msgid "This option will enable the billing details section for Stripe which requires the donor's address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:186
-msgid "Credit Card Fields Format"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:187
-msgid "This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:193
-msgid "Single Field"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:194
-msgid "Multi Field"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:208
-msgid "Enable Stripe Checkout"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:209
-msgid "This option will enable <a href=\"%s\" target=\"_blank\">Stripe's modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page."
-msgstr ""
-
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:215
-msgid "Checkout Heading"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:216
-msgid "This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:224
-msgid "Stripe Checkout Image"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:225
-msgid "This image appears in when the Stripe checkout modal window opens and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:234
-msgid "Add or Upload Image"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:239
-msgid "Processing Text"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:240
-msgid "This text appears briefly after the donor has made a successful donation while Give is confirming the payment with the Stripe API."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:248
-msgid "Verify Zip Code"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:249
-msgid "Specify whether Checkout should validate the billing ZIP code of the donor for added fraud protection."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:257
-msgid "Remember Me"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:258
-msgid "Specify whether to include the option to \"Remember Me\" for future donations."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:275, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:278
-msgid "Stripe Gateway Documentation"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:336
-msgid "Stripe SDK Compatibility"
-msgstr ""
-
-#. translators: 1. GiveWP Support URL
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:339
-msgid "If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href=\"%1$s\" target=\"_blank\">Stripe SDK</a> (Software Development Kit) either through <a href=\"%2$s\" target=\"_blank\">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href=\"%3$s\" target=\"_blank\">contact support</a>."
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:347
-msgid "Composer Autoloading"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:348
-msgid "Manual Initialization"
-msgstr ""
-
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:354
 msgid "Stripe Receipt Emails"
 msgstr ""
 
 #. translators: 1. GiveWP Support URL
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:357
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:218
 msgid "Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href=\"%1$s\" target=\"_blank\">receipt emails</a>."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:365
-msgid "Stripe JS Incompatibility"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:226, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:229, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:277, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:280, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:379, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:382
+msgid "Stripe Gateway Documentation"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:366
-msgid "If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:255
+msgid "Credit Card Fields Format"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:372
-msgid "Stripe Styles"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:256
+msgid "This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:373
-msgid "Edit the properties above to match the look and feel of your WordPress theme. These styles will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. Any valid CSS property can be defined, however, it must be formatted as JSON, not CSS. For more information on Styling Stripe CC fields please see this <a href=\"https://stripe.com/docs/stripe-js/reference#element-options\" target=\"_blank\">article</a>."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:262
+msgid "Single Field"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:380
-msgid "Stripe Fonts"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:263
+msgid "Multi Field"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:381
-msgid "Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href=\"https://stripe.com/docs/stripe-js/reference#stripe-elements\" target=\"_blank\">article</a>."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:307
+msgid "Checkout Type"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:386
-msgid "Google Fonts"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:308
+msgid "This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The \"Modal\" option is the <a href=\"%s\" target=\"_blank\">legacy Stripe Checkout</a> and is not SCA compatible. The \"Redirect\" option uses Stripe's new <a href=\"%s\" target=\"_blank\">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:387, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:400
-msgid "Custom Fonts"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:314
+msgid "Modal (Legacy Checkout)"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:392
-msgid "Google Fonts URL"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:315
+msgid "Redirect (Checkout 2.0)"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:393
-msgid "Please enter the Google Fonts URL which is applied to your theme to have the Stripe Credit Card fields reflect the same fonts."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:320
+msgid "Checkout Heading"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:401
-msgid "Edit the font properties above to match the fonts of your WordPress theme. These font properties will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. However, it must be formatted as JSON, not CSS."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:321
+msgid "This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:329
+msgid "Stripe Checkout Image"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:330
+msgid "This image appears in when the Stripe checkout modal window opens and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:339
+msgid "Add or Upload Image"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:344
+msgid "Processing Text"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:345
+msgid "This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:352
+msgid "Verify Zip Code"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:353
+msgid "Specify whether Checkout should validate the billing ZIP code of the donor for added fraud protection."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:361
+msgid "Remember Me"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:362
+msgid "Specify whether to include the option to \"Remember Me\" for future donations."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:448
+msgid "Stripe SDK Compatibility"
+msgstr ""
+
+#. translators: 1. GiveWP Support URL
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:451
+msgid "If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href=\"%1$s\" target=\"_blank\">Stripe SDK</a> (Software Development Kit) either through <a href=\"%2$s\" target=\"_blank\">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href=\"%3$s\" target=\"_blank\">contact support</a>."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:459
+msgid "Composer Autoloading"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:460
+msgid "Manual Initialization"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:466
+msgid "Stripe JS Incompatibility"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:467
+msgid "If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:473
+msgid "Stripe Styles"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:474
+msgid "Edit the properties above to match the look and feel of your WordPress theme. These styles will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. Any valid CSS property can be defined, however, it must be formatted as JSON, not CSS. For more information on Styling Stripe CC fields please see this <a href=\"https://stripe.com/docs/stripe-js/reference#element-options\" target=\"_blank\">article</a>."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:481
+msgid "Stripe Fonts"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:482
+msgid "Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href=\"https://stripe.com/docs/stripe-js/reference#stripe-elements\" target=\"_blank\">article</a>."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:487
+msgid "Google Fonts"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:488, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:501
+msgid "Custom Fonts"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:493
+msgid "Google Fonts URL"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:494
+msgid "Please enter the Google Fonts URL which is applied to your theme to have the Stripe Credit Card fields reflect the same fonts."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:502
+msgid "Edit the font properties above to match the fonts of your WordPress theme. These font properties will be applied to Stripe Credit Card fields including Card Number, CVC and Expiration. However, it must be formatted as JSON, not CSS."
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:564
 msgid "Stripe Connection"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:477
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:575
 msgid "Stripe is connected."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:485
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:583
 msgid "[Disconnect]"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:492
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:590
 msgid "Stripe is NOT connected."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:506
-msgid "The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:604
+msgid "The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href=\"%1$s\" target=\"_blank\">Stripe add-on</a> and never applies to subscription donations made through the <a href=\"%2$s\" target=\"_blank\">Recurring Donations add-on</a>. <a href=\"%3$s\" target=\"_blank\">Learn More ></a>"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:540
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:638
 msgid "In order for Stripe to function properly, you must configure your Stripe webhooks."
 msgstr ""
 
 #. translators: 1. Webhook settings page.
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:543
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:641
 msgid " You can  visit your <a href=\"%1$s\" target=\"_blank\">Stripe Account Dashboard</a> to add a new webhook. "
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:546
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:644
 msgid "Please add a new webhook endpoint for the following URL:"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:550
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:648
 msgid "Webhook URL:"
 msgstr ""
 
 #. translators: 1. Documentation on webhook setup.
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:568
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:666
 msgid "See our <a href=\"%1$s\" target=\"_blank\">documentation</a> for more information."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:576
-msgid "Stripe webhooks are important to setup so Give can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode."
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:674
+msgid "Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:617
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:715
 msgid "Base Styles"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:631
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:729
 msgid "Empty Styles"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:647
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:745
 msgid "Invalid Styles"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:663
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:761
 msgid "Complete Styles"
 msgstr ""
 
@@ -13704,23 +13730,25 @@ msgstr ""
 msgid "A Stripe token failed to be generated. Please check Stripe logs for more information."
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:199
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:199, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:128
 msgid "Donation creating error"
 msgstr ""
 
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:202
+#. translators: %s Donation Data
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:202, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:131
 msgid "Unable to create a pending donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:206
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:206, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:135
 msgid "The Stripe Gateway returned an error while creating a pending donation."
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:384
-msgid "Donor Error"
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:157
+msgid "Invalid Checkout Error"
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:384
-msgid "Donor has cancelled the payment during authorization process."
+#. translators: %s Donation Data
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:160
+msgid "Invalid Checkout type passed to process the donation. Details: %s"
 msgstr ""

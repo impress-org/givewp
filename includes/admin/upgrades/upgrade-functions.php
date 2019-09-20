@@ -495,7 +495,7 @@ function give_trigger_upgrades() {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die(
-			esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			esc_html__( 'You do not have permission to do GiveWP upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
 				'response' => 403,
 			)
 		);

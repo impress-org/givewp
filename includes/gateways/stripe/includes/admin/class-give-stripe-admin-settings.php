@@ -72,6 +72,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			}
 
 			add_filter( 'give_get_sections_gateways', array( $this, 'register_sections' ) );
+			add_filter( 'give_get_groups_stripe-settings', array( $this, 'register_groups' ) );
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
@@ -91,9 +92,28 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 */
 		public function register_sections( $sections ) {
-			$sections['stripe-settings'] = __( 'Stripe Settings', 'give' );
+			$sections['stripe-settings'] = __( 'Stripe', 'give' );
 
 			return $sections;
+		}
+
+		/**
+		 * Register groups of a section.
+		 *
+		 * @since  2.6.0
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function register_groups() {
+
+			$groups = array(
+				'general'     => __( 'General Settings', 'give' ),
+				'credit-card' => __( 'Credit Card On Site', 'give' ),
+				'checkout'    => __( 'Stripe Checkout', 'give' ),
+			);
+
+			return apply_filters( 'give_stripe_register_groups', $groups );
 		}
 
 		/**
@@ -124,20 +144,20 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function register_settings( $settings ) {
 
-			switch ( give_get_current_setting_section() ) {
+			$section = give_get_current_setting_section();
+
+			switch ( $section ) {
 
 				case 'stripe-settings':
-					// Stripe Admin Settings - Header
-					$settings = array(
-						array(
-							'id'   => 'give_title_stripe',
-							'type' => 'title',
-						),
+					// Stripe Admin Settings - Header.
+					$settings['general'][] = array(
+						'id'   => 'give_title_stripe_general',
+						'type' => 'title',
 					);
 
 					if ( apply_filters( 'give_stripe_show_connect_button', true ) ) {
 						// Stripe Admin Settings - Configuration Fields.
-						$settings[] = array(
+						$settings['general'][] = array(
 							'name'          => __( 'Stripe Connect', 'give' ),
 							'desc'          => '',
 							'wrapper_class' => 'give-stripe-connect-tr',
@@ -155,7 +175,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name'          => __( 'Stripe Webhooks', 'give' ),
 						'desc'          => '',
 						'wrapper_class' => 'give-stripe-webhooks-tr',
@@ -163,7 +183,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type'          => 'stripe_webhooks',
 					);
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name'       => __( 'Statement Descriptor', 'give' ),
 						'desc'       => __( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
 						'id'         => 'stripe_statement_descriptor',
@@ -175,24 +195,96 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'default'    => get_bloginfo( 'name' ),
 					);
 
-					$settings[] = array(
+					$settings['general'][] = array(
 						'name' => __( 'Collect Billing Details', 'give' ),
 						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
 					);
 
-					$settings[] = array(
+					/**
+					 * This filter hook is used to add fields after Stripe General fields.
+					 *
+					 * @since 2.5.5
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
+
+					$settings['general'][] = array(
+						'name' => __( 'Stripe Receipt Emails', 'give' ),
+						'desc' => sprintf(
+							/* translators: 1. GiveWP Support URL */
+							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
+							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
+						),
+						'id'   => 'stripe_receipt_emails',
+						'type' => 'checkbox',
+					);
+
+					$settings['general'][] = array(
+						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'id'    => 'display_settings_general_docs_link',
+						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'type'  => 'give_docs_link',
+					);
+
+					// Stripe Admin Settings - Footer.
+					$settings['general'][] = array(
+						'id'   => 'give_title_stripe_general',
+						'type' => 'sectionend',
+					);
+
+					// Stripe Admin Settings - Header.
+					$settings['credit-card'][] = array(
+						'id'   => 'give_title_stripe_credit_card',
+						'type' => 'title',
+					);
+
+					/**
+					 * This filter hook is used to add fields before Stripe Credit Card fields.
+					 *
+					 * @since 2.5.5
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
+
+					$settings['credit-card'][] = array(
 						'name'          => __( 'Credit Card Fields Format', 'give' ),
 						'desc'          => __( 'This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
-						'wrapper_class' => 'stripe-cc-field-format-settings ' . $this->stripe_modal_checkout_status( 'disabled' ),
+						'wrapper_class' => 'stripe-cc-field-format-settings',
 						'type'          => 'radio_inline',
 						'default'       => 'multi',
 						'options'       => array(
 							'single' => __( 'Single Field', 'give' ),
 							'multi'  => __( 'Multi Field', 'give' ),
 						),
+					);
+
+					/**
+					 * This filter hook is used to add fields after Stripe Credit Card fields.
+					 *
+					 * @since 2.5.5
+					 *
+					 * @return array
+					 */
+					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
+
+					$settings['credit-card'][] = array(
+						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'id'    => 'display_settings_credit_card_docs_link',
+						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'type'  => 'give_docs_link',
+					);
+
+					// Stripe Admin Settings - Footer.
+					$settings['credit-card'][] = array(
+						'id'   => 'give_title_stripe_credit_card',
+						'type' => 'sectionend',
 					);
 
 					/**
@@ -204,14 +296,27 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_checkout_fields', $settings );
 
-					$settings[] = array(
-						'name' => __( 'Enable Stripe Checkout', 'give' ),
-						'desc' => sprintf( __( 'This option will enable <a href="%s" target="_blank">Stripe\'s modal checkout</a> where the donor will complete the donation rather than the default credit card fields on page.', 'give' ), 'http://docs.givewp.com/stripe-checkout' ),
-						'id'   => 'stripe_checkout_enabled',
-						'type' => 'checkbox',
+					// Checkout.
+					$settings['checkout'][] = array(
+						'id'   => 'give_title_stripe_checkout',
+						'type' => 'title',
 					);
 
-					$settings[] = array(
+
+					$settings['checkout'][] = array(
+						'name'          => __( 'Checkout Type', 'give' ),
+						'desc'          => sprintf(__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout'),
+						'id'            => 'stripe_checkout_type',
+						'wrapper_class' => 'stripe-checkout-type',
+						'type'          => 'radio_inline',
+						'default'       => 'modal',
+						'options'       => array(
+							'modal'    => __( 'Modal (Legacy Checkout)', 'give' ),
+							'redirect' => __( 'Redirect (Checkout 2.0)', 'give' ),
+						),
+					);
+
+					$settings['checkout'][] = array(
 						'name'          => __( 'Checkout Heading', 'give' ),
 						'desc'          => __( 'This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website.', 'give' ),
 						'id'            => 'stripe_checkout_name',
@@ -220,7 +325,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type'          => 'text',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Stripe Checkout Image', 'give' ),
 						'desc'          => __( 'This image appears in when the Stripe checkout modal window opens and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
 						'id'            => 'stripe_checkout_image',
@@ -235,16 +340,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Processing Text', 'give' ),
-						'desc'          => __( 'This text appears briefly after the donor has made a successful donation while Give is confirming the payment with the Stripe API.', 'give' ),
+						'desc'          => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
 						'id'            => 'stripe_checkout_processing_text',
-						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => __( 'Donation Processing...', 'give' ),
 						'type'          => 'text',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Verify Zip Code', 'give' ),
 						'desc'          => __( 'Specify whether Checkout should validate the billing ZIP code of the donor for added fraud protection.', 'give' ),
 						'id'            => 'stripe_checkout_zip_verify',
@@ -253,7 +357,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type'          => 'checkbox',
 					);
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'          => __( 'Remember Me', 'give' ),
 						'desc'          => __( 'Specify whether to include the option to "Remember Me" for future donations.', 'give' ),
 						'id'            => 'stripe_checkout_remember_me',
@@ -271,19 +375,27 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
-					$settings[] = array(
+					$settings['checkout'][] = array(
 						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
-						'id'    => 'display_settings_docs_link',
+						'id'    => 'display_settings_checkout_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
 						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					);
 
 					// Stripe Admin Settings - Footer.
-					$settings[] = array(
-						'id'   => 'give_title_stripe',
+					$settings['checkout'][] = array(
+						'id'   => 'give_title_stripe_checkout',
 						'type' => 'sectionend',
 					);
+
+					/**
+					 * This filter is used to add setting fields for additional groups.
+					 *
+					 * @since 2.5.5
+					 */
+					$settings = apply_filters( 'give_stripe_add_additional_group_fields', $settings );
+
 					break;
 			} // End switch().
 
@@ -348,17 +460,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							'manual'   => __( 'Manual Initialization', 'give' ),
 						),
 						'default' => 'composer',
-					);
-
-					$settings[] = array(
-						'name' => __( 'Stripe Receipt Emails', 'give' ),
-						'desc' => sprintf(
-							/* translators: 1. GiveWP Support URL */
-							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
-							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
-						),
-						'id'   => 'stripe_receipt_emails',
-						'type' => 'checkbox',
 					);
 
 					$settings[] = array(
@@ -438,13 +539,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function stripe_modal_checkout_status( $status = 'enabled' ) {
 
-			$stripe_checkout = give_stripe_is_checkout_enabled();
+			$checkout_type = give_stripe_get_checkout_type();
 
-			if (
-				( $stripe_checkout && 'disabled' === $status ) ||
-				( ! $stripe_checkout && 'enabled' === $status )
-			) {
-				return 'give-hidden';
+			if ( 'redirect' === $checkout_type ) {
+				 return 'give-hidden';
 			}
 
 			return '';
@@ -477,7 +575,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							esc_attr_e( 'Stripe is connected.', 'give' );
 							$disconnect_confirmation_message = sprintf(
 								/* translators: %s Stripe User ID */
-								__( 'Are you sure you want to disconnect Give from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to Give will need to reconnect in order to process payments.', 'give' ),
+								__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
 								$stripe_user_id
 							);
 							?>
@@ -503,7 +601,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<p class="give-field-description">
 							<?php
 							echo sprintf(
-								__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by using the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
+								__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
 								esc_url( 'https://givewp.com/addons/stripe-gateway/' ),
 								esc_url( 'https://givewp.com/addons/recurring-donations/' ),
 								esc_url( 'http://docs.givewp.com/addon-stripe' )
@@ -573,7 +671,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					</div>
 
 					<p class="give-field-description">
-						<?php esc_html_e( 'Stripe webhooks are important to setup so Give can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
+						<?php esc_html_e( 'Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
 					</p>
 				</td>
 			</tr>

@@ -65,3 +65,17 @@ function give_get_current_setting_page() {
 	// Output.
 	return $setting_page;
 }
+
+/**
+ * This function will fetch all the groups of a current section.
+ *
+ * @since 2.5.5
+ *
+ * @return array
+ */
+function give_get_settings_groups() {
+
+	$current_section = give_get_current_setting_section();
+
+	return apply_filters( 'give_get_groups_' . $current_section, array() );
+}

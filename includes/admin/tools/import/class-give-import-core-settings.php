@@ -351,7 +351,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			<tr valign="top">
 				<th colspan="2">
 					<h2 id="give-import-title"><?php esc_html_e( 'Import Core Settings from a JSON file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import Give settings from another Give installation. Settings imported contain data from Give core as well as any of our Premium Add-ons.', 'give' ) ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import GiveWP settings from another GiveWP installation. Settings imported contain data from GiveWP core as well as any of our Premium Add-ons.', 'give' ) ?></p>
 				</th>
 			</tr>
 

@@ -130,7 +130,7 @@ class Give_Sequential_Donation_Number {
 
 			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
-			error_log( "Give caught exception: {$e->getMessage()}" );
+			error_log( "GiveWP caught exception: {$e->getMessage()}" );
 		}
 	}
 

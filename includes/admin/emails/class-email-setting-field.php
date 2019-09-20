@@ -180,7 +180,7 @@ class Give_Email_Setting_Field {
 			$default_value = 'global';
 		}
 
-		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( __( 'Global Options are set <a href="%s">in Give settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
+		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( __( 'Global Options are set <a href="%s">in GiveWP settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
 
 		return array(
 			'name'          => esc_html__( 'Notification', 'give' ),
@@ -257,7 +257,7 @@ class Give_Email_Setting_Field {
 					'<br><a href="%1$s" target="_blank">%2$s</a> %3$s',
 					esc_url( 'http://docs.givewp.com/meta-email-tags' ),
 					__( 'See our documentation', 'give' ),
-					__( 'for examples of how to use custom meta email tags to output additional donor or donation information in your Give emails.', 'give' )
+					__( 'for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails.', 'give' )
 				)
 			);
 

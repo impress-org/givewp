@@ -540,11 +540,11 @@ class Give_Payments_Query extends Give_Stats {
 
 		if ( is_numeric( $this->args['user'] ) ) {
 			// Backward compatibility: user donor param to get payment attached to donor instead of user
-			$donor_id = Give()->donors->get_column_by( 'id', is_numeric( $this->args['user'] ) ? 'user_id' : 'email', $this->args['user'] );
+			$donor_id = Give()->donors->get_column_by( 'id','user_id', $this->args['user'] );
 
 			$args = array(
 				'key'   => '_give_payment_donor_id',
-				'value' => absint( $donor_id ),
+				'value' => $donor_id ?: -1,
 			);
 		} elseif ( is_email( $this->args['user'] ) ) {
 			$args = array(

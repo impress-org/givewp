@@ -59,13 +59,13 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => __( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
+							'desc'    => __( 'When the plugin is deleted, completely remove all GiveWP data. This includes all GiveWP settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
 							'id'      => 'uninstall_on_delete',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
 								'enabled'  => __( 'Yes, Remove all data', 'give' ),
-								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
+								'disabled' => __( 'No, keep my GiveWP settings and donation data', 'give' ),
 							),
 						),
 						array(
@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => __( 'Script Loading Location', 'give' ),
-							'desc'    => __( 'This allows you to load your Give scripts either in the <code>&lt;head&gt;</code> or footer of your website.', 'give' ),
+							'desc'    => __( 'This allows you to load your GiveWP scripts either in the <code>&lt;head&gt;</code> or footer of your website.', 'give' ),
 							'id'      => 'scripts_footer',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -125,7 +125,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						array(
 							'name'    => __( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that displays each time Give is activated or updated.', 'give' ), array(
+							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Welcome screen</a> that displays each time GiveWP is activated or updated.', 'give' ), array(
 								'a' => array(
 									'href'   => array(),
 									'target' => array(),
@@ -140,7 +140,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name'        => 'Give Cache',
+							'name'        => 'GiveWP Cache',
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),
 							'desc'        => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),

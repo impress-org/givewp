@@ -78,7 +78,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 * @cover Give_Payments_Query::set_filters
 	 */
 	public function test_set_filters() {
-		/*
+		/**
 		 * Case 1
 		 * Default query arguments
 		 */
@@ -268,7 +268,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$default_args7['meta_query'] = array(
 			array(
 				'key'   => '_give_payment_donor_id',
-				'value' => 0,
+				'value' => -1,
 			),
 		);
 

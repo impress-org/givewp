@@ -51,7 +51,7 @@ class Give_Roles {
 	 * @return void
 	 */
 	public function add_roles() {
-		add_role( 'give_manager', __( 'Give Manager', 'give' ), array(
+		add_role( 'give_manager', __( 'GiveWP Manager', 'give' ), array(
 			'read'                   => true,
 			'edit_posts'             => true,
 			'delete_posts'           => true,
@@ -82,13 +82,13 @@ class Give_Roles {
 			'read_private_posts'     => true,
 		) );
 
-		add_role( 'give_accountant', __( 'Give Accountant', 'give' ), array(
+		add_role( 'give_accountant', __( 'GiveWP Accountant', 'give' ), array(
 			'read'         => true,
 			'edit_posts'   => false,
 			'delete_posts' => false,
 		) );
 
-		add_role( 'give_worker', __( 'Give Worker', 'give' ), array(
+		add_role( 'give_worker', __( 'GiveWP Worker', 'give' ), array(
 			'read'         => true,
 			'edit_posts'   => true,
 			'edit_pages'   => true,
@@ -96,7 +96,7 @@ class Give_Roles {
 			'delete_posts' => false,
 		) );
 
-		add_role( 'give_donor', __( 'Give Donor', 'give' ), array(
+		add_role( 'give_donor', __( 'GiveWP Donor', 'give' ), array(
 			'read' => true,
 		) );
 

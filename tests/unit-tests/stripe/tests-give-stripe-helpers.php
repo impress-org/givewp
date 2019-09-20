@@ -7,32 +7,6 @@
 class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 
 	/**
-	 * Unit test for function give_stripe_is_connected();
-	 *
-	 * @since 2.5.0
-	 *
-	 * @return void
-	 */
-	public function test_give_stripe_is_connected() {
-
-		// Should return false when stripe not connected.
-		$this->assertFalse( give_stripe_is_connected() );
-
-		// Ensure that Stripe is connected.
-		give_update_option( 'give_stripe_connected', '1' );
-		give_update_option( 'give_stripe_user_id', 'acct_xxxxxx' );
-		give_update_option( 'live_secret_key', 'sk_xxxxxx' );
-		give_update_option( 'test_secret_key', 'sk_test_xxxxxx' );
-		give_update_option( 'live_publishable_key', 'pk_xxxxxx' );
-		give_update_option( 'test_publishable_key', 'pk_test_xxxxxx' );
-		give_update_option( 'stripe_user_api_keys', 'disabled' );
-
-		// Should return true when stripe is connected.
-		$this->assertTrue( give_stripe_is_connected() );
-
-	}
-
-	/**
 	 * Unit test for function give_stripe_get_secret_key();
 	 *
 	 * @since 2.5.0
@@ -194,7 +168,7 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 
 		// We're asserting with `0.02` as the percentage are based on units and not sub-units.
 		// So, converting the fee percentage to be compatible with units is more sensible.
-		$this->assertEquals( 0.02, $fee_percentage );
+		$this->assertEquals( 2, $fee_percentage );
 
 		/**
 		 * Case 2: Zero-decimal currency.
@@ -225,7 +199,7 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		 */
 		give_update_option( 'currency', 'USD' );
 		$amount = give_stripe_get_application_fee_amount( 1324 );
-		$this->assertEquals( 0.26, round( $amount, 2 ) );
+		$this->assertEquals( 26.0, $amount );
 
 		/**
 		 * Case 2: Non zero-decimal currency without decimal value.
@@ -236,7 +210,7 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		 */
 		give_update_option( 'currency', 'USD' );
 		$amount = give_stripe_get_application_fee_amount( 2500 );
-		$this->assertEquals( 0.50, round( $amount, 2 ) );
+		$this->assertEquals( 50.0, $amount );
 
 		/**
 		 * Case 3: Zero-decimal currency with decimal value.
@@ -247,7 +221,7 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		 */
 		give_update_option( 'currency', 'JPY' );
 		$amount = give_stripe_get_application_fee_amount( 1324 );
-		$this->assertEquals( 26.48, round( $amount, 2 ) );
+		$this->assertEquals( 26.0, $amount );
 
 		/**
 		 * Case 4: Non zero-decimal currency without decimal value.
@@ -258,7 +232,7 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 		 */
 		give_update_option( 'currency', 'JPY' );
 		$amount = give_stripe_get_application_fee_amount( 2500 );
-		$this->assertEquals( 50.00, round( $amount, 2 ) );
+		$this->assertEquals( 50.0, $amount );
 	}
 
 	/**

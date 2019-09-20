@@ -539,7 +539,7 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 			'id'     => 'give-test-notice',
 			'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 			'parent' => 'top-secondary',
-			'title'  => __( 'Give Test Mode Active', 'give' ),
+			'title'  => __( 'GiveWP Test Mode Active', 'give' ),
 			'meta'   => array(
 				'class' => 'give-test-mode-active',
 			),

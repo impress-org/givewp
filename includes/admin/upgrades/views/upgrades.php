@@ -22,7 +22,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-		    class="wp-heading-inline"><?php echo sprintf( __( 'Give %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+		    class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
@@ -43,7 +43,7 @@ $give_updates = Give_Updates::get_instance();
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url('') ); ?></p>
+				<p><?php printf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url('') ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -57,7 +57,7 @@ $give_updates = Give_Updates::get_instance();
 									if ( ! give_test_ajax_works() ) {
 										echo sprintf(
 											'<div class="notice notice-warning inline"><p>%s</p></div>',
-											__( 'Give is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
+											__( 'GiveWP is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
 										);
 									}
 									?>
@@ -69,10 +69,10 @@ $give_updates = Give_Updates::get_instance();
 											$is_doing_updates
 												? sprintf(
 												'%s%s',
-												__( 'Give is currently updating the database', 'give' ),
+												__( 'GiveWP is currently updating the database', 'give' ),
 												give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
 											)
-												: __( 'Give needs to update the database.', 'give' ),
+												: __( 'GiveWP needs to update the database.', 'give' ),
 											$db_update_url,
 											( $is_doing_updates ? 'give-hidden' : '' ),
 											__( 'Update now', 'give' )
@@ -161,8 +161,8 @@ $give_updates = Give_Updates::get_instance();
 									<?php
 									printf(
 										_n(
-											'There is %1$d Give addon that needs to be updated. <a href="%2$s">Update now</a>',
-											'There are %1$d Give addons that need to be updated. <a href="%2$s">Update now</a>',
+											'There is %1$d GiveWP addon that needs to be updated. <a href="%2$s">Update now</a>',
+											'There are %1$d GiveWP addons that need to be updated. <a href="%2$s">Update now</a>',
 											$plugin_updates,
 											'give'
 										),

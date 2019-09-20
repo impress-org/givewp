@@ -36,9 +36,9 @@ class Give_Forms_Widget extends WP_Widget {
 
 		parent::__construct(
 			strtolower( $this->self ),
-			esc_html__( 'Give - Donation Form', 'give' ),
+			esc_html__( 'GiveWP - Donation Form', 'give' ),
 			array(
-				'description' => esc_html__( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' ),
+				'description' => esc_html__( 'Display a GiveWP Donation Form in your theme\'s widget powered sidebar.', 'give' ),
 			)
 		);
 
@@ -149,7 +149,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 			<?php // Widget: Give Form. ?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php esc_html_e( 'Give Form:', 'give' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php esc_html_e( 'GiveWP Form:', 'give' ); ?></label>
 				<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
 					<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 					<?php foreach ( $give_forms as $give_form ) { ?>
@@ -158,7 +158,7 @@ class Give_Forms_Widget extends WP_Widget {
 						<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo esc_html( $form_title ); ?></option>
 					<?php } ?>
 				</select><br>
-				<small class="give-field-description"><?php esc_html_e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
+				<small class="give-field-description"><?php esc_html_e( 'Select a GiveWP Form to embed in this widget.', 'give' ); ?></small>
 			</p>
 
 			<?php // Widget: Display Style. ?>
@@ -169,7 +169,7 @@ class Give_Forms_Widget extends WP_Widget {
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-modal"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-modal" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label>
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Button', 'give' ); ?></label><br>
 				<small class="give-field-description">
-					<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
+					<?php echo esc_html__( 'Select a GiveWP donation form style.', 'give' ); ?>
 				</small>
 			</p>
 
@@ -190,7 +190,7 @@ class Give_Forms_Widget extends WP_Widget {
 					<?php
 					printf(
 						/* translators: %s: Documentation link to http://docs.givewp.com/form-floating-labels */
-						__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
+						__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form.', 'give' ),
 						esc_url( 'http://docs.givewp.com/form-floating-labels' )
 					);
 					?>
@@ -203,7 +203,7 @@ class Give_Forms_Widget extends WP_Widget {
 				<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-none"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-none" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="none" <?php checked( $instance['show_content'], 'none' ); ?>> <?php echo esc_html__( 'None', 'give' ); ?></label>
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="above" <?php checked( $instance['show_content'], 'above' ); ?>> <?php echo esc_html__( 'Above', 'give' ); ?></label>
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
-				<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this Give form.', 'give' ); ?></small>
+				<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this GiveWP form.', 'give' ); ?></small>
 		</div>
 		<?php
 	}

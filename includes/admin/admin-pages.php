@@ -68,7 +68,7 @@ function give_add_options_links() {
 	//Settings
 	$give_settings_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'Give Settings', 'give' ),
+		esc_html__( 'GiveWP Settings', 'give' ),
 		esc_html__( 'Settings', 'give' ),
 		'manage_give_settings',
 		'give-settings',
@@ -81,7 +81,7 @@ function give_add_options_links() {
 	//Tools.
 	$give_tools_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'Give Tools', 'give' ),
+		esc_html__( 'GiveWP Tools', 'give' ),
 		esc_html__( 'Tools', 'give' ),
 		'manage_give_settings',
 		'give-tools',
@@ -112,7 +112,7 @@ function give_add_add_ons_option_link(){
 	//Add-ons
 	$give_add_ons_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'Give Add-ons', 'give' ),
+		esc_html__( 'GiveWP Add-ons', 'give' ),
 		esc_html__( 'Add-ons', 'give' ),
 		'install_plugins',
 		'give-addons',

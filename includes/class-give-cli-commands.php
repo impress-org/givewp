@@ -107,7 +107,7 @@ class GIVE_CLI_COMMAND {
 		/**
 		 * Plugin Information
 		 */
-		WP_CLI::log( $this->color_message( __( 'Give Version: ', 'give' ) ) . GIVE_VERSION );
+		WP_CLI::log( $this->color_message( __( 'GiveWP Version: ', 'give' ) ) . GIVE_VERSION );
 
 		/**
 		 * General Information.
@@ -756,10 +756,10 @@ class GIVE_CLI_COMMAND {
 
 				if ( $this->delete_stats_transients() ) {
 					// Report .eading.
-					WP_CLI::success( 'Give cache deleted.' );
+					WP_CLI::success( 'GiveWP cache deleted.' );
 				} else {
 					// Report .eading.
-					WP_CLI::warning( 'We did not find any Give plugin cache to delete :)' );
+					WP_CLI::warning( 'We did not find any GiveWP plugin cache to delete.' );
 				}
 				break;
 		}
@@ -1048,7 +1048,7 @@ class GIVE_CLI_COMMAND {
 
 
 			// Show success message on completion.
-			WP_CLI::success( 'Give Test mode enabled' );
+			WP_CLI::success( 'GiveWP Test mode enabled' );
 		}
 
 		// Disable Test Mode.
@@ -1070,7 +1070,7 @@ class GIVE_CLI_COMMAND {
 
 
 			// Show success message on completion.
-			WP_CLI::success( 'Give Test mode disabled' );
+			WP_CLI::success( 'GiveWP Test mode disabled' );
 		}
 	}
 
@@ -1120,22 +1120,22 @@ class GIVE_CLI_COMMAND {
 	 * ## OPTIONS
 	 *
 	 * [--name=<name>]
-	 * : Update a single addon.
+	 * : Update a single add-on.
 	 *
 	 * [--exclude=<names>]
-	 * : Names of addons that should be excluded from updating.
+	 * : Names of add-ons that should be excluded from updating.
 	 *
 	 * ## EXAMPLES
-	 * 	wp give addon-update
-	 * 	wp give addon-update --name="Give-Stripe"
-	 * 	wp give addon-update --exclude="Give-Stripe, Give-Recurring-Donations"
+	 * 	wp give add-on-update
+	 * 	wp give add-on-update --name="Give-Stripe"
+	 * 	wp give add-on-update --exclude="Give-Stripe, Give-Recurring-Donations"
 	 *
 	 * @param array $pos   Array of positional arguments.
 	 * @param array $assoc Array of associative arguments.
 	 *
 	 * @since 2.1.3
 	 *
-	 * @subcommand addon-update
+	 * @subcommand add-on-update
 	 */
 	public function addon_update( $pos, $assoc ) {
 
@@ -1158,7 +1158,7 @@ class GIVE_CLI_COMMAND {
 			 * not exist.
 			 */
 			if ( empty( $give_addon_path ) ) {
-				WP_CLI::error( sprintf( __( "The Give addon '%s' does not exist.", 'give' ), $addon_name ) );
+				WP_CLI::error( sprintf( __( "The GiveWP add-on '%s' does not exist.", 'give' ), $addon_name ) );
 			}
 
 			/**
@@ -1185,11 +1185,11 @@ class GIVE_CLI_COMMAND {
 			 * current branch of the addon was updated or not.
 			 */
 			if ( 0 === $return_var ) {
-				WP_CLI::success( sprintf( __( "The Give addon '%s' is up-to-date with origin." ), $addon_name ) );
+				WP_CLI::success( sprintf( __( "The GiveWP add-on '%s' is up-to-date with origin." ), $addon_name ) );
 
 				return;
 			} elseif ( 1 === $return_var ) {
-				WP_CLI::error( sprintf( __( "The Give addon '%s' was not updated." ), $addon_name ) );
+				WP_CLI::error( sprintf( __( "The GiveWP add-on '%s' was not updated." ), $addon_name ) );
 			}
 		}
 
@@ -1257,7 +1257,7 @@ class GIVE_CLI_COMMAND {
 			}
 
 			$items[] = array(
-				'Give Addon' => $plugin_name,
+				'GiveWP Addon' => $plugin_name,
 				'Branch'     => $branch_name,
 				'Remote'     => 'origin',
 				'Status'     => ( 0 === $return_var )
@@ -1278,7 +1278,7 @@ class GIVE_CLI_COMMAND {
 			'table',
 			$items,
 			array(
-				'Give Addon',
+				'GiveWP Addon',
 				'Branch',
 				'Remote',
 				'Status',

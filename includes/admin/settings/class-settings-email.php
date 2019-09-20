@@ -73,14 +73,14 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name which appears in the "From" field in all Give donation emails.', 'give' ),
+							'desc'    => esc_html__( 'The name which appears in the "From" field in all GiveWP donation emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text',
 						),
 						array(
 							'id'      => 'from_email',
 							'name'    => esc_html__( 'From Email', 'give' ),
-							'desc'    => esc_html__( 'Email address from which all Give emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
+							'desc'    => esc_html__( 'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text',
 						),
@@ -103,7 +103,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 						// Section 1: Donor Email Notification Listing.
 						array(
-							'desc'       => __( 'Email notifications sent from Give for donor are listed below. Click on an email to configure it.', 'give' ),
+							'desc'       => __( 'Email notifications sent from GiveWP for donor are listed below. Click on an email to configure it.', 'give' ),
 							'type'       => 'title',
 							'id'         => 'give_donor_email_notification_settings',
 							'table_html' => false,
@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 						// Section 1: Admin Email Notification Listing.
 						array(
-							'desc'       => __( 'Email notifications sent from Give for admin are listed below. Click on an email to configure it.', 'give' ),
+							'desc'       => __( 'Email notifications sent from GiveWP for admin are listed below. Click on an email to configure it.', 'give' ),
 							'type'       => 'title',
 							'id'         => 'give_admin_email_notification_settings',
 							'table_html' => false,

@@ -407,14 +407,14 @@ $give_updates = Give_Updates::get_instance();
 
 		// WP Remote Get Check.
 		$posting['wp_remote_get']['name'] = __( 'Remote Get', 'give' );
-		$posting['wp_remote_get']['help'] = __( 'Give plugins may use this method of communication when checking for plugin updates.', 'give' );
+		$posting['wp_remote_get']['help'] = __( 'GiveWP plugins may use this method of communication when checking for plugin updates.', 'give' );
 
 		$response = wp_safe_remote_get( 'https://woocommerce.com/wc-api/product-key-api?request=ping&network=' . ( is_multisite() ? '1' : '0' ) );
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_get']['success'] = true;
 		} else {
-			$posting['wp_remote_get']['note'] = __( 'wp_remote_get() failed. The Give plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
+			$posting['wp_remote_get']['note'] = __( 'wp_remote_get() failed. The GiveWP plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
 			if ( is_wp_error( $response ) ) {
 				$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), give_clean( $response->get_error_message() ) );
 			} else {
@@ -446,18 +446,18 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="Give Configuration"><h2><?php _e( 'Give Configuration', 'give' ); ?></h2></th>
+			<th colspan="3" data-export-label="GiveWP Configuration"><h2><?php _e( 'GiveWP Configuration', 'give' ); ?></h2></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
+			<td data-export-label="GiveWP Version"><?php _e( 'GiveWP Version', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of GiveWP installed on your site.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( get_option( 'give_version' )); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Give Cache"><?php _e( 'Give Cache', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in Give settings.', 'give' ) ); ?></td>
+			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
@@ -523,13 +523,13 @@ $give_updates = Give_Updates::get_instance();
 			</td>
 		</tr>
 		<tr>
-			<td data-export-label="Give Cache"><?php _e( 'Give Cache', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in Give settings.', 'give' ) ); ?></td>
+			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Give Cache"><?php _e( 'Give Emails', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether emails is enabled in Give settings.', 'give' ) ); ?></td>
+			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Emails', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether emails is enabled in GiveWP settings.', 'give' ) ); ?></td>
 			<td>
 				<?php
 				/* @var Give_Email_Notification $email_notification */
@@ -556,32 +556,32 @@ $give_updates = Give_Updates::get_instance();
 		</tr>
 		<tr>
 			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of GiveWP installed prior to the last update.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Test Mode"><?php _e( 'Test Mode', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether Test Mode is enabled in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether Test Mode is enabled in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo give_is_test_mode() ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Currency Code"><?php _e( 'Currency Code', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The currency code selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The currency code selected in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_currency() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The currency position selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The currency position selected in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo 'before' === give_get_option( 'currency_position' ) ? __( 'Before', 'give' ) : __( 'After', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The decimal separator defined in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_price_decimal_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The thousands separator defined in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The thousands separator defined in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_price_thousand_separator() ); ?></td>
 		</tr>
 		<tr>
@@ -600,8 +600,8 @@ $give_updates = Give_Updates::get_instance();
 			<td><?php echo ! empty( $give_options['history_page'] ) ? esc_url( get_permalink( $give_options['history_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Give Forms Slug"><?php _e( 'Give Forms Slug', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The slug used for Give donation forms.', 'give' ) ); ?></td>
+			<td data-export-label="GiveWP Forms Slug"><?php _e( 'GiveWP Forms Slug', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The slug used for GiveWP donation forms.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 		</tr>
 		<?php
@@ -629,12 +629,12 @@ $give_updates = Give_Updates::get_instance();
 		?>
 		<tr>
 			<td data-export-label="Enabled Payment Gateways"><?php _e( 'Enabled Payment Gateways', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'All payment gateways enabled in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'All payment gateways enabled in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( ! empty( $enabled_gateways ) ? $enabled_gateways : '&ndash;' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Default Payment Gateway"><?php _e( 'Default Payment Gateway', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The default payment gateway selected in GiveWP settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 		</tr>
 		<tr>
@@ -699,7 +699,7 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Active Give Add-ons"><h2><?php _e( 'Active Give Add-ons', 'give' ); ?></h2></th>
+		<th colspan="3" data-export-label="Active GiveWP Add-ons"><h2><?php _e( 'Active GiveWP Add-ons', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -708,7 +708,7 @@ $give_updates = Give_Updates::get_instance();
 			// Only show Give Core Activated Add-Ons.
 			if (
 				'active' !== $plugin_data['Status']
-				|| false !== strpos( $plugin_data['Name'], 'Give - Donation Plugin' )
+				|| false !== strpos( $plugin_data['Name'], 'GiveWP - Donation Plugin' )
 			) {
 				continue;
 			}
@@ -940,7 +940,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 			<td data-export-label="Child Theme"><?php _e( 'Child Theme', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current theme is a child theme.', 'give' ) ); ?></td>
 			<td><?php
-				echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying Give on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
+				echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
 				?></td>
 		</tr>
 		<?php

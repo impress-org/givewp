@@ -1,4 +1,4 @@
-Give - Donation Plugin for WordPress
+GiveWP - Donation Plugin for WordPress
 
 Copyright 2015 by the contributors
 
@@ -26,10 +26,11 @@ permission notices:
 
 and
 
-  Give is Copyright (c) 2015 GiveWP, LLC
+  GiveWP is Copyright (c) 2015 Impress.org, LLC
   https://givewp.com/
+  https://impress.org/
 
-  Give is released under the GPLv3
+  GiveWP is released under the GPLv3
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 

@@ -204,11 +204,14 @@ class Give_Stripe_Customer {
 		$this->set_id( $customer->id );
 		$this->set_customer_data( $customer );
 
-		// Attach source/payment method to customer.
-		if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
-			$this->attach_source();
-		} else {
-			$this->attach_payment_method();
+		// Proceed only, if the source is not empty.
+		if ( ! empty( $this->payment_method_id ) ) {
+			// Attach source/payment method to customer.
+			if (give_stripe_is_source_type($this->payment_method_id, 'pm')) {
+				$this->attach_payment_method();
+			} else {
+				$this->attach_source();
+			}
 		}
 
 		return $customer;
@@ -282,10 +285,10 @@ class Give_Stripe_Customer {
 
 			// Add these parameters when payment method/source id exists.
 			if ( ! empty( $this->payment_method_id ) ) {
-				if ( give_stripe_is_checkout_enabled() || give_stripe_is_source_type( $this->payment_method_id, 'btok' ) ) {
-					$args['source'] = $this->payment_method_id;
-				} else {
+				if ( give_stripe_is_source_type( $this->payment_method_id, 'pm' ) ) {
 					$args['payment_method'] = $this->payment_method_id;
+				} else {
+					$args['source'] = $this->payment_method_id;
 				}
 			}
 
@@ -339,7 +342,7 @@ class Give_Stripe_Customer {
 			$all_sources = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_checkout_enabled() ) {
+			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
 				$new_card = $token_details->card;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {

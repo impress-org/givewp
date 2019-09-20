@@ -32,7 +32,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">' );
 	$form_close_tag = apply_filters( self::$setting_filter_prefix . '_close_form', '</form>' );
 
-	$wrapper_class = implode( ' ',
+	$wrapper_class = implode(
+		' ',
 		array(
 			self::$setting_filter_prefix . '-setting-page',
 			self::$setting_filter_prefix . '-' . give_get_current_setting_section() . '-section',
@@ -40,7 +41,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		)
 	);
 	?>
-	<div class="wrap give-settings-page <?php echo $wrapper_class; ?>">
+	<div class="wrap give-settings-page <?php echo esc_html( $wrapper_class ); ?>">
 
 		<?php echo $form_open_tag; ?>
 
@@ -84,9 +85,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 				do_action( self::$setting_filter_prefix . '_tabs' );
 				?>
 				<div class="give-sub-nav-tab-wrapper">
-					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab"
-					   title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span
-							class="dashicons dashicons-arrow-down-alt2"></span></span>
+					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php esc_html_e( 'View remaining setting tabs', 'give' ); ?>">
+						<span class="dashicons dashicons-arrow-down-alt2"></span>
 					</a>
 					<nav class="give-sub-nav-tab give-hidden"></nav>
 				</div>
@@ -120,11 +120,19 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
-				<input name="save" class="button-primary give-save-button" type="submit"
-				       value="<?php _e( 'Save changes', 'give' ); ?>"/>
+				<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_html_e( 'Save changes', 'give' ); ?>"/>
 			</div>
 		<?php endif; ?>
 		<?php echo $form_close_tag; ?>
 	</div>
-<?php else : echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>'; ?>
-<?php endif; ?>
+	<?php
+else :
+	?>
+	<div class="error">
+		<p>
+			<?php esc_html_e( 'Oops, this settings page does not exist.', 'give' ); ?>
+		</p>
+	</div>
+	<?php
+endif;
+?>

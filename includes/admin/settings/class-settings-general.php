@@ -62,7 +62,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => __( 'Session Lifetime', 'give' ),
-							'desc'    => __( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
+							'desc'    => __( 'The length of time a user\'s session is kept alive. GiveWP starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => __( '24 Hours', 'give' ),

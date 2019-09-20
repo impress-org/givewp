@@ -68,7 +68,7 @@ const SelectForm = ( { forms, attributes, setAttributes } ) => {
 		componentUI = <NoForms />;
 	} else {
 		componentUI = (
-			<GiveBlankSlate title={ __( 'Give Donation form' ) }>
+			<GiveBlankSlate title={ __( 'Donation Form' ) }>
 				<ChosenSelect
 					className="give-blank-slate__select"
 					options={ getFormOptions() }

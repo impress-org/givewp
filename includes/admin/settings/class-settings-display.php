@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'title',
 						),
 						array(
-							'name'    => __( 'Default Give Styles', 'give' ),
+							'name'    => __( 'Default GiveWP Styles', 'give' ),
 							'desc'    => __( 'You can disable Give\'s default styles for donation forms and other frontend elements.', 'give' ),
 							'id'      => 'css',
 							'type'    => 'radio_inline',
@@ -215,7 +215,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Single Form Sidebar', 'give' ),
-							'desc'    => __( 'The sidebar allows you to add additional widgets to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'desc'    => __( 'The sidebar allows you to add additional widgets to the GiveWP single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
 							'id'      => 'form_sidebar',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -246,7 +246,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Form Categories', 'give' ),
-							'desc'    => __( 'Enable Categories for all Give forms.', 'give' ),
+							'desc'    => __( 'Enable Categories for all GiveWP forms.', 'give' ),
 							'id'      => 'categories',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -257,7 +257,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Form Tags', 'give' ),
-							'desc'    => __( 'Enable Tags for all Give forms.', 'give' ),
+							'desc'    => __( 'Enable Tags for all GiveWP forms.', 'give' ),
 							'id'      => 'tags',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
