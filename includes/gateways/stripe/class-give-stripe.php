@@ -69,37 +69,47 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Bailout, if any of the Stripe gateways are not active.
 			if ( ! give_stripe_is_any_payment_method_active() ) {
 
-				// If `get_plugin_data` fn not exists then include the file.
-				if ( ! function_exists( 'get_plugin_data' ) ) {
-					require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-				}
-
 				// Hardcoded recurring plugin basename to show notice even when recurring addon is deactivated.
 				$recurring_plugin_basename = 'give-recurring/give-recurring.php';
-				$recurring_plugin_data     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $recurring_plugin_basename );
+				$recurring_file_path       = WP_CONTENT_DIR . '/plugins/' . $recurring_plugin_basename;
 
-				// Avoid fatal error for smooth update for customers.
-				if (
-					isset( $recurring_plugin_data['Version'] ) &&
-					version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
-				) {
-					add_action( 'admin_notices', function() {
+				// If recurring donations add-on exists.
+				if ( file_exists( $recurring_file_path ) ) {
 
-						// Register error notice.
-						Give()->notices->register_notice(
-							array(
-								'id'          => 'give-recurring-fatal-error',
-								'type'        => 'error',
-								'description' => sprintf(__( '<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give' ), 'https://wordpress.org/plugins/wp-rollback/', 'https://givewp.com/support/'),
-								'show'        => true,
-							)
-						);
-					});
+					// If `get_plugin_data` fn not exists then include the file.
+					if ( ! function_exists( 'get_plugin_data' ) ) {
+						require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+					}
 
-					// Deactivate recurring addon to avoid fatal error.
-					deactivate_plugins( $recurring_plugin_basename );
-					if ( isset( $_GET['activate'] ) ) {
-						unset( $_GET['activate'] );
+					$recurring_plugin_data = get_plugin_data($recurring_file_path);
+
+					// Avoid fatal error for smooth update for customers.
+					if (
+						isset( $recurring_plugin_data['Version'] ) &&
+						version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
+					) {
+						add_action('admin_notices', function() {
+
+							// Register error notice.
+							Give()->notices->register_notice(
+								array(
+									'id'          => 'give-recurring-fatal-error',
+									'type'        => 'error',
+									'description' => sprintf(
+										__( '<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give'),
+										'https://wordpress.org/plugins/wp-rollback/',
+										'https://givewp.com/support/'
+									),
+									'show'        => true,
+								)
+							);
+						});
+
+						// Deactivate recurring addon to avoid fatal error.
+						deactivate_plugins( $recurring_plugin_basename );
+						if ( isset( $_GET['activate'] ) ) {
+							unset( $_GET['activate'] );
+						}
 					}
 				}
 
