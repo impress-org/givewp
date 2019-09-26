@@ -3527,9 +3527,14 @@ function give_v258_upgrades() {
 	}
 
 	$enabled_gateways = give_get_option( 'gateways', array() );
-	$gateways_label   = give_get_option( 'gateways_label', array() );
-	$default_gateway  = give_get_option( 'default_gateway' );
 
+	// Bailout, if Stripe Checkout is already enabled.
+	if ( ! empty( $enabled_gateways['stripe_checkout'] ) ) {
+		return;
+	}
+
+	$gateways_label  = give_get_option( 'gateways_label', array() );
+	$default_gateway = give_get_option( 'default_gateway' );
 
 	// Set Stripe Checkout as active gateway.
 	$enabled_gateways['stripe_checkout']  = 1;
