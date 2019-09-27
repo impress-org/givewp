@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.7
+Stable tag: 2.5.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.8: September 26th, 2019 =
+* Fix: Resolved an upgrade issue for customers who had enabled the Stripe Credit Card option in GiveWP 2.5.4 and below and Stripe 2.2.0 and below. After upgrading existing donors were not able to change their credit card info and new donors were not able make donations.
 
 = 2.5.7: September 20th, 2019 =
 * Fix: Resolved issues with the notice added in the previous version displaying incorrectly for sites that do not have Recurring Donations installed or activated. [#4257](https://github.com/impress-org/givewp/pull/4257)
