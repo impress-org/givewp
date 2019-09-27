@@ -134,6 +134,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.0', '<' ):
 			give_v250_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.5.8', '<' ):
+			give_v258_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -3506,4 +3510,50 @@ function give_v250_upgrades() {
 	delete_option( 'give_is_addon_activated' );
 
 	give_refresh_licenses();
+}
+
+/**
+ * DB upgrades for Give 2.5.8
+ *
+ * @since 2.5.8
+ */
+function give_v258_upgrades() {
+
+	$is_checkout_enabled = give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
+
+	// Bailout, if stripe checkout is not active as a gateway.
+	if ( ! $is_checkout_enabled  ) {
+		return;
+	}
+
+	$enabled_gateways = give_get_option( 'gateways', array() );
+
+	// Bailout, if Stripe Checkout is already enabled.
+	if ( ! empty( $enabled_gateways['stripe_checkout'] ) ) {
+		return;
+	}
+
+	$gateways_label  = give_get_option( 'gateways_label', array() );
+	$default_gateway = give_get_option( 'default_gateway' );
+
+	// Set Stripe Checkout as active gateway.
+	$enabled_gateways['stripe_checkout']  = 1;
+
+	// Unset Stripe - Credit Card as an active gateway.
+	unset( $enabled_gateways['stripe'] );
+
+	// Set Stripe Checkout same as Stripe as they have enabled Stripe Checkout under Stripe using same label.
+	$gateways_label['stripe_checkout'] = $gateways_label['stripe'];
+	give_update_option( 'gateways_label', $gateways_label );
+
+	// If default gateway selected is `stripe` then set `stripe checkout` as default.
+	if ( 'stripe' === $default_gateway ) {
+		give_update_option( 'default_gateway', 'stripe_checkout' );
+	}
+
+	// Update the enabled gateways in database.
+	give_update_option( 'gateways', $enabled_gateways );
+
+	// Delete the old legacy settings.
+	give_delete_option( 'stripe_checkout_enabled' );
 }
