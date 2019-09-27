@@ -3418,7 +3418,7 @@ function give_v241_remove_sale_logs_callback() {
 /**
  * DB upgrades for Give 2.5.0
  *
- * !since 2.5.0
+ * @since 2.5.0
  */
 function give_v250_upgrades() {
 	global $wpdb;
