@@ -10,6 +10,32 @@
     font-size: 15px;
 }
 
+#give-stripe-connect-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 16px;
+    flex: 1 0 0;
+  }
+
+  #give-stripe-connect {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 782px) {
+  #give-stripe-connect-banner {
+    flex-direction: column;
+    align-items: flex-start;
+
+    #give-stripe-connect {
+      margin-left: 0;
+      margin-top: 10px;
+    }
+  }
+}
 #give-stripe-connect-banner p {
 	font-size: 16px;
 }
@@ -193,3 +219,4 @@ only screen and (min-device-pixel-ratio: 1.5) {
     }
 
 }
+

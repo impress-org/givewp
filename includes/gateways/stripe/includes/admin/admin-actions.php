@@ -293,7 +293,7 @@ function give_stripe_show_connect_banner() {
 
 	$message = sprintf(
 		/* translators: 1. Main Text, 2. Connect Link */
-		__( '<strong>Stripe Connect:</strong> %1$s %2$s', 'give' ),
+        __( '<p><strong>Stripe Connect:</strong> %1$s </p>%2$s', 'give' ),
 		$main_text,
 		$connect_link
 	);
