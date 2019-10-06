@@ -270,9 +270,19 @@ function give_count_donations_of_donor( $user = null ) {
  */
 function give_donation_total_of_user( $user = null ) {
 
-	$stats = give_get_donation_stats_by_user( $user );
+    // Logged in?
+    if ( empty( $user ) ) {
+        $user = get_current_user_id();
+    }
 
-	return $stats['total_spent'];
+    // Email access?
+    if ( empty( $user ) && Give()->email_access->token_email ) {
+        $user = Give()->email_access->token_email;
+    }
+
+    $stats = ! empty( $user ) ? give_get_donation_stats_by_user( $user ) : false;
+
+    return isset( $stats['total_spent'] ) ? $stats['total_spent'] : 0;
 }
 
 
