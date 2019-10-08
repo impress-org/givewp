@@ -664,7 +664,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							echo sprintf(
 								/* translators: 1. Documentation on webhook setup. */
 								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
-								esc_url_raw( 'http://docs.givewp.com/stripe-webhooks ' )
+								esc_url_raw( 'http://docs.givewp.com/stripe-webhooks' )
 							);
 							?>
 						</p>
