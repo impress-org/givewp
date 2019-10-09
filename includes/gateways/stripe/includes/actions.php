@@ -35,8 +35,6 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 	$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 	$publishable_key        = give_stripe_get_publishable_key();
 	$secret_key             = give_stripe_get_secret_key();
-	$fallback_option        = give_get_option( 'stripe_js_fallback' );
-	$stripe_js_fallback     = ! empty( $fallback_option );
 	$stripe_cc_field_format = give_get_option( 'stripe_cc_fields_format', 'multi' );
 
 	ob_start();
