@@ -32,11 +32,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 
-	// No CC or billing fields for Stripe Checkout.
-	if ( give_stripe_is_checkout_enabled() ) {
-		return false;
-	}
-
 	$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 	$publishable_key        = give_stripe_get_publishable_key();
 	$secret_key             = give_stripe_get_secret_key();
