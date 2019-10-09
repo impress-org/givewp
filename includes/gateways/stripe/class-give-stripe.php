@@ -33,6 +33,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		public function __construct() {
 
 			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+			add_action( 'admin_notices', array( $this, 'display_processing_fees_notice' ) );
 
 			/**
 			 * Using hardcoded constant for backward compatibility of Give 2.5.0 with Recurring 1.8.13 when Stripe Premium is not active.
@@ -121,6 +122,76 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 			// Include frontend files.
 			$this->include_frontend_files();
+		}
+
+		/**
+		 * This function is used to display admin notices about Stripe Application Fees.
+		 *
+		 * @since 2.5.9
+		 *
+		 * @return void
+		 */
+		public function display_processing_fees_notice() {
+
+			// Hardcoded stripe plugin name.
+			$stripe_plugin_name     = 'give-stripe';
+			$stripe_plugin_basename = "{$stripe_plugin_name}/{$stripe_plugin_name}.php";
+			$stripe_file_path       = WP_CONTENT_DIR . '/plugins/' . $stripe_plugin_basename;
+
+			$description = false;
+			$license     = Give_License::get_license_by_plugin_dirname( $stripe_plugin_name );
+
+			// Proceed, if Stripe Premium add-on exists.
+			if ( file_exists( $stripe_file_path ) ) {
+
+				if ( defined( 'GIVE_STRIPE_VERSION' ) ) {
+					// Stripe Premium is installed and active.
+					if (
+						empty( $license ) ||
+						(
+							! empty( $license['license'] ) &&
+							'valid' !== $license['license']
+						)
+					) {
+
+						// Show notice when Stripe Premium is active and license is not valid.
+						$description = sprintf(
+							__( '<strong>Action Needed: </strong>Please authenticate your license key to avoid 2%% application fees applied on every donation with Stripe payment gateway. If you are experiencing any issue, please <a href="%1$s" target="_blank">contact support</a> for prompt assistance.', 'give' ),
+							esc_url( 'https://givewp.com/support/' )
+						);
+					}
+
+				} else {
+
+					// Show notice to activate Stripe Premium add-on and authenticate the license.
+					$description = sprintf(
+						__( '<strong>Action Needed: </strong>Please activate the Stripe Premium add-on and authenticate your license to avoid 2%% application fees applied on every donation. If you are experiencing any issue, please <a href="%1$s" target="_blank">contact support</a> for prompt assistance.', 'give' ),
+						esc_url( 'https://givewp.com/support/' )
+					);
+
+					// Stripe Premium is installed and not active.
+					if ( ! empty( $license['license'] ) && 'valid' === $license['license'] ) {
+
+						// Show notice to activate Stripe Premium add-on.
+						$description = sprintf(
+							__( '<strong>Action Needed: </strong>Please activate the Stripe Premium add-on to avoid 2%% application fees applied on every donation. If you are experiencing any issue, please <a href="%1$s" target="_blank">contact support</a> for prompt assistance.', 'give' ),
+							esc_url( 'https://givewp.com/support/' )
+						);
+					}
+				}
+
+				// Register Notice for Stripe Premium Application Fees.
+				if ( ! empty( $description ) ) {
+					Give()->notices->register_notice(
+						array(
+							'id'          => 'give-stripe-premium-application-fee-errors',
+							'type'        => 'error',
+							'description' => $description,
+							'show'        => true,
+						)
+					);
+				}
+			}
 		}
 
 		/**
