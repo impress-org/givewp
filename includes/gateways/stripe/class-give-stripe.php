@@ -88,6 +88,13 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						isset( $recurring_plugin_data['Version'] ) &&
 						version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
 					) {
+
+						// Load Stripe SDK.
+						give_stripe_load_stripe_sdk();
+
+						// Include frontend files.
+						$this->include_frontend_files();
+
 						add_action('admin_notices', function() {
 
 							// Register error notice.
@@ -104,12 +111,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 								)
 							);
 						});
-
-						// Deactivate recurring addon to avoid fatal error.
-						deactivate_plugins( $recurring_plugin_basename );
-						if ( isset( $_GET['activate'] ) ) {
-							unset( $_GET['activate'] );
-						}
 					}
 				}
 
