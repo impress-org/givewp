@@ -103,7 +103,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 									'id'          => 'give-recurring-fatal-error',
 									'type'        => 'error',
 									'description' => sprintf(
-										__( '<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give'),
+										__( '<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give'),
 										'https://wordpress.org/plugins/wp-rollback/',
 										'https://givewp.com/support/'
 									),
