@@ -229,7 +229,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Corrected an edge case issue with Stripe Credit Card fields not appearing properly after updating. [#4274](https://github.com/impress-org/givewp/issues/4274)
 * Fix: Improved the layout of the Stripe Connect banner for smaller screens. [#4259](https://github.com/impress-org/givewp/issues/4259)
 * Fix: Removed space in link to Stripe's webhook documentation. [#4266](https://github.com/impress-org/givewp/issues/4266)
-* Fix: Resolved typos in GitHub's readme.md documenation. [#4268](https://github.com/impress-org/givewp/issues/4268)
+* Fix: Resolved typos in GitHub's readme.md documentation. [#4268](https://github.com/impress-org/givewp/issues/4268)
 
 = 2.5.8: September 26th, 2019 =
 * Fix: Resolved an upgrade issue for customers who had enabled the Stripe Credit Card option in GiveWP 2.5.4 and below and Stripe 2.2.0 and below. After upgrading existing donors were not able to change their credit card info and new donors were not able make donations. [#4260](https://github.com/impress-org/givewp/issues/4260)
