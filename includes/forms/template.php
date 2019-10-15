@@ -1927,6 +1927,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
 function give_get_donation_form_submit_button( $form_id, $args = array() ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
+    $display_label_field = apply_filters( 'give_donation_form_submit_button_text', $display_label_field, $form_id, $args );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 	ob_start();
 	?>

@@ -6122,7 +6122,7 @@ msgstr ""
 msgid "Hey! We've raised {total} of the {total_goal} we are trying to raise for this campaign!"
 msgstr ""
 
-#: includes/shortcodes.php:558, includes/forms/template.php:700, includes/forms/template.php:1930, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
+#: includes/shortcodes.php:558, includes/forms/template.php:700, includes/forms/template.php:1931, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
 msgid "Donate Now"
 msgstr ""
 
@@ -7954,19 +7954,19 @@ msgstr ""
 msgid "Leave a comment"
 msgstr ""
 
-#: includes/forms/template.php:973, includes/gateways/stripe/includes/actions.php:53
+#: includes/forms/template.php:973, includes/gateways/stripe/includes/actions.php:46
 msgid "Credit Card Info"
 msgstr ""
 
-#: includes/forms/template.php:977, includes/gateways/stripe/includes/actions.php:62
+#: includes/forms/template.php:977, includes/gateways/stripe/includes/actions.php:55
 msgid "This is a secure SSL encrypted payment."
 msgstr ""
 
-#: includes/forms/template.php:982, includes/gateways/stripe/includes/actions.php:113, includes/gateways/stripe/includes/give-stripe-scripts.php:57
+#: includes/forms/template.php:982, includes/gateways/stripe/includes/actions.php:106, includes/gateways/stripe/includes/give-stripe-scripts.php:57
 msgid "Card Number"
 msgstr ""
 
-#: includes/forms/template.php:984, includes/gateways/stripe/includes/actions.php:116
+#: includes/forms/template.php:984, includes/gateways/stripe/includes/actions.php:109
 msgid "The (typically) 16 digits on the front of your credit card."
 msgstr ""
 
@@ -7974,11 +7974,11 @@ msgstr ""
 msgid "Card number"
 msgstr ""
 
-#: includes/forms/template.php:995, includes/gateways/stripe/includes/actions.php:126, includes/gateways/stripe/includes/give-stripe-scripts.php:58
+#: includes/forms/template.php:995, includes/gateways/stripe/includes/actions.php:119, includes/gateways/stripe/includes/give-stripe-scripts.php:58
 msgid "CVC"
 msgstr ""
 
-#: includes/forms/template.php:997, includes/gateways/stripe/includes/actions.php:129
+#: includes/forms/template.php:997, includes/gateways/stripe/includes/actions.php:122
 msgid "The 3 digit (back) or 4 digit (front) value on your card."
 msgstr ""
 
@@ -7986,19 +7986,19 @@ msgstr ""
 msgid "Security code"
 msgstr ""
 
-#: includes/forms/template.php:1007, includes/forms/template.php:1013, includes/gateways/stripe/includes/actions.php:137, includes/gateways/stripe/includes/actions.php:148
+#: includes/forms/template.php:1007, includes/forms/template.php:1013, includes/gateways/stripe/includes/actions.php:130, includes/gateways/stripe/includes/actions.php:141
 msgid "Cardholder Name"
 msgstr ""
 
-#: includes/forms/template.php:1009, includes/gateways/stripe/includes/actions.php:140
+#: includes/forms/template.php:1009, includes/gateways/stripe/includes/actions.php:133
 msgid "The name of the credit card account holder."
 msgstr ""
 
-#: includes/forms/template.php:1029, includes/gateways/stripe/includes/actions.php:157
+#: includes/forms/template.php:1029, includes/gateways/stripe/includes/actions.php:150
 msgid "Expiration"
 msgstr ""
 
-#: includes/forms/template.php:1031, includes/gateways/stripe/includes/actions.php:160
+#: includes/forms/template.php:1031, includes/gateways/stripe/includes/actions.php:153
 msgid "The date your credit card expires, typically on the front of the card."
 msgstr ""
 
@@ -8122,15 +8122,15 @@ msgstr ""
 msgid "Donation Total:"
 msgstr ""
 
-#: includes/forms/template.php:2205, includes/gateways/stripe/includes/actions.php:79, includes/gateways/stripe/includes/actions.php:90, includes/gateways/stripe/includes/actions.php:98
+#: includes/forms/template.php:2206, includes/gateways/stripe/includes/actions.php:72, includes/gateways/stripe/includes/actions.php:83, includes/gateways/stripe/includes/actions.php:91
 msgid "Notice:"
 msgstr ""
 
-#: includes/forms/template.php:2205
+#: includes/forms/template.php:2206
 msgid "Test mode is enabled. While in test mode no live donations are processed."
 msgstr ""
 
-#: includes/forms/template.php:2235
+#: includes/forms/template.php:2236
 msgid "Please log in in order to complete your donation."
 msgstr ""
 
@@ -11514,19 +11514,19 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:99
-msgid "<strong>Activation Error:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing this issue please rollback GiveWP to 2.5.4 or below using the <a href=\"%s\" target=\"_blank\">WP Rollback</a> plugin and <a href=\"%s\" target=\"_blank\">contact support</a> for prompt assistance."
+#: includes/gateways/stripe/class-give-stripe.php:106
+msgid "<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href=\"%s\" target=\"_blank\">WP Rollback</a> plugin and <a href=\"%s\" target=\"_blank\">contact support</a> for prompt assistance."
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:193
+#: includes/gateways/stripe/class-give-stripe.php:194
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:194, includes/gateways/stripe/class-give-stripe.php:200
+#: includes/gateways/stripe/class-give-stripe.php:195, includes/gateways/stripe/class-give-stripe.php:201
 msgid "Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:199
+#: includes/gateways/stripe/class-give-stripe.php:200
 msgid "Stripe - Checkout"
 msgstr ""
 
@@ -13109,15 +13109,15 @@ msgid_plural "There are %1$d GiveWP addons that need to be updated. <a href=\"%2
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/gateways/stripe/includes/actions.php:80
+#: includes/gateways/stripe/includes/actions.php:73
 msgid "Credit card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS."
 msgstr ""
 
-#: includes/gateways/stripe/includes/actions.php:91
+#: includes/gateways/stripe/includes/actions.php:84
 msgid "Credit card fields are disabled because Stripe is not connected."
 msgstr ""
 
-#: includes/gateways/stripe/includes/actions.php:99
+#: includes/gateways/stripe/includes/actions.php:92
 msgid "Credit card fields are disabled because your site is not running securely over HTTPS."
 msgstr ""
 
@@ -13462,7 +13462,7 @@ msgstr ""
 
 #. translators: 1. Main Text, 2. Connect Link
 #: includes/gateways/stripe/includes/admin/admin-actions.php:296
-msgid "<strong>Stripe Connect:</strong> %1$s %2$s"
+msgid "<p><strong>Stripe Connect:</strong> %1$s </p>%2$s"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/admin-helpers.php:160

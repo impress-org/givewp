@@ -8,9 +8,9 @@
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/impress-org/givewp.svg?branch=master)](https://travis-ci.org/impress-org/givewp) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/impress-org/give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) 
 
-Welcome to the GiveWP GitHub repository. This is the core repository and heart of ecosystem of active development. Here you can browse the source, look at open issues, and contribute to the project. 
+Welcome to the GiveWP GitHub repository. This is the core repository and heart of an ecosystem of active development. Here you can browse the source, look at open issues, and contribute to the project. 
 
-Many of our add-ons are in public repositories, however the majority are private. If you have a legitimate need for access, please [reach out to us](https://givewp.com/contact-us/) and we'll be happy to grant you access. As well, we recommend all developers follow the [GiveWP development blog](https://developers.givewp.com) to stay up to date on the latest features and changes. Happy coding!
+Many of our add-ons are in public repositories, however, the majority are private. If you have a legitimate need for access, please [reach out to us](https://givewp.com/contact-us/) and we'll be happy to grant you access. As well, we recommend all developers follow the [GiveWP development blog](https://developers.givewp.com) to stay up to date on the latest features and changes. Happy coding!
  
  ## 🙋 Support
  
@@ -37,11 +37,11 @@ To get started developing on the GiveWP platform you will need to perform the fo
 
 1. Create a new WordPress site with `give.test` as the URL
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
-3. Fork this this repository from GitHub and then clone that into your plugins directory in a new `give` directory
+3. Fork this repository from GitHub and then clone that into your plugins directory in a new `give` directory
 4. Run `composer install` to set up dependencies
 5. Run `npm install` to get the necessary npm packages
 6. Activate the plugin in WordPress
-7. Run `npm run dev` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)  
+7. Run `npm run watch` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)  
 
 That's it. You're now ready to start development.
 
