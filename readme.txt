@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.5.8
+Stable tag: 2.5.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.9: October 15th, 2019 =
+* New: Added a new filter `give_donation_form_submit_button_text` for developers. Thanks @mcdonagg! [#4269](https://github.com/impress-org/givewp/issues/4269)
+* Fix: Resolved an edge case update conflict with Stripe and Recurring which could cause a fatal error for some installs. [#4272](https://github.com/impress-org/givewp/issues/4272)
+* Fix: Corrected an edge case issue with Stripe Credit Card fields not appearing properly after updating. [#4274](https://github.com/impress-org/givewp/issues/4274)
+* Fix: Improved the layout of the Stripe Connect banner for smaller screens. [#4259](https://github.com/impress-org/givewp/issues/4259)
+* Fix: Removed space in link to Stripe's webhook documentation. [#4266](https://github.com/impress-org/givewp/issues/4266)
+* Fix: Resolved typos in GitHub's readme.md documenation. [#4268](https://github.com/impress-org/givewp/issues/4268)
 
 = 2.5.8: September 26th, 2019 =
 * Fix: Resolved an upgrade issue for customers who had enabled the Stripe Credit Card option in GiveWP 2.5.4 and below and Stripe 2.2.0 and below. After upgrading existing donors were not able to change their credit card info and new donors were not able make donations. [#4260](https://github.com/impress-org/givewp/issues/4260)
