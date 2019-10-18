@@ -226,11 +226,13 @@ class Give_Stripe_Customer {
 	 *
 	 * @since 2.5.10
 	 *
-	 * @return \Stripe\Customer
+	 * @return bool|\Stripe\Customer
 	 */
 	public function update_customer( $id, $args ) {
 
 		give_stripe_set_app_info();
+
+		$customer = false;
 
 		try {
 			$customer = \Stripe\Customer::update( $id, $args );
@@ -462,21 +464,10 @@ class Give_Stripe_Customer {
 
 		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
 
-			$card        = '';
-			$card_exists = false;
-			$all_sources = $this->customer_data->sources->all();
-
-			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
-				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
-				$new_card      = $token_details->card;
-			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
-				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
-				$new_card       = $source_details->card;
-			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'pm' ) ) {
-				$payment_method_details = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
-				$new_card               = $payment_method_details->card;
-			}
+			$card               = '';
+			$card_exists        = false;
+			$payment_methods    = $this->stripe_gateway->payment_method->list_all( $this->id ); // All payment methods.
+			$new_payment_method = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
 
 			/**
 			 * This filter hook is used to get new card details.
@@ -485,13 +476,29 @@ class Give_Stripe_Customer {
 			 */
 			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->payment_method_id, $this->stripe_gateway );
 
-			// Check to ensure that new card is already attached with customer or not.
-			if ( count( $all_sources->data ) > 0 ) {
-				foreach ( $all_sources->data as $source_item ) {
+			// Check to ensure that new card is already attached with customer's payment methods or not.
+			if ( count( $payment_methods->data ) > 0 ) {
+				foreach ( $payment_methods->data as $card_details ) {
 
-					$source_fingerprint = isset( $source_item->card ) ? $source_item->card->fingerprint : $source_item->fingerprint;
+					// Check whether the fingerprint of new and the existing card matches or not.
+					if ( $card_details->card->fingerprint === $new_payment_method->card->fingerprint ) {
 
-					if ( $source_fingerprint === $new_card->fingerprint ) {
+						if (
+							$card_details->card->exp_month === $new_payment_method->card->exp_month &&
+							$card_details->card->exp_year === $new_payment_method->card->exp_year
+						) {
+							$card_exists          = true;
+							$this->is_card_exists = true;
+							return;
+						} else {
+
+							$update_args = array(
+								'invoice_settings' => array(
+									'default_payment_method' => $new_payment_method,
+								),
+							);
+							$this->update_customer( $this->id, $update_args );
+						}
 
 						// Set the existing card as default source.
 						$this->customer_data->default_source = $source_item->id;
