@@ -107,7 +107,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 			$payment_method = false;
 
 			try {
-				$payment_method = \Stripe\PaymentMethod::retrieve( $id, give_stripe_get_connected_account_options() );
+				$payment_method = \Stripe\PaymentMethod::update( $id, $args, give_stripe_get_connected_account_options() );
 			} catch( Exception $e ) {
 				give_record_gateway_error(
 					__( 'Stripe Payment Method Error', 'give' ),
