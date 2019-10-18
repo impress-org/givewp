@@ -248,6 +248,27 @@ class Give_Stripe_Customer {
 	}
 
 	/**
+	 * This function is used to set the payment method as default.
+	 *
+	 * @param string $id          Payment Method ID provided by Stripe.
+	 * @param string $customer_id Customer ID provided by Stripe.
+	 *
+	 * @since 2.5.10
+	 *
+	 * @return \Stripe\Customer
+	 */
+	public function set_default_payment_method( $id, $customer_id ) {
+
+		$update_args = array(
+			'invoice_settings' => array(
+				'default_payment_method' => $id,
+			),
+		);
+
+		return $this->update_customer( $customer_id, $update_args );
+	}
+
+	/**
 	 * Create a Customer in Stripe.
 	 *
 	 * @since  2.5.0
