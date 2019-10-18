@@ -500,18 +500,34 @@ class Give_Stripe_Customer {
 			if ( count( $payment_methods->data ) > 0 ) {
 				foreach ( $payment_methods->data as $card_details ) {
 
-					// Check whether the fingerprint of new and the existing card matches or not.
-					if ( $card_details->card->fingerprint === $new_payment_method->card->fingerprint ) {
-
-						if (
-							$card_details->card->exp_month === $new_payment_method->card->exp_month &&
-							$card_details->card->exp_year === $new_payment_method->card->exp_year
-						) {
-							$payment_method       = $card_details;
-							$this->is_card_exists = true;
-							return;
-						}
+					// If fingerprint of new and existing payment method doesn't match then continue to next iteration.
+					if ( $card_details->card->fingerprint !== $new_payment_method->card->fingerprint ) {
+						continue;
 					}
+
+					if (
+						$card_details->card->exp_month !== $new_payment_method->card->exp_month ||
+						$card_details->card->exp_year !== $new_payment_method->card->exp_year
+					) {
+
+						// Set updated expiry date to the existing card.
+						$this->stripe_gateway->payment_method->update(
+							$card_details->id,
+							array(
+								'card' => array(
+									'exp_month' => $new_payment_method->card->exp_month,
+									'exp_year'  => $new_payment_method->card->exp_year,
+								),
+							)
+						);
+					}
+
+					// Set existing card as default payment method.
+					$this->set_default_payment_method( $card_details->id, $this->id );
+
+					$payment_method       = $card_details;
+					$this->is_card_exists = true;
+
 				}
 			}
 
