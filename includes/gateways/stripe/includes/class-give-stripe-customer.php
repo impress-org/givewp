@@ -219,6 +219,33 @@ class Give_Stripe_Customer {
 	}
 
 	/**
+	 * This function is used to update the customer records in Stripe.
+	 *
+	 * @param string $id   Customer ID provided by Stripe.
+	 * @param array  $args List of arguments to update customer details.
+	 *
+	 * @since 2.5.10
+	 *
+	 * @return \Stripe\Customer
+	 */
+	public function update_customer( $id, $args ) {
+
+		give_stripe_set_app_info();
+
+		try {
+			$customer = \Stripe\Customer::update( $id, $args );
+		} catch( Exception $e ) {
+			// Record Log.
+			give_stripe_record_log(
+				__( 'Stripe - Customer Update Error', 'give' ),
+				$e->getMessage()
+			);
+		}
+
+		return $customer;
+	}
+
+	/**
 	 * Create a Customer in Stripe.
 	 *
 	 * @since  2.5.0
