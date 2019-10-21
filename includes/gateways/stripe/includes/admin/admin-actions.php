@@ -23,6 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_stripe_connect_save_options() {
+	// Is user have permission to edit give setting.
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		return;
+	}
 
 	$get_vars = give_clean( $_GET );
 
@@ -34,7 +38,7 @@ function give_stripe_connect_save_options() {
 		|| ! isset( $get_vars['stripe_access_token_test'] )
 		|| ! isset( $get_vars['connected'] )
 	) {
-		return false;
+		return;
 	}
 
 	// Update keys.
