@@ -289,7 +289,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			// If featured image exists, then add it to checkout session.
 			if ( ! empty( get_the_post_thumbnail( $form_id ) ) ) {
-				$session_args['line_items']['images'] = [get_the_post_thumbnail($form_id)];
+				$session_args['line_items'][0]['images'] = array( get_the_post_thumbnail_url( $form_id ) );
 			}
 
 			// Create Checkout Session.
