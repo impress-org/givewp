@@ -2159,7 +2159,7 @@ function give_get_receipt_link( $donation_id ) {
  */
 function give_get_receipt_url( $donation_id ) {
 
-	$receipt_url = esc_url(
+	$receipt_url = esc_url_raw(
 		add_query_arg(
 			array(
 				'donation_id' => $donation_id,
@@ -2199,7 +2199,7 @@ function give_get_view_receipt_link( $donation_id ) {
  */
 function give_get_view_receipt_url( $donation_id ) {
 
-	$receipt_url = esc_url(
+	$receipt_url = esc_url_raw(
 		add_query_arg(
 			array(
 				'action'     => 'view_in_browser',
