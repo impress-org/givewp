@@ -91,6 +91,40 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		}
 
 		/**
+		 * This function is used to update existing payment method.
+		 *
+		 * @param string $id   Payment Method ID of Stripe.
+		 * @param array  $args List of arguments to update.
+		 *
+		 * @since 2.5.10
+		 *
+		 * @return bool|\Stripe\PaymentMethod
+		 */
+		public function update( $id, $args ) {
+
+			give_stripe_set_app_info();
+
+			$payment_method = false;
+
+			try {
+				$payment_method = \Stripe\PaymentMethod::update( $id, $args, give_stripe_get_connected_account_options() );
+			} catch( Exception $e ) {
+				give_record_gateway_error(
+					__( 'Stripe Payment Method Error', 'give' ),
+					sprintf(
+					/* translators: %s Exception Message Body */
+						__( 'The Stripe Gateway returned an error while updating the payment method of the customer. Details: %s', 'give' ),
+						$e->getMessage()
+					)
+				);
+				give_set_error( 'stripe_error', __( 'An occurred while retrieving the payment method of the customer. Please try again.', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode']) );
+			}
+
+			return $payment_method;
+		}
+
+		/**
 		 * Fetch all payment methods of the customer.
 		 *
 		 * @param string $customer_id Stripe Customer ID.

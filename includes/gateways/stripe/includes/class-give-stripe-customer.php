@@ -219,6 +219,56 @@ class Give_Stripe_Customer {
 	}
 
 	/**
+	 * This function is used to update the customer records in Stripe.
+	 *
+	 * @param string $id   Customer ID provided by Stripe.
+	 * @param array  $args List of arguments to update customer details.
+	 *
+	 * @since 2.5.10
+	 *
+	 * @return bool|\Stripe\Customer
+	 */
+	public function update_customer( $id, $args ) {
+
+		give_stripe_set_app_info();
+
+		$customer = false;
+
+		try {
+			$customer = \Stripe\Customer::update( $id, $args );
+		} catch( Exception $e ) {
+			// Record Log.
+			give_stripe_record_log(
+				__( 'Stripe - Customer Update Error', 'give' ),
+				$e->getMessage()
+			);
+		}
+
+		return $customer;
+	}
+
+	/**
+	 * This function is used to set the payment method as default.
+	 *
+	 * @param string $id          Payment Method ID provided by Stripe.
+	 * @param string $customer_id Customer ID provided by Stripe.
+	 *
+	 * @since 2.5.10
+	 *
+	 * @return \Stripe\Customer
+	 */
+	public function set_default_payment_method( $id, $customer_id ) {
+
+		$update_args = array(
+			'invoice_settings' => array(
+				'default_payment_method' => $id,
+			),
+		);
+
+		return $this->update_customer( $customer_id, $update_args );
+	}
+
+	/**
 	 * Create a Customer in Stripe.
 	 *
 	 * @since  2.5.0
@@ -435,93 +485,65 @@ class Give_Stripe_Customer {
 
 		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
 
-			$card        = '';
-			$card_exists = false;
-			$all_sources = $this->customer_data->sources->all();
-
-			// Fetch the new card or source object to match with customer attached card fingerprint.
-			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
-				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
-				$new_card      = $token_details->card;
-			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
-				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
-				$new_card       = $source_details->card;
-			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'pm' ) ) {
-				$payment_method_details = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
-				$new_card               = $payment_method_details->card;
-			}
+			$payment_method     = '';
+			$payment_methods    = $this->stripe_gateway->payment_method->list_all( $this->id ); // All payment methods.
+			$new_payment_method = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
 
 			/**
 			 * This filter hook is used to get new card details.
 			 *
 			 * @since 2.5.0
 			 */
-			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->payment_method_id, $this->stripe_gateway );
+			$new_payment_method = apply_filters( 'give_stripe_get_new_card_details', $new_payment_method, $this->payment_method_id, $this->stripe_gateway );
 
-			// Check to ensure that new card is already attached with customer or not.
-			if ( count( $all_sources->data ) > 0 ) {
-				foreach ( $all_sources->data as $source_item ) {
+			// Check to ensure that new card is already attached with customer's payment methods or not.
+			if ( count( $payment_methods->data ) > 0 ) {
+				foreach ( $payment_methods->data as $card_details ) {
 
-					$source_fingerprint = isset( $source_item->card ) ? $source_item->card->fingerprint : $source_item->fingerprint;
-
-					if ( $source_fingerprint === $new_card->fingerprint ) {
-
-						// Set the existing card as default source.
-						$this->customer_data->default_source = $source_item->id;
-						$this->customer_data->save();
-						$card                 = $source_item;
-						$card_exists          = true;
-						$this->is_card_exists = true;
-						break;
+					// If fingerprint of new and existing payment method doesn't match then continue to next iteration.
+					if ( $card_details->card->fingerprint !== $new_payment_method->card->fingerprint ) {
+						continue;
 					}
+
+					if (
+						$card_details->card->exp_month !== $new_payment_method->card->exp_month ||
+						$card_details->card->exp_year !== $new_payment_method->card->exp_year
+					) {
+
+						// Set updated expiry date to the existing card.
+						$this->stripe_gateway->payment_method->update(
+							$card_details->id,
+							array(
+								'card' => array(
+									'exp_month' => $new_payment_method->card->exp_month,
+									'exp_year'  => $new_payment_method->card->exp_year,
+								),
+							)
+						);
+					}
+
+					// Set existing card as default payment method.
+					$this->set_default_payment_method( $card_details->id, $this->id );
+
+					$payment_method       = $card_details;
+					$this->is_card_exists = true;
+
 				}
 			}
 
 			// Create the card, if none found above.
-			if ( ! $card_exists ) {
-				try {
-					$customer_args = array();
+			if ( ! $this->is_card_exists ) {
 
-					if ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) || give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
-						$customer_args['source'] = $this->payment_method_id;
-						$card = $this->customer_data->sources->create( $customer_args );
-						$this->customer_data->default_source = $card->id;
-						$this->customer_data->save();
-					} else {
+				// Set new card as default payment method.
+				$this->set_default_payment_method( $this->payment_method_id, $this->id );
 
-						$card = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
-
-						// If payment method is not attached to customer then attach it now.
-						if ( empty( $card->customer ) ) {
-							$card->attach(
-								array(
-									'customer' => $this->id,
-								)
-							);
-						}
-					}
-
-				} catch ( \Stripe\Error\Base $e ) {
-
-					Give_Stripe_Logger::log_error( $e, 'stripe' );
-
-				} catch ( Exception $e ) {
-					give_record_gateway_error(
-						__( 'Stripe Error', 'give' ),
-						sprintf(
-							/* translators: %s Exception Message Body */
-							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
-							$e->getMessage()
-						)
-					);
-					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-					give_send_back_to_checkout( '?payment-mode=stripe' );
-				}
+				// Assign the new payment method.
+				$payment_method = $new_payment_method;
 			}
 
 			// Return Card Details, if exists.
-			if ( ! empty( $card->id ) ) {
-				$this->attached_payment_method = $card;
+			if ( ! empty( $payment_method->id ) ) {
+				$this->attached_payment_method = $payment_method;
 			} else {
 
 				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
