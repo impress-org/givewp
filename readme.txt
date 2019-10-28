@@ -50,7 +50,7 @@ Find out more:
 
 = Who Uses GiveWP? =
 
-With more than 40,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations using GiveWP. Causes are using GiveWP to raise millions of dollars per year. Check out some of our [GiveWP Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
+With more than 70,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations using GiveWP. Causes are using GiveWP to raise millions of dollars per year. Check out some of our [GiveWP Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
 
 = Why Use GiveWP for Donations? =
 
