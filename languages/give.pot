@@ -523,7 +523,7 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1872, includes/api/class-give-api.php:1878, includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:502, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:205, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
+#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1872, includes/api/class-give-api.php:1878, includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:502, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:209, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
 msgid "Error"
 msgstr ""
 
@@ -13121,45 +13121,48 @@ msgstr ""
 msgid "Credit card fields are disabled because your site is not running securely over HTTPS."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:55, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:95, includes/gateways/stripe/includes/class-give-stripe-customer.php:307, includes/gateways/stripe/includes/class-give-stripe-customer.php:401, includes/gateways/stripe/includes/class-give-stripe-customer.php:419, includes/gateways/stripe/includes/class-give-stripe-customer.php:510, includes/gateways/stripe/includes/class-give-stripe-customer.php:528, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:191, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:60, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:100, includes/gateways/stripe/includes/class-give-stripe-customer.php:357, includes/gateways/stripe/includes/class-give-stripe-customer.php:451, includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:195, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
 msgid "Stripe Error"
 msgstr ""
 
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:58
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:63
 msgid "The Stripe Gateway returned an error while creating the Checkout Session. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:62, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:102, includes/gateways/stripe/includes/class-give-stripe-customer.php:314, includes/gateways/stripe/includes/class-give-stripe-customer.php:408, includes/gateways/stripe/includes/class-give-stripe-customer.php:517, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:67, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:107, includes/gateways/stripe/includes/class-give-stripe-customer.php:364, includes/gateways/stripe/includes/class-give-stripe-customer.php:458, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
 msgid "An occurred while processing the donation with the gateway. Please try your donation again."
 msgstr ""
 
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:98
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:103
 msgid "The Stripe Gateway returned an error while retrieving the Checkout Session. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:301
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:351
 msgid "Stripe - Customer Creation Error"
 msgstr ""
 
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:242
+msgid "Stripe - Customer Update Error"
+msgstr ""
+
 #. translators: %s Site URL
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:277
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:327
 msgid "Stripe Customer generated by GiveWP via %s"
 msgstr ""
 
 #. translators: %s Exception Message Body
 #. translators: %s Exception Message Body
-#. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:310, includes/gateways/stripe/includes/class-give-stripe-customer.php:404, includes/gateways/stripe/includes/class-give-stripe-customer.php:513
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:360, includes/gateways/stripe/includes/class-give-stripe-customer.php:454
 msgid "The Stripe Gateway returned an error while creating the customer. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:418, includes/gateways/stripe/includes/class-give-stripe-customer.php:527, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:468, includes/gateways/stripe/includes/class-give-stripe-customer.php:549, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
 msgid "An error occurred while processing the donation. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:419, includes/gateways/stripe/includes/class-give-stripe-customer.php:528, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
 msgid "An error occurred retrieving or creating the "
 msgstr ""
 
@@ -13206,13 +13209,13 @@ msgstr ""
 
 #. translators: %s Exception Message
 #. translators: 1. Error Message
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:399, includes/gateways/stripe/includes/class-give-stripe-logger.php:61, includes/gateways/stripe/includes/admin/admin-actions.php:187
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:399, includes/gateways/stripe/includes/class-give-stripe-logger.php:61, includes/gateways/stripe/includes/admin/admin-actions.php:191
 msgid "Message: %s"
 msgstr ""
 
 #. translators: %s Trace String
 #. translators: 1. Error Code
-#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:408, includes/gateways/stripe/includes/class-give-stripe-logger.php:67, includes/gateways/stripe/includes/admin/admin-actions.php:188
+#: includes/gateways/stripe/includes/class-give-stripe-gateway.php:408, includes/gateways/stripe/includes/class-give-stripe-logger.php:67, includes/gateways/stripe/includes/admin/admin-actions.php:192
 msgid "Code: %s"
 msgstr ""
 
@@ -13333,7 +13336,7 @@ msgstr ""
 msgid "Error updating payment intent with Stripe. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:46, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:78, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:120
+#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:46, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:78, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:113, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:154
 msgid "Stripe Payment Method Error"
 msgstr ""
 
@@ -13351,16 +13354,21 @@ msgstr ""
 msgid "The Stripe Gateway returned an error while retrieving the payment method of the customer. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:85
+#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:85, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:120
 msgid "An occurred while retrieving the payment method of the customer. Please try again."
 msgstr ""
 
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:123
+#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:116
+msgid "The Stripe Gateway returned an error while updating the payment method of the customer. Details: %s"
+msgstr ""
+
+#. translators: %s Exception Message Body
+#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:157
 msgid "The Stripe Gateway returned an error while fetching the list of payment methods of the customer. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:127
+#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:161
 msgid "An occurred while fetching the list of payment methods of the customer. Please try again."
 msgstr ""
 
@@ -13435,33 +13443,33 @@ msgid "Donation Processing..."
 msgstr ""
 
 #. translators: %s Error Message
-#: includes/gateways/stripe/includes/admin/admin-actions.php:75
+#: includes/gateways/stripe/includes/admin/admin-actions.php:79
 msgid "<strong>Error:</strong> GiveWP could not disconnect from the Stripe API. Reason: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/admin-actions.php:112
+#: includes/gateways/stripe/includes/admin/admin-actions.php:116
 msgid "Refund Charge in Stripe?"
 msgstr ""
 
 #. translators: 1. Refund ID
-#: includes/gateways/stripe/includes/admin/admin-actions.php:179
+#: includes/gateways/stripe/includes/admin/admin-actions.php:183
 msgid "Charge refunded in Stripe: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/admin-actions.php:186
+#: includes/gateways/stripe/includes/admin/admin-actions.php:190
 msgid "The Stripe payment gateway returned an error while refunding a donation."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/admin-actions.php:202
+#: includes/gateways/stripe/includes/admin/admin-actions.php:206
 msgid "Something went wrong while refunding the charge in Stripe."
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/admin-actions.php:283
+#: includes/gateways/stripe/includes/admin/admin-actions.php:287
 msgid "The Stripe gateway is enabled but you're not connected. Connect to Stripe to start accepting credit card donations directly on your website."
 msgstr ""
 
 #. translators: 1. Main Text, 2. Connect Link
-#: includes/gateways/stripe/includes/admin/admin-actions.php:296
+#: includes/gateways/stripe/includes/admin/admin-actions.php:300
 msgid "<p><strong>Stripe Connect:</strong> %1$s </p>%2$s"
 msgstr ""
 
@@ -13519,7 +13527,7 @@ msgid "Credit Card Fields Format"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:256
-msgid "This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway."
+msgid "This option allows you to show single or multiple credit card fields on your donation forms."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:262
