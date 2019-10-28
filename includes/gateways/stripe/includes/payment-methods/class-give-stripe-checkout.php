@@ -276,7 +276,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					),
 				),
 				'payment_intent_data'        => [
-					'application_fee_amount' => give_stripe_get_application_fee_amount( $amount ),
 					'capture_method'         => 'automatic',
 					'description'            => $donation_summary,
 					'metadata'               => $this->prepare_metadata( $donation_id ),
