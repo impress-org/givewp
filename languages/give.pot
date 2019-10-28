@@ -13527,7 +13527,7 @@ msgid "Credit Card Fields Format"
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:256
-msgid "This option will enable you to show single or multiple credit card fields on your donation form for Stripe Payment Gateway."
+msgid "This option allows you to show single or multiple credit card fields on your donation forms."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:262
