@@ -284,6 +284,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				'submit_type'                => 'donate',
 				'success_url'                => give_get_success_page_uri(),
 				'cancel_url'                 => give_get_failed_transaction_uri(),
+				'locale'                     => give_stripe_get_preferred_locale(),
 			);
 
 			// If featured image exists, then add it to checkout session.

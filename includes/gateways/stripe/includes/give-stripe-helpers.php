@@ -220,8 +220,13 @@ function give_stripe_get_preferred_locale() {
 
 	$language_code = substr( get_locale(), 0, 2 ); // Get the lowercase language code. For Example, en, es, de.
 
-	// Return "no" as accepted parameter for norwegian language code "nb" && "nn".
-	$language_code = in_array( $language_code, array( 'nb', 'nn' ), true ) ? 'no' : $language_code;
+	if ( 'modal' === give_stripe_get_checkout_type() ) {
+		// For Legacy Checkout, Return "no" as accepted parameter for norwegian language code "nb" && "nn".
+		$language_code = in_array( $language_code, array( 'nb', 'nn' ), true ) ? 'no' : $language_code;
+	} else {
+		// For Checkout 2.0, Return "nb" as accepted parameter for norwegian language code "no" && "nn".
+		$language_code = in_array( $language_code, array( 'no', 'nn' ), true ) ? 'nb' : $language_code;
+	}
 
 	return apply_filters( 'give_stripe_elements_preferred_locale', $language_code );
 }
