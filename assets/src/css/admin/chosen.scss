@@ -4,9 +4,9 @@
 
   .chosen-single {
 	background: #FFF;
-	height: 30px;
-	line-height: 30px;
-	border: 1px solid #DDD;
+	height: 36px;
+	line-height: 36px;
+	border: 1px solid #7e8993;
 	box-shadow: none;
 
 	span {
@@ -17,7 +17,7 @@
 
   // Reposition dropdown arrow because of large size above.
   &.chosen-with-drop .chosen-single div b, .chosen-single div b {
-	background-position-y: 4px;
+	background-position-y: 8px;
   }
 }
 
