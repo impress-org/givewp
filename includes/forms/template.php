@@ -34,7 +34,7 @@ function give_get_donation_form( $args = array() ) {
 	// If are calling this function directly with `form_id` the use `id` instead.
 	$args['id'] = ! empty( $args['form_id'] ) ? absint( $args['form_id'] ) : $args['id'];
 
-	// If `id` does not set then maybe we are single donation form page, so lets render form.
+	// If `id` is not set then maybe we are single donation form page, so lets render form.
 	if ( empty( $args['id'] ) && is_object( $post ) && $post->ID ) {
 		$args['id'] = $post->ID;
 	}
