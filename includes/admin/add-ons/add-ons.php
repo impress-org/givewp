@@ -29,7 +29,7 @@ function give_add_ons_page() {
 		<div class="give-addons-header">
 
 			<div class="give-admin-logo give-addon-h1">
-				<a href="https://givewp.com/&utm_campaign=admin&utm_source=addons&utm_medium=imagelogo"
+				<a href="https://givewp.com/?utm_campaign=admin&utm_source=addons&utm_medium=imagelogo"
 				   class="give-admin-logo-link" target="_blank"><img
 						src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-large-no-tagline.png'; ?>"
 						alt="<?php _e( 'Click to Visit GiveWP in a new tab.', 'give' ); ?>"/><span><?php echo esc_html( get_admin_page_title() ); ?></span></a>
