@@ -7,50 +7,20 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-/*------------------------------------
-Forms CPT
---------------------------------------*/
-/* Hide conditional fields */
-.post-type-give_forms .tablenav #post-query-submit,
-.give-hidden {
-	display: none;
-}
 
-//---------------------------------------------------
-// Field One Offs
-//---------------------------------------------------
-.give-time-field {
-	width: 65px;
-}
+.give_options_panel {
 
-.give-money-field {
-	width: 75px;
-	margin-right: 0;
-	margin-left: 0;
-}
-
-.give-money-symbol {
-	border: 1px solid #DDD;
-	background: #FCFCFC;
-	margin: 0;
-	font-size: 14px;
-	padding: 5px 8px;
-}
-
-.give-money-symbol-before {
-	border-right: 0;
-	margin-right: -4px;
-}
-
-.give-money-symbol-after {
-	//border-left: 0;
-	margin-left: -5px;
-}
-
-.give_options_panel input[ type="text"],
-.give_options_panel input[ type="email"] {
-	padding: 5px;
-	width: 100%;
+	input[ type="text"],
+	input[ type="email"] {
+		padding: 3px 5px;
+		width: 100%;
+		line-height: 2;
+		box-shadow: 0 0 0 transparent;
+		border-radius: 4px;
+		border: 1px solid #7e8993;
+		background-color: #fff;
+		color: #32373c;
+	}
 }
 
 input.give-text_small,
@@ -62,6 +32,63 @@ input.give-text-medium,
 input.give-text_medium {
 	width: 200px !important;
 }
+
+
+/*------------------------------------
+Forms CPT
+--------------------------------------*/
+/* Hide conditional fields */
+.post-type-give_forms .tablenav #post-query-submit,
+.give-hidden {
+	display: none;
+}
+
+//---------------------------------------------------
+//  Time, Money, Percentage Fields
+//---------------------------------------------------
+.give_options_panel {
+	.give-time-field {
+		width: 65px;
+	}
+
+	.give-money-field {
+		width: 75px;
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	.give-money-symbol {
+		border: 1px solid #7e8993;
+		background: #FCFCFC;
+		margin: 0;
+		font-size: 14px;
+		padding: 8px 10px 9px;
+	}
+
+	.give-money-symbol-before {
+		border-right: 0;
+		margin-right: -5px;
+		border-radius: 4px 0 0 4px;
+
+		+ .give-money-field {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+	}
+
+	.give-money-symbol-after {
+		margin-left: -5px;
+		border-radius: 0 4px 4px 0;
+
+		+ .give-money-field {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+
+	}
+}
+
 
 .give-underline {
 	text-decoration: underline;
@@ -357,6 +384,9 @@ Shortcode Copy & Paste
 
 		input {
 			margin-left: 1px;
+			position: relative;
+			z-index: 1;
+			border-radius: 0 4px 4px 0;
 		}
 	}
 
@@ -563,7 +593,7 @@ Donations forms filter
 
 	}
 
-	.actions{
+	.actions {
 		position: absolute;
 		left: 230px;
 		bottom: 10px;

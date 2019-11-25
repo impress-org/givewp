@@ -88,7 +88,10 @@ class Give_Scripts {
 	 */
 	public function register_styles() {
 
-		// WP-admin.
+		// Global WP-admin.
+		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin-global' . $this->direction . '.css', array(), GIVE_VERSION );
+
+		// GiveWP-only WP-admin.
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
 		// WP-admin: plugin page.
@@ -148,6 +151,10 @@ class Give_Scripts {
 	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_styles( $hook ) {
+
+		// Global admin styles
+		wp_enqueue_style( 'give-admin-global-styles' );
+
 		// Give Admin Only.
 		if ( ! apply_filters( 'give_load_admin_styles', give_is_admin_page(), $hook ) ) {
 			return;

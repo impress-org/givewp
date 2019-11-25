@@ -52,6 +52,12 @@ body.give-twentynineteen {
 
 }
 
+// Twenty Twenty Compatibility.
+body.theme-twentytwenty .give-wrap {
+	max-width: 1200px;
+	margin: 60px auto;
+}
+
 // Enfold Compatibility
 html[class*="avia"] body#top form[id*=give-form] input.give-amount-top {
   width: unset;
