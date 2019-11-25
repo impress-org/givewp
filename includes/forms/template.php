@@ -475,7 +475,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	}
 
 	/**
-	 * Fires while displaying donation form, after donation amounf field(s).
+	 * Fires while displaying donation form, after donation amount field(s).
 	 *
 	 * @param int   $form_id The form ID.
 	 * @param array $args    An array of form arguments.
