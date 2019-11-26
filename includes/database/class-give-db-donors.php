@@ -563,7 +563,7 @@ class Give_DB_Donors extends Give_DB {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		$sql = "CREATE TABLE " . $this->table_name . " (
+		$sql = "CREATE TABLE {$this->table_name} (
 		id bigint(20) NOT NULL AUTO_INCREMENT,
 		user_id bigint(20) NOT NULL,
 		email varchar(255) NOT NULL,
