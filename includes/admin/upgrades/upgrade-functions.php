@@ -3570,8 +3570,7 @@ function give_v258_upgrades() {
  */
 function give_v2511_upgrades() {
 	global $wpdb;
-	$donor_table_name = Give()->donors->table_name;
 
 	// Remove unused notes column from donor table.
-	$wpdb->query( "ALTER TABLE {$donor_table_name} DROP COLUMN notes;" );
+	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_donors DROP COLUMN notes;" );
 }
