@@ -244,15 +244,6 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'import_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['import_give_forms'] );
 
-		$this->assertArrayHasKey( 'edit_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
-		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_payment'] );
-
-		$this->assertArrayHasKey( 'read_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
-		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['read_give_payment'] );
-
-		$this->assertArrayHasKey( 'delete_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
-		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_payment'] );
-
 		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_payments'] );
 
