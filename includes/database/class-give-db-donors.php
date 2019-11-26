@@ -61,7 +61,6 @@ class Give_DB_Donors extends Give_DB {
 			'payment_ids'     => '%s',
 			'purchase_value'  => '%f',
 			'purchase_count'  => '%d',
-			'notes'           => '%s',
 			'date_created'    => '%s',
 			'token'           => '%s',
 			'verify_key'      => '%s',
@@ -85,7 +84,6 @@ class Give_DB_Donors extends Give_DB {
 			'payment_ids'     => '',
 			'purchase_value'  => 0.00,
 			'purchase_count'  => 0,
-			'notes'           => '',
 			'date_created'    => date( 'Y-m-d H:i:s' ),
 			'token'           => '',
 			'verify_key'      => '',
@@ -565,7 +563,7 @@ class Give_DB_Donors extends Give_DB {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		$sql = "CREATE TABLE " . $this->table_name . " (
+		$sql = "CREATE TABLE {$this->table_name} (
 		id bigint(20) NOT NULL AUTO_INCREMENT,
 		user_id bigint(20) NOT NULL,
 		email varchar(255) NOT NULL,
@@ -573,7 +571,6 @@ class Give_DB_Donors extends Give_DB {
 		purchase_value mediumtext NOT NULL,
 		purchase_count bigint(20) NOT NULL,
 		payment_ids longtext NOT NULL,
-		notes longtext NOT NULL,
 		date_created datetime NOT NULL,
 		token VARCHAR(255) CHARACTER SET utf8 NOT NULL,
 		verify_key VARCHAR(255) CHARACTER SET utf8 NOT NULL,
