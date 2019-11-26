@@ -138,6 +138,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.8', '<' ):
 			give_v258_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.5.11', '<' ):
+			give_v2511_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -3556,4 +3560,24 @@ function give_v258_upgrades() {
 
 	// Delete the old legacy settings.
 	give_delete_option( 'stripe_checkout_enabled' );
+}
+
+
+/**
+ * DB upgrades for Give 2.5.11
+ *
+ * @since 2.5.11
+ */
+function give_v2511_upgrades(){
+	global $wp_roles;
+	$all_roles = get_editable_roles();
+
+	foreach ( $all_roles as $role => $data ) {
+		$wp_roles->remove_cap( $role, 'delete_give_form' );
+		$wp_roles->remove_cap( $role, 'delete_give_payment' );
+		$wp_roles->remove_cap( $role, 'edit_give_form' );
+		$wp_roles->remove_cap( $role, 'edit_give_payment' );
+		$wp_roles->remove_cap( $role, 'read_give_form' );
+		$wp_roles->remove_cap( $role, 'read_give_payment' );
+	}
 }
