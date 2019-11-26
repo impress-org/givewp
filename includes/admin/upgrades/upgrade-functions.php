@@ -138,6 +138,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.8', '<' ):
 			give_v258_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.5.11', '<' ):
+			give_v2511_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -3556,4 +3560,18 @@ function give_v258_upgrades() {
 
 	// Delete the old legacy settings.
 	give_delete_option( 'stripe_checkout_enabled' );
+}
+
+
+/**
+ * DB upgrades for Give 2.5.11
+ *
+ * @since 2.5.11
+ */
+function give_v2511_upgrades() {
+	global $wpdb;
+	$donor_table_name = Give()->donors->table_name;
+
+	// Remove unused notes column from donor table.
+	$wpdb->query( "ALTER TABLE {$donor_table_name} DROP COLUMN notes;" );
 }
