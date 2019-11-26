@@ -3571,6 +3571,9 @@ function give_v258_upgrades() {
 function give_v2511_upgrades() {
 	global $wpdb;
 
-	// Remove unused notes column from donor table.
-	$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_donors DROP COLUMN notes;" );
+	// Run code only if not a fresh install.
+	if( Give_Cache_Setting::get_option( 'give_version' ) ) {
+		// Remove unused notes column from donor table.
+		$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_donors DROP COLUMN notes;" );
+	}
 }
