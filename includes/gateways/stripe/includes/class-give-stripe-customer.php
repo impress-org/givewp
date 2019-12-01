@@ -482,77 +482,110 @@ class Give_Stripe_Customer {
 	 * @return void
 	 */
 	public function attach_payment_method() {
+		if ( empty( $this->payment_method_id ) || empty( $this->customer_data ) ) {
+			return;
+		}
 
-		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
+		$new_payment_method = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
+		$payment_methods    = $this->stripe_gateway->payment_method->list_all( $this->id, $new_payment_method->type);
+		
+		/**
+		 * This filter hook is used to get new card details.
+		 *
+		 * @since 2.5.0
+		 */
+		$new_payment_method = apply_filters( 'give_stripe_get_new_card_details', $new_payment_method, $this->payment_method_id, $this->stripe_gateway );
 
-			$payment_method     = '';
-			$payment_methods    = $this->stripe_gateway->payment_method->list_all( $this->id ); // All payment methods.
-			$new_payment_method = $this->stripe_gateway->payment_method->retrieve( $this->payment_method_id );
+		$payment_method = $this->findPaymentMethod($payment_methods->data, $new_payment_method);
 
-			/**
-			 * This filter hook is used to get new card details.
-			 *
-			 * @since 2.5.0
-			 */
-			$new_payment_method = apply_filters( 'give_stripe_get_new_card_details', $new_payment_method, $this->payment_method_id, $this->stripe_gateway );
+		if ( $payment_method ) {
+			$this->updateCardExpiry($payment_method, $new_payment_method);
+		} else { // Create the card, if none found above.
+			$payment_method = $new_payment_method;
+		}
 
-			// Check to ensure that new card is already attached with customer's payment methods or not.
-			if ( count( $payment_methods->data ) > 0 ) {
-				foreach ( $payment_methods->data as $card_details ) {
+		// Set payment method as default.
+		$this->set_default_payment_method( $payment_method->id, $this->id );
 
-					// If fingerprint of new and existing payment method doesn't match then continue to next iteration.
-					if ( $card_details->card->fingerprint !== $new_payment_method->card->fingerprint ) {
-						continue;
-					}
+		// Return Card Details, if exists.
+		if ( ! empty( $payment_method->id ) ) {
+			$this->attached_payment_method = $payment_method;
+		} else {
 
-					if (
-						$card_details->card->exp_month !== $new_payment_method->card->exp_month ||
-						$card_details->card->exp_year !== $new_payment_method->card->exp_year
-					) {
+			give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
+			give_record_gateway_error( __( 'Stripe Error', 'give' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
+			give_send_back_to_checkout( '?payment-mode=stripe' );
 
-						// Set updated expiry date to the existing card.
-						$this->stripe_gateway->payment_method->update(
-							$card_details->id,
-							array(
-								'card' => array(
-									'exp_month' => $new_payment_method->card->exp_month,
-									'exp_year'  => $new_payment_method->card->exp_year,
-								),
-							)
-						);
-					}
+			$this->attached_payment_method = false;
+		}
+	}
 
-					// Set existing card as default payment method.
-					$this->set_default_payment_method( $card_details->id, $this->id );
-
-					$payment_method       = $card_details;
-					$this->is_card_exists = true;
-
-				}
+	/**
+	 * This function is used find the current payment methods from Stripe payment methods
+	 *
+	 * @access private
+	 *
+	 * @return PaymentMethod or null
+	 */
+	private function findPaymentMethod($payment_methods,$new_payment_method) {
+		if ( count( $payment_methods ) == 0 ) {
+			return null;
+		}
+		foreach ( $payment_methods as $payment_method ) {
+			if ( $payment_method->type !== $new_payment_method->type ) {
+				continue;
 			}
 
-			// Create the card, if none found above.
-			if ( ! $this->is_card_exists ) {
-
-				// Set new card as default payment method.
-				$this->set_default_payment_method( $this->payment_method_id, $this->id );
-
-				// Assign the new payment method.
-				$payment_method = $new_payment_method;
+			if ( !$this->isEqualPaymentMethod($payment_method, $new_payment_method) ) {
+				continue;
 			}
 
-			// Return Card Details, if exists.
-			if ( ! empty( $payment_method->id ) ) {
-				$this->attached_payment_method = $payment_method;
-			} else {
+			return $payment_method;
+		}
+	}
 
-				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
-				give_record_gateway_error( __( 'Stripe Error', 'give' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=stripe' );
+	/**
+	 * This function compares two payment methods
+	 *
+	 * @access private
+	 *
+	 * @return boolean
+	 */
+	private function isEqualPaymentMethod( $method1, $method2 ) {
+		if ( $method1->type !== $method2->type ) {
+			return false;
+		}
+		$type = $method1->type;
+		return $method1[$type]->fingerprint === $method2[$type]->fingerprint;
+	}
 
-				$this->attached_payment_method = false;
-			}
-		} // End if().
+	/**
+	 * This function updates the expiry of credit cards
+	 *
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function updateCardExpiry($payment_method, $new_payment_method) {
+		if ( $payment_method->type !== 'card' ) {
+			return;
+		}
+		if (
+			$payment_method->card->exp_month === $new_payment_method->card->exp_month &&
+			$payment_method->card->exp_year === $new_payment_method->card->exp_year
+		) {
+			return;
+		}
+
+		$this->stripe_gateway->payment_method->update(
+			$payment_method->id,
+			array(
+				'card' => array(
+					'exp_month' => $new_payment_method->card->exp_month,
+					'exp_year'  => $new_payment_method->card->exp_year,
+				),
+			)
+		);
 	}
 
 	/**

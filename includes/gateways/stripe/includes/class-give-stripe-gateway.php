@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @var string
 		 */
-		public $api_version = '2019-05-16';
+		public $api_version = '2019-11-05';
 
 		/**
 		 * Secret API Key.

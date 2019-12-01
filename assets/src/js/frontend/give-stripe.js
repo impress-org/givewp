@@ -16,6 +16,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	let cardElements = [];
 	let defaultGateway = '';
 	const globalCardElements = [];
+	const globalIbanElements = [];
 	let cardElementSelectors = [];
 	const fontStyles = [];
 	const preferredLocale = give_stripe_vars.preferred_locale;
@@ -48,7 +49,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		const idPrefix = form_element.getAttribute( 'data-id' );
-		const donateButton = form_element.querySelector( '.give-submit' );
 
 		// Create Card Elements for each form.
 		cardElements = giveStripePrepareCardElements( form_element, elements, idPrefix );
@@ -59,42 +59,31 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			cardElementSelectors = [ '#give-card-number-field-', '#give-card-cvc-field-', '#give-card-expiration-field-' ];
 		}
 
-		// Prepare Card Elements for each form on a single page.
+		// Prepare Elements for each form on a single page.
 		globalCardElements[ idPrefix ] = [];
-
+		globalIbanElements[ idPrefix ] = [];
 		Array.prototype.forEach.call( cardElementSelectors, function( selector, index ) {
 			globalCardElements[ idPrefix ][ index ] = [];
 			globalCardElements[ idPrefix ][ index ].item = cardElements[ index ];
 			globalCardElements[ idPrefix ][ index ].selector = selector;
 			globalCardElements[ idPrefix ][ index ].isCardMounted = false;
 		} );
+		globalIbanElements[ idPrefix ][0] = { item: giveStripePrepareIbanElement(form_element, elements, idPrefix), selector: '#give-iban-field-', isCardMounted: false };
 
 		// Mount and Un-Mount Stripe CC Fields on gateway load.
 		jQuery( document ).on( 'give_gateway_loaded', function( event, xhr, settings ) {
-
-			// Un-mount card elements when stripe is not the selected gateway.
-			giveStripeUnmountCardElements( globalCardElements[ idPrefix ] );
-
-			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway').value === 'stripe' ) {
-				// Mount card elements when stripe is the selected gateway.
-				giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
+			const gateway = form_element.querySelector( '.give-gateway-option-selected .give-gateway' ).value;
+			if ( 'stripe' === gateway || 'stripe_sepa' === gateway ) {
+				remountStripeGateway( gateway, idPrefix, form_element );
 			}
 
 			// Convert normal fields to float labels.
 			giveStripeTriggerFloatLabels( idPrefix, form_element );
 		} );
 
-		// Mount Card Elements, if default gateway is stripe.
-		if ( 'stripe' === defaultGateway ) {
-			// Disabled the donate button of the form.
-			donateButton.setAttribute( 'disabled', 'disabled' );
-
-			giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
-
-			// Enable the donate button of the form after successful mounting of CC fields.
-			donateButton.removeAttribute( 'disabled' );
-		} else {
-			giveStripeUnmountCardElements( cardElements );
+		// Mount Elements, if default gateway is stripe.
+		if ( 'stripe' === defaultGateway || 'stripe_sepa' === defaultGateway ) {
+			remountStripeGateway( defaultGateway, idPrefix, form_element );
 		}
 
 		// Convert normal fields to float labels.
@@ -108,6 +97,10 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		if ( 'stripe' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_card_update ) {
 			give_stripe_process_card( $form, globalCardElements[ $idPrefix ][ 0 ].item );
+			event.preventDefault();
+		}
+		if ( 'stripe_sepa' === $form.find( 'input.give-gateway:checked' ).val() ) {
+			give_stripe_process_sepa( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
 	} );
@@ -168,7 +161,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 *
 	 * @since 1.6
 	 */
-	function giveStripeMountCardElements( idPrefix, cardElements = [] ) {
+	function giveStripeMountElements( idPrefix, cardElements = [] ) {
 		const cardElementsLength = Object.keys( cardElements ).length;
 
 		// Assign any card element to variable to create source.
@@ -192,7 +185,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 *
 	 * @since 1.6
 	 */
-	function giveStripeUnmountCardElements( cardElements = [] ) {
+	function giveStripeUnmountElements( cardElements = [] ) {
 		// Un-mount required card elements.
 		Array.prototype.forEach.call( cardElements, function( value, index ) {
 			if ( true === value.isCardMounted ) {
@@ -303,6 +296,38 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		$form.get( 0 ).submit();
 	}
 
+
+	/**
+	 * Stripe Process Error Handler
+	 *
+	 * @param {object} stripe result object
+	 * @param {object} $form Form Object.
+	 *
+	 * @returns {boolean} True or False.
+	 */
+	function give_stripe_process_error( result, $form ) {
+		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
+
+		const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+
+		// re-enable the submit button.
+		$form_submit_btn.attr( 'disabled', false );
+
+		// Hide the loading animation.
+		jQuery( '.give-loading-animation' ).fadeOut();
+
+		// Display Error on the form.
+		$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
+
+		// Reset Donate Button.
+		if ( give_global_vars.complete_purchase ) {
+			$form_submit_btn.val( give_global_vars.complete_purchase );
+		} else {
+			$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
+		}
+	}
+
 	/**
 	 * Stripe Process CC
 	 *
@@ -313,10 +338,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 */
 	function give_stripe_process_card( $form, card ) {
 		const additionalData = {
-			billing_details: {},
+			billing_details: collectBillingDetails($form),
 		};
-		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
-		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
 		const card_name = $form.find( '.card-name' ).val();
 
 		// disable the submit button to prevent repeated clicks.
@@ -327,7 +350,22 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			additionalData.billing_details.name = card_name;
 		}
 
-		// Gather additional customer data we may have collected in our form.
+		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
+		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+			if ( result.error ) {
+				give_stripe_process_error(result, $form);
+			} else {
+				// Send payment method to server for processing payment.
+				give_stripe_response_handler( $form, result.paymentMethod );
+			}
+		} );
+
+		return false; // Submit from callback.
+	}
+
+	// Gather additional customer data we may have collected in our form.
+	function collectBillingDetails($form) {
+		const billingDetails = {}
 		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
 			const address1 = $form.find( '.card-address' ).val();
 			const address2 = $form.find( '.card-address-2' ).val();
@@ -336,7 +374,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			const zip = $form.find( '.card-zip' ).val();
 			const country = $form.find( '.billing-country' ).val();
 
-			additionalData.billing_details.address = {
+			billingDetails.address = {
 				line1: address1 ? address1 : '',
 				line2: address2 ? address2 : '',
 				city: city ? city : '',
@@ -346,26 +384,108 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			};
 		}
 
-		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+		return billingDetails;
+	}
+
+	/**
+	 * Create stripe gateway.
+	 *
+	 * @param {string} gateway 		Stripe Gateway Name.
+	 * @param {string} idPrefix     ID Prefix.
+	 * @param {object} form_element Form Element.
+	 *
+	 * @since 2.5
+	 *
+	 * @return void
+	 */
+	function remountStripeGateway( gateway, idPrefix, form_element ) {
+		const donateButton = form_element.querySelector( '.give-submit' );
+
+		// Un-mount elements when stripe is not the selected gateway.
+		if ( 'stripe' === gateway ) {
+			giveStripeUnmountElements( globalCardElements[ idPrefix ] );
+		}
+		if ( 'stripe_sepa' === gateway ) {
+			giveStripeUnmountElements( globalIbanElements[ idPrefix ] );
+		}
+
+		// Disabled the donate button of the form.
+		donateButton.setAttribute( 'disabled', 'disabled' );
+
+		if ( 'stripe' === gateway ) {
+			giveStripeMountElements( idPrefix, globalCardElements[ idPrefix ] );
+		}
+		if ( 'stripe_sepa' === gateway ) {
+			giveStripeMountElements( idPrefix, globalIbanElements[ idPrefix ] );
+		}
+
+		// Enable the donate button of the form after successful mounting of CC fields.
+		donateButton.removeAttribute( 'disabled' );
+	}
+
+	/**
+	 * Create required sepa elements.
+	 *
+	 * @param {object} form_element Form Element.
+	 * @param {object} elements     Stripe Element.
+	 * @param {string} idPrefix     ID Prefix.
+	 *
+	 * @since 2.5
+	 *
+	 * @return iban element
+	 */
+	function giveStripePrepareIbanElement( form_element, elements, idPrefix ) {
+		const prepareCardElements = [];
+		const baseStyles = give_stripe_vars.element_base_styles;
+		const completeStyles = give_stripe_vars.element_complete_styles;
+		const emptyStyles = give_stripe_vars.element_empty_styles;
+		const invalidStyles = give_stripe_vars.element_invalid_styles;
+
+		const elementStyles = {
+			base: baseStyles,
+			complete: completeStyles,
+			empty: emptyStyles,
+			invalid: invalidStyles,
+		};
+
+		const elementClasses = {
+			focus: 'focus',
+			empty: 'empty',
+			invalid: 'invalid',
+		};
+
+		const iban = elements.create(
+			'iban',
+			{
+				style: elementStyles,
+				classes: elementClasses,
+				supportedCountries: ['SEPA'],
+			}
+		);
+
+		return iban;
+	}
+
+	/**
+	 * Stripe Process SEPA
+	 *
+	 * @param {object} $form Form Object.
+	 * @param {object} iban  Iban Object.
+	 *
+	 * @returns {boolean} True or False.
+	 */
+	function give_stripe_process_sepa( $form, iban ) {
+		const billing_details = collectBillingDetails($form);
+
+		// disable the submit button to prevent repeated clicks.
+		$form.find( '[id^=give-purchase-button]' ).attr( 'disabled', 'disabled' );
+
+		billing_details.name = `${$form.find( 'input[name="give_first"]' ).val()} ${$form.find( 'input[name="give_last"]' ).val()}`;
+		billing_details.email = $form.find( 'input[name="give_email"]' ).val();
+		
+		stripe.createPaymentMethod({ type: 'sepa_debit', sepa_debit: iban, billing_details }).then( function( result ) {
 			if ( result.error ) {
-				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
-
-				// re-enable the submit button.
-				$form_submit_btn.attr( 'disabled', false );
-
-				// Hide the loading animation.
-				jQuery( '.give-loading-animation' ).fadeOut();
-
-				// Display Error on the form.
-				$form.find( '[id^=give-stripe-payment-errors-' + $form_id + ']' ).html( error );
-
-				// Reset Donate Button.
-				if ( give_global_vars.complete_purchase ) {
-					$form_submit_btn.val( give_global_vars.complete_purchase );
-				} else {
-					$form_submit_btn.val( $form_submit_btn.data( 'before-validation-label' ) );
-				}
+				give_stripe_process_error(result, $form);
 			} else {
 				// Send payment method to server for processing payment.
 				give_stripe_response_handler( $form, result.paymentMethod );

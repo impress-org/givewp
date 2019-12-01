@@ -1,4 +1,4 @@
-.form-row .give-stripe-cc-field {
+  .form-row .give-stripe-cc-field, .form-row .give-stripe-sepa-field {
 	box-sizing: border-box;
 	width: 100%;
 	border-radius: 0;
@@ -39,3 +39,4 @@
   .give-form .give-stripe-cc-field:focus {
 	background-color: #FFFFFF;
   }
+

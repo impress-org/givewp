@@ -140,6 +140,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Load these files when accessed from admin.
 			if ( is_admin() ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-sepa-settings.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
 			}
 		}
@@ -171,6 +172,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Payment Methods.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe-sepa.php';
 
 			// Deprecations.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';

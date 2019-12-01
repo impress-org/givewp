@@ -11514,19 +11514,39 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
+#: includes/gateways/stripe/class-give-stripe-sepa.php:43
+msgid "Stripe - SEPA Direct Debit"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe-sepa.php:44
+msgid "SEPA Direct Debit"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe-sepa.php:77
+msgid "SEPA Info"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe-sepa.php:83
+msgid "IBAN"
+msgstr ""
+
+#: includes/gateways/stripe/class-give-stripe-sepa.php:86
+msgid "The 16 to 34 digits on the front or back of your debit card."
+msgstr ""
+
 #: includes/gateways/stripe/class-give-stripe.php:106
 msgid "<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href=\"%s\" target=\"_blank\">WP Rollback</a> plugin and <a href=\"%s\" target=\"_blank\">contact support</a> for prompt assistance."
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:194
+#: includes/gateways/stripe/class-give-stripe.php:196
 msgid "Stripe - Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:195, includes/gateways/stripe/class-give-stripe.php:201
+#: includes/gateways/stripe/class-give-stripe.php:197, includes/gateways/stripe/class-give-stripe.php:203
 msgid "Credit Card"
 msgstr ""
 
-#: includes/gateways/stripe/class-give-stripe.php:200
+#: includes/gateways/stripe/class-give-stripe.php:202
 msgid "Stripe - Checkout"
 msgstr ""
 
@@ -13121,7 +13141,7 @@ msgstr ""
 msgid "Credit card fields are disabled because your site is not running securely over HTTPS."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:60, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:100, includes/gateways/stripe/includes/class-give-stripe-customer.php:357, includes/gateways/stripe/includes/class-give-stripe-customer.php:451, includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:195, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:60, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:100, includes/gateways/stripe/includes/class-give-stripe-customer.php:357, includes/gateways/stripe/includes/class-give-stripe-customer.php:451, includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:516, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:195, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
 msgid "Stripe Error"
 msgstr ""
 
@@ -13158,11 +13178,11 @@ msgstr ""
 msgid "The Stripe Gateway returned an error while creating the customer. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:468, includes/gateways/stripe/includes/class-give-stripe-customer.php:549, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:468, includes/gateways/stripe/includes/class-give-stripe-customer.php:515, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
 msgid "An error occurred while processing the donation. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:516, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
 msgid "An error occurred retrieving or creating the "
 msgstr ""
 
@@ -13424,17 +13444,18 @@ msgstr ""
 msgid "Unable to set Stripe API Key. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:958, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:275
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:958, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:275, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:195
 msgid "Stripe Customer Creation Failed"
 msgstr ""
 
 #. translators: %s Donation Data
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:961, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:278
+#. translators: %s Donation Data
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:961, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:278, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:198
 msgid "Customer creation failed while processing the donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:965, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:282, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:164
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:965, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:282, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:164, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:202
 msgid "The Stripe Gateway returned an error while processing the donation."
 msgstr ""
 
@@ -13475,6 +13496,18 @@ msgstr ""
 
 #: includes/gateways/stripe/includes/admin/admin-helpers.php:160
 msgid "Connect with Stripe"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-sepa-settings.php:50
+msgid "SEPA Debit"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-sepa-settings.php:75
+msgid "Mandate Authorization"
+msgstr ""
+
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-sepa-settings.php:76
+msgid "Your customer must read and accept the SEPA Direct Debit mandate."
 msgstr ""
 
 #: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:67, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:95, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:130, includes/gateways/stripe/includes/admin/class-give-stripe-logs.php:101
@@ -13742,17 +13775,18 @@ msgstr ""
 msgid "A Stripe token failed to be generated. Please check Stripe logs for more information."
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:199, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:128
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:199, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:128, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:109
 msgid "Donation creating error"
 msgstr ""
 
 #. translators: %s Donation Data
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:202, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:131
+#. translators: %s Donation Data
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:202, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:131, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:112
 msgid "Unable to create a pending donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:206, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:135
+#: includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:206, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:135, includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php:116
 msgid "The Stripe Gateway returned an error while creating a pending donation."
 msgstr ""
 
