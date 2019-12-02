@@ -201,8 +201,14 @@ function give_send_back_to_checkout( $args = array() ) {
 	$redirect = remove_query_arg( [ 'card_number', 'card_cvc' ], $redirect );
 
 	// Redirect them.
-	$redirect .= '#give-form-' . $form_id . '-wrap';
+	$redirect .= "#give-form-{$form_id}-wrap";
+
+
+	/**
+	 * Filter the redirect url
+	 */
 	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+
 	give_die();
 }
 
