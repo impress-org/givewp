@@ -158,9 +158,11 @@ Shortcode Copy & Paste
 }
 
 // Hide 'copy shortcode' text at certain resolutions
-@media only screen and (min-width: 782px) and (max-width: 1232px) {
-	.give-shortcode-button-text {
-		display: none;
+@media only screen and (min-width: 782px) and (max-width: 1260px) {
+	.js-give-shortcode-button {
+		.give-button-text {
+			display: none;
+		}
 	}
 }
 
