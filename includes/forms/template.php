@@ -1229,6 +1229,7 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 		// Used to determine if state is required.
 		$require_state = ! array_key_exists( $selected_country, $no_states_country ) && give_field_is_required( 'card_state', $form_id );
+		$validate_state = ! array_key_exists( $selected_country, $states_not_required_country_list ) && give_field_is_required( 'card_state', $form_id );
 
 		?>
 		<p id="give-card-state-wrap"
@@ -1236,7 +1237,7 @@ function give_default_cc_address_fields( $form_id ) {
 			<label for="card_state" class="give-label">
 				<span class="state-label-text"><?php echo $state_label; ?></span>
 				<span
-					class="give-required-indicator <?php echo array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : ''; ?> ">*</span>
+					class="give-required-indicator <?php echo $validate_state ? '' : 'give-hidden'; ?> ">*</span>
 				<span class="give-tooltip give-icon give-icon-question"
 				      data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
 			</label>
@@ -1248,8 +1249,8 @@ function give_default_cc_address_fields( $form_id ) {
 					name="card_state"
 					autocomplete="address-level1"
 					id="card_state"
-					class="card_state give-select<?php echo $require_state ? ' required' : ''; ?>"
-					<?php echo $require_state ? ' required aria-required="true" ' : ''; ?>>
+					class="card_state give-select<?php echo $validate_state ? ' required' : ''; ?>"
+					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>>
 					<?php
 					foreach ( $states as $state_code => $state ) {
 						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
@@ -1259,7 +1260,7 @@ function give_default_cc_address_fields( $form_id ) {
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
 				       placeholder="<?php echo $state_label; ?>" value="<?php echo $selected_state; ?>"
-					<?php echo $require_state ? ' required aria-required="true" ' : ''; ?>
+					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>
 				/>
 			<?php endif; ?>
 		</p>
