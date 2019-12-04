@@ -1229,6 +1229,7 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 		// Used to determine if state is required.
 		$require_state = ! array_key_exists( $selected_country, $no_states_country ) && give_field_is_required( 'card_state', $form_id );
+		// Used to determine is state input should be marked as required.
 		$validate_state = ! array_key_exists( $selected_country, $states_not_required_country_list ) && give_field_is_required( 'card_state', $form_id );
 
 		?>
