@@ -36,8 +36,7 @@ class GiveButton {
 
 	updateIcon( className, position = 'before' ) {
 		const icon = `<span class="${className}"></span>`;
-		const text = this.root.querySelector('.give-button-text') ? `<span class="give-button-text">${this.buttonText}</span>` : this.buttonText;
-		
+
 		if ( 'after' === position ) {
 			this.root.innerHTML = `${this.text} ${icon}`;
 		} else {
