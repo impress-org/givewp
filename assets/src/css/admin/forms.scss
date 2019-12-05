@@ -158,7 +158,7 @@ Shortcode Copy & Paste
 }
 
 // Hide 'copy shortcode' text at certain resolutions
-@media only screen and (min-width: 782px) and (max-width: 1260px) {
+@media only screen and (min-width: 782px) and (max-width: 1480px) {
 	.js-give-shortcode-button {
 		.give-button-text {
 			display: none;
