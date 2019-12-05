@@ -41,11 +41,9 @@ class GiveButton {
 	updateIcon( className, position = 'before' ) {
 		const icon = `<span class="${className}"></span>`;
 
-		if ( 'after' === position ) {
-			this.root.innerHTML = `${this._buttonTextWithWrapper} ${icon}`;
-		} else {
-			this.root.innerHTML = `${icon} ${this._buttonTextWithWrapper}`;
-		}
+		this.root.innerHTML = 'after' === position
+			? `${this._buttonTextWithWrapper} ${icon}`
+			: `${icon} ${this._buttonTextWithWrapper}`;
 
 		this.iconClassName = className;
 		this.iconPosition  = position;
