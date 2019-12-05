@@ -86,7 +86,29 @@ jQuery( function( $ ) {
 							$city.removeAttr( 'required' );
 						}
 					} else {
-						$current_state_field.closest( 'p' ).find( 'label' ).text( states_label );
+						//Had floating labels
+						if (
+							'undefined' !== typeof ( response.states_require )
+							&& true === response.states_require
+						) {
+							new_state_field.attr( 'required', 'required' ).attr( 'aria-required', 'true' ).addClass('required');
+							$current_state_field.closest( 'p' ).find( '.give-fl-wrap' ).addClass( 'give-fl-is-required' );
+
+						} else {
+							new_state_field.removeAttr( 'required' ).removeAttr( 'aria-required' ).removeClass('required');
+							$current_state_field.closest( 'p' ).find( '.give-fl-wrap' ).removeClass( 'give-fl-is-required' );
+						}
+
+						var $city = $form.find( 'input[name="card_city"]' );
+
+						// check if city fields is require or not
+						if ( 'undefined' !== typeof ( response.city_require ) && true === response.city_require ) {
+							$city.closest( 'p' ).find( '.give-fl-wrap' ).addClass( 'give-fl-is-required' );
+							$city.attr( 'required', true );
+						} else {
+							$city.closest( 'p' ).find( '.give-fl-wrap' ).removeClass( 'give-fl-is-required' );
+							$city.removeAttr( 'required' );
+						}
 					}
 
 					$current_state_field.closest( 'p' ).find( 'label .state-label-text' ).text( states_label );
