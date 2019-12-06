@@ -213,7 +213,7 @@ function give_mark_abandoned_donations() {
 
 	if ( $payments ) {
 		/**
-		 * Filter payment gateways:  Used to set payment gateways which can be skip while transferring pending payment to abandon.
+		 * Filter payment gateways:  Used to set payment gateways that can be skipped while updating the donation status from pending to abandoned.
 		 *
 		 * @since 1.6
 		 *
