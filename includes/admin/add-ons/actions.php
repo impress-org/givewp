@@ -640,5 +640,12 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 
 add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 1, 2 );
 
+/**
+ * Look for Give core add-ons update when wp-admin/plugins.php loads
+ *
+ * @since 2.5.11
+ */
+add_action( 'load-plugins.php', 'give_refresh_licenses' );
+
 
 
