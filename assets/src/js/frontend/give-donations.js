@@ -45,7 +45,8 @@ jQuery( function( $ ) {
 				success: function( response ) {
 					var new_state_field = '',
 						states_label = response.states_label,
-						$current_state_field = $form.find( 'input[name="card_state"], select[name="card_state"]' );
+						$current_state_field = $form.find( 'input[name="card_state"], select[name="card_state"]' ),
+						$city = $form.find( 'input[name="card_city"]' );
 
 					// Get response data from states query.
 					if (
@@ -75,8 +76,6 @@ jQuery( function( $ ) {
 							$current_state_field.closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
 						}
 
-						var $city = $form.find( 'input[name="card_city"]' );
-
 						// check if city fields is require or not
 						if ( 'undefined' !== typeof ( response.city_require ) && true === response.city_require ) {
 							$city.closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' ).removeClass( 'required' );
@@ -98,8 +97,6 @@ jQuery( function( $ ) {
 							new_state_field.removeAttr( 'required' ).removeAttr( 'aria-required' ).removeClass('required');
 							$current_state_field.closest( 'p' ).find( '.give-fl-wrap' ).removeClass( 'give-fl-is-required' );
 						}
-
-						var $city = $form.find( 'input[name="card_city"]' );
 
 						// check if city fields is require or not
 						if ( 'undefined' !== typeof ( response.city_require ) && true === response.city_require ) {
