@@ -151,14 +151,19 @@ Shortcode Copy & Paste
 		font-size: 16px;
 		width: 16px;
 		vertical-align: middle;
-		color: #909090;
+		color: inherit;
 		margin-right: 2px;
 	}
 
-	&:hover .dashicons {
-		color: #555;
-	}
+}
 
+// Hide 'copy shortcode' text at certain resolutions
+@media only screen and (min-width: 782px) and (max-width: 1260px) {
+	.js-give-shortcode-button {
+		.give-button-text {
+			display: none;
+		}
+	}
 }
 
 //-------------------------------------
