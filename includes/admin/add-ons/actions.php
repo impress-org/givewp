@@ -650,8 +650,6 @@ function give_refresh_license_on_force_check(){
 		give_refresh_licenses();
 	}
 }
-add_action( 'load-update-core.php', 'give_refresh_license_on_force_check' );
-//add_action( 'load-plugins.php', 'give_refresh_licenses', 9 );
-
+add_action( 'load-update-core.php', 'give_refresh_license_on_force_check', 9 );
 
 
