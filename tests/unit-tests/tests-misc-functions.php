@@ -23,8 +23,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	public function tearDown() {
 		parent::tearDown();
 
-		//Delete forms.
-		Give_Helper_Form::delete_form( $this->_simple_form->ID );
+		//Delete form.
 		Give_Helper_Form::delete_form( $this->_multi_form->ID );
 	}
 
@@ -389,7 +388,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Check if the give_verify_minimum_price() returns verified status, amount range and form ID.
+	 * Check if the give_verify_minimum_price() returns verified status.
 	 * Function handles verification of either maximum or minimum status, so test for both.
 	 *
 	 * @since  2.5.11
@@ -401,7 +400,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		// Test minimum donation
 		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $_multi_form->ID;
+		$_POST['give-form-id'] = $this->_multi_form->ID;
 		$_POST['give-amount'] = '10';
 		$_POST['give-price-id'] = '1';
 
@@ -410,25 +409,16 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		// Test maximum donation
 		//Set post superglobal keys to values match maximum possible donation
-		$_POST['give-form-id'] = $_multi_form->ID;
+		$_POST['give-form-id'] = $this->_multi_form->ID;
 		$_POST['give-amount'] = '10';
 		$_POST['give-price-id'] = '1';
 
 		//Verify that $_POST object represents maximum possible donation
 		$verified_max = give_verify_minimum_price('maximum');
 
-		// Check return values
 		// Check verified status
-		$this->assertTrue($verified_min->verified_stat);
-		$this->assertTrue($verified_max->verified_stat);
-
-		// Check amount range
-		$this->assertEquals($verified_max->amount_range, 'maximum');
-		$this->assertEquals($verified_min->amount_range, 'minimum');
-
-		// Check form id
-		$this->assertEquals($verified_max->form_id, $_multi_form->ID);
-		$this->assertEquals($verified_min->form_id, $_multi_form->ID);
+		$this->assertTrue($verified_min);
+		$this->assertTrue($verified_max);
 
 	}
 }
