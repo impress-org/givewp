@@ -478,22 +478,8 @@ function give_count_total_donors() {
  * @return array The donor's address, if any
  */
 function give_get_donor_address( $donor_id = null, $args = array() ) {
-	$default_args = array(
-		'by_user_id'   => false,
-		'address_type' => 'billing',
-	);
 
-	$default_address = array(
-		'line1'   => '',
-		'line2'   => '',
-		'city'    => '',
-		'state'   => '',
-		'country' => '',
-		'zip'     => '',
-	);
-
-	$address = array();
-	$args    = wp_parse_args( $args, $default_args );
+	$args['by_user_id'] = false;
 
 	// Set user id if donor is empty.
 	if ( empty( $donor_id ) ) {
@@ -501,35 +487,12 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 		$args['by_user_id'] = true;
 	}
 
-	// Backward compatibility.
-	if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ) {
-		return wp_parse_args(
-			(array) get_user_meta( $donor_id, '_give_user_address', true ),
-			$default_address
-		);
-	}
-
 	$donor = new Give_Donor( $donor_id, (bool) $args['by_user_id'] );
 
-	if (
-		! $donor->id ||
-		empty( $donor->address ) ||
-		! array_key_exists( $args['address_type'], $donor->address )
-	) {
-		return $default_address;
-	}
-
-	switch ( true ) {
-		case is_string( end( $donor->address[ $args['address_type'] ] ) ):
-			$address = wp_parse_args( $donor->address[ $args['address_type'] ], $default_address );
-			break;
-
-		case is_array( end( $donor->address[ $args['address_type'] ] ) ):
-			$address = wp_parse_args( array_shift( $donor->address[ $args['address_type'] ] ), $default_address );
-			break;
-	}
+	$address = $donor->get_donor_address($args);
 
 	return $address;
+	
 }
 
 /**
