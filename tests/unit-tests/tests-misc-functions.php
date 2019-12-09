@@ -438,6 +438,8 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount', 'enabled' );
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_range_minimum', 5 );
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_minimum', 5 );
+		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_range_maximum', 150 );
+		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_maximum', 150 );
 
 		//Set post superglobal keys to values match minimum possible donation
 		$_POST['give-form-id'] = $this->_multi_form->ID;
@@ -445,7 +447,31 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$_POST['give-price-id'] = '1';
 
 		//Verify that $_POST object represents minimum possible donation
-		$verified_amount_range_min = give_verify_minimum_price('minimum');
+		$verified_custom_range_min = give_verify_minimum_price('minimum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 1;
+		$_POST['give-price-id'] = '1';
+
+		//Verify that $_POST object represents minimum possible donation
+		$verified_custom_range_min = give_verify_minimum_price('minimum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 150;
+		$_POST['give-price-id'] = '4';
+
+		//Verify that $_POST object represents minimum possible donation
+		$verified_custom_range_max = give_verify_minimum_price('maximum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 250;
+		$_POST['give-price-id'] = '4';
+
+		//Verify that $_POST object represents minimum possible donation
+		$unverified_custom_range_max = give_verify_minimum_price('maximum');
 
 		//Set post superglobal keys to values match minimum possible donation
 		$_POST['give-form-id'] = $this->_multi_form->ID;
@@ -453,15 +479,45 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$_POST['give-price-id'] = '1';
 
 		//Verify that $_POST object represents minimum possible donation
-		$verified_amount_min = give_verify_minimum_price('minimum');
+		$verified_custom_min = give_verify_minimum_price('minimum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 1;
+		$_POST['give-price-id'] = '1';
+
+		//Verify that $_POST object represents minimum possible donation
+		$unverified_custom_min = give_verify_minimum_price('minimum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 150;
+		$_POST['give-price-id'] = '1';
+
+		//Verify that $_POST object represents minimum possible donation
+		$verified_custom_max = give_verify_minimum_price('maximum');
+
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = 250;
+		$_POST['give-price-id'] = '1';
+
+		//Verify that $_POST object represents minimum possible donation
+		$unverified_custom_max = give_verify_minimum_price('maximum');
 
 		// Check verified status
 		$this->assertTrue($verified_amount_range_min);
 		$this->assertTrue($verified_amount_min);
+		$this->assertTrue($verified_amount_range_max);
+		$this->assertTrue($verified_amount_max);
 		$this->assertTrue($verified_min);
 		$this->assertTrue($verified_max);
 
 		// Check unverified status
+		$this->assertTrue($unverified_custom_range_min);
+		$this->assertTrue($unverified_custom_min);
+		$this->assertTrue($unverified_custom_range_max);
+		$this->assertTrue($unverified_custom_max);
 		$this->assertFalse($unverified_min);
 		$this->assertFalse($unverified_max);
 
