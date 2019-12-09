@@ -107,6 +107,12 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @access public
 		 */
 		public function setup_email_notification( $user_id, $user_data ) {
+			if ( ! is_int( $user_id ) || ! $user_id ) {
+				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 400,
+				) );
+			}
+
 			$this->setup_email_data();
 
 			$this->recipient_email = $user_data['email'];
