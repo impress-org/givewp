@@ -640,5 +640,16 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 
 add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 1, 2 );
 
+/**
+ * Look for Give core add-ons update when someone manually presses the "Check Again" button within WP's Dashboard > Updates
+ *
+ * @since 2.5.11
+ */
+function give_refresh_license_on_force_check(){
+	if( isset( $_GET['force-check'] ) ) {
+		give_refresh_licenses();
+	}
+}
+add_action( 'load-update-core.php', 'give_refresh_license_on_force_check', 9 );
 
 
