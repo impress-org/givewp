@@ -407,18 +407,40 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		//Verify that $_POST object represents minimum possible donation
 		$verified_min = give_verify_minimum_price('minimum');
 
+		// Test less-than minimum donation
+		//Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = '5';
+		$_POST['give-price-id'] = '1';
+
+		//Verify that $_POST object represents minimum possible donation
+		$unverified_min = give_verify_minimum_price('minimum');
+
 		// Test maximum donation
 		//Set post superglobal keys to values match maximum possible donation
 		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = '10';
-		$_POST['give-price-id'] = '1';
+		$_POST['give-amount'] = '100';
+		$_POST['give-price-id'] = '4';
 
 		//Verify that $_POST object represents maximum possible donation
 		$verified_max = give_verify_minimum_price('maximum');
 
+		// Test greater-than maximum donation
+		//Set post superglobal keys to values match maximum possible donation
+		$_POST['give-form-id'] = $this->_multi_form->ID;
+		$_POST['give-amount'] = '150';
+		$_POST['give-price-id'] = '4';
+
+		//Verify that $_POST object represents maximum possible donation
+		$unverified_max = give_verify_minimum_price('maximum');
+
 		// Check verified status
 		$this->assertTrue($verified_min);
 		$this->assertTrue($verified_max);
+
+		// Check unverified status
+		$this->assertFalse($unverified_min);
+		$this->assertFalse($unverified_max);
 
 	}
 }
