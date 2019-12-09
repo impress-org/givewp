@@ -72,6 +72,12 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 		 * @param int $note_id     Donor comment.
 		 */
 		public function send_note( $note_id, $donation_id ) {
+			if( ! $note_id || ! $donation_id ) {
+				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 400,
+				) );
+			}
+
 			$this->recipient_email = give_get_donation_donor_email( $donation_id );
 
 			// Send email.
