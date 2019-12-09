@@ -296,8 +296,8 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->payment = new Give_Payment( $purchase_id );
 
 			if ( ! current_user_can( 'edit_give_payments', $this->payment->ID ) ) {
-				wp_die( esc_html__( 'You do not have permission to edit donations.', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 403,
+				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 400,
 				) );
 			}
 
