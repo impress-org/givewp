@@ -795,7 +795,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 								if ( ! $license['activations_left'] ) {
 									echo sprintf(
 										'<span class="give-license-activations-left">%1$s</span>',
-										__( 'No activation remaining', 'give' )
+										__( 'No activations remaining', 'give' )
 									);
 								} else {
 									echo sprintf(
