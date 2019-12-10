@@ -14,7 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-Give_Cron::add_monthly_event( 'give_refresh_licenses' );
+
+/**
+ * Look for Give core add-ons update after every third day
+ *
+ * @since 2.5.11
+ */
+Give_Cron::add_thricely_event( 'give_refresh_licenses' );
 
 /**
  * Hooks Give actions, when present in the $_GET superglobal. Every give_action

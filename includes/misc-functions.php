@@ -837,6 +837,10 @@ function give_get_plugins( $args = array() ) {
 	}
 
 	if( ! empty( $args['only_premium_add_ons'] ) ) {
+		if( ! function_exists( 'give_get_premium_add_ons' ) ) {
+			require_once GIVE_PLUGIN_DIR . '/includes/admin/misc-functions.php';
+		}
+
 		$premium_addons_list = give_get_premium_add_ons();
 
 		foreach ( $plugins as $key => $plugin ){
