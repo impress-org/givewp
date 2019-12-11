@@ -16,6 +16,7 @@ require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-campaigns-report.
 
 //Require pages
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-overview-page.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-donors-page.php';
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-single-page.php';
 
 /**
@@ -44,6 +45,7 @@ class Reports {
 		];
 		static::$pages = [
 			'overview' => new Overview_Page(),
+			'donors' => new Donors_Page(),
 			'single' => new Single_Page()
 		];
 		add_action( 'admin_menu', [__CLASS__, 'register_submenu_page'] );

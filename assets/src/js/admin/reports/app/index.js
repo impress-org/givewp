@@ -1,19 +1,11 @@
-import {
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom"
+import Tabs from '../components/tabs'
+
 
 const App = (props) => {
 
-    const pages = giveReportsData.app.pages;
-    const links = Object.values(pages).map((page, index) => {
-        console.log('link!', page);
-        return (
-            <Link to={page.path} key={index}>{page.title}</Link>
-        )
-    })
-    const routes = Object.values(pages).map((page, index) => {
+    
+    const routes = Object.values(giveReportsData.app.pages).map((page, index) => {
         console.log('route!', page);
         return(
             <Route exact path={page.path} key={index}>
@@ -23,18 +15,15 @@ const App = (props) => {
     })
 
     return (
-        <div className="wrap">
-            <h1 className="wp-heading-inline">Reports</h1>
-            <hr className="wp-header-end"></hr>
+        <div className='wrap give-settings-page give-settings-setting-page give-settings-general-settings-section give-settings-general-tab'>
+            <div className='give-settings-header'>
+                <h1 className='wp-heading-inline'>Reports</h1>
+            </div>
+            <Tabs pages={giveReportsData.app.pages} />
             <div>
-                <nav>
-                    {links}
-                </nav>
-                <div>
-                    <Switch>
-                        {routes}
-                    </Switch>
-                </div>
+                <Switch>
+                    {routes}
+                </Switch>
             </div>
         </div>
     )
