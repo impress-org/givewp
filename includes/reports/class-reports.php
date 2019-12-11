@@ -7,11 +7,15 @@
 
 namespace Give;
 
-require_once GIVE_PLUGIN_DIR . 'includes/reports/class-report.php';
-require_once GIVE_PLUGIN_DIR . 'includes/reports/class-chart.php';
-require_once GIVE_PLUGIN_DIR . 'includes/admin/class-page.php';
-
 defined( 'ABSPATH' ) || exit;
+
+//Require reports
+require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-donors-report.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payments-report.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-campaigns-report.php';
+
+//Require pages
+require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-overview-page.php';
 
 /**
  * Manages the settings.
@@ -25,91 +29,92 @@ class Reports {
 	 * @var array
 	 */
 
-	public static $reports = [];
-	public static $charts = [];
-	public static $pages = [];
-
-	public static $period = [];
+	protected static $reports = [];
+	protected static $pages = [];
 
 	/**
 	 * Initialize and register all of the post types
 	 */
 	public static function init() {
 		static::$reports = [
-            'payments' => new Payments_Report(['period' => static::$period]),
-			'donors' => new Donors_Report(['period' => static::$period]),
-			'campaigns' => new Campaigns_Report(['period' => static::$period]),
+            'payments' => new Payments_Report(),
+			'donors' => new Donors_Report(),
+			'campaigns' => new Campaigns_Report(),
 		];
-
 		static::$pages = [
-			'overview' => new Page ([
-				'title' => 'Overview',
-				'charts' => [
-					'donations_for_period' => new Chart([
-						'title' => 'Donations For Period',
-						'type' => 'line',
-						'width' => 12,
-						'data' => [
-							[
-								'label' => 'Total Raised',
-								'source' => static::$reports['payments']->get_total('payments')
-							],
-							[
-								'label' => 'Total Donors',
-								'source' => static::$reports['donors']->get_total('donors')
-							],
-							[
-								'label' => 'Average Donation',
-								'source' => static::$reports['payments']->get_average('payments')
-							],
-							[
-								'label' => 'Total Refunded',
-								'source' => static::$reports['payments']->get_total('refunds')
-							]
-						]
-					]),
-					'campaign_performance' => new Chart([
-						'title' => 'Campaign Performance',
-						'type' => 'doughnut',
-						'width' => 6,
-						'data' => static::$reports['campaigns']->get_totals([
-							'total' => 'payments',
-							'showing' => 4,
-							'sortby' => 'ASC'
-						])
-					]),
-					'payment_statuses' => new Chart ([
-						'title' => 'Payment Statuses',
-						'type' => 'bar',
-						'width' => 6,
-						'data' => static::$reports['payments']->get_totals([
-							'total' => 'statuses',
-						])
-					]),
-				],
-			])
+			'overview' => new Overview_Page()
 		];
-
-		add_action( 'init', [__CLASS__, 'register_reports'] );
-
+		add_action( 'admin_menu', [__CLASS__, 'register_submenu_page'] );
+		add_action( 'admin_enqueue_scripts', [__CLASS__, 'enqueue_scripts'] );
+		add_action( 'rest_api_init', [__CLASS__, 'register_api_routes'] );
 	}
 
-    /**
-	 * Register all reports
-	 */
-	public static function register_reports() {
-		foreach (static::$reports as $report) {
-			$report->register_report();
+	public static function enqueue_scripts() {
+		wp_enqueue_script(
+			'give-admin-reports-v3-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
+			['wp-element', 'wp-api'],
+			'0.0.1',
+			true
+		);
+		wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
+			'app' => self::get_app_object()
+		]);
+	}
+
+	public static function get_app_object() {
+		$object = [
+			'pages' => []
+		];
+
+		foreach (self::$pages as $slug => $class) {
+			$object['pages'][$slug] = $class->get_page_object();
 		}
+
+		return $object;
+	}
+
+	public static function register_submenu_page() {
+		add_submenu_page(
+			'edit.php?post_type=give_forms',
+			esc_html__( 'Donation Reports', 'give' ),
+			esc_html__( 'Reports v3', 'give' ),
+			'view_give_reports',
+			'give-reports-v3',
+			[__CLASS__, 'generate_output']
+		);
+	}
+
+	public static function generate_output() {
+		echo '<div id="reports-app"><h1>Loading</h1></div>';
 	}
 
 	/**
-	 * Register all pages
+	 * Register all reports in API
 	 */
-	public static function register_pages() {
-		foreach (static::$pages as $page) {
-			$page->register_page();
-		}
+	protected static function register_api_routes() {
+
+		register_rest_route( 'givewp/v3', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
+			'methods' => 'GET',
+			'callback' => [__CLASS__, 'handle_report_callback'],
+		));
+
+		register_rest_route( 'givewp/v3', '/reports/page=(?P<page>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
+			'methods' => 'GET',
+			'callback' => [__CLASS__, 'handle_page_callback'],
+		));
+
 	}
+
+	protected static function handle_report_callback (WP_REST_Request $request) {
+		$report = self::$reports[$request['report']];
+		return $report->handle_api_callback($request);
+	}
+
+	protected static function handle_page_callback (WP_REST_Request $request) {
+		$page = self::$pages[$request['page']];
+		return $page->handle_api_callback($request);
+	}
+
 }
 Reports::init();

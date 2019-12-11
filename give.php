@@ -594,6 +594,9 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
 
+			//Include new reports page
+			require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports.php';
+
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
