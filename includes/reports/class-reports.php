@@ -16,6 +16,7 @@ require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-campaigns-report.
 
 //Require pages
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-overview-page.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-single-page.php';
 
 /**
  * Manages the settings.
@@ -42,7 +43,8 @@ class Reports {
 			'campaigns' => new Campaigns_Report(),
 		];
 		static::$pages = [
-			'overview' => new Overview_Page()
+			'overview' => new Overview_Page(),
+			'single' => new Single_Page()
 		];
 		add_action( 'admin_menu', [__CLASS__, 'register_submenu_page'] );
 		add_action( 'admin_enqueue_scripts', [__CLASS__, 'enqueue_scripts'] );
@@ -58,7 +60,8 @@ class Reports {
 			true
 		);
 		wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
-			'app' => self::get_app_object()
+			'app' => self::get_app_object(),
+			'basename' => '/wp-admin/edit.php?post_type=give_forms&page=give-reports-v3'
 		]);
 	}
 
@@ -86,7 +89,7 @@ class Reports {
 	}
 
 	public static function generate_output() {
-		echo '<div id="reports-app"><h1>Loading</h1></div>';
+		include_once GIVE_PLUGIN_DIR . 'includes/reports/template.php';
 	}
 
 	/**
@@ -94,14 +97,19 @@ class Reports {
 	 */
 	protected static function register_api_routes() {
 
-		register_rest_route( 'givewp/v3', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
+		register_rest_route( 'givewp/v3', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [__CLASS__, 'handle_report_callback'],
 		));
 
-		register_rest_route( 'givewp/v3', '/reports/page=(?P<page>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
+		register_rest_route( 'givewp/v3', '/reports/page=(?P<page>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [__CLASS__, 'handle_page_callback'],
+		));
+
+		register_rest_route( 'givewp/v3', '/reports/single=(?P<page>[a-zA-Z0-9-]+)/', array(
+			'methods' => 'GET',
+			'callback' => [__CLASS__, 'handle_single_callback'],
 		));
 
 	}
@@ -113,6 +121,11 @@ class Reports {
 
 	protected static function handle_page_callback (WP_REST_Request $request) {
 		$page = self::$pages[$request['page']];
+		return $page->handle_api_callback($request);
+	}
+
+	protected static function handle_single_callback (WP_REST_Request $request) {
+		$page = self::$pages['single'];
 		return $page->handle_api_callback($request);
 	}
 

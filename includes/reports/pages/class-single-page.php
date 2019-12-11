@@ -15,11 +15,12 @@ require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
 /**
  * Functionality and actions specific to the content API
  */
-class Overview_Page extends Page {
+class Single_Page extends Page {
 
     public function __construct() {
-        $this->title = 'Overview';
-        $this->path = '/';
+        $this->title = 'Single';
+        $this->show_in_menu = false;
+        $this->path = '/single';
         $this->charts = [
             'donations_for_period' => new Chart([
                 'title' => 'Donations For Period',

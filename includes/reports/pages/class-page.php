@@ -20,6 +20,8 @@ abstract class Page {
 	 * @var string
 	 */
     protected $title = '';
+    protected $show_in_menu = true;
+    protected $path = '';
     protected $charts = [];
 
 	/**
@@ -38,6 +40,8 @@ abstract class Page {
 
         $object = [
             'title' => $this->title,
+            'show_in_menu' => $this->show_in_menu,
+            'path' => $this->path,
             'charts' => $charts
         ];
 
