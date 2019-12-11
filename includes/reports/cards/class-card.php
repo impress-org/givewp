@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Common functionality for admin screens. Override this class.
  */
-class Chart {
+class Card {
 
 	/**
 	 * Variables used to register block type
@@ -36,7 +36,7 @@ class Chart {
 
     }
 
-    public function get_chart_object () {
+    public function get_card_object () {
         $object = [
             'title' => $this->title,
             'type' => $this->type,

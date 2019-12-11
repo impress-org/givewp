@@ -22,7 +22,7 @@ abstract class Page {
     protected $title = '';
     protected $show_in_menu = true;
     protected $path = '';
-    protected $charts = [];
+    protected $cards = [];
 
 	/**
 	 * Initialize.
@@ -33,16 +33,16 @@ abstract class Page {
 
     public function get_page_object() {
 
-        $charts = [];
-        foreach ($this->charts as $slug => $class) {
-            $charts[$slug] = $class->get_chart_object();
+        $cards = [];
+        foreach ($this->cards as $slug => $class) {
+            $cards[$slug] = $class->get_card_object();
         }
 
         $object = [
             'title' => $this->title,
             'show_in_menu' => $this->show_in_menu,
             'path' => $this->path,
-            'charts' => $charts
+            'cards' => $cards
         ];
 
         return $object;

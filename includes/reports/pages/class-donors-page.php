@@ -9,7 +9,7 @@ namespace Give;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once GIVE_PLUGIN_DIR . 'includes/reports/charts/class-chart.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
 
 /**
@@ -20,10 +20,10 @@ class Donors_Page extends Page {
     public function __construct() {
         $this->title = 'Donors';
         $this->path = '/donors';
-        $this->charts = [
-            'donations_for_period' => new Chart([
-                'title' => 'Donations For Period',
-                'type' => 'line',
+        $this->cards = [
+            'donations_for_period' => new Card([
+                'title' => 'Donors For Period',
+                'type' => 'chart',
                 'width' => 12,
                 'props' => [
                     [
@@ -44,16 +44,16 @@ class Donors_Page extends Page {
                     ]
                 ]
             ]),
-            'campaign_performance' => new Chart([
-                'title' => 'Campaign Performance',
-                'type' => 'doughnut',
-                'width' => 6,
+            'campaign_performance' => new Card([
+                'title' => 'Donors by Country',
+                'type' => 'list',
+                'width' => 4,
                 'props' => ''
             ]),
-            'payment_statuses' => new Chart ([
-                'title' => 'Payment Statuses',
-                'type' => 'bar',
-                'width' => 6,
+            'payment_statuses' => new Card([
+                'title' => 'Top Donors',
+                'type' => 'list',
+                'width' => 8,
                 'props' => ''
             ]),
         ];

@@ -9,7 +9,7 @@ namespace Give;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once GIVE_PLUGIN_DIR . 'includes/reports/charts/class-chart.php';
+require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
 
 /**
@@ -21,8 +21,8 @@ class Single_Page extends Page {
         $this->title = 'Single';
         $this->show_in_menu = false;
         $this->path = '/single';
-        $this->charts = [
-            'donations_for_period' => new Chart([
+        $this->cards = [
+            'donations_for_period' => new Card([
                 'title' => 'Donations For Period',
                 'type' => 'line',
                 'width' => 12,
@@ -45,13 +45,13 @@ class Single_Page extends Page {
                     ]
                 ]
             ]),
-            'campaign_performance' => new Chart([
+            'campaign_performance' => new Card([
                 'title' => 'Campaign Performance',
                 'type' => 'doughnut',
                 'width' => 6,
                 'props' => ''
             ]),
-            'payment_statuses' => new Chart ([
+            'payment_statuses' => new Card([
                 'title' => 'Payment Statuses',
                 'type' => 'bar',
                 'width' => 6,
