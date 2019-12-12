@@ -10,7 +10,7 @@ namespace Give;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Common functionality for admin screens. Override this class.
+ * Common functionality for reports. Override this class.
  */
 abstract class Report {
 

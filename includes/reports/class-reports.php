@@ -20,13 +20,13 @@ require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-donors-page.php';
 require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-single-page.php';
 
 /**
- * Manages the settings.
+ * Manages reports
  */
 class Reports {
 
 	/**
-	 * Information about all of the APIs.
-	 * See `init` for structure of the data.
+	 * Gathers and sets up information for reports page
+	 * See `init` for structure of the data and setup process
 	 *
 	 * @var array
 	 */

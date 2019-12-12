@@ -9,9 +9,6 @@ namespace Give;
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Common functionality for admin screens. Override this class.
- */
 class Card {
 
 	/**
