@@ -12,6 +12,10 @@ const Chart = (props) => {
             data: setup.data,
             options: setup.options
         })
+
+        return function cleanup() {
+            chart.destroy()
+          }
     }, [])
     return (
         <div>
