@@ -9,15 +9,16 @@ namespace Give;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
-require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
-
 /**
  * Functionality and actions specific to the single page
  */
 class Single_Page extends Page {
 
     public function __construct() {
+
+        require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
+
         $this->title = 'Single';
         $this->show_in_menu = false;
         $this->path = '/single';

@@ -9,15 +9,16 @@ namespace Give;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
-require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
-
 /**
  * Functionality and actions specific to the donors page
  */
 class Donors_Page extends Page {
 
     public function __construct() {
+
+        require_once GIVE_PLUGIN_DIR . 'includes/reports/cards/class-card.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-page.php';
+
         $this->title = 'Donors';
         $this->path = '/donors';
         $this->cards = [

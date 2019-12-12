@@ -17,7 +17,7 @@ const Card = (props) => {
     }
 
     const contentStyle = {
-        padding: '15px'
+        padding: ' 0 15px 15px 15px'
     }
 
     return (
