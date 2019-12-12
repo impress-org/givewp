@@ -21,13 +21,13 @@ class Donors_Page extends Page {
         $this->title = 'Donors';
         $this->path = '/donors';
         $this->cards = [
-            'donations_for_period' => new Card([
+            'donors_for_period' => new Card([
                 'title' => 'Donors For Period',
                 'type' => 'chart',
                 'width' => 12,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.4,
+                    'aspectRatio' => 0.25,
                     'data' => [
                         'label' => 'Donations',
                         'labels' => [

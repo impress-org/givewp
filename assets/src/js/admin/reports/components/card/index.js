@@ -12,12 +12,12 @@ const Card = (props) => {
 
     const titleStyle = {
         fontWeight: 'bold',
-        padding: '16px 12px 12px 12px',
+        padding: '22px 15px 15px 15px',
         fontSize: '15px',
     }
 
     const contentStyle = {
-        padding: '12px'
+        padding: '15px'
     }
 
     return (

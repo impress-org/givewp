@@ -4,8 +4,8 @@ const Grid = (props) => {
     const gridStyle = {
         display: 'grid',
         gridTemplateColumns: 'repeat(12, 1fr)',
-        gridGap: '16px',
-        marginTop: '26px',
+        gridGap: '30px',
+        marginTop: '30px',
     }
 
     return (

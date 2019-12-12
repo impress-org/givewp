@@ -27,7 +27,7 @@ class Overview_Page extends Page {
                 'width' => 12,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.4,
+                    'aspectRatio' => 0.25,
                     'data' => [
                         'label' => 'Donations',
                         'labels' => [
@@ -41,6 +41,182 @@ class Overview_Page extends Page {
                             [
                                 'label' => 'Donations',
                                 'data' => [12, 14, 8, 9, 11],
+                                'backgroundColor' => [
+                                    'rgba(105, 184, 104, 0.21)',
+                                ],
+                                'borderColor' => [
+                                    'rgba(105, 184, 104, 1)',
+                                ],
+                                'borderWidth' => 3
+                            ]
+                        ]
+                    ],
+                    'options' => [
+                        'scales' => [
+                            'yAxes' => [
+                                [
+                                    'ticks' => [
+                                        'beginAtZero' => true,
+                                        'stepSize' => 5
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]),
+            'total_raised' => new Card([
+                'title' => 'Total Raised',
+                'type' => 'chart',
+                'width' => 3,
+                'props' => [
+                    'type' => 'line',
+                    'aspectRatio' => 0.6,
+                    'data' => [
+                        'label' => 'Donations',
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
+                        'datasets' => [
+                            [
+                                'label' => 'Donors',
+                                'data' => [4, 2, 6, 2, 5],
+                                'backgroundColor' => [
+                                    'rgba(105, 184, 104, 0.21)',
+                                ],
+                                'borderColor' => [
+                                    'rgba(105, 184, 104, 1)',
+                                ],
+                                'borderWidth' => 3
+                            ]
+                        ]
+                    ],
+                    'options' => [
+                        'scales' => [
+                            'yAxes' => [
+                                [
+                                    'ticks' => [
+                                        'beginAtZero' => true,
+                                        'stepSize' => 5
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]),
+            'total_donors' => new Card([
+                'title' => 'Total Donors',
+                'type' => 'chart',
+                'width' => 3,
+                'props' => [
+                    'type' => 'line',
+                    'aspectRatio' => 0.6,
+                    'data' => [
+                        'label' => 'Donations',
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
+                        'datasets' => [
+                            [
+                                'label' => 'Donors',
+                                'data' => [4, 2, 6, 2, 5],
+                                'backgroundColor' => [
+                                    'rgba(105, 184, 104, 0.21)',
+                                ],
+                                'borderColor' => [
+                                    'rgba(105, 184, 104, 1)',
+                                ],
+                                'borderWidth' => 3
+                            ]
+                        ]
+                    ],
+                    'options' => [
+                        'scales' => [
+                            'yAxes' => [
+                                [
+                                    'ticks' => [
+                                        'beginAtZero' => true,
+                                        'stepSize' => 5
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]),
+            'average_donation' => new Card([
+                'title' => 'Average Donation',
+                'type' => 'chart',
+                'width' => 3,
+                'props' => [
+                    'type' => 'line',
+                    'aspectRatio' => 0.6,
+                    'data' => [
+                        'label' => 'Donations',
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
+                        'datasets' => [
+                            [
+                                'label' => 'Donors',
+                                'data' => [4, 2, 6, 2, 5],
+                                'backgroundColor' => [
+                                    'rgba(105, 184, 104, 0.21)',
+                                ],
+                                'borderColor' => [
+                                    'rgba(105, 184, 104, 1)',
+                                ],
+                                'borderWidth' => 3
+                            ]
+                        ]
+                    ],
+                    'options' => [
+                        'scales' => [
+                            'yAxes' => [
+                                [
+                                    'ticks' => [
+                                        'beginAtZero' => true,
+                                        'stepSize' => 5
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]),
+            'total_refunds' => new Card([
+                'title' => 'Total Refunds',
+                'type' => 'chart',
+                'width' => 3,
+                'props' => [
+                    'type' => 'line',
+                    'aspectRatio' => 0.6,
+                    'data' => [
+                        'label' => 'Donations',
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
+                        'datasets' => [
+                            [
+                                'label' => 'Donors',
+                                'data' => [4, 2, 6, 2, 5],
                                 'backgroundColor' => [
                                     'rgba(105, 184, 104, 0.21)',
                                 ],
