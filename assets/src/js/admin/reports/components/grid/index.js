@@ -1,5 +1,6 @@
 const Grid = (props) => {
 
+    //To do: swap with scss
     const gridStyle = {
         display: 'grid',
         gridTemplateColumns: 'repeat(12, 1fr)',

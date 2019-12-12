@@ -1,6 +1,6 @@
 <?php
 /**
- * Common functionality reports
+ * Abstract Report class
  *
  * @package Give
  */

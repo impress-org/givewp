@@ -1,6 +1,6 @@
 <?php
 /**
- * Overview Page
+ * Payments report
  *
  * @package Give
  */

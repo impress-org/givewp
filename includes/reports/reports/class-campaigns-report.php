@@ -1,6 +1,6 @@
 <?php
 /**
- * Overview Page
+ * Campaigns report
  *
  * @package Give
  */

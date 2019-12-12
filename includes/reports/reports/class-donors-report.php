@@ -1,6 +1,6 @@
 <?php
 /**
- * Overview Page
+ * Donors report
  *
  * @package Give
  */

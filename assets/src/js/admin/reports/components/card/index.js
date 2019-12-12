@@ -1,5 +1,6 @@
 const Card = (props) => {
 
+    //To do: swap with scss
     const cardStyle = {
         background: '#fff',
         borderRadius: '5px',

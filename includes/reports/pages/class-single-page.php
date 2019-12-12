@@ -1,6 +1,6 @@
 <?php
 /**
- * Overview Page
+ * Single Page
  *
  * @package Give
  */

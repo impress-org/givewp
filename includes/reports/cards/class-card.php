@@ -1,6 +1,6 @@
 <?php
 /**
- * Common functionality reports
+ * Card class
  *
  * @package Give
  */

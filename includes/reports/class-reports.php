@@ -1,6 +1,6 @@
 <?php
 /**
- * Reports manager
+ * Reports class
  *
  * @package Give
  */
@@ -35,7 +35,7 @@ class Reports {
 	protected static $pages = [];
 
 	/**
-	 * Initialize and register all of the post types
+	 * Initialize Reports and Pages, register hooks
 	 */
 	public static function init() {
 		static::$reports = [
@@ -53,20 +53,23 @@ class Reports {
 		add_action( 'rest_api_init', [__CLASS__, 'register_api_routes'] );
 	}
 
-	public static function enqueue_scripts() {
-		wp_enqueue_script(
-			'give-admin-reports-v3-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
-			['wp-element', 'wp-api'],
-			'0.0.1',
-			true
-		);
-		wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
-			'app' => self::get_app_object(),
-			'basename' => '/wp-admin/edit.php?post_type=give_forms&page=give-reports-v3'
-		]);
+	//Enqueue app scripts
+	public static function enqueue_scripts($base) {
+		if ($base === 'give_forms_page_give-reports-v3' ) {
+			wp_enqueue_script(
+				'give-admin-reports-v3-js',
+				GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
+				['wp-element', 'wp-api'],
+				'0.0.1',
+				true
+			);
+			wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
+				'app' => self::get_app_object(),
+			]);
+		}
 	}
 
+	//Return array of app data, to be accessed by frontend scripts
 	public static function get_app_object() {
 		$object = [
 			'pages' => []
@@ -79,6 +82,7 @@ class Reports {
 		return $object;
 	}
 
+	//Add Reports submenu page to admin menu
 	public static function register_submenu_page() {
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
@@ -94,9 +98,9 @@ class Reports {
 		include_once GIVE_PLUGIN_DIR . 'includes/reports/template.php';
 	}
 
-	/**
-	 * Register all reports in API
-	 */
+	// To do: refactor high-level API methods
+
+	//Register api routes for reports, pages, and singles
 	protected static function register_api_routes() {
 
 		register_rest_route( 'givewp/v3', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
@@ -116,16 +120,19 @@ class Reports {
 
 	}
 
+	//Return response for report API request
 	protected static function handle_report_callback (WP_REST_Request $request) {
 		$report = self::$reports[$request['report']];
 		return $report->handle_api_callback($request);
 	}
 
+	//Return response for page API request
 	protected static function handle_page_callback (WP_REST_Request $request) {
 		$page = self::$pages[$request['page']];
 		return $page->handle_api_callback($request);
 	}
 
+	//Return response for single API request
 	protected static function handle_single_callback (WP_REST_Request $request) {
 		$page = self::$pages['single'];
 		return $page->handle_api_callback($request);

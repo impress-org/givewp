@@ -1,5 +1,6 @@
 <?php
 // Reports page markup
+// #reports-app is replaced by React app
 ?>
 <div id="reports-app">
     <div class="wrap give-settings-page give-settings-setting-page give-settings-general-settings-section give-settings-general-tab">
