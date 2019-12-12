@@ -2,7 +2,6 @@ import ChartJS from 'chart.js'
 import { useEffect, createRef } from 'react'
 
 const Chart = (props) => {
-    console.log('chart props', props)
     const setup = props.setup
     const canvas = createRef()
     useEffect(() => {
@@ -15,9 +14,10 @@ const Chart = (props) => {
         })
     }, [])
 
+    const calcHeight = setup.type === 'doughnut' || setup.type === 'pie' ? 100 : 40
     return (
         <div>
-            <canvas width={100} height={40}  ref={canvas}></canvas>
+            <canvas width={100} height={calcHeight}  ref={canvas}></canvas>
         </div>
     )
 }

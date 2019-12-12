@@ -6,9 +6,7 @@ import Table from '../table'
 
 const Page = (props) => {
     const page = props.page
-
     const cards = Object.values(page.cards).map((card, index) => {
-
         let content
         switch (card.type) {
             case 'chart':
@@ -24,8 +22,6 @@ const Page = (props) => {
 
         return (
             <Card title={card.title} width={card.width} key={index}>
-                <p>Type: {card.type}</p>
-                <p>{JSON.stringify(card.props)}</p>
                 {content}
             </Card>
         )

@@ -26,21 +26,40 @@ class Donors_Page extends Page {
                 'type' => 'chart',
                 'width' => 12,
                 'props' => [
-                    [
-                        'label' => 'Total Raised',
-                        'data' => ''
+                    'type' => 'line',
+                    'data' => [
+                        'label' => 'Donations',
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
+                        'datasets' => [
+                            [
+                                'data' => [4, 2, 6, 2, 5],
+                                'backgroundColor' => [
+                                    'rgba(255, 99, 132, 0.2)',
+                                ],
+                                'borderColor' => [
+                                    'rgba(255, 99, 132, 1)',
+                                ],
+                                'borderWidth' => 1
+                            ]
+                        ]
                     ],
-                    [
-                        'label' => 'Total Donors',
-                        'data' => ''
-                    ],
-                    [
-                        'label' => 'Average Donation',
-                        'data' => ''
-                    ],
-                    [
-                        'label' => 'Total Refunded',
-                        'data' => ''
+                    'options' => [
+                        'scales' => [
+                            'yAxes' => [
+                                [
+                                    'ticks' => [
+                                        'beginAtZero' => true,
+                                        'stepSize' => 5
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]),
