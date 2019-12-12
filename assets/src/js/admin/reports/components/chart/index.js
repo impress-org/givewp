@@ -13,11 +13,9 @@ const Chart = (props) => {
             options: setup.options
         })
     }, [])
-
-    const calcHeight = setup.type === 'doughnut' || setup.type === 'pie' ? 100 : 40
     return (
         <div>
-            <canvas width={100} height={calcHeight}  ref={canvas}></canvas>
+            <canvas width={100} height={100 * setup.aspectRatio}  ref={canvas}></canvas>
         </div>
     )
 }

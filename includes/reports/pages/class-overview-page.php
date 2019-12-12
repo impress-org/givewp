@@ -27,6 +27,7 @@ class Overview_Page extends Page {
                 'width' => 12,
                 'props' => [
                     'type' => 'line',
+                    'aspectRatio' => 0.4,
                     'data' => [
                         'label' => 'Donations',
                         'labels' => [
@@ -69,6 +70,7 @@ class Overview_Page extends Page {
                 'width' => 6,
                 'props' => [
                     'type' => 'doughnut',
+                    'aspectRatio' => 0.6,
                     'data' => [
                         'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                         'datasets' => [
@@ -103,6 +105,7 @@ class Overview_Page extends Page {
                 'width' => 6,
                 'props' => [
                     'type' => 'bar',
+                    'aspectRatio' => 0.6,
                     'data' => [
                         'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                         'datasets' => [
