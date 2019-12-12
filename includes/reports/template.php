@@ -1,5 +1,5 @@
 <?php
-// Reports markup
+// Reports page markup
 ?>
 <div id="reports-app">
     <div class="wrap give-settings-page give-settings-setting-page give-settings-general-settings-section give-settings-general-tab">

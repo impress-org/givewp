@@ -86,11 +86,11 @@ class Reports {
 			esc_html__( 'Reports v3', 'give' ),
 			'view_give_reports',
 			'give-reports-v3',
-			[__CLASS__, 'generate_output']
+			[__CLASS__, 'render_template']
 		);
 	}
 
-	public static function generate_output() {
+	public static function render_template() {
 		include_once GIVE_PLUGIN_DIR . 'includes/reports/template.php';
 	}
 
