@@ -36,11 +36,18 @@ class Overview_Page extends Page {
                             'March',
                             'April',
                             'May',
+                            'June', 
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
                         ],
                         'datasets' => [
                             [
                                 'label' => 'Donations',
-                                'data' => [12, 14, 8, 9, 11],
+                                'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
                                 'backgroundColor' => [
                                     'rgba(105, 184, 104, 0.21)',
                                 ],
@@ -244,10 +251,10 @@ class Overview_Page extends Page {
             'campaign_performance' => new Card([
                 'title' => 'Campaign Performance',
                 'type' => 'chart',
-                'width' => 6,
+                'width' => 4,
                 'props' => [
                     'type' => 'doughnut',
-                    'aspectRatio' => 0.6,
+                    'aspectRatio' => 1,
                     'data' => [
                         'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
                         'datasets' => [
@@ -272,10 +279,10 @@ class Overview_Page extends Page {
             'payment_statuses' => new Card([
                 'title' => 'Payment Statuses',
                 'type' => 'chart',
-                'width' => 6,
+                'width' => 4,
                 'props' => [
                     'type' => 'bar',
-                    'aspectRatio' => 0.6,
+                    'aspectRatio' => 1,
                     'data' => [
                         'labels' => ['Stripe', 'Paypal', 'Yellow', 'Green', 'Purple'],
                         'datasets' => [
@@ -302,6 +309,34 @@ class Overview_Page extends Page {
                                 ]
                             ]
                         ]
+                    ]
+                ]
+            ]),
+            'payment_gateways' => new Card([
+                'title' => 'Payment Gateways',
+                'type' => 'chart',
+                'width' => 4,
+                'props' => [
+                    'type' => 'doughnut',
+                    'aspectRatio' => 1,
+                    'data' => [
+                        'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                        'datasets' => [
+                            [
+                                'label' => '# of Votes',
+                                'data' => [12, 19, 3, 5, 2],
+                                'backgroundColor' => [
+                                    '#69B868',
+                                    '#F49420',
+                                    '#556E79',
+                                    '#D75A4B',
+                                    '#9EA3A8',
+                                ],
+                                'borderColor' => '#FFFFFF',
+                                'borderWidth' => 3,
+                                'borderAlign' => 'inner'
+                            ]
+                        ],
                     ]
                 ]
             ]),
