@@ -27,6 +27,7 @@ class Donors_Page extends Page {
                 'width' => 12,
                 'props' => [
                     'type' => 'line',
+                    'aspectRatio' => 0.4,
                     'data' => [
                         'label' => 'Donations',
                         'labels' => [
@@ -38,14 +39,15 @@ class Donors_Page extends Page {
                         ],
                         'datasets' => [
                             [
+                                'label' => 'Donors',
                                 'data' => [4, 2, 6, 2, 5],
                                 'backgroundColor' => [
-                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(105, 184, 104, 0.21)',
                                 ],
                                 'borderColor' => [
-                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(105, 184, 104, 1)',
                                 ],
-                                'borderWidth' => 1
+                                'borderWidth' => 3
                             ]
                         ]
                     ],
