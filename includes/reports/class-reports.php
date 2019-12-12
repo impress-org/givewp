@@ -67,8 +67,6 @@ class Reports {
 			'donors' => new Donors_Page(),
 			'single' => new Single_Page()
 		];
-
-		$this->init();
 	}
 }
 $reports = new Reports;
