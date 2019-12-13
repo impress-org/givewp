@@ -1,11 +1,12 @@
 import { Switch, Route } from 'react-router-dom'
+import OverviewPage from '../../pages/overview-page'
 
 const Routes = (props) => {
     
     return (
         <Switch>
             <Route exact path='/'>
-                <h1>Overview Page</h1>
+                <OverviewPage />
             </Route>
         </Switch>
     )
