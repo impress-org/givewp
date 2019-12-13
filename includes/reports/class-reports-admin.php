@@ -22,8 +22,8 @@ class Reports_Admin {
 		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'] );
 	}
 
-	public function __construct($pages) {
-        $this->pages = $pages;
+	public function __construct() {
+        //Do nothing
 	}
 
 	//Enqueue app scripts
@@ -47,10 +47,6 @@ class Reports_Admin {
 		$object = [
 			'pages' => []
 		];
-
-		foreach ($this->pages as $slug => $class) {
-			$object['pages'][$slug] = $class->get_page_object();
-		}
 
 		return $object;
 	}

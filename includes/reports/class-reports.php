@@ -22,7 +22,6 @@ class Reports {
 	 */
 
 	protected $reports = [];
-	protected $pages = [];
 
 	/**
 	 * Initialize Reports and Pages, register hooks
@@ -34,21 +33,10 @@ class Reports {
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payments-report.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-campaigns-report.php';
 
-		//Require pages
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-overview-page.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-donors-page.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/pages/class-single-page.php';
-
 		$this->reports = [
 			'payments' => new Payments_Report(),
 			'donors' => new Donors_Report(),
 			'campaigns' => new Campaigns_Report(),
-		];
-
-		$this->pages = [
-			'overview' => new Overview_Page(),
-			'donors' => new Donors_Page(),
-			'single' => new Single_Page()
 		];
 
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-admin.php';
@@ -60,7 +48,6 @@ class Reports {
 
 		$api = new Reports_API([
 			'reports' => $this->reports,
-			'pages' => $this->pages
 		]);
 		$api->init();
 
