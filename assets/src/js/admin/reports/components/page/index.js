@@ -10,7 +10,11 @@ const Page = (props) => {
         let content
         switch (card.type) {
             case 'chart':
-                content = <Chart setup={card.props}/>
+                content = <Chart 
+                    type={card.props.type}
+                    data={card.props.data}
+                    cardWidth={card.width}
+                />
                 break;
             case 'list':
                 content = <List/>

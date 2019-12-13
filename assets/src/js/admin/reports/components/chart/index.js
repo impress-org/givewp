@@ -1,25 +1,27 @@
 import ChartJS from 'chart.js'
 import { useEffect, createRef } from 'react'
+import { createConfig, calcHeight } from './utils'
 
 const Chart = (props) => {
-    const setup = props.setup
+
     const canvas = createRef()
+    const config = createConfig(props)
+    const height = calcHeight(props)
+
     useEffect(() => {
+
         const ctx = canvas.current.getContext('2d')
-        console.log('ctx!', ctx)
-        const chart = new ChartJS(ctx, {
-            type: setup.type,
-            data: setup.data,
-            options: setup.options
-        })
+        const chart = new ChartJS(ctx, config)
 
         return function cleanup() {
             chart.destroy()
-          }
+        }
+        
     }, [])
+
     return (
         <div>
-            <canvas width={100} height={100 * setup.aspectRatio}  ref={canvas}></canvas>
+            <canvas width={100} height={height}  ref={canvas}></canvas>
         </div>
     )
 }

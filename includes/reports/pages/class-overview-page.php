@@ -29,9 +29,7 @@ class Overview_Page extends Page {
                 'width' => 12,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.25,
                     'data' => [
-                        'label' => 'Donations',
                         'labels' => [
                             'January',
                             'February',
@@ -50,25 +48,7 @@ class Overview_Page extends Page {
                             [
                                 'label' => 'Donations',
                                 'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
-                                'backgroundColor' => [
-                                    'rgba(105, 184, 104, 0.21)',
-                                ],
-                                'borderColor' => [
-                                    'rgba(105, 184, 104, 1)',
-                                ],
-                                'borderWidth' => 3
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true,
-                                        'stepSize' => 5
-                                    ]
-                                ]
+                                    
                             ]
                         ]
                     ]
@@ -80,39 +60,26 @@ class Overview_Page extends Page {
                 'width' => 3,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.6,
                     'data' => [
-                        'label' => 'Donations',
                         'labels' => [
                             'January',
                             'February',
                             'March',
                             'April',
                             'May',
+                            'June', 
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
                         ],
                         'datasets' => [
                             [
-                                'label' => 'Donors',
-                                'data' => [4, 2, 6, 2, 5],
-                                'backgroundColor' => [
-                                    'rgba(105, 184, 104, 0.21)',
-                                ],
-                                'borderColor' => [
-                                    'rgba(105, 184, 104, 1)',
-                                ],
-                                'borderWidth' => 3
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true,
-                                        'stepSize' => 5
-                                    ]
-                                ]
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
+                                    
                             ]
                         ]
                     ]
@@ -124,39 +91,26 @@ class Overview_Page extends Page {
                 'width' => 3,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.6,
                     'data' => [
-                        'label' => 'Donations',
                         'labels' => [
                             'January',
                             'February',
                             'March',
                             'April',
                             'May',
+                            'June', 
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
                         ],
                         'datasets' => [
                             [
-                                'label' => 'Donors',
-                                'data' => [4, 2, 6, 2, 5],
-                                'backgroundColor' => [
-                                    'rgba(105, 184, 104, 0.21)',
-                                ],
-                                'borderColor' => [
-                                    'rgba(105, 184, 104, 1)',
-                                ],
-                                'borderWidth' => 3
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true,
-                                        'stepSize' => 5
-                                    ]
-                                ]
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
+                                    
                             ]
                         ]
                     ]
@@ -168,39 +122,26 @@ class Overview_Page extends Page {
                 'width' => 3,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.6,
                     'data' => [
-                        'label' => 'Donations',
                         'labels' => [
                             'January',
                             'February',
                             'March',
                             'April',
                             'May',
+                            'June', 
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
                         ],
                         'datasets' => [
                             [
-                                'label' => 'Donors',
-                                'data' => [4, 2, 6, 2, 5],
-                                'backgroundColor' => [
-                                    'rgba(105, 184, 104, 0.21)',
-                                ],
-                                'borderColor' => [
-                                    'rgba(105, 184, 104, 1)',
-                                ],
-                                'borderWidth' => 3
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true,
-                                        'stepSize' => 5
-                                    ]
-                                ]
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
+                                    
                             ]
                         ]
                     ]
@@ -212,39 +153,26 @@ class Overview_Page extends Page {
                 'width' => 3,
                 'props' => [
                     'type' => 'line',
-                    'aspectRatio' => 0.6,
                     'data' => [
-                        'label' => 'Donations',
                         'labels' => [
                             'January',
                             'February',
                             'March',
                             'April',
                             'May',
+                            'June', 
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
                         ],
                         'datasets' => [
                             [
-                                'label' => 'Donors',
-                                'data' => [4, 2, 6, 2, 5],
-                                'backgroundColor' => [
-                                    'rgba(105, 184, 104, 0.21)',
-                                ],
-                                'borderColor' => [
-                                    'rgba(105, 184, 104, 1)',
-                                ],
-                                'borderWidth' => 3
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true,
-                                        'stepSize' => 5
-                                    ]
-                                ]
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9, 11, 12, 11, 13, 4, 10, 11, 9],
+                                    
                             ]
                         ]
                     ]
@@ -255,26 +183,19 @@ class Overview_Page extends Page {
                 'type' => 'chart',
                 'width' => 4,
                 'props' => [
-                    'type' => 'doughnut',
-                    'aspectRatio' => 1,
+                    'type' => 'pie',
                     'data' => [
-                        'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                        'labels' => [
+                            'Save the Whales',
+                            'Another Campaign',
+                            'One More Campaign',
+                        ],
                         'datasets' => [
                             [
-                                'label' => '# of Votes',
-                                'data' => [12, 19, 3, 5, 2],
-                                'backgroundColor' => [
-                                    '#69B868',
-                                    '#F49420',
-                                    '#556E79',
-                                    '#D75A4B',
-                                    '#9EA3A8',
-                                ],
-                                'borderColor' => '#FFFFFF',
-                                'borderWidth' => 3,
-                                'borderAlign' => 'inner'
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8],
                             ]
-                        ],
+                        ]
                     ]
                 ]
             ]),
@@ -284,31 +205,19 @@ class Overview_Page extends Page {
                 'width' => 4,
                 'props' => [
                     'type' => 'bar',
-                    'aspectRatio' => 1,
                     'data' => [
-                        'labels' => ['Stripe', 'Paypal', 'Yellow', 'Green', 'Purple'],
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                        ],
                         'datasets' => [
                             [
-                                'label' => '# of Votes',
-                                'data' => [12, 19, 3, 5, 2],
-                                'backgroundColor' => [
-                                    '#69B868',
-                                    '#F49420',
-                                    '#556E79',
-                                    '#D75A4B',
-                                    '#9EA3A8',
-                                ],
-                            ]
-                        ]
-                    ],
-                    'options' => [
-                        'scales' => [
-                            'yAxes' => [
-                                [
-                                    'ticks' => [
-                                        'beginAtZero' => true
-                                    ]
-                                ]
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9, 11],
+                                    
                             ]
                         ]
                     ]
@@ -320,25 +229,20 @@ class Overview_Page extends Page {
                 'width' => 4,
                 'props' => [
                     'type' => 'doughnut',
-                    'aspectRatio' => 1,
                     'data' => [
-                        'labels' => ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                        'labels' => [
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                        ],
                         'datasets' => [
                             [
-                                'label' => '# of Votes',
-                                'data' => [12, 19, 3, 5, 2],
-                                'backgroundColor' => [
-                                    '#69B868',
-                                    '#F49420',
-                                    '#556E79',
-                                    '#D75A4B',
-                                    '#9EA3A8',
-                                ],
-                                'borderColor' => '#FFFFFF',
-                                'borderWidth' => 3,
-                                'borderAlign' => 'inner'
+                                'label' => 'Donations',
+                                'data' => [12, 14, 8, 9],
+                                    
                             ]
-                        ],
+                        ]
                     ]
                 ]
             ]),
