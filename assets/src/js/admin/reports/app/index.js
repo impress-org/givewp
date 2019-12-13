@@ -8,8 +8,8 @@ const App = (props) => {
             <div className='give-settings-header'>
                 <h1 className='wp-heading-inline'>Reports</h1>
             </div>
-            <Tabs pages={giveReportsData.app.pages} />
-            <Routes pages={giveReportsData.app.pages} />
+            <Tabs />
+            <Routes />
         </div>
     )
 }
