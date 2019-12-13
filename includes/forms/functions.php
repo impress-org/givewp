@@ -1555,7 +1555,7 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 
 
 /**
- * Get list of default param of form shrtcode.
+ * Get the list of default parameters for the form shortcode.
  *
  * @since 2.4.1
  * @return array
