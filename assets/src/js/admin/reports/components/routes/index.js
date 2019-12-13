@@ -1,3 +1,6 @@
+// Handles display of different page components depending on location path
+// Page components are found in app/pages
+
 import { Switch, Route } from 'react-router-dom'
 import OverviewPage from '../../pages/overview-page'
 
