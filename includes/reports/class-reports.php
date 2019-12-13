@@ -41,7 +41,7 @@ class Reports {
 
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-admin.php';
 
-		$admin = new Reports_Admin($this->pages);
+		$admin = new Reports_Admin();
 		$admin->init();
 
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-api.php';

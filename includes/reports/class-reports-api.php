@@ -23,7 +23,6 @@ class Reports_API {
 
 	public function __construct($args) {
         $this->reports = $args['reports'];
-        $this->pages = $args['pages'];
 	}
 
 	// To do: refactor high-level API methods
