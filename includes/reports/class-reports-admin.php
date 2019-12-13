@@ -36,19 +36,7 @@ class Reports_Admin {
 				'0.0.1',
 				true
 			);
-			wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
-				'app' => self::get_app_object(),
-			]);
 		}
-	}
-
-	//Return array of app data, to be accessed by frontend scripts
-	public function get_app_object() {
-		$object = [
-			'pages' => []
-		];
-
-		return $object;
 	}
 
 	//Add Reports submenu page to admin menu
