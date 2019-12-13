@@ -1,8 +1,7 @@
 import { Switch, Route } from 'react-router-dom'
 import OverviewPage from '../../pages/overview-page'
 
-const Routes = (props) => {
-    
+const Routes = () => {
     return (
         <Switch>
             <Route exact path='/'>
