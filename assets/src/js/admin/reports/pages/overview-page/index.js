@@ -1,8 +1,12 @@
+import Grid from '../../components/grid'
+
 const OverviewPage = () => {
     return (
-        <div>
-            <h1>Overview Page!</h1>
-        </div>
+        <Grid>
+            <div>
+                Child Component
+            </div>
+        </Grid>
     )
 }
 export default OverviewPage
