@@ -3,13 +3,16 @@
 // 12 column grid for content to exist in
 
 import Grid from '../../components/grid'
+import Card from '../../components/card'
+import Chart from '../../components/chart'
 
 const OverviewPage = () => {
     return (
         <Grid>
-            <div>
-                Child Component
-            </div>
+            <Card
+            title="Sample Chart">
+                <Chart/>
+            </Card>
         </Grid>
     )
 }
