@@ -1,11 +1,14 @@
-import { Switch, Route } from 'react-router-dom'
+// Handles display of different page components depending on location path
+// Page components are found in app/pages
 
-const Routes = (props) => {
-    
+import { Switch, Route } from 'react-router-dom'
+import OverviewPage from '../../pages/overview-page'
+
+const Routes = () => {
     return (
         <Switch>
             <Route exact path='/'>
-                <h1>Overview Page</h1>
+                <OverviewPage />
             </Route>
         </Switch>
     )
