@@ -1,12 +1,12 @@
 import ChartJS from 'chart.js'
-import { useEffect, createRef } from 'react'
+import { useEffect, useLayoutEffect, useState, createRef } from 'react'
 import { createConfig } from './utils'
 
 const Chart = ({type, data}) => {
 
     const canvas = createRef()
     const config = createConfig(type, data)
-    let height = 100
+    const [height, setHeight] = useState(100)
 
     useEffect(() => {
 
@@ -15,6 +15,22 @@ const Chart = ({type, data}) => {
 
         return function cleanup() {
             chart.destroy()
+        }
+
+    }, [])
+
+    useLayoutEffect(() => {
+
+        function updateHeight (evt) {
+            console.log('update height!', canvas)
+            setHeight(80)
+        }
+
+        window.addEventListener('resize', updateHeight)
+        updateHeight()
+
+        return function cleanup() {
+            window.removeEventListener('resize', updateHeight)
         }
 
     }, [])
