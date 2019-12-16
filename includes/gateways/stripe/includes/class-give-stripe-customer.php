@@ -259,9 +259,14 @@ class Give_Stripe_Customer {
 	 * @return \Stripe\Customer
 	 */
 	public function set_default_payment_method( $id, $customer_id ) {
-		$this->stripe_gateway->payment_method->retrieve( $id )->attach(array(
-			'customer' => $customer_id
-		));
+		$payment_method = $this->stripe_gateway->payment_method->retrieve( $id );
+
+		// Add card only if not added before.
+		if( $customer_id !== $payment_method->customer ){
+			$payment_method->attach(array(
+				'customer' => $customer_id
+			));
+		}
 
 		$update_args = array(
 			'invoice_settings' => array(
