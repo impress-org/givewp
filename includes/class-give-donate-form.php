@@ -381,7 +381,7 @@ class Give_Donate_Form {
 			$this->$key = $value;
 		}
 
-		return true;
+		return $donation_form->ID;
 
 	}
 
