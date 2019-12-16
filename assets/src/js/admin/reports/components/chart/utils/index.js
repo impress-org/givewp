@@ -32,10 +32,10 @@ function createStyles (props) {
     return styles
 }
 
-export function createConfig (props) {
-    const formattedData = formatData(props.data)
+export function createConfig (type, data) {
+    const formattedData = formatData(data)
     const config = {
-        type: props.type,
+        type: type,
         data: formattedData,
         options: {
             scales: {
