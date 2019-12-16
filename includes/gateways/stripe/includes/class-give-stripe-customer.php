@@ -254,10 +254,14 @@ class Give_Stripe_Customer {
 	 * @param string $customer_id Customer ID provided by Stripe.
 	 *
 	 * @since 2.5.10
+	 * @see https://stripe.com/docs/api/payment_methods/attach
 	 *
 	 * @return \Stripe\Customer
 	 */
 	public function set_default_payment_method( $id, $customer_id ) {
+		$this->stripe_gateway->payment_method->retrieve( $id )->attach(array(
+			'customer' => $customer_id
+		));
 
 		$update_args = array(
 			'invoice_settings' => array(
