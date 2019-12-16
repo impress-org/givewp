@@ -259,22 +259,34 @@ class Give_Stripe_Customer {
 	 * @return \Stripe\Customer
 	 */
 	public function set_default_payment_method( $id, $customer_id ) {
-		$payment_method = $this->stripe_gateway->payment_method->retrieve( $id );
+		$customer = null;
 
-		// Add card only if not added before.
-		if( $customer_id !== $payment_method->customer ){
-			$payment_method->attach(array(
-				'customer' => $customer_id
-			));
+		try{
+			$payment_method = $this->stripe_gateway->payment_method->retrieve( $id );
+
+			// Add card only if not added before.
+			if( $customer_id !== $payment_method->customer ){
+				$payment_method->attach(array(
+					'customer' => $customer_id
+				));
+			}
+
+			$update_args = array(
+				'invoice_settings' => array(
+					'default_payment_method' => $id,
+				),
+			);
+
+			$customer = $this->update_customer( $customer_id, $update_args );
+
+		}catch( Exception $e ){
+
+			give_set_error( 'stripe_error', $e->getMessage() );
+			give_record_gateway_error( __( 'Stripe Payment Method Error', 'give' ), sprintf( "%s\n%s", __( 'An error occurred retrieving or creating the ', 'give' ), $e->getMessage() ) );
+			give_send_back_to_checkout( '?payment-mode=stripe' );
 		}
 
-		$update_args = array(
-			'invoice_settings' => array(
-				'default_payment_method' => $id,
-			),
-		);
-
-		return $this->update_customer( $customer_id, $update_args );
+		return $customer;
 	}
 
 	/**
