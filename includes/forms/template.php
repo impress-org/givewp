@@ -39,7 +39,7 @@ function give_get_donation_form( $args = array() ) {
 		$args['id'] = $post->ID;
 	}
 
-	// set `form_id` for backward compatibility because many filter and function  using it.
+	// set `form_id` for backward compatibility because many legacy filters and functions are using it.
 	$args['form_id'] = $args['id'];
 
 	/**
