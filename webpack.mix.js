@@ -2,7 +2,7 @@
  * External dependencies
  */
 const mix = require('laravel-mix');
-const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
+require('laravel-mix-polyfill');
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const wpPot = require( 'wp-pot' );
 
@@ -12,7 +12,6 @@ mix.js('assets/src/js/frontend/give.js', 'js/give.js')
     .js('assets/src/js/frontend/give-stripe-checkout.js', 'js/give-stripe-checkout.js')
     .js('assets/src/js/admin/admin.js', 'js/admin.js')
     .js('blocks/load.js', 'js/blocks.js')
-    .js('@babel/polyfill', 'js/babel-polyfill.js')
     .js('includes/admin/shortcodes/admin-shortcodes.js', 'js/admin-shortcodes.js')
     .js('assets/src/js/admin/plugin-deactivation-survey.js', 'js/plugin-deactivation-survey.js')
     .js('assets/src/js/admin/admin-add-ons.js', 'js/admin-add-ons.js');
@@ -25,14 +24,24 @@ mix.sass('assets/src/css/frontend/give-frontend.scss', 'css/give-frontend.css')
     .sass('assets/src/css/admin/plugin-deactivation-survey.scss', 'css/plugin-deactivation-survey.css');
 
 // Images 
-mix.copy('assets/src/images', 'images');
+mix.copyDirectory('assets/src/images', 'images');
 
 // Set configuration
 mix.setPublicPath('assets/dist')
+    .polyfill()
     .browserSync('give.test');
 
 if (mix.inProduction()) {
     mix.version();
+
+    mix.webpackConfig({
+        plugins: [
+            new WebpackRTLPlugin( {
+                suffix: '-rtl',
+                minify: true,
+            } )
+        ],
+    })
 
     // POT file.
 	wpPot( {
