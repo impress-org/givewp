@@ -35,7 +35,8 @@ class Reports_Admin {
 				['wp-element', 'wp-api'],
 				'0.0.1',
 				true
-			);
+            );
+            wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
 		}
 	}
 
