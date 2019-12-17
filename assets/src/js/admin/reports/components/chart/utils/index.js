@@ -3,7 +3,7 @@ export function formatData (data) {
     const formattedLabels = data.labels
 
     const formattedDatasets = data.datasets.map((dataset) => {
-        const styles = createStyles(props)
+        //const styles = createStyles(props)
         const formatted = {
             label: dataset.label,
             data: dataset.data,
@@ -51,17 +51,6 @@ export function createConfig (type, data) {
     return config
 }
 
-export function calcHeight (props) {
-    let ratio
-    switch (true) {
-        case props.cardWidth <= 3:
-            ratio = 1
-            break
-        case props.cardWidth <= 6:
-            ratio = 0.8
-            break
-        default:
-            ratio = 0.25
-    }
-    return 100 * ratio
+export function calcHeight (aspectRatio) {
+    return 40
 }
