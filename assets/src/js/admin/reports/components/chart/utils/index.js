@@ -1,15 +1,15 @@
-export function formatData (data) {
+export function formatData (type, data) {
 
     const formattedLabels = data.labels
 
-    const formattedDatasets = data.datasets.map((dataset) => {
-        const styles = createStyles(props)
+    const formattedDatasets = data.datasets.map((dataset, index) => {
+        const styles = createStyles(type, dataset.data, index)
         const formatted = {
             label: dataset.label,
             data: dataset.data,
-            backgroundColor: ['rgba(105, 184, 104, 0.21)'],
-            borderColor: ['rgba(105, 184, 104, 1)'],
-            borderWidth: 3
+            backgroundColor: styles.backgroundColor,
+            borderColor: styles.borderColor,
+            borderWidth: styles.borderWidth
         }
         return formatted
     })
@@ -22,22 +22,49 @@ export function formatData (data) {
     return formattedData
 }
 
-function createStyles (props) {
+function createStyles (type, data, index) {
+
+    const palette = [
+        '#69B868',
+        '#F49420',
+        '#D75A4B',
+        '#556E79',
+        '#9EA3A8'
+    ]
+
     const styles = {
-        backgroundColor: ['rgba(105, 184, 104, 0.21)'],
-        borderColor: ['rgba(105, 184, 104, 1)'],
-        borderWidth: 3
+        backgroundColor: palette,
+        borderColor: palette,
+        borderWidth: 0
+    }
+
+    switch (type) {
+        case 'line':
+            styles.backgroundColor = [
+                palette[index] + '44'
+            ]
+            styles.borderColor = [
+                palette[index]
+            ]
+            styles.borderWidth = 3
+            break;
+        case 'doughnut':
+            styles.borderColor = ['#FFFFFF']
+            styles.borderWidth = 3
     }
 
     return styles
 }
 
-export function createConfig (props) {
-    const formattedData = formatData(props.data)
+export function createConfig (type, data) {
+    const formattedData = formatData(type, data)
     const config = {
-        type: props.type,
+        type: type,
         data: formattedData,
         options: {
+            legend: {
+                position: 'bottom',
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -49,19 +76,4 @@ export function createConfig (props) {
         }
     }
     return config
-}
-
-export function calcHeight (props) {
-    let ratio
-    switch (true) {
-        case props.cardWidth <= 3:
-            ratio = 1
-            break
-        case props.cardWidth <= 6:
-            ratio = 0.8
-            break
-        default:
-            ratio = 0.25
-    }
-    return 100 * ratio
 }

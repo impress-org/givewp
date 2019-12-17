@@ -2,11 +2,11 @@ import ChartJS from 'chart.js'
 import { useEffect, createRef } from 'react'
 import { createConfig, calcHeight } from './utils'
 
-const Chart = (props) => {
+const Chart = ({type, aspectRatio, data}) => {
 
     const canvas = createRef()
-    const config = createConfig(props)
-    const height = calcHeight(props)
+    const config = createConfig(type, data)
+    const height = 100 * aspectRatio
 
     useEffect(() => {
 
@@ -16,8 +16,8 @@ const Chart = (props) => {
         return function cleanup() {
             chart.destroy()
         }
-        
-    }, [])
+
+    }, [height])
 
     return (
         <div>
