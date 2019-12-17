@@ -9,7 +9,7 @@ import Chart from '../../components/chart'
 const OverviewPage = () => {
     return (
         <Grid>
-            <Card title="Sample Chart" width={12}>
+            <Card title="Line Chart" width={12}>
                 <Chart
                     type='line'
                     aspectRatio={0.4}
@@ -17,6 +17,37 @@ const OverviewPage = () => {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
                         datasets: [
                             {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
+            <Card title="Doughnut Chart" width={4}>
+                <Chart
+                    type='doughnut'
+                    aspectRatio={0.7}
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
+            <Card title="Bar Chart" width={4}>
+                <Chart
+                    type='bar'
+                    aspectRatio={0.7}
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
                                 data: [4, 5, 3, 7, 5, 6]
                             }
                         ]

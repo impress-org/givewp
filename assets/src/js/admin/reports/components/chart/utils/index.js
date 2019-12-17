@@ -32,17 +32,21 @@ function createStyles (type, data) {
         '#9EA3A8'
     ]
 
-    const area = ['#69B86844']
-    const line = ['#69B868']
-
-    const backgroundColor = type === 'line' ? area : palette
-    const borderColor = type === 'line' ? line : palette
-    const borderWidth = type === 'line' ? 3 : 0
-
     const styles = {
-        backgroundColor,
-        borderColor,
-        borderWidth
+        backgroundColor: palette,
+        borderColor: palette,
+        borderWidth: 0
+    }
+
+    switch (type) {
+        case 'line':
+            styles.backgroundColor = ['#69B86844']
+            styles.borderColor = ['#69B868']
+            styles.borderWidth = 3
+            break;
+        case 'doughnut':
+            styles.borderColor = ['#FFFFFF']
+            styles.borderWidth = 3
     }
 
     return styles
@@ -54,6 +58,9 @@ export function createConfig (type, data) {
         type: type,
         data: formattedData,
         options: {
+            legend: {
+                position: 'bottom',
+            },
             scales: {
                 yAxes: [{
                     ticks: {
