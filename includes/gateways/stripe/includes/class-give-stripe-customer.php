@@ -282,7 +282,7 @@ class Give_Stripe_Customer {
 		}catch( Exception $e ){
 
 			give_set_error( 'stripe_error', $e->getMessage() );
-			give_record_gateway_error( __( 'Stripe Payment Method Error', 'give' ), sprintf( "%s\n%s", __( 'An error occurred retrieving or creating the ', 'give' ), $e->getMessage() ) );
+			give_record_gateway_error( __( 'Stripe Payment Method Error', 'give' ), sprintf( '%s%s', __( 'Error:  ', 'give' ), $e->getMessage() ) );
 			give_send_back_to_checkout( '?payment-mode=stripe' );
 		}
 
