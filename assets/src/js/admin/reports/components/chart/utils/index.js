@@ -2,8 +2,8 @@ export function formatData (type, data) {
 
     const formattedLabels = data.labels
 
-    const formattedDatasets = data.datasets.map((dataset) => {
-        const styles = createStyles(type, dataset.data)
+    const formattedDatasets = data.datasets.map((dataset, index) => {
+        const styles = createStyles(type, dataset.data, index)
         const formatted = {
             label: dataset.label,
             data: dataset.data,
@@ -22,7 +22,7 @@ export function formatData (type, data) {
     return formattedData
 }
 
-function createStyles (type, data) {
+function createStyles (type, data, index) {
 
     const palette = [
         '#69B868',
@@ -40,8 +40,12 @@ function createStyles (type, data) {
 
     switch (type) {
         case 'line':
-            styles.backgroundColor = ['#69B86844']
-            styles.borderColor = ['#69B868']
+            styles.backgroundColor = [
+                palette[index] + '44'
+            ]
+            styles.borderColor = [
+                palette[index]
+            ]
             styles.borderWidth = 3
             break;
         case 'doughnut':
