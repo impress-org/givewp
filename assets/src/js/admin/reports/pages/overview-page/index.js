@@ -12,6 +12,7 @@ const OverviewPage = () => {
             <Card title="Sample Chart" width={12}>
                 <Chart
                     type='line'
+                    aspectRatio={0.4}
                     data={{
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
                         datasets: [
