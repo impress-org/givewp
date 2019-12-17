@@ -346,23 +346,24 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			?>
 			<div id="give-stripe-checkout-processing"></div>
 			<script>
+				// Show Processing Donation Overlay.
+				const processingHtml = document.querySelector( '#give-stripe-checkout-processing');
+
+				processingHtml.setAttribute( 'class', 'stripe-checkout-process' );
+				processingHtml.style.background = '#FFFFFF';
+				processingHtml.style.opacity = '0.9';
+				processingHtml.style.position = 'fixed';
+				processingHtml.style.top = '0';
+				processingHtml.style.left = '0';
+				processingHtml.style.bottom = '0';
+				processingHtml.style.right = '0';
+				processingHtml.style.zIndex = '2147483646';
+				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
+
 				window.addEventListener('load', function() {
 					const stripe = Stripe( '<?php echo $publishable_key; ?>', {
 						'stripeAccount': '<?php echo $stripe_account_id; ?>'
 					} );
-					const processingHtml = document.querySelector( '#give-stripe-checkout-processing');
-
-					// Show Processing Donation Overlay.
-					processingHtml.setAttribute( 'class', 'stripe-checkout-process' );
-					processingHtml.style.background = '#FFFFFF';
-					processingHtml.style.opacity = '0.9';
-					processingHtml.style.position = 'fixed';
-					processingHtml.style.top = '0';
-					processingHtml.style.left = '0';
-					processingHtml.style.bottom = '0';
-					processingHtml.style.right = '0';
-					processingHtml.style.zIndex = '2147483646';
-					processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
 
 					// Redirect donor to Checkout page.
 					stripe.redirectToCheckout({
