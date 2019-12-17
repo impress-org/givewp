@@ -5,11 +5,12 @@
 import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
+const { __ } = wp.i18n;
 
 const OverviewPage = () => {
     return (
         <Grid>
-            <Card title="Doughnut Chart" width={4}>
+            <Card title={__('Dougnhut Chart', 'give')} width={4}>
                 <Chart
                     type='doughnut'
                     aspectRatio={0.7}
@@ -24,7 +25,7 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title="Bar Chart" width={4}>
+            <Card title={__('Bar Chart', 'give')} width={4}>
                 <Chart
                     type='bar'
                     aspectRatio={0.7}
@@ -39,7 +40,7 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title="Pie Chart" width={4}>
+            <Card title={__('Pie Chart', 'give')} width={4}>
                 <Chart
                     type='pie'
                     aspectRatio={0.7}
@@ -54,7 +55,7 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title="Line Chart" width={12}>
+            <Card title={__('Line Chart', 'give')} width={12}>
                 <Chart
                     type='line'
                     aspectRatio={0.4}
