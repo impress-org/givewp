@@ -50,7 +50,3 @@ export function createConfig (type, data) {
     }
     return config
 }
-
-export function calcHeight (aspectRatio) {
-    return 40
-}

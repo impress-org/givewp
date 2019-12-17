@@ -6,7 +6,7 @@ const Chart = ({type, aspectRatio, data}) => {
 
     const canvas = createRef()
     const config = createConfig(type, data)
-    const height = calcHeight(aspectRatio)
+    const height = 100 * aspectRatio
 
     useEffect(() => {
 
