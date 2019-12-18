@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			// Load the `redirect_to_checkout` function only when `redirect` is set as checkout type.
 			if ( 'redirect' === give_stripe_get_checkout_type() ) {
-				add_action( 'wp_footer', array( $this, 'redirect_to_checkout' ) );
+				add_action( 'wp_footer', array( $this, 'redirect_to_checkout' ), 99999 );
 			}
 
 		}
@@ -346,35 +346,38 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			?>
 			<div id="give-stripe-checkout-processing"></div>
 			<script>
-                const stripe = Stripe( '<?php echo $publishable_key; ?>', {
-                    'stripeAccount': '<?php echo $stripe_account_id; ?>'
-                } );
-                const processingHtml = document.querySelector( '#give-stripe-checkout-processing');
+				// Show Processing Donation Overlay.
+				const processingHtml = document.querySelector( '#give-stripe-checkout-processing');
 
-                // Show Processing Donation Overlay.
-                processingHtml.setAttribute( 'class', 'stripe-checkout-process' );
-                processingHtml.style.background = '#FFFFFF';
-                processingHtml.style.opacity = '0.9';
-                processingHtml.style.position = 'fixed';
-                processingHtml.style.top = '0';
-                processingHtml.style.left = '0';
-                processingHtml.style.bottom = '0';
-                processingHtml.style.right = '0';
-                processingHtml.style.zIndex = '2147483646';
-                processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
+				processingHtml.setAttribute( 'class', 'stripe-checkout-process' );
+				processingHtml.style.background = '#FFFFFF';
+				processingHtml.style.opacity = '0.9';
+				processingHtml.style.position = 'fixed';
+				processingHtml.style.top = '0';
+				processingHtml.style.left = '0';
+				processingHtml.style.bottom = '0';
+				processingHtml.style.right = '0';
+				processingHtml.style.zIndex = '2147483646';
+				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
 
-                // Redirect donor to Checkout page.
-                stripe.redirectToCheckout({
-                    // Make the id field from the Checkout Session creation API response
-                    // available to this file, so you can provide it as parameter here
-                    // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                    sessionId: '<?php echo $session_id; ?>'
-                }).then( ( result ) => {
-                    console.log(result);
-                    // If `redirectToCheckout` fails due to a browser or network
-                    // error, display the localized error message to your customer
-                    // using `result.error.message`.
-                });
+				window.addEventListener('load', function() {
+					const stripe = Stripe( '<?php echo $publishable_key; ?>', {
+						'stripeAccount': '<?php echo $stripe_account_id; ?>'
+					} );
+
+					// Redirect donor to Checkout page.
+					stripe.redirectToCheckout({
+						// Make the id field from the Checkout Session creation API response
+						// available to this file, so you can provide it as parameter here
+						// instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+						sessionId: '<?php echo $session_id; ?>'
+					}).then( ( result ) => {
+						console.log(result);
+						// If `redirectToCheckout` fails due to a browser or network
+						// error, display the localized error message to your customer
+						// using `result.error.message`.
+					});
+				})
 			</script>
 			<?php
 		}
