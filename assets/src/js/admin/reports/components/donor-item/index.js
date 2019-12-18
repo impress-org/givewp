@@ -1,8 +1,16 @@
-const DonorItem = ({image, name, count, total}) => {
+const DonorItem = ({image, name, email, count, total}) => {
     
     return (
         <div>
-            Donor Item
+            <img src={image}/>
+            <div>
+                <p><strong>{name}</strong></p>
+                <p>{email}</p>
+            </div>
+            <div>
+                <p>{count}</p>
+                <p>{total}</p>
+            </div>
         </div>
     )
 }
