@@ -58,7 +58,56 @@ const OverviewPage = () => {
                 />
             </Card>
             <Card title={__('Example List', 'give')} width={4}>
-                <List onScrollEnd={() => console.log('approaching end!')} >
+                <List onScrollEnd={() => alert('approaching end!')} >
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
                     <DonorItem
                         image='../images/give-icon-full-circle.svg'
                         name='Test Name'
