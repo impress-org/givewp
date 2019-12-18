@@ -6,6 +6,7 @@ import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
 import List from '../../components/list'
+import DonorItem from '../../components/donor-item'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -56,18 +57,15 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title={__('Example List', 'give')} width={3}>
+            <Card title={__('Example List', 'give')} width={4}>
                 <List onScrollEnd={() => console.log('approaching end!')} >
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
+                    <DonorItem
+                        image='../images/give-icon-full-circle.svg'
+                        name='Test Name'
+                        email='test@test.org'
+                        count='3 Donations'
+                        total='$120.00'
+                    />
                 </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
