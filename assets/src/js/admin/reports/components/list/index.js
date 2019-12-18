@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const List = ({onApproachScrolleEnd, children}) => {
+const List = ({onApproachScrollEnd, children}) => {
 
     const list = createRef()
 
