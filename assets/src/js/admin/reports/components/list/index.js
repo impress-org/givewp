@@ -1,6 +1,6 @@
 import { useEffect, createRef } from 'react'
 
-const List = ({onApproachScrollEnd, children}) => {
+const List = ({onScrollEnd, children}) => {
 
     const list = createRef()
     const listStyle = {
@@ -16,7 +16,7 @@ const List = ({onApproachScrollEnd, children}) => {
             const height = evt.target.offsetHeight
 
             if (remaining <= height) {
-                onApproachScrollEnd()
+                onScrollEnd()
             }
 
         }
