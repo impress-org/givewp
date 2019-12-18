@@ -4,7 +4,7 @@ const List = ({onScrollEnd, children}) => {
 
     const list = createRef()
     const listStyle = {
-        height: '60px',
+        height: '432px',
         overflow: 'scroll'
     }
 
