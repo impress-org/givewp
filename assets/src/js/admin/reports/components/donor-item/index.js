@@ -1,9 +1,21 @@
 const DonorItem = ({image, name, email, count, total}) => {
     
+    const itemStyle = {
+        height: '72px',
+        display: 'flex'
+    }
+
+    const imageStyle = {
+        height: '36px',
+        width: '36px',
+        borderRadius: '50%',
+        objectFit: 'cover'
+    }
+
     return (
-        <div>
+        <div style={itemStyle}>
             <img src={image}/>
-            <div>
+            <div style={{flex: 1}}>
                 <p><strong>{name}</strong></p>
                 <p>{email}</p>
             </div>
