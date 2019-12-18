@@ -8,11 +8,6 @@ const List = ({onApproachScrollEnd, children}) => {
         overflow: 'scroll'
     }
 
-    const itemStyle = {
-        height: '200px',
-        background: '#CCCCCC'
-    }
-
     useEffect(() => {
 
         function checkScroll (evt) {
@@ -21,7 +16,7 @@ const List = ({onApproachScrollEnd, children}) => {
             const height = evt.target.offsetHeight
 
             if (remaining <= height) {
-                console.log('remaining!', remaining)
+                onApproachScrollEnd()
             }
 
         }
@@ -36,7 +31,6 @@ const List = ({onApproachScrollEnd, children}) => {
 
     return (
         <div ref={list} style={listStyle}>
-            <div style={itemStyle}></div>
             {children}
         </div>
     )

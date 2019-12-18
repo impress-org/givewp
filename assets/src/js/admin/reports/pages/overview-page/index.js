@@ -57,7 +57,9 @@ const OverviewPage = () => {
                 />
             </Card>
             <Card title={__('Example List', 'give')} width={3}>
-                <List />
+                <List onApproachScrollEnd={() => console.log('approaching end!')} >
+                    <div style={{height: '200px', background: '#CCCCCC'}} />
+                </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
                 <Chart
