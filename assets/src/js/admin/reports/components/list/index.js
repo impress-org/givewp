@@ -3,11 +3,27 @@ import { useEffect, createRef } from 'react'
 const List = ({onApproachScrollEnd, children}) => {
 
     const list = createRef()
+    const listStyle = {
+        height: '60px',
+        overflow: 'scroll'
+    }
+
+    const itemStyle = {
+        height: '200px',
+        background: '#CCCCCC'
+    }
 
     useEffect(() => {
 
         function checkScroll (evt) {
-            console.log('check scroll!', evt)
+
+            const remaining = evt.target.scrollHeight - evt.target.scrollTop
+            const height = evt.target.offsetHeight
+
+            if (remaining <= height) {
+                console.log('remaining!', remaining)
+            }
+
         }
         
         list.current.addEventListener('scroll', checkScroll)
@@ -19,7 +35,8 @@ const List = ({onApproachScrollEnd, children}) => {
     }, [])
 
     return (
-        <div ref={list}>
+        <div ref={list} style={listStyle}>
+            <div style={itemStyle}></div>
             {children}
         </div>
     )
