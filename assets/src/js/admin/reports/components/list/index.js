@@ -2,10 +2,10 @@ import { useEffect, createRef } from 'react'
 import './style.scss';
 
 const List = ({onScrollEnd, children}) => {
-
+    
     const list = createRef()
 
-    useEffect(() => {
+    useEffect((onScrollEnd) => {
 
         function checkScroll (evt) {
 
@@ -18,10 +18,11 @@ const List = ({onScrollEnd, children}) => {
 
         }
         
-        list.current.addEventListener('scroll', checkScroll)
-    
-        return function cleanup () {
-            list.current.removeEventListener('scroll', checkScroll)
+        if (onScrollEnd) {
+            list.current.addEventListener('scroll', checkScroll)
+            return function cleanup () {
+                list.current.removeEventListener('scroll', checkScroll)
+            }
         }
 
     }, [])
