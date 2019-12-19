@@ -37,16 +37,12 @@ const List = ({onScrollEnd, children}) => {
 
 List.propTypes = {
     onScrollEnd: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node.isRequired
 }
 
 List.defaultProps = {
     onScrollEnd: null,
-    children: [
-        <div className='default-item'>
-            Error loading list.
-        </div>
-    ]
+    children: null
 }
 
 export default List
