@@ -28,7 +28,7 @@ const List = ({onScrollEnd, children}) => {
     }, [])
 
     return (
-        <div ref={list} class='list'>
+        <div ref={list} className='list'>
             {children}
         </div>
     )
