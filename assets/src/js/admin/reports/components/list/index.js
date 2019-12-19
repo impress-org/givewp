@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import { useEffect, createRef } from 'react'
 import './style.scss';
 
 const List = ({onScrollEnd, children}) => {
-
+    
     const list = createRef()
 
     useEffect(() => {
@@ -18,18 +19,32 @@ const List = ({onScrollEnd, children}) => {
 
         }
         
-        list.current.addEventListener('scroll', checkScroll)
-    
-        return function cleanup () {
-            list.current.removeEventListener('scroll', checkScroll)
+        if (onScrollEnd) {
+            list.current.addEventListener('scroll', checkScroll)
+            return function cleanup () {
+                list.current.removeEventListener('scroll', checkScroll)
+            }
         }
 
-    }, [])
+    }, [onScrollEnd])
 
     return (
-        <div ref={list} class='list'>
+        <div ref={list} className='list'>
             {children}
         </div>
     )
 }
+
+List.propTypes = {
+    /** Callback triggered when the list is scrolled to its end */
+    onScrollEnd: PropTypes.func,
+    /** Elements to render within the list **/
+    children: PropTypes.node.isRequired
+}
+
+List.defaultProps = {
+    onScrollEnd: null,
+    children: null
+}
+
 export default List
