@@ -7,12 +7,12 @@ const DonorItem = ({image, name, email, count, total}) => {
         <div class='donor-item'>
             <img src={image} />
             <div>
-                <p style={{margin: 0}}><strong>{name}</strong></p>
-                <p style={{margin: 0}}>{email}</p>
+                <p><strong>{name}</strong></p>
+                <p>{email}</p>
             </div>
             <div>
-                <p style={{margin: 0}}>{count}</p>
-                <p style={{margin: 0}}>{total}</p>
+                <p>{count}</p>
+                <p>{total}</p>
             </div>
         </div>
     )

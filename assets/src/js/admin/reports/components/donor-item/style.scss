@@ -21,5 +21,8 @@
         &:last-of-type {
             text-align: right;
         }
+        > p {
+            margin: 0;
+        }
     }
 }
