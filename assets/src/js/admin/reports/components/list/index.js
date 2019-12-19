@@ -36,7 +36,9 @@ const List = ({onScrollEnd, children}) => {
 }
 
 List.propTypes = {
+    /** Callback triggered when the list is scrolled to its end */
     onScrollEnd: PropTypes.func,
+    /** Elements to render within the list **/
     children: PropTypes.node.isRequired
 }
 
