@@ -100,7 +100,6 @@ function give_offline_process_payment( $purchase_data ) {
 		'gateway'         => 'offline',
 	);
 
-
 	// record the pending payment
 	$payment = give_insert_payment( $payment_data );
 
