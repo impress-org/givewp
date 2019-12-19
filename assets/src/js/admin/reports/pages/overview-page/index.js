@@ -58,16 +58,16 @@ const OverviewPage = () => {
             </Card>
             <Card title={__('Example List', 'give')} width={3}>
                 <List onScrollEnd={() => console.log('approaching end!')} >
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
-                    <div style={{height: '72px', background: '#CCCCCC'}} />
-                    <div style={{height: '72px', background: '#AAAAAA'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
                 </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
