@@ -19,10 +19,15 @@ const DonorItem = ({image, name, email, count, total}) => {
 }
 
 DonorItem.propTypes = {
+    // URL of donor photo
     image: PropTypes.string,
+    // Name of donor
     name: PropTypes.string.isRequired,
+    // Donor email
     email: PropTypes.string.isRequired,
+    // Internationalized total number of donations attributed to donor (ex: "2 Donations")
     count: PropTypes.string.isRequired,
+    // Internationalized total amount of money donated by donor (ex: "$100.00")
     total: PropTypes.string.isRequired
 }
 
