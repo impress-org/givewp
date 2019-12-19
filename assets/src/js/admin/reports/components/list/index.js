@@ -1,12 +1,9 @@
 import { useEffect, createRef } from 'react'
+import './style.scss';
 
 const List = ({onScrollEnd, children}) => {
 
     const list = createRef()
-    const listStyle = {
-        height: '432px',
-        overflow: 'scroll'
-    }
 
     useEffect(() => {
 
@@ -30,7 +27,7 @@ const List = ({onScrollEnd, children}) => {
     }, [])
 
     return (
-        <div ref={list} style={listStyle}>
+        <div ref={list} class='list'>
             {children}
         </div>
     )

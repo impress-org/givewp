@@ -29,6 +29,12 @@ class Reports_Admin {
 	//Enqueue app scripts
 	public function enqueue_scripts($base) {
 		if ($base === 'give_forms_page_give-reports-v3' ) {
+			wp_enqueue_style(
+				'give-admin-reports-v3-style',
+				GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports.css',
+				[],
+				'0.0.1'
+            );
 			wp_enqueue_script(
 				'give-admin-reports-v3-js',
 				GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
