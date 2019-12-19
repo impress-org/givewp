@@ -11,47 +11,47 @@
 /* globals jQuery, Give */
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
-	if( Give.form.fn.isFormExist() ) {
+	if ( Give.form.fn.isFormExist() ) {
 
 		//Hide loading elements
 		$( '.give-loading-text' ).hide();
 
 		// Update and invalidate cached nonce.
-		$('.give-form').each(function (index, $form) {
+		$( '.give-form' ).each( function( index, $form ) {
 			let nonceInfo, nonceTime, currentTime, timeDiff;
 
-			$form = jQuery($form);
+			$form = jQuery( $form );
 			nonceInfo = Give.form.fn.getNonceInfo( $form );
 
-			if( ! nonceInfo.el.attr( 'data-donor-session' ) ){
+			if ( !nonceInfo.el.attr( 'data-donor-session' ) ) {
 				// Backward compatibility.
 				// @see https://github.com/impress-org/give/issues/3820
-				Give.form.fn.resetAllNonce($form);
+				Give.form.fn.resetAllNonce( $form );
 
-			}else if(
+			} else if (
 				(
 					nonceInfo.createdInDonorSession
 					|| Give.donor.fn.hasSession( $form )
 				)
-				&& ! Give.donor.fn.isLoggedIn()
+				&& !Give.donor.fn.isLoggedIn()
 			) {
 				// Reset nonce if nonce cached when donor was in session or logged in.
-				Give.form.fn.resetAllNonce($form);
+				Give.form.fn.resetAllNonce( $form );
 			}
 
-			nonceTime = ( parseInt(nonceInfo.el.data('time')) + parseInt(nonceInfo.el.data('nonce-life') ) ) * 1000,
-			currentTime = Date.now();
+			nonceTime = ( parseInt( nonceInfo.el.data( 'time' ) ) + parseInt( nonceInfo.el.data( 'nonce-life' ) ) ) * 1000,
+				currentTime = Date.now();
 
 			// We need time in ms.
 			timeDiff = nonceTime - currentTime;
 
-			timeDiff = 0 > timeDiff ? timeDiff : (timeDiff + 100);
+			timeDiff = 0 > timeDiff ? timeDiff : ( timeDiff + 100 );
 
 			// Update nonce in background.
-			window.setTimeout(function () {
-				Give.form.fn.resetAllNonce($form);
-			}, timeDiff);
-		});
+			window.setTimeout( function() {
+				Give.form.fn.resetAllNonce( $form );
+			}, timeDiff );
+		} );
 	}
 
 	// Show the login form in the checkout when the user clicks the "Login" link
@@ -67,7 +67,7 @@ jQuery( document ).ready( function( $ ) {
 		// Show the ajax loader
 		loading_animation.show();
 
-		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( checkout_response ) {
+		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
 
 			//Clear form HTML and add AJAX response containing fields
 			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
@@ -93,7 +93,7 @@ jQuery( document ).ready( function( $ ) {
 			form_id: $( this_form ).find( '[name="give-form-id"]' ).val()
 		};
 		// AJAX get the payment fields.
-		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( checkout_response ) {
+		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
 			//Show fields
 			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
@@ -111,7 +111,7 @@ jQuery( document ).ready( function( $ ) {
 		var complete_purchase_val = $( this ).val();
 		var this_form = $( this ).parents( 'form' );
 
-		$( this ).val( Give.fn.getGlobalVar('purchase_loading') );
+		$( this ).val( Give.fn.getGlobalVar( 'purchase_loading' ) );
 
 		this_form.find( '[id^=give-login-fields] .give-loading-animation' ).fadeIn();
 
@@ -123,9 +123,9 @@ jQuery( document ).ready( function( $ ) {
 			give_form_id: this_form.find( '[name=give-form-id]' ).val()
 		};
 
-		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( response ) {
+		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( response ) {
 			//user is logged in
-			if ( $.trim( typeof (response.success) ) != undefined && response.success == true && typeof (response.data) != undefined ) {
+			if ( $.trim( typeof ( response.success ) ) != undefined && response.success == true && typeof ( response.data ) != undefined ) {
 
 				//remove errors
 				this_form.find( '.give_errors' ).remove();
@@ -182,13 +182,13 @@ jQuery( document ).ready( function( $ ) {
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
-			nonce: Give.fn.getGlobalVar('ajax_vars').ajaxNonce
+			nonce: Give.fn.getGlobalVar( 'ajax_vars' ).ajaxNonce
 		};
 
-		$this.text( Give.fn.getGlobalVar('loading') );
+		$this.text( Give.fn.getGlobalVar( 'loading' ) );
 		$this.attr( 'disabled', 'disabled' );
 
-		$.post( Give.fn.getGlobalVar('ajaxurl'), data, function( response ) {
+		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( response ) {
 			response = JSON.parse( response );
 			if ( 'error' === response.status ) {
 				$this.closest( '#give_user_history tfoot' ).hide();
@@ -208,7 +208,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @description: Process the donation submit
 	 */
-	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function ( e ) {
+	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 
 		//this form object
 		var $this = $( this );
@@ -242,13 +242,13 @@ jQuery( document ).ready( function( $ ) {
 		var complete_purchase_val = $( this ).val();
 
 		//Update submit button text
-		$( this ).val( Give.fn.getGlobalVar('purchase_loading') );
+		$( this ).val( Give.fn.getGlobalVar( 'purchase_loading' ) );
 
 		// Disable the form donation button.
 		Give.form.fn.disable( this_form, true );
 
 		//Submit form via AJAX
-		$.post( Give.fn.getGlobalVar('ajaxurl'), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function ( data ) {
+		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function( data ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
@@ -276,30 +276,30 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @since 2.2.0
 	 */
-	const receiptContainer = document.getElementById('give-receipt');
+	const receiptContainer = document.getElementById( 'give-receipt' );
 
 	if ( receiptContainer ) {
 
-		let data        = {
-				action: 'get_receipt',
-				shortcode_atts: receiptContainer.getAttribute('data-shortcode'),
-				donation_id: receiptContainer.getAttribute( 'data-donation-key'),
-				receipt_type: receiptContainer.getAttribute( 'data-receipt-type'),
-			};
+		let data = {
+			action: 'get_receipt',
+			shortcode_atts: receiptContainer.getAttribute( 'data-shortcode' ),
+			donation_id: receiptContainer.getAttribute( 'data-donation-key' ),
+			receipt_type: receiptContainer.getAttribute( 'data-receipt-type' ),
+		};
 
 		const cookie_name = Give.fn.getGlobalVar( 'session_cookie_name' );
 
 		// Set cookie.
-		data[cookie_name] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
+		data[ cookie_name ] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
 
-		$.ajax({
-			url: Give.fn.getGlobalVar('ajaxurl'),
+		$.ajax( {
+			url: Give.fn.getGlobalVar( 'ajaxurl' ),
 			method: 'GET',
 			data: data,
-			success: function (response) {
+			success: function( response ) {
 				receiptContainer.innerHTML = response;
 			}
-		});
+		} );
 	}
 } );
 
@@ -333,7 +333,7 @@ function give_load_gateway( form_object, payment_mode ) {
 	}
 
 	//Post via AJAX to Give
-	jQuery.post( Give.fn.getGlobalVar('ajaxurl') + '?payment-mode=' + payment_mode, {
+	jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
 			action: 'give_load_gateway',
 			give_total: give_total,
 			give_form_id: give_form_id,
@@ -342,6 +342,7 @@ function give_load_gateway( form_object, payment_mode ) {
 			nonce: Give.form.fn.getNonce( form_object )
 		},
 		function( response ) {
+
 			//Success: let's output the gateway fields in the appropriate form space
 			jQuery( form_object ).unblock();
 			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
