@@ -19,35 +19,35 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: give.php:663
+#: give.php:666
 msgid "Your site could be faster and more secure with a newer PHP version."
 msgstr ""
 
-#: give.php:664
+#: give.php:667
 msgid "Hey, we've noticed that you're running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we're sending you this notice."
 msgstr ""
 
-#: give.php:665
+#: give.php:668
 msgid "Hosts have the ability to update your PHP version, but sometimes they don't dare to do that because they're afraid they'll break your site."
 msgstr ""
 
-#: give.php:666
+#: give.php:669
 msgid "To which version should I update?"
 msgstr ""
 
-#: give.php:667
+#: give.php:670
 msgid "You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It's also the only PHP version still in active development and therefore the better option for your site in the long run."
 msgstr ""
 
-#: give.php:668
+#: give.php:671
 msgid "Can't update? Ask your host!"
 msgstr ""
 
-#: give.php:669
+#: give.php:672
 msgid "If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don't want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s."
 msgstr ""
 
-#: give.php:695
+#: give.php:698
 msgid "<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href=\"%1$s\" target=\"_blank\">logging into your account</a> and visiting <a href=\"%1$s\" target=\"_blank\">your downloads</a> page on the GiveWP website."
 msgstr ""
 
@@ -55,11 +55,11 @@ msgstr ""
 msgid "Give"
 msgstr ""
 
-#: includes/actions.php:108
+#: includes/actions.php:114
 msgid "WordPress user #%d is connected to #%d"
 msgstr ""
 
-#: includes/actions.php:282
+#: includes/actions.php:288
 msgid "GiveWP version %s is required to update this add-on."
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Unable to send email. Please try again."
 msgstr ""
 
-#: includes/ajax-functions.php:699, includes/class-give-scripts.php:470, templates/email-login-form.php:33
+#: includes/ajax-functions.php:699, includes/class-give-scripts.php:477, templates/email-login-form.php:33
 msgid "Please check your email and click on the link to access your complete donation history."
 msgstr ""
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "%s: '%s' does not contain git repo."
 msgstr ""
 
-#: includes/class-give-cli-commands.php:1264, includes/class-give-scripts.php:279
+#: includes/class-give-cli-commands.php:1264, includes/class-give-scripts.php:286
 msgid "Success"
 msgstr ""
 
@@ -299,6 +299,10 @@ msgstr ""
 
 #: includes/class-give-cron.php:92
 msgid "Once Monthly"
+msgstr ""
+
+#: includes/class-give-cron.php:98
+msgid "Every Third Day"
 msgstr ""
 
 #. translators: %s: property key
@@ -376,7 +380,7 @@ msgid "Renew to manage sites"
 msgstr ""
 
 #: includes/class-give-license-handler.php:798
-msgid "No activation remaining"
+msgid "No activations remaining"
 msgstr ""
 
 #: includes/class-give-license-handler.php:804
@@ -441,397 +445,397 @@ msgstr ""
 msgid "GiveWP Donor"
 msgstr ""
 
-#: includes/class-give-scripts.php:202, includes/admin/add-ons/actions.php:158
+#: includes/class-give-scripts.php:209, includes/admin/add-ons/actions.php:158
 msgid "Sorry, you entered an invalid key."
 msgstr ""
 
-#: includes/class-give-scripts.php:203
+#: includes/class-give-scripts.php:210
 msgid "Success! You have activated your license key and are receiving updates and priority support. <a href=\"{link}\">Click here</a> to download your add-on."
 msgstr ""
 
-#: includes/class-give-scripts.php:204
+#: includes/class-give-scripts.php:211
 msgid "{pluginName} add-on activated successfully."
 msgstr ""
 
-#: includes/class-give-scripts.php:205
+#: includes/class-give-scripts.php:212
 msgid "The add-on did not activate successfully."
 msgstr ""
 
-#: includes/class-give-scripts.php:225, includes/class-give-scripts.php:278, includes/forms/template.php:1549, includes/admin/donors/class-donor-table.php:585, includes/admin/donors/donors.php:502, includes/admin/donors/donors.php:729, includes/admin/donors/donors.php:1116, includes/admin/payments/view-payment-details.php:674
+#: includes/class-give-scripts.php:232, includes/class-give-scripts.php:285, includes/forms/template.php:1551, includes/admin/donors/class-donor-table.php:585, includes/admin/donors/donors.php:502, includes/admin/donors/donors.php:729, includes/admin/donors/donors.php:1116, includes/admin/payments/view-payment-details.php:674
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-give-scripts.php:226
+#: includes/class-give-scripts.php:233
 msgid "Error: Please select at least one option."
 msgstr ""
 
-#: includes/class-give-scripts.php:227
+#: includes/class-give-scripts.php:234
 msgid "Submit and Deactivate"
 msgstr ""
 
-#: includes/class-give-scripts.php:228
+#: includes/class-give-scripts.php:235
 msgid "Skip and Deactivate"
 msgstr ""
 
-#: includes/class-give-scripts.php:229
+#: includes/class-give-scripts.php:236
 msgid "Error: Please complete the required field."
 msgstr ""
 
 #. translators: %s Stripe User ID
 #. translators: %s Stripe User ID
-#: includes/class-give-scripts.php:252, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:578
+#: includes/class-give-scripts.php:259, includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:578
 msgid "Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments."
 msgstr ""
 
-#: includes/class-give-scripts.php:268
+#: includes/class-give-scripts.php:275
 msgid "Not available for variable priced forms."
 msgstr ""
 
-#: includes/class-give-scripts.php:269
+#: includes/class-give-scripts.php:276
 msgid "Are you sure you want to <strong>permanently</strong> delete this donation?"
 msgstr ""
 
-#: includes/class-give-scripts.php:270
+#: includes/class-give-scripts.php:277
 msgid "Are you sure you want to delete this note?"
 msgstr ""
 
-#: includes/class-give-scripts.php:271
+#: includes/class-give-scripts.php:278
 msgid "Are you sure you want to revoke this API key?"
 msgstr ""
 
-#: includes/class-give-scripts.php:272
+#: includes/class-give-scripts.php:279
 msgid "Are you sure you want to regenerate this API key?"
 msgstr ""
 
-#: includes/class-give-scripts.php:273
+#: includes/class-give-scripts.php:280
 msgid "Are you sure you want to resend the donation receipt?"
 msgstr ""
 
-#: includes/class-give-scripts.php:274
+#: includes/class-give-scripts.php:281
 msgid "Are you sure you want to disconnect the user from this donor?"
 msgstr ""
 
-#: includes/class-give-scripts.php:275
+#: includes/class-give-scripts.php:282
 msgid "Choose a form"
 msgstr ""
 
-#: includes/class-give-scripts.php:276
+#: includes/class-give-scripts.php:283
 msgid "Choose one or more forms"
 msgstr ""
 
-#: includes/class-give-scripts.php:277
+#: includes/class-give-scripts.php:284
 msgid "Ok"
 msgstr ""
 
-#: includes/class-give-scripts.php:280, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1872, includes/api/class-give-api.php:1878, includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898, includes/forms/functions.php:330, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:299, includes/admin/forms/dashboard-columns.php:266, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:502, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:209, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
+#: includes/class-give-scripts.php:287, includes/class-notices.php:632, includes/formatting.php:755, includes/api/class-give-api.php:1872, includes/api/class-give-api.php:1878, includes/api/class-give-api.php:1893, includes/api/class-give-api.php:1898, includes/forms/functions.php:310, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:187, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:270, includes/admin/donors/donor-actions.php:284, includes/admin/donors/donor-actions.php:371, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:558, includes/admin/emails/class-donation-receipt-email.php:272, includes/admin/emails/class-donation-receipt-email.php:305, includes/admin/emails/class-donor-note-email.php:76, includes/admin/emails/class-donor-register-email.php:111, includes/admin/emails/class-email-access-email.php:268, includes/admin/emails/class-new-donation-email.php:245, includes/admin/emails/class-new-donor-register-email.php:106, includes/admin/emails/class-new-offline-donation-email.php:256, includes/admin/emails/class-offline-donation-instruction-email.php:222, includes/admin/forms/dashboard-columns.php:273, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:87, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:379, includes/admin/payments/actions.php:399, includes/admin/payments/actions.php:457, includes/admin/payments/actions.php:479, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/upgrades/upgrade-functions.php:506, includes/admin/tools/data/class-give-tools-delete-donations.php:156, includes/admin/tools/data/class-give-tools-delete-import-donors.php:309, includes/admin/tools/data/class-give-tools-delete-test-donors.php:248, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:129, includes/admin/tools/data/class-give-tools-recount-all-stats.php:248, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:204, includes/admin/tools/data/class-give-tools-recount-form-stats.php:204, includes/admin/tools/data/class-give-tools-recount-income.php:177, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:160, includes/admin/tools/data/class-give-tools-reset-stats.php:241, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:81, includes/admin/tools/export/class-export.php:185, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/gateways/stripe/includes/admin/admin-actions.php:209, includes/gateways/stripe/includes/admin/class-give-stripe-logs-list-table.php:87
 msgid "Error"
 msgstr ""
 
-#: includes/class-give-scripts.php:281, includes/admin/shortcodes/abstract-shortcode-generator.php:91
+#: includes/class-give-scripts.php:288, includes/admin/shortcodes/abstract-shortcode-generator.php:91
 msgid "Close"
 msgstr ""
 
-#: includes/class-give-scripts.php:282
+#: includes/class-give-scripts.php:289
 msgid "Confirm"
 msgstr ""
 
-#: includes/class-give-scripts.php:283
+#: includes/class-give-scripts.php:290
 msgid "Copied!"
 msgstr ""
 
-#: includes/class-give-scripts.php:284
+#: includes/class-give-scripts.php:291
 msgid "Shortcode could not be copied."
 msgstr ""
 
-#: includes/class-give-scripts.php:285
+#: includes/class-give-scripts.php:292
 msgid "Confirm Action"
 msgstr ""
 
-#: includes/class-give-scripts.php:286
+#: includes/class-give-scripts.php:293
 msgid "Confirm Deletion"
 msgstr ""
 
-#: includes/class-give-scripts.php:287
+#: includes/class-give-scripts.php:294
 msgid "Confirm Delete Donation"
 msgstr ""
 
-#: includes/class-give-scripts.php:288
+#: includes/class-give-scripts.php:295
 msgid "Confirm re-send"
 msgstr ""
 
-#: includes/class-give-scripts.php:289
+#: includes/class-give-scripts.php:296
 msgid "Confirm bulk action"
 msgstr ""
 
-#: includes/class-give-scripts.php:290
+#: includes/class-give-scripts.php:297
 msgid "Do you want to restart the update process?"
 msgstr ""
 
-#: includes/class-give-scripts.php:291
+#: includes/class-give-scripts.php:298
 msgid "It is recommended that you backup your database before proceeding. Do you want to run the update now?"
 msgstr ""
 
-#: includes/class-give-scripts.php:292
+#: includes/class-give-scripts.php:299
 msgid "Do you want to stop the update process now?"
 msgstr ""
 
-#: includes/class-give-scripts.php:293
+#: includes/class-give-scripts.php:300
 msgid "Import failed"
 msgstr ""
 
-#: includes/class-give-scripts.php:294
+#: includes/class-give-scripts.php:301
 msgid "Flush success"
 msgstr ""
 
-#: includes/class-give-scripts.php:295
+#: includes/class-give-scripts.php:302
 msgid "Flush error"
 msgstr ""
 
-#: includes/class-give-scripts.php:296
+#: includes/class-give-scripts.php:303
 msgid "No form selected"
 msgstr ""
 
-#: includes/class-give-scripts.php:297
+#: includes/class-give-scripts.php:304
 msgid "You must choose a method."
 msgstr ""
 
-#: includes/class-give-scripts.php:298
+#: includes/class-give-scripts.php:305
 msgid "Required fields not completed."
 msgstr ""
 
-#: includes/class-give-scripts.php:299
+#: includes/class-give-scripts.php:306
 msgid "Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding."
 msgstr ""
 
-#: includes/class-give-scripts.php:300
+#: includes/class-give-scripts.php:307
 msgid "Are you sure you want to delete all the test donors? This process will also delete test donations as well."
 msgstr ""
 
-#: includes/class-give-scripts.php:301
+#: includes/class-give-scripts.php:308
 msgid "Are you sure you want to delete all the imported donors? This process will also delete imported donations as well."
 msgstr ""
 
-#: includes/class-give-scripts.php:302
+#: includes/class-give-scripts.php:309
 msgid "Are you sure you want to delete all the donations in the specfied date range?"
 msgstr ""
 
-#: includes/class-give-scripts.php:303
+#: includes/class-give-scripts.php:310
 msgid "Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) ."
 msgstr ""
 
-#: includes/class-give-scripts.php:305
+#: includes/class-give-scripts.php:312
 msgid "Do you want to delete this item?"
 msgstr ""
 
-#: includes/class-give-scripts.php:306, includes/admin/admin-actions.php:329
+#: includes/class-give-scripts.php:313, includes/admin/admin-actions.php:329
 msgid "You cannot set the success and failed pages to the same page"
 msgstr ""
 
-#: includes/class-give-scripts.php:307
+#: includes/class-give-scripts.php:314
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/class-give-scripts.php:308
+#: includes/class-give-scripts.php:315
 msgid "Type to search all forms"
 msgstr ""
 
-#: includes/class-give-scripts.php:309
+#: includes/class-give-scripts.php:316
 msgid "Type to search all donors"
 msgstr ""
 
-#: includes/class-give-scripts.php:310
+#: includes/class-give-scripts.php:317
 msgid "Type to search all countries"
 msgstr ""
 
-#: includes/class-give-scripts.php:311
+#: includes/class-give-scripts.php:318
 msgid "Type to search all states/provinces"
 msgstr ""
 
-#: includes/class-give-scripts.php:312
+#: includes/class-give-scripts.php:319
 msgid "Action forbidden"
 msgstr ""
 
-#: includes/class-give-scripts.php:313
+#: includes/class-give-scripts.php:320
 msgid "To edit first name and last name, please go to user profile of the donor."
 msgstr ""
 
-#: includes/class-give-scripts.php:314
+#: includes/class-give-scripts.php:321
 msgid "Remove from Bulk Delete"
 msgstr ""
 
-#: includes/class-give-scripts.php:317
+#: includes/class-give-scripts.php:324
 msgid "No donors selected"
 msgstr ""
 
-#: includes/class-give-scripts.php:318
+#: includes/class-give-scripts.php:325
 msgid "You must choose at least one or more donors to delete."
 msgstr ""
 
-#: includes/class-give-scripts.php:321
+#: includes/class-give-scripts.php:328
 msgid "No action selected"
 msgstr ""
 
-#: includes/class-give-scripts.php:322
+#: includes/class-give-scripts.php:329
 msgid "You must select a bulk action to proceed."
 msgstr ""
 
-#: includes/class-give-scripts.php:327
+#: includes/class-give-scripts.php:334
 msgid "No payments selected"
 msgstr ""
 
-#: includes/class-give-scripts.php:330
+#: includes/class-give-scripts.php:337
 msgid "You must choose at least one or more donations to delete."
 msgstr ""
 
-#: includes/class-give-scripts.php:331
+#: includes/class-give-scripts.php:338
 msgid "Are you sure you want to permanently delete this donation?"
 msgstr ""
 
-#: includes/class-give-scripts.php:332
+#: includes/class-give-scripts.php:339
 msgid "Are you sure you want to permanently delete the selected {payment_count} donations?"
 msgstr ""
 
-#: includes/class-give-scripts.php:335
+#: includes/class-give-scripts.php:342
 msgid "You must choose at least one or more recipients to resend the email receipt."
 msgstr ""
 
-#: includes/class-give-scripts.php:336
+#: includes/class-give-scripts.php:343
 msgid "Are you sure you want to resend the email receipt to this recipient?"
 msgstr ""
 
-#: includes/class-give-scripts.php:337
+#: includes/class-give-scripts.php:344
 msgid "Are you sure you want to resend the emails receipt to {payment_count} recipients?"
 msgstr ""
 
-#: includes/class-give-scripts.php:340
+#: includes/class-give-scripts.php:347
 msgid "You must choose at least one or more donations to set status to {status}."
 msgstr ""
 
-#: includes/class-give-scripts.php:341
+#: includes/class-give-scripts.php:348
 msgid "Are you sure you want to set status of this donation to {status}?"
 msgstr ""
 
-#: includes/class-give-scripts.php:342
+#: includes/class-give-scripts.php:349
 msgid "Are you sure you want to set status of {payment_count} donations to {status}?"
 msgstr ""
 
-#: includes/class-give-scripts.php:346
+#: includes/class-give-scripts.php:353
 msgid "Please reload this page and try again"
 msgstr ""
 
-#: includes/class-give-scripts.php:350
+#: includes/class-give-scripts.php:357
 msgid "Choose Image"
 msgstr ""
 
-#: includes/class-give-scripts.php:353
+#: includes/class-give-scripts.php:360
 msgid "Choose File"
 msgstr ""
 
-#: includes/class-give-scripts.php:357
+#: includes/class-give-scripts.php:364
 msgid "No results match {search_term}"
 msgstr ""
 
-#: includes/class-give-scripts.php:358
+#: includes/class-give-scripts.php:365
 msgid "Searching results for match {search_term}"
 msgstr ""
 
-#: includes/class-give-scripts.php:360
+#: includes/class-give-scripts.php:367
 msgid "Run Updates"
 msgstr ""
 
-#: includes/class-give-scripts.php:361
+#: includes/class-give-scripts.php:368
 msgid "The following process will make updates to your site's database. Please create a database backup before proceeding with updates."
 msgstr ""
 
-#: includes/class-give-scripts.php:362
+#: includes/class-give-scripts.php:369
 msgid "Something went wrong kindly try again!"
 msgstr ""
 
-#: includes/class-give-scripts.php:365
+#: includes/class-give-scripts.php:372
 msgid "Changes you made may not be saved."
 msgstr ""
 
-#: includes/class-give-scripts.php:370
+#: includes/class-give-scripts.php:377
 msgid "No result found. Press enter to add"
 msgstr ""
 
-#: includes/class-give-scripts.php:373
+#: includes/class-give-scripts.php:380
 msgid "Please confirm you would like to add a donor note. An email notification will be sent to the donor with the note. If you do not want to notify the donor you may add a private note or disable the donor note email."
 msgstr ""
 
-#: includes/class-give-scripts.php:379
+#: includes/class-give-scripts.php:386
 msgid "Confirm Disconnect?"
 msgstr ""
 
-#: includes/class-give-scripts.php:382
+#: includes/class-give-scripts.php:389
 msgid "Updating..."
 msgstr ""
 
-#: includes/class-give-scripts.php:383, includes/class-give-scripts.php:484
+#: includes/class-give-scripts.php:390, includes/class-give-scripts.php:491
 msgid "Loading..."
 msgstr ""
 
-#: includes/class-give-scripts.php:384
+#: includes/class-give-scripts.php:391
 msgid "Uploading..."
 msgstr ""
 
-#: includes/class-give-scripts.php:385
+#: includes/class-give-scripts.php:392
 msgid "Processing..."
 msgstr ""
 
-#: includes/class-give-scripts.php:386
+#: includes/class-give-scripts.php:393
 msgid "Activating..."
 msgstr ""
 
-#: includes/class-give-scripts.php:481
+#: includes/class-give-scripts.php:488
 msgid "Please select a payment method."
 msgstr ""
 
-#: includes/class-give-scripts.php:482
+#: includes/class-give-scripts.php:489
 msgid "The minimum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:483
+#: includes/class-give-scripts.php:490
 msgid "The maximum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:485
+#: includes/class-give-scripts.php:492
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/class-give-scripts.php:499
+#: includes/class-give-scripts.php:506
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:500, includes/process-donation.php:587, includes/shortcodes.php:413, includes/admin/admin-actions.php:871
+#: includes/class-give-scripts.php:507, includes/process-donation.php:587, includes/shortcodes.php:413, includes/admin/admin-actions.php:871
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:501, includes/process-donation.php:583
+#: includes/class-give-scripts.php:508, includes/process-donation.php:583
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-give-scripts.php:502
+#: includes/class-give-scripts.php:509
 msgid "Invalid email address or username."
 msgstr ""
 
-#: includes/class-give-scripts.php:503, includes/process-donation.php:961, includes/user-functions.php:413
+#: includes/class-give-scripts.php:510, includes/process-donation.php:961, includes/user-functions.php:413
 msgid "Enter a password."
 msgstr ""
 
-#: includes/class-give-scripts.php:504, includes/user-functions.php:417
+#: includes/class-give-scripts.php:511, includes/user-functions.php:417
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:505, includes/process-donation.php:561
+#: includes/class-give-scripts.php:512, includes/process-donation.php:561
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
-#: includes/class-give-scripts.php:512
+#: includes/class-give-scripts.php:519
 msgid "Loading"
 msgstr ""
 
-#: includes/class-give-scripts.php:514, includes/admin/tools/views/html-admin-page-data.php:33
+#: includes/class-give-scripts.php:521, includes/admin/tools/views/html-admin-page-data.php:33
 msgid "Please select an option"
 msgstr ""
 
@@ -5539,11 +5543,11 @@ msgstr ""
 msgid "%s million"
 msgstr ""
 
-#: includes/formatting.php:754, includes/formatting.php:791, includes/process-donation.php:850, includes/api/class-give-api.php:1872, includes/forms/functions.php:330, includes/gateways/actions.php:48, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
+#: includes/formatting.php:754, includes/formatting.php:791, includes/process-donation.php:850, includes/api/class-give-api.php:1872, includes/forms/functions.php:310, includes/gateways/actions.php:48, includes/gateways/manual.php:38, includes/admin/donors/donor-actions.php:389, includes/admin/donors/donor-actions.php:467, includes/admin/donors/donor-actions.php:514, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35
 msgid "We're unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance."
 msgstr ""
 
-#: includes/install.php:356, includes/forms/template.php:1751, includes/forms/template.php:1756, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:305
+#: includes/install.php:356, includes/forms/template.php:1753, includes/forms/template.php:1758, tests/unit-tests/tests-install.php:100, includes/admin/forms/class-metabox-form-data.php:581, includes/admin/settings/class-settings-display.php:305
 msgid "Agree to Terms?"
 msgstr ""
 
@@ -5655,31 +5659,31 @@ msgstr ""
 msgid "array_column(): The index key should be either a string or an integer."
 msgstr ""
 
-#: includes/misc-functions.php:1521, includes/admin/tools/import/class-give-import-core-settings.php:467
+#: includes/misc-functions.php:1525, includes/admin/tools/import/class-give-import-core-settings.php:467
 msgid "Please upload or provide a valid JSON file."
 msgstr ""
 
-#: includes/misc-functions.php:1553
+#: includes/misc-functions.php:1557
 msgid "For security reasons, please confirm your email address (%s) to view your complete donation history."
 msgstr ""
 
-#: includes/misc-functions.php:1559, includes/admin/emails/class-email-access-email.php:45
+#: includes/misc-functions.php:1563, includes/admin/emails/class-email-access-email.php:45
 msgid "Confirm Email"
 msgstr ""
 
-#: includes/misc-functions.php:1561
+#: includes/misc-functions.php:1565
 msgid "Email Sent!"
 msgstr ""
 
-#: includes/misc-functions.php:2147, includes/misc-functions.php:2187
+#: includes/misc-functions.php:2151, includes/misc-functions.php:2191
 msgid "View the receipt in your browser &raquo;"
 msgstr ""
 
-#: includes/misc-functions.php:2264
+#: includes/misc-functions.php:2268
 msgid "You are trying to access invalid donation receipt. Please try again."
 msgstr ""
 
-#: includes/misc-functions.php:2285
+#: includes/misc-functions.php:2289
 msgid "You must be logged in to view this donation receipt."
 msgstr ""
 
@@ -6057,7 +6061,7 @@ msgstr ""
 msgid "Please enter your username or email to log in."
 msgstr ""
 
-#: includes/process-donation.php:943, templates/shortcode-login.php:51, includes/forms/template.php:1537
+#: includes/process-donation.php:943, templates/shortcode-login.php:51, includes/forms/template.php:1539
 msgid "Reset Password"
 msgstr ""
 
@@ -6122,7 +6126,7 @@ msgstr ""
 msgid "Hey! We've raised {total} of the {total_goal} we are trying to raise for this campaign!"
 msgstr ""
 
-#: includes/shortcodes.php:558, includes/forms/template.php:700, includes/forms/template.php:1931, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
+#: includes/shortcodes.php:558, includes/forms/template.php:700, includes/forms/template.php:1933, includes/admin/forms/class-metabox-form-data.php:263, includes/admin/forms/class-metabox-form-data.php:273, includes/gateways/stripe/includes/give-stripe-scripts.php:59
 msgid "Donate Now"
 msgstr ""
 
@@ -6273,7 +6277,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: templates/shortcode-login.php:38, templates/shortcode-register.php:44, includes/forms/template.php:1521
+#: templates/shortcode-login.php:38, templates/shortcode-register.php:44, includes/forms/template.php:1523
 msgid "Password"
 msgstr ""
 
@@ -6699,7 +6703,7 @@ msgstr ""
 msgid "Donors"
 msgstr ""
 
-#: includes/admin/admin-pages.php:58
+#: includes/admin/admin-pages.php:58, includes/reports/class-reports-admin.php:47
 msgid "Donation Reports"
 msgstr ""
 
@@ -7866,31 +7870,31 @@ msgstr ""
 msgid "Preview email with a donation:"
 msgstr ""
 
-#: includes/forms/functions.php:1275
+#: includes/forms/functions.php:1255
 msgid "of"
 msgstr ""
 
-#: includes/forms/functions.php:1278, includes/admin/tools/import/class-give-import-donations.php:253, includes/admin/tools/import/class-give-import-donations.php:259
+#: includes/forms/functions.php:1258, includes/admin/tools/import/class-give-import-donations.php:253, includes/admin/tools/import/class-give-import-donations.php:259
 msgid "donors"
 msgstr ""
 
-#: includes/forms/functions.php:1278, includes/admin/tools/import/class-give-import-donations.php:271, includes/admin/tools/import/class-give-import-donations.php:277
+#: includes/forms/functions.php:1258, includes/admin/tools/import/class-give-import-donations.php:271, includes/admin/tools/import/class-give-import-donations.php:277
 msgid "donations"
 msgstr ""
 
-#: includes/forms/functions.php:1282
+#: includes/forms/functions.php:1262
 msgid "Goal achieved"
 msgstr ""
 
-#: includes/forms/functions.php:1507
+#: includes/forms/functions.php:1487
 msgid "Mr."
 msgstr ""
 
-#: includes/forms/functions.php:1508
+#: includes/forms/functions.php:1488
 msgid "Mrs."
 msgstr ""
 
-#: includes/forms/functions.php:1509
+#: includes/forms/functions.php:1489
 msgid "Ms."
 msgstr ""
 
@@ -8034,103 +8038,103 @@ msgstr ""
 msgid "The city for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1241
+#: includes/forms/template.php:1243
 msgid "The state, province, or county for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1269, includes/forms/template.php:1283
+#: includes/forms/template.php:1271, includes/forms/template.php:1285
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: includes/forms/template.php:1273
+#: includes/forms/template.php:1275
 msgid "The zip or postal code for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:1371
+#: includes/forms/template.php:1373
 msgid "Registration is required to donate."
 msgstr ""
 
-#: includes/forms/template.php:1381
+#: includes/forms/template.php:1383
 msgid "Create an account"
 msgstr ""
 
-#: includes/forms/template.php:1382
+#: includes/forms/template.php:1384
 msgid "Create an account on the site to see and manage donation history."
 msgstr ""
 
-#: includes/forms/template.php:1394
+#: includes/forms/template.php:1396
 msgid "Already have an account?"
 msgstr ""
 
-#: includes/forms/template.php:1396, includes/forms/template.php:1545, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
+#: includes/forms/template.php:1398, includes/forms/template.php:1547, includes/admin/forms/class-metabox-form-data.php:362, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25
 msgid "Login"
 msgstr ""
 
-#: includes/forms/template.php:1468
+#: includes/forms/template.php:1470
 msgid "Log In to Your Account"
 msgstr ""
 
-#: includes/forms/template.php:1470
+#: includes/forms/template.php:1472
 msgid "(optional)"
 msgstr ""
 
-#: includes/forms/template.php:1476
+#: includes/forms/template.php:1478
 msgid "Don't have an account?"
 msgstr ""
 
-#: includes/forms/template.php:1481
+#: includes/forms/template.php:1483
 msgid "Register as a part of your donation &raquo;"
 msgstr ""
 
-#: includes/forms/template.php:1483
+#: includes/forms/template.php:1485
 msgid "Register or donate as a guest &raquo;"
 msgstr ""
 
-#: includes/forms/template.php:1506
+#: includes/forms/template.php:1508
 msgid "Username or Email Address"
 msgstr ""
 
-#: includes/forms/template.php:1515
+#: includes/forms/template.php:1517
 msgid "Your username or email"
 msgstr ""
 
-#: includes/forms/template.php:1528
+#: includes/forms/template.php:1530
 msgid "Your password"
 msgstr ""
 
-#: includes/forms/template.php:1620
+#: includes/forms/template.php:1622
 msgid "Select Payment Method"
 msgstr ""
 
-#: includes/forms/template.php:1767
+#: includes/forms/template.php:1769
 msgid "Please enter valid terms and conditions in <a href=\"%s\">this form's settings</a>."
 msgstr ""
 
-#: includes/forms/template.php:1782
+#: includes/forms/template.php:1784
 msgid "Terms"
 msgstr ""
 
-#: includes/forms/template.php:1803
+#: includes/forms/template.php:1805
 msgid "Show Terms"
 msgstr ""
 
-#: includes/forms/template.php:1805
+#: includes/forms/template.php:1807
 msgid "Hide Terms"
 msgstr ""
 
-#: includes/forms/template.php:1850, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
+#: includes/forms/template.php:1852, includes/admin/shortcodes/shortcode-give-donor-wall.php:154
 msgid "Donation Total:"
 msgstr ""
 
-#: includes/forms/template.php:2206, includes/gateways/stripe/includes/actions.php:72, includes/gateways/stripe/includes/actions.php:83, includes/gateways/stripe/includes/actions.php:91
+#: includes/forms/template.php:2208, includes/gateways/stripe/includes/actions.php:72, includes/gateways/stripe/includes/actions.php:83, includes/gateways/stripe/includes/actions.php:91
 msgid "Notice:"
 msgstr ""
 
-#: includes/forms/template.php:2206
+#: includes/forms/template.php:2208
 msgid "Test mode is enabled. While in test mode no live donations are processed."
 msgstr ""
 
-#: includes/forms/template.php:2236
+#: includes/forms/template.php:2238
 msgid "Please log in in order to complete your donation."
 msgstr ""
 
@@ -8493,127 +8497,131 @@ msgctxt "custom donation dropdown item"
 msgid "Custom"
 msgstr ""
 
+#: includes/reports/class-reports-admin.php:48
+msgid "Reports v3"
+msgstr ""
+
 #: templates/single-give-form/featured-image.php:41
 msgid "Placeholder"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:41
+#: tests/unit-tests/tests-misc-functions.php:56
 msgid "US Dollars"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:42
+#: tests/unit-tests/tests-misc-functions.php:57
 msgid "Euros"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:43
+#: tests/unit-tests/tests-misc-functions.php:58
 msgid "Pounds Sterling"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:44
+#: tests/unit-tests/tests-misc-functions.php:59
 msgid "Australian Dollars"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:45
+#: tests/unit-tests/tests-misc-functions.php:60
 msgid "Brazilian Real"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:46
+#: tests/unit-tests/tests-misc-functions.php:61
 msgid "Canadian Dollars"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:47
+#: tests/unit-tests/tests-misc-functions.php:62
 msgid "Czech Koruna"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:48
+#: tests/unit-tests/tests-misc-functions.php:63
 msgid "Danish Krone"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:49
+#: tests/unit-tests/tests-misc-functions.php:64
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:50
+#: tests/unit-tests/tests-misc-functions.php:65
 msgid "Hungarian Forint"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:51
+#: tests/unit-tests/tests-misc-functions.php:66
 msgid "Israeli Shekel"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:52
+#: tests/unit-tests/tests-misc-functions.php:67
 msgid "Japanese Yen"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:53
+#: tests/unit-tests/tests-misc-functions.php:68
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:54
+#: tests/unit-tests/tests-misc-functions.php:69
 msgid "Mexican Peso"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:55
+#: tests/unit-tests/tests-misc-functions.php:70
 msgid "Moroccan Dirham"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:56
+#: tests/unit-tests/tests-misc-functions.php:71
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:57
+#: tests/unit-tests/tests-misc-functions.php:72
 msgid "Norwegian Krone"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:58
+#: tests/unit-tests/tests-misc-functions.php:73
 msgid "Philippine Pesos"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:59
+#: tests/unit-tests/tests-misc-functions.php:74
 msgid "Polish Zloty"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:60
+#: tests/unit-tests/tests-misc-functions.php:75
 msgid "Singapore Dollar"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:61
+#: tests/unit-tests/tests-misc-functions.php:76
 msgid "South Korean Won"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:62
+#: tests/unit-tests/tests-misc-functions.php:77
 msgid "South African Rand"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:63
+#: tests/unit-tests/tests-misc-functions.php:78
 msgid "Swedish Krona"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:64
+#: tests/unit-tests/tests-misc-functions.php:79
 msgid "Swiss Franc"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:65
+#: tests/unit-tests/tests-misc-functions.php:80
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:66
+#: tests/unit-tests/tests-misc-functions.php:81
 msgid "Thai Baht"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:67
+#: tests/unit-tests/tests-misc-functions.php:82
 msgid "Indian Rupee"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:68
+#: tests/unit-tests/tests-misc-functions.php:83
 msgid "Turkish Lira"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:69
+#: tests/unit-tests/tests-misc-functions.php:84
 msgid "Iranian Rial"
 msgstr ""
 
-#: tests/unit-tests/tests-misc-functions.php:70
+#: tests/unit-tests/tests-misc-functions.php:85
 msgid "Russian Rubles"
 msgstr ""
 
@@ -8673,23 +8681,23 @@ msgstr ""
 msgid "Name, Email, or Donor ID"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:87, includes/admin/forms/dashboard-columns.php:488, includes/admin/payments/class-payments-table.php:164, includes/admin/tools/logs/logs.php:148
+#: includes/admin/donors/class-donor-table.php:87, includes/admin/forms/dashboard-columns.php:495, includes/admin/payments/class-payments-table.php:164, includes/admin/tools/logs/logs.php:148
 msgid "Search"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:93, includes/admin/donors/class-donor-table.php:101, includes/admin/forms/dashboard-columns.php:497, includes/admin/forms/dashboard-columns.php:505, includes/admin/payments/class-payments-table.php:168, includes/admin/payments/class-payments-table.php:176, includes/admin/tools/export/class-give-export-donations.php:243, includes/admin/tools/views/html-admin-page-exports.php:108
+#: includes/admin/donors/class-donor-table.php:93, includes/admin/donors/class-donor-table.php:101, includes/admin/forms/dashboard-columns.php:504, includes/admin/forms/dashboard-columns.php:512, includes/admin/payments/class-payments-table.php:168, includes/admin/payments/class-payments-table.php:176, includes/admin/tools/export/class-give-export-donations.php:243, includes/admin/tools/views/html-admin-page-exports.php:108
 msgid "Start Date"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:105, includes/admin/donors/class-donor-table.php:113, includes/admin/forms/dashboard-columns.php:509, includes/admin/forms/dashboard-columns.php:517, includes/admin/payments/class-payments-table.php:180, includes/admin/payments/class-payments-table.php:188, includes/admin/tools/export/class-give-export-donations.php:252, includes/admin/tools/views/html-admin-page-exports.php:116
+#: includes/admin/donors/class-donor-table.php:105, includes/admin/donors/class-donor-table.php:113, includes/admin/forms/dashboard-columns.php:516, includes/admin/forms/dashboard-columns.php:524, includes/admin/payments/class-payments-table.php:180, includes/admin/payments/class-payments-table.php:188, includes/admin/tools/export/class-give-export-donations.php:252, includes/admin/tools/views/html-admin-page-exports.php:116
 msgid "End Date"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:153, includes/admin/forms/dashboard-columns.php:556, includes/admin/payments/class-payments-table.php:229, includes/admin/tools/logs/logs.php:196
+#: includes/admin/donors/class-donor-table.php:153, includes/admin/forms/dashboard-columns.php:563, includes/admin/payments/class-payments-table.php:229, includes/admin/tools/logs/logs.php:196
 msgid "Apply"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:159, includes/admin/forms/dashboard-columns.php:562, includes/admin/payments/class-payments-table.php:235
+#: includes/admin/donors/class-donor-table.php:159, includes/admin/forms/dashboard-columns.php:569, includes/admin/payments/class-payments-table.php:235
 msgid "Clear Filters"
 msgstr ""
 
@@ -8733,7 +8741,7 @@ msgstr ""
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:284
+#: includes/admin/donors/donor-actions.php:52, includes/admin/donors/donor-actions.php:201, includes/admin/donors/donor-actions.php:284, includes/admin/emails/class-donation-receipt-email.php:272, includes/admin/emails/class-donation-receipt-email.php:305, includes/admin/emails/class-donor-note-email.php:76, includes/admin/emails/class-donor-register-email.php:111, includes/admin/emails/class-email-access-email.php:268, includes/admin/emails/class-new-donation-email.php:245, includes/admin/emails/class-new-donor-register-email.php:106, includes/admin/emails/class-new-offline-donation-email.php:256, includes/admin/emails/class-offline-donation-instruction-email.php:222
 msgid "Cheatin&#8217; uh?"
 msgstr ""
 
@@ -8988,10 +8996,6 @@ msgstr ""
 msgid "Sent to the donor when their donation completes or a pending donation is marked as complete."
 msgstr ""
 
-#: includes/admin/emails/class-donation-receipt-email.php:299
-msgid "You do not have permission to edit donations."
-msgstr ""
-
 #: includes/admin/emails/class-donor-note-email.php:42
 msgid "Donation Note"
 msgstr ""
@@ -9049,15 +9053,15 @@ msgstr ""
 msgid "Sincerely"
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:146, includes/admin/emails/class-new-donor-register-email.php:138
+#: includes/admin/emails/class-donor-register-email.php:152, includes/admin/emails/class-new-donor-register-email.php:144
 msgid "No donor(s) found."
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:150, includes/admin/emails/class-new-donor-register-email.php:142
+#: includes/admin/emails/class-donor-register-email.php:156, includes/admin/emails/class-new-donor-register-email.php:148
 msgid "- Select a donor -"
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:185, includes/admin/emails/class-new-donor-register-email.php:192
+#: includes/admin/emails/class-donor-register-email.php:191, includes/admin/emails/class-new-donor-register-email.php:198
 msgid "Preview email with a donor:"
 msgstr ""
 
@@ -9672,7 +9676,7 @@ msgstr ""
 msgid "Goal Statistics"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:39, includes/admin/forms/dashboard-columns.php:523
+#: includes/admin/forms/dashboard-columns.php:39, includes/admin/forms/dashboard-columns.php:530
 msgid "Goal"
 msgstr ""
 
@@ -9688,31 +9692,31 @@ msgstr ""
 msgid "No Goal Set"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:131, includes/admin/forms/metabox.php:38
+#: includes/admin/forms/dashboard-columns.php:138, includes/admin/forms/metabox.php:38
 msgid "Copy Shortcode"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:266
+#: includes/admin/forms/dashboard-columns.php:273
 msgid "You do not have permission to view this data."
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:485
+#: includes/admin/forms/dashboard-columns.php:492
 msgid "Form Name or ID"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:531
+#: includes/admin/forms/dashboard-columns.php:538
 msgid "Any Goal Status"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:538
+#: includes/admin/forms/dashboard-columns.php:545
 msgid "Goal Achieved"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:545
+#: includes/admin/forms/dashboard-columns.php:552
 msgid "Goal In Progress"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:552
+#: includes/admin/forms/dashboard-columns.php:559
 msgid "Goal Not Set"
 msgstr ""
 
@@ -11502,7 +11506,7 @@ msgstr ""
 msgid "Updates Completed."
 msgstr ""
 
-#: includes/admin/upgrades/upgrade-functions.php:502
+#: includes/admin/upgrades/upgrade-functions.php:506
 msgid "You do not have permission to do GiveWP upgrades."
 msgstr ""
 
@@ -13121,7 +13125,7 @@ msgstr ""
 msgid "Credit card fields are disabled because your site is not running securely over HTTPS."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:60, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:100, includes/gateways/stripe/includes/class-give-stripe-customer.php:357, includes/gateways/stripe/includes/class-give-stripe-customer.php:451, includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:536, includes/gateways/stripe/includes/give-stripe-helpers.php:634, includes/gateways/stripe/includes/give-stripe-helpers.php:799, includes/gateways/stripe/includes/admin/admin-actions.php:195, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:60, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:100, includes/gateways/stripe/includes/class-give-stripe-customer.php:378, includes/gateways/stripe/includes/class-give-stripe-customer.php:472, includes/gateways/stripe/includes/class-give-stripe-customer.php:490, includes/gateways/stripe/includes/class-give-stripe-customer.php:571, includes/gateways/stripe/includes/class-give-stripe-gateway.php:127, includes/gateways/stripe/includes/class-give-stripe-gateway.php:262, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340, includes/gateways/stripe/includes/class-give-stripe-gateway.php:419, includes/gateways/stripe/includes/class-give-stripe-logger.php:77, includes/gateways/stripe/includes/class-give-stripe-webhooks.php:168, includes/gateways/stripe/includes/give-stripe-helpers.php:541, includes/gateways/stripe/includes/give-stripe-helpers.php:639, includes/gateways/stripe/includes/give-stripe-helpers.php:804, includes/gateways/stripe/includes/admin/admin-actions.php:195, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:80
 msgid "Stripe Error"
 msgstr ""
 
@@ -13130,7 +13134,7 @@ msgstr ""
 msgid "The Stripe Gateway returned an error while creating the Checkout Session. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:67, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:107, includes/gateways/stripe/includes/class-give-stripe-customer.php:364, includes/gateways/stripe/includes/class-give-stripe-customer.php:458, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
+#: includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:67, includes/gateways/stripe/includes/class-give-stripe-checkout-session.php:107, includes/gateways/stripe/includes/class-give-stripe-customer.php:385, includes/gateways/stripe/includes/class-give-stripe-customer.php:479, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:87
 msgid "An occurred while processing the donation with the gateway. Please try your donation again."
 msgstr ""
 
@@ -13139,7 +13143,7 @@ msgstr ""
 msgid "The Stripe Gateway returned an error while retrieving the Checkout Session. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:351
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:190, includes/gateways/stripe/includes/class-give-stripe-customer.php:372
 msgid "Stripe - Customer Creation Error"
 msgstr ""
 
@@ -13147,22 +13151,30 @@ msgstr ""
 msgid "Stripe - Customer Update Error"
 msgstr ""
 
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:285, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:46, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:78, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:113, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:154
+msgid "Stripe Payment Method Error"
+msgstr ""
+
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:285
+msgid "Error:  "
+msgstr ""
+
 #. translators: %s Site URL
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:327
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:348
 msgid "Stripe Customer generated by GiveWP via %s"
 msgstr ""
 
 #. translators: %s Exception Message Body
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:360, includes/gateways/stripe/includes/class-give-stripe-customer.php:454
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:381, includes/gateways/stripe/includes/class-give-stripe-customer.php:475
 msgid "The Stripe Gateway returned an error while creating the customer. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:468, includes/gateways/stripe/includes/class-give-stripe-customer.php:549, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:641
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:489, includes/gateways/stripe/includes/class-give-stripe-customer.php:570, includes/gateways/stripe/includes/class-give-stripe-gateway.php:134, includes/gateways/stripe/includes/class-give-stripe-gateway.php:189, includes/gateways/stripe/includes/class-give-stripe-gateway.php:229, includes/gateways/stripe/includes/class-give-stripe-gateway.php:269, includes/gateways/stripe/includes/class-give-stripe-gateway.php:339, includes/gateways/stripe/includes/give-stripe-helpers.php:646
 msgid "An error occurred while processing the donation. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-customer.php:469, includes/gateways/stripe/includes/class-give-stripe-customer.php:550, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
+#: includes/gateways/stripe/includes/class-give-stripe-customer.php:490, includes/gateways/stripe/includes/class-give-stripe-customer.php:571, includes/gateways/stripe/includes/class-give-stripe-gateway.php:340
 msgid "An error occurred retrieving or creating the "
 msgstr ""
 
@@ -13336,10 +13348,6 @@ msgstr ""
 msgid "Error updating payment intent with Stripe. Please try again."
 msgstr ""
 
-#: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:46, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:78, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:113, includes/gateways/stripe/includes/class-give-stripe-payment-method.php:154
-msgid "Stripe Payment Method Error"
-msgstr ""
-
 #. translators: %s Exception Message Body
 #: includes/gateways/stripe/includes/class-give-stripe-payment-method.php:49
 msgid "The Stripe Gateway returned an error while creating the payment method. Details: %s"
@@ -13406,35 +13414,35 @@ msgstr ""
 msgid "Charge refunded in Stripe."
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:461
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:466
 msgid "-- N/A --"
 msgstr ""
 
 #. translators: %s Exception Error Message
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:539
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:544
 msgid "Unable to set application information to Stripe. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:544
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:549
 msgid "Unable to set application information to Stripe. Please try again."
 msgstr ""
 
 #. translators: %s Exception Message Body
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:637
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:642
 msgid "Unable to set Stripe API Key. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:958, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:275
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:963, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:275
 msgid "Stripe Customer Creation Failed"
 msgstr ""
 
 #. translators: %s Donation Data
 #. translators: %s Donation Data
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:961, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:278
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:966, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:278
 msgid "Customer creation failed while processing the donation. Details: %s"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-helpers.php:965, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:282, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:164
+#: includes/gateways/stripe/includes/give-stripe-helpers.php:970, includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php:282, includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php:164
 msgid "The Stripe Gateway returned an error while processing the donation."
 msgstr ""
 

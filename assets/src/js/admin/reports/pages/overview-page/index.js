@@ -5,6 +5,7 @@
 import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
+import List from '../../components/list'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -54,6 +55,20 @@ const OverviewPage = () => {
                         ]
                     }}
                 />
+            </Card>
+            <Card title={__('Example List', 'give')} width={3}>
+                <List onScrollEnd={() => console.log('approaching end!')} >
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                    <div style={{height: '72px'}} />
+                </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
                 <Chart

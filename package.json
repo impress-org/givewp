@@ -80,6 +80,7 @@
     "jquery-chosen": "latest",
     "jquery.payment": "latest",
     "magnific-popup": "latest",
+    "prop-types": "^15.7.2",
     "query-string": "^5.1.1",
     "querystringify": "^1.0.0",
     "react": "^16.12.0",

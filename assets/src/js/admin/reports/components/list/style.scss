@@ -1,0 +1,13 @@
+.list {
+    max-height: 432px;
+    overflow: scroll;
+}
+
+.list {
+    > * {
+        background: #DDDDDD;
+    }
+    > :nth-of-type(even) {
+        background: #FFFFFF;
+    }
+}
