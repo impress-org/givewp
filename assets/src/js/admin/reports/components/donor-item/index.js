@@ -19,11 +19,19 @@ const DonorItem = ({image, name, email, count, total}) => {
 }
 
 DonorItem.propTypes = {
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     count: PropTypes.string.isRequired,
     total: PropTypes.string.isRequired
+}
+
+DonorItem.defaultProps = {
+    image: null,
+    name: null,
+    email: null,
+    count: null,
+    total: null
 }
 
 export default DonorItem
