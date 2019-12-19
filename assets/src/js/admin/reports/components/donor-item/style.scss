@@ -1,0 +1,24 @@
+.donor-item {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+
+.donor-item {
+    > img {
+        object-fit: cover;
+        height: 36px;
+        width: 36px;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    > div {
+        &:first-of-type {
+            flex: 1;
+            margin-left: 16px;
+        }
+        &:last-of-type {
+            text-align: right;
+        }
+    }
+}
