@@ -6,7 +6,7 @@ const List = ({onScrollEnd, children}) => {
     
     const list = createRef()
 
-    useEffect((onScrollEnd) => {
+    useEffect(() => {
 
         function checkScroll (evt) {
 
@@ -26,7 +26,7 @@ const List = ({onScrollEnd, children}) => {
             }
         }
 
-    }, [])
+    }, [onScrollEnd])
 
     return (
         <div ref={list} className='list'>
