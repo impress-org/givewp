@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, createRef } from 'react'
 import './style.scss';
 
@@ -33,4 +34,19 @@ const List = ({onScrollEnd, children}) => {
         </div>
     )
 }
+
+List.propTypes = {
+    onScrollEnd: PropTypes.func,
+    children: PropTypes.node
+}
+
+List.defaultProps = {
+    onScrollEnd: null,
+    children: [
+        <div className='default-item'>
+            Error loading list.
+        </div>
+    ]
+}
+
 export default List
