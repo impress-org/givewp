@@ -25,3 +25,17 @@ export function getIcon (status) {
             break
     }
 }
+
+export function getColor (status) {
+    switch (status) {
+        case 'completed':
+            return '#69B868'
+            break;
+        case 'abandoned':
+            return '#D75A4B'
+            break;
+        case 'refunded':
+            return '#D75A4B'
+            break;
+    }
+}

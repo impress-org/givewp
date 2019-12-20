@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { getIcon } from './utils'
+import { getIcon, getColor } from './utils'
 import './style.scss'
 
 const DonationItem = ({status, amount, time, donor, source}) => {
@@ -14,7 +14,7 @@ const DonationItem = ({status, amount, time, donor, source}) => {
             </div>
             <div className='info'>
                 <p>
-                    <span>{amount} {status}</span> 
+                    <span style={{fontWeight: 'bold', color: getColor(status)}}>{amount} {status}</span> 
                     <span className='elapsed'>{elapsed}</span>
                 </p>
                 <p className='donor'>
