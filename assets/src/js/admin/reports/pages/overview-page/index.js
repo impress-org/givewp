@@ -67,21 +67,18 @@ const OverviewPage = () => {
                         total='$200.00'
                     />
                     <DonorItem
-                        image='./default.png'
                         name='Test Name'
                         email='email@test.org'
                         count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
-                        image='./default.png'
                         name='Test Name'
                         email='email@test.org'
                         count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
-                        image='./default.png'
                         name='Test Name'
                         email='email@test.org'
                         count='2 Donations'

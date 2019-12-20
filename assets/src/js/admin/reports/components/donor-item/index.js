@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types'
 import './style.scss'
+import { getBGColor } from './utils'
 
 const DonorItem = ({image, name, email, count, total}) => {
-    const palette = [
-        '#D75A4B',
-        '#F49420',
-        '#69B868',
-        '#556E79',
-        '#9EA3A8',
-    ]
-    const profile = image ? <img src={image} /> : <div className='donor-initials' style={{backgroundColor: palette[Math.floor(Math.random() * (palette.length))]}}>HH</div>
+    
+    const profile = image ? <img src={image} /> : <div className='donor-initials' style={{backgroundColor: getBGColor()}}>HH</div>
     return (
         <div className='donor-item'>
             {profile}
