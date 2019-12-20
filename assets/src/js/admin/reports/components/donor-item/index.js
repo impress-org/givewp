@@ -19,7 +19,7 @@ const DonorItem = ({image, name, email, count, total}) => {
 
 DonorItem.propTypes = {
     // Source URL for donor image
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     // Donor name
     name: PropTypes.string.isRequired,
     // Donor email
