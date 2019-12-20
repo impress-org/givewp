@@ -17,12 +17,14 @@ const DonorItem = ({image, name, email, count, total}) => {
     )
 }
 
-DonotItem.propTypes = {
+DonorItem.propTypes = {
     image: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     count: PropTypes.string.isRequired,
     total: PropTypes.string.isRequired
 }
+
+
 
 export default DonorItem
