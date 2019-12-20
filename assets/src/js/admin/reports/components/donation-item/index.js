@@ -31,13 +31,18 @@ const DonationItem = ({status, amount, time, donor, source}) => {
 }
 
 DonationItem.propTypes = {
+    // Status of donation (either 'completed', 'abandoned', or 'refunded')
     status: PropTypes.string.isRequired,
+    // Internationalized amount of the donation (ex: $100.00)
     amount: PropTypes.string.isRequired,
+    // String representation of the time a donation ocurred (ex: '2013-02-08 09:30')
     time: PropTypes.string.isRequired,
+    // Object describing the donor, including donor name and id
     donor: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.number.isRequired
     }),
+    // Name of form or campaign where donation originated
     source: PropTypes.string.isRequired
 }
 
