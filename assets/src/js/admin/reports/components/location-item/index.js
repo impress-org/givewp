@@ -6,7 +6,7 @@ const LocationItem = ({city, state, country, flag, count, total}) => {
         <div className='location-item'>
             <img className='flag' src={flag} />
             <div className='info'>
-                <p><strong>{city}, {state}</strong></p>
+                <p><strong>{city}{state && (', ' + state)}</strong></p>
                 <p>{country}</p>
             </div>
             <div className='donations'>
