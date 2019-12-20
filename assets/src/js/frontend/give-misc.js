@@ -248,7 +248,7 @@ window.give_open_form_modal = function ($form_wrap, $form) {
 
 					// Hide .give-hidden and .give-btn-modal if admin only wants to show the button.
 					if ($form_wrap.hasClass( 'give-display-button-only' )) {
-						children = $form.children().not( '.give-btn-modal' );
+						children = $form.children();
 					}
 
 					// Hide all form elements besides the ones required for payment
