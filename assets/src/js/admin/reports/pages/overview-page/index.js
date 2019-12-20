@@ -67,19 +67,19 @@ const OverviewPage = () => {
                         total='$200.00'
                     />
                     <DonorItem
-                        name='Test Name'
+                        name='Test A Name'
                         email='email@test.org'
                         count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
-                        name='Test Name'
+                        name='Test'
                         email='email@test.org'
                         count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
-                        name='Test Name'
+                        name='Does This Work'
                         email='email@test.org'
                         count='2 Donations'
                         total='$200.00'
