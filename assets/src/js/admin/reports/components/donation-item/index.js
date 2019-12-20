@@ -14,11 +14,10 @@ const DonationItem = ({status, amount, time, donor, source}) => {
             </div>
             <div className='info'>
                 <p>
-                    <span className='amount'>{amount}</span> 
-                    <span className='status'>{status}</span> 
+                    <span>{amount} {status}</span> 
                     <span className='elapsed'>{elapsed}</span>
                 </p>
-                <p>
+                <p className='donor'>
                     {donor.name}<strong>(#{donor.id})</strong>
                 </p>
                 <p>

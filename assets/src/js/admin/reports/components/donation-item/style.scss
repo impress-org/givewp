@@ -8,21 +8,27 @@
         width: 36px;
         display: flex;
         align-items: center;
+        margin-left: 16px;
+    }
+
+    .info {
+        margin-right: 16px;
+        text-transform: capitalize;
     }
 
     p {
         margin: 0;
-    }
-
-    .amount {
-        font-weight: bold;
+        font-size: 12px;
     }
 
     .elapsed {
-        color: #CCCCCC;
+        color: #82878C;
+        font-size: 10px;
+        margin-left: 4px;
+        text-transform: lowercase;
     }
 
     .source {
-        color: #CCCCCC;
+        font-weight: lighter;
     }
 }
