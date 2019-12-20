@@ -1,4 +1,5 @@
 import './style.scss'
+const { __ } = wp.i18n
 
 const PeriodSelector = ({date, range, onChange}) => {
 
@@ -13,10 +14,10 @@ const PeriodSelector = ({date, range, onChange}) => {
         <div className='givewp-period-selector'>
             <button className='icon'>{icon}</button>
             <div className='group'>
-                <button>Day</button>
-                <button className='selected'>Week</button>
-                <button>Month</button>
-                <button>Year</button>
+                <button>{__('Day', 'give')}</button>
+                <button className='selected'>{__('Week', 'give')}</button>
+                <button>{__('Month', 'give')}</button>
+                <button>{__('Year', 'give')}</button>
             </div>
         </div>
     )
