@@ -26,4 +26,13 @@ LocationItem.propTypes = {
     total: PropTypes.string.isRequired
 }
 
+LocationItem.defaultProps = {
+    city: null,
+    state: null,
+    country: null,
+    flag: null,
+    count: null,
+    total: nulll
+}
+
 export default LocationItem
