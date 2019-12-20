@@ -14,7 +14,7 @@ const PeriodSelector = ({date, range, onChange}) => {
             <button className='icon'>{icon}</button>
             <div className='group'>
                 <button>Day</button>
-                <button>Week</button>
+                <button className='selected'>Week</button>
                 <button>Month</button>
                 <button>Year</button>
             </div>
