@@ -10,9 +10,9 @@ const PeriodSelector = ({date, range, onChange}) => {
     </svg>
     
     return (
-        <div>
+        <div className='givewp-period-selector'>
             <button>{icon}</button>
-            <div>
+            <div className='button-group'>
                 <button>Day</button>
                 <button>Week</button>
                 <button>Month</button>

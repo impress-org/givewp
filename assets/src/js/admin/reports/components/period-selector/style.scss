@@ -1,0 +1,26 @@
+.givewp-period-selector {
+    display: flex;
+
+    & button {
+        border: 1px solid #DDDDDD;
+        border-bottom-width: 3px;
+        background: #F7F7F7;
+        border-radius: 3px;
+    }
+
+    > .group {
+        margin-left: 16px;
+
+        > button {
+            border-radius: 0px;
+
+            &:first-of-type {
+                border-radius: 3px 0 0 3px;
+            }
+
+            &:last-of-type {
+                border-radius: 0 3px 3px 0;
+            }
+        }
+    }
+}
