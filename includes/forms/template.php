@@ -691,8 +691,11 @@ function give_display_checkout_button( $form_id, $args ) {
 		: give_get_meta( $form_id, '_give_payment_display', true );
 
 	if ( 'button' === $display_option ) {
-		$display_option = 'modal';
-	} elseif ( $display_option === 'onpage' ) {
+		add_action( 'give_post_form', 'give_add_button_open_form', 10, 2 );
+		return '';
+	}
+
+	if ( $display_option === 'onpage' ) {
 		return '';
 	}
 
@@ -701,10 +704,48 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
-	echo apply_filters( 'give_display_checkout_button', $output );
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
+	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
 add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );
+
+/**
+ * Display MagnificPopup Button.
+ *
+ * @since 2.5.11
+ *
+ * @param $form_id
+ * @param $args
+ *
+ * @return string
+ */
+function give_add_button_open_form( $form_id, $args ){
+	$display_label_field = give_get_meta( $form_id, '_give_reveal_label', true );
+	$display_label       = ! empty( $args['continue_button_title'] )
+		? $args['continue_button_title']
+		: ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+
+	$output = sprintf(
+		'<button type="button" class="give-btn give-btn-modal">%1$s</button>',
+		$display_label
+	);
+
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
+	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
+}
 
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
