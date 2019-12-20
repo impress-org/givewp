@@ -25,6 +25,12 @@ DonorItem.propTypes = {
     total: PropTypes.string.isRequired
 }
 
-
+DonorItem.defaultProps = {
+    image: null,
+    name: null,
+    email: null,
+    count: null,
+    total: null
+}
 
 export default DonorItem
