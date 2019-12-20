@@ -12,7 +12,7 @@ const PeriodSelector = ({date, range, onChange}) => {
     return (
         <div className='givewp-period-selector'>
             <button>{icon}</button>
-            <div className='button-group'>
+            <div className='group'>
                 <button>Day</button>
                 <button>Week</button>
                 <button>Month</button>
