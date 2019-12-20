@@ -6,6 +6,7 @@ import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
 import List from '../../components/list'
+import DonationItem from '../../components/donation-item'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -68,6 +69,52 @@ const OverviewPage = () => {
                     <div style={{height: '72px'}} />
                     <div style={{height: '72px'}} />
                     <div style={{height: '72px'}} />
+                </List>
+            </Card>
+            <Card title={__('Donation List', 'give')} width={4}>
+                <List onScrollEnd={() => alert('reached end of list!')}>
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
+                    <DonationItem
+                        status='completed'
+                        amount='$50.00'
+                        time='5:16pm'
+                        donor={{name: 'Test Name', id: 456}}
+                        source='Save the Whales'
+                    />
                 </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
