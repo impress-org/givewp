@@ -15,9 +15,31 @@
         justify-content: center;
     }
 
-    > .icon {
+    > .date-input {
         height: 32px;
+        border: 1px solid #DDDDDD;
+        border-width: 1px 1px 3px 0;
+        border-radius: 0 3px 3px 0;
+        background: #F7F7F7;
+        margin: 0;
+        padding-left: 0;
+
+        &:focus {
+            box-shadow: none;
+            border-color: #DDDDDD;
+        }
+    }
+
+    > .icon {
+        border: 1px solid #DDDDDD;
+        border-width: 1px 0 3px 1px;
+        background: #F7F7F7;
+        border-radius: 3px 0 0 3px;
+        height: 28px;
         width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     > .group {

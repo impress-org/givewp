@@ -12,7 +12,8 @@ const PeriodSelector = ({date, range, onChange}) => {
     
     return (
         <div className='givewp-period-selector'>
-            <button className='icon'>{icon}</button>
+            <div className='icon'>{icon}</div>
+            <input className='date-input' defaultValue={date} type='date' />
             <div className='group'>
                 <button>{__('Day', 'give')}</button>
                 <button className='selected'>{__('Week', 'give')}</button>
@@ -21,6 +22,12 @@ const PeriodSelector = ({date, range, onChange}) => {
             </div>
         </div>
     )
+}
+
+PeriodSelector.defaultProps = {
+    date: new Date().toISOString().split('T')[0] ,
+    range: 'day',
+    onChange: null
 }
 
 export default PeriodSelector
