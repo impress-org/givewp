@@ -1,0 +1,28 @@
+.donation-item {
+    height: 72px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+        height: 36px;
+        width: 36px;
+        display: flex;
+        align-items: center;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .amount {
+        font-weight: bold;
+    }
+
+    .elapsed {
+        color: #CCCCCC;
+    }
+
+    .source {
+        color: #CCCCCC;
+    }
+}
