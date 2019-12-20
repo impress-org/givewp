@@ -76,42 +76,42 @@ const OverviewPage = () => {
                     <DonationItem
                         status='completed'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
                         status='completed'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
                         status='abandoned'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
                         status='refunded'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
                         status='completed'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
                         status='completed'
                         amount='$50.00'
-                        time='5:16pm'
+                        time='2013-02-08 09:30'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />

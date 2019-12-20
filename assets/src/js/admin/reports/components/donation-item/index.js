@@ -2,11 +2,12 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { getIcon, getColor } from './utils'
 import './style.scss'
+const { __ } = wp.i18n;
 
 const DonationItem = ({status, amount, time, donor, source}) => {
 
     const icon = getIcon(status)
-    const elapsed = moment(time).toNow(true) + ' ago'
+    const elapsed = moment(time).toNow(true) + ' ' + __('ago', 'give')
 
     return (
         <div className='donation-item'>
