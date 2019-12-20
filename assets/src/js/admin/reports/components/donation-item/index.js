@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import { getIcon, getColor } from './utils'
 import './style.scss'
 
 const DonationItem = ({status, amount, time, donor, source}) => {
 
     const icon = getIcon(status)
-    const elapsed = '3 hours ago'
+    const elapsed = moment(time).toNow(true) + ' ago'
 
     return (
         <div className='donation-item'>
