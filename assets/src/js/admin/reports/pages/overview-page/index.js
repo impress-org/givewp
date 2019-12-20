@@ -88,14 +88,14 @@ const OverviewPage = () => {
                         source='Save the Whales'
                     />
                     <DonationItem
-                        status='completed'
+                        status='abandoned'
                         amount='$50.00'
                         time='5:16pm'
                         donor={{name: 'Test Name', id: 456}}
                         source='Save the Whales'
                     />
                     <DonationItem
-                        status='completed'
+                        status='refunded'
                         amount='$50.00'
                         time='5:16pm'
                         donor={{name: 'Test Name', id: 456}}
