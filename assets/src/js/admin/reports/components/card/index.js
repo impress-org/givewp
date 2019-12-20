@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './style.scss'
 
 const Card = ({width, title, children}) => {
@@ -12,4 +13,11 @@ const Card = ({width, title, children}) => {
         </div>
     )
 }
+
+Card.propTypes = {
+    width: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired
+}
+
 export default Card
