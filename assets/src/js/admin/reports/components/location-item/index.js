@@ -18,11 +18,17 @@ const LocationItem = ({city, state, country, flag, count, total}) => {
 }
 
 LocationItem.propTypes = {
+    // City name
     city: PropTypes.string.isRequired,
+    // State name (not required)
     state: PropTypes.string,
+    // Country name
     country: PropTypes.string.isRequired,
+    // Flag image URL
     flag: PropTypes.string.isRequired,
+    // Internationalized number of donations attributed to location (ex: "2 Donations")
     count: PropTypes.string.isRequired,
+    // Internationalized total amount of donations attributed to lcoation (ex: "$345.00")
     total: PropTypes.string.isRequired
 }
 
