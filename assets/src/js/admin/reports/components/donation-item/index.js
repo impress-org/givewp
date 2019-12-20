@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
+import { getIcon } from './utils'
 import './style.scss'
 
 const DonationItem = ({status, amount, time, donor, source}) => {
 
+    const icon = getIcon(status)
     const elapsed = '3 hours ago'
 
     return (
