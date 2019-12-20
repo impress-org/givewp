@@ -1,34 +1,32 @@
-const Card = (props) => {
+import PropTypes from 'prop-types'
+import './style.scss'
 
-    //To do: swap with scss
-    const cardStyle = {
-        background: '#fff',
-        borderRadius: '5px',
-        boxShadow: '0px 3px 6px rgba(68, 68, 68, 0.05), 0px 3px 6px rgba(68, 68, 68, 0.05)',
-        gridColumn: 'span ' + props.width,
-        display: 'flex',
-        flexDirection: 'column',
-    }
-
-    const titleStyle = {
-        fontWeight: 'bold',
-        padding: '22px 15px 15px 15px',
-        fontSize: '15px',
-    }
-
-    const contentStyle = {
-        padding: ' 0 15px 15px 15px'
-    }
-
+const Card = ({width, title, children}) => {
     return (
-        <div style={cardStyle}>
-            <div style={titleStyle}>
-                {props.title}
+        <div className='givewp-card' style={{gridColumn: 'span ' + width}}>
+            <div className='title'>
+                {title}
             </div>
-            <div style={contentStyle}>
-                {props.children}
+            <div className='content'>
+                {children}
             </div>
         </div>
     )
 }
+
+Card.propTypes = {
+    // Number of grid columns for Card to span, out of 12
+    width: PropTypes.number,
+    // Title of card
+    title: PropTypes.string.isRequired,
+    // Elements to displayed in content area of card (eg: Chart, List)
+    children: PropTypes.node.isRequired
+}
+
+Card.defaultProps = {
+    width: 4,
+    title: null,
+    children: null
+}
+
 export default Card
