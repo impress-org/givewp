@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './style.scss'
 
 const DonationItem = ({status, amount, time, donor, source}) => {
@@ -24,6 +25,17 @@ const DonationItem = ({status, amount, time, donor, source}) => {
             </div>
         </div>
     )
+}
+
+DonationItem.propTypes = {
+    status: PropTypes.string.isRequired,
+    amount: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    donor: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
+    }),
+    source: PropTypes.string.isRequired
 }
 
 export default DonationItem
