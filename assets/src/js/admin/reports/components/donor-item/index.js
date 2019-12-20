@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import './style.scss'
 
 const DonorItem = ({image, name, email, count, total}) => {
+    const profile = image ? <img src={image} /> : <div className='donor-initials'>HH</div>
     return (
         <div className='donor-item'>
-            <img src={image} />
+            {profile}
             <div>
                 <p><strong>{name}</strong></p>
                 <p>{email}</p>
