@@ -1,0 +1,27 @@
+.donor-item {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    padding: 0 16px;
+
+    > img {
+        object-fit: cover;
+        width: 36px;
+        width: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    > div {
+        &:first-of-type {
+            flex: 1;
+            margin-left: 16px;
+        }
+        &:last-of-type {
+            text-align: right;
+        }
+        > p {
+            margin: 0;
+        }
+    }
+}

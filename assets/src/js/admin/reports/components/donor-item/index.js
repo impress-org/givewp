@@ -3,7 +3,7 @@ import './style.scss'
 
 const DonorItem = ({image, name, email, count, total}) => {
     return (
-        <div>
+        <div className='donor-item'>
             <img src={image} />
             <div>
                 <p><strong>{name}</strong></p>
