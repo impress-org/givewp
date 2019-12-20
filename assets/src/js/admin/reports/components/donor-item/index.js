@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './style.scss'
 
 const DonorItem = ({image, name, email, count, total}) => {
@@ -14,6 +15,14 @@ const DonorItem = ({image, name, email, count, total}) => {
             </div>
         </div>
     )
+}
+
+DonotItem.propTypes = {
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    count: PropTypes.string.isRequired,
+    total: PropTypes.string.isRequired
 }
 
 export default DonorItem
