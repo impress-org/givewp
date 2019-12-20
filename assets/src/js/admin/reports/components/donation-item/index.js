@@ -46,4 +46,12 @@ DonationItem.propTypes = {
     source: PropTypes.string.isRequired
 }
 
+DonationItem.defaultProps = {
+    status: null,
+    amount: null,
+    time: null,
+    donor: null,
+    source: null,
+}
+
 export default DonationItem
