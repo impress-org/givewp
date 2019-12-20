@@ -6,6 +6,7 @@ import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
 import List from '../../components/list'
+import DonorItem from '../../components/donor-item'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -56,18 +57,78 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title={__('Example List', 'give')} width={3}>
-                <List onScrollEnd={() => console.log('approaching end!')} >
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
-                    <div style={{height: '72px'}} />
+            <Card title={__('Donor List', 'give')} width={4}>
+                <List onScrollEnd={() => alert('Reached end!')} >
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
+                    <DonorItem
+                        image='./default.png'
+                        name='Test Name'
+                        email='email@test.org'
+                        cound='2 Donations'
+                        total='$200.00'
+                    />
                 </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
