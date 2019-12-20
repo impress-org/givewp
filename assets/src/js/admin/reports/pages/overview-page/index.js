@@ -60,7 +60,7 @@ const OverviewPage = () => {
             <Card title={__('Donor List', 'give')} width={4}>
                 <List onScrollEnd={() => alert('Reached end!')} >
                     <DonorItem
-                        image='./default.png'
+                        image={null}
                         name='Test Name'
                         email='email@test.org'
                         cound='2 Donations'
