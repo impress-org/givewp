@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import './style.scss'
-import { getBGColor } from './utils'
+import { getBGColor, getInitials } from './utils'
 
 const DonorItem = ({image, name, email, count, total}) => {
     
-    const profile = image ? <img src={image} /> : <div className='donor-initials' style={{backgroundColor: getBGColor()}}>HH</div>
+    const profile = image ? <img src={image} /> : <div className='donor-initials' style={{backgroundColor: getBGColor()}}>{getInitials(name)}</div>
     return (
         <div className='donor-item'>
             {profile}
