@@ -63,70 +63,70 @@ const OverviewPage = () => {
                         image={null}
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                     <DonorItem
                         image='./default.png'
                         name='Test Name'
                         email='email@test.org'
-                        cound='2 Donations'
+                        count='2 Donations'
                         total='$200.00'
                     />
                 </List>
