@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './style.scss'
 
 const LocationItem = ({city, state, country, flag, count, total}) => {
@@ -14,6 +15,15 @@ const LocationItem = ({city, state, country, flag, count, total}) => {
             </div>
         </div>
     )
+}
+
+LocationItem.propTypes = {
+    city: PropTypes.string.isRequired,
+    state: PropTypes.string,
+    country: PropTypes.string.isRequired,
+    flag: PropTypes.string.isRequired,
+    count: PropTypes.string.isRequired,
+    total: PropTypes.string.isRequired
 }
 
 export default LocationItem
