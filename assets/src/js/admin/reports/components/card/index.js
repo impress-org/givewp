@@ -15,8 +15,11 @@ const Card = ({width, title, children}) => {
 }
 
 Card.propTypes = {
+    // Number of grid columns for Card to span, out of 12
     width: PropTypes.number,
+    // Title of card
     title: PropTypes.string.isRequired,
+    // Elements to displayed in content area of card (eg: Chart, List)
     children: PropTypes.node.isRequired
 }
 
