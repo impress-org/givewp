@@ -6,22 +6,34 @@
 
     > img {
         object-fit: cover;
-        width: 36px;
+        height: 36px;
         width: 36px;
         border-radius: 50%;
         overflow: hidden;
     }
 
-    > div {
-        &:first-of-type {
-            flex: 1;
-            margin-left: 16px;
-        }
-        &:last-of-type {
-            text-align: right;
-        }
-        > p {
-            margin: 0;
-        }
+    > .donor-initials {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        color: #FFFFFF;
+        background: rgb(235, 88, 88);
+    }
+
+    > .donor-info {
+        flex: 1;
+        margin-left: 16px;
+    }
+
+    > .donor-totals {
+        text-align: right;
+    }
+
+    p {
+        margin: 0;
     }
 }

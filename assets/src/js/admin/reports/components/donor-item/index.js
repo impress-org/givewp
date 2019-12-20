@@ -6,11 +6,11 @@ const DonorItem = ({image, name, email, count, total}) => {
     return (
         <div className='donor-item'>
             {profile}
-            <div>
+            <div className='donor-info'>
                 <p><strong>{name}</strong></p>
                 <p>{email}</p>
             </div>
-            <div>
+            <div className='donor-totals'>
                 <p>{count}</p>
                 <p>{total}</p>
             </div>
