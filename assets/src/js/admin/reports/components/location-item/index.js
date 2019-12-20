@@ -32,7 +32,7 @@ LocationItem.defaultProps = {
     country: null,
     flag: null,
     count: null,
-    total: nulll
+    total: null
 }
 
 export default LocationItem
