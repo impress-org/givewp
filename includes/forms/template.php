@@ -704,6 +704,13 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
 	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
@@ -730,6 +737,13 @@ function give_add_button_open_form( $form_id, $args ){
 		$display_label
 	);
 
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
 	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
