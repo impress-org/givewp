@@ -20,4 +20,10 @@ Card.propTypes = {
     children: PropTypes.node.isRequired
 }
 
+Card.defaultProps = {
+    width: 4,
+    title: null,
+    children: null
+}
+
 export default Card
