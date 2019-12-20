@@ -1,13 +1,13 @@
 import './style.scss'
 
-const Card = (props) => {
+const Card = ({width, title, children}) => {
     return (
-        <div className='givewp-card' style={{gridColumn: 'span ' + props.width}}>
+        <div className='givewp-card' style={{gridColumn: 'span ' + width}}>
             <div className='title'>
-                {props.title}
+                {title}
             </div>
             <div className='content'>
-                {props.children}
+                {children}
             </div>
         </div>
     )
