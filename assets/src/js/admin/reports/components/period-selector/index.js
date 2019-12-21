@@ -1,3 +1,5 @@
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import './style.scss'
 const { __ } = wp.i18n
 
@@ -12,8 +14,10 @@ const PeriodSelector = ({date, range, onChange}) => {
     
     return (
         <div className='givewp-period-selector'>
+            <div className='date-input'>
+                <DatePicker selected={date} />
+            </div>
             <div className='icon'>{icon}</div>
-            <input className='date-input' defaultValue={date} type='date' />
             <div className='group'>
                 <button>{__('Day', 'give')}</button>
                 <button className='selected'>{__('Week', 'give')}</button>
@@ -25,7 +29,7 @@ const PeriodSelector = ({date, range, onChange}) => {
 }
 
 PeriodSelector.defaultProps = {
-    date: new Date().toISOString().split('T')[0] ,
+    date: new Date(),
     range: 'day',
     onChange: null
 }
