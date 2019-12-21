@@ -69,13 +69,9 @@ const config = {
 			{
 				test: /\.css$/,
 				use: [
-					MiniCSSExtractPlugin.loader,
-					{
-						loader: 'style-loader',
-						options: {
-							sourceMap: true,
-						},
-					},
+					//MiniCSSExtractPlugin.loader,
+					'style-loader',
+					'css-loader'
 				],
 			},
 
