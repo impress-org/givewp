@@ -241,6 +241,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function setup_email_notification( $payment_id ) {
 			$this->payment = new Give_Payment( $payment_id );
 
+			if( ! $this->payment->ID ) {
+				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 400,
+				) );
+			}
+
 			// Set email data.
 			$this->setup_email_data();
 

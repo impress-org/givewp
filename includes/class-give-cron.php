@@ -92,6 +92,12 @@ class Give_Cron {
 			'display'  => __( 'Once Monthly', 'give' ),
 		);
 
+		// Adds every third day to the existing schedules.
+		$schedules['thricely'] = array(
+			'interval' => 259200, // 3 * 24 * 3600
+			'display'  => __( 'Every Third Day', 'give' ),
+		);
+
 		return $schedules;
 	}
 
@@ -106,6 +112,7 @@ class Give_Cron {
 		$this->monthly_events();
 		$this->weekly_events();
 		$this->daily_events();
+		$this->thricely_events();
 	}
 
 	/**
@@ -148,6 +155,19 @@ class Give_Cron {
 	}
 
 	/**
+	 * Schedule thricely events
+	 *
+	 * @return void
+	 * @since  2.5.11
+	 * @access private
+	 */
+	private function thricely_events() {
+		if ( ! wp_next_scheduled( 'give_thricely_scheduled_events' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'thricely', 'give_thricely_scheduled_events' );
+		}
+	}
+
+	/**
 	 * get cron job action name
 	 *
 	 * @param string $type
@@ -162,6 +182,10 @@ class Give_Cron {
 		switch ( $type ) {
 			case 'daily':
 				$cron_action = 'give_daily_scheduled_events';
+				break;
+
+			case 'thricely':
+				$cron_action = 'give_thricely_scheduled_events';
 				break;
 
 			case 'monthly':
@@ -212,6 +236,18 @@ class Give_Cron {
 	 */
 	public static function add_daily_event( $callback ) {
 		self::add_event( $callback, 'daily' );
+	}
+
+	/**
+	 * Add thricely event
+	 *
+	 * @param $callback
+	 *
+	 * @since  2.5.11
+	 * @access public
+	 */
+	public static function add_thricely_event( $callback ) {
+		self::add_event( $callback, 'thricely' );
 	}
 
 	/**

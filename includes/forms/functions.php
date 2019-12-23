@@ -195,41 +195,21 @@ function give_send_back_to_checkout( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	// Merge URL query with $args to maintain third-party URL parameters after redirect.
-	$url_data = wp_parse_url( $url );
+	$redirect = add_query_arg( $args, $url );
 
-	// Check if an array to prevent notices before parsing.
-	if ( isset( $url_data['query'] ) && ! empty( $url_data['query'] ) ) {
-		parse_str( $url_data['query'], $query );
-
-		// Precaution: don't allow any CC info.
-		unset( $query['card_number'] );
-		unset( $query['card_cvc'] );
-
-	} else {
-		// No $url_data so pass empty array.
-		$query = array();
-	}
-
-	$new_query        = array_merge( $args, $query );
-	$new_query_string = http_build_query( $new_query );
-
-	$path = $url_data['path'];
-
-	if( is_multisite() && ! is_subdomain_install() ) {
-		/* @var  WP_Site $site_info */
-		$site_info = get_site();
-		$path = 0 === strpos( $path, $site_info->path )
-			? str_replace( untrailingslashit( $site_info->path ), '', $path )
-			: $path ;
-	}
-
-	// Assemble URL parts.
-	$redirect = home_url( '/' . $path . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
+	// Precaution: don't allow any CC info.
+	$redirect = remove_query_arg( [ 'card_number', 'card_cvc' ], $redirect );
 
 	// Redirect them.
-	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
-	give_die();
+	$redirect .= "#give-form-{$form_id}-wrap";
 
+
+	/**
+	 * Filter the redirect url
+	 */
+	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+
+	give_die();
 }
 
 /**
@@ -1575,7 +1555,7 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 
 
 /**
- * Get list of default param of form shrtcode.
+ * Get the list of default parameters for the form shortcode.
  *
  * @since 2.4.1
  * @return array

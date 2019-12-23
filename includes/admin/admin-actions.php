@@ -834,7 +834,7 @@ add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_call
  * @since 1.8.13
  */
 function give_blank_slate() {
-	$blank_slate = new Give_Blank_Slate();
+	$blank_slate = Give_Blank_Slate::get_instance();
 	$blank_slate->init();
 }
 

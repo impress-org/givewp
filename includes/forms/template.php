@@ -34,12 +34,12 @@ function give_get_donation_form( $args = array() ) {
 	// If are calling this function directly with `form_id` the use `id` instead.
 	$args['id'] = ! empty( $args['form_id'] ) ? absint( $args['form_id'] ) : $args['id'];
 
-	// If `id` does not set then maybe we are single donation form page, so lets render form.
+	// If `id` is not set then maybe we are single donation form page, so lets render form.
 	if ( empty( $args['id'] ) && is_object( $post ) && $post->ID ) {
 		$args['id'] = $post->ID;
 	}
 
-	// set `form_id` for backward compatibility because many filter and function  using it.
+	// set `form_id` for backward compatibility because many legacy filters and functions are using it.
 	$args['form_id'] = $args['id'];
 
 	/**
@@ -475,7 +475,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	}
 
 	/**
-	 * Fires while displaying donation form, after donation amounf field(s).
+	 * Fires while displaying donation form, after donation amount field(s).
 	 *
 	 * @param int   $form_id The form ID.
 	 * @param array $args    An array of form arguments.
@@ -691,8 +691,11 @@ function give_display_checkout_button( $form_id, $args ) {
 		: give_get_meta( $form_id, '_give_payment_display', true );
 
 	if ( 'button' === $display_option ) {
-		$display_option = 'modal';
-	} elseif ( $display_option === 'onpage' ) {
+		add_action( 'give_post_form', 'give_add_button_open_form', 10, 2 );
+		return '';
+	}
+
+	if ( $display_option === 'onpage' ) {
 		return '';
 	}
 
@@ -701,10 +704,48 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
-	echo apply_filters( 'give_display_checkout_button', $output );
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
+	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
 add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );
+
+/**
+ * Display MagnificPopup Button.
+ *
+ * @since 2.5.11
+ *
+ * @param $form_id
+ * @param $args
+ *
+ * @return string
+ */
+function give_add_button_open_form( $form_id, $args ){
+	$display_label_field = give_get_meta( $form_id, '_give_reveal_label', true );
+	$display_label       = ! empty( $args['continue_button_title'] )
+		? $args['continue_button_title']
+		: ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+
+	$output = sprintf(
+		'<button type="button" class="give-btn give-btn-modal">%1$s</button>',
+		$display_label
+	);
+
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
+	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
+}
 
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
@@ -1229,6 +1270,8 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 		// Used to determine if state is required.
 		$require_state = ! array_key_exists( $selected_country, $no_states_country ) && give_field_is_required( 'card_state', $form_id );
+		// Used to determine is state input should be marked as required.
+		$validate_state = ! array_key_exists( $selected_country, $states_not_required_country_list ) && give_field_is_required( 'card_state', $form_id );
 
 		?>
 		<p id="give-card-state-wrap"
@@ -1236,7 +1279,7 @@ function give_default_cc_address_fields( $form_id ) {
 			<label for="card_state" class="give-label">
 				<span class="state-label-text"><?php echo $state_label; ?></span>
 				<span
-					class="give-required-indicator <?php echo array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : ''; ?> ">*</span>
+					class="give-required-indicator <?php echo $validate_state ? '' : 'give-hidden'; ?> ">*</span>
 				<span class="give-tooltip give-icon give-icon-question"
 				      data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
 			</label>
@@ -1248,8 +1291,8 @@ function give_default_cc_address_fields( $form_id ) {
 					name="card_state"
 					autocomplete="address-level1"
 					id="card_state"
-					class="card_state give-select<?php echo $require_state ? ' required' : ''; ?>"
-					<?php echo $require_state ? ' required aria-required="true" ' : ''; ?>>
+					class="card_state give-select<?php echo $validate_state ? ' required' : ''; ?>"
+					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>>
 					<?php
 					foreach ( $states as $state_code => $state ) {
 						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
@@ -1259,7 +1302,7 @@ function give_default_cc_address_fields( $form_id ) {
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
 				       placeholder="<?php echo $state_label; ?>" value="<?php echo $selected_state; ?>"
-					<?php echo $require_state ? ' required aria-required="true" ' : ''; ?>
+					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>
 				/>
 			<?php endif; ?>
 		</p>

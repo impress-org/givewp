@@ -187,9 +187,6 @@ class Give_Roles {
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
 				// Post type.
-				"edit_{$capability_type}",
-				"read_{$capability_type}",
-				"delete_{$capability_type}",
 				"edit_{$capability_type}s",
 				"edit_others_{$capability_type}s",
 				"publish_{$capability_type}s",

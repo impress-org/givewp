@@ -4,6 +4,11 @@ class GiveButton {
 		this.buttonText    = this.root.textContent.trim();
 		this.iconPosition  = 'before';
 
+		// Note: this property is for internal use. It can be change in future.
+		this._buttonTextWithWrapper = this.root.querySelector('.give-button-text')
+			? `<span class="give-button-text">${this.buttonText}</span>`
+			: this.buttonText;
+
 		const icon = this.root.querySelector( '.dashicons' );
 
 		if ( icon ) {
@@ -21,7 +26,7 @@ class GiveButton {
 
 	setBusyState() {
 		const busyIcon      = '<span class="dashicons dashicons-marker"></span>';
-		this.root.innerHTML = `${busyIcon} ${this.buttonText}`;
+		this.root.innerHTML = `${busyIcon} ${this._buttonTextWithWrapper}`;
 		this.disable();
 	}
 
@@ -36,11 +41,9 @@ class GiveButton {
 	updateIcon( className, position = 'before' ) {
 		const icon = `<span class="${className}"></span>`;
 
-		if ( 'after' === position ) {
-			this.root.innerHTML = `${this.buttonText} ${icon}`;
-		} else {
-			this.root.innerHTML = `${icon} ${this.buttonText}`;
-		}
+		this.root.innerHTML = 'after' === position
+			? `${this._buttonTextWithWrapper} ${icon}`
+			: `${icon} ${this._buttonTextWithWrapper}`;
 
 		this.iconClassName = className;
 		this.iconPosition  = position;

@@ -126,7 +126,6 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 			'payment_ids'     => '%s',
 			'purchase_value'  => '%f',
 			'purchase_count'  => '%d',
-			'notes'           => '%s',
 			'date_created'    => '%s',
 			'token'           => '%s',
 			'verify_key'      => '%s',
