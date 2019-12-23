@@ -115,15 +115,13 @@ class Give_Blank_Slate {
 
 				add_action( 'manage_posts_extra_tablenav', array( $this, 'render' ) );
 				break;
+
 			// Donations screen.
 			case 'give_forms_page_give-payment-history':
 				$this->form     = $this->post_exists( 'give_forms' );
 				$this->donation = $this->post_exists( 'give_payment' );
 
-				if ( $this->donation ) {
-					// Donation exists. Bail out.
-					return false;
-				} elseif ( ! $this->form ) {
+				if ( ! $this->form ) {
 					// No forms and no donations exist.
 					$content = $this->get_content( 'no_donations_or_forms' );
 				} else {
@@ -133,15 +131,13 @@ class Give_Blank_Slate {
 
 				add_action( 'give_payments_page_bottom', array( $this, 'render' ) );
 				break;
+
 			// Donors screen.
 			case 'give_forms_page_give-donors':
 				$this->form  = $this->post_exists( 'give_forms' );
 				$this->donor = $this->donor_exists();
 
-				if ( $this->donor ) {
-					// Donor exists. Bail out.
-					return false;
-				} elseif ( ! $this->form ) {
+				if ( ! $this->form ) {
 					// No forms and no donors exist.
 					$content = $this->get_content( 'no_donors_or_forms' );
 				} else {
@@ -338,9 +334,9 @@ class Give_Blank_Slate {
 		if ( isset( $content[ $context ] ) ) {
 			// Merge contextual content with defaults.
 			return wp_parse_args( $content[ $context ], $defaults );
-		} else {
-			// Return defaults if context is undefined.
-			return $defaults;
 		}
+
+		// Return defaults if context is undefined.
+		return $defaults;
 	}
 }
