@@ -239,7 +239,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an error with Stripe that would occur if an existing donor would make a new donation using a different credit card. The error "The customer does not have a payment method with the ID..." will no longer appear now and donations will process as expected. (https://github.com/impress-org/givewp/issues/4328)[#4328]
 * Fix: Resolved an issue with Stripe Checkout if you chose to load scripts in the footer would result in a redirect loop depending on your set up. (https://github.com/impress-org/givewp/issues/4329)[#4329]
 * Fix: When clicking on the modal popup button it would previously be hidden from the DOM which could result in background jumpiness. Now the button is not hidden which leads to better theme compatibility. (https://github.com/impress-org/givewp/issues/4352)[#4352]
-* Fix: Corrected an broked URL in the in add-ons header. (https://github.com/impress-org/givewp/issues/4307)[#4307]
+* Fix: Corrected an broken URL in the in add-ons header. (https://github.com/impress-org/givewp/issues/4307)[#4307]
 
 = 2.5.10: October 28th, 2019 =
 * Fix: Resolved an issue with Stripe Checkout 2.0 and featured images not properly displaying for certain WP installs. [#4281](https://github.com/impress-org/givewp/issues/4281)
