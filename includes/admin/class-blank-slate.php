@@ -128,7 +128,9 @@ class Give_Blank_Slate {
 				$this->form     = $this->post_exists( 'give_forms' );
 				$this->donation = $this->post_exists( 'give_payment' );
 
-				if ( ! $this->form ) {
+				if( $this->donation ){
+					return false;
+				}elseif ( ! $this->form ) {
 					// No forms and no donations exist.
 					$content = $this->get_content( 'no_donations_or_forms' );
 				} else {
@@ -144,7 +146,9 @@ class Give_Blank_Slate {
 				$this->form  = $this->post_exists( 'give_forms' );
 				$this->donor = $this->donor_exists();
 
-				if ( ! $this->form ) {
+				if( $this->donor ) {
+					return  false;
+				}if ( ! $this->form ) {
 					// No forms and no donors exist.
 					$content = $this->get_content( 'no_donors_or_forms' );
 				} else {
