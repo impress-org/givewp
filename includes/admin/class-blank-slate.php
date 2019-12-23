@@ -151,14 +151,26 @@ class Give_Blank_Slate {
 
 				add_action( 'give_donors_table_bottom', array( $this, 'render' ) );
 				break;
+
 			default:
-				return null;
+				/**
+				 * Add this hook to dynamically add black slate to custom table or UI
+				 *
+				 * @since 2.5.11
+				 */
+				$content = apply_filters( 'give_blank_slate', $content, $this->screen );
+		}
+
+		if( empty( $content ) ) {
+			return false;
 		}
 
 		$this->content = $content;
 
 		// Hide non-essential UI elements.
 		add_action( 'admin_head', array( $this, 'hide_ui' ) );
+
+		return true;
 	}
 
 	/**
