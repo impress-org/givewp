@@ -15,6 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Give_Blank_Slate {
 	/**
+	 * @since 2.5.11
+	 * @var Give_Blank_Slate
+	 */
+	private static $instance;
+
+	/**
 	 * The current screen ID.
 	 *
 	 * @since  1.8.13
@@ -55,23 +61,42 @@ class Give_Blank_Slate {
 	 *
 	 * @since  1.8.13
 	 * @var array
-	 * @access private
+	 * @access public
 	 */
-	private $content = array();
+	public $content = array();
+
+	/**
+	 * Get class instance
+	 *
+	 * @ince 2.5.11
+	 *
+	 * @return Give_Blank_Slate|static
+	 */
+	public static function get_instance(){
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+
+			self::$instance->screen = get_current_screen()->id;
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Constructs the Give_Blank_Slate class.
 	 *
 	 * @since 1.8.13
 	 */
-	public function __construct() {
-		$this->screen = get_current_screen()->id;
+	private function __construct() {
+
 	}
 
 	/**
 	 * Initializes the class and hooks into WordPress.
 	 *
 	 * @since 1.8.13
+	 *
+	 * @return bool
 	 */
 	public function init() {
 		// Bail early if screen cannot be detected.
@@ -97,15 +122,15 @@ class Give_Blank_Slate {
 
 				add_action( 'manage_posts_extra_tablenav', array( $this, 'render' ) );
 				break;
+
 			// Donations screen.
 			case 'give_forms_page_give-payment-history':
 				$this->form     = $this->post_exists( 'give_forms' );
 				$this->donation = $this->post_exists( 'give_payment' );
 
-				if ( $this->donation ) {
-					// Donation exists. Bail out.
+				if( $this->donation ){
 					return false;
-				} elseif ( ! $this->form ) {
+				}elseif ( ! $this->form ) {
 					// No forms and no donations exist.
 					$content = $this->get_content( 'no_donations_or_forms' );
 				} else {
@@ -115,15 +140,15 @@ class Give_Blank_Slate {
 
 				add_action( 'give_payments_page_bottom', array( $this, 'render' ) );
 				break;
+
 			// Donors screen.
 			case 'give_forms_page_give-donors':
 				$this->form  = $this->post_exists( 'give_forms' );
 				$this->donor = $this->donor_exists();
 
-				if ( $this->donor ) {
-					// Donor exists. Bail out.
-					return false;
-				} elseif ( ! $this->form ) {
+				if( $this->donor ) {
+					return  false;
+				}if ( ! $this->form ) {
 					// No forms and no donors exist.
 					$content = $this->get_content( 'no_donors_or_forms' );
 				} else {
@@ -133,22 +158,36 @@ class Give_Blank_Slate {
 
 				add_action( 'give_donors_table_bottom', array( $this, 'render' ) );
 				break;
+
 			default:
-				return null;
+				/**
+				 * Add this hook to dynamically add black slate to custom table or UI
+				 *
+				 * @since 2.5.11
+				 */
+				do_action( 'give_blank_slate', $this->screen );
+		}
+
+		if( empty( $content ) ) {
+			return false;
 		}
 
 		$this->content = $content;
 
 		// Hide non-essential UI elements.
 		add_action( 'admin_head', array( $this, 'hide_ui' ) );
+
+		return true;
 	}
 
 	/**
 	 * Renders the blank slate message.
 	 *
+	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
+	 *
+	 * @return null
 	 * @since 1.8.13
 	 *
-	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
 	 */
 	public function render( $which = 'bottom' ) {
 		// Bail out to prevent content from rendering twice.
@@ -214,7 +253,7 @@ class Give_Blank_Slate {
 	 * @param string $post_type Post type used in the query.
 	 * @return bool True if post exists, otherwise false.
 	 */
-	private function post_exists( $post_type ) {
+	public function post_exists( $post_type ) {
 		// Attempt to get a single post of the post type.
 		$query = new WP_Query( array(
 			'post_type'              => $post_type,
@@ -252,20 +291,7 @@ class Give_Blank_Slate {
 	 */
 	private function get_content( $context ) {
 		// Define default content.
-		$defaults = array(
-			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
-			'image_alt' => __( 'GiveWP Icon', 'give' ),
-			'heading'   => __( 'No donation forms found.', 'give' ),
-			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
-			'cta_text'  => __( 'Create Donation Form', 'give' ),
-			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
-			'help'      => sprintf(
-				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
-				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
-				'<a href="http://docs.givewp.com/give101/" target="_blank">',
-				'</a>'
-			),
-		);
+		$defaults = $this->get_default_content();
 
 		// Define contextual content.
 		$content = array(
@@ -306,9 +332,33 @@ class Give_Blank_Slate {
 		if ( isset( $content[ $context ] ) ) {
 			// Merge contextual content with defaults.
 			return wp_parse_args( $content[ $context ], $defaults );
-		} else {
-			// Return defaults if context is undefined.
-			return $defaults;
 		}
+
+		// Return defaults if context is undefined.
+		return $defaults;
+	}
+
+
+	/**
+	 * Get default content
+	 *
+	 * @return array
+	 * @since 2.5.11
+	 */
+	public function get_default_content() {
+		return array(
+			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_alt' => __( 'GiveWP Icon', 'give' ),
+			'heading'   => __( 'No donation forms found.', 'give' ),
+			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
+			'cta_text'  => __( 'Create Donation Form', 'give' ),
+			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
+			'help'      => sprintf(
+			/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
+				'<a href="http://docs.givewp.com/give101/" target="_blank">',
+				'</a>'
+			),
+		);
 	}
 }
