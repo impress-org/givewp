@@ -1,5 +1,8 @@
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import 'react-dates/initialize'
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates'
+import 'react-dates/lib/css/_datepicker.css'
+import { useState } from 'react'
+
 import './style.scss'
 const { __ } = wp.i18n
 
@@ -11,13 +14,30 @@ const PeriodSelector = ({date, range, onChange}) => {
         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 3H14.25C15.075 3 15.75 3.675 15.75 4.5V15C15.75 15.825 15.075 16.5 14.25 16.5H3.75C2.9175 16.5 2.25 15.825 2.25 15L2.2575 4.5C2.2575 3.675 2.9175 3 3.75 3H4.5V1.5H6V3H12V1.5H13.5V3ZM6.75 9.75V8.25H5.25V9.75H6.75ZM14.25 15H3.75V7.5H14.25V15ZM3.75 6H14.25V4.5H3.75V6ZM12.75 8.25V9.75H11.25V8.25H12.75ZM9.75 8.25H8.25V9.75H9.75V8.25Z" fill="black"/>
         </g>
     </svg>
-    
+
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+    const [focusedInput, setFocusedInput] = useState(null)
+
     return (
         <div className='givewp-period-selector'>
-            <div className='date-input'>
-                <DatePicker selected={date} />
-            </div>
             <div className='icon'>{icon}</div>
+            <div className='datepicker'>
+                <DateRangePicker
+                    startDate={startDate} 
+                    startDateId="givewp-reports-start"
+                    endDate={endDate}
+                    endDateId="givewp-reports-end" 
+                    onDatesChange={({ startDate, endDate }) => {
+                        setStartDate(startDate)
+                        setEndDate(endDate)
+                    }}
+                    focusedInput={focusedInput}
+                    onFocusChange={focusedInput => {
+                        setFocusedInput(focusedInput)
+                    }}
+                    />
+            </div>
             <div className='group'>
                 <button>{__('Day', 'give')}</button>
                 <button className='selected'>{__('Week', 'give')}</button>
