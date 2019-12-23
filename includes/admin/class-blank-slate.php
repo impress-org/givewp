@@ -65,11 +65,18 @@ class Give_Blank_Slate {
 	 */
 	private $content = array();
 
-	public function get_instance(){
+	/**
+	 * Get class instance
+	 *
+	 * @ince 2.5.11
+	 *
+	 * @return Give_Blank_Slate|static
+	 */
+	public static function get_instance(){
 		if ( null === static::$instance ) {
 			self::$instance = new static();
 
-			$this->screen = get_current_screen()->id;
+			self::$instance->screen = get_current_screen()->id;
 		}
 
 		return self::$instance;
