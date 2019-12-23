@@ -1,23 +1,33 @@
 .float-right {
-	float: right ;
+  float: right;
 }
 
-.gutenberg__editor .give-blank-slate__image {
-	max-width: 96px;
-}
+.gutenberg__editor {
 
-.components-button {
-	margin: 15px 0 0 0;
-}
+  // Donation form block.
+  .give-blank-slate {
 
-.give-chosen-base-control {
-	a.chosen-single {
+	.give-chosen-base-control {
+	  margin: 0 auto 15px;
+	  max-width: 300px;
+
+	  a.chosen-single {
 		box-shadow: none !important;
-	}
+	  }
 
-	ul.chosen-results {
+	  ul.chosen-results {
 		margin: 0 !important;
 		text-align: left !important;
+	  }
+
 	}
+
+	.give-blank-slate__image {
+	  max-width: 96px;
+	}
+
+  }
+
 }
+
 
