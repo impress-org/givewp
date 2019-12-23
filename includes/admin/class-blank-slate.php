@@ -287,20 +287,7 @@ class Give_Blank_Slate {
 	 */
 	private function get_content( $context ) {
 		// Define default content.
-		$defaults = array(
-			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
-			'image_alt' => __( 'GiveWP Icon', 'give' ),
-			'heading'   => __( 'No donation forms found.', 'give' ),
-			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
-			'cta_text'  => __( 'Create Donation Form', 'give' ),
-			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
-			'help'      => sprintf(
-				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
-				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
-				'<a href="http://docs.givewp.com/give101/" target="_blank">',
-				'</a>'
-			),
-		);
+		$defaults = $this->get_default_content();
 
 		// Define contextual content.
 		$content = array(
@@ -345,5 +332,29 @@ class Give_Blank_Slate {
 
 		// Return defaults if context is undefined.
 		return $defaults;
+	}
+
+
+	/**
+	 * Get default content
+	 *
+	 * @return array
+	 * @since 2.5.11
+	 */
+	public function get_default_content() {
+		return array(
+			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_alt' => __( 'GiveWP Icon', 'give' ),
+			'heading'   => __( 'No donation forms found.', 'give' ),
+			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
+			'cta_text'  => __( 'Create Donation Form', 'give' ),
+			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
+			'help'      => sprintf(
+			/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
+				'<a href="http://docs.givewp.com/give101/" target="_blank">',
+				'</a>'
+			),
+		);
 	}
 }
