@@ -2,6 +2,7 @@ import 'react-dates/initialize'
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 import { useState } from 'react'
+import moment from 'moment'
 
 import './style.scss'
 const { __ } = wp.i18n
@@ -24,6 +25,7 @@ const PeriodSelector = ({date, range, onChange}) => {
             <div className='icon'>{icon}</div>
             <div className='datepicker'>
                 <DateRangePicker
+                    noBorder={true}
                     startDate={startDate} 
                     startDateId="givewp-reports-start"
                     endDate={endDate}
@@ -36,6 +38,8 @@ const PeriodSelector = ({date, range, onChange}) => {
                     onFocusChange={focusedInput => {
                         setFocusedInput(focusedInput)
                     }}
+                    isOutsideRange={day => (moment().diff(day) < 0)}
+                    numberOfMonths={1}
                     />
             </div>
             <div className='group'>

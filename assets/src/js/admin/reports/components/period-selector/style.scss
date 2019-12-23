@@ -4,20 +4,40 @@
     align-items: center;
     height: 50px;
 
-    > .date-input {
+    > .datepicker {
+        border: 1px solid #DDDDDD;
+        border-bottom-width: 3px;
+        background: #F7F7F7;
+        height: 28px;
+        border-radius: 3px;
+        padding-left: 22px;
+
+        .DateRangePickerInput {
+            border: none;
+            background: none;
+            height: 28px;
+        }
+
+        .DateRangePicker_picker {
+            border-radius: 3px;
+        }
+
+        .DateInput {
+            background: none;
+        }
 
         input[type="text"] {
-            height: 32px;
-            border: 1px solid #DDDDDD;
-            border-bottom-width: 3px;
+            height: 28px;
+            min-height: 28px;
+            border: none;
+            background: none;
             border-radius: 3px;
-            background: #F7F7F7;
-            margin: 0;
-            padding-left: 32px;
+            overflow: hidden;
+            font-size: 14px;
     
             &:focus {
                 box-shadow: none;
-                border-color: rgb(134, 134, 134);
+                border: none;
             }
         }
 
