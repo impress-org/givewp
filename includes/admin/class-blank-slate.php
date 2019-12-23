@@ -61,9 +61,9 @@ class Give_Blank_Slate {
 	 *
 	 * @since  1.8.13
 	 * @var array
-	 * @access private
+	 * @access public
 	 */
-	private $content = array();
+	public $content = array();
 
 	/**
 	 * Get class instance
@@ -161,7 +161,7 @@ class Give_Blank_Slate {
 				 *
 				 * @since 2.5.11
 				 */
-				$content = apply_filters( 'give_blank_slate', $content, $this->screen );
+				do_action( 'give_blank_slate', $this->screen );
 		}
 
 		if( empty( $content ) ) {
@@ -249,7 +249,7 @@ class Give_Blank_Slate {
 	 * @param string $post_type Post type used in the query.
 	 * @return bool True if post exists, otherwise false.
 	 */
-	private function post_exists( $post_type ) {
+	public function post_exists( $post_type ) {
 		// Attempt to get a single post of the post type.
 		$query = new WP_Query( array(
 			'post_type'              => $post_type,
