@@ -15,6 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Give_Blank_Slate {
 	/**
+	 * @since 2.5.11
+	 * @var Give_Blank_Slate
+	 */
+	private static $instance;
+
+	/**
 	 * The current screen ID.
 	 *
 	 * @since  1.8.13
@@ -59,19 +65,31 @@ class Give_Blank_Slate {
 	 */
 	private $content = array();
 
+	public function get_instance(){
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+
+			$this->screen = get_current_screen()->id;
+		}
+
+		return self::$instance;
+	}
+
 	/**
 	 * Constructs the Give_Blank_Slate class.
 	 *
 	 * @since 1.8.13
 	 */
-	public function __construct() {
-		$this->screen = get_current_screen()->id;
+	private function __construct() {
+
 	}
 
 	/**
 	 * Initializes the class and hooks into WordPress.
 	 *
 	 * @since 1.8.13
+	 *
+	 * @return bool
 	 */
 	public function init() {
 		// Bail early if screen cannot be detected.
