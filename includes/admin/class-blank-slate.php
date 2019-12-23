@@ -146,9 +146,11 @@ class Give_Blank_Slate {
 	/**
 	 * Renders the blank slate message.
 	 *
+	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
+	 *
+	 * @return null
 	 * @since 1.8.13
 	 *
-	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
 	 */
 	public function render( $which = 'bottom' ) {
 		// Bail out to prevent content from rendering twice.
