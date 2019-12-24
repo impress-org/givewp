@@ -6,6 +6,7 @@ import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
 import List from '../../components/list'
+import LocationItem from '../../components/location-item'
 import DonationItem from '../../components/donation-item'
 import DonorItem from '../../components/donor-item'
 const { __ } = wp.i18n;
@@ -129,6 +130,74 @@ const OverviewPage = () => {
                     />
                 </List>
             </Card>
+            <Card title={__('Location List', 'give')} width={4}>
+                <List onScrollEnd={() => alert('reached end!')}>
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    />
+                    <LocationItem
+                        city='Anacorts'
+                        state='Washington'
+                        country='United States'
+                        flag='flag.png'
+                        count='4 Donations'
+                        total='$345.00'
+                    </LocationItem>
+                 </List>
+            </Card
             <Card title={__('Donation List', 'give')} width={4}>
                 <List onScrollEnd={() => alert('reached end of list!')}>
                     <DonationItem
