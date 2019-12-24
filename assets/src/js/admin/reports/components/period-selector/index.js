@@ -3,11 +3,15 @@ import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'rea
 import 'react-dates/lib/css/_datepicker.css'
 import { useState } from 'react'
 import moment from 'moment'
+import { useStoreValue } from '../../store';
+
 
 import './style.scss'
 const { __ } = wp.i18n
 
 const PeriodSelector = ({date, range, onChange}) => {
+
+    const [{ period }, dispatch] = useStoreValue()
 
     const icon = <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g opacity="0.501465">
@@ -16,9 +20,26 @@ const PeriodSelector = ({date, range, onChange}) => {
         </g>
     </svg>
 
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
     const [focusedInput, setFocusedInput] = useState(null)
+
+    const setDates = (startDate, endDate) => {
+        dispatch({
+            type: 'SET_DATES',
+            payload: {
+                startDate,
+                endDate
+            }
+        })
+    }
+
+    const setRange = (range) => {
+        dispatch({
+            type: 'SET_RANGE',
+            payload: {
+                range
+            }
+        })
+    }
 
     return (
         <div className='givewp-period-selector'>
@@ -26,14 +47,11 @@ const PeriodSelector = ({date, range, onChange}) => {
             <div className='datepicker'>
                 <DateRangePicker
                     noBorder={true}
-                    startDate={startDate} 
+                    startDate={period.startDate} 
                     startDateId="givewp-reports-start"
-                    endDate={endDate}
+                    endDate={period.endDate}
                     endDateId="givewp-reports-end" 
-                    onDatesChange={({ startDate, endDate }) => {
-                        setStartDate(startDate)
-                        setEndDate(endDate)
-                    }}
+                    onDatesChange={({ startDate, endDate }) => setDates(startDate, endDate)}
                     focusedInput={focusedInput}
                     onFocusChange={focusedInput => {
                         setFocusedInput(focusedInput)
@@ -43,10 +61,10 @@ const PeriodSelector = ({date, range, onChange}) => {
                     />
             </div>
             <div className='group'>
-                <button>{__('Day', 'give')}</button>
-                <button className='selected'>{__('Week', 'give')}</button>
-                <button>{__('Month', 'give')}</button>
-                <button>{__('Year', 'give')}</button>
+                <button className={period.range === 'day' ? 'selected' : null} onClick={() => setRange('day')}>{__('Day', 'give')}</button>
+                <button className={period.range === 'week' ? 'selected' : null} onClick={() => setRange('week')}>{__('Week', 'give')}</button>
+                <button className={period.range === 'month' ? 'selected' : null} onClick={() => setRange('month')}>{__('Month', 'give')}</button>
+                <button className={period.range === 'year' ? 'selected' : null} onClick={() => setRange('year')}>{__('Year', 'give')}</button>
             </div>
         </div>
     )
