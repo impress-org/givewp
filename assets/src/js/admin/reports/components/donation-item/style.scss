@@ -1,0 +1,34 @@
+.donation-item {
+    height: 72px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+        height: 36px;
+        width: 36px;
+        display: flex;
+        align-items: center;
+        margin-left: 16px;
+    }
+
+    .info {
+        margin-right: 16px;
+        text-transform: capitalize;
+    }
+
+    p {
+        margin: 0;
+        font-size: 12px;
+    }
+
+    .elapsed {
+        color: #82878C;
+        font-size: 10px;
+        margin-left: 4px;
+        text-transform: lowercase;
+    }
+
+    .source {
+        font-weight: lighter;
+    }
+}
