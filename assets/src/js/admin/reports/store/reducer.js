@@ -12,6 +12,7 @@ export const reducer = (state, action) => {
                 }
             }
         case 'SET_RANGE':
+            //determine new startDate based on selected range
             let startDate
             switch (action.payload.range) {
                 case 'day':
