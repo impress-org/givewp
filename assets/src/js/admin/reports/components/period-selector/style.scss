@@ -1,0 +1,93 @@
+.givewp-period-selector {
+    float: right;
+    display: flex;
+    align-items: center;
+    height: 50px;
+
+    > .datepicker {
+        border: 1px solid #DDDDDD;
+        border-bottom-width: 3px;
+        background: #F7F7F7;
+        height: 28px;
+        border-radius: 3px;
+        padding-left: 22px;
+
+        .DateRangePickerInput {
+            border: none;
+            background: none;
+            height: 28px;
+        }
+
+        .DateRangePicker_picker {
+            border-radius: 3px;
+        }
+
+        .DateInput {
+            background: none;
+        }
+
+        input[type="text"] {
+            height: 28px;
+            min-height: 28px;
+            border: none;
+            background: none;
+            border-radius: 3px;
+            overflow: hidden;
+            font-size: 14px;
+    
+            &:focus {
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+    }
+
+    > .icon {
+        height: 32px;
+        width: 32px;
+        position: absolute;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    > .group {
+        margin-left: 16px;
+        display: flex;
+
+        > button {
+            border: 1px solid #DDDDDD;
+            border-bottom-width: 3px;
+            background: #F7F7F7;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0px;
+            border-width: 1px 1px 3px 0px;
+            padding: 0 16px;
+
+            &:first-of-type {
+                border-radius: 3px 0 0 3px;
+                border-width: 1px 1px 3px 1px;
+            }
+
+            &:last-of-type {
+                border-radius: 0 3px 3px 0;
+                border-width: 1px 1px 3px 0px;
+            }
+
+            &.selected {
+                background: #DDDDDD;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+                border-color: #DDDDDD;
+            }
+        }
+    }
+}
