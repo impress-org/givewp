@@ -9,7 +9,7 @@ import { useStoreValue } from '../../store';
 import './style.scss'
 const { __ } = wp.i18n
 
-const PeriodSelector = ({date, range, onChange}) => {
+const PeriodSelector = () => {
 
     const [{ period }, dispatch] = useStoreValue()
 
@@ -68,12 +68,6 @@ const PeriodSelector = ({date, range, onChange}) => {
             </div>
         </div>
     )
-}
-
-PeriodSelector.defaultProps = {
-    date: new Date(),
-    range: 'day',
-    onChange: null
 }
 
 export default PeriodSelector
