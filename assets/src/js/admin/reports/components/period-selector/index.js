@@ -1,8 +1,13 @@
+// Vendor dependencies
+import { useState } from 'react'
+import moment from 'moment'
+
+// react-dates dependencies
 import 'react-dates/initialize'
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
-import { useState } from 'react'
-import moment from 'moment'
+
+// Store-related dependencies
 import { useStoreValue } from '../../store';
 
 
@@ -11,8 +16,10 @@ const { __ } = wp.i18n
 
 const PeriodSelector = () => {
 
+    // Get 'period' object from the store
     const [{ period }, dispatch] = useStoreValue()
 
+    // SVG calendar icon (could be moved to images/admin folder)
     const icon = <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g opacity="0.501465">
         <path opacity="0.3" d="M3.75 6H14.25V4.5H3.75V6Z" fill="black"/>
@@ -20,8 +27,10 @@ const PeriodSelector = () => {
         </g>
     </svg>
 
+    //  setup focuesedInput state, required for react-dates
     const [focusedInput, setFocusedInput] = useState(null)
 
+    // Dispatch SET_DATES action
     const setDates = (startDate, endDate) => {
         dispatch({
             type: 'SET_DATES',
@@ -32,6 +41,7 @@ const PeriodSelector = () => {
         })
     }
 
+    // Dispatch SET_RANGE action
     const setRange = (range) => {
         dispatch({
             type: 'SET_RANGE',

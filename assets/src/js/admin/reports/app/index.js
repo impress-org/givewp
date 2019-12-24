@@ -1,15 +1,22 @@
+// Vendor dependencies
 import { createContext } from 'react'
-import moment from 'moment'
 import { Switch, Route } from "react-router-dom"
-import PeriodSelector from '../components/period-selector'
-import Tabs from '../components/tabs'
-import Routes from '../components/routes'
+import moment from 'moment'
+
+// Store related dependencies
 import { StoreProvider } from '../store'
 import { reducer } from '../store/reducer'
 
+// Components
+import PeriodSelector from '../components/period-selector'
+import Tabs from '../components/tabs'
+import Routes from '../components/routes'
+
 const App = (props) => {
 
+    // Initial app state (available in component through useStoreValue)
     const initialState = {
+        // Initial period range (defaults to the past week)
         period: { 
             startDate: moment().subtract(7, 'days'),
             endDate: moment(),
