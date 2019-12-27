@@ -1,4 +1,5 @@
 import { createRef, useEffect, Fragment } from 'react'
+import PropTypes from 'prop-types'
 import ChartJS from 'chart.js'
 import { createConfig, getPercentage, getAmount } from './utils'
 import './style.scss'
@@ -59,6 +60,13 @@ const MiniChart = ({title, data}) => {
             </div>
         </div>
     )
+}
+
+MiniChart.propTypes = {
+    //Chart title
+    title: PropTypes.string.isRequired,
+    //Chart data
+    data: PropTypes.object.isRequired
 }
 
 export default MiniChart
