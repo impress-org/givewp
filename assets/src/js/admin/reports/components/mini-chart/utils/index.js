@@ -1,3 +1,4 @@
+const { __ } = wp.i18n
 export function formatData (data) {
 
     const formattedLabels = data.labels
@@ -31,7 +32,7 @@ export function getPercentage (data) {
 export function getAmount (data) {
     const current = data.datasets[0].data[data.datasets[0].data.length - 1]
     const previous = data.datasets[0].data[data.datasets[0].data.length - 2]
-    const amount = '$' + Math.abs( (current - previous) ).toFixed(2)
+    const amount = __('$', 'give') + Math.abs( (current - previous) ).toFixed(2)
 
     return amount
 }
