@@ -69,4 +69,9 @@ MiniChart.propTypes = {
     data: PropTypes.object.isRequired
 }
 
+MiniChart.defaultProps = {
+    title: null,
+    data: null
+}
+
 export default MiniChart
