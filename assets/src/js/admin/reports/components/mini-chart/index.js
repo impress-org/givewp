@@ -1,12 +1,12 @@
 import { createRef, useEffect } from 'react'
 import ChartJS from 'chart.js'
-import { createConfig } from './utils'
+import { createConfig, getPercentage, getAmount } from './utils'
 import './style.scss'
 
 const MiniChart = ({title, data}) => {
 
-    const amount = '$200.00'
-    const percentage = -5
+    const amount = getAmount(data)
+    const percentage = getPercentage(data)
 
     const canvas = createRef()
     const config = createConfig(data)

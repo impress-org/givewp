@@ -24,7 +24,7 @@ const OverviewPage = () => {
                         datasets: [
                             {
                                 label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
+                                data: [400.00, 532.00, 333.00, 72.56, 300.00, 422.22]
                             }
                         ]
                     }}
@@ -39,7 +39,7 @@ const OverviewPage = () => {
                         datasets: [
                             {
                                 label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
+                                data: [400.00, 532.00, 333.00, 72.56, 380.23, 450.00]
                             }
                         ]
                     }}
@@ -54,7 +54,7 @@ const OverviewPage = () => {
                         datasets: [
                             {
                                 label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
+                                data: [400.00, 532.00, 333.00, 72.56, 300.00, 450.30]
                             }
                         ]
                     }}
@@ -69,7 +69,7 @@ const OverviewPage = () => {
                         datasets: [
                             {
                                 label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
+                                data: [400.00, 532.00, 333.00, 72.56, 300.00, 450.00]
                             }
                         ]
                     }}
