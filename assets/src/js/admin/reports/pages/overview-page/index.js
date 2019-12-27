@@ -195,9 +195,9 @@ const OverviewPage = () => {
                         flag='flag.png'
                         count='4 Donations'
                         total='$345.00'
-                    </LocationItem>
+                    />
                  </List>
-            </Card
+            </Card>
             <Card title={__('Donation List', 'give')} width={4}>
                 <List onScrollEnd={() => alert('reached end of list!')}>
                     <DonationItem
