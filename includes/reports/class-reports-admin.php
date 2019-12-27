@@ -54,6 +54,20 @@ class Reports_Admin {
 				true
             );
             wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
+		} else if ($base === 'index.php') {
+			wp_enqueue_style(
+				'give-admin-reports-widget-style',
+				GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports-widget.css',
+				[],
+				'0.0.1'
+            );
+			wp_enqueue_script(
+				'give-admin-reports-widget-js',
+				GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
+				['wp-element', 'wp-api'],
+				'0.0.1',
+				true
+            );
 		}
 	}
 
