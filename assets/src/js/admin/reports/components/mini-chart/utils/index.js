@@ -23,7 +23,7 @@ export function formatData (data) {
 export function getPercentage (data) {
     const current = data.datasets[0].data[data.datasets[0].data.length - 1]
     const previous = data.datasets[0].data[data.datasets[0].data.length - 2]
-    const percentage = Math.round( (current / previous) * 100 )
+    const percentage = Math.round( (current / previous) * 100 ) - 100
     return percentage
 }
 

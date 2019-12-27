@@ -17,9 +17,24 @@
             color: #82878C;
         }
 
-        > .percentage {
+        > .indicator {
+            display: flex;
+            align-items: center;
             font-size: 14px;
             font-weight: bold;
+
+            > div {
+                margin-right: 4px;
+            }
+
+            > .up {
+                margin-top: 5px;
+            }
+
+            > .down {
+                transform: rotate(180deg);
+                margin-top: -5px;
+            }
         }
     }
 
