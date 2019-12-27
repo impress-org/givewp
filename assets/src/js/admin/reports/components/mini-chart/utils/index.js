@@ -24,13 +24,14 @@ export function getPercentage (data) {
     const current = data.datasets[0].data[data.datasets[0].data.length - 1]
     const previous = data.datasets[0].data[data.datasets[0].data.length - 2]
     const percentage = Math.round( (current / previous) * 100 ) - 100
+
     return percentage
 }
 
 export function getAmount (data) {
     const current = data.datasets[0].data[data.datasets[0].data.length - 1]
     const previous = data.datasets[0].data[data.datasets[0].data.length - 2]
-    const amount = '$' + Math.abs( (current - previous).toFixed(2) )
+    const amount = '$' + Math.abs( (current - previous) ).toFixed(2)
 
     return amount
 }
