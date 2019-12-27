@@ -30,7 +30,7 @@ export function getPercentage (data) {
 export function getAmount (data) {
     const current = data.datasets[0].data[data.datasets[0].data.length - 1]
     const previous = data.datasets[0].data[data.datasets[0].data.length - 2]
-    const amount = '$' + (current - previous).toFixed(2)
+    const amount = '$' + Math.abs( (current - previous).toFixed(2) )
 
     return amount
 }
