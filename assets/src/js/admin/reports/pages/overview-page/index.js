@@ -5,6 +5,7 @@
 import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
+import MiniChart from '../../components/mini-chart'
 import List from '../../components/list'
 import LocationItem from '../../components/location-item'
 import DonationItem from '../../components/donation-item'
@@ -14,6 +15,66 @@ const { __ } = wp.i18n;
 const OverviewPage = () => {
     return (
         <Grid>
+            <Card width={3}>
+                <MiniChart
+                    title='Mini Doughnut'
+                    type='doughnut'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={3}>
+                <MiniChart
+                    title='Mini Line'
+                    type='line'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={3}>
+                <MiniChart
+                    title='Mini Pie'
+                    type='pie'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={3}>
+                <MiniChart
+                    title='Mini Bar'
+                    type='bar'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            }
+                        ]
+                    }}
+                />
+            </Card>
             <Card title={__('Dougnhut Chart', 'give')} width={4}>
                 <Chart
                     type='doughnut'
