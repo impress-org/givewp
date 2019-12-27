@@ -8,7 +8,6 @@ export function formatData (data) {
             data: dataset.data,
             backgroundColor: '#FFFFFF',
             borderColor: '#DDDDDD',
-            borderWidth: 3
         }
         return formatted
     })
@@ -37,6 +36,14 @@ export function createConfig (type, data) {
                 xAxes: [{
                     display: false
                 }]
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
             }
         }
     }
