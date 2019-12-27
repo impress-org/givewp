@@ -1,3 +1,6 @@
+// Reports admin dashboard widget
+
+// Components
 import Grid from '../components/grid'
 import Card from '../components/card'
 import Chart from '../components/chart'
