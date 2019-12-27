@@ -1,11 +1,15 @@
 import { createRef, useEffect, Fragment } from 'react'
 import PropTypes from 'prop-types'
+
+//Import ChartJS dependencies
 import ChartJS from 'chart.js'
 import { createConfig, getPercentage, getAmount } from './utils'
+
 import './style.scss'
 
 const MiniChart = ({title, data}) => {
 
+    //SVG up/positive icon
     const up = <div className='up'><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13Z" fill="#69B868" fill-opacity="0.3"/>
         <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="4" width="8" height="5">
@@ -16,6 +20,7 @@ const MiniChart = ({title, data}) => {
         </g>
     </svg></div>
 
+    //SVG down/negative icon
     const down = <div className='down'><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13Z" fill="#D75A4B" fill-opacity="0.3"/>
         <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="5" width="8" height="5">
@@ -26,7 +31,6 @@ const MiniChart = ({title, data}) => {
         </g>
     </svg></div>
     
-
     const amount = getAmount(data)
     const percentage = getPercentage(data)
     const indicator = Math.sign(percentage) === -1 ? <Fragment>{down} <span style={{color: '#D75A4B'}}>{Math.abs(percentage) + '%'}</span></Fragment> : <Fragment>{up} <span style={{color: '#69B868'}}>{Math.abs(percentage) + '%'}</span></Fragment>
