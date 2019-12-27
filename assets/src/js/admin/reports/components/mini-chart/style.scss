@@ -1,0 +1,34 @@
+.givewp-mini-chart {
+    width: calc(100% - 32px);
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+
+    > .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        > .title {
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        > .percentage {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    > .content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        filter: grayscale(100%);
+
+        > .amount {
+            font-weight: bold;
+            font-size: 25px;
+        }
+    }
+}

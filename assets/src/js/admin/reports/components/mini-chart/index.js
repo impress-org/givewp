@@ -1,4 +1,5 @@
 import Chart from '../chart'
+import './style.scss'
 
 const MiniChart = ({title, type, data}) => {
 
