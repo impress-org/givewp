@@ -1,0 +1,13 @@
+.givewp-legend {
+    display: flex;
+    flex-direction: column;
+
+    > .item {
+        display: flex;
+
+        > .bar {
+            width: 8px;
+            background: rgb(255, 22, 22);
+        }
+    }
+}

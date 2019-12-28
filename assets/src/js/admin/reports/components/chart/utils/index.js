@@ -63,7 +63,7 @@ export function createConfig (type, data) {
         data: formattedData,
         options: {
             legend: {
-                position: 'bottom',
+                display: false
             },
             scales: {
                 yAxes: [{
