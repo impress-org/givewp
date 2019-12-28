@@ -27,6 +27,7 @@ const OverviewPage = () => {
                             }
                         ]
                     }}
+                    showLegend={true}
                 />
             </Card>
             <Card title={__('Bar Chart', 'give')} width={4}>
@@ -57,6 +58,7 @@ const OverviewPage = () => {
                             }
                         ]
                     }}
+                    showLegend={true}
                 />
             </Card>
             <Card title={__('Donor List', 'give')} width={4}>

@@ -2,10 +2,10 @@ import ChartJS from 'chart.js'
 import { useEffect, createRef } from 'react'
 import { createConfig, calcHeight } from './utils'
 
-const Chart = ({type, aspectRatio, data}) => {
+const Chart = ({type, aspectRatio, data, showLegend}) => {
 
     const canvas = createRef()
-    const config = createConfig(type, data)
+    const config = createConfig(type, data, showLegend)
     const height = 100 * aspectRatio
 
     useEffect(() => {
