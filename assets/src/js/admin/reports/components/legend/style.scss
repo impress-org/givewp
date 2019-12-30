@@ -24,10 +24,11 @@
 
         > .data {
             margin: 14px 8px;
+            width: 76px;
+        }
 
-            &:last-of-type {
-                margin: 14px 16px 14px 8px;
-            }
+        > .percent {
+            margin: 14px 16px 14px 8px;
         }
 
     }

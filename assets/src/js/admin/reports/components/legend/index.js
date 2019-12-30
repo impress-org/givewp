@@ -10,6 +10,7 @@ const Legend = ({data}) => {
                 <div className='bar' style={{background: color}}></div>
                 <p className='label'>{label}</p>
                 <p className='data'>{data.datasets[0].data[index]}</p>
+                <p className='percent'>40%</p>
             </div>
         )
     })
