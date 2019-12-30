@@ -1,3 +1,4 @@
+// Get color associated with a specific index
 export function getColor (index) {
     const palette = [
         '#69B868',
