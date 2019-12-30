@@ -1,5 +1,6 @@
 import './style.scss'
 import { getColor } from './utils'
+import PropTypes from 'prop-types'
 
 const Legend = ({data, chartRef}) => {
 
@@ -30,4 +31,10 @@ const Legend = ({data, chartRef}) => {
     )
 }
 
+Legend.propTypes = {
+    // Data object provided from Reports API
+    data: PropTypes.object.isRequired,
+    // Chart object created and passed by parent Chart component
+    chartRef: PropTypes.object.isRequired,
+}
 export default Legend
