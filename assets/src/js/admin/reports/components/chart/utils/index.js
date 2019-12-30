@@ -5,8 +5,8 @@ export function formatData (type, data) {
     const formattedDatasets = data.datasets.map((dataset, index) => {
         const styles = createStyles(type, dataset.data, index)
         const formatted = {
-            label: dataset.label,
-            data: dataset.data,
+            label: (' ' + dataset.label).slice(1),
+            data: dataset.data.slice(0),
             backgroundColor: styles.backgroundColor,
             borderColor: styles.borderColor,
             borderWidth: styles.borderWidth
