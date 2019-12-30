@@ -8,8 +8,8 @@ const Legend = ({data}) => {
         return (
             <div className='item'>
                 <div className='bar' style={{background: color}}></div>
-                <p>{label}</p>
-                <p>{data.datasets[0].data[index]}</p>
+                <p className='label'>{label}</p>
+                <p className='data'>{data.datasets[0].data[index]}</p>
             </div>
         )
     })

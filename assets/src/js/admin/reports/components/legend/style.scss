@@ -4,10 +4,31 @@
 
     > .item {
         display: flex;
+        height: 40px;
+        font-size: 12px;
+
+        &:nth-of-type(odd) {
+            background: #F4F4F4;
+        }
 
         > .bar {
             width: 8px;
-            background: rgb(255, 22, 22);
+            background: rgb(54, 68, 85);
         }
+
+        > .label {
+            flex: 1;
+            margin: 14px 8px;
+            font-weight: bold;
+        }
+
+        > .data {
+            margin: 14px 8px;
+
+            &:last-of-type {
+                margin: 14px 16px 14px 8px;
+            }
+        }
+
     }
 }
