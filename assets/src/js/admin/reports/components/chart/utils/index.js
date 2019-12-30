@@ -16,7 +16,7 @@ export function formatData (type, data) {
 
     const formattedData = {
         labels: formattedLabels,
-        datasets: formattedDatasets
+        datasets: formattedDatasets,
     }
 
     return formattedData
@@ -58,22 +58,28 @@ function createStyles (type, data, index) {
 
 export function createConfig (type, data) {
     const formattedData = formatData(type, data)
-    const config = {
+    let config = {
         type: type,
         data: formattedData,
         options: {
             legend: {
                 display: false
             },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 5
-                    }
-                }]
+            layout: {
+                padding: 16
             }
         }
     }
+
+    if (type === 'line' || type === 'bar') {
+        config.options.scales = {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+            }]
+        }
+    }
+
     return config
 }
