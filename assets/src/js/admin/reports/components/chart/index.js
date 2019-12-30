@@ -35,13 +35,20 @@ const Chart = ({type, aspectRatio, data, showLegend}) => {
 
 Chart.propTypes = {
     // Chart type (see https://www.chartjs.org/docs/2.8.0/charts/)
-    type: PropTypes.string.isRequired,
-    // Aspect ratio used to display chart (number:1)
-    aspectRatio: PropTypes.number.isRequired
+    type: PropTypes.string,
+    // Aspect ratio used to display chart (default 0.6)
+    aspectRatio: PropTypes.number,
     // Data object provided by Reports API
     data: PropTypes.object.isRequired,
-    // Whether or not to display a legend for Chart (default to true)
+    // Whether or not to display a legend for Chart (default to false)
     showLegend: PropTypes.bool
+}
+
+Chart.defaultProps = {
+    type: 'bar',
+    aspectRatio: 0.6,
+    data: null,
+    showLegend: false
 }
 
 export default Chart
