@@ -11,6 +11,10 @@
             background: #F4F4F4;
         }
 
+        &.inactive {
+            opacity: 0.3;
+        }
+
         > .bar {
             width: 8px;
             background: rgb(54, 68, 85);

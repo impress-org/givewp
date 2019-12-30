@@ -5,7 +5,8 @@ const Legend = ({data, chartRef}) => {
 
     const total = data.datasets[0].data.reduce((a, b) => a + b)
 
-    const hideData = (index, value) => {
+    const hideData = (evt, index, value) => {
+        evt.target.closest('.item').classList.toggle('inactive')
         chartRef.data.datasets[0].data[index] = chartRef.data.datasets[0].data[index] === value ? null : value
         chartRef.update()
     }
@@ -14,7 +15,7 @@ const Legend = ({data, chartRef}) => {
         const color = getColor(index)
         const percent = Math.round( ( data.datasets[0].data[index] / total ) * 100 ) + '%'
         return (
-            <div className='item' onClick={() => hideData(index, data.datasets[0].data[index])}>
+            <div className='item' onClick={(evt) => hideData(evt, index, data.datasets[0].data[index])}>
                 <div className='bar' style={{background: color}}></div>
                 <p className='label'>{label}</p>
                 <p className='data'>{data.datasets[0].data[index]}</p>
