@@ -37,4 +37,10 @@ Legend.propTypes = {
     // Chart object created and passed by parent Chart component
     chartRef: PropTypes.object.isRequired,
 }
+
+Legend.defaultProps = {
+    data: null,
+    chartRef: null
+}
+
 export default Legend
