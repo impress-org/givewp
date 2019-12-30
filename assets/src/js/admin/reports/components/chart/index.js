@@ -1,8 +1,12 @@
+// Dependencies
 import ChartJS from 'chart.js'
 import { useEffect, useState, createRef } from 'react'
-import { createConfig, calcHeight } from './utils'
 import PropTypes from 'prop-types'
 
+// Utilities
+import { createConfig, calcHeight } from './utils'
+
+// Components
 import Legend from '../legend'
 
 const Chart = ({type, aspectRatio, data, showLegend}) => {
@@ -14,11 +18,14 @@ const Chart = ({type, aspectRatio, data, showLegend}) => {
 
     useEffect(() => {
 
+        // Setup chart
         const ctx = canvas.current.getContext('2d')
         const chart = new ChartJS(ctx, config)
 
+        // Setup legend
         showLegend && setupLegend(<Legend data={data} chartRef={chart}/>)
 
+        // Cleanup chart
         return function cleanup() {
             chart.destroy()
         }
