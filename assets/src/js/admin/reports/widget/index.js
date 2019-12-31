@@ -4,10 +4,11 @@
 import Grid from '../components/grid'
 import Card from '../components/card'
 import Chart from '../components/chart'
+import MiniChart from '../components/mini-chart'
 
 const Widget = () => {
     return (
-        <Grid>
+        <Grid gap='12px'>
             <Card width={12}>
                 <Chart
                     type='line'
@@ -23,10 +24,62 @@ const Widget = () => {
                     }}
                 />
             </Card>
-            <Card width={6}>Mini Chart here</Card>
-            <Card width={6}>Mini chart here</Card>
-            <Card width={6}>Mini chart here</Card>
-            <Card width={6}>Mini chart here</Card>
+            <Card width={6}>
+                <MiniChart
+                    title='Avg Donations'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            },
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={6}>
+                <MiniChart
+                    title='Avg Donations'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            },
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={6}>
+                <MiniChart
+                    title='Avg Donations'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            },
+                        ]
+                    }}
+                />
+            </Card>
+            <Card width={6}>
+                <MiniChart
+                    title='Avg Donations'
+                    data={{
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Donations',
+                                data: [4, 5, 3, 7, 5, 6]
+                            },
+                        ]
+                    }}
+                />
+            </Card>
         </Grid>
     )
 }
