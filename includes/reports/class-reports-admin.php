@@ -79,7 +79,7 @@ class Reports_Admin {
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Donation Reports', 'give' ),
-			esc_html__( 'Reports v3', 'give' ),
+			esc_html__( 'Reports', 'give' ),
 			'view_give_reports',
 			'give-reports-v3',
 			[$this, 'render_template']
