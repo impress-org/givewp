@@ -6,9 +6,7 @@ const Tabs = (props) => {
             <Tab to='/'>
                 Overview
             </Tab>
-            <Tab directTo='/edit.php?post_type=give_forms&page=give-reports'>
-                Legacy Reports Page
-            </Tab>
+            <a className='nav-tab' href='/wp-admin/edit.php?post_type=give_forms&page=give-reports'>Legacy Reports Page</a>
         </div>
     )
 }
