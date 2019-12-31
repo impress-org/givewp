@@ -38,7 +38,6 @@ function give_reports_page() {
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
-		<a href="#" class="nav-tab">testingg</a>
 			<?php foreach ( $views as $tab => $label ) { ?>
 				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => $tab,
