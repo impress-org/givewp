@@ -6,7 +6,7 @@ const Tabs = (props) => {
             <Tab to='/'>
                 Overview
             </Tab>
-            <a className='nav-tab' href='/wp-admin/edit.php?post_type=give_forms&page=give-reports'>Legacy Reports Page</a>
+            <a className='nav-tab' href={giveReportsData.legacyReportsUrl}>Legacy Reports Page</a>
         </div>
     )
 }

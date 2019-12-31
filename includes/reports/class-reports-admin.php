@@ -53,7 +53,10 @@ class Reports_Admin {
 				'0.0.1',
 				true
             );
-            wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
+			wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
+			wp_localize_script('give-admin-reports-v3-js', 'giveReportsData', [
+				'legacyReportsUrl' => get_admin_url(null, '/edit.php?post_type=give_forms&page=give-reports')
+			]);
 		} else if ($base === 'index.php') {
 			wp_enqueue_style(
 				'give-admin-reports-widget-style',
