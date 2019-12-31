@@ -43,6 +43,9 @@ export function createConfig (type, data) {
         type: 'line',
         data: formattedData,
         options: {
+            layout: {
+                padding: 4
+            },
             legend: {
                 display: false
             },
@@ -59,7 +62,7 @@ export function createConfig (type, data) {
             },
             elements: {
                 point: {
-                    radius: 0
+                    radius: 2
                 }
             }
         }
