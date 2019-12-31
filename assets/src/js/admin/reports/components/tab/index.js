@@ -23,4 +23,9 @@ Tab.propTypes = {
     children: PropTypes.node.isRequired
 }
 
+Tab.defaultProps = {
+    to: null,
+    children: null
+}
+
 export default Tab
