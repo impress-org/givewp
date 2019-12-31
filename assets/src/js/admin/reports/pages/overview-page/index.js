@@ -17,7 +17,7 @@ const OverviewPage = () => {
             <Card title={__('Dougnhut Chart', 'give')} width={4}>
                 <Chart
                     type='doughnut'
-                    aspectRatio={0.7}
+                    aspectRatio={0.6}
                     data={{
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
                         datasets: [
@@ -27,12 +27,13 @@ const OverviewPage = () => {
                             }
                         ]
                     }}
+                    showLegend={true}
                 />
             </Card>
             <Card title={__('Bar Chart', 'give')} width={4}>
                 <Chart
                     type='bar'
-                    aspectRatio={0.7}
+                    aspectRatio={1.2}
                     data={{
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
                         datasets: [
@@ -47,7 +48,7 @@ const OverviewPage = () => {
             <Card title={__('Pie Chart', 'give')} width={4}>
                 <Chart
                     type='pie'
-                    aspectRatio={0.7}
+                    aspectRatio={0.6}
                     data={{
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
                         datasets: [
@@ -57,6 +58,7 @@ const OverviewPage = () => {
                             }
                         ]
                     }}
+                    showLegend={true}
                 />
             </Card>
             <Card title={__('Donor List', 'give')} width={4}>

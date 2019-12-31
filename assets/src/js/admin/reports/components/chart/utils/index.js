@@ -1,12 +1,16 @@
+// Format data from Reports API for ChartJS
 export function formatData (type, data) {
 
-    const formattedLabels = data.labels
+    const formattedLabels = data.labels.slice(0)
 
     const formattedDatasets = data.datasets.map((dataset, index) => {
+
+        // Setup styles
         const styles = createStyles(type, dataset.data, index)
+
         const formatted = {
-            label: dataset.label,
-            data: dataset.data,
+            label: (' ' + dataset.label).slice(1),
+            data: dataset.data.slice(0),
             backgroundColor: styles.backgroundColor,
             borderColor: styles.borderColor,
             borderWidth: styles.borderWidth
@@ -16,12 +20,14 @@ export function formatData (type, data) {
 
     const formattedData = {
         labels: formattedLabels,
-        datasets: formattedDatasets
+        datasets: formattedDatasets,
     }
 
     return formattedData
 }
 
+// Create chart styles from predifined pallette, 
+// depending on chart type
 function createStyles (type, data, index) {
 
     const palette = [
@@ -38,6 +44,7 @@ function createStyles (type, data, index) {
         borderWidth: 0
     }
 
+    // Handle special styles needed for 'line' and 'doughnut' charts
     switch (type) {
         case 'line':
             styles.backgroundColor = [
@@ -56,24 +63,32 @@ function createStyles (type, data, index) {
     return styles
 }
 
+// Return config object for ChartJS
 export function createConfig (type, data) {
     const formattedData = formatData(type, data)
-    const config = {
+    let config = {
         type: type,
         data: formattedData,
         options: {
             legend: {
-                position: 'bottom',
+                display: false
             },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 5
-                    }
-                }]
+            layout: {
+                padding: 16
             }
         }
     }
+
+    // Setup yAxes to begin at zero if chart is 'line' or 'bar'
+    if (type === 'line' || type === 'bar') {
+        config.options.scales = {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+            }]
+        }
+    }
+
     return config
 }
