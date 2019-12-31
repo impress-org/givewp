@@ -52,11 +52,11 @@ function give_add_options_links() {
 		'give_donors_page'
 	);
 
-	//Reports
+	//Legacy reports
 	$give_reports_page = add_submenu_page(
-		'edit.php?post_type=give_forms',
+		null,
 		esc_html__( 'Donation Reports', 'give' ),
-		esc_html__( 'Reports', 'give' ),
+		esc_html__( 'Legacy Reports', 'give' ),
 		'view_give_reports',
 		'give-reports',
 		array(
