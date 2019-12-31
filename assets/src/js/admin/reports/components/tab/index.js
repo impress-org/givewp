@@ -16,4 +16,11 @@ const Tab = ({to, children}) => {
 
 }
 
+Tab.propTypes = {
+    // Route that is passed to react-router Link component
+    to: PropTypes.string.isRequired,
+    // Link children (typically text)
+    children: PropTypes.node.isRequired
+}
+
 export default Tab
