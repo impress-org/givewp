@@ -38,6 +38,7 @@ function give_reports_page() {
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
+		<a href="#" class="nav-tab">testingg</a>
 			<?php foreach ( $views as $tab => $label ) { ?>
 				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => $tab,
@@ -49,7 +50,7 @@ function give_reports_page() {
 					'tab'              => 'export',
 					'settings-updated' => false,
 				), $current_page ) ); ?>" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
-			<?php }
+			<?php } ?>
 			/**
 			 * Fires in the report tabs.
 			 *

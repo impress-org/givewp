@@ -83,7 +83,11 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 				 * @since 1.8
 				 */
 				do_action( self::$setting_filter_prefix . '_tabs' );
-				?>
+
+				$isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports' ? true : false;
+				if ($isReports === true) { ?>
+				<a href="<?php echo admin_url('edit.php?post_type=give_forms&page=give-reports-v3') ?>" class="nav-tab"><?php esc_html_e( 'New Reports Page', 'give' ); ?></a>
+				<?php } ?>
 				<div class="give-sub-nav-tab-wrapper">
 					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php esc_html_e( 'View remaining setting tabs', 'give' ); ?>">
 						<span class="dashicons dashicons-arrow-down-alt2"></span>
