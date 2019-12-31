@@ -6,6 +6,9 @@ const Tabs = (props) => {
             <Tab to='/'>
                 Overview
             </Tab>
+            <Tab to='/edit.php?post_type=give_forms&page=give-reports'>
+                Legacy Reports Page
+            </Tab>
         </div>
     )
 }
