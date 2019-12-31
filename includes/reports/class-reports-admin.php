@@ -20,10 +20,21 @@ class Reports_Admin {
 	public function init() {
 		add_action( 'admin_menu', [$this, 'register_submenu_page'] );
 		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'] );
+		add_action( 'wp_dashboard_setup', [$this, 'add_dashboard_widget'] );
+
 	}
 
 	public function __construct() {
         //Do nothing
+	}
+
+	//Add dashboard widget
+	public function add_dashboard_widget() {
+		wp_add_dashboard_widget(
+			'givewp_reports_widget', 
+			'GiveWP', 
+			[$this, 'render_widget_template']
+		);
 	}
 
 	//Enqueue app scripts
@@ -43,6 +54,20 @@ class Reports_Admin {
 				true
             );
             wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
+		} else if ($base === 'index.php') {
+			wp_enqueue_style(
+				'give-admin-reports-widget-style',
+				GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports-widget.css',
+				[],
+				'0.0.1'
+            );
+			wp_enqueue_script(
+				'give-admin-reports-widget-js',
+				GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
+				['wp-element', 'wp-api'],
+				'0.0.1',
+				true
+            );
 		}
 	}
 
@@ -60,6 +85,10 @@ class Reports_Admin {
 
 	public function render_template() {
 		include_once GIVE_PLUGIN_DIR . 'includes/reports/template.php';
-    }
+	}
+	
+	public function render_widget_template() {
+		include_once GIVE_PLUGIN_DIR . 'includes/reports/widget-template.php';
+	}
     
 }

@@ -1,3 +1,5 @@
+// Reports page app
+
 // Vendor dependencies
 import { createContext } from 'react'
 import { Switch, Route } from "react-router-dom"

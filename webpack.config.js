@@ -30,7 +30,8 @@ const config = {
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 		'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		'admin-add-ons': [ './assets/src/js/admin/admin-add-ons.js' ],
-		'admin-reports': ['./assets/src/js/admin/reports/index.js']
+		'admin-reports': ['./assets/src/js/admin/reports/app.js'],
+		'admin-reports-widget': ['./assets/src/js/admin/reports/widget.js']
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
