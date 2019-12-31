@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const Grid = ({gap}) => {
+const Grid = ({gap, children}) => {
 
     //To do: swap with scss
     const gridStyle = {
@@ -12,18 +12,21 @@ const Grid = ({gap}) => {
 
     return (
         <div style={gridStyle}>
-            {props.children}
+            {children}
         </div>
     )
 }
 
 Grid.propTypes = {
     // Grid gap spacing (ex: 30px)
-    gap: PropTypes.string
+    gap: PropTypes.string,
+    // Grid items
+    children: PropTypes.node.isRequired
 }
 
 Grid.defaultProps = {
-    gap: '30px'
+    gap: '30px',
+    children: null
 }
 
 export default Grid
