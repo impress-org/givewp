@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 2.5.11
+Stable tag: 2.5.12
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.12: December 31st, 2019 =
+* Fix: Resolved an issue with donation receipt emails and admin notifications not being sent out properly when a new donation is made. The cause of the issue was a security permission check incorrectly put in place in the previous version that was unable to be bypassed by new donors. We've reverted that change and fully tested to ensure emails are working as expected again. (https://github.com/impress-org/givewp/issues/4379)[#4379]
 
 = 2.5.11: December 23rd, 2019 =
 * Fix: Activating Give created a minor style conflict with the Gutenberg editor slightly pushing down some buttons. This has been resolved by refactoring the styles so they no longer conflict with WP Core elements. (https://github.com/impress-org/givewp/issues/4354)[#4354]
