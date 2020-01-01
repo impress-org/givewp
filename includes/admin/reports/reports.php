@@ -49,7 +49,7 @@ function give_reports_page() {
 					'tab'              => 'export',
 					'settings-updated' => false,
 				), $current_page ) ); ?>" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
-			<?php } ?>
+			<?php }
 			/**
 			 * Fires in the report tabs.
 			 *
