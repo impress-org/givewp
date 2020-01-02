@@ -30,17 +30,17 @@ class Reports_API {
 	//Register api routes for reports, pages, and singles
 	protected function register_api_routes() {
 
-		register_rest_route( 'givewp/v3', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
+		register_rest_route( 'give-api/v2', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [__CLASS__, 'handle_report_callback'],
 		));
 
-		register_rest_route( 'givewp/v3', '/reports/page=(?P<page>[a-zA-Z0-9-]+)/', array(
+		register_rest_route( 'give-api/v2', '/reports/page=(?P<page>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [__CLASS__, 'handle_page_callback'],
 		));
 
-		register_rest_route( 'givewp/v3', '/reports/single=(?P<page>[a-zA-Z0-9-]+)/', array(
+		register_rest_route( 'give-api/v2', '/reports/single=(?P<page>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [__CLASS__, 'handle_single_callback'],
 		));
