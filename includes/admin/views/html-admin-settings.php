@@ -86,9 +86,13 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 				// Show link to New Reports page
 				$isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports' ? true : false;
-				if ($isReports === true) { ?>
-				<a href="<?php echo admin_url('edit.php?post_type=give_forms&page=give-reports-v3') ?>" class="nav-tab"><?php esc_html_e( 'New Reports Page', 'give' ); ?></a>
-				<?php } ?>
+				if ($isReports === true) {
+					echo sprintf(
+						'<a href="%1$s" class="nav-tab">%2$s</a>',
+						admin_url('edit.php?post_type=give_forms&page=give-reports-v3'),
+						esc_html__( 'New Reports Page', 'give' )
+					);
+				} ?>
 
 				<div class="give-sub-nav-tab-wrapper">
 					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php esc_html_e( 'View remaining setting tabs', 'give' ); ?>">
