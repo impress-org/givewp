@@ -32,13 +32,13 @@ class Reports_API {
 
 		register_rest_route( 'give-api/v2', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
-			'callback' => [__CLASS__, 'handle_report_callback'],
+			'callback' => [__CLASS__, 'handle_callback'],
 		));
 
 	}
 
 	//Return response for report API request
-	protected function handle_report_callback (WP_REST_Request $request) {
+	protected function handle_callback (WP_REST_Request $request) {
 		$report = self::$reports[$request['report']];
 		return $report->handle_api_callback($request);
 	}
