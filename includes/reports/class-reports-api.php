@@ -25,7 +25,8 @@ class Reports_API {
         $this->reports = $args['reports'];
 	}
 
-	//Register api routes for reports
+	// Register API routes for reports
+	// Example: https://give.test/wp-json/give-api/v2/report/payment-statuses
 	public function register_api_routes() {
 
 		register_rest_route( 'give-api/v2', '/report/(?P<report>[a-zA-Z0-9-]+)/', array(
