@@ -28,7 +28,7 @@ class Reports_API {
 	//Register api routes for reports
 	public function register_api_routes() {
 
-		register_rest_route( 'give-api/v2', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
+		register_rest_route( 'give-api/v2', '/report/(?P<report>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
 			'callback' => [$this, 'handle_callback'],
 		));
