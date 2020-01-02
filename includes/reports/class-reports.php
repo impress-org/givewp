@@ -28,18 +28,22 @@ class Reports {
 	 */
 	public function init() {
 
-		//Require reports
+		// Require reports
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payment-statuses-report.php';
 
+		// Register reports (keys used by Reports API as endpoints)
 		$this->reports = [
 			'payment-statuses' => new Payment_Statuses_Report(),
 		];
 
+		// Initialize Reports admin area
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-admin.php';
 
 		$admin = new Reports_Admin();
 		$admin->init();
 
+
+		// Initialize Reports API
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-api.php';
 
 		$api = new Reports_API([

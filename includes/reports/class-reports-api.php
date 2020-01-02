@@ -25,9 +25,7 @@ class Reports_API {
         $this->reports = $args['reports'];
 	}
 
-	// To do: refactor high-level API methods
-
-	//Register api routes for reports, pages, and singles
+	//Register api routes for reports
 	public function register_api_routes() {
 
 		register_rest_route( 'give-api/v2', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
