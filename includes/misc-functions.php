@@ -1581,6 +1581,7 @@ function give_donation_history_table_end() {
  *
  * @return void
  * @since  1.8.18
+ * @since  2.5.13 Refactor function
  */
 function give_doing_it_wrong( $function, $message, $version = null  ) {
 	/**
@@ -1592,7 +1593,7 @@ function give_doing_it_wrong( $function, $message, $version = null  ) {
 	 * @param string $replacement Optional. The function that should have been called.
 	 * @param string $version     The plugin version that deprecated the function.
 	 *
-	 * @since 1.0
+	 * @since 2.5.13
 	 */
 	do_action( 'give_doing_it_wrong', $function, $message, $version );
 
