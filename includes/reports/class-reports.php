@@ -32,7 +32,7 @@ class Reports {
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payment-statuses-report.php';
 
 		$this->reports = [
-			'payment-statuses' => new Payments_Report(),
+			'payment-statuses' => new Payment_Statuses_Report(),
 		];
 
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-admin.php';
