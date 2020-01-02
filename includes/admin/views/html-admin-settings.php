@@ -85,7 +85,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 				do_action( self::$setting_filter_prefix . '_tabs' );
 
 				// Show link to New Reports page
-				$isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports' ? true : false;
+				$isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports';
 				if ($isReports === true) {
 					echo sprintf(
 						'<a href="%1$s" class="nav-tab">%2$s</a>',
