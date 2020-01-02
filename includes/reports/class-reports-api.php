@@ -43,7 +43,6 @@ class Reports_API {
 	public function handle_callback (\WP_REST_Request $request) {
 			$report = $this->reports[$request['report']];
 			return $report->handle_api_callback($request['data']);
-		}
 	}
 
 }
