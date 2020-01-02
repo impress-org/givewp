@@ -28,19 +28,19 @@ class Reports_API {
 	// To do: refactor high-level API methods
 
 	//Register api routes for reports, pages, and singles
-	protected function register_api_routes() {
+	public function register_api_routes() {
 
 		register_rest_route( 'give-api/v2', '/reports/report=(?P<report>[a-zA-Z0-9-]+)/', array(
 			'methods' => 'GET',
-			'callback' => [__CLASS__, 'handle_callback'],
+			'callback' => [$this, 'handle_callback'],
 		));
 
 	}
 
 	//Return response for report API request
-	protected function handle_callback (WP_REST_Request $request) {
-		$report = self::$reports[$request['report']];
-		return $report->handle_api_callback($request);
+	public function handle_callback (\WP_REST_Request $request) {
+		$report = $this->reports[$request['report']];
+		return $report->handle_api_callback($request['data']);
 	}
 
 }

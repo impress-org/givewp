@@ -16,7 +16,7 @@ require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-report.php';
  */
 class Payment_Statuses_Report extends Report {
     public function handle_api_callback ($data) {
-        $response = new WP_REST_Response([
+        $response = new \WP_REST_Response([
             'key' => 'value',
             'report' => 'payment-statuses',
             'data' => [
