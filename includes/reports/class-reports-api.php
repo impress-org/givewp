@@ -41,8 +41,16 @@ class Reports_API {
 
 	//Return response for report API request
 	public function handle_callback (\WP_REST_Request $request) {
+		if (array_key_exists($request['report'], $this->reports)) {
 			$report = $this->reports[$request['report']];
 			return $report->handle_api_callback($request['data']);
+		} else {
+			return new \WP_Error( 
+				'rest_missing',
+				esc_html__( 'The requested report could not be found.' ),
+				['status' => 404]
+			);
+		}
 	}
 
 }
