@@ -29,14 +29,10 @@ class Reports {
 	public function init() {
 
 		//Require reports
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-donors-report.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payments-report.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-campaigns-report.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/reports/reports/class-payment-statuses-report.php';
 
 		$this->reports = [
-			'payments' => new Payments_Report(),
-			'donors' => new Donors_Report(),
-			'campaigns' => new Campaigns_Report(),
+			'payment-statuses' => new Payments_Report(),
 		];
 
 		require_once GIVE_PLUGIN_DIR . 'includes/reports/class-reports-admin.php';
