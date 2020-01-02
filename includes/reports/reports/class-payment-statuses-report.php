@@ -1,6 +1,8 @@
 <?php
 /**
- * Campaigns report
+ * Payment Status report
+ * Returns WP REST Response containing data to generate
+ * a payment statuses bar chart.
  *
  * @package Give
  */
