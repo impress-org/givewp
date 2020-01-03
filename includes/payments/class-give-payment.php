@@ -763,7 +763,7 @@ final class Give_Payment {
 			);
 
 			if ( ! empty( $custom_payment_meta ) ) {
-				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key has been deprecated for performance reasons. Your custom meta data will still be stored but we recommend updating your code to store meta keys individually.', 'give' ), '2.0.0' );
+				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key has been deprecated for performance reasons. Your custom meta data will still be stored but we recommend updating your code to store meta keys individually from GiveWP 2.0.0.', 'give' ) );
 
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
