@@ -5,14 +5,14 @@
  * @package Give
  */
 
-namespace Give;
+namespace Give\Reports;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages reports admin registration
  */
-class Reports_Admin {
+class AdminView {
 
 	/**
 	 * Initialize Reports Admin pages
@@ -31,8 +31,8 @@ class Reports_Admin {
 	//Add dashboard widget
 	public function add_dashboard_widget() {
 		wp_add_dashboard_widget(
-			'givewp_reports_widget', 
-			'GiveWP', 
+			'givewp_reports_widget',
+			'GiveWP',
 			[$this, 'render_widget_template']
 		);
 	}
@@ -87,11 +87,11 @@ class Reports_Admin {
 	}
 
 	public function render_template() {
-		include_once GIVE_PLUGIN_DIR . 'includes/reports/template.php';
+		include_once GIVE_PLUGIN_DIR . 'src/Reports/Views/template.php';
 	}
-	
+
 	public function render_widget_template() {
-		include_once GIVE_PLUGIN_DIR . 'includes/reports/widget-template.php';
+		include_once GIVE_PLUGIN_DIR . 'src/Reports/Views/widget-template.php';
 	}
-    
+
 }

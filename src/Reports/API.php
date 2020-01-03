@@ -5,14 +5,14 @@
  * @package Give
  */
 
-namespace Give;
+namespace Give\Reports;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages report api
  */
-class Reports_API {
+class API {
 
 	/**
 	 * Initialize Reports REST API

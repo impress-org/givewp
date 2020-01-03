@@ -29,5 +29,10 @@
     "post-update-cmd": [
       "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
     ]
+  },
+  "autoload": {
+	"psr-4": {
+	  "Give\\": "src/"
+	}
   }
 }
