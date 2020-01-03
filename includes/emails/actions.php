@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_trigger_donation_receipt( $payment_id ) {
 	// Make sure we don't send a receipt while editing a donation.
-	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
+	if ( ! is_numeric( $payment_id ) ) {
 		return;
 	}
 
