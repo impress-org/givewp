@@ -5,7 +5,7 @@
  * @package Give
  */
 
-namespace Give;
+namespace Give\Reports\Report;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,21 +19,20 @@ abstract class Report {
 	 *
 	 * @var string
 	 */
-    protected $period = [];
+	protected $period = [];
 
 	/**
 	 * Initialize.
 	 */
 	public function __construct() {
-        //Do nothing
-    }
+		//Do nothing
+	}
 
-	public function handle_api_callback ($data) {
-        $response = new WP_REST_Response([
-            'key' => 'value',
-            'report' => 'data'
-        ]);
-        return $response;
-    }
+	public function handle_api_callback( $data ) {
+		return new \WP_REST_Response( [
+			'key'    => 'value',
+			'report' => 'data',
+		] );
+	}
 
 }
