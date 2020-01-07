@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Functionality and actions specific to the payments report
  */
-class Payments extends Report {
+class Payment_Statuses extends Report {
 
+	/**
+	 * Initialize.
+	 */
+	public function __construct() {
+		//Do nothing
+    }
+    
 }

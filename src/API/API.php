@@ -13,15 +13,13 @@ defined( 'ABSPATH' ) || exit;
  * Manages API Endpoints
  */
 class API {
-
-	/**
-	 * Array of controllers to match each endpoint
-	 * See `init` for structure of the data and setup process
-	 *
-	 * @var array
+    
+    /**
+	 * WP REST API Namespace 
+	 * @var string
 	 */
 
-	protected $controllers = [];
+    protected $namespace = 'give-api/v2';
 
 	/**
 	 * Initialize Reports and Pages, register hooks
@@ -29,13 +27,21 @@ class API {
 	public function init() {
 		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
 		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-
-		$this->controllers = [
-			'reports' => new Controller\Reports(),
-		];
+        
+        $this->register_routes();
 	}
 
 	public function __construct() {
 		//Do nothing
-	}
+    }
+    
+    public function register_routes() {
+        
+        // Register Reports Routes
+        $reports = new Controllers\Reports();
+        $reports->register_routes();
+
+    }
 }
+$api = new API;
+$api->init();

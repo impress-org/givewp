@@ -30,21 +30,9 @@ class Reports {
 		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
 		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-		$this->reports = [
-			'payments' => new Report\Payments(),
-			'donors' => new Report\Donors(),
-			'campaigns' => new Report\Campaigns(),
-		];
-
 
 		$admin = new AdminView();
 		$admin->init();
-
-
-		$api = new API([
-			'reports' => $this->reports,
-		]);
-		$api->init();
 
 	}
 
