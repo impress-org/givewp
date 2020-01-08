@@ -83,7 +83,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
 function give_akismet( $spam ) {
 
 	// Bail out, If spam.
-	if ( $spam ) {
+	if ( $spam || ! give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) ) {
 		return $spam;
 	}
 
