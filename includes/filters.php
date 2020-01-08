@@ -151,16 +151,35 @@ function give_check_akismet_key() {
 /**
  * Detect spam through Akismet Comment API.
  *
- * @since 1.8.14
- *
  * @param array $args
  *
  * @return bool|mixed
+ * @since 1.8.14
+ * @since 2.3.15 Refactor function to use give_akismet_spam_check_post
+ *
  */
 function give_akismet_spam_check( $args ) {
+	$response = give_akismet_spam_check_post( $args );
+
+	// It's spam if response status is true.
+	$spam = 'true' === $response[1];
+
+	// Allow developer to modified Akismet spam detection response.
+	return apply_filters( 'give_akismet_spam_check', $spam, $args );
+}
+
+/**
+ * Detect spam through Akismet Comment API.
+ *
+ * @since 2.5.13
+ *
+ * @param array $args
+ *
+ * @return array
+ */
+function give_akismet_spam_check_post( $args ) {
 	global $akismet_api_host, $akismet_api_port;
 
-	$spam         = false;
 	$query_string = http_build_query( $args );
 
 	if ( is_callable( array( 'Akismet', 'http_post' ) ) ) { // Akismet v3.0+
@@ -170,13 +189,7 @@ function give_akismet_spam_check( $args ) {
 			'/1.1/comment-check', $akismet_api_port );
 	}
 
-	// It's spam if response status is true.
-	if ( 'true' === $response[1] ) {
-		$spam = true;
-	}
-
-	// Allow developer to modified Akismet spam detection response.
-	return apply_filters( 'give_akismet_spam_check', $spam, $args );
+	return $response;
 }
 
 /**
