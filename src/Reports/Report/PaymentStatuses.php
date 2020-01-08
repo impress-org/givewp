@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Payments report
  *
@@ -7,21 +8,24 @@
 
 namespace Give\Reports\Report;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Functionality and actions specific to the payments report
  */
-class PaymentStatuses extends Report {
+class PaymentStatuses extends Report
+{
 
-	/**
-	 * Initialize.
-	 */
-	public function __construct() {
-		//Do nothing
+    /**
+     * Initialize.
+     */
+    public function __construct()
+    {
+        //Do nothing
     }
 
-    public function get_datasets() {
+    public function get_datasets()
+    {
         $datasets = array(
             array(
                 'label' => 'Payment Statuses',
@@ -31,7 +35,8 @@ class PaymentStatuses extends Report {
         return $datasets;
     }
 
-    public function get_data() {
+    public function get_data()
+    {
         $data = array(
             '312',
             '206',
@@ -41,7 +46,8 @@ class PaymentStatuses extends Report {
         return $data;
     }
 
-    public function get_labels() {
+    public function get_labels()
+    {
         $labels = array(
             'PayPal',
             'Stripe',
@@ -50,5 +56,4 @@ class PaymentStatuses extends Report {
         );
         return $labels;
     }
-    
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reports class
  *
@@ -7,12 +8,13 @@
 
 namespace Give\Reports;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Manages reports
  */
-class Reports {
+class Reports
+{
 
 	/**
 	 * Gathers and sets up information for reports page
@@ -26,20 +28,22 @@ class Reports {
 	/**
 	 * Initialize Reports and Pages, register hooks
 	 */
-	public function init() {
+	public function init()
+	{
 		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
 		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
 		$admin = new AdminView();
 		$admin->init();
-
 	}
 
-	public function get_reports() {
+	public function get_reports()
+	{
 		return $this->reports;
 	}
 
-	public function __construct() {
+	public function __construct()
+	{
 		//Do nothing
 	}
 }
