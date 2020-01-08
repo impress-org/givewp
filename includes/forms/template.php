@@ -745,6 +745,10 @@ function give_add_button_open_form( $form_id, $args ){
 	 * @param array $args Shortcode argument
 	 */
 	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
+
+	// Remove action otherwise button will be added to coming form.
+	// @see https://github.com/impress-org/givewp/issues/4395
+	remove_action( 'give_post_form', 'give_add_button_open_form', 10 );
 }
 
 /**
