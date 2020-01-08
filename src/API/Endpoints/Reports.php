@@ -33,18 +33,53 @@ class Reports extends Endpoint {
             array(
                 'methods' => 'GET',
                 'callback' => array( $this, 'get_report' ),
-                'permission_callback' => array( $this, 'permissions_check' ),
+                //'permission_callback' => array( $this, 'permissions_check' ),
                 'args' => array(
                     'report' => array(
                         'type' => 'string',
                         'enum' => array_keys($this->reports),
                         'required' => true,
                     ),
+                    'start' => array(
+                        'type' => 'string',
+                        'required' => true,
+                        'validate_callback' => array($this, 'validate_date'),
+                        'sanitize_callback' => array($this, 'sanitize_date')
+                    ),
+                    'end' => array(
+                        'type' => 'string',
+                        'required' => true,
+                        'validate_callback' => array($this, 'validate_date'),
+                        'sanitize_callback' => array($this, 'sanitize_date')
+                    )
                 )
             ),
             // Register our schema callback.
             'schema' => array( $this, 'get_report_schema' ),
         ) );
+    }
+
+    public function validate_date( $param, $request, $key ) {
+
+        //Check that date is valid, and formatted YYYY-MM-DD
+        $exploded = explode('-', $param);
+        $valid = checkdate($exploded[1], $exploded[2], $exploded[0]);
+
+        //If checking end date, check that it is after start date
+        if ($key === 'end') {
+            $start = date($request['start']);
+            $end = date($request['end']);
+            $valid = $start < $end ? $valid : false;
+        }
+
+        return $valid;
+
+    }
+
+    public function sanitize_date( $param, $request, $key ) {
+        //Return Date object from parameter
+        $date = date($param);
+        return $date;
     }
 
     /**
@@ -69,7 +104,9 @@ class Reports extends Endpoint {
         $report = $this->reports[$request['report']];
 
         return new \WP_REST_Response( array(
-			'report' => $request['report'],
+            'report' => $request['report'],
+            'start' => $request['start'],
+            'end' => $request['end'],
 			'data' => array(
                 'labels' => $report->get_labels(),
                 'data' => $report->get_datasets(),
