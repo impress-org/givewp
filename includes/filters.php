@@ -117,13 +117,36 @@ function give_akismet( $spam ) {
 	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
 
 	foreach ( $_SERVER as $key => $value ) {
-		if ( ! in_array( $key, (array) $ignore ) ) {
+		if ( ! in_array( $key, $ignore, true ) ) {
 			$args["$key"] = $value;
 		}
 	}
 
+	$response = give_akismet_spam_check_post( $args );
+	$spam     = 'true' === $response[1];
+
+	// Log spam information.
+	if( $spam ) {
+		give_record_log(
+			sprintf(
+				'Spam flagged for %1$s (%2$s)',
+				$args['comment_author'],
+				$args['comment_author_email']
+			),
+			sprintf(
+				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
+				__('Request', 'give-zapier'),
+				print_r( $args, true ),
+				__('Response', 'give-zapier'),
+				print_r( $response, true )
+			),
+			0,
+			'spam'
+		);
+	}
+
 	// It will return Akismet spam detect API response.
-	return give_akismet_spam_check( $args );
+	return $spam;
 
 }
 
