@@ -5,21 +5,14 @@
  * @package Give
  */
 
-namespace Give\API\Controllers;
+namespace Give\API\Endpoints;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Common functionality for API Controllers. Override this class.
  */
-abstract class Controller {
-
-	/**
-	 * Variables used to register controller
-	 *
-	 * @var string
-	 */
-    protected $namespace = '/give-api/v2';
+abstract class Endpoint {
 
 	/**
 	 * Initialize.
