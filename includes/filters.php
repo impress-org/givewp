@@ -81,6 +81,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * @return bool|mixed
  */
 function give_akismet( $spam ) {
+	$args = array();
 
 	// Bail out, If spam.
 	if ( $spam || ! give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) ) {
@@ -92,11 +93,24 @@ function give_akismet( $spam ) {
 		return false;
 	}
 
+	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : false;
+
+	/**
+	 * Filter list of whitelisted emails
+	 *
+	 * @since 2.5.13
+	 */
+	$whitelist_emails = apply_filters( 'give_akismet_whitelist_emails', array() );
+
+	// Whitelist emails.
+	if ( in_array( $args['comment_author_email'],  (array) $whitelist_emails, true ) ) {
+		return false;
+	}
+
 	// Build args array.
 	$args = array();
 
 	$args['comment_author']       = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
-	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : false;
 	$args['blog']                 = get_option( 'home' );
 	$args['blog_lang']            = get_locale();
 	$args['blog_charset']         = get_option( 'blog_charset' );
