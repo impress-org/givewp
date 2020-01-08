@@ -81,6 +81,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * @return bool|mixed
  */
 function give_akismet( $spam ) {
+	// Build args array.
 	$args = array();
 
 	// Bail out, If spam.
@@ -106,9 +107,6 @@ function give_akismet( $spam ) {
 	if ( in_array( $args['comment_author_email'],  (array) $whitelist_emails, true ) ) {
 		return false;
 	}
-
-	// Build args array.
-	$args = array();
 
 	$args['comment_author']       = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
 	$args['blog']                 = get_option( 'home' );
