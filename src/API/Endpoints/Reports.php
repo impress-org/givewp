@@ -5,9 +5,9 @@
  * @package Give
  */
 
-namespace Give\API\Controllers;
+namespace Give\API\Endpoints;
 
-class Reports extends Controller {
+class Reports extends Endpoint {
 
     protected $reports = [];
  
@@ -17,34 +17,32 @@ class Reports extends Controller {
         $this->resource_name = 'reports';
 
         $this->reports = [
-            'payment_statuses' => new \Give\Reports\Report\Payment_Statuses()
+            'payment-statuses' => new \Give\Reports\Report\PaymentStatuses()
         ];
 
     }
 
+    public function init() {
+        add_action( 'rest_api_init', array( $this, 'register_routes' ));
+    }
+
     // Register our routes.
     public function register_routes() {
-        register_rest_route( '/give-api/v2/reports/?P<report>[a-zA-Z0-9-]+)/', array(
-            // Here we register the readable endpoint for collections.
+        register_rest_route( 'give-api/v2', '/reports/(?P<report>[a-zA-Z0-9-]+)', array(
+            // Here we register the readable endpoint
             array(
                 'methods' => 'GET',
                 'callback' => array( $this, 'get_report' ),
-                'permission_callback' => array( $this, 'permissions_check' ),
-                // 'args' => array(
-                //     'report' => array(
-                //         'type' => 'string',
-                //         'enum' => array_keys($this->reports),
-                //         'validate_callback' => function($param, $request, $key) {
-                //             return !empty( $param );
-                //         }
-                //     ),
-                //     'period' => array(
-                //         'validate_callback' => function($param, $request, $key) {
-                //             return !empty( $param );
-                //         },
-                //         'sanitize_callback' => '',
-                //     )
-                // )
+                //'permission_callback' => array( $this, 'permissions_check' ),
+                'args' => array(
+                    'report' => array(
+                        'type' => 'string',
+                        'enum' => array_keys($this->reports),
+                        'validate_callback' => function($param, $request, $key) {
+                            return !empty( $param );
+                        }
+                    ),
+                )
             ),
             // Register our schema callback.
             'schema' => array( $this, 'get_report_schema' ),
@@ -57,8 +55,8 @@ class Reports extends Controller {
     * @param WP_REST_Request $request Current request.
     */
     public function permissions_check( $request ) {
-        if ( ! current_user_can( 'manage_options' ) ) {
-            return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the reports resource.' ), array( 'status' => $this->authorization_status_code() ) );
+        if ( ! current_user_can( 'read' ) ) {
+            return new \WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the reports resource.' ), array( 'status' => $this->authorization_status_code() ) );
         }
         return true;
     }
@@ -69,7 +67,16 @@ class Reports extends Controller {
     * @param WP_REST_Request $request Current request.
     */
     public function get_report( $request ) {
-        return 'testingg';
+
+        $report = $this->reports[$request['report']];
+
+        return new \WP_REST_Response( array(
+			'report' => $request['report'],
+			'data' => array(
+                'labels' => $report->get_labels(),
+                'data' => $report->get_datasets(),
+            )
+        ));
     }
 
     /**
@@ -91,7 +98,7 @@ class Reports extends Controller {
             'type'                 => 'object',
             // In JSON Schema you can specify object properties in the properties attribute.
             'properties'           => array(
-                'name' => array(
+                'report' => array(
                     'description'  => esc_html__( 'Unique identifier for the report.', 'give' ),
                     'type'         => 'string',
                     'context'      => array( 'view', 'edit', 'embed' ),
