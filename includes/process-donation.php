@@ -595,13 +595,13 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
 	}
-	
+
 	// If credit card fields related actions exists then check for the cc fields validations.
 	if (
 		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
 		has_action('give_cc_form', 'give_get_cc_form' )
 	) {
-		
+
 		// Validate card number field for empty check.
 		if (
 			isset( $posted_data['card_number'] ) &&
@@ -612,7 +612,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card number.', 'give' ),
 			);
 		}
-		
+
 		// Validate card cvc field for empty check.
 		if (
 			isset( $posted_data['card_cvc'] ) &&
@@ -623,7 +623,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
 			);
 		}
-		
+
 		// Validate card name field for empty check.
 		if (
 			isset( $posted_data['card_name'] ) &&
@@ -634,7 +634,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
 			);
 		}
-		
+
 		// Validate card expiry field for empty check.
 		if (
 			isset( $posted_data['card_expiry'] ) &&
