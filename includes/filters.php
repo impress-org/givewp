@@ -118,7 +118,7 @@ function give_akismet( $spam ) {
 
 	foreach ( $_SERVER as $key => $value ) {
 		if ( ! in_array( $key, $ignore, true ) ) {
-			$args["$key"] = $value;
+			$args[$key] = $value;
 		}
 	}
 
