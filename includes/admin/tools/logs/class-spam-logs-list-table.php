@@ -61,9 +61,9 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'ID'      => __( 'Log ID', 'give' ),
-			'ip'      => __( 'Error', 'give' ),
+			'error'   => __( 'Error', 'give' ),
 			'date'    => __( 'Date', 'give' ),
-			'details' => __( 'Request Details', 'give' ),
+			'details' => __( 'Log Details', 'give' ),
 		);
 	}
 
@@ -99,7 +99,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 */
 	public function column_details( $item ) {
 		echo Give()->tooltips->render_link( array(
-			'label'       => __( 'View Request', 'give' ),
+			'label'       => __( 'View Log Details', 'give' ),
 			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
 			'attributes'  => array(
@@ -108,7 +108,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 		) );
 		?>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
-			<?php esc_html_e( $item['log_content'] ) ?>
+			<?php echo html_entity_decode( esc_html( $item['log_content'] ) ) ?>
 		</div>
 		<?php
 	}
@@ -183,7 +183,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 					'ID'          => $log->ID,
 					'date'        => $log->log_date,
 					'log_content' => $log->log_content,
-					'log_date'    => $log->log_date,
+					'error'       => $log->log_title,
 				);
 			}
 		}
