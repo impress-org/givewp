@@ -11,7 +11,7 @@ const giveFormOptions = {};
 // Form Order By
 giveFormOptions.orderBy = [
 	{value: 'date', label: __('Date Created')},
-	{value: 'name', label: __('Form Name')},
+	{value: 'title', label: __('Form Name')},
 	{value: 'amount_donated', label: __('Amount Donated')},
 	{value: 'number_donations', label: __('Number of Donations')},
 	{value: 'menu_order', label: __('Menu Order')},

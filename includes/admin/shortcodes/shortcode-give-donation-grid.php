@@ -61,7 +61,7 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 				'label'       => esc_attr__( 'Order By:', 'give' ),
 				'tooltip'     => esc_attr__( 'Different parameter to set the order for the forms display in the form grid.', 'give' ),
 				'options'     => array(
-					'name'             => esc_html__( 'Form Name', 'give' ),
+					'title'             => esc_html__( 'Form Name', 'give' ),
 					'amount_donated'   => esc_html__( 'Amount Donated', 'give' ),
 					'number_donations' => esc_html__( 'Number of Donations', 'give' ),
 					'menu_order'       => esc_html__( 'Menu Order', 'give' ),
