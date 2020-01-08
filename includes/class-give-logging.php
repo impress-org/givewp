@@ -130,6 +130,7 @@ class Give_Logging {
 	 * Sets up the default log types and allows for new ones to be created.
 	 *
 	 * @since  1.0
+	 * @since  2.5.13 Add spam as valid log
 	 * @access public
 	 *
 	 * @return array $terms
@@ -140,6 +141,7 @@ class Give_Logging {
 			'gateway_error',
 			'api_request',
 			'update',
+			'spam'
 		);
 
 		return apply_filters( 'give_log_types', $terms );

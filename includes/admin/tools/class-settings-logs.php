@@ -85,14 +85,16 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		/**
 		 * Get sections.
 		 *
-		 * @since 1.8
 		 * @return array
+		 * @since 1.8
+		 * @since 2.5.13 Add spam section
 		 */
 		public function get_sections() {
 			$sections = array(
 				'gateway_errors' => __( 'Payment Errors', 'give' ),
 				'api_requests'   => __( 'API Requests', 'give' ),
-				'updates'   => __( 'Updates', 'give' ),
+				'updates'        => __( 'Updates', 'give' ),
+				'spam'           => __( 'Spam', 'give' ),
 			);
 
 			$sections = apply_filters( 'give_log_views', $sections );

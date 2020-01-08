@@ -164,6 +164,51 @@ function give_logs_view_api_requests() {
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 
 /**
+ * Spam Logs
+ *
+ * @since 2.5.13
+ * @uses  Give_Spam_Log_Table::prepare_items()
+ * @uses  Give_Spam_Log_Table::display()
+ * @return void
+ */
+function give_logs_view_spam() {
+	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-spam-logs-list-table.php' );
+
+	$logs_table = new Give_Spam_Log_Table();
+	$logs_table->prepare_items();
+	?>
+	<div class="give-log-wrap">
+
+		<?php
+		/**
+		 * Fires before displaying spam logs.
+		 *
+		 * @since 2.5.13
+		 */
+		do_action( 'give_logs_spam_top' );
+
+		$logs_table->display(); ?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="spam"/>
+
+		<?php
+		/**
+		 * Fires after displaying spam logs.
+		 *
+		 * @since 2.5.13
+		 */
+		do_action( 'give_logs_spam_bottom' );
+		?>
+
+	</div>
+	<?php
+}
+
+add_action( 'give_logs_view_spam', 'give_logs_view_spam' );
+
+/**
  * Renders the log views drop down.
  *
  * @since 1.0
