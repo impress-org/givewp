@@ -21,7 +21,7 @@ class Reports {
 	 * @var array
 	 */
 
-	protected $reports = [];
+	public $reports = [];
 
 	/**
 	 * Initialize Reports and Pages, register hooks
@@ -30,10 +30,13 @@ class Reports {
 		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
 		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-
 		$admin = new AdminView();
 		$admin->init();
 
+	}
+
+	public function get_reports() {
+		return $this->reports;
 	}
 
 	public function __construct() {
