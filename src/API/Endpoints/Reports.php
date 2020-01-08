@@ -33,7 +33,7 @@ class Reports extends Endpoint {
             array(
                 'methods' => 'GET',
                 'callback' => array( $this, 'get_report' ),
-                //'permission_callback' => array( $this, 'permissions_check' ),
+                'permission_callback' => array( $this, 'permissions_check' ),
                 'args' => array(
                     'report' => array(
                         'type' => 'string',
