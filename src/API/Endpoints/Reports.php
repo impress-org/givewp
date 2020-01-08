@@ -38,9 +38,7 @@ class Reports extends Endpoint {
                     'report' => array(
                         'type' => 'string',
                         'enum' => array_keys($this->reports),
-                        'validate_callback' => function($param, $request, $key) {
-                            return !empty( $param );
-                        }
+                        'required' => true,
                     ),
                 )
             ),
