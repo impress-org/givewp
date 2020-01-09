@@ -119,7 +119,7 @@ class Reports extends Endpoint {
 				'end' => $request['end'],
 				'data' => array(
 					'labels' => $report->get_labels(),
-					'data' => $report->get_datasets(),
+					'datasets' => $report->get_datasets(),
 				)
 			)
 		);
