@@ -341,7 +341,7 @@ function give_donation_form_validate_fields() {
 		isset( $post_data['action'] )
 		&& give_is_spam_donation()
 	) {
-		give_set_error( 'spam_donation', __( 'The email you are using has been marked as one used in SPAM comments or donations. Try using a different email address, or contact this site\'s administrator', 'give' ) );
+		give_set_error( 'spam_donation', __( 'The email you are using has been flagged as one used in SPAM comments or donations by our system. Please try using a different email address or contact the site administrator if you have any questions.', 'give' ) );
 	}
 
 	// Start an array to collect valid data.
