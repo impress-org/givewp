@@ -5,6 +5,7 @@
 import Grid from '../../components/grid'
 import Card from '../../components/card'
 import Chart from '../../components/chart'
+import RESTChart from '../../components/rest-chart'
 import MiniChart from '../../components/mini-chart'
 import List from '../../components/list'
 import LocationItem from '../../components/location-item'
@@ -107,18 +108,10 @@ const OverviewPage = () => {
                 />
             </Card>
             <Card title={__('Pie Chart', 'give')} width={4}>
-                <Chart
+                <RESTChart
                     type='pie'
                     aspectRatio={0.6}
-                    data={{
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-                        datasets: [
-                            {
-                                label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
-                            }
-                        ]
-                    }}
+                    endpoint='payment-statuses'
                     showLegend={true}
                 />
             </Card>
