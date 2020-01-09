@@ -1,7 +1,8 @@
 import axios from 'axios'
 import Chart from '../chart'
 import { useState, useEffect, Fragment } from 'react'
-import { useStoreValue } from '../../app/store';
+import { useStoreValue } from '../../app/store'
+import PropTypes from 'prop-types'
 
 const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
@@ -28,8 +29,6 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 	}, [period, endpoint])
 
-
-
 	return (
 		<Fragment>
 			{fetched && (
@@ -43,4 +42,12 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 		</Fragment>
 	)
 }
+
+RESTChart.propTypes = {
+	type: PropTypes.string.isRequired,
+	aspectRatio: PropTypes.number,
+	endpoint: PropTypes.string.isRequired,
+	showLegend: PropTypes.bool
+}
+
 export default RESTChart
