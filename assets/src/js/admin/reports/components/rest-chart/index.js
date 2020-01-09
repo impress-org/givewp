@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Chart from '../chart'
 import { useState, useEffect, Fragment } from 'react'
-import { useStoreValue } from '../../store';
+import { useStoreValue } from '../../app/store';
 
 const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
