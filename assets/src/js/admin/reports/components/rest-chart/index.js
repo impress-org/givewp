@@ -12,7 +12,7 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 		console.log('period changed!', period)
 
-		axios.get(wpApiSettings.root + 'give-api/v2/reports/payment-statuses', {
+		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
 				start: '2011-09-14',
 				end: '2014-08-13'
