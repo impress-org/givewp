@@ -1,21 +1,12 @@
-import qs from 'qs';
 import axios from 'axios';
 import Chart from '../chart'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useStoreValue } from '../../store';
 
 const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 	const [{ period }, dispatch] = useStoreValue()
-	const [fetched, setFetched] = useState({
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-		datasets: [
-			{
-				label: 'Donations',
-				data: [4, 5, 3, 7, 5, 6]
-			}
-		]
-	})
+	const [fetched, setFetched] = useState(null)
 
 	useEffect(() => {
 
@@ -37,13 +28,19 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 	}, [period, endpoint])
 
+
+
 	return (
-		<Chart
-			type={type}
-			aspectRatio={aspectRatio}
-			data={fetched}
-			showLegend={showLegend}
-		/>
+		<Fragment>
+			{fetched && (
+				<Chart
+					type={type}
+					aspectRatio={aspectRatio}
+					data={fetched}
+					showLegend={showLegend}
+				/>
+			)}
+		</Fragment>
 	)
 }
 export default RESTChart
