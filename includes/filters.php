@@ -147,9 +147,9 @@ function give_akismet( $spam ) {
 			),
 			sprintf(
 				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
-				__('Request', 'give-zapier'),
+				__('Request', 'give'),
 				print_r( $args, true ),
-				__('Response', 'give-zapier'),
+				__('Response', 'give'),
 				print_r( $response, true )
 			),
 			0,
