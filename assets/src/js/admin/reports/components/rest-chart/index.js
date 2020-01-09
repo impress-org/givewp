@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import Chart from '../chart'
 import { useState, useEffect, Fragment } from 'react'
 import { useStoreValue } from '../../store';
@@ -14,8 +14,8 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
-				start: '2011-09-14',
-				end: '2014-08-13'
+				start: period.startDate.format('YYYY-MM-DD'),
+				end: period.startDate.format('YYYY-MM-DD')
 			},
 			headers: {
 				'X-WP-Nonce': wpApiSettings.nonce
