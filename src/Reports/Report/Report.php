@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract Report class
  *
@@ -7,32 +8,31 @@
 
 namespace Give\Reports\Report;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Common functionality for reports. Override this class.
  */
 abstract class Report {
 
-	/**
-	 * Variables used to register block type
-	 *
-	 * @var string
-	 */
-	protected $period = [];
+    /**
+     * Variables used to register block type
+     *
+     * @var string
+     */
+    protected $period = [];
 
-	/**
-	 * Initialize.
-	 */
-	public function __construct() {
-		//Do nothing
-	}
+    /**
+     * Initialize.
+     */
+    public function __construct() {
+        //Do nothing
+    }
 
-	public function handle_api_callback( $data ) {
-		return new \WP_REST_Response( [
-			'key'    => 'value',
-			'report' => 'data',
-		] );
-	}
-
+    public function handle_api_callback($data) {
+        return new \WP_REST_Response(array(
+            'key'    => 'value',
+            'report' => 'data',
+        ));
+    }
 }

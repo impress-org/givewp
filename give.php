@@ -597,6 +597,9 @@ if ( ! class_exists( 'Give' ) ) :
 			//Include new reports page
 			require_once GIVE_PLUGIN_DIR . 'src/Reports/Reports.php';
 
+			//Include API
+			require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
+
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
