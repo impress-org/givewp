@@ -1,14 +1,23 @@
+// Vendor dependencies
 import axios from 'axios'
-import Chart from '../chart'
 import { useState, useEffect, Fragment } from 'react'
-import { useStoreValue } from '../../app/store'
 import PropTypes from 'prop-types'
+
+// Components
+import Chart from '../chart'
+
+// Store-related dependencies
+import { useStoreValue } from '../../app/store'
 
 const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
+	// Use period from store
 	const [{ period }, dispatch] = useStoreValue()
+
+	// Use state to hold data fetched from API
 	const [fetched, setFetched] = useState(null)
 
+	// Fetch new data and update Chart when period changes
 	useEffect(() => {
 		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
@@ -40,9 +49,13 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 }
 
 RESTChart.propTypes = {
+	// Chart type (ex: line)
 	type: PropTypes.string.isRequired,
+	// Chart aspect ratio
 	aspectRatio: PropTypes.number,
+	// API endpoint where data is fetched (ex: 'payment-statuses')
 	endpoint: PropTypes.string.isRequired,
+	// Display Chart with Legend
 	showLegend: PropTypes.bool
 }
 
