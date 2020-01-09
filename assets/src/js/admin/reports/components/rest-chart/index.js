@@ -50,4 +50,11 @@ RESTChart.propTypes = {
 	showLegend: PropTypes.bool
 }
 
+RESTChart.defaultProps = {
+	type: null,
+	aspectRatio: 0.6,
+	endpoint: null,
+	showLegend: false
+}
+
 export default RESTChart
