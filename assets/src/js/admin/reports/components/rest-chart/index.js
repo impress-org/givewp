@@ -10,9 +10,6 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 	const [fetched, setFetched] = useState(null)
 
 	useEffect(() => {
-
-		console.log('period changed!', period)
-
 		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
 				start: period.startDate.format('YYYY-MM-DD'),
@@ -26,7 +23,6 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 			console.log(response)
 			setFetched(response.data.data)
 		})
-
 	}, [period, endpoint])
 
 	return (
