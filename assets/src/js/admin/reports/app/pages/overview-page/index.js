@@ -2,15 +2,15 @@
 // Pages use the Grid component to establish a
 // 12 column grid for content to exist in
 
-import Grid from '../../components/grid'
-import Card from '../../components/card'
-import Chart from '../../components/chart'
-import RESTChart from '../../components/rest-chart'
-import MiniChart from '../../components/mini-chart'
-import List from '../../components/list'
-import LocationItem from '../../components/location-item'
-import DonationItem from '../../components/donation-item'
-import DonorItem from '../../components/donor-item'
+import Grid from '../../../components/grid'
+import Card from '../../../components/card'
+import Chart from '../../../components/chart'
+import RESTChart from '../../../components/rest-chart'
+import MiniChart from '../../../components/mini-chart'
+import List from '../../../components/list'
+import LocationItem from '../../../components/location-item'
+import DonationItem from '../../../components/donation-item'
+import DonorItem from '../../../components/donor-item'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
