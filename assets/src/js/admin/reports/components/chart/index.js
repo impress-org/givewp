@@ -30,7 +30,7 @@ const Chart = ({type, aspectRatio, data, showLegend}) => {
             chart.destroy()
         }
 
-    }, [height])
+    }, [height, data])
 
     return (
         <div>

@@ -6,8 +6,8 @@ import { Switch, Route } from "react-router-dom"
 import moment from 'moment'
 
 // Store related dependencies
-import { StoreProvider } from '../store'
-import { reducer } from '../store/reducer'
+import { StoreProvider } from './store'
+import { reducer } from './store/reducer'
 
 // Components
 import PeriodSelector from '../components/period-selector'

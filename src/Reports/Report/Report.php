@@ -29,10 +29,4 @@ abstract class Report {
         //Do nothing
     }
 
-    public function handle_api_callback($data) {
-        return new \WP_REST_Response(array(
-            'key'    => 'value',
-            'report' => 'data',
-        ));
-    }
 }

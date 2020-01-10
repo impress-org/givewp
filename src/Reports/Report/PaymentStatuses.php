@@ -28,7 +28,7 @@ class PaymentStatuses extends Report
     {
         $datasets = array(
             array(
-                'label' => 'Payment Statuses',
+                'label' => 'Payments',
                 'data' => $this->get_data()
             )
         );

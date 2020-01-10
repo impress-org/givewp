@@ -73,7 +73,7 @@ class Reports extends Endpoint {
         if ( $key === 'end' ) {
             $start = date($request['start']);
             $end = date($request['end']);
-            $valid = $start < $end ? $valid : false;
+            $valid = $start <= $end ? $valid : false;
         }
 
         return $valid;
@@ -119,7 +119,7 @@ class Reports extends Endpoint {
 				'end' => $request['end'],
 				'data' => array(
 					'labels' => $report->get_labels(),
-					'data' => $report->get_datasets(),
+					'datasets' => $report->get_datasets(),
 				)
 			)
 		);

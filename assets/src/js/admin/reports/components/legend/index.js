@@ -11,7 +11,7 @@ import './style.scss'
 const Legend = ({data, chartRef}) => {
 
     // Calculate total value of points in dataset (used to find percentages)
-    const total = data.datasets[0].data.reduce((a, b) => a + b)
+	const total = data.datasets[0].data.reduce((a, b) => parseInt(a) + parseInt(b))
 
     const [inactiveItems, setInactiveItems] = useState([])
 

@@ -8,7 +8,7 @@ import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'rea
 import 'react-dates/lib/css/_datepicker.css'
 
 // Store-related dependencies
-import { useStoreValue } from '../../store';
+import { useStoreValue } from '../../app/store';
 
 
 import './style.scss'
@@ -57,10 +57,10 @@ const PeriodSelector = () => {
             <div className='datepicker'>
                 <DateRangePicker
                     noBorder={true}
-                    startDate={period.startDate} 
+                    startDate={period.startDate}
                     startDateId="givewp-reports-start"
                     endDate={period.endDate}
-                    endDateId="givewp-reports-end" 
+                    endDateId="givewp-reports-end"
                     onDatesChange={({ startDate, endDate }) => setDates(startDate, endDate)}
                     focusedInput={focusedInput}
                     onFocusChange={focusedInput => {
