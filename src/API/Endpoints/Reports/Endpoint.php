@@ -1,37 +1,31 @@
 <?php
 
 /**
- * Payments report
+ * Reports base endpoint
  *
  * @package Give
  */
 
-namespace Give\API\Endpoints;
+namespace Give\API\Endpoints\Reports;
 
-class Reports extends Endpoint {
+abstract class Endpoint {
 
-    protected $reports = [];
+    protected $endpoint;
 
-    // Here initialize our resource name.
+    // Here initialize our endpoint name.
     public function __construct() {
-
-        $this->resource_name = 'reports';
-
-        $this->reports = array(
-            'payment-statuses' => new \Give\Reports\Report\PaymentStatuses()
-		);
-
+		//Do nothing
     }
 
     public function init() {
-        add_action('rest_api_init', array($this, 'register_routes'));
+        add_action('rest_api_init', array($this, 'register_route'));
     }
 
     // Register our routes.
-    public function register_routes() {
+    public function register_route() {
         register_rest_route(
 			'give-api/v2',
-			'/reports/(?P<report>[a-zA-Z0-9-]+)',
+			'/reports/' . $this->endpoint,
 			array(
 				// Here we register the readable endpoint
 				array(
@@ -39,11 +33,6 @@ class Reports extends Endpoint {
 					'callback' => array($this, 'get_report'),
 					'permission_callback' => array($this, 'permissions_check'),
 					'args' => array(
-						'report' => array(
-							'type' => 'string',
-							'enum' => array_keys($this->reports),
-							'required' => true,
-						),
 						'start' => array(
 							'type' => 'string',
 							'required' => true,
@@ -73,7 +62,7 @@ class Reports extends Endpoint {
         if ( $key === 'end' ) {
             $start = date($request['start']);
             $end = date($request['end']);
-            $valid = $start < $end ? $valid : false;
+            $valid = $start <= $end ? $valid : false;
         }
 
         return $valid;
@@ -109,17 +98,11 @@ class Reports extends Endpoint {
      * @param WP_REST_Request $request Current request.
      */
     public function get_report($request) {
-
-        $report = $this->reports[$request['report']];
-
         return new \WP_REST_Response(
 			array(
-				'report' => $request['report'],
-				'start' => $request['start'],
-				'end' => $request['end'],
 				'data' => array(
-					'labels' => $report->get_labels(),
-					'data' => $report->get_datasets(),
+					'labels' => ['a', 'b', 'c'],
+					'data' => ['1', '4', '3'],
 				)
 			)
 		);
@@ -145,12 +128,6 @@ class Reports extends Endpoint {
             'type'                 => 'object',
             // In JSON Schema you can specify object properties in the properties attribute.
             'properties'           => array(
-                'report' => array(
-                    'description'  => esc_html__('Unique identifier for the report.', 'give'),
-                    'type'         => 'string',
-                    'context'      => array('view', 'edit', 'embed'),
-                    'readonly'     => true,
-                ),
                 'data' => array(
                     'description'  => esc_html__('The data for the report.', 'give'),
                     'type'         => 'object',
