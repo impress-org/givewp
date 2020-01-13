@@ -1,6 +1,6 @@
 {
 	"*.json": ["prettier --write", "git add"],
-	"*.php": ["./vendor/bin/phpcbf", "git add"],
+	"*.php": ["./vendor/bin/phpcbf --standard=WordPress", "git add"],
 	"*.{js,jsx}": ["eslint --fix", "git add"],
 	"*.css": ["stylelint --fix", "git add"]
 }

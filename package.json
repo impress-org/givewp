@@ -13,8 +13,8 @@
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
-        "lint:php": "./vendor/bin/phpcs",
-        "lint:php:fix": "./vendor/bin/phpcbf",
+        "lint:php": "./vendor/bin/phpcs --standard=WordPress",
+        "lint:php:fix": "./vendor/bin/phpcbf --standard=WordPress",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
     },
     "repository": {
