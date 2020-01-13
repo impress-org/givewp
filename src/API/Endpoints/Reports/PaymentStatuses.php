@@ -15,23 +15,33 @@ class PaymentStatuses extends Endpoint {
 	}
 
 	public function get_report($request) {
+
+		$args = [
+			'start-date' => $request['start'],
+			'end-date' => $request['end']
+		];
+		$payments = give_count_payments( $args );
+
 		return new \WP_REST_Response([
 			'data' => [
 				'labels' => [
-					'Stripe',
-					'Paypal',
-					'Other'
+					'Completed',
+					'Pending',
+					'Refunded',
+					'Abandoned'
 				],
 				'datasets' => [
 					[
 						'label' => 'Payments',
 						'data' => [
-							'200',
-							'143',
-							'33'
+							$payments->completed,
+							$payments->pending,
+							$payments->refunded,
+							$payments->abandoned
 						]
 					]
-				]
+				],
+				'payments' => $payments
 			]
 		]);
 	}
