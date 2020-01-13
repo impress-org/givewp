@@ -36,7 +36,6 @@ class PaymentMethods extends Endpoint {
 				'labels' => $labels,
 				'datasets' => [
 					[
-						'label' => 'Payments',
 						'data' => $data
 					]
 				],
