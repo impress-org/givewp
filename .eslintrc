@@ -2,8 +2,11 @@
   "root": true,
   "parser": "babel-eslint",
   "extends": [
-    "wordpress",
-    "plugin:react/recommended"
+	"plugin:prettier/recommended",
+	"prettier/react",
+
+	// Includes eslint-plugin-react, eslint-plugin-jsx-a11y
+	"plugin:@wordpress/eslint-plugin/recommended"
   ],
   "env": {
     "browser": false,
@@ -24,14 +27,14 @@
 		"document": true,
 		"giveApiSettings": true
   },
-  "plugins": ["react"],
+  "plugins": ["react", "react-hooks"],
   "settings": {
     "react": {
       "pragma": "wp"
     }
   },
   "rules": {
-		"linebreak-style": 0,
+	"linebreak-style": 0,
     "array-bracket-spacing": ["error", "always"],
     "brace-style": ["error", "1tbs"],
     "camelcase": ["error", { "properties": "never" }],
@@ -145,6 +148,10 @@
     "prefer-const": "error",
     "quote-props": ["error", "as-needed"],
     "react/display-name": "off",
+	"react-hooks/rules-of-hooks": "error",
+	"react-hooks/exhaustive-deps": "warn",
+	"react/jsx-props-no-spreading": "off",
+	"react/forbid-prop-types": "off",
     "react/jsx-curly-spacing": [
       "error",
       {
@@ -177,6 +184,6 @@
     "template-curly-spacing": ["error", "always"],
     "valid-jsdoc": ["error", { "requireReturn": false }],
     "valid-typeof": "error",
-    "yoda": "off"
+    "yoda": "off",
   }
 }
