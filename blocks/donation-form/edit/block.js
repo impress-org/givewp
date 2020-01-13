@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { ServerSideRender } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 
 /**
  * Internal dependencies
