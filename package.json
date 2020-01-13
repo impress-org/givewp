@@ -50,7 +50,6 @@
         "cssnano-preset-advanced": "^4.0.6",
         "eslint": "^5.15.3",
         "eslint-config-prettier": "^6.9.0",
-        "eslint-config-wordpress": "^2.0.0",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.12.3",
         "eslint-plugin-react-hooks": "^2.3.0",
