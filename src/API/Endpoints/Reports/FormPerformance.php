@@ -16,34 +16,28 @@ class FormPerformance extends Endpoint {
 
 	public function get_report($request) {
 
-		// Setup args for give_count_payments
-		$args = [
-			'start-date' => $request['start'],
-			'end-date' => $request['end']
-		];
+		$labels = [];
+		$data = [];
 
-		// Use give_count_payments logic to get payments
-		$payments = give_count_payments( $args );
+		$stats = new \Give_Payment_Stats;
+		$topForms = $stats->get_best_selling(5);
+
+		foreach ($topForms as $form) {
+			$title = get_the_title($form->form_id);
+			array_push($labels, $title);
+			array_push($data, $form->sales);
+		}
 
 		// Add caching logic here...
 
 		return new \WP_REST_Response([
 			'data' => [
-				'labels' => [
-					'Completed',
-					'Pending',
-					'Refunded',
-					'Abandoned'
-				],
+				'top' => $topForms,
+				'labels' => $labels,
 				'datasets' => [
 					[
-						'label' => 'Payments',
-						'data' => [
-							$payments->completed,
-							$payments->pending,
-							$payments->refunded,
-							$payments->abandoned
-						]
+						'label' => 'Sales',
+						'data' => $data
 					]
 				],
 			]
