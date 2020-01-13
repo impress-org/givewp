@@ -75,7 +75,8 @@
         "webpack": "^4.28.4",
         "webpack-cli": "^3.3.0",
         "webpack-rtl-plugin": "^2.0.0",
-        "wp-pot": "^1.7.0"
+        "wp-pot": "^1.7.0",
+        "wp-textdomain": "^1.0.1"
     },
     "dependencies": {
         "accounting": "latest",
