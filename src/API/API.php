@@ -35,6 +35,10 @@ class API {
 		// Load payment statuses endpoint
 		$paymentStatuses = new Endpoints\Reports\PaymentStatuses();
 		$paymentStatuses->init();
+
+		//Load payment methods endpoint
+		$paymentMethods = new Endpoints\Reports\PaymentMethods();
+		$paymentMethods->init();
 	}
 
 }
