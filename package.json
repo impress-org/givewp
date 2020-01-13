@@ -9,10 +9,12 @@
         "production": "cross-env NODE_ENV=production webpack",
         "build": "npm run production",
         "watch": "cross-env webpack --watch",
-        "lint": "npm run lint:js & npm run lint:scss",
+        "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
+        "lint:php": "./vendor/bin/phpcs",
+        "lint:php:fix": "./vendor/bin/phpcbf",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
     },
     "repository": {
