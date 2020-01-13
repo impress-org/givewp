@@ -8,10 +8,10 @@
 
 namespace Give\API\Endpoints\Reports;
 
-class PaymentStatuses extends Endpoint {
+class PaymentMethods extends Endpoint {
 
 	public function __construct() {
-		$this->endpoint = 'payment-statuses';
+		$this->endpoint = 'payment-methods';
 	}
 
 	public function get_report($request) {
@@ -25,8 +25,8 @@ class PaymentStatuses extends Endpoint {
 
 		foreach ( $gateways as $gateway_id => $gateway ) {
 			$donations = $stats->get_earnings( 0, date($request['start']), date($request['end']), $gateway_id );
-			array_push($labels, $gateway_id);
-			array_push($data = $donations);
+			array_push($labels, $gateway['admin_label']);
+			array_push($data, $donations);
 		}
 
 		// Add caching logic here...
