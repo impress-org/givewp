@@ -16,34 +16,28 @@ class PaymentStatuses extends Endpoint {
 
 	public function get_report($request) {
 
-		// Setup args for give_count_payments
-		$args = [
-			'start-date' => $request['start'],
-			'end-date' => $request['end']
-		];
+		$labels = [];
+		$data = [];
 
 		// Use give_count_payments logic to get payments
-		$payments = give_count_payments( $args );
+		$gateways = give_get_payment_gateways();
+		$stats = new \Give_Payment_Stats();
+
+		foreach ( $gateways as $gateway_id => $gateway ) {
+			$donations = $stats->get_earnings( 0, date($request['start']), date($request['end']), $gateway_id );
+			array_push($labels, $gateway_id);
+			array_push($data = $donations);
+		}
 
 		// Add caching logic here...
 
 		return new \WP_REST_Response([
 			'data' => [
-				'labels' => [
-					'Completed',
-					'Pending',
-					'Refunded',
-					'Abandoned'
-				],
+				'labels' => $labels,
 				'datasets' => [
 					[
 						'label' => 'Payments',
-						'data' => [
-							$payments->completed,
-							$payments->pending,
-							$payments->refunded,
-							$payments->abandoned
-						]
+						'data' => $data
 					]
 				],
 			]
