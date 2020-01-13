@@ -4,6 +4,9 @@ node_modules/*
 # Ignore Composer packages
 vendor/*
 
+# Ignore Directories
+sample-data/*
+
 # Ignore Files
 phpcs.xml
 package-lock.json
