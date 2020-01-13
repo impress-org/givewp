@@ -2,5 +2,5 @@
     "*.json": ["prettier --write", "git add"],
     "*.php": ["npm run lint:textdomain", "./vendor/bin/phpcbf --standard=WordPress", "git add"],
     "*.{js,jsx}": ["eslint --fix", "git add"],
-    "*.css": ["stylelint --fix", "git add"]
+    "*.scss": ["stylelint --fix", "git add"]
 }
