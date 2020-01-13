@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Reports base endpoint
+ * Form Performance endpoint
  *
  * @package Give
  */
@@ -19,9 +19,11 @@ class FormPerformance extends Endpoint {
 		$labels = [];
 		$data = [];
 
+		// Use Give Payment Stats class to get best selling forms
 		$stats = new \Give_Payment_Stats;
 		$topForms = $stats->get_best_selling(5);
 
+		// Populate data from top performing forms
 		foreach ($topForms as $form) {
 			$title = get_the_title($form->form_id);
 			array_push($labels, $title);
