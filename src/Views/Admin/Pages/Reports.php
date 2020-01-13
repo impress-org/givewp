@@ -11,11 +11,11 @@ namespace Give\Views\Admin\Pages;
 defined('ABSPATH') || exit;
 
 /**
- * Manages reports admin views
+ * Manages reports admin page
  */
 class Reports {
 	/**
-	 * Initialize Reports Admin pages
+	 * Initialize Reports Admin page
 	 */
 	public function init() {
 		add_action('admin_menu', [$this, 'add_page']);

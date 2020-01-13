@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
 class Views {
 
     /**
-     * Initialize Reports and Pages, register hooks
+     * Initialize admin and frontend views
      */
     public function init() {
         // To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
@@ -32,13 +32,9 @@ class Views {
 	}
 
 	public function load_admin_views() {
-
-		//require GIVE_PLUGIN_DIR . 'src/Views/Admin/Admin.php';
-
-		// Load payment statuses endpoint
+		// Init admin views
 		$admin = new Admin();
 		$admin->init();
-
 	}
 
 }

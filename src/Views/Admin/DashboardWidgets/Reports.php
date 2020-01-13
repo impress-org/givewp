@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
 class Reports {
 
 	/**
-	 * Initialize Reports Admin pages
+	 * Initialize Reports Dashboard Widget
 	 */
 	public function init() {
 		add_action('wp_dashboard_setup', [$this, 'add_dashboard_widget']);

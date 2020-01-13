@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
 class Admin {
 
     /**
-     * Initialize Reports and Pages, register hooks
+     * Initialize Admin views
      */
     public function init() {
 
@@ -33,13 +33,13 @@ class Admin {
 	}
 
 	public function load_dashboard_widgets() {
-		// Load payment statuses endpoint
+		// Load Reports dashboard widget
 		$reports = new Admin\DashboardWidgets\Reports();
 		$reports->init();
 	}
 
 	public function load_pages() {
-		// Load payment statuses endpoint
+		// Load Reports page
 		$reports = new Admin\Pages\Reports();
 		$reports->init();
 	}
