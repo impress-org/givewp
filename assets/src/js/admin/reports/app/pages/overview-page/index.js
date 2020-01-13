@@ -2,14 +2,15 @@
 // Pages use the Grid component to establish a
 // 12 column grid for content to exist in
 
-import Grid from '../../components/grid'
-import Card from '../../components/card'
-import Chart from '../../components/chart'
-import MiniChart from '../../components/mini-chart'
-import List from '../../components/list'
-import LocationItem from '../../components/location-item'
-import DonationItem from '../../components/donation-item'
-import DonorItem from '../../components/donor-item'
+import Grid from '../../../components/grid'
+import Card from '../../../components/card'
+import Chart from '../../../components/chart'
+import RESTChart from '../../../components/rest-chart'
+import MiniChart from '../../../components/mini-chart'
+import List from '../../../components/list'
+import LocationItem from '../../../components/location-item'
+import DonationItem from '../../../components/donation-item'
+import DonorItem from '../../../components/donor-item'
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -76,49 +77,26 @@ const OverviewPage = () => {
                 />
             </Card>
             <Card title={__('Dougnhut Chart', 'give')} width={4}>
-                <Chart
+				<RESTChart
                     type='doughnut'
                     aspectRatio={0.6}
-                    data={{
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-                        datasets: [
-                            {
-                                label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
-                            }
-                        ]
-                    }}
+                    endpoint='payment-statuses'
                     showLegend={true}
                 />
             </Card>
             <Card title={__('Bar Chart', 'give')} width={4}>
-                <Chart
+				<RESTChart
                     type='bar'
                     aspectRatio={1.2}
-                    data={{
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-                        datasets: [
-                            {
-                                label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
-                            }
-                        ]
-                    }}
+                    endpoint='payment-statuses'
+                    showLegend={false}
                 />
             </Card>
             <Card title={__('Pie Chart', 'give')} width={4}>
-                <Chart
+                <RESTChart
                     type='pie'
                     aspectRatio={0.6}
-                    data={{
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-                        datasets: [
-                            {
-                                label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
-                            }
-                        ]
-                    }}
+                    endpoint='payment-statuses'
                     showLegend={true}
                 />
             </Card>
@@ -308,22 +286,11 @@ const OverviewPage = () => {
                 </List>
             </Card>
             <Card title={__('Line Chart', 'give')} width={12}>
-                <Chart
+				<RESTChart
                     type='line'
                     aspectRatio={0.4}
-                    data={{
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul'],
-                        datasets: [
-                            {
-                                label: 'Donations',
-                                data: [4, 5, 3, 7, 5, 6]
-                            },
-                            // {
-                            //     label: 'Refunds',
-                            //     data: [2, 4, 6, 4, 3, 4]
-                            // }
-                        ]
-                    }}
+                    endpoint='payment-statuses'
+                    showLegend={false}
                 />
             </Card>
         </Grid>
