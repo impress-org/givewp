@@ -76,15 +76,15 @@ const OverviewPage = () => {
                     }}
                 />
             </Card>
-            <Card title={__('Dougnhut Chart', 'give')} width={4}>
+            <Card title={__('Payment Methods', 'give')} width={4}>
 				<RESTChart
                     type='doughnut'
                     aspectRatio={0.6}
-                    endpoint='payment-statuses'
+                    endpoint='payment-methods'
                     showLegend={true}
                 />
             </Card>
-            <Card title={__('Bar Chart', 'give')} width={4}>
+            <Card title={__('Payment Statuses', 'give')} width={4}>
 				<RESTChart
                     type='bar'
                     aspectRatio={1.2}

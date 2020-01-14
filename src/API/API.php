@@ -36,6 +36,10 @@ class API {
 		$paymentStatuses = new Endpoints\Reports\PaymentStatuses();
 		$paymentStatuses->init();
 
+		//Load payment methods endpoint
+		$paymentMethods = new Endpoints\Reports\PaymentMethods();
+		$paymentMethods->init();
+    
 		// Load form performance endpoint
 		$formPerformance = new Endpoints\Reports\FormPerformance();
 		$formPerformance->init();
