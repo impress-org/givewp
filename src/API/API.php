@@ -35,6 +35,10 @@ class API {
 		// Load payment statuses endpoint
 		$paymentStatuses = new Endpoints\Reports\PaymentStatuses();
 		$paymentStatuses->init();
+
+		// Load donations vs income endpoint
+		$donationsVsIncome = new Endpoints\Reports\DonationsVsIncome();
+		$donationsVsIncome->init();
 	}
 
 }
