@@ -22,14 +22,14 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
 				start: period.startDate.format('YYYY-MM-DD'),
-				end: period.startDate.format('YYYY-MM-DD')
+				end: period.endDate.format('YYYY-MM-DD')
 			},
 			headers: {
 				'X-WP-Nonce': wpApiSettings.nonce
 			}
 		})
 		.then(function (response) {
-			console.log(response)
+			console.log(endpoint, response)
 			setFetched(response.data.data)
 		})
 	}, [period, endpoint])
