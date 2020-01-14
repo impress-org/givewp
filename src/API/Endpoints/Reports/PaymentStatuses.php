@@ -39,7 +39,7 @@ class PaymentStatuses extends Endpoint {
 					[
 						'label' => 'Payments',
 						'data' => [
-							$payments->completed,
+							$payments->publish,
 							$payments->pending,
 							$payments->refunded,
 							$payments->abandoned

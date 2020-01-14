@@ -92,11 +92,11 @@ const OverviewPage = () => {
                     showLegend={false}
                 />
             </Card>
-            <Card title={__('Pie Chart', 'give')} width={4}>
+            <Card title={__('Form Performance (All Time)', 'give')} width={4}>
                 <RESTChart
                     type='pie'
                     aspectRatio={0.6}
-                    endpoint='payment-statuses'
+                    endpoint='form-performance'
                     showLegend={true}
                 />
             </Card>
