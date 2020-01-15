@@ -138,8 +138,7 @@ function give_akismet( $spam ) {
 	}
 
 	$response = give_akismet_spam_check_post( $args );
-	// $spam     = 'true' === $response[1];
-	$spam = true;
+	$spam     = 'true' === $response[1];
 
 	// Log spam information.
 	if ( $spam && ! give_akismet_is_email_logged( $args['comment_author_email'] ) ) {
