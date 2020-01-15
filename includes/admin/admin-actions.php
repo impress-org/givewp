@@ -329,6 +329,17 @@ function _give_register_admin_notices() {
 							)
 						);
 						break;
+					case 'akismet-deblacklisted-email':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-akismet-deblacklisted-email',
+								'type'        => 'updated',
+								'description' => __( 'Email de-blacklisted successfully. Now Donor will able to process donation with email flagged as spam', 'give' ),
+								'show'        => true,
+								'dismissible' => 'auto',
+							)
+						);
+						break;
 				}// End switch().
 			}// End if().
 
@@ -1478,7 +1489,7 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		}
 
 		// Redirect to Akismet setting page.
-		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection' );
+		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
 	}
 }
 add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
