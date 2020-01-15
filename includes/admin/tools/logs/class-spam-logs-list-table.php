@@ -53,6 +53,35 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Show the search field
+	 *
+	 * @since  2.5.13
+	 * @access public
+	 *
+	 * @param string $text     Label for the search box
+	 * @param string $input_id ID of the search box
+	 *
+	 * @return void
+	 */
+	public function search_box( $text, $input_id ) {
+		$input_id = "{$input_id}-search-input";
+
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+		}
+		if ( ! empty( $_REQUEST['order'] ) ) {
+			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+		}
+		?>
+		<p class="search-box" role="search">
+			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
+		</p>
+		<?php
+	}
+
+	/**
 	 * Retrieve the table columns
 	 *
 	 * @access public
@@ -165,6 +194,18 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Retrieves the search query string
+	 *
+	 * @access public
+	 * @since  2.5.13
+	 *
+	 * @return string|bool String if search is present, false otherwise
+	 */
+	public function get_search() {
+		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+	}
+
+	/**
 	 * Retrieve the current page number
 	 *
 	 * @access public
@@ -173,6 +214,31 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+	}
+
+	/**
+	 * Gets the meta query for the log query
+	 *
+	 * This is used to return log entries that match our search query
+	 *
+	 * @access public
+	 * @since  2.5.13
+	 *
+	 * @return array $meta_query
+	 */
+	public function get_meta_query() {
+
+		$meta_query = array( 'relation' => 'OR' );
+		$search     = $this->get_search();
+
+		if ( $search ) {
+			$meta_query[] = array(
+				'key'   => 'donor_email',
+				'value' => $search,
+			);
+		}
+
+		return $meta_query;
 	}
 
 	/**
@@ -188,6 +254,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 		$log_query = array(
 			'log_type'       => 'spam',
 			'paged'          => $paged,
+			'meta_query'     => $this->get_meta_query(),
 			'posts_per_page' => $this->per_page,
 		);
 
@@ -245,7 +312,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $this->get_logs();
-		$total_items           = Give()->logs->get_log_count( 0, 'spam' );
+		$total_items           = Give()->logs->get_log_count( 0, 'spam', $this->get_meta_query() );
 
 		$this->set_pagination_args(
 			array(
