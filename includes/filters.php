@@ -100,8 +100,10 @@ function give_akismet( $spam ) {
 	 * Filter list of whitelisted emails
 	 *
 	 * @since 2.5.13
+	 *
+	 * @param array
 	 */
-	$whitelist_emails = apply_filters( 'give_akismet_whitelist_emails', array() );
+	$whitelist_emails = apply_filters( 'give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails() );
 
 	// Whitelist emails.
 	if ( in_array( $args['comment_author_email'], (array) $whitelist_emails, true ) ) {
@@ -146,7 +148,14 @@ function give_akismet( $spam ) {
 				$args['comment_author'],
 				$donor_last_name,
 				$args['comment_author_email'],
-				admin_url(),
+				add_query_arg(
+					array(
+						'give-action' => 'akismet_whitelist_spammed_email',
+						'email'       => $args['comment_author_email'],
+						'_wpnonce'    => wp_create_nonce( 'give_akismet_whitelist_spammed_email_' . $args['comment_author_email'] ),
+					),
+					admin_url()
+				),
 				__( 'Click on this link to whitelist this email address to process donation.', 'give' )
 			),
 			sprintf(
@@ -232,6 +241,19 @@ function give_akismet_spam_check_post( $args ) {
 	}
 
 	return $response;
+}
+
+/**
+ * Get list of whitelisted emails.
+ *
+ * @return array
+ * @since 2.5.13
+ */
+function give_akismet_get_whitelisted_emails() {
+	return give_get_option(
+		'akismet_whitelisted_email_addresses',
+		get_bloginfo( 'admin_email' )
+	);
 }
 
 /**
