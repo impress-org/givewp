@@ -168,7 +168,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @see    : https://github.com/impress-org/give/issues/564
 	 *
-	 * @since  1.4.1
+	 * @since  2.5.13
 	 * @access protected
 	 *
 	 * @param string $which
