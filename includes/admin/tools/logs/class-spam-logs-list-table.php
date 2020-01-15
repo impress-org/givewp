@@ -82,7 +82,21 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'error':
-				return $item[ $column_name ];
+				$action      = 'akismet_deblacklist_spammed_email';
+				$donor_email = Give()->logmeta_db->get_meta( $item['ID'], 'donor_email', true );
+
+				return str_replace(
+					'#noncelink',
+					add_query_arg(
+						array(
+							'give-action' => $action,
+							'email'       => $donor_email,
+							'_wpnonce'    => wp_create_nonce( "give_{$action}_{$donor_email}" ),
+						),
+						admin_url()
+					),
+					$item[ $column_name ]
+				);
 
 			default:
 				return esc_attr( $item[ $column_name ] );
