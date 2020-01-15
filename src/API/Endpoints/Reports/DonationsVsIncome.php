@@ -23,26 +23,32 @@ class DonationsVsIncome extends Endpoint {
 		$data = [];
 
 		switch(true) {
-			case ($diff->days > 400):
-				$data = $this->get_data($start, $end, 'P1Y');
+			case ($diff->days > 900):
+				$data = $this->get_data($start, $end, 'P1Y', 'Y');
+				break;
+			case ($diff->days > 600):
+				$data = $this->get_data($start, $end, 'P6M', 'F Y');
+				break;
+			case ($diff->days > 300):
+				$data = $this->get_data($start, $end, 'P3M', 'F Y');
 				break;
 			case ($diff->days > 120):
-				$data = $this->get_data($start, $end, 'P1M');
+				$data = $this->get_data($start, $end, 'P1M', 'M Y');
 				break;
 			case ($diff->days > 30):
-				$data = $this->get_data($start, $end, 'P7D');
+				$data = $this->get_data($start, $end, 'P7D', 'M jS');
 				break;
 			case ($diff->days > 10):
-				$data = $this->get_data($start, $end, 'P3D');
+				$data = $this->get_data($start, $end, 'P3D', 'M jS');
 				break;
 			case ($diff->days > 4):
-				$data = $this->get_data($start, $end, 'P1D');
+				$data = $this->get_data($start, $end, 'P1D', 'l');
 				break;
 			case ($diff->days > 1):
-				$data = $this->get_data($start, $end, 'PT6H');
+				$data = $this->get_data($start, $end, 'PT6H', 'D ga');
 				break;
 			case ($diff->days >= 0):
-				$data = $this->get_data($start, $end, 'PT1H');
+				$data = $this->get_data($start, $end, 'PT1H', 'D ga');
 				break;
 		}
 
@@ -53,7 +59,7 @@ class DonationsVsIncome extends Endpoint {
 		]);
 	}
 
-	public function get_data($start, $end, $interval) {
+	public function get_data($start, $end, $interval, $format) {
 
 		$stats = new \Give_Payment_Stats();
 
@@ -71,6 +77,7 @@ class DonationsVsIncome extends Endpoint {
 			$periodEnd = clone $start;
 			date_add($periodEnd, $dateInterval);
 
+			$label = $periodEnd->format($format);
 			$periodEnd = $periodEnd->format('Y-m-d H:i:s');
 
 			$donationsForPeriod = $stats->get_sales( 0, $periodStart, $periodEnd );
@@ -78,7 +85,7 @@ class DonationsVsIncome extends Endpoint {
 
 			array_push($donations, $donationsForPeriod);
 			array_push($income, $incomeForPeriod);
-			array_push($labels, $periodEnd);
+			array_push($labels, $label);
 			array_push($periods, $periodStart);
 
 			date_add($start, $dateInterval);
