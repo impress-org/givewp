@@ -138,24 +138,17 @@ function give_akismet( $spam ) {
 	}
 
 	$response = give_akismet_spam_check_post( $args );
-	$spam     = 'true' === $response[1];
+	// $spam     = 'true' === $response[1];
+	$spam = true;
 
 	// Log spam information.
 	if ( $spam ) {
-		give_record_log(
+		$log_id = give_record_log(
 			sprintf(
-				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="%4$s" title="%5$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
+				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="#noncelink" title="%4$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
 				$args['comment_author'],
 				$donor_last_name,
 				$args['comment_author_email'],
-				add_query_arg(
-					array(
-						'give-action' => 'akismet_whitelist_spammed_email',
-						'email'       => $args['comment_author_email'],
-						'_wpnonce'    => wp_create_nonce( 'give_akismet_whitelist_spammed_email_' . $args['comment_author_email'] ),
-					),
-					admin_url()
-				),
 				__( 'Click on this link to whitelist this email address to process donation.', 'give' )
 			),
 			sprintf(
@@ -168,6 +161,8 @@ function give_akismet( $spam ) {
 			0,
 			'spam'
 		);
+
+		Give()->logmeta_db->add_meta( $log_id, 'donor_email', $args['comment_author_email'] );
 	}
 
 	// It will return Akismet spam detect API response.
