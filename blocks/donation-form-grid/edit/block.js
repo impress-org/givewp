@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * WordPress dependencies
  */
 const { Fragment } = wp.element;
-const { ServerSideRender } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 const { withSelect } = wp.data;
 
 /**
