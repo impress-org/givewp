@@ -37,16 +37,35 @@ const RESTList = ({endpoint}) => {
 		})
 	}, [period, endpoint])
 
-	const items = fetched.map((item, index) => {
+	const items = fetched ? fetched.map((item, index) => {
 		switch (item.type) {
 			case 'donor':
-				return <DonorItem name={item.name} />
+				return <DonorItem
+							image={item.image}
+							name={item.name}
+							email={item.email}
+							count={item.count}
+							total={item.total}
+						/>
 			case 'donation':
-				return <DonationItem name={item.name} />
+				return <DonationItem
+							status={item.status}
+							amount={item.amount}
+							time={item.time}
+							donor={item.donor}
+							source={item.source}
+						/>
 			case 'location':
-				return <LocationItem name={item.name} />
+				return <LocationItem
+							city={item.city}
+							state={item.state}
+							country={item.country}
+							flag={item.flag}
+							count={item.count}
+							total={item.total}
+						/>
 		}
-	})
+	}) : null
 
 	return (
 		<Fragment>

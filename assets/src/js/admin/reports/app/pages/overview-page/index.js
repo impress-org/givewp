@@ -8,6 +8,7 @@ import Chart from '../../../components/chart'
 import RESTChart from '../../../components/rest-chart'
 import MiniChart from '../../../components/mini-chart'
 import List from '../../../components/list'
+import RESTList from '../../../components/rest-list'
 import LocationItem from '../../../components/location-item'
 import DonationItem from '../../../components/donation-item'
 import DonorItem from '../../../components/donor-item'
@@ -101,75 +102,7 @@ const OverviewPage = () => {
                 />
             </Card>
             <Card title={__('Donor List', 'give')} width={4}>
-                <List onScrollEnd={() => alert('Reached end!')} >
-                    <DonorItem
-                        image={null}
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        name='Test A Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        name='Test'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        name='Does This Work'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                    <DonorItem
-                        image='./default.png'
-                        name='Test Name'
-                        email='email@test.org'
-                        count='2 Donations'
-                        total='$200.00'
-                    />
-                </List>
+				<RESTList endpoint='top-donors' />
             </Card>
             <Card title={__('Location List', 'give')} width={4}>
                 <List onScrollEnd={() => alert('reached end!')}>

@@ -39,10 +39,14 @@ class API {
 		//Load payment methods endpoint
 		$paymentMethods = new Endpoints\Reports\PaymentMethods();
 		$paymentMethods->init();
-    
+
 		// Load form performance endpoint
 		$formPerformance = new Endpoints\Reports\FormPerformance();
 		$formPerformance->init();
+
+		// Load top donors endpoint
+		$topDonors = new Endpoints\Reports\TopDonors();
+		$topDonors->init();
 	}
 
 }
