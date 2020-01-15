@@ -173,7 +173,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name'             => __( 'WhiteListed Email Addresses', 'give' ),
+							'name'             => __( 'Whitelist by Email', 'give' ),
 							'desc'             => sprintf(
 								'%1$s %2$s',
 								__( 'Add email address to this list which is flagged as SPAM in Akismet (to allow them to donate). This options will not responsible to remove spam email address from Akismet database but instead allow donor to process donation even if his/her email address flagged as SPAM when donating.', 'give' ),
