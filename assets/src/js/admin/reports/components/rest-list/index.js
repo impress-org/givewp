@@ -46,6 +46,7 @@ const RESTList = ({endpoint}) => {
 							email={item.email}
 							count={item.count}
 							total={item.total}
+							key={index}
 						/>
 			case 'donation':
 				return <DonationItem
@@ -54,6 +55,7 @@ const RESTList = ({endpoint}) => {
 							time={item.time}
 							donor={item.donor}
 							source={item.source}
+							key={index}
 						/>
 			case 'location':
 				return <LocationItem
@@ -63,6 +65,7 @@ const RESTList = ({endpoint}) => {
 							flag={item.flag}
 							count={item.count}
 							total={item.total}
+							key={index}
 						/>
 		}
 	}) : null
