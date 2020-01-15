@@ -184,13 +184,20 @@ class Give_Spam_Log_Table extends WP_List_Table {
 				$logs_data[] = array(
 					'ID'          => $log->ID,
 					'date'        => $log->log_date,
-					'log_content' => wp_kses( $log->log_content, array( 'p', 'pre', 'strong' ) ),
+					'log_content' => wp_kses(
+						$log->log_content,
+						array(
+							'p'      => array(),
+							'pre'    => array(),
+							'strong' => array(),
+						)
+					),
 					'error'       => wp_kses(
 						$log->log_title,
 						array(
-							'p',
-							'strong',
-							'a' => array(
+							'p'      => array(),
+							'strong' => array(),
+							'a'      => array(
 								'href'   => array(),
 								'title'  => array(),
 								'target' => array(),
