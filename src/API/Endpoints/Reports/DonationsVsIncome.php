@@ -26,10 +26,10 @@ class DonationsVsIncome extends Endpoint {
 			case ($diff->days > 900):
 				$data = $this->get_data($start, $end, 'P1Y', 'Y');
 				break;
-			case ($diff->days > 600):
+			case ($diff->days > 700):
 				$data = $this->get_data($start, $end, 'P6M', 'F Y');
 				break;
-			case ($diff->days > 300):
+			case ($diff->days > 400):
 				$data = $this->get_data($start, $end, 'P3M', 'F Y');
 				break;
 			case ($diff->days > 120):
