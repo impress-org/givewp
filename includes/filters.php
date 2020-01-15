@@ -142,7 +142,7 @@ function give_akismet( $spam ) {
 	$spam = true;
 
 	// Log spam information.
-	if ( $spam ) {
+	if ( $spam && ! give_akismet_is_email_logged( $args['comment_author_email'] ) ) {
 		$log_id = give_record_log(
 			sprintf(
 				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="#noncelink" title="%4$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
@@ -163,6 +163,7 @@ function give_akismet( $spam ) {
 		);
 
 		Give()->logmeta_db->add_meta( $log_id, 'donor_email', $args['comment_author_email'] );
+		Give()->logmeta_db->add_meta( $log_id, 'filter', 'akismet' );
 	}
 
 	// It will return Akismet spam detect API response.
@@ -236,6 +237,34 @@ function give_akismet_spam_check_post( $args ) {
 	}
 
 	return $response;
+}
+
+
+/**
+ * Check if email already logged or not
+ *
+ * @param $email
+ *
+ * @return bool
+ * @since 2.5.13
+ */
+function give_akismet_is_email_logged( $email ) {
+	return (bool) Give()->log_db->count(
+		array(
+			'log_type'   => 'spam',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'donor_email',
+					'value' => $email,
+				),
+				array(
+					'key'   => 'filter',
+					'value' => 'akismet',
+				),
+			),
+		)
+	);
 }
 
 /**
