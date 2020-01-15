@@ -32,11 +32,11 @@ export function formatData (type, data) {
 function createStyles (type, data, index) {
 
     const palette = [
-        '#69B868',
-        '#F49420',
+		'#69B868',
+		'#556E79',
+		'#9EA3A8',
         '#D75A4B',
-        '#556E79',
-        '#9EA3A8'
+		'#F49420'
     ]
 
     const styles = {
