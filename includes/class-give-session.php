@@ -609,7 +609,7 @@ class Give_Session {
 	public function use_php_sessions() {
 		$ret = false;
 
-		give_doing_it_wrong( __FUNCTION__, __( 'We are using database session logic instead of PHP session', 'give' ), '2.2.0' );
+		give_doing_it_wrong( __FUNCTION__, __( 'We are using database session logic instead of PHP session since GiveWP 2.2.0', 'give' ) );
 
 		return (bool) apply_filters( 'give_use_php_sessions', $ret );
 	}
@@ -629,7 +629,7 @@ class Give_Session {
 
 		$start_session = true;
 
-		give_doing_it_wrong( __FUNCTION__, __( 'We are using database session logic instead of PHP session', 'give' ), '2.2.0' );
+		give_doing_it_wrong( __FUNCTION__, __( 'We are using database session logic instead of PHP session since GiveWP 2.2.0', 'give' ) );
 
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {  // @codingStandardsIgnoreLine

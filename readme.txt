@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 2.5.12
+Stable tag: 2.5.13
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,12 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.5.13: January 15th, 2020 =
+* Fix: Resolved an issue when using button mode of multiple donation buttons appearing incorrectly within shortcodes, blocks, and widgets. [#4379](https://github.com/impress-org/givewp/issues/4379)
+* Fix: Correct an ordering issue with the form grid when sorting by "Form Title" it was using the slug rather than the actual donation form title. [#4392](https://github.com/impress-org/givewp/issues/4392)
+* Fix: Removed deprecated usage of `wp.components.ServerSideRender` in our Gutenberg blocks. [#4402](https://github.com/impress-org/givewp/issues/4402)
+* Tweak: Refactored the `give_doing_it_wrong()` function so that it properly displays Give-specific messages for developers. [#2572](https://github.com/impress-org/givewp/issues/2572)
 
 = 2.5.12: December 31st, 2019 =
 * Fix: Resolved an issue with donation receipt emails and admin notifications not being sent out properly when a new donation is made. The cause of the issue was a security permission check incorrectly put in place in the previous version that was unable to be bypassed by new donors. We've reverted that change and fully tested to ensure emails are working as expected again. [#4379](https://github.com/impress-org/givewp/issues/4379)
