@@ -43,11 +43,13 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false,// Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+				'ajax'     => false, // Does this table support ajax?
+			)
+		);
 	}
 
 	/**
@@ -56,7 +58,6 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @return array $columns Array of all the list table columns
 	 * @since  2.5.13
-	 *
 	 */
 	public function get_columns() {
 		return array(
@@ -77,10 +78,12 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 * @since  2.5.13
-	 *
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'error':
+				return $item[ $column_name ];
+
 			default:
 				return esc_attr( $item[ $column_name ] );
 		}
@@ -95,20 +98,21 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 * @since  2.5.13
-	 *
 	 */
 	public function column_details( $item ) {
-		echo Give()->tooltips->render_link( array(
-			'label'       => __( 'View Log Details', 'give' ),
-			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
-			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
-			'attributes'  => array(
-				'class' => 'thickbox give-error-log-details-link button button-small',
-			),
-		) );
+		echo Give()->tooltips->render_link(
+			array(
+				'label'       => __( 'View Log Details', 'give' ),
+				'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+				'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
+				'attributes'  => array(
+					'class' => 'thickbox give-error-log-details-link button button-small',
+				),
+			)
+		);
 		?>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
-			<?php echo html_entity_decode( esc_html( $item['log_content'] ) ) ?>
+			<?php echo $item['log_content']; ?>
 		</div>
 		<?php
 	}
@@ -151,7 +155,6 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @return int Current page number
 	 * @since  2.5.13
-	 *
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
@@ -163,7 +166,6 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @return array $logs_data Array of all the Log entires
 	 * @since  2.5.13
-	 *
 	 */
 	public function get_logs() {
 		$logs_data = array();
@@ -182,8 +184,19 @@ class Give_Spam_Log_Table extends WP_List_Table {
 				$logs_data[] = array(
 					'ID'          => $log->ID,
 					'date'        => $log->log_date,
-					'log_content' => $log->log_content,
-					'error'       => $log->log_title,
+					'log_content' => wp_kses( $log->log_content, array( 'p', 'pre', 'strong' ) ),
+					'error'       => wp_kses(
+						$log->log_title,
+						array(
+							'p',
+							'strong',
+							'a' => array(
+								'href'   => array(),
+								'title'  => array(),
+								'target' => array(),
+							),
+						)
+					),
 				);
 			}
 		}
@@ -212,7 +225,8 @@ class Give_Spam_Log_Table extends WP_List_Table {
 		$this->items           = $this->get_logs();
 		$total_items           = Give()->logs->get_log_count( 0, 'spam' );
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(
+			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
 				'total_pages' => ceil( $total_items / $this->per_page ),
