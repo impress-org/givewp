@@ -104,20 +104,21 @@ function give_akismet( $spam ) {
 	$whitelist_emails = apply_filters( 'give_akismet_whitelist_emails', array() );
 
 	// Whitelist emails.
-	if ( in_array( $args['comment_author_email'],  (array) $whitelist_emails, true ) ) {
+	if ( in_array( $args['comment_author_email'], (array) $whitelist_emails, true ) ) {
 		return false;
 	}
 
-	$args['comment_author']       = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
-	$args['blog']                 = get_option( 'home' );
-	$args['blog_lang']            = get_locale();
-	$args['blog_charset']         = get_option( 'blog_charset' );
-	$args['user_ip']              = $_SERVER['REMOTE_ADDR'];
-	$args['user_agent']           = $_SERVER['HTTP_USER_AGENT'];
-	$args['referrer']             = $_SERVER['HTTP_REFERER'];
-	$args['comment_type']         = 'contact-form';
+	$args['comment_author'] = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
+	$args['blog']           = get_option( 'home' );
+	$args['blog_lang']      = get_locale();
+	$args['blog_charset']   = get_option( 'blog_charset' );
+	$args['user_ip']        = $_SERVER['REMOTE_ADDR'];
+	$args['user_agent']     = $_SERVER['HTTP_USER_AGENT'];
+	$args['referrer']       = $_SERVER['HTTP_REFERER'];
+	$args['comment_type']   = 'contact-form';
 
-	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$form_id         = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$donor_last_name = ! empty( $_POST['give_last'] ) ? ' ' . give_clean( $_POST['give_last'] ) : '';
 
 	// Pass Donor comment if enabled.
 	if ( give_is_donor_comment_field_enabled( $form_id ) ) {
@@ -130,7 +131,7 @@ function give_akismet( $spam ) {
 
 	foreach ( $_SERVER as $key => $value ) {
 		if ( ! in_array( $key, $ignore, true ) ) {
-			$args[$key] = $value;
+			$args[ $key ] = $value;
 		}
 	}
 
@@ -138,18 +139,19 @@ function give_akismet( $spam ) {
 	$spam     = 'true' === $response[1];
 
 	// Log spam information.
-	if( $spam ) {
+	if ( $spam ) {
 		give_record_log(
 			sprintf(
-				'Spam flagged for %1$s (%2$s)',
+				'This donor\'s email (%1$s%2$s - %3$s) has been flagged as SPAM. Click here to whitelist this email if you feel it was flagged incorrectly.',
 				$args['comment_author'],
+				$donor_last_name,
 				$args['comment_author_email']
 			),
 			sprintf(
 				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
-				__('Request', 'give'),
+				__( 'Request', 'give' ),
 				print_r( $args, true ),
-				__('Response', 'give'),
+				__( 'Response', 'give' ),
 				print_r( $response, true )
 			),
 			0,
@@ -191,7 +193,6 @@ function give_check_akismet_key() {
  * @return bool|mixed
  * @since 1.8.14
  * @since 2.3.15 Refactor function to use give_akismet_spam_check_post
- *
  */
 function give_akismet_spam_check( $args ) {
 	$response = give_akismet_spam_check_post( $args );
@@ -220,8 +221,12 @@ function give_akismet_spam_check_post( $args ) {
 	if ( is_callable( array( 'Akismet', 'http_post' ) ) ) { // Akismet v3.0+
 		$response = Akismet::http_post( $query_string, 'comment-check' );
 	} else {
-		$response = akismet_http_post( $query_string, $akismet_api_host,
-			'/1.1/comment-check', $akismet_api_port );
+		$response = akismet_http_post(
+			$query_string,
+			$akismet_api_host,
+			'/1.1/comment-check',
+			$akismet_api_port
+		);
 	}
 
 	return $response;
@@ -289,14 +294,14 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
  * @return array
  */
 function __give_validate_active_gateways( $value ) {
-	$gateways = array_keys( give_get_payment_gateways() );
+	$gateways        = array_keys( give_get_payment_gateways() );
 	$active_gateways = is_array( $value ) ? array_keys( $value ) : array();
 
 	// Remove deactivated payment gateways.
-	if( ! empty( $active_gateways ) ) {
+	if ( ! empty( $active_gateways ) ) {
 		foreach ( $active_gateways as $index => $gateway_id ) {
-			if( ! in_array( $gateway_id, $gateways ) ) {
-				unset( $value[$gateway_id] );
+			if ( ! in_array( $gateway_id, $gateways ) ) {
+				unset( $value[ $gateway_id ] );
 			}
 		}
 	}
@@ -307,9 +312,12 @@ function __give_validate_active_gateways( $value ) {
 		 *
 		 * @since 2.1.0
 		 */
-		$value = apply_filters( 'give_default_active_gateways', array(
-			'manual' => 1,
-		) );
+		$value = apply_filters(
+			'give_default_active_gateways',
+			array(
+				'manual' => 1,
+			)
+		);
 	}
 
 	return $value;
