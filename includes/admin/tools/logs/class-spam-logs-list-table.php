@@ -91,6 +91,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 						array(
 							'give-action' => $action,
 							'email'       => $donor_email,
+							'log'         => $item['ID'],
 							'_wpnonce'    => wp_create_nonce( "give_{$action}_{$donor_email}" ),
 						),
 						admin_url()

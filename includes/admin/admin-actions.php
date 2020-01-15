@@ -1460,6 +1460,7 @@ add_action( 'admin_head', 'give_admin_quick_js' );
  */
 function give_akismet_deblacklist_spammed_email_handler( $get ) {
 	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';
+	$log    = ! empty( $get['log'] ) ? absint( $get['log'] ) : '';
 	$action = "give_akismet_deblacklist_spammed_email_{$email}";
 
 	check_admin_referer( $action );
@@ -1470,6 +1471,11 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		$emails   = array_unique( $emails );
 
 		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
+
+		// Remove log amd metadata.
+		if ( Give()->log_db->delete( $log ) ) {
+			Give()->logmeta_db->delete( $log );
+		}
 
 		// Redirect to Akismet setting page.
 		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection' );
