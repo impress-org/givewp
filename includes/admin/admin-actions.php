@@ -1467,8 +1467,7 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 	$emails = give_akismet_get_whitelisted_emails();
 
 	if ( ! in_array( $email, $emails, true ) ) {
-		$emails[] = $email;
-		$emails   = array_unique( $emails );
+		array_unshift( $emails, $email );
 
 		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
 
