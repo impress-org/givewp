@@ -22,8 +22,8 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 		if (period.startDate && period.endDate) {
 			axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				params: {
-					start: period.startDate.format('YYYY-MM-DD'),
-					end: period.endDate.format('YYYY-MM-DD')
+					start: period.startDate.format('YYYY-MM-DD-HH'),
+					end: period.endDate.format('YYYY-MM-DD-HH')
 				},
 				headers: {
 					'X-WP-Nonce': wpApiSettings.nonce

@@ -70,7 +70,8 @@ abstract class Endpoint {
 
     public function sanitize_date($param, $request, $key) {
         //Return Date object from parameter
-        $date = date($param);
+		$exploded = explode('-', $param);
+		$date = $exploded[0] . '-' . $exploded[1] . '-' . $exploded[2] . ' ' . $exploded[3] . ':00:00';
         return $date;
     }
 
