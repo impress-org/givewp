@@ -142,10 +142,12 @@ function give_akismet( $spam ) {
 	if ( $spam ) {
 		give_record_log(
 			sprintf(
-				'This donor\'s email (%1$s%2$s - %3$s) has been flagged as SPAM. Click here to whitelist this email if you feel it was flagged incorrectly.',
+				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="%4$s" title="%5$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
 				$args['comment_author'],
 				$donor_last_name,
-				$args['comment_author_email']
+				$args['comment_author_email'],
+				admin_url(),
+				__( 'Click on this link to whitelist this email address to process donation.', 'give' )
 			),
 			sprintf(
 				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
