@@ -20,7 +20,7 @@ const RESTList = ({endpoint}) => {
 	// Use state to hold data fetched from API
 	const [fetched, setFetched] = useState(null)
 
-	// Fetch new data and update Chart when period changes
+	// Fetch new data and update List when period changes
 	useEffect(() => {
 		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 			params: {
@@ -59,22 +59,13 @@ const RESTList = ({endpoint}) => {
 	)
 }
 
-RESTChart.propTypes = {
-	// Chart type (ex: line)
-	type: PropTypes.string.isRequired,
-	// Chart aspect ratio
-	aspectRatio: PropTypes.number,
+RESTList.propTypes = {
 	// API endpoint where data is fetched (ex: 'payment-statuses')
-	endpoint: PropTypes.string.isRequired,
-	// Display Chart with Legend
-	showLegend: PropTypes.bool
+	endpoint: PropTypes.string.isRequired
 }
 
-RESTChart.defaultProps = {
-	type: null,
-	aspectRatio: 0.6,
+RESTList.defaultProps = {
 	endpoint: null,
-	showLegend: false
 }
 
-export default RESTChart
+export default RESTList
