@@ -74,7 +74,7 @@ class DonationsVsIncome extends Endpoint {
 			$periodEnd = $periodEnd->format('Y-m-d H:i:s');
 
 			$donationsForPeriod = $stats->get_sales( 0, $periodStart, $periodEnd );
-			$incomeForPeriod = $stats->get_earnings( 0, $periodS, $periodEnd );
+			$incomeForPeriod = $stats->get_earnings( 0, $periodStart, $periodEnd );
 
 			array_push($donations, $donationsForPeriod);
 			array_push($income, $incomeForPeriod);
