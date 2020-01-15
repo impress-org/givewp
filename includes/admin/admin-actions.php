@@ -1472,9 +1472,10 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 
 		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
 
-		// Remove log amd metadata.
+		// Remove log, metadata and cache.
 		if ( Give()->log_db->delete( $log ) ) {
-			Give()->logmeta_db->delete( $log );
+			Give()->logmeta_db->delete_all_meta( $log );
+			Give()->logs->delete_cache();
 		}
 
 		// Redirect to Akismet setting page.
