@@ -86,7 +86,7 @@ export function createConfig (type, data) {
 
 		const yAxes = data.datasets.map((dataset, index) => {
 			return {
-				id: 'y-axis-' + index,
+				id: `y-axis-${index}`,
 				ticks: {
 					beginAtZero: true,
 				}
