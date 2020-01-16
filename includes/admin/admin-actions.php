@@ -526,7 +526,9 @@ function _give_register_admin_notices() {
 		current_user_can( 'manage_give_settings' ) &&
 		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
 	) {
-		$current_time = current_time( 'timestamp' );
+		$current_time               = current_time( 'timestamp' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
 
 		$spam_count = Give()->log_db->count(
 			array(
@@ -544,9 +546,9 @@ function _give_register_admin_notices() {
 		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
 			Give()->notices->register_notice(
 				array(
-					'id'               => 'give-new-spam-found',
-					'type'             => 'warning',
-					'description'      => sprintf(
+					'id'                    => 'give-new-spam-found',
+					'type'                  => 'warning',
+					'description'           => sprintf(
 						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
 						$spam_count,
 						_n( 'donor email', 'donor emails', $spam_count, 'give' ),
@@ -556,8 +558,9 @@ function _give_register_admin_notices() {
 						_n( 'donor', 'donors', $spam_count, 'give' ),
 						_n( 'this', 'these', $spam_count, 'give' )
 					),
-					'dismissible_type' => 'user',
-					'dismiss_interval' => 'shortly',
+					'dismissible_type'      => 'user',
+					'dismiss_interval'      => 'custom',
+					'dismiss_interval_time' => $end_of_current_time_in_gmt - $current_time_gmt,
 				)
 			);
 		}
