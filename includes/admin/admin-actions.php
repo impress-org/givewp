@@ -546,7 +546,7 @@ function _give_register_admin_notices() {
 		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
 			Give()->notices->register_notice(
 				array(
-					'id'                    => 'give-new-spam-found',
+					'id'                    => 'give-new-akismet-spam-found',
 					'type'                  => 'warning',
 					'description'           => sprintf(
 						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
