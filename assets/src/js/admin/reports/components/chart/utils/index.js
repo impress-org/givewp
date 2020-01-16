@@ -11,11 +11,12 @@ export function formatData (type, data) {
         const formatted = {
             label: (' ' + dataset.label).slice(1),
 			data: dataset.data.slice(0),
-			yAxisID: 'y-axis-' + index,
+			yAxisID: `y-axis-${index}`,
             backgroundColor: styles.backgroundColor,
             borderColor: styles.borderColor,
             borderWidth: styles.borderWidth
-        }
+		}
+
         return formatted
     })
 
