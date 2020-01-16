@@ -52,8 +52,6 @@ class DonationsVsIncome extends Endpoint {
 				break;
 		}
 
-		// Add caching logic here...
-
 		return new \WP_REST_Response([
 			'data' => $data
 		]);
