@@ -1512,7 +1512,7 @@ add_action( 'admin_head', 'give_admin_quick_js' );
 /**
  * Handle akismet_deblacklist_spammed_email_handler give-action
  *
- * @since 2.5.13
+ * @since 2.5.14
  *
  * @param array $get
  */

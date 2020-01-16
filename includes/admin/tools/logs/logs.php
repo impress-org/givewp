@@ -168,7 +168,7 @@ add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 /**
  * Spam Logs
  *
- * @since 2.5.13
+ * @since 2.5.14
  * @uses  Give_Spam_Log_Table::prepare_items()
  * @uses  Give_Spam_Log_Table::display()
  * @return void
@@ -185,7 +185,7 @@ function give_logs_view_spam() {
 		/**
 		 * Fires before displaying spam logs.
 		 *
-		 * @since 2.5.13
+		 * @since 2.5.14
 		 */
 		do_action( 'give_logs_spam_top' );
 
@@ -201,7 +201,7 @@ function give_logs_view_spam() {
 		/**
 		 * Fires after displaying spam logs.
 		 *
-		 * @since 2.5.13
+		 * @since 2.5.14
 		 */
 		do_action( 'give_logs_spam_bottom' );
 		?>

@@ -99,7 +99,7 @@ function give_akismet( $spam ) {
 	/**
 	 * Filter list of whitelisted emails
 	 *
-	 * @since 2.5.13
+	 * @since 2.5.14
 	 *
 	 * @param array
 	 */

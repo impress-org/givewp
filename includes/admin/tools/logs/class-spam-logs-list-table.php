@@ -4,9 +4,9 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2016, GiveWP
+ * @copyright   Copyright (c) 2020, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.5.13
+ * @since       2.5.14
  */
 
 // Exit if accessed directly.
@@ -24,21 +24,21 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the gateway errors list table
  *
- * @since 2.5.13
+ * @since 2.5.14
  */
 class Give_Spam_Log_Table extends WP_List_Table {
 	/**
 	 * Number of items per page
 	 *
 	 * @var int
-	 * @since 2.5.13
+	 * @since 2.5.14
 	 */
 	public $per_page = 30;
 
 	/**
 	 * Get things started
 	 *
-	 * @since 2.5.13
+	 * @since 2.5.14
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -55,7 +55,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 * @access public
 	 *
 	 * @param string $text     Label for the search box
@@ -86,7 +86,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @return array $columns Array of all the list table columns
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function get_columns() {
 		return array(
@@ -106,7 +106,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
@@ -141,7 +141,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @param array $item Contains all the data of the log
 	 *
 	 * @return void
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function column_details( $item ) {
 		echo Give()->tooltips->render_link(
@@ -168,7 +168,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @see    : https://github.com/impress-org/give/issues/564
 	 *
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 * @access protected
 	 *
 	 * @param string $which
@@ -197,7 +197,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 *
 	 * @return string|bool String if search is present, false otherwise
 	 */
@@ -210,7 +210,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @return int Current page number
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
@@ -222,7 +222,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * This is used to return log entries that match our search query
 	 *
 	 * @access public
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 *
 	 * @return array $meta_query
 	 */
@@ -246,7 +246,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @return array $logs_data Array of all the Log entires
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function get_logs() {
 		$logs_data = array();
@@ -304,7 +304,7 @@ class Give_Spam_Log_Table extends WP_List_Table {
 	 * @uses   Give_Spam_Log_Table::get_logs()
 	 * @uses   Give_Spam_Log_Table::get_log_count()
 	 *
-	 * @since  2.5.13
+	 * @since  2.5.14
 	 */
 	public function prepare_items() {
 		$columns               = $this->get_columns();
