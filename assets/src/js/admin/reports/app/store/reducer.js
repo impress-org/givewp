@@ -16,7 +16,7 @@ export const reducer = (state, action) => {
             let startDate
             switch (action.payload.range) {
                 case 'day':
-                    startDate = moment(state.period.endDate)
+                    startDate = moment(state.period.endDate).subtract(1, 'days')
                     break
                 case 'week':
                     startDate = moment(state.period.endDate).subtract(7, 'days')
@@ -30,7 +30,7 @@ export const reducer = (state, action) => {
             }
             return {
                 ...state,
-                period: { ...state.period, 
+                period: { ...state.period,
                     startDate,
                     range: action.payload.range
                 }

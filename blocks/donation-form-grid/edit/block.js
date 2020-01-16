@@ -1,13 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-
-/**
- * WordPress dependencies
- */
 const { Fragment } = wp.element;
-const { ServerSideRender } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 const { withSelect } = wp.data;
 
 /**
@@ -20,7 +15,7 @@ import Inspector from './inspector';
  */
 
 const GiveDonationFormGrid = ( props ) => {
-	const {attributes} = props;
+	const { attributes } = props;
 
 	return (
 		<Fragment>

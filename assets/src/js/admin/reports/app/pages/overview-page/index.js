@@ -16,6 +16,14 @@ const { __ } = wp.i18n;
 const OverviewPage = () => {
     return (
         <Grid>
+			<Card title={__('Donations vs Income', 'give')} width={12}>
+				<RESTChart
+                    type='line'
+                    aspectRatio={0.4}
+                    endpoint='donations-vs-income'
+                    showLegend={false}
+                />
+            </Card>
             <Card width={3}>
                 <MiniChart
                     title='Mini Doughnut'
@@ -284,14 +292,6 @@ const OverviewPage = () => {
                         source='Save the Whales'
                     />
                 </List>
-            </Card>
-            <Card title={__('Line Chart', 'give')} width={12}>
-				<RESTChart
-                    type='line'
-                    aspectRatio={0.4}
-                    endpoint='payment-statuses'
-                    showLegend={false}
-                />
             </Card>
         </Grid>
     )

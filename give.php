@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.5.12
+ * Version: 2.5.13
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -411,7 +411,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden.
-			give_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			give_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ) );
 		}
 
 		/**
@@ -424,7 +424,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden.
-			give_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			give_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ) );
 		}
 
 		/**
@@ -439,7 +439,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.5.12' );
+				define( 'GIVE_VERSION', '2.5.13' );
 			}
 
 			// Plugin Root File.
@@ -481,16 +481,15 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache-setting.php';
 
-
 			/**
 			 * Load libraries.
 			 */
 			if ( ! class_exists( 'WP_Async_Request' ) ) {
-				include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php' );
+				include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php';
 			}
 
 			if ( ! class_exists( 'WP_Background_Process' ) ) {
-				include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php' );
+				include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php';
 			}
 
 			require_once GIVE_PLUGIN_DIR . 'includes/setting-functions.php';
@@ -525,7 +524,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
 
-
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
@@ -552,7 +550,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
-
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
@@ -594,21 +591,21 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
 
-			//Include API
+			// Include API
 			require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
 
-			//Include Views
+			// Include Views
 			require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
 
-			//$classes = get_declared_classes();
-			//print_r($classes);
+			// $classes = get_declared_classes();
+			// print_r($classes);
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
 
 			// Load file for frontend
-			if( $this->is_request('frontend' ) ) {
+			if ( $this->is_request( 'frontend' ) ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/frontend/class-give-frontend.php';
 			}
 

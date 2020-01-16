@@ -19,19 +19,21 @@ const RESTChart = ({type, aspectRatio, endpoint, showLegend}) => {
 
 	// Fetch new data and update Chart when period changes
 	useEffect(() => {
-		axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
-			params: {
-				start: period.startDate.format('YYYY-MM-DD'),
-				end: period.startDate.format('YYYY-MM-DD')
-			},
-			headers: {
-				'X-WP-Nonce': wpApiSettings.nonce
-			}
-		})
-		.then(function (response) {
-			console.log(response)
-			setFetched(response.data.data)
-		})
+		if (period.startDate && period.endDate) {
+			axios.get(wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
+				params: {
+					start: period.startDate.format('YYYY-MM-DD-HH'),
+					end: period.endDate.format('YYYY-MM-DD-HH')
+				},
+				headers: {
+					'X-WP-Nonce': wpApiSettings.nonce
+				}
+			})
+			.then(function (response) {
+				console.log(endpoint, response)
+				setFetched(response.data.data)
+			})
+		}
 	}, [period, endpoint])
 
 	return (

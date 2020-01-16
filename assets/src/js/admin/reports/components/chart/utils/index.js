@@ -10,11 +10,13 @@ export function formatData (type, data) {
 
         const formatted = {
             label: (' ' + dataset.label).slice(1),
-            data: dataset.data.slice(0),
+			data: dataset.data.slice(0),
+			yAxisID: `y-axis-${index}`,
             backgroundColor: styles.backgroundColor,
             borderColor: styles.borderColor,
             borderWidth: styles.borderWidth
-        }
+		}
+
         return formatted
     })
 
@@ -26,16 +28,16 @@ export function formatData (type, data) {
     return formattedData
 }
 
-// Create chart styles from predifined pallette, 
+// Create chart styles from predifined pallette,
 // depending on chart type
 function createStyles (type, data, index) {
 
     const palette = [
-        '#69B868',
-        '#F49420',
+		'#69B868',
+		'#556E79',
+		'#9EA3A8',
         '#D75A4B',
-        '#556E79',
-        '#9EA3A8'
+		'#F49420'
     ]
 
     const styles = {
@@ -81,12 +83,18 @@ export function createConfig (type, data) {
 
     // Setup yAxes to begin at zero if chart is 'line' or 'bar'
     if (type === 'line' || type === 'bar') {
+
+		const yAxes = data.datasets.map((dataset, index) => {
+			return {
+				id: `y-axis-${index}`,
+				ticks: {
+					beginAtZero: true,
+				}
+			}
+		})
+
         config.options.scales = {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                }
-            }]
+            yAxes: yAxes
         }
     }
 
