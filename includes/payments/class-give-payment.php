@@ -620,7 +620,7 @@ final class Give_Payment {
 	 */
 	public function update_payment_setup( $payment_id ) {
 		// Delete cache.
-		Give_Cache::delete_group( $this->ID,'give-donations' );
+		Give_Cache::delete_group( $this->ID, 'give-donations' );
 
 		$this->setup_payment( $payment_id );
 	}
@@ -684,14 +684,18 @@ final class Give_Payment {
 			'status'       => $this->status,
 		);
 
-		$args = apply_filters( 'give_insert_payment_args', array(
-			'post_title'    => $payment_title,
-			'post_status'   => $this->status,
-			'post_type'     => 'give_payment',
-			'post_date'     => ! empty( $this->date ) ? $this->date : null,
-			'post_date_gmt' => ! empty( $this->date ) ? get_gmt_from_date( $this->date ) : null,
-			'post_parent'   => $this->parent_payment,
-		), $payment_data );
+		$args = apply_filters(
+			'give_insert_payment_args',
+			array(
+				'post_title'    => $payment_title,
+				'post_status'   => $this->status,
+				'post_type'     => 'give_payment',
+				'post_date'     => ! empty( $this->date ) ? $this->date : null,
+				'post_date_gmt' => ! empty( $this->date ) ? get_gmt_from_date( $this->date ) : null,
+				'post_parent'   => $this->parent_payment,
+			),
+			$payment_data
+		);
 
 		// Create a blank payment.
 		$payment_id = wp_insert_post( $args );
@@ -701,7 +705,7 @@ final class Give_Payment {
 			$this->ID  = $payment_id;
 			$this->_ID = $payment_id;
 
-			$donor = new stdClass;
+			$donor = new stdClass();
 
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
@@ -763,7 +767,7 @@ final class Give_Payment {
 			);
 
 			if ( ! empty( $custom_payment_meta ) ) {
-				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key has been deprecated for performance reasons. Your custom meta data will still be stored but we recommend updating your code to store meta keys individually.', 'give' ), '2.0.0' );
+				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key has been deprecated for performance reasons. Your custom meta data will still be stored but we recommend updating your code to store meta keys individually from GiveWP 2.0.0.', 'give' ) );
 
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
@@ -836,7 +840,6 @@ final class Give_Payment {
 							switch ( $item['action'] ) {
 
 								case 'add':
-
 									$price = $item['price'];
 
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
@@ -1205,7 +1208,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function increase_subtotal( $amount = 0.00 ) {
-		$amount         = (float) $amount;
+		$amount          = (float) $amount;
 		$this->subtotal += $amount;
 
 		$this->recalculate_total();
@@ -1222,7 +1225,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function decrease_subtotal( $amount = 0.00 ) {
-		$amount         = (float) $amount;
+		$amount          = (float) $amount;
 		$this->subtotal -= $amount;
 
 		if ( $this->subtotal < 0 ) {
@@ -1392,7 +1395,6 @@ final class Give_Payment {
 		if ( empty( $meta_key ) ) {
 			return false;
 		}
-
 
 		/**
 		 * Filter the single meta key while updating
@@ -1699,7 +1701,6 @@ final class Give_Payment {
 
 		$donor   = Give()->donors->get_donor_by( 'id', $this->donor_id );
 		$user_id = $donor ? absint( $donor->user_id ) : 0;
-
 
 		return $user_id;
 	}

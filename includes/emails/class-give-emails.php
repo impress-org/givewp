@@ -155,7 +155,7 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_content_type() {
-		if ( ! $this->content_type  ) {
+		if ( ! $this->content_type ) {
 			$this->content_type = $this->html
 				? apply_filters( 'give_email_default_content_type', 'text/html', $this )
 				: 'text/plain';
@@ -171,7 +171,7 @@ class Give_Emails {
 	 */
 	public function get_headers() {
 		if ( ! $this->headers ) {
-			$this->headers = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
+			$this->headers  = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
 			$this->headers .= "Reply-To: {$this->get_from_address()}\r\n";
 			$this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
 		}
@@ -187,7 +187,7 @@ class Give_Emails {
 	public function get_templates() {
 		$templates = array(
 			'default' => esc_html__( 'Default Template', 'give' ),
-			'none'    => esc_html__( 'No template, plain text only', 'give' )
+			'none'    => esc_html__( 'No template, plain text only', 'give' ),
 		);
 
 		return apply_filters( 'give_email_templates', $templates );
@@ -304,7 +304,7 @@ class Give_Emails {
 		 */
 		do_action( 'give_email_footer', $this );
 
-		$body    = ob_get_clean();
+		$body = ob_get_clean();
 
 		// Email tag.
 		$message = str_replace( '{email}', $message, $body );
@@ -319,7 +319,7 @@ class Give_Emails {
 			);
 		}
 
-		$message  = str_replace( '{email_logo}', $header_img, $message );
+		$message = str_replace( '{email_logo}', $header_img, $message );
 
 		return apply_filters( 'give_email_message', $message, $this );
 	}
@@ -337,7 +337,7 @@ class Give_Emails {
 	public function send( $to, $subject, $message, $attachments = '' ) {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
-			give_doing_it_wrong( __FUNCTION__, esc_html__( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ), null );
+			give_doing_it_wrong( __FUNCTION__, esc_html__( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ) );
 
 			return false;
 		}
@@ -395,10 +395,10 @@ class Give_Emails {
 		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
 		// Reset email related params.
-		$this->heading = '';
-		$this->from_name = '';
+		$this->heading      = '';
+		$this->from_name    = '';
 		$this->from_address = '';
-		$this->form_id = 0;
+		$this->form_id      = 0;
 	}
 
 	/**
