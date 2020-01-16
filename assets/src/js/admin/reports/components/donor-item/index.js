@@ -3,7 +3,7 @@ import './style.scss'
 import { getBGColor, getInitials } from './utils'
 
 const DonorItem = ({image, name, email, count, total}) => {
-    
+
     const profile = image ? <img src={image} /> : <div className='donor-initials' style={{backgroundColor: getBGColor()}}>{getInitials(name)}</div>
     return (
         <div className='donor-item'>
@@ -24,9 +24,9 @@ DonorItem.propTypes = {
     // Source URL for donor image
     image: PropTypes.string,
     // Donor name
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     // Donor email
-    email: PropTypes.string.isRequired,
+    email: PropTypes.string,
     // Internationalized count of donations attributed to donor (ex: "2 Donations")
     count: PropTypes.string.isRequired,
     // Internationalized total amount of donations attributed to donor (ex: "$100.00")
@@ -35,7 +35,7 @@ DonorItem.propTypes = {
 
 DonorItem.defaultProps = {
     image: null,
-    name: null,
+    name: 'Anonymous',
     email: null,
     count: null,
     total: null

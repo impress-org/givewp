@@ -47,6 +47,10 @@ class API {
 		// Load form performance endpoint
 		$formPerformance = new Endpoints\Reports\FormPerformance();
 		$formPerformance->init();
+
+		// Load top donors endpoint
+		$topDonors = new Endpoints\Reports\TopDonors();
+		$topDonors->init();
 	}
 
 }
