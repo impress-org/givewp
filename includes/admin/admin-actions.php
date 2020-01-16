@@ -519,11 +519,13 @@ function _give_register_admin_notices() {
 		}
 	}
 
-	if ( current_user_can( 'manage_give_settings' ) ) {
-
-		/**
-		 * Spam log admin notice
-		 */
+	/**
+	 * Spam log admin notice
+	 */
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	) {
 		$current_time = current_time( 'timestamp' );
 
 		$spam_count = Give()->log_db->count(
