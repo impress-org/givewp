@@ -518,6 +518,48 @@ function _give_register_admin_notices() {
 			}// End if().
 		}
 	}
+
+	if ( current_user_can( 'manage_give_settings' ) ) {
+
+		/**
+		 * Spam log admin notice
+		 */
+		$current_time = current_time( 'timestamp' );
+
+		$spam_count = Give()->log_db->count(
+			array(
+				'log_type'   => 'spam',
+				'date_query' => array(
+					array(
+						'after'     => date( 'Y-m-d 00:00:00', $current_time ),
+						'before'    => date( 'Y-m-d 23:59:59', $current_time ),
+						'inclusive' => true,
+					),
+				),
+			)
+		);
+
+		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
+			Give()->notices->register_notice(
+				array(
+					'id'               => 'give-new-spam-found',
+					'type'             => 'warning',
+					'description'      => sprintf(
+						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
+						$spam_count,
+						_n( 'donor email', 'donor emails', $spam_count, 'give' ),
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&section=spam' ) ),
+						__( 'Go to spam log list page', 'give' ),
+						_n( 'was', 'were', $spam_count, 'give' ),
+						_n( 'donor', 'donors', $spam_count, 'give' ),
+						_n( 'this', 'these', $spam_count, 'give' )
+					),
+					'dismissible_type' => 'user',
+					'dismiss_interval' => 'shortly',
+				)
+			);
+		}
+	}
 }
 
 add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
