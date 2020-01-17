@@ -37,7 +37,7 @@ const RESTList = ( { endpoint } ) => {
 		}
 	}, [ period, endpoint ] );
 
-	const items = fetched ? fetched.map( ( item, index ) => {
+	const items = Array.isArray( fetched ) && fetched.length ? fetched.map( ( item, index ) => {
 		switch ( item.type ) {
 			case 'donor':
 				return <DonorItem
