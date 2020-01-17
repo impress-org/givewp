@@ -21,7 +21,6 @@
 			min-width: 301px;
 			margin: 0;
 			padding: 0;
-			border: 1px solid #e1e1e1
 		}
 	</style>
 	<body>
