@@ -33,12 +33,15 @@ class TopDonors extends Endpoint {
 		foreach ( $donors as $donor ) {
 
 			$avatar = give_validate_gravatar( $donor->email ) ? get_avatar( $donor->email, 60 ) : null;
+			$total  = give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
+
+			$countLabel = $donor->purchase_count > 1 ? esc_html__( 'Donations', 'give' ) : esc_html__( 'Donation', 'give' );
 
 			$item = [
 				'type'  => 'donor',
 				'name'  => $donor->name,
-				'count' => $donor->purchase_count,
-				'total' => $donor->purchase_value,
+				'count' => "{$donor->purchase_count} {$countLabel}",
+				'total' => $total,
 				'image' => $avatar,
 				'email' => $donor->email,
 			];
