@@ -36,7 +36,7 @@ function give_form_styles_routes() {
 	global $post;
 
 	// Exit if not give embed page.
-	if ( 'give-embed' !== get_query_var( 'name' ) || empty( get_query_var( 'give_form_id' ) ) ) {
+	if ( ! give_is_viewing_embed_form() ) {
 		return;
 	}
 
