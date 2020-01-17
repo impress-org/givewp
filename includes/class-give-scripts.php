@@ -64,7 +64,8 @@ class Give_Scripts {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
 
-			add_action( 'give_head', array( $this, 'embed_page_enqueue' ) );
+			add_action( 'give_embed_head', array( $this, 'embed_page_styles' ) );
+			add_action( 'give_embed_footer', array( $this, 'embed_page_scripts' ) );
 		}
 	}
 
@@ -471,27 +472,25 @@ class Give_Scripts {
 
 
 	/**
-	 * Print scripts and styles on embed page
+	 * Print styles on embed page
 	 *
 	 * @todo: add script & style version
 	 */
-	public function embed_page_enqueue() {
-		/**
-		 * Style
-		 */
+	public function embed_page_styles() {
 		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
 
-		/**
-		 * Scripts
-		 */
+		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
+	}
+
+	/**
+	 * Print scripts on embed page
+	 *
+	 * @todo: add script & style version
+	 */
+	public function embed_page_scripts() {
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
 		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
-
-		/**
-		 * Localized script
-		 */
-		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
 	}
 
 	/**
