@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Reports base endpoint
+ * Top Donors endpoint
  *
  * @package Give
  */
@@ -16,6 +16,7 @@ class TopDonors extends Endpoint {
 
 	public function get_report( $request ) {
 
+		// Setup donor query args (get sanitized start/end date from request)
 		$args = [
 			'number'     => 25,
 			'paged'      => 1,
@@ -25,11 +26,12 @@ class TopDonors extends Endpoint {
 			'end_date'   => $request['end'],
 		];
 
+		// Get array of top 25 donors
 		$donors = new \Give_Donors_Query( $args );
 		$donors = $donors->get_donors();
 
+		// Populate $list with arrays in correct shape for frontend RESTList component
 		$list = [];
-
 		foreach ( $donors as $donor ) {
 
 			$avatar     = give_validate_gravatar( $donor->email ) ? get_avatar( $donor->email, 60 ) : null;
@@ -49,10 +51,10 @@ class TopDonors extends Endpoint {
 			array_push( $list, $item );
 		}
 
+		// Return $list of donors for RESTList component
 		return new \WP_REST_Response(
 			[
-				'donors' => $donors,
-				'data'   => $list,
+				'data' => $list,
 			]
 		);
 	}
