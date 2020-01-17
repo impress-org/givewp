@@ -31,12 +31,15 @@ class TopDonors extends Endpoint {
 		$list = [];
 
 		foreach ( $donors as $donor ) {
+
+			$avatar = give_validate_gravatar( $donor->email ) ? get_avatar( $donor->email, 60 ) : null;
+
 			$item = [
 				'type'  => 'donor',
 				'name'  => $donor->name,
 				'count' => $donor->purchase_count,
 				'total' => $donor->purchase_value,
-				'image' => 'image.png',
+				'image' => $avatar,
 				'email' => $donor->email,
 			];
 			array_push( $list, $item );
@@ -44,9 +47,8 @@ class TopDonors extends Endpoint {
 
 		return new \WP_REST_Response(
 			[
-				'start' => $startTime,
-				'end'   => $endTime,
-				'data'  => $list,
+				'donors' => $donors,
+				'data'   => $list,
 			]
 		);
 	}
