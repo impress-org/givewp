@@ -77,7 +77,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 	 */
 	do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
 
-	include( $located );
+	include $located;
 
 	/**
 	 * Fires in give template, after the file is included.
@@ -380,7 +380,7 @@ function give_add_post_class( $classes, $class = '', $post_id = '' ) {
 		return $classes;
 	}
 
-	//@TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc).
+	// @TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc).
 
 	if ( false !== ( $key = array_search( 'hentry', $classes ) ) ) {
 		unset( $classes[ $key ] );
@@ -545,4 +545,14 @@ if ( ! function_exists( 'is_give_taxonomy' ) ) {
 	function is_give_taxonomy() {
 		return is_tax( get_object_taxonomies( 'give_form' ) );
 	}
+}
+
+
+/**
+ * Get result if we are viewing embed form or not
+ *
+ * @return bool
+ */
+function give_is_viewing_embed_form() {
+	return ! ( 'give-embed' !== get_query_var( 'name' ) || empty( get_query_var( 'give_form_id' ) ) );
 }
