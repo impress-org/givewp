@@ -63,6 +63,8 @@ class Give_Scripts {
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
+
+			add_action( 'give_head', array( $this, 'embed_page_enqueue' ) );
 		}
 	}
 
@@ -116,15 +118,21 @@ class Give_Scripts {
 	public function register_scripts() {
 
 		// WP-Admin.
-		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin.js', array(
-			'jquery',
-			'jquery-ui-datepicker',
-			'wp-color-picker',
-			'jquery-query',
-		), GIVE_VERSION );
+		wp_register_script(
+			'give-admin-scripts',
+			GIVE_PLUGIN_URL . 'assets/dist/js/admin.js',
+			array(
+				'jquery',
+				'jquery-ui-datepicker',
+				'wp-color-picker',
+				'jquery-query',
+			),
+			GIVE_VERSION
+		);
 
 		// WP-admin: plugin page.
-		wp_register_script( 'plugin-deactivation-survey-js',
+		wp_register_script(
+			'plugin-deactivation-survey-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
 			array( 'jquery' ),
 			GIVE_VERSION,
@@ -132,7 +140,8 @@ class Give_Scripts {
 		);
 
 		// WP-admin: add-ons page.
-		wp_register_script( 'admin-add-ons-js',
+		wp_register_script(
+			'admin-add-ons-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
 			array( 'jquery' ),
 			GIVE_VERSION,
@@ -202,14 +211,14 @@ class Give_Scripts {
 		// Localize admin scripts
 		$this->admin_localize_scripts();
 
-		if ( Give_Admin_Settings::is_setting_page( 'licenses'  ) ) {
+		if ( Give_Admin_Settings::is_setting_page( 'licenses' ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
 			$localized_data = array(
 				'notices' => array(
-					'invalid_license' => __( 'Sorry, you entered an invalid key.', 'give' ),
-					'download_file'   => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}">Click here</a> to download your add-on.', 'give' ),
-					'addon_activated'   => __( '{pluginName} add-on activated successfully.', 'give' ),
-					'addon_activation_error'   => __( 'The add-on did not activate successfully.', 'give' ),
+					'invalid_license'        => __( 'Sorry, you entered an invalid key.', 'give' ),
+					'download_file'          => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}">Click here</a> to download your add-on.', 'give' ),
+					'addon_activated'        => __( '{pluginName} add-on activated successfully.', 'give' ),
+					'addon_activation_error' => __( 'The add-on did not activate successfully.', 'give' ),
 				),
 			);
 
@@ -406,7 +415,7 @@ class Give_Scripts {
 			@font-face {
 				font-family: 'give-icomoon';
 				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?ngjl88'; ?>');
-				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
+				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?#iefixngjl88'; ?>') format('embedded-opentype'),
 				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
 				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
 				font-weight: normal;
@@ -444,7 +453,7 @@ class Give_Scripts {
 
 		// Call Babel Polyfill with common handle so that it is compatible with plugins and themes.
 		if ( ! wp_script_is( 'babel-polyfill', 'enqueued' )
-		     && give_is_setting_enabled( give_get_option( 'babel_polyfill_script', 'enabled' ) )
+			 && give_is_setting_enabled( give_get_option( 'babel_polyfill_script', 'enabled' ) )
 		) {
 			wp_enqueue_script(
 				'babel-polyfill',
@@ -460,75 +469,36 @@ class Give_Scripts {
 		$this->public_localize_scripts();
 	}
 
+
+	/**
+	 * Print scripts and styles on embed page
+	 *
+	 * @todo: add script & style version
+	 */
+	public function embed_page_enqueue() {
+		/**
+		 * Style
+		 */
+		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
+
+		/**
+		 * Scripts
+		 */
+		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
+		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
+		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
+
+		/**
+		 * Localized script
+		 */
+		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
+	}
+
 	/**
 	 * Localize / PHP to AJAX vars.
 	 */
 	public function public_localize_scripts() {
-
-		/**
-		 * Filter to modify access mail send notice
-		 *
-		 * @param string Send notice message for email access.
-		 *
-		 * @return  string $message Send notice message for email access.
-		 * @since 2.1.3
-		 *
-		 */
-		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
-
-		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
-			'ajaxurl'                     => give_get_ajax_url(),
-			'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
-			// Do not use this nonce. Its deprecated.
-			'currency'                    => give_get_currency(),
-			'currency_sign'               => give_currency_filter( '' ),
-			'currency_pos'                => give_get_currency_position(),
-			'thousands_separator'         => give_get_price_thousand_separator(),
-			'decimal_separator'           => give_get_price_decimal_separator(),
-			'no_gateway'                  => __( 'Please select a payment method.', 'give' ),
-			'bad_minimum'                 => __( 'The minimum custom donation amount for this form is', 'give' ),
-			'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
-			'general_loading'             => __( 'Loading...', 'give' ),
-			'purchase_loading'            => __( 'Please Wait...', 'give' ),
-			'number_decimals'             => give_get_price_decimals(),
-			'give_version'                => GIVE_VERSION,
-			'magnific_options'            => apply_filters(
-				'give_magnific_options',
-				array(
-					'main_class'        => 'give-modal',
-					'close_on_bg_click' => false,
-				)
-			),
-			'form_translation'            => apply_filters(
-				'give_form_translation_js',
-				array(
-					// Field name               Validation message.
-					'payment-mode'           => __( 'Please select payment mode.', 'give' ),
-					'give_first'             => __( 'Please enter your first name.', 'give' ),
-					'give_email'             => __( 'Please enter a valid email address.', 'give' ),
-					'give_user_login'        => __( 'Invalid email address or username.', 'give' ),
-					'give_user_pass'         => __( 'Enter a password.', 'give' ),
-					'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
-					'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
-				)
-			),
-			'confirm_email_sent_message'  => $message,
-			'ajax_vars'                   => apply_filters( 'give_global_ajax_vars', array(
-				'ajaxurl'         => give_get_ajax_url(),
-				'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
-				'loading'         => __( 'Loading', 'give' ),
-				// General loading message.
-				'select_option'   => __( 'Please select an option', 'give' ),
-				// Variable pricing error with multi-donation option enabled.
-				'default_gateway' => give_get_default_gateway( null ),
-				'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
-				'number_decimals' => give_get_price_decimals(),
-			) ),
-			'cookie_hash'                 => COOKIEHASH,
-			'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
-			'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
-			'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
-		) );
+		$localize_give_vars = apply_filters( 'give_global_script_vars', $this->get_public_data() );
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
 	}
@@ -588,7 +558,7 @@ class Give_Scripts {
 	public function gutenberg_admin_scripts() {
 
 		// Enqueue the bundled block JS file
-		//@todo: Update dependencies on 5.0 Stable release
+		// @todo: Update dependencies on 5.0 Stable release
 		wp_enqueue_script(
 			'give-blocks-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
@@ -613,4 +583,136 @@ class Give_Scripts {
 
 	}
 
+	/**
+	 * Get script tag
+	 *
+	 * @param string $url
+	 * @param array  $args
+	 *
+	 * @return string
+	 */
+	private function get_script_tag( $url, $args = [] ) {
+		return sprintf(
+			'<script src="%1$s" type="text/javascript"></script>',
+			$url
+		);
+	}
+
+
+	/**
+	 * Get style tag
+	 *
+	 * @param string $url
+	 * @param array  $args
+	 *
+	 * @return string
+	 */
+	private function get_style_tag( $url, $args = [] ) {
+		$args = wp_parse_args(
+			$args,
+			[ 'media' => 'all' ]
+		);
+		return sprintf(
+			'<link rel="stylesheet" href="%1$s" media="%2$s"/>',
+			$url,
+			$args['media']
+		);
+	}
+
+	/**
+	 * Get localize script
+	 *
+	 * @param string $name
+	 * @param array  $data
+	 *
+	 * @return string
+	 */
+	private function get_localized_script( $name, $data ) {
+		return sprintf(
+			'<script> var %1$s = %2$s </script>',
+			$name,
+			wp_json_encode( $data )
+		);
+	}
+
+
+	/**
+	 * Get public data which will be accessible by global constant.
+	 *
+	 * @return mixed|void
+	 */
+	private function get_public_data() {
+		/**
+		 * Filter to modify access mail send notice
+		 *
+		 * @param string Send notice message for email access.
+		 *
+		 * @return  string $message Send notice message for email access.
+		 * @since 2.1.3
+		 */
+		$message = (string) apply_filters(
+			'give_email_access_mail_send_notice',
+			__( 'Please check your email and click on the link to access your complete donation history.', 'give' )
+		);
+
+		return apply_filters(
+			'give_global_script_vars',
+			array(
+				'ajaxurl'                     => give_get_ajax_url(),
+				'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
+				// Do not use this nonce. Its deprecated.
+				'currency'                    => give_get_currency(),
+				'currency_sign'               => give_currency_filter( '' ),
+				'currency_pos'                => give_get_currency_position(),
+				'thousands_separator'         => give_get_price_thousand_separator(),
+				'decimal_separator'           => give_get_price_decimal_separator(),
+				'no_gateway'                  => __( 'Please select a payment method.', 'give' ),
+				'bad_minimum'                 => __( 'The minimum custom donation amount for this form is', 'give' ),
+				'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
+				'general_loading'             => __( 'Loading...', 'give' ),
+				'purchase_loading'            => __( 'Please Wait...', 'give' ),
+				'number_decimals'             => give_get_price_decimals(),
+				'give_version'                => GIVE_VERSION,
+				'magnific_options'            => apply_filters(
+					'give_magnific_options',
+					array(
+						'main_class'        => 'give-modal',
+						'close_on_bg_click' => false,
+					)
+				),
+				'form_translation'            => apply_filters(
+					'give_form_translation_js',
+					array(
+						// Field name               Validation message.
+						'payment-mode'           => __( 'Please select payment mode.', 'give' ),
+						'give_first'             => __( 'Please enter your first name.', 'give' ),
+						'give_email'             => __( 'Please enter a valid email address.', 'give' ),
+						'give_user_login'        => __( 'Invalid email address or username.', 'give' ),
+						'give_user_pass'         => __( 'Enter a password.', 'give' ),
+						'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
+						'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
+					)
+				),
+				'confirm_email_sent_message'  => $message,
+				'ajax_vars'                   => apply_filters(
+					'give_global_ajax_vars',
+					array(
+						'ajaxurl'         => give_get_ajax_url(),
+						'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
+						'loading'         => __( 'Loading', 'give' ),
+						// General loading message.
+						'select_option'   => __( 'Please select an option', 'give' ),
+						// Variable pricing error with multi-donation option enabled.
+						'default_gateway' => give_get_default_gateway( null ),
+						'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
+						'number_decimals' => give_get_price_decimals(),
+					)
+				),
+				'cookie_hash'                 => COOKIEHASH,
+				'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
+				'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
+				'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
+			)
+		);
+	}
 }
