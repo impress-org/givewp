@@ -17,10 +17,12 @@ class TopDonors extends Endpoint {
 	public function get_report( $request ) {
 
 		$args = [
-			'number'  => 10,
-			'paged'   => 1,
-			'orderby' => 'purchase_value',
-			'order'   => 'DESC',
+			'number'     => 10,
+			'paged'      => 1,
+			'orderby'    => 'purchase_value',
+			'order'      => 'DESC',
+			'start_date' => $request['start'],
+			'end_date'   => $request['end'],
 		];
 
 		$donors = new \Give_Donors_Query( $args );
@@ -42,7 +44,9 @@ class TopDonors extends Endpoint {
 
 		return new \WP_REST_Response(
 			[
-				'data' => $list,
+				'start' => $startTime,
+				'end'   => $endTime,
+				'data'  => $list,
 			]
 		);
 	}
