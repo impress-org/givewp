@@ -177,7 +177,7 @@ const OverviewPage = () => {
 					/>
 				</List>
 			</Card>
-			<Card title={ __( 'Donation List', 'give' ) } width={ 4 }>
+			<Card title={ __( 'Recent Donations', 'give' ) } width={ 4 }>
 				<RESTList endpoint="recent-donations" />
 			</Card>
 		</Grid>
