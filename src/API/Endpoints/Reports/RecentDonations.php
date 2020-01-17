@@ -16,7 +16,7 @@ class RecentDonations extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Setup donor query args (get sanitized start/end date from request)
+		// Setup donation query args (get sanitized start/end date from request)
 		$args = [
 			'number'     => 50,
 			'paged'      => 1,
@@ -54,7 +54,7 @@ class RecentDonations extends Endpoint {
 			array_push( $list, $item );
 		}
 
-		// Return $list of donors for RESTList component
+		// Return $list of donations for RESTList component
 		return new \WP_REST_Response(
 			[
 				'data' => $list,
