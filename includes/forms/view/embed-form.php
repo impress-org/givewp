@@ -12,7 +12,7 @@
 		/**
 		 * Fire the action hook in header
 		 */
-		do_action( 'give_head' );
+		do_action( 'give_embed_head' );
 		?>
 	</head>
 	<style>
@@ -32,7 +32,7 @@
 		/**
 		 * Fire the action hook in footer
 		 */
-		do_action( 'give_head' );
+		do_action( 'give_embed_footer' );
 		?>
 	</body>
 </html>
