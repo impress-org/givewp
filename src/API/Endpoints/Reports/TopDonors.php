@@ -14,21 +14,36 @@ class TopDonors extends Endpoint {
 		$this->endpoint = 'top-donors';
 	}
 
-	public function get_report($request) {
+	public function get_report( $request ) {
 
-		// Add caching logic here...
+		$args = [
+			'number'  => 10,
+			'paged'   => 1,
+			'orderby' => 'purchase_value',
+			'order'   => 'DESC',
+		];
 
-		return new \WP_REST_Response([
-			'data' => [
-				[
-					'type' => 'donor',
-					'name' => 'Name',
-					'count' => '4 Donations',
-					'total' => '$50.00',
-					'image' => 'image.png',
-					'email' => 'test@email.com'
-				],
+		$donors = new \Give_Donors_Query( $args );
+		$donors = $donors->get_donors();
+
+		$list = [];
+
+		foreach ( $donors as $donor ) {
+			$item = [
+				'type'  => 'donor',
+				'name'  => $donor->name,
+				'count' => $donor->purchase_count,
+				'total' => $donor->purchase_value,
+				'image' => 'image.png',
+				'email' => $donor->email,
+			];
+			array_push( $list, $item );
+		}
+
+		return new \WP_REST_Response(
+			[
+				'data' => $list,
 			]
-		]);
+		);
 	}
 }
