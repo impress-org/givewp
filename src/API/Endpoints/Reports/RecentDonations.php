@@ -34,16 +34,22 @@ class RecentDonations extends Endpoint {
 		$list = [];
 		foreach ( $donations as $donation ) {
 
+			$donation = new \Give_Payment( $donation->ID );
+
+			$amount = give_currency_symbol( $payment->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
+			$status = $donation->status === 'publish' ? 'completed' : $donation->status;
+
 			$item = [
-				'type'   => 'donation',
-				'status' => 'completed',
-				'amount' => '$50.00',
-				'time'   => '2013-02-08 09:30',
-				'donor'  => [
-					'name' => 'Test Name',
-					'id'   => 456,
+				'type'     => 'donation',
+				'donation' => $donation,
+				'status'   => $status,
+				'amount'   => $amount,
+				'time'     => $donation->date,
+				'donor'    => [
+					'name' => "{$donation->first_name} {$donation->last_name}",
+					'id'   => $donation->donor_id,
 				],
-				'source' => 'Save the Whales',
+				'source'   => $donation->form_title,
 			];
 			array_push( $list, $item );
 		}
