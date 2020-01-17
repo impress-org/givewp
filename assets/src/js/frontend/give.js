@@ -16,5 +16,5 @@ import './give-ajax';
 import './give-misc';
 import './give-donor-wall';
 
-const { init, fn, form, notice, cache, donor } = GiveAPI;
-window.Give = { init, fn, form, notice, cache, donor };
+const { init, fn, form, notice, cache, donor, util } = GiveAPI;
+window.Give = { init, fn, form, notice, cache, donor, util };

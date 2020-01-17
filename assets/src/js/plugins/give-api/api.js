@@ -2,6 +2,7 @@
 import GiveNotice from './notice';
 import GiveForm from './form';
 import GiveDonor from './donor';
+import GiveUtil from './util';
 
 /**
  *  This API is under development.
@@ -282,10 +283,10 @@ const Give = {
 			classes += text.length ? ' give-has-text' : '';
 			classes = classes.length ? ' ' + classes.trim() : '';
 
-			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>`;
+			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim() }</div></div>`;
 
 			// return spinner HTML.
-			if( null === args.show ) {
+			if ( null === args.show ) {
 				return spinnerHTML;
 			}
 
@@ -306,5 +307,6 @@ const Give = {
 Give.notice = GiveNotice;
 Give.form = GiveForm;
 Give.donor = GiveDonor;
+Give.util = GiveUtil;
 
 export default Give;
