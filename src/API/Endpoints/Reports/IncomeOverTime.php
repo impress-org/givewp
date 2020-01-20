@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Reports base endpoint
+ * Income over time endpoint
  *
  * @package Give
  */
@@ -89,6 +89,7 @@ class IncomeOverTime extends Endpoint {
 		$total   = array_sum( $income );
 		$average = $total / count( $income );
 
+		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'labels'   => $labels,
 			'datasets' => [
