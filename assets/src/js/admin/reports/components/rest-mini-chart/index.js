@@ -9,7 +9,7 @@ import MiniChart from '../mini-chart';
 // Store-related dependencies
 import { useStoreValue } from '../../app/store';
 
-const RESTMiniChart = ( { title, endpoint } ) => {
+const RESTMiniChart = ( { title, highlight, endpoint } ) => {
 	// Use period from store
 	const [ { period } ] = useStoreValue();
 
@@ -39,6 +39,7 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 			{ fetched && (
 				<MiniChart
 					title={ title }
+					highlight={ highlight }
 					data={ fetched }
 				/>
 			) }
@@ -49,12 +50,15 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 RESTMiniChart.propTypes = {
 	// Mini Chart title
 	title: PropTypes.string.isRequired,
+	// Mini Chart highlight value (ex total, average)
+	highlight: PropTypes.string,
 	// API endpoint where data is fetched (ex: 'payment-statuses')
 	endpoint: PropTypes.string.isRequired,
 };
 
 RESTMiniChart.defaultProps = {
 	title: null,
+	highlight: 'total',
 	endpoint: null,
 };
 

@@ -45,7 +45,7 @@ class IncomeOverTime extends Endpoint {
 				$data = $this->get_data( $start, $end, 'P1D', 'l' );
 				break;
 			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'PT6H', 'D ga' );
+				$data = $this->get_data( $start, $end, 'P1D', 'D ga' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H', 'D ga' );
@@ -86,12 +86,20 @@ class IncomeOverTime extends Endpoint {
 			date_add( $start, $dateInterval );
 		}
 
+		$total   = array_sum( $income );
+		$average = $total / count( $income );
+
 		$data = [
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label' => 'Income',
-					'data'  => $income,
+					'label'      => 'Income',
+					'data'       => $income,
+					'trend'      => '-15',
+					'highlights' => [
+						'total'   => give_currency_filter( give_format_amount( $total ), [ 'decode_currency' => true ] ),
+						'average' => give_currency_filter( give_format_amount( $average ), [ 'decode_currency' => true ] ),
+					],
 				],
 			],
 		];
