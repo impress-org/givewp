@@ -24,8 +24,8 @@ const RESTList = ( { endpoint } ) => {
 		if ( period.startDate && period.endDate ) {
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				params: {
-					start: period.startDate.format( 'YYYY-MM-DD' ),
-					end: period.startDate.format( 'YYYY-MM-DD' ),
+					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
+					end: period.endDate.format( 'YYYY-MM-DD-HH' ),
 				},
 				headers: {
 					'X-WP-Nonce': wpApiSettings.nonce,
@@ -37,7 +37,7 @@ const RESTList = ( { endpoint } ) => {
 		}
 	}, [ period, endpoint ] );
 
-	const items = fetched ? fetched.map( ( item, index ) => {
+	const items = Array.isArray( fetched ) && fetched.length ? fetched.map( ( item, index ) => {
 		switch ( item.type ) {
 			case 'donor':
 				return <DonorItem
