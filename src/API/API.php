@@ -8,27 +8,27 @@
 
 namespace Give\API;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages API Endpoints
  */
 class API {
 
-    /**
-     * Initialize Reports and Pages, register hooks
-     */
-    public function init() {
-        // To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
-        require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+	/**
+	 * Initialize Reports and Pages, register hooks
+	 */
+	public function init() {
+		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
+		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-        // Load endpoints
-        $this->load_endpoints();
+		// Load endpoints
+		$this->load_endpoints();
 
-    }
+	}
 
-    public function __construct() {
-        //Do nothing
+	public function __construct() {
+		// Do nothing
 	}
 
 	public function load_endpoints() {
@@ -40,7 +40,7 @@ class API {
 		$donationsVsIncome = new Endpoints\Reports\DonationsVsIncome();
 		$donationsVsIncome->init();
 
-		//Load payment methods endpoint
+		// Load payment methods endpoint
 		$paymentMethods = new Endpoints\Reports\PaymentMethods();
 		$paymentMethods->init();
 
@@ -51,8 +51,12 @@ class API {
 		// Load top donors endpoint
 		$topDonors = new Endpoints\Reports\TopDonors();
 		$topDonors->init();
+
+		// Load income over time endpoint
+		$incomeOverTime = new Endpoints\Reports\IncomeOverTime();
+		$incomeOverTime->init();
 	}
 
 }
-$api = new API;
+$api = new API();
 $api->init();
