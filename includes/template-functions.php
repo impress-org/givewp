@@ -556,3 +556,20 @@ if ( ! function_exists( 'is_give_taxonomy' ) ) {
 function give_is_viewing_embed_form() {
 	return ! ( 'give-embed' !== get_query_var( 'name' ) || empty( get_query_var( 'give_form_id' ) ) );
 }
+
+/**
+ * Get form style for donation form
+ *
+ * @param int $form_id
+ *
+ * @return string Form style name.
+ */
+function give_get_form_style( $form_id ) {
+	$form_style = Give()->form_meta->get_meta( $form_id, '_give_form_style' );
+
+	if ( ! empty( $_REQUEST['give_form_style'] ) ) {
+		$form_style = give_clean( $_REQUEST['give_form_style'] );
+	}
+
+	return $form_style;
+}
