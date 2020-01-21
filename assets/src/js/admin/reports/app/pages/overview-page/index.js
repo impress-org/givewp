@@ -24,7 +24,7 @@ const OverviewPage = () => {
 			</Card>
 			<Card width={ 3 }>
 				<MiniChart
-					title="Mini Doughnut"
+					title={ __( 'Total Donations', 'give' ) }
 					type="doughnut"
 					data={ {
 						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
@@ -39,7 +39,7 @@ const OverviewPage = () => {
 			</Card>
 			<Card width={ 3 }>
 				<MiniChart
-					title="Mini Line"
+					title={ __( 'Average Donation', 'give' ) }
 					type="line"
 					data={ {
 						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
@@ -54,7 +54,7 @@ const OverviewPage = () => {
 			</Card>
 			<Card width={ 3 }>
 				<MiniChart
-					title="Mini Pie"
+					title={ __( 'Amount Raised', 'give' ) }
 					type="pie"
 					data={ {
 						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
@@ -69,7 +69,7 @@ const OverviewPage = () => {
 			</Card>
 			<Card width={ 3 }>
 				<MiniChart
-					title="Mini Bar"
+					title={ __( 'Total Refunds', 'give' ) }
 					type="bar"
 					data={ {
 						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
