@@ -478,6 +478,7 @@ class Give_Scripts {
 	 */
 	public function embed_page_styles() {
 		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
+		echo $this->get_style_tag( GIVE_PLUGIN_URL . 'assets/dist/css/give-elegent-theme.css' );
 
 		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
 	}

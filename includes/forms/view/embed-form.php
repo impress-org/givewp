@@ -15,14 +15,6 @@
 		do_action( 'give_embed_head' );
 		?>
 	</head>
-	<style>
-		body {
-			max-width: 500px;
-			min-width: 301px;
-			margin: 0;
-			padding: 0;
-		}
-	</style>
 	<body>
 		<?php
 		// Fetch the Give Form.
