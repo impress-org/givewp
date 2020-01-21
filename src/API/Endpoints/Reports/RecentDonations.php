@@ -20,7 +20,7 @@ class RecentDonations extends Endpoint {
 		$args = [
 			'number'     => 50,
 			'paged'      => 1,
-			'orderby'    => 'publish_date',
+			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $request['start'],
 			'end_date'   => $request['end'],
@@ -39,7 +39,7 @@ class RecentDonations extends Endpoint {
 			$amount = give_currency_symbol( $payment->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
 			$status = $donation->status === 'publish' ? 'completed' : $donation->status;
 
-			$item = [
+			$list[] = [
 				'type'     => 'donation',
 				'donation' => $donation,
 				'status'   => $status,
@@ -51,7 +51,6 @@ class RecentDonations extends Endpoint {
 				],
 				'source'   => $donation->form_title,
 			];
-			array_push( $list, $item );
 		}
 
 		// Return $list of donations for RESTList component
