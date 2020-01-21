@@ -9,7 +9,6 @@ import RESTMiniChart from '../../../components/rest-mini-chart';
 import List from '../../../components/list';
 import RESTList from '../../../components/rest-list';
 import LocationItem from '../../../components/location-item';
-import DonationItem from '../../../components/donation-item';
 const { __ } = wp.i18n;
 
 const OverviewPage = () => {
@@ -75,7 +74,7 @@ const OverviewPage = () => {
 					showLegend={ true }
 				/>
 			</Card>
-			<Card title={ __( 'Donor List', 'give' ) } width={ 4 }>
+			<Card title={ __( 'Top Donors', 'give' ) } width={ 4 }>
 				<RESTList endpoint="top-donors" />
 			</Card>
 			<Card title={ __( 'Location List', 'give' ) } width={ 4 }>
@@ -146,51 +145,8 @@ const OverviewPage = () => {
 					/>
 				</List>
 			</Card>
-			<Card title={ __( 'Donation List', 'give' ) } width={ 4 }>
-				<List>
-					<DonationItem
-						status="completed"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-					<DonationItem
-						status="completed"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-					<DonationItem
-						status="abandoned"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-					<DonationItem
-						status="refunded"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-					<DonationItem
-						status="completed"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-					<DonationItem
-						status="completed"
-						amount="$50.00"
-						time="2013-02-08 09:30"
-						donor={ { name: 'Test Name', id: 456 } }
-						source="Save the Whales"
-					/>
-				</List>
+			<Card title={ __( 'Recent Donations', 'give' ) } width={ 4 }>
+				<RESTList endpoint="recent-donations" />
 			</Card>
 		</Grid>
 	);
