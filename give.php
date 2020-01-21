@@ -552,6 +552,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
+			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
