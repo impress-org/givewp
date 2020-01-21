@@ -50,3 +50,5 @@ function give_form_styles_routes() {
 }
 
 add_action( 'template_redirect', 'give_form_styles_routes' );
+
+// @todo: use slug to render donation form
