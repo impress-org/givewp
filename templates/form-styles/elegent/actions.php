@@ -11,6 +11,17 @@ function give_elegent_add_form_introduction_section( $form_id, $args, $form ) {
 }
 
 /**
+ * Add form stats form section
+ *
+ * @param $form_id
+ * @param $args
+ * @param $form
+ */
+function give_elegent_add_form_stats_section( $form_id, $args, $form ) {
+	include 'sections/form-income-stats.php';
+}
+
+/**
  * Setup hooks in-favor of elegent form style
  *
  * @param int              $form_id
@@ -28,6 +39,7 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	 */
 	// Add customized introduction section.
 	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 11, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
 
 	/**
 	 * Remove actions
