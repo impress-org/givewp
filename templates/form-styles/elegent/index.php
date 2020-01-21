@@ -1,3 +1,4 @@
+<?php require_once 'actions.php'; ?>
 <div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form->get_form_wrap_classes( $args ); ?>">
 	<?php
 	if ( $form->is_close_donation_form() ) {

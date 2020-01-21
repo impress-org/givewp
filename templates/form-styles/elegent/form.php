@@ -34,7 +34,6 @@ $form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags,
 			<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
 			<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>
 		</span>
-		<?php require 'sections/introduction.php'; ?>
 		<?php
 		/**
 		 * Fires while outputting donation form, before all other fields.
