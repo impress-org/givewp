@@ -62,6 +62,10 @@ add_action( 'template_redirect', 'give_form_styles_routes' );
 function give_add_embed_form_class( $classes ) {
 	if ( give_is_viewing_embed_form() ) {
 		$classes[] = 'give-embed-form';
+
+		if ( ! empty( $_GET['iframe'] ) ) {
+			$classes[] = 'give-viewing-form-in-iframe';
+		}
 	}
 
 	return $classes;

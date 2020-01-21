@@ -1016,7 +1016,7 @@ function give_embed_form( $args ) {
 
 	printf(
 		'<iframe name="give-embed-form" src="%1$s" data-embed-id="" onload="Give.util.fn.resizeIframe(this)" style="border: 0;"></iframe>',
-		home_url( "/give-embed/{$args['id']}" )
+		home_url( "/give-embed/{$args['id']}?iframe=true" )
 	);
 
 	return ob_get_clean();
