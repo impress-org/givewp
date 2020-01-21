@@ -39,7 +39,7 @@ class TopDonors extends Endpoint {
 			$url        = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $donor->id ) );
 			$countLabel = $donor->purchase_count > 1 ? esc_html__( 'Donations', 'give' ) : esc_html__( 'Donation', 'give' );
 
-			$item = [
+			$list[] = [
 				'type'  => 'donor',
 				'name'  => $donor->name,
 				'url'   => $url,
@@ -48,7 +48,6 @@ class TopDonors extends Endpoint {
 				'image' => $avatar,
 				'email' => $donor->email,
 			];
-			array_push( $list, $item );
 		}
 
 		// Return $list of donors for RESTList component
