@@ -1,4 +1,4 @@
-.donor-link {
+.give-donor-link {
 	display: contents;
 	text-decoration: inherit;
 	color: inherit;
@@ -8,7 +8,7 @@
 	}
 }
 
-.donor-item {
+.give-donor-item {
 	display: flex;
 	align-items: center;
 	height: 72px;
@@ -22,7 +22,7 @@
 		overflow: hidden;
 	}
 
-	> .donor-initials {
+	> .give-donor-initials {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -34,16 +34,20 @@
 		background: #d75a4b;
 	}
 
-	> .donor-info {
+	> .give-donor-info {
 		flex: 1;
+		overflow: hidden;
 		margin-left: 16px;
 	}
 
-	> .donor-totals {
+	> .give-donor-totals {
 		text-align: right;
 	}
 
 	p {
 		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }

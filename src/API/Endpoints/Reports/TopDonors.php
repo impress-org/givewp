@@ -37,9 +37,9 @@ class TopDonors extends Endpoint {
 			$avatar     = give_validate_gravatar( $donor->email ) ? get_avatar( $donor->email, 60 ) : null;
 			$total      = give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
 			$url        = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $donor->id ) );
-			$countLabel = $donor->purchase_count > 1 ? esc_html__( 'Donations', 'give' ) : esc_html__( 'Donation', 'give' );
+			$countLabel = _n( 'Donation', 'Donations', $donor->purchase_count, 'give' )
 
-			$item = [
+			$list[] = [
 				'type'  => 'donor',
 				'name'  => $donor->name,
 				'url'   => $url,
@@ -48,7 +48,6 @@ class TopDonors extends Endpoint {
 				'image' => $avatar,
 				'email' => $donor->email,
 			];
-			array_push( $list, $item );
 		}
 
 		// Return $list of donors for RESTList component

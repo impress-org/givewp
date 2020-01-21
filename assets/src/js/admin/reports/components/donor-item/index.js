@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import './style.scss';
 import { getBGColor, getInitials } from './utils';
+const { __ } = wp.i18n;
 
 const DonorItem = ( { image, name, email, count, total, url } ) => {
-	const profile = image ? <img src={ image } /> : <div className="donor-initials" style={ { backgroundColor: getBGColor() } }>{ getInitials( name ) }</div>;
+	const profile = image ? <img src={ image } /> : <div className="give-donor-initials" style={ { backgroundColor: getBGColor() } }>{ getInitials( name ) }</div>;
 	return (
-		<a className="donor-link" href={ url }>
-			<div className="donor-item">
+		<a className="give-donor-link" href={ url }>
+			<div className="give-donor-item">
 				{ profile }
-				<div className="donor-info">
+				<div className="give-donor-info">
 					<p><strong>{ name }</strong></p>
 					<p>{ email }</p>
 				</div>
-				<div className="donor-totals">
+				<div className="give-donor-totals">
 					<p>{ count }</p>
 					<p>{ total }</p>
 				</div>
@@ -38,7 +39,7 @@ DonorItem.propTypes = {
 
 DonorItem.defaultProps = {
 	image: null,
-	name: 'Anonymous',
+	name: __( 'Anonymous', 'give' ),
 	email: null,
 	count: null,
 	total: null,
