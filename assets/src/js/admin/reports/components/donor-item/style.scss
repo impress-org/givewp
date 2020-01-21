@@ -36,6 +36,7 @@
 
 	> .give-donor-info {
 		flex: 1;
+		overflow: hidden;
 		margin-left: 16px;
 	}
 
@@ -45,5 +46,8 @@
 
 	p {
 		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }

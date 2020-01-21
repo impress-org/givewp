@@ -3,7 +3,7 @@ import './style.scss';
 import { getBGColor, getInitials } from './utils';
 
 const DonorItem = ( { image, name, email, count, total, url } ) => {
-	const profile = image ? <img src={ image } /> : <div className="donor-initials" style={ { backgroundColor: getBGColor() } }>{ getInitials( name ) }</div>;
+	const profile = image ? <img src={ image } /> : <div className="give-donor-initials" style={ { backgroundColor: getBGColor() } }>{ getInitials( name ) }</div>;
 	return (
 		<a className="give-donor-link" href={ url }>
 			<div className="give-donor-item">
