@@ -51,4 +51,22 @@ function give_form_styles_routes() {
 
 add_action( 'template_redirect', 'give_form_styles_routes' );
 
+
+/**
+ * Add class
+ *
+ * @param array $classes
+ *
+ * @return array
+ */
+function give_add_embed_form_class( $classes ) {
+	if ( give_is_viewing_embed_form() ) {
+		$classes[] = 'give-embed-form';
+	}
+
+	return $classes;
+}
+
+add_filter( 'give_form_wrap_classes', 'give_add_embed_form_class' );
+
 // @todo: use slug to render donation form
