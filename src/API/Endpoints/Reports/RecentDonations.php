@@ -20,7 +20,7 @@ class RecentDonations extends Endpoint {
 		$args = [
 			'number'     => 50,
 			'paged'      => 1,
-			'orderby'    => 'publish_date',
+			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $request['start'],
 			'end_date'   => $request['end'],
