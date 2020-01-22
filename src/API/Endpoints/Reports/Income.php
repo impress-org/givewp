@@ -89,8 +89,8 @@ class Income extends Endpoint {
 
 			$incomeForPeriod = $stats->get_earnings( 0, $periodStart, $periodEnd );
 
-			array_push( $income, $incomeForPeriod );
-			array_push( $labels, $label );
+			$income[] = $incomeForPeriod;
+			$labels[] = $label;
 
 			date_add( $start, $dateInterval );
 		}
