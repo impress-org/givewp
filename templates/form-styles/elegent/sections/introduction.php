@@ -9,7 +9,7 @@ $form_title = sprintf(
 		<strong><?php echo $form_title; ?></strong>
 	</div>
 	<div class="headline"></div>
-	<div class="subheading">
+	<div class="subheading text">
 		<p><?php echo get_the_excerpt( $form ); ?></p>
 	</div>
 	<img src="<?php echo get_the_post_thumbnail_url( $form ); ?>" alt="">
