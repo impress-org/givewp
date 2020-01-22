@@ -55,6 +55,10 @@ class API {
 		// Load recent donations endpoint
 		$recentDonations = new Endpoints\Reports\RecentDonations();
 		$recentDonations->init();
+
+		// Load income endpoint
+		$income = new Endpoints\Reports\Income();
+		$income->init();
 	}
 
 }
