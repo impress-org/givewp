@@ -119,8 +119,8 @@ body {
 			padding: 25px 20px 25px 42px !important;
 			border: 0 !important;
 			text-align: center;
-			font-size: 25px;
-			font-weight: 400;
+			font-size: 25px !important;
+			font-weight: 400 !important;
 
 			&:focus{
 				outline: none;
