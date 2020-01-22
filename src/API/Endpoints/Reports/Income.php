@@ -86,7 +86,12 @@ class Income extends Endpoint {
 			date_add( $start, $dateInterval );
 		}
 
-		$total = array_sum( $income );
+		$totalForPeriod = array_sum( $income );
+
+		$beginning    = '2000-01-01';
+		$totalAtStart = $stats->get_earnings( 0, $beginning, $start->format( 'Y-m-d H:i:s' ) );
+		$totalAtEnd   = $stats->get_earnings( 0, $beginning, $end->format( 'Y-m-d H:i:s' ) );
+		$trend        = $totalAtStart > 0 ? ( ( $totalAtEnd - $totalAtStart ) / $totalAtStart ) * 100 : 'NaN';
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -95,8 +100,8 @@ class Income extends Endpoint {
 				[
 					'label'     => 'Income',
 					'data'      => $income,
-					'trend'     => '-15',
-					'highlight' => give_currency_filter( give_format_amount( $total ), [ 'decode_currency' => true ] ),
+					'trend'     => $trend,
+					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),
 				],
 			],
 		];
