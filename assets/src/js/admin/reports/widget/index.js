@@ -46,28 +46,24 @@ const Widget = () => {
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						highlight="total"
 						endpoint="income-over-time"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						highlight="total"
 						endpoint="income-over-time"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						highlight="total"
 						endpoint="income-over-time"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						highlight="total"
 						endpoint="income-over-time"
 					/>
 				</Card>

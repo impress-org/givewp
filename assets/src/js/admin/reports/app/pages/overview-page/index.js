@@ -25,28 +25,24 @@ const OverviewPage = () => {
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Total Income', 'give' ) }
-					highlight="total"
 					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Avg. Income', 'give' ) }
-					highlight="average"
 					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Total Income', 'give' ) }
-					highlight="total"
 					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Total Income', 'give' ) }
-					highlight="total"
 					endpoint="income-over-time"
 				/>
 			</Card>

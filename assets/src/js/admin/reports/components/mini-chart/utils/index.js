@@ -24,8 +24,8 @@ export function getTrend( data ) {
 	return trend;
 }
 
-export function getHighlightValue( highlight, data ) {
-	const highlightValue = data.datasets[ 0 ].highlights[ highlight ];
+export function getHighlightValue( data ) {
+	const highlightValue = data.datasets[ 0 ].highlight;
 	return highlightValue;
 }
 

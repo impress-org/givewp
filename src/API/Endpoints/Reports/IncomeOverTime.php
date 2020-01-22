@@ -94,13 +94,10 @@ class IncomeOverTime extends Endpoint {
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'      => 'Income',
-					'data'       => $income,
-					'trend'      => '-15',
-					'highlights' => [
-						'total'   => give_currency_filter( give_format_amount( $total ), [ 'decode_currency' => true ] ),
-						'average' => give_currency_filter( give_format_amount( $average ), [ 'decode_currency' => true ] ),
-					],
+					'label'     => 'Income',
+					'data'      => $income,
+					'trend'     => '-15',
+					'highlight' => give_currency_filter( give_format_amount( $total ), [ 'decode_currency' => true ] ),
 				],
 			],
 		];
