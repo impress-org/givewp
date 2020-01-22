@@ -52,6 +52,9 @@ class Income extends Endpoint {
 				break;
 		}
 
+		$data['start'] = $request['start'];
+		$data['end']   = $request['end'];
+
 		return new \WP_REST_Response(
 			[
 				'data' => $data,
@@ -62,6 +65,12 @@ class Income extends Endpoint {
 	public function get_data( $start, $end, $interval, $format ) {
 
 		$stats = new \Give_Payment_Stats();
+
+		$startStr = $start->format( 'Y-m-d H:i:s' );
+		$endStr   = $end->format( 'Y-m-d H:i:s' );
+
+		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
+		$prevStr = $prev->format( 'Y-m-d H:i:s' );
 
 		$labels = [];
 		$income = [];
@@ -88,10 +97,9 @@ class Income extends Endpoint {
 
 		$totalForPeriod = array_sum( $income );
 
-		$beginning    = '2000-01-01';
-		$totalAtStart = $stats->get_earnings( 0, $beginning, $start->format( 'Y-m-d H:i:s' ) );
-		$totalAtEnd   = $stats->get_earnings( 0, $beginning, $end->format( 'Y-m-d H:i:s' ) );
-		$trend        = $totalAtStart > 0 ? ( ( $totalAtEnd - $totalAtStart ) / $totalAtStart ) * 100 : 'NaN';
+		$prevTotal    = $stats->get_earnings( 0, $prevStr, $startStr );
+		$currentTotal = $stats->get_earnings( 0, $startStr, $endStr );
+		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
