@@ -90,6 +90,9 @@ body {
 		margin-bottom: 20px;
 
 		div.give-donation-amount{
+			border: 1px solid #e1e1e1;
+			border-radius: 6px !important;
+
 			&:before{
 				content: none;
 			}
@@ -101,15 +104,21 @@ body {
 			position: relative;
 			z-index: 3;
 			padding: 10px 12px !important;
+			border-radius: 6px !important;
 		}
 
 		input[type=tel] {
 			position: relative;
 			left: -35px;
-			border-radius: 6px !important;
 			width: 170px !important;
+			border-radius: 6px !important;
 			padding: 25px 20px 25px 42px !important;
 			font-weight: bold;
+			border: 0 !important;
+
+			&:focus{
+				outline: none;
+			}
 		}
 
 		.give-donation-amount{
@@ -137,6 +146,10 @@ body {
 
 		li:last-child{
 			grid-column: 1 / span 3;
+
+			button{
+				padding: 9px 23px !important;
+			}
 		}
 	}
 
@@ -150,6 +163,10 @@ body {
 		&:hover{
 			border-color: #2bc253;
 			color: #2bc253;
+		}
+
+		&:focus{
+			outline: none;
 		}
 	}
 }
