@@ -46,6 +46,26 @@ function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
 }
 
 /**
+ * Add introduction text to personal information section
+ *
+ * @param int              $form_id
+ * @param array            $args
+ * @param Give_Donate_Form $form
+ */
+function give_elegent_add_personal_infomation_section_text( $form_id, $args, $form ) {
+	$text = sprintf(
+		'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
+		__( 'Tell us a bit amount yourself', 'give' ),
+		__( 'We\'ll never share this information with anyone', 'give' )
+	);
+
+	/**
+	 * Filter text
+	 */
+	echo apply_filters( 'give_elegent_add_personal_information_section_text', $text, $form_id, $args, $form );
+}
+
+/**
  * Setup hooks in-favor of elegent form style
  *
  * @param int              $form_id
@@ -66,6 +86,7 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
 	add_action( 'give_payment_mode_top', 'give_user_info_fields' );
+	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_infomation_section_text' );
 
 	/**
 	 * Remove actions

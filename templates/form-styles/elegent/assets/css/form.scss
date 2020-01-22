@@ -11,6 +11,12 @@ body {
 	color: #555555;
 }
 
+input[type="text"],
+input[type="email"],
+textarea{
+	font-size: 14px;
+	padding: 10px 10px !important;
+}
 
 .give-section.introduction{
 	display: flex;
@@ -68,6 +74,18 @@ body {
 .give-section.progress-bar{
 	padding: 19px 10px;
 	border-bottom: 1px solid #e1e1e1;
+}
+
+.give-section.personal-information-text {
+	text-align: center;
+	background-color: #f1f1f1;
+	margin-top: 19px;
+	padding: 15px 23px;
+
+	.subheading{
+		font-size: 12px;
+		color: #555555;
+	}
 }
 
 /**
@@ -173,6 +191,16 @@ body {
 
 		&:focus{
 			outline: none;
+		}
+	}
+
+	#give_checkout_user_info{
+		background-color: #f1f1f1;
+		padding: 15px 23px;
+		margin: 0 0 19px;
+
+		legend{
+			display: none;
 		}
 	}
 }
