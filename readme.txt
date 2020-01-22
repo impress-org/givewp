@@ -17,7 +17,7 @@ Accept donations and begin fundraising with GiveWP, the highest rated WordPress 
 
 Transform the way you accept online donations. With GiveWP you can accept charitable gifts through customizable donation forms, view donation statistics and reports, manage donors, and integrate with a wide variety of third-party gateways and services.
 
-[youtube https://www.youtube.com/watch?v=gNdEelhjoKE]
+[youtube https://www.youtube.com/watch?v=L5YudU2hido]
 
 = GiveWP's Features =
 
