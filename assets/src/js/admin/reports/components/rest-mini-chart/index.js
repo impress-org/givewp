@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import MiniChart from '../mini-chart';
 
 // Store-related dependencies
-import { useStoreValue } from '../../app/store';
+import { useStoreValue } from '../../store';
 
 const RESTMiniChart = ( { title, highlight, endpoint } ) => {
 	// Use period from store
