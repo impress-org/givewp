@@ -7,6 +7,10 @@ body {
 	font-family: 'Montserrat', sans-serif;
 }
 
+.text{
+	color: #555555;
+}
+
 
 .give-section.introduction{
 	display: flex;
@@ -79,6 +83,96 @@ body {
 	&.give-form-wrap{
 		.give_error:first-child{
 			margin-top: 0;
+		}
+	}
+
+	.give-total-wrap {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding-top: 17px;
+		margin-bottom: 20px;
+
+		div.give-donation-amount{
+			border: 1px solid #e1e1e1;
+			border-radius: 6px !important;
+
+			&:before{
+				content: none;
+			}
+		}
+
+		span.give-currency-symbol {
+			background-color: transparent!important;
+			border: 0 !important;
+			position: relative;
+			z-index: 3;
+			padding: 10px 12px !important;
+			border-radius: 6px !important;
+		}
+
+		input[type=tel] {
+			position: relative;
+			left: -35px;
+			width: 170px !important;
+			border-radius: 6px !important;
+			padding: 25px 20px 25px 42px !important;
+			border: 0 !important;
+			text-align: center;
+			font-size: 25px;
+			font-weight: 400;
+
+			&:focus{
+				outline: none;
+			}
+		}
+
+		.give-donation-amount{
+			&:before,
+			&:after{
+				content: none !important;
+			}
+		}
+	}
+
+	.give-donation-levels-wrap{
+		display: grid;
+		grid-gap: 15px;
+		grid-template-columns: repeat(3, 1fr);
+		padding: 0 5% !important;
+
+		&:before,
+		&:after{
+			content: none !important;
+		}
+
+		li{
+			margin: 0 !important;
+		}
+
+		li:last-child{
+			grid-column: 1 / span 3;
+
+			button{
+				padding: 9px 23px !important;
+			}
+		}
+	}
+
+	.give-donation-level-btn{
+		background: white;
+		color: black;
+		border-radius: 30px;
+		padding: 15px 23px;
+		width: 100%;
+
+		&:hover{
+			border-color: #2bc253;
+			color: #2bc253;
+		}
+
+		&:focus{
+			outline: none;
 		}
 	}
 }
