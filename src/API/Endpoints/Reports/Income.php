@@ -16,6 +16,15 @@ class Income extends Endpoint {
 
 	public function get_report( $request ) {
 
+		$cached_report = $this->get_cached_report( $request );
+		if ( $cached_report !== false ) {
+			return new \WP_REST_Response(
+				[
+					'data' => $cached_report,
+				]
+			);
+		}
+
 		$start = date_create( $request['start'] );
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
@@ -52,8 +61,7 @@ class Income extends Endpoint {
 				break;
 		}
 
-		$data['start'] = $request['start'];
-		$data['end']   = $request['end'];
+		$result = $this->cache_report( $request, $data );
 
 		return new \WP_REST_Response(
 			[

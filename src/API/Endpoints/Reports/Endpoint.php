@@ -150,4 +150,43 @@ abstract class Endpoint {
 		return $status;
 
 	}
+
+	/**
+	 * Get cached report
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function get_cached_report( $request ) {
+
+		$query_args = [
+			'start' => $request['start'],
+			'end'   => $request['end'],
+		];
+
+		$cache_key = \Give_Cache::get_key( 'api_get_report', $query_args );
+
+		$cached = \Give_Cache::get( $cache_key, false, $query_args );
+
+		return \Give_Cache::get( $cache_key, false, $query_args );
+	}
+
+	/**
+	 * Cache report
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function cache_report( $request, $report ) {
+
+		$query_args = [
+			'start' => $request['start'],
+			'end'   => $request['end'],
+		];
+
+		$cache_key = \Give_Cache::get_key( 'api_get_report', $query_args );
+
+		$result = \Give_Cache::set( $cache_key, $report, HOUR_IN_SECONDS, false, $query_args );
+
+		return $result;
+
+	}
 }
