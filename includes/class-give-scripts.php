@@ -479,6 +479,7 @@ class Give_Scripts {
 	public function embed_page_styles() {
 		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
 		echo $this->get_style_tag( GIVE_PLUGIN_URL . 'assets/dist/css/give-elegent-theme.css' );
+		echo $this->get_style_tag( 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap' );
 
 		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
 	}
