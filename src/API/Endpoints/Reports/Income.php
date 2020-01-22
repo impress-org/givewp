@@ -16,8 +16,10 @@ class Income extends Endpoint {
 
 	public function get_report( $request ) {
 
+		// Check if a cached version exists
 		$cached_report = $this->get_cached_report( $request );
 		if ( $cached_report !== false ) {
+			// Bail and return the cached version
 			return new \WP_REST_Response(
 				[
 					'data' => $cached_report,
@@ -61,6 +63,7 @@ class Income extends Endpoint {
 				break;
 		}
 
+		// Cache the report data
 		$result = $this->cache_report( $request, $data );
 
 		return new \WP_REST_Response(
@@ -77,6 +80,7 @@ class Income extends Endpoint {
 		$startStr = $start->format( 'Y-m-d H:i:s' );
 		$endStr   = $end->format( 'Y-m-d H:i:s' );
 
+		// Determine the start date of the previous period (used to calculate trend)
 		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
 		$prevStr = $prev->format( 'Y-m-d H:i:s' );
 
@@ -105,6 +109,8 @@ class Income extends Endpoint {
 
 		$totalForPeriod = array_sum( $income );
 
+		// Calculate the income trend by comparing total earnings in the
+		// previous period to earnings in the current period
 		$prevTotal    = $stats->get_earnings( 0, $prevStr, $startStr );
 		$currentTotal = $stats->get_earnings( 0, $startStr, $endStr );
 		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
