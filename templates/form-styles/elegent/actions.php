@@ -22,6 +22,17 @@ function give_elegent_add_form_stats_section( $form_id, $args, $form ) {
 }
 
 /**
+ * Add progress bar form section
+ *
+ * @param $form_id
+ * @param $args
+ * @param $form
+ */
+function give_elegent_add_progress_bar_section( $form_id, $args, $form ) {
+	include 'sections/progress-bar.php';
+}
+
+/**
  * Setup hooks in-favor of elegent form style
  *
  * @param int              $form_id
@@ -40,6 +51,7 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	// Add customized introduction section.
 	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 11, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
 
 	/**
 	 * Remove actions

@@ -21,7 +21,7 @@ body {
 
 	.headline{
 		width: 25%;
-		border: 2px solid #8484d4;
+		border: 2px solid #2bc253;
 		border-radius: 10px;
 	}
 
@@ -58,6 +58,11 @@ body {
 
 		padding: 10px;
 	}
+}
+
+.give-section.progress-bar{
+	padding: 19px 10px;
+	border-bottom: 1px solid #e1e1e1;
 }
 
 /**
