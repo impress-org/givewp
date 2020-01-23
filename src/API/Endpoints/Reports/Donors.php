@@ -130,6 +130,12 @@ class Donors extends Endpoint {
 
 	}
 
+	/**
+	 * Calculate the donor count for a given period
+	 *
+	 * @param  $start string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end  string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 */
 	public function get_donor_count( $start, $end ) {
 		// Setup donor query args (get sanitized start/end date from request)
 		$args = [
