@@ -18,32 +18,32 @@ const OverviewPage = () => {
 				<RESTChart
 					type="line"
 					aspectRatio={ 0.4 }
-					endpoint="donations-vs-income"
+					endpoint="income"
 					showLegend={ false }
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Total Income', 'give' ) }
-					endpoint="income-over-time"
+					endpoint="income"
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
-					title={ __( 'Avg. Income', 'give' ) }
-					endpoint="income-over-time"
-				/>
-			</Card>
-			<Card width={ 3 }>
-				<RESTMiniChart
-					title={ __( 'Total Income', 'give' ) }
-					endpoint="income-over-time"
+					title={ __( 'Avg. Donation', 'give' ) }
+					endpoint="average-donation"
 				/>
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
 					title={ __( 'Total Income', 'give' ) }
-					endpoint="income-over-time"
+					endpoint="income"
+				/>
+			</Card>
+			<Card width={ 3 }>
+				<RESTMiniChart
+					title={ __( 'Total Income', 'give' ) }
+					endpoint="income"
 				/>
 			</Card>
 			<Card title={ __( 'Payment Methods', 'give' ) } width={ 4 }>
