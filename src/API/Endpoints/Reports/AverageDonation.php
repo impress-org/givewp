@@ -99,9 +99,7 @@ class AverageDonation extends Endpoint {
 			$label     = $periodEnd->format( $format );
 			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
 
-			$incomeForPeriod        = $stats->get_earnings( 0, $periodStart, $periodEnd );
-			$paymentsForPeriod      = $stats->get_sales( 0, $periodStart, $periodEnd );
-			$averageIncomeForPeriod = $paymentsForPeriod > 0 ? $incomeForPeriod / $paymentsForPeriod : 0;
+			$averageIncomeForPeriod = $this->get_average_donation( $periodStart, $periodEnd );
 
 			$income[] = $averageIncomeForPeriod;
 			$labels[] = $label;
@@ -113,13 +111,8 @@ class AverageDonation extends Endpoint {
 
 		// Calculate the income trend by comparing average earnings in the
 		// previous period to average earnings in the current period
-		$prevIncome   = $stats->get_earnings( 0, $prevStr, $startStr );
-		$prevPayments = $stats->get_sales( 0, $prevStr, $startStr );
-		$prevAverage  = $prevPayments > 0 ? $prevIncome / $prevPayments : 0;
-
-		$currentIncome   = $stats->get_earnings( 0, $startStr, $endStr );
-		$currentPayments = $stats->get_sales( 0, $startStr, $endStr );
-		$currentAverage  = $currentPayments > 0 ? $currentIncome / $currentPayments : 0;
+		$prevAverage    = $this->get_average_donation( $prevStr, $startStr );
+		$currentAverage = $this->get_average_donation( $startStr, $endStr );
 
 		$trend = $prevAverage > 0 ? round( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ) : 'NaN';
 
@@ -137,6 +130,18 @@ class AverageDonation extends Endpoint {
 		];
 
 		return $data;
+
+	}
+
+	public function get_average_donation( $start, $end ) {
+
+		$stats = new \Give_Payment_Stats();
+
+		$income   = $stats->get_earnings( 0, $start, $end );
+		$payments = $stats->get_sales( 0, $start, $end );
+		$average  = $payments > 0 ? $income / $payments : 0;
+
+		return $average;
 
 	}
 }
