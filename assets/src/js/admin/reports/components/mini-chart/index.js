@@ -58,7 +58,7 @@ const MiniChart = ( { title, data } ) => {
 		<div className="givewp-mini-chart">
 			<div className="header">
 				<div className="title">{ title }</div>
-				<div className="indicator">{ indicator && ( indicator ) }</div>
+				<div className="indicator">{ ! isNaN( trend ) && ( indicator ) }</div>
 			</div>
 			<div className="content">
 				<div className="amount">{ highlightValue && ( highlightValue ) }</div>
