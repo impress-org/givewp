@@ -106,7 +106,7 @@ add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
  * @param int $form_id
  */
 function give_elegent_setup_hooks_on_ajax( $form_id ) {
-	// early exit.
+	// Early exit.
 	if ( ! give_is_viewing_embed_form() ) {
 		return;
 	}
