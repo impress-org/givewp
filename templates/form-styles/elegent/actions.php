@@ -52,16 +52,11 @@ function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
  * @param int $form_id
  */
 function give_elegent_add_personal_information_section_text( $form_id ) {
-	$text = sprintf(
+	printf(
 		'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 		__( 'Tell us a bit amount yourself', 'give' ),
 		__( 'We\'ll never share this information with anyone', 'give' )
 	);
-
-	/**
-	 * Filter text
-	 */
-	echo apply_filters( 'give_elegent_add_personal_information_section_text', $text, $form_id );
 }
 
 /**
