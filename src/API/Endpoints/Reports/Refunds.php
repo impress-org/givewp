@@ -107,7 +107,7 @@ class Refunds extends Endpoint {
 			date_add( $start, $dateInterval );
 		}
 
-		$totalForPeriod = array_sum( $income );
+		$totalForPeriod = array_sum( $refunds );
 
 		// Calculate the refunds trend by comparing total refunds in the
 		// previous period to refunds in the current period
