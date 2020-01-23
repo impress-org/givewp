@@ -4,12 +4,12 @@ import { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import Chart from '../chart';
+import MiniChart from '../mini-chart';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
 
-const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
+const RESTMiniChart = ( { title, endpoint } ) => {
 	// Use period from store
 	const [ { period } ] = useStoreValue();
 
@@ -37,33 +37,25 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 	return (
 		<Fragment>
 			{ fetched && (
-				<Chart
-					type={ type }
-					aspectRatio={ aspectRatio }
+				<MiniChart
+					title={ title }
 					data={ fetched }
-					showLegend={ showLegend }
 				/>
 			) }
 		</Fragment>
 	);
 };
 
-RESTChart.propTypes = {
-	// Chart type (ex: line)
-	type: PropTypes.string.isRequired,
-	// Chart aspect ratio
-	aspectRatio: PropTypes.number,
+RESTMiniChart.propTypes = {
+	// Mini Chart title
+	title: PropTypes.string.isRequired,
 	// API endpoint where data is fetched (ex: 'payment-statuses')
 	endpoint: PropTypes.string.isRequired,
-	// Display Chart with Legend
-	showLegend: PropTypes.bool,
 };
 
-RESTChart.defaultProps = {
-	type: null,
-	aspectRatio: 0.6,
+RESTMiniChart.defaultProps = {
+	title: null,
 	endpoint: null,
-	showLegend: false,
 };
 
-export default RESTChart;
+export default RESTMiniChart;

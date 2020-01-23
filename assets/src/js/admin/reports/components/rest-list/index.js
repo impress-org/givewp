@@ -10,7 +10,7 @@ import LocationItem from '../location-item';
 import DonationItem from '../donation-item';
 
 // Store-related dependencies
-import { useStoreValue } from '../../app/store';
+import { useStoreValue } from '../../store';
 
 const RESTList = ( { endpoint } ) => {
 	// Use period from store
