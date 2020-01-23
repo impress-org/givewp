@@ -2,6 +2,7 @@
 
 // Vendor dependencies
 import moment from 'moment';
+const { __ } = wp.i18n;
 
 // Store related dependencies
 import { StoreProvider } from '../store';
@@ -27,7 +28,7 @@ const App = () => {
 		<StoreProvider initialState={ initialState } reducer={ reducer }>
 			<div className="wrap give-settings-page">
 				<div className="give-settings-header">
-					<h1 className="wp-heading-inline">Reports</h1>
+					<h1 className="wp-heading-inline">{ __( 'Reports', 'give' ) }</h1>
 					<PeriodSelector />
 				</div>
 				<Tabs />
