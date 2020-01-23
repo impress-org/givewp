@@ -105,19 +105,19 @@ add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
 /**
  * Setup hooks in-favor of elegent form style when donor changes payment gateway
  *
- * @param int $form_id
+ * @param int   $form_id
+ * @param array $args
  */
-function give_elegent_setup_hooks_on_ajax( $form_id ) {
+function give_elegent_setup_hooks_on_ajax( $form_id, $args ) {
 	// Early exit.
 	if ( ! give_is_viewing_embed_form() ) {
 		return;
 	}
 
-	give_elegent_setup_common_hooks( $form_id, array(), new Give_Donate_Form( $form_id ) );
+	give_elegent_setup_common_hooks( $form_id, $args, new Give_Donate_Form( $form_id ) );
 }
 
-add_action( 'wp_ajax_give_load_gateway', 'give_elegent_setup_hooks_on_ajax', 9 );
-add_action( 'wp_ajax_no_privgive_load_gateway', 'give_elegent_setup_hooks_on_ajax, 9' );
+add_action( 'give_donation_form', 'give_elegent_setup_hooks_on_ajax', 9, 2 );
 
 /**
  * Load Checkout Fields
