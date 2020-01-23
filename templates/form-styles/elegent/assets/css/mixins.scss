@@ -1,0 +1,10 @@
+@mixin background-lightgray{
+	background-color: #f1f1f1
+}
+
+@mixin before-after-content-none{
+	&:before,
+	&:after{
+		content: none !important;
+	}
+}

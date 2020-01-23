@@ -1,3 +1,5 @@
+@import "mixins";
+
 body {
 	max-width: 450px;
 	min-width: 320px;
@@ -147,10 +149,7 @@ textarea{
 		}
 
 		.give-donation-amount{
-			&:before,
-			&:after{
-				content: none !important;
-			}
+			@include before-after-content-none;
 		}
 	}
 
@@ -196,7 +195,8 @@ textarea{
 	}
 
 	#give_checkout_user_info{
-		background-color: #f1f1f1;
+		@include background-lightgray;
+
 		padding: 15px 23px;
 		margin: 0 0 19px;
 
@@ -218,9 +218,38 @@ textarea{
 			flex-direction: column;
 			justify-content: flex-end;
 
-			&:before,
-			&:after{
-				content: none !important;
+			@include before-after-content-none;
+		}
+	}
+
+	[id="give-payment-mode-select"]{
+		padding: 15px 23px;
+
+		legend{
+			display: none
+		}
+
+		ul{
+			display: grid;
+			grid-gap: 10px;
+			grid-template-rows: 1fr;
+
+			@include before-after-content-none;
+
+			li{
+				@include background-lightgray;
+
+				margin: 0 !important;
+				padding: 14px 20px !important;
+
+				display: flex !important;
+				justify-content: flex-start;
+				align-items: center;
+
+				label{
+					padding-left: 3px;
+					flex-grow: 1;
+				}
 			}
 		}
 	}
