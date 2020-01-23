@@ -48,11 +48,9 @@ function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
 /**
  * Add introduction text to personal information section
  *
- * @param int              $form_id
- * @param array            $args
- * @param Give_Donate_Form $form
+ * @param int $form_id
  */
-function give_elegent_add_personal_infomation_section_text( $form_id, $args, $form ) {
+function give_elegent_add_personal_infomation_section_text( $form_id ) {
 	$text = sprintf(
 		'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 		__( 'Tell us a bit amount yourself', 'give' ),
@@ -62,7 +60,7 @@ function give_elegent_add_personal_infomation_section_text( $form_id, $args, $fo
 	/**
 	 * Filter text
 	 */
-	echo apply_filters( 'give_elegent_add_personal_information_section_text', $text, $form_id, $args, $form );
+	echo apply_filters( 'give_elegent_add_personal_information_section_text', $text, $form_id );
 }
 
 /**
@@ -99,6 +97,7 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	// Setup common hooks.
 	give_elegent_setup_common_hooks( $form_id, $args, $form );
 }
+
 add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
 
 /**
@@ -109,6 +108,7 @@ add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
 function give_elegent_setup_hooks_on_ajax( $form_id ) {
 	give_elegent_setup_common_hooks( $form_id, array(), new Give_Donate_Form( $form_id ) );
 }
+
 add_action( 'wp_ajax_give_load_gateway', 'give_elegent_setup_hooks_on_ajax', 9 );
 add_action( 'wp_ajax_no_privgive_load_gateway', 'give_elegent_setup_hooks_on_ajax, 9' );
 
