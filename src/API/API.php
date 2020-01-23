@@ -25,6 +25,7 @@ class API {
 		Reports\TopDonors::class,
 		Reports\RecentDonations::class,
 		Reports\Income::class,
+		Reports\AverageDonation::class,
 	];
 
 	/**
