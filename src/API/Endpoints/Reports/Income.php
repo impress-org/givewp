@@ -120,7 +120,7 @@ class Income extends Endpoint {
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => 'Income',
+					'label'     => __( 'Income', 'give' ),
 					'data'      => $income,
 					'trend'     => $trend,
 					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),
