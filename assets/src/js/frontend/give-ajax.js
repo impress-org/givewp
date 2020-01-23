@@ -12,7 +12,6 @@
 jQuery( document ).ready( function( $ ) {
 	// Reset nonce only if form exists.
 	if ( Give.form.fn.isFormExist() ) {
-
 		//Hide loading elements
 		$( '.give-loading-text' ).hide();
 
@@ -23,24 +22,23 @@ jQuery( document ).ready( function( $ ) {
 			$form = jQuery( $form );
 			nonceInfo = Give.form.fn.getNonceInfo( $form );
 
-			if ( !nonceInfo.el.attr( 'data-donor-session' ) ) {
+			if ( ! nonceInfo.el.attr( 'data-donor-session' ) ) {
 				// Backward compatibility.
 				// @see https://github.com/impress-org/give/issues/3820
 				Give.form.fn.resetAllNonce( $form );
-
 			} else if (
 				(
-					nonceInfo.createdInDonorSession
-					|| Give.donor.fn.hasSession( $form )
-				)
-				&& !Give.donor.fn.isLoggedIn()
+					nonceInfo.createdInDonorSession ||
+					Give.donor.fn.hasSession( $form )
+				) &&
+				! Give.donor.fn.isLoggedIn()
 			) {
 				// Reset nonce if nonce cached when donor was in session or logged in.
 				Give.form.fn.resetAllNonce( $form );
 			}
 
 			nonceTime = ( parseInt( nonceInfo.el.data( 'time' ) ) + parseInt( nonceInfo.el.data( 'nonce-life' ) ) ) * 1000,
-				currentTime = Date.now();
+			currentTime = Date.now();
 
 			// We need time in ms.
 			timeDiff = nonceTime - currentTime;
@@ -56,29 +54,36 @@ jQuery( document ).ready( function( $ ) {
 
 	// Show the login form in the checkout when the user clicks the "Login" link
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
-		var $this = $( this );
-		var this_form = $( this ).parents( 'form' );
-		var loading_animation = $( this_form ).find( '[id^="give-checkout-login-register"] .give-loading-text' );
-		var data = {
+		const $this = $( this );
+		const this_form = $( this ).parents( 'form' );
+		const loading_animation = $this.parents( 'div.give-login-account-wrap' ).find( '.give-loading-text' );
+		const data = {
 			action: $this.data( 'action' ),
-			form_id: $( this_form ).find( '[name="give-form-id"]' ).val()
+			form_id: $( this_form ).find( '[name="give-form-id"]' ).val(),
 		};
 
 		// Show the ajax loader
 		loading_animation.show();
 
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
+			const oldPosition = $( this_form ).find( '[id^=give-checkout-login-register]' );
 
-			//Clear form HTML and add AJAX response containing fields
-			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
+			//Show fields
+			if ( parseInt( oldPosition.html().trim().length ) ) {
+				$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
+			} else {
+				// Insert html on correct position for elegent form style (form in embed).
+				$( this_form ).find( '[id^="give_checkout_user_info"]' ).html( checkout_response );
+			}
+
 			$( this_form ).find( '.give-submit-button-wrap' ).hide();
-
 		} ).done( function() {
 			// Hide the ajax loader
 			loading_animation.hide();
 			// Trigger float-labels
 			give_fl_trigger();
 		} );
+
 		return false;
 	} );
 
@@ -86,16 +91,24 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'click', '.give-checkout-register-cancel', function( e ) {
 		e.preventDefault();
 		// User cancelled login.
-		var $this = $( this );
-		var this_form = $( this ).parents( 'form' );
-		var data = {
+		const $this = $( this );
+		const this_form = $( this ).parents( 'form' );
+		const data = {
 			action: $this.data( 'action' ),
-			form_id: $( this_form ).find( '[name="give-form-id"]' ).val()
+			form_id: $( this_form ).find( '[name="give-form-id"]' ).val(),
 		};
 		// AJAX get the payment fields.
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
+			const oldPosition = $( this_form ).find( '[id^=give-checkout-login-register]' );
+
 			//Show fields
-			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
+			if ( parseInt( oldPosition.html().trim().length ) ) {
+				$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
+			} else {
+				// Insert html on correct position for elegent form style (form in embed).
+				$( this_form ).find( '[id^="give_checkout_user_info"]' ).html( $.parseJSON( checkout_response.fields ) );
+			}
+
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
 		} ).done( function() {
 			// Trigger float-labels
@@ -105,35 +118,32 @@ jQuery( document ).ready( function( $ ) {
 
 	// Process the login form via ajax when the user clicks "login"
 	$( document ).on( 'click', '[id^=give-login-fields] input[type=submit]', function( e ) {
-
 		e.preventDefault();
 
-		var complete_purchase_val = $( this ).val();
-		var this_form = $( this ).parents( 'form' );
+		const complete_purchase_val = $( this ).val();
+		const this_form = $( this ).parents( 'form' );
 
 		$( this ).val( Give.fn.getGlobalVar( 'purchase_loading' ) );
 
 		this_form.find( '[id^=give-login-fields] .give-loading-animation' ).fadeIn();
 
-		var data = {
+		const data = {
 			action: 'give_process_donation_login',
 			give_ajax: 1,
 			give_user_login: this_form.find( '[name=give_user_login]' ).val(),
 			give_user_pass: this_form.find( '[name=give_user_pass]' ).val(),
-			give_form_id: this_form.find( '[name=give-form-id]' ).val()
+			give_form_id: this_form.find( '[name=give-form-id]' ).val(),
 		};
 
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( response ) {
 			//user is logged in
-			if ( $.trim( typeof ( response.success ) ) != undefined && response.success == true && typeof ( response.data ) != undefined ) {
-
+			if ( $.trim( typeof ( response.success ) ) != undefined && response.success == true && typeof ( response.data ) !== undefined ) {
 				//remove errors
 				this_form.find( '.give_errors' ).remove();
 
 				// Login successfully message.
 				this_form.find( '#give-payment-mode-select' ).after( response.data );
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
-
 
 				Give.form.fn.resetAllNonce( this_form ).then(
 					response => {
@@ -149,7 +159,6 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '[id^=give-user-login-submit]' ).before( response.data );
 			}
 		} );
-
 	} );
 
 	//Switch the gateway on gateway selection field change
@@ -157,7 +166,7 @@ jQuery( document ).ready( function( $ ) {
 		e.preventDefault();
 
 		//Which payment gateway to load?
-		var payment_mode = $( this ).val();
+		const payment_mode = $( this ).val();
 
 		//Problema? Bounce
 		if ( payment_mode == '0' ) {
@@ -168,7 +177,6 @@ jQuery( document ).ready( function( $ ) {
 		give_load_gateway( $( this ).parents( 'form' ), payment_mode );
 
 		return false;
-
 	} );
 
 	/**
@@ -177,12 +185,11 @@ jQuery( document ).ready( function( $ ) {
 	 * @since 1.8.17
 	 */
 	$( 'body' ).on( 'click', '#give-confirm-email-btn', function( e ) {
-
-		var $this = $( this );
-		var data = {
+		const $this = $( this );
+		const data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
-			nonce: Give.fn.getGlobalVar( 'ajax_vars' ).ajaxNonce
+			nonce: Give.fn.getGlobalVar( 'ajax_vars' ).ajaxNonce,
 		};
 
 		$this.text( Give.fn.getGlobalVar( 'loading' ) );
@@ -209,37 +216,34 @@ jQuery( document ).ready( function( $ ) {
 	 * @description: Process the donation submit
 	 */
 	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
-
 		//this form object
-		var $this = $( this );
-		var this_form = $this.parents( 'form.give-form' );
+		const $this = $( this );
+		const this_form = $this.parents( 'form.give-form' );
 
 		//loading animation
-		var loading_animation = this_form.find( 'input[type="submit"].give-submit + .give-loading-animation' );
+		const loading_animation = this_form.find( 'input[type="submit"].give-submit + .give-loading-animation' );
 		loading_animation.fadeIn();
 
 		//this form selector
-		var give_purchase_form = this_form.get( 0 );
+		const give_purchase_form = this_form.get( 0 );
 
 		//HTML5 required check validity
 		if ( typeof give_purchase_form.checkValidity === 'function' && give_purchase_form.checkValidity() === false ) {
-
 			//Don't leave any hanging loading animations
 			loading_animation.fadeOut();
 
 			//Check for Safari (doesn't support HTML5 required)
-			if ( ( navigator.userAgent.indexOf( 'Safari' ) != - 1 && navigator.userAgent.indexOf( 'Chrome' ) == - 1 ) === false ) {
+			if ( ( navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1 ) === false ) {
 				//Not safari: Support HTML5 "required" so skip the rest of this function
 				return;
 			}
-
 		}
 
 		//prevent form from submitting normally
 		e.preventDefault();
 
 		//Submit btn text
-		var complete_purchase_val = $( this ).val();
+		const complete_purchase_val = $( this ).val();
 
 		//Update submit button text
 		$( this ).val( Give.fn.getGlobalVar( 'purchase_loading' ) );
@@ -249,7 +253,6 @@ jQuery( document ).ready( function( $ ) {
 
 		//Submit form via AJAX
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function( data ) {
-
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();
@@ -268,7 +271,6 @@ jQuery( document ).ready( function( $ ) {
 				Give.form.fn.disable( this_form, false );
 			}
 		} );
-
 	} );
 
 	/**
@@ -279,8 +281,7 @@ jQuery( document ).ready( function( $ ) {
 	const receiptContainer = document.getElementById( 'give-receipt' );
 
 	if ( receiptContainer ) {
-
-		let data = {
+		const data = {
 			action: 'get_receipt',
 			shortcode_atts: receiptContainer.getAttribute( 'data-shortcode' ),
 			donation_id: receiptContainer.getAttribute( 'data-donation-key' ),
@@ -298,7 +299,7 @@ jQuery( document ).ready( function( $ ) {
 			data: data,
 			success: function( response ) {
 				receiptContainer.innerHTML = response;
-			}
+			},
 		} );
 	}
 } );
@@ -311,46 +312,44 @@ jQuery( document ).ready( function( $ ) {
  * @param payment_mode
  */
 function give_load_gateway( form_object, payment_mode ) {
-
-	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
-	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
-	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
-	var give_form_id_prefix = jQuery( form_object ).find( 'input[name="give-form-id-prefix"]' ).val();
+	const loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
+	const give_total = jQuery( form_object ).find( '#give-amount' ).val();
+	const give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
+	const give_form_id_prefix = jQuery( form_object ).find( 'input[name="give-form-id-prefix"]' ).val();
 
 	// Show the ajax loader
 	loading_element.fadeIn();
 
-	var form_data = jQuery( form_object ).data();
+	const form_data = jQuery( form_object ).data();
 
 	if ( form_data[ 'blockUI.isBlocked' ] != 1 ) {
 		jQuery( form_object ).find( '#give_purchase_form_wrap' ).block( {
 			message: null,
 			overlayCSS: {
 				background: '#fff',
-				opacity: 0.6
-			}
+				opacity: 0.6,
+			},
 		} );
 	}
 
 	//Post via AJAX to Give
 	jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
-			action: 'give_load_gateway',
-			give_total: give_total,
-			give_form_id: give_form_id,
-			give_form_id_prefix: give_form_id_prefix,
-			give_payment_mode: payment_mode,
-			nonce: Give.form.fn.getNonce( form_object )
-		},
-		function( response ) {
+		action: 'give_load_gateway',
+		give_total: give_total,
+		give_form_id: give_form_id,
+		give_form_id_prefix: give_form_id_prefix,
+		give_payment_mode: payment_mode,
+		nonce: Give.form.fn.getNonce( form_object ),
+	},
+	function( response ) {
+		//Success: let's output the gateway fields in the appropriate form space
+		jQuery( form_object ).unblock();
+		jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
+		jQuery( '.give-no-js' ).hide();
+		jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
 
-			//Success: let's output the gateway fields in the appropriate form space
-			jQuery( form_object ).unblock();
-			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
-			jQuery( '.give-no-js' ).hide();
-			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
-
-			// trigger an event on success for hooks
-			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
-		}
+		// trigger an event on success for hooks
+		jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+	}
 	);
 }

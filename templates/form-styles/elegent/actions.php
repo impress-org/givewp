@@ -43,6 +43,7 @@ function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
 	// Remove personal information from current position.
 	remove_action( 'give_donation_form_after_user_info', 'give_user_info_fields' );
 	remove_action( 'give_register_fields_before', 'give_user_info_fields' );
+	remove_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
 }
 
 /**
@@ -50,7 +51,7 @@ function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
  *
  * @param int $form_id
  */
-function give_elegent_add_personal_infomation_section_text( $form_id ) {
+function give_elegent_add_personal_information_section_text( $form_id ) {
 	$text = sprintf(
 		'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 		__( 'Tell us a bit amount yourself', 'give' ),
@@ -84,7 +85,8 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
 	add_action( 'give_payment_mode_top', 'give_user_info_fields' );
-	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_infomation_section_text' );
+	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
+	add_action( 'give_donation_form_after_email', 'give_get_register_fields', 9999 );
 
 	/**
 	 * Remove actions
@@ -116,3 +118,36 @@ function give_elegent_setup_hooks_on_ajax( $form_id ) {
 
 add_action( 'wp_ajax_give_load_gateway', 'give_elegent_setup_hooks_on_ajax', 9 );
 add_action( 'wp_ajax_no_privgive_load_gateway', 'give_elegent_setup_hooks_on_ajax, 9' );
+
+/**
+ * Load Checkout Fields
+ *
+ * @return void
+ */
+function give_elegent_load_checkout_fields() {
+	// Early exit.
+	if ( ! give_is_viewing_embed_form() ) {
+		return;
+	}
+
+	$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : '';
+
+	give_elegent_setup_common_hooks( $form_id, array(), new Give_Donate_Form( $form_id ) );
+	add_action( 'give_donation_form_after_email', 'give_get_register_fields', 9999 );
+
+	ob_start();
+
+	give_user_info_fields( $form_id );
+
+	$fields = ob_get_clean();
+
+	wp_send_json(
+		array(
+			'fields' => wp_json_encode( $fields ),
+			'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
+		)
+	);
+}
+
+add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_elegent_load_checkout_fields', 9 );
+add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_elegent_load_checkout_fields', 9 );
