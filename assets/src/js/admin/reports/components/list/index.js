@@ -1,50 +1,45 @@
 import PropTypes from 'prop-types';
-import { useEffect, createRef } from 'react'
+import { useEffect, createRef } from 'react';
 import './style.scss';
 
-const List = ({onScrollEnd, children}) => {
-    
-    const list = createRef()
+const List = ( { onScrollEnd, children } ) => {
+	const list = createRef();
 
-    useEffect(() => {
+	useEffect( () => {
+		function checkScroll( evt ) {
+			const remaining = evt.target.scrollHeight - evt.target.scrollTop;
+			const height = evt.target.offsetHeight;
 
-        function checkScroll (evt) {
+			if ( remaining <= height ) {
+				onScrollEnd();
+			}
+		}
 
-            const remaining = evt.target.scrollHeight - evt.target.scrollTop
-            const height = evt.target.offsetHeight
+		if ( onScrollEnd ) {
+			list.current.addEventListener( 'scroll', checkScroll );
+			return function cleanup() {
+				list.current.removeEventListener( 'scroll', checkScroll );
+			};
+		}
+	}, [ onScrollEnd ] );
 
-            if (remaining <= height) {
-                onScrollEnd()
-            }
-
-        }
-        
-        if (onScrollEnd) {
-            list.current.addEventListener('scroll', checkScroll)
-            return function cleanup () {
-                list.current.removeEventListener('scroll', checkScroll)
-            }
-        }
-
-    }, [onScrollEnd])
-
-    return (
-        <div ref={list} className='list'>
-            {children}
-        </div>
-    )
-}
+	return (
+		<div ref={ list } className="list">
+			{ children }
+		</div>
+	);
+};
 
 List.propTypes = {
-    /** Callback triggered when the list is scrolled to its end */
-    onScrollEnd: PropTypes.func,
-    /** Elements to render within the list **/
-    children: PropTypes.node.isRequired
-}
+	/** Callback triggered when the list is scrolled to its end */
+	onScrollEnd: PropTypes.func,
+	/** Elements to render within the list **/
+	children: PropTypes.node,
+};
 
 List.defaultProps = {
-    onScrollEnd: null,
-    children: null
-}
+	onScrollEnd: null,
+	children: null,
+};
 
-export default List
+export default List;
