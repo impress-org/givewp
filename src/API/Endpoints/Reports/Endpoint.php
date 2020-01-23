@@ -8,6 +8,8 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use \Give_Cache;
+
 abstract class Endpoint {
 
 	protected $endpoint;
@@ -163,11 +165,11 @@ abstract class Endpoint {
 			'end'   => $request['end'],
 		];
 
-		$cache_key = \Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$cached = \Give_Cache::get( $cache_key, false, $query_args );
+		$cached = Give_Cache::get_db_query( $cache_key );
 
-		return \Give_Cache::get( $cache_key, false, $query_args );
+		return $cached;
 	}
 
 	/**
@@ -182,9 +184,9 @@ abstract class Endpoint {
 			'end'   => $request['end'],
 		];
 
-		$cache_key = \Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$result = \Give_Cache::set( $cache_key, $report, HOUR_IN_SECONDS, false, $query_args );
+		$result = Give_Cache::set_db_query( $cache_key, $report );
 
 		return $result;
 

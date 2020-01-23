@@ -18,7 +18,7 @@ class Income extends Endpoint {
 
 		// Check if a cached version exists
 		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== false ) {
+		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
 				[
@@ -120,7 +120,7 @@ class Income extends Endpoint {
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => 'Income',
+					'label'     => __( 'Income', 'give' ),
 					'data'      => $income,
 					'trend'     => $trend,
 					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),

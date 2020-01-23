@@ -8,12 +8,24 @@
 
 namespace Give\API;
 
+use Give\API\Endpoints\Reports as Reports;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages API Endpoints
  */
 class API {
+
+	protected $endpoints = [
+		Reports\PaymentStatuses::class,
+		Reports\DonationsVsIncome::class,
+		Reports\PaymentMethods::class,
+		Reports\FormPerformance::class,
+		Reports\TopDonors::class,
+		Reports\RecentDonations::class,
+		Reports\Income::class,
+	];
 
 	/**
 	 * Initialize Reports and Pages, register hooks
@@ -32,37 +44,10 @@ class API {
 	}
 
 	public function load_endpoints() {
-		// Load payment statuses endpoint
-		$paymentStatuses = new Endpoints\Reports\PaymentStatuses();
-		$paymentStatuses->init();
-
-		// Load donations vs income endpoint
-		$donationsVsIncome = new Endpoints\Reports\DonationsVsIncome();
-		$donationsVsIncome->init();
-
-		// Load payment methods endpoint
-		$paymentMethods = new Endpoints\Reports\PaymentMethods();
-		$paymentMethods->init();
-
-		// Load form performance endpoint
-		$formPerformance = new Endpoints\Reports\FormPerformance();
-		$formPerformance->init();
-
-		// Load top donors endpoint
-		$topDonors = new Endpoints\Reports\TopDonors();
-		$topDonors->init();
-
-		// Load recent donations endpoint
-		$recentDonations = new Endpoints\Reports\RecentDonations();
-		$recentDonations->init();
-
-		// Load income endpoint
-		$income = new Endpoints\Reports\Income();
-		$income->init();
-
-		// Load average donation endpoint
-		$averageDonation = new Endpoints\Reports\AverageDonation();
-		$averageDonation->init();
+		foreach ( $this->endpoints as $endpoint ) {
+			$class = new $endpoint();
+			$class->init();
+		}
 	}
 
 }
