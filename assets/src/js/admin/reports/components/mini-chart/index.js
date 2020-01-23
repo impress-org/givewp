@@ -40,7 +40,7 @@ const MiniChart = ( { title, data } ) => {
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
 		const newTrend = getTrend( data );
-		const newIndicator = Math.sign( trend ) === -1 ? <Fragment>{ down } <span style={ { color: '#D75A4B' } }>{ Math.abs( trend ) + '%' }</span></Fragment> : <Fragment>{ up } <span style={ { color: '#69B868' } }>{ Math.abs( trend ) + '%' }</span></Fragment>;
+		const newIndicator = Math.sign( trend ) === -1 ? <Fragment>{ down } <span style={ { color: '#D75A4B' } }>{ `${ Math.abs( trend ) }%` }</span></Fragment> : <Fragment>{ up } <span style={ { color: '#69B868' } }>{ `${ Math.abs( trend ) }%` }</span></Fragment>;
 
 		setHighlightValue( newHighlightValue );
 		setTrend( newTrend );
