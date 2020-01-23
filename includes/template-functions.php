@@ -554,7 +554,10 @@ if ( ! function_exists( 'is_give_taxonomy' ) ) {
  * @return bool
  */
 function give_is_viewing_embed_form() {
-	return ! ( 'give-embed' !== get_query_var( 'name' ) || empty( get_query_var( 'give_form_id' ) ) );
+	return (
+		'give-embed' === get_query_var( 'name' ) ||
+		( wp_doing_ajax() && false !== strpos( wp_get_referer(), '/give-embed/' ) ) // for ajax
+	);
 }
 
 /**
