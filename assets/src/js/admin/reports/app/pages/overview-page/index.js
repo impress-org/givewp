@@ -5,7 +5,7 @@
 import Grid from '../../../components/grid';
 import Card from '../../../components/card';
 import RESTChart from '../../../components/rest-chart';
-import MiniChart from '../../../components/mini-chart';
+import RESTMiniChart from '../../../components/rest-mini-chart';
 import List from '../../../components/list';
 import RESTList from '../../../components/rest-list';
 import LocationItem from '../../../components/location-item';
@@ -23,63 +23,27 @@ const OverviewPage = () => {
 				/>
 			</Card>
 			<Card width={ 3 }>
-				<MiniChart
-					title={ __( 'Total Donations', 'give' ) }
-					type="doughnut"
-					data={ {
-						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
-						datasets: [
-							{
-								label: 'Donations',
-								data: [ 400.00, 532.00, 333.00, 72.56, 300.00, 422.22 ],
-							},
-						],
-					} }
+				<RESTMiniChart
+					title={ __( 'Total Income', 'give' ) }
+					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
-				<MiniChart
-					title={ __( 'Average Donation', 'give' ) }
-					type="line"
-					data={ {
-						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
-						datasets: [
-							{
-								label: 'Donations',
-								data: [ 400.00, 532.00, 333.00, 72.56, 390.23, 350.00 ],
-							},
-						],
-					} }
+				<RESTMiniChart
+					title={ __( 'Avg. Income', 'give' ) }
+					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
-				<MiniChart
-					title={ __( 'Amount Raised', 'give' ) }
-					type="pie"
-					data={ {
-						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
-						datasets: [
-							{
-								label: 'Donations',
-								data: [ 400.00, 532.00, 333.00, 72.56, 300.00, 450.30 ],
-							},
-						],
-					} }
+				<RESTMiniChart
+					title={ __( 'Total Income', 'give' ) }
+					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card width={ 3 }>
-				<MiniChart
-					title={ __( 'Total Refunds', 'give' ) }
-					type="bar"
-					data={ {
-						labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
-						datasets: [
-							{
-								label: 'Donations',
-								data: [ 400.00, 532.00, 333.00, 72.56, 300.00, 450.00 ],
-							},
-						],
-					} }
+				<RESTMiniChart
+					title={ __( 'Total Income', 'give' ) }
+					endpoint="income-over-time"
 				/>
 			</Card>
 			<Card title={ __( 'Payment Methods', 'give' ) } width={ 4 }>

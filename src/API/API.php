@@ -52,6 +52,10 @@ class API {
 		$topDonors = new Endpoints\Reports\TopDonors();
 		$topDonors->init();
 
+		// Load income over time endpoint
+		$incomeOverTime = new Endpoints\Reports\IncomeOverTime();
+		$incomeOverTime->init();
+    
 		// Load recent donations endpoint
 		$recentDonations = new Endpoints\Reports\RecentDonations();
 		$recentDonations->init();
