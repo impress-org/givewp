@@ -59,6 +59,10 @@ class API {
 		// Load income endpoint
 		$income = new Endpoints\Reports\Income();
 		$income->init();
+
+		// Load average donation endpoint
+		$averageDonation = new Endpoints\Reports\AverageDonation();
+		$averageDonation->init();
 	}
 
 }
