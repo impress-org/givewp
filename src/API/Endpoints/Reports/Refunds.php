@@ -115,7 +115,7 @@ class Refunds extends Endpoint {
 		$currentTotal = $stats->get_sales( 0, $startStr, $endStr, 'refunded' );
 		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+		// Create data objec to be returned, with total highlighted
 		$data = [
 			'labels'   => $labels,
 			'datasets' => [
