@@ -8,6 +8,8 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use \Give_Cache;
+
 abstract class Endpoint {
 
 	protected $endpoint;
@@ -148,6 +150,45 @@ abstract class Endpoint {
 		}
 
 		return $status;
+
+	}
+
+	/**
+	 * Get cached report
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function get_cached_report( $request ) {
+
+		$query_args = [
+			'start' => $request['start'],
+			'end'   => $request['end'],
+		];
+
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
+
+		$cached = Give_Cache::get_db_query( $cache_key );
+
+		return $cached;
+	}
+
+	/**
+	 * Cache report
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function cache_report( $request, $report ) {
+
+		$query_args = [
+			'start' => $request['start'],
+			'end'   => $request['end'],
+		];
+
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
+
+		$result = Give_Cache::set_db_query( $cache_key, $report );
+
+		return $result;
 
 	}
 }
