@@ -106,11 +106,13 @@ add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
  * @param int $form_id
  */
 function give_elegent_setup_hooks_on_ajax( $form_id ) {
+	// early exit.
+	if ( ! give_is_viewing_embed_form() ) {
+		return;
+	}
+
 	give_elegent_setup_common_hooks( $form_id, array(), new Give_Donate_Form( $form_id ) );
 }
 
 add_action( 'wp_ajax_give_load_gateway', 'give_elegent_setup_hooks_on_ajax', 9 );
 add_action( 'wp_ajax_no_privgive_load_gateway', 'give_elegent_setup_hooks_on_ajax, 9' );
-
-
-// @todo: add remove hooks on basis on form style or mode embed or onpage
