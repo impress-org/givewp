@@ -133,6 +133,12 @@ class AverageDonation extends Endpoint {
 
 	}
 
+	/**
+	 * Calculate the average donation for a given period
+	 *
+	 * @param  $start string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end  string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 */
 	public function get_average_donation( $start, $end ) {
 
 		$stats = new \Give_Payment_Stats();
