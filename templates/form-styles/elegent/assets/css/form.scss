@@ -80,10 +80,11 @@ textarea{
 }
 
 .give-section.personal-information-text {
+	@include section-padding;
+
 	text-align: center;
 	background-color: #f1f1f1;
 	margin-top: 19px;
-	padding: 15px 23px;
 
 	.subheading{
 		font-size: 12px;
@@ -178,10 +179,11 @@ textarea{
 	}
 
 	.give-donation-level-btn{
+		@include section-padding;
+
 		background: white;
 		color: black;
 		border-radius: 30px;
-		padding: 15px 23px;
 		width: 100%;
 
 		&:hover{
@@ -196,8 +198,8 @@ textarea{
 
 	#give_checkout_user_info{
 		@include background-lightgray;
+		@include section-padding;
 
-		padding: 15px 23px;
 		margin: 0 0 19px;
 
 		fieldset[id="give_checkout_user_info"]{
@@ -223,7 +225,7 @@ textarea{
 	}
 
 	[id="give-payment-mode-select"]{
-		padding: 15px 23px;
+		@include section-padding;
 
 		legend{
 			display: none
@@ -236,7 +238,7 @@ textarea{
 
 			@include before-after-content-none;
 
-			li{
+			> li:not(.give_purchase_form_wrap-clone){
 				@include background-lightgray;
 
 				margin: 0 !important;
@@ -251,6 +253,18 @@ textarea{
 					flex-grow: 1;
 				}
 			}
+
+			 > li.give_purchase_form_wrap-clone{
+				background-color: transparent;
+			}
+		}
+	}
+
+	[id="give_purchase_form_wrap"]{
+		@include section-padding;
+
+		> *:not(.give-donation-submit){
+			display: none;
 		}
 	}
 }

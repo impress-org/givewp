@@ -52,6 +52,8 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
+	giveMoveFieldsUnderPaymentGateway( true );
+
 	// Show the login form in the checkout when the user clicks the "Login" link
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
 		const $this = $( this );
@@ -333,23 +335,73 @@ function give_load_gateway( form_object, payment_mode ) {
 	}
 
 	//Post via AJAX to Give
-	jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
-		action: 'give_load_gateway',
-		give_total: give_total,
-		give_form_id: give_form_id,
-		give_form_id_prefix: give_form_id_prefix,
-		give_payment_mode: payment_mode,
-		nonce: Give.form.fn.getNonce( form_object ),
-	},
-	function( response ) {
-		//Success: let's output the gateway fields in the appropriate form space
-		jQuery( form_object ).unblock();
-		jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
-		jQuery( '.give-no-js' ).hide();
-		jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
+	new Promise( function( res ) {
+		giveMoveFieldsUnderPaymentGateway( false );
 
-		// trigger an event on success for hooks
-		jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+		jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
+			action: 'give_load_gateway',
+			give_total: give_total,
+			give_form_id: give_form_id,
+			give_form_id_prefix: give_form_id_prefix,
+			give_payment_mode: payment_mode,
+			nonce: Give.form.fn.getNonce( form_object ),
+		},
+		function( response ) {
+			//Success: let's output the gateway fields in the appropriate form space
+			jQuery( form_object ).unblock();
+			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
+			jQuery( '.give-no-js' ).hide();
+			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
+
+			// trigger an event on success for hooks
+			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+
+			return res();
+		}
+		);
+	} ).then( function() {
+		giveMoveFieldsUnderPaymentGateway( true );
+	} );
+}
+
+/**
+ * Move form field under payment gateway
+ *
+ * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
+ */
+function giveMoveFieldsUnderPaymentGateway( $refresh = false ) {
+	// This function will run only for embed donation form.
+	if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
+		return;
 	}
-	);
+
+	if ( ! $refresh ) {
+		const element = jQuery( 'li.give_purchase_form_wrap-clone' );
+		element.slideUp( 'slow', function() {
+			element.remove();
+		} );
+
+		return;
+	}
+
+	new Promise( function( res ) {
+		const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
+		let showFields = false;
+
+		jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
+
+		jQuery.each( fields, function( index, $item ) {
+			$item = jQuery( $item );
+			jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
+
+			showFields = ! showFields ? $item.html() : showFields;
+
+			$item.remove();
+		} );
+
+		return res( showFields );
+	} ).then( function( showFields ) {
+		// eslint-disable-next-line no-unused-expressions
+		showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+	} );
 }
