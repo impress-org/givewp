@@ -36,8 +36,8 @@ const OverviewPage = () => {
 			</Card>
 			<Card width={ 3 }>
 				<RESTMiniChart
-					title={ __( 'Total Income', 'give' ) }
-					endpoint="income"
+					title={ __( 'Total Donors', 'give' ) }
+					endpoint="donors"
 				/>
 			</Card>
 			<Card width={ 3 }>
