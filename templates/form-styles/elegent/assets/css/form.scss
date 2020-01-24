@@ -266,5 +266,27 @@ textarea{
 		> *:not(.give-donation-submit){
 			display: none;
 		}
+
+		fieldset.give-donation-submit{
+			> *:not(.give-submit-button-wrap){
+				display: none;
+			}
+
+			.give-submit-button-wrap{
+				@include before-after-content-none;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				.give-submit{
+					background-color: #2bc253;
+					color: white;
+					flex-grow: 1;
+
+					padding: 16px !important;
+				}
+			}
+		}
 	}
 }
