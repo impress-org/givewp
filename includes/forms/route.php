@@ -35,18 +35,19 @@ add_filter( 'query_vars', 'give_query_vars' );
 function give_form_styles_routes() {
 	global $post;
 
-	// Exit if not give embed page.
-	if ( ! give_is_viewing_embed_form() ) {
-		return;
+	if ( give_is_viewing_embed_form() ) {
+		$post = get_post( get_query_var( 'give_form_id' ) );
+
+		nocache_headers();
+		header( 'HTTP/1.1 200 OK' );
+		require_once 'view/embed-form.php';
+		exit();
 	}
 
-	// Setup global post.
-	$post = get_post( get_query_var( 'give_form_id' ) );
-
-	nocache_headers();
-	header( 'HTTP/1.1 200 OK' );
-	require_once 'view/embed-form.php';
-	exit();
+	if ( give_is_viewing_embed_form_receipt() ) {
+		require_once 'view/receipt.php';
+		exit();
+	}
 }
 
 add_action( 'template_redirect', 'give_form_styles_routes' );
