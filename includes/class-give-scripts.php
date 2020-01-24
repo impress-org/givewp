@@ -150,7 +150,7 @@ class Give_Scripts {
 		);
 
 		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, self::$scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery', 'iframeResizer' ), GIVE_VERSION, self::$scripts_footer );
 	}
 
 	/**
@@ -465,6 +465,8 @@ class Give_Scripts {
 			);
 		}
 
+		wp_enqueue_script( 'iframeResizer', 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.min.js', array( 'jquery' ), '4.2.9', self::$scripts_footer );
+
 		wp_enqueue_script( 'give' );
 
 		$this->public_localize_scripts();
@@ -492,6 +494,7 @@ class Give_Scripts {
 	public function embed_page_scripts() {
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
 		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
+		echo $this->get_script_tag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
 
 		$this->stripe_frontend_scripts();

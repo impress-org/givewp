@@ -10,6 +10,11 @@
 
 /* globals jQuery, Give */
 jQuery( document ).ready( function( $ ) {
+	// console.log( $.fn.iFrameResize);
+	if ( $.fn.iFrameResize ) {
+		$( 'iframe[name="give-embed-form"]' ).iFrameResize( { log: true } );
+	}
+
 	// Reset nonce only if form exists.
 	if ( Give.form.fn.isFormExist() ) {
 		//Hide loading elements
