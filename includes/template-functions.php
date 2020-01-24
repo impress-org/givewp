@@ -561,6 +561,18 @@ function give_is_viewing_embed_form() {
 }
 
 /**
+ * Get result if we are viewing embed form receipt or not
+ *
+ * @return bool
+ */
+function give_is_viewing_embed_form_receipt() {
+	return (
+		give_is_success_page() &&
+		false !== strpos( wp_get_referer(), '/give-embed/' )
+	);
+}
+
+/**
  * Get form style for donation form
  *
  * @param int $form_id
