@@ -396,10 +396,14 @@ function giveMoveFieldsUnderPaymentGateway( $refresh = false ) {
 			$item = jQuery( $item );
 			jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
 
-			showFields = ! showFields ? $item.html() : showFields;
+			showFields = ! showFields ? !! $item.html().trim() : showFields;
 
 			$item.remove();
 		} );
+
+		if ( ! showFields ) {
+			jQuery( '.give_purchase_form_wrap-clone' ).remove();
+		}
 
 		return res( showFields );
 	} ).then( function( showFields ) {
