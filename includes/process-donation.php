@@ -339,10 +339,9 @@ function give_donation_form_validate_fields() {
 	// Check spam detect.
 	if (
 		isset( $post_data['action'] )
-		&& give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
 		&& give_is_spam_donation()
 	) {
-		give_set_error( 'spam_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
+		give_set_error( 'spam_donation', __( 'The email you are using has been flagged as one used in SPAM comments or donations by our system. Please try using a different email address or contact the site administrator if you have any questions.', 'give' ) );
 	}
 
 	// Start an array to collect valid data.
@@ -595,13 +594,13 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter your title.', 'give' ),
 		);
 	}
-	
+
 	// If credit card fields related actions exists then check for the cc fields validations.
 	if (
 		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
 		has_action('give_cc_form', 'give_get_cc_form' )
 	) {
-		
+
 		// Validate card number field for empty check.
 		if (
 			isset( $posted_data['card_number'] ) &&
@@ -612,7 +611,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card number.', 'give' ),
 			);
 		}
-		
+
 		// Validate card cvc field for empty check.
 		if (
 			isset( $posted_data['card_cvc'] ) &&
@@ -623,7 +622,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
 			);
 		}
-		
+
 		// Validate card name field for empty check.
 		if (
 			isset( $posted_data['card_name'] ) &&
@@ -634,7 +633,7 @@ function give_get_required_fields( $form_id ) {
 				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
 			);
 		}
-		
+
 		// Validate card expiry field for empty check.
 		if (
 			isset( $posted_data['card_expiry'] ) &&

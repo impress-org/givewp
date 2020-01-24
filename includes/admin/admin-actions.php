@@ -40,7 +40,6 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
  *
  * @return bool
  * @since 1.8
- *
  */
 function give_redirect_to_clean_url_admin_pages() {
 	// Give admin pages.
@@ -92,7 +91,6 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * @return void
  * @since 1.8.9
- *
  */
 function give_hide_outdated_php_notice() {
 
@@ -331,6 +329,17 @@ function _give_register_admin_notices() {
 							)
 						);
 						break;
+					case 'akismet-deblacklisted-email':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-akismet-deblacklisted-email',
+								'type'        => 'updated',
+								'description' => __( 'Email de-blacklisted successfully. Now Donor will able to process donation with email flagged as spam', 'give' ),
+								'show'        => true,
+								'dismissible' => 'auto',
+							)
+						);
+						break;
 				}// End switch().
 			}// End if().
 
@@ -507,6 +516,53 @@ function _give_register_admin_notices() {
 						break;
 				}// End switch().
 			}// End if().
+		}
+	}
+
+	/**
+	 * Spam log admin notice
+	 */
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	) {
+		$current_time               = current_time( 'timestamp' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+
+		$spam_count = Give()->log_db->count(
+			array(
+				'log_type'   => 'spam',
+				'date_query' => array(
+					array(
+						'after'     => date( 'Y-m-d 00:00:00', $current_time ),
+						'before'    => date( 'Y-m-d 23:59:59', $current_time ),
+						'inclusive' => true,
+					),
+				),
+			)
+		);
+
+		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
+			Give()->notices->register_notice(
+				array(
+					'id'                    => 'give-new-akismet-spam-found',
+					'type'                  => 'warning',
+					'description'           => sprintf(
+						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
+						$spam_count,
+						_n( 'donor email', 'donor emails', $spam_count, 'give' ),
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&section=spam' ) ),
+						__( 'Go to spam log list page', 'give' ),
+						_n( 'was', 'were', $spam_count, 'give' ),
+						_n( 'donor', 'donors', $spam_count, 'give' ),
+						_n( 'this', 'these', $spam_count, 'give' )
+					),
+					'dismissible_type'      => 'user',
+					'dismiss_interval'      => 'custom',
+					'dismiss_interval_time' => $end_of_current_time_in_gmt - $current_time_gmt,
+				)
+			);
 		}
 	}
 }
@@ -762,7 +818,6 @@ function give_core_settings_import_callback() {
 	 *
 	 * @return array $fields
 	 * @since  1.8.17
-	 *
 	 */
 	$fields = (array) apply_filters( 'give_import_core_settings_fields', $fields );
 
@@ -793,7 +848,6 @@ function give_core_settings_import_callback() {
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
 		 * @since  1.8.17
-		 *
 		 */
 		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
@@ -811,11 +865,11 @@ function give_core_settings_import_callback() {
 	 *
 	 * @return array $url
 	 * @since  1.8.17
-	 *
 	 */
 	$json_data['url'] = give_import_page_url(
 		(array) apply_filters(
-			'give_import_core_settings_success_url', array(
+			'give_import_core_settings_success_url',
+			array(
 				'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
 				'importer-type' => 'import_core_setting',
 				'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
@@ -849,7 +903,6 @@ add_action( 'current_screen', 'give_blank_slate' );
  *
  * @return mixed
  * @since 2.0
- *
  */
 function give_validate_user_profile( $errors, $update, $user ) {
 
@@ -914,7 +967,6 @@ add_action( 'personal_options', 'give_donor_information_profile_fields' );
  *
  * @return array
  * @since 1.8.13
- *
  */
 function give_get_user_roles() {
 	$user_roles = array();
@@ -933,7 +985,6 @@ function give_get_user_roles() {
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_ajax_donor_manage_addresses() {
 	// Bailout.
@@ -1106,7 +1157,6 @@ add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresse
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_donor_billing_address_label( $address_label ) {
 	$address_label = __( 'Billing Address', 'give' );
@@ -1123,7 +1173,6 @@ add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_la
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_donor_personal_address_label( $address_label ) {
 	$address_label = __( 'Personal Address', 'give' );
@@ -1142,7 +1191,6 @@ add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_
  * @access public
  * @return bool
  * @since  2.0
- *
  */
 function give_update_donor_name_on_user_update( $user_id = 0 ) {
 
@@ -1162,7 +1210,8 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 
 		// Assign User First name and Last name to Donor.
 		Give()->donors->update(
-			$donor->id, array(
+			$donor->id,
+			array(
 				'name' => $full_name,
 			)
 		);
@@ -1186,7 +1235,6 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * @return bool
  * @since  1.4.3
  * @access public
- *
  */
 function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
 
@@ -1201,7 +1249,8 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
 		$success = Give()->donors->update(
-			$donor->id, array(
+			$donor->id,
+			array(
 				'email' => $user->user_email,
 			)
 		);
@@ -1226,7 +1275,6 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 			 * @param Give_Donor $donor Give donor object.
 			 *
 			 * @since 1.4.3
-			 *
 			 */
 			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
@@ -1460,5 +1508,37 @@ function give_admin_quick_js() {
 }
 
 add_action( 'admin_head', 'give_admin_quick_js' );
+
+/**
+ * Handle akismet_deblacklist_spammed_email_handler give-action
+ *
+ * @since 2.5.14
+ *
+ * @param array $get
+ */
+function give_akismet_deblacklist_spammed_email_handler( $get ) {
+	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';
+	$log    = ! empty( $get['log'] ) ? absint( $get['log'] ) : '';
+	$action = "give_akismet_deblacklist_spammed_email_{$email}";
+
+	check_admin_referer( $action );
+	$emails = give_akismet_get_whitelisted_emails();
+
+	if ( ! in_array( $email, $emails, true ) ) {
+		array_unshift( $emails, $email );
+
+		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
+
+		// Remove log, metadata and cache.
+		if ( Give()->log_db->delete( $log ) ) {
+			Give()->logmeta_db->delete_all_meta( $log );
+			Give()->logs->delete_cache();
+		}
+
+		// Redirect to Akismet setting page.
+		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
+	}
+}
+add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
 
 

@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_logs_tab() {
 
-	require( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
+	require GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
 
 	// Get current section.
 	$current_section = $_GET['section'] = give_get_current_setting_section();
@@ -43,7 +43,7 @@ function give_get_logs_tab() {
  * @return void
  */
 function give_logs_view_updates() {
-	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-update-logs-list-table.php' );
+	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-update-logs-list-table.php';
 
 	$logs_table = new Give_Update_Log_Table();
 	$logs_table->prepare_items();
@@ -58,7 +58,8 @@ function give_logs_view_updates() {
 		 */
 		do_action( 'give_logs_update_top' );
 
-		$logs_table->display(); ?>
+		$logs_table->display();
+		?>
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-tools"/>
 		<input type="hidden" name="tab" value="logs"/>
@@ -88,7 +89,7 @@ add_action( 'give_logs_view_updates', 'give_logs_view_updates' );
  * @return void
  */
 function give_logs_view_gateway_errors() {
-	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
+	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php';
 
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
@@ -103,7 +104,8 @@ function give_logs_view_gateway_errors() {
 		 */
 		do_action( 'give_logs_payment_error_top' );
 
-		$logs_table->display(); ?>
+		$logs_table->display();
+		?>
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-tools"/>
 		<input type="hidden" name="tab" value="logs"/>
@@ -133,7 +135,7 @@ add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
  * @return void
  */
 function give_logs_view_api_requests() {
-	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
+	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php';
 
 	$logs_table = new Give_API_Request_Log_Table();
 	$logs_table->prepare_items();
@@ -162,6 +164,53 @@ function give_logs_view_api_requests() {
 	do_action( 'give_logs_api_requests_bottom' );
 }
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
+
+/**
+ * Spam Logs
+ *
+ * @since 2.5.14
+ * @uses  Give_Spam_Log_Table::prepare_items()
+ * @uses  Give_Spam_Log_Table::display()
+ * @return void
+ */
+function give_logs_view_spam() {
+	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-spam-logs-list-table.php';
+
+	$logs_table = new Give_Spam_Log_Table();
+	$logs_table->prepare_items();
+	?>
+	<div class="give-log-wrap">
+
+		<?php
+		/**
+		 * Fires before displaying spam logs.
+		 *
+		 * @since 2.5.14
+		 */
+		do_action( 'give_logs_spam_top' );
+
+		$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
+		$logs_table->display();
+		?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="spam"/>
+
+		<?php
+		/**
+		 * Fires after displaying spam logs.
+		 *
+		 * @since 2.5.14
+		 */
+		do_action( 'give_logs_spam_bottom' );
+		?>
+
+	</div>
+	<?php
+}
+
+add_action( 'give_logs_view_spam', 'give_logs_view_spam' );
 
 /**
  * Renders the log views drop down.
