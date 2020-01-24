@@ -348,13 +348,15 @@ function give_load_gateway( form_object, payment_mode ) {
 		},
 		function( response ) {
 			//Success: let's output the gateway fields in the appropriate form space
-			jQuery( form_object ).unblock();
 			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
 
 			// trigger an event on success for hooks
 			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+
+			// Unblock form.
+			jQuery( form_object ).unblock();
 
 			return res();
 		}
