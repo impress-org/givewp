@@ -16,9 +16,13 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
 
+	// Use to manage loading state
+	const [ loaded, setLoaded ] = useState( false );
+
 	// Fetch new data and update Chart when period changes
 	useEffect( () => {
 		if ( period.startDate && period.endDate ) {
+			setLoaded( false );
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				params: {
 					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
@@ -29,6 +33,7 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 				},
 			} )
 				.then( function( response ) {
+					setLoaded( true );
 					setFetched( response.data.data );
 				} );
 		}
@@ -36,6 +41,9 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 
 	return (
 		<Fragment>
+			{ ! loaded && (
+				<div>Loading...</div>
+			) }
 			{ fetched && (
 				<Chart
 					type={ type }
