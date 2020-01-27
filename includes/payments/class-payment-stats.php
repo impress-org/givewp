@@ -119,14 +119,6 @@ class Give_Payment_Stats extends Give_Stats {
 			);
 		}
 
-		// Filter by Gateway ID meta_key
-		if ( $form_id ) {
-			$args['meta_query'][] = array(
-				'key'   => '_give_payment_form_id',
-				'value' => $form_id,
-			);
-		}
-
 		if ( ! empty( $args['meta_query'] ) && 1 < count( $args['meta_query'] ) ) {
 			$args['meta_query']['relation'] = 'AND';
 		}
