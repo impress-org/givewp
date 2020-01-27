@@ -109,6 +109,8 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 					continue;
 				}
 
+				$currency_code = give_get_payment_currency_code( $payment->ID );
+
 				/**
 				 * Filter the payment amount.
 				 *
@@ -123,7 +125,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 				);
 
 				$totals['sales'] ++;
-				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount );
+				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount, array( 'currency' => $currency_code ) );
 
 			}
 
