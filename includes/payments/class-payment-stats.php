@@ -102,7 +102,6 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$args = array(
 			'status'     => 'publish',
-			'give_forms' => $form_id,
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
@@ -230,7 +229,6 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$args = array(
 			'status'     => 'publish',
-			'give_forms' => $form_id,
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
