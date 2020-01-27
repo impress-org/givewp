@@ -360,6 +360,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 						continue;
 					}
 
+					$currency_code = give_get_payment_currency_code( $payment->ID );
+
 					if ( ! array_key_exists( $payment->ID, $payment_items ) ) {
 
 						/**
@@ -378,7 +380,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 						$payment_items[ $payment->ID ] = array(
 							'id'         => $form_id,
 							'payment_id' => $payment->ID,
-							'price'      => (float) give_maybe_sanitize_amount( $payment_total ),
+							'price'      => (float) give_maybe_sanitize_amount( $payment_total, array( 'currency' => $currency_code ) ),
 						);
 					}
 				}
