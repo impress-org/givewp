@@ -14,7 +14,7 @@ const { __ } = wp.i18n;
 const OverviewPage = () => {
 	return (
 		<Grid>
-			<Card title={ __( 'Donations vs Income', 'give' ) } width={ 12 }>
+			<Card title={ __( 'Income for Period', 'give' ) } width={ 12 }>
 				<RESTChart
 					type="line"
 					aspectRatio={ 0.4 }
