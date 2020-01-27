@@ -454,9 +454,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$_donor_query['number'] = - 1;
 		$_donor_query['offset'] = 0;
-		$donors                 = Give()->donors->get_donors( $_donor_query );
+		$_donor_query['count']  = true;
 
-		return count( $donors );
+		return Give()->donors->get_donors( $_donor_query );
 	}
 
 	/**
