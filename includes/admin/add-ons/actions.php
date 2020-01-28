@@ -107,7 +107,8 @@ function give_upload_addon_handler() {
 	}
 
 	// Delete cache and get current installed addon plugin path.
-	wp_cache_delete( 'plugins', 'plugins' );
+	wp_clean_plugins_cache( true );
+
 	$give_addons_list   = give_get_plugins();
 	$installed_addon  = array();
 
