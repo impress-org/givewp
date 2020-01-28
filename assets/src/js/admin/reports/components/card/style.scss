@@ -1,18 +1,21 @@
 .givewp-card {
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 3px 6px rgba(68, 68, 68, 0.05), 0px 3px 6px rgba(68, 68, 68, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 3px 6px rgba(68, 68, 68, 0.05), 0 3px 6px rgba(68, 68, 68, 0.05);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 
-    > .title {
-        font-weight: bold;
-        padding: 16px;
-        font-size: 15px;
-    }
+	> .title {
+		font-weight: 900;
+		padding: 16px;
+		font-size: 15px;
+	}
 
-    > .content {
-        padding: 0;
-    }
+	> .content {
+		padding: 0;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
 }
