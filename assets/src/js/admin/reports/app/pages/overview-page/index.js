@@ -2,21 +2,23 @@
 // Pages use the Grid component to establish a
 // 12 column grid for content to exist in
 
-import Grid from '../../../components/grid';
-import Card from '../../../components/card';
-import RESTChart from '../../../components/rest-chart';
-import RESTMiniChart from '../../../components/rest-mini-chart';
-import List from '../../../components/list';
-import RESTList from '../../../components/rest-list';
-import LocationItem from '../../../components/location-item';
-import NotFoundNotice from '../../../components/not-found-notice';
-import LoadingNotice from '../../../components/loading-notice';
+// Vendor dependencies
 const { __ } = wp.i18n;
-
 import { Fragment } from 'react';
 
 // Store-related dependencies
 import { useStoreValue } from '../../../store';
+
+//Components
+import Grid from '../../../components/grid';
+import Card from '../../../components/card';
+import RESTChart from '../../../components/rest-chart';
+import RESTMiniChart from '../../../components/rest-mini-chart';
+import RESTList from '../../../components/rest-list';
+import List from '../../../components/list';
+import LocationItem from '../../../components/location-item';
+import NotFoundNotice from '../../../components/not-found-notice';
+import LoadingNotice from '../../../components/loading-notice';
 
 const OverviewPage = () => {
 	// Use initLoaded from store
@@ -93,7 +95,7 @@ const OverviewPage = () => {
 				<Card title={ __( 'Location List', 'give' ) } width={ 4 }>
 					<List>
 						<LocationItem
-							city="Anacorts"
+							city="Anacortes"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -101,7 +103,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Seattle"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -109,7 +111,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Burlington"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -117,7 +119,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Friday Harbor"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -125,7 +127,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="La Conner"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -133,7 +135,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Bellingham"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -141,7 +143,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Everett"
 							state="Washington"
 							country="United States"
 							flag="flag.png"
@@ -149,7 +151,7 @@ const OverviewPage = () => {
 							total="$345.00"
 						/>
 						<LocationItem
-							city="Anacorts"
+							city="Lynden"
 							state="Washington"
 							country="United States"
 							flag="flag.png"

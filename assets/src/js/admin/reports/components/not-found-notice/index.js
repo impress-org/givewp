@@ -1,5 +1,7 @@
+// Dependencies
 const { __ } = wp.i18n;
 
+// Styles
 import './style.scss';
 
 const NotFoundNotice = () => {

@@ -1,8 +1,9 @@
+// Components
 import DonationItem from '../../donation-item';
 import DonorItem from '../../donor-item';
 import LocationItem from '../../location-item';
 
-// Get color associated with a specific index
+// Get list items from data
 export function getItems( data ) {
 	const items = Array.isArray( data ) && data.length ? data.map( ( item, index ) => {
 		switch ( item.type ) {
@@ -40,86 +41,18 @@ export function getItems( data ) {
 	return items;
 }
 
+// Get skeleton list items
 export function getSkeletonItems() {
-	const data = [
-		{
+	const data = new Array( 10 ).map( () => {
+		return {
 			type: 'donor',
 			name: '- -',
 			email: '--',
 			count: '--',
 			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-		{
-			type: 'donor',
-			name: '- -',
-			email: '--',
-			count: '--',
-			total: '--',
-		},
-	];
+		};
+	} );
+
 	const items = getItems( data );
 	return items;
 }

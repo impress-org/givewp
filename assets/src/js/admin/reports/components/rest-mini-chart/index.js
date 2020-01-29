@@ -17,6 +17,7 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
 
+	// Use state to handle loaded status
 	const [ loaded, setLoaded ] = useState( true );
 
 	// Fetch new data and update Chart when period changes

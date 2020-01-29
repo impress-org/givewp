@@ -8,7 +8,7 @@ import List from '../list';
 import LoadingOverlay from '../loading-overlay';
 import NotFoundOverlay from '../not-found-overlay';
 
-//Utilities
+// Utilities
 import { getItems, getSkeletonItems } from './utils';
 
 // Store-related dependencies
