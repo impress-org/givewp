@@ -111,13 +111,16 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$payments = $this->get_stored_data( 'give_temp_all_payments_data' );
 
 		if ( empty( $payments ) ) {
-			$args = apply_filters( 'give_recount_form_stats_args', array(
-				'give_forms' => $all_forms,
-				'number'     => $this->per_step,
-				'status'     => $accepted_statuses,
-				'paged'      => $this->step,
-				'output'     => 'give_payments',
-			) );
+			$args = apply_filters(
+				'give_recount_form_stats_args',
+				array(
+					'give_forms' => $all_forms,
+					'number'     => $this->per_step,
+					'status'     => $accepted_statuses,
+					'paged'      => $this->step,
+					'output'     => 'give_payments',
+				)
+			);
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
@@ -125,11 +128,11 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 		if ( ! empty( $payments ) ) {
 
-			//Loop through payments
+			// Loop through payments
 			foreach ( $payments as $payment ) {
 
 				$payment_id = ( ! empty( $payment['ID'] ) ? absint( $payment['ID'] ) : ( ! empty( $payment->ID ) ? absint( $payment->ID ) : false ) );
-				$payment = new Give_Payment( $payment_id );
+				$payment    = new Give_Payment( $payment_id );
 
 				// Prevent payments that have all ready been retrieved from a previous sales log from counting again.
 				if ( in_array( $payment->ID, $processed_payments ) ) {
@@ -172,7 +175,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			// Get the list of form ids which does not contain any payment record.
 			$remaining_form_ids = array_diff( $all_forms, array_keys( $totals ) );
 			foreach ( $remaining_form_ids as $form_id ) {
-				//If array key doesn't exist, create it
+				// If array key doesn't exist, create it
 				if ( ! array_key_exists( $form_id, $totals ) ) {
 					$totals[ $form_id ] = array(
 						'sales'    => (int) 0,
@@ -186,7 +189,6 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 			return true;
 		}
-
 
 		foreach ( $totals as $key => $stats ) {
 			give_update_meta( $key, '_give_form_sales', $stats['sales'] );
@@ -329,13 +331,16 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 			$this->store_data( 'give_temp_form_ids', $all_forms );
 
-			$args = apply_filters( 'give_recount_form_stats_total_args', array(
-				'give_forms' => $all_forms,
-				'number'     => $this->per_step,
-				'status'     => $accepted_statuses,
-				'page'       => $this->step,
-				'output'     => 'payments',
-			) );
+			$args = apply_filters(
+				'give_recount_form_stats_total_args',
+				array(
+					'give_forms' => $all_forms,
+					'number'     => $this->per_step,
+					'status'     => $accepted_statuses,
+					'page'       => $this->step,
+					'output'     => 'payments',
+				)
+			);
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
@@ -350,7 +355,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 					$form_id = $payment->form_id;
 
-					//If for some reason somehow the form_ID isn't set check payment meta
+					// If for some reason somehow the form_ID isn't set check payment meta
 					if ( empty( $payment->form_id ) ) {
 						$payment_meta = $payment->get_meta();
 						$form_id      = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
@@ -359,6 +364,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 						continue;
 					}
+
+					$currency_code = give_get_payment_currency_code( $payment->ID );
 
 					if ( ! array_key_exists( $payment->ID, $payment_items ) ) {
 
@@ -372,13 +379,17 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 							give_format_amount( $payment->total, array( 'donation_id' => $payment->ID ) ),
 							$payment->total,
 							$payment->ID,
-							array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+							array(
+								'type'     => 'stats',
+								'currency' => false,
+								'amount'   => false,
+							)
 						);
 
 						$payment_items[ $payment->ID ] = array(
 							'id'         => $form_id,
 							'payment_id' => $payment->ID,
-							'price'      => (float) give_maybe_sanitize_amount( $payment_total ),
+							'price'      => (float) give_maybe_sanitize_amount( $payment_total, array( 'currency' => $currency_code ) ),
 						);
 					}
 				}
@@ -463,7 +474,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
