@@ -1,102 +1,117 @@
 // Format data from Reports API for ChartJS
-export function formatData (type, data) {
+export function formatData( type, data ) {
+	const formattedLabels = data.labels.slice( 0 );
 
-    const formattedLabels = data.labels.slice(0)
+	const formattedDatasets = data.datasets.map( ( dataset, index ) => {
+		// Setup styles
+		const styles = createStyles( type, dataset.data, index );
 
-    const formattedDatasets = data.datasets.map((dataset, index) => {
+		const formatted = {
+			label: ( ' ' + dataset.label ).slice( 1 ),
+			data: dataset.data.slice( 0 ),
+			yAxisID: `y-axis-${ index }`,
+			backgroundColor: styles.backgroundColor,
+			borderColor: styles.borderColor,
+			borderWidth: styles.borderWidth,
+		};
 
-        // Setup styles
-        const styles = createStyles(type, dataset.data, index)
+		return formatted;
+	} );
 
-        const formatted = {
-            label: (' ' + dataset.label).slice(1),
-			data: dataset.data.slice(0),
-			yAxisID: `y-axis-${index}`,
-            backgroundColor: styles.backgroundColor,
-            borderColor: styles.borderColor,
-            borderWidth: styles.borderWidth
-		}
+	const formattedData = {
+		labels: formattedLabels,
+		datasets: formattedDatasets,
+	};
 
-        return formatted
-    })
-
-    const formattedData = {
-        labels: formattedLabels,
-        datasets: formattedDatasets,
-    }
-
-    return formattedData
+	return formattedData;
 }
 
 // Create chart styles from predifined pallette,
 // depending on chart type
-function createStyles (type, data, index) {
-
-    const palette = [
+function createStyles( type, data, index ) {
+	const palette = [
 		'#69B868',
 		'#556E79',
 		'#9EA3A8',
-        '#D75A4B',
-		'#F49420'
-    ]
+		'#D75A4B',
+		'#F49420',
+	];
 
-    const styles = {
-        backgroundColor: palette,
-        borderColor: palette,
-        borderWidth: 0
-    }
+	const styles = {
+		backgroundColor: palette,
+		borderColor: palette,
+		borderWidth: 0,
+	};
 
-    // Handle special styles needed for 'line' and 'doughnut' charts
-    switch (type) {
-        case 'line':
-            styles.backgroundColor = [
-                palette[index] + '44'
-            ]
-            styles.borderColor = [
-                palette[index]
-            ]
-            styles.borderWidth = 3
-            break;
-        case 'doughnut':
-            styles.borderColor = ['#FFFFFF']
-            styles.borderWidth = 3
-    }
+	// Handle special styles needed for 'line' and 'doughnut' charts
+	switch ( type ) {
+		case 'line':
+			styles.backgroundColor = [
+				palette[ index ] + '44',
+			];
+			styles.borderColor = [
+				palette[ index ],
+			];
+			styles.borderWidth = 3;
+			break;
+		case 'doughnut':
+			styles.borderColor = [ '#FFFFFF' ];
+			styles.borderWidth = 3;
+	}
 
-    return styles
+	return styles;
 }
 
 // Return config object for ChartJS
-export function createConfig (type, data) {
-    const formattedData = formatData(type, data)
-    let config = {
-        type: type,
-        data: formattedData,
-        options: {
-            legend: {
-                display: false
-            },
-            layout: {
-                padding: 16
-            }
-        }
-    }
+export function createConfig( type, data ) {
+	const formattedData = formatData( type, data );
+	const config = {
+		type: type,
+		data: formattedData,
+		options: {
+			tooltips: {
+				mode: 'index',
+				backgroundColor: '#555555',
+				titleFontSize: 15,
+				titleAlign: 'center',
+				footerAlign: 'center',
+				caretPadding: 4,
+				callbacks: {
+					title: function( tooltipItems ) {
+						return '$' + tooltipItems[ 0 ].value;
+					},
+					label: function() {
+						return '12 Donors';
+					},
+					footer: function( tooltipItem, chartData ) {
+						return chartData.labels[ tooltipItem[ 0 ].index ];
+					},
+				},
+			},
+			legend: {
+				display: false,
+			},
+			layout: {
+				padding: 16,
+			},
+		},
+	};
 
-    // Setup yAxes to begin at zero if chart is 'line' or 'bar'
-    if (type === 'line' || type === 'bar') {
-
-		const yAxes = data.datasets.map((dataset, index) => {
+	// Setup yAxes to begin at zero if chart is 'line' or 'bar'
+	if ( type === 'line' || type === 'bar' ) {
+		const yAxes = data.datasets.map( ( dataset, index ) => {
 			return {
-				id: `y-axis-${index}`,
+				id: `y-axis-${ index }`,
 				ticks: {
 					beginAtZero: true,
-				}
-			}
-		})
+				},
+			};
+		} );
 
-        config.options.scales = {
-            yAxes: yAxes
-        }
-    }
+		config.options.scales = {
+			yAxes: yAxes,
+		};
+	}
 
-    return config
+	return config;
 }
