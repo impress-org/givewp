@@ -34,7 +34,7 @@
 			</a>
 		</div>
 		<div class="givewp-loading-notice">
-			<h2><?php _e( 'Loading', 'give' ); ?></h2>
+			<h2><?php _e( 'Loading...', 'give' ); ?></h2>
 		</div>
 	</div>
 </div>
