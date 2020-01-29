@@ -19,7 +19,12 @@
 		<?php
 		// Fetch the Give Form.
 		ob_start();
-		give_get_donation_form( $atts );
+
+		if ( empty( $_REQUEST['show_receipt'] ) ) {
+			give_get_donation_form( $atts );
+		} else {
+			echo give_receipt_shortcode( array() );
+		}
 		echo ob_get_clean();
 
 		/**
