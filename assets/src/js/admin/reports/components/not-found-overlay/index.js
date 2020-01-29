@@ -1,10 +1,12 @@
+const { __ } = wp.i18n;
+
 import './style.scss';
 
 const NotFoundOverlay = () => {
 	return (
 		<div className="givewp-not-found-overlay">
 			<div className="notice-text">
-				No data found.
+				{ __( 'No data found.', 'give' ) }
 			</div>
 		</div>
 	);
