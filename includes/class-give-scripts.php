@@ -494,6 +494,20 @@ class Give_Scripts {
 	public function embed_page_scripts() {
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
 		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
+		?>
+		<script>
+			var iFrameResizer = {
+				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
+				onMessage: function( message ) {
+					console.log( message );
+
+					if ('currentPage' in message) {
+						document.getElementsByName( 'give-current-url' ).value = message.currentPage;
+					}
+				}
+			}
+		</script>
+		<?php
 		echo $this->get_script_tag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
 

@@ -12,8 +12,30 @@
 jQuery( document ).ready( function( $ ) {
 	// console.log( $.fn.iFrameResize);
 	if ( $.fn.iFrameResize ) {
-		$( 'iframe[name="give-embed-form"]' ).iFrameResize( { log: true } );
+		// Parent page.
+		$( 'iframe[name="give-embed-form"]' ).iFrameResize(
+			{
+				log: true,
+				onMessage: function( message ) {
+					console.log( message );
+				},
+				onInit: function( iframe ) {
+					iframe.iFrameResizer.sendMessage( {
+						currentPage: window.location.href,
+					} );
+				},
+			}
+		);
 	}
+
+	window.setTimeout( function() {
+		if ( 'parentIFrame' in window ) {
+			// Iframe page.
+			// window.parentIFrame.sendMessage( {
+			// 	iframe: window.parentIFrame
+			// } );
+		}
+	}, 3000 );
 
 	// Reset nonce only if form exists.
 	if ( Give.form.fn.isFormExist() ) {
