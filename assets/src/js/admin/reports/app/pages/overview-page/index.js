@@ -9,6 +9,8 @@ import RESTMiniChart from '../../../components/rest-mini-chart';
 import List from '../../../components/list';
 import RESTList from '../../../components/rest-list';
 import LocationItem from '../../../components/location-item';
+import NotFoundNotice from '../../../components/not-found-notice';
+import LoadingNotice from '../../../components/loading-notice';
 const { __ } = wp.i18n;
 
 import { Fragment } from 'react';
@@ -23,18 +25,10 @@ const OverviewPage = () => {
 	return (
 		<Fragment>
 			{ donationsFound === false && (
-				<Grid>
-					<Card width={ 12 }>
-						<h1>No donations were found for the selected period.</h1>
-					</Card>
-				</Grid>
+				<NotFoundNotice />
 			) }
 			{ pageLoaded === false && (
-				<Grid>
-					<Card width={ 12 }>
-						<h1>Loading...</h1>
-					</Card>
-				</Grid>
+				<LoadingNotice />
 			) }
 			<Grid visible={ showGrid }>
 				<Card title={ __( 'Income for Period', 'give' ) } width={ 12 }>

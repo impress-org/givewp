@@ -33,14 +33,8 @@
 				Legacy Reports Page
 			</a>
 		</div>
-		<div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; margin-top: 30px;">
-			<div class="givewp-card" style="grid-column: span 12 / auto;">
-				<div class="content">
-					<h1>
-						Loading...
-					</h1>
-				</div>
-			</div>
+		<div class="givewp-loading-notice">
+			<h2>Loading...</h2>
 		</div>
 	</div>
 </div>
