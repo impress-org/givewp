@@ -580,7 +580,7 @@ function give_is_viewing_embed_form_receipt() {
  * @return string Form style name.
  */
 function give_get_form_style( $form_id ) {
-	$form_style = Give()->form_meta->get_meta( $form_id, '_give_form_style' );
+	$form_style = Give()->form_meta->get_meta( $form_id, '_give_form_style', true );
 
 	if ( ! empty( $_REQUEST['give_form_style'] ) ) {
 		$form_style = give_clean( $_REQUEST['give_form_style'] );
