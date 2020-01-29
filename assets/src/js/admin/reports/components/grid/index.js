@@ -1,32 +1,35 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const Grid = ({gap, children}) => {
+const Grid = ( { gap, visible, children } ) => {
+	const display = visible === true ? 'grid' : 'none';
 
-    //To do: swap with scss
-    const gridStyle = {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gridGap: gap,
-        marginTop: '30px',
-    }
+	//To do: swap with scss
+	const gridStyle = {
+		display: display,
+		gridTemplateColumns: 'repeat(12, 1fr)',
+		gridGap: gap,
+		marginTop: '30px',
+	};
 
-    return (
-        <div style={gridStyle}>
-            {children}
-        </div>
-    )
-}
+	return (
+		<div style={ gridStyle }>
+			{ children }
+		</div>
+	);
+};
 
 Grid.propTypes = {
-    // Grid gap spacing (ex: 30px)
-    gap: PropTypes.string,
-    // Grid items
-    children: PropTypes.node.isRequired
-}
+	// Grid gap spacing (ex: 30px)
+	gap: PropTypes.string,
+	visible: PropTypes.bool,
+	// Grid items
+	children: PropTypes.node.isRequired,
+};
 
 Grid.defaultProps = {
-    gap: '30px',
-    children: null
-}
+	gap: '30px',
+	visible: true,
+	children: null,
+};
 
-export default Grid
+export default Grid;

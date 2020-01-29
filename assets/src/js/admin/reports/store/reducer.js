@@ -35,6 +35,16 @@ export const reducer = ( state, action ) => {
 					range: action.payload.range,
 				},
 			};
+		case 'SET_DONATIONS_FOUND':
+			return {
+				...state,
+				donationsFound: action.payload,
+			};
+		case 'SET_PAGE_LOADED':
+			return {
+				...state,
+				pageLoaded: action.payload,
+			};
 		default:
 			return state;
 	}

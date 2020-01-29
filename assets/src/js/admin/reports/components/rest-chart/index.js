@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 
 // Components
 import Chart from '../chart';
+import LoadingOverlay from '../loading-overlay';
+import SkeletonChart from '../skeleton-chart';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
 
 const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 	// Use period from store
-	const [ { period } ] = useStoreValue();
+	const [ { period }, dispatch ] = useStoreValue();
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
@@ -35,6 +37,18 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 				.then( function( response ) {
 					setLoaded( true );
 					setFetched( response.data.data );
+
+					if ( endpoint === 'income' ) {
+						const found = response.data.data.datasets[ 0 ].data.reduce( ( a, b ) => a + b, 0 ) > 0 ? true : false;
+						dispatch( {
+							type: 'SET_DONATIONS_FOUND',
+							payload: found,
+						} );
+						dispatch( {
+							type: 'SET_PAGE_LOADED',
+							payload: true,
+						} );
+					}
 				} );
 		}
 	}, [ period, endpoint ] );
@@ -42,13 +56,19 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 	return (
 		<Fragment>
 			{ ! loaded && (
-				<div>Loading...</div>
+				<LoadingOverlay />
 			) }
-			{ fetched && (
+			{ fetched ? (
 				<Chart
 					type={ type }
 					aspectRatio={ aspectRatio }
 					data={ fetched }
+					showLegend={ showLegend }
+				/>
+			) : (
+				<SkeletonChart
+					type={ type }
+					aspectRatio={ aspectRatio }
 					showLegend={ showLegend }
 				/>
 			) }
