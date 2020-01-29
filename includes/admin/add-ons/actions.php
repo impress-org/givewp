@@ -28,7 +28,7 @@ function give_upload_addon_handler() {
 	check_admin_referer( 'give-upload-addon' );
 
 	// Remove version from file name.
-	$filename = preg_replace( '/\(\d\).zip/', '', $_FILES['file']['name'] );
+	$filename = preg_replace( array( '/\(\d\).zip/', '/(.\d).*[\(\d\)]/' ), '', $_FILES['file']['name'] );
 	$filename = basename( trim( $filename ), '.zip' );
 
 	// Bailout if user does not has permission.
