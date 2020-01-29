@@ -60,11 +60,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		// Set parent defaults.
-		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
-			'plural'   => __( 'Donors', 'give' ), // Plural name of the listed records.
-			'ajax'     => false, // Does this table support ajax?.
-		) );
+		parent::__construct(
+			array(
+				'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
+				'plural'   => __( 'Donors', 'give' ), // Plural name of the listed records.
+				'ajax'     => false, // Does this table support ajax?.
+			)
+		);
 
 	}
 	/**
@@ -74,48 +76,56 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function advanced_filters() {
-		$start_date  = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-		$end_date    = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
-		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search      = $this->get_search();
-		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
+		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
+		$search     = $this->get_search();
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
 				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
-				<?php submit_button( __( 'Search', 'give' ), 'button', false, false, array(
-					'ID' => 'donor-search-submit',
-				) ); ?>
+				<?php
+				submit_button(
+					__( 'Search', 'give' ),
+					'button',
+					false,
+					false,
+					array(
+						'ID' => 'donor-search-submit',
+					)
+				);
+				?>
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
-				       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
 				<input type="text"
-				       id="start-date"
-				       name="start-date"
-				       class="give_datepicker"
-				       autocomplete="off"
-				       value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-				       data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-				       placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+					   id="start-date"
+					   name="start-date"
+					   class="give_datepicker"
+					   autocomplete="off"
+					   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
+					   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
+					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
 				<input type="text"
-				       id="end-date"
-				       name="end-date"
-				       class="give_datepicker"
-				       autocomplete="off"
-				       value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-				       data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-				       placeholder="<?php _e( 'End Date', 'give' ); ?>"
+					   id="end-date"
+					   name="end-date"
+					   class="give_datepicker"
+					   autocomplete="off"
+					   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
+					   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
 				/>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-				       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
 				echo Give()->html->forms_dropdown(
@@ -138,7 +148,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			 * @since 2.4.0
 			 */
 			do_action( 'give_donor_table_advanced_filters' );
-
 
 			if ( ! empty( $status ) ) {
 				echo sprintf( '<input type="hidden" name="status" value="%s"/>', esc_attr( $status ) );
@@ -179,7 +188,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 
-			case 'num_donations' :
+			case 'num_donations':
 				$value = sprintf(
 					'<a href="%s">%s</a>',
 					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor['id'] ) ),
@@ -187,11 +196,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 				);
 				break;
 
-			case 'amount_spent' :
+			case 'amount_spent':
 				$value = give_currency_filter( give_format_amount( $donor[ $column_name ], array( 'sanitize' => false ) ) );
 				break;
 
-			case 'date_created' :
+			case 'date_created':
 				$value = date_i18n( give_date_format(), strtotime( $donor['date_created'] ) );
 				break;
 
@@ -384,7 +393,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-donors','_wpnonce', false );
+			wp_nonce_field( 'bulk-donors', '_wpnonce', false );
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
@@ -392,7 +401,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 				<div class="alignleft actions bulkactions">
 					<?php $this->bulk_actions( $which ); ?>
 				</div>
-			<?php endif;
+				<?php
+			endif;
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
 			?>
@@ -454,9 +464,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$_donor_query['number'] = - 1;
 		$_donor_query['offset'] = 0;
-		$donors                 = Give()->donors->get_donors( $_donor_query );
+		$_donor_query['count']  = true;
 
-		return count( $donors );
+		return Give()->donors->get_donors( $_donor_query );
 	}
 
 	/**
@@ -471,7 +481,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$per_page   = $this->per_page;
 		$paged      = $this->get_paged();
 		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
-		$start_date = ! empty ( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : false;
+		$start_date = ! empty( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : false;
 		$end_date   = ! empty( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : false;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$offset     = $this->per_page * ( $paged - 1 );
@@ -532,8 +542,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-		$order          = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
-		$order_by       = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
+		$order    = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
+		$order_by = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
 		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
 			<thead>
@@ -542,14 +552,17 @@ class Give_Donor_List_Table extends WP_List_Table {
 			</tr>
 			</thead>
 
-			<tbody id="the-list"<?php
+			<tbody id="the-list"
+			<?php
 			if ( $singular ) {
 				echo " data-wp-lists='list:$singular'";
-			} ?>>
+			}
+			?>
+			>
 			<tr class="hidden"></tr>
 			<tr id="give-bulk-delete"
-			    class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor"
-			    style="display: none;">
+				class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor"
+				style="display: none;">
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
@@ -566,12 +579,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 						<div class="inline-edit-col">
 							<label>
 								<input class="give-donor-delete-confirm" type="checkbox"
-								       name="give-donor-delete-confirm"/>
+									   name="give-donor-delete-confirm"/>
 								<?php esc_attr_e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
 							</label>
 							<label>
 								<input class="give-donor-delete-records" type="checkbox"
-								       name="give-donor-delete-records"/>
+									   name="give-donor-delete-records"/>
 								<?php esc_attr_e( 'Delete all associated donations and records?', 'give' ); ?>
 							</label>
 						</div>
@@ -582,10 +595,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 						<input type="hidden" name="orderby" value="<?php echo esc_html( $order_by ); ?>"/>
 						<input type="hidden" name="order" value="<?php echo esc_html( $order ); ?>"/>
 						<button type="button" id="give-bulk-delete-cancel"
-						        class="button cancel alignleft"><?php esc_attr_e( 'Cancel', 'give' ); ?></button>
+								class="button cancel alignleft"><?php esc_attr_e( 'Cancel', 'give' ); ?></button>
 						<input type="submit" id="give-bulk-delete-button" disabled
-						       class="button button-primary alignright"
-						       value="<?php esc_attr_e( 'Delete', 'give' ); ?>">
+							   class="button button-primary alignright"
+							   value="<?php esc_attr_e( 'Delete', 'give' ); ?>">
 						<br class="clear">
 					</p>
 				</td>
@@ -624,10 +637,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$this->total = $this->get_donor_count();
 
-		$this->set_pagination_args( array(
-			'total_items' => $this->total,
-			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $this->total / $this->per_page ),
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $this->total,
+				'per_page'    => $this->per_page,
+				'total_pages' => ceil( $this->total / $this->per_page ),
+			)
+		);
 	}
 }
