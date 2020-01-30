@@ -98,7 +98,7 @@ jQuery( document ).ready( function( $ ) {
 			const oldPosition = $( this_form ).find( '[id^=give-checkout-login-register]' );
 
 			//Show fields
-			if ( parseInt( oldPosition.html().trim().length ) ) {
+			if ( oldPosition.length && parseInt( oldPosition.html().trim().length ) ) {
 				$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
 			} else {
 				// Insert html on correct position for elegent form style (form in embed).
