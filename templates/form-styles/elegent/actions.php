@@ -41,9 +41,7 @@ function give_elegent_add_progress_bar_section( $form_id, $args, $form ) {
  */
 function give_elegent_setup_common_hooks( $form_id, $args, $form ) {
 	// Remove personal information from current position.
-	remove_action( 'give_donation_form_after_user_info', 'give_user_info_fields' );
-	remove_action( 'give_register_fields_before', 'give_user_info_fields' );
-	remove_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
+	remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 }
 
 /**
@@ -79,9 +77,8 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 11, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
-	add_action( 'give_payment_mode_top', 'give_user_info_fields' );
+	add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
-	add_action( 'give_donation_form_after_email', 'give_get_register_fields', 9999 );
 
 	/**
 	 * Remove actions
