@@ -502,7 +502,7 @@ class Give_Scripts {
 					console.log( message );
 
 					if ('currentPage' in message) {
-						document.getElementsByName( 'give-current-url' ).value = message.currentPage;
+						document.getElementsByName( 'give-current-url' )[0].setAttribute('value', message.currentPage);
 					}
 				}
 			}
