@@ -1,46 +1,39 @@
 // Reports admin dashboard widget
 
+// Dependencies
+import { Fragment } from 'react';
+const { __ } = wp.i18n;
+
+// Store-related dependencies
+import { useStoreValue } from '../store';
+
 // Components
 import Grid from '../components/grid';
 import Card from '../components/card';
-import Chart from '../components/chart';
+import RESTChart from '../components/rest-chart';
 import RESTMiniChart from '../components/rest-mini-chart';
-
-// Dependencies
-import moment from 'moment';
-const { __ } = wp.i18n;
-
-// Store related dependencies
-import { StoreProvider } from '../store';
-import { reducer } from '../store/reducer';
+import NotFoundNotice from '../components/not-found-notice';
+import LoadingNotice from '../components/loading-notice';
 
 const Widget = () => {
-	// Initial app state (available in component through useStoreValue)
-	const initialState = {
-		// Initial period range (defaults to the past week)
-		period: {
-			startDate: moment().subtract( 7, 'days' ),
-			endDate: moment(),
-			range: 'week',
-		},
-	};
+	const [ { donationsFound, pageLoaded } ] = useStoreValue();
+	const showGrid = donationsFound && pageLoaded ? true : false;
 
 	return (
-		<StoreProvider initialState={ initialState } reducer={ reducer }>
-			<Grid gap="12px">
+		<Fragment>
+			{ donationsFound === false && (
+				<NotFoundNotice />
+			) }
+			{ pageLoaded === false && (
+				<LoadingNotice />
+			) }
+			<Grid gap="12px" visible={ showGrid }>
 				<Card width={ 12 }>
-					<Chart
+					<RESTChart
 						type="line"
 						aspectRatio={ 0.4 }
-						data={ {
-							labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul' ],
-							datasets: [
-								{
-									label: 'Donations',
-									data: [ 4, 5, 3, 7, 5, 6 ],
-								},
-							],
-						} }
+						endpoint="income"
+						showLegend={ false }
 					/>
 				</Card>
 				<Card width={ 6 }>
@@ -51,24 +44,24 @@ const Widget = () => {
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
-						title={ __( 'Total Income', 'give' ) }
-						endpoint="income"
+						title={ __( 'Avg. Donation', 'give' ) }
+						endpoint="average-donation"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
-						title={ __( 'Total Income', 'give' ) }
-						endpoint="income"
+						title={ __( 'Total Donors', 'give' ) }
+						endpoint="donors"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
-						title={ __( 'Total Income', 'give' ) }
-						endpoint="income"
+						title={ __( 'Total Refunds', 'give' ) }
+						endpoint="refunds"
 					/>
 				</Card>
 			</Grid>
-		</StoreProvider>
+		</Fragment>
 	);
 };
 export default Widget;
