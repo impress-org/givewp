@@ -88,6 +88,10 @@ class Income extends Endpoint {
 		$income = [];
 
 		$dateInterval = new \DateInterval( $interval );
+
+		date_sub( $start, $dateInterval );
+		date_sub( $end, $dateInterval );
+
 		while ( $start < $end ) {
 
 			$periodStart = $start->format( 'Y-m-d H:i:s' );
