@@ -80,16 +80,18 @@ textarea{
 }
 
 .give-section.personal-information-text {
-	@include section-padding;
-
 	text-align: center;
 	background-color: #f1f1f1;
-	margin-top: 19px;
+	padding: 20px 0;
 
 	.subheading{
 		font-size: 12px;
 		color: #555555;
 	}
+}
+
+.give-section.personal-information-text+[id="give_checkout_user_info"]{
+	margin: 0;
 }
 
 /**
@@ -196,11 +198,12 @@ textarea{
 		}
 	}
 
-	#give_checkout_user_info{
+	[id^="give-checkout-login-register-"],
+	[id="give_checkout_user_info"]{
 		@include background-lightgray;
 		@include section-padding;
 
-		margin: 0 0 19px;
+		margin: 19px 0;
 
 		fieldset[id="give_checkout_user_info"]{
 			padding: 0;
