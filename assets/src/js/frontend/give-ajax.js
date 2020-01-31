@@ -28,15 +28,6 @@ jQuery( document ).ready( function( $ ) {
 		);
 	}
 
-	window.setTimeout( function() {
-		if ( 'parentIFrame' in window ) {
-			// Iframe page.
-			// window.parentIFrame.sendMessage( {
-			// 	iframe: window.parentIFrame
-			// } );
-		}
-	}, 3000 );
-
 	// Reset nonce only if form exists.
 	if ( Give.form.fn.isFormExist() ) {
 		//Hide loading elements
