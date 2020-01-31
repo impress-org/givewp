@@ -128,16 +128,7 @@ jQuery( document ).ready( function( $ ) {
 		};
 		// AJAX get the payment fields.
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
-			const oldPosition = $( this_form ).find( '[id^=give-checkout-login-register]' );
-
-			//Show fields
-			if ( parseInt( oldPosition.html().trim().length ) ) {
-				$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
-			} else {
-				// Insert html on correct position for elegent form style (form in embed).
-				$( this_form ).find( '[id^="give_checkout_user_info"]' ).html( $.parseJSON( checkout_response.fields ) );
-			}
-
+			$( this_form ).find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( checkout_response.fields ) );
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
 		} ).done( function() {
 			// Trigger float-labels
