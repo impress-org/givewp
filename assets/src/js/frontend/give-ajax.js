@@ -165,6 +165,11 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '#give-payment-mode-select' ).after( response.data );
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
+				// This function will run only for embed donation form.
+				if ( this_form.parent().hasClass( 'give-embed-form' ) ) {
+					this_form.find( '[id^=give-checkout-login-register-]' ).slideUp();
+				}
+
 				Give.form.fn.resetAllNonce( this_form ).then(
 					response => {
 						//reload the selected gateway so it contains their logged in information
