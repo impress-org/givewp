@@ -117,28 +117,7 @@ add_action( 'give_donation_form', 'give_elegent_setup_hooks_on_ajax', 9, 2 );
  * @return void
  */
 function give_elegent_load_checkout_fields() {
-	// Early exit.
-	if ( ! give_is_viewing_embed_form() ) {
-		return;
-	}
-
-	$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : '';
-
-	give_elegent_setup_common_hooks( $form_id, array(), new Give_Donate_Form( $form_id ) );
-	add_action( 'give_donation_form_after_email', 'give_get_register_fields', 9999 );
-
-	ob_start();
-
-	give_user_info_fields( $form_id );
-
-	$fields = ob_get_clean();
-
-	wp_send_json(
-		array(
-			'fields' => wp_json_encode( $fields ),
-			'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
-		)
-	);
+	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
 }
 
 add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_elegent_load_checkout_fields', 9 );
