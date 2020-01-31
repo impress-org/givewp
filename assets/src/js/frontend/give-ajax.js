@@ -158,7 +158,7 @@ jQuery( document ).ready( function( $ ) {
 
 				// This function will run only for embed donation form.
 				if ( this_form.parent().hasClass( 'give-embed-form' ) ) {
-					this_form.find( '[id^=give-checkout-login-register-]' ).slideUp();
+					// @todo: add a way to load personal information fields.
 				}
 
 				Give.form.fn.resetAllNonce( this_form ).then(
