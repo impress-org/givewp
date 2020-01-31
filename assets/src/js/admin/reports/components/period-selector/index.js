@@ -58,11 +58,12 @@ const PeriodSelector = () => {
 					startDate={ period.startDate }
 					startDateId="givewp-reports-start"
 					endDate={ period.endDate }
+					hideKeyboardShortcutsPanel={ true }
 					endDateId="givewp-reports-end"
 					onDatesChange={ ( { startDate, endDate } ) => setDates( startDate, endDate ) }
 					focusedInput={ focusedInput }
-					onFocusChange={ () => {
-						setFocusedInput( focusedInput );
+					onFocusChange={ ( newFocus ) => {
+						setFocusedInput( newFocus );
 					} }
 					isOutsideRange={ day => ( moment().diff( day ) < 0 ) }
 					numberOfMonths={ 1 }

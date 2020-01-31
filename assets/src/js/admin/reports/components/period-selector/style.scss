@@ -1,93 +1,126 @@
 .givewp-period-selector {
-    float: right;
-    display: flex;
-    align-items: center;
-    height: 50px;
+	float: right;
+	display: flex;
+	align-items: center;
+	height: 50px;
 
-    > .datepicker {
-        border: 1px solid #DDDDDD;
-        border-bottom-width: 3px;
-        background: #F7F7F7;
-        height: 28px;
-        border-radius: 3px;
-        padding-left: 22px;
+	> .datepicker {
+		border: 1px solid #ddd;
+		border-bottom-width: 3px;
+		background: #f7f7f7;
+		height: 28px;
+		border-radius: 3px;
+		padding-left: 22px;
 
-        .DateRangePickerInput {
-            border: none;
-            background: none;
-            height: 28px;
-        }
+		// Dispable stylelint for react-dates override classes
+		/* stylelint-disable selector-class-pattern */
 
-        .DateRangePicker_picker {
-            border-radius: 3px;
-        }
+		// Will edit everything selected including everything between a range of dates
+		.CalendarDay__selected_span {
+			background: rgb(145, 200, 150); //background
+			color: #fff; //text
+			border: 1px solid #66bb6a;
+		}
 
-        .DateInput {
-            background: none;
-        }
+		// Will edit selected date or the endpoints of a range of dates
+		.CalendarDay__selected {
+			background: #66bb6a;
+			color: #fff;
+		}
 
-        input[type="text"] {
-            height: 28px;
-            min-height: 28px;
-            border: none;
-            background: none;
-            border-radius: 3px;
-            overflow: hidden;
-            font-size: 14px;
-    
-            &:focus {
-                box-shadow: none;
-                border: none;
-            }
-        }
+		// Will edit when the second date (end date) in a range of dates
+		// is not yet selected. Edits the dates between your mouse and said date
+		.CalendarDay__hovered_span, /* stylelint-disable-line selector-class-pattern */
+		.CalendarDay__hovered_span:hover {
+			background: rgb(145, 200, 150); //background
+			color: #fff; //text
+			border: 1px solid #66bb6a;
+		}
 
-    }
+		.DayPickerNavigation_button__horizontalDefault {
+			top: 12px;
+		}
 
-    > .icon {
-        height: 32px;
-        width: 32px;
-        position: absolute;
-        pointer-events: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+		.DateRangePickerInput {
+			border: none;
+			background: none;
+			height: 28px;
+		}
 
-    > .group {
-        margin-left: 16px;
-        display: flex;
+		.DateRangePicker_picker {
+			border-radius: 3px;
+		}
 
-        > button {
-            border: 1px solid #DDDDDD;
-            border-bottom-width: 3px;
-            background: #F7F7F7;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0px;
-            border-width: 1px 1px 3px 0px;
-            padding: 0 16px;
+		.DateInput {
+			background: none;
+		}
 
-            &:first-of-type {
-                border-radius: 3px 0 0 3px;
-                border-width: 1px 1px 3px 1px;
-            }
+		.DayPicker_weekHeader {
+			top: 52px;
+		}
 
-            &:last-of-type {
-                border-radius: 0 3px 3px 0;
-                border-width: 1px 1px 3px 0px;
-            }
+		/* stylelint-enable selector-class-pattern */
 
-            &.selected {
-                background: #DDDDDD;
-            }
+		input[type='text'] {
+			height: 28px;
+			min-height: 28px;
+			border: none;
+			background: none;
+			border-radius: 3px;
+			overflow: hidden;
+			font-size: 14px;
 
-            &:focus {
-                outline: none;
-                box-shadow: none;
-                border-color: #DDDDDD;
-            }
-        }
-    }
+			&:focus {
+				box-shadow: none;
+				border: none;
+			}
+		}
+	}
+
+	> .icon {
+		height: 32px;
+		width: 32px;
+		position: absolute;
+		pointer-events: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	> .group {
+		margin-left: 16px;
+		display: flex;
+
+		> button {
+			border: 1px solid #ddd;
+			background: #f7f7f7;
+			height: 32px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 0;
+			border-width: 1px 1px 3px 0;
+			padding: 0 16px;
+
+			&:first-of-type {
+				border-radius: 3px 0 0 3px;
+				border-width: 1px 1px 3px 1px;
+			}
+
+			&:last-of-type {
+				border-radius: 0 3px 3px 0;
+				border-width: 1px 1px 3px 0;
+			}
+
+			&.selected {
+				background: #ddd;
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+				border-color: #ddd;
+			}
+		}
+	}
 }
