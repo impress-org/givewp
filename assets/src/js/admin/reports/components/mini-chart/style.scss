@@ -1,55 +1,56 @@
 .givewp-mini-chart {
-    width: calc(100% - 32px);
-    padding: 16px 0 16px 16px;
-    display: flex;
-    flex-direction: column;
+	width: calc(100% - 32px);
+	padding: 16px 0 16px 16px;
+	display: flex;
+	flex-direction: column;
 
-    > .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 8px;
+	> .header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-bottom: 8px;
 
-        > .title {
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 12px;
-            color: #82878C;
-        }
+		> .title {
+			text-transform: uppercase;
+			font-weight: 600;
+			font-size: 12px;
+			color: #82878c;
+		}
 
-        > .indicator {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            font-weight: bold;
+		> .indicator {
+			display: flex;
+			align-items: center;
+			font-size: 14px;
+			font-weight: 600;
 
-            > div {
-                margin-right: 4px;
-            }
+			> div {
+				margin-right: 4px;
+			}
 
-            > .up {
-                margin-top: 5px;
-            }
+			> .up {
+				margin-top: -5px;
+				transform: rotate(180deg);
+			}
 
-            > .down {
-                transform: rotate(180deg);
-                margin-top: -5px;
-            }
-        }
-    }
+			> .down {
+				margin-top: 5px;
+			}
+		}
+	}
 
-    > .content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+	> .content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-        > .amount {
-            font-weight: bold;
-            font-size: 25px;
-        }
+		> .amount {
+			font-weight: 600;
+			font-size: 25px;
+		}
 
-        > .chart {
-            width: 35%;
-        }
-    }
+		> .chart {
+			width: 35%;
+			transform: translateY(-4px);
+		}
+	}
 }

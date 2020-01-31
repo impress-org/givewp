@@ -63,7 +63,7 @@ const MiniChart = ( { title, data } ) => {
 			<div className="content">
 				<div className="amount">{ highlightValue && ( highlightValue ) }</div>
 				<div className="chart">
-					<canvas width={ 100 } height={ 40 } ref={ canvas }></canvas>
+					<canvas width={ 100 } height={ 50 } ref={ canvas }></canvas>
 				</div>
 			</div>
 		</div>
