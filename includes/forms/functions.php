@@ -615,7 +615,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 
 		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
-			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
+			$price_text = apply_filters( 'give_form_level_text', isset( $price['_give_text'] ) ? $price['_give_text'] : '', $form_id, $price );
 			$price_fallback = $use_fallback ?
 				give_currency_filter(
 					give_format_amount(
