@@ -598,27 +598,26 @@ function give_get_form_style( $form_id ) {
 function give_embed_form_redirect( $url ) {
 	if ( ! give_is_viewing_embed_form() ) {
 		wp_redirect( $url );
-		exit();
+	} else {
+		?>
+		<!doctype html>
+		<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="ie=edge">
+				<title>Donation Processing...</title>
+			</head>
+			<body>
+				<p style="text-align: center">Processing...</p>
+				<a style="font-size: 0" id="link" href="<?php echo esc_js( $url ); ?>" target="_parent">Link</a>
+				<script>
+					document.getElementById( 'link' ).click();
+				</script>
+			</body>
+		</html>
+		<?php
 	}
-	?>
-	<!doctype html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-			<meta http-equiv="X-UA-Compatible" content="ie=edge">
-			<title>Donation Processing...</title>
-		</head>
-		<body>
-			<p style="text-align: center">Processing...</p>
-			<a style="font-size: 0" id="link" href="<?php echo esc_js( $url ); ?>" target="_parent">Link</a>
-			<script>
-				document.getElementById('link').click();
-			</script>
-		</body>
-	</html>
-	<?php
-
 	exit();
 }
 
