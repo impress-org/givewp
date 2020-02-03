@@ -81,7 +81,7 @@ add_filter( 'give_form_wrap_classes', 'give_add_embed_form_class' );
  * @param array $args
  */
 function give_embed_form_hidden_data( $form_id, $args ) {
-	if ( (bool) $args['embed'] || ! give_is_viewing_embed_form() ) {
+	if ( ! give_is_viewing_embed_form() ) {
 		return;
 	}
 
