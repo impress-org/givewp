@@ -105,7 +105,13 @@ function give_can_checkout() {
 function give_get_success_page_uri() {
 	$give_options = give_get_settings();
 
-	$success_page = isset( $give_options['success_page'] ) ? get_permalink( absint( $give_options['success_page'] ) ) : get_bloginfo( 'url' );
+	$success_page = isset( $give_options['success_page'] )
+		? get_permalink( absint( $give_options['success_page'] ) )
+		: get_bloginfo( 'url' );
+
+	if ( give_is_viewing_embed_form() ) {
+		$success_page = add_query_arg( array( 'show_receipt' => 1 ), $_REQUEST['give-current-url'] );
+	}
 
 	return apply_filters( 'give_get_success_page_uri', $success_page );
 }
