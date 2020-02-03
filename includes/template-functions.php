@@ -599,7 +599,6 @@ function give_embed_form_redirect( $url ) {
 	if ( ! give_is_viewing_embed_form() ) {
 		wp_redirect( $url );
 		exit();
-
 	}
 	?>
 	<!doctype html>
