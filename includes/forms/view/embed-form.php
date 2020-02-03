@@ -21,7 +21,7 @@
 		ob_start();
 
 		if ( empty( $_REQUEST['show_receipt'] ) ) {
-			give_get_donation_form( $atts );
+			give_get_donation_form( array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) ) );
 		} else {
 			echo give_receipt_shortcode( array() );
 		}
