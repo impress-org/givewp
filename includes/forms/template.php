@@ -1896,7 +1896,7 @@ function give_checkout_submit( $form_id, $args ) {
 		 */
 		do_action( 'give_donation_form_before_submit', $form_id, $args );
 
-		give_checkout_hidden_fields( $form_id );
+		give_checkout_hidden_fields( $form_id, $args );
 
 		echo give_get_donation_form_submit_button( $form_id, $args );
 
@@ -2125,12 +2125,13 @@ function give_form_display_content( $form_id, $args ) {
 /**
  * Renders the hidden Checkout fields.
  *
- * @param int $form_id The form ID.
+ * @param int   $form_id The form ID.
+ * @param array $args Shortcode args.
  *
  * @return void
  * @since 1.0
  */
-function give_checkout_hidden_fields( $form_id ) {
+function give_checkout_hidden_fields( $form_id, $args = array() ) {
 
 	/**
 	 * Fires while rendering hidden checkout fields, before the fields.
@@ -2139,7 +2140,7 @@ function give_checkout_hidden_fields( $form_id ) {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_hidden_fields_before', $form_id );
+	do_action( 'give_hidden_fields_before', $form_id, $args );
 
 	if ( is_user_logged_in() ) {
 		?>
@@ -2155,7 +2156,7 @@ function give_checkout_hidden_fields( $form_id ) {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_hidden_fields_after', $form_id );
+	do_action( 'give_hidden_fields_after', $form_id, $args );
 
 }
 

@@ -588,3 +588,55 @@ function give_get_form_style( $form_id ) {
 
 	return $form_style;
 }
+
+/**
+ * Redirect parent page if form loaded in iframe
+ *
+ * @since 2.7
+ * @param string $url
+ */
+function give_embed_form_redirect( $url ) {
+	if ( ! give_is_viewing_embed_form() ) {
+		wp_redirect( $url );
+		exit();
+
+	}
+	?>
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<title>Donation Processing...</title>
+		</head>
+		<body>
+			<p style="text-align: center">Processing...</p>
+			<a style="font-size: 0" id="link" href="<?php echo esc_js( $url ); ?>" target="_parent">Link</a>
+			<script>
+				document.getElementById('link').click();
+			</script>
+		</body>
+	</html>
+	<?php
+
+	exit();
+}
+
+
+/**
+ * Return parent page as success page
+ *
+ * @since 2.7.0
+ * @param array $args
+ * @return string
+ */
+function give_embed_form_success_page_url( $args = array() ) {
+	$url = give_is_viewing_embed_form()
+		? $_REQUEST['give-current-url']
+		: give_get_success_page_uri();
+
+	$url = add_query_arg( array_merge( $args, array( 'show_receipt' => 1 ) ), $url );
+
+	return esc_url( $url );
+}

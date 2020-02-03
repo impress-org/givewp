@@ -66,25 +66,7 @@ function give_process_paypal_payment( $payment_data ) {
 	}
 
 	// Redirect to PayPal.
-	?>
-	<!doctype html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-			<meta http-equiv="X-UA-Compatible" content="ie=edge">
-			<title>Document</title>
-		</head>
-		<body>
-			<p style="text-align: center">Processing...</p>
-			<a style="font-size: 0" id="link" href="<?php echo esc_js( give_build_paypal_url( $payment_id, $payment_data ) ); ?>" target="_parent">Link</a>
-			<script>
-				document.getElementById('link').click();
-			</script>
-		</body>
-	</html>
-	<?php
-	exit;
+	give_embed_form_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
 }
 
 add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
@@ -638,14 +620,11 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
 
 	// Get the success url.
-	$return_url = add_query_arg(
+	$return_url = give_embed_form_success_page_url(
 		array(
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
-			'show_receipt'         => 1,
-
-		),
-		esc_url( $_REQUEST['give-current-url'] )
+		)
 	);
 
 	// Get the PayPal redirect uri.
