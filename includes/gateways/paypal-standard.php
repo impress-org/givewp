@@ -620,11 +620,12 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
 
 	// Get the success url.
-	$return_url = give_embed_form_success_page_url(
+	$return_url = add_query_arg(
 		array(
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
-		)
+		),
+		give_get_success_page_uri()
 	);
 
 	// Get the PayPal redirect uri.
