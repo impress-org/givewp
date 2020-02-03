@@ -99,6 +99,7 @@ function give_can_checkout() {
  *
  * @access      public
  * @since       1.0
+ * @since       2.7.0 Return current url when in iframe
  *
  * @return      string
  */
