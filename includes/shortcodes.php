@@ -140,7 +140,16 @@ function give_form_shortcode( $atts ) {
 
 	// Fetch the Give Form.
 	ob_start();
-	give_get_donation_form( $atts );
+
+	if ( ! empty( $atts['embed'] ) ) {
+		printf(
+			'<iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0;"></iframe>',
+			add_query_arg( array( wp_parse_args( $_SERVER['QUERY_STRING'] ), array( 'iframe' => true ), $atts ), home_url( "/give-embed/{$atts['id']}" ) )
+		);
+	} else {
+		give_get_donation_form( $atts );
+	}
+
 	$final_output = ob_get_clean();
 
 	return apply_filters( 'give_donate_form', $final_output, $atts );
@@ -995,32 +1004,4 @@ function give_form_grid_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
-
-/**
- * Display donation form in iframe
- *
- * @todo: resolve conflict with possible slug like "give-embed-form-shortcode"
- *
- * @param array $args
- *
- * @return string
- */
-function give_embed_form( $args ) {
-	ob_start();
-
-	if ( empty( $args['id'] ) ) {
-		Give_Notices::print_frontend_notice(
-			__( 'Please provide a valid donation form ID.', 'give' )
-		);
-	}
-
-	printf(
-		'<iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0;"></iframe>',
-		add_query_arg( wp_parse_args( $_SERVER['QUERY_STRING'] ), home_url( "/give-embed/{$args['id']}?iframe=true" ) )
-	);
-
-	return ob_get_clean();
-}
-
-add_shortcode( 'give_embed_form', 'give_embed_form' );
 

@@ -77,14 +77,15 @@ add_filter( 'give_form_wrap_classes', 'give_add_embed_form_class' );
 /**
  * Add hidden fields
  *
- * @param $form_id
+ * @param int   $form_id
+ * @param array $args
  */
-function give_embed_form_hidden_data( $form_id ) {
-	if ( ! give_is_viewing_embed_form() ) {
+function give_embed_form_hidden_data( $form_id, $args ) {
+	if ( (bool) $args['embed'] || ! give_is_viewing_embed_form() ) {
 		return;
 	}
 
 	printf( '<input type="hidden" name="%1$s" value="%2$s">', 'give_embed_form', '1' );
 }
-add_action( 'give_hidden_fields_after', 'give_embed_form_hidden_data' );
+add_action( 'give_hidden_fields_after', 'give_embed_form_hidden_data', 10, 2 );
 // @todo: use slug to render donation form
