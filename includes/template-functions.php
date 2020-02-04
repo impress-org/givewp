@@ -561,6 +561,15 @@ function give_is_viewing_embed_form() {
 }
 
 /**
+ * Get result if we are processing embed form or not
+ *
+ * @return bool
+ */
+function give_is_processing_embed_form() {
+	return ! empty( $_REQUEST['give_embed_form' ] );
+}
+
+/**
  * Get result if we are viewing embed form receipt or not
  *
  * @return bool
