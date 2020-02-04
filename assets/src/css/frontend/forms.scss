@@ -915,3 +915,13 @@ Button with Loader
 		display: inline;
 	}
 }
+
+
+/*---------------------------------
+Embed Form aka IFrame Form
+-----------------------------------*/
+.give-embed-form-wrapper{
+	&.give-loader-type-img{
+		@include give-img-type-loader;
+	}
+}
