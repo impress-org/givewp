@@ -22,6 +22,7 @@ jQuery( document ).ready( function( $ ) {
 				onMessage: function( messageData ) {
 					switch ( messageData.message ) {
 						case 'give_embed_form_loaded':
+							messageData.iframe.parentElement.classList.remove( 'give-loader-type-img' );
 							messageData.iframe.style.visibility = 'visible';
 					}
 				},
