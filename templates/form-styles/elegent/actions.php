@@ -32,6 +32,17 @@ function give_elegent_add_progress_bar_section( $form_id, $args, $form ) {
 	include 'sections/progress-bar.php';
 }
 
+
+/**
+ * Add load next sections button
+ */
+function give_elegent_add_next_button() {
+	printf(
+		'<div class="give-show-form"><button class="give-btn">%1$s</button></div>',
+		__( 'Next', 'give' )
+	);
+}
+
 /**
  * Setup common hooks in-favor of elegent form style
  *
@@ -77,6 +88,7 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 11, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_next_button', 13, 3 );
 	add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
 
