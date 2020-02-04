@@ -325,6 +325,13 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	}
+
+	$('.give-show-form button', '.give-embed-form').on( 'click', function(e){
+		e.preventDefault();
+
+		$('.give-embed-form > *:not(.give_error):not(form)').hide();
+		$('form').show();
+	})
 } );
 
 /**
