@@ -37,6 +37,7 @@ function give_elegent_add_progress_bar_section( $form_id, $args, $form ) {
  * Add load next sections button
  */
 function give_elegent_add_next_button() {
+	// @todo: make button text customizable.
 	printf(
 		'<div class="give-show-form"><button class="give-btn">%1$s</button></div>',
 		__( 'Next', 'give' )
