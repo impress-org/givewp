@@ -21,9 +21,14 @@ jQuery( document ).ready( function( $ ) {
 				widthCalculationMethod: 'documentElementOffset',
 				onMessage: function( messageData ) {
 					switch ( messageData.message ) {
-						case 'give_embed_form_loaded':
+						case 'giveEmbedFormContentLoaded':
 							messageData.iframe.parentElement.classList.remove( 'give-loader-type-img' );
 							messageData.iframe.style.visibility = 'visible';
+							break;
+
+						case 'giveEmbedShowingForm':
+							$( 'html, body' ).animate( { scrollTop: messageData.iframe.offsetTop } );
+							break;
 					}
 				},
 				onInit: function( iframe ) {
@@ -326,12 +331,14 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	$('.give-show-form button', '.give-embed-form').on( 'click', function(e){
+	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
 		e.preventDefault();
 
-		$('.give-embed-form > *:not(.give_error):not(form)').hide();
-		$('form').show();
-	})
+		$( '.give-embed-form > *:not(.give_error):not(form)' ).hide();
+		$( 'form' ).show();
+
+		window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
+	} );
 } );
 
 /**
