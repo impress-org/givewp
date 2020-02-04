@@ -145,7 +145,7 @@ function give_form_shortcode( $atts ) {
 		unset( $atts['embed'] );
 
 		printf(
-			'<iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0; visibility: hidden"></iframe>',
+			'<div class="give-embed-form-wrapper give-loader-type-img"><iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0; visibility: hidden"></iframe></div>',
 			add_query_arg( array( wp_parse_args( $_SERVER['QUERY_STRING'] ), array( 'iframe' => true ), $atts ), home_url( "/give-embed/{$atts['id']}" ) )
 		);
 	} else {
