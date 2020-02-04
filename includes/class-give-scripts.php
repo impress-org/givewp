@@ -494,10 +494,17 @@ class Give_Scripts {
 	public function embed_page_scripts() {
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
 		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
+
+		// @todo: move js code to own file.
 		?>
 		<script>
 			var iFrameResizer = {
 				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
+				onReady: function(){
+					setTimeout( function() {
+						window.parentIFrame.sendMessage( 'give_embed_form_loaded' );
+					}, 500 );
+				},
 				onMessage: function( message ) {
 					console.log( message );
 
@@ -510,6 +517,7 @@ class Give_Scripts {
 		<?php
 		echo $this->get_script_tag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
 		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
+		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-elegent-theme.js' );
 
 		$this->stripe_frontend_scripts();
 	}

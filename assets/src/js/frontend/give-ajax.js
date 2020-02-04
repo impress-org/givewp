@@ -16,8 +16,14 @@ jQuery( document ).ready( function( $ ) {
 		$( 'iframe[name="give-embed-form"]' ).iFrameResize(
 			{
 				log: true,
-				onMessage: function( message ) {
-					console.log( message );
+				sizeWidth: true,
+				heightCalculationMethod: 'documentElementOffset',
+				widthCalculationMethod: 'documentElementOffset',
+				onMessage: function( messageData ) {
+					switch ( messageData.message ) {
+						case 'give_embed_form_loaded':
+							messageData.iframe.style.visibility = 'visible';
+					}
 				},
 				onInit: function( iframe ) {
 					iframe.iFrameResizer.sendMessage( {

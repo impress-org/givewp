@@ -566,7 +566,7 @@ function give_is_viewing_embed_form() {
  * @return bool
  */
 function give_is_processing_embed_form() {
-	return ! empty( $_REQUEST['give_embed_form' ] );
+	return ! empty( $_REQUEST['give_embed_form'] );
 }
 
 /**
@@ -605,7 +605,7 @@ function give_get_form_style( $form_id ) {
  * @param string $url
  */
 function give_embed_form_redirect( $url ) {
-	if ( ! give_is_viewing_embed_form() ) {
+	if ( ! give_is_processing_embed_form() ) {
 		wp_redirect( $url );
 	} else {
 		?>

@@ -30,7 +30,7 @@ const config = {
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 		'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		'admin-add-ons': [ './assets/src/js/admin/admin-add-ons.js' ],
-		'give-elegent-theme': [ './templates/form-styles/elegent/assets/css/form.scss' ],
+		'give-elegent-theme': [ './templates/form-styles/elegent/assets/css/form.scss', './templates/form-styles/elegent/assets/js/form.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
