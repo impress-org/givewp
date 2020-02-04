@@ -629,21 +629,3 @@ function give_embed_form_redirect( $url ) {
 	}
 	exit();
 }
-
-
-/**
- * Return parent page as success page
- *
- * @since 2.7.0
- * @param array $args
- * @return string
- */
-function give_embed_form_success_page_url( $args = array() ) {
-	$url = give_is_viewing_embed_form()
-		? $_REQUEST['give-current-url']
-		: give_get_success_page_uri();
-
-	$url = add_query_arg( array_merge( $args, array( 'show_receipt' => 1 ) ), $url );
-
-	return esc_url( $url );
-}
