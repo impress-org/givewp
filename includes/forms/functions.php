@@ -110,7 +110,7 @@ function give_get_success_page_uri() {
 		? get_permalink( absint( $give_options['success_page'] ) )
 		: get_bloginfo( 'url' );
 
-	if ( give_is_viewing_embed_form() ) {
+	if ( give_is_viewing_embed_form() || give_is_processing_embed_form() ) {
 		$success_page = add_query_arg( array( 'show_receipt' => 1 ), $_REQUEST['give-current-url'] );
 	}
 
