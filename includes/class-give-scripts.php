@@ -501,9 +501,7 @@ class Give_Scripts {
 			var iFrameResizer = {
 				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
 				onReady: function(){
-					setTimeout( function() {
-						window.parentIFrame.sendMessage( 'give_embed_form_loaded' );
-					}, 500 );
+					window.parentIFrame.sendMessage( 'give_embed_form_loaded' );
 				},
 				onMessage: function( message ) {
 					console.log( message );
