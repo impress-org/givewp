@@ -575,7 +575,7 @@ function give_is_processing_embed_form() {
  * @return bool
  */
 function give_is_viewing_embed_form_receipt() {
-	return ! empty( $_REQUEST['give_show_receipt'] );
+	return ! empty( $_REQUEST['giveDonationAction'] ) && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] );
 }
 
 /**

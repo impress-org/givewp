@@ -99,7 +99,7 @@ add_action( 'give_hidden_fields_after', 'give_embed_form_hidden_data', 10, 2 );
  */
 function give_embed_form_success_uri( $success_page ) {
 	if ( give_is_viewing_embed_form() || give_is_processing_embed_form() ) {
-		$success_page = add_query_arg( array( 'give_show_receipt' => 1 ), $success_page );
+		$success_page = add_query_arg( array( 'giveDonationAction' => 'showReceipt' ), $success_page );
 	}
 
 	return $success_page;
