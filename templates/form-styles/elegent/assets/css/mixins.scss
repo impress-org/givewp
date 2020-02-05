@@ -12,3 +12,11 @@
 @mixin section-padding{
 	padding: 15px 23px;
 }
+
+@mixin display-flex{
+	display: flex;
+}
+
+@mixin display-grid{
+	display: grid;
+}
