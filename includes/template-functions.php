@@ -575,10 +575,7 @@ function give_is_processing_embed_form() {
  * @return bool
  */
 function give_is_viewing_embed_form_receipt() {
-	return (
-		give_is_success_page() &&
-		false !== strpos( wp_get_referer(), '/give-embed/' )
-	);
+	return ! empty( $_REQUEST['give_show_receipt'] );
 }
 
 /**

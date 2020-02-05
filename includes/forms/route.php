@@ -50,7 +50,7 @@ function give_form_styles_routes() {
 	}
 }
 
-add_action( 'template_redirect', 'give_form_styles_routes' );
+add_action( 'template_redirect', 'give_form_styles_routes', 0 );
 
 
 /**
@@ -88,4 +88,37 @@ function give_embed_form_hidden_data( $form_id, $args ) {
 	printf( '<input type="hidden" name="%1$s" value="%2$s">', 'give_embed_form', '1' );
 }
 add_action( 'give_hidden_fields_after', 'give_embed_form_hidden_data', 10, 2 );
+
+
+/**
+ * Edit success page if process embed form
+ *
+ * @param string $success_page
+ *
+ * @return string
+ */
+function give_embed_form_success_uri( $success_page ) {
+	if ( give_is_viewing_embed_form() || give_is_processing_embed_form() ) {
+		$success_page = add_query_arg( array( 'give_show_receipt' => 1 ), $success_page );
+	}
+
+	return $success_page;
+}
+
+/**
+ * Setup Embed form related hooks on int hook
+ *
+ * @since 2.7
+ */
+function give_embed_form_setup_hooks_on_init() {
+	if ( ! give_is_processing_embed_form() ) {
+		return;
+	}
+
+	add_filter( 'give_get_success_page_uri', 'give_embed_form_success_uri' );
+
+}
+add_action( 'init', 'give_embed_form_setup_hooks_on_init', 1, 3 );
+
+
 // @todo: use slug to render donation form
