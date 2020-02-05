@@ -112,25 +112,20 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Akismet SPAM Protection', 'give' ),
-							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
-							'id'      => 'akismet_spam_protection',
-							'type'    => 'radio_inline',
-							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
 							'name'    => __( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Welcome screen</a> that displays each time GiveWP is activated or updated.', 'give' ), array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
+							'desc'    => sprintf(
+								wp_kses(
+									__( 'Enable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Welcome screen</a> that displays each time GiveWP is activated or updated.', 'give' ),
+									array(
+										'a' => array(
+											'href'   => array(),
+											'target' => array(),
+										),
+									)
 								),
-							) ), esc_url( admin_url( 'index.php?page=give-getting-started' ) ) ),
+								esc_url( admin_url( 'index.php?page=give-getting-started' ) )
+							),
 							'id'      => 'welcome',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -144,7 +139,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),
 							'desc'        => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
-							'type'        => 'remove_cache_button'
+							'type'        => 'remove_cache_button',
 						),
 						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
@@ -159,6 +154,46 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 					);
 					break;
+
+				case 'akismet-spam-protection':
+					$settings = array(
+						array(
+							'id'   => 'give_setting_advanced_section_akismet_spam_protection',
+							'type' => 'title',
+						),
+						array(
+							'name'    => __( 'Akismet SPAM Protection', 'give' ),
+							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
+							'id'      => 'akismet_spam_protection',
+							'type'    => 'radio_inline',
+							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'             => __( 'Whitelist by Email', 'give' ),
+							'desc'             => sprintf(
+								'%1$s %2$s',
+								__( 'Add email address to this list which is flagged as SPAM in Akismet (to allow them to donate). This options will not responsible to remove spam email address from Akismet database but instead allow donor to process donation even if his/her email address flagged as SPAM when donating.', 'give' ),
+								sprintf(
+									__( 'You can contact <a href="%1$s" target="_blank">Akismet support team</a> to de-blacklist donor email permanently.', 'give' ),
+									esc_url( 'https://akismet.com/contact/' )
+								)
+							),
+							'id'               => 'akismet_whitelisted_email_addresses',
+							'type'             => 'email',
+							'default'          => get_bloginfo( 'admin_email' ),
+							'repeat'           => true,
+							'repeat_btn_title' => esc_html__( 'Add email', 'give' ),
+						),
+						array(
+							'id'   => 'give_setting_advanced_section_akismet_spam_protection',
+							'type' => 'sectionend',
+						),
+					);
+					break;
 			}
 
 			/**
@@ -167,21 +202,25 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 * @since 2.0
 			 */
 			if ( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
-				array_splice( $settings, 1, 0, array(
+				array_splice(
+					$settings,
+					1,
+					0,
 					array(
-						'name'    => __( 'Cache', 'give' ),
-						'desc'    => __( 'If caching is enabled the plugin will start caching custom post type related queries and reduce the overall load time.', 'give' ),
-						'id'      => 'cache',
-						'type'    => 'radio_inline',
-						'default' => 'enabled',
-						'options' => array(
-							'enabled'  => __( 'Enabled', 'give' ),
-							'disabled' => __( 'Disabled', 'give' ),
+						array(
+							'name'    => __( 'Cache', 'give' ),
+							'desc'    => __( 'If caching is enabled the plugin will start caching custom post type related queries and reduce the overall load time.', 'give' ),
+							'id'      => 'cache',
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
 						),
 					)
-				) );
+				);
 			}
-
 
 			/**
 			 * Filter the advanced settings.
@@ -210,7 +249,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'advanced-options' => __( 'Advanced Options', 'give' ),
+				'advanced-options'        => __( 'Advanced Options', 'give' ),
+				'akismet-spam-protection' => __( 'Akismet SPAM Protection', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
@@ -227,14 +267,14 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function render_remove_cache_button( $field ) {
 			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label
-						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
 				</th>
 				<td class="give-forminp">
 					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
-					        class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ) ?></button>
+							class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>

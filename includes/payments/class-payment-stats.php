@@ -58,7 +58,7 @@ class Give_Payment_Stats extends Give_Stats {
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
-			'output'     => ''
+			'output'     => '',
 		);
 
 		if ( ! empty( $form_id ) ) {
@@ -102,14 +102,12 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$args = array(
 			'status'     => 'publish',
-			'give_forms' => $form_id,
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
 			'output'     => '',
 		);
-
 
 		// Filter by Gateway ID meta_key
 		if ( $gateway_id ) {
@@ -146,14 +144,14 @@ class Give_Payment_Stats extends Give_Stats {
 
 			if ( ! empty( $payments ) ) {
 				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
-				$query = "SELECT {$donation_id_col} as id, meta_value as total
+				$query           = "SELECT {$donation_id_col} as id, meta_value as total
 					FROM {$wpdb->donationmeta}
 					WHERE meta_key='_give_payment_total'
-					AND {$donation_id_col} IN ('". implode( '\',\'', $payments ) ."')";
+					AND {$donation_id_col} IN ('" . implode( '\',\'', $payments ) . "')";
 
-				$payments = $wpdb->get_results($query, ARRAY_A);
+				$payments = $wpdb->get_results( $query, ARRAY_A );
 
-				if( ! empty( $payments ) ) {
+				if ( ! empty( $payments ) ) {
 					foreach ( $payments as $payment ) {
 						$currency_code = give_get_payment_currency_code( $payment['id'] );
 
@@ -165,16 +163,19 @@ class Give_Payment_Stats extends Give_Stats {
 						 */
 						$formatted_amount = apply_filters(
 							'give_donation_amount',
-							give_format_amount(  $payment['total'], array( 'donation_id' =>  $payment['id'] ) ),
+							give_format_amount( $payment['total'], array( 'donation_id' => $payment['id'] ) ),
 							$payment['total'],
 							$payment['id'],
-							array( 'type' => 'stats', 'currency'=> false, 'amount' => false )
+							array(
+								'type'     => 'stats',
+								'currency' => false,
+								'amount'   => false,
+							)
 						);
 
-						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code  ) );
+						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code ) );
 					}
 				}
-
 			}
 
 			// Cache the results for one hour.
@@ -194,7 +195,7 @@ class Give_Payment_Stats extends Give_Stats {
 		 */
 		$earnings = apply_filters( 'give_get_earnings', $earnings, $form_id, $start_date, $end_date, $gateway_id );
 
-		//return earnings
+		// return earnings
 		return round( $earnings, give_get_price_decimals( $form_id ) );
 
 	}
@@ -228,13 +229,11 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$args = array(
 			'status'     => 'publish',
-			'give_forms' => $form_id,
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
 		);
-
 
 		// Filter by Gateway ID meta_key
 		if ( $gateway_id ) {
@@ -259,7 +258,7 @@ class Give_Payment_Stats extends Give_Stats {
 		$args = apply_filters( 'give_stats_earnings_args', $args );
 		$key  = Give_Cache::get_key( 'give_stats', $args );
 
-		//return earnings
+		// return earnings
 		return $key;
 
 	}
@@ -280,12 +279,15 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$meta_table = __give_v20_bc_table_details( 'form' );
 
-		$give_forms = $wpdb->get_results( $wpdb->prepare(
-			"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
+		$give_forms = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
 				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
-				DESC LIMIT %d;", $number
-		) );
+				DESC LIMIT %d;",
+				$number
+			)
+		);
 
 		return $give_forms;
 	}
