@@ -25,7 +25,7 @@ textarea{
 }
 
 .give-section.introduction{
-	@include display-flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
@@ -53,7 +53,7 @@ textarea{
 }
 
 .give-section.form-stats {
-	@include display-flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
@@ -65,7 +65,7 @@ textarea{
 	}
 
 	> div{
-		@include display-flex;
+		display: flex;
 		flex: 1 1 0%;
 		flex-direction: column;
 		align-items: center;
@@ -84,7 +84,6 @@ textarea{
 
 .give-section.personal-information-text {
 	text-align: center;
-	background-color: #f1f1f1;
 	padding: 20px 0;
 
 	.subheading{
@@ -119,7 +118,7 @@ textarea{
 	.give-show-form{
 		@include section-padding;
 
-		@include display-flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
 
@@ -226,7 +225,6 @@ textarea{
 
 	[id^="give-checkout-login-register-"],
 	[id="give_checkout_user_info"]{
-		@include background-lightgray;
 		@include section-padding;
 
 		margin: 19px 0;
@@ -242,10 +240,10 @@ textarea{
 	}
 
 	.give-user-login-fields-container{
-		@include display-flex;
+		display: flex;
 
 		div{
-			@include display-flex;
+			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
 
@@ -261,7 +259,7 @@ textarea{
 		}
 
 		ul{
-			@include display-grid;
+			display: grid;
 			grid-gap: 10px;
 			grid-template-rows: 1fr;
 
@@ -304,14 +302,15 @@ textarea{
 			.give-submit-button-wrap{
 				@include before-after-content-none;
 
-				@include display-flex;
+				display: flex;
 				justify-content: center;
 				align-items: center;
+				flex-direction: column;
 
 				.give-submit{
 					background-color: #2bc253;
 					color: white;
-					flex-grow: 1;
+					width: 100%;
 
 					padding: 16px !important;
 				}
