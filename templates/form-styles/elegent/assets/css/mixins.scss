@@ -14,9 +14,9 @@
 }
 
 @mixin display-flex{
-	display: flex;
+	display: flex !important;
 }
 
 @mixin display-grid{
-	display: grid;
+	display: grid !important;
 }
