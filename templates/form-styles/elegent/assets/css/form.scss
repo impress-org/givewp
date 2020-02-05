@@ -1,5 +1,5 @@
-@import "mixins";
-@import "util";
+@import 'mixins';
+@import 'util';
 
 html {
 	margin: 0;
@@ -7,24 +7,24 @@ html {
 	border: 0;
 }
 
-body{
+body {
 	margin: 10px 0;
 	font-family: 'Montserrat', sans-serif;
 }
 
-.text{
-	color: #555555;
+.text {
+	color: #555;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea{
+input[type='text'],
+input[type='email'],
+input[type='password'],
+textarea {
 	font-size: 14px;
 	padding: 10px 10px !important;
 }
 
-.give-section.introduction{
+.give-section.introduction {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -32,22 +32,23 @@ textarea{
 
 	text-align: center;
 
-	h2, p{
+	h2,
+	p {
 		margin: 0;
 	}
 
-	.headline{
+	.headline {
 		width: 25%;
 		border: 2px solid #2bc253;
 		border-radius: 10px;
 	}
 
-	img{
+	img {
 		width: 100%;
 		margin-bottom: 0;
 	}
 
-	> *{
+	> * {
 		margin-bottom: 14px;
 	}
 }
@@ -58,13 +59,13 @@ textarea{
 	align-items: center;
 	flex-direction: row;
 
-	background-color: #F9F9F9;
+	background-color: #f9f9f9;
 
-	.number{
+	.number {
 		font-weight: bold;
 	}
 
-	> div{
+	> div {
 		display: flex;
 		flex: 1 1 0%;
 		flex-direction: column;
@@ -77,7 +78,7 @@ textarea{
 	}
 }
 
-.give-section.progress-bar{
+.give-section.progress-bar {
 	padding: 19px 10px;
 	border-bottom: 1px solid #e1e1e1;
 }
@@ -85,44 +86,46 @@ textarea{
 .give-section.personal-information-text {
 	text-align: center;
 	padding: 20px 0;
+	@include background-lightgray;
 
-	.subheading{
+	.subheading {
 		font-size: 12px;
-		color: #555555;
+		color: #555;
 	}
 }
 
-.give-section.personal-information-text+[id="give_checkout_user_info"]{
+.give-section.personal-information-text + [id='give_checkout_user_info'] {
 	margin: 0;
 }
 
 /**
  * Override style
  */
-.give-embed-form{
+.give-embed-form {
 	max-width: 480px;
 	margin: auto;
 	border-radius: 6px;
 	color: #696969;
 	background-color: #fbfbfb;
-	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
+	-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+		0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 	width: 100%;
 
-	.give_error{
-		&:before{
+	.give_error {
+		&::before {
 			content: none;
 		}
 	}
 
-	.give-show-form{
+	.give-show-form {
 		@include section-padding;
 
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
-		button{
+		button {
 			background-color: #2bc253;
 			color: white;
 			padding: 16px;
@@ -131,8 +134,8 @@ textarea{
 		}
 	}
 
-	&.give-form-wrap{
-		.give_error:first-child{
+	&.give-form-wrap {
+		.give_error:first-child {
 			margin-top: 0;
 		}
 	}
@@ -143,18 +146,18 @@ textarea{
 		padding-top: 17px;
 		margin-bottom: 20px;
 
-		div.give-donation-amount{
+		div.give-donation-amount {
 			border: 1px solid #e1e1e1;
 			border-radius: 6px !important;
 			background-color: white;
 
-			&:before{
+			&::before {
 				content: none;
 			}
 		}
 
 		span.give-currency-symbol {
-			background-color: transparent!important;
+			background-color: transparent !important;
 			border: 0 !important;
 			position: relative;
 			z-index: 3;
@@ -162,7 +165,7 @@ textarea{
 			border-radius: 6px !important;
 		}
 
-		input[type=tel] {
+		input[type='tel'] {
 			position: relative;
 			left: -35px;
 			width: 170px !important;
@@ -173,40 +176,40 @@ textarea{
 			font-size: 25px !important;
 			font-weight: 400 !important;
 
-			&:focus{
+			&:focus {
 				outline: none;
 			}
 		}
 
-		.give-donation-amount{
+		.give-donation-amount {
 			@include before-after-content-none;
 		}
 	}
 
-	.give-donation-levels-wrap{
+	.give-donation-levels-wrap {
 		grid-gap: 15px;
 		grid-template-columns: repeat(3, 1fr);
 		padding: 0 5% !important;
 
-		&:before,
-		&:after{
+		&::before,
+		&::after {
 			content: none !important;
 		}
 
-		li{
+		li {
 			margin: 0 !important;
 		}
 
-		li:last-child{
+		li:last-child {
 			grid-column: 1 / span 3;
 
-			button{
+			button {
 				padding: 9px 23px !important;
 			}
 		}
 	}
 
-	.give-donation-level-btn{
+	.give-donation-level-btn {
 		@include section-padding;
 
 		background: white;
@@ -214,36 +217,37 @@ textarea{
 		border-radius: 30px;
 		width: 100%;
 
-		&:hover{
+		&:hover {
 			border-color: #2bc253;
 			color: #2bc253;
 		}
 
-		&:focus{
+		&:focus {
 			outline: none;
 		}
 	}
 
-	[id^="give-checkout-login-register-"],
-	[id="give_checkout_user_info"]{
+	[id^='give-checkout-login-register-'],
+	[id='give_checkout_user_info'] {
 		@include section-padding;
+		@include background-lightgray;
 
 		margin: 19px 0;
 
-		fieldset[id="give_checkout_user_info"]{
+		fieldset[id='give_checkout_user_info'] {
 			padding: 0;
 			margin: 0;
 		}
 
-		legend{
+		legend {
 			display: none;
 		}
 	}
 
-	.give-user-login-fields-container{
+	.give-user-login-fields-container {
 		display: flex;
 
-		div{
+		div {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
@@ -252,21 +256,21 @@ textarea{
 		}
 	}
 
-	[id="give-payment-mode-select"]{
+	[id='give-payment-mode-select'] {
 		@include section-padding;
 
-		legend{
-			display: none
+		legend {
+			display: none;
 		}
 
-		ul{
+		ul {
 			display: grid;
 			grid-gap: 10px;
 			grid-template-rows: 1fr;
 
 			@include before-after-content-none;
 
-			> li:not(.give_purchase_form_wrap-clone){
+			> li:not(.give_purchase_form_wrap-clone) {
 				@include background-lightgray;
 
 				margin: 0 !important;
@@ -276,31 +280,31 @@ textarea{
 				justify-content: flex-start;
 				align-items: center;
 
-				label{
+				label {
 					padding-left: 3px;
 					flex-grow: 1;
 				}
 			}
 
-			 > li.give_purchase_form_wrap-clone{
+			> li.give_purchase_form_wrap-clone {
 				background-color: transparent;
 			}
 		}
 	}
 
-	[id="give_purchase_form_wrap"]{
+	[id='give_purchase_form_wrap'] {
 		@include section-padding;
 
-		> *:not(.give-donation-submit){
+		> *:not(.give-donation-submit) {
 			display: none;
 		}
 
-		fieldset.give-donation-submit{
-			> *:not(.give-submit-button-wrap){
+		fieldset.give-donation-submit {
+			> *:not(.give-submit-button-wrap) {
 				display: none;
 			}
 
-			.give-submit-button-wrap{
+			.give-submit-button-wrap {
 				@include before-after-content-none;
 
 				display: flex;
@@ -308,7 +312,7 @@ textarea{
 				align-items: center;
 				flex-direction: column;
 
-				.give-submit{
+				.give-submit {
 					background-color: #2bc253;
 					color: white;
 					width: 100%;
@@ -319,7 +323,7 @@ textarea{
 		}
 	}
 
-	form > *{
+	form > * {
 		display: none;
 	}
 }

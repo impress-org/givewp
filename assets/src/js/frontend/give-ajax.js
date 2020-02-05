@@ -334,66 +334,14 @@ jQuery( document ).ready( function( $ ) {
 
 	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
 		e.preventDefault();
-		const $parent = $( this ).parent(),
-			$container = $( '.give-embed-form' ),
+		const $container = $( '.give-embed-form' ),
 			$form = $( 'form', $container );
 
-		if ( $parent.hasClass( 'give-showing__introduction-section' ) ) {
-			// Hide introduction section.
-			$( '> *:not(.give_error):not(form):not(.give-show-form)', $container ).hide();
+		$( '> *:not(.give_error):not(form)', $container ).hide();
 
-			// show choose amount section
-			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
-			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
-			$( '.give-section.choose-amount', $form ).show();
-
-			$parent.removeClass( 'give-showing__introduction-section' ).addClass( 'give-showing_choose-amount-section' );
-		} else if ( $parent.hasClass( 'give-showing_choose-amount-section' ) ) {
-			// Hide choose amount section.
-			$( '.give-section.choose-amount', $form ).hide();
-			$( '.give-total-wrap', $container ).removeClass( 'give-flex' );
-			$( '.give-section.choose-amount', $form ).hide();
-
-			// Show personal information section.
-			$( 'form .give-section.personal-information-text', $container ).show();
-			$( 'form [id="give_checkout_user_info"]', $container ).show(); // If donor is logged-in
-			$( 'form [id^="give-checkout-login-register-"]', $container ).show(); // if donor is not logged-in
-
-			$parent.removeClass( 'give-showing_choose-amount-section' ).addClass( 'give-showing__personal-section' );
-		} else if ( $parent.hasClass( 'give-showing__personal-section' ) ) {
-			// Validate personal information field before processing to third step.
-			const $requiredPersonalInformationInputs = $( '[id="give_checkout_user_info"] input[required]', $container );
-			let canShowThirdPanel = true;
-
-			// Validate personal information required fields before move to next step.
-			$.each( $requiredPersonalInformationInputs, function( index, $item ) {
-				$item.checkValidity();
-
-				if ( ! $item.validity.valid ) {
-					canShowThirdPanel = false;
-					return false;
-				}
-			} );
-
-			// Donor did not add required personal information, so do not move to third step.
-			if ( ! canShowThirdPanel ) {
-				$( 'input[name="give-purchase"].give-submit', $form ).trigger( 'click' );
-				return;
-			}
-
-			// Hide paginate button.
-			$( '.give-show-form', $container ).hide();
-
-			// Hide personal information section.
-			$( 'form .give-section.personal-information-text', $container ).hide();
-			$( '[id="give_checkout_user_info"]', $container ).hide(); // If donor is logged-in
-			$( '[id^="give-checkout-login-register-"]', $container ).hide(); // if donor is not logged-in
-
-			// Show remain form options.
-			$( 'form > *:not(.give-section.choose-amount):not([id="give_checkout_user_info"]):not([id^="give-checkout-login-register-"]):not(.give-section.personal-information-text)', $container ).show();
-
-			$parent.removeClass( 'give-showing_choose-amount-section' ).addClass( 'give-showing__personal-section' );
-		}
+		$( '.give-donation-levels-wrap', $form ).addClass( 'give-grid' );
+		$( '.give-total-wrap', $form ).addClass( 'give-flex' );
+		$( '> *', $form ).show();
 
 		if ( 'parentIFrame' in window ) {
 			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
