@@ -132,6 +132,7 @@ jQuery( document ).ready( function( $ ) {
 		// AJAX get the payment fields.
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
 			$( this_form ).find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( checkout_response.fields ) );
+			$( this_form ).find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
 		} ).done( function() {
 			// Trigger float-labels
@@ -333,11 +334,54 @@ jQuery( document ).ready( function( $ ) {
 
 	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
 		e.preventDefault();
+		const $parent = $( this ).parent(),
+			$container = $( '.give-embed-form' ),
+			$form = $( 'form', $container );
 
-		$( '.give-embed-form > *:not(.give_error):not(form)' ).hide();
-		$( 'form' ).show();
+		if ( $parent.hasClass( 'give-showing__introduction-section' ) ) {
+			$( '> *:not(.give_error):not(form):not(.give-show-form)', $container ).hide();
 
-		window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
+			$( 'form .give-section.personal-information-text', $container ).show();
+			$( 'form [id="give_checkout_user_info"]', $container ).show(); // If donor is logged-in
+			$( 'form [id^="give-checkout-login-register-"]', $container ).show(); // if donor is not logged-in
+
+			$parent.removeClass( 'give-showing__introduction-section' ).addClass( 'give-showing__personal-section' );
+		} else if ( $parent.hasClass( 'give-showing__personal-section' ) ) {
+			// Validate personal information field before processing to third step.
+			const $requiredPersonalInformationInputs = $( '[id="give_checkout_user_info"] input[required]', $container );
+			let canShowThirdPanel = true;
+
+			$.each( $requiredPersonalInformationInputs, function( index, $item ) {
+				$item.checkValidity();
+
+				if ( ! $item.validity.valid ) {
+					canShowThirdPanel = false;
+					return false;
+				}
+			} );
+
+			// Donor did not add required personal information, so do not move to third step.
+			if ( ! canShowThirdPanel ) {
+				$( 'input[name="give-purchase"].give-submit', $form ).trigger( 'click' );
+				return;
+			}
+
+			$( '.give-show-form', $container ).hide();
+
+			$( 'form .give-section.personal-information-text', $container ).hide();
+			$( '[id="give_checkout_user_info"]', $container ).hide(); // If donor is logged-in
+			$( '[id^="give-checkout-login-register-"]', $container ).hide(); // if donor is not logged-in
+
+			// Add required classes to form children before display.
+			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
+			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
+
+			$( 'form > *:not([id="give_checkout_user_info"]):not([id^="give-checkout-login-register-"]):not(.give-section.personal-information-text)', $container ).show();
+		}
+
+		if ( 'parentIFrame' in window ) {
+			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
+		}
 	} );
 } );
 
