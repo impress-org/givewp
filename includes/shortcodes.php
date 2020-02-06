@@ -146,6 +146,7 @@ function give_form_shortcode( $atts ) {
 
 		$query_string     = wp_parse_args( $_SERVER['QUERY_STRING'] );
 		$donation_history = give_get_purchase_session();
+		$isAutoScroll     = 1;
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
@@ -154,20 +155,29 @@ function give_form_shortcode( $atts ) {
 			$atts['id'] !== $donation_history['post_data'] ['give-form-id']
 		) {
 			unset( $query_string['giveDonationAction'] );
+			$isAutoScroll = 0;
 		}
+
+		// Build iframe url.
+		$iframe_url = add_query_arg(
+			array(
+				$query_string,
+				array( 'iframe' => true ),
+				$atts,
+			),
+			home_url( "/give-embed/{$atts['id']}" )
+		);
 
 		printf(
 			'<div class="give-embed-form-wrapper give-loader-type-img">
-						<iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0; visibility: hidden"></iframe>
+						<iframe
+						name="give-embed-form"
+						src="%1$s"
+						data-autoScroll="%2$s"
+						style="border: 0; visibility: hidden"></iframe>
 					</div>',
-			add_query_arg(
-				array(
-					$query_string,
-					array( 'iframe' => true ),
-					$atts,
-				),
-				home_url( "/give-embed/{$atts['id']}" )
-			)
+			$iframe_url,
+			$isAutoScroll
 		);
 	} else {
 		give_get_donation_form( $atts );
