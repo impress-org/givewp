@@ -1702,3 +1702,16 @@ function give_embed_form_failed_transaction_page_url( $args = array() ) {
 		give_clean( $_REQUEST['give-current-url'] )
 	);
 }
+
+
+/**
+ * Get embed form URL.
+ *
+ * @since 2.7
+ * @param $form_id
+ *
+ * @return string|void
+ */
+function give_embed_form_get_url( $form_id ) {
+	return home_url( "/give-embed/{$form_id}" );
+}
