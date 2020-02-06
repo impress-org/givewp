@@ -33,8 +33,9 @@ const OverviewPage = () => {
 				<LoadingNotice />
 			) }
 			<Grid visible={ showGrid }>
-				<Card title={ __( 'Income for Period', 'give' ) } width={ 12 }>
+				<Card width={ 12 }>
 					<RESTChart
+						title={ __( 'Income for Period', 'give' ) }
 						type="line"
 						aspectRatio={ 0.4 }
 						endpoint="income"
@@ -44,7 +45,7 @@ const OverviewPage = () => {
 				<Card width={ 3 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						endpoint="income"
+						endpoint="total-income"
 					/>
 				</Card>
 				<Card width={ 3 }>
@@ -62,35 +63,41 @@ const OverviewPage = () => {
 				<Card width={ 3 }>
 					<RESTMiniChart
 						title={ __( 'Total Refunds', 'give' ) }
-						endpoint="refunds"
+						endpoint="total-refunds"
 					/>
 				</Card>
-				<Card title={ __( 'Payment Methods', 'give' ) } width={ 4 }>
+				<Card width={ 4 }>
 					<RESTChart
+						title={ __( 'Payment Methods', 'give' ) }
 						type="doughnut"
 						aspectRatio={ 0.6 }
 						endpoint="payment-methods"
 						showLegend={ true }
 					/>
 				</Card>
-				<Card title={ __( 'Payment Statuses', 'give' ) } width={ 4 }>
+				<Card width={ 4 }>
 					<RESTChart
+						title={ __( 'Payment Statuses', 'give' ) }
 						type="bar"
 						aspectRatio={ 1.2 }
 						endpoint="payment-statuses"
 						showLegend={ false }
 					/>
 				</Card>
-				<Card title={ __( 'Form Performance (All Time)', 'give' ) } width={ 4 }>
+				<Card width={ 4 }>
 					<RESTChart
+						title={ __( 'Form Performance (All Time)', 'give' ) }
 						type="pie"
 						aspectRatio={ 0.6 }
 						endpoint="form-performance"
 						showLegend={ true }
 					/>
 				</Card>
-				<Card title={ __( 'Top Donors', 'give' ) } width={ 4 }>
-					<RESTList endpoint="top-donors" />
+				<Card width={ 4 }>
+					<RESTList
+						title={ __( 'Top Donors', 'give' ) }
+						endpoint="top-donors"
+					/>
 				</Card>
 				<Card title={ __( 'Location List', 'give' ) } width={ 4 }>
 					<List>
@@ -160,8 +167,11 @@ const OverviewPage = () => {
 						/>
 					</List>
 				</Card>
-				<Card title={ __( 'Recent Donations', 'give' ) } width={ 4 }>
-					<RESTList endpoint="recent-donations" />
+				<Card width={ 4 }>
+					<RESTList
+						title={ __( 'Recent Donations', 'give' ) }
+						endpoint="recent-donations"
+					/>
 				</Card>
 			</Grid>
 		</Fragment>
