@@ -1663,11 +1663,11 @@ function give_embed_form_redirect( $url ) {
 /**
  * Get success page url.
  *
- * @return array
+ * @return string
  * @since 2.7
  */
 function give_embed_form_success_page_url() {
-	return wp_parse_args(
+	return add_query_arg(
 		array( 'giveDonationAction' => 'showReceipt' ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
