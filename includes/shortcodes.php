@@ -146,7 +146,7 @@ function give_form_shortcode( $atts ) {
 
 		$query_string     = wp_parse_args( $_SERVER['QUERY_STRING'] );
 		$donation_history = give_get_purchase_session();
-		$isAutoScroll     = 1;
+		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
