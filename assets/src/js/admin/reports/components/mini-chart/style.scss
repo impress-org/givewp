@@ -28,12 +28,12 @@
 			}
 
 			> .up {
-				margin-top: -5px;
-				transform: rotate(180deg);
+				margin-top: 5px;
 			}
 
 			> .down {
-				margin-top: 5px;
+				margin-top: -5px;
+				transform: rotate(180deg);
 			}
 		}
 	}
