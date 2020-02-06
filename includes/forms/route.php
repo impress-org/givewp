@@ -133,4 +133,24 @@ function give_embed_form_setup_hooks_on_init() {
 add_action( 'init', 'give_embed_form_setup_hooks_on_init', 1, 3 );
 
 
+/**
+ * Redirect to embed form url if processing embed form
+ *
+ * @param string $redirect
+ *
+ * @return string
+ */
+function give_embed_send_back_to_checkout( $redirect ) {
+	if ( ! give_is_processing_embed_form() ) {
+		return $redirect;
+	}
+
+	$url    = explode( '?', $redirect );
+	$url[0] = give_embed_form_get_url( absint( $_REQUEST['give-form-id'] ) );
+
+	return implode( '?', $url );
+}
+add_filter( 'give_send_back_to_checkout', 'give_embed_send_back_to_checkout' );
+
+
 // @todo: use slug to render donation form
