@@ -22,7 +22,7 @@
 				},
 				onInit: function( iframe ) {
 					iframe.iFrameResizer.sendMessage( {
-						currentPage: window.location.href,
+						currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
 					} );
 				},
 			}
