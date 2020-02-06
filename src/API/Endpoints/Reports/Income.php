@@ -34,32 +34,11 @@ class Income extends Endpoint {
 		$data = [];
 
 		switch ( true ) {
-			case ( $diff->days > 900 ):
-				$data = $this->get_data( $start, $end, 'P1Y', 'Y' );
-				break;
-			case ( $diff->days > 700 ):
-				$data = $this->get_data( $start, $end, 'P6M', 'F Y' );
-				break;
-			case ( $diff->days > 400 ):
-				$data = $this->get_data( $start, $end, 'P3M', 'F Y' );
-				break;
-			case ( $diff->days > 120 ):
-				$data = $this->get_data( $start, $end, 'P1M', 'M Y' );
-				break;
-			case ( $diff->days > 30 ):
-				$data = $this->get_data( $start, $end, 'P7D', 'M jS' );
-				break;
-			case ( $diff->days > 10 ):
-				$data = $this->get_data( $start, $end, 'P3D', 'M jS' );
-				break;
-			case ( $diff->days > 4 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'l' );
-				break;
 			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'D ga' );
+				$data = $this->get_data( $start, $end, 'P1D' );
 				break;
 			case ( $diff->days >= 0 ):
-				$data = $this->get_data( $start, $end, 'PT1H', 'D ga' );
+				$data = $this->get_data( $start, $end, 'PT1H' );
 				break;
 		}
 
@@ -73,7 +52,7 @@ class Income extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval, $format ) {
+	public function get_data( $start, $end, $interval ) {
 
 		$stats = new \Give_Payment_Stats();
 
@@ -90,7 +69,6 @@ class Income extends Endpoint {
 		$dateInterval = new \DateInterval( $interval );
 
 		date_sub( $start, $dateInterval );
-		date_sub( $end, $dateInterval );
 
 		while ( $start < $end ) {
 
@@ -100,7 +78,7 @@ class Income extends Endpoint {
 			$periodEnd = clone $start;
 			date_add( $periodEnd, $dateInterval );
 
-			$label     = $periodEnd->format( $format );
+			$label     = $periodEnd->format( 'Y-m-d H:i:s' );
 			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			$incomeForPeriod = $stats->get_earnings( 0, $periodStart, $periodEnd );
@@ -111,23 +89,13 @@ class Income extends Endpoint {
 			date_add( $start, $dateInterval );
 		}
 
-		$totalForPeriod = array_sum( $income );
-
-		// Calculate the income trend by comparing total earnings in the
-		// previous period to earnings in the current period
-		$prevTotal    = $stats->get_earnings( 0, $prevStr, $startStr );
-		$currentTotal = $stats->get_earnings( 0, $startStr, $endStr );
-		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
-
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => __( 'Income', 'give' ),
-					'data'      => $income,
-					'trend'     => $trend,
-					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),
+					'label' => __( 'Income', 'give' ),
+					'data'  => $income,
 				],
 			],
 		];

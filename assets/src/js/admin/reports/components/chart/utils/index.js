@@ -111,6 +111,12 @@ export function createConfig( type, data ) {
 		config.options.scales = {
 			yAxes: yAxes,
 		};
+
+		if ( type === 'line' ) {
+			config.options.scales.xAxes = [ {
+				type: 'time',
+			} ];
+		}
 	}
 
 	return config;
