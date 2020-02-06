@@ -144,9 +144,30 @@ function give_form_shortcode( $atts ) {
 	if ( ! empty( $atts['embed'] ) ) {
 		unset( $atts['embed'] );
 
+		$query_string     = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$donation_history = give_get_purchase_session();
+
+		// Do not pass donation acton by query param if does not belong to current form.
+		if (
+			! empty( $query_string['giveDonationAction'] ) &&
+			! empty( $donation_history ) &&
+			$atts['id'] !== $donation_history['post_data'] ['give-form-id']
+		) {
+			unset( $query_string['giveDonationAction'] );
+		}
+
 		printf(
-			'<div class="give-embed-form-wrapper give-loader-type-img"><iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0; visibility: hidden"></iframe></div>',
-			add_query_arg( array( wp_parse_args( $_SERVER['QUERY_STRING'] ), array( 'iframe' => true ), $atts ), home_url( "/give-embed/{$atts['id']}" ) )
+			'<div class="give-embed-form-wrapper give-loader-type-img">
+						<iframe name="give-embed-form" src="%1$s" data-embed-id="" style="border: 0; visibility: hidden"></iframe>
+					</div>',
+			add_query_arg(
+				array(
+					$query_string,
+					array( 'iframe' => true ),
+					$atts,
+				),
+				home_url( "/give-embed/{$atts['id']}" )
+			)
 		);
 	} else {
 		give_get_donation_form( $atts );
