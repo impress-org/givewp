@@ -191,4 +191,28 @@ abstract class Endpoint {
 		return $result;
 
 	}
+
+	public function get_all_time_start() {
+
+		$start = date_create( '01/01/2015' );
+		$end   = date_create();
+
+		// Setup donation query args (get sanitized start/end date from request)
+		$args = [
+			'number'     => 1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'ASC',
+			'start_date' => $request['start'],
+			'end_date'   => $request['end'],
+		];
+
+		// Get array of 50 recent donations
+		$donations = new \Give_Payments_Query( $args );
+		$donations = $donations->get_payments();
+
+		$earliest = $donations[0]->date;
+
+		return $earliest;
+	}
 }
