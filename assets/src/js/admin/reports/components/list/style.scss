@@ -1,13 +1,20 @@
-.list {
-    max-height: 432px;
-    overflow: scroll;
+.givewp-list-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
 }
 
-.list {
-    > * {
-        background: #F4F4F4;
-    }
-    > :nth-of-type(even) {
-        background: #FFFFFF;
-    }
+.givewp-list {
+	max-height: 432px;
+	overflow: scroll;
+
+	> * {
+		background: #f4f4f4;
+	}
+	> :nth-of-type(even) {
+		background: #fff;
+	}
 }

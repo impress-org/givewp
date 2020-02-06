@@ -14,7 +14,7 @@ import { getItems, getSkeletonItems } from './utils';
 // Store-related dependencies
 import { useStoreValue } from '../../store';
 
-const RESTList = ( { endpoint } ) => {
+const RESTList = ( { title, endpoint } ) => {
 	// Use period from store
 	const [ { period } ] = useStoreValue();
 
@@ -59,11 +59,11 @@ const RESTList = ( { endpoint } ) => {
 				<NotFoundOverlay />
 			) }
 			{ fetched ? (
-				<List>
+				<List title={ title }>
 					{ items }
 				</List>
 			) : (
-				<List>
+				<List title={ title }>
 					{ skeletonItems }
 				</List>
 			) }
