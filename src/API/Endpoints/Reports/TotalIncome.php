@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Refunds endpoint
+ * Income over time endpoint
  *
  * @package Give
  */
 
 namespace Give\API\Endpoints\Reports;
 
-class Refunds extends Endpoint {
+class TotalIncome extends Endpoint {
 
 	public function __construct() {
-		$this->endpoint = 'refunds';
+		$this->endpoint = 'total-income';
 	}
 
 	public function get_report( $request ) {
@@ -75,6 +75,8 @@ class Refunds extends Endpoint {
 
 	public function get_data( $start, $end, $interval, $format ) {
 
+		$allTimeStartStr = $this->get_all_time_start();
+
 		$stats = new \Give_Payment_Stats();
 
 		$startStr = $start->format( 'Y-m-d H:i:s' );
@@ -84,10 +86,13 @@ class Refunds extends Endpoint {
 		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
 		$prevStr = $prev->format( 'Y-m-d H:i:s' );
 
-		$labels  = [];
-		$refunds = [];
+		$labels = [];
+		$income = [];
 
 		$dateInterval = new \DateInterval( $interval );
+
+		date_sub( $start, $dateInterval );
+
 		while ( $start < $end ) {
 
 			$periodStart = $start->format( 'Y-m-d H:i:s' );
@@ -99,31 +104,31 @@ class Refunds extends Endpoint {
 			$label     = $periodEnd->format( $format );
 			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
 
-			$refundsForPeriod = $stats->get_sales( 0, $periodStart, $periodEnd, 'refunded' );
+			$incomeForPeriod = $stats->get_earnings( 0, $startStr, $periodEnd );
 
-			$refunds[] = $refundsForPeriod;
-			$labels[]  = $label;
+			$income[] = $incomeForPeriod;
+			$labels[] = $label;
 
 			date_add( $start, $dateInterval );
 		}
 
-		$totalForPeriod = array_sum( $refunds );
+		$totalForPeriod = $stats->get_earnings( 0, $startStr, $endStr );
 
-		// Calculate the refunds trend by comparing total refunds in the
-		// previous period to refunds in the current period
-		$prevTotal    = $stats->get_sales( 0, $prevStr, $startStr, 'refunded' );
-		$currentTotal = $stats->get_sales( 0, $startStr, $endStr, 'refunded' );
+		// Calculate the income trend by comparing total earnings in the
+		// previous period to earnings in the current period
+		$prevTotal    = $stats->get_earnings( 0, $allTimeStartStr, $startStr );
+		$currentTotal = $stats->get_earnings( 0, $allTimeStartStr, $endStr );
 		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
 
-		// Create data objec to be returned, with total highlighted
+		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => __( 'Refunds', 'give' ),
-					'data'      => $refunds,
+					'label'     => __( 'Income', 'give' ),
+					'data'      => $income,
 					'trend'     => $trend,
-					'highlight' => $totalForPeriod,
+					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),
 				],
 			],
 		];
