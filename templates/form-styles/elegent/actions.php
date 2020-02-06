@@ -86,9 +86,9 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	 * Add hooks
 	 */
 	// Add customized introduction section.
-	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 11, 3 );
-	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 12, 3 );
-	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 13, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_form_introduction_section', 12, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 13, 3 );
+	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 14, 3 );
 	add_action( 'give_post_form', 'give_elegent_add_next_button', 13, 3 );
 	add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
