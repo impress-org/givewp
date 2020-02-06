@@ -10,7 +10,7 @@ import './style.scss';
 
 const Legend = ( { data, chartRef } ) => {
 	// Calculate total value of points in dataset (used to find percentages)
-	const total = data.datasets[ 0 ].data.reduce( ( a, b ) => parseInt( a ) + parseInt( b ) );
+	const total = data.datasets[ 0 ].data.length > 0 ? data.datasets[ 0 ].data.reduce( ( a, b ) => parseInt( a ) + parseInt( b ) ) : 0;
 
 	const [ inactiveItems, setInactiveItems ] = useState( [] );
 
@@ -40,7 +40,7 @@ const Legend = ( { data, chartRef } ) => {
 		const color = getColor( index );
 
 		// Prepare percent to display with legend item
-		const percent = Math.round( ( data.datasets[ 0 ].data[ index ] / total ) * 100 ) + '%';
+		const percent = ! isNaN( total ) ? Math.round( ( data.datasets[ 0 ].data[ index ] / total ) * 100 ) + '%' : '';
 
 		return (
 			<div className={ 'item' + status } key={ index } onClick={ () => hideData( index, data.datasets[ 0 ].data[ index ] ) }>
