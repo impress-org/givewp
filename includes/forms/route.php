@@ -39,8 +39,12 @@ function give_form_styles_routes() {
 		nocache_headers();
 		header( 'HTTP/1.1 200 OK' );
 
-		if ( ! empty( $_REQUEST['giveDonationAction'] ) && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-			wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
+		if ( ! empty( $_REQUEST['giveDonationAction'] ) ) {
+			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
+				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
+			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
+				wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
+			}
 		} else {
 			$post = get_post( get_query_var( 'give_form_id' ) );
 			require_once 'view/embed-form.php';
@@ -49,7 +53,10 @@ function give_form_styles_routes() {
 		exit();
 	}
 
-	if ( give_is_viewing_embed_form_receipt() ) {
+	if (
+		give_is_viewing_embed_form_receipt()
+		|| give_is_viewing_embed_form_failed_transaction_page()
+	) {
 		require_once 'view/receipt.php';
 		exit();
 	}

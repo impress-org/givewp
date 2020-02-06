@@ -1603,11 +1603,24 @@ function give_is_processing_embed_form() {
  * Get result if we are viewing embed form receipt or not
  *
  * @return bool
+ * @since 2.7
  */
 function give_is_viewing_embed_form_receipt() {
 	return ! empty( $_REQUEST['giveDonationAction'] )
-		&& give_is_success_page()
-		&& 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] );
+		   && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] )
+		   && give_is_success_page();
+}
+
+/**
+ * Get result if we are viewing embed form receipt or not
+ *
+ * @return bool
+ * @since 2.7
+ */
+function give_is_viewing_embed_form_failed_transaction_page() {
+	return ! empty( $_REQUEST['giveDonationAction'] )
+		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] )
+		   && give_is_failed_transaction_page();
 }
 
 /**
@@ -1663,12 +1676,29 @@ function give_embed_form_redirect( $url ) {
 /**
  * Get success page url.
  *
+ * @param array $args
+ *
  * @return string
  * @since 2.7
  */
-function give_embed_form_success_page_url() {
+function give_embed_form_success_page_url( $args = array() ) {
 	return add_query_arg(
-		array( 'giveDonationAction' => 'showReceipt' ),
+		array_merge( array( 'giveDonationAction' => 'showReceipt' ), $args ),
+		give_clean( $_REQUEST['give-current-url'] )
+	);
+}
+
+/**
+ * Get success page url.
+ *
+ * @param array $args
+ *
+ * @return string
+ * @since 2.7
+ */
+function give_embed_form_failed_transaction_page_url( $args = array() ) {
+	return add_query_arg(
+		array_merge( array( 'giveDonationAction' => 'failedDonation' ), $args ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
 }

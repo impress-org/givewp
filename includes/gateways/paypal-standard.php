@@ -653,7 +653,9 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		'custom'        => $payment_id,
 		'rm'            => '2',
 		'return'        => $return_url,
-		'cancel_return' => give_get_failed_transaction_uri( '?payment-id=' . $payment_id ),
+		'cancel_return' => give_is_processing_embed_form()
+			? give_embed_form_failed_transaction_page_url( array( 'payment-id' => $payment_id ) )
+			: give_get_failed_transaction_uri(),
 		'notify_url'    => $listener_url,
 		'page_style'    => give_get_paypal_page_style(),
 		'cbt'           => get_bloginfo( 'name' ),
