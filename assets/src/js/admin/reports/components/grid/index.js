@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import './style.scss';
 
 const Grid = ( { gap, visible, children } ) => {
 	const display = visible === true ? 'grid' : 'none';
@@ -6,13 +7,11 @@ const Grid = ( { gap, visible, children } ) => {
 	//To do: swap with scss
 	const gridStyle = {
 		display: display,
-		gridTemplateColumns: 'repeat(12, 1fr)',
 		gridGap: gap,
-		marginTop: '30px',
 	};
 
 	return (
-		<div style={ gridStyle }>
+		<div className="givewp-grid" style={ gridStyle }>
 			{ children }
 		</div>
 	);

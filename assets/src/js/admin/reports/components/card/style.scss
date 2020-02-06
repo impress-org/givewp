@@ -20,3 +20,9 @@
 		flex-direction: column;
 	}
 }
+
+@media (max-width: 768px) {
+	.givewp-card {
+		grid-column: span 12 !important;
+	}
+}
