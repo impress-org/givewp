@@ -36,11 +36,16 @@ function give_form_styles_routes() {
 	global $post;
 
 	if ( give_is_viewing_embed_form() ) {
-		$post = get_post( get_query_var( 'give_form_id' ) );
-
 		nocache_headers();
 		header( 'HTTP/1.1 200 OK' );
-		require_once 'view/embed-form.php';
+
+		if ( ! empty( $_REQUEST['giveDonationAction'] ) && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
+			wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
+		} else {
+			$post = get_post( get_query_var( 'give_form_id' ) );
+			require_once 'view/embed-form.php';
+		}
+
 		exit();
 	}
 
