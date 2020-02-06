@@ -283,8 +283,12 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					'statement_descriptor' => give_stripe_get_statement_descriptor(),
 				],
 				'submit_type'                => 'donate',
-				'success_url'                => add_query_arg( array( 'show_receipt' => 1 ), esc_url( $_REQUEST['give-current-url'] ) ),
-				'cancel_url'                 => give_get_failed_transaction_uri(),
+				'success_url'                => give_is_processing_embed_form()
+					? give_embed_form_success_page_url()
+					: give_get_success_page_uri(),
+				'cancel_url'                 => give_is_processing_embed_form()
+					? give_embed_form_failed_transaction_page_url()
+					: give_get_failed_transaction_uri(),
 				'locale'                     => give_stripe_get_preferred_locale(),
 			);
 
