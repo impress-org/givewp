@@ -133,5 +133,6 @@ function give_elegent_load_checkout_fields() {
 	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
 }
 
+add_action( 'wp_ajax_give_cancel_login', 'give_elegent_load_checkout_fields', 9 );
 add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_elegent_load_checkout_fields', 9 );
 add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_elegent_load_checkout_fields', 9 );

@@ -136,12 +136,26 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '.give_errors' ).remove();
 
 				// Login successfully message.
-				this_form.find( '#give-payment-mode-select' ).after( response.data );
+				this_form.find( '[id^=give-checkout-login-register]' ).before( response.data );
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
 				// This function will run only for embed donation form.
+				// Show personal information section fields.
 				if ( this_form.parent().hasClass( 'give-embed-form' ) ) {
-					// @todo: add a way to load personal information fields.
+					const data = {
+						action: 'give_cancel_login',
+						form_id: this_form.find( '[name="give-form-id"]' ).val(),
+					};
+
+					// AJAX get the payment fields.
+					$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
+						this_form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( checkout_response.fields ) );
+						this_form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
+						this_form.find( '.give-submit-button-wrap' ).show();
+					} ).done( function() {
+						// Trigger float-labels
+						give_fl_trigger();
+					} );
 				}
 
 				Give.form.fn.resetAllNonce( this_form ).then(
