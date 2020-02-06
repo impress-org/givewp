@@ -5,16 +5,7 @@
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background: rgba(255, 255, 255, 0.7);
+	background: rgba(255, 255, 255, 0.8);
 	z-index: 999;
 	pointer-events: none;
-
-	> .notice-text {
-		font-size: 28px;
-		font-weight: 900;
-		color: rgb(39, 39, 39);
-		line-height: 36px;
-		padding: 22px;
-		text-align: center;
-	}
 }
