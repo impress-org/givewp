@@ -25,20 +25,22 @@
 		</div>
 		<div class="text">donations</div>
 	</div>
-	<div class="goal">
-		<div class="number">
-		<?php
-		echo give_currency_filter(
-			give_format_amount(
-				$form->get_goal(),
-				array(
-					'sanitize' => false,
-					'decimal'  => false,
+	<?php if ( $form->has_goal() ) : ?>
+		<div class="goal">
+			<div class="number">
+			<?php
+			echo give_currency_filter(
+				give_format_amount(
+					$form->get_goal(),
+					array(
+						'sanitize' => false,
+						'decimal'  => false,
+					)
 				)
-			)
-		);
-		?>
+			);
+			?>
+			</div>
+			<div class="text">goal</div>
 		</div>
-		<div class="text">goal</div>
-	</div>
+	<?php endif; ?>
 </div>
