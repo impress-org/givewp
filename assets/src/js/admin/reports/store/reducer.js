@@ -14,6 +14,7 @@ export const reducer = ( state, action ) => {
 		case 'SET_RANGE':
 			//determine new startDate based on selected range
 			let startDate;
+			let endDate = state.period.endDate;
 			switch ( action.payload.range ) {
 				case 'day':
 					startDate = moment( state.period.endDate ).subtract( 1, 'days' );
@@ -27,11 +28,16 @@ export const reducer = ( state, action ) => {
 				case 'year':
 					startDate = moment( state.period.endDate ).subtract( 1, 'years' );
 					break;
+				case 'alltime':
+					startDate = moment( window.giveReportsData.allTimeStart );
+					endDate = moment();
+					break;
 			}
 			return {
 				...state,
 				period: { ...state.period,
 					startDate,
+					endDate,
 					range: action.payload.range,
 				},
 			};

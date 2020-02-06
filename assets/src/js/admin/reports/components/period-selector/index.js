@@ -74,6 +74,7 @@ const PeriodSelector = () => {
 				<button className={ period.range === 'week' ? 'selected' : null } onClick={ () => setRange( 'week' ) }>{ __( 'Week', 'give' ) }</button>
 				<button className={ period.range === 'month' ? 'selected' : null } onClick={ () => setRange( 'month' ) }>{ __( 'Month', 'give' ) }</button>
 				<button className={ period.range === 'year' ? 'selected' : null } onClick={ () => setRange( 'year' ) }>{ __( 'Year', 'give' ) }</button>
+				<button className={ period.range === 'alltime' ? 'selected' : null } onClick={ () => setRange( 'alltime' ) }>{ __( 'All Time', 'give' ) }</button>
 			</div>
 		</div>
 	);
