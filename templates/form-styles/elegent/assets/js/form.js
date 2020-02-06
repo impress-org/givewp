@@ -17,7 +17,7 @@
 
 		$( '.give-donation-levels-wrap', $form ).addClass( 'give-grid' );
 		$( '.give-total-wrap', $form ).addClass( 'give-flex' );
-		$form.show();
+		$form.slideDown();
 
 		// Hide payment gateway option in case on one gateway is active.
 		if ( 1 === parseInt( $paymentGateways.length ) ) {
