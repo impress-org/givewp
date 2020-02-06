@@ -17,3 +17,24 @@
 		position: relative;
 	}
 }
+
+#givewp-chartjs-tooltip {
+	background: #555;
+	min-width: 106px;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+
+	.givewp-tooltip-header {
+		background: #666;
+		padding: 8px 12px;
+		color: #fff;
+		font-size: 15px;
+	}
+
+	.givewp-tooltip-body {
+		padding: 8px 12px;
+		color: rgb(228, 228, 228);
+		font-size: 12px;
+	}
+}

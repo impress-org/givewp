@@ -70,22 +70,44 @@ export function createConfig( type, data ) {
 		data: formattedData,
 		options: {
 			tooltips: {
-				mode: 'index',
-				backgroundColor: '#555555',
-				titleFontSize: 15,
-				titleAlign: 'center',
-				footerAlign: 'center',
-				caretPadding: 4,
-				callbacks: {
-					title: function( tooltipItems ) {
-						return '$' + tooltipItems[ 0 ].value;
-					},
-					label: function() {
-						return '12 Donors';
-					},
-					footer: function( tooltipItem, chartData ) {
-						return chartData.labels[ tooltipItem[ 0 ].index ];
-					},
+				// Disable the on-canvas tooltip
+				enabled: false,
+
+				custom: function( tooltipModel ) {
+					// Tooltip Element
+					let tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
+
+					// Create element on first render
+					if ( ! tooltipEl ) {
+						tooltipEl = document.createElement( 'div' );
+						tooltipEl.id = 'givewp-chartjs-tooltip';
+						tooltipEl.innerHTML = '<div class="givewp-tooltip-header">$1200</div><div class="givewp-tooltip-body"><bold>12 Donors</b><br>June 2019</div>';
+						document.body.appendChild( tooltipEl );
+					}
+
+					// Hide if no tooltip
+					if ( tooltipModel.opacity === 0 ) {
+						tooltipEl.style.opacity = 0;
+						return;
+					}
+
+					// Set caret Position
+					tooltipEl.classList.remove( 'above', 'below', 'no-transform' );
+					if ( tooltipModel.yAlign ) {
+						tooltipEl.classList.add( tooltipModel.yAlign );
+					} else {
+						tooltipEl.classList.add( 'no-transform' );
+					}
+
+					// `this` will be the overall tooltip
+					const position = this._chart.canvas.getBoundingClientRect();
+
+					// Display, position, and set styles for font
+					tooltipEl.style.opacity = 1;
+					tooltipEl.style.position = 'absolute';
+					tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - ( tooltipEl.offsetWidth / 2 ) + 'px';
+					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 12 ) + 'px';
+					tooltipEl.style.pointerEvents = 'none';
 				},
 			},
 			legend: {
