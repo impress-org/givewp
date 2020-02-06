@@ -35,7 +35,8 @@ class Income extends Endpoint {
 
 		switch ( true ) {
 			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'P1D' );
+				$interval = round( $diff->days / 12 );
+				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H' );
