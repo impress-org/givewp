@@ -1,3 +1,12 @@
+.givewp-chart-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
+}
+
 .givewp-chart-canvas {
 	display: flex;
 	flex: 1;

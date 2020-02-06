@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 
 // Components
 import Chart from '../chart';
-import LoadingOverlay from '../loading-overlay';
 import SkeletonChart from '../skeleton-chart';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
 
-const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
+const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 	// Use period from store
 	const [ { period }, dispatch ] = useStoreValue();
 
@@ -55,8 +54,13 @@ const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
 
 	return (
 		<Fragment>
-			{ ! loaded && (
-				<LoadingOverlay />
+			{ title && (
+				<div className="givewp-chart-title">
+					{ title }
+					{ ! loaded && (
+						<span className="spinner is-active" />
+					) }
+				</div>
 			) }
 			{ fetched ? (
 				<Chart
