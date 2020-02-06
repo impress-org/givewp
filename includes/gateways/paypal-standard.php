@@ -625,7 +625,9 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
 		),
-		give_get_success_page_uri()
+		give_is_processing_embed_form()
+			? give_embed_form_success_page_url()
+			: give_get_success_page_uri()
 	);
 
 	// Get the PayPal redirect uri.
