@@ -15,6 +15,7 @@ import './give-donations';
 import './give-ajax';
 import './give-misc';
 import './give-donor-wall';
+import './give-embed-form';
 
 const { init, fn, form, notice, cache, donor, util } = GiveAPI;
 window.Give = { init, fn, form, notice, cache, donor, util };

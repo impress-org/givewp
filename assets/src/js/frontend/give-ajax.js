@@ -10,36 +10,6 @@
 
 /* globals jQuery, Give */
 jQuery( document ).ready( function( $ ) {
-	// console.log( $.fn.iFrameResize);
-	if ( $.fn.iFrameResize ) {
-		// Parent page.
-		$( 'iframe[name="give-embed-form"]' ).iFrameResize(
-			{
-				log: true,
-				sizeWidth: true,
-				heightCalculationMethod: 'documentElementOffset',
-				widthCalculationMethod: 'documentElementOffset',
-				onMessage: function( messageData ) {
-					switch ( messageData.message ) {
-						case 'giveEmbedFormContentLoaded':
-							messageData.iframe.parentElement.classList.remove( 'give-loader-type-img' );
-							messageData.iframe.style.visibility = 'visible';
-							break;
-
-						case 'giveEmbedShowingForm':
-							$( 'html, body' ).animate( { scrollTop: messageData.iframe.offsetTop } );
-							break;
-					}
-				},
-				onInit: function( iframe ) {
-					iframe.iFrameResizer.sendMessage( {
-						currentPage: window.location.href,
-					} );
-				},
-			}
-		);
-	}
-
 	// Reset nonce only if form exists.
 	if ( Give.form.fn.isFormExist() ) {
 		//Hide loading elements
@@ -331,35 +301,6 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	}
-
-	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
-		e.preventDefault();
-		const $container = $( '.give-embed-form' ),
-			$form = $( 'form', $container ),
-			$paymentGateways = $( '[id="give-payment-mode-wrap"] li:not(.give_purchase_form_wrap-clone)', $form );
-
-		// Add flex class in case of more then one payment gateway active.
-		if ( 1 < parseInt( $paymentGateways.length ) ) {
-			$.each( $paymentGateways, function( index, $item ) {
-				$( $item ).addClass( 'give-flex' );
-			} );
-		}
-
-		$( '> *:not(.give_error):not(form)', $container ).hide();
-
-		$( '.give-donation-levels-wrap', $form ).addClass( 'give-grid' );
-		$( '.give-total-wrap', $form ).addClass( 'give-flex' );
-		$( '> *', $form ).show();
-
-		// Hide payment gateway option in case on one gateway is active.
-		if ( 1 === parseInt( $paymentGateways.length ) ) {
-			$paymentGateways.hide();
-		}
-
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
-		}
-	} );
 } );
 
 /**
@@ -424,6 +365,8 @@ function give_load_gateway( form_object, payment_mode ) {
 
 /**
  * Move form field under payment gateway
+ *
+ * @todo: refactor this code
  *
  * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
  */
