@@ -165,7 +165,7 @@ function give_form_shortcode( $atts ) {
 				array( 'iframe' => true ),
 				$atts,
 			),
-			home_url( "/give-embed/{$atts['id']}" )
+			give_embed_form_get_url( $atts['id'] )
 		);
 
 		printf(
