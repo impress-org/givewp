@@ -75,6 +75,8 @@ class AverageDonation extends Endpoint {
 
 	public function get_data( $start, $end, $interval, $format ) {
 
+		$allTimeStartStr = $this->get_all_time_start();
+
 		$stats = new \Give_Payment_Stats();
 
 		$startStr = $start->format( 'Y-m-d H:i:s' );
@@ -111,8 +113,8 @@ class AverageDonation extends Endpoint {
 
 		// Calculate the income trend by comparing average earnings in the
 		// previous period to average earnings in the current period
-		$prevAverage    = $this->get_average_donation( $prevStr, $startStr );
-		$currentAverage = $this->get_average_donation( $startStr, $endStr );
+		$prevAverage    = $this->get_average_donation( $allTimeStartStr, $startStr );
+		$currentAverage = $this->get_average_donation( $allTimeStartStr, $endStr );
 
 		$trend = $prevAverage > 0 ? round( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ) : 'NaN';
 
