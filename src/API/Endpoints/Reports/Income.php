@@ -31,7 +31,7 @@ class Income extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
+		$dataset = [];
 
 		switch ( true ) {
 			case ( $diff->days > 1 ):
@@ -64,8 +64,8 @@ class Income extends Endpoint {
 		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
 		$prevStr = $prev->format( 'Y-m-d H:i:s' );
 
-		$labels = [];
-		$income = [];
+		$tooltips = [];
+		$income   = [];
 
 		$dateInterval = new \DateInterval( $interval );
 
@@ -73,35 +73,69 @@ class Income extends Endpoint {
 
 		while ( $start < $end ) {
 
-			$periodStart = $start->format( 'Y-m-d H:i:s' );
+			$periodStart = clone $start;
+			$periodEnd   = clone $start;
 
-			// Add interval to get period end
-			$periodEnd = clone $start;
+			// Add interval to set up period end
 			date_add( $periodEnd, $dateInterval );
 
-			$label     = $periodEnd->format( 'Y-m-d H:i:s' );
-			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
+			$startStr = $periodStart->format( 'Y-m-d H:i:s' );
+			$endStr   = $periodEnd->format( 'Y-m-d H:i:s' );
 
-			$incomeForPeriod = $stats->get_earnings( 0, $periodStart, $periodEnd );
+			$incomeForPeriod = $stats->get_earnings( 0, $startStr, $endStr );
+			$donorsForPeriod = $this->get_donor_count( $startStr, $endStr );
 
-			$income[] = $incomeForPeriod;
-			$labels[] = $label;
+			if ( $interval == 'PT1H' ) {
+				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+			} else {
+				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			}
+
+			$income[] = [
+				'x' => $endStr,
+				'y' => $incomeForPeriod,
+			];
+
+			$tooltips[] = [
+				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
+				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
+				'footer' => $periodLabel,
+			];
 
 			date_add( $start, $dateInterval );
 		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
-			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label' => __( 'Income', 'give' ),
-					'data'  => $income,
+					'label'    => __( 'Income', 'give' ),
+					'data'     => $income,
+					'tooltips' => $tooltips,
 				],
 			],
 		];
 
 		return $data;
 
+	}
+
+	public function get_donor_count( $start, $end ) {
+		// Setup donor query args (get sanitized start/end date from request)
+		$args = [
+			'number'     => 25,
+			'paged'      => 1,
+			'orderby'    => 'purchase_value',
+			'order'      => 'DESC',
+			'start_date' => $start,
+			'end_date'   => $end,
+		];
+
+		// Get array of top 25 donors
+		$donors     = new \Give_Donors_Query( $args );
+		$donors     = $donors->get_donors();
+		$donorCount = count( $donors );
+
+		return $donorCount;
 	}
 }
