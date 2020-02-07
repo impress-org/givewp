@@ -50,14 +50,21 @@ const RESTList = ( { title, endpoint } ) => {
 	const items = getItems( fetched );
 	const skeletonItems = getSkeletonItems();
 
+	let overlay;
+	switch ( true ) {
+		case loaded === false: {
+			overlay = <LoadingOverlay />;
+			break;
+		}
+		case dataFound === false: {
+			overlay = <NotFoundOverlay />;
+			break;
+		}
+	}
+
 	return (
 		<Fragment>
-			{ ! loaded && (
-				<LoadingOverlay />
-			) }
-			{ ! dataFound && (
-				<NotFoundOverlay />
-			) }
+			{ overlay }
 			{ fetched ? (
 				<List title={ title }>
 					{ items }
