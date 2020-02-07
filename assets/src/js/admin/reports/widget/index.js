@@ -30,6 +30,7 @@ const Widget = () => {
 			<Grid gap="12px" visible={ showGrid }>
 				<Card width={ 12 }>
 					<RESTChart
+						title={ __( 'All Time Income', 'give' ) }
 						type="line"
 						aspectRatio={ 0.4 }
 						endpoint="income"
@@ -39,7 +40,7 @@ const Widget = () => {
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Income', 'give' ) }
-						endpoint="income"
+						endpoint="total-income"
 					/>
 				</Card>
 				<Card width={ 6 }>
@@ -51,13 +52,13 @@ const Widget = () => {
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Donors', 'give' ) }
-						endpoint="donors"
+						endpoint="total-donors"
 					/>
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
 						title={ __( 'Total Refunds', 'give' ) }
-						endpoint="refunds"
+						endpoint="total-refunds"
 					/>
 				</Card>
 			</Grid>
