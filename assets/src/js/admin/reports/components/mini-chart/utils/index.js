@@ -3,7 +3,6 @@ export function formatData( data ) {
 
 	const formattedDatasets = data.datasets.map( ( dataset ) => {
 		const formatted = {
-			label: dataset.label,
 			data: dataset.data,
 			backgroundColor: '#FFFFFF',
 			borderColor: '#DDDDDD',
@@ -47,6 +46,7 @@ export function createConfig( data ) {
 				} ],
 				xAxes: [ {
 					display: false,
+					type: 'time',
 				} ],
 			},
 			tooltips: {
@@ -61,7 +61,7 @@ export function createConfig( data ) {
 					if ( ! tooltipEl ) {
 						tooltipEl = document.createElement( 'div' );
 						tooltipEl.id = 'givewp-mini-chartjs-tooltip';
-						tooltipEl.innerHTML = '<div class="givewp-mini-tooltip-header">$1200</div><div class="givewp-mini-tooltip-body"><bold>12 Donors</b><br>June 2019</div>';
+						tooltipEl.innerHTML = '<div class="givewp-tooltip-header"></div><div class="givewp-tooltip-body"><bold></b><br></div><div class="givewp-tooltip-caret"></div>';
 						document.body.appendChild( tooltipEl );
 					}
 
@@ -86,13 +86,18 @@ export function createConfig( data ) {
 					tooltipEl.style.opacity = 1;
 					tooltipEl.style.position = 'absolute';
 					tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - ( tooltipEl.offsetWidth / 2 ) + 'px';
-					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 12 ) + 'px';
+					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 2 ) + 'px';
 					tooltipEl.style.pointerEvents = 'none';
+
+					const tooltip = data.datasets[ tooltipModel.dataPoints[ 0 ].datasetIndex ].tooltips[ tooltipModel.dataPoints[ 0 ].index ];
+
+					// Setup tooltip inner HTML
+					tooltipEl.innerHTML = `<div class="givewp-mini-tooltip-header">${ tooltip.title }</div><div class="givewp-mini-tooltip-body"><bold>${ tooltip.body }</b><br>${ tooltip.footer }</div><div class="givewp-mini-tooltip-caret"></div>`;
 				},
 			},
 			elements: {
 				point: {
-					radius: 0,
+					radius: 2,
 				},
 			},
 		},

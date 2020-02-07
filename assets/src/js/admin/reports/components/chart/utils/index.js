@@ -1,13 +1,12 @@
 // Format data from Reports API for ChartJS
 export function formatData( type, data ) {
-	const formattedLabels = data.labels.slice( 0 );
+	const formattedLabels = data.labels ? data.labels.slice( 0 ) : null;
 
 	const formattedDatasets = data.datasets.map( ( dataset, index ) => {
 		// Setup styles
 		const styles = createStyles( type, dataset.data, index );
 
 		const formatted = {
-			label: ( ' ' + dataset.label ).slice( 1 ),
 			data: dataset.data.slice( 0 ),
 			yAxisID: `y-axis-${ index }`,
 			backgroundColor: styles.backgroundColor,
@@ -81,7 +80,7 @@ export function createConfig( type, data ) {
 					if ( ! tooltipEl ) {
 						tooltipEl = document.createElement( 'div' );
 						tooltipEl.id = 'givewp-chartjs-tooltip';
-						tooltipEl.innerHTML = '<div class="givewp-tooltip-header">$1200</div><div class="givewp-tooltip-body"><bold>12 Donors</b><br>June 2019</div>';
+						tooltipEl.innerHTML = '<div class="givewp-tooltip-header"></div><div class="givewp-tooltip-body"><bold></b><br></div><div class="givewp-tooltip-caret"></div>';
 						document.body.appendChild( tooltipEl );
 					}
 
@@ -106,8 +105,13 @@ export function createConfig( type, data ) {
 					tooltipEl.style.opacity = 1;
 					tooltipEl.style.position = 'absolute';
 					tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - ( tooltipEl.offsetWidth / 2 ) + 'px';
-					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 12 ) + 'px';
+					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 6 ) + 'px';
 					tooltipEl.style.pointerEvents = 'none';
+
+					const tooltip = data.datasets[ tooltipModel.dataPoints[ 0 ].datasetIndex ].tooltips[ tooltipModel.dataPoints[ 0 ].index ];
+
+					// Set tooltip inner HTML
+					tooltipEl.innerHTML = `<div class="givewp-tooltip-header">${ tooltip.title }</div><div class="givewp-tooltip-body"><bold>${ tooltip.body }</b><br>${ tooltip.footer }</div><div class="givewp-tooltip-caret"></div>`;
 				},
 			},
 			legend: {
@@ -137,6 +141,9 @@ export function createConfig( type, data ) {
 		if ( type === 'line' ) {
 			config.options.scales.xAxes = [ {
 				type: 'time',
+				time: {
+					stepSize: 3,
+				},
 			} ];
 		}
 	}

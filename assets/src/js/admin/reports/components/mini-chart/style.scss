@@ -76,22 +76,35 @@
 }
 
 #givewp-mini-chartjs-tooltip {
-	background: #555;
 	min-width: 106px;
 	text-align: center;
 	border-radius: 3px;
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 
 	.givewp-mini-tooltip-header {
 		background: #666;
 		padding: 8px 12px;
 		color: #fff;
 		font-size: 15px;
+		border-radius: 3px 3px 0 0;
 	}
 
 	.givewp-mini-tooltip-body {
 		padding: 8px 12px;
 		color: rgb(228, 228, 228);
 		font-size: 12px;
+		background: #555;
+		border-radius: 0 0 3px 3px;
+	}
+
+	.givewp-mini-tooltip-caret {
+		height: 14px;
+		width: 20px;
+		margin: 0 auto;
+		transform: translate3d(0, -1px, 0);
+		background: #555;
+		clip-path: polygon(50% 100%, 0 0, 100% 0);
 	}
 }
