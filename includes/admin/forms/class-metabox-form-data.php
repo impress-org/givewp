@@ -786,6 +786,7 @@ class Give_MetaBox_Form_Data {
 					?>
 					<div id="<?php echo $setting['id']; ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
+						<?php echo $this->upsell_html(); ?>
 						<?php if ( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
 								<?php give_render_field( $field ); ?>
@@ -812,6 +813,34 @@ class Give_MetaBox_Form_Data {
 			</div>
 		<?php
 		endif; // End if().
+	}
+
+
+	/**
+	 * Gt upsells html
+	 *
+	 * @return string
+	 * @since 2.6.0
+	 */
+	private function upsell_html() {
+		$addon_url = esc_url( 'https://givewp.com/addons/recurring-donations/' );
+
+		return sprintf(
+			'
+			<div class="give-upsell-notice">
+				<span class="icon dashicons dashicons-update-alt"></span>
+				<span class="description">%1$s</span>
+				<a class="view-addon-link button" href="%2$s" target="_blank">%3$s</a>
+			</div>
+			',
+			sprintf(
+				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provides your donors with flexibility subscription giving options.', 'give' ),
+				$addon_url,
+				__( 'Recurring Donations add-on', 'give' )
+			),
+			$addon_url,
+			__( 'View Add-on', 'give' )
+		);
 	}
 
 	/**
