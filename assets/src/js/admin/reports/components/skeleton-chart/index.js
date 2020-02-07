@@ -20,11 +20,38 @@ const SkeletonChart = ( { type, aspectRatio, showLegend } ) => {
 			{
 				label: '--',
 				data: [
-					22,
+					32,
 					41,
 					37,
 					12,
 					32,
+				],
+				tooltips: [
+					{
+						title: '--',
+						body: '--',
+						footer: '',
+					},
+					{
+						title: '--',
+						body: '--',
+						footer: '',
+					},
+					{
+						title: '--',
+						body: '--',
+						footer: '',
+					},
+					{
+						title: '--',
+						body: '--',
+						footer: '',
+					},
+					{
+						title: '--',
+						body: '--',
+						footer: '',
+					},
 				],
 			},
 		],
