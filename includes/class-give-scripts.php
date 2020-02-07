@@ -399,7 +399,6 @@ class Give_Scripts {
 				'processing' => __( 'Processing...', 'give' ),
 				'activating' => __( 'Activating...', 'give' ),
 			),
-			'highlightAddonLink'                => give_get_plugins( array( 'only_premium_add_ons' => true ) ),
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );

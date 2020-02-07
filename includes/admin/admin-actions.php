@@ -1510,6 +1510,44 @@ function give_admin_quick_js() {
 add_action( 'admin_head', 'give_admin_quick_js' );
 
 /**
+ * Admin Footer JS
+ *
+ * @since 2.6.0
+ */
+function give_admin_footer_quick_js() {
+	?>
+	<script>
+		(function($){
+			const $addonLink = $('#menu-posts-give_forms a[href^="https://givewp.com"]');
+			$addonLink.attr('target', '_blank');
+
+			<?php if ( empty( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ) ) : ?>
+			$addonLink.addClass('give-highlight');
+			$addonLink.prepend('<span class="dashicons dashicons-star-filled"></span>');
+			<?php endif; ?>
+		})(jQuery)
+	</script>
+	<style>
+		#menu-posts-give_forms a[href^="https://givewp.com"].give-highlight {
+			 color: rgb(43, 194, 83);
+			 font-weight: 700;
+			 vertical-align: top;
+		}
+
+		#menu-posts-give_forms a[href^="https://givewp.com"].give-highlight span.dashicons {
+			font-size: 14px !important;
+			width: auto;
+			height: 18px;
+			padding-right: 8px;
+			vertical-align: middle;
+		}
+	</style>
+	<?php
+}
+
+add_action( 'admin_footer', 'give_admin_footer_quick_js' );
+
+/**
  * Handle akismet_deblacklist_spammed_email_handler give-action
  *
  * @since 2.5.14
