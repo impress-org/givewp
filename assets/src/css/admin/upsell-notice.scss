@@ -3,10 +3,8 @@
 	padding: 10px;
 	margin: 10px;
 	box-shadow: 1px 1px 5px #e2e2e2;
-
-	> * {
-		min-height: 30px;
-	}
+	display: flex;
+	align-items: center;
 
 	a {
 		text-decoration: none;
@@ -14,13 +12,7 @@
 
 	.icon,
 	.description {
-		vertical-align: middle;
 		font-style: normal;
-
-		// For icon.
-		&::before {
-			vertical-align: middle;
-		}
 	}
 
 	.icon {
@@ -35,7 +27,7 @@
 	}
 
 	a.view-addon-link {
-		float: right;
 		background: none !important;
+		margin-left: auto;
 	}
 }
