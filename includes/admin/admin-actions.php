@@ -1510,11 +1510,11 @@ function give_admin_quick_js() {
 add_action( 'admin_head', 'give_admin_quick_js' );
 
 /**
- * Admin Footer JS
+ * Add Admin addon menu related scripts
  *
  * @since 2.6.0
  */
-function give_admin_footer_quick_js() {
+function give_admin_addon_menu_inline_scripts() {
 	?>
 	<script>
 		(function($){
@@ -1545,7 +1545,7 @@ function give_admin_footer_quick_js() {
 	<?php
 }
 
-add_action( 'admin_footer', 'give_admin_footer_quick_js' );
+add_action( 'admin_footer', 'give_admin_addon_menu_inline_scripts' );
 
 /**
  * Handle akismet_deblacklist_spammed_email_handler give-action
