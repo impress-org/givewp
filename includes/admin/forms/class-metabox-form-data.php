@@ -859,7 +859,7 @@ class Give_MetaBox_Form_Data {
 	 * @since 2.6.0
 	 */
 	private function upsell_html() {
-		if ( ! Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
+		if ( Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
 			return '';
 		}
 
