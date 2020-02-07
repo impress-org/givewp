@@ -8,6 +8,7 @@ const Grid = ( { gap, visible, children } ) => {
 	const gridStyle = {
 		display: display,
 		gridGap: gap,
+		marginTop: gap,
 	};
 
 	return (
