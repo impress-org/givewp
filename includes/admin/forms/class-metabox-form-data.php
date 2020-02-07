@@ -772,6 +772,8 @@ class Give_MetaBox_Form_Data {
 		if ( $form_data_tabs = $this->get_tabs() ) :
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
+
+			$upsell_html = $this->upsell_html();
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
 			<div class="give-metabox-panel-wrap">
@@ -820,7 +822,7 @@ class Give_MetaBox_Form_Data {
 					?>
 					<div id="<?php echo $setting['id']; ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
-						<?php echo $this->upsell_html(); ?>
+						<?php echo $upsell_html; ?>
 						<?php if ( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
 								<?php give_render_field( $field ); ?>
@@ -857,6 +859,10 @@ class Give_MetaBox_Form_Data {
 	 * @since 2.6.0
 	 */
 	private function upsell_html() {
+		if ( ! Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
+			return '';
+		}
+
 		$addon_url = esc_url( 'https://givewp.com/addons/recurring-donations/' );
 
 		return sprintf(
