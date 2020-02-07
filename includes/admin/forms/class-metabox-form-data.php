@@ -818,7 +818,7 @@ class Give_MetaBox_Form_Data {
 					<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 					<?php
 					// Determine if current panel is active.
-					$is_active = $active_tab === $setting['id'] ? true : false;
+					$is_active = $active_tab === $setting['id'];
 					?>
 					<div id="<?php echo $setting['id']; ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
