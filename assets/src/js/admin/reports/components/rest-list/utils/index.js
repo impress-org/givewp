@@ -13,6 +13,7 @@ export function getItems( data ) {
 					name={ item.name }
 					email={ item.email }
 					count={ item.count }
+					url={ item.url }
 					total={ item.total }
 					key={ index }
 				/>;
@@ -21,6 +22,7 @@ export function getItems( data ) {
 					status={ item.status }
 					amount={ item.amount }
 					time={ item.time }
+					url={ item.url }
 					donor={ item.donor }
 					source={ item.source }
 					key={ index }
