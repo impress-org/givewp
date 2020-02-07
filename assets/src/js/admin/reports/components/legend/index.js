@@ -31,8 +31,8 @@ const Legend = ( { data, chartRef } ) => {
 		chartRef.update();
 	};
 
-	// Map data labels to build legend items
-	const items = data.labels.map( ( label, index ) => {
+	// Map dataset to build legend items
+	const items = data.datasets[ 0 ].data.map( ( amount, index ) => {
 		// Prepare status class for item
 		const status = inactiveItems.includes( index ) ? ' inactive' : '';
 
@@ -40,13 +40,15 @@ const Legend = ( { data, chartRef } ) => {
 		const color = getColor( index );
 
 		// Prepare percent to display with legend item
-		const percent = ! isNaN( total ) ? Math.round( ( data.datasets[ 0 ].data[ index ] / total ) * 100 ) + '%' : '';
+		const percent = ! isNaN( total ) ? Math.round( ( amount / total ) * 100 ) + '%' : '';
+
+		const point = data.datasets[ 0 ].tooltips[ index ];
 
 		return (
-			<div className={ 'item' + status } key={ index } onClick={ () => hideData( index, data.datasets[ 0 ].data[ index ] ) }>
+			<div className={ 'item' + status } key={ index } onClick={ () => hideData( index, amount ) }>
 				<div className="bar" style={ { background: color } }></div>
-				<p className="label">{ label }</p>
-				<p className="data">{ data.datasets[ 0 ].data[ index ] }</p>
+				<p className="label">{ point.footer }</p>
+				<p className="data">{ point.title }</p>
 				<p className="percent">{ percent }</p>
 			</div>
 		);
