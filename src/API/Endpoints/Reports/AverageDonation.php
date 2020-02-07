@@ -34,32 +34,12 @@ class AverageDonation extends Endpoint {
 		$data = [];
 
 		switch ( true ) {
-			case ( $diff->days > 900 ):
-				$data = $this->get_data( $start, $end, 'P1Y', 'Y' );
-				break;
-			case ( $diff->days > 700 ):
-				$data = $this->get_data( $start, $end, 'P6M', 'F Y' );
-				break;
-			case ( $diff->days > 400 ):
-				$data = $this->get_data( $start, $end, 'P3M', 'F Y' );
-				break;
-			case ( $diff->days > 120 ):
-				$data = $this->get_data( $start, $end, 'P1M', 'M Y' );
-				break;
-			case ( $diff->days > 30 ):
-				$data = $this->get_data( $start, $end, 'P7D', 'M jS' );
-				break;
-			case ( $diff->days > 10 ):
-				$data = $this->get_data( $start, $end, 'P3D', 'M jS' );
-				break;
-			case ( $diff->days > 4 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'l' );
-				break;
 			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'D ga' );
+				$interval = round( $diff->days / 12 );
+				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
 			case ( $diff->days >= 0 ):
-				$data = $this->get_data( $start, $end, 'PT1H', 'D ga' );
+				$data = $this->get_data( $start, $end, 'PT1H' );
 				break;
 		}
 
@@ -73,7 +53,7 @@ class AverageDonation extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval, $format ) {
+	public function get_data( $start, $end, $interval ) {
 
 		$allTimeStartStr = $this->get_all_time_start();
 
@@ -82,34 +62,44 @@ class AverageDonation extends Endpoint {
 		$startStr = $start->format( 'Y-m-d H:i:s' );
 		$endStr   = $end->format( 'Y-m-d H:i:s' );
 
-		// Determine the start date of the previous period (used to calculate trend)
-		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
-		$prevStr = $prev->format( 'Y-m-d H:i:s' );
-
-		$labels = [];
-		$income = [];
+		$tooltips = [];
+		$income   = [];
 
 		$dateInterval = new \DateInterval( $interval );
 		while ( $start < $end ) {
 
-			$periodStart = $start->format( 'Y-m-d H:i:s' );
+			$periodStart = clone $start;
+			$periodEnd   = clone $start;
 
-			// Add interval to get period end
-			$periodEnd = clone $start;
+			// Add interval to set up period end
 			date_add( $periodEnd, $dateInterval );
 
-			$label     = $periodEnd->format( $format );
-			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
+			$startStr = $periodStart->format( 'Y-m-d H:i:s' );
+			$endStr   = $periodEnd->format( 'Y-m-d H:i:s' );
 
-			$averageIncomeForPeriod = $this->get_average_donation( $periodStart, $periodEnd );
+			$averageIncomeForPeriod = $this->get_average_donation( $startStr, $endStr );
 
-			$income[] = $averageIncomeForPeriod;
-			$labels[] = $label;
+			$income[] = [
+				'y' => $averageIncomeForPeriod,
+				'x' => $endStr,
+			];
+
+			if ( $interval == 'PT1H' ) {
+				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+			} else {
+				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			}
+
+			$tooltips[] = [
+				'title'  => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), [ 'decode_currency' => true ] ),
+				'body'   => __( 'Average Donation', 'give' ),
+				'footer' => $periodLabel,
+			];
 
 			date_add( $start, $dateInterval );
 		}
 
-		$averageForPeriod = array_sum( $income ) / count( $income );
+		$averageForPeriod = $this->get_average_donation( $startStr, $endStr );
 
 		// Calculate the income trend by comparing average earnings in the
 		// previous period to average earnings in the current period
@@ -120,11 +110,10 @@ class AverageDonation extends Endpoint {
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
-			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => 'Income',
 					'data'      => $income,
+					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'highlight' => give_currency_filter( give_format_amount( $averageForPeriod ), [ 'decode_currency' => true ] ),
 				],
