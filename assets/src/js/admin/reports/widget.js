@@ -13,7 +13,7 @@ import { reducer } from './store/reducer';
 const initialState = {
 	// Initial period range (defaults to the past week)
 	period: {
-		startDate: moment().subtract( 5, 'years' ),
+		startDate: moment( window.giveReportsData.allTimeStart ),
 		endDate: moment(),
 		range: 'week',
 	},
