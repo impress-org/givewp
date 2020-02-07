@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Income over time endpoint
+ * Total Donors over time endpoint
  *
  * @package Give
  */
 
 namespace Give\API\Endpoints\Reports;
 
-class Donors extends Endpoint {
+class TotalDonors extends Endpoint {
 
 	public function __construct() {
-		$this->endpoint = 'donors';
+		$this->endpoint = 'total-donors';
 	}
 
 	public function get_report( $request ) {
@@ -34,32 +34,12 @@ class Donors extends Endpoint {
 		$data = [];
 
 		switch ( true ) {
-			case ( $diff->days > 900 ):
-				$data = $this->get_data( $start, $end, 'P1Y', 'Y' );
-				break;
-			case ( $diff->days > 700 ):
-				$data = $this->get_data( $start, $end, 'P6M', 'F Y' );
-				break;
-			case ( $diff->days > 400 ):
-				$data = $this->get_data( $start, $end, 'P3M', 'F Y' );
-				break;
-			case ( $diff->days > 120 ):
-				$data = $this->get_data( $start, $end, 'P1M', 'M Y' );
-				break;
-			case ( $diff->days > 30 ):
-				$data = $this->get_data( $start, $end, 'P7D', 'M jS' );
-				break;
-			case ( $diff->days > 10 ):
-				$data = $this->get_data( $start, $end, 'P3D', 'M jS' );
-				break;
-			case ( $diff->days > 4 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'l' );
-				break;
 			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'D ga' );
+				$interval = round( $diff->days / 12 );
+				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
 			case ( $diff->days >= 0 ):
-				$data = $this->get_data( $start, $end, 'PT1H', 'D ga' );
+				$data = $this->get_data( $start, $end, 'PT1H' );
 				break;
 		}
 
@@ -73,53 +53,66 @@ class Donors extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval, $format ) {
+	public function get_data( $start, $end, $interval ) {
+
+		$allTimeStartStr = $this->get_all_time_start();
 
 		$startStr = $start->format( 'Y-m-d H:i:s' );
 		$endStr   = $end->format( 'Y-m-d H:i:s' );
 
-		// Determine the start date of the previous period (used to calculate trend)
-		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
-		$prevStr = $prev->format( 'Y-m-d H:i:s' );
-
-		$labels = [];
-		$donors = [];
+		$tooltips = [];
+		$donors   = [];
 
 		$dateInterval = new \DateInterval( $interval );
+
+		date_sub( $start, $dateInterval );
+
 		while ( $start < $end ) {
 
-			$periodStart = $start->format( 'Y-m-d H:i:s' );
+			$periodStart = clone $start;
+			$periodEnd   = clone $start;
 
-			// Add interval to get period end
-			$periodEnd = clone $start;
+			// Add interval to set up period end
 			date_add( $periodEnd, $dateInterval );
 
-			$label     = $periodEnd->format( $format );
-			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
+			$endStr = $periodEnd->format( 'Y-m-d H:i:s' );
 
-			$donorCount = $this->get_donor_count( $periodStart, $periodEnd );
+			$donorsForPeriod = $this->get_donor_count( $startStr, $endStr );
 
-			$donors[] = $donorCount;
-			$labels[] = $label;
+			$income[] = [
+				'y' => $donorsForPeriod,
+				'x' => $endStr,
+			];
+
+			if ( $interval == 'PT1H' ) {
+				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+			} else {
+				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			}
+
+			$tooltips[] = [
+				'title'  => $donorsForPeriod . __( 'Donors', 'give' ),
+				'body'   => __( 'Total Donors', 'give' ),
+				'footer' => $periodLabel,
+			];
 
 			date_add( $start, $dateInterval );
 		}
 
-		$totalForPeriod = array_sum( $donors );
+		$totalForPeriod = $this->get_donor_count( $startStr, $endStr );
 
-		// Calculate the income trend by comparing total earnings in the
-		// previous period to earnings in the current period
-		$prevTotal    = $this->get_donor_count( $prevStr, $startStr );
-		$currentTotal = $this->get_donor_count( $startStr, $endStr );
+		// Calculate the donor trend by comparing total donors in the
+		// previous period to donors in the current period
+		$prevTotal    = $this->get_donor_count( $allTimeStartStr, $startStr );
+		$currentTotal = $this->get_donor_count( $allTimeStartStr, $endStr );
 		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
-			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => __( 'Donors', 'give' ),
-					'data'      => $donors,
+					'data'      => $income,
+					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'highlight' => $totalForPeriod,
 				],
