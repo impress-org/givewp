@@ -23,6 +23,7 @@ import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
+import './admin-addon-link-handler';
 
 // Stripe core.
 import './stripe-admin';
