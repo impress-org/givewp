@@ -8,7 +8,7 @@
 
 namespace Give\Views\Admin\DashboardWidgets;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages reports dashboard widget view
@@ -19,27 +19,28 @@ class Reports {
 	 * Initialize Reports Dashboard Widget
 	 */
 	public function init() {
-		add_action('wp_dashboard_setup', [$this, 'add_dashboard_widget']);
-		add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+		add_action( 'wp_dashboard_setup', [ $this, 'add_dashboard_widget' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
-	public function __construct()
-	{
-		//Do nothing
+	public function __construct() {
+		 // Do nothing
 	}
 
-	//Add dashboard widget
+	// Add dashboard widget
 	public function add_dashboard_widget() {
-		wp_add_dashboard_widget(
-			'givewp_reports_widget',
-			'GiveWP',
-			[$this, 'render_template']
-		);
+		if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
+			wp_add_dashboard_widget(
+				'givewp_reports_widget',
+				__( 'Give Donations: Reports', 'give' ),
+				[ $this, 'render_template' ]
+			);
+		}
 	}
 
-	//Enqueue app scripts
-	public function enqueue_scripts($base) {
-		if ($base !== 'index.php') {
+	// Enqueue app scripts
+	public function enqueue_scripts( $base ) {
+		if ( $base !== 'index.php' ) {
 			return;
 		}
 
@@ -52,14 +53,45 @@ class Reports {
 		wp_enqueue_script(
 			'give-admin-reports-widget-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
-			['wp-element', 'wp-api', 'wp-i18n'],
+			[ 'wp-element', 'wp-api', 'wp-i18n' ],
 			'0.0.1',
 			true
+		);
+		wp_localize_script(
+			'give-admin-reports-widget-js',
+			'giveReportsData',
+			[
+				'allTimeStart' => $this->get_all_time_start(),
+			]
 		);
 
 	}
 
 	public function render_template() {
 		include_once GIVE_PLUGIN_DIR . 'src/Views/Admin/DashboardWidgets/templates/reports-template.php';
+	}
+
+	public function get_all_time_start() {
+
+		$start = date_create( '01/01/2015' );
+		$end   = date_create();
+
+		// Setup donation query args (get sanitized start/end date from request)
+		$args = [
+			'number'     => 1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'ASC',
+			'start_date' => $request['start'],
+			'end_date'   => $request['end'],
+		];
+
+		// Get array of 50 recent donations
+		$donations = new \Give_Payments_Query( $args );
+		$donations = $donations->get_payments();
+
+		$earliest = $donations[0]->date;
+
+		return $earliest;
 	}
 }
