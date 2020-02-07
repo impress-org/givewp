@@ -25,8 +25,13 @@
 
 	.icon {
 		color: #aaa;
-		font-size: 26px;
-		padding-right: 15px;
+		font-size: 30px;
+		line-height: 22px;
+		width: 30px;
+	}
+
+	.description {
+		padding-left: 10px;
 	}
 
 	a.view-addon-link {
