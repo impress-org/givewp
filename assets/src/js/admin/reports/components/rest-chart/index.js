@@ -36,9 +36,14 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 				.then( function( response ) {
 					setLoaded( true );
 					setFetched( response.data.data );
-
 					if ( endpoint === 'income' ) {
-						const found = response.data.data.datasets[ 0 ].data.reduce( ( a, b ) => a + b, 0 ) > 0 ? true : false;
+						let found = false;
+						response.data.data.datasets[ 0 ].data.forEach( ( point ) => {
+							if ( point.y > 0 ) {
+								found = true;
+							}
+						} );
+
 						dispatch( {
 							type: 'SET_DONATIONS_FOUND',
 							payload: found,
