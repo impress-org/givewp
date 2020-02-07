@@ -773,7 +773,8 @@ class Give_MetaBox_Form_Data {
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
-			$upsell_html = $this->upsell_html();
+			$upsell_html          = $this->upsell_html();
+			$added_upsells_notice = false;
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
 			<div class="give-metabox-panel-wrap">
@@ -822,7 +823,12 @@ class Give_MetaBox_Form_Data {
 					?>
 					<div id="<?php echo $setting['id']; ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
-						<?php echo $upsell_html; ?>
+						<?php
+						if ( ! $added_upsells_notice ) {
+							echo $upsell_html;
+							$added_upsells_notice = true;
+						}
+						?>
 						<?php if ( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
 								<?php give_render_field( $field ); ?>
