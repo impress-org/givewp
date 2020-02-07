@@ -111,7 +111,13 @@ function give_add_add_ons_option_link() {
 	$submenu['edit.php?post_type=give_forms'][] = array(
 		esc_html__( 'Add-ons', 'give' ),
 		'install_plugins',
-		esc_url( 'https://givewp.com/addons/' ),
+
+		/**
+		 * Filter the add-on page url.
+		 *
+		 * @since 2.6.0
+		 */
+		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://givewp.com/addons/' ) ),
 	);
 
 }
