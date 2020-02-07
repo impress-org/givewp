@@ -14,35 +14,42 @@ class FormPerformance extends Endpoint {
 		$this->endpoint = 'form-performance';
 	}
 
-	public function get_report($request) {
+	public function get_report( $request ) {
 
-		$labels = [];
-		$data = [];
+		$tooltips = [];
+		$data     = [];
 
 		// Use Give Payment Stats class to get best selling forms
-		$stats = new \Give_Payment_Stats;
-		$topForms = $stats->get_best_selling(5);
+		$stats    = new \Give_Payment_Stats();
+		$topForms = $stats->get_best_selling();
 
 		// Populate data from top performing forms
-		foreach ($topForms as $form) {
-			$title = get_the_title($form->form_id);
-			array_push($labels, $title);
-			array_push($data, $form->sales);
+		foreach ( $topForms as $form ) {
+			$title = get_the_title( $form->form_id );
+
+			$tooltips[] = [
+				'title'  => $form->sales,
+				'body'   => $title,
+				'footer' => '',
+			];
+
+			$data[] = $form->sales;
+
 		}
 
 		// Add caching logic here...
 
-		return new \WP_REST_Response([
-			'data' => [
-				'top' => $topForms,
-				'labels' => $labels,
-				'datasets' => [
-					[
-						'label' => 'Sales',
-						'data' => $data
-					]
+		return new \WP_REST_Response(
+			[
+				'data' => [
+					'datasets' => [
+						[
+							'data'     => $data,
+							'tooltips' => $tooltips,
+						],
+					],
 				],
 			]
-		]);
+		);
 	}
 }
