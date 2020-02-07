@@ -1,0 +1,15 @@
+#menu-posts-give_forms a[href^="https://givewp.com"] {
+	&.give-highlight {
+		color: rgb(43, 194, 83);
+		font-weight: 700;
+		vertical-align: top;
+
+		span.dashicons {
+			font-size: 14px !important;
+			width: auto;
+			height: 18px;
+			padding-right: 8px;
+			vertical-align: middle;
+		}
+	}
+}
