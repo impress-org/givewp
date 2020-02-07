@@ -1,0 +1,36 @@
+.give-upsell-notice {
+	border: 1px solid #e2e2e2;
+	padding: 10px;
+	margin: 10px;
+	box-shadow: 1px 1px 5px #e2e2e2;
+
+	> * {
+		min-height: 30px;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	.icon,
+	.description {
+		vertical-align: middle;
+		font-style: normal;
+
+		// For icon.
+		&::before {
+			vertical-align: middle;
+		}
+	}
+
+	.icon {
+		color: #aaa;
+		font-size: 26px;
+		padding-right: 15px;
+	}
+
+	a.view-addon-link {
+		float: right;
+		background: none !important;
+	}
+}
