@@ -77,7 +77,7 @@ class AverageDonation extends Endpoint {
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 			];
 
-			if ( $interval == 'PT1H' ) {
+			if ( $intervalStr == 'PT1H' ) {
 				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 			} else {
 				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
