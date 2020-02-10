@@ -53,35 +53,28 @@ class AverageDonation extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval ) {
-
-		$allTimeStartStr = $this->get_all_time_start();
+	public function get_data( $start, $end, $intervalStr ) {
 
 		$stats = new \Give_Payment_Stats();
-
-		$startStr = $start->format( 'Y-m-d H:i:s' );
-		$endStr   = $end->format( 'Y-m-d H:i:s' );
 
 		$tooltips = [];
 		$income   = [];
 
-		$dateInterval = new \DateInterval( $interval );
-		while ( $start < $end ) {
+		$interval = new \DateInterval( $intervalStr );
 
-			$periodStart = clone $start;
-			$periodEnd   = clone $start;
+		$periodStart = clone $start;
+		$periodEnd   = clone $start;
 
-			// Add interval to set up period end
-			date_add( $periodEnd, $dateInterval );
+		// Add interval to set up period end
+		date_sub( $periodStart, $interval );
 
-			$startStr = $periodStart->format( 'Y-m-d H:i:s' );
-			$endStr   = $periodEnd->format( 'Y-m-d H:i:s' );
+		while ( $periodStart < $end ) {
 
-			$averageIncomeForPeriod = $this->get_average_donation( $startStr, $endStr );
+			$averageIncomeForPeriod = $this->get_average_donation( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
 			$income[] = [
 				'y' => $averageIncomeForPeriod,
-				'x' => $endStr,
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 			];
 
 			if ( $interval == 'PT1H' ) {
@@ -96,17 +89,13 @@ class AverageDonation extends Endpoint {
 				'footer' => $periodLabel,
 			];
 
-			date_add( $start, $dateInterval );
+			// Add interval to set up next period
+			date_add( $periodEnd, $interval );
+			date_add( $periodStart, $interval );
 		}
 
-		$averageForPeriod = $this->get_average_donation( $startStr, $endStr );
-
-		// Calculate the income trend by comparing average earnings in the
-		// previous period to average earnings in the current period
-		$prevAverage    = $this->get_average_donation( $allTimeStartStr, $startStr );
-		$currentAverage = $this->get_average_donation( $allTimeStartStr, $endStr );
-
-		$trend = $prevAverage > 0 ? round( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ) : 'NaN';
+		$averageForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend            = $this->get_trend( $start, $end );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -140,5 +129,19 @@ class AverageDonation extends Endpoint {
 
 		return $average;
 
+	}
+
+	public function get_trend( $start, $end ) {
+
+		$allTimeStartStr = $this->get_all_time_start();
+
+		// Calculate the income trend by comparing average earnings in the
+		// previous period to average earnings in the current period
+		$prevAverage    = $this->get_average_donation( $allTimeStartStr, $start->format( 'Y-m-d H:i:s' ) );
+		$currentAverage = $this->get_average_donation( $allTimeStartStr, $end->format( 'Y-m-d H:i:s' ) );
+
+		$trend = $prevAverage > 0 ? round( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ) : 'NaN';
+
+		return $trend;
 	}
 }
