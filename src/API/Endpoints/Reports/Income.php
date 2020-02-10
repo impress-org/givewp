@@ -53,46 +53,34 @@ class Income extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval ) {
+	public function get_data( $start, $end, $intervalStr ) {
 
 		$stats = new \Give_Payment_Stats();
-
-		$startStr = $start->format( 'Y-m-d H:i:s' );
-		$endStr   = $end->format( 'Y-m-d H:i:s' );
-
-		// Determine the start date of the previous period (used to calculate trend)
-		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
-		$prevStr = $prev->format( 'Y-m-d H:i:s' );
 
 		$tooltips = [];
 		$income   = [];
 
-		$dateInterval = new \DateInterval( $interval );
+		$interval = new \DateInterval( $intervalStr );
 
-		date_sub( $start, $dateInterval );
+		$periodStart = clone $start;
+		$periodEnd   = clone $start;
 
-		while ( $start < $end ) {
+		// Subtract interval to set up period start
+		date_sub( $periodStart, $interval );
 
-			$periodStart = clone $start;
-			$periodEnd   = clone $start;
+		while ( $periodStart < $end ) {
 
-			// Add interval to set up period end
-			date_add( $periodEnd, $dateInterval );
+			$incomeForPeriod = $stats->get_earnings( 0, $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$donorsForPeriod = $this->get_donor_count( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
-			$startStr = $periodStart->format( 'Y-m-d H:i:s' );
-			$endStr   = $periodEnd->format( 'Y-m-d H:i:s' );
-
-			$incomeForPeriod = $stats->get_earnings( 0, $startStr, $endStr );
-			$donorsForPeriod = $this->get_donor_count( $startStr, $endStr );
-
-			if ( $interval == 'PT1H' ) {
+			if ( $intervalStr == 'PT1H' ) {
 				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 			} else {
 				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
 			$income[] = [
-				'x' => $endStr,
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $incomeForPeriod,
 			];
 
@@ -102,14 +90,15 @@ class Income extends Endpoint {
 				'footer' => $periodLabel,
 			];
 
-			date_add( $start, $dateInterval );
+			// Add interval to set up next period
+			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
 		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'datasets' => [
 				[
-					'label'    => __( 'Income', 'give' ),
 					'data'     => $income,
 					'tooltips' => $tooltips,
 				],
@@ -123,10 +112,7 @@ class Income extends Endpoint {
 	public function get_donor_count( $start, $end ) {
 		// Setup donor query args (get sanitized start/end date from request)
 		$args = [
-			'number'     => 25,
-			'paged'      => 1,
-			'orderby'    => 'purchase_value',
-			'order'      => 'DESC',
+			'number'     => -1,
 			'start_date' => $start,
 			'end_date'   => $end,
 		];
