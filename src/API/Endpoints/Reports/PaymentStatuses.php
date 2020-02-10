@@ -16,10 +16,13 @@ class PaymentStatuses extends Endpoint {
 
 	public function get_report( $request ) {
 
+		$start = date_create( $request['start'] );
+		$end   = date_create( $request['end'] );
+
 		// Setup args for give_count_payments
 		$args = [
-			'start-date' => $request['start'],
-			'end-date'   => $request['end'],
+			'start-date' => $start->format( 'Y-m-d H:i:s' ),
+			'end-date'   => $end->format( 'Y-m-d H:i:s' ),
 		];
 
 		// Use give_count_payments logic to get payments
@@ -41,8 +44,8 @@ class PaymentStatuses extends Endpoint {
 							'data'     => [
 								$payments->publish,
 								$payments->pending,
-								$payments->abandoned,
 								$payments->refunded,
+								$payments->abandoned,
 							],
 							'tooltips' => [
 								[
