@@ -706,7 +706,7 @@ class Give_Scripts {
 	private function get_script_tag( $url, $args = [] ) {
 		return sprintf(
 			'<script src="%1$s" type="text/javascript"></script>',
-			$url
+			add_query_arg( array( 'ver' => GIVE_VERSION ), $url )
 		);
 	}
 
@@ -726,7 +726,7 @@ class Give_Scripts {
 		);
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" media="%2$s"/>',
-			$url,
+			add_query_arg( array( 'ver' => GIVE_VERSION ), $url ),
 			$args['media']
 		);
 	}
