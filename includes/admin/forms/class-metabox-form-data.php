@@ -880,7 +880,7 @@ class Give_MetaBox_Form_Data {
 			</div>
 			',
 			sprintf(
-				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provides your donors with flexibility subscription giving options.', 'give' ),
+				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provide your donors with flexible subscription giving options.', 'give' ),
 				$addon_url,
 				__( 'Recurring Donations add-on', 'give' )
 			),

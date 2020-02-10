@@ -1517,28 +1517,29 @@ add_action( 'admin_head', 'give_admin_quick_js' );
 function give_admin_addon_menu_inline_scripts() {
 	?>
 	<script>
-		(function($){
-			const $addonLink = $('#menu-posts-give_forms a[href^="https://givewp.com"]');
-			$addonLink.attr('target', '_blank');
+		( function( $ ) {
+			const $addonLink = $( '#menu-posts-give_forms a[href^="https://givewp.com"]' );
+			$addonLink.attr( 'target', '_blank' );
 
 			<?php if ( empty( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ) ) : ?>
-			$addonLink.addClass('give-highlight');
-			$addonLink.prepend('<span class="dashicons dashicons-star-filled"></span>');
+			$addonLink.addClass( 'give-highlight' );
+			$addonLink.prepend( '<span class="dashicons dashicons-star-filled"></span>' );
 			<?php endif; ?>
-		})(jQuery)
+		} )( jQuery )
 	</script>
 	<style>
 		#menu-posts-give_forms a[href^="https://givewp.com"].give-highlight {
-			 color: rgb(43, 194, 83);
-			 font-weight: 700;
-			 vertical-align: top;
+			color: rgb(43, 194, 83);
+			font-weight: 700;
+			vertical-align: top;
+			text-shadow: 0 1px 2px #00000080;
 		}
 
 		#menu-posts-give_forms a[href^="https://givewp.com"].give-highlight span.dashicons {
 			font-size: 14px !important;
 			width: auto;
 			height: 18px;
-			padding-right: 8px;
+			padding-right: 3px;
 			vertical-align: middle;
 		}
 	</style>
@@ -1550,9 +1551,10 @@ add_action( 'admin_footer', 'give_admin_addon_menu_inline_scripts' );
 /**
  * Handle akismet_deblacklist_spammed_email_handler give-action
  *
+ * @param array $get
+ *
  * @since 2.5.14
  *
- * @param array $get
  */
 function give_akismet_deblacklist_spammed_email_handler( $get ) {
 	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';
@@ -1577,6 +1579,7 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
 	}
 }
+
 add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
 
 
