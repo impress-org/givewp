@@ -53,35 +53,28 @@ class TotalDonors extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval ) {
+	public function get_data( $start, $end, $intervalStr ) {
 
-		$allTimeStartStr = $this->get_all_time_start();
-
-		$startStr = $start->format( 'Y-m-d H:i:s' );
-		$endStr   = $end->format( 'Y-m-d H:i:s' );
+		$stats = new \Give_Payment_Stats();
 
 		$tooltips = [];
-		$donors   = [];
+		$income   = [];
 
-		$dateInterval = new \DateInterval( $interval );
+		$interval = new \DateInterval( $intervalStr );
 
-		date_sub( $start, $dateInterval );
+		$periodStart = clone $start;
+		$periodEnd   = clone $start;
 
-		while ( $start < $end ) {
+		// Subtract interval to set up period start
+		date_sub( $periodStart, $interval );
 
-			$periodStart = clone $start;
-			$periodEnd   = clone $start;
+		while ( $periodStart < $end ) {
 
-			// Add interval to set up period end
-			date_add( $periodEnd, $dateInterval );
-
-			$endStr = $periodEnd->format( 'Y-m-d H:i:s' );
-
-			$donorsForPeriod = $this->get_donor_count( $startStr, $endStr );
+			$donorsForPeriod = $this->get_donor_count( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
 			$income[] = [
 				'y' => $donorsForPeriod,
-				'x' => $endStr,
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 			];
 
 			if ( $interval == 'PT1H' ) {
@@ -91,21 +84,18 @@ class TotalDonors extends Endpoint {
 			}
 
 			$tooltips[] = [
-				'title'  => $donorsForPeriod . __( 'Donors', 'give' ),
+				'title'  => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'body'   => __( 'Total Donors', 'give' ),
 				'footer' => $periodLabel,
 			];
 
-			date_add( $start, $dateInterval );
+			// Add interval to set up next period
+			date_add( $periodEnd, $interval );
+			date_add( $periodStart, $interval );
 		}
 
-		$totalForPeriod = $this->get_donor_count( $startStr, $endStr );
-
-		// Calculate the donor trend by comparing total donors in the
-		// previous period to donors in the current period
-		$prevTotal    = $this->get_donor_count( $allTimeStartStr, $startStr );
-		$currentTotal = $this->get_donor_count( $allTimeStartStr, $endStr );
-		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+		$totalForPeriod = $this->get_donor_count( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend          = $this->get_trend( $start, $end );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -132,10 +122,7 @@ class TotalDonors extends Endpoint {
 	public function get_donor_count( $start, $end ) {
 		// Setup donor query args (get sanitized start/end date from request)
 		$args = [
-			'number'     => 25,
-			'paged'      => 1,
-			'orderby'    => 'purchase_value',
-			'order'      => 'DESC',
+			'number'     => -1,
 			'start_date' => $start,
 			'end_date'   => $end,
 		];
@@ -146,5 +133,18 @@ class TotalDonors extends Endpoint {
 		$donorCount = count( $donors );
 
 		return $donorCount;
+	}
+
+	public function get_trend( $start, $end ) {
+
+		$allTimeStartStr = $this->get_all_time_start();
+
+		// Calculate the donor trend by comparing total donors in the
+		// previous period to donors in the current period
+		$prevTotal    = $this->get_donor_count( $allTimeStartStr, $start->format( 'Y-m-d H:i:s' ) );
+		$currentTotal = $this->get_donor_count( $allTimeStartStr, $end->format( 'Y-m-d H:i:s' ) );
+		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+
+		return $trend;
 	}
 }
