@@ -117,7 +117,7 @@ function give_add_add_ons_option_link() {
 		 *
 		 * @since 2.6.0
 		 */
-		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://givewp.com/addons/' ) ),
+		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://go.givewp.com/addons-menu-link' ) ),
 	);
 
 }
