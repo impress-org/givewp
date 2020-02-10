@@ -53,35 +53,26 @@ class TotalRefunds extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval ) {
-
-		$allTimeStartStr = $this->get_all_time_start();
-
-		$stats = new \Give_Payment_Stats();
-
-		$startStr = $start->format( 'Y-m-d H:i:s' );
-		$endStr   = $end->format( 'Y-m-d H:i:s' );
+	public function get_data( $start, $end, $intervalStr ) {
 
 		$tooltips = [];
 		$income   = [];
 
-		$dateInterval = new \DateInterval( $interval );
+		$interval = new \DateInterval( $intervalStr );
 
-		while ( $start < $end ) {
+		$periodStart = clone $start;
+		$periodEnd   = clone $start;
 
-			$periodStart = clone $start;
-			$periodEnd   = clone $start;
+		// Subtract interval to set up period start
+		date_sub( $periodStart, $interval );
 
-			// Add interval to set up period end
-			date_add( $periodEnd, $dateInterval );
+		while ( $periodStart < $end ) {
 
-			$endStr = $periodEnd->format( 'Y-m-d H:i:s' );
-
-			$refundsForPeriod = $stats->get_sales( 0, $startStr, $endStr, 'refunded' );
+			$refundsForPeriod = $this->get_refunds( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
 			$refunds[] = [
 				'y' => $refundsForPeriod,
-				'x' => $endStr,
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 			];
 
 			if ( $interval == 'PT1H' ) {
@@ -96,16 +87,14 @@ class TotalRefunds extends Endpoint {
 				'footer' => $periodLabel,
 			];
 
-			date_add( $start, $dateInterval );
+			// Add interval to set up period end
+			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
+
 		}
 
-		$totalForPeriod = $stats->get_sales( 0, $startStr, $endStr, 'refunded' );
-
-		// Calculate the refunds trend by comparing total refunds in the
-		// previous period to refunds in the current period
-		$prevTotal    = $stats->get_sales( 0, $allTimeStartStr, $startStr, 'refunded' );
-		$currentTotal = $stats->get_sales( 0, $allTimeStartStr, $endStr, 'refunded' );
-		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+		$totalForPeriod = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend          = $this->get_trend( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Create data objec to be returned, with total highlighted
 		$data = [
@@ -120,6 +109,34 @@ class TotalRefunds extends Endpoint {
 		];
 
 		return $data;
+
+	}
+
+	public function get_refunds( $startStr, $endStr ) {
+
+		$args = [
+			'start-date' => $startStr,
+			'end-date'   => $endStr,
+		];
+
+		$payments = give_count_payments( $args );
+		$refunds  = $payments->refunded;
+
+		return $refunds;
+
+	}
+
+	public function get_trend( $startStr, $endStr ) {
+
+		$allTimeStartStr = $this->get_all_time_start();
+
+		// Calculate the refunds trend by comparing total refunds in the
+		// previous period to refunds in the current period
+		$prevTotal    = $this->get_refunds( $allTimeStartStr, $startStr );
+		$currentTotal = $this->get_refunds( $allTimeStartStr, $endStr );
+		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+
+		return $trend;
 
 	}
 }
