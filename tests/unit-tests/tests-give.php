@@ -113,7 +113,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/add-ons/add-ons.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php' );

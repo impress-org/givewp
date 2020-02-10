@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_add_options_links() {
 	global $give_settings_page, $give_payments_page, $give_reports_page, $give_donors_page, $give_tools_page;
 
-	//Payments
+	// Payments
 	/* @var WP_Post_Type $give_payment */
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page(
@@ -42,7 +42,7 @@ function give_add_options_links() {
 		'give_payment_history_page'
 	);
 
-	//Donors
+	// Donors
 	$give_donors_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
 		esc_html__( 'Donors', 'give' ),
@@ -52,7 +52,7 @@ function give_add_options_links() {
 		'give_donors_page'
 	);
 
-	//Reports
+	// Reports
 	$give_reports_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
 		esc_html__( 'Donation Reports', 'give' ),
@@ -65,7 +65,7 @@ function give_add_options_links() {
 		)
 	);
 
-	//Settings
+	// Settings
 	$give_settings_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
 		esc_html__( 'GiveWP Settings', 'give' ),
@@ -78,7 +78,7 @@ function give_add_options_links() {
 		)
 	);
 
-	//Tools.
+	// Tools.
 	$give_tools_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
 		esc_html__( 'GiveWP Tools', 'give' ),
@@ -102,21 +102,22 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
  *
  * @since 2.5.0
  *
- * @global $give_add_ons_page
- *
  * @return void
  */
-function give_add_add_ons_option_link(){
-	global $give_add_ons_page;
+function give_add_add_ons_option_link() {
+	global $submenu;
 
-	//Add-ons
-	$give_add_ons_page = add_submenu_page(
-		'edit.php?post_type=give_forms',
-		esc_html__( 'GiveWP Add-ons', 'give' ),
+	// Add-ons
+	$submenu['edit.php?post_type=give_forms'][] = array(
 		esc_html__( 'Add-ons', 'give' ),
 		'install_plugins',
-		'give-addons',
-		'give_add_ons_page'
+
+		/**
+		 * Filter the add-on page url.
+		 *
+		 * @since 2.6.0
+		 */
+		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://go.givewp.com/addons-menu-link' ) ),
 	);
 
 }
@@ -229,18 +230,20 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			}
 			break;
 		default:
-			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
-			$admin_pages = apply_filters( 'give_admin_pages', array(
-				$give_payments_page,
-				$give_settings_page,
-				$give_reports_page,
-				$give_system_info_page,
-				$give_add_ons_page,
-				$give_settings_export,
-				$give_donors_page,
-				$give_tools_page,
-				'widgets.php',
-			) );
+			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_settings_export, $give_donors_page, $give_tools_page;
+			$admin_pages = apply_filters(
+				'give_admin_pages',
+				array(
+					$give_payments_page,
+					$give_settings_page,
+					$give_reports_page,
+					$give_system_info_page,
+					$give_settings_export,
+					$give_donors_page,
+					$give_tools_page,
+					'widgets.php',
+				)
+			);
 
 			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php' ) ), true ) ) ? true : false;
 	}
@@ -255,29 +258,29 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
  * @return array
  */
 function give_settings_page_pages( $settings ) {
-	include( 'abstract-admin-settings-page.php' );
+	include 'abstract-admin-settings-page.php';
 
 	$settings = array(
 		// General settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-general.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-general.php',
 
 		// Payment Gateways Settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-gateways.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-gateways.php',
 
 		// Display settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-display.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-display.php',
 
 		// Emails settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-email.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-email.php',
 
 		// Addons settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-addon.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-addon.php',
 
 		// License settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php',
 
 		// Advanced settings.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php',
 	);
 
 	// Output.
@@ -294,17 +297,17 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
  * @return array
  */
 function give_reports_page_pages( $settings ) {
-	include( 'abstract-admin-settings-page.php' );
+	include 'abstract-admin-settings-page.php';
 
 	$settings = array(
 		// Earnings.
-		include( 'reports/class-earnings-report.php' ),
+		include 'reports/class-earnings-report.php',
 
 		// Forms.
-		include( 'reports/class-forms-report.php' ),
+		include 'reports/class-forms-report.php',
 
 		// Gateways.
-		include( 'reports/class-gateways-report.php' ),
+		include 'reports/class-gateways-report.php',
 
 	);
 
@@ -321,27 +324,27 @@ add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 )
  * @return array
  */
 function give_tools_page_pages( $settings ) {
-	include( 'abstract-admin-settings-page.php' );
+	include 'abstract-admin-settings-page.php';
 
 	$settings = array(
 
 		// Export.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php',
 
 		// Import
-		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php',
 
 		// Logs.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php',
 
 		// API.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php',
 
 		// Data.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php',
 
 		// System Info.
-		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
+		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php',
 	);
 
 	// Output.
@@ -380,7 +383,7 @@ add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_
  *
  * @since 1.8.18
  *
- * @param array $post_states An array of post display states.
+ * @param array   $post_states An array of post display states.
  * @param WP_Post $post The current post object.
  *
  * @return array
