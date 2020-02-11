@@ -32,7 +32,7 @@ class Reports {
 		if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 			wp_add_dashboard_widget(
 				'givewp_reports_widget',
-				__( 'Give Donations: Reports', 'give' ),
+				__( 'GiveWP Donations: Reports', 'give' ),
 				[ $this, 'render_template' ]
 			);
 		}
