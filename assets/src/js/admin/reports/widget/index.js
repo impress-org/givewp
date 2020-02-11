@@ -32,7 +32,7 @@ const Widget = () => {
 					<RESTChart
 						title={ __( 'All Time Income', 'give' ) }
 						type="line"
-						aspectRatio={ 0.4 }
+						aspectRatio={ 0.8 }
 						endpoint="income"
 						showLegend={ false }
 					/>
