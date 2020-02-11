@@ -23,7 +23,6 @@ import LoadingNotice from '../../../components/loading-notice';
 const OverviewPage = () => {
 	// Use initLoaded from store
 	const [ { donationsFound, pageLoaded } ] = useStoreValue();
-	const showGrid = donationsFound && pageLoaded ? true : false;
 	return (
 		<Fragment>
 			{ donationsFound === false && (
@@ -32,7 +31,7 @@ const OverviewPage = () => {
 			{ pageLoaded === false && (
 				<LoadingNotice />
 			) }
-			<Grid visible={ showGrid }>
+			<Grid visible={ pageLoaded }>
 				<Card width={ 12 }>
 					<RESTChart
 						title={ __( 'Income for Period', 'give' ) }

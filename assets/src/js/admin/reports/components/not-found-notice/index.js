@@ -23,12 +23,14 @@ const NotFoundNotice = () => {
 
 	return (
 		<div className="givewp-not-found-notice">
-			<h2>{ __( 'No donations were found for this period.', 'give' ) }</h2>
-			<button
-				onClick={ () => setRange( 'alltime' ) }
-				className="givewp-not-found-notice-button">
-				{ __( 'See All Time Donations', 'give' ) }
-			</button>
+			<div className="givewp-not-found-card">
+				<h2>{ __( 'No donations were found for this period.', 'give' ) }</h2>
+				<button
+					onClick={ () => setRange( 'alltime' ) }
+					className="givewp-not-found-notice-button">
+					{ __( 'See All Time Donations', 'give' ) }
+				</button>
+			</div>
 		</div>
 	);
 };
