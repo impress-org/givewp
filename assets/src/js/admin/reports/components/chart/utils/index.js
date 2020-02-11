@@ -71,7 +71,8 @@ export function createConfig( type, data ) {
 			tooltips: {
 				// Disable the on-canvas tooltip
 				enabled: false,
-
+				mode: 'index',
+				intersect: false,
 				custom: function( tooltipModel ) {
 					// Tooltip Element
 					let tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
@@ -104,8 +105,10 @@ export function createConfig( type, data ) {
 					// Display, position, and set styles for font
 					tooltipEl.style.opacity = 1;
 					tooltipEl.style.position = 'absolute';
-					tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - ( tooltipEl.offsetWidth / 2 ) + 'px';
+
+					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
 					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 6 ) + 'px';
+
 					tooltipEl.style.pointerEvents = 'none';
 
 					const tooltip = data.datasets[ tooltipModel.dataPoints[ 0 ].datasetIndex ].tooltips[ tooltipModel.dataPoints[ 0 ].index ];
@@ -114,11 +117,26 @@ export function createConfig( type, data ) {
 					tooltipEl.innerHTML = `<div class="givewp-tooltip-header">${ tooltip.title }</div><div class="givewp-tooltip-body"><bold>${ tooltip.body }</b><br>${ tooltip.footer }</div><div class="givewp-tooltip-caret"></div>`;
 				},
 			},
+			plugins: {
+				crosshair: false,
+			},
 			legend: {
 				display: false,
 			},
 			layout: {
 				padding: 16,
+			},
+			scales: {
+				xAxes: [],
+				yAxes: [],
+			},
+			elements: {
+				point: {
+					radius: 4,
+					hitRadius: 2,
+					hoverRadius: 6,
+					backgroundColor: '#555555',
+				},
 			},
 		},
 	};
@@ -127,6 +145,9 @@ export function createConfig( type, data ) {
 	if ( type === 'line' || type === 'bar' ) {
 		const yAxes = data.datasets.map( ( dataset, index ) => {
 			return {
+				gridLines: {
+					color: '#D8D8D8',
+				},
 				id: `y-axis-${ index }`,
 				ticks: {
 					beginAtZero: true,
@@ -136,15 +157,42 @@ export function createConfig( type, data ) {
 
 		config.options.scales = {
 			yAxes: yAxes,
+			xAxes: [],
+		};
+
+		config.options.plugins = {
+			crosshair: false,
 		};
 
 		if ( type === 'line' ) {
 			config.options.scales.xAxes = [ {
+				gridLines: {
+					color: '#FFF',
+				},
 				type: 'time',
 				time: {
 					stepSize: 3,
 				},
 			} ];
+
+			config.options.plugins = {
+				crosshair: {
+					line: {
+						color: '#9EA3A8',
+						width: 1,
+						dashPattern: [ 10, 10 ],
+					},
+					sync: {
+						enabled: false,
+					},
+					snap: {
+						enabled: true,
+					},
+					zoom: {
+						enabled: false,
+					},
+				},
+			};
 		}
 	}
 

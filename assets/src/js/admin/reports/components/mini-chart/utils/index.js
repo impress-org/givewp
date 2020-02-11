@@ -34,6 +34,9 @@ export function createConfig( data ) {
 		type: 'line',
 		data: formattedData,
 		options: {
+			plugins: {
+				crosshair: false,
+			},
 			layout: {
 				padding: 4,
 			},
@@ -52,7 +55,8 @@ export function createConfig( data ) {
 			tooltips: {
 				// Disable the on-canvas tooltip
 				enabled: false,
-
+				mode: 'index',
+				intersect: false,
 				custom: function( tooltipModel ) {
 					// Tooltip Element
 					let tooltipEl = document.getElementById( 'givewp-mini-chartjs-tooltip' );
@@ -85,8 +89,10 @@ export function createConfig( data ) {
 					// Display, position, and set styles for font
 					tooltipEl.style.opacity = 1;
 					tooltipEl.style.position = 'absolute';
-					tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - ( tooltipEl.offsetWidth / 2 ) + 'px';
-					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 2 ) + 'px';
+
+					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 6 ) + 'px';
+
 					tooltipEl.style.pointerEvents = 'none';
 
 					const tooltip = data.datasets[ tooltipModel.dataPoints[ 0 ].datasetIndex ].tooltips[ tooltipModel.dataPoints[ 0 ].index ];
@@ -97,7 +103,10 @@ export function createConfig( data ) {
 			},
 			elements: {
 				point: {
-					radius: 2,
+					radius: 0,
+					hitRadius: 3,
+					hoverRadius: 4,
+					backgroundColor: '#555555',
 				},
 			},
 		},
