@@ -1,5 +1,5 @@
-// Dependencies
-const { __ } = wp.i18n;
+// Components
+import Spinner from '../spinner';
 
 // Styles
 import './style.scss';
@@ -7,7 +7,7 @@ import './style.scss';
 const LoadingNotice = () => {
 	return (
 		<div className="givewp-loading-notice">
-			<h2>{ __( 'Loading...', 'give' ) }</h2>
+			<Spinner />
 		</div>
 	);
 };

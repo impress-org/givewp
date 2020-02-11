@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 // Components
 import Chart from '../chart';
 import SkeletonChart from '../skeleton-chart';
+import Spinner from '../spinner';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
@@ -63,7 +64,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 				<div className="givewp-chart-title">
 					{ title }
 					{ ! loaded && (
-						<span className="spinner is-active" />
+						<Spinner />
 					) }
 				</div>
 			) }
