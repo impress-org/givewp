@@ -4,6 +4,6 @@
 ?>
 <div id="givewp-reports-widget">
 	<div class="givewp-loading-notice">
-		<h2><?php _e( 'Loading...', 'give' ); ?></h2>
+		<div className="givewp-spinner"></div>
 	</div>
 </div>
