@@ -10,6 +10,8 @@ namespace Give\API\Endpoints\Reports;
 
 class Income extends Endpoint {
 
+	protected $payments;
+
 	public function __construct() {
 		$this->endpoint = 'income';
 	}
@@ -34,9 +36,15 @@ class Income extends Endpoint {
 		$dataset = [];
 
 		switch ( true ) {
-			case ( $diff->days > 1 ):
+			case ( $diff->days > 12 ):
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
+				break;
+			case ( $diff->days > 7 ):
+				$data = $this->get_data( $start, $end, 'PT12H' );
+				break;
+			case ( $diff->days > 2 ):
+				$data = $this->get_data( $start, $end, 'PT3H' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H' );
@@ -55,7 +63,7 @@ class Income extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		$tooltips = [];
 		$income   = [];
@@ -70,8 +78,9 @@ class Income extends Endpoint {
 
 		while ( $periodStart < $end ) {
 
-			$incomeForPeriod = $stats->get_earnings( 0, $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
-			$donorsForPeriod = $this->get_donor_count( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$values          = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$incomeForPeriod = $values['earnings'];
+			$donorsForPeriod = $values['donor_count'];
 
 			if ( $intervalStr == 'PT1H' ) {
 				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
@@ -109,19 +118,40 @@ class Income extends Endpoint {
 
 	}
 
-	public function get_donor_count( $start, $end ) {
-		// Setup donor query args (get sanitized start/end date from request)
+	public function get_values( $startStr, $endStr ) {
+
+		$earnings = 0;
+		$donors   = [];
+
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
+				$earnings += $payment->total;
+				$donors[]  = $payment->donor_id;
+			}
+		}
+
+		$unique = array_unique( $donors );
+
+		return [
+			'earnings'    => $earnings,
+			'donor_count' => count( $unique ),
+		];
+	}
+
+	public function get_payments( $startStr, $endStr ) {
+
 		$args = [
 			'number'     => -1,
-			'start_date' => $start,
-			'end_date'   => $end,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
 		];
 
-		// Get array of top 25 donors
-		$donors     = new \Give_Donors_Query( $args );
-		$donors     = $donors->get_donors();
-		$donorCount = count( $donors );
+		$payments = new \Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
+		return $payments;
 
-		return $donorCount;
 	}
 }
