@@ -68,6 +68,30 @@ export function createConfig( type, data ) {
 		type: type,
 		data: formattedData,
 		options: {
+			hover: {
+				intersect: false,
+			},
+			plugins: {
+				crosshair: false,
+			},
+			legend: {
+				display: false,
+			},
+			layout: {
+				padding: 16,
+			},
+			scales: {
+				xAxes: [],
+				yAxes: [],
+			},
+			elements: {
+				point: {
+					radius: 4,
+					hitRadius: 2,
+					hoverRadius: 6,
+					backgroundColor: '#69B868',
+				},
+			},
 			tooltips: {
 				// Disable the on-canvas tooltip
 				enabled: false,
@@ -115,27 +139,6 @@ export function createConfig( type, data ) {
 
 					// Set tooltip inner HTML
 					tooltipEl.innerHTML = `<div class="givewp-tooltip-header">${ tooltip.title }</div><div class="givewp-tooltip-body"><bold>${ tooltip.body }</b><br>${ tooltip.footer }</div><div class="givewp-tooltip-caret"></div>`;
-				},
-			},
-			plugins: {
-				crosshair: false,
-			},
-			legend: {
-				display: false,
-			},
-			layout: {
-				padding: 16,
-			},
-			scales: {
-				xAxes: [],
-				yAxes: [],
-			},
-			elements: {
-				point: {
-					radius: 4,
-					hitRadius: 2,
-					hoverRadius: 6,
-					backgroundColor: '#555555',
 				},
 			},
 		},
