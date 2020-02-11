@@ -22,6 +22,9 @@
 					<button>
 						<?php _e( 'Year', 'give' ); ?>
 					</button>
+					<button>
+						<?php _e( 'All Time', 'give' ); ?>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -34,7 +37,7 @@
 			</a>
 		</div>
 		<div class="givewp-loading-notice">
-			<h2><?php _e( 'Loading...', 'give' ); ?></h2>
+			<div className="givewp-spinner"></div>
 		</div>
 	</div>
 </div>
