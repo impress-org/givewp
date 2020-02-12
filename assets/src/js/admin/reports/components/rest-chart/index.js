@@ -13,7 +13,7 @@ import { useStoreValue } from '../../store';
 
 const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 	// Use period from store
-	const [ { period }, dispatch ] = useStoreValue();
+	const [ { period, donationsFound, pageLoaded }, dispatch ] = useStoreValue();
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
@@ -58,6 +58,8 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 		}
 	}, [ period, endpoint ] );
 
+	const ready = fetched && donationsFound && pageLoaded ? true : false;
+
 	return (
 		<Fragment>
 			{ title && (
@@ -68,7 +70,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 					) }
 				</div>
 			) }
-			{ fetched ? (
+			{ ready ? (
 				<Chart
 					type={ type }
 					aspectRatio={ aspectRatio }

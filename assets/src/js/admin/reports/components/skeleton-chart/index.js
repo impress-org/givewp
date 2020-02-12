@@ -1,5 +1,6 @@
 // Dependencies
 import PropTypes from 'prop-types';
+import { getSkeletonData } from './utils';
 
 // Components
 import Chart from '../chart';
@@ -8,64 +9,15 @@ import Chart from '../chart';
 import './style.scss';
 
 const SkeletonChart = ( { type, aspectRatio, showLegend } ) => {
-	const skeletonData = {
-		labels: [
-			'--',
-			'--',
-			'--',
-			'--',
-			'--',
-		],
-		datasets: [
-			{
-				label: '--',
-				data: [
-					32,
-					41,
-					37,
-					12,
-					32,
-				],
-				tooltips: [
-					{
-						title: '--',
-						body: '--',
-						footer: '',
-					},
-					{
-						title: '--',
-						body: '--',
-						footer: '',
-					},
-					{
-						title: '--',
-						body: '--',
-						footer: '',
-					},
-					{
-						title: '--',
-						body: '--',
-						footer: '',
-					},
-					{
-						title: '--',
-						body: '--',
-						footer: '',
-					},
-				],
-			},
-		],
-	};
+	const skeletonData = getSkeletonData( type );
 
 	return (
-		<div className="givewp-skeleton-chart">
-			<Chart
-				type={ type }
-				aspectRatio={ aspectRatio }
-				data={ skeletonData }
-				showLegend={ showLegend }
-			/>
-		</div>
+		<Chart
+			type={ type }
+			aspectRatio={ aspectRatio }
+			data={ skeletonData }
+			showLegend={ showLegend }
+		/>
 	);
 };
 

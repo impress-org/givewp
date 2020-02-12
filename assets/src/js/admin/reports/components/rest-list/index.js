@@ -16,7 +16,7 @@ import { useStoreValue } from '../../store';
 
 const RESTList = ( { title, endpoint } ) => {
 	// Use period from store
-	const [ { period } ] = useStoreValue();
+	const [ { period, donationsFound, pageLoaded } ] = useStoreValue();
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
@@ -50,6 +50,8 @@ const RESTList = ( { title, endpoint } ) => {
 	const items = getItems( fetched );
 	const skeletonItems = getSkeletonItems();
 
+	const ready = fetched && donationsFound && pageLoaded ? true : false;
+
 	let overlay;
 	switch ( true ) {
 		case loaded === false: {
@@ -64,11 +66,13 @@ const RESTList = ( { title, endpoint } ) => {
 
 	return (
 		<Fragment>
-			{ overlay }
-			{ fetched ? (
-				<List title={ title }>
-					{ items }
-				</List>
+			{ ready ? (
+				<Fragment>
+					{ overlay }
+					<List title={ title }>
+						{ items }
+					</List>
+				</Fragment>
 			) : (
 				<List title={ title }>
 					{ skeletonItems }
