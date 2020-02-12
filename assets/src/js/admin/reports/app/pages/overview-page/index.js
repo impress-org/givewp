@@ -15,8 +15,7 @@ import Card from '../../../components/card';
 import RESTChart from '../../../components/rest-chart';
 import RESTMiniChart from '../../../components/rest-mini-chart';
 import RESTList from '../../../components/rest-list';
-import List from '../../../components/list';
-import LocationItem from '../../../components/location-item';
+import RESTTable from '../../../components/rest-table';
 import NotFoundNotice from '../../../components/not-found-notice';
 import LoadingNotice from '../../../components/loading-notice';
 
@@ -65,6 +64,12 @@ const OverviewPage = () => {
 						endpoint="total-refunds"
 					/>
 				</Card>
+				<Card width={ 12 }>
+					<RESTTable
+						title={ __( 'Income Breakdown', 'give' ) }
+						endpoint="endpoint"
+					/>
+				</Card>
 				<Card width={ 4 }>
 					<RESTChart
 						title={ __( 'Payment Methods', 'give' ) }
@@ -92,84 +97,16 @@ const OverviewPage = () => {
 						showLegend={ true }
 					/>
 				</Card>
-				<Card width={ 4 }>
-					<RESTList
-						title={ __( 'Top Donors', 'give' ) }
-						endpoint="top-donors"
-					/>
-				</Card>
-				<Card title={ __( 'Location List', 'give' ) } width={ 4 }>
-					<List>
-						<LocationItem
-							city="Anacortes"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Seattle"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Burlington"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Friday Harbor"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="La Conner"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Bellingham"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Everett"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-						<LocationItem
-							city="Lynden"
-							state="Washington"
-							country="United States"
-							flag="flag.png"
-							count="4 Donations"
-							total="$345.00"
-						/>
-					</List>
-				</Card>
-				<Card width={ 4 }>
+				<Card width={ 6 }>
 					<RESTList
 						title={ __( 'Recent Donations', 'give' ) }
 						endpoint="recent-donations"
+					/>
+				</Card>
+				<Card width={ 6 }>
+					<RESTList
+						title={ __( 'Top Donors', 'give' ) }
+						endpoint="top-donors"
 					/>
 				</Card>
 			</Grid>
