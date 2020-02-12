@@ -24,7 +24,7 @@ class AverageDonation extends Endpoint {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
 				[
-					'data' => 'test cached',
+					'data' => $cached_report,
 				]
 			);
 		}
@@ -56,7 +56,8 @@ class AverageDonation extends Endpoint {
 
 		return new \WP_REST_Response(
 			[
-				'data' => $data,
+				'cached' => $result,
+				'data'   => $data,
 			]
 		);
 	}
@@ -111,7 +112,7 @@ class AverageDonation extends Endpoint {
 					'data'      => $income,
 					'tooltips'  => $tooltips,
 					'trend'     => 5,
-					'highlight' => $averageIncomeForPeriod,
+					'highlight' => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), [ 'decode_currency' => true ] ),
 				],
 			],
 		];
@@ -122,20 +123,17 @@ class AverageDonation extends Endpoint {
 
 	public function get_average_donation( $startStr, $endStr ) {
 
-		$earnings = 0;
-		$donors   = [];
+		$earnings     = 0;
+		$paymentCount = 0;
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$earnings += $payment->total;
-				$donors[]  = $payment->donor_id;
+				$earnings     += $payment->total;
+				$paymentCount += 1;
 			}
 		}
 
-		$unique     = array_unique( $donors );
-		$donorCount = count( $unique );
-
-		$average = (int) ( $earnings / $donorCount );
+		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
 		return $average;
 	}

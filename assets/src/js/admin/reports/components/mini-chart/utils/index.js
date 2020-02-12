@@ -34,6 +34,9 @@ export function createConfig( data ) {
 		type: 'line',
 		data: formattedData,
 		options: {
+			hover: {
+				intersect: false,
+			},
 			plugins: {
 				crosshair: false,
 			},
