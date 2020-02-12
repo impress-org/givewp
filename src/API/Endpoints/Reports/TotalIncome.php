@@ -103,6 +103,7 @@ class TotalIncome extends Endpoint {
 		}
 
 		$totalIncomeForPeriod = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend                = $this->get_trend( $start, $end, $income );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -110,7 +111,7 @@ class TotalIncome extends Endpoint {
 				[
 					'data'      => $income,
 					'tooltips'  => $tooltips,
-					'trend'     => 5,
+					'trend'     => $trend,
 					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), [ 'decode_currency' => true ] ),
 				],
 			],
@@ -118,6 +119,30 @@ class TotalIncome extends Endpoint {
 
 		return $data;
 
+	}
+
+	public function get_trend( $start, $end, $income ) {
+
+		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
+		$slopes   = [];
+
+		foreach ( $income as $key => $value ) {
+			if ( $key > 1 ) {
+				$currentY = $income[ $key ]['y'];
+				$prevY    = $income[ $key - 1 ]['y'];
+
+				$diff  = $prevY - $currentY;
+				$slope = $diff / $interval;
+
+				$slopes[] += $slope;
+			}
+		}
+
+		$sum   = round( array_sum( $slopes ), 2 );
+		$count = count( $slopes );
+
+		$trend = round( ( $sum / $count ) * 100, 1 );
+		return $trend;
 	}
 
 	public function get_income( $startStr, $endStr ) {
