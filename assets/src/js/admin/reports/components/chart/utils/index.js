@@ -1,3 +1,5 @@
+import crosshairPlugin from './crosshair';
+
 // Format data from Reports API for ChartJS
 export function formatData( type, data ) {
 	const formattedLabels = data.labels ? data.labels.slice( 0 ) : null;
@@ -70,9 +72,6 @@ export function createConfig( type, data ) {
 		options: {
 			hover: {
 				intersect: false,
-			},
-			plugins: {
-				crosshair: false,
 			},
 			legend: {
 				display: false,
@@ -163,10 +162,6 @@ export function createConfig( type, data ) {
 			xAxes: [],
 		};
 
-		config.options.plugins = {
-			crosshair: false,
-		};
-
 		if ( type === 'line' ) {
 			config.options.scales.xAxes = [ {
 				gridLines: {
@@ -178,24 +173,7 @@ export function createConfig( type, data ) {
 				},
 			} ];
 
-			config.options.plugins = {
-				crosshair: {
-					line: {
-						color: '#9EA3A8',
-						width: 1,
-						dashPattern: [ 10, 10 ],
-					},
-					sync: {
-						enabled: false,
-					},
-					snap: {
-						enabled: true,
-					},
-					zoom: {
-						enabled: false,
-					},
-				},
-			};
+			config.plugins = [ crosshairPlugin ];
 		}
 	}
 
