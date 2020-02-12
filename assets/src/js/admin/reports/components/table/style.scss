@@ -1,0 +1,29 @@
+.givewp-table-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
+}
+
+.givewp-table {
+	display: flex;
+	flex-direction: column;
+
+	> * {
+		display: flex;
+		min-height: 40px;
+		height: auto;
+		font-size: 12px;
+		padding: 0 16px;
+
+		> * {
+			flex: 1;
+		}
+	}
+
+	> .givewp-table-header {
+		font-weight: 500;
+	}
+}
