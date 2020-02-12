@@ -111,7 +111,7 @@ class TotalIncome extends Endpoint {
 					'data'      => $income,
 					'tooltips'  => $tooltips,
 					'trend'     => 5,
-					'highlight' => $totalIncomeForPeriod,
+					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), [ 'decode_currency' => true ] ),
 				],
 			],
 		];
