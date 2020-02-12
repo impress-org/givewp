@@ -10,6 +10,8 @@ namespace Give\API\Endpoints\Reports;
 
 class AverageDonation extends Endpoint {
 
+	protected $payments;
+
 	public function __construct() {
 		$this->endpoint = 'average-donation';
 	}
@@ -22,7 +24,7 @@ class AverageDonation extends Endpoint {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
 				[
-					'data' => $cached_report,
+					'data' => 'test cached',
 				]
 			);
 		}
@@ -34,9 +36,15 @@ class AverageDonation extends Endpoint {
 		$data = [];
 
 		switch ( true ) {
-			case ( $diff->days > 1 ):
+			case ( $diff->days > 12 ):
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
+				break;
+			case ( $diff->days > 7 ):
+				$data = $this->get_data( $start, $end, 'PT12H' );
+				break;
+			case ( $diff->days > 2 ):
+				$data = $this->get_data( $start, $end, 'PT3H' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H' );
@@ -55,27 +63,22 @@ class AverageDonation extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
-		$tooltips = [];
 		$income   = [];
+		$tooltips = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
 		$periodStart = clone $start;
 		$periodEnd   = clone $start;
 
-		// Add interval to set up period end
+		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
 		while ( $periodStart < $end ) {
 
-			$averageIncomeForPeriod = $this->get_average_donation( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
-
-			$income[] = [
-				'y' => $averageIncomeForPeriod,
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
-			];
+			$averageForPeriod = $this->get_average_donation( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
 			if ( $intervalStr == 'PT1H' ) {
 				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
@@ -83,19 +86,23 @@ class AverageDonation extends Endpoint {
 				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
+			$income[] = [
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'y' => $averageForPeriod,
+			];
+
 			$tooltips[] = [
-				'title'  => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), [ 'decode_currency' => true ] ),
-				'body'   => __( 'Average Donation', 'give' ),
+				'title'  => give_currency_filter( give_format_amount( $averageForPeriod ), [ 'decode_currency' => true ] ),
+				'body'   => __( 'Avg Donation', 'give' ),
 				'footer' => $periodLabel,
 			];
 
 			// Add interval to set up next period
-			date_add( $periodEnd, $interval );
 			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
 		}
 
-		$averageForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend            = $this->get_trend( $start, $end );
+		$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -103,8 +110,8 @@ class AverageDonation extends Endpoint {
 				[
 					'data'      => $income,
 					'tooltips'  => $tooltips,
-					'trend'     => $trend,
-					'highlight' => give_currency_filter( give_format_amount( $averageForPeriod ), [ 'decode_currency' => true ] ),
+					'trend'     => 5,
+					'highlight' => $averageIncomeForPeriod,
 				],
 			],
 		];
@@ -113,35 +120,40 @@ class AverageDonation extends Endpoint {
 
 	}
 
-	/**
-	 * Calculate the average donation for a given period
-	 *
-	 * @param  $start string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
-	 * @param  $end  string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 */
-	public function get_average_donation( $start, $end ) {
+	public function get_average_donation( $startStr, $endStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$earnings = 0;
+		$donors   = [];
 
-		$income   = $stats->get_earnings( 0, $start, $end );
-		$payments = $stats->get_sales( 0, $start, $end );
-		$average  = $payments > 0 ? $income / $payments : 0;
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
+				$earnings += $payment->total;
+				$donors[]  = $payment->donor_id;
+			}
+		}
+
+		$unique     = array_unique( $donors );
+		$donorCount = count( $unique );
+
+		$average = (int) ( $earnings / $donorCount );
 
 		return $average;
-
 	}
 
-	public function get_trend( $start, $end ) {
+	public function get_payments( $startStr, $endStr ) {
 
-		$allTimeStartStr = $this->get_all_time_start();
+		$args = [
+			'number'     => -1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
+		];
 
-		// Calculate the income trend by comparing average earnings in the
-		// previous period to average earnings in the current period
-		$prevAverage    = $this->get_average_donation( $allTimeStartStr, $start->format( 'Y-m-d H:i:s' ) );
-		$currentAverage = $this->get_average_donation( $allTimeStartStr, $end->format( 'Y-m-d H:i:s' ) );
+		$payments = new \Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
+		return $payments;
 
-		$trend = $prevAverage > 0 ? round( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ) : 'NaN';
-
-		return $trend;
 	}
 }
