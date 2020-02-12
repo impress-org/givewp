@@ -8,23 +8,25 @@
 			<h1 class="wp-heading-inline">
 				<?php _e( 'Reports', 'give' ); ?>
 			</h1>
-			<div class="givewp-period-selector">
-				<div class="group">
-					<button>
-						<?php _e( 'Day', 'give' ); ?>
-					</button>
-					<button class="selected">
-						<?php _e( 'Week', 'give' ); ?>
-					</button>
-					<button>
-						<?php _e( 'Month', 'give' ); ?>
-					</button>
-					<button>
-						<?php _e( 'Year', 'give' ); ?>
-					</button>
-					<button>
-						<?php _e( 'All Time', 'give' ); ?>
-					</button>
+			<div class="givewp-inline-period-selector">
+				<div class="givewp-period-selector">
+					<div class="group">
+						<button>
+							<?php _e( 'Day', 'give' ); ?>
+						</button>
+						<button class="selected">
+							<?php _e( 'Week', 'give' ); ?>
+						</button>
+						<button>
+							<?php _e( 'Month', 'give' ); ?>
+						</button>
+						<button>
+							<?php _e( 'Year', 'give' ); ?>
+						</button>
+						<button>
+							<?php _e( 'All Time', 'give' ); ?>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
