@@ -203,7 +203,6 @@ function give_send_back_to_checkout( $args = array() ) {
 	// Redirect them.
 	$redirect .= "#give-form-{$form_id}-wrap";
 
-
 	/**
 	 * Filter the redirect url
 	 */
@@ -264,7 +263,6 @@ function give_get_failed_transaction_uri( $extras = false ) {
 	$uri = ! empty( $give_options['failure_page'] ) ?
 		trailingslashit( get_permalink( $give_options['failure_page'] ) ) :
 		home_url();
-
 
 	if ( $extras ) {
 		$uri .= "?{$extras}";
@@ -425,7 +423,7 @@ function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
  */
 function give_update_goal_progress( $form_id = 0 ) {
 
-	//Get goal option meta key
+	// Get goal option meta key
 	$is_goal_enabled = give_is_setting_enabled( give_get_meta( $form_id, '_give_goal_option', true, 'disabled' ) );
 
 	// Check, if the form goal is enabled.
@@ -654,7 +652,6 @@ function give_price_range( $form_id = 0, $formatted = true ) {
 		'asc' === $order_type ? give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ),
 		'asc' === $order_type ? 'high' : 'low',
 		'asc' === $order_type ? give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) )
-
 	);
 
 	if ( ! $formatted ) {
@@ -905,7 +902,6 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 			break;
 		}
 	}
-
 
 	/**
 	 * Filter the price amount
@@ -1173,7 +1169,6 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 		$donor_count = absint( $wpdb->get_var( $query ) );
 	}
 
-
 	/**
 	 * Filter the donor count
 	 *
@@ -1275,7 +1270,6 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	$html .= '</div>';
 
-
 	return $html;
 }
 
@@ -1295,7 +1289,6 @@ function give_form_get_default_level( $form_id ) {
 	if ( give_has_variable_prices( $form_id ) ) {
 		/**
 		 * Filter the variable pricing
-		 *
 		 *
 		 * @since      1.0
 		 * @deprecated 2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
