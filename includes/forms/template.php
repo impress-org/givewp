@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string Donation form.
  * @since 1.0
- *
  */
 function give_get_donation_form( $args = array() ) {
 
@@ -62,7 +61,8 @@ function give_get_donation_form( $args = array() ) {
 
 	$form_action = add_query_arg(
 		apply_filters(
-			'give_form_action_args', array(
+			'give_form_action_args',
+			array(
 				'payment-mode' => $payment_mode,
 			)
 		),
@@ -92,7 +92,6 @@ function give_get_donation_form( $args = array() ) {
 	 * @param array $args An array of form arguments.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
@@ -129,7 +128,6 @@ function give_get_donation_form( $args = array() ) {
 			 * @param Give_Donate_Form $form Form object.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( 'give_pre_form', $form->ID, $args, $form );
 
@@ -148,7 +146,6 @@ function give_get_donation_form( $args = array() ) {
 			 * @param Give_Donate_Form $form           Form object.
 			 *
 			 * @since 1.8.17
-			 *
 			 */
 			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
 			?>
@@ -157,7 +154,7 @@ function give_get_donation_form( $args = array() ) {
 				<span class="give-hidden" style="display: none !important;">
 					<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
 					<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot"
-					       class="give-honeypot give-hidden"/>
+						   class="give-honeypot give-hidden"/>
 				</span>
 
 				<?php
@@ -169,7 +166,6 @@ function give_get_donation_form( $args = array() ) {
 				 * @param Give_Donate_Form $form Form object.
 				 *
 				 * @since 1.0
-				 *
 				 */
 				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
@@ -181,7 +177,6 @@ function give_get_donation_form( $args = array() ) {
 				 * @param Give_Donate_Form $form Form object.
 				 *
 				 * @since 1.7
-				 *
 				 */
 				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
@@ -193,7 +188,6 @@ function give_get_donation_form( $args = array() ) {
 				 * @param Give_Donate_Form $form Form object.
 				 *
 				 * @since 1.0
-				 *
 				 */
 				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
@@ -209,7 +203,6 @@ function give_get_donation_form( $args = array() ) {
 			 * @param Give_Donate_Form $form Form object.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( 'give_post_form', $form->ID, $args, $form );
 
@@ -226,7 +219,6 @@ function give_get_donation_form( $args = array() ) {
 	 * @param array $args An array of form arguments.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_post_form_output', $form->ID, $args );
 
@@ -248,7 +240,6 @@ function give_get_donation_form( $args = array() ) {
  *
  * @return string
  * @since  1.0
- *
  */
 function give_show_purchase_form( $form_id, $args ) {
 
@@ -296,7 +287,6 @@ function give_show_purchase_form( $form_id, $args ) {
 			 * @param int $form_id The form ID.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( "give_{$payment_mode}_cc_form", $form_id, $args );
 		} else {
@@ -306,7 +296,6 @@ function give_show_purchase_form( $form_id, $args ) {
 			 * @param int $form_id The form ID.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( 'give_cc_form', $form_id, $args );
 		}
@@ -345,7 +334,6 @@ add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
  *
  * @return void
  * @since  1.4.1
- *
  */
 function give_show_register_login_fields( $form_id ) {
 
@@ -363,7 +351,7 @@ function give_show_register_login_fields( $form_id ) {
 			do_action( 'give_donation_form_register_fields', $form_id );
 			?>
 		</div>
-	<?php
+		<?php
 	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
 		?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
@@ -376,7 +364,7 @@ function give_show_register_login_fields( $form_id ) {
 			do_action( 'give_donation_form_login_fields', $form_id );
 			?>
 		</div>
-	<?php
+		<?php
 	endif;
 
 	if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
@@ -402,7 +390,6 @@ add_action( 'give_donation_form_register_login_fields', 'give_show_register_logi
  *
  * @return void
  * @since  1.0
- *
  */
 function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
@@ -413,7 +400,8 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$symbol              = give_currency_symbol( give_get_currency( $form_id, $args ) );
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
 	$default_amount      = give_format_amount(
-		give_get_default_form_amount( $form_id ), array(
+		give_get_default_form_amount( $form_id ),
+		array(
 			'sanitize' => false,
 			'currency' => give_get_currency( $form_id ),
 		)
@@ -427,7 +415,6 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 * @param array $args    An array of form arguments.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
@@ -436,7 +423,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		?>
 		<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
-		       value="<?php echo $default_amount; ?>" required aria-required="true"/>
+			   value="<?php echo $default_amount; ?>" required aria-required="true"/>
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php
 			if ( 'before' === $currency_position ) {
@@ -463,7 +450,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				?>
 				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel"
-				       placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
+					   placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php
 				if ( 'after' === $currency_position ) {
 					echo $currency_output;
@@ -481,7 +468,6 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 * @param array $args    An array of form arguments.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
@@ -504,7 +490,6 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 * @param array $args    An array of form arguments.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_after_donation_levels', $form_id, $args );
 }
@@ -518,7 +503,6 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
  *
  * @return string Donation levels.
  * @since  1.0
- *
  */
 function give_output_levels( $form_id ) {
 
@@ -531,7 +515,6 @@ function give_output_levels( $form_id ) {
 	 * @since          1.0
 	 * @deprecated     2.2 Use give_get_donation_levels filter instead of give_form_variable_prices.
 	 *                 Check Give_Donate_Form::get_prices().
-	 *
 	 */
 	$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 
@@ -554,7 +537,8 @@ function give_output_levels( $form_id ) {
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( give_is_default_level_id( $price ) ? 'give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount(
-					$price['_give_amount'], array(
+					$price['_give_amount'],
+					array(
 						'sanitize' => false,
 						'currency' => give_get_currency( $form_id ),
 					)
@@ -594,7 +578,8 @@ function give_output_levels( $form_id ) {
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$formatted_amount = give_format_amount(
-					$price['_give_amount'], array(
+					$price['_give_amount'],
+					array(
 						'sanitize' => false,
 						'currency' => give_get_currency( $form_id ),
 					)
@@ -634,12 +619,15 @@ function give_output_levels( $form_id ) {
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ), $form_id, $price );
 				$level_classes = apply_filters(
-					'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ), $form_id,
+					'give_form_level_classes',
+					'give-donation-level-' . $price['_give_id']['level_id'] . ( give_is_default_level_id( $price ) ? ' give-default-level' : '' ),
+					$form_id,
 					$price
 				);
 
 				$formatted_amount = give_format_amount(
-					$price['_give_amount'], array(
+					$price['_give_amount'],
+					array(
 						'sanitize' => false,
 						'currency' => give_get_currency( $form_id ),
 					)
@@ -682,7 +670,6 @@ function give_output_levels( $form_id ) {
  *
  * @return string Checkout button.
  * @since  1.0
- *
  */
 function give_display_checkout_button( $form_id, $args ) {
 
@@ -726,7 +713,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @return string
  */
-function give_add_button_open_form( $form_id, $args ){
+function give_add_button_open_form( $form_id, $args ) {
 	$display_label_field = give_get_meta( $form_id, '_give_reveal_label', true );
 	$display_label       = ! empty( $args['continue_button_title'] )
 		? $args['continue_button_title']
@@ -760,7 +747,6 @@ function give_add_button_open_form( $form_id, $args ){
  * @see    For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
  *
  * @since  1.0
- *
  */
 function give_user_info_fields( $form_id ) {
 
@@ -998,7 +984,6 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  *
  * @return void
  * @since  1.0
- *
  */
 function give_get_cc_form( $form_id ) {
 
@@ -1010,7 +995,6 @@ function give_get_cc_form( $form_id ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_before_cc_fields', $form_id );
 	?>
@@ -1031,8 +1015,8 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id; ?>"
-			       class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>"
-			       required aria-required="true"/>
+				   class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>"
+				   required aria-required="true"/>
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-responsive">
@@ -1043,8 +1027,8 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id; ?>"
-			       class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>"
-			       required aria-required="true"/>
+				   class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>"
+				   required aria-required="true"/>
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
@@ -1055,8 +1039,8 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id; ?>"
-			       class="card-name give-input required" placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
-			       required aria-required="true"/>
+				   class="card-name give-input required" placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
+				   required aria-required="true"/>
 		</p>
 		<?php
 		/**
@@ -1065,7 +1049,6 @@ function give_get_cc_form( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_before_cc_expiration' );
 		?>
@@ -1077,13 +1060,13 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="hidden" id="card_exp_month-<?php echo $form_id; ?>" name="card_exp_month"
-			       class="card-expiry-month"/>
+				   class="card-expiry-month"/>
 			<input type="hidden" id="card_exp_year-<?php echo $form_id; ?>" name="card_exp_year"
-			       class="card-expiry-year"/>
+				   class="card-expiry-year"/>
 
 			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id; ?>"
-			       class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>"
-			       required aria-required="true"/>
+				   class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>"
+				   required aria-required="true"/>
 		</p>
 		<?php
 		/**
@@ -1092,7 +1075,6 @@ function give_get_cc_form( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_after_cc_expiration', $form_id );
 		?>
@@ -1104,7 +1086,6 @@ function give_get_cc_form( $form_id ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_after_cc_fields', $form_id );
 
@@ -1120,7 +1101,6 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
  *
  * @return void
  * @since  1.0
- *
  */
 function give_default_cc_address_fields( $form_id ) {
 	// Get user info.
@@ -1137,7 +1117,6 @@ function give_default_cc_address_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_cc_billing_top' );
 
@@ -1163,7 +1142,6 @@ function give_default_cc_address_fields( $form_id ) {
 			$selected_country = $give_user_info['billing_country'];
 		}
 
-
 		// Get the country list that does not require city.
 		$city_required = ! array_key_exists( $selected_country, give_city_not_required_country_list() );
 
@@ -1175,7 +1153,7 @@ function give_default_cc_address_fields( $form_id ) {
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
 				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+					  data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<select
@@ -1285,7 +1263,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<span
 					class="give-required-indicator <?php echo $validate_state ? '' : 'give-hidden'; ?> ">*</span>
 				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+					  data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
 			</label>
 			<?php
 
@@ -1305,7 +1283,7 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-				       placeholder="<?php echo $state_label; ?>" value="<?php echo $selected_state; ?>"
+					   placeholder="<?php echo $state_label; ?>" value="<?php echo $selected_state; ?>"
 					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>
 				/>
 			<?php endif; ?>
@@ -1339,7 +1317,6 @@ function give_default_cc_address_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_cc_billing_bottom' );
 		?>
@@ -1359,7 +1336,6 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  *
  * @return string
  * @since  1.0
- *
  */
 function give_get_register_fields( $form_id ) {
 
@@ -1382,7 +1358,6 @@ function give_get_register_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_register_fields_before', $form_id );
 		?>
@@ -1395,14 +1370,13 @@ function give_get_register_fields( $form_id ) {
 			 * @param int $form_id The form ID.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
 
 			$class = ( 'registration' === $show_register_form ) ? 'form-row-wide' : 'form-row-first';
 			?>
 			<div id="give-create-account-wrap-<?php echo $form_id; ?>"
-			     class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
+				 class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
 					// Add attributes to checkbox, if Guest Checkout is disabled.
@@ -1421,7 +1395,7 @@ function give_get_register_fields( $form_id ) {
 					} else {
 						?>
 						<input type="checkbox" name="give_create_account" value="on" id="<?php echo $id; ?>"
-						       class="give-input"/>
+							   class="give-input"/>
 						<?php
 					}
 
@@ -1432,7 +1406,7 @@ function give_get_register_fields( $form_id ) {
 						'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
 						give_get_nonce_field( "give_form_create_user_nonce_{$form_id}", 'give-form-user-register-hash', false )
 					);
-					?>
+	?>
 				</label>
 			</div>
 
@@ -1455,7 +1429,6 @@ function give_get_register_fields( $form_id ) {
 			 * @param int $form_id The form ID.
 			 *
 			 * @since 1.0
-			 *
 			 */
 			do_action( 'give_register_account_fields_after', $form_id );
 			?>
@@ -1468,7 +1441,6 @@ function give_get_register_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_register_fields_after', $form_id );
 		?>
@@ -1500,7 +1472,6 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
  *
  * @return string
  * @since  1.0
- *
  */
 function give_get_login_fields( $form_id ) {
 
@@ -1543,7 +1514,6 @@ function give_get_login_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_donation_form_login_fields_before', $form_id );
 		?>
@@ -1557,13 +1527,13 @@ function give_get_login_fields( $form_id ) {
 				</label>
 
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
-				       type="text"
-				       name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-				       placeholder="<?php _e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   type="text"
+					   name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
+					   placeholder="<?php _e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>"
-			     class="give_login_password form-row form-row-last form-row-responsive">
+				 class="give_login_password form-row form-row-last form-row-responsive">
 				<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
 					<?php _e( 'Password', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -1571,8 +1541,8 @@ function give_get_login_fields( $form_id ) {
 					<?php } ?>
 				</label>
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
-				       type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
-				       placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
+					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 				<?php if ( give_logged_in_only( $form_id ) ) : ?>
 					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 				<?php endif; ?>
@@ -1581,7 +1551,7 @@ function give_get_login_fields( $form_id ) {
 			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
 				 <span class="give-forgot-password ">
 					 <a href="<?php echo wp_lostpassword_url(); ?>"
-					    target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
+						target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
 				 </span>
 			</div>
 		</div>
@@ -1589,11 +1559,11 @@ function give_get_login_fields( $form_id ) {
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit"
-			       value="<?php _e( 'Login', 'give' ); ?>"/>
+				   value="<?php _e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
 				<input type="button" data-action="give_cancel_login"
-				       class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel"
-				       value="<?php _e( 'Cancel', 'give' ); ?>"/>
+					   class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel"
+					   value="<?php _e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</div>
@@ -1604,7 +1574,6 @@ function give_get_login_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_donation_form_login_fields_after', $form_id );
 		?>
@@ -1627,7 +1596,6 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  *
  * @return void
  * @since  1.0
- *
  */
 function give_payment_mode_select( $form_id, $args ) {
 
@@ -1640,7 +1608,6 @@ function give_payment_mode_select( $form_id, $args ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.7
-	 *
 	 */
 	do_action( 'give_payment_mode_top', $form_id );
 	?>
@@ -1659,7 +1626,6 @@ function give_payment_mode_select( $form_id, $args ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.7
-		 *
 		 */
 		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
@@ -1684,15 +1650,15 @@ function give_payment_mode_select( $form_id, $args ) {
 				/**
 				 * Loop through the active payment gateways.
 				 */
-				$selected_gateway              = give_get_chosen_gateway( $form_id );
-				$give_settings                 = give_get_settings();
-				$gateways_label                = array_key_exists( 'gateways_label', $give_settings ) ?
+				$selected_gateway = give_get_chosen_gateway( $form_id );
+				$give_settings    = give_get_settings();
+				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
 					$give_settings['gateways_label'] :
 					array();
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					// Determine the default gateway.
-					$checked = checked( $gateway_id, $selected_gateway, false );
+					$checked                   = checked( $gateway_id, $selected_gateway, false );
 					$checked_class             = $checked ? ' class="give-gateway-option-selected"' : '';
 					$is_payment_method_visible = isset( $gateway['is_visible'] ) ? $gateway['is_visible'] : true;
 
@@ -1700,8 +1666,8 @@ function give_payment_mode_select( $form_id, $args ) {
 						?>
 						<li<?php echo $checked_class; ?>>
 							<input type="radio" name="payment-mode" class="give-gateway"
-							       id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							       value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+								   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
+								   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
 
 							<?php
 							$label = $gateway['checkout_label'];
@@ -1710,8 +1676,8 @@ function give_payment_mode_select( $form_id, $args ) {
 							}
 							?>
 							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-							       class="give-gateway-option"
-							       id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+								   class="give-gateway-option"
+								   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
 						</li>
 						<?php
 					}
@@ -1734,7 +1700,6 @@ function give_payment_mode_select( $form_id, $args ) {
 		 * @param int $form_id The form ID.
 		 *
 		 * @since 1.7
-		 *
 		 */
 		do_action( 'give_payment_mode_after_gateways_wrap' );
 		?>
@@ -1747,7 +1712,6 @@ function give_payment_mode_select( $form_id, $args ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.7
-	 *
 	 */
 	do_action( 'give_payment_mode_bottom', $form_id );
 	?>
@@ -1785,7 +1749,6 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select', 10, 2 );
  *
  * @return bool
  * @since  1.0
- *
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
@@ -1853,7 +1816,7 @@ function give_terms_agreement( $form_id ) {
 		</div>
 
 		<input name="give_agree_to_terms" class="required" type="checkbox"
-		       id="give_agree_to_terms-<?php echo $form_id; ?>" value="1" required aria-required="true"/>
+			   id="give_agree_to_terms-<?php echo $form_id; ?>" value="1" required aria-required="true"/>
 		<label for="give_agree_to_terms-<?php echo $form_id; ?>"><?php echo $label; ?></label>
 
 	</fieldset>
@@ -1871,12 +1834,11 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  *
  * @return void
  * @since  1.0
- *
  */
 function give_checkout_final_total( $form_id ) {
 
 	$total = isset( $_POST['give_total'] ) ?
-		apply_filters('give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		give_get_default_form_amount( $form_id );
 
 	// Only proceed if give_total available.
@@ -1897,15 +1859,17 @@ function give_checkout_final_total( $form_id ) {
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
 		<span class="give-final-total-amount"
-		      data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
+			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php
 			echo give_currency_filter(
 				give_format_amount(
-					$total, array(
+					$total,
+					array(
 						'sanitize' => false,
 						'currency' => give_get_currency( $form_id ),
 					)
-				), array( 'currency_code' => give_get_currency( $form_id ) )
+				),
+				array( 'currency_code' => give_get_currency( $form_id ) )
 			);
 			?>
 		</span>
@@ -1931,7 +1895,6 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  *
  * @return void
  * @since  1.0
- *
  */
 function give_checkout_submit( $form_id, $args ) {
 	?>
@@ -1969,18 +1932,17 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
  *
  * @return string
  * @since  1.8.8
- *
  */
 function give_get_donation_form_submit_button( $form_id, $args = array() ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
-    $display_label_field = apply_filters( 'give_donation_form_submit_button_text', $display_label_field, $form_id, $args );
+	$display_label_field = apply_filters( 'give_donation_form_submit_button_text', $display_label_field, $form_id, $args );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 	ob_start();
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-		       value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
+			   value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
@@ -2003,7 +1965,8 @@ function give_show_goal_progress( $form_id, $args = array() ) {
 
 	ob_start();
 	give_get_template(
-		'shortcode-goal', array(
+		'shortcode-goal',
+		array(
 			'form_id' => $form_id,
 			'args'    => $args,
 		)
@@ -2029,7 +1992,6 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  *
  * @return mixed
  * @since  2.1
- *
  */
 function give_show_goal_totals_progress( $total, $total_goal ) {
 
@@ -2040,7 +2002,8 @@ function give_show_goal_totals_progress( $total, $total_goal ) {
 
 	ob_start();
 	give_get_template(
-		'shortcode-totals-progress', array(
+		'shortcode-totals-progress',
+		array(
 			'total'      => $total,
 			'total_goal' => $total_goal,
 		)
@@ -2061,7 +2024,6 @@ add_action( 'give_pre_form', 'give_show_goal_totals_progress', 10, 2 );
  *
  * @return mixed|string
  * @since  1.8
- *
  */
 function give_get_form_content_placement( $form_id, $args ) {
 	$show_content = '';
@@ -2096,7 +2058,6 @@ function give_get_form_content_placement( $form_id, $args ) {
  *
  * @return void|bool
  * @since  1.0
- *
  */
 function give_form_content( $form_id, $args ) {
 
@@ -2123,7 +2084,6 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  *
  * @return void
  * @since  1.0
- *
  */
 function give_form_display_content( $form_id, $args ) {
 	$content      = give_get_meta( $form_id, '_give_form_content', true );
@@ -2165,7 +2125,6 @@ function give_form_display_content( $form_id, $args ) {
 	 * @param array  $args
 	 *
 	 * @since 1.0
-	 *
 	 */
 	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
@@ -2181,7 +2140,6 @@ function give_form_display_content( $form_id, $args ) {
  *
  * @return void
  * @since 1.0
- *
  */
 function give_checkout_hidden_fields( $form_id ) {
 
@@ -2191,7 +2149,6 @@ function give_checkout_hidden_fields( $form_id ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_hidden_fields_before', $form_id );
 
@@ -2208,7 +2165,6 @@ function give_checkout_hidden_fields( $form_id ) {
 	 * @param int $form_id The form ID.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_hidden_fields_after', $form_id );
 
@@ -2223,7 +2179,6 @@ function give_checkout_hidden_fields( $form_id ) {
  *
  * @return string $content Filtered content.
  * @since 1.0
- *
  */
 function give_filter_success_page_content( $content ) {
 
@@ -2266,7 +2221,6 @@ add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
  *
  * @return string
  * @since  1.4.1
- *
  */
 function give_members_only_form( $final_output, $args ) {
 
@@ -2301,7 +2255,6 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
  * @param Give_Donate_Form $form
  *
  * @since 1.8.17
- *
  */
 function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
@@ -2319,9 +2272,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	if ( give_is_setting_enabled( $custom_amount ) ) {
 		?>
 		<input type="hidden" name="give-form-minimum"
-		       value="<?php echo give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ); ?>"/>
+			   value="<?php echo give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ); ?>"/>
 		<input type="hidden" name="give-form-maximum"
-		       value="<?php echo give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ); ?>"/>
+			   value="<?php echo give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ); ?>"/>
 		<?php
 	}
 
@@ -2362,7 +2315,6 @@ add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0
  *
  * @return array
  * @since 1.8.17
- *
  */
 function __give_form_add_currency_settings( $form_html_tags, $form ) {
 	$form_currency     = give_get_currency( $form->ID );
@@ -2378,7 +2330,7 @@ function __give_form_add_currency_settings( $form_html_tags, $form ) {
 
 	if ( ! empty( $currency_settings ) ) {
 		foreach ( $currency_settings as $key => $value ) {
-			$form_html_tags["data-{$key}"] = $value;
+			$form_html_tags[ "data-{$key}" ] = $value;
 		}
 	}
 
@@ -2394,7 +2346,6 @@ add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );
  *
  * @return string
  * @since 2.1
- *
  */
 function add_give_goal_progress_class( $class_goal ) {
 	$class_goal = 'progress progress-striped active';
@@ -2409,7 +2360,6 @@ function add_give_goal_progress_class( $class_goal ) {
  *
  * @return string
  * @since 2.1
- *
  */
 function add_give_goal_progress_bar_class( $class_bar ) {
 	$class_bar = 'bar';
@@ -2426,7 +2376,6 @@ function add_give_goal_progress_bar_class( $class_bar ) {
  *
  * @return array
  * @since 2.1
- *
  */
 function add_class_for_form_grid( $class, $id, $args ) {
 	$class[] = 'give-form-grid-wrap';
@@ -2482,7 +2431,8 @@ function give_redirect_and_popup_form( $redirect, $args ) {
 			array(
 				'form-id'      => $form_id,
 				'payment-mode' => $payment_mode,
-			), $redirect
+			),
+			$redirect
 		);
 	}
 
