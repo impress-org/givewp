@@ -19,6 +19,8 @@
 		overflow: hidden;
 		margin-top: 180px;
 		background: #fff;
+		position: sticky;
+		top: calc(40vh - 1px);
 
 		> button {
 			border: 1px solid #ddd;
