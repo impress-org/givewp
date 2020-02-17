@@ -146,12 +146,23 @@ export function createConfig( type, data ) {
 	// Setup yAxes to begin at zero if chart is 'line' or 'bar'
 	if ( type === 'line' || type === 'bar' ) {
 		const yAxes = data.datasets.map( ( dataset, index ) => {
+			let max;
+			switch ( typeof dataset.data[ 0 ] ) {
+				case 'object':
+					max = Math.max( ...dataset.data.map( o => o.y ), 0 ) * 1.1;
+					break;
+				default:
+					max = Math.max( ...dataset.data.map( o => o ), 0 ) * 1.1;
+					break;
+			}
+
 			return {
 				gridLines: {
 					color: '#D8D8D8',
 				},
 				id: `y-axis-${ index }`,
 				ticks: {
+					suggestedMax: max,
 					beginAtZero: true,
 				},
 			};
@@ -165,11 +176,15 @@ export function createConfig( type, data ) {
 		if ( type === 'line' ) {
 			config.options.scales.xAxes = [ {
 				gridLines: {
-					color: '#FFF',
+					display: false,
 				},
 				type: 'time',
 				time: {
-					stepSize: 3,
+					//stepSize: 5,
+					displayFormats: {
+						hour: 'ddd ha',
+						day: 'MMM D, YYYY',
+					},
 				},
 			} ];
 
