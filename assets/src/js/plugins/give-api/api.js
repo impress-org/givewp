@@ -282,10 +282,10 @@ const Give = {
 			classes += text.length ? ' give-has-text' : '';
 			classes = classes.length ? ' ' + classes.trim() : '';
 
-			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>`;
+			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim() }</div></div>`;
 
 			// return spinner HTML.
-			if( null === args.show ) {
+			if ( null === args.show ) {
 				return spinnerHTML;
 			}
 
