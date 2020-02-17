@@ -36,15 +36,14 @@ class IncomeBreakdown extends Endpoint {
 		$dataset = [];
 
 		switch ( true ) {
-			case ( $diff->days > 12 ):
-				$interval = round( $diff->days / 12 );
-				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
+			case ( $diff->days > 365 ):
+				$data = $this->get_data( $start, $end, 'P1M' );
 				break;
-			case ( $diff->days > 7 ):
-				$data = $this->get_data( $start, $end, 'PT12H' );
+			case ( $diff->days > 60 ):
+				$data = $this->get_data( $start, $end, 'P1W' );
 				break;
-			case ( $diff->days > 2 ):
-				$data = $this->get_data( $start, $end, 'PT3H' );
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H' );
@@ -85,17 +84,14 @@ class IncomeBreakdown extends Endpoint {
 			$netForPeriod     = $values['net'];
 
 			switch ( $intervalStr ) {
-				case 'PT12H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
-				case 'PT3H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+				case 'P1M':
+					$periodLabel = $periodEnd->format( 'F Y' );
 					break;
 				case 'PT1H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					$periodLabel = $periodEnd->format( 'l ga' );
 					break;
 				default:
-					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+					$periodLabel = $periodEnd->format( 'F j, Y' );
 			}
 
 			$income[] = [
@@ -144,10 +140,10 @@ class IncomeBreakdown extends Endpoint {
 		$unique = array_unique( $donors );
 
 		return [
-			'income'  => $income,
+			'income'  => give_currency_filter( give_format_amount( $income ), [ 'decode_currency' => true ] ),
 			'donors'  => count( $unique ),
 			'refunds' => $refunds,
-			'net'     => $income - $refundTotal,
+			'net'     => give_currency_filter( give_format_amount( $income - $refundTotal ), [ 'decode_currency' => true ] ),
 		];
 	}
 
