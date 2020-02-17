@@ -180,11 +180,13 @@ export function createConfig( type, data ) {
 				},
 				type: 'time',
 				time: {
-					//stepSize: 5,
 					displayFormats: {
 						hour: 'ddd ha',
 						day: 'MMM D, YYYY',
 					},
+				},
+				ticks: {
+					maxTicksLimit: 10,
 				},
 			} ];
 
