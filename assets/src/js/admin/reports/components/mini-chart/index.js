@@ -61,6 +61,14 @@ const MiniChart = ( { title, data } ) => {
 				</Fragment>;
 				break;
 			}
+			default: {
+				newIndicator = <Fragment>
+					<span style={ { color: '#afb5bb' } }>
+						{ `${ Math.abs( newTrend ) }%` }
+					</span>
+				</Fragment>;
+				break;
+			}
 		}
 
 		setHighlightValue( newHighlightValue );
