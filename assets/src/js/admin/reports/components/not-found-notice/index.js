@@ -7,22 +7,22 @@ import { useStoreValue } from '../../store';
 // Styles
 import './style.scss';
 
-const NotFoundNotice = ( { noticeRange } ) => {
+const NotFoundNotice = ( { range } ) => {
 	// Get 'period' object from the store
 	const [ {}, dispatch ] = useStoreValue();
 
 	// Dispatch SET_RANGE action
-	const setRange = ( range ) => {
+	const setRange = ( noticeRange ) => {
 		dispatch( {
 			type: 'SET_RANGE',
 			payload: {
-				range,
+				range: noticeRange,
 			},
 		} );
 	};
 
 	let label;
-	switch ( noticeRange ) {
+	switch ( range ) {
 		case 'month':
 			label = __( 'See Donations for Month', 'give' );
 			break;
@@ -34,9 +34,13 @@ const NotFoundNotice = ( { noticeRange } ) => {
 	return (
 		<div className="givewp-not-found-notice">
 			<div className="givewp-not-found-card">
-				<h2>{ __( 'No donations were found for this period.', 'give' ) }</h2>
+				<h2>{ __( 'Get a quick read of your', 'give' ) }<br />{ __( 'GiveWP Donations', 'give' ) }</h2>
+				<p>
+					{ __( 'Uh oh! Looks like we can\'t find any donations.', 'give' ) } <br />
+					{ __( 'Try looking at a different stretch of time, or use the Reports page to view all-time records.', 'give' ) } <br />
+				</p>
 				<button
-					onClick={ () => setRange( noticeRange ) }
+					onClick={ () => setRange( range ) }
 					className="givewp-not-found-notice-button">
 					{ label }
 				</button>
