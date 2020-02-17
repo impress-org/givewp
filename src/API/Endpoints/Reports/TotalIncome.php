@@ -80,10 +80,18 @@ class TotalIncome extends Endpoint {
 
 			$incomeForPeriod = $this->get_income( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
-			if ( $intervalStr == 'PT1H' ) {
-				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-			} else {
-				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			switch ( $intervalStr ) {
+				case 'PT12H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT3H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT1H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				default:
+					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
 			$income[] = [
@@ -93,7 +101,7 @@ class TotalIncome extends Endpoint {
 
 			$tooltips[] = [
 				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
-				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
+				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
 			];
 
