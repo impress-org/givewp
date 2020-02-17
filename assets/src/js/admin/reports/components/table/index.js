@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import ExportCSV from '../export-csv';
 
 import './style.scss';
 
@@ -27,10 +28,14 @@ const Table = ( { title, labels, rows } ) => {
 		);
 	} );
 
+	let filename = title.replace( ' ', '-' );
+	filename = filename.toLowerCase();
+
 	return (
 		<Fragment>
 			{ title && ( <div className="givewp-table-title">
 				{ title }
+				<ExportCSV filename={ filename } headers={ labels } rows={ rows } />
 			</div> ) }
 			<div className="givewp-table">
 				<div className="givewp-table-header">
