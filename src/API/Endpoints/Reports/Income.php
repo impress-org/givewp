@@ -82,10 +82,18 @@ class Income extends Endpoint {
 			$incomeForPeriod = $values['earnings'];
 			$donorsForPeriod = $values['donor_count'];
 
-			if ( $intervalStr == 'PT1H' ) {
-				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-			} else {
-				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			switch ( $intervalStr ) {
+				case 'PT12H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT3H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT1H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				default:
+					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
 			$income[] = [
