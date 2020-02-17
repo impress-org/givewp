@@ -63,7 +63,7 @@ const MiniChart = ( { title, data } ) => {
 			}
 			default: {
 				newIndicator = <Fragment>
-					<span style={ { color: '#afb5bb' } }>
+					<span style={ { color: '#82878c' } }>
 						{ `${ Math.abs( newTrend ) }%` }
 					</span>
 				</Fragment>;
