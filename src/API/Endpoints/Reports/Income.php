@@ -40,7 +40,10 @@ class Income extends Endpoint {
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
-			case ( $diff->days > 7 ):
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
+				break;
+			case ( $diff->days > 4 ):
 				$data = $this->get_data( $start, $end, 'PT12H' );
 				break;
 			case ( $diff->days > 2 ):
@@ -83,6 +86,9 @@ class Income extends Endpoint {
 			$donorsForPeriod = $values['donor_count'];
 
 			switch ( $intervalStr ) {
+				case 'P1D':
+					$periodLabel = $periodEnd->format( 'l' );
+					break;
 				case 'PT12H':
 					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 					break;
