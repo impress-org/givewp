@@ -11,7 +11,7 @@ import Spinner from '../spinner';
 // Store-related dependencies
 import { useStoreValue } from '../../store';
 
-const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
+const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls } ) => {
 	// Use period from store
 	const [ { period, donationsFound, pageLoaded }, dispatch ] = useStoreValue();
 
@@ -64,9 +64,12 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend } ) => {
 		<Fragment>
 			{ title && (
 				<div className="givewp-chart-title">
-					{ title }
+					<span className="givewp-chart-title-text">{ title }</span>
 					{ ! loaded && (
 						<Spinner />
+					) }
+					{ headerEls && (
+						headerEls
 					) }
 				</div>
 			) }
