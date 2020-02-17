@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Total Donors over time endpoint
+ * Total donors endpoint
  *
  * @package Give
  */
@@ -9,6 +9,8 @@
 namespace Give\API\Endpoints\Reports;
 
 class TotalDonors extends Endpoint {
+
+	protected $payments;
 
 	public function __construct() {
 		$this->endpoint = 'total-donors';
@@ -31,12 +33,18 @@ class TotalDonors extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
+		$dataset = [];
 
 		switch ( true ) {
-			case ( $diff->days > 1 ):
+			case ( $diff->days > 12 ):
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
+				break;
+			case ( $diff->days > 7 ):
+				$data = $this->get_data( $start, $end, 'PT12H' );
+				break;
+			case ( $diff->days > 2 ):
+				$data = $this->get_data( $start, $end, 'PT3H' );
 				break;
 			case ( $diff->days >= 0 ):
 				$data = $this->get_data( $start, $end, 'PT1H' );
@@ -55,10 +63,10 @@ class TotalDonors extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		$tooltips = [];
-		$income   = [];
+		$donors   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -70,18 +78,26 @@ class TotalDonors extends Endpoint {
 
 		while ( $periodStart < $end ) {
 
-			$donorsForPeriod = $this->get_donor_count( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$donorsForPeriod = $this->get_donors( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
-			$income[] = [
-				'y' => $donorsForPeriod,
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
-			];
-
-			if ( $interval == 'PT1H' ) {
-				$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-			} else {
-				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			switch ( $intervalStr ) {
+				case 'PT12H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT3H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT1H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				default:
+					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
+
+			$donors[] = [
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'y' => $donorsForPeriod,
+			];
 
 			$tooltips[] = [
 				'title'  => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
@@ -90,21 +106,21 @@ class TotalDonors extends Endpoint {
 			];
 
 			// Add interval to set up next period
-			date_add( $periodEnd, $interval );
 			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
 		}
 
-		$totalForPeriod = $this->get_donor_count( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend          = $this->get_trend( $start, $end );
+		$totalDonorsForPeriod = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend                = $this->get_trend( $start, $end, $donors );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'datasets' => [
 				[
-					'data'      => $income,
+					'data'      => $donors,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
-					'highlight' => $totalForPeriod,
+					'highlight' => $totalDonorsForPeriod,
 				],
 			],
 		];
@@ -113,38 +129,60 @@ class TotalDonors extends Endpoint {
 
 	}
 
-	/**
-	 * Calculate the donor count for a given period
-	 *
-	 * @param  $start string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
-	 * @param  $end  string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 */
-	public function get_donor_count( $start, $end ) {
-		// Setup donor query args (get sanitized start/end date from request)
-		$args = [
-			'number'     => -1,
-			'start_date' => $start,
-			'end_date'   => $end,
-		];
+	public function get_trend( $start, $end, $donors ) {
 
-		// Get array of top 25 donors
-		$donors     = new \Give_Donors_Query( $args );
-		$donors     = $donors->get_donors();
-		$donorCount = count( $donors );
+		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
+		$slopes   = [];
+
+		foreach ( $donors as $key => $value ) {
+			if ( $key > 1 ) {
+				$currentY = $income[ $key ]['y'];
+				$prevY    = $income[ $key - 1 ]['y'];
+
+				$diff  = $prevY - $currentY;
+				$slope = $diff / $interval;
+
+				$slopes[] += $slope;
+			}
+		}
+
+		$sum   = round( array_sum( $slopes ), 2 );
+		$count = count( $slopes );
+
+		$trend = round( ( $sum / $count ) * 100, 1 );
+
+		return $trend;
+	}
+
+	public function get_donors( $startStr, $endStr ) {
+
+		$donors = [];
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->date > $startStr && $payment->date < $endStr ) {
+				$donors[] = $payment->donor_id;
+			}
+		}
+
+		$unique     = array_unique( $donors );
+		$donorCount = count( $unique );
 
 		return $donorCount;
 	}
 
-	public function get_trend( $start, $end ) {
+	public function get_payments( $startStr, $endStr ) {
 
-		$allTimeStartStr = $this->get_all_time_start();
+		$args = [
+			'number'     => -1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
+		];
 
-		// Calculate the donor trend by comparing total donors in the
-		// previous period to donors in the current period
-		$prevTotal    = $this->get_donor_count( $allTimeStartStr, $start->format( 'Y-m-d H:i:s' ) );
-		$currentTotal = $this->get_donor_count( $allTimeStartStr, $end->format( 'Y-m-d H:i:s' ) );
-		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+		$payments = new \Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
+		return $payments;
 
-		return $trend;
 	}
 }
