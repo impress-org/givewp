@@ -1,6 +1,5 @@
 // Dependencies
 import ChartJS from 'chart.js';
-import 'chartjs-plugin-crosshair';
 import { useEffect, useState, createRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
