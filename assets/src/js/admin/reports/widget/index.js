@@ -23,7 +23,7 @@ const Widget = () => {
 	return (
 		<div className="givewp-reports-widget-container">
 			{ donationsFound === false && (
-				<NotFoundNotice range={ 'month' } />
+				<NotFoundNotice version={ 'dashboard' } />
 			) }
 			{ pageLoaded === false && (
 				<LoadingNotice />
