@@ -130,6 +130,7 @@ class IncomeBreakdown extends Endpoint {
 					}
 					case 'refunded': {
 						$refunds     += 1;
+						$income      += $payment->total;
 						$refundTotal += $payment->total;
 						break;
 					}
@@ -147,20 +148,4 @@ class IncomeBreakdown extends Endpoint {
 		];
 	}
 
-	public function get_payments( $startStr, $endStr ) {
-
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
-
-		$payments = new \Give_Payments_Query( $args );
-		$payments = $payments->get_payments();
-		return $payments;
-
-	}
 }

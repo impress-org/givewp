@@ -164,21 +164,4 @@ class TotalIncome extends Endpoint {
 
 		return $income;
 	}
-
-	public function get_payments( $startStr, $endStr ) {
-
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
-
-		$payments = new \Give_Payments_Query( $args );
-		$payments = $payments->get_payments();
-		return $payments;
-
-	}
 }
