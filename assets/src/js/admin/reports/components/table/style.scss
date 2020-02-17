@@ -10,13 +10,15 @@
 .givewp-table {
 	display: flex;
 	flex-direction: column;
+	max-height: 320px;
+	overflow: scroll;
 
 	> * {
 		display: flex;
 		min-height: 40px;
 		height: auto;
-		font-size: 12px;
-		padding: 0 16px;
+		font-size: 14px;
+		padding: 8px 16px;
 
 		> * {
 			flex: 1;
@@ -25,5 +27,23 @@
 
 	> .givewp-table-header {
 		font-weight: 500;
+		background: #f4f4f4;
+		position: sticky;
+		top: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	> .givewp-table-row {
+		background: #fff;
+
+		&:nth-of-type(odd) {
+			background: #f4f4f4;
+		}
+
+		> .givewp-table-row-item {
+			display: flex;
+			align-items: center;
+		}
 	}
 }
