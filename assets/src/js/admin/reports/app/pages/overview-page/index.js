@@ -67,7 +67,7 @@ const OverviewPage = () => {
 				<Card width={ 12 }>
 					<RESTTable
 						title={ __( 'Income Breakdown', 'give' ) }
-						endpoint="endpoint"
+						endpoint="income-breakdown"
 					/>
 				</Card>
 				<Card width={ 4 }>

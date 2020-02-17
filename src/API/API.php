@@ -24,6 +24,7 @@ class API {
 		Reports\TopDonors::class,
 		Reports\RecentDonations::class,
 		Reports\Income::class,
+		Reports\IncomeBreakdown::class,
 		Reports\AverageDonation::class,
 		Reports\TotalDonors::class,
 		Reports\TotalIncome::class,
