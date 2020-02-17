@@ -24,16 +24,21 @@
 	.info {
 		margin-right: 16px;
 		text-transform: capitalize;
+
+		&:last-of-type {
+			flex: 1;
+			text-align: right;
+		}
 	}
 
 	p {
 		margin: 0;
-		font-size: 12px;
+		font-size: 14px;
 	}
 
 	.elapsed {
 		color: #82878c;
-		font-size: 10px;
+		font-size: 12px;
 		margin-left: 4px;
 		text-transform: lowercase;
 	}
