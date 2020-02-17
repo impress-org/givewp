@@ -95,6 +95,7 @@
         "query-string": "^5.1.1",
         "querystringify": "^1.0.0",
         "react": "^16.12.0",
+        "react-csv": "^2.0.1",
         "react-dates": "^21.7.0",
         "react-dom": "^16.12.0",
         "react-router": "^5.1.2",
