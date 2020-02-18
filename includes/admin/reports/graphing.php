@@ -437,7 +437,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				esc_html__( 'Income Report for %s', 'give' ),
 				get_the_title( $form_id )
 			);
-			?>
+	?>
 			</span></h3>
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
@@ -501,7 +501,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
  */
 function give_reports_graph_controls() {
 	$date_options = apply_filters(
-		'give_report_date_options', array(
+		'give_report_date_options',
+		array(
 			'today'        => __( 'Today', 'give' ),
 			'yesterday'    => __( 'Yesterday', 'give' ),
 			'this_week'    => __( 'This Week', 'give' ),
@@ -536,7 +537,7 @@ function give_reports_graph_controls() {
 			<div class="actions">
 
 				<input type="hidden" name="post_type" value="give_forms" />
-				<input type="hidden" name="page" value="give-reports" />
+				<input type="hidden" name="page" value="give-legacy-reports" />
 				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
 				<?php if ( isset( $_GET['form-id'] ) ) : ?>
@@ -808,7 +809,7 @@ function give_parse_report_dates( $data ) {
 	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 
@@ -830,7 +831,8 @@ function give_reports_refresh_button() {
 				'give_action'     => 'refresh_reports_transients',
 				'give-messages[]' => 'refreshed-reports',
 			)
-		), 'give-refresh-reports'
+		),
+		'give-refresh-reports'
 	);
 
 	echo Give()->tooltips->render_link(

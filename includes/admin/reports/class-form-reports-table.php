@@ -56,11 +56,13 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
-			'ajax'     => false                        // Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
+				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
+				'ajax'     => false,                        // Does this table support ajax?
+			)
+		);
 
 		add_action( 'give_report_view_actions', array( $this, 'category_filter' ) );
 		$this->query();
@@ -94,14 +96,14 @@ class Give_Form_Reports_Table extends WP_List_Table {
 					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . urlencode( $item['ID'] ) ),
 					$item['sales']
 				);
-			case 'earnings' :
+			case 'earnings':
 				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
-			case 'average_sales' :
+			case 'average_sales':
 				return round( $item[ $column_name ] );
-			case 'average_earnings' :
+			case 'average_earnings':
 				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
-			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
+			case 'details':
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -122,7 +124,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			'earnings'         => esc_html__( 'Income', 'give' ),
 			'average_sales'    => esc_html__( 'Monthly Average Donations', 'give' ),
 			'average_earnings' => esc_html__( 'Monthly Average Income', 'give' ),
-			'details'          => esc_html__( 'Detailed Report', 'give' )
+			'details'          => esc_html__( 'Detailed Report', 'give' ),
 		);
 
 		return $columns;
@@ -255,29 +257,29 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			'fields'           => 'ids',
 			'posts_per_page'   => $this->per_page,
 			'paged'            => $this->get_paged(),
-			'suppress_filters' => true
+			'suppress_filters' => true,
 		);
 
 		if ( ! empty( $category ) ) {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => 'form_category',
-					'terms'    => $category
-				)
+					'terms'    => $category,
+				),
 			);
 		}
 
 		switch ( $orderby ) :
-			case 'title' :
+			case 'title':
 				$args['orderby'] = 'title';
 				break;
 
-			case 'sales' :
+			case 'sales':
 				$args['orderby']  = 'meta_value_num';
 				$args['meta_key'] = '_give_form_sales';
 				break;
 
-			case 'earnings' :
+			case 'earnings':
 				$args['orderby']  = 'meta_value_num';
 				$args['meta_key'] = '_give_form_earnings';
 				break;
@@ -313,7 +315,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 					'sales'            => give_get_form_sales_stats( $form ),
 					'earnings'         => give_get_form_earnings_stats( $form ),
 					'average_sales'    => give_get_average_monthly_form_sales( $form ),
-					'average_earnings' => give_get_average_monthly_form_earnings( $form )
+					'average_earnings' => give_get_average_monthly_form_earnings( $form ),
 				);
 			}
 		}
@@ -335,17 +337,18 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
-		$columns = $this->get_columns();
-		$hidden = array(); // No hidden columns
-		$sortable = $this->get_sortable_columns();
+		$columns               = $this->get_columns();
+		$hidden                = array(); // No hidden columns
+		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-		$this->items = $this->reports_data();
-		$total_items = $this->count;
+		$this->items           = $this->reports_data();
+		$total_items           = $this->count;
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(
+			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}

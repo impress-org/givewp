@@ -29,7 +29,7 @@ class Reports {
 	// Enqueue app scripts
 	public function enqueue_scripts( $base ) {
 
-		if ( $base !== 'give_forms_page_give-reports-v3' ) {
+		if ( $base !== 'give_forms_page_give-reports' ) {
 			return;
 		}
 
@@ -51,7 +51,7 @@ class Reports {
 			'give-admin-reports-v3-js',
 			'giveReportsData',
 			[
-				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-reports' ),
+				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-legacy-reports' ),
 				'allTimeStart'     => $this->get_all_time_start(),
 			]
 		);
@@ -65,7 +65,7 @@ class Reports {
 			esc_html__( 'Donation Reports', 'give' ),
 			esc_html__( 'Reports', 'give' ),
 			'view_give_reports',
-			'give-reports-v3',
+			'give-reports',
 			[ $this, 'render_template' ]
 		);
 	}

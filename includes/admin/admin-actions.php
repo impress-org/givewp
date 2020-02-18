@@ -40,14 +40,13 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
  *
  * @return bool
  * @since 1.8
- *
  */
 function give_redirect_to_clean_url_admin_pages() {
 	// Give admin pages.
 	$give_pages = array(
 		'give-payment-history',
 		'give-donors',
-		'give-reports',
+		'give-legacy-reports',
 		'give-tools',
 	);
 
@@ -92,7 +91,6 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * @return void
  * @since 1.8.9
- *
  */
 function give_hide_outdated_php_notice() {
 
@@ -762,7 +760,6 @@ function give_core_settings_import_callback() {
 	 *
 	 * @return array $fields
 	 * @since  1.8.17
-	 *
 	 */
 	$fields = (array) apply_filters( 'give_import_core_settings_fields', $fields );
 
@@ -793,7 +790,6 @@ function give_core_settings_import_callback() {
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
 		 * @since  1.8.17
-		 *
 		 */
 		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
@@ -811,11 +807,11 @@ function give_core_settings_import_callback() {
 	 *
 	 * @return array $url
 	 * @since  1.8.17
-	 *
 	 */
 	$json_data['url'] = give_import_page_url(
 		(array) apply_filters(
-			'give_import_core_settings_success_url', array(
+			'give_import_core_settings_success_url',
+			array(
 				'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
 				'importer-type' => 'import_core_setting',
 				'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
@@ -849,7 +845,6 @@ add_action( 'current_screen', 'give_blank_slate' );
  *
  * @return mixed
  * @since 2.0
- *
  */
 function give_validate_user_profile( $errors, $update, $user ) {
 
@@ -914,7 +909,6 @@ add_action( 'personal_options', 'give_donor_information_profile_fields' );
  *
  * @return array
  * @since 1.8.13
- *
  */
 function give_get_user_roles() {
 	$user_roles = array();
@@ -933,7 +927,6 @@ function give_get_user_roles() {
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_ajax_donor_manage_addresses() {
 	// Bailout.
@@ -1106,7 +1099,6 @@ add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresse
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_donor_billing_address_label( $address_label ) {
 	$address_label = __( 'Billing Address', 'give' );
@@ -1123,7 +1115,6 @@ add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_la
  *
  * @return string
  * @since 2.0
- *
  */
 function __give_donor_personal_address_label( $address_label ) {
 	$address_label = __( 'Personal Address', 'give' );
@@ -1142,7 +1133,6 @@ add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_
  * @access public
  * @return bool
  * @since  2.0
- *
  */
 function give_update_donor_name_on_user_update( $user_id = 0 ) {
 
@@ -1162,7 +1152,8 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 
 		// Assign User First name and Last name to Donor.
 		Give()->donors->update(
-			$donor->id, array(
+			$donor->id,
+			array(
 				'name' => $full_name,
 			)
 		);
@@ -1186,7 +1177,6 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * @return bool
  * @since  1.4.3
  * @access public
- *
  */
 function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
 
@@ -1201,7 +1191,8 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
 		$success = Give()->donors->update(
-			$donor->id, array(
+			$donor->id,
+			array(
 				'email' => $user->user_email,
 			)
 		);
@@ -1226,7 +1217,6 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 			 * @param Give_Donor $donor Give donor object.
 			 *
 			 * @since 1.4.3
-			 *
 			 */
 			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
