@@ -18,16 +18,16 @@ class FormPerformance extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
+		// // Check if a cached version exists
+		// $cached_report = $this->get_cached_report( $request );
+		// if ( $cached_report !== null ) {
+		// Bail and return the cached version
+		// return new \WP_REST_Response(
+		// [
+		// 'data' => $cached_report,
+		// ]
+		// );
+		// }
 
 		$start = date_create( $request['start'] );
 		$end   = date_create( $request['end'] );
@@ -47,7 +47,7 @@ class FormPerformance extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ), 'date', -1 );
 
 		$forms    = [];
 		$labels   = [];
@@ -61,19 +61,23 @@ class FormPerformance extends Endpoint {
 			}
 		}
 
-		$forms = array_slice( $forms, 0, 5 );
+		$sorted = usort( $forms, [ $this, 'compare_forms' ] );
 
-		foreach ( $forms as $key => $value ) {
-			$tooltips[]    = [
-				'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
-				'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
-				'footer' => $value['title'],
-			];
-			$labels[]      = $value['title'];
-			$forms[ $key ] = $value['income'];
+		if ( $sorted === true ) {
+			$forms = array_slice( $forms, 0, 5 );
+
+			foreach ( $forms as $key => $value ) {
+				$tooltips[]    = [
+					'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
+					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
+					'footer' => $value['title'],
+				];
+				$labels[]      = $value['title'];
+				$forms[ $key ] = $value['income'];
+			}
+
+			$forms = array_values( $forms );
 		}
-
-		$forms = array_values( $forms );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -90,40 +94,10 @@ class FormPerformance extends Endpoint {
 
 	}
 
-	public function get_values( $startStr, $endStr ) {
-
-		$earnings = 0;
-		$donors   = [];
-
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$earnings += $payment->total;
-				$donors[]  = $payment->donor_id;
-			}
+	public function compare_forms( $a, $b ) {
+		if ( $a['income'] == $b['income'] ) {
+				return 0;
 		}
-
-		$unique = array_unique( $donors );
-
-		return [
-			'earnings'    => $earnings,
-			'donor_count' => count( $unique ),
-		];
-	}
-
-	public function get_payments( $startStr, $endStr ) {
-
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
-
-		$payments = new \Give_Payments_Query( $args );
-		$payments = $payments->get_payments();
-		return $payments;
-
+		return ( $a['income'] > $b['income'] ) ? -1 : 1;
 	}
 }
