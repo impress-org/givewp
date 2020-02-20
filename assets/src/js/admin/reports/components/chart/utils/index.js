@@ -66,12 +66,13 @@ function createStyles( type, data, index ) {
 // Return config object for ChartJS
 export function createConfig( type, data ) {
 	const formattedData = formatData( type, data );
+	const intersect = type === 'line' || type === 'bar' ? false : true;
 	const config = {
 		type: type,
 		data: formattedData,
 		options: {
 			hover: {
-				intersect: false,
+				intersect: intersect,
 			},
 			legend: {
 				display: false,
@@ -95,7 +96,7 @@ export function createConfig( type, data ) {
 				// Disable the on-canvas tooltip
 				enabled: false,
 				mode: 'index',
-				intersect: false,
+				intersect: intersect,
 				custom: function( tooltipModel ) {
 					// Tooltip Element
 					let tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
