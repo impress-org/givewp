@@ -201,11 +201,13 @@ abstract class Endpoint {
 		 *
 		 * @param WP_REST_Request $request Current request.
 		 */
-	public function cache_payments( $startStr, $endStr, $payments ) {
+	public function cache_payments( $startStr, $endStr, $orderBy, $number, $payments ) {
 
 		$query_args = [
-			'start' => $startStr,
-			'end'   => $endStr,
+			'start'   => $startStr,
+			'end'     => $endStr,
+			'orderby' => $orderBy,
+			'number'  => $number,
 		];
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
@@ -221,11 +223,13 @@ abstract class Endpoint {
 	 *
 	 * @param WP_REST_Request $request Current request.
 	 */
-	public function get_cached_payments( $startStr, $endStr ) {
+	public function get_cached_payments( $startStr, $endStr, $orderBy, $number ) {
 
 		$query_args = [
-			'start' => $startStr,
-			'end'   => $endStr,
+			'start'   => $startStr,
+			'end'     => $endStr,
+			'orderby' => $orderBy,
+			'number'  => $number,
 		];
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
@@ -239,19 +243,19 @@ abstract class Endpoint {
 		}
 	}
 
-	public function get_payments( $startStr, $endStr ) {
+	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
 
 		// Check if a cached payments exists
-		$cached_payments = $this->get_cached_payments( $startStr, $endStr );
+		$cached_payments = $this->get_cached_payments( $startStr, $endStr, $orderBy, $number );
 		if ( $cached_payments !== null ) {
 			// Bail and return the cached payments
 			return $cached_payments;
 		}
 
 		$args = [
-			'number'     => -1,
+			'number'     => $number,
 			'paged'      => 1,
-			'orderby'    => 'date',
+			'orderby'    => $orderBy,
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
@@ -261,7 +265,7 @@ abstract class Endpoint {
 		$payments = $payments->get_payments();
 
 		// Cache the report data
-		$result = $this->cache_payments( $startStr, $endStr, $payments );
+		$result = $this->cache_payments( $startStr, $endStr, $orderBy, $number, $payments );
 
 		return $payments;
 
