@@ -152,7 +152,7 @@ class Income extends Endpoint {
 		];
 	}
 
-	public function get_payments( $startStr, $endStr ) {
+	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
 
 		$args = [
 			'number'     => -1,
