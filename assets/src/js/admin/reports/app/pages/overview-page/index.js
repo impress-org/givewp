@@ -90,7 +90,7 @@ const OverviewPage = () => {
 				</Card>
 				<Card width={ 4 }>
 					<RESTChart
-						title={ __( 'Form Performance (All Time)', 'give' ) }
+						title={ __( 'Form Performance', 'give' ) }
 						type="pie"
 						aspectRatio={ 0.6 }
 						endpoint="form-performance"
@@ -99,7 +99,7 @@ const OverviewPage = () => {
 				</Card>
 				<Card width={ 6 }>
 					<RESTList
-						title={ __( 'Recent Donations', 'give' ) }
+						title={ __( 'Donation Activity', 'give' ) }
 						endpoint="recent-donations"
 					/>
 				</Card>
