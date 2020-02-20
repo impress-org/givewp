@@ -21,7 +21,7 @@ class FormPerformance extends Endpoint {
 		// Check if a cached version exists
 		$cached_report = $this->get_cached_report( $request );
 		if ( $cached_report !== null ) {
-			Bail and return the cached version
+			// Bail and return the cached version
 			return new \WP_REST_Response(
 				[
 					'data' => $cached_report,
