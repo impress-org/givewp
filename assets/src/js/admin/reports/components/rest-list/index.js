@@ -25,10 +25,21 @@ const RESTList = ( { title, endpoint } ) => {
 
 	const [ loaded, setLoaded ] = useState( false );
 
+	const [ querying, setQuerying ] = useState( false );
+
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
+
 	// Fetch new data and update List when period changes
 	useEffect( () => {
 		if ( period.startDate && period.endDate ) {
+			if ( querying === true ) {
+				source.cancel( 'Operation canceled by the user.' );
+			}
+
+			setQuerying( true );
 			setLoaded( false );
+
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				params: {
 					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
@@ -39,10 +50,14 @@ const RESTList = ( { title, endpoint } ) => {
 				},
 			} )
 				.then( function( response ) {
+					setQuerying( false );
 					setFetched( response.data.data );
 					const found = response.data.data.length > 0 ? true : false;
 					setDataFound( found );
 					setLoaded( true );
+				} )
+				.catch( function() {
+					setQuerying( false );
 				} );
 		}
 	}, [ period, endpoint ] );

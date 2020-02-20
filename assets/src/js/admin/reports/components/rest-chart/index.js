@@ -21,11 +21,23 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 	// Use to manage loading state
 	const [ loaded, setLoaded ] = useState( false );
 
+	const [ querying, setQuerying ] = useState( false );
+
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
+
 	// Fetch new data and update Chart when period changes
 	useEffect( () => {
 		if ( period.startDate && period.endDate ) {
+			if ( querying === true ) {
+				source.cancel( 'Operation canceled by the user.' );
+			}
+
+			setQuerying( true );
 			setLoaded( false );
+
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
+				cancelToken: source.token,
 				params: {
 					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
 					end: period.endDate.format( 'YYYY-MM-DD-HH' ),
@@ -35,6 +47,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 				},
 			} )
 				.then( function( response ) {
+					setQuerying( false );
 					setLoaded( true );
 					setFetched( response.data.data );
 					if ( endpoint === 'income' ) {
@@ -54,6 +67,9 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 							payload: true,
 						} );
 					}
+				} )
+				.catch( function() {
+					setQuerying( false );
 				} );
 		}
 	}, [ period, endpoint ] );

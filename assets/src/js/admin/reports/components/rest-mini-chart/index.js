@@ -20,10 +20,21 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 	// Use state to handle loaded status
 	const [ loaded, setLoaded ] = useState( true );
 
+	const [ querying, setQuerying ] = useState( false );
+
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
+
 	// Fetch new data and update Chart when period changes
 	useEffect( () => {
 		if ( period.startDate && period.endDate ) {
+			if ( querying === true ) {
+				source.cancel( 'Operation canceled by the user.' );
+			}
+
+			setQuerying( true );
 			setLoaded( false );
+
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				params: {
 					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
@@ -34,8 +45,12 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 				},
 			} )
 				.then( function( response ) {
+					setQuerying( false );
 					setFetched( response.data.data );
 					setLoaded( true );
+				} )
+				.catch( function() {
+					setQuerying( false );
 				} );
 		}
 	}, [ period, endpoint ] );
