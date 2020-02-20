@@ -174,6 +174,9 @@ export function createConfig( type, data ) {
 		};
 
 		if ( type === 'line' ) {
+			const count = data.datasets[ 0 ].data.length;
+			const ticksSource = count < 16 ? 'data' : 'auto';
+
 			config.options.scales.xAxes = [ {
 				gridLines: {
 					display: false,
@@ -187,6 +190,7 @@ export function createConfig( type, data ) {
 				},
 				ticks: {
 					maxTicksLimit: 10,
+					source: ticksSource,
 				},
 			} ];
 
