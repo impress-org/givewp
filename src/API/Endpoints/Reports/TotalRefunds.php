@@ -129,27 +129,23 @@ class TotalRefunds extends Endpoint {
 
 	}
 
-	public function get_trend( $start, $end, $refunds ) {
+	public function get_trend( $start, $end, $income ) {
 
-		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
-		$slopes   = [];
+		$interval = $start->diff( $end );
 
-		foreach ( $refunds as $key => $value ) {
-			if ( $key > 1 ) {
-				$currentY = $refunds[ $key ]['y'];
-				$prevY    = $refunds[ $key - 1 ]['y'];
+		$prevStart = clone $start;
+		$prevStart = date_sub( $prevStart, $interval );
 
-				$diff  = $prevY - $currentY;
-				$slope = $diff / $interval;
+		$prevEnd = clone $start;
 
-				$slopes[] += $slope;
-			}
+		$prevRefunds    = $this->get_prev_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$currentRefunds = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+
+		$trend = 0;
+		if ( $prevRefunds > 0 && $currentRefunds > 0 ) {
+			$trend = round( ( ( ( $prevRefunds - $currentRefunds ) / $currentRefunds ) * 100 ), 1 );
 		}
 
-		$sum   = round( array_sum( $slopes ), 2 );
-		$count = count( $slopes );
-
-		$trend = round( ( $sum / $count ) * 100, 1 );
 		return $trend;
 	}
 
@@ -157,6 +153,30 @@ class TotalRefunds extends Endpoint {
 
 		$refunds = 0;
 		foreach ( $this->payments as $payment ) {
+			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
+				$refunds += 1;
+			}
+		}
+
+		return $refunds;
+	}
+
+	public function get_prev_refunds( $startStr, $endStr ) {
+
+		$args = [
+			'number'     => -1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
+		];
+
+		$prevPayments = new \Give_Payments_Query( $args );
+		$prevPayments = $prevPayments->get_payments();
+
+		$refunds = 0;
+		foreach ( $prevPayments as $payment ) {
 			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
 				$refunds += 1;
 			}
