@@ -35,7 +35,7 @@
 				<?php _e( 'Overview', 'give' ); ?>
 			</a>
 			<a class="nav-tab" href="http://givewp.local/wp-admin/edit.php?post_type=give_forms&amp;page=give-legacy-reports">
-				<?php _e( 'Legacy Reports Page', 'give' ); ?>
+				<?php _e( 'Legacy Reports', 'give' ); ?>
 			</a>
 		</div>
 		<div class="givewp-loading-notice">
