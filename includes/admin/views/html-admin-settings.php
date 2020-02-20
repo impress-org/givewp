@@ -90,7 +90,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 					echo sprintf(
 						'<a href="%1$s" class="nav-tab">%2$s</a>',
 						admin_url( 'edit.php?post_type=give_forms&page=give-reports' ),
-						esc_html__( 'New Reports Page', 'give' )
+						esc_html__( 'New Reports Dashboard', 'give' )
 					);
 				}
 				?>
