@@ -129,27 +129,22 @@ class TotalDonors extends Endpoint {
 
 	}
 
-	public function get_trend( $start, $end, $donors ) {
+	public function get_trend( $start, $end, $income ) {
 
-		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
-		$slopes   = [];
+		$interval = $start->diff( $end );
 
-		foreach ( $donors as $key => $value ) {
-			if ( $key > 1 ) {
-				$currentY = $income[ $key ]['y'];
-				$prevY    = $income[ $key - 1 ]['y'];
+		$prevStart = clone $start;
+		$prevStart = date_sub( $prevStart, $interval );
 
-				$diff  = $prevY - $currentY;
-				$slope = $diff / $interval;
+		$prevEnd = clone $start;
 
-				$slopes[] += $slope;
-			}
+		$prevDonors    = $this->get_prev_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$currentDonors = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+
+		$trend = 0;
+		if ( $prevDonors > 0 && $currentDonors > 0 ) {
+			$trend = round( ( ( ( $prevDonors - $currentDonors ) / $currentDonors ) * 100 ), 1 );
 		}
-
-		$sum   = round( array_sum( $slopes ), 2 );
-		$count = count( $slopes );
-
-		$trend = round( ( $sum / $count ) * 100, 1 );
 
 		return $trend;
 	}
@@ -158,6 +153,33 @@ class TotalDonors extends Endpoint {
 
 		$donors = [];
 		foreach ( $this->payments as $payment ) {
+			if ( $payment->date > $startStr && $payment->date < $endStr ) {
+				$donors[] = $payment->donor_id;
+			}
+		}
+
+		$unique     = array_unique( $donors );
+		$donorCount = count( $unique );
+
+		return $donorCount;
+	}
+
+	public function get_prev_donors( $startStr, $endStr ) {
+
+		$args = [
+			'number'     => -1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
+		];
+
+		$prevPayments = new \Give_Payments_Query( $args );
+		$prevPayments = $prevPayments->get_payments();
+
+		$donors = [];
+		foreach ( $prevPayments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
 				$donors[] = $payment->donor_id;
 			}
