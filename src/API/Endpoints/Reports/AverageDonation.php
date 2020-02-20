@@ -124,25 +124,21 @@ class AverageDonation extends Endpoint {
 
 	public function get_trend( $start, $end, $income ) {
 
-		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
-		$slopes   = [];
+		$interval = $start->diff( $end );
 
-		foreach ( $income as $key => $value ) {
-			if ( $key > 1 ) {
-				$currentY = $income[ $key ]['y'];
-				$prevY    = $income[ $key - 1 ]['y'];
+		$prevStart = clone $start;
+		$prevStart = date_sub( $prevStart, $interval );
 
-				$diff  = $prevY - $currentY;
-				$slope = $diff / $interval;
+		$prevEnd = clone $start;
 
-				$slopes[] += $slope;
-			}
+		$prevAverage    = $this->get_prev_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$currentAverage = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+
+		$trend = 0;
+		if ( $prevAverage > 0 && $currentAverage > 0 ) {
+			$trend = round( ( ( ( $prevAverage - $currentAverage ) / $currentAverage ) * 100 ), 1 );
 		}
 
-		$sum   = round( array_sum( $slopes ), 2 );
-		$count = count( $slopes );
-
-		$trend = round( ( $sum / $count ) * 100, 1 );
 		return $trend;
 	}
 
@@ -159,6 +155,18 @@ class AverageDonation extends Endpoint {
 		}
 
 		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
+
+		return $average;
+	}
+
+	public function get_prev_average_donation( $startStr, $endStr ) {
+
+		$stats = new \Give_Payment_Stats();
+
+		$earnings = $stats->get_earnings( 0, $startStr, $endStr );
+		$sales    = $stats->get_sales( 0, $startStr, $endStr );
+
+		$average = $sales > 0 ? $earnings / $sales : 0;
 
 		return $average;
 	}
