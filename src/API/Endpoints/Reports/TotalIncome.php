@@ -18,16 +18,16 @@ class TotalIncome extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
+		// // Check if a cached version exists
+		// $cached_report = $this->get_cached_report( $request );
+		// if ( $cached_report !== null ) {
+		// Bail and return the cached version
+		// return new \WP_REST_Response(
+		// [
+		// 'data' => $cached_report,
+		// ]
+		// );
+		// }
 
 		$start = date_create( $request['start'] );
 		$end   = date_create( $request['end'] );
@@ -131,25 +131,21 @@ class TotalIncome extends Endpoint {
 
 	public function get_trend( $start, $end, $income ) {
 
-		$interval = ( $end->getTimestamp() - $start->getTimestamp() ) / 3600;
-		$slopes   = [];
+		$interval = $start->diff( $end );
 
-		foreach ( $income as $key => $value ) {
-			if ( $key > 1 ) {
-				$currentY = $income[ $key ]['y'];
-				$prevY    = $income[ $key - 1 ]['y'];
+		$prevStart = clone $start;
+		$prevStart = date_sub( $prevStart, $interval );
 
-				$diff  = $prevY - $currentY;
-				$slope = $diff / $interval;
+		$prevEnd = clone $start;
 
-				$slopes[] += $slope;
-			}
+		$prevIncome    = $this->get_prev_income( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$currentIncome = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+
+		$trend = 0;
+		if ( $prevIncome > 0 && $currentIncome > 0 ) {
+			$trend = round( ( ( ( $prevIncome - $currentIncome ) / $currentIncome ) * 100 ), 1 );
 		}
 
-		$sum   = round( array_sum( $slopes ), 2 );
-		$count = count( $slopes );
-
-		$trend = round( ( $sum / $count ) * 100, 1 );
 		return $trend;
 	}
 
@@ -162,6 +158,12 @@ class TotalIncome extends Endpoint {
 			}
 		}
 
+		return $income;
+	}
+
+	public function get_prev_income( $startStr, $endStr ) {
+		$stats  = new \Give_Payment_Stats();
+		$income = $stats->get_earnings( 0, $startStr, $endStr );
 		return $income;
 	}
 }
