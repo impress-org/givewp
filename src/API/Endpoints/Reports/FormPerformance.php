@@ -61,7 +61,7 @@ class FormPerformance extends Endpoint {
 			}
 		}
 
-		$forms = array_slice( $forms, 0, 4 );
+		$forms = array_slice( $forms, 0, 5 );
 
 		foreach ( $forms as $key => $value ) {
 			$tooltips[]    = [
