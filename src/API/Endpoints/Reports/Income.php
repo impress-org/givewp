@@ -18,16 +18,16 @@ class Income extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
+		// // Check if a cached version exists
+		// $cached_report = $this->get_cached_report( $request );
+		// if ( $cached_report !== null ) {
+		// Bail and return the cached version
+		// return new \WP_REST_Response(
+		// [
+		// 'data' => $cached_report,
+		// ]
+		// );
+		// }
 
 		$start = date_create( $request['start'] );
 		$end   = date_create( $request['end'] );
@@ -118,6 +118,8 @@ class Income extends Endpoint {
 			date_add( $periodEnd, $interval );
 		}
 
+		$status = $this->get_give_status();
+
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'datasets' => [
@@ -126,6 +128,7 @@ class Income extends Endpoint {
 					'tooltips' => $tooltips,
 				],
 			],
+			'status'   => $status,
 		];
 
 		return $data;
@@ -152,20 +155,35 @@ class Income extends Endpoint {
 		];
 	}
 
-	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
+	public function get_give_status() {
 
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
+		$payments_for_site = get_posts(
+			[
+				'post_type'   => array( 'give_payment' ),
+				'post_status' => 'publish',
+				'numberposts' => 1,
+			]
+		);
 
-		$payments = new \Give_Payments_Query( $args );
-		$payments = $payments->get_payments();
-		return $payments;
+		$payments_for_period = [];
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->status === 'publish' ) {
+				$payments_for_period[] = $payment;
+			}
+		}
+
+		switch ( true ) {
+			case count( $payments_for_period ) > 0 : {
+				return 'donations_found_for_period';
+			}
+			case count( $payments_for_site ) > 0 : {
+				return 'donations_found_on_site';
+			}
+			default : {
+				return 'no_donations_found';
+			}
+		}
 
 	}
+
 }

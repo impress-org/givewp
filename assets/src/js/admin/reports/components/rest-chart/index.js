@@ -13,7 +13,7 @@ import { useStoreValue } from '../../store';
 
 const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls } ) => {
 	// Use period from store
-	const [ { period, donationsFound, pageLoaded }, dispatch ] = useStoreValue();
+	const [ { period, giveStatus }, dispatch ] = useStoreValue();
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
@@ -51,16 +51,10 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 					setLoaded( true );
 					setFetched( response.data.data );
 					if ( endpoint === 'income' ) {
-						let found = false;
-						response.data.data.datasets[ 0 ].data.forEach( ( point ) => {
-							if ( point.y > 0 ) {
-								found = true;
-							}
-						} );
-
+						const status = response.data.data.status;
 						dispatch( {
-							type: 'SET_DONATIONS_FOUND',
-							payload: found,
+							type: 'SET_GIVE_STATUS',
+							payload: status,
 						} );
 						dispatch( {
 							type: 'SET_PAGE_LOADED',
@@ -74,7 +68,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 		}
 	}, [ period, endpoint ] );
 
-	const ready = fetched && donationsFound && pageLoaded ? true : false;
+	const ready = giveStatus === 'donations_found_for_period' ? true : false;
 
 	return (
 		<Fragment>

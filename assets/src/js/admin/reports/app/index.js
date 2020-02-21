@@ -24,7 +24,7 @@ const App = () => {
 			endDate: moment(),
 			range: 'week',
 		},
-		donationsFound: null,
+		giveStatus: null,
 		pageLoaded: false,
 	};
 

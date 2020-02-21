@@ -17,15 +17,20 @@ import RESTMiniChart from '../../../components/rest-mini-chart';
 import RESTList from '../../../components/rest-list';
 import RESTTable from '../../../components/rest-table';
 import NotFoundNotice from '../../../components/not-found-notice';
+import NoDataNotice from '../../../components/no-data-notice';
 import LoadingNotice from '../../../components/loading-notice';
 
 const OverviewPage = () => {
 	// Use initLoaded from store
-	const [ { donationsFound, pageLoaded } ] = useStoreValue();
+	const [ { giveStatus, pageLoaded } ] = useStoreValue();
+
 	return (
 		<Fragment>
-			{ donationsFound === false && (
+			{ giveStatus === 'donations_found_on_site' && (
 				<NotFoundNotice />
+			) }
+			{ giveStatus === 'no_donations_found' && (
+				<NoDataNotice />
 			) }
 			{ pageLoaded === false && (
 				<LoadingNotice />

@@ -18,7 +18,7 @@ const initialState = {
 		range: 'week',
 	},
 	pageLoaded: false,
-	donationsFound: null,
+	giveStatus: null,
 };
 
 ReactDOM.render(

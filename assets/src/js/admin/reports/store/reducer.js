@@ -41,10 +41,10 @@ export const reducer = ( state, action ) => {
 					range: action.payload.range,
 				},
 			};
-		case 'SET_DONATIONS_FOUND':
+		case 'SET_GIVE_STATUS':
 			return {
 				...state,
-				donationsFound: action.payload,
+				giveStatus: action.payload,
 			};
 		case 'SET_PAGE_LOADED':
 			return {
