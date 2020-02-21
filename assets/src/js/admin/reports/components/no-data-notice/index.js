@@ -27,6 +27,10 @@ const NoDataNotice = ( { version } ) => {
 		disablePeriodSelector();
 	};
 
+	const goToNewFormUrl = () => {
+		window.location = window.giveReportsData.newFormUrl;
+	};
+
 	return (
 		<Fragment>
 			{ showNotice && (
@@ -40,6 +44,7 @@ const NoDataNotice = ( { version } ) => {
 									{ __( 'Setup a donation form, or visit the Reports page to explore some sample data.', 'give' ) } <br />
 								</p>
 								<button
+									onClick={ () => goToNewFormUrl() }
 									className="givewp-not-found-notice-button">
 									{ __( 'Create a Donation Form', 'give' ) }
 								</button>

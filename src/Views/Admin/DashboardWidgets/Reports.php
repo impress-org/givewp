@@ -65,6 +65,7 @@ class Reports {
 			'give-admin-reports-widget-js',
 			'giveReportsData',
 			[
+				'newFormUrl'   => admin_url( '/post-new.php?post_type=give_forms' ),
 				'allTimeStart' => $this->get_all_time_start(),
 			]
 		);
