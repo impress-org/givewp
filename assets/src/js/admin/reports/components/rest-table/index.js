@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 // Components
 import Table from '../table';
 import LoadingOverlay from '../loading-overlay';
-import NotFoundOverlay from '../not-found-overlay';
 
 // Utilities
 import { getSkeletonLabels, getSkeletonRows, getLabels, getRows } from './utils';
@@ -20,8 +19,6 @@ const RESTTable = ( { title, endpoint } ) => {
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
-
-	const [ dataFound, setDataFound ] = useState( true );
 
 	const [ loaded, setLoaded ] = useState( false );
 
@@ -52,8 +49,6 @@ const RESTTable = ( { title, endpoint } ) => {
 				.then( function( response ) {
 					setQuerying( false );
 					setFetched( response.data.data );
-					const found = response.data.data.length > 0 ? true : false;
-					setDataFound( found );
 					setLoaded( true );
 				} )
 				.catch( function() {
@@ -62,12 +57,12 @@ const RESTTable = ( { title, endpoint } ) => {
 		}
 	}, [ period, endpoint ] );
 
-	const ready = giveStatus === 'donations_found_for_period' ? true : false;
+	const donationsFound = giveStatus === 'donations_found' ? true : false;
 
 	let labels;
 	let rows;
 
-	if ( ready ) {
+	if ( donationsFound ) {
 		labels = getLabels( fetched );
 		rows = getRows( fetched );
 	} else {
@@ -75,21 +70,11 @@ const RESTTable = ( { title, endpoint } ) => {
 		rows = getSkeletonRows( fetched );
 	}
 
-	let overlay;
-	switch ( true ) {
-		case loaded === false: {
-			overlay = <LoadingOverlay />;
-			break;
-		}
-		case dataFound === false: {
-			overlay = <NotFoundOverlay />;
-			break;
-		}
-	}
-
 	return (
 		<Fragment>
-			{ overlay }
+			{ ! loaded && (
+				<LoadingOverlay />
+			) }
 			<Table
 				title={ title }
 				labels={ labels }
