@@ -62,12 +62,12 @@ const RESTTable = ( { title, endpoint } ) => {
 	let labels;
 	let rows;
 
-	if ( donationsFound ) {
+	if ( donationsFound && fetched ) {
 		labels = getLabels( fetched );
 		rows = getRows( fetched );
 	} else {
-		labels = getSkeletonLabels( fetched );
-		rows = getSkeletonRows( fetched );
+		labels = getSkeletonLabels();
+		rows = getSkeletonRows();
 	}
 
 	return (
