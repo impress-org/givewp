@@ -40,7 +40,8 @@ const Legend = ( { data, chartRef } ) => {
 		const color = getColor( index );
 
 		// Prepare percent to display with legend item
-		const percent = ! isNaN( total ) ? Math.round( ( amount / total ) * 100 ) + '%' : '';
+		const percent = Math.round( ( amount / total ) * 100 );
+		const percentText = ! isNaN( percent ) ? percent + '%' : '0%';
 
 		const point = data.datasets[ 0 ].tooltips[ index ];
 
@@ -49,7 +50,7 @@ const Legend = ( { data, chartRef } ) => {
 				<div className="bar" style={ { background: color } }></div>
 				<p className="label">{ point.footer }</p>
 				<p className="data">{ point.title }</p>
-				<p className="percent">{ percent }</p>
+				<p className="percent">{ percentText }</p>
 			</div>
 		);
 	} );
