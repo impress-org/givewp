@@ -13,7 +13,6 @@ import Grid from '../components/grid';
 import Card from '../components/card';
 import RESTChart from '../components/rest-chart';
 import RESTMiniChart from '../components/rest-mini-chart';
-import NotFoundNotice from '../components/not-found-notice';
 import NoDataNotice from '../components/no-data-notice';
 import LoadingNotice from '../components/loading-notice';
 import MiniPeriodSelector from '../components/mini-period-selector';
@@ -23,9 +22,6 @@ const Widget = () => {
 
 	return (
 		<div className="givewp-reports-widget-container">
-			{ giveStatus === 'donations_found_on_site' && (
-				<NotFoundNotice version={ 'dashboard' } />
-			) }
 			{ giveStatus === 'no_donations_found' && (
 				<NoDataNotice version={ 'dashboard' } />
 			) }
