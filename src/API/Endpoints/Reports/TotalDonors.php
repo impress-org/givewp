@@ -141,9 +141,20 @@ class TotalDonors extends Endpoint {
 		$prevDonors    = $this->get_prev_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentDonors = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
+		// Set default trend to 0
 		$trend = 0;
+
+		// Check that prev value and current value are > 0 (can't divide by 0)
 		if ( $prevDonors > 0 && $currentDonors > 0 ) {
-			$trend = round( ( ( ( $prevDonors - $currentDonors ) / $currentDonors ) * 100 ), 1 );
+
+			// Check if it is a percent decreate, or increase
+			if ( $prevDonors > $currentDonors ) {
+				// Calculate a percent decrease
+				$trend = round( ( ( ( $prevDonors - $currentDonors ) / $prevDonors ) * 100 ), 1 ) * -1;
+			} elseif ( $currentDonors > $prevDonors ) {
+				// Calculate a percent increase
+				$trend = round( ( ( ( $currentDonors - $prevDonors ) / $prevDonors ) * 100 ), 1 );
+			}
 		}
 
 		return $trend;
