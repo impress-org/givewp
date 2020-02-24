@@ -50,7 +50,7 @@ const PeriodSelector = () => {
 	};
 
 	return (
-		<div className="givewp-period-selector">
+		<div className="givewp-period-selector" key={ focusedInput }>
 			<div className="icon">{ icon }</div>
 			<div className="datepicker">
 				<DateRangePicker
@@ -67,6 +67,14 @@ const PeriodSelector = () => {
 					} }
 					isOutsideRange={ day => ( moment().diff( day ) < 0 ) }
 					numberOfMonths={ 1 }
+					initialVisibleMonth={
+						() => {
+							if ( focusedInput === 'endDate' ) {
+								return period.endDate;
+							}
+							return period.startDate;
+						}
+					}
 				/>
 			</div>
 			<div className="group">
