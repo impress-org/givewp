@@ -134,9 +134,20 @@ class AverageDonation extends Endpoint {
 		$prevAverage    = $this->get_prev_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentAverage = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
+		// Set default trend to 0
 		$trend = 0;
+
+		// Check that prev value and current value are > 0 (can't divide by 0)
 		if ( $prevAverage > 0 && $currentAverage > 0 ) {
-			$trend = round( ( ( ( $prevAverage - $currentAverage ) / $currentAverage ) * 100 ), 1 );
+
+			// Check if it is a percent decreate, or increase
+			if ( $prevAverage > $currentAverage ) {
+				// Calculate a percent decrease
+				$trend = round( ( ( ( $prevAverage - $currentAverage ) / $prevAverage ) * 100 ), 1 ) * -1;
+			} elseif ( $currentAverage > $prevAverage ) {
+				// Calculate a percent increase
+				$trend = round( ( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ), 1 );
+			}
 		}
 
 		return $trend;
