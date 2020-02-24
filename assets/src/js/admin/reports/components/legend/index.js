@@ -27,7 +27,6 @@ const Legend = ( { data, chartRef } ) => {
 			inactive.splice( foundIndex, 1 );
 			setInactiveItems( inactive );
 		}
-		//chartRef.data.datasets[0].data[index] = chartRef.data.datasets[0].data[index] === value ? null : value
 		chartRef.update();
 	};
 
