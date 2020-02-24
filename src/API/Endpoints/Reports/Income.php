@@ -157,7 +157,7 @@ class Income extends Endpoint {
 
 	public function get_give_status() {
 
-		$payments_for_site = get_posts(
+		$donations = get_posts(
 			[
 				'post_type'   => array( 'give_payment' ),
 				'post_status' => 'publish',
@@ -165,25 +165,11 @@ class Income extends Endpoint {
 			]
 		);
 
-		$payments_for_period = [];
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->status === 'publish' ) {
-				$payments_for_period[] = $payment;
-			}
+		if ( count( $donations ) > 0 ) {
+			return 'donations_found';
+		} else {
+			return 'no_donations_found';
 		}
-
-		switch ( true ) {
-			case count( $payments_for_period ) > 0 : {
-				return 'donations_found_for_period';
-			}
-			case count( $payments_for_site ) > 0 : {
-				return 'donations_found_on_site';
-			}
-			default : {
-				return 'no_donations_found';
-			}
-		}
-
 	}
 
 }
