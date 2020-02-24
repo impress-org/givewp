@@ -141,9 +141,20 @@ class TotalRefunds extends Endpoint {
 		$prevRefunds    = $this->get_prev_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentRefunds = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
+		// Set default trend to 0
 		$trend = 0;
+
+		// Check that prev value and current value are > 0 (can't divide by 0)
 		if ( $prevRefunds > 0 && $currentRefunds > 0 ) {
-			$trend = round( ( ( ( $prevRefunds - $currentRefunds ) / $currentRefunds ) * 100 ), 1 );
+
+			// Check if it is a percent decreate, or increase
+			if ( $prevRefunds > $currentRefunds ) {
+				// Calculate a percent decrease
+				$trend = round( ( ( ( $prevRefunds - $currentRefunds ) / $prevRefunds ) * 100 ), 1 ) * -1;
+			} elseif ( $currentRefunds > $prevRefunds ) {
+				// Calculate a percent increase
+				$trend = round( ( ( ( $currentRefunds - $prevRefunds ) / $prevRefunds ) * 100 ), 1 );
+			}
 		}
 
 		return $trend;
