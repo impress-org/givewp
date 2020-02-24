@@ -67,7 +67,7 @@ const Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price = parseFloat( price ).toFixed( format_args.precision ),
+				let actual_price = accounting.formatNumber( price, { precision: format_args.precision, decimal: '.' } ),
 					afterPoint = args.precision ? '.0' : '',
 					lastThree = '',
 					otherNumbers = '',
@@ -282,10 +282,10 @@ const Give = {
 			classes += text.length ? ' give-has-text' : '';
 			classes = classes.length ? ' ' + classes.trim() : '';
 
-			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim()  }</div></div>`;
+			spinnerHTML = `<div class="give-spinner-wrap${ classes }"><div class="give-spinner-inner">${ ( text + spinner ).trim() }</div></div>`;
 
 			// return spinner HTML.
-			if( null === args.show ) {
+			if ( null === args.show ) {
 				return spinnerHTML;
 			}
 

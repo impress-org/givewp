@@ -102,21 +102,22 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
  *
  * @since 2.5.0
  *
- * @global $give_add_ons_page
- *
  * @return void
  */
 function give_add_add_ons_option_link() {
-	global $give_add_ons_page;
+	global $submenu;
 
 	// Add-ons
-	$give_add_ons_page = add_submenu_page(
-		'edit.php?post_type=give_forms',
-		esc_html__( 'GiveWP Add-ons', 'give' ),
+	$submenu['edit.php?post_type=give_forms'][] = array(
 		esc_html__( 'Add-ons', 'give' ),
 		'install_plugins',
-		'give-addons',
-		'give_add_ons_page'
+
+		/**
+		 * Filter the add-on page url.
+		 *
+		 * @since 2.6.0
+		 */
+		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://go.givewp.com/addons-menu-link' ) ),
 	);
 
 }
@@ -229,7 +230,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			}
 			break;
 		default:
-			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
+			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_settings_export, $give_donors_page, $give_tools_page;
 			$admin_pages = apply_filters(
 				'give_admin_pages',
 				array(
@@ -237,7 +238,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					$give_settings_page,
 					$give_reports_page,
 					$give_system_info_page,
-					$give_add_ons_page,
 					$give_settings_export,
 					$give_donors_page,
 					$give_tools_page,

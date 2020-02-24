@@ -24,6 +24,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.5
 	 */
@@ -31,6 +32,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -38,6 +40,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -45,6 +48,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 	/**
 	 * Sets the donation form ID to recalculate
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -85,13 +89,16 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->store_data( 'give_temp_recount_form_stats', $totals );
 		}
 
-		$args = apply_filters( 'give_recount_form_stats_args', array(
-			'give_forms' => $this->form_id,
-			'number'     => $this->per_step,
-			'status'     => $accepted_statuses,
-			'paged'      => $this->step,
-			'fields'     => 'ids',
-		) );
+		$args = apply_filters(
+			'give_recount_form_stats_args',
+			array(
+				'give_forms' => $this->form_id,
+				'number'     => $this->per_step,
+				'status'     => $accepted_statuses,
+				'paged'      => $this->step,
+				'fields'     => 'ids',
+			)
+		);
 
 		$payments = new Give_Payments_Query( $args );
 		$payments = $payments->get_payments();
@@ -109,6 +116,8 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 					continue;
 				}
 
+				$currency_code = give_get_payment_currency_code( $payment->ID );
+
 				/**
 				 * Filter the payment amount.
 				 *
@@ -119,11 +128,15 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 					give_format_amount( $payment->total, array( 'donation_id' => $payment->ID ) ),
 					$payment->total,
 					$payment->ID,
-					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+					array(
+						'type'     => 'stats',
+						'currency' => false,
+						'amount'   => false,
+					)
 				);
 
 				$totals['sales'] ++;
-				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount );
+				$totals['earnings'] += (float) give_maybe_sanitize_amount( $earning_amount, array( 'currency' => $currency_code ) );
 
 			}
 
@@ -131,7 +144,6 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 			return true;
 		}
-
 
 		give_update_meta( $this->form_id, '_give_form_sales', $totals['sales'] );
 		give_update_meta( $this->form_id, '_give_form_earnings', give_sanitize_amount_for_db( $totals['earnings'] ) );
@@ -155,12 +167,15 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 		if ( false === $total ) {
 			$total = 0;
-			$args  = apply_filters( 'give_recount_form_stats_total_args', array(
-				'give_forms' => $this->form_id,
-				'number'     => - 1,
-				'status'     => $accepted_statuses,
-				'fields'     => 'ids',
-			) );
+			$args  = apply_filters(
+				'give_recount_form_stats_total_args',
+				array(
+					'give_forms' => $this->form_id,
+					'number'     => - 1,
+					'status'     => $accepted_statuses,
+					'fields'     => 'ids',
+				)
+			);
 
 			$payments = new Give_Payments_Query( $args );
 			$total    = count( $payments->get_payments() );
@@ -270,7 +285,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  mixed  $value The value to store
 	 *
 	 * @return void
 	 */
@@ -313,7 +328,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {

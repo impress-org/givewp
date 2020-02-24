@@ -329,6 +329,17 @@ function _give_register_admin_notices() {
 							)
 						);
 						break;
+					case 'akismet-deblacklisted-email':
+						Give()->notices->register_notice(
+							array(
+								'id'          => 'give-akismet-deblacklisted-email',
+								'type'        => 'updated',
+								'description' => __( 'Email de-blacklisted successfully. Now Donor will able to process donation with email flagged as spam', 'give' ),
+								'show'        => true,
+								'dismissible' => 'auto',
+							)
+						);
+						break;
 				}// End switch().
 			}// End if().
 
@@ -505,6 +516,53 @@ function _give_register_admin_notices() {
 						break;
 				}// End switch().
 			}// End if().
+		}
+	}
+
+	/**
+	 * Spam log admin notice
+	 */
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	) {
+		$current_time               = current_time( 'timestamp' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+
+		$spam_count = Give()->log_db->count(
+			array(
+				'log_type'   => 'spam',
+				'date_query' => array(
+					array(
+						'after'     => date( 'Y-m-d 00:00:00', $current_time ),
+						'before'    => date( 'Y-m-d 23:59:59', $current_time ),
+						'inclusive' => true,
+					),
+				),
+			)
+		);
+
+		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
+			Give()->notices->register_notice(
+				array(
+					'id'                    => 'give-new-akismet-spam-found',
+					'type'                  => 'warning',
+					'description'           => sprintf(
+						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
+						$spam_count,
+						_n( 'donor email', 'donor emails', $spam_count, 'give' ),
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&section=spam' ) ),
+						__( 'Go to spam log list page', 'give' ),
+						_n( 'was', 'were', $spam_count, 'give' ),
+						_n( 'donor', 'donors', $spam_count, 'give' ),
+						_n( 'this', 'these', $spam_count, 'give' )
+					),
+					'dismissible_type'      => 'user',
+					'dismiss_interval'      => 'custom',
+					'dismiss_interval_time' => $end_of_current_time_in_gmt - $current_time_gmt,
+				)
+			);
 		}
 	}
 }
@@ -1450,5 +1508,77 @@ function give_admin_quick_js() {
 }
 
 add_action( 'admin_head', 'give_admin_quick_js' );
+
+/**
+ * Add Admin addon menu related scripts
+ *
+ * @since 2.6.0
+ */
+function give_admin_addon_menu_inline_scripts() {
+	?>
+	<script>
+		( function( $ ) {
+			const $addonLink = $( '#menu-posts-give_forms a[href^="https://go.givewp.com"]' );
+			$addonLink.attr( 'target', '_blank' );
+
+			<?php if ( empty( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ) ) : ?>
+			$addonLink.addClass( 'give-highlight' );
+			$addonLink.prepend( '<span class="dashicons dashicons-star-filled"></span>' );
+			<?php endif; ?>
+		} )( jQuery )
+	</script>
+	<style>
+		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight {
+			color: rgb(43, 194, 83);
+			font-weight: 700;
+			vertical-align: top;
+			text-shadow: 0 1px 2px #00000080;
+		}
+
+		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight span.dashicons {
+			font-size: 14px !important;
+			width: auto;
+			height: 18px;
+			padding-right: 3px;
+			vertical-align: middle;
+		}
+	</style>
+	<?php
+}
+
+add_action( 'admin_footer', 'give_admin_addon_menu_inline_scripts' );
+
+/**
+ * Handle akismet_deblacklist_spammed_email_handler give-action
+ *
+ * @param array $get
+ *
+ * @since 2.5.14
+ */
+function give_akismet_deblacklist_spammed_email_handler( $get ) {
+	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';
+	$log    = ! empty( $get['log'] ) ? absint( $get['log'] ) : '';
+	$action = "give_akismet_deblacklist_spammed_email_{$email}";
+
+	check_admin_referer( $action );
+	$emails = give_akismet_get_whitelisted_emails();
+
+	if ( ! in_array( $email, $emails, true ) ) {
+		array_unshift( $emails, $email );
+
+		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
+
+		// Remove log, metadata and cache.
+		if ( Give()->log_db->delete( $log ) ) {
+			Give()->logmeta_db->delete_all_meta( $log );
+			Give()->logs->delete_cache();
+		}
+
+		// Redirect to Akismet setting page.
+		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
+	}
+}
+
+add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
 
 
