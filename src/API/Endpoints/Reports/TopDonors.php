@@ -47,7 +47,7 @@ class TopDonors extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ), 'amount', 20 );
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ), 'date', -1 );
 
 		$donors = [];
 
@@ -67,10 +67,22 @@ class TopDonors extends Endpoint {
 			}
 		}
 
-		$donors = array_values( $donors );
+		$sorted = usort( $donors, [ $this, 'compare_donors' ] );
+
+		if ( $sorted === true ) {
+			$donors = array_slice( $donors, 0, 25 );
+			$donors = array_values( $donors );
+		}
 
 		return $donors;
 
+	}
+
+	public function compare_donors( $a, $b ) {
+		if ( $a['earnings'] == $b['earnings'] ) {
+				return 0;
+		}
+		return ( $a['earnings'] > $b['earnings'] ) ? -1 : 1;
 	}
 
 }
