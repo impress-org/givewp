@@ -14,11 +14,6 @@ abstract class Endpoint {
 
 	protected $endpoint;
 
-	// Here initialize our endpoint name.
-	public function __construct() {
-		// Do nothing
-	}
-
 	public function init() {
 		add_action( 'rest_api_init', array( $this, 'register_route' ) );
 	}
