@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 // Components
 import List from '../list';
 import LoadingOverlay from '../loading-overlay';
-import NotFoundOverlay from '../not-found-overlay';
 
 // Utilities
 import { getItems, getSkeletonItems } from './utils';
@@ -20,8 +19,6 @@ const RESTList = ( { title, endpoint } ) => {
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
-
-	const [ dataFound, setDataFound ] = useState( true );
 
 	const [ loaded, setLoaded ] = useState( false );
 
@@ -52,8 +49,6 @@ const RESTList = ( { title, endpoint } ) => {
 				.then( function( response ) {
 					setQuerying( false );
 					setFetched( response.data.data );
-					const found = response.data.data.length > 0 ? true : false;
-					setDataFound( found );
 					setLoaded( true );
 				} )
 				.catch( function() {
@@ -65,25 +60,15 @@ const RESTList = ( { title, endpoint } ) => {
 	const items = getItems( fetched );
 	const skeletonItems = getSkeletonItems();
 
-	const ready = giveStatus === 'donations_found_for_period' ? true : false;
-
-	let overlay;
-	switch ( true ) {
-		case loaded === false: {
-			overlay = <LoadingOverlay />;
-			break;
-		}
-		case dataFound === false: {
-			overlay = <NotFoundOverlay />;
-			break;
-		}
-	}
+	const donationsFound = giveStatus === 'donations_found' ? true : false;
 
 	return (
 		<Fragment>
-			{ ready ? (
+			{ donationsFound ? (
 				<Fragment>
-					{ overlay }
+					{ ! loaded && (
+						<LoadingOverlay />
+					) }
 					<List title={ title }>
 						{ items }
 					</List>
