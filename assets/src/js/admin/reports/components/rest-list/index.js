@@ -57,27 +57,23 @@ const RESTList = ( { title, endpoint } ) => {
 		}
 	}, [ period, endpoint ] );
 
-	const items = getItems( fetched );
-	const skeletonItems = getSkeletonItems();
+	const ready = giveStatus === 'donations_found' && fetched !== null ? true : false;
 
-	const donationsFound = giveStatus === 'donations_found' ? true : false;
+	let items;
+	if ( ready ) {
+		items = getItems( fetched );
+	} else {
+		items = getSkeletonItems();
+	}
 
 	return (
 		<Fragment>
-			{ donationsFound ? (
-				<Fragment>
-					{ ! loaded && (
-						<LoadingOverlay />
-					) }
-					<List title={ title }>
-						{ items }
-					</List>
-				</Fragment>
-			) : (
-				<List title={ title }>
-					{ skeletonItems }
-				</List>
+			{ ! loaded && (
+				<LoadingOverlay />
 			) }
+			<List title={ title }>
+				{ items }
+			</List>
 		</Fragment>
 	);
 };
