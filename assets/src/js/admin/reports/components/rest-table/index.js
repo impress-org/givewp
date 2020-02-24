@@ -57,12 +57,11 @@ const RESTTable = ( { title, endpoint } ) => {
 		}
 	}, [ period, endpoint ] );
 
-	const donationsFound = giveStatus === 'donations_found' ? true : false;
+	const ready = giveStatus === 'donations_found' && fetched !== null ? true : false;
 
 	let labels;
 	let rows;
-
-	if ( donationsFound && fetched ) {
+	if ( ready ) {
 		labels = getLabels( fetched );
 		rows = getRows( fetched );
 	} else {
