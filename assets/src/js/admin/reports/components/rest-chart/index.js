@@ -68,7 +68,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 		}
 	}, [ period, endpoint ] );
 
-	const ready = giveStatus === 'donations_found_for_period' ? true : false;
+	const donationsFound = giveStatus === 'donations_found' ? true : false;
 
 	return (
 		<Fragment>
@@ -83,7 +83,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 					) }
 				</div>
 			) }
-			{ ready ? (
+			{ donationsFound ? (
 				<Chart
 					type={ type }
 					aspectRatio={ aspectRatio }
