@@ -20,7 +20,7 @@ class Give_Admin {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -77,7 +77,6 @@ class Give_Admin {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-filters.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons/add-ons.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons/actions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';

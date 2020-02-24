@@ -28,9 +28,8 @@ function give_upload_addon_handler() {
 	check_admin_referer( 'give-upload-addon' );
 
 	// Remove version from file name.
-	$filename = preg_replace(  '/(.\d)+.zip/', '', $_FILES['file']['name']  );
-	$filename = basename( $filename, '.zip' );
-
+	$filename = preg_replace( array( '/\(\d\).zip/', '/(.\d).*[\(\d\)]/' ), '', $_FILES['file']['name'] );
+	$filename = basename( trim( $filename ), '.zip' );
 
 	// Bailout if user does not has permission.
 	if ( ! current_user_can( 'upload_plugins' ) ) {
@@ -53,7 +52,7 @@ function give_upload_addon_handler() {
 	$file_type = wp_check_filetype( $_FILES['file']['name'], array( 'zip' => 'application/zip' ) );
 
 	if ( empty( $file_type['ext'] ) ) {
-		wp_send_json_error( array( 'errorMsg' =>  __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ) );
+		wp_send_json_error( array( 'errorMsg' => __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ) );
 	}
 
 	$give_addons_list   = give_get_plugins();
@@ -69,10 +68,12 @@ function give_upload_addon_handler() {
 
 	// Bailout  if addon already installed
 	if ( ! empty( $is_addon_installed ) ) {
-		wp_send_json_error( array(
-			'errorMsg'   => __( 'This add-on is already installed.', 'give' ),
-			'pluginInfo' => $is_addon_installed,
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg'   => __( 'This add-on is already installed.', 'give' ),
+				'pluginInfo' => $is_addon_installed,
+			)
+		);
 	}
 
 	$upload_status = wp_handle_upload( $_FILES['file'], array( 'test_form' => false ) );
@@ -82,7 +83,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error( $upload_status );
 	}
 
-	// @todo: check how wordpress verify plugin files before uploading to plugin directory
+	// @todo: check how WordPress verify plugin files before uploading to plugin directory
 
 	/* you can safely run request_filesystem_credentials() without any issues and don't need to worry about passing in a URL */
 	$creds = request_filesystem_credentials( site_url() . '/wp-admin/', '', false, false, array() );
@@ -90,9 +91,11 @@ function give_upload_addon_handler() {
 	/* initialize the API */
 	if ( ! WP_Filesystem( $creds ) ) {
 		/* any problems and we exit */
-		wp_send_json_error(array(
-			'errorMsg' => __( 'File system does not load correctly.', 'give' )
-		));
+		wp_send_json_error(
+			array(
+				'errorMsg' => __( 'File system does not load correctly.', 'give' ),
+			)
+		);
 	}
 
 	$unzip_status = unzip_file( $upload_status['file'], $wp_filesystem->wp_plugins_dir() );
@@ -102,14 +105,17 @@ function give_upload_addon_handler() {
 
 	// Bailout if not able to unzip file successfully
 	if ( is_wp_error( $unzip_status ) ) {
-		wp_send_json_error( array(
-			'errorMsg' => $unzip_status
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => $unzip_status,
+			)
+		);
 	}
 
 	// Delete cache and get current installed addon plugin path.
-	wp_cache_delete( 'plugins', 'plugins' );
-	$give_addons_list   = give_get_plugins();
+	wp_clean_plugins_cache( true );
+
+	$give_addons_list = give_get_plugins();
 	$installed_addon  = array();
 
 	if ( ! empty( $give_addons_list ) ) {
@@ -121,12 +127,14 @@ function give_upload_addon_handler() {
 		}
 	}
 
-	wp_send_json_success( array(
-		'pluginPath'         => $installed_addon['path'],
-		'pluginName'         => $installed_addon['Name'],
-		'nonce'              => wp_create_nonce( "give_activate-{$installed_addon['path']}" ),
-		'licenseSectionHtml' => Give_License::render_licenses_list(),
-	) );
+	wp_send_json_success(
+		array(
+			'pluginPath'         => $installed_addon['path'],
+			'pluginName'         => $installed_addon['Name'],
+			'nonce'              => wp_create_nonce( "give_activate-{$installed_addon['path']}" ),
+			'licenseSectionHtml' => Give_License::render_licenses_list(),
+		)
+	);
 }
 
 add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
@@ -152,88 +160,104 @@ function give_get_license_info_handler() {
 	$plugin_slug                  = $is_activating_single_license ? give_clean( $_POST['addon'] ) : '';
 	$licenses                     = get_option( 'give_licenses', array() );
 
-
 	if ( ! $license_key ) {
-		wp_send_json_error( array(
-			'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
+			)
+		);
 
-	} else if (
+	} elseif (
 		! $is_reactivating_license
 		&& array_key_exists( $license_key, $licenses )
 	) {
 		// If admin already activated license but did not install add-on then send license info show notice to admin with download link.
-		$license = $licenses[$license_key];
-		if( empty( $license['is_all_access_pass'] ) ) {
-			$plugin_data = Give_License::get_plugin_by_slug( $license['plugin_slug' ] );
+		$license = $licenses[ $license_key ];
+		if ( empty( $license['is_all_access_pass'] ) ) {
+			$plugin_data = Give_License::get_plugin_by_slug( $license['plugin_slug'] );
 
 			// Plugin license activated but does not install, sent notice which allow admin to download add-on.
-			if( empty( $plugin_data ) ) {
+			if ( empty( $plugin_data ) ) {
 				wp_send_json_success( $license );
 			}
 		}
 
-		wp_send_json_error( array(
-			'errorMsg' => __( 'This license key is already in use on this website.', 'give' ),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => __( 'This license key is already in use on this website.', 'give' ),
+			)
+		);
 	}
 
-
 	// Check license.
-	$check_license_res = Give_License::request_license_api( array(
-		'edd_action' => 'check_license',
-		'license'    => $license_key,
-	), true );
+	$check_license_res = Give_License::request_license_api(
+		array(
+			'edd_action' => 'check_license',
+			'license'    => $license_key,
+		),
+		true
+	);
 
 	// Make sure there are no errors.
 	if ( is_wp_error( $check_license_res ) ) {
-		wp_send_json_error( array(
-			'errorMsg' => $check_license_res->get_error_message(),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => $check_license_res->get_error_message(),
+			)
+		);
 	}
 
 	// Check if license valid or not.
 	if ( ! $check_license_res['success'] ) {
-		wp_send_json_error( array(
-			'errorMsg' => sprintf(
-				__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
-				Give_License::get_account_url(),
-				$check_license_res['license']
-			),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => sprintf(
+					__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+					Give_License::get_account_url(),
+					$check_license_res['license']
+				),
+			)
+		);
 	}
 
-	if(
+	if (
 		$is_activating_single_license
 		&& ! empty( $check_license_res['plugin_slug'] )
 		&& $plugin_slug !== $check_license_res['plugin_slug']
 	) {
-		wp_send_json_error( array(
-			'errorMsg' => sprintf(
-				__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
-				Give_License::get_account_url()
-			),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => sprintf(
+					__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+					Give_License::get_account_url()
+				),
+			)
+		);
 	}
 
 	// Activate license.
-	$activate_license_res = Give_License::request_license_api( array(
-		'edd_action' => 'activate_license',
-		'item_name'  => $check_license_res['item_name'],
-		'license'    => $license_key,
-	), true );
+	$activate_license_res = Give_License::request_license_api(
+		array(
+			'edd_action' => 'activate_license',
+			'item_name'  => $check_license_res['item_name'],
+			'license'    => $license_key,
+		),
+		true
+	);
 
 	if ( is_wp_error( $activate_license_res ) ) {
-		wp_send_json_error( array(
-			'errorMsg' => $check_license_res->get_error_message(),
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => $check_license_res->get_error_message(),
+			)
+		);
 	}
 
 	// Return error if license activation is not success and admin is not reactivating add-on.
-	if ( ! $is_reactivating_license && ! $activate_license_res['success']  ) {
+	if ( ! $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
+			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);
@@ -258,14 +282,13 @@ function give_get_license_info_handler() {
 	if ( $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.' ),
+			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);
 
 		wp_send_json_error( $response );
 	}
-
 
 	// Tell WordPress to look for updates.
 	give_refresh_licenses();
@@ -302,9 +325,11 @@ function give_activate_addon_handler() {
 	// Tell WordPress to look for updates.
 	give_refresh_licenses();
 
-	wp_send_json_success( array(
-		'licenseSectionHtml' => Give_License::render_licenses_list(),
-	) );
+	wp_send_json_success(
+		array(
+			'licenseSectionHtml' => Give_License::render_licenses_list(),
+		)
+	);
 }
 
 add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
@@ -336,24 +361,30 @@ function give_deactivate_license_handler() {
 	$give_licenses = get_option( 'give_licenses', array() );
 
 	if ( empty( $give_licenses[ $license ] ) ) {
-		wp_send_json_error( array(
+		wp_send_json_error(
+			array(
 				'errorMsg' => __( 'We are unable to deactivate invalid license', 'give' ),
 			)
 		);
 	}
 
 	/* @var array|WP_Error $response */
-	$response = Give_License::request_license_api( array(
-		'edd_action' => 'deactivate_license',
-		'license'    => $license,
-		'item_name'  => $item_name,
-	), true );
+	$response = Give_License::request_license_api(
+		array(
+			'edd_action' => 'deactivate_license',
+			'license'    => $license,
+			'item_name'  => $item_name,
+		),
+		true
+	);
 
 	if ( is_wp_error( $response ) ) {
-		wp_send_json_error( array(
-			'errorMsg' => $response->get_error_message(),
-			'response' => $license,
-		) );
+		wp_send_json_error(
+			array(
+				'errorMsg' => $response->get_error_message(),
+				'response' => $license,
+			)
+		);
 	}
 
 	$is_all_access_pass = $give_licenses[ $license ]['is_all_access_pass'];
@@ -416,16 +447,18 @@ function give_refresh_all_licenses_handler() {
 	give_refresh_licenses();
 
 	$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $data['time'] ) ) );
-	wp_send_json_success( array(
-		'html'          => Give_License::render_licenses_list(),
-		'refreshButton' => 5 <= $data['count'],
-		'refreshStatus' => $data,
-		'lastUpdateMsg' => sprintf(
-			__( 'Last refreshed on %1$s at %2$s', 'give' ),
-			date( give_date_format(), $local_date ),
-			date( 'g:i a', $local_date )
-		),
-	) );
+	wp_send_json_success(
+		array(
+			'html'          => Give_License::render_licenses_list(),
+			'refreshButton' => 5 <= $data['count'],
+			'refreshStatus' => $data,
+			'lastUpdateMsg' => sprintf(
+				__( 'Last refreshed on %1$s at %2$s', 'give' ),
+				date( give_date_format(), $local_date ),
+				date( 'g:i a', $local_date )
+			),
+		)
+	);
 }
 
 add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_handler' );
@@ -442,14 +475,12 @@ add_action( 'wp_ajax_give_refresh_all_licenses', 'give_refresh_all_licenses_hand
  * @return object $_data
  * @since 2.5.0
  * @uses  api_request()
- *
  */
 function give_plugins_api_filter( $_data, $_action = '', $_args = null ) {
 	// Exit.
 	if ( 'plugin_information' !== $_action ) {
 		return $_data;
 	}
-
 
 	$plugin = Give_License::get_plugin_by_slug( $_args->slug );
 
@@ -523,17 +554,16 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 	$plugin_data = Give_License::get_plugin_by_slug( $plugin['slug'] );
 
 	// Only show notices for Give add-ons
-	if ( 'add-on' !== $plugin_data['Type']  ) {
+	if ( 'add-on' !== $plugin_data['Type'] ) {
 		return;
 	}
 
 	// Do not print any message if updates does not exist.
 	$update_cache = get_site_transient( 'update_plugins' );
 
-	if( ! isset( $update_cache->response[$file] ) ) {
+	if ( ! isset( $update_cache->response[ $file ] ) ) {
 		return;
 	}
-
 
 	if ( ! empty( $update_cache->response[ $plugin_data['Path'] ] ) && version_compare( $plugin_data['Version'], $plugin['new_version'], '<' ) ) {
 		printf(
@@ -589,7 +619,6 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 		return;
 	}
 
-
 	if (
 		! $plugin
 		|| empty( $plugin['slug'] )
@@ -610,10 +639,9 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 
 	// Do not print any message if updates does not exist.
 	$update_plugins = get_site_transient( 'update_plugins' );
-	if( ! isset( $update_plugins->response[$file] ) ) {
+	if ( ! isset( $update_plugins->response[ $file ] ) ) {
 		return;
 	}
-
 
 	// Remove core update notice.
 	remove_action( "after_plugin_row_{$file}", 'wp_plugin_update_row' );
@@ -645,8 +673,8 @@ add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 
  *
  * @since 2.5.11
  */
-function give_refresh_license_on_force_check(){
-	if( isset( $_GET['force-check'] ) ) {
+function give_refresh_license_on_force_check() {
+	if ( isset( $_GET['force-check'] ) ) {
 		give_refresh_licenses();
 	}
 }

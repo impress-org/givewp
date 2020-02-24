@@ -28,7 +28,7 @@ $give_updates = Give_Updates::get_instance();
 ?>
 
 <div class="give-debug-report-wrapper">
-	<p class="give-debug-report-text"><?php echo sprintf(__( 'Please copy and paste this information in your ticket when contacting support:', 'give' )); ?> </p>
+	<p class="give-debug-report-text"><?php echo sprintf( __( 'Please copy and paste this information in your ticket when contacting support:', 'give' ) ); ?> </p>
 	<div class="give-debug-report-actions">
 		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
 		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?> <span class="dashicons dashicons-external"></span></a>
@@ -57,13 +57,21 @@ $give_updates = Give_Updates::get_instance();
 		</tr>
 		<tr>
 			<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help(  __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
 			<td><?php bloginfo( 'version' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
-			<td><?php if ( is_multisite() ) echo '<span class="dashicons dashicons-yes"></span>'; else echo '&ndash;'; ?></td>
+			<td>
+			<?php
+			if ( is_multisite() ) {
+				echo '<span class="dashicons dashicons-yes"></span>';
+			} else {
+				echo '&ndash;';
+			}
+			?>
+			</td>
 
 		</tr>
 		<tr>
@@ -79,7 +87,7 @@ $give_updates = Give_Updates::get_instance();
 				}
 
 				if ( $memory < 67108864 ) {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend setting memory to at least 64 MB. See: %s', 'give' ), size_format( $memory ), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend setting memory to at least 64 MB. See: %2$s', 'give' ), size_format( $memory ), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
 				} else {
 					echo '<mark class="yes">' . size_format( $memory ) . '</mark>';
 				}
@@ -138,7 +146,7 @@ $give_updates = Give_Updates::get_instance();
 				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The page set to display your posts.', 'give' ) ); ?></td>
 				<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
 			</tr>
-		<?php endif;?>
+		<?php endif; ?>
 		<tr>
 			<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The table prefix used in your WordPress database.', 'give' ) ); ?></td>
@@ -205,7 +213,7 @@ $give_updates = Give_Updates::get_instance();
 			<td>
 				<?php
 				if ( false !== $tls_check ) {
-					esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version );
+					esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
 				}
 				?>
 			</td>
@@ -225,14 +233,15 @@ $give_updates = Give_Updates::get_instance();
 					$php_version = phpversion();
 
 					if ( version_compare( $php_version, '5.6', '<' ) ) {
-						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum PHP version of 5.6. See: %s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/settings-system-info" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
+						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend a minimum PHP version of 5.6. See: %2$s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/settings-system-info" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
 					} else {
 						echo '<mark class="yes">' . esc_html( $php_version ) . '</mark>';
 					}
 				} else {
 					_e( "Couldn't determine PHP version because phpversion() doesn't exist.", 'give' );
 				}
-				?></td>
+				?>
+				</td>
 		</tr>
 		<?php if ( function_exists( 'ini_get' ) ) : ?>
 			<tr>
@@ -242,7 +251,7 @@ $give_updates = Give_Updates::get_instance();
 			</tr>
 			<tr>
 				<td data-export-label="PHP Time Limit"><?php _e( 'PHP Time Limit', 'give' ); ?>:</td>
-				<td class="help"><?php echo Give() ->tooltips->render_help( __( 'The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups).', 'give' ) ); ?></td>
+				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups).', 'give' ) ); ?></td>
 				<td><?php echo ini_get( 'max_execution_time' ); ?></td>
 			</tr>
 			<tr>
@@ -279,7 +288,8 @@ $give_updates = Give_Updates::get_instance();
 				<td class="help"><?php echo Give()->tooltips->render_help( __( 'Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits.', 'give' ) ); ?></td>
 				<td><?php echo extension_loaded( 'suhosin' ) ? '<span class="dashicons dashicons-yes"></span>' : '&ndash;'; ?></td>
 			</tr>
-		<?php endif;
+			<?php
+		endif;
 
 		if ( $wpdb->use_mysqli ) {
 			$ver = mysqli_get_server_info( $wpdb->dbh );
@@ -287,7 +297,8 @@ $give_updates = Give_Updates::get_instance();
 			$ver = mysql_get_server_info();
 		}
 
-		if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) : ?>
+		if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) :
+			?>
 			<tr>
 				<td data-export-label="MySQL Version"><?php _e( 'MySQL Version', 'give' ); ?>:</td>
 				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of MySQL installed on your hosting server.', 'give' ) ); ?></td>
@@ -296,7 +307,7 @@ $give_updates = Give_Updates::get_instance();
 					$mysql_version = $wpdb->db_version();
 
 					if ( version_compare( $mysql_version, '5.6', '<' ) ) {
-						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum MySQL version of 5.6. See: %s', 'give' ), esc_html( $mysql_version ), '<a href="https://wordpress.org/about/requirements/" target="_blank">' . __( 'WordPress Requirements', 'give' ) . '</a>' ) . '</mark>';
+						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend a minimum MySQL version of 5.6. See: %2$s', 'give' ), esc_html( $mysql_version ), '<a href="https://wordpress.org/about/requirements/" target="_blank">' . __( 'WordPress Requirements', 'give' ) . '</a>' ) . '</mark>';
 					} else {
 						echo '<mark class="yes">' . esc_html( $mysql_version ) . '</mark>';
 					}
@@ -307,13 +318,15 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td data-export-label="Default Timezone is UTC"><?php _e( 'Default Timezone is UTC', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The default timezone for your server.', 'give' ) ); ?></td>
-			<td><?php
+			<td>
+			<?php
 				$default_timezone = date_default_timezone_get();
-				if ( 'UTC' !== $default_timezone ) {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Default timezone is %s - it should be UTC', 'give' ), $default_timezone ) . '</mark>';
-				} else {
-					echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>';
-				} ?>
+			if ( 'UTC' !== $default_timezone ) {
+				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Default timezone is %s - it should be UTC', 'give' ), $default_timezone ) . '</mark>';
+			} else {
+				echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>';
+			}
+			?>
 			</td>
 		</tr>
 		<?php
@@ -384,14 +397,17 @@ $give_updates = Give_Updates::get_instance();
 		$posting['wp_remote_post']['name'] = __( 'Remote Post', 'give' );
 		$posting['wp_remote_post']['help'] = __( 'PayPal uses this method of communicating when sending back transaction information.', 'give' );
 
-		$response = wp_safe_remote_post( 'https://www.paypal.com/cgi-bin/webscr', array(
-			'timeout'     => 60,
-			'user-agent'  => 'Give/' . GIVE_VERSION,
-			'httpversion' => '1.1',
-			'body'        => array(
-				'cmd' => '_notify-validate',
-			),
-		) );
+		$response = wp_safe_remote_post(
+			'https://www.paypal.com/cgi-bin/webscr',
+			array(
+				'timeout'     => 60,
+				'user-agent'  => 'Give/' . GIVE_VERSION,
+				'httpversion' => '1.1',
+				'body'        => array(
+					'cmd' => '_notify-validate',
+				),
+			)
+		);
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_post']['success'] = true;
@@ -453,12 +469,12 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td data-export-label="GiveWP Version"><?php _e( 'GiveWP Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of GiveWP installed on your site.', 'give' ) ); ?></td>
-			<td><?php echo esc_html( get_option( 'give_version' )); ?></td>
+			<td><?php echo esc_html( get_option( 'give_version' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
-			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+			<td><?php echo give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Database Updates"><?php _e( 'Database Updates', 'give' ); ?>:</td>
@@ -469,20 +485,20 @@ $give_updates = Give_Updates::get_instance();
 				$pending_updates = $give_updates->get_total_new_db_update_count();
 				$total_updates   = $give_updates->get_total_db_update_count();
 
-				if( Give_Updates::$background_updater->is_paused_process() ) {
+				if ( Give_Updates::$background_updater->is_paused_process() ) {
 					// When all the db updates are pending.
 					$updates_text = sprintf(
 						__( '%1$s updates still need to run. (Paused) ', 'give' ),
-						count( $give_updates->get_updates('database', 'new' ) )
+						count( $give_updates->get_updates( 'database', 'new' ) )
 					);
-				} elseif( $pending_updates === $total_updates ) {
+				} elseif ( $pending_updates === $total_updates ) {
 
 					// When all the db updates are pending.
 					$updates_text = sprintf(
 						__( '%1$s updates still need to run.', 'give' ),
 						$total_updates
 					);
-				} elseif( $pending_updates > 0 ) {
+				} elseif ( $pending_updates > 0 ) {
 
 					// When some of the db updates are completed and some are pending.
 					$updates_text = sprintf(
@@ -525,7 +541,7 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
-			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+			<td><?php echo give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Emails', 'give' ); ?>:</td>
@@ -533,7 +549,7 @@ $give_updates = Give_Updates::get_instance();
 			<td>
 				<?php
 				/* @var Give_Email_Notification $email_notification */
-				if( $email_notifications = Give_Email_Notifications::get_instance()->get_email_notifications() ) {
+				if ( $email_notifications = Give_Email_Notifications::get_instance()->get_email_notifications() ) {
 					ob_start();
 
 					foreach ( Give_Email_Notifications::get_instance()->get_email_notifications() as $email_notification ) {
@@ -658,7 +674,7 @@ $give_updates = Give_Updates::get_instance();
 					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
 					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
 					echo sprintf(
-						__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
+						__( 'IPN received for <a href="%1$s">#%2$s</a> ( <a href="%3$s" target="_blank">%4$s</a> ) on %5$s at %6$s. Status %7$s', 'give' ),
 						$donation_url,
 						$donation_id,
 						$transaction_url,
@@ -693,6 +709,16 @@ $give_updates = Give_Updates::get_instance();
 				?>
 			</td>
 		</tr>
+		<?php
+		/**
+		 * This action hook will be used to add system info configuration for GiveWP.
+		 *
+		 * @param array $give_options List of Give Settings.
+		 *
+		 * @since 2.5.14
+		 */
+		do_action( 'give_add_system_info_configuration', $give_options );
+		?>
 	</tbody>
 </table>
 
@@ -748,9 +774,9 @@ $give_updates = Give_Updates::get_instance();
 					}
 
 					echo ' &ndash; '
-					     . sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
-					     . ' &ndash; '
-					     . esc_html( $plugin_data['Version'] );
+						 . sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
+						 . ' &ndash; '
+						 . esc_html( $plugin_data['Version'] );
 					?>
 				</td>
 			</tr>
@@ -862,7 +888,7 @@ $give_updates = Give_Updates::get_instance();
 <?php
 $active_mu_plugins = (array) get_mu_plugins();
 if ( ! empty( $active_mu_plugins ) ) {
-?>
+	?>
 	<table class="give-status-table widefat" cellspacing="0">
 		<thead>
 			<tr>
@@ -917,13 +943,13 @@ if ( ! empty( $active_mu_plugins ) ) {
 		</tr>
 	</thead>
 	<?php
-	include_once( ABSPATH . 'wp-admin/includes/theme-install.php' );
+	require_once ABSPATH . 'wp-admin/includes/theme-install.php';
 	$active_theme = wp_get_theme();
 	?>
 	<tbody>
 		<tr>
 			<td data-export-label="Name"><?php _e( 'Name', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The name of the current active theme.', 'give' )  ); ?></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The name of the current active theme.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( $active_theme->Name ); ?></td>
 		</tr>
 		<tr>
@@ -939,14 +965,16 @@ if ( ! empty( $active_mu_plugins ) ) {
 		<tr>
 			<td data-export-label="Child Theme"><?php _e( 'Child Theme', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current theme is a child theme.', 'give' ) ); ?></td>
-			<td><?php
+			<td>
+			<?php
 				echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
-				?></td>
+			?>
+				</td>
 		</tr>
 		<?php
-		if( is_child_theme() ) {
+		if ( is_child_theme() ) {
 			$parent_theme = wp_get_theme( $active_theme->Template );
-		?>
+			?>
 			<tr>
 				<td data-export-label="Parent Theme Name"><?php _e( 'Parent Theme Name', 'give' ); ?>:</td>
 				<td class="help"><?php echo Give()->tooltips->render_help( __( 'The name of the parent theme.', 'give' ) ); ?></td>

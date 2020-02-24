@@ -1828,7 +1828,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
 function give_checkout_final_total( $form_id ) {
 
 	$total = isset( $_POST['give_total'] ) ?
-		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'] ) ) :
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		give_get_default_form_amount( $form_id );
 
 	// Only proceed if give_total available.

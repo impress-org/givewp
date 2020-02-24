@@ -81,9 +81,11 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * @return bool|mixed
  */
 function give_akismet( $spam ) {
+	// Build args array.
+	$args = array();
 
 	// Bail out, If spam.
-	if ( $spam ) {
+	if ( $spam || ! give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) ) {
 		return $spam;
 	}
 
@@ -92,20 +94,33 @@ function give_akismet( $spam ) {
 		return false;
 	}
 
-	// Build args array.
-	$args = array();
-
-	$args['comment_author']       = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
 	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : false;
-	$args['blog']                 = get_option( 'home' );
-	$args['blog_lang']            = get_locale();
-	$args['blog_charset']         = get_option( 'blog_charset' );
-	$args['user_ip']              = $_SERVER['REMOTE_ADDR'];
-	$args['user_agent']           = $_SERVER['HTTP_USER_AGENT'];
-	$args['referrer']             = $_SERVER['HTTP_REFERER'];
-	$args['comment_type']         = 'contact-form';
 
-	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	/**
+	 * Filter list of whitelisted emails
+	 *
+	 * @since 2.5.14
+	 *
+	 * @param array
+	 */
+	$whitelist_emails = apply_filters( 'give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails() );
+
+	// Whitelist emails.
+	if ( in_array( $args['comment_author_email'], (array) $whitelist_emails, true ) ) {
+		return false;
+	}
+
+	$args['comment_author'] = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
+	$args['blog']           = get_option( 'home' );
+	$args['blog_lang']      = get_locale();
+	$args['blog_charset']   = get_option( 'blog_charset' );
+	$args['user_ip']        = $_SERVER['REMOTE_ADDR'];
+	$args['user_agent']     = $_SERVER['HTTP_USER_AGENT'];
+	$args['referrer']       = $_SERVER['HTTP_REFERER'];
+	$args['comment_type']   = 'contact-form';
+
+	$form_id         = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$donor_last_name = ! empty( $_POST['give_last'] ) ? ' ' . give_clean( $_POST['give_last'] ) : '';
 
 	// Pass Donor comment if enabled.
 	if ( give_is_donor_comment_field_enabled( $form_id ) ) {
@@ -117,13 +132,41 @@ function give_akismet( $spam ) {
 	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
 
 	foreach ( $_SERVER as $key => $value ) {
-		if ( ! in_array( $key, (array) $ignore ) ) {
-			$args["$key"] = $value;
+		if ( ! in_array( $key, $ignore, true ) ) {
+			$args[ $key ] = $value;
 		}
 	}
 
+	$response = give_akismet_spam_check_post( $args );
+	$spam     = 'true' === $response[1];
+
+	// Log spam information.
+	if ( $spam && ! give_akismet_is_email_logged( $args['comment_author_email'] ) ) {
+		$log_id = give_record_log(
+			sprintf(
+				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="#noncelink" title="%4$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
+				$args['comment_author'],
+				$donor_last_name,
+				$args['comment_author_email'],
+				__( 'Click on this link to whitelist this email address to process donation.', 'give' )
+			),
+			sprintf(
+				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
+				__( 'Request', 'give' ),
+				print_r( $args, true ),
+				__( 'Response', 'give' ),
+				print_r( $response, true )
+			),
+			0,
+			'spam'
+		);
+
+		Give()->logmeta_db->add_meta( $log_id, 'donor_email', $args['comment_author_email'] );
+		Give()->logmeta_db->add_meta( $log_id, 'filter', 'akismet' );
+	}
+
 	// It will return Akismet spam detect API response.
-	return give_akismet_spam_check( $args );
+	return $spam;
 
 }
 
@@ -151,32 +194,89 @@ function give_check_akismet_key() {
 /**
  * Detect spam through Akismet Comment API.
  *
- * @since 1.8.14
- *
  * @param array $args
  *
  * @return bool|mixed
+ * @since 1.8.14
+ * @since 2.3.15 Refactor function to use give_akismet_spam_check_post
  */
 function give_akismet_spam_check( $args ) {
+	$response = give_akismet_spam_check_post( $args );
+
+	// It's spam if response status is true.
+	$spam = 'true' === $response[1];
+
+	// Allow developer to modified Akismet spam detection response.
+	return apply_filters( 'give_akismet_spam_check', $spam, $args );
+}
+
+/**
+ * Detect spam through Akismet Comment API.
+ *
+ * @since 2.5.13
+ *
+ * @param array $args
+ *
+ * @return array
+ */
+function give_akismet_spam_check_post( $args ) {
 	global $akismet_api_host, $akismet_api_port;
 
-	$spam         = false;
 	$query_string = http_build_query( $args );
 
 	if ( is_callable( array( 'Akismet', 'http_post' ) ) ) { // Akismet v3.0+
 		$response = Akismet::http_post( $query_string, 'comment-check' );
 	} else {
-		$response = akismet_http_post( $query_string, $akismet_api_host,
-			'/1.1/comment-check', $akismet_api_port );
+		$response = akismet_http_post(
+			$query_string,
+			$akismet_api_host,
+			'/1.1/comment-check',
+			$akismet_api_port
+		);
 	}
 
-	// It's spam if response status is true.
-	if ( 'true' === $response[1] ) {
-		$spam = true;
-	}
+	return $response;
+}
 
-	// Allow developer to modified Akismet spam detection response.
-	return apply_filters( 'give_akismet_spam_check', $spam, $args );
+
+/**
+ * Check if email already logged or not
+ *
+ * @param $email
+ *
+ * @return bool
+ * @since 2.5.13
+ */
+function give_akismet_is_email_logged( $email ) {
+	return (bool) Give()->log_db->count(
+		array(
+			'log_type'   => 'spam',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'donor_email',
+					'value' => $email,
+				),
+				array(
+					'key'   => 'filter',
+					'value' => 'akismet',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Get list of whitelisted emails.
+ *
+ * @return array
+ * @since 2.5.13
+ */
+function give_akismet_get_whitelisted_emails() {
+	return give_get_option(
+		'akismet_whitelisted_email_addresses',
+		get_bloginfo( 'admin_email' )
+	);
 }
 
 /**
@@ -241,14 +341,14 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
  * @return array
  */
 function __give_validate_active_gateways( $value ) {
-	$gateways = array_keys( give_get_payment_gateways() );
+	$gateways        = array_keys( give_get_payment_gateways() );
 	$active_gateways = is_array( $value ) ? array_keys( $value ) : array();
 
 	// Remove deactivated payment gateways.
-	if( ! empty( $active_gateways ) ) {
+	if ( ! empty( $active_gateways ) ) {
 		foreach ( $active_gateways as $index => $gateway_id ) {
-			if( ! in_array( $gateway_id, $gateways ) ) {
-				unset( $value[$gateway_id] );
+			if ( ! in_array( $gateway_id, $gateways ) ) {
+				unset( $value[ $gateway_id ] );
 			}
 		}
 	}
@@ -259,9 +359,12 @@ function __give_validate_active_gateways( $value ) {
 		 *
 		 * @since 2.1.0
 		 */
-		$value = apply_filters( 'give_default_active_gateways', array(
-			'manual' => 1,
-		) );
+		$value = apply_filters(
+			'give_default_active_gateways',
+			array(
+				'manual' => 1,
+			)
+		);
 	}
 
 	return $value;
