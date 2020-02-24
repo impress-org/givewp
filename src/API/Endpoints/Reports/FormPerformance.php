@@ -18,16 +18,16 @@ class FormPerformance extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
+		// // Check if a cached version exists
+		// $cached_report = $this->get_cached_report( $request );
+		// if ( $cached_report !== null ) {
+		// Bail and return the cached version
+		// return new \WP_REST_Response(
+		// [
+		// 'data' => $cached_report,
+		// ]
+		// );
+		// }
 
 		$start = date_create( $request['start'] );
 		$end   = date_create( $request['end'] );
@@ -53,18 +53,48 @@ class FormPerformance extends Endpoint {
 		$labels   = [];
 		$tooltips = [];
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->status === 'publish' ) {
-				$forms[ $payment->form_id ]['income']    += $payment->total;
-				$forms[ $payment->form_id ]['donations'] += 1;
-				$forms[ $payment->form_id ]['title']      = $payment->form_title;
+		if ( count( $this->payments ) > 0 ) {
+
+			foreach ( $this->payments as $payment ) {
+				if ( $payment->status === 'publish' ) {
+					$forms[ $payment->form_id ]['income']    += $payment->total;
+					$forms[ $payment->form_id ]['donations'] += 1;
+					$forms[ $payment->form_id ]['title']      = $payment->form_title;
+				}
 			}
-		}
 
-		$sorted = usort( $forms, [ $this, 'compare_forms' ] );
+			$sorted = usort( $forms, [ $this, 'compare_forms' ] );
 
-		if ( $sorted === true ) {
-			$forms = array_slice( $forms, 0, 5 );
+			if ( $sorted === true ) {
+				$forms = array_slice( $forms, 0, 5 );
+
+				foreach ( $forms as $key => $value ) {
+					$tooltips[]    = [
+						'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
+						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
+						'footer' => $value['title'],
+					];
+					$labels[]      = $value['title'];
+					$forms[ $key ] = $value['income'];
+				}
+
+				$forms = array_values( $forms );
+			}
+		} else {
+
+			$formsQuery = new \Give_Forms_Query(
+				[
+					'number' => 5,
+				]
+			);
+
+			$allForms = $formsQuery->get_forms();
+
+			foreach ( $allForms as $form ) {
+				$forms[ $form->ID ]['income']    = 0;
+				$forms[ $form->ID ]['donations'] = 0;
+				$forms[ $form->ID ]['title']     = $form->post_title;
+			}
 
 			foreach ( $forms as $key => $value ) {
 				$tooltips[]    = [
@@ -77,10 +107,12 @@ class FormPerformance extends Endpoint {
 			}
 
 			$forms = array_values( $forms );
+
 		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
+			'forms'    => $allForms,
 			'datasets' => [
 				[
 					'data'     => $forms,
