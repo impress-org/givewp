@@ -5,11 +5,8 @@ import './style.scss';
 const ExportCSV = ( { filename, headers, rows } ) => {
 	const data = [
 		headers,
+		...rows,
 	];
-
-	rows.forEach( ( row ) => {
-		data.push( row );
-	} );
 
 	return (
 		<CSVLink filename={ `${ filename }.csv` } data={ data } className="givewp-export-button">{ __( 'Export CSV', 'give' ) }</CSVLink>
