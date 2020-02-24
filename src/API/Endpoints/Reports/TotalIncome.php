@@ -141,9 +141,20 @@ class TotalIncome extends Endpoint {
 		$prevIncome    = $this->get_prev_income( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentIncome = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
+		// Set default trend to 0
 		$trend = 0;
+
+		// Check that prev value and current value are > 0 (can't divide by 0)
 		if ( $prevIncome > 0 && $currentIncome > 0 ) {
-			$trend = round( ( ( ( $prevIncome - $currentIncome ) / $currentIncome ) * 100 ), 1 );
+
+			// Check if it is a percent decreate, or increase
+			if ( $prevIncome > $currentIncome ) {
+				// Calculate a percent decrease
+				$trend = round( ( ( ( $prevIncome - $currentIncome ) / $prevIncome ) * 100 ), 1 ) * -1;
+			} elseif ( $currentIncome > $prevIncome ) {
+				// Calculate a percent increase
+				$trend = round( ( ( ( $currentIncome - $prevIncome ) / $prevIncome ) * 100 ), 1 );
+			}
 		}
 
 		return $trend;
