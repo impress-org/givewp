@@ -38,10 +38,10 @@ const NoDataNotice = ( { version } ) => {
 					<div className="givewp-not-found-card">
 						{ version === 'dashboard' ? (
 							<Fragment>
-								<h2>{ __( 'Get a quick view of your', 'give' ) }<br />{ __( 'GiveWP Donations', 'give' ) }</h2>
+								<h2>{ __( 'Get a quick view of your', 'give' ) }<br />{ __( 'donation activity', 'give' ) }</h2>
 								<p>
-									{ __( 'Uh oh! Looks like we can\'t find any donations.', 'give' ) } <br />
-									{ __( 'Setup a donation form, or visit the Reports page to explore some sample data.', 'give' ) } <br />
+									{ __( 'It looks like there hasn\'t been any donations yet on your website.', 'give' ) } <br />
+									{ __( 'Set up a donation form to begin collecting donations now.', 'give' ) } <br />
 								</p>
 								<button
 									onClick={ () => goToNewFormUrl() }
@@ -51,10 +51,10 @@ const NoDataNotice = ( { version } ) => {
 							</Fragment>
 						) : (
 							<Fragment>
-								<h2>{ __( 'Get a detailed view of your', 'give' ) }<br />{ __( 'GiveWP Donations', 'give' ) }</h2>
+								<h2>{ __( 'Get a detailed view of your', 'give' ) }<br />{ __( 'donation activity', 'give' ) }</h2>
 								<p>
-									{ __( 'Uh oh! Looks like we can\'t find any donations.', 'give' ) } <br />
-									{ __( 'Setup a donation form, or load some sample data with the button below.', 'give' ) } <br />
+									{ __( 'It looks like there hasn\'t been any donations yet on your website. ', 'give' ) } <br />
+									{ __( 'Set up a donation form to begin collection donations or load some sample data to preview what the reports look like.', 'give' ) } <br />
 								</p>
 								<button
 									onClick={ () => loadSampleData() }
