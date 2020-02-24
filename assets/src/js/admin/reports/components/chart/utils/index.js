@@ -149,12 +149,16 @@ export function createConfig( type, data ) {
 		const yAxes = data.datasets.map( ( dataset, index ) => {
 			let max;
 			switch ( typeof dataset.data[ 0 ] ) {
-				case 'object':
-					max = Math.max( ...dataset.data.map( o => o.y ), 0 ) * 1.1;
+				case 'object': {
+					const calcMax = Math.max( ...dataset.data.map( o => o.y ), 0 ) * 1.1;
+					max = calcMax > 100 ? calcMax : 100;
 					break;
-				default:
-					max = Math.max( ...dataset.data.map( o => o ), 0 ) * 1.1;
+				}
+				default: {
+					const calcMax = Math.max( ...dataset.data.map( o => o ), 0 ) * 1.1;
+					max = calcMax > 100 ? calcMax : 100;
 					break;
+				}
 			}
 
 			return {
