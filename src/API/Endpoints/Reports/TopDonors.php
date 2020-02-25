@@ -67,7 +67,15 @@ class TopDonors extends Endpoint {
 			}
 		}
 
-		$sorted = usort( $donors, [ $this, 'compare_donors' ] );
+		$sorted = usort(
+			$donors,
+			function ( $a, $b ) {
+				if ( $a['earnings'] == $b['earnings'] ) {
+					return 0;
+				}
+				return ( $a['earnings'] > $b['earnings'] ) ? -1 : 1;
+			}
+		);
 
 		if ( $sorted === true ) {
 			$donors = array_slice( $donors, 0, 25 );
@@ -76,13 +84,6 @@ class TopDonors extends Endpoint {
 
 		return $donors;
 
-	}
-
-	public function compare_donors( $a, $b ) {
-		if ( $a['earnings'] == $b['earnings'] ) {
-				return 0;
-		}
-		return ( $a['earnings'] > $b['earnings'] ) ? -1 : 1;
 	}
 
 }
