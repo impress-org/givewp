@@ -10,8 +10,9 @@ import Spinner from '../spinner';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
+import { setGiveStatus, setPageLoaded } from '../../store/actions';
 
-const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls } ) => {
+const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerElements } ) => {
 	// Use period from store
 	const [ { period, giveStatus }, dispatch ] = useStoreValue();
 
@@ -52,14 +53,8 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 					setFetched( response.data.data );
 					if ( endpoint === 'income' ) {
 						const status = response.data.data.status;
-						dispatch( {
-							type: 'SET_GIVE_STATUS',
-							payload: status,
-						} );
-						dispatch( {
-							type: 'SET_PAGE_LOADED',
-							payload: true,
-						} );
+						dispatch( setGiveStatus( status ) );
+						dispatch( setPageLoaded() );
 					}
 				} )
 				.catch( function() {
@@ -78,8 +73,8 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerEls 
 					{ ! loaded && (
 						<Spinner />
 					) }
-					{ headerEls && (
-						headerEls
+					{ headerElements && (
+						headerElements
 					) }
 				</div>
 			) }

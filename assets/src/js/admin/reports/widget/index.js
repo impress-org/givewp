@@ -32,7 +32,7 @@ const Widget = () => {
 				<Card width={ 12 }>
 					<RESTChart
 						title={ __( 'All Time Income', 'give' ) }
-						headerEls={ <MiniPeriodSelector /> }
+						headerElements={ <MiniPeriodSelector /> }
 						type="line"
 						aspectRatio={ 0.8 }
 						endpoint="income"
