@@ -85,8 +85,8 @@ class Reports {
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'ASC',
-			'start_date' => $request['start'],
-			'end_date'   => $request['end'],
+			'start_date' => $start->format( 'Y-m-d H:i:s' ),
+			'end_date'   => $end->format( 'Y-m-d H:i:s' ),
 		];
 
 		// Get array of 50 recent donations
