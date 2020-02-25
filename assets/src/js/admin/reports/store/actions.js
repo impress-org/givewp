@@ -26,3 +26,19 @@ export const disablePeriodSelector = () => {
 		payload: false,
 	};
 };
+
+// Dispatch SET_GIVE_STATUS action
+export const setGiveStatus = ( status ) => {
+	return {
+		type: 'SET_GIVE_STATUS',
+		payload: status,
+	};
+};
+
+// Dispatch true SET_PAGE_LOADED action
+export const setPageLoaded = () => {
+	return {
+		type: 'SET_PAGE_LOADED',
+		payload: true,
+	};
+};
