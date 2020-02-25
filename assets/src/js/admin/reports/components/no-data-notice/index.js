@@ -1,6 +1,7 @@
 // Dependencies
 import { useState, Fragment } from 'react';
 const { __ } = wp.i18n;
+import { getWindowData } from '../../utils';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
@@ -20,7 +21,8 @@ const NoDataNotice = ( { version } ) => {
 	};
 
 	const goToNewFormUrl = () => {
-		window.location = window.giveReportsData.newFormUrl;
+		const url = getWindowData( 'newFormUrl' );
+		window.location = url;
 	};
 
 	return (

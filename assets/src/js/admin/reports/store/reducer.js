@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getWindowData } from '../utils';
 
 export const reducer = ( state, action ) => {
 	switch ( action.type ) {
@@ -29,7 +30,8 @@ export const reducer = ( state, action ) => {
 					startDate = moment( state.period.endDate ).subtract( 1, 'years' );
 					break;
 				case 'alltime':
-					startDate = moment( window.giveReportsData.allTimeStart );
+					const allTimeStart = getWindowData( 'allTimeStart' );
+					startDate = moment( allTimeStart );
 					endDate = moment();
 					break;
 			}
