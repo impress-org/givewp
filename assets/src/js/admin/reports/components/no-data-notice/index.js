@@ -4,27 +4,19 @@ const { __ } = wp.i18n;
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
+import { disablePeriodSelector } from '../../store/actions';
 
 // Styles
 import './style.scss';
 
 const NoDataNotice = ( { version } ) => {
-	// Get 'period' object from the store
 	const [ {}, dispatch ] = useStoreValue();
-
-	// Dispatch SET_RANGE action
-	const disablePeriodSelector = () => {
-		dispatch( {
-			type: 'ENABLE_PERIOD_SELECTOR',
-			payload: false,
-		} );
-	};
 
 	const [ showNotice, setShowNotice ] = useState( true );
 
 	const loadSampleData = () => {
 		setShowNotice( false );
-		disablePeriodSelector();
+		dispatch( disablePeriodSelector() );
 	};
 
 	const goToNewFormUrl = () => {

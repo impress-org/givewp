@@ -18,3 +18,11 @@ export const setRange = ( range ) => {
 		},
 	};
 };
+
+// Dispatch false ENABLE_PERIOD_SELCTOR action
+export const disablePeriodSelector = () => {
+	return {
+		type: 'ENABLE_PERIOD_SELECTOR',
+		payload: false,
+	};
+};
