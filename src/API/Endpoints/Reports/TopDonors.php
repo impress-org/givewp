@@ -56,7 +56,7 @@ class TopDonors extends Endpoint {
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status === 'publish' ) {
 				$donors[ $payment->donor_id ]['type']      = 'donor';
-				$donors[ $payment->donor_id ]['earnings'] += isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : 0;
+				$donors[ $payment->donor_id ]['earnings']  = isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : 0;
 				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
 				$donors[ $payment->donor_id ]['donations'] = isset( $donors[ $payment->donor_id ]['donations'] ) ? $donors[ $payment->donor_id ]['donations'] += 1 : 1;
 				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;
