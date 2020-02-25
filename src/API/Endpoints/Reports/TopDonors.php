@@ -55,15 +55,15 @@ class TopDonors extends Endpoint {
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status === 'publish' ) {
-				$donors[ $payment->donor_id ]['type']       = 'donor';
-				$donors[ $payment->donor_id ]['earnings']  += $payment->total;
-				$donors[ $payment->donor_id ]['total']      = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
-				$donors[ $payment->donor_id ]['donations'] += 1;
-				$donors[ $payment->donor_id ]['count']      = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;
-				$donors[ $payment->donor_id ]['name']       = $payment->first_name . ' ' . $payment->last_name;
-				$donors[ $payment->donor_id ]['email']      = $payment->email;
-				$donors[ $payment->donor_id ]['image']      = give_validate_gravatar( $payment->email ) ? get_avatar( $payment->email, 60 ) : null;
-				$donors[ $payment->donor_id ]['url']        = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $payment->donor_id ) );
+				$donors[ $payment->donor_id ]['type']      = 'donor';
+				$donors[ $payment->donor_id ]['earnings'] += isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : 0;
+				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
+				$donors[ $payment->donor_id ]['donations'] = isset( $donors[ $payment->donor_id ]['donations'] ) ? $donors[ $payment->donor_id ]['donations'] += 1 : 1;
+				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;
+				$donors[ $payment->donor_id ]['name']      = $payment->first_name . ' ' . $payment->last_name;
+				$donors[ $payment->donor_id ]['email']     = $payment->email;
+				$donors[ $payment->donor_id ]['image']     = give_validate_gravatar( $payment->email ) ? get_avatar( $payment->email, 60 ) : null;
+				$donors[ $payment->donor_id ]['url']       = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $payment->donor_id ) );
 			}
 		}
 

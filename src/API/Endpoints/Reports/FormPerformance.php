@@ -57,8 +57,8 @@ class FormPerformance extends Endpoint {
 
 			foreach ( $this->payments as $payment ) {
 				if ( $payment->status === 'publish' ) {
-					$forms[ $payment->form_id ]['income']    += $payment->total;
-					$forms[ $payment->form_id ]['donations'] += 1;
+					$forms[ $payment->form_id ]['income']    += isset( $forms[ $payment->form_id ]['income'] ) ? $forms[ $payment->form_id ]['income'] += $payment->total : 0;
+					$forms[ $payment->form_id ]['donations'] += isset( $forms[ $payment->form_id ]['income'] ) ? $forms[ $payment->form_id ]['income'] += 1 : 1;
 					$forms[ $payment->form_id ]['title']      = $payment->form_title;
 				}
 			}
