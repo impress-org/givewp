@@ -92,7 +92,7 @@ class FormPerformance extends Endpoint {
 
 			$formsQuery = new \Give_Forms_Query(
 				[
-					'number' => 5,
+					'posts_per_page' => 5,
 				]
 			);
 
