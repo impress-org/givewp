@@ -29,7 +29,15 @@ class PaymentMethods extends Endpoint {
 				'amount'      => $stats->get_earnings( 0, date( $request['start'] ), date( $request['end'] ), $gateway_id ),
 			];
 		}
-		$sorted = usort( $gatewaysArr, [ $this, 'compare_gateways' ] );
+		$sorted = usort(
+			$gatewaysArr,
+			function ( $a, $b ) {
+				if ( $a['amount'] == $b['amount'] ) {
+					return 0;
+				}
+				return ( $a['amount'] > $b['amount'] ) ? -1 : 1;
+			}
+		);
 
 		$labels   = [];
 		$data     = [];
@@ -61,12 +69,5 @@ class PaymentMethods extends Endpoint {
 				],
 			]
 		);
-	}
-
-	public function compare_gateways( $a, $b ) {
-		if ( $a['amount'] == $b['amount'] ) {
-				return 0;
-		}
-		return ( $a['amount'] > $b['amount'] ) ? -1 : 1;
 	}
 }
