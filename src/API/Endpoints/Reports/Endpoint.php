@@ -14,11 +14,6 @@ abstract class Endpoint {
 
 	protected $endpoint;
 
-	// Here initialize our endpoint name.
-	public function __construct() {
-		// Do nothing
-	}
-
 	public function init() {
 		add_action( 'rest_api_init', array( $this, 'register_route' ) );
 	}
@@ -167,9 +162,13 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$cached = Give_Cache::get_db_query( $cache_key );
+		$cached = Give_Cache::get( $cache_key, false, $query_args );
 
-		return $cached;
+		if ( $cached ) {
+			return $cached;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -186,9 +185,84 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$result = Give_Cache::set_db_query( $cache_key, $report );
+		$result = Give_Cache::set( $cache_key, $report, 3600, false, $query_args );
 
 		return $result;
+
+	}
+
+		/**
+		 * Cache report
+		 *
+		 * @param WP_REST_Request $request Current request.
+		 */
+	public function cache_payments( $startStr, $endStr, $orderBy, $number, $payments ) {
+
+		$query_args = [
+			'start'   => $startStr,
+			'end'     => $endStr,
+			'orderby' => $orderBy,
+			'number'  => $number,
+		];
+
+		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
+
+		$result = Give_Cache::set( $cache_key, $payments, 3600, false, $query_args );
+
+		return $result;
+
+	}
+
+	/**
+	 * Get cached report
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function get_cached_payments( $startStr, $endStr, $orderBy, $number ) {
+
+		$query_args = [
+			'start'   => $startStr,
+			'end'     => $endStr,
+			'orderby' => $orderBy,
+			'number'  => $number,
+		];
+
+		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
+
+		$cached = Give_Cache::get( $cache_key, false, $query_args );
+
+		if ( $cached ) {
+			return $cached;
+		} else {
+			return null;
+		}
+	}
+
+	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
+
+		// Check if a cached payments exists
+		$cached_payments = $this->get_cached_payments( $startStr, $endStr, $orderBy, $number );
+		if ( $cached_payments !== null ) {
+			// Bail and return the cached payments
+			return $cached_payments;
+		}
+
+		$args = [
+			'number'     => $number,
+			'paged'      => 1,
+			'orderby'    => $orderBy,
+			'order'      => 'DESC',
+			'start_date' => $startStr,
+			'end_date'   => $endStr,
+		];
+
+		$payments = new \Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
+
+		// Cache the report data
+		$result = $this->cache_payments( $startStr, $endStr, $orderBy, $number, $payments );
+
+		return $payments;
 
 	}
 }

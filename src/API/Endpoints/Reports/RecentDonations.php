@@ -16,6 +16,17 @@ class RecentDonations extends Endpoint {
 
 	public function get_report( $request ) {
 
+		// Check if a cached version exists
+		$cached_report = $this->get_cached_report( $request );
+		if ( $cached_report !== null ) {
+			// Bail and return the cached version
+			return new \WP_REST_Response(
+				[
+					'data' => $cached_report,
+				]
+			);
+		}
+
 		// Setup donation query args (get sanitized start/end date from request)
 		$args = [
 			'number'     => 50,
@@ -31,19 +42,21 @@ class RecentDonations extends Endpoint {
 		$donations = $donations->get_payments();
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$list = [];
+		$data = [];
 		foreach ( $donations as $donation ) {
 
 			$donation = new \Give_Payment( $donation->ID );
 
 			$amount = give_currency_symbol( $payment->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
 			$status = $donation->status === 'publish' ? 'completed' : $donation->status;
+			$url    = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
 
-			$list[] = [
+			$data[] = [
 				'type'     => 'donation',
 				'donation' => $donation,
 				'status'   => $status,
 				'amount'   => $amount,
+				'url'      => $url,
 				'time'     => $donation->date,
 				'donor'    => [
 					'name' => "{$donation->first_name} {$donation->last_name}",
@@ -53,10 +66,13 @@ class RecentDonations extends Endpoint {
 			];
 		}
 
+		// Cache the report data
+		$result = $this->cache_report( $request, $data );
+
 		// Return $list of donations for RESTList component
 		return new \WP_REST_Response(
 			[
-				'data' => $list,
+				'data' => $data,
 			]
 		);
 	}

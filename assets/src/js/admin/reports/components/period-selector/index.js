@@ -9,6 +9,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Store-related dependencies
 import { useStoreValue } from '../../store';
+import { setDates, setRange } from '../../store/actions';
 
 import './style.scss';
 const { __ } = wp.i18n;
@@ -28,29 +29,8 @@ const PeriodSelector = () => {
 	//  setup focuesedInput state, required for react-dates
 	const [ focusedInput, setFocusedInput ] = useState( null );
 
-	// Dispatch SET_DATES action
-	const setDates = ( startDate, endDate ) => {
-		dispatch( {
-			type: 'SET_DATES',
-			payload: {
-				startDate,
-				endDate,
-			},
-		} );
-	};
-
-	// Dispatch SET_RANGE action
-	const setRange = ( range ) => {
-		dispatch( {
-			type: 'SET_RANGE',
-			payload: {
-				range,
-			},
-		} );
-	};
-
 	return (
-		<div className="givewp-period-selector">
+		<div className="givewp-period-selector" key={ focusedInput }>
 			<div className="icon">{ icon }</div>
 			<div className="datepicker">
 				<DateRangePicker
@@ -58,21 +38,31 @@ const PeriodSelector = () => {
 					startDate={ period.startDate }
 					startDateId="givewp-reports-start"
 					endDate={ period.endDate }
+					hideKeyboardShortcutsPanel={ true }
 					endDateId="givewp-reports-end"
-					onDatesChange={ ( { startDate, endDate } ) => setDates( startDate, endDate ) }
+					onDatesChange={ ( { startDate, endDate } ) => dispatch( setDates( startDate, endDate ) ) }
 					focusedInput={ focusedInput }
-					onFocusChange={ () => {
-						setFocusedInput( focusedInput );
+					onFocusChange={ ( newFocus ) => {
+						setFocusedInput( newFocus );
 					} }
 					isOutsideRange={ day => ( moment().diff( day ) < 0 ) }
 					numberOfMonths={ 1 }
+					initialVisibleMonth={
+						() => {
+							if ( focusedInput === 'endDate' ) {
+								return period.endDate;
+							}
+							return period.startDate;
+						}
+					}
 				/>
 			</div>
 			<div className="group">
-				<button className={ period.range === 'day' ? 'selected' : null } onClick={ () => setRange( 'day' ) }>{ __( 'Day', 'give' ) }</button>
-				<button className={ period.range === 'week' ? 'selected' : null } onClick={ () => setRange( 'week' ) }>{ __( 'Week', 'give' ) }</button>
-				<button className={ period.range === 'month' ? 'selected' : null } onClick={ () => setRange( 'month' ) }>{ __( 'Month', 'give' ) }</button>
-				<button className={ period.range === 'year' ? 'selected' : null } onClick={ () => setRange( 'year' ) }>{ __( 'Year', 'give' ) }</button>
+				<button className={ period.range === 'day' ? 'selected' : null } onClick={ () => dispatch( setRange( 'day' ) ) }>{ __( 'Day', 'give' ) }</button>
+				<button className={ period.range === 'week' ? 'selected' : null } onClick={ () => dispatch( setRange( 'week' ) ) }>{ __( 'Week', 'give' ) }</button>
+				<button className={ period.range === 'month' ? 'selected' : null } onClick={ () => dispatch( setRange( 'month' ) ) }>{ __( 'Month', 'give' ) }</button>
+				<button className={ period.range === 'year' ? 'selected' : null } onClick={ () => dispatch( setRange( 'year' ) ) }>{ __( 'Year', 'give' ) }</button>
+				<button className={ period.range === 'alltime' ? 'selected' : null } onClick={ () => dispatch( setRange( 'alltime' ) ) }>{ __( 'All Time', 'give' ) }</button>
 			</div>
 		</div>
 	);

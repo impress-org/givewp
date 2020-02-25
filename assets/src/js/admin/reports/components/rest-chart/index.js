@@ -1,46 +1,42 @@
 // Vendor dependencies
-import axios from 'axios';
-import { useState, useEffect, Fragment } from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+// Store-related dependencies
+import { useReportsAPI } from '../../utils';
 
 // Components
 import Chart from '../chart';
+import SkeletonChart from '../skeleton-chart';
+import Spinner from '../spinner';
 
-// Store-related dependencies
-import { useStoreValue } from '../../store';
-
-const RESTChart = ( { type, aspectRatio, endpoint, showLegend } ) => {
-	// Use period from store
-	const [ { period } ] = useStoreValue();
-
-	// Use state to hold data fetched from API
-	const [ fetched, setFetched ] = useState( null );
-
-	// Fetch new data and update Chart when period changes
-	useEffect( () => {
-		if ( period.startDate && period.endDate ) {
-			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
-				params: {
-					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
-					end: period.endDate.format( 'YYYY-MM-DD-HH' ),
-				},
-				headers: {
-					'X-WP-Nonce': wpApiSettings.nonce,
-				},
-			} )
-				.then( function( response ) {
-					setFetched( response.data.data );
-				} );
-		}
-	}, [ period, endpoint ] );
+const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerElements } ) => {
+	const [ fetched, querying ] = useReportsAPI( endpoint );
 
 	return (
 		<Fragment>
-			{ fetched && (
+			{ title && (
+				<div className="givewp-chart-title">
+					<span className="givewp-chart-title-text">{ title }</span>
+					{ querying && (
+						<Spinner />
+					) }
+					{ headerElements && (
+						headerElements
+					) }
+				</div>
+			) }
+			{ fetched ? (
 				<Chart
 					type={ type }
 					aspectRatio={ aspectRatio }
 					data={ fetched }
+					showLegend={ showLegend }
+				/>
+			) : (
+				<SkeletonChart
+					type={ type }
+					aspectRatio={ aspectRatio }
 					showLegend={ showLegend }
 				/>
 			) }

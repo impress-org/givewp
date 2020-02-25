@@ -3,7 +3,6 @@ export function formatData( data ) {
 
 	const formattedDatasets = data.datasets.map( ( dataset ) => {
 		const formatted = {
-			label: dataset.label,
 			data: dataset.data,
 			backgroundColor: '#FFFFFF',
 			borderColor: '#DDDDDD',
@@ -35,6 +34,12 @@ export function createConfig( data ) {
 		type: 'line',
 		data: formattedData,
 		options: {
+			hover: {
+				intersect: false,
+			},
+			plugins: {
+				crosshair: false,
+			},
 			layout: {
 				padding: 4,
 			},
@@ -47,14 +52,64 @@ export function createConfig( data ) {
 				} ],
 				xAxes: [ {
 					display: false,
+					type: 'time',
 				} ],
 			},
 			tooltips: {
+				// Disable the on-canvas tooltip
 				enabled: false,
+				mode: 'index',
+				intersect: false,
+				custom: function( tooltipModel ) {
+					// Tooltip Element
+					let tooltipEl = document.getElementById( 'givewp-mini-chartjs-tooltip' );
+
+					// Create element on first render
+					if ( ! tooltipEl ) {
+						tooltipEl = document.createElement( 'div' );
+						tooltipEl.id = 'givewp-mini-chartjs-tooltip';
+						tooltipEl.innerHTML = '<div class="givewp-tooltip-header"></div><div class="givewp-tooltip-body"><bold></b><br></div><div class="givewp-tooltip-caret"></div>';
+						document.body.appendChild( tooltipEl );
+					}
+
+					// Hide if no tooltip
+					if ( tooltipModel.opacity === 0 ) {
+						tooltipEl.style.opacity = 0;
+						return;
+					}
+
+					// Set caret Position
+					tooltipEl.classList.remove( 'above', 'below', 'no-transform' );
+					if ( tooltipModel.yAlign ) {
+						tooltipEl.classList.add( tooltipModel.yAlign );
+					} else {
+						tooltipEl.classList.add( 'no-transform' );
+					}
+
+					// `this` will be the overall tooltip
+					const position = this._chart.canvas.getBoundingClientRect();
+
+					// Display, position, and set styles for font
+					tooltipEl.style.opacity = 1;
+					tooltipEl.style.position = 'absolute';
+
+					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 6 ) + 'px';
+
+					tooltipEl.style.pointerEvents = 'none';
+
+					const tooltip = data.datasets[ tooltipModel.dataPoints[ 0 ].datasetIndex ].tooltips[ tooltipModel.dataPoints[ 0 ].index ];
+
+					// Setup tooltip inner HTML
+					tooltipEl.innerHTML = `<div class="givewp-mini-tooltip-header">${ tooltip.title }</div><div class="givewp-mini-tooltip-body"><bold>${ tooltip.body }</b><br>${ tooltip.footer }</div><div class="givewp-mini-tooltip-caret"></div>`;
+				},
 			},
 			elements: {
 				point: {
 					radius: 0,
+					hitRadius: 3,
+					hoverRadius: 4,
+					backgroundColor: '#555555',
 				},
 			},
 		},

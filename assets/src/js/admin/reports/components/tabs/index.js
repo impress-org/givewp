@@ -1,17 +1,20 @@
 // Dependencies
-const { __ } = wp.i18n
+const { __ } = wp.i18n;
+import { getWindowData } from '../../utils';
 
 // Components
-import Tab from '../tab'
+import Tab from '../tab';
 
 const Tabs = () => {
-    return (
-        <div className='nav-tab-wrapper give-nav-tab-wrapper'>
-            <Tab to='/'>
+	const url = getWindowData( 'legacyReportsUrl' );
+
+	return (
+		<div className="nav-tab-wrapper give-nav-tab-wrapper">
+			<Tab to="/">
                 Overview
-            </Tab>
-            <a className='nav-tab' href={giveReportsData.legacyReportsUrl}>{__('Legacy Reports Page', 'give')}</a>
-        </div>
-    )
-}
-export default Tabs
+			</Tab>
+			<a className="nav-tab" href={ url }>{ __( 'Legacy Reports', 'give' ) }</a>
+		</div>
+	);
+};
+export default Tabs;

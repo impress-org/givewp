@@ -19,15 +19,16 @@ class API {
 
 	protected $endpoints = [
 		Reports\PaymentStatuses::class,
-		Reports\DonationsVsIncome::class,
 		Reports\PaymentMethods::class,
 		Reports\FormPerformance::class,
 		Reports\TopDonors::class,
 		Reports\RecentDonations::class,
 		Reports\Income::class,
+		Reports\IncomeBreakdown::class,
 		Reports\AverageDonation::class,
-		Reports\Donors::class,
-		Reports\Refunds::class,
+		Reports\TotalDonors::class,
+		Reports\TotalIncome::class,
+		Reports\TotalRefunds::class,
 	];
 
 	/**

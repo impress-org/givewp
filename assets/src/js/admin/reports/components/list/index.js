@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useEffect, createRef } from 'react';
+import { useEffect, createRef, Fragment } from 'react';
 import './style.scss';
 
-const List = ( { onScrollEnd, children } ) => {
+const List = ( { title, onScrollEnd, children } ) => {
 	const list = createRef();
 
 	useEffect( () => {
@@ -24,9 +24,14 @@ const List = ( { onScrollEnd, children } ) => {
 	}, [ onScrollEnd ] );
 
 	return (
-		<div ref={ list } className="list">
-			{ children }
-		</div>
+		<Fragment>
+			{ title && ( <div className="givewp-list-title">
+				{ title }
+			</div> ) }
+			<div ref={ list } className="givewp-list">
+				{ children }
+			</div>
+		</Fragment>
 	);
 };
 

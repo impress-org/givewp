@@ -1,0 +1,20 @@
+.givewp-not-found-overlay {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: rgba(255, 255, 255, 0.7);
+	z-index: 899;
+	pointer-events: none;
+
+	> .notice-text {
+		font-size: 22px;
+		font-weight: 500;
+		color: rgb(39, 39, 39);
+		line-height: 26px;
+		padding: 22px;
+		text-align: center;
+	}
+}

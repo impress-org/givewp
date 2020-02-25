@@ -16,45 +16,74 @@ class TopDonors extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Setup donor query args (get sanitized start/end date from request)
-		$args = [
-			'number'     => 25,
-			'paged'      => 1,
-			'orderby'    => 'purchase_value',
-			'order'      => 'DESC',
-			'start_date' => $request['start'],
-			'end_date'   => $request['end'],
-		];
-
-		// Get array of top 25 donors
-		$donors = new \Give_Donors_Query( $args );
-		$donors = $donors->get_donors();
-
-		// Populate $list with arrays in correct shape for frontend RESTList component
-		$list = [];
-		foreach ( $donors as $donor ) {
-
-			$avatar     = give_validate_gravatar( $donor->email ) ? get_avatar( $donor->email, 60 ) : null;
-			$total      = give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
-			$url        = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $donor->id ) );
-			$countLabel = _n( 'Donation', 'Donations', $donor->purchase_count, 'give' );
-
-			$list[] = [
-				'type'  => 'donor',
-				'name'  => $donor->name,
-				'url'   => $url,
-				'count' => "{$donor->purchase_count} {$countLabel}",
-				'total' => $total,
-				'image' => $avatar,
-				'email' => $donor->email,
-			];
+		// Check if a cached version exists
+		$cached_report = $this->get_cached_report( $request );
+		if ( $cached_report !== null ) {
+			// Bail and return the cached version
+			return new \WP_REST_Response(
+				[
+					'data' => $cached_report,
+				]
+			);
 		}
 
-		// Return $list of donors for RESTList component
+		$start = date_create( $request['start'] );
+		$end   = date_create( $request['end'] );
+		$diff  = date_diff( $start, $end );
+
+		$dataset = [];
+
+		$data = $this->get_data( $start, $end );
+
+		// Cache the report data
+		$result = $this->cache_report( $request, $data );
+
 		return new \WP_REST_Response(
 			[
-				'data' => $list,
+				'data' => $data,
 			]
 		);
 	}
+
+	public function get_data( $start, $end ) {
+
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ), 'date', -1 );
+
+		$donors = [];
+
+		$countLabel = _n( 'Donation', 'Donations', $donor->purchase_count, 'give' );
+
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->status === 'publish' ) {
+				$donors[ $payment->donor_id ]['type']      = 'donor';
+				$donors[ $payment->donor_id ]['earnings']  = isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : $payment->total;
+				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
+				$donors[ $payment->donor_id ]['donations'] = isset( $donors[ $payment->donor_id ]['donations'] ) ? $donors[ $payment->donor_id ]['donations'] += 1 : 1;
+				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;
+				$donors[ $payment->donor_id ]['name']      = $payment->first_name . ' ' . $payment->last_name;
+				$donors[ $payment->donor_id ]['email']     = $payment->email;
+				$donors[ $payment->donor_id ]['image']     = give_validate_gravatar( $payment->email ) ? get_avatar( $payment->email, 60 ) : null;
+				$donors[ $payment->donor_id ]['url']       = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $payment->donor_id ) );
+			}
+		}
+
+		$sorted = usort(
+			$donors,
+			function ( $a, $b ) {
+				if ( $a['earnings'] == $b['earnings'] ) {
+					return 0;
+				}
+				return ( $a['earnings'] > $b['earnings'] ) ? -1 : 1;
+			}
+		);
+
+		if ( $sorted === true ) {
+			$donors = array_slice( $donors, 0, 25 );
+			$donors = array_values( $donors );
+		}
+
+		return $donors;
+
+	}
+
 }

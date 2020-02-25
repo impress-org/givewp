@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getWindowData } from '../utils';
 
 export const reducer = ( state, action ) => {
 	switch ( action.type ) {
@@ -14,6 +15,7 @@ export const reducer = ( state, action ) => {
 		case 'SET_RANGE':
 			//determine new startDate based on selected range
 			let startDate;
+			let endDate = state.period.endDate;
 			switch ( action.payload.range ) {
 				case 'day':
 					startDate = moment( state.period.endDate ).subtract( 1, 'days' );
@@ -27,13 +29,29 @@ export const reducer = ( state, action ) => {
 				case 'year':
 					startDate = moment( state.period.endDate ).subtract( 1, 'years' );
 					break;
+				case 'alltime':
+					const allTimeStart = getWindowData( 'allTimeStart' );
+					startDate = moment( allTimeStart );
+					endDate = moment();
+					break;
 			}
 			return {
 				...state,
 				period: { ...state.period,
 					startDate,
+					endDate,
 					range: action.payload.range,
 				},
+			};
+		case 'SET_GIVE_STATUS':
+			return {
+				...state,
+				giveStatus: action.payload,
+			};
+		case 'SET_PAGE_LOADED':
+			return {
+				...state,
+				pageLoaded: action.payload,
 			};
 		default:
 			return state;

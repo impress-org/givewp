@@ -40,7 +40,36 @@ const MiniChart = ( { title, data } ) => {
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
 		const newTrend = getTrend( data );
-		const newIndicator = Math.sign( trend ) === -1 ? <Fragment>{ down } <span style={ { color: '#D75A4B' } }>{ `${ Math.abs( trend ) }%` }</span></Fragment> : <Fragment>{ up } <span style={ { color: '#69B868' } }>{ `${ Math.abs( trend ) }%` }</span></Fragment>;
+		let newIndicator;
+
+		switch ( true ) {
+			case newTrend < 0 : {
+				newIndicator = <Fragment>
+					{ down }
+					<span style={ { color: '#D75A4B' } }>
+						{ `${ Math.abs( newTrend ) }%` }
+					</span>
+				</Fragment>;
+				break;
+			}
+			case newTrend > 0 : {
+				newIndicator = <Fragment>
+					{ up }
+					<span style={ { color: '#69B868' } }>
+						{ `${ Math.abs( newTrend ) }%` }
+					</span>
+				</Fragment>;
+				break;
+			}
+			default: {
+				newIndicator = <Fragment>
+					<span style={ { color: '#82878c' } }>
+						{ `${ Math.abs( newTrend ) }%` }
+					</span>
+				</Fragment>;
+				break;
+			}
+		}
 
 		setHighlightValue( newHighlightValue );
 		setTrend( newTrend );
@@ -58,12 +87,16 @@ const MiniChart = ( { title, data } ) => {
 		<div className="givewp-mini-chart">
 			<div className="header">
 				<div className="title">{ title }</div>
-				<div className="indicator">{ ! isNaN( trend ) && ( indicator ) }</div>
+				{ trend !== 'NaN' && (
+					<div className="indicator">
+						{ indicator }
+					</div>
+				) }
 			</div>
 			<div className="content">
 				<div className="amount">{ highlightValue && ( highlightValue ) }</div>
 				<div className="chart">
-					<canvas width={ 100 } height={ 40 } ref={ canvas }></canvas>
+					<canvas width={ 100 } height={ 50 } ref={ canvas }></canvas>
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,8 @@ namespace Give\API\Endpoints\Reports;
 
 class Income extends Endpoint {
 
+	protected $payments;
+
 	public function __construct() {
 		$this->endpoint = 'income';
 	}
@@ -31,35 +33,24 @@ class Income extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
+		$dataset = [];
 
 		switch ( true ) {
-			case ( $diff->days > 900 ):
-				$data = $this->get_data( $start, $end, 'P1Y', 'Y' );
+			case ( $diff->days > 12 ):
+				$interval = round( $diff->days / 12 );
+				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
-			case ( $diff->days > 700 ):
-				$data = $this->get_data( $start, $end, 'P6M', 'F Y' );
-				break;
-			case ( $diff->days > 400 ):
-				$data = $this->get_data( $start, $end, 'P3M', 'F Y' );
-				break;
-			case ( $diff->days > 120 ):
-				$data = $this->get_data( $start, $end, 'P1M', 'M Y' );
-				break;
-			case ( $diff->days > 30 ):
-				$data = $this->get_data( $start, $end, 'P7D', 'M jS' );
-				break;
-			case ( $diff->days > 10 ):
-				$data = $this->get_data( $start, $end, 'P3D', 'M jS' );
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
 				break;
 			case ( $diff->days > 4 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'l' );
+				$data = $this->get_data( $start, $end, 'PT12H' );
 				break;
-			case ( $diff->days > 1 ):
-				$data = $this->get_data( $start, $end, 'P1D', 'D ga' );
+			case ( $diff->days > 2 ):
+				$data = $this->get_data( $start, $end, 'PT3H' );
 				break;
 			case ( $diff->days >= 0 ):
-				$data = $this->get_data( $start, $end, 'PT1H', 'D ga' );
+				$data = $this->get_data( $start, $end, 'PT1H' );
 				break;
 		}
 
@@ -73,62 +64,112 @@ class Income extends Endpoint {
 		);
 	}
 
-	public function get_data( $start, $end, $interval, $format ) {
+	public function get_data( $start, $end, $intervalStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
-		$startStr = $start->format( 'Y-m-d H:i:s' );
-		$endStr   = $end->format( 'Y-m-d H:i:s' );
+		$tooltips = [];
+		$income   = [];
 
-		// Determine the start date of the previous period (used to calculate trend)
-		$prev    = date_sub( date_create( $startStr ), date_diff( $start, $end ) );
-		$prevStr = $prev->format( 'Y-m-d H:i:s' );
+		$interval = new \DateInterval( $intervalStr );
 
-		$labels = [];
-		$income = [];
+		$periodStart = clone $start;
+		$periodEnd   = clone $start;
 
-		$dateInterval = new \DateInterval( $interval );
-		while ( $start < $end ) {
+		// Subtract interval to set up period start
+		date_sub( $periodStart, $interval );
 
-			$periodStart = $start->format( 'Y-m-d H:i:s' );
+		while ( $periodStart < $end ) {
 
-			// Add interval to get period end
-			$periodEnd = clone $start;
-			date_add( $periodEnd, $dateInterval );
+			$values          = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$incomeForPeriod = $values['earnings'];
+			$donorsForPeriod = $values['donor_count'];
 
-			$label     = $periodEnd->format( $format );
-			$periodEnd = $periodEnd->format( 'Y-m-d H:i:s' );
+			switch ( $intervalStr ) {
+				case 'P1D':
+					$periodLabel = $periodEnd->format( 'l' );
+					break;
+				case 'PT12H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT3H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				case 'PT1H':
+					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
+					break;
+				default:
+					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
+			}
 
-			$incomeForPeriod = $stats->get_earnings( 0, $periodStart, $periodEnd );
+			$income[] = [
+				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'y' => $incomeForPeriod,
+			];
 
-			$income[] = $incomeForPeriod;
-			$labels[] = $label;
+			$tooltips[] = [
+				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
+				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
+				'footer' => $periodLabel,
+			];
 
-			date_add( $start, $dateInterval );
+			// Add interval to set up next period
+			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
 		}
 
-		$totalForPeriod = array_sum( $income );
-
-		// Calculate the income trend by comparing total earnings in the
-		// previous period to earnings in the current period
-		$prevTotal    = $stats->get_earnings( 0, $prevStr, $startStr );
-		$currentTotal = $stats->get_earnings( 0, $startStr, $endStr );
-		$trend        = $prevTotal > 0 ? round( ( ( $currentTotal - $prevTotal ) / $prevTotal ) * 100 ) : 'NaN';
+		$status = $this->get_give_status();
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
-			'labels'   => $labels,
 			'datasets' => [
 				[
-					'label'     => __( 'Income', 'give' ),
-					'data'      => $income,
-					'trend'     => $trend,
-					'highlight' => give_currency_filter( give_format_amount( $totalForPeriod ), [ 'decode_currency' => true ] ),
+					'data'     => $income,
+					'tooltips' => $tooltips,
 				],
 			],
+			'status'   => $status,
 		];
 
 		return $data;
 
 	}
+
+	public function get_values( $startStr, $endStr ) {
+
+		$earnings = 0;
+		$donors   = [];
+
+		foreach ( $this->payments as $payment ) {
+			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
+				$earnings += $payment->total;
+				$donors[]  = $payment->donor_id;
+			}
+		}
+
+		$unique = array_unique( $donors );
+
+		return [
+			'earnings'    => $earnings,
+			'donor_count' => count( $unique ),
+		];
+	}
+
+	public function get_give_status() {
+
+		$donations = get_posts(
+			[
+				'post_type'   => array( 'give_payment' ),
+				'post_status' => 'publish',
+				'numberposts' => 1,
+			]
+		);
+
+		if ( count( $donations ) > 0 ) {
+			return 'donations_found';
+		} else {
+			return 'no_donations_found';
+		}
+	}
+
 }

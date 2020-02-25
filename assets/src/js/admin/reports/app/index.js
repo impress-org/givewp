@@ -4,6 +4,8 @@
 import moment from 'moment';
 const { __ } = wp.i18n;
 
+import './style.scss';
+
 // Store related dependencies
 import { StoreProvider } from '../store';
 import { reducer } from '../store/reducer';
@@ -22,6 +24,8 @@ const App = () => {
 			endDate: moment(),
 			range: 'week',
 		},
+		giveStatus: null,
+		pageLoaded: false,
 	};
 
 	return (
@@ -29,7 +33,9 @@ const App = () => {
 			<div className="wrap give-settings-page">
 				<div className="give-settings-header">
 					<h1 className="wp-heading-inline">{ __( 'Reports', 'give' ) }</h1>
-					<PeriodSelector />
+					<div className="givewp-inline-period-selector">
+						<PeriodSelector />
+					</div>
 				</div>
 				<Tabs />
 				<Routes />
