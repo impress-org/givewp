@@ -1,6 +1,5 @@
 // Vendor dependencies
-import axios from 'axios';
-import { useState, useEffect, Fragment } from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
@@ -11,56 +10,13 @@ import LoadingOverlay from '../loading-overlay';
 import { getItems, getSkeletonItems } from './utils';
 
 // Store-related dependencies
-import { useStoreValue } from '../../store';
+import { useReportsAPI } from '../../utils';
 
 const RESTList = ( { title, endpoint } ) => {
-	// Use period from store
-	const [ { period, giveStatus } ] = useStoreValue();
-
-	// Use state to hold data fetched from API
-	const [ fetched, setFetched ] = useState( null );
-
-	const [ loaded, setLoaded ] = useState( false );
-
-	const [ querying, setQuerying ] = useState( false );
-
-	const CancelToken = axios.CancelToken;
-	const source = CancelToken.source();
-
-	// Fetch new data and update List when period changes
-	useEffect( () => {
-		if ( period.startDate && period.endDate ) {
-			if ( querying === true ) {
-				source.cancel( 'Operation canceled by the user.' );
-			}
-
-			setQuerying( true );
-			setLoaded( false );
-
-			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
-				params: {
-					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
-					end: period.endDate.format( 'YYYY-MM-DD-HH' ),
-				},
-				headers: {
-					'X-WP-Nonce': wpApiSettings.nonce,
-				},
-			} )
-				.then( function( response ) {
-					setQuerying( false );
-					setFetched( response.data.data );
-					setLoaded( true );
-				} )
-				.catch( function() {
-					setQuerying( false );
-				} );
-		}
-	}, [ period, endpoint ] );
-
-	const ready = giveStatus === 'donations_found' && fetched !== null ? true : false;
+	const [ fetched, querying ] = useReportsAPI( endpoint );
 
 	let items;
-	if ( ready ) {
+	if ( fetched ) {
 		items = getItems( fetched );
 	} else {
 		items = getSkeletonItems();
@@ -68,7 +24,7 @@ const RESTList = ( { title, endpoint } ) => {
 
 	return (
 		<Fragment>
-			{ ! loaded && (
+			{ querying && (
 				<LoadingOverlay />
 			) }
 			<List title={ title }>
