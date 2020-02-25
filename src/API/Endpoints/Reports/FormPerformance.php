@@ -63,7 +63,15 @@ class FormPerformance extends Endpoint {
 				}
 			}
 
-			$sorted = usort( $forms, [ $this, 'compare_forms' ] );
+			$sorted = usort(
+				$forms,
+				function ( $a, $b ) {
+					if ( $a['income'] == $b['income'] ) {
+						return 0;
+					}
+					return ( $a['income'] > $b['income'] ) ? -1 : 1;
+				}
+			);
 
 			if ( $sorted === true ) {
 				$forms = array_slice( $forms, 0, 5 );
@@ -124,12 +132,5 @@ class FormPerformance extends Endpoint {
 
 		return $data;
 
-	}
-
-	public function compare_forms( $a, $b ) {
-		if ( $a['income'] == $b['income'] ) {
-				return 0;
-		}
-		return ( $a['income'] > $b['income'] ) ? -1 : 1;
 	}
 }
