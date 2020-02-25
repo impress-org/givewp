@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const Grid = ( { gap, visible, children } ) => {
-	const display = visible === true ? 'grid' : 'none';
+	const display = visible ? 'grid' : 'none';
 
 	//To do: swap with scss
 	const gridStyle = {
