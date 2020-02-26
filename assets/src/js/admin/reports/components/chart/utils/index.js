@@ -181,6 +181,9 @@ export function createConfig( type, data ) {
 		if ( type === 'line' ) {
 			const count = data.datasets[ 0 ].data.length;
 			const ticksSource = count < 16 ? 'data' : 'auto';
+			const firstYear = parseInt( data.datasets[ 0 ].data[ 0 ].x );
+			const currentYear = new Date().getFullYear();
+			const dayFormat = firstYear === currentYear ? 'MMM D' : 'MMM D, YYYY';
 
 			config.options.scales.xAxes = [ {
 				gridLines: {
@@ -190,7 +193,7 @@ export function createConfig( type, data ) {
 				time: {
 					displayFormats: {
 						hour: 'ddd ha',
-						day: 'MMM D, YYYY',
+						day: dayFormat,
 					},
 				},
 				ticks: {
