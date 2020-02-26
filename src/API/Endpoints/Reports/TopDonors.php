@@ -62,7 +62,7 @@ class TopDonors extends Endpoint {
 				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;
 				$donors[ $payment->donor_id ]['name']      = $payment->first_name . ' ' . $payment->last_name;
 				$donors[ $payment->donor_id ]['email']     = $payment->email;
-				$donors[ $payment->donor_id ]['image']     = give_validate_gravatar( $payment->email ) ? get_avatar( $payment->email, 60 ) : null;
+				$donors[ $payment->donor_id ]['image']     = give_validate_gravatar( $payment->email ) ? get_avatar_url( $payment->email, 60 ) : null;
 				$donors[ $payment->donor_id ]['url']       = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $payment->donor_id ) );
 			}
 		}
