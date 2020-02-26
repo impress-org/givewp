@@ -1,16 +1,9 @@
 const defaultOptions = {
-	lines: [
-		{
-			color: '#9EA3A8',
-			width: 1,
-			dashPattern: [ 5, 10 ],
-		},
-		{
-			color: 'rgba(35, 36, 37, 0.05)',
-			width: 140,
-			dashPattern: [],
-		},
-	],
+	line: {
+		color: '#9EA3A8',
+		width: 1,
+		dashPattern: [ 5, 10 ],
+	},
 	snap: {
 		enabled: true,
 	},
@@ -97,20 +90,37 @@ const crosshairPlugin = {
 			lineX = chart.active[ 0 ]._view.x;
 		}
 
-		defaultOptions.lines.forEach( ( line ) => {
-			const lineWidth = line.width;
-			const color = line.color;
-			const dashPattern = line.dashPattern;
+		const lineWidth = defaultOptions.line.width;
+		const color = defaultOptions.line.color;
+		const dashPattern = defaultOptions.line.dashPattern;
 
-			chart.ctx.beginPath();
-			chart.ctx.setLineDash( dashPattern );
-			chart.ctx.moveTo( lineX, yScale.getPixelForValue( yScale.max ) );
-			chart.ctx.lineWidth = lineWidth;
-			chart.ctx.strokeStyle = color;
-			chart.ctx.lineTo( lineX, yScale.getPixelForValue( yScale.min ) );
-			chart.ctx.stroke();
-			chart.ctx.setLineDash( [] );
-		} );
+		chart.ctx.beginPath();
+		chart.ctx.setLineDash( dashPattern );
+		chart.ctx.moveTo( lineX, yScale.getPixelForValue( yScale.max ) );
+		chart.ctx.lineWidth = lineWidth;
+		chart.ctx.strokeStyle = color;
+		chart.ctx.lineTo( lineX, yScale.getPixelForValue( yScale.min ) );
+		chart.ctx.stroke();
+		chart.ctx.setLineDash( [] );
+
+		// Draw shaodw
+		chart.ctx.beginPath();
+		chart.ctx.fillStyle = 'rgba(35, 36, 37, 0.05)';
+
+		let x;
+		const width = 140;
+		if ( lineX - 70 < chart.options.layout.padding + 35 ) {
+			x = chart.options.layout.padding + 35;
+		} else if ( lineX - 70 > ( chart.width - ( 140 + chart.options.layout.padding + 5 ) ) ) {
+			x = chart.width - ( 140 + chart.options.layout.padding + 5 );
+		} else {
+			x = lineX - 70;
+		}
+
+		const y = yScale.getPixelForValue( yScale.max );
+		const height = yScale.getPixelForValue( yScale.min ) - yScale.getPixelForValue( yScale.max );
+		chart.ctx.rect( x, y, width, height );
+		chart.ctx.fill();
 	},
 
 	drawTracePoints: function( chart ) {
