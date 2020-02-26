@@ -105,7 +105,9 @@ class AverageDonation extends Endpoint {
 
 		$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 		$trend                  = $this->get_trend( $start, $end, $income );
-		$info                   = $interval->days > 1 ? __( 'vs previous ', 'give' ) . $interval->days . __( 'days', 'give' ) : __( 'vs previous day', 'give' );
+
+		$diff = date_diff( $start, $end );
+		$info = $diff->days > 1 ? __( 'vs previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'vs previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
