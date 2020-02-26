@@ -37,6 +37,7 @@ const MiniChart = ( { title, data } ) => {
 	const [ indicator, setIndicator ] = useState( null );
 	const [ showTooltip, setShowTooltip ] = useState( false );
 	const [ tooltipText, setTooltipText ] = useState( null );
+	const [ tooltipPosition, setTooltipPosition ] = useState( { x: 0, y: 0 } );
 
 	const canvas = createRef();
 	const config = createConfig( data );
@@ -94,8 +95,16 @@ const MiniChart = ( { title, data } ) => {
 			<div className="header">
 				<div className="title">{ title }</div>
 				{ trend !== 'NaN' && (
-					<div className="indicator" onMouseEnter={ () => setShowTooltip( true ) } onMouseLeave={ () => setShowTooltip( false ) }>
-						{ showTooltip && ( <Tooltip body={ tooltipText } /> ) }
+					<div className="indicator"
+						onMouseEnter={ ( event ) => {
+							const rect = event.target.getBoundingClientRect();
+							setTooltipPosition( { x: event.target.offsetLeft + ( rect.width / 2 ), y: event.target.offsetTop } );
+							setShowTooltip( true );
+						} }
+						onMouseLeave={ () => {
+							setShowTooltip( false );
+						} }>
+						{ showTooltip && ( <Tooltip body={ tooltipText } position={ tooltipPosition } /> ) }
 						{ indicator }
 					</div>
 				) }

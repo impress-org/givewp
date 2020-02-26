@@ -5,10 +5,11 @@
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -100%);
 	position: absolute;
-	top: -16px;
 	font-weight: 500;
+	top: 0;
+	left: 0;
 
 	.givewp-tooltip__header {
 		background: #666;

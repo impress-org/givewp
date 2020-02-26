@@ -1,8 +1,13 @@
 import './style.scss';
 
-const Tooltip = ( { title, body } ) => {
+const Tooltip = ( { title, body, position } ) => {
+	const style = position ? {
+		top: position.y,
+		left: position.x,
+	} : null;
+
 	return (
-		<div className="givewp-tooltip">
+		<div className="givewp-tooltip" style={ style }>
 			{ title && (
 				<div className="givewp-tooltip__header">
 					{ title }
