@@ -112,6 +112,7 @@ class TotalRefunds extends Endpoint {
 
 		$totalRefundsForPeriod = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 		$trend                 = $this->get_trend( $start, $end, $refunds );
+		$info                  = $interval->days > 1 ? __( 'vs previous ', 'give' ) . $interval->days . __( 'days', 'give' ) : __( 'vs previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -120,6 +121,7 @@ class TotalRefunds extends Endpoint {
 					'data'      => $refunds,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
+					'info'      => $info,
 					'highlight' => $totalRefundsForPeriod,
 				],
 			],

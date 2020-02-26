@@ -28,6 +28,11 @@ export function getHighlightValue( data ) {
 	return highlightValue;
 }
 
+export function getTooltipText( data ) {
+	const tooltipText = data.datasets[ 0 ].info;
+	return tooltipText;
+}
+
 export function createConfig( data ) {
 	const formattedData = formatData( data );
 	const config = {

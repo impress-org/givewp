@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 //Import ChartJS dependencies
 import ChartJS from 'chart.js';
-import { createConfig, getTrend, getHighlightValue } from './utils';
+import { createConfig, getTrend, getHighlightValue, getTooltipText } from './utils';
+
+import Tooltip from '../tooltip';
 
 import './style.scss';
 
@@ -33,6 +35,8 @@ const MiniChart = ( { title, data } ) => {
 	const [ highlightValue, setHighlightValue ] = useState( null );
 	const [ trend, setTrend ] = useState( null );
 	const [ indicator, setIndicator ] = useState( null );
+	const [ showTooltip, setShowTooltip ] = useState( false );
+	const [ tooltipText, setTooltipText ] = useState( null );
 
 	const canvas = createRef();
 	const config = createConfig( data );
@@ -40,6 +44,7 @@ const MiniChart = ( { title, data } ) => {
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
 		const newTrend = getTrend( data );
+		const newTooltipText = getTooltipText( data );
 		let newIndicator;
 
 		switch ( true ) {
@@ -72,6 +77,7 @@ const MiniChart = ( { title, data } ) => {
 		}
 
 		setHighlightValue( newHighlightValue );
+		setTooltipText( newTooltipText );
 		setTrend( newTrend );
 		setIndicator( newIndicator );
 
@@ -88,7 +94,8 @@ const MiniChart = ( { title, data } ) => {
 			<div className="header">
 				<div className="title">{ title }</div>
 				{ trend !== 'NaN' && (
-					<div className="indicator">
+					<div className="indicator" onMouseEnter={ () => setShowTooltip( true ) } onMouseLeave={ () => setShowTooltip( false ) }>
+						{ showTooltip && ( <Tooltip title={ title } body={ tooltipText } /> ) }
 						{ indicator }
 					</div>
 				) }
