@@ -95,7 +95,7 @@ const MiniChart = ( { title, data } ) => {
 				<div className="title">{ title }</div>
 				{ trend !== 'NaN' && (
 					<div className="indicator" onMouseEnter={ () => setShowTooltip( true ) } onMouseLeave={ () => setShowTooltip( false ) }>
-						{ showTooltip && ( <Tooltip title={ title } body={ tooltipText } /> ) }
+						{ showTooltip && ( <Tooltip body={ tooltipText } /> ) }
 						{ indicator }
 					</div>
 				) }
