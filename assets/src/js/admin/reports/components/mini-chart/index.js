@@ -90,6 +90,8 @@ const MiniChart = ( { title, data } ) => {
 		};
 	}, [ data ] );
 
+	const stacked = highlightValue && highlightValue.length > 7 ? true : false;
+
 	return (
 		<div className="givewp-mini-chart">
 			<div className="header">
@@ -110,10 +112,10 @@ const MiniChart = ( { title, data } ) => {
 					</div>
 				) }
 			</div>
-			<div className="content">
+			<div className={ stacked ? 'content stacked' : 'content' }>
 				<div className="amount">{ highlightValue && ( highlightValue ) }</div>
 				<div className="chart">
-					<canvas width={ 100 } height={ 50 } ref={ canvas }></canvas>
+					<canvas width={ 100 } height={ 40 } ref={ canvas }></canvas>
 				</div>
 			</div>
 		</div>

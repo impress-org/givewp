@@ -1,8 +1,10 @@
 .givewp-mini-chart {
+	height: 100%;
 	width: calc(100% - 32px);
 	padding: 16px 0 16px 16px;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-evenly;
 
 	> .header {
 		display: flex;
@@ -43,6 +45,16 @@
 		> .chart {
 			width: 35%;
 			transform: translateY(-4px);
+		}
+
+		&.stacked {
+			flex-direction: column-reverse;
+
+			> .chart {
+				width: 75%;
+				transform: translateY(0);
+				margin-bottom: 16px;
+			}
 		}
 	}
 }
