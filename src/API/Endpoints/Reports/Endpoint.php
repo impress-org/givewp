@@ -155,6 +155,12 @@ abstract class Endpoint {
 	 */
 	public function get_cached_report( $request ) {
 
+		// Do not get cached report for period less than a week
+		$diff = date_diff( $request['start'], date_create() );
+		if ( $diff->days < 8 ) {
+			return null;
+		}
+
 		$query_args = [
 			'start' => $request['start'],
 			'end'   => $request['end'],
