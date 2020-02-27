@@ -48,8 +48,18 @@ class RecentDonations extends Endpoint {
 			$donation = new \Give_Payment( $donation->ID );
 
 			$amount = give_currency_symbol( $payment->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
-			$status = $donation->status === 'publish' ? 'completed' : $donation->status;
-			$url    = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
+			$status = null;
+			switch ( $donation->status ) {
+				case 'publish':
+					$status = 'completed';
+					break;
+				case 'give_recurring':
+					$status = 'completed recurring';
+					break;
+				default:
+					$status = $donation->status;
+			}
+			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
 
 			$data[] = [
 				'type'     => 'donation',
