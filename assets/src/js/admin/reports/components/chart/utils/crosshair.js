@@ -87,6 +87,7 @@ const crosshairPlugin = {
 
 	drawTraceLine: function( chart ) {
 		const yScale = this.getYScale( chart );
+		const xScale = this.getXScale( chart );
 
 		let lineX = chart.crosshair.x;
 		const isHoverIntersectOff = chart.config.options.hover.intersect === false;
@@ -113,8 +114,8 @@ const crosshairPlugin = {
 		chart.ctx.beginPath();
 		chart.ctx.fillStyle = 'rgba(35, 36, 37, 0.05)';
 
-		const leftEnd = chart.options.layout.padding + 35;
-		const rightEnd = chart.width - ( chart.options.layout.padding + 5 );
+		const leftEnd = xScale.getPixelForValue( xScale.min );
+		const rightEnd = xScale.getPixelForValue( xScale.max );
 
 		let x;
 		let width;
