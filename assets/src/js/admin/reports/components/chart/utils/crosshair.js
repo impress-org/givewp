@@ -112,14 +112,21 @@ const crosshairPlugin = {
 		chart.ctx.beginPath();
 		chart.ctx.fillStyle = 'rgba(35, 36, 37, 0.05)';
 
+		const leftEnd = chart.options.layout.padding + 35;
+		const rightEnd = chart.width - ( chart.options.layout.padding + 5 );
+
 		let x;
-		const width = 140;
-		if ( lineX - 70 < chart.options.layout.padding + 35 ) {
-			x = chart.options.layout.padding + 35;
-		} else if ( lineX - 70 > ( chart.width - ( 140 + chart.options.layout.padding + 5 ) ) ) {
-			x = chart.width - ( 140 + chart.options.layout.padding + 5 );
+		let width;
+
+		if ( lineX - 70 < leftEnd ) {
+			x = leftEnd;
+			width = 70 + ( lineX - leftEnd );
+		} else if ( lineX + 70 > rightEnd ) {
+			x = lineX - 70;
+			width = 70 + ( rightEnd - lineX );
 		} else {
 			x = lineX - 70;
+			width = 140;
 		}
 
 		const y = yScale.getPixelForValue( yScale.max );
