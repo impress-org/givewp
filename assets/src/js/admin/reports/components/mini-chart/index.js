@@ -97,8 +97,9 @@ const MiniChart = ( { title, data } ) => {
 				{ trend !== 'NaN' && (
 					<div className="indicator"
 						onMouseEnter={ ( event ) => {
-							const rect = event.target.getBoundingClientRect();
-							setTooltipPosition( { x: event.target.offsetLeft + ( rect.width / 2 ), y: event.target.offsetTop } );
+							const target = event.target.classList.contains( 'indicator' ) ? event.target : event.target.closest( '.indicator' );
+							const rect = target.getBoundingClientRect();
+							setTooltipPosition( { x: target.offsetLeft + ( rect.width / 2 ), y: target.offsetTop } );
 							setShowTooltip( true );
 						} }
 						onMouseLeave={ () => {
