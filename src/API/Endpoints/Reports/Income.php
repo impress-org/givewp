@@ -77,24 +77,24 @@ class Income extends Endpoint {
 		$periodEnd   = clone $start;
 
 		// Subtract interval to set up period start
-		date_sub( $periodStart, $interval );
+		if ( $intervalStr !== 'P1D' ) {
+			date_sub( $periodStart, $interval );
+		}
 
-		while ( $periodStart < $end ) {
+		while ( $periodStart <= $end ) {
 
 			$values          = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 			$incomeForPeriod = $values['earnings'];
 			$donorsForPeriod = $values['donor_count'];
+			$time            = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
 				case 'P1D':
-					$periodLabel = $periodEnd->format( 'l' );
+					$time        = $periodStart->format( 'Y-m-d H:i:s' );
+					$periodLabel = $periodStart->format( 'l' );
 					break;
 				case 'PT12H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT3H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT1H':
 					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 					break;
@@ -103,7 +103,7 @@ class Income extends Endpoint {
 			}
 
 			$income[] = [
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'x' => $time,
 				'y' => $incomeForPeriod,
 			];
 
