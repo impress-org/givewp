@@ -112,6 +112,7 @@ export function createConfig( type, data ) {
 					// Hide if no tooltip
 					if ( tooltipModel.opacity === 0 ) {
 						tooltipEl.style.opacity = 0;
+						tooltipEl.style.display = 'none';
 						return;
 					}
 
@@ -128,6 +129,7 @@ export function createConfig( type, data ) {
 
 					// Display, position, and set styles for font
 					tooltipEl.style.opacity = 1;
+					tooltipEl.style.display = 'block';
 					tooltipEl.style.position = 'absolute';
 
 					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';

@@ -73,6 +73,7 @@ const crosshairPlugin = {
 			const tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
 			if ( tooltipEl ) {
 				tooltipEl.style.opacity = 0;
+				tooltipEl.style.display = 'none';
 			}
 
 			return;
