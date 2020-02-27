@@ -13,16 +13,23 @@ const RESTMiniChart = ( { title, endpoint } ) => {
 	// Use period from store
 	const [ fetched, querying ] = useReportsAPI( endpoint );
 
+	const loadingStyle = {
+		width: '100%',
+		height: '95px',
+	};
+
 	return (
 		<Fragment>
 			{ querying && (
 				<LoadingOverlay />
 			) }
-			{ fetched && (
+			{ fetched ? (
 				<MiniChart
 					title={ title }
 					data={ fetched }
 				/>
+			) : (
+				<div style={ loadingStyle } />
 			) }
 		</Fragment>
 	);
