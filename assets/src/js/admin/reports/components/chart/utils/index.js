@@ -112,6 +112,7 @@ export function createConfig( type, data ) {
 					// Hide if no tooltip
 					if ( tooltipModel.opacity === 0 ) {
 						tooltipEl.style.opacity = 0;
+						tooltipEl.style.display = 'none';
 						return;
 					}
 
@@ -128,6 +129,7 @@ export function createConfig( type, data ) {
 
 					// Display, position, and set styles for font
 					tooltipEl.style.opacity = 1;
+					tooltipEl.style.display = 'block';
 					tooltipEl.style.position = 'absolute';
 
 					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
@@ -181,6 +183,9 @@ export function createConfig( type, data ) {
 		if ( type === 'line' ) {
 			const count = data.datasets[ 0 ].data.length;
 			const ticksSource = count < 16 ? 'data' : 'auto';
+			const firstYear = parseInt( data.datasets[ 0 ].data[ 0 ].x );
+			const currentYear = new Date().getFullYear();
+			const dayFormat = firstYear === currentYear ? 'MMM D' : 'MMM D, YYYY';
 
 			config.options.scales.xAxes = [ {
 				gridLines: {
@@ -190,7 +195,7 @@ export function createConfig( type, data ) {
 				time: {
 					displayFormats: {
 						hour: 'ddd ha',
-						day: 'MMM D, YYYY',
+						day: dayFormat,
 					},
 				},
 				ticks: {

@@ -31,7 +31,7 @@ const Widget = () => {
 			<Grid gap="12px" visible={ pageLoaded }>
 				<Card width={ 12 }>
 					<RESTChart
-						title={ __( 'All Time Income', 'give' ) }
+						title={ __( 'Overview', 'give' ) }
 						headerElements={ <MiniPeriodSelector /> }
 						type="line"
 						aspectRatio={ 0.8 }

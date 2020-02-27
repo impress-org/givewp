@@ -22,17 +22,10 @@
 			align-items: center;
 			font-size: 14px;
 			font-weight: 600;
+			cursor: default;
 
-			> div {
+			> svg {
 				margin-right: 4px;
-			}
-
-			> .up {
-				margin-top: 5px;
-			}
-
-			> .down {
-				margin-top: 5px;
 			}
 		}
 	}

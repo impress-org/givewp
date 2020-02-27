@@ -1,16 +1,9 @@
 const defaultOptions = {
-	lines: [
-		{
-			color: '#9EA3A8',
-			width: 1,
-			dashPattern: [ 5, 10 ],
-		},
-		{
-			color: 'rgba(35, 36, 37, 0.05)',
-			width: 140,
-			dashPattern: [],
-		},
-	],
+	line: {
+		color: '#9EA3A8',
+		width: 1,
+		dashPattern: [ 5, 10 ],
+	},
 	snap: {
 		enabled: true,
 	},
@@ -77,6 +70,12 @@ const crosshairPlugin = {
 
 	afterDraw: function( chart ) {
 		if ( ! chart.crosshair.enabled ) {
+			const tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
+			if ( tooltipEl ) {
+				tooltipEl.style.opacity = 0;
+				tooltipEl.style.display = 'none';
+			}
+
 			return;
 		}
 
@@ -97,20 +96,44 @@ const crosshairPlugin = {
 			lineX = chart.active[ 0 ]._view.x;
 		}
 
-		defaultOptions.lines.forEach( ( line ) => {
-			const lineWidth = line.width;
-			const color = line.color;
-			const dashPattern = line.dashPattern;
+		const lineWidth = defaultOptions.line.width;
+		const color = defaultOptions.line.color;
+		const dashPattern = defaultOptions.line.dashPattern;
 
-			chart.ctx.beginPath();
-			chart.ctx.setLineDash( dashPattern );
-			chart.ctx.moveTo( lineX, yScale.getPixelForValue( yScale.max ) );
-			chart.ctx.lineWidth = lineWidth;
-			chart.ctx.strokeStyle = color;
-			chart.ctx.lineTo( lineX, yScale.getPixelForValue( yScale.min ) );
-			chart.ctx.stroke();
-			chart.ctx.setLineDash( [] );
-		} );
+		chart.ctx.beginPath();
+		chart.ctx.setLineDash( dashPattern );
+		chart.ctx.moveTo( lineX, yScale.getPixelForValue( yScale.max ) );
+		chart.ctx.lineWidth = lineWidth;
+		chart.ctx.strokeStyle = color;
+		chart.ctx.lineTo( lineX, yScale.getPixelForValue( yScale.min ) );
+		chart.ctx.stroke();
+		chart.ctx.setLineDash( [] );
+
+		// Draw shaodw
+		chart.ctx.beginPath();
+		chart.ctx.fillStyle = 'rgba(35, 36, 37, 0.05)';
+
+		const leftEnd = chart.options.layout.padding + 35;
+		const rightEnd = chart.width - ( chart.options.layout.padding + 5 );
+
+		let x;
+		let width;
+
+		if ( lineX - 70 < leftEnd ) {
+			x = leftEnd;
+			width = 70 + ( lineX - leftEnd );
+		} else if ( lineX + 70 > rightEnd ) {
+			x = lineX - 70;
+			width = 70 + ( rightEnd - lineX );
+		} else {
+			x = lineX - 70;
+			width = 140;
+		}
+
+		const y = yScale.getPixelForValue( yScale.max );
+		const height = yScale.getPixelForValue( yScale.min ) - yScale.getPixelForValue( yScale.max );
+		chart.ctx.rect( x, y, width, height );
+		chart.ctx.fill();
 	},
 
 	drawTracePoints: function( chart ) {

@@ -2,7 +2,6 @@
 	float: right;
 	display: flex;
 	align-items: center;
-	height: 50px;
 
 	> .group {
 		margin-left: 16px;
@@ -20,6 +19,7 @@
 			padding: 0 16px;
 			font-size: 14px;
 			font-weight: 400;
+			cursor: pointer;
 
 			&:first-of-type {
 				border-radius: 3px 0 0 3px;

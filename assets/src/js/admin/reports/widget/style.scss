@@ -2,13 +2,12 @@
 	position: relative;
 	height: auto;
 	width: 100%;
-	overflow: hidden;
-	border-radius: 6px;
 }
 
 #givewp_reports_widget {
+	background: rgb(249, 249, 249);
+
 	.inside {
-		background: rgb(241, 241, 241);
 		margin-top: 0;
 	}
 }

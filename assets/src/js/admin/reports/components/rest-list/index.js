@@ -1,13 +1,16 @@
 // Vendor dependencies
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+const { __ } = wp.i18n;
 
 // Components
 import List from '../list';
 import LoadingOverlay from '../loading-overlay';
 
+import './style.scss';
+
 // Utilities
-import { getItems, getSkeletonItems } from './utils';
+import { getItems } from './utils';
 
 // Store-related dependencies
 import { useReportsAPI } from '../../utils';
@@ -15,12 +18,7 @@ import { useReportsAPI } from '../../utils';
 const RESTList = ( { title, endpoint } ) => {
 	const [ fetched, querying ] = useReportsAPI( endpoint );
 
-	let items;
-	if ( fetched ) {
-		items = getItems( fetched );
-	} else {
-		items = getSkeletonItems();
-	}
+	const items = fetched ? getItems( fetched ) : null;
 
 	return (
 		<Fragment>
@@ -28,7 +26,13 @@ const RESTList = ( { title, endpoint } ) => {
 				<LoadingOverlay />
 			) }
 			<List title={ title }>
-				{ items }
+				{ items ? (
+					items
+				) : (
+					<div className="givewp-list-notice">
+						<h1>{ __( 'No data found.', 'give' ) }</h1>
+					</div>
+				) }
 			</List>
 		</Fragment>
 	);

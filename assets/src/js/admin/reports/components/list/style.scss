@@ -9,7 +9,8 @@
 
 .givewp-list {
 	max-height: 432px;
-	overflow: scroll;
+	overflow-y: auto;
+	overflow-x: hidden;
 
 	> * {
 		background: #f4f4f4;

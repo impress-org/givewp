@@ -113,6 +113,9 @@ class TotalDonors extends Endpoint {
 		$totalDonorsForPeriod = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 		$trend                = $this->get_trend( $start, $end, $donors );
 
+		$diff = date_diff( $start, $end );
+		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
+
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
 			'datasets' => [
@@ -120,6 +123,7 @@ class TotalDonors extends Endpoint {
 					'data'      => $donors,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
+					'info'      => $info,
 					'highlight' => $totalDonorsForPeriod,
 				],
 			],

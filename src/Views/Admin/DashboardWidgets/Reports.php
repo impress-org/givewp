@@ -31,7 +31,7 @@ class Reports {
 	public function add_dashboard_widget() {
 
 		$reportsURL = admin_url( '/edit.php?post_type=give_forms&page=give-reports' );
-		$reportsStr = __( 'GiveWP Donations: Reports', 'give' ) . '<a class="givewp-reports-link" href="' . $reportsURL . '">' . __( 'Visit Dashboard', 'give' ) . '</a>';
+		$reportsStr = __( 'GiveWP Donations: Reports', 'give' ) . '<a class="givewp-reports-link" href="' . $reportsURL . '">' . __( 'Visit Reports', 'give' ) . '</a>';
 
 		if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 			wp_add_dashboard_widget(

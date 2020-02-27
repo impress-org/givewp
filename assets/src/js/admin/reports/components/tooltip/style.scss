@@ -1,37 +1,17 @@
-.givewp-chart-title {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 16px;
-
-	> .givewp-chart-title-text {
-		font-weight: 600;
-		font-size: 15px;
-		white-space: nowrap;
-	}
-}
-
-.givewp-chart-canvas {
-	display: flex;
-	flex: 1;
-	align-items: center;
-	background: #f4f4f4;
-
-	canvas {
-		position: relative;
-	}
-}
-
-#givewp-chartjs-tooltip {
+.givewp-tooltip {
 	min-width: 106px;
 	text-align: center;
 	border-radius: 3px;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	transform: translate(-50%, 0);
+	transform: translate(-50%, -100%);
+	position: absolute;
+	font-weight: 500;
+	top: 0;
+	left: 0;
 
-	.givewp-tooltip-header {
+	.givewp-tooltip__header {
 		background: #666;
 		padding: 8px 12px;
 		color: #fff;
@@ -39,7 +19,7 @@
 		border-radius: 3px 3px 0 0;
 	}
 
-	.givewp-tooltip-body {
+	.givewp-tooltip__body {
 		padding: 8px 12px;
 		color: rgb(228, 228, 228);
 		font-size: 12px;
@@ -47,7 +27,7 @@
 		border-radius: 0 0 3px 3px;
 	}
 
-	.givewp-tooltip-caret {
+	.givewp-tooltip__caret {
 		height: 14px;
 		width: 20px;
 		margin: 0 auto;
