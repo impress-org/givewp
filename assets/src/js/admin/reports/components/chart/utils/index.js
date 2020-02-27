@@ -100,13 +100,14 @@ export function createConfig( type, data ) {
 				custom: function( tooltipModel ) {
 					// Tooltip Element
 					let tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
+					const reportsBody = document.getElementById( 'reports-app' );
 
 					// Create element on first render
 					if ( ! tooltipEl ) {
 						tooltipEl = document.createElement( 'div' );
 						tooltipEl.id = 'givewp-chartjs-tooltip';
 						tooltipEl.innerHTML = '<div class="givewp-tooltip-header"></div><div class="givewp-tooltip-body"><bold></b><br></div><div class="givewp-tooltip-caret"></div>';
-						document.body.appendChild( tooltipEl );
+						reportsBody.appendChild( tooltipEl );
 					}
 
 					// Hide if no tooltip
@@ -123,15 +124,12 @@ export function createConfig( type, data ) {
 						tooltipEl.classList.add( 'no-transform' );
 					}
 
-					// `this` will be the overall tooltip
-					const position = this._chart.canvas.getBoundingClientRect();
-
 					// Display, position, and set styles for font
 					tooltipEl.style.opacity = 1;
 					tooltipEl.style.position = 'absolute';
 
-					tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
-					tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - ( tooltipEl.offsetHeight + 6 ) + 'px';
+					tooltipEl.style.left = this._chart.canvas.offsetLeft + ( tooltipModel.caretX + 2 ) + 'px';
+					tooltipEl.style.top = this._chart.canvas.offsetTop + tooltipModel.caretY + ( tooltipEl.clientHeight / 2 ) - 6 + 'px';
 
 					tooltipEl.style.pointerEvents = 'none';
 
