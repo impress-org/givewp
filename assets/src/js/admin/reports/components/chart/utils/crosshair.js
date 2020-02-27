@@ -70,6 +70,11 @@ const crosshairPlugin = {
 
 	afterDraw: function( chart ) {
 		if ( ! chart.crosshair.enabled ) {
+			const tooltipEl = document.getElementById( 'givewp-chartjs-tooltip' );
+			if ( tooltipEl ) {
+				tooltipEl.style.opacity = 0;
+			}
+
 			return;
 		}
 
