@@ -157,7 +157,7 @@ abstract class Endpoint {
 
 		// Do not get cached report for period less than a week
 		$diff = date_diff( $request['start'], date_create() );
-		if ( $diff->days < 8 ) {
+		if ( $diff->days < 2 ) {
 			return null;
 		}
 

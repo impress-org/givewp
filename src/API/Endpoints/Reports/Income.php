@@ -77,9 +77,7 @@ class Income extends Endpoint {
 		$periodEnd   = clone $start;
 
 		// Subtract interval to set up period start
-		if ( $intervalStr !== 'P1D' ) {
-			date_sub( $periodStart, $interval );
-		}
+		date_sub( $periodStart, $interval );
 
 		while ( $periodStart <= $end ) {
 
@@ -119,6 +117,11 @@ class Income extends Endpoint {
 		}
 
 		$status = $this->get_give_status();
+
+		if ( $intervalStr === 'P1D' ) {
+			$income   = array_slice( $income, 1 );
+			$tooltips = array_slice( $tooltips, 1 );
+		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
