@@ -28,11 +28,12 @@ class PaymentStatuses extends Endpoint {
 		// Use give_count_payments logic to get payments
 		$payments = give_count_payments( $args );
 
-		// Add caching logic here...
+		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
 			[
-				'data' => [
+				'status' => $status,
+				'data'   => [
 					'labels'   => [
 						'Completed',
 						'Pending',

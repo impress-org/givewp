@@ -53,10 +53,12 @@ class TotalRefunds extends Endpoint {
 
 		// Cache the report data
 		$result = $this->cache_report( $request, $data );
+		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
 			[
-				'data' => $data,
+				'data'   => $data,
+				'status' => $status,
 			]
 		);
 	}

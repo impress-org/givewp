@@ -7,11 +7,15 @@ import { useReportsAPI } from '../../utils';
 
 // Components
 import Chart from '../chart';
-import SkeletonChart from '../skeleton-chart';
 import Spinner from '../spinner';
 
 const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerElements } ) => {
 	const [ fetched, querying ] = useReportsAPI( endpoint );
+
+	const loadingStyle = {
+		width: '100%',
+		height: '295px',
+	};
 
 	return (
 		<Fragment>
@@ -34,11 +38,7 @@ const RESTChart = ( { title, type, aspectRatio, endpoint, showLegend, headerElem
 					showLegend={ showLegend }
 				/>
 			) : (
-				<SkeletonChart
-					type={ type }
-					aspectRatio={ aspectRatio }
-					showLegend={ showLegend }
-				/>
+				<div style={ loadingStyle } />
 			) }
 		</Fragment>
 	);

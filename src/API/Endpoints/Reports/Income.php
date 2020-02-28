@@ -56,10 +56,12 @@ class Income extends Endpoint {
 
 		// Cache the report data
 		$result = $this->cache_report( $request, $data );
+		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
 			[
-				'data' => $data,
+				'data'   => $data,
+				'status' => $status,
 			]
 		);
 	}
@@ -116,8 +118,6 @@ class Income extends Endpoint {
 			date_add( $periodEnd, $interval );
 		}
 
-		$status = $this->get_give_status();
-
 		if ( $intervalStr === 'P1D' ) {
 			$income   = array_slice( $income, 1 );
 			$tooltips = array_slice( $tooltips, 1 );
@@ -131,7 +131,6 @@ class Income extends Endpoint {
 					'tooltips' => $tooltips,
 				],
 			],
-			'status'   => $status,
 		];
 
 		return $data;
@@ -158,23 +157,6 @@ class Income extends Endpoint {
 			'earnings'    => $earnings,
 			'donor_count' => count( $unique ),
 		];
-	}
-
-	public function get_give_status() {
-
-		$donations = get_posts(
-			[
-				'post_type'   => array( 'give_payment' ),
-				'post_status' => 'publish',
-				'numberposts' => 1,
-			]
-		);
-
-		if ( count( $donations ) > 0 ) {
-			return 'donations_found';
-		} else {
-			return 'no_donations_found';
-		}
 	}
 
 }

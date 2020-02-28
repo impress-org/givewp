@@ -39,7 +39,12 @@
 			</a>
 		</div>
 		<div class="givewp-loading-notice">
-			<div className="givewp-spinner"></div>
+			<div class="givewp-loading-notice__card">
+				<div class="givewp-spinner"></div>
+				<h2>
+					<?php echo __( 'Loading your latest', 'give' ) . '<br>' . __( 'donation activity', 'give' ); ?>
+				</h2>
+			</div>
 		</div>
 	</div>
 </div>

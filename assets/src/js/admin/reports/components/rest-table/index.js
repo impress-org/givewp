@@ -7,7 +7,7 @@ import Table from '../table';
 import LoadingOverlay from '../loading-overlay';
 
 // Utilities
-import { getSkeletonLabels, getSkeletonRows, getLabels, getRows } from './utils';
+import { getLabels, getRows } from './utils';
 
 // Store-related dependencies
 import { useReportsAPI } from '../../utils';
@@ -21,21 +21,27 @@ const RESTTable = ( { title, endpoint } ) => {
 	if ( fetched ) {
 		labels = getLabels( fetched );
 		rows = getRows( fetched );
-	} else {
-		labels = getSkeletonLabels();
-		rows = getSkeletonRows();
 	}
+
+	const loadingStyle = {
+		width: '100%',
+		height: '95px',
+	};
 
 	return (
 		<Fragment>
 			{ querying && (
 				<LoadingOverlay />
 			) }
-			<Table
-				title={ title }
-				labels={ labels }
-				rows={ rows }
-			/>
+			{ fetched ? (
+				<Table
+					title={ title }
+					labels={ labels }
+					rows={ rows }
+				/>
+			) : (
+				<div style={ loadingStyle } />
+			) }
 		</Fragment>
 	);
 };

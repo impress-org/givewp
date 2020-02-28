@@ -2,6 +2,7 @@ import { useStoreValue } from '../store';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { setGiveStatus, setPageLoaded } from '../store/actions';
+import { getSampleData } from './sample';
 
 export const getWindowData = ( value ) => {
 	const data = window.giveReportsData;
@@ -40,13 +41,21 @@ export const useReportsAPI = ( endpoint ) => {
 				},
 			} )
 				.then( function( response ) {
-					setQuerying( false );
-					setFetched( response.data.data );
+					const status = response.data.status;
+					dispatch( setGiveStatus( status ) );
+
+					if ( status === 'no_donations_found' ) {
+						const sample = getSampleData( endpoint );
+						setFetched( sample );
+					} else {
+						setFetched( response.data.data );
+					}
+
 					if ( endpoint === 'income' ) {
-						const status = response.data.data.status;
-						dispatch( setGiveStatus( status ) );
 						dispatch( setPageLoaded() );
 					}
+
+					setQuerying( false );
 				} )
 				.catch( function() {
 					setQuerying( false );

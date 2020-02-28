@@ -271,4 +271,21 @@ abstract class Endpoint {
 		return $payments;
 
 	}
+
+	public function get_give_status() {
+
+		$donations = get_posts(
+			[
+				'post_type'   => array( 'give_payment' ),
+				'post_status' => 'publish',
+				'numberposts' => 1,
+			]
+		);
+
+		if ( count( $donations ) > 0 ) {
+			return 'donations_found';
+		} else {
+			return 'no_donations_found';
+		}
+	}
 }
