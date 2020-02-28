@@ -54,7 +54,7 @@ class RecentDonations extends Endpoint {
 					$status = 'completed';
 					break;
 				case 'give_subscription':
-					$status = 'renewal';
+					$status = $payment->times > 1 ? 'renewal' : 'first_renewal';
 					break;
 				default:
 					$status = $donation->status;
