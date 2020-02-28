@@ -30,7 +30,9 @@ const RESTList = ( { title, endpoint } ) => {
 					items
 				) : (
 					<div className="givewp-list-notice">
-						<h1>{ __( 'No data found.', 'give' ) }</h1>
+						{ ! querying && (
+							<h1>{ __( 'No data found.', 'give' ) }</h1>
+						) }
 					</div>
 				) }
 			</List>
