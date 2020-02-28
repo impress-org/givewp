@@ -1,3 +1,5 @@
+const { __ } = wp.i18n;
+
 export function getIcon( status ) {
 	switch ( status ) {
 		case 'completed':
@@ -8,6 +10,13 @@ export function getIcon( status ) {
 				</g>
 			</svg>;
 		case 'renewal':
+			return <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<g opacity="0.5">
+					<path opacity="0.3" d="M17 5.5C15.46 5.5 13.96 6.49 13.44 7.86H11.57C11.04 6.49 9.54 5.5 8 5.5C6 5.5 4.5 7 4.5 9C4.5 11.89 7.64 14.74 12.4 19.05L12.5 19.15L12.6 19.05C17.36 14.74 20.5 11.89 20.5 9C20.5 7 19 5.5 17 5.5Z" fill="black" />
+					<path fillRule="evenodd" clipRule="evenodd" d="M12.5 5.59C13.59 4.31 15.26 3.5 17 3.5C20.08 3.5 22.5 5.92 22.5 9C22.5 12.7769 19.1056 15.8549 13.9627 20.5185L13.95 20.53L12.5 21.85L11.05 20.54L11.0105 20.5041C5.88263 15.8442 2.5 12.7703 2.5 9C2.5 5.92 4.92 3.5 8 3.5C9.74 3.5 11.41 4.31 12.5 5.59ZM12.5 19.15L12.6 19.05C17.36 14.74 20.5 11.89 20.5 9C20.5 7 19 5.5 17 5.5C15.46 5.5 13.96 6.49 13.44 7.86H11.57C11.04 6.49 9.54 5.5 8 5.5C6 5.5 4.5 7 4.5 9C4.5 11.89 7.64 14.74 12.4 19.05L12.5 19.15Z" fill="black" />
+				</g>
+			</svg>;
+		case 'first_renewal':
 			return <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g opacity="0.5">
 					<path opacity="0.3" d="M17 5.5C15.46 5.5 13.96 6.49 13.44 7.86H11.57C11.04 6.49 9.54 5.5 8 5.5C6 5.5 4.5 7 4.5 9C4.5 11.89 7.64 14.74 12.4 19.05L12.5 19.15L12.6 19.05C17.36 14.74 20.5 11.89 20.5 9C20.5 7 19 5.5 17 5.5Z" fill="black" />
@@ -44,6 +53,8 @@ export function getIcon( status ) {
 
 export function getColor( status ) {
 	switch ( status ) {
+		case 'first_renewal':
+		case 'renewal':
 		case 'completed':
 			return '#69B868';
 		case 'abandoned':
@@ -54,5 +65,24 @@ export function getColor( status ) {
 			return '#D75A4B';
 		default:
 			return '#D75A4B';
+	}
+}
+
+export function getLabel( status ) {
+	switch ( status ) {
+		case 'completed':
+			return __( 'Completed', 'give' );
+		case 'renewal':
+			return __( 'Renewal', 'give' );
+		case 'first_renewal':
+			return __( 'First-Time Renewal', 'give' );
+		case 'abandoned':
+			return __( 'Abandoned', 'give' );
+		case 'cancelled':
+			return __( 'Cancelled', 'give' );
+		case 'refunded':
+			return __( 'Refunded', 'give' );
+		default:
+			return status;
 	}
 }
