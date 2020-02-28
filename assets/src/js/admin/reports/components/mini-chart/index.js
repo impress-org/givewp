@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState, Fragment } from 'react';
+import { createRef, useEffect, useLayoutEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 //Import ChartJS dependencies
@@ -38,9 +38,12 @@ const MiniChart = ( { title, data } ) => {
 	const [ showTooltip, setShowTooltip ] = useState( false );
 	const [ tooltipText, setTooltipText ] = useState( null );
 	const [ tooltipPosition, setTooltipPosition ] = useState( { x: 0, y: 0 } );
+	const [ stacked, setStacked ] = useState( false );
 
 	const canvas = createRef();
 	const config = createConfig( data );
+
+	const amountRef = createRef();
 
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
@@ -90,7 +93,24 @@ const MiniChart = ( { title, data } ) => {
 		};
 	}, [ data ] );
 
-	const stacked = highlightValue && highlightValue.length > 7 ? true : false;
+	// Use layout effect to determine if MiniChart should be stacked
+	useLayoutEffect( () => {
+		// Set stacked to true if the amount is greater than half the card width
+		function checkStacked() {
+			const node = amountRef.current;
+			const amountRect = node.getBoundingClientRect();
+			const cardRect = node.closest( '.givewp-card' ).getBoundingClientRect();
+			const stack = amountRect.width > cardRect.width * 0.5 ? true : false;
+			setStacked( stack );
+		}
+
+		window.addEventListener( 'resize', checkStacked );
+		checkStacked();
+
+		return function cleanup() {
+			window.removeEventListener( 'resize', checkStacked );
+		};
+	} );
 
 	return (
 		<div className="givewp-mini-chart">
@@ -113,7 +133,7 @@ const MiniChart = ( { title, data } ) => {
 				) }
 			</div>
 			<div className={ stacked ? 'content stacked' : 'content' }>
-				<div className="amount">{ highlightValue && ( highlightValue ) }</div>
+				<div className="amount" ref={ amountRef }>{ highlightValue && ( highlightValue ) }</div>
 				<div className="chart">
 					<canvas width={ 100 } height={ 40 } ref={ canvas }></canvas>
 				</div>
