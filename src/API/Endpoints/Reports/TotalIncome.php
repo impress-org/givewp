@@ -76,7 +76,7 @@ class TotalIncome extends Endpoint {
 		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
-		while ( $periodStart < $end ) {
+		while ( $periodStart <= $end ) {
 
 			$incomeForPeriod = $this->get_income( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 
@@ -110,11 +110,11 @@ class TotalIncome extends Endpoint {
 			date_add( $periodEnd, $interval );
 		}
 
-		$totalIncomeForPeriod = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 		$trend                = $this->get_trend( $start, $end, $income );
 
 		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
+		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -142,8 +142,8 @@ class TotalIncome extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevIncome    = $this->get_prev_income( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
-		$currentIncome = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$prevIncome    = $this->get_earnings( $prevStart->format( 'Y-m-d' ), $prevEnd->format( 'Y-m-d' ) );
+		$currentIncome = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
 		// Set default trend to 0
 		$trend = 0;
@@ -170,7 +170,7 @@ class TotalIncome extends Endpoint {
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
+				if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
 					$income += $payment->total;
 				}
 			}
@@ -179,7 +179,7 @@ class TotalIncome extends Endpoint {
 		return $income;
 	}
 
-	public function get_prev_income( $startStr, $endStr ) {
+	public function get_earnings( $startStr, $endStr ) {
 		$stats  = new \Give_Payment_Stats();
 		$income = $stats->get_earnings( 0, $startStr, $endStr );
 		return $income;
