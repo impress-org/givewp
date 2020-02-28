@@ -7,8 +7,8 @@ export const reducer = ( state, action ) => {
 			return {
 				...state,
 				period: {
-					startDate: action.payload.startDate,
-					endDate: action.payload.endDate,
+					startDate: moment( action.payload.startDate ).hour( 0 ),
+					endDate: moment( action.payload.endDate ).hour( 23 ),
 					range: 'custom',
 				},
 			};
@@ -22,18 +22,18 @@ export const reducer = ( state, action ) => {
 					startDate = moment( endDate ).subtract( 1, 'days' );
 					break;
 				case 'week':
-					startDate = moment( state.period.endDate ).subtract( 7, 'days' );
+					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 7, 'days' );
 					break;
 				case 'month':
-					startDate = moment( state.period.endDate ).subtract( 1, 'months' );
+					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 1, 'months' );
 					break;
 				case 'year':
-					startDate = moment( state.period.endDate ).subtract( 1, 'years' );
+					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 1, 'years' );
 					break;
 				case 'alltime':
 					const allTimeStart = getWindowData( 'allTimeStart' );
-					startDate = moment( allTimeStart );
-					endDate = moment();
+					startDate = moment( allTimeStart ).hour( 0 );
+					endDate = moment().hour( 23 );
 					break;
 			}
 			return {

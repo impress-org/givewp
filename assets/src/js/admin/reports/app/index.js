@@ -20,8 +20,8 @@ const App = () => {
 	const initialState = {
 		// Initial period range (defaults to the past week)
 		period: {
-			startDate: moment().subtract( 7, 'days' ),
-			endDate: moment(),
+			startDate: moment().hour( 0 ).subtract( 7, 'days' ),
+			endDate: moment().hour( 23 ),
 			range: 'week',
 		},
 		giveStatus: null,
