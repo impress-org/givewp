@@ -30,7 +30,7 @@ const App = () => {
 
 	return (
 		<StoreProvider initialState={ initialState } reducer={ reducer }>
-			<div className="wrap give-settings-page">
+			<div className="wrap give-settings-page" style={ { position: 'relative' } }>
 				<div className="give-settings-header">
 					<h1 className="wp-heading-inline">{ __( 'Reports', 'give' ) }</h1>
 					<div className="givewp-inline-period-selector">
