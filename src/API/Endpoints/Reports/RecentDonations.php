@@ -51,10 +51,11 @@ class RecentDonations extends Endpoint {
 			$status = null;
 			switch ( $donation->status ) {
 				case 'publish':
-					$status = 'completed';
+					$meta   = $donation->payment_meta;
+					$status = $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
 					break;
 				case 'give_subscription':
-					$status = $payment->times > 1 ? 'renewal' : 'first_renewal';
+					$status = 'renewal';
 					break;
 				default:
 					$status = $donation->status;
