@@ -66,7 +66,7 @@ export function getLabel( status ) {
 		case 'completed':
 			return __( 'One-Time Donation', 'give' );
 		case 'renewal':
-			return __( 'Renewal', 'give' );
+			return __( 'Renewal Donation', 'give' );
 		case 'first_renewal':
 			return __( 'New Subscription', 'give' );
 		case 'abandoned':
