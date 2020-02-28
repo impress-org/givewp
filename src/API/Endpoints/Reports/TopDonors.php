@@ -47,7 +47,7 @@ class TopDonors extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ), 'date', -1 );
+		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
 
 		$donors = [];
 
