@@ -64,11 +64,11 @@ export function getColor( status ) {
 export function getLabel( status ) {
 	switch ( status ) {
 		case 'completed':
-			return __( 'Completed', 'give' );
+			return __( 'One-Time Donation', 'give' );
 		case 'renewal':
 			return __( 'Renewal', 'give' );
 		case 'first_renewal':
-			return __( 'First-Time Renewal', 'give' );
+			return __( 'New Subscription', 'give' );
 		case 'abandoned':
 			return __( 'Abandoned', 'give' );
 		case 'cancelled':
