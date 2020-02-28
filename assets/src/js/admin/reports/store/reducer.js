@@ -18,7 +18,8 @@ export const reducer = ( state, action ) => {
 			let endDate = state.period.endDate;
 			switch ( action.payload.range ) {
 				case 'day':
-					startDate = moment( state.period.endDate ).subtract( 1, 'days' );
+					endDate = moment( state.period.endDate ).hour( 23 );
+					startDate = moment( endDate ).subtract( 1, 'days' );
 					break;
 				case 'week':
 					startDate = moment( state.period.endDate ).subtract( 7, 'days' );
