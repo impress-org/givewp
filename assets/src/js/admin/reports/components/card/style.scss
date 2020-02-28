@@ -4,6 +4,7 @@
 	box-shadow: 0 3px 6px rgba(68, 68, 68, 0.05), 0 3px 6px rgba(68, 68, 68, 0.05);
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 
 	> .title {
 		font-weight: 900;
