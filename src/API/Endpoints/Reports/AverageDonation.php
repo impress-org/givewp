@@ -163,9 +163,11 @@ class AverageDonation extends Endpoint {
 		$paymentCount = 0;
 
 		foreach ( $this->payments as $payment ) {
-			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$earnings     += $payment->total;
-				$paymentCount += 1;
+			if ( $payment->date > $startStr && $payment->date < $endStr ) {
+				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
+					$earnings     += $payment->total;
+					$paymentCount += 1;
+				}
 			}
 		}
 

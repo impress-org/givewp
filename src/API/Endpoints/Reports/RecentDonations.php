@@ -53,7 +53,7 @@ class RecentDonations extends Endpoint {
 				case 'publish':
 					$status = 'completed';
 					break;
-				case 'give_recurring':
+				case 'give_subscription':
 					$status = 'completed recurring';
 					break;
 				default:

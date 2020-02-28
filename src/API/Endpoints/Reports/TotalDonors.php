@@ -167,9 +167,12 @@ class TotalDonors extends Endpoint {
 	public function get_donors( $startStr, $endStr ) {
 
 		$donors = [];
+
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				$donors[] = $payment->donor_id;
+				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
+					$donors[] = $payment->donor_id;
+				}
 			}
 		}
 

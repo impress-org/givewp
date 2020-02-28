@@ -42,7 +42,7 @@ class PaymentStatuses extends Endpoint {
 					'datasets' => [
 						[
 							'data'     => [
-								$payments->publish,
+								$payments->publish + $payments->give_subscription,
 								$payments->pending,
 								$payments->refunded,
 								$payments->abandoned,

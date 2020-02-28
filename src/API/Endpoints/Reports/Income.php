@@ -144,9 +144,11 @@ class Income extends Endpoint {
 		$donors   = [];
 
 		foreach ( $this->payments as $payment ) {
-			if ( $payment->status == 'publish' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$earnings += $payment->total;
-				$donors[]  = $payment->donor_id;
+			if ( $payment->date > $startStr && $payment->date < $endStr ) {
+				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
+					$earnings += $payment->total;
+					$donors[]  = $payment->donor_id;
+				}
 			}
 		}
 

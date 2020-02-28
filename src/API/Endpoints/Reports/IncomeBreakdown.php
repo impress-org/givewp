@@ -123,6 +123,7 @@ class IncomeBreakdown extends Endpoint {
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
 				switch ( $payment->status ) {
+					case 'give_subscription':
 					case 'publish': {
 						$income  += $payment->total;
 						$donors[] = $payment->donor_id;
