@@ -351,8 +351,18 @@
 		font-size: 14px;
 		font-style: italic;
 		color: #777;
-		margin: 0;
+		margin: 0 0 15px;
 	}
+
+	._form-content {
+		display: flex;
+		justify-content: space-between;
+
+		> div {
+			width: 32%;
+		}
+	}
+
 
 	input[type="email"],
 	input[type="text"] {
@@ -365,16 +375,12 @@
 		height: 36px;
 	}
 
-	td {
-		padding: 0 10px 0 0;
-	}
-
-	div.give-newsletter-confirmation {
+	div._form-thank-you {
 		background: #fff;
 		-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 		margin: 5px 10px 4px 5px;
-		padding: 1px 12px;
+		padding: 12px;
 		border-left: 4px solid #7ad03a;
 		display: none;
 
