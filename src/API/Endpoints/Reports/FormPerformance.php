@@ -12,10 +12,19 @@ class FormPerformance extends Endpoint {
 
 	protected $payments;
 
+	/**
+	 * Initialize endpoint and setup endpoint variable
+	 */
 	public function __construct() {
 		$this->endpoint = 'form-performance';
 	}
 
+	/**
+	 * Check for cached reports, and return WP_REST_Response with report data and Give status
+	 *
+	 * @param array $request Sanitized request parameters
+	 * @return \WP_REST_Response
+	 */
 	public function get_report( $request ) {
 
 		// Check if a cached version exists
@@ -37,8 +46,11 @@ class FormPerformance extends Endpoint {
 
 		// Cache the report data
 		$result = $this->cache_report( $request, $data );
+
+		// Get Give status (returns either 'donations_found' or 'no_donations_found')
 		$status = $this->get_give_status();
 
+		// Return WP REST Response with data and Give status
 		return new \WP_REST_Response(
 			[
 				'data'   => $data,
@@ -47,6 +59,14 @@ class FormPerformance extends Endpoint {
 		);
 	}
 
+	/**
+	 * Get report datasets and tooltips, give the requested start, end and intervals
+	 *
+	 * @param DateTime $start The start of the requested period
+	 * @param DateTime $end The end of the requested period
+	 *
+	 * @return array
+	 */
 	public function get_data( $start, $end ) {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );

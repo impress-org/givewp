@@ -82,6 +82,8 @@ class AverageDonation extends Endpoint {
 	 * @param DateTime $start The start of the requested period
 	 * @param DateTime $end The end of the requested period
 	 * @param string   $intervalStr The desired intervals to break requested period into
+	 *
+	 * @return array
 	 */
 	public function get_data( $start, $end, $intervalStr ) {
 
