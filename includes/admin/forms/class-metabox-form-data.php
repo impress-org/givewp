@@ -245,6 +245,19 @@ class Give_MetaBox_Form_Data {
 			),
 
 			/**
+			 * Theme Options
+			 */
+			'form_theme_options'    => apply_filters(
+				'give_form_theme_options',
+				array(
+					'id'        => 'form_theme_options',
+					'title'     => __( 'Form Theme', 'give' ),
+					'icon-html' => '<span class="give-icon give-icon-display"></span>',
+					'fields'    => array(),
+				)
+			),
+
+			/**
 			 * Display Options
 			 */
 			'form_display_options'  => apply_filters(
