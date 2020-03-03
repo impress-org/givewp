@@ -51,4 +51,15 @@ class Theme {
 	public function getID() {
 		return $this->data['id'];
 	}
+
+	/**
+	 * return theme title.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function geTitle() {
+		return $this->data['title'];
+	}
 }
