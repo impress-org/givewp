@@ -21,9 +21,13 @@ const initialState = {
 	giveStatus: null,
 };
 
-ReactDOM.render(
-	<StoreProvider initialState={ initialState } reducer={ reducer }>
-		<Widget />
-	</StoreProvider>,
-	document.getElementById( 'givewp-reports-widget' )
-);
+const container = document.getElementById( 'givewp-reports-widget' );
+
+if ( container ) {
+	ReactDOM.render(
+		<StoreProvider initialState={ initialState } reducer={ reducer }>
+			<Widget />
+		</StoreProvider>,
+		document.getElementById( 'givewp-reports-widget' )
+	);
+}
