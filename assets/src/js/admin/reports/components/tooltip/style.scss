@@ -1,0 +1,38 @@
+.givewp-tooltip {
+	min-width: 106px;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	transform: translate(-50%, -100%);
+	position: absolute;
+	font-weight: 500;
+	top: 0;
+	left: 0;
+
+	.givewp-tooltip__header {
+		background: #666;
+		padding: 8px 12px;
+		color: #fff;
+		font-size: 15px;
+		border-radius: 3px 3px 0 0;
+	}
+
+	.givewp-tooltip__body {
+		padding: 8px 12px;
+		color: rgb(228, 228, 228);
+		font-size: 12px;
+		background: #555;
+		border-radius: 0 0 3px 3px;
+	}
+
+	.givewp-tooltip__caret {
+		height: 14px;
+		width: 20px;
+		margin: 0 auto;
+		transform: translate3d(0, -1px, 0);
+		background: #555;
+		clip-path: polygon(50% 100%, 0 0, 100% 0);
+	}
+}

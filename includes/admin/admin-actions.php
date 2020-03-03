@@ -46,7 +46,7 @@ function give_redirect_to_clean_url_admin_pages() {
 	$give_pages = array(
 		'give-payment-history',
 		'give-donors',
-		'give-reports',
+		'give-legacy-reports',
 		'give-tools',
 	);
 
@@ -888,7 +888,7 @@ add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_call
  * @since 1.8.13
  */
 function give_blank_slate() {
-	$blank_slate = Give_Blank_Slate::get_instance();
+	$blank_slate = new Give_Blank_Slate();
 	$blank_slate->init();
 }
 
@@ -1554,7 +1554,6 @@ add_action( 'admin_footer', 'give_admin_addon_menu_inline_scripts' );
  * @param array $get
  *
  * @since 2.5.14
- *
  */
 function give_akismet_deblacklist_spammed_email_handler( $get ) {
 	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';

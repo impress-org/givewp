@@ -1,0 +1,65 @@
+.givewp-not-found-notice {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: 999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	font-weight: 500;
+	background: rgba(238, 238, 238, 0.7);
+
+	.givewp-not-found-card {
+		padding: 1.5em 3em;
+		box-shadow: 0 3px 6px rgba(68, 68, 68, 0.05), 0 3px 6px rgba(68, 68, 68, 0.05);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		border-radius: 5px;
+		overflow: hidden;
+		margin-top: 180px;
+		background: #fff;
+		width: 22em;
+
+		h2 {
+			font-size: 20px;
+			margin-bottom: 18px;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+
+		p {
+			font-size: 13px;
+			font-weight: 400;
+			margin: 0;
+		}
+
+		> button {
+			cursor: pointer;
+			background: #66bb6a;
+			border-radius: 5px;
+			color: #fff;
+			display: inline-block;
+			margin-top: 28px;
+			margin-bottom: 15px;
+			padding: 12px 28px;
+			text-decoration: none;
+			border: 1px solid rgb(64, 117, 67);
+			border-width: 1px 1px 3px 1px;
+			font-size: 13px;
+			font-weight: 400;
+
+			&:hover {
+				background: rgb(90, 165, 94);
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+				border-color: rgb(64, 117, 67);
+			}
+		}
+	}
+}

@@ -678,11 +678,8 @@ function give_display_checkout_button( $form_id, $args ) {
 		: give_get_meta( $form_id, '_give_payment_display', true );
 
 	if ( 'button' === $display_option ) {
-		add_action( 'give_post_form', 'give_add_button_open_form', 10, 2 );
-		return '';
-	}
-
-	if ( $display_option === 'onpage' ) {
+		$display_option = 'modal';
+	} elseif ( $display_option === 'onpage' ) {
 		return '';
 	}
 
@@ -691,14 +688,7 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
-	/**
-	 * filter the button html
-	 *
-	 * @param string $output Button HTML.
-	 * @param int $form_id Form ID.
-	 * @param array $args Shortcode argument
-	 */
-	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
+	echo apply_filters( 'give_display_checkout_button', $output );
 }
 
 add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );

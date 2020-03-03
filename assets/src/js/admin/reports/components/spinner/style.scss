@@ -1,0 +1,26 @@
+.givewp-spinner {
+	display: inline-block;
+	width: 34px;
+	height: 18px;
+}
+
+.givewp-spinner::after {
+	content: ' ';
+	display: block;
+	width: 18px;
+	height: 18px;
+	margin: 0 8px;
+	border-radius: 50%;
+	border: 3px solid #66bb6a;
+	border-color: #66bb6a transparent #66bb6a transparent;
+	animation: givewp-spinner 1.2s linear infinite;
+}
+
+@keyframes givewp-spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

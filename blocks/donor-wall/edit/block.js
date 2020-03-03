@@ -2,7 +2,7 @@
  * Wordpress dependencies
  */
 const { Fragment } = wp.element;
- const ServerSideRender = wp.serverSideRender;
+const ServerSideRender = wp.serverSideRender;
 
 /**
  * Internal dependencies

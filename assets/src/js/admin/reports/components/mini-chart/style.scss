@@ -1,0 +1,115 @@
+.givewp-mini-chart {
+	height: 100%;
+	width: calc(100% - 32px);
+	padding: 16px 0 16px 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+
+	> .header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-bottom: 8px;
+
+		> .title {
+			text-transform: uppercase;
+			font-weight: 600;
+			font-size: 12px;
+			color: #82878c;
+		}
+
+		> .indicator {
+			display: flex;
+			align-items: center;
+			font-size: 14px;
+			font-weight: 600;
+			cursor: default;
+
+			> svg {
+				margin-right: 4px;
+			}
+		}
+	}
+
+	> .content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		> .amount {
+			font-weight: 600;
+			font-size: 25px;
+		}
+
+		> .chart {
+			width: 35%;
+			transform: translateY(-4px);
+		}
+
+		&.stacked {
+			flex-direction: column-reverse;
+
+			> .chart {
+				width: 75%;
+				transform: translateY(0);
+				margin-bottom: 16px;
+			}
+		}
+	}
+}
+
+.givewp-chart-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
+}
+
+.givewp-chart-canvas {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	background: #f4f4f4;
+
+	canvas {
+		position: relative;
+	}
+}
+
+#givewp-mini-chartjs-tooltip {
+	min-width: 106px;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	transform: translate(-50%, 0);
+
+	.givewp-mini-tooltip-header {
+		background: #666;
+		padding: 8px 12px;
+		color: #fff;
+		font-size: 15px;
+		border-radius: 3px 3px 0 0;
+	}
+
+	.givewp-mini-tooltip-body {
+		padding: 8px 12px;
+		color: rgb(228, 228, 228);
+		font-size: 12px;
+		background: #555;
+		border-radius: 0 0 3px 3px;
+	}
+
+	.givewp-mini-tooltip-caret {
+		height: 14px;
+		width: 20px;
+		margin: 0 auto;
+		transform: translate3d(0, -1px, 0);
+		background: #555;
+		clip-path: polygon(50% 100%, 0 0, 100% 0);
+	}
+}
