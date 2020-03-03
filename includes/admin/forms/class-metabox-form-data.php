@@ -306,44 +306,6 @@ class Give_MetaBox_Form_Data {
 								'type' => 'default_gateway',
 							),
 							array(
-								'name'    => __( 'Display Options', 'give' ),
-								'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
-								'id'      => $prefix . 'payment_display',
-								'type'    => 'radio_inline',
-								'options' => array(
-									'onpage' => __( 'All Fields', 'give' ),
-									'modal'  => __( 'Modal', 'give' ),
-									'reveal' => __( 'Reveal', 'give' ),
-									'button' => __( 'Button', 'give' ),
-								),
-								'default' => 'onpage',
-							),
-							array(
-								'id'            => $prefix . 'reveal_label',
-								'name'          => __( 'Continue Button', 'give' ),
-								'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
-								'type'          => 'text_small',
-								'attributes'    => array(
-									'placeholder' => __( 'Donate Now', 'give' ),
-								),
-								'wrapper_class' => 'give-hidden',
-							),
-							array(
-								'id'         => $prefix . 'checkout_label',
-								'name'       => __( 'Submit Button', 'give' ),
-								'desc'       => __( 'The button label for completing a donation.', 'give' ),
-								'type'       => 'text_small',
-								'attributes' => array(
-									'placeholder' => __( 'Donate Now', 'give' ),
-								),
-							),
-							array(
-								'name' => __( 'Default Gateway', 'give' ),
-								'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under GiveWP > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
-								'id'   => $prefix . 'default_gateway',
-								'type' => 'default_gateway',
-							),
-							array(
 								'name'    => __( 'Name Title Prefix', 'give' ),
 								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
 								'id'      => $prefix . 'name_title_prefix',
