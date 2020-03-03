@@ -599,9 +599,6 @@ if ( ! class_exists( 'Give' ) ) :
 			// Include Views
 			require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
 
-			// $classes = get_declared_classes();
-			// print_r($classes);
-
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
