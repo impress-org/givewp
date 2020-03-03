@@ -550,9 +550,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
-			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/actions.php';
-			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
@@ -563,6 +560,13 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
+
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
+			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/filters.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Form/Themes.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Form/Theme.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Form/Helpers.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
