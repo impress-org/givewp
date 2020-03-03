@@ -388,6 +388,11 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session                = Give_Session::get_instance();
 
 			/**
+			 * Register core form themes
+			 */
+			\Give\Form\Themes::registerThemes();
+
+			/**
 			 * Fire the action after Give core loads.
 			 *
 			 * @param Give class instance.
