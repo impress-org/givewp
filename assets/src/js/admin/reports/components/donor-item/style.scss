@@ -1,0 +1,53 @@
+.give-donor-link {
+	display: contents;
+	text-decoration: inherit;
+	color: inherit;
+
+	&:hover {
+		color: rgb(90, 90, 90);
+	}
+}
+
+.give-donor-item {
+	display: flex;
+	align-items: center;
+	height: 72px;
+	padding: 0 16px;
+
+	> img {
+		object-fit: cover;
+		height: 40px;
+		width: 40px;
+		border-radius: 50%;
+		overflow: hidden;
+	}
+
+	> .give-donor-initials {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 36px;
+		width: 36px;
+		border-radius: 50%;
+		overflow: hidden;
+		color: #fff;
+		background: #d75a4b;
+	}
+
+	> .give-donor-info {
+		flex: 1;
+		overflow: hidden;
+		margin-left: 12px;
+	}
+
+	> .give-donor-totals {
+		text-align: right;
+	}
+
+	p {
+		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}

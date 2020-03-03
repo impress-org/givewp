@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_donation_form() {
 
 	// Sanitize Posted Data.
-	$post_data  = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
 
 	// Check whether the form submitted via AJAX or not.
 	$is_ajax = isset( $post_data['give_ajax'] );
@@ -122,7 +122,7 @@ function give_process_donation_form() {
 	// Donation form ID.
 	$form_id = isset( $post_data['give-form-id'] ) ? absint( $post_data['give-form-id'] ) : 0;
 
-	$price = isset( $post_data['give-amount'] ) ?
+	$price        = isset( $post_data['give-amount'] ) ?
 		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
@@ -152,14 +152,14 @@ function give_process_donation_form() {
 
 	// Setup donation information.
 	$donation_data = array(
-		'price'         => $price,
-		'purchase_key'  => $purchase_key,
-		'user_email'    => $user['user_email'],
-		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-		'user_info'     => stripslashes_deep( $user_info ),
-		'post_data'     => $post_data,
-		'gateway'       => $valid_data['gateway'],
-		'card_info'     => $valid_data['cc_info'],
+		'price'        => $price,
+		'purchase_key' => $purchase_key,
+		'user_email'   => $user['user_email'],
+		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'user_info'    => stripslashes_deep( $user_info ),
+		'post_data'    => $post_data,
+		'gateway'      => $valid_data['gateway'],
+		'card_info'    => $valid_data['cc_info'],
 	);
 
 	// Add the user data for hooks.
@@ -255,7 +255,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 			give_set_error(
 				'give-customer-email-exists',
 				sprintf(
-				/* translators: 1. Donor Email, 2. Submitted Email */
+					/* translators: 1. Donor Email, 2. Submitted Email */
 					__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
 					$donor->email,
 					$submitted_email
@@ -456,7 +456,8 @@ function give_donation_form_validate_gateway() {
 				/* translators: %s: minimum donation amount */
 				__( 'This form has a minimum donation amount of %s.', 'give' ),
 				give_currency_filter(
-					give_format_amount( give_get_form_minimum_price( $form_id ),
+					give_format_amount(
+						give_get_form_minimum_price( $form_id ),
 						array(
 							'sanitize' => false,
 						)
@@ -472,7 +473,8 @@ function give_donation_form_validate_gateway() {
 				/* translators: %s: Maximum donation amount */
 				__( 'This form has a maximum donation amount of %s.', 'give' ),
 				give_currency_filter(
-					give_format_amount( give_get_form_maximum_price( $form_id ),
+					give_format_amount(
+						give_get_form_maximum_price( $form_id ),
 						array(
 							'sanitize' => false,
 						)
@@ -520,10 +522,10 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	if ( ! $verified_stat ) {
 		switch ( $amount_range ) {
-			case 'minimum' :
+			case 'minimum':
 				$verified_stat = ( give_get_form_minimum_price( $form_id ) > $amount ) ? false : true;
 				break;
-			case 'maximum' :
+			case 'maximum':
 				$verified_stat = ( give_get_form_maximum_price( $form_id ) < $amount ) ? false : true;
 				break;
 		}
@@ -597,8 +599,8 @@ function give_get_required_fields( $form_id ) {
 
 	// If credit card fields related actions exists then check for the cc fields validations.
 	if (
-		has_action("give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
-		has_action('give_cc_form', 'give_get_cc_form' )
+		has_action( "give_{$payment_mode}_cc_form", 'give_get_cc_form' ) ||
+		has_action( 'give_cc_form', 'give_get_cc_form' )
 	) {
 
 		// Validate card number field for empty check.
@@ -665,7 +667,6 @@ function give_get_required_fields( $form_id ) {
 			'error_id'      => 'invalid_country',
 			'error_message' => __( 'Please select your billing country.', 'give' ),
 		);
-
 
 		$required_fields['card_state'] = array(
 			'error_id'      => 'invalid_state',
@@ -1054,15 +1055,19 @@ function give_register_and_login_new_user( $user_data = array() ) {
 		return - 1;
 	}
 
-	$user_args = apply_filters( 'give_insert_user_args', array(
-		'user_login'      => isset( $user_data['user_login'] ) ? $user_data['user_login'] : '',
-		'user_pass'       => isset( $user_data['user_pass'] ) ? $user_data['user_pass'] : '',
-		'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
-		'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
-		'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
-		'user_registered' => date( 'Y-m-d H:i:s' ),
-		'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
-	), $user_data );
+	$user_args = apply_filters(
+		'give_insert_user_args',
+		array(
+			'user_login'      => isset( $user_data['user_login'] ) ? $user_data['user_login'] : '',
+			'user_pass'       => isset( $user_data['user_pass'] ) ? $user_data['user_pass'] : '',
+			'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
+			'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
+			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
+			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
+		),
+		$user_data
+	);
 
 	// Insert new user.
 	$user_id = wp_insert_user( $user_args );
@@ -1520,10 +1525,10 @@ function give_validate_donation_amount( $valid_data ) {
 		give_set_error(
 			'invalid_donation_amount',
 			sprintf(
-			/* translators: %s: invalid donation amount */
+				/* translators: %s: invalid donation amount */
 				__( 'Donation amount %s is invalid.', 'give' ),
 				give_currency_filter(
-					give_format_amount( $post_data['give-amount'], array( 'sanitize' => false, ) )
+					give_format_amount( $post_data['give-amount'], array( 'sanitize' => false ) )
 				)
 			)
 		);

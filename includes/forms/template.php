@@ -14,6 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Get Donation Form.
+ *
+ * @param array $args An array of form arguments.
+ *
+ * @return string Donation form.
+ * @since 1.0
+ */
 function give_get_donation_form( $args = array() ) {
 
 	global $post;
@@ -670,11 +678,8 @@ function give_display_checkout_button( $form_id, $args ) {
 		: give_get_meta( $form_id, '_give_payment_display', true );
 
 	if ( 'button' === $display_option ) {
-		add_action( 'give_post_form', 'give_add_button_open_form', 10, 2 );
-		return '';
-	}
-
-	if ( $display_option === 'onpage' ) {
+		$display_option = 'modal';
+	} elseif ( $display_option === 'onpage' ) {
 		return '';
 	}
 
@@ -683,14 +688,7 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
-	/**
-	 * filter the button html
-	 *
-	 * @param string $output Button HTML.
-	 * @param int $form_id Form ID.
-	 * @param array $args Shortcode argument
-	 */
-	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
+	echo apply_filters( 'give_display_checkout_button', $output );
 }
 
 add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );
@@ -1539,6 +1537,12 @@ function give_get_login_fields( $form_id ) {
 					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 				<?php endif; ?>
 			</div>
+			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
+				 <span class="give-forgot-password ">
+					 <a href="<?php echo wp_lostpassword_url(); ?>"
+						target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
+				 </span>
+			</div>
 		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
@@ -1827,7 +1831,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
 function give_checkout_final_total( $form_id ) {
 
 	$total = isset( $_POST['give_total'] ) ?
-		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'] ) ) :
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
 		give_get_default_form_amount( $form_id );
 
 	// Only proceed if give_total available.

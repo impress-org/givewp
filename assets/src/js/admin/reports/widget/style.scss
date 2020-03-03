@@ -1,0 +1,21 @@
+.givewp-reports-widget-container {
+	position: relative;
+	height: auto;
+	width: 100%;
+}
+
+#givewp_reports_widget {
+	background: rgb(249, 249, 249);
+
+	.inside {
+		margin-top: 0;
+	}
+}
+
+a.givewp-reports-link {
+	float: right;
+	height: 100%;
+	font-size: 14px;
+	text-decoration: none !important;
+	margin: 0;
+}

@@ -306,6 +306,44 @@ class Give_MetaBox_Form_Data {
 								'type' => 'default_gateway',
 							),
 							array(
+								'name'    => __( 'Display Options', 'give' ),
+								'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
+								'id'      => $prefix . 'payment_display',
+								'type'    => 'radio_inline',
+								'options' => array(
+									'onpage' => __( 'All Fields', 'give' ),
+									'modal'  => __( 'Modal', 'give' ),
+									'reveal' => __( 'Reveal', 'give' ),
+									'button' => __( 'Button', 'give' ),
+								),
+								'default' => 'onpage',
+							),
+							array(
+								'id'            => $prefix . 'reveal_label',
+								'name'          => __( 'Continue Button', 'give' ),
+								'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
+								'type'          => 'text_small',
+								'attributes'    => array(
+									'placeholder' => __( 'Donate Now', 'give' ),
+								),
+								'wrapper_class' => 'give-hidden',
+							),
+							array(
+								'id'         => $prefix . 'checkout_label',
+								'name'       => __( 'Submit Button', 'give' ),
+								'desc'       => __( 'The button label for completing a donation.', 'give' ),
+								'type'       => 'text_small',
+								'attributes' => array(
+									'placeholder' => __( 'Donate Now', 'give' ),
+								),
+							),
+							array(
+								'name' => __( 'Default Gateway', 'give' ),
+								'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under GiveWP > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
+								'id'   => $prefix . 'default_gateway',
+								'type' => 'default_gateway',
+							),
+							array(
 								'name'    => __( 'Name Title Prefix', 'give' ),
 								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
 								'id'      => $prefix . 'name_title_prefix',
@@ -783,6 +821,9 @@ class Give_MetaBox_Form_Data {
 		if ( $form_data_tabs = $this->get_tabs() ) :
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
+
+			$upsell_html          = $this->upsell_html();
+			$added_upsells_notice = false;
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
 			<div class="give-metabox-panel-wrap">
@@ -827,10 +868,16 @@ class Give_MetaBox_Form_Data {
 					<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 					<?php
 					// Determine if current panel is active.
-					$is_active = $active_tab === $setting['id'] ? true : false;
+					$is_active = $active_tab === $setting['id'];
 					?>
 					<div id="<?php echo $setting['id']; ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
+						<?php
+						if ( ! $added_upsells_notice ) {
+							echo $upsell_html;
+							$added_upsells_notice = true;
+						}
+						?>
 						<?php if ( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
 								<?php give_render_field( $field ); ?>
@@ -857,6 +904,39 @@ class Give_MetaBox_Form_Data {
 			</div>
 			<?php
 		endif; // End if().
+	}
+
+
+	/**
+	 * Gt upsells html
+	 *
+	 * @return string
+	 * @since 2.6.0
+	 */
+	private function upsell_html() {
+		if ( Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
+			return '';
+		}
+
+		$addon_link_url   = esc_url( 'https://go.givewp.com/addons-recurring-inlinelink' );
+		$addon_button_url = esc_url( 'https://go.givewp.com/addons-recurring-button' );
+
+		return sprintf(
+			'
+			<div class="give-upsell-notice">
+				<span class="icon dashicons dashicons-update-alt"></span>
+				<span class="description">%1$s</span>
+				<a class="view-addon-link button" href="%2$s" target="_blank">%3$s</a>
+			</div>
+			',
+			sprintf(
+				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provide your donors with flexible subscription giving options.', 'give' ),
+				$addon_link_url,
+				__( 'Click to view the Recurring Donations add-on', 'give' )
+			),
+			$addon_button_url,
+			__( 'View Add-on', 'give' )
+		);
 	}
 
 	/**

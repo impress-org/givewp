@@ -68,7 +68,7 @@ const Give = {
 			args.precision = parseInt( args.precision );
 
 			if ( 'INR' === args.currency ) {
-				let actual_price = parseFloat( price ).toFixed( format_args.precision ),
+				let actual_price = accounting.formatNumber( price, { precision: format_args.precision, decimal: '.' } ),
 					afterPoint = args.precision ? '.0' : '',
 					lastThree = '',
 					otherNumbers = '',

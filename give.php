@@ -316,7 +316,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public function __construct() {
 			// PHP version
 			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
-				define( 'GIVE_REQUIRED_PHP_VERSION', '5.4.0' );
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.6.0' );
 			}
 
 			// Bailout: Need minimum php version to load plugin.
@@ -550,7 +550,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
-
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
 			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/filters.php';
@@ -593,6 +592,15 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
 			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
+
+			// Include API
+			require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
+
+			// Include Views
+			require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
+
+			// $classes = get_declared_classes();
+			// print_r($classes);
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';

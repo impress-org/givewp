@@ -804,7 +804,7 @@ function give_get_plugins( $args = array() ) {
 		$plugins[ $plugin_path ]['Path'] = $plugin_path;
 
 		// A third party add-on may contain more then one author like sofort, so it is better to compare array.
-		$author                          = false !== strpos( $plugin_data['Author'], ',' )
+		$author = false !== strpos( $plugin_data['Author'], ',' )
 			? array_map( 'trim', explode( ',', $plugin_data['Author'] ) )
 			: array( $plugin_data['Author'] );
 
@@ -830,31 +830,39 @@ function give_get_plugins( $args = array() ) {
 		}
 	}
 
-	if( ! empty( $args['only_add_on'] ) ) {
-		$plugins = array_filter( $plugins, function( $plugin ){
-			return 'add-on' === $plugin['Type'];
-		});
+	if ( ! empty( $args['only_add_on'] ) ) {
+		$plugins = array_filter(
+			$plugins,
+			function( $plugin ) {
+				return 'add-on' === $plugin['Type'];
+			}
+		);
 	}
 
-	if( ! empty( $args['only_premium_add_ons'] ) ) {
-		if( ! function_exists( 'give_get_premium_add_ons' ) ) {
+	if ( ! empty( $args['only_premium_add_ons'] ) ) {
+		if ( ! function_exists( 'give_get_premium_add_ons' ) ) {
 			require_once GIVE_PLUGIN_DIR . '/includes/admin/misc-functions.php';
 		}
 
 		$premium_addons_list = give_get_premium_add_ons();
 
-		foreach ( $plugins as $key => $plugin ){
+		foreach ( $plugins as $key => $plugin ) {
 			$addon_shortname = str_replace( 'give-', '', $plugin['Dir'] );
-			$tmp = $premium_addons_list;
-			$is_premium = count( array_filter( $tmp, function( $plugin ) use ($addon_shortname){
-				return false !== strpos( $plugin, $addon_shortname );
-			}) );
+			$tmp             = $premium_addons_list;
+			$is_premium      = count(
+				array_filter(
+					$tmp,
+					function( $plugin ) use ( $addon_shortname ) {
+						return false !== strpos( $plugin, $addon_shortname );
+					}
+				)
+			);
 
-			if(
+			if (
 				'add-on' !== $plugin['Type']
 				|| ( false === strpos( $plugin['PluginURI'], 'givewp.com' ) && ! $is_premium )
 			) {
-				unset( $plugins[$key] );
+				unset( $plugins[ $key ] );
 			}
 		}
 	}
@@ -1583,7 +1591,7 @@ function give_donation_history_table_end() {
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
-function give_doing_it_wrong( $function, $message, $version = null  ) {
+function give_doing_it_wrong( $function, $message, $version = null ) {
 	/**
 	 * Fires while calling function incorrectly.
 	 *
@@ -2324,8 +2332,8 @@ function give_display_donation_receipt( $args ) {
 		if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $args ) ) {
 			return Give_Notices::print_frontend_notice( $args['error'], false, 'error' );
 		}
-	} else{
-		$donation_id =  give_get_donation_id_by_key( $get_data['donation_id'] );
+	} else {
+		$donation_id             = give_get_donation_id_by_key( $get_data['donation_id'] );
 		$give_receipt_args['id'] = $donation_id;
 	}
 
@@ -2402,11 +2410,14 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		)
 		: array();
 
-	$tmp = Give_License::request_license_api( array(
-		'edd_action' => 'check_licenses',
-		'licenses'   => $license_keys,
-		'unlicensed' => implode( ',', $unlicensed_give_addon ),
-	), true );
+	$tmp = Give_License::request_license_api(
+		array(
+			'edd_action' => 'check_licenses',
+			'licenses'   => $license_keys,
+			'unlicensed' => implode( ',', $unlicensed_give_addon ),
+		),
+		true
+	);
 
 	if ( ! $tmp || is_wp_error( $tmp ) ) {
 		return array();
@@ -2421,13 +2432,13 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 	$tmp_unlicensed = array();
 	foreach ( $tmp as $key => $data ) {
 		if ( empty( $data ) ) {
-			unset( $tmp["{$key}"] );
+			unset( $tmp[ "{$key}" ] );
 			continue;
 		}
 
 		if ( empty( $data['check_license'] ) ) {
 			$tmp_unlicensed[ $key ] = $data;
-			unset( $tmp["{$key}"] );
+			unset( $tmp[ "{$key}" ] );
 		}
 	}
 
@@ -2484,9 +2495,9 @@ function give_refresh_licenses( $wp_check_updates = true ) {
  * @return stdClass
  * @since 2.5.0
  */
-function give_check_addon_updates( $_transient_data ){
+function give_check_addon_updates( $_transient_data ) {
 	if ( ! is_object( $_transient_data ) ) {
-		$_transient_data = new stdClass;
+		$_transient_data = new stdClass();
 	}
 
 	$update_plugins = get_option( 'give_get_versions', array() );
@@ -2495,7 +2506,7 @@ function give_check_addon_updates( $_transient_data ){
 	if ( ! $update_plugins ) {
 		$data = give_refresh_licenses( false );
 
-		if(
+		if (
 			empty( $data['give_get_versions'] )
 			|| is_wp_error( $data )
 		) {
@@ -2507,9 +2518,8 @@ function give_check_addon_updates( $_transient_data ){
 
 	foreach ( $update_plugins as $key => $data ) {
 		$plugins = ! empty( $check_licenses[ $key ] )
-			?  ( ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data ) )
+			? ( ! empty( $check_licenses[ $key ]['is_all_access_pass'] ) ? $data : array( $data ) )
 			: array( $data );
-
 
 		foreach ( $plugins as $plugin ) {
 			// This value will be empty if any error occurred when verifying version of add-on.
@@ -2528,11 +2538,11 @@ function give_check_addon_updates( $_transient_data ){
 
 			if ( - 1 !== version_compare( $tmp_plugin['Version'], $plugin['new_version'] ) ) {
 				$_transient_data->no_update[ $tmp_plugin['Path'] ] = (object) $plugin;
-			} else{
+			} else {
 				$_transient_data->response[ $tmp_plugin['Path'] ] = (object) $plugin;
 			}
 
-			$_transient_data->checked[ $tmp_plugin['Path'] ]  = $tmp_plugin['Version'];
+			$_transient_data->checked[ $tmp_plugin['Path'] ] = $tmp_plugin['Version'];
 		}
 	}
 

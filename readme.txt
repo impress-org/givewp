@@ -3,7 +3,7 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
-Tested up to: 5.3
+Tested up to: 5.2
 Requires PHP: 5.6
 Stable tag: 2.5.13
 License: GPLv3

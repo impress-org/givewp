@@ -115,7 +115,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
-						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports&tab=forms&form-id=' . $post_id ) ),
 						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) )
 					);
 				} else {
@@ -270,7 +270,9 @@ function give_filter_forms( $vars ) {
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
 				wp_die(
-					esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+					esc_html__( 'You do not have permission to view this data.', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
 						'response' => 403,
 					)
 				);
@@ -492,7 +494,11 @@ function give_forms_advanced_filter( $which ) {
 			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
 			<?php
 			submit_button(
-				__( 'Search', 'give' ), 'button', false, false, array(
+				__( 'Search', 'give' ),
+				'button',
+				false,
+				false,
+				array(
 					'ID' => 'form-search-submit',
 				)
 			);
@@ -503,10 +509,10 @@ function give_forms_advanced_filter( $which ) {
 				<label for="start-date"
 					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
 				<input type="text"
-				       id="start-date"
-				       name="start-date"
-				       class="give_datepicker"
-				       autocomplete="off"
+					   id="start-date"
+					   name="start-date"
+					   class="give_datepicker"
+					   autocomplete="off"
 					   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
 					   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
 					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
@@ -515,12 +521,12 @@ function give_forms_advanced_filter( $which ) {
 			<div class="give-filter give-filter-half">
 				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
 				<input type="text"
-				       id="end-date"
-				       name="end-date"
-				       class="give_datepicker"
-				       autocomplete="off"
-				       value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-				       data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+					   id="end-date"
+					   name="end-date"
+					   class="give_datepicker"
+					   autocomplete="off"
+					   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
+					   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
 					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
 				/>
 			</div>
@@ -529,28 +535,28 @@ function give_forms_advanced_filter( $which ) {
 			<label for="give-donation-forms-filter"
 				   class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
 			<select id="give-forms-goal-filter" name="give-forms-goal-filter" class="give-forms-goal-filter">
-				<option value="any_goal_status" 
+				<option value="any_goal_status"
 				<?php
 				if ( 'any_goal_status' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
 				><?php _e( 'Any Goal Status', 'give' ); ?></option>
-				<option value="goal_achieved" 
+				<option value="goal_achieved"
 				<?php
 				if ( 'goal_achieved' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
 				><?php _e( 'Goal Achieved', 'give' ); ?></option>
-				<option value="goal_in_progress" 
+				<option value="goal_in_progress"
 				<?php
 				if ( 'goal_in_progress' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
 				><?php _e( 'Goal In Progress', 'give' ); ?></option>
-				<option value="goal_not_set" 
+				<option value="goal_not_set"
 				<?php
 				if ( 'goal_not_set' === $give_forms_goal_filter ) {
 					echo 'selected';

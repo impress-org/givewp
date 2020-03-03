@@ -46,7 +46,7 @@ function give_redirect_to_clean_url_admin_pages() {
 	$give_pages = array(
 		'give-payment-history',
 		'give-donors',
-		'give-reports',
+		'give-legacy-reports',
 		'give-tools',
 	);
 
@@ -888,7 +888,7 @@ add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_call
  * @since 1.8.13
  */
 function give_blank_slate() {
-	$blank_slate = Give_Blank_Slate::get_instance();
+	$blank_slate = new Give_Blank_Slate();
 	$blank_slate->init();
 }
 
@@ -1510,11 +1510,50 @@ function give_admin_quick_js() {
 add_action( 'admin_head', 'give_admin_quick_js' );
 
 /**
+ * Add Admin addon menu related scripts
+ *
+ * @since 2.6.0
+ */
+function give_admin_addon_menu_inline_scripts() {
+	?>
+	<script>
+		( function( $ ) {
+			const $addonLink = $( '#menu-posts-give_forms a[href^="https://go.givewp.com"]' );
+			$addonLink.attr( 'target', '_blank' );
+
+			<?php if ( empty( give_get_plugins( array( 'only_premium_add_ons' => true ) ) ) ) : ?>
+			$addonLink.addClass( 'give-highlight' );
+			$addonLink.prepend( '<span class="dashicons dashicons-star-filled"></span>' );
+			<?php endif; ?>
+		} )( jQuery )
+	</script>
+	<style>
+		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight {
+			color: rgb(43, 194, 83);
+			font-weight: 700;
+			vertical-align: top;
+			text-shadow: 0 1px 2px #00000080;
+		}
+
+		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight span.dashicons {
+			font-size: 14px !important;
+			width: auto;
+			height: 18px;
+			padding-right: 3px;
+			vertical-align: middle;
+		}
+	</style>
+	<?php
+}
+
+add_action( 'admin_footer', 'give_admin_addon_menu_inline_scripts' );
+
+/**
  * Handle akismet_deblacklist_spammed_email_handler give-action
  *
- * @since 2.5.14
- *
  * @param array $get
+ *
+ * @since 2.5.14
  */
 function give_akismet_deblacklist_spammed_email_handler( $get ) {
 	$email  = ! empty( $get['email'] ) && is_email( $get['email'] ) ? give_clean( $get['email'] ) : '';
@@ -1539,6 +1578,7 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
 	}
 }
+
 add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
 
 

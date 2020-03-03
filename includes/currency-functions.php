@@ -137,9 +137,12 @@ function give_currency_symbols( $decode_currencies = false ) {
 	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
-		array_walk( $currencies, function ( &$currency_symbol ) {
-			$currency_symbol = html_entity_decode( $currency_symbol, ENT_COMPAT, 'UTF-8' );
-		} );
+		array_walk(
+			$currencies,
+			function ( &$currency_symbol ) {
+				$currency_symbol = html_entity_decode( $currency_symbol, ENT_COMPAT, 'UTF-8' );
+			}
+		);
 	}
 
 	/**
@@ -268,35 +271,35 @@ function give_currency_filter( $price = '', $args = array() ) {
 	$args['symbol'] = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
 
 	switch ( $args['currency_code'] ) :
-		case 'GBP' :
-		case 'BRL' :
-		case 'EUR' :
-		case 'USD' :
-		case 'AUD' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'NZD' :
-		case 'SGD' :
-		case 'JPY' :
-		case 'THB' :
-		case 'INR' :
-		case 'IDR' :
-		case 'IRR' :
-		case 'TRY' :
-		case 'RUB' :
-		case 'SEK' :
-		case 'PLN' :
-		case 'PHP' :
-		case 'TWD' :
-		case 'MYR' :
-		case 'CZK' :
-		case 'DKK' :
-		case 'HUF' :
-		case 'ILS' :
-		case 'MAD' :
-		case 'KRW' :
-		case 'ZAR' :
+		case 'GBP':
+		case 'BRL':
+		case 'EUR':
+		case 'USD':
+		case 'AUD':
+		case 'CAD':
+		case 'HKD':
+		case 'MXN':
+		case 'NZD':
+		case 'SGD':
+		case 'JPY':
+		case 'THB':
+		case 'INR':
+		case 'IDR':
+		case 'IRR':
+		case 'TRY':
+		case 'RUB':
+		case 'SEK':
+		case 'PLN':
+		case 'PHP':
+		case 'TWD':
+		case 'MYR':
+		case 'CZK':
+		case 'DKK':
+		case 'HUF':
+		case 'ILS':
+		case 'MAD':
+		case 'KRW':
+		case 'ZAR':
 			$formatted = ( 'before' === $args['position'] ? $args['symbol'] . $price : $price . $args['symbol'] );
 			break;
 		case 'NOK':
@@ -423,14 +426,14 @@ function give_is_right_to_left_supported_currency( $currency = '' ) {
 			'KWD',
 			'OMR',
 			'SAR',
-			'TND', //https://en.wikipedia.org/wiki/Tunisian_dinar
-			'QAR', //https://en.wikipedia.org/wiki/Qatari_riyal
-			'LYD', //https://en.wikipedia.org/wiki/Libyan_dinar
-			'LBP', //https://en.wikipedia.org/wiki/Lebanese_pound
-			'IRT', //https://en.wikipedia.org/wiki/Iranian_toman
-			'IQD', //https://en.wikipedia.org/wiki/Iraqi_dinar
-			'DZD', //https://en.wikipedia.org/wiki/Algerian_dinar
-			'AFN', //https://en.wikipedia.org/wiki/Afghan_afghani
+			'TND', // https://en.wikipedia.org/wiki/Tunisian_dinar
+			'QAR', // https://en.wikipedia.org/wiki/Qatari_riyal
+			'LYD', // https://en.wikipedia.org/wiki/Libyan_dinar
+			'LBP', // https://en.wikipedia.org/wiki/Lebanese_pound
+			'IRT', // https://en.wikipedia.org/wiki/Iranian_toman
+			'IQD', // https://en.wikipedia.org/wiki/Iraqi_dinar
+			'DZD', // https://en.wikipedia.org/wiki/Algerian_dinar
+			'AFN', // https://en.wikipedia.org/wiki/Afghan_afghani
 		)
 	);
 
