@@ -858,6 +858,7 @@ class Give_MetaBox_Form_Data {
 								<?php give_render_field( $field ); ?>
 							<?php endforeach; ?>
 						<?php endif; ?>
+						<?php do_action( "give_post_{$setting['id']}_settings" ); ?>
 					</div>
 					<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
 
