@@ -33,23 +33,24 @@ class AverageDonation extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
-
+		$intervalStr = 'P1D';
 		switch ( true ) {
 			case ( $diff->days > 12 ):
-				$interval = round( $diff->days / 12 );
-				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
+				$interval    = round( $diff->days / 12 );
+				$intervalStr = 'P' . $interval . 'D';
 				break;
 			case ( $diff->days > 7 ):
-				$data = $this->get_data( $start, $end, 'PT12H' );
+				$intervalStr = 'PT12H';
 				break;
 			case ( $diff->days > 2 ):
-				$data = $this->get_data( $start, $end, 'PT3H' );
+				$intervalStr = 'PT3H';
 				break;
 			case ( $diff->days >= 0 ):
-				$data = $this->get_data( $start, $end, 'PT1H' );
+				$intervalStr = 'PT1H';
 				break;
 		}
+
+		$data = $this->get_data( $start, $end, $intervalStr );
 
 		// Cache the report data
 		$result = $this->cache_report( $request, $data );
