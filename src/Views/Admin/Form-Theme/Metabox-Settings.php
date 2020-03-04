@@ -1,24 +1,26 @@
 <div class="form_theme_options_wrap inner-panel">
-	<strong><?php _e( 'Available Form Themes', 'give' ); ?></strong>
+	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
 	<div class="themes-list">
 		<?php
 		/* @var \Give\Form\Theme $theme */
 		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
 			printf(
-				'<div class="theme-info %1$s">
+				'<div class="theme-info %1$s" data-id="%1$s">
 							<div class="image-placeholder">%2$s</div>
 							<div class="action">
-								<strong>%3$s</strong>
-								<button class="button">%4$s</button>
+								<strong>%3$s <span class="badge">%5$s</span></strong>
+								<button class="button js-theme--activate">%4$s</button>
 							</div>
 						</div>',
 				$theme->getID(),
 				$theme->getImage(),
 				$theme->geName(),
-				__( 'Activate', 'give' )
+				__( 'Activate', 'give' ),
+				__( 'active', 'give' )
 			);
 		}
 		?>
+		<input type="hidden" name="form-theme" value="">
 	</div>
 	<div class="form-theme-introduction">
 		<strong>

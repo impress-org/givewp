@@ -413,6 +413,32 @@ Shortcode Copy & Paste
 				strong {
 					flex-grow: 1;
 				}
+
+				.badge {
+					display: none;
+					padding: 2px 9px;
+					background-color: #08c508;
+					color: white;
+					font-style: normal;
+					border-radius: 5px;
+					margin-left: 10px;
+				}
+			}
+
+			&.has-activated-theme {
+				grid-template-columns: 1fr !important;
+
+				.image-placeholder {
+					display: none;
+				}
+				.theme-info:not(.active) {
+					display: none;
+				}
+				.theme-info.active {
+					.badge {
+						display: inline-block;
+					}
+				}
 			}
 		}
 
