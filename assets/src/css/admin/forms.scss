@@ -292,6 +292,15 @@ Shortcode Copy & Paste
 				padding: 0;
 			}
 
+			.give-row-head {
+				border-bottom: 1px solid #eee;
+				cursor: move;
+
+				h2 {
+					text-align: left !important;
+				}
+			}
+
 			.give-remove {
 				float: right;
 				width: 22px;
@@ -313,19 +322,6 @@ Shortcode Copy & Paste
 				border-radius: 30px;
 				margin-top: 8px;
 				line-height: 19px;
-			}
-
-			.give-row-head {
-				border-bottom: 1px solid #eee;
-				cursor: move;
-
-				h2 {
-					text-align: left !important;
-				}
-			}
-
-			.give-row.closed .toggle-indicator::before {
-				content: '\f140';
 			}
 
 			.give-row .give-move .toggle-indicator::before {
@@ -370,6 +366,10 @@ Shortcode Copy & Paste
 			.give-row.ui-sortable-helper {
 				border-bottom: 0;
 			}
+		}
+
+		.give-row.closed .toggle-indicator::before {
+			content: '\f140';
 		}
 	}
 
@@ -432,11 +432,21 @@ Shortcode Copy & Paste
 
 		.theme-options {
 			display: none;
+
+			.give-row {
+				margin-bottom: 20px;
+				border: 1px solid #ccd0d4;
+			}
+
+			.give-row-head {
+				background-color: #f1f1f1;
+			}
 		}
 
 		.inner-panel {
 			.form-theme-options-introduction {
 				display: none;
+				padding-bottom: 25px;
 			}
 
 			&.has-activated-theme {

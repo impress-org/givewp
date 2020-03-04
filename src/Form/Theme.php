@@ -73,4 +73,43 @@ class Theme {
 	public function getImage() {
 		return $this->data['image'];
 	}
+
+	/**
+	 * return theme options.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function renderOptions() {
+		ob_start();
+
+		foreach ( $this->data['options'] as $groupdID => $option ) {
+			printf(
+				'<div class="give-row %1$s">',
+				$groupdID
+			);
+
+			printf(
+				'<div class="give-row-head">
+							<button type="button" class="handlediv" aria-expanded="true">
+								<span class="toggle-indicator"></span>
+							</button>
+							<h2 class="hndle"><span>%1$s</span></h2>
+						</div>',
+				$option['name']
+			);
+
+			echo '<div class="give-row-body">';
+			foreach ( $option['fields'] as $field ) {
+				$field['id'] = "{$this->data['id']}[{$field['id']}]";
+
+				give_render_field( $field );
+			}
+
+			echo '</div></div>';
+		}
+
+		return ob_get_clean();
+	}
 }

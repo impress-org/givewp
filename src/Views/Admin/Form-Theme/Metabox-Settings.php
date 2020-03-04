@@ -26,7 +26,7 @@
 		<strong>
 			<?php _e( 'What is a Form Theme', 'give' ); ?>
 		</strong>
-		<p><?php _e( 'In GiveWP, a form theme is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the theme chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
+		<p class="give-field-description"><?php _e( 'In GiveWP, a form theme is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the theme chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
 
 		<div class="give-notice notice notice-success inline">
 			<p>
@@ -40,7 +40,7 @@
 		<strong>
 			<?php _e( 'Form Theme Options', 'give' ); ?>
 		</strong>
-		<p><?php _e( 'Customize the appearance of your form theme by modifying the options below. You can preview your changes using "Preview button at anytime."', 'give' ); ?></p>
+		<p class="give-field-description"><?php _e( 'Customize the appearance of your form theme by modifying the options below. You can preview your changes using "Preview button at anytime."', 'give' ); ?></p>
 	</div>
 
 	<div class="form-theme-options">
@@ -48,11 +48,9 @@
 		/* @var \Give\Form\Theme $theme */
 		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
 			printf(
-				'<div class="theme-options %1$s" data-id="%1$s">
-							Showing %2$s Theme Options
-						</div>',
+				'<div class="theme-options %1$s" data-id="%1$s">%2$s</div>',
 				$theme->getID(),
-				$theme->geName()
+				$theme->renderOptions()
 			);
 		}
 		?>
