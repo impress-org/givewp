@@ -309,8 +309,7 @@
 	 * Handle form theme activation
 	 * @since: 2.7.0
 	 */
-	const handle_form_theme_activation = function() {
-		//No Value = Placeholders: determine if value is 0.00 and remove if so in favor of placeholders
+	const handleFormThemeActivation = function() {
 		$( '#form_theme_options' ).on( 'click', '.js-theme--activate', function( ev ) {
 			ev.preventDefault();
 
@@ -340,8 +339,7 @@
 	 * Handle form theme deactivation
 	 * @since: 2.7.0
 	 */
-	const handle_form_theme_deactivation = function() {
-		//No Value = Placeholders: determine if value is 0.00 and remove if so in favor of placeholders
+	const handleFormThemeDeactivation = function() {
 		$( '#form_theme_options' ).on( 'click', '.js-theme--deactivate', function( ev ) {
 			ev.preventDefault();
 
@@ -372,7 +370,7 @@
 		toggle_conditional_form_fields();
 		handle_repeatable_row_ID();
 		misc_cleanup();
-		handle_form_theme_activation();
-		handle_form_theme_deactivation();
+		handleFormThemeActivation();
+		handleFormThemeDeactivation();
 	} );
 }( jQuery ) );
