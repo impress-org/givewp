@@ -292,6 +292,8 @@ class Give_Scripts {
 			'one_option'                        => __( 'Choose a form', 'give' ),
 			'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
 			'ok'                                => __( 'Ok', 'give' ),
+			'activate'                          => __( 'Activate', 'give' ),
+			'deactivate'                        => __( 'Deactivate', 'give' ),
 			'cancel'                            => __( 'Cancel', 'give' ),
 			'success'                           => __( 'Success', 'give' ),
 			'error'                             => __( 'Error', 'give' ),
