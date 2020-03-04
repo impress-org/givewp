@@ -62,4 +62,15 @@ class Theme {
 	public function geTitle() {
 		return $this->data['title'];
 	}
+
+	/**
+	 * return theme image.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getImage() {
+		return $this->data['image'];
+	}
 }

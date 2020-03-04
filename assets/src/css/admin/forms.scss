@@ -7,11 +7,9 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-
 .give_options_panel {
-
-	input[ type="text"],
-	input[ type="email"] {
+	input[type='text'],
+	input[type='email'] {
 		padding: 3px 5px;
 		width: 100%;
 		line-height: 2;
@@ -33,10 +31,10 @@ input.give-text_medium {
 	width: 200px !important;
 }
 
-
 /*------------------------------------
 Forms CPT
 --------------------------------------*/
+
 /* Hide conditional fields */
 .post-type-give_forms .tablenav #post-query-submit,
 .give-hidden {
@@ -47,6 +45,10 @@ Forms CPT
 //  Time, Money, Percentage Fields
 //---------------------------------------------------
 .give_options_panel {
+	.inner-panel {
+		padding: 9px 15px;
+	}
+
 	.give-time-field {
 		width: 65px;
 	}
@@ -59,7 +61,7 @@ Forms CPT
 
 	.give-money-symbol {
 		border: 1px solid #7e8993;
-		background: #FCFCFC;
+		background: #fcfcfc;
 		margin: 0;
 		font-size: 14px;
 		padding: 8px 10px 9px;
@@ -74,7 +76,6 @@ Forms CPT
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
 		}
-
 	}
 
 	.give-money-symbol-after {
@@ -85,17 +86,15 @@ Forms CPT
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 		}
-
 	}
 }
-
 
 .give-underline {
 	text-decoration: underline;
 }
 
 // Show unnamed donors one per line.
-#give-bulk-donors div[id^="give-donor-"] {
+#give-bulk-donors div[id^='give-donor-'] {
 	display: block;
 	overflow: hidden;
 }
@@ -117,7 +116,6 @@ Forms CPT
 		margin: 0;
 		width: 100%;
 	}
-
 }
 
 /*-------------------------------------
@@ -142,7 +140,7 @@ Shortcode Copy & Paste
 	font-weight: normal;
 	cursor: help;
 
-	&:after {
+	&::after {
 		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 		text-shadow: none;
 	}
@@ -154,7 +152,6 @@ Shortcode Copy & Paste
 		color: inherit;
 		margin-right: 2px;
 	}
-
 }
 
 // Hide 'copy shortcode' text at certain resolutions
@@ -181,14 +178,12 @@ Shortcode Copy & Paste
 	&:hover {
 		color: $dark;
 	}
-
 }
 
 //-------------------------------------
 // Metabox Form
 // -------------------------------------
 #give-metabox-form-data {
-
 	.inside {
 		margin: 0;
 		padding: 0;
@@ -213,7 +208,8 @@ Shortcode Copy & Paste
 			margin: 0;
 			border-bottom: 1px solid #eee;
 
-			> label, > span.give-field-label {
+			> label,
+			> span.give-field-label {
 				float: left;
 				width: 135px;
 				padding: 0;
@@ -224,7 +220,7 @@ Shortcode Copy & Paste
 			}
 
 			.give-field-description {
-				color: #aaaaaa;
+				color: #aaa;
 				font-size: 12px;
 				line-height: 18px;
 				display: block;
@@ -328,11 +324,11 @@ Shortcode Copy & Paste
 				}
 			}
 
-			.give-row.closed .toggle-indicator:before {
-				content: "\f140";
+			.give-row.closed .toggle-indicator::before {
+				content: '\f140';
 			}
 
-			.give-row .give-move .toggle-indicator:before {
+			.give-row .give-move .toggle-indicator::before {
 				margin-left: 7px;
 			}
 
@@ -358,7 +354,7 @@ Shortcode Copy & Paste
 			}
 
 			.give-repeater-field-description {
-				color: #aaaaaa;
+				color: #aaa;
 				font-size: 12px;
 				line-height: 18px;
 				display: block;
@@ -379,7 +375,7 @@ Shortcode Copy & Paste
 
 	.give-minmax-wrap {
 		display: block;
-		margin-bottom: .5rem;
+		margin-bottom: 0.5rem;
 
 		label {
 			display: inline-block;
@@ -395,6 +391,35 @@ Shortcode Copy & Paste
 		}
 	}
 
+	#form_theme_options {
+		.themes-list {
+			display: grid;
+			grid-gap: 10px;
+			grid-template-columns: 1fr 1fr;
+			padding: 25px 0;
+
+			.image-placeholder {
+				height: 150px;
+				background-color: #d8d8d8;
+			}
+
+			.action {
+				display: flex;
+				align-items: center;
+
+				background-color: #eee;
+				padding: 6px;
+
+				strong {
+					flex-grow: 1;
+				}
+			}
+		}
+
+		.form-theme-introduction {
+			padding-bottom: 25px;
+		}
+	}
 }
 
 // Hide first row remove button for multi-level.
@@ -406,7 +431,6 @@ Shortcode Copy & Paste
 // Metabox Tabs
 //-------------------------------------
 #give-metabox-form-data {
-
 	.give-metabox-tabs {
 		margin: 0;
 		max-width: 170px;
@@ -418,8 +442,8 @@ Shortcode Copy & Paste
 		border-right: 1px solid #eee;
 		box-sizing: border-box;
 
-		&:after {
-			content: "";
+		&::after {
+			content: '';
 			display: block;
 			width: 100%;
 			height: 9999em;
@@ -451,7 +475,6 @@ Shortcode Copy & Paste
 					display: inline-block;
 				}
 			}
-
 		}
 
 		.give-metabox-sub-tabs li {
@@ -485,13 +508,10 @@ Shortcode Copy & Paste
 			}
 		}
 	}
-
 }
 
 // Icons only display for tight resolutions.
-@media only screen and (min-width: 851px) and (max-width: 1025px),
-(max-width: 550px) {
-
+@media only screen and (min-width: 851px) and (max-width: 1025px), (max-width: 550px) {
 	#give-metabox-form-data {
 		ul.give-metabox-tabs {
 			min-width: 40px;
@@ -499,7 +519,7 @@ Shortcode Copy & Paste
 			li > a {
 				text-align: center;
 
-				&:before {
+				&::before {
 					margin-right: 0;
 					font-size: 15px;
 				}
@@ -508,11 +528,10 @@ Shortcode Copy & Paste
 					display: none;
 				}
 
-				span.give-icon:before {
+				span.give-icon::before {
 					margin: 0;
 				}
 			}
-
 		}
 
 		.give_options_panel {
@@ -521,17 +540,16 @@ Shortcode Copy & Paste
 			.give-field-wrap {
 				padding: 10px;
 
-				span.give-field-label, label {
+				span.give-field-label,
+				label {
 					display: block;
 					float: none;
 					margin: 0 0 10px 0;
 					font-size: 14px;
 					width: 100%;
 				}
-
 			}
 		}
-
 	}
 }
 
@@ -540,7 +558,7 @@ Chosen Overrides
 -------------------------------------*/
 
 .chosen-container-single a.chosen-single {
-	background: #FFF !important;
+	background: #fff !important;
 }
 
 /*-------------------------------------
@@ -595,7 +613,6 @@ Donations forms filter
 		#give-forms-search-input {
 			margin-right: 6px;
 		}
-
 	}
 
 	.actions {
@@ -608,7 +625,6 @@ Donations forms filter
 		}
 	}
 }
-
 
 /*
 Prevent currency icon height issue with input field

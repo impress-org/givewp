@@ -1,13 +1,21 @@
-<div class="form_theme_options_wrap">
+<div class="form_theme_options_wrap inner-panel">
 	<strong><?php _e( 'Available Form Themes', 'give' ); ?></strong>
-	<div>
+	<div class="themes-list">
 		<?php
 		/* @var \Give\Form\Theme $theme */
 		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
 			printf(
-				'<div class="theme-info-container %1$s">%2$s</div>',
+				'<div class="theme-info %1$s">
+							<div class="image-placeholder">%2$s</div>
+							<div class="action">
+								<strong>%3$s</strong>
+								<button class="button">%4$s</button>
+							</div>
+						</div>',
 				$theme->getID(),
-				$theme->geTitle()
+				$theme->getImage(),
+				$theme->geTitle(),
+				__( 'Activate', 'give' )
 			);
 		}
 		?>
@@ -21,7 +29,7 @@
 	<div class="give-notice notice notice-success inline">
 		<p>
 			<?php _e( 'More themes are coming soon! Let us know what you want to see next', 'give' ); ?>
-			<button><?php _e( 'Take the Survey', 'give' ); ?></button>
+			<button class="button"><?php _e( 'Take the Survey', 'give' ); ?></button>
 		</p>
 	</div>
 </div>
