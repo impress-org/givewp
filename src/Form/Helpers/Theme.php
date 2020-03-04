@@ -17,15 +17,16 @@ function getActiveThemeID( $formID ) {
 /**
  * Return saved form theme settings
  *
- * @param int $formID
+ * @param int    $formID
+ * @param string $themeID
  *
- * @return mixed
+ * @return array
  * @since 2.7.0
  */
-function getSavedSettings( $formID ) {
-	$theme = Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
+function getSavedSettings( $formID, $themeID = '' ) {
+	$theme = $themeID ?: Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
 
-	return Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
+	return (array) Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
 }
 
 /**
