@@ -34,8 +34,10 @@ function createStyles( type, data, index ) {
 		'#69B868',
 		'#556E79',
 		'#9EA3A8',
-		'#D75A4B',
+		'#4BB5D7',
 		'#F49420',
+		'#D75A4B',
+		'#914BD7',
 	];
 
 	const styles = {
@@ -55,8 +57,9 @@ function createStyles( type, data, index ) {
 			];
 			styles.borderWidth = 3;
 			break;
+		case 'pie':
 		case 'doughnut':
-			styles.borderColor = [ '#FFFFFF' ];
+			styles.borderColor = [ 'rgb(244, 244, 244)' ];
 			styles.borderWidth = 3;
 	}
 
