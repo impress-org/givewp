@@ -81,7 +81,7 @@ class Income extends Endpoint {
 		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
-		while ( $periodStart <= $end ) {
+		while ( $periodStart < $end ) {
 
 			$values          = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
 			$incomeForPeriod = $values['earnings'];

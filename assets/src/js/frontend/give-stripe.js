@@ -86,7 +86,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		} );
 
 		// Mount Card Elements, if default gateway is stripe.
-		if ( 'stripe' === defaultGateway ) {
+		if ( 'stripe' === defaultGateway || give_stripe_vars.stripe_card_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 

@@ -46,7 +46,10 @@ DonationItem.propTypes = {
 	// Object describing the donor, including donor name and id
 	donor: PropTypes.shape( {
 		name: PropTypes.string.isRequired,
-		id: PropTypes.number.isRequired,
+		id: PropTypes.oneOfType( [
+			PropTypes.string,
+			PropTypes.number,
+		] ),
 	} ),
 	// Name of form or campaign where donation originated
 	source: PropTypes.string.isRequired,

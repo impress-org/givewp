@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_reports_page() {
-	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports' );
+	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
 	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$views        = give_reports_default_views();
 	?>
@@ -360,7 +360,7 @@ function give_estimated_monthly_stats() {
 function give_reports_set_form_method() {
 	return 'get';
 }
-add_filter( 'give-legacy-reports_form_method_tab_forms', 'give_reports_set_form_method', 10 );
-add_filter( 'give-legacy-reports_form_method_tab_donors', 'give_reports_set_form_method', 10 );
+add_filter( 'give-reports_form_method_tab_forms', 'give_reports_set_form_method', 10 );
+add_filter( 'give-reports_form_method_tab_donors', 'give_reports_set_form_method', 10 );
 
 // @TODO: After release 1.8 Donations -> Reports generates with new setting api, so we can remove some old code from this file.
