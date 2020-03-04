@@ -20,7 +20,6 @@
 			);
 		}
 		?>
-		<input type="hidden" name="form-theme" value="">
 	</div>
 
 	<div class="form-theme-introduction">

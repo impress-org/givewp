@@ -253,7 +253,14 @@ class Give_MetaBox_Form_Data {
 					'id'        => 'form_theme_options',
 					'title'     => __( 'Form Theme', 'give' ),
 					'icon-html' => '<span class="give-icon give-icon-display"></span>',
-					'fields'    => array(),
+					'fields'    => array(
+						array(
+							'id'      => 'form_theme',
+							'name'    => 'form_theme',
+							'type'    => 'hidden',
+							'default' => '',
+						),
+					),
 				)
 			),
 

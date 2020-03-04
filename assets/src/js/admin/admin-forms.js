@@ -332,7 +332,7 @@
 			$( this ).parents( '.theme-info' ).addClass( 'active' );
 			$innerContainer.addClass( 'has-activated-theme' );
 
-			$( 'input[name=form-theme]', $themesList ).val( activatedThemeID );
+			$innerContainer.prev( 'input[name=form_theme]' ).val( activatedThemeID );
 		} );
 	};
 
@@ -362,7 +362,7 @@
 
 			$innerContainer.removeClass( 'has-activated-theme' );
 
-			$( 'input[name=form-theme]', $themesList ).val( '' );
+			$innerContainer.prev( 'input[name=form_theme]' ).val( '' );
 		} );
 	};
 
