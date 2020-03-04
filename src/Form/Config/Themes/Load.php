@@ -1,5 +1,5 @@
 <?php
 return [
-	require 'Sequola.php',
-	require 'Legacy.php',
+	require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Sequola.php',
+	require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Legacy.php',
 ];

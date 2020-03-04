@@ -13,7 +13,8 @@ function registerDefaults() {
 	/**
 	 * Register themes
 	 */
-	$themes = GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
+	$themes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
+
 	foreach ( $themes as $theme ) {
 		Themes::set( new Theme( $theme ) );
 	}
