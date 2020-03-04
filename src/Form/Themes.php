@@ -86,6 +86,19 @@ final class Themes {
 	}
 
 	/**
+	 * Get Registered theme
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param string $themeID
+	 *
+	 * @return Theme
+	 */
+	public static function getRegisterTheme( $themeID ) {
+		return self::$themes[ $themeID ];
+	}
+
+	/**
 	 * Themes constructor.
 	 *
 	 * @param Theme $registerTheme

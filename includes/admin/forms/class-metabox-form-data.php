@@ -57,6 +57,8 @@ class Give_MetaBox_Form_Data {
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
+		add_action( 'give_save__give_form_theme', array( $this, 'save_form_theme_settings' ), 10, 3 );
+
 		// cmb2 old setting loaders.
 		// add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
 		// Add offline donations options.
@@ -255,7 +257,7 @@ class Give_MetaBox_Form_Data {
 					'icon-html' => '<span class="give-icon give-icon-display"></span>',
 					'fields'    => array(
 						array(
-							'id'      => 'form_theme',
+							'id'      => $prefix . 'form_theme',
 							'name'    => 'form_theme',
 							'type'    => 'hidden',
 							'default' => '',
@@ -1126,6 +1128,57 @@ class Give_MetaBox_Form_Data {
 
 		// Fire action after saving form meta.
 		do_action( 'give_post_process_give_forms_meta', $post_id, $post );
+	}
+
+
+	/**
+	 * Save form theme setting handler
+	 *
+	 * @param string $meta_key
+	 * @param string $new_theme
+	 * @param int    $formID
+	 */
+	public function save_form_theme_settings( $meta_key, $new_theme, $formID ) {
+		$options = $_POST[ $new_theme ];
+
+		// Exit
+		if ( empty( $options ) ) {
+			return;
+		}
+
+		$theme        = \Give\Form\Themes::getRegisterTheme( $new_theme );
+		$themeOptions = $theme->getOptions();
+		$saveOptions  = $theme->getSavedSettings( $formID );
+
+		foreach ( $themeOptions as $groupID => $group ) {
+			foreach ( $group['fields'] as $field ) {
+				if ( ! isset( $options[ $groupID ][ $field['id'] ] ) ) {
+					continue;
+				}
+
+				switch ( $field['type'] ) {
+					case 'textarea':
+					case 'wysiwyg':
+						$value = wp_kses_post( $options[ $groupID ][ $field['id'] ] );
+						break;
+
+					case 'donation_limit':
+						$value = $options[ $groupID ][ $field['id'] ];
+						break;
+
+					case 'group':
+						// @todo: add support for group field.
+						continue;
+
+					default:
+						$value = give_clean( $options[ $groupID ][ $field['id'] ] );
+				}// End switch().
+
+				$saveOptions[ $groupID ][ $field['id'] ] = $value;
+			}
+		}
+
+		$theme->store( $formID, $saveOptions );
 	}
 
 
