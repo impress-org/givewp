@@ -18,22 +18,22 @@ export const reducer = ( state, action ) => {
 			let endDate = state.period.endDate;
 			switch ( action.payload.range ) {
 				case 'day':
-					endDate = moment( state.period.endDate ).hour( 23 );
+					endDate = moment( state.period.endDate );
 					startDate = moment( endDate ).subtract( 1, 'days' );
 					break;
 				case 'week':
-					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 7, 'days' );
+					startDate = moment( state.period.endDate ).subtract( 7, 'days' );
 					break;
 				case 'month':
-					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 1, 'months' );
+					startDate = moment( state.period.endDate ).subtract( 1, 'months' );
 					break;
 				case 'year':
-					startDate = moment( state.period.endDate ).hour( 0 ).subtract( 1, 'years' );
+					startDate = moment( state.period.endDate ).subtract( 1, 'years' );
 					break;
 				case 'alltime':
 					const allTimeStart = getWindowData( 'allTimeStart' );
-					startDate = moment( allTimeStart ).hour( 0 );
-					endDate = moment().hour( 23 );
+					startDate = moment( allTimeStart );
+					endDate = moment();
 					break;
 			}
 			return {
