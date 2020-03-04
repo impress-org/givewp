@@ -40,7 +40,11 @@ const PeriodSelector = () => {
 					endDate={ period.endDate }
 					hideKeyboardShortcutsPanel={ true }
 					endDateId="givewp-reports-end"
-					onDatesChange={ ( { startDate, endDate } ) => dispatch( setDates( startDate, endDate ) ) }
+					onDatesChange={ ( { startDate, endDate } ) => {
+						if ( startDate && endDate ) {
+							dispatch( setDates( startDate, endDate ) );
+						}
+					} }
 					focusedInput={ focusedInput }
 					onFocusChange={ ( newFocus ) => {
 						setFocusedInput( newFocus );
