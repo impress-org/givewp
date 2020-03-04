@@ -52,19 +52,6 @@ function give_add_options_links() {
 		'give_donors_page'
 	);
 
-	// Legacy reports
-	$give_reports_page = add_submenu_page(
-		null,
-		esc_html__( 'Donation Reports', 'give' ),
-		esc_html__( 'Legacy Reports', 'give' ),
-		'view_give_reports',
-		'give-legacy-reports',
-		array(
-			Give()->give_settings,
-			'output',
-		)
-	);
-
 	// Settings
 	$give_settings_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
@@ -219,7 +206,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'addons':
 			// Get current tab.
 			$current_tab       = empty( $passed_view ) ? $query_args['tab'] : $passed_view;
-			$give_setting_page = in_array( $query_args['page'], array( 'give-legacy-reports', 'give-settings', 'give-addons' ), true );
+			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
 
 			// Check if it's Give Setting page or not.
 			if (
@@ -314,7 +301,7 @@ function give_reports_page_pages( $settings ) {
 	// Output.
 	return $settings;
 }
-add_filter( 'give-legacy-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 );
+add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 );
 
 /**
  * Add setting tab to give-settings page
@@ -375,7 +362,7 @@ add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_to
 function give_set_default_tab_form_reports_page( $default_tab ) {
 	return 'earnings';
 }
-add_filter( 'give_default_setting_tab_give-legacy-reports', 'give_set_default_tab_form_reports_page', 10, 1 );
+add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_reports_page', 10, 1 );
 
 
 /**

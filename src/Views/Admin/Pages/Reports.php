@@ -33,6 +33,23 @@ class Reports {
 			return;
 		}
 
+		if ( isset( $_GET['legacy'] ) ) {
+			$script = "
+				jQuery(document).ready(() => {
+					const anchors = [].slice.call(document.querySelectorAll('a'));
+					const filtered = anchors.filter(anchor => anchor.getAttribute('href').includes('give-reports') );
+					filtered.forEach((anchor) => {
+						if (anchor.getAttribute('id') === 'new-reports-link') {
+							return;
+						}
+						anchor.setAttribute('href', anchor.getAttribute('href') + '&legacy=true');
+					});
+				});
+			";
+			wp_add_inline_script( 'jquery', $script );
+			return;
+		}
+
 		wp_enqueue_style(
 			'give-admin-reports-v3-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports.css',
@@ -51,7 +68,7 @@ class Reports {
 			'give-admin-reports-v3-js',
 			'giveReportsData',
 			[
-				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-legacy-reports' ),
+				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-reports&legacy=true' ),
 				'allTimeStart'     => $this->get_all_time_start(),
 			]
 		);
@@ -60,13 +77,18 @@ class Reports {
 
 	// Add Reports submenu page to admin menu
 	public function add_page() {
+		$render = [ $this, 'render_template' ];
+		if ( isset( $_GET['legacy'] ) ) {
+			$render = [ Give()->give_settings, 'output' ];
+		}
+
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Donation Reports', 'give' ),
 			esc_html__( 'Reports', 'give' ),
 			'view_give_reports',
 			'give-reports',
-			[ $this, 'render_template' ]
+			$render,
 		);
 	}
 

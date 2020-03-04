@@ -537,7 +537,7 @@ function give_reports_graph_controls() {
 			<div class="actions">
 
 				<input type="hidden" name="post_type" value="give_forms" />
-				<input type="hidden" name="page" value="give-legacy-reports" />
+				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
 				<?php if ( isset( $_GET['form-id'] ) ) : ?>
@@ -809,7 +809,7 @@ function give_parse_report_dates( $data ) {
 	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 
