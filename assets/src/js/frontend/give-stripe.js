@@ -1,12 +1,11 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-
 let stripe = Stripe( give_stripe_vars.publishable_key );
 
 if ( give_stripe_vars.stripe_account_id ) {
 	stripe = Stripe( give_stripe_vars.publishable_key, {
-		stripeAccount: give_stripe_vars.stripe_account_id
+		stripeAccount: give_stripe_vars.stripe_account_id,
 	} );
 }
 
@@ -71,11 +70,10 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		// Mount and Un-Mount Stripe CC Fields on gateway load.
 		jQuery( document ).on( 'give_gateway_loaded', function( event, xhr, settings ) {
-
 			// Un-mount card elements when stripe is not the selected gateway.
 			giveStripeUnmountCardElements( globalCardElements[ idPrefix ] );
 
-			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway').value === 'stripe' ) {
+			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe' ) {
 				// Mount card elements when stripe is the selected gateway.
 				giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
 			}
@@ -85,7 +83,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		} );
 
 		// Mount Card Elements, if default gateway is stripe.
-		if ( 'stripe' === defaultGateway ) {
+		if ( 'stripe' === defaultGateway || give_stripe_vars.stripe_card_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 
