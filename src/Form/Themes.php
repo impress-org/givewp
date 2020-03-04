@@ -58,22 +58,6 @@ final class Themes {
 		return self::$instance;
 	}
 
-
-	/**
-	 * Register core themes
-	 *
-	 * @since 2.7.0
-	 */
-	public static function registerDefaults() {
-		/**
-		 * Register themes
-		 */
-		$themes = require 'Config/Themes/Load.php';
-		foreach ( $themes as $theme ) {
-			self::set( new Theme( $theme ) );
-		}
-	}
-
 	/**
 	 * Get Registered themes
 	 *

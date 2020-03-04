@@ -390,7 +390,7 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Register core form themes
 			 */
-			\Give\Form\Themes::registerDefaults();
+			\Give\Form\Themes\registerDefaults();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -572,6 +572,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'src/Form/Themes.php';
 			require_once GIVE_PLUGIN_DIR . 'src/Form/Theme.php';
 			require_once GIVE_PLUGIN_DIR . 'src/Form/Helpers/Theme.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Form/Helpers/Themes.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
