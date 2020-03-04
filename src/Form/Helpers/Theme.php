@@ -9,7 +9,7 @@ namespace Give\Form\Theme;
  * @return mixed
  * @since 2.7.0
  */
-function getActiveThemeID( $formID ) {
+function getActiveID( $formID ) {
 	return Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
 }
 
@@ -23,7 +23,7 @@ function getActiveThemeID( $formID ) {
  * @return array
  * @since 2.7.0
  */
-function getSavedSettings( $formID, $themeID = '' ) {
+function get( $formID, $themeID = '' ) {
 	$theme = $themeID ?: Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
 
 	return (array) Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
@@ -38,7 +38,7 @@ function getSavedSettings( $formID, $themeID = '' ) {
  *
  * @return mixed
  */
-function store( $formID, $settings ) {
+function set( $formID, $settings ) {
 	$theme = Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
 
 	return Give()->form_meta->update_meta( $formID, "_give_{$theme}_form_theme_settings", $settings );

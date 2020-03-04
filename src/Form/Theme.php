@@ -9,8 +9,8 @@
 
 namespace Give\Form;
 
-use function Give\Form\Theme\getActiveThemeID;
-use function Give\Form\Theme\getSavedSettings;
+use function Give\Form\Theme\getActiveID;
+use function Give\Form\Theme\get;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -99,7 +99,7 @@ class Theme {
 		global $post;
 		ob_start();
 
-		$saveOptions = getSavedSettings( $post->ID, $this->getID() );
+		$saveOptions = get( $post->ID, $this->getID() );
 
 		foreach ( $this->data['options'] as $groupdID => $option ) {
 			printf(
