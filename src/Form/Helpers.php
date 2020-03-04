@@ -14,6 +14,6 @@ namespace Give\Form;
  * @since 2.7.0
  * @param array $data
  */
-function register_theme( $data ) {
+function registerTheme( $data ) {
 	Themes::store( ( new Theme( $data ) ) );
 }
