@@ -39,6 +39,8 @@ class PaymentStatuses extends Endpoint {
 						'Pending',
 						'Refunded',
 						'Abandoned',
+						'Cancelled',
+						'Failed',
 					],
 					'datasets' => [
 						[
