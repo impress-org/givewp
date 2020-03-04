@@ -322,8 +322,8 @@
 			// Deactivate existing activated theme.
 			$( '.theme-info', $themesList ).removeClass( 'active' );
 
-			// Show Settings and it's introduction.
-			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).show();
+			// Show Settings.
+			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).addClass( 'active' );
 
 			$( this ).text( Give.fn.getGlobalVar( 'deactivate' ) );
 			$( this ).removeClass( 'js-theme--activate' );
@@ -354,7 +354,7 @@
 			$( '.theme-info', $themesList ).removeClass( 'active' );
 
 			// Hide Settings.
-			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).hide();
+			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).removeClass( 'active' );
 
 			$( this ).text( Give.fn.getGlobalVar( 'activate' ) );
 			$( this ).removeClass( 'js-theme--deactivate' );

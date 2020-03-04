@@ -473,7 +473,8 @@ Shortcode Copy & Paste
 					display: none;
 				}
 
-				.form-theme-options-introduction {
+				.form-theme-options-introduction,
+				.theme-options.active {
 					display: block;
 				}
 			}

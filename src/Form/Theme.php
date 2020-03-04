@@ -99,8 +99,7 @@ class Theme {
 		global $post;
 		ob_start();
 
-		$saveOptions   = getSavedSettings( $post->ID );
-		$activeThemeID = getActiveThemeID( $post->ID );
+		$saveOptions = getSavedSettings( $post->ID, $this->getID() );
 
 		foreach ( $this->data['options'] as $groupdID => $option ) {
 			printf(
@@ -120,10 +119,7 @@ class Theme {
 
 			echo '<div class="give-row-body">';
 			foreach ( $option['fields'] as $field ) {
-				if (
-					$activeThemeID === $this->data['id'] &&
-					isset( $saveOptions[ $groupdID ][ $field['id'] ] )
-				) {
+				if ( isset( $saveOptions[ $groupdID ][ $field['id'] ] ) ) {
 					$field['attributes']['value'] = $saveOptions[ $groupdID ][ $field['id'] ];
 				}
 

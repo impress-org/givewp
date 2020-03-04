@@ -1,22 +1,33 @@
-<div class="form_theme_options_wrap inner-panel">
+<?php
+global $post;
+
+use Give\Form\Theme;
+
+$activatedTheme = \Give\Form\Theme\getActiveThemeID( $post->ID );
+?>
+<div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
 	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
 	<div class="themes-list">
 		<?php
-		/* @var \Give\Form\Theme $theme */
+		/* @var Theme $theme */
 		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
+			$isActive = $activatedTheme === $theme->getID();
+
 			printf(
-				'<div class="theme-info %1$s" data-id="%1$s">
-							<div class="image-placeholder">%2$s</div>
+				'<div class="theme-info %1$s" data-id="%2$s">
+							<div class="image-placeholder">%3$s</div>
 							<div class="action">
-								<strong>%3$s <span class="badge">%5$s</span></strong>
-								<button class="button js-theme--activate">%4$s</button>
+								<strong>%4$s <span class="badge">%5$s</span></strong>
+								<button class="button %7$s">%6$s</button>
 							</div>
 						</div>',
+				$theme->getID() . ( $isActive ? ' active' : '' ),
 				$theme->getID(),
 				$theme->getImage(),
 				$theme->geName(),
-				__( 'Activate', 'give' ),
-				__( 'active', 'give' )
+				__( 'active', 'give' ),
+				$isActive ? __( 'Deactivate', 'give' ) : __( 'Activate', 'give' ),
+				$isActive ? 'js-theme--deactivate' : 'js-theme--activate'
 			);
 		}
 		?>
@@ -45,10 +56,11 @@
 
 	<div class="form-theme-options">
 		<?php
-		/* @var \Give\Form\Theme $theme */
+		/* @var Theme $theme */
 		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
 			printf(
-				'<div class="theme-options %1$s" data-id="%1$s">%2$s</div>',
+				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
+				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),
 				$theme->getID(),
 				$theme->renderOptions()
 			);
