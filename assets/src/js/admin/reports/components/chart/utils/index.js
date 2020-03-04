@@ -153,12 +153,26 @@ export function createConfig( type, data ) {
 			switch ( typeof dataset.data[ 0 ] ) {
 				case 'object': {
 					const calcMax = Math.max( ...dataset.data.map( o => o.y ), 0 ) * 1.1;
-					max = calcMax > 100 ? calcMax : 100;
+					switch ( type ) {
+						case 'line':
+							max = calcMax > 100 ? calcMax : 100;
+							break;
+						case 'bar':
+							max = calcMax > 10 ? calcMax : 10;
+							break;
+					}
 					break;
 				}
 				default: {
 					const calcMax = Math.max( ...dataset.data.map( o => o ), 0 ) * 1.1;
-					max = calcMax > 100 ? calcMax : 100;
+					switch ( type ) {
+						case 'line':
+							max = calcMax > 100 ? calcMax : 100;
+							break;
+						case 'bar':
+							max = calcMax > 10 ? calcMax : 10;
+							break;
+					}
 					break;
 				}
 			}
