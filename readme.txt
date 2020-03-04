@@ -223,8 +223,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
-= 2.6.0: March ??nd, 2020 =
-* New: 
+= 2.6.0: March 4th, 2020 =
+* New: The Reporting feature of GiveWP has undergone a major enhancement. Now reports display using a much improved visual charting interface with a breakdown of income, donors, top donation forms, and more. [#1525](https://github.com/impress-org/givewp/issues/1525), [#4330](https://github.com/impress-org/givewp/issues/4330)
+* New: The WP-Admin dashboard Donation Report widget for GiveWP has also undergone a major improvement. Now you can get a high-level overview of your donations for the day, week, or month from directly in you dashboard. (#4370)[https://github.com/impress-org/givewp/issues/4370]
+* New: The Akismet SPAM feature has been improved with logs for admins to better understand why an email has been flagged as SPAM as well as a new Whitelist setting for them to allow email addresses to bypass the check. [#4110](https://github.com/impress-org/givewp/issues/4110)
+* Fix: Resolved an issue with the "Recalculate Income Amount and Donation Counts for a Form" not accurately recalculating when using Currency Switcher add-on. [#4447](https://github.com/impress-org/givewp/issues/4447)
+* Fix: Resolved an issue with large databases with more than 13,000 donors receiving a fatal error when viewing the donor's list screen. [#4444](https://github.com/impress-org/givewp/issues/4444)
+* Tweak: You can now activate any plugin within the GiveWP Licenses tab. This resolves an issue with "this plugin does not have a valid header" error admins were receiving. [#4443](https://github.com/impress-org/givewp/issues/4443) 
+* Tweak: Updated the `[give_login]` shortcode text output to "Username or Email Address" to match WP's login. Note: you have been able to always log in using email but now the text accurately reflects that. [#4434](https://github.com/impress-org/givewp/issues/4434) 
 
 = 2.5.13: January 15th, 2020 =
 * Fix: Resolved an issue when using button mode of multiple donation buttons appearing incorrectly within shortcodes, blocks, and widgets. [#4379](https://github.com/impress-org/givewp/issues/4379)
