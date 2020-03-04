@@ -39,6 +39,8 @@ class PaymentStatuses extends Endpoint {
 						'Pending',
 						'Refunded',
 						'Abandoned',
+						'Cancelled',
+						'Failed',
 					],
 					'datasets' => [
 						[
@@ -47,10 +49,12 @@ class PaymentStatuses extends Endpoint {
 								$payments->pending,
 								$payments->refunded,
 								$payments->abandoned,
+								$payments->cancelled,
+								$payments->failed,
 							],
 							'tooltips' => [
 								[
-									'title'  => $payments->publish . ' ' . __( 'Payments', 'give' ),
+									'title'  => $payments->publish + $payments->give_subscription . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Completed', 'give' ),
 									'footer' => '',
 								],
@@ -67,6 +71,16 @@ class PaymentStatuses extends Endpoint {
 								[
 									'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Abandoned', 'give' ),
+									'footer' => '',
+								],
+								[
+									'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
+									'body'   => __( 'Cancelled', 'give' ),
+									'footer' => '',
+								],
+								[
+									'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
+									'body'   => __( 'Failed', 'give' ),
 									'footer' => '',
 								],
 							],

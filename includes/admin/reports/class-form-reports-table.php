@@ -103,7 +103,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			case 'average_earnings':
 				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
 			case 'details':
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-legacy-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}

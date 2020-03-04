@@ -30,16 +30,7 @@ function give_stripe_frontend_scripts() {
 	$zip_option      = give_is_setting_enabled( give_get_option( 'stripe_checkout_zip_verify' ) );
 	$remember_option = give_is_setting_enabled( give_get_option( 'stripe_checkout_remember_me' ) );
 
-	$stripe_card_update = false;
-	$get_data           = give_clean( filter_input_array( INPUT_GET ) );
-
-	if ( isset( $get_data['action'] ) &&
-		'update' === $get_data['action'] &&
-		isset( $get_data['subscription_id'] ) &&
-		is_numeric( $get_data['subscription_id'] )
-	) {
-		$stripe_card_update = true;
-	}
+	$stripe_card_update = give_stripe_is_update_payment_method_screen();
 
 	// Set vars for AJAX.
 	$stripe_vars = array(
@@ -62,9 +53,11 @@ function give_stripe_frontend_scripts() {
 		'element_complete_styles'      => give_stripe_get_element_complete_styles(),
 		'element_empty_styles'         => give_stripe_get_element_empty_styles(),
 		'element_invalid_styles'       => give_stripe_get_element_invalid_styles(),
-		'float_labels'                 => give_is_float_labels_enabled( array(
-			'form_id' => get_the_ID(),
-		) ),
+		'float_labels'                 => give_is_float_labels_enabled(
+			array(
+				'form_id' => get_the_ID(),
+			)
+		),
 		'base_country'                 => give_get_option( 'base_country' ),
 		'stripe_card_update'           => $stripe_card_update,
 		'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
@@ -98,7 +91,7 @@ function give_stripe_frontend_scripts() {
 	}
 
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
-	if ( give_is_gateway_active( 'stripe' ) ) {
+	if ( give_is_gateway_active( 'stripe' ) || $stripe_card_update ) {
 		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}

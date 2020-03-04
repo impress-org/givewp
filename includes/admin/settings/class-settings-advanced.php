@@ -32,7 +32,10 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			$this->default_tab = 'advanced-options';
 
 			if ( $this->id === give_get_current_setting_tab() ) {
-				add_action( 'give_admin_field_remove_cache_button', array( $this, 'render_remove_cache_button' ), 10, 1 );
+				add_action( 'give_admin_field_remove_cache_button', array(
+					$this,
+					'render_remove_cache_button'
+				), 10, 1 );
 				add_action( 'give_save_settings_give_settings', array( $this, 'validate_settngs' ) );
 			}
 
@@ -42,8 +45,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		/**
 		 * Get settings array.
 		 *
-		 * @since  1.8
 		 * @return array
+		 * @since  1.8
 		 */
 		public function get_settings() {
 			$settings = array();
@@ -163,7 +166,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => __( 'Akismet SPAM Protection', 'give' ),
-							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
+							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent through Akismet\'s SPAM check API if you have the plugin activated and configured.', 'give' ),
 							'id'      => 'akismet_spam_protection',
 							'type'    => 'radio_inline',
 							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
@@ -176,17 +179,19 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'name'             => __( 'Whitelist by Email', 'give' ),
 							'desc'             => sprintf(
 								'%1$s %2$s',
-								__( 'Add email address to this list which is flagged as SPAM in Akismet (to allow them to donate). This options will not responsible to remove spam email address from Akismet database but instead allow donor to process donation even if his/her email address flagged as SPAM when donating.', 'give' ),
+								__( 'Add emails one at a time to ensure that donations using that email bypass GiveWP\'s Akismet SPAM filtering. Emails added to the list here are always allowed to donate, even if they\'ve been flagged by Akismet.', 'give' ),
 								sprintf(
-									__( 'You can contact <a href="%1$s" target="_blank">Akismet support team</a> to de-blacklist donor email permanently.', 'give' ),
+									__( 'To permanently prevent emails from being flagged as SPAM by Akismet <a href="%1$s" target="_blank">contact their team here</a>.', 'give' ),
 									esc_url( 'https://akismet.com/contact/' )
 								)
 							),
 							'id'               => 'akismet_whitelisted_email_addresses',
 							'type'             => 'email',
-							'default'          => get_bloginfo( 'admin_email' ),
+							'attributes'       => array(
+								'placeholder' => 'jon@email.com',
+							),
 							'repeat'           => true,
-							'repeat_btn_title' => esc_html__( 'Add email', 'give' ),
+							'repeat_btn_title' => esc_html__( 'Add Email', 'give' ),
 						),
 						array(
 							'id'   => 'give_setting_advanced_section_akismet_spam_protection',
@@ -231,9 +236,10 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			/**
 			 * Filter the settings.
 			 *
+			 * @param array $settings
+			 *
 			 * @since  1.8
 			 *
-			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
@@ -244,8 +250,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		/**
 		 * Get sections.
 		 *
-		 * @since 1.8
 		 * @return array
+		 * @since 1.8
 		 */
 		public function get_sections() {
 			$sections = array(
@@ -260,10 +266,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		/**
 		 *  Render remove_cache_button field type
 		 *
+		 * @param array $field
+		 *
 		 * @since  2.1
 		 * @access public
 		 *
-		 * @param array $field
 		 */
 		public function render_remove_cache_button( $field ) {
 			?>
@@ -274,7 +281,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				</th>
 				<td class="give-forminp">
 					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
-							class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
+					        class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>
@@ -285,10 +292,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		/**
 		 * Validate setting
 		 *
+		 * @param array $options
+		 *
 		 * @since  2.2.0
 		 * @access public
 		 *
-		 * @param array $options
 		 */
 		public function validate_settngs( $options ) {
 			// Sanitize data.

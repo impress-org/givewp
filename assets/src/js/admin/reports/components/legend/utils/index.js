@@ -4,8 +4,10 @@ export function getColor( index ) {
 		'#69B868',
 		'#556E79',
 		'#9EA3A8',
-		'#D75A4B',
+		'#4BB5D7',
 		'#F49420',
+		'#D75A4B',
+		'#914BD7',
 	];
 
 	return palette[ index ];

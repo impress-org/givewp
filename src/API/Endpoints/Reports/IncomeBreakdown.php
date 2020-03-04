@@ -89,6 +89,9 @@ class IncomeBreakdown extends Endpoint {
 				case 'P1M':
 					$periodLabel = $periodEnd->format( 'F Y' );
 					break;
+				case 'P1D':
+					$periodLabel = $periodStart->format( 'F j, Y' );
+					break;
 				case 'PT1H':
 					$periodLabel = $periodEnd->format( 'l ga' );
 					break;
