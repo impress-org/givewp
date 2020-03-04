@@ -1148,7 +1148,7 @@ class Give_MetaBox_Form_Data {
 
 		$theme        = \Give\Form\Themes::getRegisterTheme( $new_theme );
 		$themeOptions = $theme->getOptions();
-		$saveOptions  = $theme->getSavedSettings( $formID );
+		$saveOptions  = \Give\Form\Theme\getSavedSettings( $formID );
 
 		foreach ( $themeOptions as $groupID => $group ) {
 			foreach ( $group['fields'] as $field ) {
@@ -1178,7 +1178,7 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		$theme->store( $formID, $saveOptions );
+		\Give\Form\Theme\store( $formID, $saveOptions );
 	}
 
 

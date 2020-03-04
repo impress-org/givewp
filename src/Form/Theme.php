@@ -9,6 +9,9 @@
 
 namespace Give\Form;
 
+use function Give\Form\Theme\getActiveThemeID;
+use function Give\Form\Theme\getSavedSettings;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -86,48 +89,6 @@ class Theme {
 	}
 
 	/**
-	 * Return active form theme ID
-	 *
-	 * @param int $formID
-	 *
-	 * @return mixed
-	 * @since 2.7.0
-	 */
-	public function getActiveThemeID( $formID ) {
-		return Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
-	}
-
-
-	/**
-	 * Return saved form theme settings
-	 *
-	 * @param int $formID
-	 *
-	 * @return mixed
-	 * @since 2.7.0
-	 */
-	public function getSavedSettings( $formID ) {
-		$theme = Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
-
-		return Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
-	}
-
-	/**
-	 * Save settings
-	 *
-	 * @sinxe 2.7.0
-	 * @param $formID
-	 * @param $settings
-	 *
-	 * @return mixed
-	 */
-	public function store( $formID, $settings ) {
-		$theme = Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
-
-		return Give()->form_meta->update_meta( $formID, "_give_{$theme}_form_theme_settings", $settings );
-	}
-
-	/**
 	 * return theme options.
 	 *
 	 * @since 2.7.0
@@ -138,8 +99,8 @@ class Theme {
 		global $post;
 		ob_start();
 
-		$saveOptions   = $this->getSavedSettings( $post->ID );
-		$activeThemeID = $this->getActiveThemeID( $post->ID );
+		$saveOptions   = getSavedSettings( $post->ID );
+		$activeThemeID = getActiveThemeID( $post->ID );
 
 		foreach ( $this->data['options'] as $groupdID => $option ) {
 			printf(
