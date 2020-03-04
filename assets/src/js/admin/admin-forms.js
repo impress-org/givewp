@@ -1,3 +1,4 @@
+/* globals jQuery, Give*/
 /*!
  * Give Admin Forms JS
  *
@@ -323,10 +324,41 @@
 			// Hide theme list heading.
 			$themesList.prev().hide();
 
+			$( this ).text( Give.fn.getGlobalVar( 'deactivate' ) );
+			$( this ).removeClass( 'js-theme--activate' );
+			$( this ).addClass( 'js-theme--deactivate' );
+
 			$( this ).parents( '.theme-info' ).addClass( 'active' );
 			$themesList.addClass( 'has-activated-theme' );
 
 			$( 'input[name=form-theme]', $themesList ).val( activatedThemeID );
+		} );
+	};
+
+	/**
+	 * Handle form theme deactivate
+	 * @since: 2.7.0
+	 */
+	const handle_form_theme_deactivation = function() {
+		//No Value = Placeholders: determine if value is 0.00 and remove if so in favor of placeholders
+		$( '#form_theme_options' ).on( 'click', '.js-theme--deactivate', function( ev ) {
+			ev.preventDefault();
+
+			const $themesList = $( this ).parents( '.themes-list' );
+
+			// Deactivate existing activated theme.
+			$( '.theme-info', $themesList ).removeClass( 'active' );
+
+			// Show theme list heading.
+			$themesList.prev().show();
+
+			$( this ).text( Give.fn.getGlobalVar( 'activate' ) );
+			$( this ).removeClass( 'js-theme--deactivate' );
+			$( this ).addClass( 'js-theme--activate' );
+
+			$themesList.removeClass( 'has-activated-theme' );
+
+			$( 'input[name=form-theme]', $themesList ).val( '' );
 		} );
 	};
 
@@ -337,5 +369,6 @@
 		handle_repeatable_row_ID();
 		misc_cleanup();
 		handle_form_theme_activation();
+		handle_form_theme_deactivation();
 	} );
 }( jQuery ) );
