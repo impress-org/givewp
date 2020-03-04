@@ -36,7 +36,7 @@ class Reports {
 		if ( isset( $_GET['legacy'] ) ) {
 			$script = "
 				jQuery(document).ready(() => {
-					const anchors = [].slice.call(document.querySelectorAll('.give-nav-tab-wrapper a[href*=give-reports]'));
+					const anchors = [].slice.call(document.querySelectorAll('a[href*=give-reports]'));
 					anchors.forEach((anchor) => {
 						if (anchor.getAttribute('id') === 'new-reports-link') {
 							return;
