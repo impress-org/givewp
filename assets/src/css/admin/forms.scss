@@ -424,26 +424,49 @@ Shortcode Copy & Paste
 					margin-left: 10px;
 				}
 			}
-
-			&.has-activated-theme {
-				grid-template-columns: 1fr !important;
-
-				.image-placeholder {
-					display: none;
-				}
-				.theme-info:not(.active) {
-					display: none;
-				}
-				.theme-info.active {
-					.badge {
-						display: inline-block;
-					}
-				}
-			}
 		}
 
 		.form-theme-introduction {
 			padding-bottom: 25px;
+		}
+
+		.theme-options {
+			display: none;
+		}
+
+		.inner-panel {
+			.form-theme-options-introduction {
+				display: none;
+			}
+
+			&.has-activated-theme {
+				.themes-list {
+					grid-template-columns: 1fr !important;
+
+					.image-placeholder {
+						display: none;
+					}
+
+					.theme-info:not(.active) {
+						display: none;
+					}
+
+					.theme-info.active {
+						.badge {
+							display: inline-block;
+						}
+					}
+				}
+
+				.form-theme-introduction,
+				.themes-list-heading {
+					display: none;
+				}
+
+				.form-theme-options-introduction {
+					display: block;
+				}
+			}
 		}
 	}
 }

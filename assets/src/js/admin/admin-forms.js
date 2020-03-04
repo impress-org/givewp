@@ -315,21 +315,22 @@
 			ev.preventDefault();
 
 			const $themesList = $( this ).parents( '.themes-list' ),
-				  $parent = $( '.theme-info', $themesList ),
+				  $innerContainer = $themesList.parent(),
+				  $parent = $( this ).parents( '.theme-info' ),
 				  activatedThemeID = $parent.attr( 'data-id' );
 
 			// Deactivate existing activated theme.
 			$( '.theme-info', $themesList ).removeClass( 'active' );
 
-			// Hide theme list heading.
-			$themesList.prev().hide();
+			// Show Settings and it's introduction.
+			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).show();
 
 			$( this ).text( Give.fn.getGlobalVar( 'deactivate' ) );
 			$( this ).removeClass( 'js-theme--activate' );
 			$( this ).addClass( 'js-theme--deactivate' );
 
 			$( this ).parents( '.theme-info' ).addClass( 'active' );
-			$themesList.addClass( 'has-activated-theme' );
+			$innerContainer.addClass( 'has-activated-theme' );
 
 			$( 'input[name=form-theme]', $themesList ).val( activatedThemeID );
 		} );
@@ -344,19 +345,22 @@
 		$( '#form_theme_options' ).on( 'click', '.js-theme--deactivate', function( ev ) {
 			ev.preventDefault();
 
-			const $themesList = $( this ).parents( '.themes-list' );
+			const $themesList = $( this ).parents( '.themes-list' ),
+				  $innerContainer = $themesList.parent(),
+				  $parent = $( this ).parents( '.theme-info' ),
+				  activatedThemeID = $parent.attr( 'data-id' );
 
 			// Deactivate existing activated theme.
 			$( '.theme-info', $themesList ).removeClass( 'active' );
 
-			// Show theme list heading.
-			$themesList.prev().show();
+			// Hide Settings.
+			$innerContainer.find( `.theme-options.${ activatedThemeID }` ).hide();
 
 			$( this ).text( Give.fn.getGlobalVar( 'activate' ) );
 			$( this ).removeClass( 'js-theme--deactivate' );
 			$( this ).addClass( 'js-theme--activate' );
 
-			$themesList.removeClass( 'has-activated-theme' );
+			$innerContainer.removeClass( 'has-activated-theme' );
 
 			$( 'input[name=form-theme]', $themesList ).val( '' );
 		} );

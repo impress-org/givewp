@@ -22,6 +22,7 @@
 		?>
 		<input type="hidden" name="form-theme" value="">
 	</div>
+
 	<div class="form-theme-introduction">
 		<strong>
 			<?php _e( 'What is a Form Theme', 'give' ); ?>
@@ -34,5 +35,27 @@
 				<button class="button"><?php _e( 'Take the Survey', 'give' ); ?></button>
 			</p>
 		</div>
+	</div>
+
+	<div class="form-theme-options-introduction">
+		<strong>
+			<?php _e( 'Form Theme Options', 'give' ); ?>
+		</strong>
+		<p><?php _e( 'Customize the appearance of your form theme by modifying the options below. You can preview your changes using "Preview button at anytime."', 'give' ); ?></p>
+	</div>
+
+	<div class="form-theme-options">
+		<?php
+		/* @var \Give\Form\Theme $theme */
+		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
+			printf(
+				'<div class="theme-options %1$s" data-id="%1$s">
+							Showing %2$s Theme Options
+						</div>',
+				$theme->getID(),
+				$theme->geName()
+			);
+		}
+		?>
 	</div>
 </div>
