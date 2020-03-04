@@ -1146,7 +1146,7 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
-		$theme        = \Give\Form\Themes::getRegisterTheme( $new_theme );
+		$theme        = \Give\Form\Themes::getTheme( $new_theme );
 		$themeOptions = $theme->getOptions();
 		$saveOptions  = \Give\Form\Theme\get( $formID );
 

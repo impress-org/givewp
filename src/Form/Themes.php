@@ -50,7 +50,7 @@ final class Themes {
 	 * @access public
 	 * @return Themes
 	 */
-	public static function get_instance() {
+	public static function getInstance() {
 		if ( null === static::$instance ) {
 			self::$instance = new static();
 		}
@@ -64,13 +64,13 @@ final class Themes {
 	 *
 	 * @since 2.7.0
 	 */
-	public static function registerThemes() {
+	public static function registerDefaults() {
 		/**
 		 * Register themes
 		 */
 		$themes = require 'Config/Themes/Load.php';
 		foreach ( $themes as $theme ) {
-			self::store( new Theme( $theme ) );
+			self::set( new Theme( $theme ) );
 		}
 	}
 
@@ -81,7 +81,7 @@ final class Themes {
 	 *
 	 * @return array
 	 */
-	public static function getRegisterThemes() {
+	public static function get() {
 		return self::$themes;
 	}
 
@@ -94,7 +94,7 @@ final class Themes {
 	 *
 	 * @return Theme
 	 */
-	public static function getRegisterTheme( $themeID ) {
+	public static function getTheme( $themeID ) {
 		return self::$themes[ $themeID ];
 	}
 
@@ -103,7 +103,7 @@ final class Themes {
 	 *
 	 * @param Theme $registerTheme
 	 */
-	public static function store( $registerTheme ) {
+	public static function set( $registerTheme ) {
 		self::$themes[ $registerTheme->getID() ] = $registerTheme;
 	}
 }

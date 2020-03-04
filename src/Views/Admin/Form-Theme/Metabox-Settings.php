@@ -10,7 +10,7 @@ $activatedTheme = \Give\Form\Theme\getActiveID( $post->ID );
 	<div class="themes-list">
 		<?php
 		/* @var Theme $theme */
-		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
+		foreach ( Give\Form\Themes::get() as $theme ) {
 			$isActive = $activatedTheme === $theme->getID();
 
 			printf(
@@ -57,7 +57,7 @@ $activatedTheme = \Give\Form\Theme\getActiveID( $post->ID );
 	<div class="form-theme-options">
 		<?php
 		/* @var Theme $theme */
-		foreach ( Give\Form\Themes::getRegisterThemes() as $theme ) {
+		foreach ( Give\Form\Themes::get() as $theme ) {
 			printf(
 				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
 				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),

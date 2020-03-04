@@ -390,7 +390,7 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Register core form themes
 			 */
-			\Give\Form\Themes::registerThemes();
+			\Give\Form\Themes::registerDefaults();
 
 			/**
 			 * Fire the action after Give core loads.
