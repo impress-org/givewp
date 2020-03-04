@@ -171,7 +171,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$cached = Give_Cache::get( $cache_key, false, $query_args );
+		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;
@@ -194,7 +194,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$result = Give_Cache::set( $cache_key, $report, 3600, false, $query_args );
+		$result = Give_Cache::set_db_query( $cache_key, $report );
 
 		return $result;
 
@@ -216,7 +216,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
-		$result = Give_Cache::set( $cache_key, $payments, 3600, false, $query_args );
+		$result = Give_Cache::set_db_query( $cache_key, $payments );
 
 		return $result;
 
@@ -238,7 +238,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
-		$cached = Give_Cache::get( $cache_key, false, $query_args );
+		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;
