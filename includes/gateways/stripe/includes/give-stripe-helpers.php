@@ -194,7 +194,7 @@ function give_stripe_get_element_font_styles() {
 
 	if ( 'custom_fonts' === $stripe_fonts ) {
 		$custom_fonts_attributes = give_get_option( 'stripe_custom_fonts' );
-		$font_styles = json_decode( $custom_fonts_attributes );
+		$font_styles             = json_decode( $custom_fonts_attributes );
 	} else {
 		$font_styles = array(
 			'cssSrc' => give_get_option( 'stripe_google_fonts_url' ),
@@ -456,7 +456,7 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 				continue;
 			}
 
-			$input_field_value = ! empty( $_POST[$field['name']] ) ? give_clean( $_POST[$field['name']] ) : '';
+			$input_field_value = ! empty( $_POST[ $field['name'] ] ) ? give_clean( $_POST[ $field['name'] ] ) : '';
 
 			if ( $donation_id > 0 ) {
 				$field_value = give_get_meta( $donation_id, $field['name'], true );
@@ -533,8 +533,6 @@ function give_stripe_set_app_info() {
 			esc_url_raw( 'https://givewp.com' ),
 			'pp_partner_DKj75W1QYBxBLK' // Partner ID.
 		);
-	} catch ( \Stripe\Error\Base $e ) {
-		Give_Stripe_Logger::log_error( $e, $this->id );
 	} catch ( Exception $e ) {
 
 		give_record_gateway_error(
@@ -619,18 +617,13 @@ function give_stripe_get_donation_id_by( $id, $type ) {
  */
 function give_stripe_set_api_key() {
 
-    try {
+	try {
 
 		// Fetch secret key.
-        $secret_key = give_stripe_get_secret_key();
+		$secret_key = give_stripe_get_secret_key();
 
-        // Set secret key.
+		// Set secret key.
 		\Stripe\Stripe::setApiKey( $secret_key );
-
-	} catch ( \Stripe\Error\Base $e ) {
-
-		// Log Error.
-		$this->log_error( $e );
 
 	} catch ( Exception $e ) {
 
@@ -638,7 +631,7 @@ function give_stripe_set_api_key() {
 		give_record_gateway_error(
 			__( 'Stripe Error', 'give' ),
 			sprintf(
-			/* translators: %s Exception Message Body */
+				/* translators: %s Exception Message Body */
 				__( 'Unable to set Stripe API Key. Details: %s', 'give' ),
 				$e->getMessage()
 			)
@@ -675,7 +668,7 @@ function give_stripe_get_webhook_key() {
  */
 function give_stripe_get_webhook_id() {
 
-    $key = give_stripe_get_webhook_key();
+	$key = give_stripe_get_webhook_key();
 
 	return trim( give_get_option( $key ) );
 }
@@ -689,7 +682,7 @@ function give_stripe_get_webhook_id() {
  */
 function give_stripe_delete_webhook_id() {
 
-    $key = give_stripe_get_webhook_key();
+	$key = give_stripe_get_webhook_key();
 
 	return trim( give_delete_option( $key ) );
 }
@@ -703,13 +696,13 @@ function give_stripe_delete_webhook_id() {
  */
 function give_stripe_get_payment_mode() {
 
-    $mode = 'live';
+	$mode = 'live';
 
-    if ( give_is_test_mode() ) {
-        $mode = 'test';
-    }
+	if ( give_is_test_mode() ) {
+		$mode = 'test';
+	}
 
-    return $mode;
+	return $mode;
 }
 
 /**
@@ -902,7 +895,6 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 
 			// Save donation summary to donation.
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
-
 
 			if ( give_stripe_is_checkout_enabled() ) {
 
