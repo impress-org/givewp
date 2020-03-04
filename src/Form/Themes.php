@@ -25,38 +25,14 @@ final class Themes {
 	private static $themes = array();
 
 	/**
-	 * Instance.
-	 *
-	 * @since  version
-	 * @access private
-	 * @var
-	 */
-	private static $instance;
-
-	/**
 	 * Singleton pattern.
 	 *
 	 * @since  version
 	 * @access private
 	 */
-	private function __construct() {
+	public function __construct() {
 	}
 
-
-	/**
-	 * Get instance.
-	 *
-	 * @since  version
-	 * @access public
-	 * @return Themes
-	 */
-	public static function getInstance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
-		}
-
-		return self::$instance;
-	}
 
 	/**
 	 * Get Registered themes
