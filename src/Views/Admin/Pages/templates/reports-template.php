@@ -34,7 +34,7 @@
 			<a class="nav-tab nav-tab-active" href="#/">
 				<?php _e( 'Overview', 'give' ); ?>
 			</a>
-			<a class="nav-tab" href="http://givewp.local/wp-admin/edit.php?post_type=give_forms&amp;page=give-legacy-reports">
+			<a class="nav-tab" href="http://givewp.local/wp-admin/edit.php?post_type=give_forms&page=give-reports&legacy=1">
 				<?php _e( 'Legacy Reports', 'give' ); ?>
 			</a>
 		</div>

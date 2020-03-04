@@ -57,8 +57,8 @@ abstract class Endpoint {
 
 		// If checking end date, check that it is after start date
 		if ( $key === 'end' ) {
-			$start = date( $request['start'] );
-			$end   = date( $request['end'] );
+			$start = date_create( $request['start'] );
+			$end   = date_create( $request['end'] );
 			$valid = $start <= $end ? $valid : false;
 		}
 
@@ -68,7 +68,7 @@ abstract class Endpoint {
 	public function sanitize_date( $param, $request, $key ) {
 		// Return Date object from parameter
 		$exploded = explode( '-', $param );
-		$date     = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} {$exploded[3]}:00:00";
+		$date     = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
 		return $date;
 	}
 
@@ -155,8 +155,11 @@ abstract class Endpoint {
 	 */
 	public function get_cached_report( $request ) {
 
+		$start = date_create( $request['start'] );
+		$end   = date_create();
+
 		// Do not get cached report for period less than a week
-		$diff = date_diff( $request['start'], date_create() );
+		$diff = date_diff( $start, $end );
 		if ( $diff->days < 2 ) {
 			return null;
 		}
@@ -168,7 +171,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$cached = Give_Cache::get( $cache_key, false, $query_args );
+		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;
@@ -191,7 +194,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
-		$result = Give_Cache::set( $cache_key, $report, 3600, false, $query_args );
+		$result = Give_Cache::set_db_query( $cache_key, $report );
 
 		return $result;
 
@@ -213,7 +216,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
-		$result = Give_Cache::set( $cache_key, $payments, 3600, false, $query_args );
+		$result = Give_Cache::set_db_query( $cache_key, $payments );
 
 		return $result;
 
@@ -235,7 +238,7 @@ abstract class Endpoint {
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
-		$cached = Give_Cache::get( $cache_key, false, $query_args );
+		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;

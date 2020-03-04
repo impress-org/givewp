@@ -33,8 +33,8 @@ export const useReportsAPI = ( endpoint ) => {
 			axios.get( wpApiSettings.root + 'give-api/v2/reports/' + endpoint, {
 				cancelToken: source.token,
 				params: {
-					start: period.startDate.format( 'YYYY-MM-DD-HH' ),
-					end: period.endDate.format( 'YYYY-MM-DD-HH' ),
+					start: period.startDate.format( 'YYYY-MM-DD' ),
+					end: period.endDate.format( 'YYYY-MM-DD' ),
 				},
 				headers: {
 					'X-WP-Nonce': wpApiSettings.nonce,

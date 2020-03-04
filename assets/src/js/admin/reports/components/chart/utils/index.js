@@ -34,8 +34,10 @@ function createStyles( type, data, index ) {
 		'#69B868',
 		'#556E79',
 		'#9EA3A8',
-		'#D75A4B',
+		'#4BB5D7',
 		'#F49420',
+		'#D75A4B',
+		'#914BD7',
 	];
 
 	const styles = {
@@ -55,8 +57,9 @@ function createStyles( type, data, index ) {
 			];
 			styles.borderWidth = 3;
 			break;
+		case 'pie':
 		case 'doughnut':
-			styles.borderColor = [ '#FFFFFF' ];
+			styles.borderColor = [ 'rgb(244, 244, 244)' ];
 			styles.borderWidth = 3;
 	}
 
@@ -153,12 +156,26 @@ export function createConfig( type, data ) {
 			switch ( typeof dataset.data[ 0 ] ) {
 				case 'object': {
 					const calcMax = Math.max( ...dataset.data.map( o => o.y ), 0 ) * 1.1;
-					max = calcMax > 100 ? calcMax : 100;
+					switch ( type ) {
+						case 'line':
+							max = calcMax > 100 ? calcMax : 100;
+							break;
+						case 'bar':
+							max = calcMax > 10 ? calcMax : 10;
+							break;
+					}
 					break;
 				}
 				default: {
 					const calcMax = Math.max( ...dataset.data.map( o => o ), 0 ) * 1.1;
-					max = calcMax > 100 ? calcMax : 100;
+					switch ( type ) {
+						case 'line':
+							max = calcMax > 100 ? calcMax : 100;
+							break;
+						case 'bar':
+							max = calcMax > 10 ? calcMax : 10;
+							break;
+					}
 					break;
 				}
 			}

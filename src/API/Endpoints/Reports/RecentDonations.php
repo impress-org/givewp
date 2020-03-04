@@ -47,7 +47,7 @@ class RecentDonations extends Endpoint {
 
 			$donation = new \Give_Payment( $donation->ID );
 
-			$amount = give_currency_symbol( $payment->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
+			$amount = give_currency_symbol( $donation->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
 			$status = null;
 			switch ( $donation->status ) {
 				case 'publish':

@@ -85,10 +85,10 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 				do_action( self::$setting_filter_prefix . '_tabs' );
 
 				// Show link to New Reports page
-				$isReports = isset( $_GET['page'] ) && $_GET['page'] === 'give-legacy-reports';
+				$isReports = isset( $_GET['page'] ) && $_GET['page'] === 'give-reports';
 				if ( $isReports === true ) {
 					echo sprintf(
-						'<a href="%1$s" class="nav-tab">%2$s</a>',
+						'<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',
 						admin_url( 'edit.php?post_type=give_forms&page=give-reports' ),
 						esc_html__( 'New Reports Dashboard', 'give' )
 					);
