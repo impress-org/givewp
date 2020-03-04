@@ -53,14 +53,14 @@ class Theme {
 	}
 
 	/**
-	 * return theme title.
+	 * return theme name.
 	 *
 	 * @since 2.7.0
 	 *
 	 * @return string
 	 */
-	public function geTitle() {
-		return $this->data['title'];
+	public function geName() {
+		return $this->data['name'];
 	}
 
 	/**

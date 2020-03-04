@@ -14,7 +14,7 @@
 						</div>',
 				$theme->getID(),
 				$theme->getImage(),
-				$theme->geTitle(),
+				$theme->geName(),
 				__( 'Activate', 'give' )
 			);
 		}
