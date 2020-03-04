@@ -88,7 +88,7 @@ class Reports {
 			esc_html__( 'Reports', 'give' ),
 			'view_give_reports',
 			'give-reports',
-			$render,
+			$render
 		);
 	}
 
