@@ -25,7 +25,7 @@ class Give_Session {
 	 * @access private
 	 * @var Give_Session
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Holds our session data
@@ -255,7 +255,7 @@ class Give_Session {
 	 *
 	 * @return array|bool|string
 	 */
-	private function __handle_ajax_cookie(){
+	private function __handle_ajax_cookie() {
 		$cookie = false;
 
 		// @see https://github.com/impress-org/give/issues/3705
@@ -265,7 +265,7 @@ class Give_Session {
 			&& isset( $_GET['action'] )
 			&& 'get_receipt' === $_GET['action']
 		) {
-			$cookie = isset( $_GET[$this->cookie_name] ) ? give_clean( $_GET[$this->cookie_name] ) : false;
+			$cookie = isset( $_GET[ $this->cookie_name ] ) ? give_clean( $_GET[ $this->cookie_name ] ) : false;
 		}
 
 		return $cookie;
@@ -301,7 +301,7 @@ class Give_Session {
 		 * @param string $cookie_name Cookie name.
 		 * @param string $cookie_type Cookie type session or nonce.
 		 */
-		$this->cookie_name       = apply_filters(
+		$this->cookie_name = apply_filters(
 			'give_session_cookie',
 			'wp-give_session_' . COOKIEHASH, // Cookie name.
 			'session' // Cookie type.
@@ -406,7 +406,7 @@ class Give_Session {
 	 * @return string|bool Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
-		return $this->has_session() ? $this->session_expiration :false;
+		return $this->has_session() ? $this->session_expiration : false;
 	}
 
 	/**
@@ -499,7 +499,7 @@ class Give_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_delete_nonce_cookie(){
+	public function is_delete_nonce_cookie() {
 		$value = false;
 
 		if ( Give()->session->has_session() ) {
@@ -631,11 +631,11 @@ class Give_Session {
 
 		give_doing_it_wrong( __FUNCTION__, __( 'We are using database session logic instead of PHP session since GiveWP 2.2.0', 'give' ) );
 
-
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {  // @codingStandardsIgnoreLine
 
 			$blacklist = apply_filters(
-				'give_session_start_uri_blacklist', array(
+				'give_session_start_uri_blacklist',
+				array(
 					'feed',
 					'feed',
 					'feed/rss',

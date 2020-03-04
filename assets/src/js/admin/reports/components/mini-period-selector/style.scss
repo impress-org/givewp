@@ -1,0 +1,46 @@
+.givewp-mini-period-selector {
+	float: right;
+	display: flex;
+	align-items: center;
+
+	> .group {
+		margin-left: 16px;
+		display: flex;
+
+		> button {
+			border: 1px solid #ddd;
+			background: #f7f7f7;
+			height: 32px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 0;
+			border-width: 1px 1px 3px 0;
+			padding: 0 16px;
+			font-size: 14px;
+			font-weight: 400;
+			cursor: pointer;
+			margin: 0;
+
+			&:first-of-type {
+				border-radius: 3px 0 0 3px;
+				border-width: 1px 1px 3px 1px;
+			}
+
+			&:last-of-type {
+				border-radius: 0 3px 3px 0;
+				border-width: 1px 1px 3px 0;
+			}
+
+			&.selected {
+				background: #ddd;
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+				border-color: #ddd;
+			}
+		}
+	}
+}

@@ -30,7 +30,7 @@ if ( ! is_user_logged_in() ) {
 			do_action( 'give_login_fields_before' );
 			?>
 			<div class="give-login-username give-login">
-				<label for="give_user_login"><?php esc_html_e( 'Username', 'give' ); ?></label>
+				<label for="give_user_login"><?php esc_html_e( 'Username or Email Address', 'give' ); ?></label>
 				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" required aria-required="true" />
 			</div>
 

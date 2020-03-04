@@ -39,17 +39,36 @@ function give_reports_page() {
 
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $views as $tab => $label ) { ?>
-				<a href="<?php echo esc_url( add_query_arg( array(
-					'tab'              => $tab,
-					'settings-updated' => false,
-				), $current_page ) ); ?>" class="nav-tab <?php echo $tab === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
+				<a href="
+				<?php
+				echo esc_url(
+					add_query_arg(
+						array(
+							'tab'              => $tab,
+							'settings-updated' => false,
+						),
+						$current_page
+					)
+				);
+				?>
+				" class="nav-tab <?php echo $tab === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
 			<?php } ?>
 			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
-				<a href="<?php echo esc_url( add_query_arg( array(
-					'tab'              => 'export',
-					'settings-updated' => false,
-				), $current_page ) ); ?>" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
-			<?php }
+				<a href="
+				<?php
+				echo esc_url(
+					add_query_arg(
+						array(
+							'tab'              => 'export',
+							'settings-updated' => false,
+						),
+						$current_page
+					)
+				);
+				?>
+				" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
+				<?php
+			}
 			/**
 			 * Fires in the report tabs.
 			 *
@@ -139,7 +158,7 @@ function give_get_reporting_view( $default = 'earnings' ) {
  */
 function give_reports_tab_reports() {
 
-	if( ! current_user_can( 'view_give_reports' ) ) {
+	if ( ! current_user_can( 'view_give_reports' ) ) {
 		wp_die( __( 'You do not have permission to access this report', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
@@ -311,7 +330,7 @@ function give_estimated_monthly_stats() {
 			'sales'    => 0,
 		);
 
-		$stats = new Give_Payment_Stats;
+		$stats = new Give_Payment_Stats();
 
 		$to_date_earnings = $stats->get_earnings( 0, 'this_month' );
 		$to_date_sales    = $stats->get_sales( 0, 'this_month' );

@@ -1,0 +1,51 @@
+.givewp-table-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
+}
+
+.givewp-table {
+	display: flex;
+	flex-direction: column;
+	max-height: 320px;
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	> * {
+		display: flex;
+		min-height: 40px;
+		height: auto;
+		font-size: 14px;
+		padding: 8px 16px;
+
+		> * {
+			flex: 1;
+		}
+	}
+
+	> .givewp-table-header {
+		font-weight: 500;
+		background: #f4f4f4;
+		position: sticky;
+		top: 0;
+		display: flex;
+		align-items: center;
+		box-shadow: 0 0 8px #b8b8b8;
+	}
+
+	> .givewp-table-row {
+		background: #fff;
+
+		&:nth-of-type(odd) {
+			background: #f4f4f4;
+		}
+
+		> .givewp-table-row-item {
+			display: flex;
+			align-items: center;
+		}
+	}
+}

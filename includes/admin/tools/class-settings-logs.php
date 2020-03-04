@@ -50,24 +50,27 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 */
 		public function get_settings() {
 			// Get settings.
-			$settings = apply_filters( 'give_settings_logs', array(
+			$settings = apply_filters(
+				'give_settings_logs',
 				array(
-					'id'         => 'give_tools_logs',
-					'type'       => 'title',
-					'table_html' => false,
-				),
-				array(
-					'id'   => 'logs',
-					'name' => __( 'Log', 'give' ),
-					'type' => 'logs',
+					array(
+						'id'         => 'give_tools_logs',
+						'type'       => 'title',
+						'table_html' => false,
+					),
+					array(
+						'id'   => 'logs',
+						'name' => __( 'Log', 'give' ),
+						'type' => 'logs',
 
-				),
-				array(
-					'id'         => 'give_tools_logs',
-					'type'       => 'sectionend',
-					'table_html' => false,
-				),
-			) );
+					),
+					array(
+						'id'         => 'give_tools_logs',
+						'type'       => 'sectionend',
+						'table_html' => false,
+					),
+				)
+			);
 
 			/**
 			 * Filter the settings.
@@ -85,14 +88,16 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		/**
 		 * Get sections.
 		 *
-		 * @since 1.8
 		 * @return array
+		 * @since 1.8
+		 * @since 2.5.14 Add spam section
 		 */
 		public function get_sections() {
 			$sections = array(
 				'gateway_errors' => __( 'Payment Errors', 'give' ),
 				'api_requests'   => __( 'API Requests', 'give' ),
-				'updates'   => __( 'Updates', 'give' ),
+				'updates'        => __( 'Updates', 'give' ),
+				'spam'           => __( 'Spam', 'give' ),
 			);
 
 			$sections = apply_filters( 'give_log_views', $sections );

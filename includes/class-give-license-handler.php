@@ -512,7 +512,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$give_licenses          = get_option( 'give_licenses', array() );
 			$licenses_without_addon = $give_licenses;
 
-
 			// Get all access pass licenses
 			$all_access_pass_licenses   = array();
 			$all_access_pass_addon_list = array();
@@ -520,7 +519,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				if ( $give_license['is_all_access_pass'] ) {
 					$all_access_pass_licenses[ $key ] = $give_license;
 
-					unset( $licenses_without_addon[$key] );
+					unset( $licenses_without_addon[ $key ] );
 
 					foreach ( $give_license['download'] as $download ) {
 						$all_access_pass_addon_list[] = $download['plugin_slug'];
@@ -535,7 +534,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				'all_access_licensed'    => '',
 			);
 
-			if( ! empty( $give_plugins ) ) {
+			if ( ! empty( $give_plugins ) ) {
 				foreach ( $give_plugins as $give_plugin ) {
 					if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 						continue;
@@ -546,10 +545,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					if ( $addon_license ) {
 						$html_arr_key = 'licensed';
-						unset( $licenses_without_addon[$addon_license['license_key']] );
+						unset( $licenses_without_addon[ $addon_license['license_key'] ] );
 					}
 
-					$html["{$html_arr_key}"] .= self::html_by_plugin( $give_plugin );
+					$html[ "{$html_arr_key}" ] .= self::html_by_plugin( $give_plugin );
 				}
 			}
 
@@ -610,7 +609,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			$plugin['License'] = $license = wp_parse_args(
-				$license, array(
+				$license,
+				array(
 					'item_name'     => str_replace( 'give-', '', $plugin['Dir'] ),
 					'purchase_link' => $plugin['PluginURI'],
 				)
@@ -650,7 +650,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					$addons = $license['download'];
 
-					if( empty( $license['is_all_access_pass'] ) ) {
+					if ( empty( $license['is_all_access_pass'] ) ) {
 						$addons = array( $license );
 					}
 
@@ -723,8 +723,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 								<button class="give-button__license-activate button-primary" data-addon="<?php echo $addon_dir; ?>">
 									<?php _e( 'Activate', 'give' ); ?>
 								</button>
-							<?php elseif ( $license_is_inactive ): ?>
-								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $addon_dir; ?>" data-license="<?php echo $license['license_key'] ?>">
+							<?php elseif ( $license_is_inactive ) : ?>
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $addon_dir; ?>" data-license="<?php echo $license['license_key']; ?>">
 									<?php _e( 'Reactivate', 'give' ); ?>
 								</button>
 							<?php else : ?>
@@ -737,7 +737,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 									$license['item_name'],
 									wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
 									! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : ''
-								); ?>
+								);
+								?>
 
 							<?php endif; ?>
 
@@ -772,7 +773,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<h3 class="give-license-top-header"><?php _e( 'License Information', 'give' ); ?></h3>
 						<?php
 						// @todo: handle all license status;
-						if ( $license_key ) : ?>
+						if ( $license_key ) :
+							?>
 
 							<?php if ( $license_key ) : ?>
 								<?php
@@ -784,7 +786,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 								?>
 							<?php endif; ?>
 
-							<?php if ( $is_license_expired ) {
+							<?php
+							if ( $is_license_expired ) {
 								// @todo: need to test renew license link
 								echo sprintf(
 									'<a href="%1$s" target="_blank">%2$s</a>',
@@ -804,7 +807,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 										_n( 'Activation Remaining', 'Activations Remaining', $license['activations_left'], 'give' )
 									);
 								}
-							} ?>
+							}
+							?>
 						<?php else : ?>
 
 							<p class="give-field-description"><?php _e( 'This is an unlicensed add-on and is not receiving updates or support. Please activate your license key to fix the issue.', 'give' ); ?></p>
@@ -817,7 +821,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 						<?php
 						// Purchase license link.
-						if ( ! $license_key ) : ?>
+						if ( ! $license_key ) :
+							?>
 							<?php
 							echo sprintf(
 								'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
@@ -832,14 +837,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 						if ( ! $is_license_expired && $license_key ) {
 							echo sprintf(
 								'<a href="%1$spurchase-history/?license_id=%2$s&action=manage_licenses&payment_id=%3$s" target="_blank" class="give-license-action-link">%4$s</a>',
-								trailingslashit( Give_License::get_website_url() ),
+								trailingslashit( self::get_website_url() ),
 								$license['license_id'],
 								$license['payment_id'],
 								__( 'Manage License', 'give' )
 							);
 							echo sprintf(
 								'<a href="%1$spriority-support/" target="_blank" class="give-license-action-link">%2$s</a>',
-								trailingslashit( Give_License::get_website_url() ),
+								trailingslashit( self::get_website_url() ),
 								__( 'Access Support', 'give' )
 							);
 						}

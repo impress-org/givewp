@@ -437,7 +437,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				esc_html__( 'Income Report for %s', 'give' ),
 				get_the_title( $form_id )
 			);
-			?>
+	?>
 			</span></h3>
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
@@ -501,7 +501,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
  */
 function give_reports_graph_controls() {
 	$date_options = apply_filters(
-		'give_report_date_options', array(
+		'give_report_date_options',
+		array(
 			'today'        => __( 'Today', 'give' ),
 			'yesterday'    => __( 'Yesterday', 'give' ),
 			'this_week'    => __( 'This Week', 'give' ),
@@ -830,7 +831,8 @@ function give_reports_refresh_button() {
 				'give_action'     => 'refresh_reports_transients',
 				'give-messages[]' => 'refreshed-reports',
 			)
-		), 'give-refresh-reports'
+		),
+		'give-refresh-reports'
 	);
 
 	echo Give()->tooltips->render_link(

@@ -70,7 +70,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $name => $label ) {
-					echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
+					echo '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
 				}
 
 				/**
@@ -83,7 +83,18 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 				 * @since 1.8
 				 */
 				do_action( self::$setting_filter_prefix . '_tabs' );
+
+				// Show link to New Reports page
+				$isReports = isset( $_GET['page'] ) && $_GET['page'] === 'give-reports';
+				if ( $isReports === true ) {
+					echo sprintf(
+						'<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',
+						admin_url( 'edit.php?post_type=give_forms&page=give-reports' ),
+						esc_html__( 'New Reports Dashboard', 'give' )
+					);
+				}
 				?>
+
 				<div class="give-sub-nav-tab-wrapper">
 					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php esc_html_e( 'View remaining setting tabs', 'give' ); ?>">
 						<span class="dashicons dashicons-arrow-down-alt2"></span>
@@ -118,7 +129,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 
-		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
+		if ( empty( $GLOBALS['give_hide_save_button'] ) ) :
+			?>
 			<div class="give-submit-wrap">
 				<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_html_e( 'Save changes', 'give' ); ?>"/>
 			</div>

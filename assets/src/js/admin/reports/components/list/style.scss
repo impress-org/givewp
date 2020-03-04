@@ -1,0 +1,21 @@
+.givewp-list-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	padding: 16px;
+	font-size: 15px;
+}
+
+.givewp-list {
+	max-height: 432px;
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	> * {
+		background: #f4f4f4;
+	}
+	> :nth-of-type(even) {
+		background: #fff;
+	}
+}

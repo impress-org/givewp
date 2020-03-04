@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.5.13
+Stable tag: 2.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,30 +13,30 @@ Accept donations and begin fundraising with GiveWP, the highest rated WordPress 
 
 == Description ==
 
-**[GiveWP](http://bit.ly/WPORGGive "Visit the GiveWP website")** is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving.
+**[GiveWP](https://go.givewp.com/home "Visit the GiveWP website")** is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving.
 
 Transform the way you accept online donations. With GiveWP you can accept charitable gifts through customizable donation forms, view donation statistics and reports, manage donors, and integrate with a wide variety of third-party gateways and services.
 
-[youtube https://www.youtube.com/watch?v=gNdEelhjoKE]
+[youtube https://www.youtube.com/watch?v=L5YudU2hido]
 
 = GiveWP's Features =
 
 GiveWP is free and yet is full of many advanced features to suit your needs. Slick donation forms, full-featured reporting, and donor management features provide you with the tools you need to accept donations and manage your donors.
 
-**[Powerful Donation Forms](http://bit.ly/WPORGGiveFeaturesForms)**
+**[Powerful Donation Forms](https://go.givewp.com/features-forms)**
 
 * Build custom donation forms in your WordPress admin
 * GiveWP inherits your themes styles so it integrates seamlessly out of the box
 * Add goals, multiple giving amounts, custom amounts, terms and conditions and more with just a couple clicks
 
-**[Full-Featured Reporting](http://bit.ly/WPORGGiveFeaturesReporting)**
+**[Full-Featured Reporting](https://go.givewp.com/features-reports)**
 
 * Get a complete overview of your donation activity
 * Control your data with exports and reports
 * Filter reports by date, form, and payment method.
 * Measure performance across multiple campaigns.
 
-**[Complete Donor Management](http://bit.ly/WPORGGiveFeaturesDonors)**
+**[Complete Donor Management](https://go.givewp.com/features-donor-management)**
 
 * View a complete history of your donor activity
 * Generate tax-deductible receipts
@@ -44,13 +44,13 @@ GiveWP is free and yet is full of many advanced features to suit your needs. Sli
 
 Find out more:
 
-* **[Visit the GiveWP website](http://bit.ly/WPORGGive "Visit the GiveWP website")**
-* **[View GiveWP features](http://bit.ly/WPORGGiveFeatures "GiveWP Features Showcase")**
-* **[View GiveWP demos](http://bit.ly/WPORGGiveDemos "GiveWP Demos Showcase")**
+* **[Visit the GiveWP website](https://go.givewp.com/home "Visit the GiveWP website")**
+* **[View GiveWP features](https://go.givewp.com/features "GiveWP Features Showcase")**
+* **[View GiveWP demos](https://go.givewp.com/demos "GiveWP Demos Showcase")**
 
 = Who Uses GiveWP? =
 
-With more than 70,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations using GiveWP. Causes are using GiveWP to raise millions of dollars per year. Check out some of our [GiveWP Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
+With more than 80,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations using GiveWP. Causes are using GiveWP to raise millions of dollars per year. Check out some of our [GiveWP Stories](https://go.givewp.com/stories) and [Case Studies](https://go.givewp.com/case-studies) for details about their success.
 
 = Why Use GiveWP for Donations? =
 
@@ -66,38 +66,38 @@ The strength of GiveWP lies within its optimized donation forms. When creating a
 
 = First Time Users =
 
-For new users, we suggest reviewing our [documentation](http://bit.ly/WPORGDocs "Visit the GiveWP documentation") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the GiveWP support page on WordPress.org") to help you with your issues, questions, and concerns.
+For new users, we suggest reviewing our [documentation](https://go.givewp.com/docs "Visit the GiveWP documentation") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the GiveWP support page on WordPress.org") to help you with your issues, questions, and concerns.
 
-If you are a GiveWP customer with an active license of any of our popular add-ons, we'd love to hear from you and support you via our [Priority Support channel](http://bit.ly/WPORGGiveSupport).
+If you are a GiveWP customer with an active license of any of our popular add-ons, we'd love to hear from you and support you via our [Priority Support channel](https://go.givewp.com/support).
 
 = Accept Credit Card Donations =
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our [Stripe Premium add-on](https://givewp.com/addons/stripe-gateway/).
+* **Stripe** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our [Stripe Premium add-on](https://go.givewp.com/addon-stripe).
 * **PayPal Standard** -- Allow worldwide donations with PayPal Standard. No additional fees applied.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 
 = Extend GiveWP with Powerful Add-ons =
 
-GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online. The money you raise using GiveWP is yours to support your cause. Period. We are supported through the sale of [premium GiveWP add-ons](http://bit.ly/WPORGGiveAddons "View all of GiveWP's Premium Add-ons"). Add-ons enable advanced features that enable you to extend the functionality of GiveWP.
+GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online. The money you raise using GiveWP is yours to support your cause. Period. We are supported through the sale of [premium GiveWP add-ons](https://go.givewp.com/addons "View all of GiveWP's Premium Add-ons"). Add-ons enable advanced features that enable you to extend the functionality of GiveWP.
 
-For example, you can use one of our add-ons to accept funds through your favorite [payment gateway](http://bit.ly/WPORGGivePaymentGateways), enable [recurring donations](http://bit.ly/WPORGGiveRecurring), or send donor emails to your favorite email marketing platform. [View all of GiveWP's Add-ons](http://bit.ly/WPORGGiveAddons "View all GiveWP add-ons") to discover all the ways you can further enhance and extend GiveWP.
+For example, you can use one of our add-ons to accept funds through your favorite [payment gateway](https://go.givewp.com/addons-payment-gateways), enable [recurring donations](https://go.givewp.com/addon-recurring), or send donor emails to your favorite email marketing platform. [View all of GiveWP's Add-ons](https://go.givewp.com/addons "View all GiveWP add-ons") to discover all the ways you can further enhance and extend GiveWP.
 
 = Easy to Customize and Enhance =
 
-GiveWP is built by [Impress.org](https://impress.org/ "Visit the developers of GiveWP - Impress.org"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Started Guide](http://docs.givewp.com/give101 "GiveWP 101 - Getting started using GiveWP to accept donations on WordPress"), setting up GiveWP to accept donations on WordPress is simple and easy.
+GiveWP is built by [Impress.org](https://go.givewp.com/impress "Visit the developers of GiveWP - Impress.org"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Started Guide](https://go.givewp.com/give-101 "GiveWP 101 - Getting started using GiveWP to accept donations on WordPress"), setting up GiveWP to accept donations on WordPress is simple and easy.
 
 Are you a developer? GiveWP is fully extendable. We built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of GiveWP's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
 Here's some great developer-oriented tutorials and docs to help you customize GiveWP to your liking:
 
-* [Create Dramatic Donation Email Receipts](http://docs.givewp.com/blog-email-templates)
-* [Populate Donor Info with One Click](http://docs.givewp.com/blog-auto-populate)
-* [Using the GiveWP API to Create Charts with ChartJS](http://docs.givewp.com/blog-chartjs)
-* [Themeing with GiveWP](http://docs.givewp.com/themeing)
-* [How to Create Custom Form Fields in GiveWP](http://docs.givewp.com/custom-fields)
+* [Create Dramatic Donation Email Receipts](https://go.givewp.com/blog-emails)
+* [Populate Donor Info with One Click](https://go.givewp.com/blog-populate)
+* [Using the GiveWP API to Create Charts with ChartJS](https://go.givewp.com/blog-api)
+* [Themeing with GiveWP](https://go.givewp.com/docs-theming)
+* [How to Create Custom Form Fields in GiveWP](https://go.givewp.com/docs-custom-fields)
 
 
 = About the GiveWP Team =
@@ -108,11 +108,11 @@ Backed by a growing team of WordPress developers, support engineers, and marketi
 
 Stay in touch with us for important plugin news and updates:
 
-* **[GiveWP Website](http://bit.ly/WPORGGive "Visit the GiveWP website")**
-* **[GitHub](https://github.com/impress-org/givewp "Visit the developers of GiveWP")**
-* **[GiveWP Newsletter](http://eepurl.com/bggG99 "Subscribe to GiveWP via MailChimp")**
-* **[Facebook](https://facebook.com/wpgive "Visit the GiveWP on Facebook")**
-* **[GiveWP Add-ons](http://bit.ly/WPORGGiveAddons "View all GiveWP Add-ons")**
+* **[GiveWP Website](https://go.givewp.com/home "Visit the GiveWP website")**
+* **[GitHub](https://go.givewp.com/github "Visit the developers of GiveWP")**
+* **[GiveWP Newsletter](https://go.givewp.com/subscribe "Subscribe to GiveWP via MailChimp")**
+* **[Facebook](https://go.givewp.com/fb "Visit the GiveWP on Facebook")**
+* **[GiveWP Add-ons](https://go.givewp.com/addons "View all GiveWP Add-ons")**
 
 = Contribute to GiveWP =
 
@@ -120,11 +120,11 @@ This plugin is proudly open source (GPL license) and we're always looking for mo
 
 Here's a few ways you can contribute to GiveWP:
 
-* Star/fork/watch the [GiveWP GitHub repository](https://github.com/impress-org/givewp "Visit the GiveWP GitHub Repo") to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
+* Star/fork/watch the [GiveWP GitHub repository](https://go.givewp.com/github "Visit the GiveWP GitHub Repo") to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
 
-* Translate GiveWP into your native language. The best place to do that is here on wordpress.org. Go to [https://translate.wordpress.org/](https://translate.wordpress.org/projects/wp-plugins/give), then search for your language, click the "Plugins" tab, then search for "GiveWP". When you've submitted at least 95% of GiveWP's strings, the language moderators will review and approve your translations and then they will be available to all WordPress users for your native language. If you are interested in translating any of our Premium Add-ons, [contact us](https://givewp.com/contact-us), we'd love to chat with you about that.
+* Translate GiveWP into your native language. The best place to do that is here on wordpress.org. Go to [https://translate.wordpress.org/](https://translate.wordpress.org/projects/wp-plugins/give), then search for your language, click the "Plugins" tab, then search for "GiveWP". When you've submitted at least 95% of GiveWP's strings, the language moderators will review and approve your translations and then they will be available to all WordPress users for your native language. If you are interested in translating any of our Premium Add-ons, [contact us](https://go.givewp.com/contact), we'd love to chat with you about that.
 
-* Join the [GiveWP Community Facebook group](https://www.facebook.com/groups/givewp/). We chat about all things related to WordPress, GiveWP, fundraising, and online donations in general.
+* Join the [GiveWP Community Facebook group](https://go.givewp.com/fb-group). We chat about all things related to WordPress, GiveWP, fundraising, and online donations in general.
 
 == Upgrade Notice ==
 
@@ -137,7 +137,7 @@ Here's a few ways you can contribute to GiveWP:
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
-* An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
+* An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](https://go.givewp.com/ssl).
 
 = Automatic installation =
 
@@ -157,23 +157,23 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = Where can I learn more about how to use GiveWP? =
 
-We have extensive documentation on installing and configuring GiveWP [on our website](http://bit.ly/WPORGDocs). We suggest starting with the [GiveWP 101 article](http://bit.ly/WPORGGive101).
+We have extensive documentation on installing and configuring GiveWP [on our website](http://bit.ly/WPORGDocs). We suggest starting with the [GiveWP 101 article](https://go.givewp.com/give-101).
 
 = How can I get support for GiveWP? =
 
 We work hard to the best support possible for GiveWP. The [WordPress.org Support Forum](https://wordpress.org/support/plugin/give) is used for free community based support. We continually monitor the forum and do our best to ensure everyone gets a response.
 
-[Priority support](http://bit.ly/WPORGGiveSupport) is given to users who have an active license for one of GiveWP's [Add-ons](http://bit.ly/WPORGGiveAddons) or [Bundles](http://bit.ly/WPROGGiveBundles). We provide email-based support to our Premium Add-on customers with an average response time of under 2 hours and average time to resolution of 24-48 hours depending on the severity of the issue.
+[Priority support](https://go.givewp.com/support) is given to users who have an active license for one of GiveWP's [Add-ons](https://go.givewp.com/addons) or [Pricing Plans](https://go.givewp.com/pricing). We provide email-based support to our Premium Add-on customers with an average 1st response time of 2 to 4 hours and average time to resolution of 24-48 hours depending on the severity of the issue.
 
 = Do you have any demos? =
 
-Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out [our Demos here](http://bit.ly/WPORGGiveDemos).
+Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out [our Demos here](https://go.givewp.com/demos).
 
 = Do you have Case Studies of Nonprofits using GiveWP? =
 
 Yes! We have two different types of studies that highlight nonprofits in different ways.
-"GiveWP Stories" are stories of how nonprofits or individuals implemented GiveWP with success. [You can read them all here](http://bit.ly/WPORGGiveStories).
-"Case Studies" are more detailed examples of how an agency implemented GiveWP for a specific purpose for an organization. [You can read those here](http://bit.ly/WPORGGiveCaseStudies).
+"GiveWP Stories" are stories of how nonprofits or individuals implemented GiveWP with success. [You can read them all here](https://go.givewp.com/stories).
+"Case Studies" are more detailed examples of how an agency implemented GiveWP for a specific purpose for an organization. [You can read those here](https://go.givewp.com/case-studies).
 
 = How is GiveWP better than a form plugin for accepting donations through WordPress? =
 
@@ -189,13 +189,13 @@ On top of that, customizing the plugin's terminology is a daunting task. You nev
 
 Use GiveWP for donations, and let yourWooCommerce or WP eCommerce pluginor the like handle your products. They work alongside each other just fine. Your donors will be happy, your customers will be happy, and so will you.
 
-Additionally, you can use our [Donation Upsells for WooCommerce](https://givewp.com/addons/donation-upsells-for-woocommerce/) GiveWP add-on to allow your customers to do a donation upsell in the cart or checkout as well.
+Additionally, you can use our [Donation Upsells for WooCommerce](https://go.givewp.com/addon-upsells/) GiveWP add-on to allow your customers to do a donation upsell in the cart or checkout as well.
 
 = How do I eliminated the 2% fee on Stripe donations? =
 
 The 2% fee on Stripe donations only applies to donations taken via our free Stripe integration in GiveWP Core. If you purchase the premium Stripe add-on you will not have any additional fees at all. Additionally, even with the free Stripe plugin, the fees only apply to one-time donations, never to recurring donations.
 
-[Read our release announcement](https://givewp.com/give2-5/) for all the details, and if you have further questions feel free to reach out via [our contact page](https://givewp.com/contact-us).
+[Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
 
 == Screenshots ==
 
@@ -215,13 +215,22 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 8. In-depth donation reports allow you to track just how much your cause has raised over time. You can even export the data to CSV or PDF formats.
 
-9. Extend GiveWP with a robust suite of powerful [Add-ons](https://givewp.com/addons "View all GiveWP Add-ons"). Accept recurring donations, credit cards, add custom form fields, and more!
+9. Extend GiveWP with a robust suite of powerful [Add-ons](https://go.givewp.com/addons "View all GiveWP Add-ons"). Accept recurring donations, credit cards, add custom form fields, and more!
 
-10. GiveWP is thoroughly [documented](https://givewp.com/documentation "Visit the GiveWP documentation") to help you get started quickly and learn basic to advanced features and functionalities.
+10. GiveWP is thoroughly [documented](https://go.givewp.com/docs "Visit the GiveWP documentation") to help you get started quickly and learn basic to advanced features and functionalities.
 
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.6.0: March 4th, 2020 =
+* New: The Reporting feature of GiveWP has undergone a major enhancement. Now reports display using a much improved visual charting interface with a breakdown of income, donors, top donation forms, and more. [#1525](https://github.com/impress-org/givewp/issues/1525), [#4330](https://github.com/impress-org/givewp/issues/4330)
+* New: The WP-Admin dashboard Donation Report widget for GiveWP has also undergone a major improvement. Now you can get a high-level overview of your donations for the day, week, or month from directly in you dashboard. (#4370)[https://github.com/impress-org/givewp/issues/4370]
+* New: The Akismet SPAM feature has been improved with logs for admins to better understand why an email has been flagged as SPAM as well as a new Whitelist setting for them to allow email addresses to bypass the check. [#4110](https://github.com/impress-org/givewp/issues/4110)
+* Fix: Resolved an issue with the "Recalculate Income Amount and Donation Counts for a Form" not accurately recalculating when using Currency Switcher add-on. [#4447](https://github.com/impress-org/givewp/issues/4447)
+* Fix: Resolved an issue with large databases with more than 13,000 donors receiving a fatal error when viewing the donor's list screen. [#4444](https://github.com/impress-org/givewp/issues/4444)
+* Tweak: You can now activate any plugin within the GiveWP Licenses tab. This resolves an issue with "this plugin does not have a valid header" error admins were receiving. [#4443](https://github.com/impress-org/givewp/issues/4443) 
+* Tweak: Updated the `[give_login]` shortcode text output to "Username or Email Address" to match WP's login. Note: you have been able to always log in using email but now the text accurately reflects that. [#4434](https://github.com/impress-org/givewp/issues/4434) 
 
 = 2.5.13: January 15th, 2020 =
 * Fix: Resolved an issue when using button mode of multiple donation buttons appearing incorrectly within shortcodes, blocks, and widgets. [#4379](https://github.com/impress-org/givewp/issues/4379)

@@ -119,9 +119,13 @@ class Give_Logging {
 	 * @return void
 	 */
 	public function register_taxonomy() {
-		register_taxonomy( 'give_log_type', 'give_log', array(
-			'public' => false,
-		) );
+		register_taxonomy(
+			'give_log_type',
+			'give_log',
+			array(
+				'public' => false,
+			)
+		);
 	}
 
 	/**
@@ -130,6 +134,7 @@ class Give_Logging {
 	 * Sets up the default log types and allows for new ones to be created.
 	 *
 	 * @since  1.0
+	 * @since  2.5.14 Add spam as valid log
 	 * @access public
 	 *
 	 * @return array $terms
@@ -140,6 +145,7 @@ class Give_Logging {
 			'gateway_error',
 			'api_request',
 			'update',
+			'spam',
 		);
 
 		return apply_filters( 'give_log_types', $terms );
@@ -203,11 +209,13 @@ class Give_Logging {
 	 * @return array             An array of the connected logs.
 	 */
 	public function get_logs( $object_id = 0, $type = '', $paged = null ) {
-		return $this->get_connected_logs( array(
-			'log_parent' => $object_id,
-			'paged'      => $paged,
-			'log_type'   => $type,
-		) );
+		return $this->get_connected_logs(
+			array(
+				'log_parent' => $object_id,
+				'paged'      => $paged,
+				'log_type'   => $type,
+			)
+		);
 	}
 
 	/**
@@ -258,7 +266,6 @@ class Give_Logging {
 				$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 			}
 		}
-
 
 		// Delete cache.
 		$this->delete_cache();
@@ -557,7 +564,7 @@ class Give_Logging {
 					continue;
 				} elseif ( ! isset( $log_query[ $new_query_param ] ) ) {
 					continue;
-				} elseif( empty( $log_query[ $new_query_param ] ) ) {
+				} elseif ( empty( $log_query[ $new_query_param ] ) ) {
 					continue;
 				}
 
@@ -573,16 +580,16 @@ class Give_Logging {
 						break;
 
 					case 'meta_query':
-						if( ! empty( $log_query['meta_query'] ) && empty( $log_query['post_parent'] ) ) {
-							foreach ( $log_query['meta_query'] as $index => $meta_query ){
-								if( ! is_array( $meta_query ) || empty( $meta_query['key'] ) ) {
+						if ( ! empty( $log_query['meta_query'] ) && empty( $log_query['post_parent'] ) ) {
+							foreach ( $log_query['meta_query'] as $index => $meta_query ) {
+								if ( ! is_array( $meta_query ) || empty( $meta_query['key'] ) ) {
 									continue;
 								}
 
 								switch ( $meta_query['key'] ) {
 									case '_give_log_form_id':
 										$log_query['post_parent'] = $meta_query['value'];
-										unset( $log_query['meta_query'][$index] );
+										unset( $log_query['meta_query'][ $index ] );
 										break;
 								}
 							}
@@ -590,11 +597,11 @@ class Give_Logging {
 						break;
 
 					default:
-						switch( $new_query_param ){
+						switch ( $new_query_param ) {
 							case 'log_parent':
 								$log_query['meta_query'][] = array(
-									'key' => '_give_log_payment_id',
-									'value' => $log_query[ $new_query_param ]
+									'key'   => '_give_log_payment_id',
+									'value' => $log_query[ $new_query_param ],
 								);
 
 								break;

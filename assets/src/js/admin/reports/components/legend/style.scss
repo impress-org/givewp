@@ -1,0 +1,40 @@
+.givewp-legend {
+	display: flex;
+	flex-direction: column;
+
+	> .item {
+		display: flex;
+		min-height: 40px;
+		height: auto;
+		font-size: 12px;
+		cursor: pointer;
+
+		&:nth-of-type(even) {
+			background: #f4f4f4;
+		}
+
+		&.inactive {
+			opacity: 0.3;
+		}
+
+		> .bar {
+			width: 8px;
+			background: #e5e5e5;
+		}
+
+		> .label {
+			flex: 1;
+			margin: 14px 8px;
+			font-weight: 500;
+		}
+
+		> .data {
+			margin: 14px 8px;
+			width: 76px;
+		}
+
+		> .percent {
+			margin: 14px 16px 14px 8px;
+		}
+	}
+}

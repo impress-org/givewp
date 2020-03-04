@@ -178,17 +178,16 @@ class Give_Donors_Query {
 		// Get donors from cache.
 		$this->donors = Give_Cache::get_db_query( $cache_key );
 
-		if ( is_null( $this->donors ) ) {
+		if ( null === $this->donors ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
-				$this->update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
+				self::update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
 
 			Give_Cache::set_db_query( $cache_key, $this->donors );
 		}
-
 
 		/**
 		 * Fires after retrieving donors.
@@ -219,7 +218,6 @@ class Give_Donors_Query {
 		}
 
 		$where = $this->get_where_query();
-
 
 		// Set offset.
 		if ( empty( $this->args['offset'] ) && ( 0 < $this->args['paged'] ) ) {
@@ -359,15 +357,19 @@ class Give_Donors_Query {
 		if ( ! empty( $this->args['date_query'] ) ) {
 			$date_query_object = new WP_Date_Query( is_array( $this->args['date_query'] ) ? $this->args['date_query'] : wp_parse_args( $this->args['date_query'] ), "{$this->table_name}.date_created" );
 
-			$where .= str_replace( array(
-				"\n",
-				'(   (',
-				'))',
-			), array(
-				'',
-				'( (',
-				') )',
-			), $date_query_object->get_sql() );
+			$where .= str_replace(
+				array(
+					"\n",
+					'(   (',
+					'))',
+				),
+				array(
+					'',
+					'( (',
+					') )',
+				),
+				$date_query_object->get_sql()
+			);
 		}
 
 		return $where;
@@ -386,7 +388,7 @@ class Give_Donors_Query {
 		$where = '';
 
 		// Bailout.
-		if( empty( $this->args['s'] ) ) {
+		if ( empty( $this->args['s'] ) ) {
 			return $where;
 		}
 
@@ -404,8 +406,7 @@ class Give_Donors_Query {
 						break;
 				}
 			}
-
-		} else if ( is_numeric( $this->args['s'] ) ) {
+		} elseif ( is_numeric( $this->args['s'] ) ) {
 			$where = "AND {$this->table_name}.id ='{$this->args['s']}'";
 
 		} else {
@@ -452,29 +453,29 @@ class Give_Donors_Query {
 	private function get_order_query() {
 		$table_columns = Give()->donors->get_columns();
 
-		$query = array();
+		$query    = array();
 		$ordersby = $this->args['orderby'];
 
-		if( ! is_array( $ordersby ) ) {
+		if ( ! is_array( $ordersby ) ) {
 			$ordersby = array(
-				$this->args['orderby'] => $this->args['order']
+				$this->args['orderby'] => $this->args['order'],
 			);
 		}
 
 		// Remove non existing column.
 		// Filter orderby values.
 		foreach ( $ordersby as $orderby => $order ) {
-			if( ! array_key_exists( $orderby, $table_columns ) ) {
-				unset( $ordersby[$orderby] );
+			if ( ! array_key_exists( $orderby, $table_columns ) ) {
+				unset( $ordersby[ $orderby ] );
 				continue;
 			}
 
 			$ordersby[ esc_sql( $orderby ) ] = esc_sql( $order );
 		}
 
-		if( empty( $ordersby ) ) {
+		if ( empty( $ordersby ) ) {
 			$ordersby = array(
-				'id' => $this->args['order']
+				'id' => $this->args['order'],
 			);
 		}
 
@@ -496,6 +497,7 @@ class Give_Donors_Query {
 
 	/**
 	 * Set donation count value where clause.
+	 *
 	 * @todo: add phpunit test
 	 *
 	 * @since  2.2.0
@@ -512,7 +514,7 @@ class Give_Donors_Query {
 			$amount  = $this->args['donation_count'];
 			if ( is_array( $this->args['donation_count'] ) ) {
 				$compare = $this->args['donation_count'] ['compare'];
-				$amount = $this->args['donation_count']['amount'];
+				$amount  = $this->args['donation_count']['amount'];
 			}
 
 			$where .= "AND {$this->table_name}.purchase_count{$compare}{$amount}";
@@ -523,6 +525,7 @@ class Give_Donors_Query {
 
 	/**
 	 * Set purchase value where clause.
+	 *
 	 * @todo: add phpunit test
 	 *
 	 * @since  2.1.0
@@ -539,7 +542,7 @@ class Give_Donors_Query {
 			$amount  = $this->args['donation_amount'];
 			if ( is_array( $this->args['donation_amount'] ) ) {
 				$compare = $this->args['donation_amount'] ['compare'];
-				$amount = $this->args['donation_amount']['amount'];
+				$amount  = $this->args['donation_amount']['amount'];
 			}
 
 			$where .= "AND {$this->table_name}.purchase_value{$compare}{$amount}";
@@ -593,7 +596,7 @@ class Give_Donors_Query {
 			if ( ! empty( $donor_ids ) ) {
 				$donor_ids = wp_list_pluck( $donor_ids, 'donor_id' );
 				$donor_ids = implode( ',', array_map( 'intval', $donor_ids ) );
-				$where     .= "AND {$this->table_name}.id IN ({$donor_ids})";
+				$where    .= "AND {$this->table_name}.id IN ({$donor_ids})";
 			} else {
 				$where .= "AND {$this->table_name}.id IN ('0')";
 			}
@@ -622,7 +625,7 @@ class Give_Donors_Query {
 
 		$date_query = array();
 
-		if ( ! empty ( $this->args['start_date'] ) ) {
+		if ( ! empty( $this->args['start_date'] ) ) {
 			$date_query['after'] = date(
 				'Y-m-d H:i:s',
 				is_numeric( $this->args['start_date'] )
@@ -631,7 +634,7 @@ class Give_Donors_Query {
 			);
 		}
 
-		if ( ! empty ( $this->args['end_date'] ) ) {
+		if ( ! empty( $this->args['end_date'] ) ) {
 			$date_query['before'] = date(
 				'Y-m-d H:i:s',
 				is_numeric( $this->args['end_date'] )
@@ -654,7 +657,7 @@ class Give_Donors_Query {
 	 *
 	 * @param array $donor_ids
 	 */
-	public static function update_meta_cache( $donor_ids ){
+	public static function update_meta_cache( $donor_ids ) {
 		// Exit.
 		if ( empty( $donor_ids ) ) {
 			return;
