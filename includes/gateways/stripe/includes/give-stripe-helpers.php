@@ -1121,3 +1121,26 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 	return $args;
 }
 
+/**
+ * This helper function is used to determine whether the screen is update payment method screen or not.
+ *
+ * @since 2.5.14
+ *
+ * @return bool
+ */
+function give_stripe_is_update_payment_method_screen() {
+
+	$get_data         = give_clean( filter_input_array( INPUT_GET ) );
+	$is_update_screen = false;
+
+	if (
+		isset( $get_data['action'] ) &&
+		'update' === $get_data['action'] &&
+		isset( $get_data['subscription_id'] ) &&
+		is_numeric( $get_data['subscription_id'] )
+	) {
+		$is_update_screen = true;
+	}
+
+	return $is_update_screen;
+}
