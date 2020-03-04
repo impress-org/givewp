@@ -306,7 +306,7 @@
 	}
 
 	/**
-	 * Handle form theme activate
+	 * Handle form theme activation
 	 * @since: 2.7.0
 	 */
 	const handle_form_theme_activation = function() {
@@ -337,7 +337,7 @@
 	};
 
 	/**
-	 * Handle form theme deactivate
+	 * Handle form theme deactivation
 	 * @since: 2.7.0
 	 */
 	const handle_form_theme_deactivation = function() {
