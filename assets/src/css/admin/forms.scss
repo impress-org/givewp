@@ -433,13 +433,13 @@ Shortcode Copy & Paste
 		.theme-options {
 			display: none;
 
-			.give-row {
+			> .give-row {
 				margin-bottom: 20px;
 				border: 1px solid #ccd0d4;
-			}
 
-			.give-row-head {
-				background-color: #f1f1f1;
+				> .give-row-head {
+					background-color: #f1f1f1;
+				}
 			}
 		}
 

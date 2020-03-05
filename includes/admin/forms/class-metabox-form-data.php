@@ -279,17 +279,6 @@ class Give_MetaBox_Form_Data {
 						'give_forms_display_options_metabox_fields',
 						array(
 							array(
-								'name'    => __( 'Form Style', 'give' ),
-								'desc'    => sprintf( __( 'Choose form style', 'give' ), '#' ),
-								'id'      => $prefix . 'form_style',
-								'type'    => 'select',
-								'options' => array(
-									'legacy'  => __( 'Legacy', 'give' ),
-									'elegent' => __( 'Elegent', 'give' ),
-								),
-								'default' => 'legacy',
-							),
-							array(
 								'name'    => __( 'Display Options', 'give' ),
 								'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
 								'id'      => $prefix . 'payment_display',

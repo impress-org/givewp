@@ -26,6 +26,24 @@ return [
 						'placeholder' => __( 'Campaign Sub Heading', 'give' ),
 					),
 				),
+				array(
+					'id'            =>  'emails',
+					'type'          => 'group',
+					'options'       => array(
+						'add_button'    => __( 'Add Email', 'give' ),
+						'header_title'  => __( 'Admin Email', 'give' ),
+						'remove_button' => '<span class="dashicons dashicons-no"></span>',
+					),
+					// Fields array works the same, except id's only need to be unique for this group.
+					// Prefix is not needed.
+					'fields'        => array(
+						array(
+							'name' => __( 'ID', 'give' ),
+							'id'   => 'id',
+							'type' => 'text',
+						)
+					)
+				)
 			],
 		],
 		'thank-you'    => [
