@@ -1156,8 +1156,34 @@ class Give_MetaBox_Form_Data {
 						break;
 
 					case 'group':
-						// @todo: add support for group field.
-						continue;
+						foreach ( $options[ $groupID ][ $field['id'] ] as $index => $subFields ) {
+
+							// Do not save template input field values.
+							if ( '{{row-count-placeholder}}' === $index ) {
+								continue;
+							}
+
+							$group_of_values = array();
+
+							foreach ( $subFields as $field_id => $field_value ) {
+								switch ( $themeOptions[ $groupID ][ $field['id'] ]['fields'][ $field_id ]['type'] ) {
+									case 'wysiwyg':
+										$group_of_values[ $field_id ] = wp_kses_post( $field_value );
+										break;
+
+									default:
+										$group_of_values[ $field_id ] = give_clean( $field_value );
+								}
+							}
+
+							if ( ! empty( $group_of_values ) ) {
+								$value[ $index ] = $group_of_values;
+							}
+						}
+
+						// Arrange repeater field keys in order.
+						$value = array_values( $value );
+						break;
 
 					default:
 						$value = give_clean( $options[ $groupID ][ $field['id'] ] );
