@@ -218,19 +218,19 @@ export default {
 				current_amount = Give.fn.unFormatCurrency(
 					$form.find( 'input[name="give-amount"]' ).val(),
 					this.getInfo( 'decimal_separator', $form )
-				),
+				);
 
-				/**
-				 * Flag Multi-levels for min. donation conditional.
-				 *
-				 * Note: Value of this variable will be:
-				 *  a. -1      if no any level found.
-				 *  b. [0-*]   Any number from zero if donation level found.
-				 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
-				 *
-				 * @type {number/string} Donation level ID.
-				 */
-				price_id = ! ! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : -1;
+			/**
+			 * Flag Multi-levels for min. donation conditional.
+			 *
+			 * Note: Value of this variable will be:
+			 *  a. -1      if no any level found.
+			 *  b. [0-*]   Any number from zero if donation level found.
+			 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
+			 *
+			 * @type {number/string} Donation level ID.
+			 */
+			let	price_id = ! ! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : -1;
 
 			// Flag to decide on which param we want to find price_id
 			is_amount = 'undefined' === typeof is_amount ? true : is_amount;
