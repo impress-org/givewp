@@ -364,6 +364,35 @@
 		} );
 	};
 
+	/**
+	 * Handle form theme setting vlaidation
+	 *
+	 * @since 2.7.0
+	 */
+	const saveFormSettingOnlyIfFormThemeSelected = function() {
+		$( '.post-type-give_forms' ).on( 'click', '#publishing-action input[type=submit]', function() {
+			const activatedTheme = $( 'input[name=_give_form_theme]', '#form_theme_options' ).val();
+
+			if ( ! activatedTheme ) {
+				new Give.modal.GiveNoticeAlert( {
+					type: 'warning',
+					modalContent: {
+						desc: Give.fn.getGlobalVar( 'form_theme_required' ),
+					},
+				} ).render();
+
+				// Open form theme settings.
+				if ( 'form_theme_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
+					$( 'a[href="#form_theme_options"]' ).trigger( 'click' );
+				}
+
+				return false;
+			}
+
+			return true;
+		} );
+	};
+
 	//On DOM Ready
 	$( function() {
 		handle_default_radio();
@@ -372,5 +401,6 @@
 		misc_cleanup();
 		handleFormThemeActivation();
 		handleFormThemeDeactivation();
+		saveFormSettingOnlyIfFormThemeSelected();
 	} );
 }( jQuery ) );
