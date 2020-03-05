@@ -1,19 +1,15 @@
-(function (tinymce) {
-
+( function( tinymce ) {
 	tinymce.PluginManager.add(
 		'give_shortcode',
-		function (editor) {
+		function( editor ) {
 			editor.addCommand(
 				'Give_Shortcode',
-				function () {
-
-					if (window.scForm) {
-
+				function() {
+					if ( window.scForm ) {
 						window.scForm.open( editor.id );
 					}
 				}
 			);
 		}
 	);
-
-})( window.tinymce );
+}( window.tinymce ) );

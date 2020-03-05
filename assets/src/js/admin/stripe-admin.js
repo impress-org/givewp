@@ -30,8 +30,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				} else {
 					legacyCheckoutFields.map( field => field.classList.add( 'give-hidden' ) );
 				}
-			});
-		});
+			} );
+		} );
 	}
 
 	if ( null !== stripeDisconnect ) {

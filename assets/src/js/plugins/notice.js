@@ -1,10 +1,10 @@
 // Use only in WP Backend.
-jQuery( document ).ready( function($) {
-	$('body').on( 'click', '.notice-dismiss', function( event ) {
+jQuery( document ).ready( function( $ ) {
+	$( 'body' ).on( 'click', '.notice-dismiss', function( event ) {
 		const $el = $( this ).parent().parent();
 
 		// Exit if not give notices.
-		if( ! $el.hasClass('give-notice') ){
+		if ( ! $el.hasClass( 'give-notice' ) ) {
 			return;
 		}
 

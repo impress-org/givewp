@@ -5,9 +5,9 @@ export default {
 		this.fn.__initialize_cache();
 
 		// Run code on after window load.
-		window.addEventListener('load', function () {
+		window.addEventListener( 'load', function() {
 			Give.form.fn.__sendBackToForm();
-		});
+		} );
 	},
 
 	fn: {
@@ -19,8 +19,8 @@ export default {
 		 *
 		 * @return {boolean}
 		 */
-		isFormExist: function(){
-			return !! document.getElementsByName('give-form-hash').length;
+		isFormExist: function() {
+			return !! document.getElementsByName( 'give-form-hash' ).length;
 		},
 
 		/**
@@ -65,7 +65,7 @@ export default {
 		 * @return {string}
 		 */
 		getInfo: function( str, $form ) {
-			var data = '';
+			let data = '';
 			$form = 'undefined' !== typeof $form ? $form : {};
 
 			// Bailout.
@@ -77,7 +77,7 @@ export default {
 				case 'gateways':
 					data = [];
 					jQuery.each( $form.find( 'input[name="payment-mode"]' ), function( index, gateway ) {
-						gateway = ! (gateway instanceof jQuery) ? jQuery( gateway ) : gateway;
+						gateway = ! ( gateway instanceof jQuery ) ? jQuery( gateway ) : gateway;
 						data.push( gateway.val().trim() );
 					} );
 					break;
@@ -157,7 +157,7 @@ export default {
 		 * @param {object} $form
 		 */
 		getGateway: function( $form ) {
-			var gateway = '';
+			let gateway = '';
 
 			if ( ! $form.length ) {
 				return gateway;
@@ -176,27 +176,28 @@ export default {
 		 * @returns {Object}
 		 */
 		getVariablePrices: function( $form ) {
-			var variable_prices = [], formLevels;
+			let variable_prices = [],
+				formLevels;
 
 			// check if correct form type is multi or not.
 			if (
 				! $form.length ||
 				! $form.hasClass( 'give-form-type-multi' ) ||
-				! (formLevels = $form.find( '.give-donation-levels-wrap [data-price-id] ' ))
+				! ( formLevels = $form.find( '.give-donation-levels-wrap [data-price-id] ' ) )
 			) {
 				return variable_prices;
 			}
 
 			jQuery.each( formLevels, function( index, item ) {
 				// Get Jquery instance for item.
-				item = ! (item instanceof jQuery) ? jQuery( item ) : item;
+				item = ! ( item instanceof jQuery ) ? jQuery( item ) : item;
 
-				var decimal_separator = Give.form.fn.getInfo( 'decimal_separator', $form );
+				const decimal_separator = Give.form.fn.getInfo( 'decimal_separator', $form );
 
 				// Add price id and amount to collector.
 				variable_prices.push( {
 					price_id: item.data( 'price-id' ),
-					amount: Give.fn.unFormatCurrency( item.val(), decimal_separator )
+					amount: Give.fn.unFormatCurrency( item.val(), decimal_separator ),
 				} );
 			} );
 
@@ -213,8 +214,7 @@ export default {
 		 * @return {string}
 		 */
 		getPriceID: function( $form, is_amount ) {
-
-			var variable_prices = this.getVariablePrices( $form ),
+			const variable_prices = this.getVariablePrices( $form ),
 				current_amount = Give.fn.unFormatCurrency(
 					$form.find( 'input[name="give-amount"]' ).val(),
 					this.getInfo( 'decimal_separator', $form )
@@ -230,16 +230,15 @@ export default {
 				 *
 				 * @type {number/string} Donation level ID.
 				 */
-				price_id = ! ! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : - 1;
+				price_id = ! ! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : -1;
 
 			// Flag to decide on which param we want to find price_id
 			is_amount = 'undefined' === typeof is_amount ? true : is_amount;
 
 			// Find price id with amount in variable prices.
 			if ( variable_prices.length ) {
-
 				// Get recent selected price id for same amount.
-				if ( - 1 === price_id ) {
+				if ( -1 === price_id ) {
 					if ( is_amount ) {
 						// Find amount in donation levels.
 						jQuery.each( variable_prices, function( index, variable_price ) {
@@ -251,7 +250,7 @@ export default {
 						} );
 
 						// Set level to custom.
-						if ( - 1 === price_id && (this.getMinimumAmount( $form ) <= current_amount && (this.getMaximumAmount( $form ) >= current_amount) && this.getMinimumAmount( $form ) <= current_amount) ) {
+						if ( -1 === price_id && ( this.getMinimumAmount( $form ) <= current_amount && ( this.getMaximumAmount( $form ) >= current_amount ) && this.getMinimumAmount( $form ) <= current_amount ) ) {
 							price_id = 'custom';
 						}
 					} else {
@@ -300,7 +299,7 @@ export default {
 				return null;
 			}
 
-			var amount = $form.find( 'input[name="give-amount"]' ).val();
+			let amount = $form.find( 'input[name="give-amount"]' ).val();
 
 			if ( 'undefined' === typeof amount || ! amount ) {
 				amount = 0;
@@ -351,14 +350,14 @@ export default {
 
 			nonce.el = $form.find( 'input[name="give-form-hash"]' );
 
-			if( ! nonce.el.length ) {
+			if ( ! nonce.el.length ) {
 				return nonce;
 			}
 
 			nonce.value = $form.find( 'input[name="give-form-hash"]' ).val();
-			nonce.value =  'undefined' === typeof nonce.value || ! nonce.value ? '' : nonce.value;
+			nonce.value = 'undefined' === typeof nonce.value || ! nonce.value ? '' : nonce.value;
 
-			nonce.createdInDonorSession   = '1' === nonce.el.attr('data-donor-session');
+			nonce.createdInDonorSession = '1' === nonce.el.attr( 'data-donor-session' );
 
 			return nonce;
 		},
@@ -380,16 +379,16 @@ export default {
 			Give.form.fn.disable( $form, true );
 
 			//Post via AJAX to Give
-			jQuery.post( Give.fn.getGlobalVar('ajaxurl'), {
-					action: 'give_donation_form_nonce',
-					give_form_id: Give.form.fn.getInfo( 'form-id', $form )
-				},
-				function( response ) {
-					// Update nonce field.
-					Give.form.fn.setInfo( 'nonce', response.data, $form, '' );
+			jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ), {
+				action: 'give_donation_form_nonce',
+				give_form_id: Give.form.fn.getInfo( 'form-id', $form ),
+			},
+			function( response ) {
+				// Update nonce field.
+				Give.form.fn.setInfo( 'nonce', response.data, $form, '' );
 
-					Give.form.fn.disable( $form, false );
-				}
+				Give.form.fn.disable( $form, false );
+			}
 			);
 		},
 
@@ -410,18 +409,18 @@ export default {
 
 			Give.form.fn.disable( $form, true );
 
-			return new Promise( (resolve, reject ) => {
+			return new Promise( ( resolve, reject ) => {
 				//Post via AJAX to Give
 				jQuery.post(
-					Give.fn.getGlobalVar('ajaxurl'),
+					Give.fn.getGlobalVar( 'ajaxurl' ),
 					{
 						action: 'give_donation_form_reset_all_nonce',
-						give_form_id: Give.form.fn.getInfo( 'form-id', $form )
+						give_form_id: Give.form.fn.getInfo( 'form-id', $form ),
 					},
 					function( response ) {
 						// Process only if get response successfully.
-						if( ! response.success ) {
-							return reject(response);
+						if ( ! response.success ) {
+							return reject( response );
 						}
 
 						const createUserNonceField = $form.find( 'input[name="give-form-user-register-hash"]' );
@@ -430,7 +429,7 @@ export default {
 						Give.form.fn.setInfo( 'nonce', response.data.give_form_hash, $form, '' );
 
 						// Update create user nonce field.
-						if( createUserNonceField.length ){
+						if ( createUserNonceField.length ) {
 							createUserNonceField.val( response.data.give_form_user_register_hash );
 						}
 
@@ -442,13 +441,13 @@ export default {
 						 * @since  2.2.0
 						 * @access access
 						 */
-						jQuery(document).trigger( 'give_reset_all_nonce', [response.data] );
+						jQuery( document ).trigger( 'give_reset_all_nonce', [ response.data ] );
 
-						return resolve(response);
+						return resolve( response );
 					}
-				).done(function(){
+				).done( function() {
 					Give.form.fn.disable( $form, false );
-				});
+				} );
 			} );
 		},
 
@@ -462,17 +461,15 @@ export default {
 		 * @return {boolean}
 		 */
 		autoSelectDonationLevel: function( $form, price_id ) {
-
 			if ( ! $form.length || 'multi' !== this.getInfo( 'form-type', $form ) ) {
 				return false;
 			}
 
-			price_id = ('undefined' === typeof price_id) ? this.getPriceID( $form, false ) : price_id;
+			price_id = ( 'undefined' === typeof price_id ) ? this.getPriceID( $form, false ) : price_id;
 
 			switch ( true ) {
-
 				// Auto select radio button.
-				case (! ! $form.find( '.give-radio-input' ).length) :
+				case ( ! ! $form.find( '.give-radio-input' ).length ) :
 					$form.find( '.give-radio-input' )
 						.prop( 'checked', false );
 					$form.find( '.give-radio-input[data-price-id="' + price_id + '"]' )
@@ -481,7 +478,7 @@ export default {
 					break;
 
 				// Set focus to price id button.
-				case (! ! $form.find( 'button.give-donation-level-btn' ).length) :
+				case ( ! ! $form.find( 'button.give-donation-level-btn' ).length ) :
 					$form.find( 'button.give-donation-level-btn' )
 						.blur();
 					$form.find( 'button.give-donation-level-btn[data-price-id="' + price_id + '"]' )
@@ -489,14 +486,13 @@ export default {
 					break;
 
 				// Auto select option.
-				case (! ! $form.find( 'select.give-select-level' ).length) :
+				case ( ! ! $form.find( 'select.give-select-level' ).length ) :
 					$form.find( 'select.give-select-level option' )
 						.prop( 'selected', false );
 					$form.find( 'select.give-select-level option[data-price-id="' + price_id + '"]' )
 						.prop( 'selected', true )
 						.addClass( 'give-default-level' );
 					break;
-
 			}
 		},
 
@@ -510,13 +506,12 @@ export default {
 		 * @returns {boolean}
 		 */
 		autoSetMultiLevel: function( $level ) {
-
-			var $form = $level.parents( 'form' ),
+			let $form = $level.parents( 'form' ),
 				level_amount = $level.val(),
 				level_price_id = $level.data( 'price-id' );
 
 			// Check if price ID blank because of dropdown type
-			if ( 'undefined' === typeof  level_price_id ) {
+			if ( 'undefined' === typeof level_price_id ) {
 				level_price_id = $level.find( 'option:selected' ).data( 'price-id' );
 			}
 
@@ -531,7 +526,7 @@ export default {
 			$form.find( '.give-amount-top' ).val( level_amount );
 			$form.find( 'span.give-amount-top' ).text( level_amount );
 
-			var decimal_separator = Give.form.fn.getInfo( 'decimal_separator', $form );
+			const decimal_separator = Give.form.fn.getInfo( 'decimal_separator', $form );
 
 			// Cache previous amount and set data amount.
 			jQuery( '.give-donation-amount .give-text-input', $form )
@@ -558,8 +553,7 @@ export default {
 		 * @access private
 		 */
 		__sendBackToForm: function() {
-
-			let form_id = Give.fn.getParameterByName( 'form-id' ),
+			const form_id = Give.fn.getParameterByName( 'form-id' ),
 				payment_mode = Give.fn.getParameterByName( 'payment-mode' );
 
 			// Sanity check - only proceed if query strings in place.
@@ -567,7 +561,7 @@ export default {
 				return false;
 			}
 
-			let $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
+			const $form_wrapper = jQuery( 'body' ).find( '#give-form-' + form_id + '-wrap' ),
 				$form = $form_wrapper.find( 'form.give-form' ),
 				display_modal = $form_wrapper.hasClass( 'give-display-modal' ),
 				display_button = $form_wrapper.hasClass( 'give-display-button' ),
@@ -583,15 +577,15 @@ export default {
 
 			// Select the proper level for Multi-level forms.
 			// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
-			let level_id = Give.fn.getParameterByName( 'level-id' ),
+			const level_id = Give.fn.getParameterByName( 'level-id' ),
 				level_field = $form.find( '*[data-price-id="' + level_id + '"]' );
 
 			if ( level_field.length > 0 ) {
 				this.autoSetMultiLevel( level_field );
 			}
 
-			let give_form_wrap = jQuery( '.give-form-wrap' ),
-				is_form_grid   = give_form_wrap.hasClass( 'give-form-grid-wrap' );
+			const give_form_wrap = jQuery( '.give-form-wrap' ),
+				is_form_grid = give_form_wrap.hasClass( 'give-form-grid-wrap' );
 
 			if ( is_form_grid && 1 === jQuery( '#give-modal-form-' + form_id ).length ) {
 				jQuery.magnificPopup.open( {
@@ -605,7 +599,7 @@ export default {
 					midClick: true,
 					removalDelay: 300,
 					mainClass: 'modal-fade-slide',
-				});
+				} );
 
 				return;
 			}
@@ -618,7 +612,6 @@ export default {
 				$form.find( '.give-btn-reveal' ).hide();
 				$form.find( '#give-payment-mode-select, #give_purchase_form_wrap' ).slideDown();
 			}
-
 		},
 
 		/**
@@ -630,26 +623,25 @@ export default {
 		 * @return {boolean}
 		 */
 		isValidDonationAmount: function( $form ) {
-
 			// Return true, if custom amount is not enabled.
 			if ( $form.find( 'input[name="give-form-minimum"]' ).length <= 0 ) {
 				return true;
 			}
 
-			let min_amount = this.getMinimumAmount( $form ),
+			const min_amount = this.getMinimumAmount( $form ),
 				max_amount = this.getMaximumAmount( $form ),
 				amount = this.getAmount( $form ),
 				price_id = this.getPriceID( $form, true );
 
 			// Don't allow zero donation amounts.
 			// https://github.com/impress-org/give/issues/3181
-			if( 0 === amount ) {
-				return false
+			if ( 0 === amount ) {
+				return false;
 			}
 
 			return (
-				((- 1 < amount) && amount >= min_amount && amount <= max_amount)
-				|| (- 1 !== price_id)
+				( ( -1 < amount ) && amount >= min_amount && amount <= max_amount ) ||
+				( -1 !== price_id )
 			);
 		},
 
@@ -682,7 +674,7 @@ export default {
 				//Loop through forms on page and set CC validation
 				$forms.each( function( index, form ) {
 					form = jQuery( form );
-					var card_number = form.find( '.card-number' ),
+					const card_number = form.find( '.card-number' ),
 						card_cvc = form.find( '.card-cvc' ),
 						card_expiry = form.find( '.card-expiry' );
 
@@ -693,7 +685,7 @@ export default {
 						card_expiry.payment( 'formatCardExpiry' );
 					}
 				} );
-			}
-		}
-	}
+			},
+		},
+	},
 };
