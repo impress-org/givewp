@@ -1250,8 +1250,11 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			$repeater_field_values = give_get_meta( $thepostid, $fields['id'], true );
-			$header_title          = isset( $fields['options']['header_title'] )
+			$repeater_field_values = ! empty( $fields['attributes']['value'] )
+				? $fields['attributes']['value']
+				: give_get_meta( $thepostid, $fields['id'], true );
+
+			$header_title = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' );
 
