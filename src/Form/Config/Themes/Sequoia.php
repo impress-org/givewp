@@ -1,7 +1,7 @@
 <?php
 return [
-	'id'      => 'sequola',
-	'name'    => __( 'Sequola - Multi-Step Form', 'give' ),
+	'id'      => 'sequoia',
+	'name'    => __( 'Sequoia - Multi-Step Form', 'give' ),
 	'image'   => '',
 	'options' => [
 		'introduction' => [
