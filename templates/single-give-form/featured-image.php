@@ -27,7 +27,8 @@ do_action( 'give_pre_featured_thumbnail' );
 ?>
 
 <div class="images">
-	<?php //Featured Thumbnail
+	<?php
+	// Featured Thumbnail
 	if ( has_post_thumbnail() ) {
 
 		$image_size = give_get_option( 'featured_image_size' );
@@ -37,10 +38,11 @@ do_action( 'give_pre_featured_thumbnail' );
 
 	} else {
 
-		//Placeholder Image
+		// Placeholder Image
 		echo apply_filters( 'single_give_form_image_html', sprintf( '<img src="%s" alt="%s" />', give_get_placeholder_img_src(), esc_attr__( 'Placeholder', 'give' ) ), $post->ID );
 
-	} ?>
+	}
+	?>
 </div>
 
 <?php

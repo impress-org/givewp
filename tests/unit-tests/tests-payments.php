@@ -79,9 +79,11 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test give_payments query.
 	 */
 	public function test_payments_query_give_payments() {
-		$payments = new Give_Payments_Query( array(
-			'output' => 'give_payments',
-		) );
+		$payments = new Give_Payments_Query(
+			array(
+				'output' => 'give_payments',
+			)
+		);
 		$out      = $payments->get_payments();
 		$this->assertTrue( is_object( $out[0] ) );
 		$this->assertTrue( property_exists( $out[0], 'ID' ) );
@@ -98,9 +100,11 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test payments query.
 	 */
 	public function test_payments_query_payments() {
-		$payments = new Give_Payments_Query( array(
-			'output' => 'payments',
-		) );
+		$payments = new Give_Payments_Query(
+			array(
+				'output' => 'payments',
+			)
+		);
 		$out      = $payments->get_payments();
 		$this->assertTrue( is_object( $out[0] ) );
 		$this->assertTrue( property_exists( $out[0], 'ID' ) );
@@ -117,7 +121,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * Test default query.
 	 */
 	public function test_payments_query_default() {
-		$payments = new Give_Payments_Query;
+		$payments = new Give_Payments_Query();
 		$out      = $payments->get_payments();
 		$this->assertTrue( is_object( $out[0] ) );
 		$this->assertTrue( property_exists( $out[0], 'ID' ) );
@@ -287,7 +291,6 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
 		wp_cache_flush();
 
-
 		/**
 		 * Case 1: enable sequential donation
 		 */
@@ -347,7 +350,6 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		give_update_option( 'sequential-ordering_number_prefix', '' );
 		give_update_option( 'sequential-ordering_number_suffix', '' );
 		give_update_option( 'sequential-ordering_number', 400 );
-
 
 		/**
 		 * Case 2: disable sequential donation.
@@ -510,16 +512,22 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$total1 = give_donation_amount( $this->_payment_id, true );
 		$total2 = give_donation_amount( $this->_payment_id, true );
-		$total3 = give_donation_amount( $this->_payment_id, array(
-			'currency' => true,
-			'amount'   => true,
-			'type'     => 'stats'
-		) );
-		$total4 = give_donation_amount( $this->_payment_id, array(
-			'currency' => true,
-			'amount'   => true,
-			'type'     => 'stats'
-		) );
+		$total3 = give_donation_amount(
+			$this->_payment_id,
+			array(
+				'currency' => true,
+				'amount'   => true,
+				'type'     => 'stats',
+			)
+		);
+		$total4 = give_donation_amount(
+			$this->_payment_id,
+			array(
+				'currency' => true,
+				'amount'   => true,
+				'type'     => 'stats',
+			)
+		);
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
@@ -566,7 +574,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$form = Give_Helper_Form::create_multilevel_form(
 			array(
 				'meta' => array(
-					'_give_set_price'             => '0.00', //Multi-level Pricing; not set
+					'_give_set_price'             => '0.00', // Multi-level Pricing; not set
 					'_give_display_style'         => 'buttons',
 					'_give_donation_levels'       => array(
 						array(
@@ -659,10 +667,38 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		return array(
 			array( false, '2873892713.34', '2873892713.34' ),
 			array( true, '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
-			array( array( 'currency' => true, 'amount' => false ), '&#36;2873892713.34', '&#8377;2873892713.34' ),
-			array( array( 'currency' => false, 'amount' => true ), '2,873,892,713.34', '2,87,38,92,713.34' ),
-			array( array( 'currency' => true, 'amount' => true ), '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
-			array( array( 'currency' => false, 'amount' => false ), '2873892713.34', '2873892713.34' ),
+			array(
+				array(
+					'currency' => true,
+					'amount'   => false,
+				),
+				'&#36;2873892713.34',
+				'&#8377;2873892713.34',
+			),
+			array(
+				array(
+					'currency' => false,
+					'amount'   => true,
+				),
+				'2,873,892,713.34',
+				'2,87,38,92,713.34',
+			),
+			array(
+				array(
+					'currency' => true,
+					'amount'   => true,
+				),
+				'&#36;2,873,892,713.34',
+				'&#8377;2,87,38,92,713.34',
+			),
+			array(
+				array(
+					'currency' => false,
+					'amount'   => false,
+				),
+				'2873892713.34',
+				'2873892713.34',
+			),
 
 			array( array(), '2873892713.34', '2873892713.34' ),
 

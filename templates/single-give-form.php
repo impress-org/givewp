@@ -23,7 +23,8 @@ get_header();
  */
 do_action( 'give_before_main_content' );
 
-while ( have_posts() ) : the_post();
+while ( have_posts() ) :
+	the_post();
 
 	give_get_template_part( 'single-give-form/content', 'single-give-form' );
 

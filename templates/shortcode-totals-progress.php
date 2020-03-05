@@ -30,7 +30,7 @@ $progress = apply_filters( 'give_goal_totals_funded_percentage_output', $progres
 	<div class="raised">
 		<?php
 		echo sprintf(
-		/* translators: %s: percentage of the amount raised compared to the goal target */
+			/* translators: %s: percentage of the amount raised compared to the goal target */
 			__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
 			round( $progress )
 		);
@@ -38,10 +38,14 @@ $progress = apply_filters( 'give_goal_totals_funded_percentage_output', $progres
 	</div>
 
 	<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-	     aria-valuenow="<?php echo esc_attr( $progress ); ?>">
-			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
-				echo 'background-color:' . $color;
-			} ?>"></span>
+		 aria-valuenow="<?php echo esc_attr( $progress ); ?>">
+			<span style="width: <?php echo esc_attr( $progress ); ?>%;
+											<?php
+											if ( ! empty( $color ) ) {
+												echo 'background-color:' . $color;
+											}
+											?>
+			"></span>
 	</div><!-- /.give-progress-bar -->
 
 </div><!-- /.goal-progress -->

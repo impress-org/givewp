@@ -8,27 +8,26 @@
 
 namespace Give\Views;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages Views
- *
  */
 class Views {
 
-    /**
-     * Initialize admin and frontend views
-     */
-    public function init() {
-        // To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
-        require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+	/**
+	 * Initialize admin and frontend views
+	 */
+	public function init() {
+		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
+		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
 
-        // Load admin views
+		// Load admin views
 		$this->load_admin_views();
-    }
+	}
 
-    public function __construct() {
-        //Do nothing
+	public function __construct() {
+		// Do nothing
 	}
 
 	public function load_admin_views() {
@@ -38,5 +37,5 @@ class Views {
 	}
 
 }
-$views = new Views;
+$views = new Views();
 $views->init();

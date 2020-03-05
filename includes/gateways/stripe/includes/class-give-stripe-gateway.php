@@ -306,9 +306,11 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				try {
 
 					// Attach Source to existing Customer.
-					$card = $stripe_customer->sources->create( array(
-						'source' => $id,
-					) );
+					$card = $stripe_customer->sources->create(
+						array(
+							'source' => $id,
+						)
+					);
 
 				} catch ( \Stripe\Error\Base $e ) {
 
@@ -389,7 +391,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function log_error( $exception ) {
 
-			$log_message = __( 'The Stripe payment gateway returned an error while processing the donation.', 'give' ) . '<br><br>';
+			$log_message       = __( 'The Stripe payment gateway returned an error while processing the donation.', 'give' ) . '<br><br>';
 			$exception_message = $exception->getMessage();
 
 			// Bad Request of some sort.
@@ -566,7 +568,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @since  1.6
 		 * @access public
-	 	 *
+		 *
 		 * @return bool|\Stripe\Source
 		 */
 		public function create_3d_secure_source( $donation_id, $source_id ) {
@@ -580,7 +582,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				'currency'             => give_get_currency( $form_id ),
 				'type'                 => 'three_d_secure',
 				'three_d_secure'       => array(
-					'card'     => $source_id,
+					'card' => $source_id,
 				),
 				'statement_descriptor' => give_stripe_get_statement_descriptor(),
 				'redirect'             => array(
@@ -615,7 +617,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @since  1.6
 		 * @access public
 		 *
-	 	 * @return bool
+		 * @return bool
 		 */
 		public function is_3d_secure_required( $source_object ) {
 

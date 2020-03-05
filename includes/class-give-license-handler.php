@@ -706,7 +706,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$license_key         = $is_license ? $license['license_key'] : '';
 			$license_is_inactive = $license_key && ! in_array( $license['license'], array( 'valid', 'expired' ) );
 			$expires_timestamp   = $is_license ? strtotime( $license['expires'] ) : '';
-			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+			$is_license_expired  = $is_license && ( 'expired' === $license['license'] || $expires_timestamp < time() );
 			$addon_dir           = ! empty( $plugin['Dir'] ) ? $plugin['Dir'] : ( ! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '' );
 			?>
 			<div class="give-license-row give-clearfix">
@@ -874,7 +874,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$is_license         = $plugin['License'] && ! empty( $plugin['License']['license_key'] );
 			$expires_timestamp  = $is_license ? strtotime( $plugin['License']['expires'] ) : '';
-			$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < current_time( 'timestamp', 1 ) );
+			$is_license_expired = $is_license && ( 'expired' === $plugin['License']['license'] || $expires_timestamp < time() );
 			ob_start();
 			?>
 			<div class="give-addon-info-wrap give-clearfix">
@@ -941,7 +941,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				'give_licenses_refreshed_last_checked',
 				array(
 					'compare' => date( 'Ymd' ),
-					'time'    => current_time( 'timestamp', 1 ),
+					'time'    => time(),
 					'count'   => 0,
 				)
 			);

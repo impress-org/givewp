@@ -17,11 +17,13 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		$this->_post_id = $this->factory->post->create( array(
-			'post_title'  => 'Test Donation',
-			'post_type'   => 'give_forms',
-			'post_status' => 'publish',
-		) );
+		$this->_post_id = $this->factory->post->create(
+			array(
+				'post_title'  => 'Test Donation',
+				'post_type'   => 'give_forms',
+				'post_status' => 'publish',
+			)
+		);
 
 		$_multi_level_donations = array(
 			array(
@@ -54,13 +56,15 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 		}
 
 		/** Generate some donations */
-		$this->_user_id = $this->factory->user->create( array(
+		$this->_user_id = $this->factory->user->create(
+			array(
 				'role'       => 'administrator',
 				'first_name' => 'Admin',
 				'last_name'  => 'User',
-		) );
+			)
+		);
 
-		$user           = get_userdata( $this->_user_id );
+		$user = get_userdata( $this->_user_id );
 
 		$user_info = array(
 			'id'         => $user->ID,

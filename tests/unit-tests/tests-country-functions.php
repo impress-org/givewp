@@ -38,7 +38,7 @@ class Tests_Country_Functions extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'NC', $us_states );
 		$this->assertEquals( 'North Carolina', $us_states['NC'] );
 
-		$india_states = give_get_states('IN');
+		$india_states = give_get_states( 'IN' );
 
 		// Check some states.
 		$this->assertArrayHasKey( 'CT', $india_states );

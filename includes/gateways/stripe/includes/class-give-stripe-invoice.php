@@ -39,7 +39,7 @@ if ( ! class_exists( 'Give_Stripe_Invoice' ) ) {
 
 				// Retrieve Invoice by ID.
 				$invoice = \Stripe\Invoice::retrieve( $id );
-			} catch( Exception $e ) {
+			} catch ( Exception $e ) {
 
 				// Something went wrong outside of Stripe.
 				give_record_gateway_error(

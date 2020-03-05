@@ -5,9 +5,9 @@
  */
 class Tests_Payment_Class extends Give_Unit_Test_Case {
 
-	protected $_payment_id = null;
-	protected $_key = null;
-	protected $_post = null;
+	protected $_payment_id  = null;
+	protected $_key         = null;
+	protected $_post        = null;
 	protected $_payment_key = null;
 
 	/**
@@ -24,8 +24,13 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		$this->_transaction_id = 'FIR3SID3';
 		give_set_payment_transaction_id( $payment_id, $this->_transaction_id );
-		give_insert_payment_note( $payment_id, sprintf( /* translators: %s: Paypal transaction id */
-				esc_html__( 'PayPal Transaction ID: %s', 'give' ), $this->_transaction_id ) );
+		give_insert_payment_note(
+			$payment_id,
+			sprintf( /* translators: %s: Paypal transaction id */
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
+				$this->_transaction_id
+			)
+		);
 
 		// Make sure we're working off a clean object caching in WP Core.
 		// Prevents some payment_meta from not being present.
@@ -152,9 +157,9 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		// First check the payment exists.
 		$payment = new Give_Payment( $this->_payment_id );
-		$this->assertEquals(  $this->_payment_id, $payment->ID );
+		$this->assertEquals( $this->_payment_id, $payment->ID );
 
-		give_delete_donation($this->_payment_id);
+		give_delete_donation( $this->_payment_id );
 
 		// Now check that it has gone bye bye.
 		$payment = new Give_Payment( $this->_payment_id );
@@ -179,7 +184,12 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 	 */
 	public function test_for_serialized_user_info() {
 		$payment            = new Give_Payment( $this->_payment_id );
-		$payment->user_info = serialize( array( 'first_name' => 'John', 'last_name' => 'Doe' ) );
+		$payment->user_info = serialize(
+			array(
+				'first_name' => 'John',
+				'last_name'  => 'Doe',
+			)
+		);
 		$payment->save();
 
 		$this->assertInternalType( 'array', $payment->user_info );
@@ -469,7 +479,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form    = Give_Helper_Form::create_multilevel_form();
 		$payment = new Give_Payment();
 
-		//Add a multi-level donation amount
+		// Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
 		$this->assertEquals( give_sanitize_amount( '25', array( 'number_decimals' => true ) ), give_sanitize_amount( $payment->total, array( 'number_decimals' => true ) ) );
 		$payment->status = 'complete';
@@ -478,7 +488,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		// Auto delete this payment after all test run.
 		$this->_payment_id = $payment->ID;
 
-		//Now remove it
+		// Now remove it
 		$payment->remove_donation( $form->ID, array( 'price_id' => 2 ) );
 		$payment->save();
 

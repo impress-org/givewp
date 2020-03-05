@@ -99,8 +99,8 @@ abstract class Endpoint {
 		return new \WP_REST_Response(
 			array(
 				'data' => array(
-					'labels' => [ 'a', 'b', 'c' ],
-					'data'   => [ '1', '4', '3' ],
+					'labels' => array( 'a', 'b', 'c' ),
+					'data'   => array( '1', '4', '3' ),
 				),
 			)
 		);
@@ -164,10 +164,10 @@ abstract class Endpoint {
 			return null;
 		}
 
-		$query_args = [
+		$query_args = array(
 			'start' => $request['start'],
 			'end'   => $request['end'],
-		];
+		);
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
@@ -187,10 +187,10 @@ abstract class Endpoint {
 	 */
 	public function cache_report( $request, $report ) {
 
-		$query_args = [
+		$query_args = array(
 			'start' => $request['start'],
 			'end'   => $request['end'],
-		];
+		);
 
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
 
@@ -207,12 +207,12 @@ abstract class Endpoint {
 		 */
 	public function cache_payments( $startStr, $endStr, $orderBy, $number, $payments ) {
 
-		$query_args = [
+		$query_args = array(
 			'start'   => $startStr,
 			'end'     => $endStr,
 			'orderby' => $orderBy,
 			'number'  => $number,
-		];
+		);
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
@@ -229,12 +229,12 @@ abstract class Endpoint {
 	 */
 	public function get_cached_payments( $startStr, $endStr, $orderBy, $number ) {
 
-		$query_args = [
+		$query_args = array(
 			'start'   => $startStr,
 			'end'     => $endStr,
 			'orderby' => $orderBy,
 			'number'  => $number,
-		];
+		);
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
 
@@ -256,14 +256,14 @@ abstract class Endpoint {
 			return $cached_payments;
 		}
 
-		$args = [
+		$args = array(
 			'number'     => $number,
 			'paged'      => 1,
 			'orderby'    => $orderBy,
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
-		];
+		);
 
 		$payments = new \Give_Payments_Query( $args );
 		$payments = $payments->get_payments();
@@ -278,11 +278,11 @@ abstract class Endpoint {
 	public function get_give_status() {
 
 		$donations = get_posts(
-			[
+			array(
 				'post_type'   => array( 'give_payment' ),
 				'post_status' => 'publish',
 				'numberposts' => 1,
-			]
+			)
 		);
 
 		if ( count( $donations ) > 0 ) {

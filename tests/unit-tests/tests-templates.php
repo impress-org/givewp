@@ -28,7 +28,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->go_to( '/' );
 
 		$args = array(
-			'id' => $this->_post->ID
+			'id' => $this->_post->ID,
 		);
 
 		ob_start();
@@ -50,8 +50,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertContains( 'data-thousands_separator=","', $form );
 		$this->assertContains( 'data-number_decimals="2"', $form );
 
-
-		//Test Hidden fields.
+		// Test Hidden fields.
 		$this->assertContains( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
 		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
@@ -63,10 +62,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertContains( 'class="give-donation-levels-wrap', $form );
 		$this->assertContains( '<input type="hidden" name="give-price-id"', $form );
 
-
 		// Test a single price point as well
-
-
 	}
 
 	/**

@@ -22,7 +22,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 		parent::setUp();
 
 		$args = array(
-			'email' => 'donor@test.com'
+			'email' => 'donor@test.com',
 		);
 
 		$this->_donor_id = Give()->donors->add( $args );
@@ -45,7 +45,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 	 */
 	function test_update_metadata() {
 		$this->assertEmpty( $this->_donor->update_meta( '', '' ) );
-		$this->assertNotEmpty( $this->_donor->update_meta( 'test_key_2' , '' ) );
+		$this->assertNotEmpty( $this->_donor->update_meta( 'test_key_2', '' ) );
 		$this->assertNotEmpty( $this->_donor->update_meta( 'test_key_2', '1' ) );
 	}
 

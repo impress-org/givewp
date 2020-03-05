@@ -23,9 +23,9 @@ class TotalRefunds extends Endpoint {
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
-				[
+				array(
 					'data' => $cached_report,
-				]
+				)
 			);
 		}
 
@@ -33,7 +33,7 @@ class TotalRefunds extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = [];
+		$dataset = array();
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -56,10 +56,10 @@ class TotalRefunds extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			[
+			array(
 				'data'   => $data,
 				'status' => $status,
-			]
+			)
 		);
 	}
 
@@ -67,8 +67,8 @@ class TotalRefunds extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = [];
-		$refunds  = [];
+		$tooltips = array();
+		$refunds  = array();
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -96,16 +96,16 @@ class TotalRefunds extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$refunds[] = [
+			$refunds[] = array(
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $refundsForPeriod,
-			];
+			);
 
-			$tooltips[] = [
+			$tooltips[] = array(
 				'title'  => $refundsForPeriod . ' ' . __( 'Refunds', 'give' ),
 				'body'   => __( 'Total Refunds', 'give' ),
 				'footer' => $periodLabel,
-			];
+			);
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -119,17 +119,17 @@ class TotalRefunds extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
+		$data = array(
+			'datasets' => array(
+				array(
 					'data'      => $refunds,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
 					'highlight' => $totalRefundsForPeriod,
-				],
-			],
-		];
+				),
+			),
+		);
 
 		return $data;
 
@@ -180,14 +180,14 @@ class TotalRefunds extends Endpoint {
 
 	public function get_prev_refunds( $startStr, $endStr ) {
 
-		$args = [
+		$args = array(
 			'number'     => -1,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
-		];
+		);
 
 		$prevPayments = new \Give_Payments_Query( $args );
 		$prevPayments = $prevPayments->get_payments();
