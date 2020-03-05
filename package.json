@@ -12,7 +12,7 @@
         "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
-        "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js --fix",
+        "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js --fix",
         "lint:php": "./vendor/bin/phpcs --standard=WordPress",
         "lint:php:fix": "./vendor/bin/phpcbf --standard=WordPress",
         "lint:textdomain": "node ./wp-textdomain.js",
