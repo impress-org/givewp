@@ -66,12 +66,12 @@ function give_get_variable_prices( $form_id = 0 ) {
  * @return array Variable prices
  */
 function give_get_variable_price_ids( $form_id = 0 ) {
-	if( ! ( $prices = give_get_variable_prices( $form_id ) ) ) {
+	if ( ! ( $prices = give_get_variable_prices( $form_id ) ) ) {
 		return array();
 	}
 
 	$price_ids = array();
-	foreach ( $prices as $price ){
+	foreach ( $prices as $price ) {
 		$price_ids[] = $price['_give_id']['level_id'];
 	}
 

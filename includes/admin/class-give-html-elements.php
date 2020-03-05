@@ -29,7 +29,7 @@ class Give_HTML_Elements {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -84,9 +84,11 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$payments = new Give_Payments_Query( array(
-			'number' => $args['number'],
-		) );
+		$payments = new Give_Payments_Query(
+			array(
+				'number' => $args['number'],
+			)
+		);
 
 		$payments = $payments->get_payments();
 
@@ -104,19 +106,21 @@ class Give_HTML_Elements {
 			$options[0] = __( 'No donations found.', 'give' );
 		}
 
-		$output = $this->select( array(
-			'name'             => $args['name'],
-			'selected'         => $args['selected'],
-			'id'               => $args['id'],
-			'class'            => $args['class'],
-			'options'          => $options,
-			'chosen'           => $args['chosen'],
-			'multiple'         => $args['multiple'],
-			'placeholder'      => $args['placeholder'],
-			'select_atts'      => $args['select_atts'],
-			'show_option_all'  => false,
-			'show_option_none' => false,
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $args['name'],
+				'selected'         => $args['selected'],
+				'id'               => $args['id'],
+				'class'            => $args['class'],
+				'options'          => $options,
+				'chosen'           => $args['chosen'],
+				'multiple'         => $args['multiple'],
+				'placeholder'      => $args['placeholder'],
+				'select_atts'      => $args['select_atts'],
+				'show_option_all'  => false,
+				'show_option_none' => false,
+			)
+		);
 
 		return $output;
 	}
@@ -203,19 +207,21 @@ class Give_HTML_Elements {
 			}
 		}
 
-		$output = $this->select( array(
-			'name'             => $args['name'],
-			'selected'         => $args['selected'],
-			'id'               => $args['id'],
-			'class'            => $args['class'],
-			'options'          => $options,
-			'chosen'           => $args['chosen'],
-			'multiple'         => $args['multiple'],
-			'placeholder'      => $args['placeholder'],
-			'show_option_all'  => false,
-			'show_option_none' => false,
-			'data'             => $args['data'],
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $args['name'],
+				'selected'         => $args['selected'],
+				'id'               => $args['id'],
+				'class'            => $args['class'],
+				'options'          => $options,
+				'chosen'           => $args['chosen'],
+				'multiple'         => $args['multiple'],
+				'placeholder'      => $args['placeholder'],
+				'show_option_all'  => false,
+				'show_option_none' => false,
+				'data'             => $args['data'],
+			)
+		);
 
 		return $output;
 	}
@@ -250,9 +256,11 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$donors = Give()->donors->get_donors( array(
-			'number' => $args['number'],
-		) );
+		$donors = Give()->donors->get_donors(
+			array(
+				'number' => $args['number'],
+			)
+		);
 
 		$options = array();
 
@@ -281,18 +289,20 @@ class Give_HTML_Elements {
 			}
 		}
 
-		$output = $this->select( array(
-			'name'             => $args['name'],
-			'selected'         => $args['selected'],
-			'id'               => $args['id'],
-			'class'            => $args['class'] . ' give-customer-select',
-			'options'          => $options,
-			'multiple'         => $args['multiple'],
-			'chosen'           => $args['chosen'],
-			'show_option_all'  => false,
-			'show_option_none' => false,
-			'data'             => $args['data'],
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $args['name'],
+				'selected'         => $args['selected'],
+				'id'               => $args['id'],
+				'class'            => $args['class'] . ' give-customer-select',
+				'options'          => $options,
+				'multiple'         => $args['multiple'],
+				'chosen'           => $args['chosen'],
+				'show_option_all'  => false,
+				'show_option_none' => false,
+				'data'             => $args['data'],
+			)
+		);
 
 		return $output;
 	}
@@ -320,13 +330,18 @@ class Give_HTML_Elements {
 			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
 		}
 
-		$output = $this->select( wp_parse_args( $args, array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
-			'show_option_none' => false,
-		) ) );
+		$output = $this->select(
+			wp_parse_args(
+				$args,
+				array(
+					'name'             => $name,
+					'selected'         => $selected,
+					'options'          => $options,
+					'show_option_all'  => esc_html__( 'All Categories', 'give' ),
+					'show_option_none' => false,
+				)
+			)
+		);
 
 		return $output;
 	}
@@ -354,13 +369,18 @@ class Give_HTML_Elements {
 			$options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
 		}
 
-		$output = $this->select( wp_parse_args( $args, array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => esc_html__( 'All Tags', 'give' ),
-			'show_option_none' => false,
-		) ) );
+		$output = $this->select(
+			wp_parse_args(
+				$args,
+				array(
+					'name'             => $name,
+					'selected'         => $selected,
+					'options'          => $options,
+					'show_option_all'  => esc_html__( 'All Tags', 'give' ),
+					'show_option_none' => false,
+				)
+			)
+		);
 
 		return $output;
 	}
@@ -392,13 +412,15 @@ class Give_HTML_Elements {
 			$start_year ++;
 		}
 
-		$output = $this->select( array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => false,
-			'show_option_none' => false,
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => false,
+				'show_option_none' => false,
+			)
+		);
 
 		return $output;
 	}
@@ -426,13 +448,15 @@ class Give_HTML_Elements {
 			$month ++;
 		}
 
-		$output = $this->select( array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => false,
-			'show_option_none' => false,
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => false,
+				'show_option_none' => false,
+			)
+		);
 
 		return $output;
 	}
@@ -625,7 +649,7 @@ class Give_HTML_Elements {
 		}
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
-		
+
 		// Don't output label when the label is empty.
 		if ( ! empty( $args['label'] ) ) {
 			$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
@@ -756,7 +780,8 @@ class Give_HTML_Elements {
 
 		// Now add the selected user to the $users array if the arg is present.
 		if ( ! empty( $args['selected'] ) ) {
-			$selected_user = apply_filters( 'give_ajax_user_search_selected_results', get_users( "include={$args['selected']}" ), $args );;
+			$selected_user = apply_filters( 'give_ajax_user_search_selected_results', get_users( "include={$args['selected']}" ), $args );
+
 			$users = array_merge( $users, $selected_user );
 		}
 
@@ -771,20 +796,22 @@ class Give_HTML_Elements {
 			$options[0] = __( 'No users found.', 'give' );
 		}
 
-		$output = $this->select( array(
-			'name'             => $args['name'],
-			'selected'         => $args['selected'],
-			'id'               => $args['id'],
-			'class'            => $args['class'],
-			'options'          => $options,
-			'chosen'           => $args['chosen'],
-			'multiple'         => $args['multiple'],
-			'placeholder'      => $args['placeholder'],
-			'select_atts'      => $args['select_atts'],
-			'show_option_all'  => false,
-			'show_option_none' => false,
-			'data'             => $args['data'],
-		) );
+		$output = $this->select(
+			array(
+				'name'             => $args['name'],
+				'selected'         => $args['selected'],
+				'id'               => $args['id'],
+				'class'            => $args['class'],
+				'options'          => $options,
+				'chosen'           => $args['chosen'],
+				'multiple'         => $args['multiple'],
+				'placeholder'      => $args['placeholder'],
+				'select_atts'      => $args['select_atts'],
+				'show_option_all'  => false,
+				'show_option_none' => false,
+				'data'             => $args['data'],
+			)
+		);
 
 		return $output;
 

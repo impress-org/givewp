@@ -105,7 +105,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
         PRIMARY KEY  (id)
         ) {$charset_collate};";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		if ( ! empty( $payment_ID ) ) {
@@ -131,12 +131,12 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 
 		return $wpdb->get_var(
 			$wpdb->prepare(
-				"
+				'
 				SELECT AUTO_INCREMENT
 				FROM  INFORMATION_SCHEMA.TABLES
 				WHERE TABLE_SCHEMA=%s
 				AND TABLE_NAME=%s
-				",
+				',
 				DB_NAME,
 				$this->table_name
 			)

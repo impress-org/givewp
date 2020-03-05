@@ -215,10 +215,12 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . $label . '</a>';
 			}
 
-			echo wp_kses_post( sprintf(
-				'<ul class="give-subsubsub">%s</ul><br class="clear" /><hr>',
-				implode( ' | </li>', $section_list )
-			) );
+			echo wp_kses_post(
+				sprintf(
+					'<ul class="give-subsubsub">%s</ul><br class="clear" /><hr>',
+					implode( ' | </li>', $section_list )
+				)
+			);
 		}
 
 		/**

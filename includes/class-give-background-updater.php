@@ -69,19 +69,18 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Override if applicable, but the duration should be greater than that
 	 * defined in the time_exceeded() method.
 	 *
-	 *
 	 * @since 2.0.3
 	 */
 	protected function lock_process() {
 		// Check if admin want to pause upgrade.
-		if( get_option('give_pause_upgrade') ) {
+		if ( get_option( 'give_pause_upgrade' ) ) {
 			self::flush_cache();
 
 			delete_option( 'give_paused_batches' );
 
 			Give_Updates::get_instance()->__pause_db_update( true );
 
-			delete_option('give_pause_upgrade');
+			delete_option( 'give_pause_upgrade' );
 
 			/**
 			 * Fire action when pause db updates
@@ -92,7 +91,6 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			wp_die();
 		}
-
 
 		$this->start_time = time(); // Set start time of current process.
 
@@ -109,7 +107,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * and data exists in the queue.
 	 */
 	public function handle_cron_healthcheck() {
-		if ( $this->is_process_running() || $this->is_paused_process()  ) {
+		if ( $this->is_process_running() || $this->is_paused_process() ) {
 			// Background process already running.
 			return;
 		}
@@ -148,11 +146,16 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
 
-		$count = $wpdb->get_var( $wpdb->prepare( "
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT COUNT(*)
 			FROM {$table}
 			WHERE {$column} LIKE %s
-		", $key ) );
+		",
+				$key
+			)
+		);
 
 		return ! ( $count > 0 );
 	}
@@ -174,13 +177,18 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
 
-		$query = $wpdb->get_row( $wpdb->prepare( "
+		$query = $wpdb->get_row(
+			$wpdb->prepare(
+				"
 			SELECT *
 			FROM {$table}
 			WHERE {$column} LIKE %s
 			ORDER BY {$key_column} ASC
 			LIMIT 1
-		", $key ) );
+		",
+				$key
+			)
+		);
 
 		$batch       = new stdClass();
 		$batch->key  = $query->$column;
@@ -285,7 +293,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 */
 	protected function task( $update ) {
 		// Pause upgrade immediately if admin pausing upgrades.
-		if( $this->is_paused_process() ) {
+		if ( $this->is_paused_process() ) {
 			wp_die();
 		}
 
@@ -300,7 +308,6 @@ class Give_Background_Updater extends WP_Background_Process {
 		$give_updates  = Give_Updates::get_instance();
 		$resume_update = get_option(
 			'give_doing_upgrade',
-
 			// Default update.
 			array(
 				'update_info'      => $update,
@@ -326,7 +333,6 @@ class Give_Background_Updater extends WP_Background_Process {
 		$give_updates->update         = absint( $resume_update['update'] );
 		$is_parent_update_completed   = $give_updates->is_parent_updates_completed( $update );
 
-
 		// Skip update if dependency update does not complete yet.
 		if ( empty( $is_parent_update_completed ) ) {
 			// @todo: set error when you have only one update with invalid dependency
@@ -337,25 +343,24 @@ class Give_Background_Updater extends WP_Background_Process {
 			return false;
 		}
 
-
 		// Pause upgrade immediately if found following:
 		// 1. Running update number greater then total update count
 		// 2. Processing percentage greater then 100%
-		if( (
+		if ( (
 			101 < $resume_update['total_percentage'] ) ||
-		    ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ||
-		    ! in_array( $resume_update['update_info']['id'], $give_updates->get_update_ids() )
+			( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ||
+			! in_array( $resume_update['update_info']['id'], $give_updates->get_update_ids() )
 		) {
-			if( ! $this->is_paused_process() ){
-				$give_updates->__pause_db_update(true);
+			if ( ! $this->is_paused_process() ) {
+				$give_updates->__pause_db_update( true );
 			}
 
 			update_option( 'give_upgrade_error', 1, false );
 
-			$log_data = 'Update Task' . "\n";
+			$log_data  = 'Update Task' . "\n";
 			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
-			$log_data .= 'Update IDs: ' . print_r( $give_updates->get_update_ids() , true );
-			$log_data .= 'Update: ' . print_r( $resume_update , true );
+			$log_data .= 'Update IDs: ' . print_r( $give_updates->get_update_ids(), true );
+			$log_data .= 'Update: ' . print_r( $resume_update, true );
 
 			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
 
@@ -365,7 +370,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Disable cache.
 		Give_Cache::disable();
 
-		try{
+		try {
 			// Run update.
 			if ( is_array( $update['callback'] ) ) {
 				$object      = $update['callback'][0];
@@ -376,13 +381,13 @@ class Give_Background_Updater extends WP_Background_Process {
 			} else {
 				$update['callback']();
 			}
-		} catch ( Exception $e ){
+		} catch ( Exception $e ) {
 
-			if( ! $this->is_paused_process() ){
-				$give_updates->__pause_db_update(true);
+			if ( ! $this->is_paused_process() ) {
+				$give_updates->__pause_db_update( true );
 			}
 
-			$log_data = 'Update Task' . "\n";
+			$log_data  = 'Update Task' . "\n";
 			$log_data .= print_r( $resume_update, true ) . "\n\n";
 			$log_data .= "Error\n {$e->getMessage()}";
 
@@ -532,7 +537,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		if ( ! $this->is_queue_empty() ) {
 
 			// Dispatch only if ajax works.
-			if( give_test_ajax_works() ) {
+			if ( give_test_ajax_works() ) {
 				$this->dispatch();
 			}
 		} else {
@@ -550,11 +555,11 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @access public
 	 * @return bool
 	 */
-	public function is_paused_process(){
+	public function is_paused_process() {
 		// Delete cache.
 		wp_cache_delete( 'give_paused_batches', 'options' );
 
-		$paused_batches = Give_Cache_Setting::get_option('give_paused_batches');
+		$paused_batches = Give_Cache_Setting::get_option( 'give_paused_batches' );
 
 		return ! empty( $paused_batches );
 	}
@@ -599,7 +604,6 @@ class Give_Background_Updater extends WP_Background_Process {
 			'give_pause_upgrade',
 			'give_show_db_upgrade_complete_notice',
 		);
-
 
 		foreach ( $options as $option ) {
 			wp_cache_delete( $option, 'options' );

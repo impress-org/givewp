@@ -207,15 +207,18 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 		/**
 		 * Filter add to alter the argument before the wp quest run
 		 */
-		$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-			'post_type'      => 'give_payment',
-			'post_status'    => 'any',
-			'posts_per_page' => $this->per_step,
-			'paged'          => $paged,
-			'meta_key'       => '_give_payment_import',
-			'meta_value_num' => 1,
-			'meta_compare'   => '=',
-		) );
+		$args = apply_filters(
+			'give_tools_reset_stats_total_args',
+			array(
+				'post_type'      => 'give_payment',
+				'post_status'    => 'any',
+				'posts_per_page' => $this->per_step,
+				'paged'          => $paged,
+				'meta_key'       => '_give_payment_import',
+				'meta_value_num' => 1,
+				'meta_compare'   => '=',
+			)
+		);
 
 		// Reset the post data.
 		wp_reset_postdata();
@@ -425,11 +428,14 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			if ( ! empty( $donor_ids[ $page ] ) ) {
-				$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-					'post_status'    => 'any',
-					'posts_per_page' => 1,
-					'author'         => $donor_ids[ $page ],
-				) );
+				$args = apply_filters(
+					'give_tools_reset_stats_total_args',
+					array(
+						'post_status'    => 'any',
+						'posts_per_page' => 1,
+						'author'         => $donor_ids[ $page ],
+					)
+				);
 
 				$donations = array();
 				$payments  = new Give_Payments_Query( $args );
@@ -576,7 +582,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {

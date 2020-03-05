@@ -18,7 +18,7 @@ class Give_Donor_Stats {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -48,14 +48,12 @@ class Give_Donor_Stats {
 	/**
 	 *  Get total donated amount
 	 *
-	 *
 	 * @since  2.2.0
 	 * @access public
 	 *
 	 * @param array $args
 	 *
 	 * @return string
-	 *
 	 */
 	public static function donated( $args = array() ) {
 		global $wpdb;
@@ -103,10 +101,14 @@ class Give_Donor_Stats {
 					give_format_amount( $donation['total'], array( 'currency' => $currency_code ) ),
 					$donation['total'],
 					$donation['id'],
-					array( 'type' => 'stats', 'currency' => false, 'amount' => false )
+					array(
+						'type'     => 'stats',
+						'currency' => false,
+						'amount'   => false,
+					)
 				);
 
-				$donated_amount += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code  ) );
+				$donated_amount += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code ) );
 			}
 		}
 

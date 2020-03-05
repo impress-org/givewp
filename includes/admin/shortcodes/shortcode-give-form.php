@@ -38,7 +38,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	public function define_fields() {
 
 		$create_form_link = sprintf(
-		/* translators: %s: create new form URL */
+			/* translators: %s: create new form URL */
 			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
 			admin_url( 'post-new.php?post_type=give_forms' )
 		);

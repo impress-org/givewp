@@ -216,15 +216,17 @@ class Give_Blank_Slate {
 	 */
 	private function post_exists( $post_type ) {
 		// Attempt to get a single post of the post type.
-		$query = new WP_Query( array(
-			'post_type'              => $post_type,
-			'posts_per_page'         => 1,
-			'no_found_rows'          => false,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-			'fields'                 => 'ids',
-			'post_status'            => array( 'any', 'trash' ),
-		) );
+		$query = new WP_Query(
+			array(
+				'post_type'              => $post_type,
+				'posts_per_page'         => 1,
+				'no_found_rows'          => false,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'fields'                 => 'ids',
+				'post_status'            => array( 'any', 'trash' ),
+			)
+		);
 
 		return $query->have_posts();
 	}

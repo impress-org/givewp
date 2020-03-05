@@ -51,54 +51,70 @@ class Give_Roles {
 	 * @return void
 	 */
 	public function add_roles() {
-		add_role( 'give_manager', __( 'GiveWP Manager', 'give' ), array(
-			'read'                   => true,
-			'edit_posts'             => true,
-			'delete_posts'           => true,
-			'unfiltered_html'        => true,
-			'upload_files'           => true,
-			'export'                 => false,
-			'import'                 => false,
-			'delete_others_pages'    => false,
-			'delete_others_posts'    => false,
-			'delete_pages'           => true,
-			'delete_private_pages'   => true,
-			'delete_private_posts'   => true,
-			'delete_published_pages' => true,
-			'delete_published_posts' => true,
-			'edit_others_pages'      => false,
-			'edit_others_posts'      => false,
-			'edit_pages'             => true,
-			'edit_private_pages'     => true,
-			'edit_private_posts'     => true,
-			'edit_published_pages'   => true,
-			'edit_published_posts'   => true,
-			'manage_categories'      => false,
-			'manage_links'           => true,
-			'moderate_comments'      => true,
-			'publish_pages'          => true,
-			'publish_posts'          => true,
-			'read_private_pages'     => true,
-			'read_private_posts'     => true,
-		) );
+		add_role(
+			'give_manager',
+			__( 'GiveWP Manager', 'give' ),
+			array(
+				'read'                   => true,
+				'edit_posts'             => true,
+				'delete_posts'           => true,
+				'unfiltered_html'        => true,
+				'upload_files'           => true,
+				'export'                 => false,
+				'import'                 => false,
+				'delete_others_pages'    => false,
+				'delete_others_posts'    => false,
+				'delete_pages'           => true,
+				'delete_private_pages'   => true,
+				'delete_private_posts'   => true,
+				'delete_published_pages' => true,
+				'delete_published_posts' => true,
+				'edit_others_pages'      => false,
+				'edit_others_posts'      => false,
+				'edit_pages'             => true,
+				'edit_private_pages'     => true,
+				'edit_private_posts'     => true,
+				'edit_published_pages'   => true,
+				'edit_published_posts'   => true,
+				'manage_categories'      => false,
+				'manage_links'           => true,
+				'moderate_comments'      => true,
+				'publish_pages'          => true,
+				'publish_posts'          => true,
+				'read_private_pages'     => true,
+				'read_private_posts'     => true,
+			)
+		);
 
-		add_role( 'give_accountant', __( 'GiveWP Accountant', 'give' ), array(
-			'read'         => true,
-			'edit_posts'   => false,
-			'delete_posts' => false,
-		) );
+		add_role(
+			'give_accountant',
+			__( 'GiveWP Accountant', 'give' ),
+			array(
+				'read'         => true,
+				'edit_posts'   => false,
+				'delete_posts' => false,
+			)
+		);
 
-		add_role( 'give_worker', __( 'GiveWP Worker', 'give' ), array(
-			'read'         => true,
-			'edit_posts'   => true,
-			'edit_pages'   => true,
-			'upload_files' => true,
-			'delete_posts' => false,
-		) );
+		add_role(
+			'give_worker',
+			__( 'GiveWP Worker', 'give' ),
+			array(
+				'read'         => true,
+				'edit_posts'   => true,
+				'edit_pages'   => true,
+				'upload_files' => true,
+				'delete_posts' => false,
+			)
+		);
 
-		add_role( 'give_donor', __( 'GiveWP Donor', 'give' ), array(
-			'read' => true,
-		) );
+		add_role(
+			'give_donor',
+			__( 'GiveWP Donor', 'give' ),
+			array(
+				'read' => true,
+			)
+		);
 
 	}
 
@@ -232,8 +248,7 @@ class Give_Roles {
 
 		switch ( $cap ) {
 
-			case 'view_give_form_stats' :
-
+			case 'view_give_form_stats':
 				if ( empty( $args[0] ) ) {
 					break;
 				}
@@ -337,7 +352,7 @@ class Give_Roles {
 	 *
 	 * @return bool
 	 */
-	public function manage_admin_dashboard($show_admin_bar) {
+	public function manage_admin_dashboard( $show_admin_bar ) {
 
 		// Get the current logged user.
 		$current_user = wp_get_current_user();

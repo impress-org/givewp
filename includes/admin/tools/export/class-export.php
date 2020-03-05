@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.0
 	 */
@@ -65,7 +66,7 @@ class Give_Export {
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=' . $file_name . '.csv' );
-		header( "Expires: 0" );
+		header( 'Expires: 0' );
 	}
 
 	/**
@@ -78,7 +79,7 @@ class Give_Export {
 	public function csv_cols() {
 		$cols = array(
 			'id'   => __( 'ID', 'give' ),
-			'date' => __( 'Date', 'give' )
+			'date' => __( 'Date', 'give' ),
 		);
 
 		return $cols;
@@ -128,12 +129,12 @@ class Give_Export {
 		$data = array(
 			0 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' )
+				'data' => date( 'F j, Y' ),
 			),
 			1 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' )
-			)
+				'data' => date( 'F j, Y' ),
+			),
 		);
 
 		$data = apply_filters( 'give_export_get_data', $data );

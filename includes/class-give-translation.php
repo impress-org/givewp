@@ -35,7 +35,7 @@ class Give_Translations {
 	 * @access private
 	 * @var
 	 */
-	private static  $text_translations = array();
+	private static $text_translations = array();
 
 	/**
 	 * Singleton pattern.
@@ -274,11 +274,13 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function add_label_translation( $id, $group = '', $text = '' ) {
-		return self::get_text( array(
-			'id' => "{$id}_label",
-			'group' => $group,
-			'text' => $text,
-		) );
+		return self::get_text(
+			array(
+				'id'    => "{$id}_label",
+				'group' => $group,
+				'text'  => $text,
+			)
+		);
 	}
 
 	/**
@@ -294,11 +296,13 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function add_tooltip_translation( $id, $group = '', $text = '' ) {
-		return self::get_text( array(
-			'id' => "{$id}_label",
-			'group' => $group,
-			'text' => $text,
-		) );
+		return self::get_text(
+			array(
+				'id'    => "{$id}_label",
+				'group' => $group,
+				'text'  => $text,
+			)
+		);
 	}
 
 	/**
@@ -313,11 +317,13 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function get_label( $id, $group = '' ) {
-		return self::get_text( array(
-			'id' => "{$id}_label",
-			'group' => $group,
-			'type' => 'label',
-		) );
+		return self::get_text(
+			array(
+				'id'    => "{$id}_label",
+				'group' => $group,
+				'type'  => 'label',
+			)
+		);
 	}
 
 	/**
@@ -332,11 +338,13 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function get_tooltip( $id, $group = '' ) {
-		return self::get_text( array(
-			'id' => "{$id}_tooltip",
-			'group' => $group,
-			'type' => 'tooltip',
-		) );
+		return self::get_text(
+			array(
+				'id'    => "{$id}_tooltip",
+				'group' => $group,
+				'type'  => 'tooltip',
+			)
+		);
 	}
 
 	/**

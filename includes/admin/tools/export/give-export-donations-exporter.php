@@ -456,22 +456,24 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['donation_note_private'] ) ) {
-					$comments = Give()->comment->db->get_comments( array(
-						'comment_parent' => $payment->ID,
-						'comment_type'   => 'donation',
-						'meta_query'     => array(
-							'relation' => 'OR',
-							array(
-								'key'     => 'note_type',
-								'compare' => 'NOT EXISTS',
+					$comments = Give()->comment->db->get_comments(
+						array(
+							'comment_parent' => $payment->ID,
+							'comment_type'   => 'donation',
+							'meta_query'     => array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'note_type',
+									'compare' => 'NOT EXISTS',
+								),
+								array(
+									'key'     => 'note_type',
+									'value'   => 'donor',
+									'compare' => '!=',
+								),
 							),
-							array(
-								'key'     => 'note_type',
-								'value'   => 'donor',
-								'compare' => '!=',
-							),
-						),
-					) );
+						)
+					);
 
 					$comment_html = array();
 
@@ -489,16 +491,18 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				}
 
 				if ( ! empty( $columns['donation_note_to_donor'] ) ) {
-					$comments = Give()->comment->db->get_comments( array(
-						'comment_parent' => $payment->ID,
-						'comment_type'   => 'donation',
-						'meta_query'     => array(
-							array(
-								'key'     => 'note_type',
-								'value'   => 'donor',
+					$comments = Give()->comment->db->get_comments(
+						array(
+							'comment_parent' => $payment->ID,
+							'comment_type'   => 'donation',
+							'meta_query'     => array(
+								array(
+									'key'   => 'note_type',
+									'value' => 'donor',
+								),
 							),
-						),
-					) );
+						)
+					);
 
 					$comment_html = array();
 
@@ -604,7 +608,12 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		$args = $this->get_donation_argument( array( 'number' => - 1, 'output' => '' ) );
+		$args = $this->get_donation_argument(
+			array(
+				'number' => - 1,
+				'output' => '',
+			)
+		);
 		if ( isset( $args['page'] ) ) {
 			unset( $args['page'] );
 		}

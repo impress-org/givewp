@@ -5,7 +5,7 @@
  * @since 2.0
  *
  * @param       $object_id
- * @param array $meta_value
+ * @param array     $meta_value
  *
  * @return void
  */
@@ -85,7 +85,7 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
  * @since 2.0
  *
  * @param       $object_id
- * @param array $meta_value
+ * @param array     $meta_value
  *
  * @return array
  */
@@ -211,18 +211,21 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
  */
 function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 	// Bailout.
-	if( 'give_payment' !== get_post_type( $object_id ) ) {
+	if ( 'give_payment' !== get_post_type( $object_id ) ) {
 		return $check;
 	}
 
 	// Bailout.
 	if (
-		! in_array( $meta_key, array(
-			'_give_payment_meta',
-			'_give_payment_user_email',
-			'_give_payment_customer_id',
-			'give_payment_user_ip',
-		) )
+		! in_array(
+			$meta_key,
+			array(
+				'_give_payment_meta',
+				'_give_payment_user_email',
+				'_give_payment_customer_id',
+				'give_payment_user_ip',
+			)
+		)
 	) {
 		return $check;
 	}
@@ -262,7 +265,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	global $wpdb;
 
 	// Early exit.
-	if( 'give_payment' !== get_post_type( $object_id ) ) {
+	if ( 'give_payment' !== get_post_type( $object_id ) ) {
 		return $check;
 	}
 	// Deprecated meta keys.
@@ -365,7 +368,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	global $wpdb;
 
 	// Early exit.
-	if( 'give_payment' !== get_post_type( $object_id ) ) {
+	if ( 'give_payment' !== get_post_type( $object_id ) ) {
 		return $check;
 	}
 
@@ -401,7 +404,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 
 	$cache_key = "{$meta_key}_{$object_id}";
-	$check    = Give_Cache::get_db_query( $cache_key );
+	$check     = Give_Cache::get_db_query( $cache_key );
 
 	if ( is_null( $check ) ) {
 		switch ( $meta_key ) {
@@ -518,7 +521,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		$check = array( $check );
 	}
 
-
 	return $check;
 }
 
@@ -548,7 +550,6 @@ function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 
 	// Set meta keys.
 	$meta_keys = array();
-
 
 	// Bailout.
 	if ( ! empty( $query->query_vars['meta_key'] ) ) {
@@ -643,18 +644,15 @@ function _give_20_bc_payment_save( $payment, $key ) {
 				$payment->user_info = maybe_unserialize( $payment->user_info );
 			}
 
-
 			// Save first name.
 			if ( isset( $payment->user_info['first_name'] ) ) {
 				$payment->update_meta( '_give_donor_billing_first_name', $payment->user_info['first_name'] );
 			}
 
-
 			// Save last name.
 			if ( isset( $payment->user_info['last_name'] ) ) {
 				$payment->update_meta( '_give_donor_billing_last_name', $payment->user_info['last_name'] );
 			}
-
 
 			// Save address.
 			if ( ! empty( $payment->user_info['address'] ) ) {
@@ -704,7 +702,7 @@ function __give_20_bc_flush_cache( $check, $object_id ) {
 }
 
 // Apply only if upgrade does not complete.
-if( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
+if ( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
 	add_action( 'update_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );
 	add_action( 'add_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );
 }

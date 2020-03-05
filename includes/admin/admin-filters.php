@@ -44,15 +44,15 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 	$value                      = absint( $value );
 	$is_currency_set_to_bitcoin = ( 'BTC' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'BTC' === $_POST['currency'];
 
-	if ( $is_currency_set_to_bitcoin && 8 < $value) {
-		$value = 8;
+	if ( $is_currency_set_to_bitcoin && 8 < $value ) {
+		$value       = 8;
 		$show_notice = true;
-	}elseif ( ! $is_currency_set_to_bitcoin && 6 <= $value ) {
-		$value = 5;
+	} elseif ( ! $is_currency_set_to_bitcoin && 6 <= $value ) {
+		$value       = 5;
 		$show_notice = true;
 	}
 
-	if( $show_notice ) {
+	if ( $show_notice ) {
 		Give_Admin_Settings::add_error(
 			'give-number-decimal',
 			sprintf(
@@ -121,7 +121,7 @@ add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback',
  *
  * @since 1.8.17
  *
- * @param array $json_to_array Data from json file
+ * @param array  $json_to_array Data from json file
  * @param string $type
  *
  * @return array $json_to_array
@@ -144,7 +144,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_p
  * @since 1.8.17
  *
  * @param $json_to_array
- * @param string $type
+ * @param string        $type
  *
  * @return array $json_to_array
  */
@@ -175,7 +175,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_i
  * @since 1.8.17
  *
  * @param $json_to_array
- * @param string $type
+ * @param string        $type
  *
  * @return array $json_to_array
  */
@@ -186,9 +186,9 @@ function give_import_core_settings_merge_upload_image( $json_to_array, $type ) {
 
 			// Need to require these files.
 			if ( ! function_exists( 'media_handle_upload' ) ) {
-				require_once( ABSPATH . 'wp-admin/includes/image.php' );
-				require_once( ABSPATH . 'wp-admin/includes/file.php' );
-				require_once( ABSPATH . 'wp-admin/includes/media.php' );
+				require_once ABSPATH . 'wp-admin/includes/image.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/media.php';
 			}
 
 			$url     = $json_to_array['email_logo'];
@@ -211,7 +211,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_u
  *
  * @since 1.8.17
  *
- * @param array $json_to_array Data from json file
+ * @param array  $json_to_array Data from json file
  * @param string $type
  *
  * @return array $json_to_array

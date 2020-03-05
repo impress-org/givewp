@@ -53,11 +53,13 @@ class Give_API_Keys_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
-			'ajax'     => false, // Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
+				'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
+				'ajax'     => false, // Does this table support ajax?
+			)
+		);
 
 		$this->query();
 	}
@@ -133,33 +135,52 @@ class Give_API_Keys_Table extends WP_List_Table {
 		if ( apply_filters( 'give_api_log_requests', true ) ) {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( add_query_arg( array(
-					'section'   => 'api_requests',
-					'post_type' => 'give_forms',
-					'page'      => 'give-tools',
-					'tab'       => 'logs',
-					's'         => $item['email'],
-				), 'edit.php' ) ),
+				esc_url(
+					add_query_arg(
+						array(
+							'section'   => 'api_requests',
+							'post_type' => 'give_forms',
+							'page'      => 'give-tools',
+							'tab'       => 'logs',
+							's'         => $item['email'],
+						),
+						'edit.php'
+					)
+				),
 				esc_html__( 'View API Log', 'give' )
 			);
 		}
 
 		$actions['reissue'] = sprintf(
 			'<a href="%s" class="give-regenerate-api-key">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array(
-				'user_id'          => $item['id'],
-				'give_action'      => 'process_api_key',
-				'give_api_process' => 'regenerate',
-			) ), 'give-api-nonce' ) ),
+			esc_url(
+				wp_nonce_url(
+					add_query_arg(
+						array(
+							'user_id'          => $item['id'],
+							'give_action'      => 'process_api_key',
+							'give_api_process' => 'regenerate',
+						)
+					),
+					'give-api-nonce'
+				)
+			),
 			esc_html__( 'Reissue', 'give' )
 		);
 		$actions['revoke']  = sprintf(
 			'<a href="%s" class="give-revoke-api-key give-delete">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array(
-				'user_id'          => $item['id'],
-				'give_action'      => 'process_api_key',
-				'give_api_process' => 'revoke',
-			) ), 'give-api-nonce' ) ),
+			esc_url(
+				wp_nonce_url(
+					add_query_arg(
+						array(
+							'user_id'          => $item['id'],
+							'give_action'      => 'process_api_key',
+							'give_api_process' => 'revoke',
+						)
+					),
+					'give-api-nonce'
+				)
+			),
 			esc_html__( 'Revoke', 'give' )
 		);
 
@@ -283,11 +304,13 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function query() {
-		$users = get_users( array(
-			'meta_value' => 'give_user_secret_key',
-			'number'     => $this->per_page,
-			'offset'     => $this->per_page * ( $this->get_paged() - 1 ),
-		) );
+		$users = get_users(
+			array(
+				'meta_value' => 'give_user_secret_key',
+				'number'     => $this->per_page,
+				'offset'     => $this->per_page * ( $this->get_paged() - 1 ),
+			)
+		);
 		$keys  = array();
 
 		foreach ( $users as $user ) {
@@ -352,10 +375,12 @@ class Give_API_Keys_Table extends WP_List_Table {
 
 		$this->items = $data;
 
-		$this->set_pagination_args( array(
-			'total_items' => $total_items,
-			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $total_items / $this->per_page ),
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $this->per_page,
+				'total_pages' => ceil( $total_items / $this->per_page ),
+			)
+		);
 	}
 }

@@ -79,7 +79,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<form method="post">
 								<?php
 								printf(
-								/* translators: 1: start date dropdown 2: end date dropdown */
+									/* translators: 1: start date dropdown 2: end date dropdown */
 									esc_html__( '%1$s to %2$s', 'give' ),
 									Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
 									Give()->html->year_dropdown( 'end_year' ) . ' ' . Give()->html->month_dropdown( 'end_month' )
@@ -102,28 +102,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<form method="post" id="give_donor_export" class="give-export-form">
 								<?php
 								// Start Date form field for donors.
-								echo Give()->html->date_field( array(
-									'id'           => 'give_donor_export_start_date',
-									'name'         => 'donor_export_start_date',
-									'placeholder'  => esc_attr__( 'Start Date', 'give' ),
-									'autocomplete' => 'off',
-								) );
+								echo Give()->html->date_field(
+									array(
+										'id'           => 'give_donor_export_start_date',
+										'name'         => 'donor_export_start_date',
+										'placeholder'  => esc_attr__( 'Start Date', 'give' ),
+										'autocomplete' => 'off',
+									)
+								);
 
 								// End Date form field for donors.
-								echo Give()->html->date_field( array(
-									'id'           => 'give_donor_export_end_date',
-									'name'         => 'donor_export_end_date',
-									'placeholder'  => esc_attr__( 'End Date', 'give' ),
-									'autocomplete' => 'off',
-								) );
+								echo Give()->html->date_field(
+									array(
+										'id'           => 'give_donor_export_end_date',
+										'name'         => 'donor_export_end_date',
+										'placeholder'  => esc_attr__( 'End Date', 'give' ),
+										'autocomplete' => 'off',
+									)
+								);
 
 								// Donation forms dropdown for donors export.
-								echo Give()->html->forms_dropdown( array(
-									'name'   => 'forms',
-									'id'     => 'give_donor_export_form',
-									'chosen' => true,
-									'class'  => 'give-width-25em',
-								) );
+								echo Give()->html->forms_dropdown(
+									array(
+										'name'   => 'forms',
+										'id'     => 'give_donor_export_form',
+										'chosen' => true,
+										'class'  => 'give-width-25em',
+									)
+								);
 								?>
 								<br>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
@@ -176,12 +182,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<ul class="settings-excludes-list">
 										<?php foreach ( $export_excludes as $option_key => $option_label ) { ?>
 											<li>
-												<label for="settings_export_excludes[<?php echo $option_key ?>]">
+												<label for="settings_export_excludes[<?php echo $option_key; ?>]">
 													<input
 															type="checkbox"
 															checked
-															name="settings_export_excludes[<?php echo $option_key ?>]"
-															id="settings_export_excludes[<?php echo $option_key ?>]"
+															name="settings_export_excludes[<?php echo $option_key; ?>]"
+															id="settings_export_excludes[<?php echo $option_key; ?>]"
 													/>
 													<?php echo esc_html( $option_label ); ?>
 												</label>

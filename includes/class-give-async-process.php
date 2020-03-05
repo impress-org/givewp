@@ -22,7 +22,6 @@ class Give_Async_Process extends WP_Async_Request {
 	/**
 	 * Prefix
 	 *
-	 *
 	 * @var string
 	 * @access protected
 	 */

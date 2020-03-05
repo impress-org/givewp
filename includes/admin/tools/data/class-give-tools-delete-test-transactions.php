@@ -24,6 +24,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.5
 	 */
@@ -31,6 +32,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -38,6 +40,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -184,21 +187,24 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 		if ( false === $items ) {
 			$items = array();
 
-			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_status' => 'any',
-				'number'      => - 1,
-				'meta_query' => array(
-					'relation' => 'OR',
-					array(
-						'key'   => '_give_payment_mode',
-						'value' => 'test',
+			$args = apply_filters(
+				'give_tools_reset_stats_total_args',
+				array(
+					'post_status' => 'any',
+					'number'      => - 1,
+					'meta_query'  => array(
+						'relation' => 'OR',
+						array(
+							'key'   => '_give_payment_mode',
+							'value' => 'test',
+						),
+						array(
+							'key'   => '_give_payment_gateway',
+							'value' => 'manual',
+						),
 					),
-					array(
-						'key'   => '_give_payment_gateway',
-						'value' => 'manual',
-					),
-				),
-			) );
+				)
+			);
 
 			$posts    = new Give_Payments_Query( $args );
 			$payments = $posts->get_payments();
@@ -251,7 +257,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  mixed  $value The value to store
 	 *
 	 * @return void
 	 */
@@ -294,7 +300,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
