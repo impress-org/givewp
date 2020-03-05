@@ -2,8 +2,9 @@
 global $post;
 
 use Give\Form\Theme;
+use function Give\Form\Theme\getActiveID;
 
-$activatedTheme = \Give\Form\Theme\getActiveID( $post->ID );
+$activatedTheme = getActiveID( $post->ID );
 ?>
 <div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
 	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
