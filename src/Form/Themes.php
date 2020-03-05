@@ -24,15 +24,6 @@ class Themes {
 	 */
 	private static $themes = array();
 
-	/**
-	 * Singleton pattern.
-	 *
-	 * @since  version
-	 * @access private
-	 */
-	private function __construct() {
-	}
-
 
 	/**
 	 * Get Registered themes
