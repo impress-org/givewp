@@ -5,15 +5,22 @@ use Give\Form\Theme;
 use Give\Form\Themes;
 
 /**
- * Register core themes
+ * Load form themes
+ *
+ * Note: only for internal use. use give_form_themes filter to register new form theme.
  *
  * @since 2.7.0
  */
-function registerDefaults() {
+function load() {
 	/**
-	 * Register themes
+	 * Filter list of form theme
+	 *
+	 * @since 2.7.0
 	 */
-	$themes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
+	$themes = apply_filters(
+		'give_form_themes',
+		require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php'
+	);
 
 	foreach ( $themes as $theme ) {
 		Give()->themes->set( new Theme( $theme ) );

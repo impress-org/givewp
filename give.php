@@ -38,7 +38,6 @@
  */
 
 use Give\Form\Themes;
-use function Give\Form\Themes\registerDefaults;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -402,11 +401,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
 			$this->themes                 = new Themes();
-
-			/**
-			 * Register core form themes
-			 */
-			registerDefaults();
 
 			/**
 			 * Fire the action after Give core loads.
