@@ -4,14 +4,15 @@ global $post;
 use Give\Form\Theme;
 use function Give\Form\Theme\getActiveID;
 
-$activatedTheme = getActiveID( $post->ID );
+$activatedTheme   = getActiveID( $post->ID );
+$registeredThemes = Give()->themes->get();
 ?>
 <div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
 	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
 	<div class="themes-list">
 		<?php
 		/* @var Theme $theme */
-		foreach ( Give\Form\Themes::get() as $theme ) {
+		foreach ( $registeredThemes as $theme ) {
 			$isActive = $activatedTheme === $theme->getID();
 
 			printf(
@@ -58,7 +59,7 @@ $activatedTheme = getActiveID( $post->ID );
 	<div class="form-theme-options">
 		<?php
 		/* @var Theme $theme */
-		foreach ( Give\Form\Themes::get() as $theme ) {
+		foreach ( $registeredThemes as $theme ) {
 			printf(
 				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
 				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),

@@ -38,6 +38,9 @@
  */
 
 // Exit if accessed directly.
+use Give\Form\Themes;
+use function Give\Form\Themes\registerDefaults;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -288,6 +291,18 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public $stripe;
 
+
+		/**
+		 * Give\Form\Themes Object to handle form themes
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var Themes
+		 */
+		public $themes;
+
+
 		/**
 		 * Main Give Instance
 		 *
@@ -386,11 +401,12 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
+			$this->themes                 = new Themes();
 
 			/**
 			 * Register core form themes
 			 */
-			\Give\Form\Themes\registerDefaults();
+			registerDefaults();
 
 			/**
 			 * Fire the action after Give core loads.

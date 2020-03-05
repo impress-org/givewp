@@ -16,6 +16,6 @@ function registerDefaults() {
 	$themes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
 
 	foreach ( $themes as $theme ) {
-		Themes::set( new Theme( $theme ) );
+		Give()->themes->set( new Theme( $theme ) );
 	}
 }

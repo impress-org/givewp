@@ -22,7 +22,7 @@ class Themes {
 	 *
 	 * @var array
 	 */
-	private static $themes = array();
+	private $themes = array();
 
 
 	/**
@@ -32,8 +32,8 @@ class Themes {
 	 *
 	 * @return array
 	 */
-	public static function get() {
-		return self::$themes;
+	public function get() {
+		return $this->themes;
 	}
 
 	/**
@@ -45,8 +45,8 @@ class Themes {
 	 *
 	 * @return Theme
 	 */
-	public static function getTheme( $themeID ) {
-		return self::$themes[ $themeID ];
+	public function getTheme( $themeID ) {
+		return $this->themes[ $themeID ];
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Themes {
 	 *
 	 * @param Theme $registerTheme
 	 */
-	public static function set( $registerTheme ) {
-		self::$themes[ $registerTheme->getID() ] = $registerTheme;
+	public function set( $registerTheme ) {
+		$this->themes[ $registerTheme->getID() ] = $registerTheme;
 	}
 }
