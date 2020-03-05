@@ -37,10 +37,10 @@
  * - The GiveWP Team
  */
 
-// Exit if accessed directly.
 use Give\Form\Themes;
 use function Give\Form\Themes\registerDefaults;
 
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -295,7 +295,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give\Form\Themes Object to handle form themes
 		 *
-		 * @since  2.5.0
+		 * @since  2.7.0
 		 * @access public
 		 *
 		 * @var Themes
