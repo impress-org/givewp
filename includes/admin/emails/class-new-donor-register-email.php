@@ -31,23 +31,25 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->load( array(
-				'id'                    => 'new-donor-register',
-				'label'                 => __( 'New User Registration', 'give' ),
-				'description'           => __( 'Sent to designated recipient(s) when a new user registers on the site via a donation form.', 'give' ),
-				'has_recipient_field'   => true,
-				'notification_status'   => 'enabled',
-				'has_preview_header'    => true,
-				'email_tag_context'     => array( 'donor', 'general' ),
-				'form_metabox_setting'  => false,
-				'default_email_subject' => sprintf(
-					/* translators: %s: site name */
-					esc_attr__( '[%s] New User Registration', 'give' ),
-					get_bloginfo( 'name' )
-				),
-				'default_email_message' => $this->get_default_email_message(),
-				'default_email_header'  => __( 'New User Registration', 'give' ),
-			) );
+			$this->load(
+				array(
+					'id'                    => 'new-donor-register',
+					'label'                 => __( 'New User Registration', 'give' ),
+					'description'           => __( 'Sent to designated recipient(s) when a new user registers on the site via a donation form.', 'give' ),
+					'has_recipient_field'   => true,
+					'notification_status'   => 'enabled',
+					'has_preview_header'    => true,
+					'email_tag_context'     => array( 'donor', 'general' ),
+					'form_metabox_setting'  => false,
+					'default_email_subject' => sprintf(
+						/* translators: %s: site name */
+						esc_attr__( '[%s] New User Registration', 'give' ),
+						get_bloginfo( 'name' )
+					),
+					'default_email_message' => $this->get_default_email_message(),
+					'default_email_header'  => __( 'New User Registration', 'give' ),
+				)
+			);
 
 			// Setup action hook.
 			add_action(
@@ -74,7 +76,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @return string
 		 */
 		function get_default_email_message() {
-			$message = esc_attr__( 'New user registration on your site {sitename}:', 'give' ) . "\r\n\r\n";
+			$message  = esc_attr__( 'New user registration on your site {sitename}:', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'Email: {user_email}', 'give' ) . "\r\n";
 
@@ -103,16 +105,22 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 */
 		public function setup_email_notification( $user_id, $user_data ) {
 			if ( ! is_int( $user_id ) || ! $user_id ) {
-				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 400,
-				) );
+				wp_die(
+					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
+						'response' => 400,
+					)
+				);
 			}
 
 			$this->setup_email_data();
 
-			$this->send_email_notification( array(
-				'user_id' => $user_id,
-			) );
+			$this->send_email_notification(
+				array(
+					'user_id' => $user_id,
+				)
+			);
 		}
 
 
@@ -200,17 +208,19 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 				<?php
 				// The select field with 100 latest transactions
-				echo Give()->html->select( array(
-					'name'             => 'preview_email_user_id',
-					'selected'         => $user_id,
-					'id'               => 'give_preview_email_user_id',
-					'class'            => 'give-preview-email-donor-id',
-					'options'          => $options,
-					'chosen'           => false,
-					'select_atts'      => 'onchange="change_preview()"',
-					'show_option_all'  => false,
-					'show_option_none' => false,
-				) );
+				echo Give()->html->select(
+					array(
+						'name'             => 'preview_email_user_id',
+						'selected'         => $user_id,
+						'id'               => 'give_preview_email_user_id',
+						'class'            => 'give-preview-email-donor-id',
+						'options'          => $options,
+						'chosen'           => false,
+						'select_atts'      => 'onchange="change_preview()"',
+						'show_option_all'  => false,
+						'show_option_none' => false,
+					)
+				);
 				?>
 				<!-- Closing tag-->
 			</div>

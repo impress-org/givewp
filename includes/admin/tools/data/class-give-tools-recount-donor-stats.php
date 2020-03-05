@@ -167,7 +167,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 		);
 
 		$donors = Give()->donors->get_donors( $args );
-		$total     = count( $donors );
+		$total  = count( $donors );
 
 		$percentage = 100;
 
@@ -201,9 +201,13 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				esc_html__( 'You do not have permission to recount stats.', 'give' ),
+				esc_html__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		}
 
 		$had_data = $this->get_data();

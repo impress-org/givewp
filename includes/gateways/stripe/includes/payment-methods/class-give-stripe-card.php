@@ -66,9 +66,11 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					try {
 
-						$source = \Stripe\Source::create( array(
-							'card' => $card_data,
-						) );
+						$source    = \Stripe\Source::create(
+							array(
+								'card' => $card_data,
+							)
+						);
 						$source_id = $source->id;
 
 					} catch ( \Stripe\Error\Base $e ) {
@@ -235,7 +237,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						array(
 							'amount'               => $this->format_amount( $donation_data['price'] ),
 							'currency'             => give_get_currency( $form_id ),
-							'payment_method_types' => [ 'card' ],
+							'payment_method_types' => array( 'card' ),
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
 							'metadata'             => $this->prepare_metadata( $donation_id ),
@@ -266,7 +268,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					// Send them to success page.
 					give_send_to_success_page();
-
 
 				} else {
 

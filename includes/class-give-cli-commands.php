@@ -1022,13 +1022,12 @@ class GIVE_CLI_COMMAND {
 
 		// Return if associative arguments are not specified.
 		if ( empty( $assoc ) ) {
-			WP_CLI::error( "--enable or --disable flag is missing." );
+			WP_CLI::error( '--enable or --disable flag is missing.' );
 			return;
 		}
 
 		$enabled_gateways = give_get_option( 'gateways' );
 		$default_gateway  = give_get_option( 'default_gateway' );
-
 
 		// Enable Test Mode.
 		if ( true === WP_CLI\Utils\get_flag_value( $assoc, 'enable' ) ) {
@@ -1036,16 +1035,13 @@ class GIVE_CLI_COMMAND {
 			// Set `Test Mode` to `enabled`.
 			give_update_option( 'test_mode', 'enabled' );
 
-
 			// Enable `Test Donation` gateway.
-			$enabled_gateways['manual'] = "1";
+			$enabled_gateways['manual'] = '1';
 			give_update_option( 'gateways', $enabled_gateways );
-
 
 			// Set `Test Donation` as default gateway.
 			add_option( 'give_test_mode_default_gateway', $default_gateway );
 			give_update_option( 'default_gateway', 'manual' );
-
 
 			// Show success message on completion.
 			WP_CLI::success( 'GiveWP Test mode enabled' );
@@ -1057,17 +1053,14 @@ class GIVE_CLI_COMMAND {
 			// Set `Test Mode` to `disabled`.
 			give_update_option( 'test_mode', 'disabled' );
 
-
 			// Disable `Test Donation` gateway.
 			unset( $enabled_gateways['manual'] );
 			give_update_option( 'gateways', $enabled_gateways );
-
 
 			// Backup `Default Gateway` setting for restore on test mode disable.
 			$default_gateway_backup = get_option( 'give_test_mode_default_gateway' );
 			give_update_option( 'default_gateway', $default_gateway_backup );
 			delete_option( 'give_test_mode_default_gateway' );
-
 
 			// Show success message on completion.
 			WP_CLI::success( 'GiveWP Test mode disabled' );
@@ -1126,9 +1119,9 @@ class GIVE_CLI_COMMAND {
 	 * : Names of add-ons that should be excluded from updating.
 	 *
 	 * ## EXAMPLES
-	 * 	wp give add-on-update
-	 * 	wp give add-on-update --name="Give-Stripe"
-	 * 	wp give add-on-update --exclude="Give-Stripe, Give-Recurring-Donations"
+	 *  wp give add-on-update
+	 *  wp give add-on-update --name="Give-Stripe"
+	 *  wp give add-on-update --exclude="Give-Stripe, Give-Recurring-Donations"
 	 *
 	 * @param array $pos   Array of positional arguments.
 	 * @param array $assoc Array of associative arguments.
@@ -1151,7 +1144,7 @@ class GIVE_CLI_COMMAND {
 		 * Update a single Give addon.
 		 */
 		if ( false !== ( $addon_name = WP_CLI\Utils\get_flag_value( $assoc, 'name', false ) ) ) {
-			$give_addon_path = glob( WP_CONTENT_DIR . "/plugins/$addon_name/" , GLOB_ONLYDIR );
+			$give_addon_path = glob( WP_CONTENT_DIR . "/plugins/$addon_name/", GLOB_ONLYDIR );
 
 			/**
 			 * Display error if the plugin (addon) name entered does
@@ -1206,7 +1199,7 @@ class GIVE_CLI_COMMAND {
 		 * Get directory paths of all the addons including
 		 * Give Core.
 		 */
-		$give_addon_directories = glob( WP_CONTENT_DIR . '/plugins/[gG]ive*/' , GLOB_ONLYDIR );
+		$give_addon_directories = glob( WP_CONTENT_DIR . '/plugins/[gG]ive*/', GLOB_ONLYDIR );
 
 		foreach ( $give_addon_directories as $repo ) {
 
@@ -1223,7 +1216,7 @@ class GIVE_CLI_COMMAND {
 			if ( ! $this->is_git_repo( $repo ) ) {
 				WP_CLI::line(
 					sprintf(
-						__( "%s: '%s' does not contain git repo.", 'give' ),
+						__( "%1\$s: '%2\$s' does not contain git repo.", 'give' ),
 						WP_CLI::colorize( '%RError%n' ),
 						$plugin_name
 					)
@@ -1258,9 +1251,9 @@ class GIVE_CLI_COMMAND {
 
 			$items[] = array(
 				'GiveWP Addon' => $plugin_name,
-				'Branch'     => $branch_name,
-				'Remote'     => 'origin',
-				'Status'     => ( 0 === $return_var )
+				'Branch'       => $branch_name,
+				'Remote'       => 'origin',
+				'Status'       => ( 0 === $return_var )
 					? __( 'Success', 'give' )
 					: __( 'Failed', 'give' ),
 			);

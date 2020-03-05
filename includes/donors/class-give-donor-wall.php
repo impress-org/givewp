@@ -31,7 +31,7 @@ class Give_Donor_Wall {
 	 * @access private
 	 * @var Give_Donor_Wall
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -198,9 +198,9 @@ class Give_Donor_Wall {
 				'order'           => 'DESC',
 				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
-			), $atts
+			),
+			$atts
 		);
-
 
 		// Validate boolean attributes.
 		$boolean_attributes = array(
@@ -359,7 +359,7 @@ class Give_Donor_Wall {
 				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
 
 				// Set donation date.
-				if( empty( $temp[ $result->{$donation_id_col} ][ 'donation_date' ] ) ){
+				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
 					$temp[ $result->{$donation_id_col} ]['donation_date'] = $result->donation_date;
 				}
 			}
@@ -370,10 +370,12 @@ class Give_Donor_Wall {
 				foreach ( $temp as $donation_id => $donation_data ) {
 					$temp[ $donation_id ]['donation_id'] = $donation_id;
 
-					$temp[ $donation_id ]['name_initial'] = give_get_name_initial( array(
-						'firstname' => $donation_data['_give_donor_billing_first_name'],
-						'lastname'  => $donation_data['_give_donor_billing_last_name'],
-					) );
+					$temp[ $donation_id ]['name_initial'] = give_get_name_initial(
+						array(
+							'firstname' => $donation_data['_give_donor_billing_first_name'],
+							'lastname'  => $donation_data['_give_donor_billing_last_name'],
+						)
+					);
 
 					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
 				}
@@ -408,7 +410,6 @@ class Give_Donor_Wall {
 		// exclude donation with zero amount from result.
 		$sql   .= " INNER JOIN {$wpdb->donationmeta} as m1 ON (p1.ID = m1.{$donation_id_col})";
 		$where .= " AND m1.meta_key='_give_payment_total' AND m1.meta_value>0";
-
 
 		if ( $query_params['form_id'] ) {
 			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.{$donation_id_col})";
@@ -478,19 +479,19 @@ class Give_Donor_Wall {
 		}
 
 		$sql   = "SELECT c1.comment_parent as donation_id, c1.comment_content as comment FROM {$wpdb->give_comments} as c1";
-		$sql   .= " INNER JOIN {$wpdb->give_commentmeta} as cm1 ON (c1.comment_ID=cm1.give_comment_id)";
+		$sql  .= " INNER JOIN {$wpdb->give_commentmeta} as cm1 ON (c1.comment_ID=cm1.give_comment_id)";
 		$where = array();
 
 		foreach ( $donations_data as $id => $data ) {
 			// Do not fetch comment for anonymous donation.
-			if( ! empty( $data['_give_anonymous_donation'] )  ) {
+			if ( ! empty( $data['_give_anonymous_donation'] ) ) {
 				continue;
 			}
 
 			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
 		}
 
-		$where = ' WHERE ' . implode( ' OR ', $where );
+		$where  = ' WHERE ' . implode( ' OR ', $where );
 		$where .= " AND c1.comment_type='donor_donation'";
 
 		$sql = $sql . $where;

@@ -527,308 +527,311 @@ function give_get_states_label() {
  * @return array
  */
 function give_get_country_locale() {
-	return (array) apply_filters( 'give_get_country_locale', array(
-		'AE' => array(
-			'state' => array(
-				'required' => false,
+	return (array) apply_filters(
+		'give_get_country_locale',
+		array(
+			'AE' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'AF' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'AF' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'AT' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'AT' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'AU' => array(
-			'state' => array(
-				'label' => __( 'State', 'give' ),
+			'AU' => array(
+				'state' => array(
+					'label' => __( 'State', 'give' ),
+				),
 			),
-		),
-		'AX' => array(
-			'state' => array(
-				'required' => false,
+			'AX' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'BD' => array(
-			'state' => array(
-				'label' => __( 'District', 'give' ),
+			'BD' => array(
+				'state' => array(
+					'label' => __( 'District', 'give' ),
+				),
 			),
-		),
-		'BE' => array(
-			'state' => array(
-				'required' => false,
-				'label'    => __( 'Province', 'give' ),
-				'hidden'   => true,
+			'BE' => array(
+				'state' => array(
+					'required' => false,
+					'label'    => __( 'Province', 'give' ),
+					'hidden'   => true,
+				),
 			),
-		),
-		'BI' => array(
-			'state' => array(
-				'required' => false,
+			'BI' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'CA' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'CA' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'CH' => array(
-			'state' => array(
-				'label'    => __( 'Canton', 'give' ),
-				'required' => false,
-				'hidden'   => true,
+			'CH' => array(
+				'state' => array(
+					'label'    => __( 'Canton', 'give' ),
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'CL' => array(
-			'state' => array(
-				'label' => __( 'Region', 'give' ),
+			'CL' => array(
+				'state' => array(
+					'label' => __( 'Region', 'give' ),
+				),
 			),
-		),
-		'CN' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'CN' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'CZ' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'CZ' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'DE' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'DE' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'DK' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'DK' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'EE' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'EE' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'FI' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'FI' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'FR' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'FR' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'GP' => array(
-			'state' => array(
-				'required' => false,
+			'GP' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'GF' => array(
-			'state' => array(
-				'required' => false,
+			'GF' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'HK' => array(
-			'state' => array(
-				'label' => __( 'Region', 'give' ),
+			'HK' => array(
+				'state' => array(
+					'label' => __( 'Region', 'give' ),
+				),
 			),
-		),
-		'HU' => array(
-			'state' => array(
-				'label'  => __( 'County', 'give' ),
-				'hidden' => true,
+			'HU' => array(
+				'state' => array(
+					'label'  => __( 'County', 'give' ),
+					'hidden' => true,
+				),
 			),
-		),
-		'ID' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'ID' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'IE' => array(
-			'state' => array(
-				'label' => __( 'County', 'give' ),
+			'IE' => array(
+				'state' => array(
+					'label' => __( 'County', 'give' ),
+				),
 			),
-		),
-		'IS' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'IS' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'IL' => array(
-			'state' => array(
-				'required' => false,
+			'IL' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'IT' => array(
-			'state' => array(
-				'required' => true,
-				'label'    => __( 'Province', 'give' ),
+			'IT' => array(
+				'state' => array(
+					'required' => true,
+					'label'    => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'JP' => array(
-			'state' => array(
-				'label' => __( 'Prefecture', 'give' ),
+			'JP' => array(
+				'state' => array(
+					'label' => __( 'Prefecture', 'give' ),
+				),
 			),
-		),
-		'KR' => array(
-			'state' => array(
-				'required' => false,
+			'KR' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'KW' => array(
-			'state' => array(
-				'required' => false,
+			'KW' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'LB' => array(
-			'state' => array(
-				'required' => false,
+			'LB' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'MQ' => array(
-			'state' => array(
-				'required' => false,
+			'MQ' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'NL' => array(
-			'state' => array(
-				'required' => false,
-				'label'    => __( 'Province', 'give' ),
-				'hidden'   => true,
+			'NL' => array(
+				'state' => array(
+					'required' => false,
+					'label'    => __( 'Province', 'give' ),
+					'hidden'   => true,
+				),
 			),
-		),
-		'NZ' => array(
-			'state' => array(
-				'label' => __( 'Region', 'give' ),
+			'NZ' => array(
+				'state' => array(
+					'label' => __( 'Region', 'give' ),
+				),
 			),
-		),
-		'NO' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'NO' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'NP' => array(
-			'state' => array(
-				'label' => __( 'State / Zone', 'give' ),
+			'NP' => array(
+				'state' => array(
+					'label' => __( 'State / Zone', 'give' ),
+				),
 			),
-		),
-		'PL' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'PL' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'PT' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'PT' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'RE' => array(
-			'state' => array(
-				'required' => false,
+			'RE' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'RO' => array(
-			'state' => array(
-				'required' => false,
+			'RO' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'SG' => array(
-			'state' => array(
-				'required' => false,
+			'SG' => array(
+				'state' => array(
+					'required' => false,
+				),
+				'city'  => array(
+					'required' => false,
+				),
 			),
-			'city'  => array(
-				'required' => false,
-			)
-		),
-		'SK' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'SK' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'SI' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'SI' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'ES' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'ES' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'LI' => array(
-			'state' => array(
-				'label'    => __( 'Municipality', 'give' ),
-				'required' => false,
-				'hidden'   => true,
+			'LI' => array(
+				'state' => array(
+					'label'    => __( 'Municipality', 'give' ),
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'LK' => array(
-			'state' => array(
-				'required' => false,
+			'LK' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'SE' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'SE' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'TR' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'TR' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'US' => array(
-			'state' => array(
-				'label' => __( 'State', 'give' ),
+			'US' => array(
+				'state' => array(
+					'label' => __( 'State', 'give' ),
+				),
 			),
-		),
-		'GB' => array(
-			'state' => array(
-				'label'    => __( 'County', 'give' ),
-				'required' => false,
+			'GB' => array(
+				'state' => array(
+					'label'    => __( 'County', 'give' ),
+					'required' => false,
+				),
 			),
-		),
-		'VN' => array(
-			'state' => array(
-				'required' => false,
-				'hidden'   => true,
+			'VN' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
 			),
-		),
-		'YT' => array(
-			'state' => array(
-				'required' => false,
+			'YT' => array(
+				'state' => array(
+					'required' => false,
+				),
 			),
-		),
-		'ZA' => array(
-			'state' => array(
-				'label' => __( 'Province', 'give' ),
+			'ZA' => array(
+				'state' => array(
+					'label' => __( 'Province', 'give' ),
+				),
 			),
-		),
-		'PA' => array(
-			'state' => array(
-				'required' => true,
+			'PA' => array(
+				'state' => array(
+					'required' => true,
+				),
 			),
-		),
-	) );
+		)
+	);
 }
 
 /**

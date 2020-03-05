@@ -71,7 +71,8 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="give-totals-shortcode-container-message">%s</p>',
+				'html' => sprintf(
+					'<p class="give-totals-shortcode-container-message">%s</p>',
 					__( 'This shortcode shows the total amount raised towards a custom goal for one or several forms regardless of whether they have goals enabled or not.', 'give' )
 				),
 			),
@@ -139,4 +140,4 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Totals;
+new Give_Shortcode_Totals();

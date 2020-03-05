@@ -6,7 +6,6 @@
  *
  * @param int   $donation_id
  * @param array $donation_data
- *
  */
 function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	$is_anonymous_donation = isset( $_POST['give_anonymous_donation'] )
@@ -16,7 +15,7 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$comment_meta = array( 'author_email' => $donation_data['user_info']['email'] );
 
-		if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+		if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
 			// Backward compatibility.
 			$comment_meta = array( 'comment_author_email' => $donation_data['user_info']['email'] );
 		}
@@ -68,7 +67,7 @@ function __give_update_donor_donation_comment_status( $donation_id, $status ) {
 	/* @var WP_Comment $note */
 	$donor_comment = give_get_donor_donation_comment( $donation_id, give_get_payment_donor_id( $donation_id ) );
 
-	if( $donor_comment instanceof WP_Comment ) {
+	if ( $donor_comment instanceof WP_Comment ) {
 		wp_set_comment_status( $donor_comment->comment_ID, (string) $approve );
 	}
 }
@@ -86,7 +85,7 @@ function __give_remove_donor_donation_comment( $donation_id ) {
 	/* @var WP_Comment $note */
 	$donor_comment = give_get_donor_donation_comment( $donation_id, give_get_payment_donor_id( $donation_id ) );
 
-	if( $donor_comment instanceof WP_Comment ) {
+	if ( $donor_comment instanceof WP_Comment ) {
 		wp_delete_comment( $donor_comment->comment_ID );
 	}
 }

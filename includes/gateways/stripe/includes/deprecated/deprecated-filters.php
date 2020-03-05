@@ -55,8 +55,14 @@ function give_stripe_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '',
 			$data = apply_filters( $give_stripe_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				_give_deprecated_function( sprintf( /* translators: %s: filter name */
-					__( 'The %s filter' ), $give_stripe_map_deprecated_filters[ $filter ] ), '2.5.0', $filter );
+				_give_deprecated_function(
+					sprintf( /* translators: %s: filter name */
+						__( 'The %s filter' ),
+						$give_stripe_map_deprecated_filters[ $filter ]
+					),
+					'2.5.0',
+					$filter
+				);
 			}
 		}
 	}

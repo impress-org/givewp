@@ -449,7 +449,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v224_update_donor_meta',
 				'v224_update_donor_meta_forms_id',
 				'v230_move_donor_note',
-				'v230_move_donation_note'
+				'v230_move_donation_note',
 			),
 			'callback' => 'give_v230_delete_dw_related_donor_data_callback',
 		)
@@ -463,7 +463,7 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v230_delete_dw_related_comment_data_callback',
 			'depend'   => array(
 				'v230_move_donor_note',
-				'v230_move_donation_note'
+				'v230_move_donation_note',
 			),
 		)
 	);
@@ -503,7 +503,9 @@ function give_trigger_upgrades() {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die(
-			esc_html__( 'You do not have permission to do GiveWP upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			esc_html__( 'You do not have permission to do GiveWP upgrades.', 'give' ),
+			esc_html__( 'Error', 'give' ),
+			array(
 				'response' => 403,
 			)
 		);
@@ -567,8 +569,8 @@ function give_v134_upgrade_give_offline_status() {
 	$select = "SELECT ID FROM $wpdb->posts p ";
 	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
 	$where  = "WHERE p.post_type = 'give_payment' ";
-	$where  .= "AND ( p.post_status = 'abandoned' )";
-	$where  .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
+	$where .= "AND ( p.post_status = 'abandoned' )";
+	$where .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
 
 	$sql            = $select . $join . $where;
 	$found_payments = $wpdb->get_col( $sql );
@@ -1843,7 +1845,8 @@ function give_v20_upgrades_form_metadata_callback() {
 			// Update offline instruction email notification status.
 			$offline_instruction_notification_status = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
 			$offline_instruction_notification_status = give_is_setting_enabled(
-				$offline_instruction_notification_status, array(
+				$offline_instruction_notification_status,
+				array(
 					'enabled',
 					'global',
 				)
@@ -2479,7 +2482,8 @@ function give_v201_move_metadata_into_new_table_callback() {
 					'give_forms',
 					'give_payment',
 				)
-			), $give_updates->step * 100
+			),
+			$give_updates->step * 100
 		);
 
 		foreach ( $payments as $payment_id ) {
@@ -3079,13 +3083,13 @@ function give_v224_update_donor_meta_callback() {
 /** Update donor meta
  * Set "_give_anonymous_donor_forms" meta key if not exist
  *
- *
  * @since 2.2.4
  */
 function give_v224_update_donor_meta_forms_id_callback() {
 	$give_updates = Give_Updates::get_instance();
 
-	$donations = new WP_Query( array(
+	$donations = new WP_Query(
+		array(
 			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
@@ -3127,7 +3131,7 @@ function give_v224_update_donor_meta_forms_id_callback() {
  *
  * @since 2.4.0
  */
-function  give_v230_add_missing_comment_tables(){
+function give_v230_add_missing_comment_tables() {
 	$custom_tables = array(
 		Give()->comment->db,
 		Give()->comment->db_meta,
@@ -3154,14 +3158,18 @@ function give_v230_move_donor_note_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$donor_count = Give()->donors->count( array(
-		'number' => - 1,
-	) );
+	$donor_count = Give()->donors->count(
+		array(
+			'number' => - 1,
+		)
+	);
 
-	$donors = Give()->donors->get_donors( array(
-		'paged'  => $give_updates->step,
-		'number' => 100,
-	) );
+	$donors = Give()->donors->get_donors(
+		array(
+			'paged'  => $give_updates->step,
+			'number' => 100,
+		)
+	);
 
 	if ( $donors ) {
 		$give_updates->set_percentage( $donor_count, $give_updates->step * 100 );
@@ -3190,7 +3198,6 @@ function give_v230_move_donor_note_callback() {
 				}
 			}
 		}
-
 	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v230_move_donor_note' );
@@ -3258,7 +3265,7 @@ function give_v230_move_donation_note_callback() {
 				)
 			);
 
-			if( ! $comment_id ) {
+			if ( ! $comment_id ) {
 				continue;
 			}
 
@@ -3266,13 +3273,13 @@ function give_v230_move_donation_note_callback() {
 			$restricted_meta_keys = array(
 				'akismet_result',
 				'akismet_as_submitted',
-				'akismet_history'
+				'akismet_history',
 			);
 
 			if ( $comment_meta = get_comment_meta( $comment->comment_ID ) ) {
 				foreach ( $comment_meta as $meta_key => $meta_value ) {
 					// Skip few comment meta keys.
-					if( in_array( $meta_key, $restricted_meta_keys) ) {
+					if ( in_array( $meta_key, $restricted_meta_keys ) ) {
 						continue;
 					}
 
@@ -3288,11 +3295,10 @@ function give_v230_move_donation_note_callback() {
 			// Delete comment.
 			update_comment_meta( $comment->comment_ID, '_give_comment_moved', 1 );
 		}
-
 	} else {
 		$comment_ids = $wpdb->get_col(
 			$wpdb->prepare(
-					"
+				"
 				SELECT DISTINCT comment_id
 				FROM {$wpdb->commentmeta}
 				WHERE meta_key=%s
@@ -3303,8 +3309,8 @@ function give_v230_move_donation_note_callback() {
 			)
 		);
 
-		if( ! empty( $comment_ids ) ) {
-			$comment_ids = "'" . implode( "','", $comment_ids ). "'";
+		if ( ! empty( $comment_ids ) ) {
+			$comment_ids = "'" . implode( "','", $comment_ids ) . "'";
 
 			$wpdb->query( "DELETE FROM {$wpdb->comments} WHERE comment_ID IN ({$comment_ids})" );
 			$wpdb->query( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN ({$comment_ids})" );
@@ -3319,9 +3325,8 @@ function give_v230_move_donation_note_callback() {
  * Delete donor wall related donor meta data
  *
  * @since 2.3.0
- *
  */
-function give_v230_delete_dw_related_donor_data_callback(){
+function give_v230_delete_dw_related_donor_data_callback() {
 	global $wpdb;
 
 	$give_updates = Give_Updates::get_instance();
@@ -3338,9 +3343,8 @@ function give_v230_delete_dw_related_donor_data_callback(){
  * Delete donor wall related comment meta data
  *
  * @since 2.3.0
- *
  */
-function give_v230_delete_dw_related_comment_data_callback(){
+function give_v230_delete_dw_related_comment_data_callback() {
 	global $wpdb;
 
 	$give_updates = Give_Updates::get_instance();
@@ -3357,7 +3361,6 @@ function give_v230_delete_dw_related_comment_data_callback(){
  * Update donation form goal progress data.
  *
  * @since 2.4.0
- *
  */
 function give_v240_update_form_goal_progress_callback() {
 
@@ -3471,10 +3474,13 @@ function give_v250_upgrades() {
 
 	/* @var stdClass $data */
 	foreach ( $old_license as $key => $data ) {
-		$tmp = Give_License::request_license_api( array(
-			'edd_action' => 'check_license',
-			'license'    => $key,
-		), true );
+		$tmp = Give_License::request_license_api(
+			array(
+				'edd_action' => 'check_license',
+				'license'    => $key,
+			),
+			true
+		);
 
 		if ( is_wp_error( $tmp ) || ! $tmp['success'] ) {
 			continue;
@@ -3526,7 +3532,7 @@ function give_v258_upgrades() {
 	$is_checkout_enabled = give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
 
 	// Bailout, if stripe checkout is not active as a gateway.
-	if ( ! $is_checkout_enabled  ) {
+	if ( ! $is_checkout_enabled ) {
 		return;
 	}
 
@@ -3541,7 +3547,7 @@ function give_v258_upgrades() {
 	$default_gateway = give_get_option( 'default_gateway' );
 
 	// Set Stripe Checkout as active gateway.
-	$enabled_gateways['stripe_checkout']  = 1;
+	$enabled_gateways['stripe_checkout'] = 1;
 
 	// Unset Stripe - Credit Card as an active gateway.
 	unset( $enabled_gateways['stripe'] );
@@ -3571,7 +3577,6 @@ function give_v258_upgrades() {
 function give_v2511_upgrades() {
 	global $wp_roles, $wpdb;
 	$all_roles = get_editable_roles();
-
 
 	// Run code only if not a fresh install.
 	if ( Give_Cache_Setting::get_option( 'give_version' ) ) {

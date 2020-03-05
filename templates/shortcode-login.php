@@ -9,7 +9,8 @@ if ( ! is_user_logged_in() ) {
 
 	if ( ! empty( $get_data['donation_id'] ) ) {
 		$give_login_redirect = add_query_arg(
-			'donation_id', $get_data['donation_id'],
+			'donation_id',
+			$get_data['donation_id'],
 			give_get_history_page_uri()
 		);
 	}
@@ -73,11 +74,14 @@ if ( ! is_user_logged_in() ) {
 	);
 } else {
 	Give_Notices::print_frontend_notice(
-		apply_filters( 'give_already_logged_in_message', sprintf(
-			/* translators: %s Redirect URL. */
-			__( 'You are already logged in to the site. <a href="%s">Click here</a> to log out.', 'give' ),
-			esc_url(  wp_logout_url() )
-		) ),
+		apply_filters(
+			'give_already_logged_in_message',
+			sprintf(
+				/* translators: %s Redirect URL. */
+				__( 'You are already logged in to the site. <a href="%s">Click here</a> to log out.', 'give' ),
+				esc_url( wp_logout_url() )
+			)
+		),
 		true,
 		'warning'
 	);

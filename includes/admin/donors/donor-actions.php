@@ -28,9 +28,13 @@ function give_edit_donor( $args ) {
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			esc_html__( 'You do not have permission to edit this donor.', 'give' ),
+			esc_html__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	if ( empty( $args ) ) {
@@ -43,15 +47,19 @@ function give_edit_donor( $args ) {
 	$args = wp_parse_args(
 		$args,
 		array(
-			'give_anonymous_donor' => 0
+			'give_anonymous_donor' => 0,
 		)
 	);
 
 	// Verify Nonce.
 	if ( ! wp_verify_nonce( $args['_wpnonce'], 'edit-donor' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 400,
-		) );
+		wp_die(
+			esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+			esc_html__( 'Error', 'give' ),
+			array(
+				'response' => 400,
+			)
+		);
 	}
 
 	$donor_info = $args['donor_info'];
@@ -152,16 +160,18 @@ function give_edit_donor( $args ) {
 	}
 
 	if ( $output['success'] ) {
-		wp_safe_redirect( add_query_arg(
-			array(
-				'post_type'       => 'give_forms',
-				'page'            => 'give-donors',
-				'view'            => 'overview',
-				'id'              => $donor_id,
-				'give-messages[]' => 'profile-updated'
-			),
-			esc_url( admin_url( 'edit.php' ) )
-		) );
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'post_type'       => 'give_forms',
+					'page'            => 'give-donors',
+					'view'            => 'overview',
+					'id'              => $donor_id,
+					'give-messages[]' => 'profile-updated',
+				),
+				esc_url( admin_url( 'edit.php' ) )
+			)
+		);
 	}
 
 	exit;
@@ -184,9 +194,13 @@ function give_donor_save_note( $args ) {
 	$donor_view_role = apply_filters( 'give_view_donors_role', 'view_give_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_view_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			__( 'You do not have permission to edit this donor.', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	if ( empty( $args ) ) {
@@ -198,9 +212,13 @@ function give_donor_save_note( $args ) {
 	$nonce      = $args['add_donor_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-donor-note' ) ) {
-		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 400,
-		) );
+		wp_die(
+			__( 'Cheatin&#8217; uh?', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 400,
+			)
+		);
 	}
 
 	if ( empty( $donor_note ) ) {
@@ -267,9 +285,13 @@ function give_disconnect_donor_user_id( $args ) {
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			__( 'You do not have permission to edit this donor.', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	if ( empty( $args ) ) {
@@ -281,9 +303,13 @@ function give_disconnect_donor_user_id( $args ) {
 	$nonce = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-donor' ) ) {
-		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 400,
-		) );
+		wp_die(
+			__( 'Cheatin&#8217; uh?', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 400,
+			)
+		);
 	}
 
 	$donor = new Give_Donor( $donor_id );
@@ -364,13 +390,17 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  */
 function give_add_donor_email( $args ) {
 
-	$donor_id = '';
+	$donor_id        = '';
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			__( 'You do not have permission to edit this donor.', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	$output = array();
@@ -464,9 +494,13 @@ function give_remove_donor_email() {
 
 	$nonce = $_GET['_wpnonce'];
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
-		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	$donor = new Give_Donor( $_GET['id'] );
@@ -511,9 +545,13 @@ function give_set_donor_primary_email() {
 	$nonce = $_GET['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
-		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
+		wp_die(
+			__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
+			__( 'Error', 'give' ),
+			array(
+				'response' => 403,
+			)
+		);
 	}
 
 	$donor = new Give_Donor( $_GET['id'] );
@@ -605,9 +643,12 @@ function give_process_donor_deletion( $args ) {
 				if ( $delete_donor ) {
 
 					// Delete donor and linked donations.
-					$donor_delete_status = give_delete_donor_and_related_donation( $donor, array(
-						'delete_donation' => $delete_donation,
-					) );
+					$donor_delete_status = give_delete_donor_and_related_donation(
+						$donor,
+						array(
+							'delete_donation' => $delete_donation,
+						)
+					);
 
 					if ( 1 === $donor_delete_status ) {
 						$redirect_args['give-messages[]'] = 'donor-deleted';

@@ -138,7 +138,7 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		$donation = wp_parse_args(
 			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
 			array(
-				'price'           => number_format( (float) $multilevel_price[1]['_give_amount'], 2 ), //$25
+				'price'           => number_format( (float) $multilevel_price[1]['_give_amount'], 2 ), // $25
 				'give_form_title' => $multilevel_form->post_title,
 				'give_form_id'    => $multilevel_form->ID,
 				'give_price_id'   => $multilevel_price[1]['_give_id']['level_id'],
@@ -170,7 +170,6 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		$meta          = ! empty( $donation['meta'] ) ? $donation['meta'] : array();
 		$result_type   = ! empty( $donation['result_type'] ) ? $donation['result_type'] : 'int';
 
-
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'give_virtual';
 
@@ -199,7 +198,7 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		give_insert_payment_note(
 			$payment_id,
 			sprintf(
-			/* translators: %s: Paypal transaction id */
+				/* translators: %s: Paypal transaction id */
 				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$transaction_id
 			)
@@ -207,7 +206,7 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 
 		return 'int' === $result_type ?
 			$payment_id :
-			new Give_Payment( $payment_id);
+			new Give_Payment( $payment_id );
 	}
 
 }

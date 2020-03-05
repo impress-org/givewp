@@ -166,11 +166,13 @@ function give_update_old_payments_with_totals( $data ) {
 		return;
 	}
 
-	$payments = give_get_payments( array(
-		'offset' => 0,
-		'number' => - 1,
-		'mode'   => 'all',
-	) );
+	$payments = give_get_payments(
+		array(
+			'offset' => 0,
+			'number' => - 1,
+			'mode'   => 'all',
+		)
+	);
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
@@ -301,9 +303,12 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		}
 
 		// Convert all meta key value to string instead of array
-		array_walk( $payment_meta, function ( &$meta, $key ) {
-			$meta = current( $meta );
-		} );
+		array_walk(
+			$payment_meta,
+			function ( &$meta, $key ) {
+				$meta = current( $meta );
+			}
+		);
 
 		/**
 		 * Add backward compatibility to old meta keys.
@@ -331,7 +336,6 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		$payment_meta['date'] = ! empty( $payment_meta['date'] ) ?
 			$payment_meta['date'] :
 			get_post_field( 'post_date', $object_id );
-
 
 		// Currency.
 		$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
@@ -427,7 +431,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	return $payment_meta;
 }
 
-if( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 }
 

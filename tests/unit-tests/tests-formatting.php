@@ -42,7 +42,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
 		}
 
-
 		/**
 		 * Cse 2: Payment
 		 */
@@ -106,7 +105,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		);
 		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-
 		$this->assertArrayHasKey( 'thousands_separator', $currency_settings );
 		$this->assertEquals( $expected['thousands_separator'], $currency_settings['thousands_separator'] );
 	}
@@ -133,7 +131,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		);
 		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-
 		$this->assertArrayHasKey( 'decimal_separator', $currency_settings );
 		$this->assertEquals( $expected['decimal_separator'], $currency_settings['decimal_separator'] );
 	}
@@ -154,7 +151,13 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
 
-		$output = give_sanitize_amount( $amount, array( 'number_decimals' => $dp, 'trim_zeros' => $trim_zeros ) );
+		$output = give_sanitize_amount(
+			$amount,
+			array(
+				'number_decimals' => $dp,
+				'trim_zeros'      => $trim_zeros,
+			)
+		);
 
 		$this->assertSame(
 			$expected,
@@ -229,27 +232,36 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			default:
 				// Test 1: without decimal
 				give_update_option( 'number_decimals', 0 );
-				$output = give_format_amount( $amount, array(
-					'decimal'  => false,
-					'sanitize' => ! is_numeric( $amount ),
-					'currency' => $currency,
-				) );
+				$output = give_format_amount(
+					$amount,
+					array(
+						'decimal'  => false,
+						'sanitize' => ! is_numeric( $amount ),
+						'currency' => $currency,
+					)
+				);
 				$this->assertSame( $expected[0], $output, "Testing {$amount} with {$currency} currency and expected {$expected[0]} (without decimal)." );
 
 				// Test 2: with decimal(2)
 				give_update_option( 'number_decimals', 2 );
-				$output = give_format_amount( $amount, array(
-					'sanitize' => ! is_numeric( $amount ),
-					'currency' => $currency,
-				) );
+				$output = give_format_amount(
+					$amount,
+					array(
+						'sanitize' => ! is_numeric( $amount ),
+						'currency' => $currency,
+					)
+				);
 				$this->assertSame( $expected[1], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (with decimal {2})." );
 
 				// Test 3: with decimal (more then 2)
 				give_update_option( 'number_decimals', 4 );
-				$output = give_format_amount( $amount, array(
-					'sanitize' => ! is_numeric( $amount ),
-					'currency' => $currency,
-				) );
+				$output = give_format_amount(
+					$amount,
+					array(
+						'sanitize' => ! is_numeric( $amount ),
+						'currency' => $currency,
+					)
+				);
 				$this->assertSame( $expected[2], $output, "Testing {$amount} with {$currency} currency and expected {$expected[2]} (with decimal {4})." );
 		}
 	}
@@ -260,7 +272,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 * @return array
-	 *
 	 */
 	function give_format_amount_provider() {
 		return array(
@@ -380,20 +391,31 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function test_give_human_format_large_amount( $amount, $expected ) {
 		// Case 1.
-		$output = give_human_format_large_amount( give_format_amount( $amount, array(
-			'sanitize' => false,
-			'currency' => 'USD',
-		) ) );
+		$output = give_human_format_large_amount(
+			give_format_amount(
+				$amount,
+				array(
+					'sanitize' => false,
+					'currency' => 'USD',
+				)
+			)
+		);
 		$this->assertSame(
 			$expected[0],
 			$output
 		);
 
 		// Case 2.
-		$output = give_human_format_large_amount( give_format_amount( $amount, array(
-			'sanitize' => false,
-			'currency' => 'INR',
-		) ), array( 'currency' => 'INR' ) );
+		$output = give_human_format_large_amount(
+			give_format_amount(
+				$amount,
+				array(
+					'sanitize' => false,
+					'currency' => 'INR',
+				)
+			),
+			array( 'currency' => 'INR' )
+		);
 		$this->assertSame(
 			$expected[1],
 			$output
@@ -406,7 +428,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 * @return array
-	 *
 	 */
 	function give_human_format_large_amount_provider() {
 		return array(
@@ -481,7 +502,13 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		give_update_option( 'currency', $currency );
 		give_update_option( 'currency_position', $currency_position );
 
-		$output = give_currency_filter( $price, array( 'currency_code' => $currency, 'decode_currency' => $decode_currency ) );
+		$output = give_currency_filter(
+			$price,
+			array(
+				'currency_code'   => $currency,
+				'decode_currency' => $decode_currency,
+			)
+		);
 
 		$this->assertSame(
 			$expected,
@@ -512,7 +539,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '10', 'NOK', 'after', true, '10 kr.' ),
 			array( '10', 'USD', 'before', true, '$10' ),
 			array( '10', 'ZAR', 'before', true, 'R10' ),
-			array( '10', 'NOK', 'before', true, 'kr. 10' )
+			array( '10', 'NOK', 'before', true, 'kr. 10' ),
 		);
 	}
 
@@ -540,7 +567,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			$output_number_of_decimal,
 			'Number of decimal places should be equal to 2'
 		);
-
 
 		/*
 		 * Check 2
@@ -633,9 +659,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		return array(
 			array( '', $wp_default_date_format, "Date format should be equal to {$wp_default_date_format}" ),
-			array( 'checkout', 'F j, Y', "Date format should be equal to F j, Y" ),
-			array( 'report', 'Y-m-d', "Date format should be equal to Y-m-d" ),
-			array( 'email', 'm/d/Y', "Date format should be equal to m/d/y" ),
+			array( 'checkout', 'F j, Y', 'Date format should be equal to F j, Y' ),
+			array( 'report', 'Y-m-d', 'Date format should be equal to Y-m-d' ),
+			array( 'email', 'm/d/Y', 'Date format should be equal to m/d/y' ),
 		);
 	}
 

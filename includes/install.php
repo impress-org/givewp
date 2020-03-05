@@ -41,7 +41,6 @@ function give_install( $network_wide = false ) {
 			restore_current_blog();
 
 		}
-
 	} else {
 
 		give_run_install();
@@ -71,7 +70,7 @@ function give_run_install() {
 	// Setup some default options.
 	$options = array();
 
-	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
+	// Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options = array_merge( $options, give_get_default_settings() );
 	}
@@ -150,7 +149,7 @@ function give_run_install() {
 			'v230_delete_donor_wall_related_donor_data',
 			'v230_delete_donor_wall_related_comment_data',
 			'v240_update_form_goal_progress',
-			'v241_remove_sale_logs'
+			'v241_remove_sale_logs',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -278,7 +277,6 @@ function give_after_install() {
 		Give_Cache::delete( Give_Cache::get_key( '_give_installed' ) );
 	}
 
-
 }
 
 add_action( 'admin_init', 'give_after_install' );
@@ -361,7 +359,11 @@ function give_get_default_settings() {
 		'paypal_verification'                         => 'enabled',
 
 		// Default is manual gateway.
-		'gateways'                                    => array( 'manual' => 1, 'offline' => 1, 'stripe' => 1 ),
+		'gateways'                                    => array(
+			'manual'  => 1,
+			'offline' => 1,
+			'stripe'  => 1,
+		),
 		'default_gateway'                             => 'manual',
 
 		// Offline gateway setup.
@@ -434,7 +436,7 @@ function give_create_pages() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -453,7 +455,7 @@ function give_create_pages() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -470,7 +472,7 @@ function give_create_pages() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -511,7 +513,6 @@ add_action( 'update_option_give_version', 'give_install_tables_on_plugin_update'
  * Note: only for internal purpose use
  *
  * @sice 2.3.1
- *
  */
 function __give_get_tables() {
 	$tables = array(
@@ -535,14 +536,13 @@ function __give_get_tables() {
  * Note: only for internal purpose use
  *
  * @sice 2.3.1
- *
  */
 function __give_register_tables() {
 	$tables = __give_get_tables();
 
 	/* @var Give_DB $table */
 	foreach ( $tables  as $table ) {
-		if( ! $table->installed() ) {
+		if ( ! $table->installed() ) {
 			$table->register_table();
 		}
 	}

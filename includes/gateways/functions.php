@@ -86,7 +86,7 @@ function give_is_gateway_active( $gateway ) {
 function give_get_default_gateway( $form_id ) {
 
 	$enabled_gateways = array_keys( give_get_enabled_payment_gateways() );
-	$default_gateway  = give_get_option('default_gateway');
+	$default_gateway  = give_get_option( 'default_gateway' );
 	$default          = ! empty( $default_gateway ) && give_is_gateway_active( $default_gateway ) ? $default_gateway : $enabled_gateways[0];
 	$form_default     = give_get_meta( $form_id, '_give_default_gateway', true );
 
@@ -272,7 +272,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
  *
  * @since 1.0
  *
- * @param string $gateway_id
+ * @param string       $gateway_id
  * @param array|string $status
  *
  * @return int

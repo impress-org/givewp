@@ -72,10 +72,10 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 */
 	public function get_columns() {
 		return array(
-			'meta_id'     => '%d',
-			'donor_id' => '%d',
-			'meta_key'    => '%s',
-			'meta_value'  => '%s',
+			'meta_id'    => '%d',
+			'donor_id'   => '%d',
+			'meta_key'   => '%s',
+			'meta_value' => '%s',
 		);
 	}
 
@@ -92,7 +92,7 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s","{$wpdb->prefix}give_customermeta" ) )
+			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customermeta" ) )
 		) {
 			$wpdb->donormeta = $this->table_name = "{$wpdb->prefix}give_customermeta";
 			$this->meta_type = 'customer';

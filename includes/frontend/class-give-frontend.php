@@ -17,7 +17,7 @@ class Give_Frontend {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.

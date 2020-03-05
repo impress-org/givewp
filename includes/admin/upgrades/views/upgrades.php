@@ -22,7 +22,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-		    class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+			class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
@@ -35,7 +35,8 @@ $give_updates = Give_Updates::get_instance();
 		/**
 		 * Database Upgrades
 		 */
-		if ( ! empty( $db_updates ) ) : ?>
+		if ( ! empty( $db_updates ) ) :
+			?>
 			<?php
 			$is_doing_updates = $give_updates->is_doing_updates();
 			$db_update_url    = add_query_arg( array( 'type' => 'database' ) );
@@ -43,7 +44,7 @@ $give_updates = Give_Updates::get_instance();
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php printf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url('') ); ?></p>
+				<p><?php printf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url( '' ) ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -68,10 +69,10 @@ $give_updates = Give_Updates::get_instance();
 											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 											$is_doing_updates
 												? sprintf(
-												'%s%s',
-												__( 'GiveWP is currently updating the database', 'give' ),
-												give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
-											)
+													'%s%s',
+													__( 'GiveWP is currently updating the database', 'give' ),
+													give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
+												)
 												: __( 'GiveWP needs to update the database.', 'give' ),
 											$db_update_url,
 											( $is_doing_updates ? 'give-hidden' : '' ),
@@ -91,11 +92,11 @@ $give_updates = Give_Updates::get_instance();
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright"
-										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
 									<?php elseif ( $give_updates->is_doing_updates() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-pause-upgrades" class="button button-primary alignright"
-										        data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
+												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
 											<?php _e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
@@ -143,12 +144,14 @@ $give_updates = Give_Updates::get_instance();
 		 * Add-on Updates
 		 */
 		$plugin_updates = $give_updates->get_total_plugin_update_count();
-		if ( ! empty( $plugin_updates ) ) : ?>
+		if ( ! empty( $plugin_updates ) ) :
+			?>
 			<?php
 			$plugin_update_url = add_query_arg(
 				array(
 					'plugin_status' => 'give',
-				), admin_url( '/plugins.php' )
+				),
+				admin_url( '/plugins.php' )
 			);
 			?>
 			<div id="give-plugin-updates">

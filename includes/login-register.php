@@ -293,13 +293,15 @@ function give_process_register_form( $data ) {
 
 		$redirect = apply_filters( 'give_register_redirect', $data['give_redirect'] );
 
-		give_register_and_login_new_user( array(
-			'user_login'      => $data['give_user_login'],
-			'user_pass'       => $data['give_user_pass'],
-			'user_email'      => $data['give_user_email'],
-			'user_registered' => date( 'Y-m-d H:i:s' ),
-			'role'            => get_option( 'default_role' ),
-		) );
+		give_register_and_login_new_user(
+			array(
+				'user_login'      => $data['give_user_login'],
+				'user_pass'       => $data['give_user_pass'],
+				'user_email'      => $data['give_user_email'],
+				'user_registered' => date( 'Y-m-d H:i:s' ),
+				'role'            => get_option( 'default_role' ),
+			)
+		);
 
 		wp_redirect( $redirect );
 		give_die();
@@ -343,9 +345,12 @@ function give_email_access_login() {
 		);
 
 		if ( ! empty( $args['response'] ) ) {
-			$request = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
-				'body' => $args,
-			) );
+			$request = wp_remote_post(
+				'https://www.google.com/recaptcha/api/siteverify',
+				array(
+					'body' => $args,
+				)
+			);
 			if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
 				$response = json_decode( $request['body'], true );

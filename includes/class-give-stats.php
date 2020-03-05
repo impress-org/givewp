@@ -162,8 +162,7 @@ class Give_Stats {
 			// This is a predefined date rate, such as last_week
 			switch ( $date ) {
 
-				case 'this_month' :
-
+				case 'this_month':
 					if ( $end_date ) {
 
 						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
@@ -174,8 +173,7 @@ class Give_Stats {
 
 					break;
 
-				case 'last_month' :
-
+				case 'last_month':
 					if ( $month == 1 ) {
 
 						$month = 12;
@@ -193,8 +191,7 @@ class Give_Stats {
 
 					break;
 
-				case 'today' :
-
+				case 'today':
 					$day = date( 'd', current_time( 'timestamp' ) );
 
 					if ( $end_date ) {
@@ -205,8 +202,7 @@ class Give_Stats {
 
 					break;
 
-				case 'yesterday' :
-
+				case 'yesterday':
 					$day = date( 'd', current_time( 'timestamp' ) ) - 1;
 
 					// Check if Today is the first day of the month (meaning subtracting one will get us 0)
@@ -223,15 +219,14 @@ class Give_Stats {
 
 							// Go back one month and get the last day of the month
 							$month -= 1;
-							$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 						}
 					}
 
 					break;
 
-				case 'this_week' :
-
+				case 'this_week':
 					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
 					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
 
@@ -242,29 +237,27 @@ class Give_Stats {
 						} else {
 							$month = 12;
 						}
-
 					}
 
 					if ( ! $end_date ) {
 
 						// Getting the start day
 
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
+						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
 						$day += get_option( 'start_of_week' );
 
 					} else {
 
 						// Getting the end day
 
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
+						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
 						$day += get_option( 'start_of_week' ) + 6;
 
 					}
 
 					break;
 
-				case 'last_week' :
-
+				case 'last_week':
 					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
 					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
 
@@ -275,29 +268,27 @@ class Give_Stats {
 						} else {
 							$month = 12;
 						}
-
 					}
 
 					if ( ! $end_date ) {
 
 						// Getting the start day
 
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
+						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
 						$day += get_option( 'start_of_week' );
 
 					} else {
 
 						// Getting the end day
 
-						$day = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
+						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
 						$day += get_option( 'start_of_week' ) + 6;
 
 					}
 
 					break;
 
-				case 'this_quarter' :
-
+				case 'this_quarter':
 					$month_now = date( 'n', current_time( 'timestamp' ) );
 
 					if ( $month_now <= 3 ) {
@@ -311,8 +302,7 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
-					} else if ( $month_now <= 6 ) {
+					} elseif ( $month_now <= 6 ) {
 
 						if ( ! $end_date ) {
 							$month = 4;
@@ -323,8 +313,7 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
-					} else if ( $month_now <= 9 ) {
+					} elseif ( $month_now <= 9 ) {
 
 						if ( ! $end_date ) {
 							$month = 7;
@@ -335,7 +324,6 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
 					} else {
 
 						if ( ! $end_date ) {
@@ -347,13 +335,11 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
 					}
 
 					break;
 
-				case 'last_quarter' :
-
+				case 'last_quarter':
 					$month_now = date( 'n', current_time( 'timestamp' ) );
 
 					if ( $month_now <= 3 ) {
@@ -361,15 +347,14 @@ class Give_Stats {
 						if ( ! $end_date ) {
 							$month = 10;
 						} else {
-							$year -= 1;
+							$year  -= 1;
 							$month  = 12;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
-
-					} else if ( $month_now <= 6 ) {
+					} elseif ( $month_now <= 6 ) {
 
 						if ( ! $end_date ) {
 							$month = 1;
@@ -380,8 +365,7 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
-					} else if ( $month_now <= 9 ) {
+					} elseif ( $month_now <= 9 ) {
 
 						if ( ! $end_date ) {
 							$month = 4;
@@ -392,7 +376,6 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
 					} else {
 
 						if ( ! $end_date ) {
@@ -404,13 +387,11 @@ class Give_Stats {
 							$minute = 59;
 							$second = 59;
 						}
-
 					}
 
 					break;
 
-				case 'this_year' :
-
+				case 'this_year':
 					if ( ! $end_date ) {
 						$month = 1;
 					} else {
@@ -423,8 +404,7 @@ class Give_Stats {
 
 					break;
 
-				case 'last_year' :
-
+				case 'last_year':
 					$year -= 1;
 					if ( ! $end_date ) {
 						$month = 1;
@@ -439,14 +419,12 @@ class Give_Stats {
 					break;
 
 			}
-
-
-		} else if ( is_numeric( $date ) ) {
+		} elseif ( is_numeric( $date ) ) {
 
 			// return $date unchanged since it is a timestamp
 			$this->timestamp = true;
 
-		} else if ( false !== strtotime( $date ) ) {
+		} elseif ( false !== strtotime( $date ) ) {
 
 			$date  = strtotime( $date, current_time( 'timestamp' ) );
 			$year  = date( 'Y', $date );
@@ -477,7 +455,7 @@ class Give_Stats {
 	 * @access public
 	 *
 	 * @param  string $where SQL WHERE statment.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {

@@ -153,45 +153,45 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function advanced_filters() {
-		$start_date  = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-		$end_date    = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-		$status      = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
-		$donor       = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
-		$form_id     = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
+		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
+		$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
 		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
 			<div id="give-payment-date-filters">
 				<div class="give-filter give-filter-half">
 					<label for="start-date"
-					       class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+						   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
 					<input type="text"
-					       id="start-date"
-					       name="start-date"
-					       class="give_datepicker"
-					       autocomplete="off"
-					       value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-					       data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-					       placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+						   id="start-date"
+						   name="start-date"
+						   class="give_datepicker"
+						   autocomplete="off"
+						   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
+						   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
+						   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
 					/>
 				</div>
 				<div class="give-filter give-filter-half">
 					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
 					<input type="text"
-					       id="end-date"
-					       name="end-date"
-					       class="give_datepicker"
-					       autocomplete="off"
-					       value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-					       data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-					       placeholder="<?php _e( 'End Date', 'give' ); ?>"
+						   id="end-date"
+						   name="end-date"
+						   class="give_datepicker"
+						   autocomplete="off"
+						   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
+						   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+						   placeholder="<?php _e( 'End Date', 'give' ); ?>"
 					/>
 				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-				       class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
 				echo Give()->html->forms_dropdown(
@@ -214,7 +214,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 * @since 1.8.18
 			 */
 			do_action( 'give_payment_table_advanced_filters' );
-
 
 			if ( ! empty( $status ) ) {
 				echo sprintf( '<input type="hidden" name="status" value="%s"/>', esc_attr( $status ) );
@@ -272,13 +271,22 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_history_search' );
 			?>
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s"
-			       value="<?php _admin_search_query(); ?>"
-			       placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
-			<?php submit_button( $text, 'button', false, false, array(
-				'ID' => 'search-submit',
-			) ); ?><br />
+			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id; ?>" name="s"
+				   value="<?php _admin_search_query(); ?>"
+				   placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
+			<?php
+			submit_button(
+				$text,
+				'button',
+				false,
+				false,
+				array(
+					'ID' => 'search-submit',
+				)
+			);
+			?>
+			<br />
 		</div>
 		<?php
 	}
@@ -465,14 +473,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$value               = '';
 
 		switch ( $column_name ) {
-			case 'donation' :
+			case 'donation':
 				$serial_code = Give()->seq_donation_number->get_serial_code( $payment );
 				if ( current_user_can( 'view_give_payments' ) ) {
-					$value = Give()->tooltips->render_link( array(
-						'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
-						'tag_content' => $serial_code,
-						'link'        => $single_donation_url,
-					) );
+					$value = Give()->tooltips->render_link(
+						array(
+							'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
+							'tag_content' => $serial_code,
+							'link'        => $single_donation_url,
+						)
+					);
 				} else {
 					$value = $serial_code;
 				}
@@ -517,17 +527,18 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value = $this->get_payment_status( $payment );
 				break;
 
-
-			case 'details' :
+			case 'details':
 				if ( current_user_can( 'view_give_payments' ) ) {
-					$value = Give()->tooltips->render_link( array(
-						'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
-						'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
-						'link'        => $single_donation_url,
-						'attributes'  => array(
-							'class' => 'give-payment-details-link button button-small',
-						),
-					) );
+					$value = Give()->tooltips->render_link(
+						array(
+							'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
+							'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+							'link'        => $single_donation_url,
+							'attributes'  => array(
+								'class' => 'give-payment-details-link button button-small',
+							),
+						)
+					);
 
 					$value = "<div class=\"give-payment-details-link-wrap\">{$value}</div>";
 				}
@@ -560,12 +571,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = __( '(unknown)', 'give' );
 		}
 
-
-		$value = Give()->tooltips->render_link( array(
-			'link'        => "mailto:{$email}",
-			'label'       => __( 'Email donor', 'give' ),
-			'tag_content' => $email,
-		) );
+		$value = Give()->tooltips->render_link(
+			array(
+				'link'        => "mailto:{$email}",
+				'label'       => __( 'Email donor', 'give' ),
+				'tag_content' => $email,
+			)
+		);
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -593,14 +605,19 @@ class Give_Payment_History_Table extends WP_List_Table {
 		if ( give_is_payment_complete( $payment->ID ) && ! empty( $email ) ) {
 
 			$actions['email_links'] = sprintf(
-				'<a class="resend-single-donation-receipt" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url(
-				add_query_arg(
-					array(
-						'give-action' => 'email_links',
-						'purchase_id' => $payment->ID,
-					), $this->base_url
-				), 'give_payment_nonce'
-			), sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ), __( 'Resend Receipt', 'give' )
+				'<a class="resend-single-donation-receipt" href="%1$s" aria-label="%2$s">%3$s</a>',
+				wp_nonce_url(
+					add_query_arg(
+						array(
+							'give-action' => 'email_links',
+							'purchase_id' => $payment->ID,
+						),
+						$this->base_url
+					),
+					'give_payment_nonce'
+				),
+				sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
+				__( 'Resend Receipt', 'give' )
 			);
 
 		}
@@ -613,9 +630,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 						array(
 							'give-action' => 'delete_payment',
 							'purchase_id' => $payment->ID,
-						), $this->base_url
-					), 'give_donation_nonce'
-				), sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ), __( 'Delete', 'give' )
+						),
+						$this->base_url
+					),
+					'give_donation_nonce'
+				),
+				sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ),
+				__( 'Delete', 'give' )
 			);
 		}
 
@@ -641,15 +662,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 		);
 
 		if ( $payment->mode == 'test' ) {
-			$value .= Give()->tooltips->render_span( array(
-				'label'       => __( 'This donation was made in test mode.', 'give' ),
-				'tag_content' => __( 'Test', 'give' ),
-				'attributes'  => array(
-					'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
-				),
+			$value .= Give()->tooltips->render_span(
+				array(
+					'label'       => __( 'This donation was made in test mode.', 'give' ),
+					'tag_content' => __( 'Test', 'give' ),
+					'attributes'  => array(
+						'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
+					),
 
-
-			) );
+				)
+			);
 		}
 
 		if ( true === $payment->import && true === (bool) apply_filters( 'give_payment_show_importer_label', false ) ) {
@@ -917,7 +939,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
 		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
-		$start_date = ! empty ( $_GET['start-date'] )
+		$start_date = ! empty( $_GET['start-date'] )
 			? give_clean( $_GET['start-date'] )
 			: date( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )

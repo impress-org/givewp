@@ -25,7 +25,7 @@ class Give_Email_Notification_Util {
 	 * @access static
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -150,7 +150,7 @@ class Give_Email_Notification_Util {
 	 *
 	 * @return bool
 	 */
-	public static function is_show_on_emails_setting_page( Give_Email_Notification $email ){
+	public static function is_show_on_emails_setting_page( Give_Email_Notification $email ) {
 		return $email->config['show_on_emails_setting_page'];
 	}
 
@@ -161,11 +161,11 @@ class Give_Email_Notification_Util {
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
-	 * @param int $form_id
+	 * @param int                     $form_id
 	 *
 	 * @return bool
 	 */
-	public static function can_use_form_email_options( Give_Email_Notification $email, $form_id = null ){
+	public static function can_use_form_email_options( Give_Email_Notification $email, $form_id = null ) {
 		return give_is_setting_enabled( give_get_meta( $form_id, '_give_email_options', true ) );
 	}
 
@@ -176,13 +176,12 @@ class Give_Email_Notification_Util {
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
-	 * @param int $form_id
+	 * @param int                     $form_id
 	 *
 	 * @return string
 	 */
 	public static function is_email_notification_active( Give_Email_Notification $email, $form_id = null ) {
 		$notification_status = $email->get_notification_status( $form_id );
-
 
 		$notification_status = empty( $form_id )
 			? give_is_setting_enabled( $notification_status )
@@ -273,9 +272,9 @@ class Give_Email_Notification_Util {
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
-	 * @param string                   $option_name
-	 * @param int                      $form_id
-	 * @param mixed                    $default
+	 * @param string                  $option_name
+	 * @param int                     $form_id
+	 * @param mixed                   $default
 	 *
 	 * @return mixed
 	 */
@@ -285,7 +284,7 @@ class Give_Email_Notification_Util {
 		$global_option_name = ( 0 === strpos( $option_name, '_give_' )
 			? str_replace( '_give_', '', $option_name )
 			: $option_name );
-		$option_value = give_get_option( $global_option_name, $default );
+		$option_value       = give_get_option( $global_option_name, $default );
 
 		if (
 			! empty( $form_id )
@@ -301,7 +300,7 @@ class Give_Email_Notification_Util {
 			$option_value = get_post_meta( $form_id, $option_name, true );
 
 			// Get only email field value from recipients setting.
-			if( Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'recipient' === $option_name ) {
+			if ( Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'recipient' === $option_name ) {
 				$option_value = wp_list_pluck( $option_value, 'email' );
 			}
 		}

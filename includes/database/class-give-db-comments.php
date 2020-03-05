@@ -254,7 +254,7 @@ class Give_DB_Comments extends Give_DB {
         PRIMARY KEY  (comment_ID)
         ) {$charset_collate};";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version, false );
@@ -336,7 +336,7 @@ class Give_DB_Comments extends Give_DB {
 		// Comments created for a specific date or in a date range
 		if ( ! empty( $args['date_query'] ) ) {
 			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.comment_date" );
-			$where             .= $date_query_object->get_sql();
+			$where            .= $date_query_object->get_sql();
 		}
 
 		// Comments create for specific parent.

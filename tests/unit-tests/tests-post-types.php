@@ -4,7 +4,7 @@
  * Class Tests_Post_Types
  */
 class Tests_Post_Types extends Give_Unit_Test_Case {
-	
+
 	public function setUp() {
 		parent::setUp();
 	}

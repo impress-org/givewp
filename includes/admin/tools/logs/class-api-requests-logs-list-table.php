@@ -45,11 +45,13 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false,// Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+				'ajax'     => false, // Does this table support ajax?
+			)
+		);
 	}
 
 	/**
@@ -74,8 +76,8 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		}
 		?>
 		<p class="search-box" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
 		<?php
@@ -129,14 +131,16 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_details( $item ) {
-		echo Give()->tooltips->render_link( array(
-			'label'       => __( 'View Request', 'give' ),
-			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
-			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
-			'attributes'  => array(
-				'class' => 'thickbox give-error-log-details-link button button-small',
-			),
-		) );
+		echo Give()->tooltips->render_link(
+			array(
+				'label'       => __( 'View Request', 'give' ),
+				'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+				'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
+				'attributes'  => array(
+					'class' => 'thickbox give-error-log-details-link button button-small',
+				),
+			)
+		);
 		?>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
@@ -376,7 +380,8 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		$this->items           = $this->get_logs();
 		$total_items           = Give()->logs->get_log_count( 0, 'api_request', $this->get_meta_query() );
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(
+			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
 				'total_pages' => ceil( $total_items / $this->per_page ),

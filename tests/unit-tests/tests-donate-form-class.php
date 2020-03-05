@@ -49,7 +49,6 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		$this->assertEquals( $this->_simple_form->ID, $simple_form->ID );
 		$this->assertEquals( $this->_simple_form->ID, $simple_form->get_ID() );
 
-
 		$multi_form = new Give_Donate_Form( $this->_multi_form->ID );
 		$this->assertEquals( $this->_multi_form->ID, $multi_form->ID );
 		$this->assertEquals( $this->_multi_form->ID, $multi_form->get_ID() );

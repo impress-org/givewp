@@ -42,7 +42,7 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 			$currency = give_get_meta( $id_or_currency_code, '_give_payment_currency', true );
 
 			if (
-				! empty( $currency) &&
+				! empty( $currency ) &&
 				$give_options['currency'] !== $currency
 			) {
 				$setting = $currencies[ $currency ]['setting'];
@@ -176,9 +176,9 @@ function give_is_amount_sanitized( $amount ) {
 	// Handle thousand separator as '.'
 	// Handle sanitize database values.
 	$is_sanitize = ( 2 === count( $number_parts ) &&
-	                 is_numeric( $number_parts[0] ) &&
-	                 is_numeric( $number_parts[1] ) &&
-	                 in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) );
+					 is_numeric( $number_parts[0] ) &&
+					 is_numeric( $number_parts[1] ) &&
+					 in_array( strlen( $number_parts[1] ), array( 6, 10 ) ) );
 
 	return $is_sanitize;
 }
@@ -436,7 +436,13 @@ function give_format_amount( $amount, $args = array() ) {
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
 		$amount = ! empty( $args['sanitize'] ) ?
-			give_maybe_sanitize_amount( $amount, array( 'number_decimals' => $decimals, 'currency' => $currency ) ) :
+			give_maybe_sanitize_amount(
+				$amount,
+				array(
+					'number_decimals' => $decimals,
+					'currency'        => $currency,
+				)
+			) :
 			number_format( $amount, $decimals, '.', '' );
 
 		switch ( $currency ) {
@@ -562,7 +568,7 @@ function give_human_format_large_amount( $amount, $args = array() ) {
  *
  * @since 1.0
  *
- * @param array           $args        {
+ * @param array $args        {
  *
  * @type int|float|string $amount      Formatted or sanitized price. (optional if donation id set)
  * @type int              $donation_id donation amount (optional if set amount, but provide it for better result if formatting decimal amount of donation).
@@ -595,22 +601,28 @@ function give_format_decimal( $args ) {
 		)
 	);
 
-	if( ! empty( $args['donation_id'] ) ) {
+	if ( ! empty( $args['donation_id'] ) ) {
 
 		// Set currency if not already done.
-		if( empty( $args['currency'] ) ) {
+		if ( empty( $args['currency'] ) ) {
 			$args['currency'] = give_get_payment_currency_code( $args['donation_id'] );
 		}
 
 		// Set amount if not already done.
-		if( empty( $args['amount'] ) ) {
+		if ( empty( $args['amount'] ) ) {
 			$args['amount'] = give_donation_amount( $args['donation_id'] );
 		}
 	}
 
 	$decimal_separator = give_get_price_decimal_separator();
 	$formatted_amount  = $args['sanitize'] ?
-		give_maybe_sanitize_amount( $args['amount'], array( 'number_decimals' => $args['dp'], 'currency' => $args['currency'] ) ) :
+		give_maybe_sanitize_amount(
+			$args['amount'],
+			array(
+				'number_decimals' => $args['dp'],
+				'currency'        => $args['currency'],
+			)
+		) :
 		number_format( $args['amount'], ( is_bool( $args['dp'] ) ? give_get_price_decimals( $args['currency'] ) : $args['dp'] ), '.', '' );
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
@@ -810,7 +822,7 @@ function give_verify_donation_form_nonce( $nonce = '', $form_id ) {
  */
 function give_check_variable( $variable, $conditional = '', $default = false, $array_key_name = '' ) {
 	// Get value from array if array key non empty.
-	if( empty( $array_key_name ) ) {
+	if ( empty( $array_key_name ) ) {
 		switch ( $conditional ) {
 			case 'isset_empty':
 				$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;

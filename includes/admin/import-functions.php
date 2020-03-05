@@ -238,7 +238,6 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 		$user_id    = (int) $data['user_id'];
 		$donor_data = new Give_Donor( $user_id, true );
 
-
 		if ( empty( $donor_data->id ) ) {
 			$donor_data = get_user_by( 'id', $user_id );
 
@@ -385,9 +384,12 @@ function give_import_default_options() {
 	 *
 	 * @return array
 	 */
-	return (array) apply_filters( 'give_import_default_options', array(
-		'' => __( 'Do not import', 'give' ),
-	) );
+	return (array) apply_filters(
+		'give_import_default_options',
+		array(
+			'' => __( 'Do not import', 'give' ),
+		)
+	);
 }
 
 /**
@@ -403,94 +405,97 @@ function give_import_donations_options() {
 	 *
 	 * @return array
 	 */
-	return (array) apply_filters( 'give_import_donations_options', array(
-		'id'           => __( 'Donation ID', 'give' ),
-		'amount'       => array(
-			__( 'Donation Amount', 'give' ),
-			__( 'Amount', 'give' ),
-			__( 'Donation Total', 'give' ),
-			__( 'Total', 'give' ),
-		),
-		'currency'     => array(
-			__( 'Donation Currencies', 'give' ),
-			__( 'Currencies', 'give' ),
-			__( 'Currencies Code', 'give' ),
-			__( 'Currency Code', 'give' ),
-			__( 'Code', 'give' ),
-		),
-		'post_date'    => array(
-			__( 'Donation Date', 'give' ),
-			__( 'Date', 'give' ),
-		),
-		'post_time'    => array(
-			__( 'Donation Time', 'give' ),
-			__( 'Time', 'give' ),
-		),
-		'title_prefix' => array(
-			__( 'Title Prefix', 'give' ),
-			__( 'Prefix', 'give' ),
-		),
-		'first_name'   => array(
-			__( 'Donor First Name', 'give' ),
-			__( 'First Name', 'give' ),
-			__( 'Name', 'give' ),
-			__( 'First', 'give' ),
-		),
-		'last_name'    => array(
-			__( 'Donor Last Name', 'give' ),
-			__( 'Last Name', 'give' ),
-			__( 'Last', 'give' ),
-		),
-		'company_name' => array(
-			__( 'Company Name', 'give' ),
-			__( 'Donor Company Name', 'give' ),
-			__( 'Donor Company', 'give' ),
-			__( 'Company', 'give' ),
-		),
-		'line1'        => array(
-			__( 'Address 1', 'give' ),
-			__( 'Address', 'give' ),
-		),
-		'line2'        => __( 'Address 2', 'give' ),
-		'city'         => __( 'City', 'give' ),
-		'state'        => array(
-			__( 'State', 'give' ),
-			__( 'Province', 'give' ),
-			__( 'County', 'give' ),
-			__( 'Region', 'give' ),
-		),
-		'country'      => __( 'Country', 'give' ),
-		'zip'          => array(
-			__( 'Zip Code', 'give' ),
-			__( 'Zip', 'give' ),
-			__( 'zipcode', 'give' ),
-			__( 'Postal Code', 'give' ),
-			__( 'Postal', 'give' ),
-		),
-		'email'        => array(
-			__( 'Donor Email', 'give' ),
-			__( 'Email', 'give' ),
-			__( 'Email Address', 'give' ),
-		),
-		'post_status'  => array(
-			__( 'Donation Status', 'give' ),
-			__( 'Status', 'give' ),
-		),
-		'gateway'      => array(
-			__( 'Payment Method', 'give' ),
-			__( 'Method', 'give' ),
-			__( 'Payment Gateway', 'give' ),
-			__( 'Gateway', 'give' ),
-		),
-		'notes'        => __( 'Notes', 'give' ),
-		'mode'         => array(
-			__( 'Payment Mode', 'give' ),
-			__( 'Mode', 'give' ),
-			__( 'Test Mode', 'give' ),
-		),
-		'donor_ip'     => __( 'Donor IP Address', 'give' ),
-		'post_meta'    => __( 'Import as Meta', 'give' ),
-	) );
+	return (array) apply_filters(
+		'give_import_donations_options',
+		array(
+			'id'           => __( 'Donation ID', 'give' ),
+			'amount'       => array(
+				__( 'Donation Amount', 'give' ),
+				__( 'Amount', 'give' ),
+				__( 'Donation Total', 'give' ),
+				__( 'Total', 'give' ),
+			),
+			'currency'     => array(
+				__( 'Donation Currencies', 'give' ),
+				__( 'Currencies', 'give' ),
+				__( 'Currencies Code', 'give' ),
+				__( 'Currency Code', 'give' ),
+				__( 'Code', 'give' ),
+			),
+			'post_date'    => array(
+				__( 'Donation Date', 'give' ),
+				__( 'Date', 'give' ),
+			),
+			'post_time'    => array(
+				__( 'Donation Time', 'give' ),
+				__( 'Time', 'give' ),
+			),
+			'title_prefix' => array(
+				__( 'Title Prefix', 'give' ),
+				__( 'Prefix', 'give' ),
+			),
+			'first_name'   => array(
+				__( 'Donor First Name', 'give' ),
+				__( 'First Name', 'give' ),
+				__( 'Name', 'give' ),
+				__( 'First', 'give' ),
+			),
+			'last_name'    => array(
+				__( 'Donor Last Name', 'give' ),
+				__( 'Last Name', 'give' ),
+				__( 'Last', 'give' ),
+			),
+			'company_name' => array(
+				__( 'Company Name', 'give' ),
+				__( 'Donor Company Name', 'give' ),
+				__( 'Donor Company', 'give' ),
+				__( 'Company', 'give' ),
+			),
+			'line1'        => array(
+				__( 'Address 1', 'give' ),
+				__( 'Address', 'give' ),
+			),
+			'line2'        => __( 'Address 2', 'give' ),
+			'city'         => __( 'City', 'give' ),
+			'state'        => array(
+				__( 'State', 'give' ),
+				__( 'Province', 'give' ),
+				__( 'County', 'give' ),
+				__( 'Region', 'give' ),
+			),
+			'country'      => __( 'Country', 'give' ),
+			'zip'          => array(
+				__( 'Zip Code', 'give' ),
+				__( 'Zip', 'give' ),
+				__( 'zipcode', 'give' ),
+				__( 'Postal Code', 'give' ),
+				__( 'Postal', 'give' ),
+			),
+			'email'        => array(
+				__( 'Donor Email', 'give' ),
+				__( 'Email', 'give' ),
+				__( 'Email Address', 'give' ),
+			),
+			'post_status'  => array(
+				__( 'Donation Status', 'give' ),
+				__( 'Status', 'give' ),
+			),
+			'gateway'      => array(
+				__( 'Payment Method', 'give' ),
+				__( 'Method', 'give' ),
+				__( 'Payment Gateway', 'give' ),
+				__( 'Gateway', 'give' ),
+			),
+			'notes'        => __( 'Notes', 'give' ),
+			'mode'         => array(
+				__( 'Payment Mode', 'give' ),
+				__( 'Mode', 'give' ),
+				__( 'Test Mode', 'give' ),
+			),
+			'donor_ip'     => __( 'Donor IP Address', 'give' ),
+			'post_meta'    => __( 'Import as Meta', 'give' ),
+		)
+	);
 }
 
 /**
@@ -506,10 +511,13 @@ function give_import_donor_options() {
 	 *
 	 * @return array
 	 */
-	return (array) apply_filters( 'give_import_donor_options', array(
-		'donor_id' => __( 'Donor ID', 'give' ),
-		'user_id'  => __( 'User ID', 'give' ),
-	) );
+	return (array) apply_filters(
+		'give_import_donor_options',
+		array(
+			'donor_id' => __( 'Donor ID', 'give' ),
+			'user_id'  => __( 'User ID', 'give' ),
+		)
+	);
 }
 
 /**
@@ -525,29 +533,32 @@ function give_import_donation_form_options() {
 	 *
 	 * @return array
 	 */
-	return (array) apply_filters( 'give_import_donation_form_options', array(
-		'form_title'              => array(
-			__( 'Donation Form Title', 'give' ),
-			__( 'Donation Form', 'give' ),
-			__( 'Form Name', 'give' ),
-			__( 'Title', 'give' ),
-			__( 'Form Title', 'give' ),
-			'ignore' => array(
-				__( 'Title Prefix', 'give' ),
-				__( 'Prefix', 'give' ),
+	return (array) apply_filters(
+		'give_import_donation_form_options',
+		array(
+			'form_title'              => array(
+				__( 'Donation Form Title', 'give' ),
+				__( 'Donation Form', 'give' ),
+				__( 'Form Name', 'give' ),
+				__( 'Title', 'give' ),
+				__( 'Form Title', 'give' ),
+				'ignore' => array(
+					__( 'Title Prefix', 'give' ),
+					__( 'Prefix', 'give' ),
+				),
 			),
-		),
-		'form_id'                 => array(
-			__( 'Donation Form ID', 'give' ),
-			__( 'Form ID', 'give' ),
-		),
-		'form_level'              => array(
-			__( 'Donation Level', 'give' ),
-			__( 'Level', 'give' ),
-			__( 'Level Title', 'give' ),
-		),
-		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
-	) );
+			'form_id'                 => array(
+				__( 'Donation Form ID', 'give' ),
+				__( 'Form ID', 'give' ),
+			),
+			'form_level'              => array(
+				__( 'Donation Level', 'give' ),
+				__( 'Level', 'give' ),
+				__( 'Level Title', 'give' ),
+			),
+			'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
+		)
+	);
 }
 
 /**
@@ -592,7 +603,7 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
 	$raw_data = array();
 
-	$count    = 0;
+	$count = 0;
 	if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
 		while ( false !== ( $row = fgetcsv( $handle, 0, $delimiter ) ) ) {
 			if ( $count >= $start && $count <= $end ) {
@@ -691,7 +702,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 					$dry_run_duplicate_form = true;
 				}
 
-
 				// check for duplicate donor by donor id
 				if ( ! empty( $csv_data['donor_id'] ) && ! empty( $data['donor_id'] ) && $csv_data['donor_id'] === $data['donor_id'] ) {
 					$donor = array_search( (int) $data['donor_id'], array_column( 'id', $donors_list ) );
@@ -758,7 +768,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	// Get the report
 	$report = give_import_donation_report();
 
-
 	$status  = give_import_donation_get_status( $data );
 	$country = ( ! empty( $data['country'] ) ? ( ( $country_code = array_search( $data['country'], give_get_country_list() ) ) ? $country_code : $data['country'] ) : '' );
 	$state   = ( ! empty( $data['state'] ) ? ( ( $state_code = array_search( $data['state'], give_get_states( $country ) ) ) ? $state_code : $data['state'] ) : '' );
@@ -772,7 +781,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'country' => $country,
 	);
 
-	$test_mode = array( 'test', 'true', );
+	$test_mode = array( 'test', 'true' );
 	$post_date = current_time( 'mysql' );
 	if ( ! empty( $data['post_date'] ) ) {
 		if ( ! empty( $data['post_time'] ) ) {
@@ -783,7 +792,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		}
 	}
 
-	//Create payment_data array
+	// Create payment_data array
 	$payment_data = array(
 		'donor_id'        => $donor_id,
 		'price'           => $data['amount'],
@@ -828,7 +837,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$donation_duplicate = give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data );
 	if ( false !== $donation_duplicate || ! empty( $_dry_run_is_duplicate ) ) {
 		$report['donation_details'][ $import_setting['donation_key'] ]['duplicate'] = $donation_duplicate;
-		$report['duplicate_donation']                                               = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
+		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
 
 		if ( empty( $dry_run ) ) {
@@ -891,7 +900,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				if ( 'pending' !== $status ) {
 					$payment->update_status( $status );
 				}
-
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 				$payment_id                = false;
@@ -937,14 +945,14 @@ function give_import_donation_get_status( $data ) {
 
 	$status = 'publish';
 
-	$donation_status = trim( $data['post_status'] );
-	$donation_status_key      = strtolower( preg_replace( '/\s+/', '', $donation_status ) );
+	$donation_status     = trim( $data['post_status'] );
+	$donation_status_key = strtolower( preg_replace( '/\s+/', '', $donation_status ) );
 
 	foreach ( give_get_payment_statuses() as $key => $value ) {
 		$match = false;
 		if ( $key === $donation_status_key ) {
 			$match = true;
-		} else if ( stristr( $donation_status, $value ) ) {
+		} elseif ( stristr( $donation_status, $value ) ) {
 			$match = true;
 		}
 

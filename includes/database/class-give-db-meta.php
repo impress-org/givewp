@@ -270,7 +270,6 @@ class Give_DB_Meta extends Give_DB {
 			}
 		}
 
-
 		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
 
 		if ( $is_meta_deleted ) {
@@ -343,10 +342,14 @@ class Give_DB_Meta extends Give_DB {
 				break;
 
 			case 'posts_where':
-				$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array(
-					"mt2.{$this->meta_type}_id",
-					"mt1.{$this->meta_type}_id",
-				), $clause );
+				$clause = str_replace(
+					array( 'mt2.post_id', 'mt1.post_id' ),
+					array(
+						"mt2.{$this->meta_type}_id",
+						"mt1.{$this->meta_type}_id",
+					),
+					$clause
+				);
 				break;
 		}
 
@@ -535,7 +538,7 @@ class Give_DB_Meta extends Give_DB {
 			KEY meta_key (meta_key({$this->min_index_length}))
 			) {$charset_collate};";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version, false );

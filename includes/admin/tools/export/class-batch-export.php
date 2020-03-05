@@ -142,9 +142,13 @@ class Give_Batch_Export extends Give_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				esc_html__( 'You do not have permission to export data.', 'give' ),
+				esc_html__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		}
 
 		if ( $this->step < 2 ) {
@@ -271,7 +275,7 @@ class Give_Batch_Export extends Give_Export {
 	 */
 	protected function stash_step_data( $data = '' ) {
 
-		$file = $this->get_file();
+		$file  = $this->get_file();
 		$file .= $data;
 		@file_put_contents( $this->file, $file );
 

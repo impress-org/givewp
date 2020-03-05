@@ -19,6 +19,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 
 	/**
 	 * Tear it Down
+	 *
 	 * @since 2.5.1
 	 */
 	public function tearDown() {
@@ -254,7 +255,6 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 
 		$this->assertEquals( serialize( $default_args6 ), serialize( $payment6->args ) );
 
-
 		/**
 		 * Case 2g
 		 * meta query
@@ -479,20 +479,20 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	/**
 	 * @cover Give_Payments_Query::get_payments
 	 */
-	function test_get_payments(){
+	function test_get_payments() {
 		/*
 		 * Case 1
 		 */
 		$payment = new Give_Payments_Query();
-		$result = $payment->get_payments();
+		$result  = $payment->get_payments();
 
 		$this->assertInstanceOf( 'Give_Payment', current( $result ) );
 
 		/*
 		 * Case 2
 		 */
-		$payment = new Give_Payments_Query(array( 'output' => '' ));
-		$result = $payment->get_payments();
+		$payment = new Give_Payments_Query( array( 'output' => '' ) );
+		$result  = $payment->get_payments();
 
 		$this->assertInstanceOf( 'WP_Post', current( $result ) );
 	}

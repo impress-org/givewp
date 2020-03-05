@@ -17,7 +17,7 @@ class Give_Comment {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Comment Types.
@@ -114,18 +114,18 @@ class Give_Comment {
 	 */
 	public static function add( $comment_args = array() ) {
 		// Backward compatibility.
-		$func_args = func_get_args();
+		$func_args  = func_get_args();
 		$comment_id = self::_bc_add( $func_args );
 		if ( ! is_null( $comment_id ) ) {
 			return $comment_id;
 		}
 
 		// Backward compatibility.
-		if( is_numeric( $comment_args ) ) {
+		if ( is_numeric( $comment_args ) ) {
 			$comment_args = array(
-				'comment_parent' => $func_args[0],
+				'comment_parent'  => $func_args[0],
 				'comment_content' => $func_args[1],
-				'comment_type'   => 'payment' === $func_args[2] ? 'donation' : $func_args[1],
+				'comment_type'    => 'payment' === $func_args[2] ? 'donation' : $func_args[1],
 			);
 		}
 
@@ -268,13 +268,13 @@ class Give_Comment {
 
 		// Backward compatibility.
 		$func_args = func_get_args();
-		$comments = self::_bc_get( $func_args );
+		$comments  = self::_bc_get( $func_args );
 		if ( ! is_null( $comments ) ) {
 			return $comments;
 		}
 
 		// Backward compatibility.
-		if( is_numeric( $comment_args ) ) {
+		if ( is_numeric( $comment_args ) ) {
 			$comment_args = array(
 				'comment_parent' => $func_args[0],
 				'comment_type'   => 'payment' === $func_args[1] ? 'donation' : $func_args[1],
@@ -518,15 +518,17 @@ class Give_Comment {
 							),
 						);
 
-					$comments = get_comments( wp_parse_args(
-						$comment_args,
-						array(
-							'post_id' => $id,
-							'order'   => 'ASC',
-							'search'  => $search,
-							'type'    => 'give_payment_note',
+					$comments = get_comments(
+						wp_parse_args(
+							$comment_args,
+							array(
+								'post_id' => $id,
+								'order'   => 'ASC',
+								'search'  => $search,
+								'type'    => 'give_payment_note',
+							)
 						)
-					) );
+					);
 					break;
 
 				case 'donor':
@@ -539,14 +541,16 @@ class Give_Comment {
 							),
 						);
 
-					$comments = get_comments( wp_parse_args(
-						$comment_args,
-						array(
-							'order'  => 'ASC',
-							'search' => $search,
-							'type'   => 'give_donor_note',
+					$comments = get_comments(
+						wp_parse_args(
+							$comment_args,
+							array(
+								'order'  => 'ASC',
+								'search' => $search,
+								'type'   => 'give_donor_note',
+							)
 						)
-					) );
+					);
 					break;
 			}
 
@@ -577,7 +581,6 @@ class Give_Comment {
 			$note         = $comment_args[1];
 			$comment_type = $comment_args[2];
 			$comment_args = isset( $comment_args[3] ) ? $comment_args[3] : array();
-
 
 			// Bailout
 			if ( empty( $id ) || empty( $note ) || empty( $comment_type ) ) {
@@ -615,7 +618,6 @@ class Give_Comment {
 
 				)
 			);
-
 
 			// Check comment max length.
 			$error = wp_check_comment_data_max_lengths( $comment_args );
@@ -661,6 +663,7 @@ class Give_Comment {
 	/**
 	 * Delete comment
 	 * Note: This function add backward compatibility for delete function
+	 *
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -695,7 +698,6 @@ class Give_Comment {
 			do_action( "give_pre_delete_{$comment_type}_note", $comment_id, $id );
 
 			$ret = wp_delete_comment( $comment_id, true );
-
 
 			/**
 			 * Fires after donation note deleted.

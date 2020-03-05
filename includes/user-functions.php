@@ -41,7 +41,7 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 	}
 
 	$status = ( 'complete' === $status ) ? 'publish' : $status;
-	$paged = 1;
+	$paged  = 1;
 
 	if ( $pagination ) {
 		if ( get_query_var( 'paged' ) ) {
@@ -51,12 +51,15 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 		}
 	}
 
-	$args = apply_filters( 'give_get_users_donations_args', array(
-		'user'    => $user,
-		'number'  => $number,
-		'status'  => $status,
-		'orderby' => 'date',
-	) );
+	$args = apply_filters(
+		'give_get_users_donations_args',
+		array(
+			'user'    => $user,
+			'number'  => $number,
+			'status'  => $status,
+			'orderby' => 'date',
+		)
+	);
 
 	if ( $pagination ) {
 		$args['page'] = $paged;
@@ -65,7 +68,7 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 	}
 
 	$by_user_id = is_numeric( $user ) ? true : false;
-	$donor   = new Give_Donor( $user, $by_user_id );
+	$donor      = new Give_Donor( $user, $by_user_id );
 
 	if ( ! empty( $donor->payment_ids ) ) {
 
@@ -151,11 +154,14 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	$post_type = get_post_type( $form_ids[0] );
 
-	$args = apply_filters( 'give_get_users_completed_donations_args', array(
-		'include'        => $form_ids,
-		'post_type'      => $post_type,
-		'posts_per_page' => - 1,
-	) );
+	$args = apply_filters(
+		'give_get_users_completed_donations_args',
+		array(
+			'include'        => $form_ids,
+			'post_type'      => $post_type,
+			'posts_per_page' => - 1,
+		)
+	);
 
 	return apply_filters( 'give_users_completed_donations_list', get_posts( $args ) );
 }
@@ -209,11 +215,11 @@ function give_get_donation_stats_by_user( $user = '' ) {
 		$field = 'user_id';
 	}
 
-	$stats    = array();
+	$stats = array();
 	$donor = Give()->donors->get_donor_by( $field, $user );
 
 	if ( $donor ) {
-		$donor = new Give_Donor( $donor->id );
+		$donor                = new Give_Donor( $donor->id );
 		$stats['purchases']   = absint( $donor->purchase_count );
 		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->get_total_donation_amount() );
 	}
@@ -469,7 +475,7 @@ function give_count_total_donors() {
  * @since  1.0
  *
  * @param int/null $donor_id Donor ID.
- * @param array $args         {
+ * @param array    $args         {
  *
  * @type bool   $by_user_id   Flag to validate find donor by donor ID or user ID
  * @type string $address_type Optional. Which type of donor address this function will return.
@@ -489,10 +495,10 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 
 	$donor = new Give_Donor( $donor_id, (bool) $args['by_user_id'] );
 
-	$address = $donor->get_donor_address($args);
+	$address = $donor->get_donor_address( $args );
 
 	return $address;
-	
+
 }
 
 /**
@@ -566,9 +572,9 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 	switch ( $from ) {
 
 		case 'donation':
-			$title_prefix  = give_get_meta( $id, '_give_payment_donor_title_prefix', true );
-			$first_name    = give_get_meta( $id, '_give_donor_billing_first_name', true );
-			$last_name     = give_get_meta( $id, '_give_donor_billing_last_name', true );
+			$title_prefix = give_get_meta( $id, '_give_payment_donor_title_prefix', true );
+			$first_name   = give_get_meta( $id, '_give_donor_billing_first_name', true );
+			$last_name    = give_get_meta( $id, '_give_donor_billing_last_name', true );
 
 			$name = "{$first_name} {$last_name}";
 

@@ -15,7 +15,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		$this->_roles = new Give_Roles;
+		$this->_roles = new Give_Roles();
 		$this->_roles->add_roles();
 		$this->_roles->add_caps();
 	}
@@ -382,7 +382,6 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		// Check 11.
 		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_worker']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_worker']['capabilities']['read_private_give_forms'] );
-
 
 	}
 

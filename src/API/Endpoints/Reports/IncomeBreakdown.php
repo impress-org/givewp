@@ -23,9 +23,9 @@ class IncomeBreakdown extends Endpoint {
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
-				[
+				array(
 					'data' => $cached_report,
-				]
+				)
 			);
 		}
 
@@ -33,7 +33,7 @@ class IncomeBreakdown extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = [];
+		$dataset = array();
 
 		switch ( true ) {
 			case ( $diff->days > 365 ):
@@ -55,10 +55,10 @@ class IncomeBreakdown extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			[
+			array(
 				'data'   => $data,
 				'status' => $status,
-			]
+			)
 		);
 	}
 
@@ -66,8 +66,8 @@ class IncomeBreakdown extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = [];
-		$income   = [];
+		$tooltips = array();
+		$income   = array();
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -99,13 +99,13 @@ class IncomeBreakdown extends Endpoint {
 					$periodLabel = $periodEnd->format( 'F j, Y' );
 			}
 
-			$income[] = [
+			$income[] = array(
 				__( 'Date', 'give' )      => $periodLabel,
 				__( 'Donors', 'give' )    => $donorsForPeriod,
 				__( 'Donations', 'give' ) => $incomeForPeriod,
 				__( 'Refunds', 'give' )   => $refundsForPeriod,
 				__( 'Net', 'give' )       => $netForPeriod,
-			];
+			);
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -123,7 +123,7 @@ class IncomeBreakdown extends Endpoint {
 		$income      = 0;
 		$refundTotal = 0;
 		$refunds     = 0;
-		$donors      = [];
+		$donors      = array();
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
@@ -146,12 +146,12 @@ class IncomeBreakdown extends Endpoint {
 
 		$unique = array_unique( $donors );
 
-		return [
-			'income'  => give_currency_filter( give_format_amount( $income ), [ 'decode_currency' => true ] ),
+		return array(
+			'income'  => give_currency_filter( give_format_amount( $income ), array( 'decode_currency' => true ) ),
 			'donors'  => count( $unique ),
 			'refunds' => $refunds,
-			'net'     => give_currency_filter( give_format_amount( $income - $refundTotal ), [ 'decode_currency' => true ] ),
-		];
+			'net'     => give_currency_filter( give_format_amount( $income - $refundTotal ), array( 'decode_currency' => true ) ),
+		);
 	}
 
 }

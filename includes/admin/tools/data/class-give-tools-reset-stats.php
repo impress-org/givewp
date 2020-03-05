@@ -100,8 +100,8 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				}
 			}
 
-			$sql = array();
-			$meta_table = __give_v20_bc_table_details('form' );
+			$sql        = array();
+			$meta_table = __give_v20_bc_table_details( 'form' );
 
 			foreach ( $step_ids as $type => $ids ) {
 
@@ -113,7 +113,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 				switch ( $type ) {
 					case 'customers':
-
 						// Delete all the Give related donor and its meta.
 						$sql[] = "DELETE FROM {$wpdb->donors}";
 						$sql[] = "DELETE FROM {$wpdb->donormeta}";
@@ -123,7 +122,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0.00 WHERE meta_key = '_give_form_earnings' AND {$meta_table['column']['id']} IN ($ids)";
 						break;
 					case 'other':
-
 						// Delete main entries of forms and donations exists in posts table.
 						$sql[] = "DELETE FROM {$wpdb->posts} WHERE id IN ($ids)";
 
@@ -238,9 +236,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to reset data.', 'give' ), esc_html__( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				esc_html__( 'You do not have permission to reset data.', 'give' ),
+				esc_html__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		}
 
 		$had_data = $this->get_data();
@@ -301,11 +303,14 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$give_types_for_reset = array( 'give_forms', 'give_payment' );
 			$give_types_for_reset = apply_filters( 'give_reset_store_post_types', $give_types_for_reset );
 
-			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => $give_types_for_reset,
-				'post_status'    => 'any',
-				'posts_per_page' => - 1,
-			) );
+			$args = apply_filters(
+				'give_tools_reset_stats_total_args',
+				array(
+					'post_type'      => $give_types_for_reset,
+					'post_status'    => 'any',
+					'posts_per_page' => - 1,
+				)
+			);
 
 			$posts = get_posts( $args );
 			foreach ( $posts as $post ) {
@@ -401,9 +406,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	private function delete_data( $key ) {
 		global $wpdb;
-		$wpdb->delete( $wpdb->options, array(
-			'option_name' => $key,
-		) );
+		$wpdb->delete(
+			$wpdb->options,
+			array(
+				'option_name' => $key,
+			)
+		);
 	}
 
 	/**
@@ -411,7 +419,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {

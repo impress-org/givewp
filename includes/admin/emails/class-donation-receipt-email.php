@@ -2,7 +2,6 @@
 /**
  * Donation Receipt Email
  *
- *
  * @package     Give
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, GiveWP
@@ -37,17 +36,19 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load( array(
-				'id'                   => 'donation-receipt',
-				'label'                => __( 'Donation Receipt', 'give' ),
-				'description'          => __( 'Sent to the donor when their donation completes or a pending donation is marked as complete.', 'give' ),
-				'notification_status'  => 'enabled',
-				'form_metabox_setting' => true,
-				'recipient_group_name' => __( 'Donor', 'give' ),
-				'default_email_subject' => esc_attr__( 'Donation Receipt', 'give' ),
-				'default_email_message' => give_get_default_donation_receipt_email(),
-				'default_email_header'  => __( 'Donation Receipt', 'give' ),
-			) );
+			$this->load(
+				array(
+					'id'                    => 'donation-receipt',
+					'label'                 => __( 'Donation Receipt', 'give' ),
+					'description'           => __( 'Sent to the donor when their donation completes or a pending donation is marked as complete.', 'give' ),
+					'notification_status'   => 'enabled',
+					'form_metabox_setting'  => true,
+					'recipient_group_name'  => __( 'Donor', 'give' ),
+					'default_email_subject' => esc_attr__( 'Donation Receipt', 'give' ),
+					'default_email_message' => give_get_default_donation_receipt_email(),
+					'default_email_header'  => __( 'Donation Receipt', 'give' ),
+				)
+			);
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
@@ -167,7 +168,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @param int $form_id
 		 * @return array
 		 */
-		public function get_email_attachments( $form_id = null) {
+		public function get_email_attachments( $form_id = null ) {
 			/**
 			 * Filter the attachments.
 			 * Note: this filter will deprecate soon.
@@ -268,19 +269,25 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		public function send_donation_receipt( $payment_id ) {
 			$this->payment = new Give_Payment( $payment_id );
 
-			if( ! $this->payment->ID ) {
-				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 400,
-				) );
+			if ( ! $this->payment->ID ) {
+				wp_die(
+					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
+						'response' => 400,
+					)
+				);
 			}
 
 			// Setup email data.
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array(
-				'payment_id' => $this->payment->ID,
-			) );
+			$this->send_email_notification(
+				array(
+					'payment_id' => $this->payment->ID,
+				)
+			);
 		}
 
 		/**
@@ -302,24 +309,34 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->payment = new Give_Payment( $purchase_id );
 
 			if ( ! current_user_can( 'edit_give_payments', $this->payment->ID ) ) {
-				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 400,
-				) );
+				wp_die(
+					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
+						'response' => 400,
+					)
+				);
 			}
 
 			// Setup email data.
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array(
-				'payment_id' => $this->payment->ID,
-			) );
+			$this->send_email_notification(
+				array(
+					'payment_id' => $this->payment->ID,
+				)
+			);
 
-			wp_redirect( add_query_arg( array(
-				'give-messages[]' => 'email-sent',
-				'give-action'     => false,
-				'purchase_id'     => false,
-			) ) );
+			wp_redirect(
+				add_query_arg(
+					array(
+						'give-messages[]' => 'email-sent',
+						'give-action'     => false,
+						'purchase_id'     => false,
+					)
+				)
+			);
 			exit;
 		}
 	}

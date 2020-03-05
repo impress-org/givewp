@@ -4,14 +4,14 @@ const Give_Selector_Cache = {
 	get: function( selector, parent, refresh_cache ) {
 		// Bailout.
 		if ( ! jQuery ) {
-			return - 1;
+			return -1;
 		}
 
 		// Set default parent.
-		parent = (undefined !== parent) ? parent : undefined;
-		refresh_cache = (refresh_cache === true);
+		parent = ( undefined !== parent ) ? parent : undefined;
+		refresh_cache = ( refresh_cache === true );
 
-		if ( (undefined === this.collection[ selector ]) || refresh_cache ) {
+		if ( ( undefined === this.collection[ selector ] ) || refresh_cache ) {
 			if ( undefined !== parent ) {
 				this.collection[ selector ] = jQuery( selector, parent );
 			} else {
@@ -20,7 +20,7 @@ const Give_Selector_Cache = {
 		}
 
 		return this.collection[ selector ];
-	}
+	},
 };
 
 window.Give_Selector_Cache = Give_Selector_Cache;

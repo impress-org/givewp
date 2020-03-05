@@ -204,7 +204,7 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @return array
 	 */
-	protected function generate_docs_link( $field ){
+	protected function generate_docs_link( $field ) {
 		// Add custom style to override mce style.
 		$dashicon_style = 'width: 20px;
 			height: 20px;
@@ -235,7 +235,7 @@ abstract class Give_Shortcode_Generator {
 					$a_style,
 					esc_url( $field['link'] ),
 					$p_style
-				)
+				),
 			)
 		);
 	}
@@ -273,15 +273,18 @@ abstract class Give_Shortcode_Generator {
 	 */
 	protected function generate_listbox( $field ) {
 
-		$listbox = shortcode_atts( array(
-			'label'    => '',
-			'minWidth' => '',
-			'name'     => false,
-			'tooltip'  => '',
-			'type'     => '',
-			'value'    => '',
-			'classes'  => ''
-		), $field );
+		$listbox = shortcode_atts(
+			array(
+				'label'    => '',
+				'minWidth' => '',
+				'name'     => false,
+				'tooltip'  => '',
+				'type'     => '',
+				'value'    => '',
+				'classes'  => '',
+			),
+			$field
+		);
 
 		if ( $this->validate( $field ) ) {
 
@@ -291,15 +294,15 @@ abstract class Give_Shortcode_Generator {
 
 				if ( $key == 'value' && empty( $value ) ) {
 					$new_listbox[ $key ] = $listbox['name'];
-				} else if ( $value ) {
+				} elseif ( $value ) {
 					$new_listbox[ $key ] = $value;
 				}
 			}
 
 			// do not reindex array!
 			$field['options'] = array(
-				                    '' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
-			                    ) + $field['options'];
+				'' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
+			) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
 				$new_listbox['values'][] = array(
@@ -333,7 +336,7 @@ abstract class Give_Shortcode_Generator {
 			'suppress_filters' => false,
 		);
 
-		$args    = wp_parse_args( (array) $field['query_args'], $args );
+		$args = wp_parse_args( (array) $field['query_args'], $args );
 
 		$posts   = get_posts( $args );
 		$options = array();
@@ -369,22 +372,25 @@ abstract class Give_Shortcode_Generator {
 	 */
 	protected function generate_textbox( $field ) {
 
-		$textbox = shortcode_atts( array(
-			'label'       => '',
-			'maxLength'   => '',
-			'minHeight'   => '',
-			'minWidth'    => '',
-			'multiline'   => false,
-			'name'        => false,
-			'tooltip'     => '',
-			'type'        => '',
-			'value'       => '',
-			'classes'     => '',
-			'placeholder' => ''
-		), $field );
+		$textbox = shortcode_atts(
+			array(
+				'label'       => '',
+				'maxLength'   => '',
+				'minHeight'   => '',
+				'minWidth'    => '',
+				'multiline'   => false,
+				'name'        => false,
+				'tooltip'     => '',
+				'type'        => '',
+				'value'       => '',
+				'classes'     => '',
+				'placeholder' => '',
+			),
+			$field
+		);
 
 		// Remove empty placeholder.
-		if( empty( $textbox['placeholder'] ) ) {
+		if ( empty( $textbox['placeholder'] ) ) {
 			unset( $textbox['placeholder'] );
 		}
 
@@ -420,12 +426,15 @@ abstract class Give_Shortcode_Generator {
 	 */
 	protected function validate( $field ) {
 
-		extract( shortcode_atts(
+		extract(
+			shortcode_atts(
 				array(
 					'name'     => false,
 					'required' => false,
 					'label'    => '',
-				), $field )
+				),
+				$field
+			)
 		);
 
 		if ( $name ) {
@@ -448,10 +457,10 @@ abstract class Give_Shortcode_Generator {
 
 					$alert = $required['alert'];
 
-				} else if ( ! empty( $label ) ) {
+				} elseif ( ! empty( $label ) ) {
 
 					$alert = sprintf(
-					/* translators: %s: option label */
+						/* translators: %s: option label */
 						esc_html__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);

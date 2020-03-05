@@ -43,7 +43,7 @@ add_filter( 'plugin_action_links_' . GIVE_PLUGIN_BASENAME, 'give_plugin_action_l
  *
  * @since 1.4
  *
- * @param array $plugin_meta An array of the plugin's metadata.
+ * @param array  $plugin_meta An array of the plugin's metadata.
  * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
  *
  * @return array
@@ -62,7 +62,8 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 						'utm_source'   => 'plugins-page',
 						'utm_medium'   => 'plugin-row',
 						'utm_campaign' => 'admin',
-					), 'https://givewp.com/documentation/'
+					),
+					'https://givewp.com/documentation/'
 				)
 			),
 			__( 'Documentation', 'give' )
@@ -75,7 +76,8 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 						'utm_source'   => 'plugins-page',
 						'utm_medium'   => 'plugin-row',
 						'utm_campaign' => 'admin',
-					), 'https://givewp.com/addons/'
+					),
+					'https://givewp.com/addons/'
 				)
 			),
 			__( 'Add-ons', 'give' )
@@ -142,7 +144,6 @@ function give_recently_activated_addons() {
 				break;
 		}
 
-
 		if ( ! empty( $plugins ) ) {
 
 			$give_addons = give_get_recently_activated_addons();
@@ -179,7 +180,7 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 
 	$give_addons = wp_list_pluck( give_get_plugins( array( 'only_add_on' => true ) ), 'Name' );
 
-	if( ! empty( $give_addons ) ) {
+	if ( ! empty( $give_addons ) ) {
 		foreach ( $plugins['all'] as $file => $plugin_data ) {
 
 			if ( in_array( $plugin_data['Name'], $give_addons ) ) {
@@ -192,8 +193,8 @@ function give_filter_addons_do_filter_addons( $plugin_menu ) {
 
 					if ( isset( $current->response[ $file ] ) ) {
 						$plugins['give'][ $file ]['update'] = true;
-						$plugins['give'][ $file ] = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
-					} elseif ( isset( $current->no_update[ $file ] ) ){
+						$plugins['give'][ $file ]           = array_merge( (array) $current->response[ $file ], $plugins['give'][ $file ] );
+					} elseif ( isset( $current->no_update[ $file ] ) ) {
 						$plugins['give'][ $file ] = array_merge( (array) $current->no_update[ $file ], $plugins['give'][ $file ] );
 					}
 				}
@@ -465,7 +466,7 @@ function give_deactivation_popup() {
 	?>
 
 	<h2 id="deactivation-survey-title">
-		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ) ?>/assets/dist/images/give-icon-full-circle.svg">
+		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ); ?>/assets/dist/images/give-icon-full-circle.svg">
 		<span><?php esc_html_e( 'GiveWP Deactivation', 'give' ); ?></span>
 	</h2>
 	<form class="deactivation-survey-form" method="POST">
@@ -511,14 +512,15 @@ function give_deactivation_popup() {
 			</label>
 
 			<div class="give-survey-extra-field">
-				<p><?php
+				<p>
+				<?php
 					printf(
 						'%1$s %2$s %3$s',
 						__( "We're sorry to hear that, check", 'give' ),
 						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
 						__( 'Can you describe the issue?', 'give' )
 					);
-					?>
+				?>
 				</p>
 				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
 			</div>
@@ -531,14 +533,15 @@ function give_deactivation_popup() {
 			</label>
 
 			<div class="give-survey-extra-field">
-				<p><?php
+				<p>
+				<?php
 					printf(
 						'%1$s %2$s %3$s',
 						__( "We're sorry to hear that, check", 'give' ),
 						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
 						__( 'Can you describe the issue?', 'give' )
 					);
-					?>
+				?>
 				</p>
 				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
 			</div>

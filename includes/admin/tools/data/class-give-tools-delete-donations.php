@@ -223,7 +223,8 @@ class Give_Tools_Delete_Donations extends Give_Batch_Export {
 			 * @since 2.3.0
 			 */
 			$args = apply_filters(
-				'give_tools_delete_donations_only_args', array(
+				'give_tools_delete_donations_only_args',
+				array(
 					'post_status' => 'any',
 					'number'      => - 1,
 					'start_date'  => $this->start_date,
@@ -231,7 +232,7 @@ class Give_Tools_Delete_Donations extends Give_Batch_Export {
 				)
 			);
 
-			$posts    = new Give_Payments_Query( $args );
+			$posts = new Give_Payments_Query( $args );
 
 			$payments = $posts->get_payments();
 

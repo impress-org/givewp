@@ -23,7 +23,7 @@ class Give_Cache {
 	 * @access private
 	 * @var Give_Cache
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Flag to check if caching enabled or not.
@@ -80,7 +80,7 @@ class Give_Cache {
 
 		add_action( 'give_save_settings_give_settings', array( __CLASS__, 'flush_cache' ) );
 
-		add_action( 'wp', array( __CLASS__,  'prevent_caching' ) );
+		add_action( 'wp', array( __CLASS__, 'prevent_caching' ) );
 		add_action( 'admin_notices', array( $this, '__notices' ) );
 	}
 
@@ -96,11 +96,13 @@ class Give_Cache {
 			return;
 		}
 
-		$page_ids = array_filter( array(
-			give_get_option( 'success_page' ),
-			give_get_option( 'failure_page' ),
-			give_get_option( 'history_page' ),
-		) );
+		$page_ids = array_filter(
+			array(
+				give_get_option( 'success_page' ),
+				give_get_option( 'failure_page' ),
+				give_get_option( 'history_page' ),
+			)
+		);
 
 		if (
 			is_page( $page_ids )
@@ -201,9 +203,9 @@ class Give_Cache {
 	 */
 	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
-			if( empty( $cache_key ) ) {
+			if ( empty( $cache_key ) ) {
 				return new WP_Error( 'give_empty_cache_key', __( 'Do not pass invalid empty cache key', 'give' ) );
-			}elseif ( ! $custom_key ) {
+			} elseif ( ! $custom_key ) {
 				return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
 			}
 
@@ -218,7 +220,7 @@ class Give_Cache {
 		}
 
 		// Get current time.
-		$current_time = current_time( 'timestamp', 1 );
+		$current_time = time();
 
 		if ( empty( $option['expiration'] ) || ( $current_time < $option['expiration'] ) ) {
 			$option = $option['data'];
@@ -254,7 +256,7 @@ class Give_Cache {
 		$option_value = array(
 			'data'       => $data,
 			'expiration' => ! is_null( $expiration )
-				? ( $expiration + current_time( 'timestamp', 1 ) )
+				? ( $expiration + time() )
 				: null,
 		);
 
@@ -311,7 +313,7 @@ class Give_Cache {
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
-	 * @param bool  $force If set to true then all cached values will be delete instead of only expired
+	 * @param bool $force If set to true then all cached values will be delete instead of only expired
 	 *
 	 * @return bool
 	 */
@@ -333,7 +335,7 @@ class Give_Cache {
 			return false;
 		}
 
-		$current_time = current_time( 'timestamp', 1 );
+		$current_time = time();
 
 		// Delete log cache.
 		foreach ( $options as $option ) {
@@ -421,7 +423,6 @@ class Give_Cache {
 	 */
 	public static function is_valid_cache_key( $cache_key ) {
 		$is_valid = ( false !== strpos( $cache_key, 'give_cache_' ) );
-
 
 		/**
 		 * Filter the flag which tell about cache key valid or not
@@ -542,7 +543,7 @@ class Give_Cache {
 		}
 
 		$group_prefix = $group;
-		$group = self::$instance->filter_group_name( $group );
+		$group        = self::$instance->filter_group_name( $group );
 
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
@@ -597,7 +598,7 @@ class Give_Cache {
 			return;
 		}
 
-		self::flush_cache(true );
+		self::flush_cache( true );
 	}
 
 	/**
@@ -639,7 +640,7 @@ class Give_Cache {
 		$donation_ids = Give()->donors->get_column( 'payment_ids', $id );
 
 		if ( ! empty( $donation_ids ) ) {
-			$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donation_ids  ) ) );
+			$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donation_ids ) ) );
 
 			foreach ( $donation_ids as $donation ) {
 				wp_cache_delete( $donation, $this->filter_group_name( 'give-donations' ) );
@@ -710,7 +711,7 @@ class Give_Cache {
 		if (
 			$force
 			|| ( Give_Admin_Settings::is_saving_settings() && isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) )
-			|| ( wp_doing_ajax() &&  isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) )
+			|| ( wp_doing_ajax() && isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) )
 		) {
 			self::$instance->get_incrementer( true );
 			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
@@ -760,7 +761,7 @@ class Give_Cache {
 			}
 
 			$current_blog_id = get_current_blog_id();
-			$filtered_group   = "{$group}_{$current_blog_id}_{$incrementer}";
+			$filtered_group  = "{$group}_{$current_blog_id}_{$incrementer}";
 		}
 
 		return $filtered_group;
