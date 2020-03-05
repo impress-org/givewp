@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7.0
  */
-final class Themes {
+class Themes {
 	/**
 	 * Themes
 	 *
@@ -30,7 +30,7 @@ final class Themes {
 	 * @since  version
 	 * @access private
 	 */
-	public function __construct() {
+	private function __construct() {
 	}
 
 
