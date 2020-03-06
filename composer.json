@@ -35,7 +35,7 @@
             "Give\\": "src/"
         },
         "files": [
-            "src/Helpers/Helpers.php"
+            "src/Helpers/Form/Theme.php"
         ]
     }
 }
