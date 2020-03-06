@@ -11,6 +11,7 @@
  * @since       1.8
  */
 
+use Give\Form\Theme;
 use function Give\Helpers\Form\Theme\get;
 use function Give\Helpers\Form\Theme\set;
 
@@ -1138,6 +1139,7 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
+		/* @var Theme $theme */
 		$theme        = Give()->themes->getTheme( $new_theme );
 		$themeOptions = $theme->getOptions();
 		$saveOptions  = get( $formID );
