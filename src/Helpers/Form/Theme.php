@@ -1,5 +1,5 @@
 <?php
-namespace Give\Form\Theme;
+namespace Give\Helpers\Form\Theme;
 
 /**
  * Return active form theme ID
