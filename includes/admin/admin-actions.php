@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-use function Give\Form\Themes\load;
+use function Give\Helpers\Form\Themes\load;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

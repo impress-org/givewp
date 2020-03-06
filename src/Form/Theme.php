@@ -9,8 +9,8 @@
 
 namespace Give\Form;
 
-use function Give\Form\Theme\getActiveID;
-use function Give\Form\Theme\get;
+use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\get;
 
 defined( 'ABSPATH' ) || exit;
 

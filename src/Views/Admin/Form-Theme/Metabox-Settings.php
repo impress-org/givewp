@@ -2,7 +2,7 @@
 global $post;
 
 use Give\Form\Theme;
-use function Give\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\getActiveID;
 
 $activatedTheme   = getActiveID( $post->ID );
 $registeredThemes = Give()->themes->get();
