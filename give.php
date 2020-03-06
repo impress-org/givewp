@@ -761,6 +761,7 @@ if ( ! class_exists( 'Give' ) ) :
 			if ( 'themes' === $propertyName ) {
 				if ( ! $this->themes instanceof Themes ) {
 					$this->themes = new Themes();
+					$this->themes->loadThemes();
 				}
 
 				return $this->themes;

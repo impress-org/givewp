@@ -29,7 +29,6 @@ class Themes {
 	 * Themes constructor.
 	 */
 	public function __construct() {
-		$this->load();
 	}
 
 
@@ -38,7 +37,7 @@ class Themes {
 	 *
 	 * @since 2.7.0
 	 */
-	private function load() {
+	public function loadThemes() {
 		$coreFormThemes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
 
 		/**
