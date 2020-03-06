@@ -4,7 +4,7 @@
  * Handle Form Themes
  *
  * @package Give
- * @since 2.7.0
+ * @since   2.7.0
  */
 
 namespace Give\Form;
@@ -26,11 +26,39 @@ class Themes {
 
 
 	/**
-	 * Get Registered themes
+	 * Themes constructor.
+	 */
+	public function __construct() {
+		$this->load();
+	}
+
+
+	/**
+	 * Load themes
 	 *
 	 * @since 2.7.0
+	 */
+	private function load() {
+		$coreFormThemes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
+
+		/**
+		 * Filter list of form theme
+		 *
+		 * @since 2.7.0
+		 */
+		$themes = apply_filters( 'give_form_themes', $coreFormThemes );
+
+		foreach ( $themes as $theme ) {
+			$this->set( new Theme( $theme ) );
+		}
+	}
+
+
+	/**
+	 * Get Registered themes
 	 *
 	 * @return array
+	 * @since 2.7.0
 	 */
 	public function get() {
 		return $this->themes;
@@ -39,11 +67,10 @@ class Themes {
 	/**
 	 * Get Registered theme
 	 *
-	 * @since 2.7.0
-	 *
 	 * @param string $themeID
 	 *
 	 * @return Theme
+	 * @since 2.7.0
 	 */
 	public function getTheme( $themeID ) {
 		return $this->themes[ $themeID ];
