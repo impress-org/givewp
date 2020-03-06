@@ -300,6 +300,15 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
+		 * Array of singleton objects
+		 *
+		 * @since 2.7.0
+		 * @var array
+		 */
+		private $singletonsCache = [];
+
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -759,12 +768,12 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		function __get( $propertyName ) {
 			if ( 'themes' === $propertyName ) {
-				if ( ! $this->themes instanceof Themes ) {
-					$this->themes = new Themes();
-					$this->themes->loadThemes();
+				if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
+					$this->singletonsCache[ Themes::class ] = new Themes();
+					$this->singletonsCache[ Themes::class ]->loadThemes();
 				}
 
-				return $this->themes;
+				return $this->singletonsCache[ Themes::class ];
 			}
 		}
 
