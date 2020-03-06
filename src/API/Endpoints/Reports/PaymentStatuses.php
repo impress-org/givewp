@@ -32,10 +32,10 @@ class PaymentStatuses extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			array(
+			[
 				'status' => $status,
-				'data'   => array(
-					'labels'   => array(
+				'data'   => [
+					'labels'   => [
 						'Completed',
 						'Pending',
 						'Refunded',
@@ -58,37 +58,37 @@ class PaymentStatuses extends Endpoint {
 									'title'  => $completed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Completed', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->pending . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Pending', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->refunded . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Refunded', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Abandoned', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Cancelled', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Failed', 'give' ),
 									'footer' => '',
-								),
-							),
-						),
-					),
-				),
-			)
+								],
+							],
+						],
+					],
+				],
+			]
 		);
 	}
 }
