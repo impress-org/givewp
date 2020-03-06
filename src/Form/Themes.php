@@ -24,14 +24,6 @@ class Themes {
 	 */
 	private $themes = array();
 
-
-	/**
-	 * Themes constructor.
-	 */
-	public function __construct() {
-	}
-
-
 	/**
 	 * Load themes
 	 *
