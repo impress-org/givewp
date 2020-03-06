@@ -40,7 +40,7 @@ class Theme {
 	 *
 	 * }
 	 */
-	public function __construct( $args ) {
+	public function __construct( array $args ) {
 		$this->data = $args;
 		$this->validateArguments();
 	}

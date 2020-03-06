@@ -81,7 +81,7 @@ class Themes {
 	 *
 	 * @param Theme $registerTheme
 	 */
-	public function set( $registerTheme ) {
+	public function set( Theme $registerTheme ) {
 		$this->themes[ $registerTheme->getID() ] = $registerTheme;
 	}
 }
