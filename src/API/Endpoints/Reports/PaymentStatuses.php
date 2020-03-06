@@ -26,7 +26,8 @@ class PaymentStatuses extends Endpoint {
 		];
 
 		// Use give_count_payments logic to get payments
-		$payments = give_count_payments( $args );
+		$payments  = give_count_payments( $args );
+		$completed = property_exists( $payments, 'give_subscription' ) ? $payments->publish + $payments->give_subscription : $payments->publish;
 
 		$status = $this->get_give_status();
 
@@ -45,7 +46,7 @@ class PaymentStatuses extends Endpoint {
 					'datasets' => [
 						[
 							'data'     => [
-								$payments->publish + $payments->give_subscription,
+								$completed,
 								$payments->pending,
 								$payments->refunded,
 								$payments->abandoned,
@@ -54,7 +55,7 @@ class PaymentStatuses extends Endpoint {
 							],
 							'tooltips' => [
 								[
-									'title'  => $payments->publish + $payments->give_subscription . ' ' . __( 'Payments', 'give' ),
+									'title'  => $completed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Completed', 'give' ),
 									'footer' => '',
 								],
