@@ -127,9 +127,9 @@ class FormPerformance extends Endpoint {
 					'data'     => $forms,
 					'tooltips' => $tooltips,
 					'labels'   => $labels,
-				),
-			),
-		);
+				],
+			],
+		];
 
 	}
 }
