@@ -50,6 +50,8 @@ if ( ! class_exists( 'Give' ) ) :
 	 * Main Give Class
 	 *
 	 * @since 1.0
+	 *
+	 * @property-read Themes $themes
 	 */
 	final class Give {
 
