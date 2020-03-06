@@ -9,8 +9,6 @@
  * @since       1.0
  */
 
-use function Give\Form\Themes\load;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -1592,16 +1590,6 @@ function give_render_form_theme_setting_panel() {
 	require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form-Theme/Metabox-Settings.php';
 }
 add_action( 'give_post_form_theme_options_settings', 'give_render_form_theme_setting_panel' );
-
-/**
- * Load form theme form rendering form_theme_options
- *
- * @since 2.7.0
- */
-function give_load_form_themes() {
-	load();
-}
-add_action( 'give_before_form_theme_options_settings', 'give_load_form_themes' );
 
 
 

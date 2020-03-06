@@ -50,6 +50,8 @@ if ( ! class_exists( 'Give' ) ) :
 	 * Main Give Class
 	 *
 	 * @since 1.0
+	 *
+	 * @property-read Themes $themes
 	 */
 	final class Give {
 
@@ -292,14 +294,20 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 * Give\Form\Themes Object to handle form themes
-		 *
-		 * @since  2.7.0
-		 * @access public
-		 *
 		 * @var Themes
+		 *
+		 * @since 2.7.0
 		 */
-		public $themes;
+		protected $themes;
+
+
+		/**
+		 * Array of singleton objects
+		 *
+		 * @since 2.7.0
+		 * @var array
+		 */
+		private $singletonsCache = [];
 
 
 		/**
@@ -400,7 +408,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
-			$this->themes                 = new Themes();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -579,8 +586,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
 			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'templates/form-styles/elegent/filters.php';
-			require_once GIVE_PLUGIN_DIR . 'src/Form/Helpers/Theme.php';
-			require_once GIVE_PLUGIN_DIR . 'src/Form/Helpers/Themes.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
@@ -752,6 +757,25 @@ if ( ! class_exists( 'Give' ) ) :
 					return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! defined( 'REST_REQUEST' );
 				case 'wpcli':
 					return defined( 'WP_CLI' ) && WP_CLI;
+			}
+		}
+
+		/**
+		 * Handle property get request
+		 *
+		 * @param string $propertyName
+		 *
+		 * @since 2.7.0
+		 * @return mixed
+		 */
+		function __get( $propertyName ) {
+			if ( 'themes' === $propertyName ) {
+				if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
+					$this->singletonsCache[ Themes::class ] = new Themes();
+					$this->singletonsCache[ Themes::class ]->loadThemes();
+				}
+
+				return $this->singletonsCache[ Themes::class ];
 			}
 		}
 
