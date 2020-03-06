@@ -52,7 +52,7 @@ class RecentDonations extends Endpoint {
 			switch ( $donation->status ) {
 				case 'publish':
 					$meta   = $donation->payment_meta;
-					$status = $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
+					$status = isset( $meta['_give_is_donation_recurring'] ) && $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
 					break;
 				case 'give_subscription':
 					$status = 'renewal';
