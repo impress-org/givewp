@@ -10,7 +10,7 @@
 namespace Give\Form;
 
 use InvalidArgumentException;
-use function Give\Helpers\Form\Theme\get;
+use function Give\Helpers\Form\Theme\get as getTheme;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -100,7 +100,7 @@ class Theme {
 		global $post;
 		ob_start();
 
-		$saveOptions = get( $post->ID, $this->getID() );
+		$saveOptions = getTheme( $post->ID, $this->getID() );
 
 		foreach ( $this->data['options'] as $groupdID => $option ) {
 			printf(
