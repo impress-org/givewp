@@ -292,14 +292,11 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 * Give\Form\Themes Object to handle form themes
-		 *
-		 * @since  2.7.0
-		 * @access public
-		 *
 		 * @var Themes
+		 *
+		 * @since 2.7.0
 		 */
-		public $themes;
+		protected $themes;
 
 
 		/**
@@ -400,7 +397,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
-			$this->themes                 = new Themes();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -750,6 +746,24 @@ if ( ! class_exists( 'Give' ) ) :
 					return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! defined( 'REST_REQUEST' );
 				case 'wpcli':
 					return defined( 'WP_CLI' ) && WP_CLI;
+			}
+		}
+
+		/**
+		 * Handle property get request
+		 *
+		 * @param string $propertyName
+		 *
+		 * @since 2.7.0
+		 * @return mixed
+		 */
+		function __get( $propertyName ) {
+			if ( 'themes' === $propertyName ) {
+				if ( ! $this->themes instanceof Themes ) {
+					$this->themes = new Themes();
+				}
+
+				return $this->themes;
 			}
 		}
 
