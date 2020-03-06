@@ -12,8 +12,8 @@
  */
 
 use Give\Form\Theme;
-use function Give\Helpers\Form\Theme\get;
-use function Give\Helpers\Form\Theme\set;
+use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Theme\set as SetTheme;
 
 /**
  * Give_Meta_Box_Form_Data Class.
@@ -1142,7 +1142,7 @@ class Give_MetaBox_Form_Data {
 		/* @var Theme $theme */
 		$theme        = Give()->themes->getTheme( $new_theme );
 		$themeOptions = $theme->getOptions();
-		$saveOptions  = get( $formID );
+		$saveOptions  = getTheme( $formID );
 
 		foreach ( $themeOptions as $groupID => $group ) {
 			foreach ( $group['fields'] as $field ) {
@@ -1198,7 +1198,7 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		set( $formID, $saveOptions );
+		setTheme( $formID, $saveOptions );
 	}
 
 
