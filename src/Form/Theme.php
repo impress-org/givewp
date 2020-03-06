@@ -9,7 +9,7 @@
 
 namespace Give\Form;
 
-use function Give\Helpers\Form\Theme\getActiveID;
+use InvalidArgumentException;
 use function Give\Helpers\Form\Theme\get;
 
 defined( 'ABSPATH' ) || exit;
@@ -42,6 +42,7 @@ class Theme {
 	 */
 	public function __construct( $args ) {
 		$this->data = $args;
+		$this->validateArguments();
 	}
 
 	/**
@@ -132,5 +133,27 @@ class Theme {
 		}
 
 		return ob_get_clean();
+	}
+
+
+	/**
+	 * Validate theme arguments
+	 *
+	 * @since 2.7.0
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	private function validateArguments() {
+		$requiredParams = array( 'id', 'name', 'options', 'image' );
+
+		if ( array_diff( $requiredParams, array_keys( $this->data ) ) ) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'%1$s<pre>%2$s</pre>',
+					__( 'To register a form theme id, name, options and image is required.', 'give' ),
+					print_r( $this->data, true )
+				)
+			);
+		}
 	}
 }
