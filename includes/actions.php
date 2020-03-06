@@ -111,14 +111,14 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 
 		// Update donor user_id.
 		if ( $donor->update( array( 'user_id' => $user_id ) ) ) {
-			$donor_note = sprintf( esc_html__( 'WordPress user #%d is connected to #%d', 'give' ), $user_id, $donor->id );
+			$donor_note = sprintf( esc_html__( 'WordPress user #%1$d is connected to #%2$d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
 			// Update user_id meta in payments.
 			// if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
-			// 	foreach ( $donations as $donation  ) {
-			// 		give_update_meta( $donation, '_give_payment_user_id', $user_id );
-			// 	}
+			// foreach ( $donations as $donation  ) {
+			// give_update_meta( $donation, '_give_payment_user_id', $user_id );
+			// }
 			// }
 			// Do not need to update user_id in payment because we will get user id from donor id now.
 		}
@@ -194,13 +194,12 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
  * @param int $payment_id
  */
 function _give_save_donor_billing_address( $payment_id ) {
-	$donor_id  = absint( give_get_payment_donor_id( $payment_id ));
+	$donor_id = absint( give_get_payment_donor_id( $payment_id ) );
 
 	// Bailout
 	if ( ! $donor_id ) {
 		return;
 	}
-
 
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $donor_id );
@@ -268,7 +267,7 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	}
 
 	// Load file.
-	if( ! class_exists( 'Give_Readme_Parser' ) ) {
+	if ( ! class_exists( 'Give_Readme_Parser' ) ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-readme-parser.php';
 	}
 
@@ -279,7 +278,6 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 
 	$parser           = new Give_Readme_Parser( $url );
 	$give_min_version = $parser->requires_at_least();
-
 
 	if ( version_compare( GIVE_VERSION, $give_min_version, '<' ) ) {
 		return new WP_Error(
@@ -319,7 +317,7 @@ function __give_wpml_total_goal_shortcode_agrs( $args ) {
  */
 function __give_remove_wpml_parse_query_filter() {
 	global $sitepress;
-	remove_action('parse_query', array($sitepress, 'parse_query'));
+	remove_action( 'parse_query', array( $sitepress, 'parse_query' ) );
 }
 
 
@@ -331,7 +329,7 @@ function __give_remove_wpml_parse_query_filter() {
  */
 function __give_add_wpml_parse_query_filter() {
 	global $sitepress;
-	add_action('parse_query', array($sitepress, 'parse_query'));
+	add_action( 'parse_query', array( $sitepress, 'parse_query' ) );
 }
 
 /**
@@ -341,9 +339,8 @@ function __give_add_wpml_parse_query_filter() {
  */
 function give_add_support_for_wpml() {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
-
 
 	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
@@ -368,10 +365,10 @@ add_action( 'give_init', 'give_add_support_for_wpml', 1000 );
  *
  * @since 2.4.5
  */
-function give_set_email_access_property(){
-	if( ! ( Give()->email_access instanceof Give_Email_Access )  ){
+function give_set_email_access_property() {
+	if ( ! ( Give()->email_access instanceof Give_Email_Access ) ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
-		Give()->email_access =  new Give_Email_Access();
+		Give()->email_access = new Give_Email_Access();
 	}
 }
 add_action( 'give_email_links', 'give_set_email_access_property', -1 );

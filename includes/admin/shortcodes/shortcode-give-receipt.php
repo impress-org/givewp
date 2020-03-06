@@ -43,56 +43,56 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 				'html' => sprintf( '<p class="strong">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'price',
-				'label'   => esc_html__( 'Show Donation Amount:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'price',
+				'label'       => esc_html__( 'Show Donation Amount:', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'donor',
-				'label'   => esc_html__( 'Show Donor Name:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'donor',
+				'label'       => esc_html__( 'Show Donor Name:', 'give' ),
+				'options'     => array(
 					'true'  => esc_html__( 'Show', 'give' ),
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'date',
-				'label'   => esc_html__( 'Show Date:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'date',
+				'label'       => esc_html__( 'Show Date:', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'payment_method',
-				'label'   => esc_html__( 'Show Payment Method:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'payment_method',
+				'label'       => esc_html__( 'Show Payment Method:', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'payment_id',
-				'label'   => esc_html__( 'Show Payment ID:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'payment_id',
+				'label'       => esc_html__( 'Show Payment ID:', 'give' ),
+				'options'     => array(
 					'false' => esc_html__( 'Hide', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Show', 'give' ),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'company_name',
-				'label'   => esc_html__( 'Company Name:', 'give' ),
-				'options' => array(
+				'type'        => 'listbox',
+				'name'        => 'company_name',
+				'label'       => esc_html__( 'Company Name:', 'give' ),
+				'options'     => array(
 					'true' => esc_html__( 'Show', 'give' ),
 				),
 				'placeholder' => esc_html__( 'Hide', 'give' ),
@@ -106,4 +106,4 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Donation_Receipt;
+new Give_Shortcode_Donation_Receipt();

@@ -22,7 +22,6 @@
  * See: https://tcpdf.org/examples/example_049/
  *
  * @since 2.5.4
- *
  */
 function give_tickera_qr_compatibility() {
 	if ( is_plugin_active( 'tickera-event-ticketing-system/tickera.php' ) ) {
@@ -50,7 +49,6 @@ add_action( 'give_email_send_before', 'give_disable_mandrill_nl2br' );
  *
  * @return void
  * @since 1.8.9
- *
  */
 function give_clear_seo_sitemap_cache_on_settings_change() {
 	// Load required file if the fn 'is_plugin_active' doesn't exists.
@@ -59,8 +57,8 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 	}
 
 	if ( ( is_plugin_active( 'wordpress-seo/wp-seo.php' )
-	       || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) )
-	     && class_exists( 'WPSEO_Sitemaps_Cache' )
+		   || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) )
+		 && class_exists( 'WPSEO_Sitemaps_Cache' )
 	) {
 
 		$forms_singular_option = give_get_option( 'forms_singular' );
@@ -91,7 +89,6 @@ add_action( 'give-settings_save_display', 'give_clear_seo_sitemap_cache_on_setti
  *
  * @return boolean
  * @since 2.1.3
- *
  */
 function give_elementor_hide_shortcodes_button() {
 

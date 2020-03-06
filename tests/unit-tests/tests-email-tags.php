@@ -380,14 +380,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		give_update_option( 'sequential-ordering_status', 'enabled' );
 
-
 		/*
 		 * Case 3: Payment ID from payment.
 		 */
 		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
 		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
 
-		$this->assertEquals( Give()->seq_donation_number->get_serial_code($expected_payment_id), $actual_payment_id );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code( $expected_payment_id ), $actual_payment_id );
 	}
 
 	/**
@@ -640,7 +639,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			'/action=view_in_browser/',
 			$receipt_link_url
 		);
-		
+
 		$this->assertRegExp(
 			'/_give_hash=/',
 			$receipt_link_url
@@ -656,28 +655,27 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	function test_give_email_tag_receipt_link() {
 		$payment = Give_Helper_Payment::create_simple_payment();
 
-
 		$receipt_link = give_email_tag_receipt_link(
 			array(
 				'payment_id' => $payment,
 			)
 		);
-		
+
 		$this->assertRegExp(
 			'/>View the receipt in your browser &raquo;<\/a>/',
 			$receipt_link
 		);
-		
+
 		$this->assertRegExp(
 			'/<a href=".+?\?action=view_in_browser/',
 			$receipt_link
 		);
-		
+
 		$this->assertRegExp(
 			'/_give_hash=/',
 			$receipt_link
 		);
-		
+
 	}
 
 
@@ -690,7 +688,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	function test_give_email_tag_donation_history_link() {
 		// Create new table columns manually.
 		// Are db columns setup?
-		if( ! Give()->donors->does_column_exist( 'token' ) ) {
+		if ( ! Give()->donors->does_column_exist( 'token' ) ) {
 			Give()->email_access->create_columns();
 		}
 
@@ -708,7 +706,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			$link
 		);
 
-		$link = give_email_tag_donation_history_link( array( 'user_id' => 1, 'email_content_type' => 'text/plain' ) );
+		$link = give_email_tag_donation_history_link(
+			array(
+				'user_id'            => 1,
+				'email_content_type' => 'text/plain',
+			)
+		);
 
 		$this->assertRegExp(
 			'/View your donation history: .+?\?give_nl=/',
@@ -742,7 +745,6 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_user_id}', $donor_tag_args ) );
 		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', $donor_tag_args ) );
 		$this->assertEquals( 'admin@example.org', __give_render_metadata_email_tag( '{meta_donor_email}', $donor_tag_args ) );
-
 
 		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'user_id' => 1 ) ) );
 		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'payment_id' => $payment_id ) ) );

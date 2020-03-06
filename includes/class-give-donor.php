@@ -250,12 +250,19 @@ class Give_Donor {
 
 		$addresses = ! empty( $addresses )
 			? $addresses
-			: $wpdb->get_results( $wpdb->prepare( "
+			: $wpdb->get_results(
+				$wpdb->prepare(
+					"
 				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%%%s%%'
 				AND {$meta_type}_id=%d
-				", 'give_donor_address', $this->id ), ARRAY_N );
+				",
+					'give_donor_address',
+					$this->id
+				),
+				ARRAY_N
+			);
 
 		if ( empty( $addresses ) ) {
 			return $this->address;
@@ -977,7 +984,7 @@ class Give_Donor {
 		// Backward compatibility.
 		$note_string        = date_i18n( 'F j, Y H:i:s', current_time( 'timestamp' ) ) . ' - ' . $note;
 		$formatted_new_note = apply_filters( 'give_customer_add_note_string', $note_string );
-		$notes              .= "\n\n" . $formatted_new_note;
+		$notes             .= "\n\n" . $formatted_new_note;
 
 		/**
 		 * Fires before donor note is added.
@@ -1032,10 +1039,10 @@ class Give_Donor {
 	 */
 	private function get_raw_notes() {
 		$all_notes = '';
-		$comments = Give()->comment->db->get_results_by( array( 'comment_parent' => $this->id ) );
+		$comments  = Give()->comment->db->get_results_by( array( 'comment_parent' => $this->id ) );
 
 		// Generate notes output as we are doing before 2.3.0.
-		if( ! empty( $comments ) ) {
+		if ( ! empty( $comments ) ) {
 			/* @var stdClass $comment */
 			foreach ( $comments  as $comment ) {
 				$all_notes .= date_i18n( 'F j, Y H:i:s', strtotime( $comment->comment_date ) ) . " - {$comment->comment_content}\n\n";
@@ -1043,7 +1050,7 @@ class Give_Donor {
 		}
 
 		// Backward compatibility.
-		if( ! give_has_upgrade_completed('v230_move_donor_note') ) {
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 			$all_notes = $this->db->get_column( 'notes', $this->id );
 		}
 
@@ -1362,14 +1369,17 @@ class Give_Donor {
 		}
 
 		// Set default address.
-		$address = wp_parse_args( $address, array(
-			'line1'   => '',
-			'line2'   => '',
-			'city'    => '',
-			'state'   => '',
-			'country' => '',
-			'zip'     => '',
-		) );
+		$address = wp_parse_args(
+			$address,
+			array(
+				'line1'   => '',
+				'line2'   => '',
+				'city'    => '',
+				'state'   => '',
+				'country' => '',
+				'zip'     => '',
+			)
+		);
 
 		// Set meta key prefix.
 		global $wpdb;
@@ -1379,14 +1389,20 @@ class Give_Donor {
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
 				// Get latest address key to set multi address id.
-				$multi_address_id = $wpdb->get_var( $wpdb->prepare( "
+				$multi_address_id = $wpdb->get_var(
+					$wpdb->prepare(
+						"
 						SELECT meta_key FROM {$wpdb->donormeta}
 						WHERE meta_key
 						LIKE '%%%s%%'
 						AND {$meta_type}_id=%d
 						ORDER BY meta_id DESC
 						LIMIT 1
-						", "_give_donor_address_{$address_type}_line1", $this->id ) );
+						",
+						"_give_donor_address_{$address_type}_line1",
+						$this->id
+					)
+				);
 
 				if ( ! empty( $multi_address_id ) ) {
 					$multi_address_id = absint( substr( strrchr( $multi_address_id, '_' ), 1 ) );
@@ -1441,16 +1457,22 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->query( $wpdb->prepare( "
+		$row_affected = $wpdb->query(
+			$wpdb->prepare(
+				"
 				DELETE FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d
-				", $meta_key_prefix, $this->id ) );
+				",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
 
 		// Delete cache.
 		Give_Cache::delete_group( $this->id, 'give-donors' );
-		wp_cache_delete( $this->id,  "{$meta_type}_meta" );
+		wp_cache_delete( $this->id, "{$meta_type}_meta" );
 
 		$this->setup_address();
 
@@ -1473,7 +1495,7 @@ class Give_Donor {
 		global $wpdb;
 
 		// Get address type.
-		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+		$is_multi_address    = false !== strpos( $address_id, '_' ) ? true : false;
 		$exploded_address_id = explode( '_', $address_id );
 
 		$address_type = false !== strpos( $address_id, '_' ) ? array_shift( $exploded_address_id ) : $address_id;
@@ -1489,12 +1511,18 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->get_results( $wpdb->prepare( "
+		$row_affected = $wpdb->get_results(
+			$wpdb->prepare(
+				"
 				SELECT meta_key FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d
-				", $meta_key_prefix, $this->id ) );
+				",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
 
 		// Return result.
 		if ( ! count( $row_affected ) ) {
@@ -1540,7 +1568,7 @@ class Give_Donor {
 		switch ( true ) {
 
 			// Single address.
-			case is_string( end( $address ) ) :
+			case is_string( end( $address ) ):
 				$status = $this->is_address_match( $current_address, $address );
 				break;
 
@@ -1604,7 +1632,10 @@ class Give_Donor {
 			$last_name = $split_donor_name[1];
 		}
 
-		return (object) array( 'first_name' => $first_name, 'last_name' => $last_name );
+		return (object) array(
+			'first_name' => $first_name,
+			'last_name'  => $last_name,
+		);
 	}
 
 	/**
@@ -1681,7 +1712,7 @@ class Give_Donor {
 		$completed_data = '';
 
 		// Return if donation id is invalid.
-		if( ! ( $last_donation = absint( $this->get_last_donation() ) ) ) {
+		if ( ! ( $last_donation = absint( $this->get_last_donation() ) ) ) {
 			return $completed_data;
 		}
 
@@ -1710,10 +1741,12 @@ class Give_Donor {
 		 */
 		return apply_filters(
 			'get_donor_initals',
-			give_get_name_initial( array(
-				'firstname' =>  $this->get_first_name(),
-				'lastname' =>  $this->get_last_name()
-			) )
+			give_get_name_initial(
+				array(
+					'firstname' => $this->get_first_name(),
+					'lastname'  => $this->get_last_name(),
+				)
+			)
 		);
 
 	}

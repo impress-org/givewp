@@ -250,7 +250,7 @@ class Give_DB_Logs extends Give_DB {
         PRIMARY KEY  (ID)
         ) {$charset_collate};";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version, false );
@@ -332,7 +332,7 @@ class Give_DB_Logs extends Give_DB {
 		// Logs created for a specific date or in a date range
 		if ( ! empty( $args['date_query'] ) ) {
 			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.log_date" );
-			$where             .= $date_query_object->get_sql();
+			$where            .= $date_query_object->get_sql();
 		}
 
 		// Logs create for specific parent.

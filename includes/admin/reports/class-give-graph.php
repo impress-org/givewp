@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Graph {
 
 	/*
-
 	Simple example:
 
 	data format for each point: array( location on x, location on y )
@@ -83,31 +82,34 @@ class Give_Graph {
 	 */
 	public function __construct( $_data, $options = array() ) {
 
-		$this->data      = $_data;
+		$this->data = $_data;
 
 		// Generate unique ID
 		$this->id = md5( rand() );
 
 		// Setup default options;
-		$this->options = apply_filters( 'give_graph_args', array(
-			'y_mode'          => null,
-			'x_mode'          => null,
-			'y_decimals'      => 0,
-			'x_decimals'      => 0,
-			'y_position'      => 'right',
-			'time_format'     => '%d/%b',
-			'ticksize_unit'   => 'day',
-			'ticksize_num'    => 1,
-			'multiple_y_axes' => false,
-			'bgcolor'         => '#f9f9f9',
-			'bordercolor'     => '#eee',
-			'color'           => '#bbb',
-			'borderwidth'     => 1,
-			'bars'            => true,
-			'lines'           => false,
-			'points'          => true,
-			'dataType'        => array()
-		) );
+		$this->options = apply_filters(
+			'give_graph_args',
+			array(
+				'y_mode'          => null,
+				'x_mode'          => null,
+				'y_decimals'      => 0,
+				'x_decimals'      => 0,
+				'y_position'      => 'right',
+				'time_format'     => '%d/%b',
+				'ticksize_unit'   => 'day',
+				'ticksize_num'    => 1,
+				'multiple_y_axes' => false,
+				'bgcolor'         => '#f9f9f9',
+				'bordercolor'     => '#eee',
+				'color'           => '#bbb',
+				'borderwidth'     => 1,
+				'bars'            => true,
+				'lines'           => false,
+				'points'          => true,
+				'dataType'        => array(),
+			)
+		);
 
 		$this->options = wp_parse_args( $options, $this->options );
 	}
@@ -153,13 +155,13 @@ class Give_Graph {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array('jquery-flot'), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-orderbars' );
 
-		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.time' . $suffix . '.js', array('jquery-flot'), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.time' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-time' );
 
-		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array('jquery-flot'), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-resize' );
 
 		wp_register_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot' . $suffix . '.js', false, GIVE_VERSION );
@@ -188,14 +190,19 @@ class Give_Graph {
 					[
 						<?php
 							$order = 0;
-							foreach( $this->get_data() as $label => $data ) :
-						?>
+						foreach ( $this->get_data() as $label => $data ) :
+							?>
 						{
 							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
-							dataType  : '<?php echo ( ! empty( $this->options['dataType'][$order] ) ? $this->options['dataType'][$order] : 'count' ); ?>',
+							dataType  : '<?php echo ( ! empty( $this->options['dataType'][ $order ] ) ? $this->options['dataType'][ $order ] : 'count' ); ?>',
 							// data format is: [ point on x, value on y ]
-							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
+							data  : [
+							<?php
+							foreach ( $data as $point ) {
+								echo '[' . implode( ',', $point ) . '],'; }
+							?>
+							],
 							points: {
 								show: <?php echo $this->options['points'] ? 'true' : 'false'; ?>,
 							},
@@ -210,13 +217,16 @@ class Give_Graph {
 								fill     : true,
 								fillColor: {colors: [{opacity: 0.4}, {opacity: 0.1}]}
 							},
-							<?php if( $this->options[ 'multiple_y_axes' ] ) : ?>
+							<?php if ( $this->options['multiple_y_axes'] ) : ?>
 							yaxis : <?php echo $yaxis_count; ?>
 							<?php endif; ?>
 
 						},
 
-						<?php $yaxis_count++; endforeach; ?>
+							<?php
+							$yaxis_count++;
+endforeach;
+						?>
 
 					],
 					{
@@ -224,10 +234,10 @@ class Give_Graph {
 						grid: {
 							show           : true,
 							aboveData      : false,
-							color          : "<?php echo $this->options[ 'color' ]; ?>",
-							backgroundColor: "<?php echo $this->options[ 'bgcolor' ]; ?>",
-							borderColor    : "<?php echo $this->options[ 'bordercolor' ]; ?>",
-							borderWidth    : <?php echo absint( $this->options[ 'borderwidth' ] ); ?>,
+							color          : "<?php echo $this->options['color']; ?>",
+							backgroundColor: "<?php echo $this->options['bgcolor']; ?>",
+							borderColor    : "<?php echo $this->options['bordercolor']; ?>",
+							borderWidth    : <?php echo absint( $this->options['borderwidth'] ); ?>,
 							clickable      : false,
 							hoverable      : true
 						},
@@ -238,7 +248,7 @@ class Give_Graph {
 							mode        : "<?php echo $this->options['x_mode']; ?>",
 							timeFormat  : "<?php echo $this->options['x_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
 							tickSize    : "<?php echo $this->options['x_mode'] == 'time' ? '' : 1; ?>",
-							<?php if( $this->options['x_mode'] != 'time' ) : ?>
+							<?php if ( $this->options['x_mode'] != 'time' ) : ?>
 							tickDecimals: <?php echo $this->options['x_decimals']; ?>
 							<?php endif; ?>
 						},
@@ -247,7 +257,7 @@ class Give_Graph {
 							min         : 0,
 							mode        : "<?php echo $this->options['y_mode']; ?>",
 							timeFormat  : "<?php echo $this->options['y_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
-							<?php if( $this->options['y_mode'] != 'time' ) : ?>
+							<?php if ( $this->options['y_mode'] != 'time' ) : ?>
 							tickDecimals: <?php echo $this->options['y_decimals']; ?>,
 							<?php endif; ?>
 							tickFormatter: function(val) {
@@ -280,7 +290,7 @@ class Give_Graph {
 							previousPoint = item.dataIndex;
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
-                                y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
+								y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
 
 							if ( item.series.dataType.length &&  item.series.dataType === 'amount' ) {
 

@@ -158,7 +158,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->args = $this->_args;
 
 		// Whitelist order.
-		$this->args['order'] = in_array( strtoupper( $this->args['order'] ), array( 'ASC', 'DESC' ) ) ? $this->args['order'] : 'DESC' ;
+		$this->args['order'] = in_array( strtoupper( $this->args['order'] ), array( 'ASC', 'DESC' ) ) ? $this->args['order'] : 'DESC';
 
 		$this->date_filter_pre();
 		$this->orderby();
@@ -231,7 +231,6 @@ class Give_Payments_Query extends Give_Stats {
 			return $this->payments;
 		}
 
-
 		// Modify the query/query arguments before we retrieve payments.
 		$this->set_filters();
 
@@ -257,7 +256,7 @@ class Give_Payments_Query extends Give_Stats {
 			if ( ! in_array( $this->args['output'], $custom_output ) ) {
 				$results = $query->posts;
 
-			} else{
+			} else {
 				$previous_post = $post;
 
 				while ( $query->have_posts() ) {
@@ -303,7 +302,6 @@ class Give_Payments_Query extends Give_Stats {
 		$allowed_groups = array( 'post_status' );
 		$result         = array();
 
-
 		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
 			// Set only count in result.
 			if ( $this->args['count'] ) {
@@ -320,7 +318,6 @@ class Give_Payments_Query extends Give_Stats {
 
 				switch ( $this->args['group_by'] ) {
 					case 'post_status':
-
 						/* @var Give_Payment $donation */
 						foreach ( give_get_payment_status_keys() as $status ) {
 							if ( ! isset( $result[ $status ] ) ) {
@@ -339,7 +336,6 @@ class Give_Payments_Query extends Give_Stats {
 				}
 			}
 		}
-
 
 		/**
 		 * Filter the result
@@ -535,12 +531,11 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-
 		$args = array();
 
 		if ( is_numeric( $this->args['user'] ) ) {
 			// Backward compatibility: user donor param to get payment attached to donor instead of user
-			$donor_id = Give()->donors->get_column_by( 'id','user_id', $this->args['user'] );
+			$donor_id = Give()->donors->get_column_by( 'id', 'user_id', $this->args['user'] );
 
 			$args = array(
 				'key'   => '_give_payment_donor_id',
@@ -570,10 +565,13 @@ class Give_Payments_Query extends Give_Stats {
 
 		$donor_meta_type = Give()->donor_meta->meta_type;
 
-		$this->__set( 'meta_query', array(
-			'key'   => "_give_payment_{$donor_meta_type}_id",
-			'value' => (int) $this->args['donor'],
-		) );
+		$this->__set(
+			'meta_query',
+			array(
+				'key'   => "_give_payment_{$donor_meta_type}_id",
+				'value' => (int) $this->args['donor'],
+			)
+		);
 	}
 
 	/**
@@ -653,7 +651,7 @@ class Give_Payments_Query extends Give_Stats {
 			$this->__set( 'give_forms', $search );
 			$this->__unset( 's' );
 
-		} else if ( ! empty( $search ) ) {
+		} elseif ( ! empty( $search ) ) {
 			$search_parts = preg_split( '/\s+/', $search );
 
 			if ( is_array( $search_parts ) && 2 === count( $search_parts ) ) {
@@ -713,7 +711,8 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->__set(
-			'meta_query', array(
+			'meta_query',
+			array(
 				'key'   => '_give_payment_mode',
 				'value' => $this->args['mode'],
 			)
@@ -789,7 +788,8 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->__set(
-			'meta_query', array(
+			'meta_query',
+			array(
 				'key'     => '_give_payment_gateway',
 				'value'   => $this->args['gateway'],
 				'compare' => $compare,
@@ -831,11 +831,11 @@ class Give_Payments_Query extends Give_Stats {
 		$this->args['orderby'] = 'post_parent__in';
 
 		// Whitelist orderby.
-		if( ! in_array( $this->args['orderby'], $allowed_keys ) ) {
+		if ( ! in_array( $this->args['orderby'], $allowed_keys ) ) {
 			$this->args['orderby'] = 'ID';
 		}
 
-		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
+		$where  = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
 		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
 
 		if ( is_numeric( $this->args['post_parent'] ) ) {
@@ -882,7 +882,7 @@ class Give_Payments_Query extends Give_Stats {
 		// Date query.
 		if ( ! empty( $this->args['date_query'] ) ) {
 			$date_query_obj = new WP_Date_Query( $this->args['date_query'] );
-			$where          .= str_replace(
+			$where         .= str_replace(
 				array(
 					"\n",
 					'(   (',

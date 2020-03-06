@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Notices {
 	/**
 	 * List of notices
+	 *
 	 * @var array
 	 * @since  1.8.9
 	 * @access private
@@ -151,7 +152,6 @@ class Give_Notices {
 				// Only set it when custom is defined.
 				'dismiss_interval_time' => null,
 
-
 			)
 		);
 
@@ -165,23 +165,26 @@ class Give_Notices {
 		// Set extra dismiss links if any.
 		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
 
-			preg_match_all( "/data-([^\"]*)=\"([^\"]*)\"/", $notice_args['description'], $extra_notice_dismiss_link );
+			preg_match_all( '/data-([^"]*)="([^"]*)"/', $notice_args['description'], $extra_notice_dismiss_link );
 
 			if ( ! empty( $extra_notice_dismiss_link ) ) {
 				$extra_notice_dismiss_links = array_chunk( current( $extra_notice_dismiss_link ), 3 );
 				foreach ( $extra_notice_dismiss_links as $extra_notice_dismiss_link ) {
 					// Create array og key ==> value by parsing query string created after renaming data attributes.
-					$data_attribute_query_str = str_replace( array( 'data-', '-', '"' ), array(
-						'',
-						'_',
-						'',
-					), implode( '&', $extra_notice_dismiss_link ) );
+					$data_attribute_query_str = str_replace(
+						array( 'data-', '-', '"' ),
+						array(
+							'',
+							'_',
+							'',
+						),
+						implode( '&', $extra_notice_dismiss_link )
+					);
 
 					$notice_args['extra_links'][] = wp_parse_args( $data_attribute_query_str );
 				}
 			}
 		}
-
 
 		self::$notices[ $notice_args['id'] ] = $notice_args;
 
@@ -202,7 +205,6 @@ class Give_Notices {
 	 * Display notice.
 	 *
 	 * @since 1.8.9
-	 *
 	 */
 	public function render_admin_notices() {
 		/* @var WP_Screen $wp_screen */
@@ -239,9 +241,8 @@ class Give_Notices {
 				continue;
 			}
 
-
 			// Render custom html.
-			if( ! empty( $notice['description_html'] ) ) {
+			if ( ! empty( $notice['description_html'] ) ) {
 				$output .= "{$notice['description_html']} \n";
 				continue;
 			}
@@ -259,7 +260,7 @@ class Give_Notices {
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
 			$css_class = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
-			$output    .= sprintf(
+			$output   .= sprintf(
 				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s" style="display: none">' . " \n",
 				$css_id,
 				$css_class,
@@ -414,7 +415,7 @@ class Give_Notices {
 	 *
 	 * @since 2.3.0
 	 */
-	public function __reveal_notices(){
+	public function __reveal_notices() {
 		?>
 		<script>
 			jQuery(document).ready(function($){
@@ -683,7 +684,6 @@ class Give_Notices {
 			sprintf(
 				'<img class="notice-dismiss give-notice-close" src="%s" />',
 				esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/close.svg' )
-
 			) :
 			'';
 
@@ -701,7 +701,6 @@ class Give_Notices {
 			give_clean( $notice_args['dismiss_type'] ),
 			$message,
 			$close_icon
-
 		);
 
 		if ( ! $echo ) {
@@ -738,9 +737,9 @@ class Give_Notices {
 		);
 		$notice_args = wp_parse_args( $notice_args, $defaults );
 
-		$output    = '';
-		$css_id    = ! empty( $notice_args['id'] ) ? $notice_args['id'] : uniqid( 'give-inline-notice-' );
-		$css_class = "notice-{$notice_args['notice_type']} give-notice notice inline";
+		$output     = '';
+		$css_id     = ! empty( $notice_args['id'] ) ? $notice_args['id'] : uniqid( 'give-inline-notice-' );
+		$css_class  = "notice-{$notice_args['notice_type']} give-notice notice inline";
 		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
 		$output    .= sprintf(
 			'<div id="%1$s" class="%2$s"><p>%3$s</p></div>',

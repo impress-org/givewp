@@ -9,12 +9,12 @@ export default {
 		 * @param {object} $form
 		 * @return {boolean}
 		 */
-		hasSession: function($form ) {
-			if( ! $form.length ){
+		hasSession: function( $form ) {
+			if ( ! $form.length ) {
 				return false;
 			}
 
-			return !! Give.fn.__getCookie( Give.fn.getGlobalVar('session_cookie_name') );
+			return !! Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
 		},
 
 		/**
@@ -25,7 +25,7 @@ export default {
 		 * @return {boolean}
 		 */
 		isLoggedIn: function() {
-			return jQuery('body').hasClass('logged-in');
-		}
-	}
+			return jQuery( 'body' ).hasClass( 'logged-in' );
+		},
+	},
 };

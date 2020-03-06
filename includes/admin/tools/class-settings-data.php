@@ -40,9 +40,9 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 			parent::__construct();
 
 			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
-				add_action( "give-tools_open_form", '__return_empty_string' );
-				add_action( "give-tools_close_form", '__return_empty_string' );
+			if ( give_get_current_setting_tab() === $this->id ) {
+				add_action( 'give-tools_open_form', '__return_empty_string' );
+				add_action( 'give-tools_close_form', '__return_empty_string' );
 			}
 		}
 
@@ -54,23 +54,26 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 		 */
 		public function get_settings() {
 			// Get settings.
-			$settings = apply_filters( 'give_settings_data', array(
+			$settings = apply_filters(
+				'give_settings_data',
 				array(
-					'id'   => 'give_tools_tools',
-					'type' => 'title',
-					'table_html' => false
-				),
-				array(
-					'id'   => 'api',
-					'name' => esc_html__( 'Tools', 'give' ),
-					'type' => 'data',
-				),
-				array(
-					'id'   => 'give_tools_tools',
-					'type' => 'sectionend',
-					'table_html' => false
+					array(
+						'id'         => 'give_tools_tools',
+						'type'       => 'title',
+						'table_html' => false,
+					),
+					array(
+						'id'   => 'api',
+						'name' => esc_html__( 'Tools', 'give' ),
+						'type' => 'data',
+					),
+					array(
+						'id'         => 'give_tools_tools',
+						'type'       => 'sectionend',
+						'table_html' => false,
+					),
 				)
-			));
+			);
 
 			/**
 			 * Filter the settings.

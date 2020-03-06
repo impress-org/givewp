@@ -43,4 +43,4 @@ class Give_Shortcode_Donation_History extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Donation_History;
+new Give_Shortcode_Donation_History();

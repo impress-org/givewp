@@ -23,9 +23,9 @@ class Income extends Endpoint {
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
-				[
+				array(
 					'data' => $cached_report,
-				]
+				)
 			);
 		}
 
@@ -33,7 +33,7 @@ class Income extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = [];
+		$dataset = array();
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -59,10 +59,10 @@ class Income extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			[
+			array(
 				'data'   => $data,
 				'status' => $status,
-			]
+			)
 		);
 	}
 
@@ -70,8 +70,8 @@ class Income extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = [];
-		$income   = [];
+		$tooltips = array();
+		$income   = array();
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -102,16 +102,16 @@ class Income extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = [
+			$income[] = array(
 				'x' => $time,
 				'y' => $incomeForPeriod,
-			];
+			);
 
-			$tooltips[] = [
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
+			$tooltips[] = array(
+				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), array( 'decode_currency' => true ) ),
 				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'footer' => $periodLabel,
-			];
+			);
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -124,14 +124,14 @@ class Income extends Endpoint {
 		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
+		$data = array(
+			'datasets' => array(
+				array(
 					'data'     => $income,
 					'tooltips' => $tooltips,
-				],
-			],
-		];
+				),
+			),
+		);
 
 		return $data;
 
@@ -140,7 +140,7 @@ class Income extends Endpoint {
 	public function get_values( $startStr, $endStr ) {
 
 		$earnings = 0;
-		$donors   = [];
+		$donors   = array();
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
@@ -153,10 +153,10 @@ class Income extends Endpoint {
 
 		$unique = array_unique( $donors );
 
-		return [
+		return array(
 			'earnings'    => $earnings,
 			'donor_count' => count( $unique ),
-		];
+		);
 	}
 
 }

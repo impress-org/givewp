@@ -29,7 +29,7 @@ class Give_Donor_Wall_Block {
 	 * @access private
 	 * @var Give_Donor_Wall_Block
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -82,79 +82,82 @@ class Give_Donor_Wall_Block {
 		}
 
 		// Register block.
-		register_block_type( 'give/donor-wall', array(
-			'render_callback' => array( $this, 'render_block' ),
-			'attributes'      => array(
-				'donorsPerPage' => array(
-					'type'    => 'string',
-					'default' => '12',
+		register_block_type(
+			'give/donor-wall',
+			array(
+				'render_callback' => array( $this, 'render_block' ),
+				'attributes'      => array(
+					'donorsPerPage' => array(
+						'type'    => 'string',
+						'default' => '12',
+					),
+					'formID'        => array(
+						'type'    => 'string',
+						'default' => '0',
+					),
+					'orderBy'       => array(
+						'type'    => 'string',
+						'default' => 'post_date',
+					),
+					'order'         => array(
+						'type'    => 'string',
+						'default' => 'DESC',
+					),
+					'paged'         => array(
+						'type'    => 'string',
+						'default' => '1',
+					),
+					'columns'       => array(
+						'type'    => 'string',
+						'default' => 'best-fit',
+					),
+					'showAvatar'    => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showName'      => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showTotal'     => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showDate'      => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showComments'  => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showAnonymous' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'onlyComments'  => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'commentLength' => array(
+						'type'    => 'string',
+						'default' => '140',
+					),
+					'readMoreText'  => array(
+						'type'    => 'string',
+						'default' => __( 'Read more', 'give' ),
+					),
+					'loadMoreText'  => array(
+						'type'    => 'string',
+						'default' => __( 'Load more', 'give' ),
+					),
+					'avatarSize'    => array(
+						'type'    => 'string',
+						'default' => '60',
+					),
 				),
-				'formID'        => array(
-					'type'    => 'string',
-					'default' => '0',
-				),
-				'orderBy'       => array(
-					'type'    => 'string',
-					'default' => 'post_date',
-				),
-				'order'         => array(
-					'type'    => 'string',
-					'default' => 'DESC',
-				),
-				'paged'         => array(
-					'type'    => 'string',
-					'default' => '1',
-				),
-				'columns'       => array(
-					'type'    => 'string',
-					'default' => 'best-fit',
-				),
-				'showAvatar'    => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showName'      => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showTotal'     => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showDate'      => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showComments'  => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showAnonymous' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'onlyComments'  => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'commentLength' => array(
-					'type'    => 'string',
-					'default' => '140',
-				),
-				'readMoreText'  => array(
-					'type'    => 'string',
-					'default' => __( 'Read more', 'give' ),
-				),
-				'loadMoreText'  => array(
-					'type'    => 'string',
-					'default' => __( 'Load more', 'give' ),
-				),
-				'avatarSize'    => array(
-					'type'    => 'string',
-					'default' => '60',
-				),
-			),
-		) );
+			)
+		);
 	}
 
 	/**
@@ -211,7 +214,7 @@ class Give_Donor_Wall_Block {
 			'image_alt' => __( 'GiveWP Icon', 'give' ),
 			'heading'   => __( 'No donors found.', 'give' ),
 			'help'      => sprintf(
-			/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
+				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 				__( 'Need help? Learn more about %1$sDonors%2$s.', 'give' ),
 				'<a href="http://docs.givewp.com/core-donors/">',
 				'</a>'

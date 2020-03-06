@@ -343,7 +343,7 @@ class Give_API {
 			}
 
 			// Retrieve the user by public API key and ensure they exist
-			if ( ! preg_match( '/^[a-f0-9]{32}$/i',$wp_query->query_vars['key'] ) || ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
+			if ( ! preg_match( '/^[a-f0-9]{32}$/i', $wp_query->query_vars['key'] ) || ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
 				$this->invalid_key();
 
@@ -355,7 +355,7 @@ class Give_API {
 				$public = urldecode( $wp_query->query_vars['key'] );
 
 				// Verify that if user has secret key or not
-				if( ! $secret ) {
+				if ( ! $secret ) {
 					$this->invalid_auth();
 				}
 
@@ -366,7 +366,6 @@ class Give_API {
 
 					return false;
 				}
-
 			}
 		} elseif ( ! empty( $wp_query->query_vars['give-api'] ) && $wp_query->query_vars['give-api'] === 'forms' ) {
 			$this->is_valid_request = true;
@@ -568,41 +567,39 @@ class Give_API {
 		}
 
 		$data         = array();
-		$this->routes = new $this->versions[$this->get_queried_version()];
+		$this->routes = new $this->versions[ $this->get_queried_version() ];
 		$this->routes->validate_request();
 
 		switch ( $this->endpoint ) :
 
-			case 'stats' :
-
-				$data = $this->routes->get_stats( array(
-					'type'      => isset( $wp_query->query_vars['type'] ) ? $wp_query->query_vars['type'] : null,
-					'form'      => isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null,
-					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
-					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
-					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
-				) );
+			case 'stats':
+				$data = $this->routes->get_stats(
+					array(
+						'type'      => isset( $wp_query->query_vars['type'] ) ? $wp_query->query_vars['type'] : null,
+						'form'      => isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null,
+						'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
+						'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
+						'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
+					)
+				);
 
 				break;
 
-			case 'forms' :
-
+			case 'forms':
 				$form = isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null;
 
 				$data = $this->routes->get_forms( $form );
 
 				break;
 
-			case 'donors' :
-
+			case 'donors':
 				$donor = isset( $wp_query->query_vars['donor'] ) ? $wp_query->query_vars['donor'] : null;
 
 				$data = $this->routes->get_donors( $donor );
 
 				break;
 
-			case 'donations' :
-
+			case 'donations':
 				/**
 				 *  Call to get recent donations
 				 *
@@ -610,12 +607,14 @@ class Give_API {
 				 * @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
 				 * @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
 				 */
-				$data = $this->routes->get_recent_donations( array(
-					'id'        => isset( $wp_query->query_vars['id'] ) ? $wp_query->query_vars['id'] : null,
-					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
-					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
-					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
-				) );
+				$data = $this->routes->get_recent_donations(
+					array(
+						'id'        => isset( $wp_query->query_vars['id'] ) ? $wp_query->query_vars['id'] : null,
+						'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
+						'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
+						'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
+					)
+				);
 
 				break;
 
@@ -659,12 +658,15 @@ class Give_API {
 		global $wp_query;
 
 		// Whitelist our query options
-		$accepted = apply_filters( 'give_api_valid_query_modes', array(
-			'stats',
-			'forms',
-			'donors',
-			'donations',
-		) );
+		$accepted = apply_filters(
+			'give_api_valid_query_modes',
+			array(
+				'stats',
+				'forms',
+				'donors',
+				'donations',
+			)
+		);
 
 		$query = isset( $wp_query->query_vars['give-api'] ) ? $wp_query->query_vars['give-api'] : null;
 		$query = str_replace( $this->queried_version . '/', '', $query );
@@ -756,43 +758,42 @@ class Give_API {
 			// Modify dates based on predefined ranges
 			switch ( $args['date'] ) :
 
-				case 'this_month' :
+				case 'this_month':
 					$dates['day']     = null;
 					$dates['m_start'] = date( 'n', $current_time );
 					$dates['m_end']   = date( 'n', $current_time );
 					$dates['year']    = date( 'Y', $current_time );
 					break;
 
-				case 'last_month' :
+				case 'last_month':
 					$dates['day']     = null;
 					$dates['m_start'] = date( 'n', $current_time ) == 1 ? 12 : date( 'n', $current_time ) - 1;
 					$dates['m_end']   = $dates['m_start'];
 					$dates['year']    = date( 'n', $current_time ) == 1 ? date( 'Y', $current_time ) - 1 : date( 'Y', $current_time );
 					break;
 
-				case 'today' :
+				case 'today':
 					$dates['day']     = date( 'd', $current_time );
 					$dates['m_start'] = date( 'n', $current_time );
 					$dates['m_end']   = date( 'n', $current_time );
 					$dates['year']    = date( 'Y', $current_time );
 					break;
 
-				case 'yesterday' :
-
+				case 'yesterday':
 					$year  = date( 'Y', $current_time );
 					$month = date( 'n', $current_time );
 					$day   = date( 'd', $current_time );
 
 					if ( $month == 1 && $day == 1 ) {
 
-						$year  -= 1;
+						$year -= 1;
 						$month = 12;
 						$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 					} elseif ( $month > 1 && $day == 1 ) {
 
 						$month -= 1;
-						$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 					} else {
 
@@ -807,7 +808,7 @@ class Give_API {
 
 					break;
 
-				case 'this_quarter' :
+				case 'this_quarter':
 					$month_now = date( 'n', $current_time );
 
 					$dates['day'] = null;
@@ -839,7 +840,7 @@ class Give_API {
 					}
 					break;
 
-				case 'last_quarter' :
+				case 'last_quarter':
 					$month_now = date( 'n', $current_time );
 
 					$dates['day'] = null;
@@ -871,14 +872,14 @@ class Give_API {
 					}
 					break;
 
-				case 'this_year' :
+				case 'this_year':
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
 					$dates['year']    = date( 'Y', $current_time );
 					break;
 
-				case 'last_year' :
+				case 'last_year':
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
@@ -927,11 +928,13 @@ class Give_API {
 			$field = 'email';
 		}
 
-		$donor_query = Give()->donors->get_donors( array(
-			'number' => $per_page,
-			'offset' => $offset,
-			$field   => $donor,
-		) );
+		$donor_query = Give()->donors->get_donors(
+			array(
+				'number' => $per_page,
+				'offset' => $offset,
+				$field   => $donor,
+			)
+		);
 		$donor_count = 0;
 
 		if ( $donor_query ) {
@@ -1023,12 +1026,14 @@ class Give_API {
 		if ( $form == null ) {
 			$forms['forms'] = array();
 
-			$form_list = get_posts( array(
-				'post_type'        => 'give_forms',
-				'posts_per_page'   => $this->per_page(),
-				'suppress_filters' => true,
-				'paged'            => $this->get_paged(),
-			) );
+			$form_list = get_posts(
+				array(
+					'post_type'        => 'give_forms',
+					'posts_per_page'   => $this->per_page(),
+					'suppress_filters' => true,
+					'paged'            => $this->get_paged(),
+				)
+			);
 
 			if ( $form_list ) {
 				$i = 0;
@@ -1045,7 +1050,9 @@ class Give_API {
 
 			} else {
 				$error['error'] = sprintf( /* translators: %s: form */
-					__( 'Form %s not found.', 'give' ), $form );
+					__( 'Form %s not found.', 'give' ),
+					$form
+				);
 
 				return $error;
 			}
@@ -1065,8 +1072,8 @@ class Give_API {
 	 */
 	private function get_form_data( $form_info ) {
 
-		$form = array();
-		$currency = give_get_option('currency');
+		$form     = array();
+		$currency = give_get_option( 'currency' );
 
 		$form['info']['id']            = $form_info->ID;
 		$form['info']['slug']          = $form_info->post_name;
@@ -1092,15 +1099,30 @@ class Give_API {
 		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
 			$total_income                         = give_get_form_earnings_stats( $form_info->ID );
 			$goal_percentage_completed            = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
-			$form['goal']['amount']               = isset( $goal_amount ) ? give_format_decimal( array( 'amount' => $goal_amount, 'currency' => $currency  ) ) : '';
+			$form['goal']['amount']               = isset( $goal_amount ) ? give_format_decimal(
+				array(
+					'amount'   => $goal_amount,
+					'currency' => $currency,
+				)
+			) : '';
 			$form['goal']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
 
 		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
 			$form['stats']['total']['donations']           = give_get_form_sales_stats( $form_info->ID );
-			$form['stats']['total']['earnings']            = give_format_decimal( array( 'amount' => give_get_form_earnings_stats( $form_info->ID ), 'currency' => $currency  ) );
+			$form['stats']['total']['earnings']            = give_format_decimal(
+				array(
+					'amount'   => give_get_form_earnings_stats( $form_info->ID ),
+					'currency' => $currency,
+				)
+			);
 			$form['stats']['monthly_average']['donations'] = give_get_average_monthly_form_sales( $form_info->ID );
-			$form['stats']['monthly_average']['earnings']  = give_format_decimal( array( 'amount' => give_get_average_monthly_form_earnings( $form_info->ID ), 'currency' => $currency  ) );
+			$form['stats']['monthly_average']['earnings']  = give_format_decimal(
+				array(
+					'amount'   => give_get_average_monthly_form_earnings( $form_info->ID ),
+					'currency' => $currency,
+				)
+			);
 		}
 
 		$counter = 0;
@@ -1109,11 +1131,21 @@ class Give_API {
 				$counter ++;
 				// multi-level item
 				$level                                     = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
-				$form['pricing'][ sanitize_key( $level ) ] = give_format_decimal( array( 'amount' => $price['_give_amount'], 'currency' => $currency ) );
+				$form['pricing'][ sanitize_key( $level ) ] = give_format_decimal(
+					array(
+						'amount'   => $price['_give_amount'],
+						'currency' => $currency,
+					)
+				);
 
 			}
 		} else {
-			$form['pricing']['amount'] = give_format_decimal( array( 'amount' => give_get_form_price( $form_info->ID ), 'currency' => $currency ) );
+			$form['pricing']['amount'] = give_format_decimal(
+				array(
+					'amount'   => give_get_form_price( $form_info->ID ),
+					'currency' => $currency,
+				)
+			);
 		}
 
 		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
@@ -1155,7 +1187,7 @@ class Give_API {
 
 		$dates = $this->get_dates( $args );
 
-		$currency = give_get_option('currency');
+		$currency  = give_get_option( 'currency' );
 		$stats     = array();
 		$earnings  = array(
 			'earnings' => array(),
@@ -1256,10 +1288,12 @@ class Give_API {
 					}
 				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array(
-					'post_type' => 'give_forms',
-					'nopaging'  => true,
-				) );
+				$forms = get_posts(
+					array(
+						'post_type' => 'give_forms',
+						'nopaging'  => true,
+					)
+				);
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
 					$donations['donations'][ $i ] = array(
@@ -1291,7 +1325,9 @@ class Give_API {
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
-						__( 'Form %s not found.', 'give' ), $args['form'] );
+						__( 'Form %s not found.', 'give' ),
+						$args['form']
+					);
 				}
 			}// End if().
 
@@ -1362,7 +1398,12 @@ class Give_API {
 									$earnings['earnings'][ $date_key ] = 0;
 								}
 
-								$earnings['earnings'][ $date_key ] += give_format_decimal( array( 'amount' => $earnings_stat, 'currency' => $currency ) );
+								$earnings['earnings'][ $date_key ] += give_format_decimal(
+									array(
+										'amount'   => $earnings_stat,
+										'currency' => $currency,
+									)
+								);
 								$total                             += $earnings_stat;
 								$d ++;
 							endwhile;
@@ -1373,7 +1414,12 @@ class Give_API {
 						$y ++;
 					endwhile;
 
-					$earnings['totals'] = give_format_decimal( array( 'amount' => $total, 'currency' => $currency ) );
+					$earnings['totals'] = give_format_decimal(
+						array(
+							'amount'   => $total,
+							'currency' => $currency,
+						)
+					);
 				} else {
 					if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
 						$earnings_count = (float) 0.00;
@@ -1386,21 +1432,38 @@ class Give_API {
 							$month ++;
 						endwhile;
 
-						$earnings['earnings'][ $args['date'] ] = give_format_decimal( array( 'amount' => $earnings_count, 'currency' => $currency ) );
+						$earnings['earnings'][ $args['date'] ] = give_format_decimal(
+							array(
+								'amount'   => $earnings_count,
+								'currency' => $currency,
+							)
+						);
 					} else {
-						$earnings['earnings'][ $args['date'] ] = give_format_decimal( array( 'amount' => give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] ), 'currency' => $currency ) );
+						$earnings['earnings'][ $args['date'] ] = give_format_decimal(
+							array(
+								'amount'   => give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] ),
+								'currency' => $currency,
+							)
+						);
 					}
 				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array(
-					'post_type' => 'give_forms',
-					'nopaging'  => true,
-				) );
+				$forms = get_posts(
+					array(
+						'post_type' => 'give_forms',
+						'nopaging'  => true,
+					)
+				);
 
 				$i = 0;
 				foreach ( $forms as $form_info ) {
 					$earnings['earnings'][ $i ] = array(
-						$form_info->post_name => give_format_decimal( array( 'amount' => give_get_form_earnings_stats( $form_info->ID ), 'currency' => $currency ) ),
+						$form_info->post_name => give_format_decimal(
+							array(
+								'amount'   => give_get_form_earnings_stats( $form_info->ID ),
+								'currency' => $currency,
+							)
+						),
 					);
 					$i ++;
 				}
@@ -1408,19 +1471,26 @@ class Give_API {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info               = get_post( $args['form'] );
 					$earnings['earnings'][0] = array(
-						$form_info->post_name => give_format_decimal( array( 'amount' => $this->stats->get_earnings(
-							$args['form'],
-							is_numeric( $args['startdate'] )
-								? strtotime( $args['startdate'] )
-								: $args['startdate'],
-							is_numeric( $args['enddate'] )
-								? strtotime( $args['enddate'] )
-								: $args['enddate']
-						), 'currency' => $currency ) ),
+						$form_info->post_name => give_format_decimal(
+							array(
+								'amount'   => $this->stats->get_earnings(
+									$args['form'],
+									is_numeric( $args['startdate'] )
+									? strtotime( $args['startdate'] )
+									: $args['startdate'],
+									is_numeric( $args['enddate'] )
+									? strtotime( $args['enddate'] )
+									: $args['enddate']
+								),
+								'currency' => $currency,
+							)
+						),
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
-						__( 'Form %s not found.', 'give' ), $args['form'] );
+						__( 'Form %s not found.', 'give' ),
+						$args['form']
+					);
 				}
 			}// End if().
 
@@ -1507,21 +1577,18 @@ class Give_API {
 			switch ( $wp_query->query_vars['date'] ) {
 
 				case 'today':
-
 					// Set and Format Start and End Date to be date of today.
 					$start_date = $end_date = date( 'Y/m/d', $current_time );
 
 					break;
 
 				case 'yesterday':
-
 					// Set and Format Start and End Date to be date of yesterday.
 					$start_date = $end_date = date( 'Y/m', $current_time ) . '/' . ( date( 'd', $current_time ) - 1 );
 
 					break;
 
 				case 'range':
-
 					// Format Start Date and End Date for filtering payment based on date range.
 					$start_date = $dates['year'] . '/' . $dates['m_start'] . '/' . $dates['day_start'];
 					$end_date   = $dates['year_end'] . '/' . $dates['m_end'] . '/' . $dates['day_end'];
@@ -1553,7 +1620,7 @@ class Give_API {
 			foreach ( $query as $payment ) {
 
 				if ( is_numeric( $payment ) ) {
-					$payment      = new Give_Payment( $payment );
+					$payment = new Give_Payment( $payment );
 				}
 
 				$payment_meta = $payment->get_meta();
@@ -1566,7 +1633,12 @@ class Give_API {
 				$donations['donations'][ $i ]['number']         = $payment->number;
 				$donations['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
 				$donations['donations'][ $i ]['key']            = $payment->key;
-				$donations['donations'][ $i ]['total']          = give_format_decimal( array( 'donation_id' => $payment->ID, 'dp' => true ) );
+				$donations['donations'][ $i ]['total']          = give_format_decimal(
+					array(
+						'donation_id' => $payment->ID,
+						'dp'          => true,
+					)
+				);
 				$donations['donations'][ $i ]['status']         = give_get_payment_status( $payment, true );
 				$donations['donations'][ $i ]['gateway']        = $payment->gateway;
 				$donations['donations'][ $i ]['name']           = trim( "{$first_name} {$last_name}" );
@@ -1582,18 +1654,30 @@ class Give_API {
 
 				$donations['donations'][ $i ]['form']['id']    = $form_id;
 				$donations['donations'][ $i ]['form']['name']  = get_the_title( $payment_meta['form_id'] );
-				$donations['donations'][ $i ]['form']['price'] = give_format_decimal( array( 'amount' => $price, 'currency' => give_get_option('currency' ), 'dp' => true ) );
+				$donations['donations'][ $i ]['form']['price'] = give_format_decimal(
+					array(
+						'amount'   => $price,
+						'currency' => give_get_option( 'currency' ),
+						'dp'       => true,
+					)
+				);
 
 				if ( give_has_variable_prices( $form_id ) ) {
 					if ( isset( $payment_meta['price_id'] ) ) {
-						$price_name                                         = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
+						$price_name = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
 						$donations['donations'][ $i ]['form']['price_name'] = $price_name;
 						$donations['donations'][ $i ]['form']['price_id']   = $price_id;
-						$donations['donations'][ $i ]['form']['price']      = give_format_decimal( array( 'amount' => give_get_price_option_amount( $form_id, $price_id ), 'currency' => give_get_option('currency' ), 'dp' => true ) );
+						$donations['donations'][ $i ]['form']['price']      = give_format_decimal(
+							array(
+								'amount'   => give_get_price_option_amount( $form_id, $price_id ),
+								'currency' => give_get_option( 'currency' ),
+								'dp'       => true,
+							)
+						);
 					}
 				}
 
-				if( ! empty( $payment_meta ) ) {
+				if ( ! empty( $payment_meta ) ) {
 					// Add custom meta to API
 					foreach ( $payment_meta as $meta_key => $meta_value ) {
 
@@ -1611,7 +1695,7 @@ class Give_API {
 							'date',
 							'currency',
 							'_give_payment_total',
-							'_give_payment_date'
+							'_give_payment_date',
 						);
 
 						// Don't clutter up results with dupes
@@ -1620,8 +1704,14 @@ class Give_API {
 						}
 
 						// Meta key can contain price value like _give_fee_amount, so convert them to standard format.
-						if( give_is_amount_sanitized( $meta_value ) ) {
-							$meta_value = give_format_decimal( array( 'amount' => $meta_value, 'currency' => give_get_option('currency' ), 'dp' => true ) );
+						if ( give_is_amount_sanitized( $meta_value ) ) {
+							$meta_value = give_format_decimal(
+								array(
+									'amount'   => $meta_value,
+									'currency' => give_get_option( 'currency' ),
+									'dp'       => true,
+								)
+							);
 						}
 
 						$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
@@ -1663,7 +1753,7 @@ class Give_API {
 	 *
 	 * @global WP_Query     $wp_query
 	 *
-	 * @param array         $data
+	 * @param array $data
 	 *
 	 * @return void
 	 */
@@ -1731,7 +1821,7 @@ class Give_API {
 	 * @since 1.1
 	 * @global WP_Query $wp_query
 	 *
-	 * @param int       $status_code
+	 * @param int $status_code
 	 */
 	public function output( $status_code = 200 ) {
 
@@ -1752,16 +1842,14 @@ class Give_API {
 
 		switch ( $format ) :
 
-			case 'xml' :
-
+			case 'xml':
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/array2xml.php';
 				$xml = Array2XML::createXML( 'give', $this->data );
 				echo $xml->saveXML();
 
 				break;
 
-			case 'json' :
-
+			case 'json':
 				header( 'Content-Type: application/json' );
 				if ( ! empty( $this->pretty_print ) ) {
 					echo json_encode( $this->data, $this->pretty_print );
@@ -1771,8 +1859,7 @@ class Give_API {
 
 				break;
 
-			default :
-
+			default:
 				/**
 				 * Fires by the API while outputting other formats.
 				 *
@@ -1853,7 +1940,8 @@ class Give_API {
 				</tr>
 				</tbody>
 			</table>
-		<?php }// End if().
+			<?php
+		}// End if().
 	}
 
 	/**
@@ -1869,15 +1957,23 @@ class Give_API {
 	public function process_api_key( $args ) {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
-			wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
+				__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( __( 'User ID Required.', 'give' ), __( 'Error', 'give' ), array(
-				'response' => 401,
-			) );
+			wp_die(
+				__( 'User ID Required.', 'give' ),
+				__( 'Error', 'give' ),
+				array(
+					'response' => 401,
+				)
+			);
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1889,15 +1985,27 @@ class Give_API {
 		$process = isset( $args['give_api_process'] ) ? strtolower( $args['give_api_process'] ) : false;
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( /* translators: %s: process */
-				__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				sprintf( /* translators: %s: process */
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
+					$process
+				),
+				__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( /* translators: %s: process */
-				__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array(
-				'response' => 403,
-			) );
+			wp_die(
+				sprintf( /* translators: %s: process */
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
+					$process
+				),
+				__( 'Error', 'give' ),
+				array(
+					'response' => 403,
+				)
+			);
 		}
 
 		switch ( $process ) {
@@ -1956,9 +2064,9 @@ class Give_API {
 		$new_public_key = '';
 		$new_secret_key = '';
 
-		if( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
+		if ( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
 			// For User Profile Page.
-			if( ! empty( $_POST['give_set_api_key'] ) ) {
+			if ( ! empty( $_POST['give_set_api_key'] ) ) {
 				// Generate API Key from User Profile page.
 				$new_public_key = $this->generate_public_key( $user->user_email );
 				$new_secret_key = $this->generate_private_key( $user->ID );
@@ -2116,22 +2224,30 @@ class Give_API {
 
 		// Default earnings return
 		$earnings                              = array();
-		$earnings['earnings']['today']         = give_format_decimal( array(
-			'amount'   => $this->stats->get_earnings( 0, 'today' ),
-			'currency' => $currency,
-		) );
-		$earnings['earnings']['current_month'] = give_format_decimal( array(
-			'amount'   => $this->stats->get_earnings( 0, 'this_month' ),
-			'currency' => $currency,
-		) );
-		$earnings['earnings']['last_month']    = give_format_decimal( array(
-			'amount'   => $this->stats->get_earnings( 0, 'last_month' ),
-			'currency' => $currency,
-		) );
-		$earnings['earnings']['totals']        = give_format_decimal( array(
-			'amount'   => give_get_total_earnings(),
-			'currency' => $currency,
-		) );
+		$earnings['earnings']['today']         = give_format_decimal(
+			array(
+				'amount'   => $this->stats->get_earnings( 0, 'today' ),
+				'currency' => $currency,
+			)
+		);
+		$earnings['earnings']['current_month'] = give_format_decimal(
+			array(
+				'amount'   => $this->stats->get_earnings( 0, 'this_month' ),
+				'currency' => $currency,
+			)
+		);
+		$earnings['earnings']['last_month']    = give_format_decimal(
+			array(
+				'amount'   => $this->stats->get_earnings( 0, 'last_month' ),
+				'currency' => $currency,
+			)
+		);
+		$earnings['earnings']['totals']        = give_format_decimal(
+			array(
+				'amount'   => give_get_total_earnings(),
+				'currency' => $currency,
+			)
+		);
 
 		return $earnings;
 	}

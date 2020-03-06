@@ -27,6 +27,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Used to store donation id's that are going to get deleted.
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -34,6 +35,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Used to store donors id's that are going to get deleted.
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -41,6 +43,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Used to store the step where the step will be. ( 'count', 'donations', 'donors' ).
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -48,6 +51,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Used to store to get the page count in the loop.
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -55,6 +59,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Contain total number of step .
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -62,6 +67,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Counting contain total number of step that completed.
+	 *
 	 * @var int
 	 * @since 1.8.12
 	 */
@@ -69,6 +75,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.8.12
 	 */
@@ -76,6 +83,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.8.12
 	 * @var boolean
 	 */
@@ -83,6 +91,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.8.12
 	 * @var int
 	 */
@@ -90,6 +99,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Set's all the donors id's
+	 *
 	 * @since  1.8.12
 	 * @var array
 	 */
@@ -151,8 +161,8 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Will Update or Add the donation and donors ids in the with option table for there respected key.
 	 *
 	 * @param string $step On which the current ajax is running.
-	 * @param array $donation_ids Contain the list of all the donation id's that has being add before this
-	 * @param array $donor_ids Contain the list of all the donors id's that has being add before this
+	 * @param array  $donation_ids Contain the list of all the donation id's that has being add before this
+	 * @param array  $donor_ids Contain the list of all the donors id's that has being add before this
 	 */
 	private function count( $step, $donation_ids = array(), $donor_ids = array() ) {
 
@@ -164,24 +174,27 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		/**
 		 * Filter add to alter the argument before the wp quest run
 		 */
-		$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-			'post_type'      => 'give_payment',
-			'post_status'    => 'any',
-			'posts_per_page' => $this->per_step,
-			'paged'          => $paged,
-			// ONLY TEST MODE TRANSACTIONS!!!
-			'meta_query' => array(
-				'relation' => 'OR',
-				array(
-					'key'   => '_give_payment_mode',
-					'value' => 'test',
+		$args = apply_filters(
+			'give_tools_reset_stats_total_args',
+			array(
+				'post_type'      => 'give_payment',
+				'post_status'    => 'any',
+				'posts_per_page' => $this->per_step,
+				'paged'          => $paged,
+				// ONLY TEST MODE TRANSACTIONS!!!
+				'meta_query'     => array(
+					'relation' => 'OR',
+					array(
+						'key'   => '_give_payment_mode',
+						'value' => 'test',
+					),
+					array(
+						'key'   => '_give_payment_gateway',
+						'value' => 'manual',
+					),
 				),
-				array(
-					'key'   => '_give_payment_gateway',
-					'value' => 'manual',
-				),
-			),
-		) );
+			)
+		);
 
 		// Reset the post data.
 		wp_reset_postdata();
@@ -342,14 +355,17 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
-			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
-				'post_status'    => 'any',
-				'posts_per_page' => 1,
-				'meta_key'       => '_give_payment_mode',
-				'meta_value'     => 'live',
-				'author'         => $donor_ids[ $page ],
-			) );
+			$args = apply_filters(
+				'give_tools_reset_stats_total_args',
+				array(
+					'post_type'      => 'give_payment',
+					'post_status'    => 'any',
+					'posts_per_page' => 1,
+					'meta_key'       => '_give_payment_mode',
+					'meta_value'     => 'live',
+					'author'         => $donor_ids[ $page ],
+				)
+			);
 
 			$donation_posts = get_posts( $args );
 			if ( empty( $donation_posts ) ) {
@@ -409,7 +425,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @since  1.8.12s
 	 *
 	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  mixed  $value The value to store
 	 *
 	 * @return void
 	 */
@@ -462,7 +478,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param array $request
+	 * @param array             $request
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {

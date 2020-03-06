@@ -24,13 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array $templates All the registered email templates.
  */
 function give_get_email_templates() {
-	$templates = new Give_Emails;
+	$templates = new Give_Emails();
 
 	return $templates->get_templates();
 }
 
 /**
  * Email Template Tags.
+ *
  * @todo Modify this function to remove payment id dependency.
  *
  * @since 1.0
@@ -69,7 +70,7 @@ function give_email_preview_template_tags( $message ) {
 			10.50,
 			array(
 				'sanitize' => false,
-				)
+			)
 		)
 	);
 
@@ -115,9 +116,13 @@ function give_email_preview_buttons_callback( $field ) {
 		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
 		wp_nonce_url(
 			add_query_arg(
-				array( 'give_action' => 'preview_email', 'email_type' => $field_id ),
+				array(
+					'give_action' => 'preview_email',
+					'email_type'  => $field_id,
+				),
 				home_url()
-			), 'give-preview-email'
+			),
+			'give-preview-email'
 		),
 		$field['name']
 	);
@@ -125,11 +130,15 @@ function give_email_preview_buttons_callback( $field ) {
 	echo sprintf(
 		' <a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
 		wp_nonce_url(
-				add_query_arg( array(
-			'give_action'  => 'send_preview_email',
-			'email_type' => $field_id,
-			'give-messages[]' => 'sent-test-email',
-		) ), 'give-send-preview-email' ),
+			add_query_arg(
+				array(
+					'give_action'     => 'send_preview_email',
+					'email_type'      => $field_id,
+					'give-messages[]' => 'sent-test-email',
+				)
+			),
+			'give-send-preview-email'
+		),
 		esc_attr__( 'Send Test Email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )
 	);
@@ -144,11 +153,10 @@ function give_email_preview_buttons_callback( $field ) {
  * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
  * @since 1.6
- *
  */
 function give_get_preview_email_header() {
 
-	//Payment receipt switcher
+	// Payment receipt switcher
 	$payment_count = give_count_payments()->publish;
 	$payment_id    = give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' );
 
@@ -156,19 +164,21 @@ function give_get_preview_email_header() {
 		return false;
 	}
 
-	//Get payments.
-	$donations = new Give_Payments_Query( array(
-		'number' => 100,
-		'output' => '',
-		'fields' => 'ids'
-	) );
+	// Get payments.
+	$donations = new Give_Payments_Query(
+		array(
+			'number' => 100,
+			'output' => '',
+			'fields' => 'ids',
+		)
+	);
 	$donations = $donations->get_payments();
-	$options  = array();
+	$options   = array();
 
 	// Default option.
 	$options[0] = esc_html__( 'No donations found.', 'give' );
 
-	//Provide nice human readable options.
+	// Provide nice human readable options.
 	if ( $donations ) {
 		$options[0] = esc_html__( '- Select a donation -', 'give' );
 		foreach ( $donations as $donation_id ) {
@@ -182,7 +192,7 @@ function give_get_preview_email_header() {
 		}
 	}
 
-	//Start constructing HTML output.
+	// Start constructing HTML output.
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
 	// Remove payment id query param if set from request url.
@@ -205,20 +215,22 @@ function give_get_preview_email_header() {
 
 	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donation:', 'give' ) . '</label>';
 
-	//The select field with 100 latest transactions
-	$transaction_header .= Give()->html->select( array(
-		'name'             => 'preview_email_payment_id',
-		'selected'         => $payment_id,
-		'id'               => 'give_preview_email_payment_id',
-		'class'            => 'give-preview-email-payment-id',
-		'options'          => $options,
-		'chosen'           => false,
-		'select_atts'      => 'onchange="change_preview()"',
-		'show_option_all'  => false,
-		'show_option_none' => false,
-	) );
+	// The select field with 100 latest transactions
+	$transaction_header .= Give()->html->select(
+		array(
+			'name'             => 'preview_email_payment_id',
+			'selected'         => $payment_id,
+			'id'               => 'give_preview_email_payment_id',
+			'class'            => 'give-preview-email-payment-id',
+			'options'          => $options,
+			'chosen'           => false,
+			'select_atts'      => 'onchange="change_preview()"',
+			'show_option_all'  => false,
+			'show_option_none' => false,
+		)
+	);
 
-	//Closing tag
+	// Closing tag
 	$transaction_header .= '</div>';
 
 	return apply_filters( 'give_preview_email_receipt_header', $transaction_header );

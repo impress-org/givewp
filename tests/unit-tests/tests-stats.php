@@ -19,8 +19,8 @@ class Tests_Stats extends Give_Unit_Test_Case {
 
 		parent::setUp();
 
-		$this->_payment_id  = Give_Helper_Payment::create_simple_payment(); //$20
-		$this->_payment_id2 = Give_Helper_Payment::create_multilevel_payment(); //$25
+		$this->_payment_id  = Give_Helper_Payment::create_simple_payment(); // $20
+		$this->_payment_id2 = Give_Helper_Payment::create_multilevel_payment(); // $25
 		give_update_payment_status( $this->_payment_id );
 		give_update_payment_status( $this->_payment_id2 );
 
@@ -56,7 +56,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 			'this_quarter' => 'This Quarter',
 			'last_quarter' => 'Last Quarter',
 			'this_year'    => 'This Year',
-			'last_year'    => 'Last Year'
+			'last_year'    => 'Last Year',
 		);
 
 		$this->assertEquals( $expected, $out );
@@ -162,7 +162,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 		$stats        = new Give_Payment_Stats();
 		$best_selling = $stats->get_best_selling();
 
-		//Best selling should return an array ordered by sale count
+		// Best selling should return an array ordered by sale count
 		$this->assertLessThan( $best_selling[0]->sales, $best_selling[1]->sales );
 
 	}
@@ -171,7 +171,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 	 * Test Get Sales by Date of Give Donation Form
 	 */
 	public function test_get_sales_by_date_of_give_form() {
-		
+
 		$stats = new Give_Payment_Stats();
 		$sales = $stats->get_sales( $this->_new_form_id, 'this_month' );
 

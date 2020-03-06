@@ -29,7 +29,7 @@ class Give_Donation_Form_Grid_Block {
 	 * @access private
 	 * @var Give_Donation_Form_Grid_Block
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -73,7 +73,6 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Register block
 	 *
-	 *
 	 * @access public
 	 */
 	public function register_block() {
@@ -83,63 +82,66 @@ class Give_Donation_Form_Grid_Block {
 		}
 
 		// Register block.
-		register_block_type( 'give/donation-form-grid', array(
-			'render_callback' => array( $this, 'render_block' ),
-			'attributes'      => array(
-				'formsPerPage'      => array(
-					'type'    => 'string',
-					'default' => '12',
+		register_block_type(
+			'give/donation-form-grid',
+			array(
+				'render_callback' => array( $this, 'render_block' ),
+				'attributes'      => array(
+					'formsPerPage'      => array(
+						'type'    => 'string',
+						'default' => '12',
+					),
+					'formIDs'           => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'excludedFormIDs'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'orderBy'           => array(
+						'type'    => 'string',
+						'default' => 'date',
+					),
+					'order'             => array(
+						'type'    => 'string',
+						'default' => 'DESC',
+					),
+					'categories'        => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'tags'              => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'columns'           => array(
+						'type'    => 'string',
+						'default' => 'best-fit',
+					),
+					'showTitle'         => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showExcerpt'       => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showGoal'          => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showFeaturedImage' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'displayType'       => array(
+						'type'    => 'string',
+						'default' => 'redirect',
+					),
 				),
-				'formIDs'           => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'excludedFormIDs'   => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'orderBy'           => array(
-					'type'    => 'string',
-					'default' => 'date',
-				),
-				'order'             => array(
-					'type'    => 'string',
-					'default' => 'DESC',
-				),
-				'categories'        => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'tags'              => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'columns'           => array(
-					'type'    => 'string',
-					'default' => 'best-fit',
-				),
-				'showTitle'         => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showExcerpt'       => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showGoal'          => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'showFeaturedImage' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'displayType'       => array(
-					'type'    => 'string',
-					'default' => 'redirect',
-				),
-			),
-		) );
+			)
+		);
 	}
 
 	/**
@@ -180,8 +182,8 @@ class Give_Donation_Form_Grid_Block {
 	 *
 	 * @return string
 	 */
-	private function blank_slate(){
-		if( ! defined( 'REST_REQUEST' ) ) {
+	private function blank_slate() {
+		if ( ! defined( 'REST_REQUEST' ) ) {
 			return '';
 		}
 

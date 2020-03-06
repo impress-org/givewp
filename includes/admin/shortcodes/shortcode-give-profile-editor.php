@@ -43,4 +43,4 @@ class Give_Shortcode_Profile_Editor extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Profile_Editor;
+new Give_Shortcode_Profile_Editor();

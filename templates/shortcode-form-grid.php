@@ -98,11 +98,11 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 			$image_attr = '';
 
 			echo '<div class="give-card__media">';
-				if ( 'auto' !== $atts['image_height'] ) {
-					$image_attr = array(
-						'style' => 'height: ' . $atts['image_height'],
-					);
-				}
+			if ( 'auto' !== $atts['image_height'] ) {
+				$image_attr = array(
+					'style' => 'height: ' . $atts['image_height'],
+				);
+			}
 				the_post_thumbnail( $image_size, $image_attr );
 			echo '</div>';
 		}

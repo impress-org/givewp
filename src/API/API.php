@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class API {
 
-	protected $endpoints = [
+	protected $endpoints = array(
 		Reports\PaymentStatuses::class,
 		Reports\PaymentMethods::class,
 		Reports\FormPerformance::class,
@@ -29,7 +29,7 @@ class API {
 		Reports\TotalDonors::class,
 		Reports\TotalIncome::class,
 		Reports\TotalRefunds::class,
-	];
+	);
 
 	/**
 	 * Initialize Reports and Pages, register hooks

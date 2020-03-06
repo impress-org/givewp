@@ -18,7 +18,8 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 	}
 
 	$args = wp_parse_args(
-		$query_args, array(
+		$query_args,
+		array(
 			'post_type'   => 'page',
 			'numberposts' => 10,
 		)
@@ -135,7 +136,7 @@ function give_api_callback() {
 	<span class="give-metabox-description api-description">
 		<?php
 		echo sprintf(
-		/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
+			/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">GiveWP REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'http://docs.givewp.com/api' ),
 			esc_url( 'http://docs.givewp.com/addon-zapier' )
@@ -162,12 +163,15 @@ function give_api_callback() {
  *
  * @return string
  * @since 2.5.0
- *
  */
 function give_hide_char( $str, $show_char_count, $replace = '*' ) {
 	return str_repeat(
 		$replace,
-		strlen( $str ) - $show_char_count ) . substr( $str, - $show_char_count, $show_char_count
+		strlen( $str ) - $show_char_count
+	) . substr(
+		$str,
+		- $show_char_count,
+		$show_char_count
 	);
 }
 
@@ -179,7 +183,6 @@ function give_hide_char( $str, $show_char_count, $replace = '*' ) {
  *
  * @return string
  * @since 2.5.0
- *
  */
 function give_get_format_md( $readme ) {
 	$readme = preg_replace( '/`(.*?)`/', '<code>\\1</code>', $readme );
@@ -256,13 +259,21 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
  */
 function give_get_premium_add_ons() {
 	$list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
-	$list = array_values( array_filter( $list, function ( $url ) {
-		return false !== strpos( $url, 'givewp.com/addons' );
-	} ) );
+	$list = array_values(
+		array_filter(
+			$list,
+			function ( $url ) {
+				return false !== strpos( $url, 'givewp.com/addons' );
+			}
+		)
+	);
 
-	return array_map( function ( $url ) {
-		$path = wp_parse_url( untrailingslashit( $url ) )['path'];
+	return array_map(
+		function ( $url ) {
+				$path = wp_parse_url( untrailingslashit( $url ) )['path'];
 
-		return str_replace( '/addons/', '', $path );
-	}, $list );
+				return str_replace( '/addons/', '', $path );
+		},
+		$list
+	);
 }

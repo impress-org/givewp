@@ -78,7 +78,6 @@ class Give_i18n_Banner {
 
 		add_action( 'admin_init', array( $this, 'init' ) );
 
-
 	}
 
 	/**
@@ -170,7 +169,7 @@ class Give_i18n_Banner {
 			<div id="give-i18n-notice" class="give-addon-alert updated give-notice" style="display: none">
 
 				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation"
-				                                                                                                                             style="font-size: 110px; text-decoration: none;"></span></a>
+																																			 style="font-size: 110px; text-decoration: none;"></span></a>
 
 				<div class="give-i18n-notice-content">
 					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
@@ -187,12 +186,14 @@ class Give_i18n_Banner {
 			$notice_html = ob_get_clean();
 
 			// Register notice.
-			Give()->notices->register_notice( array(
-				'id'          => 'give-i18n-notice',
-				'type'        => 'updated',
-				'description_html' => $notice_html,
-				'show'        => true,
-			) );
+			Give()->notices->register_notice(
+				array(
+					'id'               => 'give-i18n-notice',
+					'type'             => 'updated',
+					'description_html' => $notice_html,
+					'show'             => true,
+				)
+			);
 		}
 	}
 
@@ -353,7 +354,9 @@ class Give_i18n_Banner {
 	}
 }
 
-$give_i18n = new Give_i18n_Banner( array(
+$give_i18n = new Give_i18n_Banner(
+	array(
 		'hook'          => 'admin_notices',
 		'glotpress_url' => 'https://translate.wordpress.org/api/projects/wp-plugins/give/stable/',
-	) );
+	)
+);

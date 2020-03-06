@@ -45,11 +45,13 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false                        // Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+				'ajax'     => false,                        // Does this table support ajax?
+			)
+		);
 
 	}
 
@@ -75,7 +77,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 						add_query_arg(
 							array(
 								'status'  => 'publish',
-								'gateway' => $item['ID']
+								'gateway' => $item['ID'],
 							),
 							$donation_list_page_url
 						),
@@ -91,7 +93,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 						add_query_arg(
 							array(
 								'status'  => 'pending',
-								'gateway' => $item['ID']
+								'gateway' => $item['ID'],
 							),
 							$donation_list_page_url
 						),
@@ -106,7 +108,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 						'<a href="%s">%s</a>',
 						add_query_arg(
 							array(
-								'gateway' => $item['ID']
+								'gateway' => $item['ID'],
 							),
 							$donation_list_page_url
 						),
@@ -136,7 +138,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 			'complete_sales'  => esc_attr__( 'Complete Payments', 'give' ),
 			'pending_sales'   => esc_attr__( 'Pending / Failed Payments', 'give' ),
 			'total_sales'     => esc_attr__( 'Total Payments', 'give' ),
-			'total_donations' => esc_attr__( 'Total Donated', 'give' )
+			'total_donations' => esc_attr__( 'Total Donated', 'give' ),
 		);
 
 		return $columns;
@@ -151,7 +153,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		return array(
-			'total_donations' => array( 'total_donations', false )
+			'total_donations' => array( 'total_donations', false ),
 		);
 	}
 
@@ -233,10 +235,10 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		// If no sort, default to label.
 		$orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'label';
 
-		//If no order, default to asc.
+		// If no order, default to asc.
 		$order = ( ! empty( $_REQUEST['order'] ) ) ? $_REQUEST['order'] : 'asc';
 
-		//Determine sort order.
+		// Determine sort order.
 		$result = strcmp( $old_value[ $orderby ], $new_value[ $orderby ] );
 
 		return ( $order === 'asc' ) ? $result : -$result;
@@ -267,7 +269,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 				'complete_sales'  => $complete_count,
 				'pending_sales'   => $pending_count,
 				'total_sales'     => $complete_count + $pending_count,
-				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, strtotime('04/13/2015' ), current_time('timestamp' ), $gateway_id ), array( 'sanitize' => false ) ) ),
+				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, strtotime( '04/13/2015' ), current_time( 'timestamp' ), $gateway_id ), array( 'sanitize' => false ) ) ),
 			);
 		}
 

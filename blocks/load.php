@@ -8,15 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Add Custom Block Category for Give blocks
  */
 function give_blocks_category( $categories, $post ) {
-    return array_merge(
-        $categories,
-        array(
-            array(
-                'slug' => 'give',
-                'title' => __( 'Give', 'give' ),
-            ),
-        )
-    );
+	return array_merge(
+		$categories,
+		array(
+			array(
+				'slug'  => 'give',
+				'title' => __( 'Give', 'give' ),
+			),
+		)
+	);
 }
 add_filter( 'block_categories', 'give_blocks_category', 10, 2 );
 

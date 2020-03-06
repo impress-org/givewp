@@ -63,12 +63,12 @@ class Tests_Emails extends Give_Unit_Test_Case {
 		);
 
 		foreach ( $email_functions as $email_function ) {
-			$priority = ! empty( $email_function['priority'] ) ? $email_function['priority'] : 10;
-			$add_filters = array_keys( $wp_filter[$email_function['hook']][$priority] );
+			$priority    = ! empty( $email_function['priority'] ) ? $email_function['priority'] : 10;
+			$add_filters = array_keys( $wp_filter[ $email_function['hook'] ][ $priority ] );
 
-			foreach ( $add_filters as $index =>  $filter ) {
-				if( false === strpos( $filter ,  $email_function['callback'] ) ) {
-					unset( $add_filters[$index] );
+			foreach ( $add_filters as $index => $filter ) {
+				if ( false === strpos( $filter, $email_function['callback'] ) ) {
+					unset( $add_filters[ $index ] );
 				}
 			}
 
@@ -316,7 +316,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 	public function test_text_to_html() {
 
-		$message = "Hello, this is plain text that I am going to convert to HTML\r\n";
+		$message  = "Hello, this is plain text that I am going to convert to HTML\r\n";
 		$message .= "Line breaks should become BR tags.\r\n";
 
 		$expected = wpautop( $message );

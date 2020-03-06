@@ -23,9 +23,9 @@ class TotalIncome extends Endpoint {
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
-				[
+				array(
 					'data' => $cached_report,
-				]
+				)
 			);
 		}
 
@@ -33,7 +33,7 @@ class TotalIncome extends Endpoint {
 		$end   = date_create( $request['end'] );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = [];
+		$dataset = array();
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -56,10 +56,10 @@ class TotalIncome extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			[
+			array(
 				'data'   => $data,
 				'status' => $status,
-			]
+			)
 		);
 	}
 
@@ -67,8 +67,8 @@ class TotalIncome extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = [];
-		$income   = [];
+		$tooltips = array();
+		$income   = array();
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -96,16 +96,16 @@ class TotalIncome extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = [
+			$income[] = array(
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $incomeForPeriod,
-			];
+			);
 
-			$tooltips[] = [
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
+			$tooltips[] = array(
+				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), array( 'decode_currency' => true ) ),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
-			];
+			);
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -119,17 +119,17 @@ class TotalIncome extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
+		$data = array(
+			'datasets' => array(
+				array(
 					'data'      => $income,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), [ 'decode_currency' => true ] ),
-				],
-			],
-		];
+					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), array( 'decode_currency' => true ) ),
+				),
+			),
+		);
 
 		return $data;
 

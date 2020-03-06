@@ -96,7 +96,9 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		 * Case 2: Ensure Stripe is active when Stripe ACH is enabled.
 		 */
 		unset( $this->gateways['stripe'] );
-		$gateways = array_merge( $this->gateways, array(
+		$gateways = array_merge(
+			$this->gateways,
+			array(
 				'stripe_ach' => 1,
 			)
 		);
@@ -108,7 +110,9 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		 * Case 3: Ensure Stripe is active when Stripe iDEAL is enabled.
 		 */
 		unset( $this->gateways['stripe'] );
-		$gateways = array_merge( $this->gateways, array(
+		$gateways = array_merge(
+			$this->gateways,
+			array(
 				'stripe_ideal' => 1,
 			)
 		);
@@ -120,7 +124,9 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		 * Case 4: Ensure Stripe is active when Stripe Google Pay is enabled.
 		 */
 		unset( $this->gateways['stripe'] );
-		$gateways = array_merge( $this->gateways, array(
+		$gateways = array_merge(
+			$this->gateways,
+			array(
 				'stripe_google_pay' => 1,
 			)
 		);
@@ -132,7 +138,9 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		 * Case 5: Ensure Stripe is active when Stripe Apple Pay is enabled.
 		 */
 		unset( $this->gateways['stripe'] );
-		$gateways = array_merge( $this->gateways, array(
+		$gateways = array_merge(
+			$this->gateways,
+			array(
 				'stripe_apple_pay' => 1,
 			)
 		);

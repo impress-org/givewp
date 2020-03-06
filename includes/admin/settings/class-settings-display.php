@@ -45,7 +45,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
-				case 'display-settings' :
+				case 'display-settings':
 					$settings = array(
 						// Section 1: Display
 						array(
@@ -66,12 +66,18 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => __( 'Floating Labels', 'give' ),
 							/* translators: %s: http://docs.givewp.com/form-floating-labels */
-							'desc'    => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
+							'desc'    => sprintf(
+								wp_kses(
+									__( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ),
+									array(
+										'a' => array(
+											'href'   => array(),
+											'target' => array(),
+										),
+									)
 								),
-							) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+								esc_url( 'http://docs.givewp.com/form-floating-labels' )
+							),
 							'id'      => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -150,7 +156,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					);
 					break;
 
-				case 'post-types' :
+				case 'post-types':
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_2',
@@ -169,12 +175,18 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Form Archives', 'give' ),
-							'desc'    => sprintf( wp_kses( __( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ), array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
+							'desc'    => sprintf(
+								wp_kses(
+									__( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ),
+									array(
+										'a' => array(
+											'href'   => array(),
+											'target' => array(),
+										),
+									)
 								),
-							) ), esc_url( admin_url( 'options-permalink.php' ) ) ),
+								esc_url( admin_url( 'options-permalink.php' ) )
+							),
 							'id'      => 'forms_archives',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -303,7 +315,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'id'         => 'agree_to_terms_label',
 							'attributes' => array(
 								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
-								'rows'        => 1
+								'rows'        => 1,
 							),
 							'type'       => 'textarea',
 						),

@@ -12,7 +12,7 @@
 
 // Exit, if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -171,9 +171,11 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
 	try {
 
-		$refund = \Stripe\Refund::create( array(
-			'charge' => $charge_id,
-		) );
+		$refund = \Stripe\Refund::create(
+			array(
+				'charge' => $charge_id,
+			)
+		);
 
 		if ( isset( $refund->id ) ) {
 			give_insert_payment_note(
@@ -187,7 +189,7 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 		}
 	} catch ( \Stripe\Error\Base $e ) {
 		// Refund issue occurred.
-		$log_message = __( 'The Stripe payment gateway returned an error while refunding a donation.', 'give' ) . '<br><br>';
+		$log_message  = __( 'The Stripe payment gateway returned an error while refunding a donation.', 'give' ) . '<br><br>';
 		$log_message .= sprintf( esc_html__( 'Message: %s', 'give' ), $e->getMessage() ) . '<br><br>';
 		$log_message .= sprintf( esc_html__( 'Code: %s', 'give' ), $e->getCode() );
 
@@ -206,9 +208,13 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 			$error = esc_html__( 'Something went wrong while refunding the charge in Stripe.', 'give' );
 		}
 
-		wp_die( $error, esc_html__( 'Error', 'give' ), array(
-			'response' => 400,
-		) );
+		wp_die(
+			$error,
+			esc_html__( 'Error', 'give' ),
+			array(
+				'response' => 400,
+			)
+		);
 
 	} // End try().
 
@@ -297,19 +303,21 @@ function give_stripe_show_connect_banner() {
 
 	$message = sprintf(
 		/* translators: 1. Main Text, 2. Connect Link */
-        __( '<p><strong>Stripe Connect:</strong> %1$s </p>%2$s', 'give' ),
+		__( '<p><strong>Stripe Connect:</strong> %1$s </p>%2$s', 'give' ),
 		$main_text,
 		$connect_link
 	);
 
 	// Register Notice.
-	Give()->notices->register_notice( array(
-		'id'               => 'give-stripe-connect-banner',
-		'description'      => $message,
-		'type'             => 'warning',
-		'dismissible_type' => 'user',
-		'dismiss_interval' => 'shortly',
-	) );
+	Give()->notices->register_notice(
+		array(
+			'id'               => 'give-stripe-connect-banner',
+			'description'      => $message,
+			'type'             => 'warning',
+			'dismissible_type' => 'user',
+			'dismiss_interval' => 'shortly',
+		)
+	);
 }
 
 add_action( 'admin_notices', 'give_stripe_show_connect_banner' );

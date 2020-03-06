@@ -137,14 +137,14 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 					<div class="give-grid-col-6">
 						<div id="give-addon-uploader-wrap" class="give-license-top-widget"
-						     ondragover="event.preventDefault()">
+							 ondragover="event.preventDefault()">
 							<div id="give-addon-uploader-inner">
 								<h2 class="give-license-widget-heading">
 									<span class="dashicons dashicons-upload"></span>
 									<?php _e( 'Upload and Activate an Add-on', 'give' ); ?>
 								</h2>
 
-								<?php if( ! is_multisite() ) :  ?>
+								<?php if ( ! is_multisite() ) : ?>
 
 									<p class="give-field-description">
 										<?php
@@ -208,19 +208,20 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 											</form>
 										</div>
 									<?php endif; ?>
-									<?php else:
-									printf(
-										__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.' ),
-										network_admin_url( 'plugin-install.php' )
-									);
-									?>
+									<?php
+									else :
+										printf(
+											__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.' ),
+											network_admin_url( 'plugin-install.php' )
+										);
+										?>
 								<?php endif; ?>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="give-grid-row<?php echo get_option( 'give_licenses', array() ) ? '' : ' give-hidden' ?>">
+				<div class="give-grid-row<?php echo get_option( 'give_licenses', array() ) ? '' : ' give-hidden'; ?>">
 					<div class="give-grid-col-12">
 
 						<div class="give-licenses-list-header give-clearfix">
@@ -235,25 +236,27 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 							<div id="give-refresh-button-wrap">
 								<button id="give-button__refresh-licenses"
-								        class="button-secondary"
-								        data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
-								        data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
-								        data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
+										class="button-secondary"
+										data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
+										data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
+										data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
 									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
 									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
 									<?php _e( 'Refresh All Licenses', 'give' ); ?>
 								</button>
 								<span id="give-last-refresh-notice">
-									<?php echo sprintf(
+									<?php
+									echo sprintf(
 										__( 'Last refreshed on %1$s at %2$s', 'give' ),
 										date( give_date_format(), $local_date ),
 										date( 'g:i a', $local_date )
-									); ?>
+									);
+									?>
 									</span>
 							</div>
 
 							<hr>
-							<p class="give-field-description"><?php _e('The following list displays your add-ons and their corresponding activation and license statuses.', 'give'); ?></p>
+							<p class="give-field-description"><?php _e( 'The following list displays your add-ons and their corresponding activation and license statuses.', 'give' ); ?></p>
 
 						</div>
 

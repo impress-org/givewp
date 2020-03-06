@@ -36,7 +36,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 *
 		 * @since 2.1
 		 */
-		static private $instance;
+		private static $instance;
 
 		/**
 		 * Singleton pattern.
@@ -250,7 +250,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'id'           => 'give-payment-export-end',
 									'name'         => 'end',
 									'placeholder'  => __( 'End Date', 'give' ),
-									'autocomplete' => 'off'
+									'autocomplete' => 'off',
 								);
 								echo Give()->html->date_field( $args );
 								?>
@@ -330,7 +330,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						do_action( 'give_tools_export_donations_form_before_start' );
 						?>
 						<form method="post"
-						      id="give-export_donations-form"
+							  id="give-export_donations-form"
 							  class="give-export-form tools-setting-page-export tools-setting-page-export"
 							  enctype="multipart/form-data">
 

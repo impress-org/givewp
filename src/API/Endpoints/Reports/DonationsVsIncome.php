@@ -83,15 +83,15 @@ class DonationsVsIncome extends Endpoint {
 			$donationsForPeriod = $stats->get_sales( 0, $periodStart, $periodEnd );
 			$incomeForPeriod    = $stats->get_earnings( 0, $periodStart, $periodEnd );
 
-			array_push( $donations, $donationsForPeriod );
-			array_push( $income, $incomeForPeriod );
-			array_push( $labels, $label );
-			array_push( $periods, $periodStart );
+			$donations[] = $donationsForPeriod;
+			$income[]    = $incomeForPeriod;
+			$labels[]    = $label;
+			$periods[]   = $periodStart;
 
 			date_add( $start, $dateInterval );
 		}
 
-		$data = [
+		return [
 			'periods'  => $periods,
 			'labels'   => $labels,
 			'datasets' => [
@@ -105,8 +105,5 @@ class DonationsVsIncome extends Endpoint {
 				],
 			],
 		];
-
-		return $data;
-
 	}
 }

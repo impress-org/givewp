@@ -302,10 +302,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type' => 'title',
 					);
 
-
 					$settings['checkout'][] = array(
 						'name'          => __( 'Checkout Type', 'give' ),
-						'desc'          => sprintf(__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout'),
+						'desc'          => sprintf( __( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%1$s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%2$s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout' ),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
 						'type'          => 'radio_inline',
@@ -341,11 +340,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					);
 
 					$settings['checkout'][] = array(
-						'name'          => __( 'Processing Text', 'give' ),
-						'desc'          => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
-						'id'            => 'stripe_checkout_processing_text',
-						'default'       => __( 'Donation Processing...', 'give' ),
-						'type'          => 'text',
+						'name'    => __( 'Processing Text', 'give' ),
+						'desc'    => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
+						'id'      => 'stripe_checkout_processing_text',
+						'default' => __( 'Donation Processing...', 'give' ),
+						'type'    => 'text',
 					);
 
 					$settings['checkout'][] = array(
@@ -613,7 +612,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					?>
 				</td>
 			</tr>
-		<?php
+			<?php
 		}
 
 		/**
@@ -675,7 +674,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					</p>
 				</td>
 			</tr>
-		<?php
+			<?php
 		}
 
 		/**
@@ -686,7 +685,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function stripe_styles_field( $field_options, $option_value ) {
 

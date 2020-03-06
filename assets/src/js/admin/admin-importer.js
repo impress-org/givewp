@@ -14,18 +14,17 @@
  *
  * @since 1.8.14
  */
-import {GiveWarningAlert, GiveErrorAlert, GiveConfirmModal} from '../plugins/modal';
+import { GiveWarningAlert, GiveErrorAlert, GiveConfirmModal } from '../plugins/modal';
 
-var give_setting_edit = true;
+let give_setting_edit = true;
 
-( function ( $ ) {
-
-		// On DOM Ready.
-		$( function () {
-			give_import_donation_onload();
-		} );
-	}
-) ( jQuery );
+( function( $ ) {
+	// On DOM Ready.
+	$( function() {
+		give_import_donation_onload();
+	} );
+}
+( jQuery ) );
 
 /**
  * Run when user click on submit button.
@@ -33,11 +32,10 @@ var give_setting_edit = true;
  * @since 1.8.17
  */
 function give_on_core_settings_import_start() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-2';
+	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-2';
 	if ( jQuery( import_step ).length > 0 ) {
-
-		var $form = jQuery( 'form.tools-setting-page-import' );
-		var progress = $form.find( '.give-progress' );
+		const $form = jQuery( 'form.tools-setting-page-import' );
+		const progress = $form.find( '.give-progress' );
 
 		give_setting_edit = true;
 
@@ -45,38 +43,38 @@ function give_on_core_settings_import_start() {
 			type: 'POST',
 			url: ajaxurl,
 			data: {
-				action: Give.fn.getGlobalVar('core_settings_import'),
-				fields: $form.serialize()
+				action: Give.fn.getGlobalVar( 'core_settings_import' ),
+				fields: $form.serialize(),
 			},
 			dataType: 'json',
-			success: function ( response ) {
+			success: function( response ) {
 				give_setting_edit = false;
 				if ( true === response.success ) {
 					jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
 				} else {
-					new GiveErrorAlert({
-						modalContent:{
-							title: Give.fn.getGlobalVar('import_failed'),
-							desc: Give.fn.getGlobalVar('error_message'),
-							cancelBtnTitle: Give.fn.getGlobalVar('ok'),
-						}
-					}).render();
+					new GiveErrorAlert( {
+						modalContent: {
+							title: Give.fn.getGlobalVar( 'import_failed' ),
+							desc: Give.fn.getGlobalVar( 'error_message' ),
+							cancelBtnTitle: Give.fn.getGlobalVar( 'ok' ),
+						},
+					} ).render();
 
 					return;
 				}
 				window.location = response.url;
 			},
-			error: function () {
+			error: function() {
 				give_setting_edit = false;
 
-				new GiveErrorAlert({
-					modalContent:{
-						title: Give.fn.getGlobalVar('import_failed'),
-						desc: Give.fn.getGlobalVar('error_message'),
-						cancelBtnTitle: Give.fn.getGlobalVar('ok'),
-					}
-				}).render();
-			}
+				new GiveErrorAlert( {
+					modalContent: {
+						title: Give.fn.getGlobalVar( 'import_failed' ),
+						desc: Give.fn.getGlobalVar( 'error_message' ),
+						cancelBtnTitle: Give.fn.getGlobalVar( 'ok' ),
+					},
+				} ).render();
+			},
 		} );
 	}
 }
@@ -87,7 +85,7 @@ function give_on_core_settings_import_start() {
  * @since 2.1
  */
 function give_import_core_settings_json_is_valid() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-1 .is_json_valid';
+	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-1 .is_json_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
@@ -99,7 +97,7 @@ function give_import_core_settings_json_is_valid() {
  * @since 2.1
  */
 function give_start_importing_donations() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-3';
+	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-3';
 	if ( jQuery( import_step ).length > 0 ) {
 		give_on_donation_import_ajax();
 	}
@@ -111,7 +109,7 @@ function give_start_importing_donations() {
  * @since 2.1
  */
 function give_import_donation_csv_not_valid() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-2 .csv_not_valid';
+	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-2 .csv_not_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
@@ -123,7 +121,7 @@ function give_import_donation_csv_not_valid() {
  * @since 2.1
  */
 function give_import_donation_valid_csv() {
-	var import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-1 .is_csv_valid';
+	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-1 .is_csv_valid';
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
@@ -135,7 +133,7 @@ function give_import_donation_valid_csv() {
  * @since 1.8.13
  */
 function give_on_donation_import_ajax() {
-	var $form = jQuery( 'form.tools-setting-page-import' );
+	const $form = jQuery( 'form.tools-setting-page-import' );
 
 	/**
 	 * Do not allow user to reload the page
@@ -144,9 +142,9 @@ function give_on_donation_import_ajax() {
 	 */
 	give_setting_edit = true;
 
-	var progress = $form.find( '.give-progress' );
+	const progress = $form.find( '.give-progress' );
 
-	var total_ajax = jQuery( progress ).data( 'total_ajax' ),
+	const total_ajax = jQuery( progress ).data( 'total_ajax' ),
 		current = jQuery( progress ).data( 'current' ),
 		start = jQuery( progress ).data( 'start' ),
 		end = jQuery( progress ).data( 'end' ),
@@ -158,7 +156,7 @@ function give_on_donation_import_ajax() {
 		type: 'POST',
 		url: ajaxurl,
 		data: {
-			action: Give.fn.getGlobalVar('give_donation_import'),
+			action: Give.fn.getGlobalVar( 'give_donation_import' ),
 			total_ajax: total_ajax,
 			current: current,
 			start: start,
@@ -166,10 +164,10 @@ function give_on_donation_import_ajax() {
 			next: next,
 			total: total,
 			per_page: per_page,
-			fields: $form.serialize()
+			fields: $form.serialize(),
 		},
 		dataType: 'json',
-		success: function ( response ) {
+		success: function( response ) {
 			jQuery( progress ).data( 'current', response.current );
 			jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
 
@@ -191,7 +189,7 @@ function give_on_donation_import_ajax() {
 				window.location = response.url;
 			}
 		},
-		error: function () {
+		error: function() {
 			/**
 			 * Now user is allow to reload the page.
 			 *
@@ -199,14 +197,14 @@ function give_on_donation_import_ajax() {
 			 */
 			give_setting_edit = false;
 
-			new GiveErrorAlert({
-				modalContent:{
-					title: Give.fn.getGlobalVar('import_failed'),
-					desc: Give.fn.getGlobalVar('error_message'),
-					cancelBtnTitle: Give.fn.getGlobalVar('ok'),
-				}
-			}).render();
-		}
+			new GiveErrorAlert( {
+				modalContent: {
+					title: Give.fn.getGlobalVar( 'import_failed' ),
+					desc: Give.fn.getGlobalVar( 'error_message' ),
+					cancelBtnTitle: Give.fn.getGlobalVar( 'ok' ),
+				},
+			} ).render();
+		},
 	} );
 }
 
@@ -214,7 +212,7 @@ function give_on_donation_import_ajax() {
  * Give Import donation run on load once page is load completed.
  */
 function give_import_donation_onload() {
-	window.onload = function () {
+	window.onload = function() {
 		give_import_donation_required_fields_check();
 		give_import_donation_on_drop_down_change();
 		give_start_importing_donations();
@@ -229,9 +227,9 @@ function give_import_donation_onload() {
  * Give import donation on change of drop down and update the required fields.
  */
 function give_import_donation_on_drop_down_change() {
-	var fields = document.querySelector( '.give-tools-setting-page-import table.step-2 tbody select' );
+	const fields = document.querySelector( '.give-tools-setting-page-import table.step-2 tbody select' );
 	if ( fields !== 'undefined' && fields !== null ) {
-		jQuery( '.give-tools-setting-page-import table.step-2 tbody' ).on( 'change', 'select', function () {
+		jQuery( '.give-tools-setting-page-import table.step-2 tbody' ).on( 'change', 'select', function() {
 			give_import_donation_required_fields_check();
 		} );
 	}
@@ -241,20 +239,20 @@ function give_import_donation_on_drop_down_change() {
  * Give Import Donations check required fields
  */
 function give_import_donation_required_fields_check() {
-	var required_fields = document.querySelector( '.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields' );
+	const required_fields = document.querySelector( '.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields' );
 	if ( required_fields !== 'undefined' && required_fields !== null ) {
-		var submit = true,
+		let submit = true,
 			email = false,
 			first_name = false,
 			amount = false,
 			form = false;
 
-		document.querySelectorAll( '.give-import-donation-required-fields li' ).forEach( function ( value ) {
+		document.querySelectorAll( '.give-import-donation-required-fields li' ).forEach( function( value ) {
 			value.querySelector( '.dashicons' ).classList.remove( 'dashicons-yes' );
 			value.querySelector( '.dashicons' ).classList.add( 'dashicons-no-alt' );
 		} );
 
-		var select_fields = Array.from( document.querySelectorAll( 'table.step-2 tbody select' ) ).map( function ( field ) {
+		const select_fields = Array.from( document.querySelectorAll( 'table.step-2 tbody select' ) ).map( function( field ) {
 			return field.value;
 		} );
 

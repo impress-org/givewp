@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-		    class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates Complete', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+			class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates Complete', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<div id="give-updates-content">

@@ -12,7 +12,7 @@ class Give_Sequential_Donation_Number {
 	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Donation tile prefix
@@ -110,7 +110,7 @@ class Give_Sequential_Donation_Number {
 			array(
 				$serial_number,
 				$prefix,
-				$suffix
+				$suffix,
 			)
 		);
 
@@ -120,7 +120,7 @@ class Give_Sequential_Donation_Number {
 				array(
 					'ID'         => $donation_id,
 					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
-					'post_title' => trim( $serial_code )
+					'post_title' => trim( $serial_code ),
 				)
 			);
 
@@ -147,7 +147,7 @@ class Give_Sequential_Donation_Number {
 	 */
 	public function __set_donation_number( $donation_id ) {
 		$table_data = array(
-			'payment_id' => $donation_id
+			'payment_id' => $donation_id,
 		);
 
 		// Customize sequential donation number starting point if needed.
@@ -161,7 +161,6 @@ class Give_Sequential_Donation_Number {
 
 			$table_data['id'] = $number;
 		}
-
 
 		/**
 		 * Filter the donation number
@@ -216,16 +215,16 @@ class Give_Sequential_Donation_Number {
 	 * @access public
 	 *
 	 * @param int|Give_Payment|WP_Post $donation
-	 * @param array            $args
+	 * @param array                    $args
 	 *
 	 * @return string
 	 */
 	public function get_serial_code( $donation, $args = array() ) {
 		// Get id from object.
-		if( ! is_numeric( $donation ) ) {
-			if( $donation instanceof Give_Payment ) {
+		if ( ! is_numeric( $donation ) ) {
+			if ( $donation instanceof Give_Payment ) {
 				$donation = $donation->ID;
-			} elseif ( $donation instanceof WP_Post ){
+			} elseif ( $donation instanceof WP_Post ) {
 				$donation = $donation->ID;
 			}
 		}
@@ -235,7 +234,7 @@ class Give_Sequential_Donation_Number {
 			$args,
 			array(
 				'with_hash' => false,
-				'default'   => true
+				'default'   => true,
 			)
 		);
 

@@ -32,18 +32,19 @@ class Tests_Upgrades extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.2.4
 	 */
-	public function test_auto_complete_update_on_fresh_install(){
+	public function test_auto_complete_update_on_fresh_install() {
 		$give_updates = Give_Updates::get_instance();
 
 		// Fire action to register db updates.
-		do_action('give_register_updates', $give_updates );
-
+		do_action( 'give_register_updates', $give_updates );
 
 		$completed_updates = get_option( 'give_completed_upgrades' );
 
 		// Test_Activation cause of fire 'give_upgrades' action hook multiple time which cause of remove few default updates
 		// add these missing updates to completed updates.
-		$completed_updates = array_unique( array_merge( $completed_updates,
+		$completed_updates = array_unique(
+			array_merge(
+				$completed_updates,
 				array(
 					'v201_upgrades_payment_metadata',
 					'v201_add_missing_donors',
