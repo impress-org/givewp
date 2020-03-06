@@ -24,6 +24,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.5
 	 */
@@ -31,6 +32,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -38,6 +40,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -95,11 +98,9 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 					if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
 						$payment_amount = (float) give_donation_amount( $payment->ID, array( 'type' => 'stats' ) );
-						$step_total     += $payment_amount;
+						$step_total    += $payment_amount;
 					}
-
 				}
-
 			}
 
 			$updated_total = $pending_total + $step_total;
@@ -195,11 +196,13 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_donor_payments_' . $this->customer_id );
 
 			$payment_ids = implode( ',', $payment_ids );
-			$donor->update( array(
-				'payment_ids'    => $payment_ids,
-				'purchase_count' => $purchase_count,
-				'purchase_value' => $pending_total,
-			) );
+			$donor->update(
+				array(
+					'payment_ids'    => $payment_ids,
+					'purchase_count' => $purchase_count,
+					'purchase_value' => $pending_total,
+				)
+			);
 
 			$this->done    = true;
 			$this->message = esc_html__( 'Donor stats have been successfully recounted.', 'give' );
@@ -240,7 +243,12 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			// Before we start, let's zero out the customer's data
 			$donor = new Give_Donor( $this->customer_id );
-			$donor->update( array( 'purchase_value' => give_format_amount( 0, array( 'sanitize' => false ) ), 'purchase_count' => 0 ) );
+			$donor->update(
+				array(
+					'purchase_value' => give_format_amount( 0, array( 'sanitize' => false ) ),
+					'purchase_count' => 0,
+				)
+			);
 
 			$attached_payment_ids = explode( ',', $donor->payment_ids );
 

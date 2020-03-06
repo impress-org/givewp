@@ -47,8 +47,8 @@ function give_do_ajax_export() {
 	 */
 	do_action( 'give_batch_export_class_include', $form['give-export-class'] );
 
-	$step   = absint( $_POST['step'] );
-	$class  = sanitize_text_field( $form['give-export-class'] );
+	$step  = absint( $_POST['step'] );
+	$class = sanitize_text_field( $form['give-export-class'] );
 
 	/* @var Give_Batch_Export $export */
 	$export = new $class( $step );
@@ -60,9 +60,9 @@ function give_do_ajax_export() {
 	if ( ! $export->is_writable ) {
 		$json_args = array(
 			'error'   => true,
-			'message' => esc_html__( 'Export location or file not writable.', 'give' )
+			'message' => esc_html__( 'Export location or file not writable.', 'give' ),
 		);
-		echo json_encode($json_args);
+		echo json_encode( $json_args );
 		exit;
 	}
 
@@ -76,17 +76,17 @@ function give_do_ajax_export() {
 
 	if ( $ret ) {
 
-		$step += 1;
+		$step     += 1;
 		$json_data = array(
-			'step' => $step,
-			'percentage' => $percentage
+			'step'       => $step,
+			'percentage' => $percentage,
 		);
 
 	} elseif ( true === $export->is_empty ) {
 
 		$json_data = array(
 			'error'   => true,
-			'message' => esc_html__( 'No data found for export parameters.', 'give' )
+			'message' => esc_html__( 'No data found for export parameters.', 'give' ),
 		);
 
 	} elseif ( true === $export->done && true === $export->is_void ) {
@@ -97,21 +97,24 @@ function give_do_ajax_export() {
 
 		$json_data = array(
 			'success' => true,
-			'message' => $message
+			'message' => $message,
 		);
 
 	} else {
 
-		$args = array_merge( $_REQUEST, array(
-			'step'        => $step,
-			'class'       => $class,
-			'nonce'       => wp_create_nonce( 'give-batch-export' ),
-			'give_action' => 'form_batch_export',
-		) );
+		$args = array_merge(
+			$_REQUEST,
+			array(
+				'step'        => $step,
+				'class'       => $class,
+				'nonce'       => wp_create_nonce( 'give-batch-export' ),
+				'give_action' => 'form_batch_export',
+			)
+		);
 
 		$json_data = array(
 			'step' => 'done',
-			'url' => add_query_arg( $args, admin_url() )
+			'url'  => add_query_arg( $args, admin_url() ),
 		);
 
 	}

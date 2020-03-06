@@ -208,7 +208,7 @@ if ( is_user_logged_in() ) :
 	do_action( 'give_profile_editor_after' );
 	?>
 
-<?php
+	<?php
 else :
 	if (
 		isset( $_GET['updated'] )

@@ -41,7 +41,7 @@ class Tests_Cache_Settings extends Give_Unit_Test_Case {
 			$this->assertTrue( array_key_exists( $name, $saved_settings ), "{$name} key does not find." );
 		}
 
-		$this->assertTrue( GIVE_VERSION === Give_Cache_Setting::get_option('give_version'), 'Plugin version does not match.' );
+		$this->assertTrue( GIVE_VERSION === Give_Cache_Setting::get_option( 'give_version' ), 'Plugin version does not match.' );
 	}
 
 	/**

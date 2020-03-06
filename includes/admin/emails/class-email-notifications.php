@@ -22,7 +22,7 @@ class Give_Email_Notifications {
 	 * @access static
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Array of email notifications.
@@ -81,7 +81,7 @@ class Give_Email_Notifications {
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
 			// Setup email section.
-			if( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email ) ) {
+			if ( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email ) ) {
 				add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
 				add_filter( "give_hide_section_{$email->config['id']}_on_emails_page", array( $email, 'hide_section' ) );
 			}
@@ -119,16 +119,16 @@ class Give_Email_Notifications {
 		$settings['email_notification_options'] = array(
 			'id'         => 'email_notification_options',
 			'title'      => __( 'Email Notifications', 'give' ),
-			'icon-html' => '<span class="dashicons dashicons-email-alt"></span>',
+			'icon-html'  => '<span class="dashicons dashicons-email-alt"></span>',
 			'fields'     => array(
 				array(
-					'name'        => __( 'Email Options', 'give' ),
-					'id'          => '_give_email_options',
-					'type'        => 'radio_inline',
-					'default'     => 'global',
-					'options'     => array(
-						'global'   => __( 'Global Options' ),
-						'enabled'  => __( 'Customize', 'give' ),
+					'name'    => __( 'Email Options', 'give' ),
+					'id'      => '_give_email_options',
+					'type'    => 'radio_inline',
+					'default' => 'global',
+					'options' => array(
+						'global'  => __( 'Global Options' ),
+						'enabled' => __( 'Customize', 'give' ),
 					),
 				),
 				array(
@@ -429,8 +429,8 @@ class Give_Email_Notifications {
 		// Get email type.
 		$email_type = give_get_current_setting_section();
 
-		if ( ! empty( $_POST["{$email_type}_recipient"] ) ) {
-			$_POST["{$email_type}_recipient"] = array_unique( array_filter( $_POST["{$email_type}_recipient"] ) );
+		if ( ! empty( $_POST[ "{$email_type}_recipient" ] ) ) {
+			$_POST[ "{$email_type}_recipient" ] = array_unique( array_filter( $_POST[ "{$email_type}_recipient" ] ) );
 		}
 	}
 }

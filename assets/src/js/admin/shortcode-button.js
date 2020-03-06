@@ -8,8 +8,8 @@ class GiveShortcodeButton extends GiveButton {
 		this.clipboard = new ClipboardJS( this.root, {
 			text: function( trigger ) {
 				return trigger.dataset.giveShortcode;
-			}
-		});
+			},
+		} );
 		this.reset = this.reset.bind( this );
 	}
 
@@ -40,4 +40,4 @@ class GiveShortcodeButton extends GiveButton {
 	}
 }
 
-export {GiveShortcodeButton};
+export { GiveShortcodeButton };

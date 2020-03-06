@@ -48,7 +48,7 @@ function give_load_ajax_gateway() {
 		Give_Notices::print_frontend_notice( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), true, 'error' );
 		exit();
 
-	}elseif ( isset( $post_data['give_payment_mode'] ) ) {
+	} elseif ( isset( $post_data['give_payment_mode'] ) ) {
 
 		$form_id_prefix = ! empty( $post_data['give_form_id_prefix'] ) ? $post_data['give_form_id_prefix'] : '';
 
@@ -110,14 +110,13 @@ function __give_donation_form_reset_all_nonce() {
 
 		$data = array(
 			'give_form_hash'               => wp_create_nonce( "give_donation_form_nonce_{$form_id}" ),
-			'give_form_user_register_hash' => wp_create_nonce( "give_form_create_user_nonce_{$form_id}" )
+			'give_form_user_register_hash' => wp_create_nonce( "give_form_create_user_nonce_{$form_id}" ),
 		);
 
 		/**
 		 * Filter the ajax request data
 		 *
 		 * @since  2.2.0
-		 *
 		 */
 		$data = apply_filters( 'give_donation_form_reset_all_nonce_data', $data );
 
@@ -133,6 +132,7 @@ add_action( 'wp_ajax_nopriv_give_donation_form_reset_all_nonce', '__give_donatio
 
 /**
  * Sets an error within the donation form if no gateways are enabled.
+ *
  * @todo: we can deprecate this function in future because gateways will not empty if get via Give API.
  *
  * @since 1.0

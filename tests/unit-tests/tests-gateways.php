@@ -47,21 +47,20 @@ class Test_Gateways extends Give_Unit_Test_Case {
 
 		$give_options = give_get_settings();
 
-		//Test that default gateways are enabled out-of-the-box.
+		// Test that default gateways are enabled out-of-the-box.
 		$default_gateways = give_get_enabled_payment_gateways();
 		$this->assertArrayHasKey( 'manual', $default_gateways );
 		$this->assertArrayHasKey( 'offline', $default_gateways );
 		$this->assertArrayNotHasKey( 'paypal', $default_gateways ); // But, not PayPal (it's not enabled by default).
 
-		//Enable PayPal Standard.
+		// Enable PayPal Standard.
 		$options['gateways']['paypal'] = 1;
 		update_option( 'give_settings', array_merge( $give_options, $options ) );
 		$default_gateways = give_get_enabled_payment_gateways();
 		$this->assertArrayHasKey( 'paypal', $default_gateways );
 
-		//Change back to default.
+		// Change back to default.
 		update_option( 'give_settings', $give_options );
-
 
 	}
 
@@ -77,7 +76,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
 	 */
 	public function test_default_gateway() {
 
-		//Manual aka "Test Payment" is default.
+		// Manual aka "Test Payment" is default.
 		$this->assertEquals( 'manual', give_get_default_gateway( $this->_simple_form->ID ) );
 
 	}
@@ -128,7 +127,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
 		$this->assertArrayNotHasKey( 'no_gateways', $errors );
 		// $this->assertEquals( 'You must enable a payment gateway to use Give.', $errors['no_gateways'] );
 
-		//Change back to default.
+		// Change back to default.
 		update_option( 'give_settings', $give_options );
 
 	}

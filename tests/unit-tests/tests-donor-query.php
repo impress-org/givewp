@@ -24,6 +24,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 
 	/**
 	 * Tear it Down
+	 *
 	 * @since 2.0
 	 */
 	public function tearDown() {

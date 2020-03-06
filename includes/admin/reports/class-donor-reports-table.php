@@ -62,11 +62,13 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
-			'ajax'     => false,// Does this table support ajax?
-		) );
+		parent::__construct(
+			array(
+				'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
+				'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
+				'ajax'     => false, // Does this table support ajax?
+			)
+		);
 
 	}
 
@@ -109,11 +111,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		}
 		?>
 		<p class="search-box donor-search" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
+			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
-	<?php
+		<?php
 	}
 
 	/**
@@ -145,7 +147,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
-					$this->bulk_actions( $which ); ?>
+					$this->bulk_actions( $which );
+					?>
 
 				</div>
 				<?php
@@ -176,22 +179,22 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 
-			case 'name' :
-				$name = '#' . $item['id'] . ' ';
-				$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+			case 'name':
+				$name     = '#' . $item['id'] . ' ';
+				$name    .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 				$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
 				$value    = '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>';
 				break;
 
-			case 'num_donations' :
+			case 'num_donations':
 				$value = sprintf(
 					'<a href="%s">%s</a>',
 					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $item['id'] ) ),
-						esc_html( $item['num_donations'] )
-					);
+					esc_html( $item['num_donations'] )
+				);
 				break;
 
-			case 'amount_spent' :
+			case 'amount_spent':
 				$value = give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
 				break;
 
@@ -323,7 +326,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$_donor_query['number'] = -1;
 		$_donor_query['offset'] = 0;
-		$donors = Give()->donors->get_donors( $_donor_query );
+		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );
 	}
@@ -349,7 +352,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'orderby' => $orderby,
 		);
 
-		if( $search ) {
+		if ( $search ) {
 			if ( is_email( $search ) ) {
 				$args['email'] = $search;
 			} elseif ( is_numeric( $search ) ) {
@@ -385,10 +388,12 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$this->total = $this->get_donor_count();
 
-		$this->set_pagination_args( array(
-			'total_items' => $this->total,
-			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $this->total / $this->per_page ),
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $this->total,
+				'per_page'    => $this->per_page,
+				'total_pages' => ceil( $this->total / $this->per_page ),
+			)
+		);
 	}
 }

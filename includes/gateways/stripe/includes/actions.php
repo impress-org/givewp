@@ -182,7 +182,7 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 			do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 		}
 		?>
-    </fieldset>
+	</fieldset>
 	<?php
 	// Remove Address Fields if user has option enabled.
 	$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );

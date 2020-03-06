@@ -36,7 +36,9 @@ function give_donation_history( $atts, $content = false ) {
 			'amount'         => true,
 			'status'         => false,
 			'payment_method' => false,
-		), $atts, 'donation_history'
+		),
+		$atts,
+		'donation_history'
 	);
 
 	// Always show receipt link.
@@ -163,7 +165,9 @@ function give_goal_shortcode( $atts ) {
 			'id'        => '',
 			'show_text' => true,
 			'show_bar'  => true,
-		), $atts, 'give_goal'
+		),
+		$atts,
+		'give_goal'
 	);
 
 	// get the Give Form.
@@ -213,7 +217,9 @@ function give_login_form_shortcode( $atts ) {
 			'redirect'        => '',
 			'login-redirect'  => '',
 			'logout-redirect' => '',
-		), $atts, 'give_login'
+		),
+		$atts,
+		'give_login'
 	);
 
 	// Check login-redirect attribute first, if it empty or not found then check for redirect attribute and add value of this to login-redirect attribute.
@@ -241,7 +247,9 @@ function give_register_form_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'redirect' => '',
-		), $atts, 'give_register'
+		),
+		$atts,
+		'give_register'
 	);
 
 	return give_register_form( $atts['redirect'] );
@@ -275,7 +283,9 @@ function give_receipt_shortcode( $atts ) {
 			'payment_status' => false,
 			'company_name'   => false,
 			'status_notice'  => true,
-		), $atts, 'give_receipt'
+		),
+		$atts,
+		'give_receipt'
 	);
 
 	ob_start();
@@ -289,8 +299,8 @@ function give_receipt_shortcode( $atts ) {
 		$donation_id = $get_data['donation_id'];
 	} elseif ( ! empty( $get_data['action'] ) && 'view_in_browser' === $get_data['action'] ) {
 		$receipt_type = 'view_in_browser';
-	    $donation_id  = $get_data['_give_hash'];
-    } else if ( isset( $session['donation_id'] ) ) {
+		$donation_id  = $get_data['_give_hash'];
+	} elseif ( isset( $session['donation_id'] ) ) {
 		$donation_id = $session['donation_id'];
 	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
@@ -445,7 +455,8 @@ function give_process_profile_editor_updates( $data ) {
 
 	// Update Donor First Name and Last Name.
 	Give()->donors->update(
-		$donor->id, array(
+		$donor->id,
+		array(
 			'name' => trim( "{$first_name} {$last_name}" ),
 		)
 	);
@@ -557,7 +568,9 @@ function give_totals_shortcode( $atts ) {
 			'link'         => '', // URL.
 			'link_text'    => __( 'Donate Now', 'give' ), // string,
 			'progress_bar' => true, // boolean.
-		), $atts, 'give_totals'
+		),
+		$atts,
+		'give_totals'
 	);
 
 	// Total Goal.
@@ -655,22 +668,26 @@ function give_totals_shortcode( $atts ) {
 
 	// Replace {total} in message.
 	$message = str_replace(
-		'{total}', give_currency_filter(
+		'{total}',
+		give_currency_filter(
 			give_format_amount(
 				$total,
 				array( 'sanitize' => false )
 			)
-		), esc_html( $atts['message'] )
+		),
+		esc_html( $atts['message'] )
 	);
 
 	// Replace {total_goal} in message.
 	$message = str_replace(
-		'{total_goal}', give_currency_filter(
+		'{total_goal}',
+		give_currency_filter(
 			give_format_amount(
 				$total_goal,
 				array( 'sanitize' => true )
 			)
-		), $message
+		),
+		$message
 	);
 
 	/**
@@ -775,7 +792,8 @@ function give_form_grid_shortcode( $atts ) {
 			'excerpt_length'      => 16,
 			'display_style'       => 'modal_reveal',
 			'status'              => '', // open or closed.
-		), $atts
+		),
+		$atts
 	);
 
 	// Validate integer attributes.
@@ -835,7 +853,8 @@ function give_form_grid_shortcode( $atts ) {
 			array_map(
 				function( $item ) {
 					return intval( trim( $item ) );
-				}, explode( ',', $atts['exclude'] )
+				},
+				explode( ',', $atts['exclude'] )
 			)
 		);
 	}

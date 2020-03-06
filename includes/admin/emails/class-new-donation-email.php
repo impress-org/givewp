@@ -4,7 +4,6 @@
  *
  * Donation Notification will be sent to recipient(s) when new donation received except offline donation.
  *
- *
  * @package     Give
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, GiveWP
@@ -39,17 +38,19 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load( array(
-				'id'                    => 'new-donation',
-				'label'                 => __( 'New Donation', 'give' ),
-				'description'           => __( 'Sent to designated recipient(s) when a new donation is received or a pending donation is marked as complete.', 'give' ),
-				'has_recipient_field'   => true,
-				'notification_status'   => 'enabled',
-				'form_metabox_setting'  => true,
-				'default_email_subject' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
-				'default_email_message' => ( false !== give_get_option( 'new-donation_email_message' ) ) ? give_get_option( 'new-donation_email_message' ) : give_get_default_donation_notification_email(),
-				'default_email_header'  => __( 'New Donation!', 'give' ),
-			) );
+			$this->load(
+				array(
+					'id'                    => 'new-donation',
+					'label'                 => __( 'New Donation', 'give' ),
+					'description'           => __( 'Sent to designated recipient(s) when a new donation is received or a pending donation is marked as complete.', 'give' ),
+					'has_recipient_field'   => true,
+					'notification_status'   => 'enabled',
+					'form_metabox_setting'  => true,
+					'default_email_subject' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
+					'default_email_message' => ( false !== give_get_option( 'new-donation_email_message' ) ) ? give_get_option( 'new-donation_email_message' ) : give_get_default_donation_notification_email(),
+					'default_email_header'  => __( 'New Donation!', 'give' ),
+				)
+			);
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
 		}
@@ -241,19 +242,25 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function setup_email_notification( $payment_id ) {
 			$this->payment = new Give_Payment( $payment_id );
 
-			if( ! $this->payment->ID ) {
-				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 400,
-				) );
+			if ( ! $this->payment->ID ) {
+				wp_die(
+					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
+						'response' => 400,
+					)
+				);
 			}
 
 			// Set email data.
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array(
-				'payment_id' => $payment_id,
-			) );
+			$this->send_email_notification(
+				array(
+					'payment_id' => $payment_id,
+				)
+			);
 		}
 	}
 

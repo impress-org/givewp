@@ -50,22 +50,25 @@ function give_setup_post_types() {
 		'with_front' => false,
 	);
 
-	$give_forms_labels = apply_filters( 'give_forms_labels', array(
-		'name'               => __( 'Donation Forms', 'give' ),
-		'singular_name'      => __( 'Form', 'give' ),
-		'add_new'            => __( 'Add Form', 'give' ),
-		'add_new_item'       => __( 'Add New Donation Form', 'give' ),
-		'edit_item'          => __( 'Edit Donation Form', 'give' ),
-		'new_item'           => __( 'New Form', 'give' ),
-		'all_items'          => __( 'All Forms', 'give' ),
-		'view_item'          => __( 'View Form', 'give' ),
-		'search_items'       => __( 'Search Forms', 'give' ),
-		'not_found'          => __( 'No forms found.', 'give' ),
-		'not_found_in_trash' => __( 'No forms found in Trash.', 'give' ),
-		'parent_item_colon'  => '',
-		'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
-		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) ),
-	) );
+	$give_forms_labels = apply_filters(
+		'give_forms_labels',
+		array(
+			'name'               => __( 'Donation Forms', 'give' ),
+			'singular_name'      => __( 'Form', 'give' ),
+			'add_new'            => __( 'Add Form', 'give' ),
+			'add_new_item'       => __( 'Add New Donation Form', 'give' ),
+			'edit_item'          => __( 'Edit Donation Form', 'give' ),
+			'new_item'           => __( 'New Form', 'give' ),
+			'all_items'          => __( 'All Forms', 'give' ),
+			'view_item'          => __( 'View Form', 'give' ),
+			'search_items'       => __( 'Search Forms', 'give' ),
+			'not_found'          => __( 'No forms found.', 'give' ),
+			'not_found_in_trash' => __( 'No forms found in Trash.', 'give' ),
+			'parent_item_colon'  => '',
+			'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
+			'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) ),
+		)
+	);
 
 	// Default give_forms supports.
 	$give_form_supports = array(
@@ -165,7 +168,9 @@ function give_setup_taxonomies() {
 		'menu_name'         => __( 'Categories', 'give' ),
 	);
 
-	$category_args = apply_filters( 'give_forms_category_args', array(
+	$category_args = apply_filters(
+		'give_forms_category_args',
+		array(
 			'hierarchical' => true,
 			'labels'       => apply_filters( 'give_forms_category_labels', $category_labels ),
 			'show_ui'      => true,
@@ -200,12 +205,18 @@ function give_setup_taxonomies() {
 		'choose_from_most_used' => __( 'Choose from most used tags.', 'give' ),
 	);
 
-	$tag_args = apply_filters( 'give_forms_tag_args', array(
+	$tag_args = apply_filters(
+		'give_forms_tag_args',
+		array(
 			'hierarchical' => false,
 			'labels'       => apply_filters( 'give_forms_tag_labels', $tag_labels ),
 			'show_ui'      => true,
 			'query_var'    => 'give_forms_tag',
-			'rewrite'      => array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true ),
+			'rewrite'      => array(
+				'slug'         => $slug . '/tag',
+				'with_front'   => false,
+				'hierarchical' => true,
+			),
 			'capabilities' => array(
 				'manage_terms' => 'manage_give_form_terms',
 				'edit_terms'   => 'edit_give_form_terms',
@@ -270,7 +281,6 @@ function give_get_default_form_labels() {
  *
  * @return string $defaults['singular'] Singular label
  * @since 1.0
- *
  */
 function give_get_forms_label_singular( $lowercase = false ) {
 	$defaults = give_get_default_form_labels();
@@ -297,7 +307,6 @@ function give_get_forms_label_plural( $lowercase = false ) {
  *
  * @return string $title New placeholder text
  * @since 1.0
- *
  */
 function give_change_default_title( $title ) {
 	// If a frontend plugin uses this filter (check extensions before changing this function)
@@ -326,63 +335,84 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
  */
 function give_register_post_type_statuses() {
 	// Payment Statuses
-	register_post_status( 'refunded', array(
-		'label'                     => __( 'Refunded', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' ),
-	) );
-	register_post_status( 'failed', array(
-		'label'                     => __( 'Failed', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' ),
-	) );
-	register_post_status( 'revoked', array(
-		'label'                     => __( 'Revoked', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' ),
-	) );
-	register_post_status( 'cancelled', array(
-		'label'                     => __( 'Cancelled', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' ),
-	) );
-	register_post_status( 'abandoned', array(
-		'label'                     => __( 'Abandoned', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
-	) );
-	register_post_status( 'processing', array(
-		'label'                     => _x( 'Processing', 'Processing payment status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' )
-	) );
+	register_post_status(
+		'refunded',
+		array(
+			'label'                     => __( 'Refunded', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' ),
+		)
+	);
+	register_post_status(
+		'failed',
+		array(
+			'label'                     => __( 'Failed', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' ),
+		)
+	);
+	register_post_status(
+		'revoked',
+		array(
+			'label'                     => __( 'Revoked', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' ),
+		)
+	);
+	register_post_status(
+		'cancelled',
+		array(
+			'label'                     => __( 'Cancelled', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' ),
+		)
+	);
+	register_post_status(
+		'abandoned',
+		array(
+			'label'                     => __( 'Abandoned', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
+		)
+	);
+	register_post_status(
+		'processing',
+		array(
+			'label'                     => _x( 'Processing', 'Processing payment status', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' ),
+		)
+	);
 
-	register_post_status( 'preapproval', array(
-		'label'                     => _x( 'Preapproval', 'Preapproval payment status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Preapproval <span class="count">(%s)</span>', 'Preapproval <span class="count">(%s)</span>', 'give' ),
-	) );
+	register_post_status(
+		'preapproval',
+		array(
+			'label'                     => _x( 'Preapproval', 'Preapproval payment status', 'give' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Preapproval <span class="count">(%s)</span>', 'Preapproval <span class="count">(%s)</span>', 'give' ),
+		)
+	);
 
 }
 
@@ -397,7 +427,6 @@ add_action( 'init', 'give_register_post_type_statuses' );
  *
  * @return array $messages New post updated messages
  * @since 1.0
- *
  */
 function give_updated_messages( $messages ) {
 	global $post, $post_ID;
@@ -459,15 +488,20 @@ function give_widgets_init() {
 		&& give_is_setting_enabled( give_get_option( 'form_sidebar' ) )
 	) {
 
-		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
-			'name'          => __( 'GiveWP Single Form Sidebar', 'give' ),
-			'id'            => 'give-forms-sidebar',
-			'description'   => __( 'Widgets in this area will be shown on the single GiveWP forms aside area. This sidebar will not display for embedded forms.', 'give' ),
-			'before_widget' => '<div id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</div>',
-			'before_title'  => '<h3 class="widgettitle widget-title">',
-			'after_title'   => '</h3>',
-		) ) );
+		register_sidebar(
+			apply_filters(
+				'give_forms_single_sidebar',
+				array(
+					'name'          => __( 'GiveWP Single Form Sidebar', 'give' ),
+					'id'            => 'give-forms-sidebar',
+					'description'   => __( 'Widgets in this area will be shown on the single GiveWP forms aside area. This sidebar will not display for embedded forms.', 'give' ),
+					'before_widget' => '<div id="%1$s" class="widget %2$s">',
+					'after_widget'  => '</div>',
+					'before_title'  => '<h3 class="widgettitle widget-title">',
+					'after_title'   => '</h3>',
+				)
+			)
+		);
 
 	}
 }
@@ -483,7 +517,6 @@ add_action( 'widgets_init', 'give_widgets_init', 999 );
  *
  * @return array
  * @since 2.3.0
- *
  */
 function give_forms_disable_quick_edit( $actions = array(), $post = null ) {
 
@@ -512,7 +545,6 @@ add_filter( 'post_row_actions', 'give_forms_disable_quick_edit', 10, 2 );
  *
  * @return bool Whether to display screen options.
  * @since 2.5.0
- *
  */
 function give_remove_screen_options( $display_boolean, $wp_screen_object ) {
 
@@ -524,7 +556,7 @@ function give_remove_screen_options( $display_boolean, $wp_screen_object ) {
 	return $display_boolean;
 }
 
-//add_filter( 'screen_options_show_screen', 'give_remove_screen_options', 10, 2 );
+// add_filter( 'screen_options_show_screen', 'give_remove_screen_options', 10, 2 );
 
 /**
  * Renders the screen options back after admin bar to ensure it pushes down the banner rather than overlaps them as is default in WordPress.
@@ -532,13 +564,13 @@ function give_remove_screen_options( $display_boolean, $wp_screen_object ) {
  * @since  2.5.0
  */
 function give_render_screen_options() {
-	if( ! is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
 	}
 
 	$current_screen = get_current_screen();
 
-	if ( empty ( $current_screen ) ) {
+	if ( empty( $current_screen ) ) {
 		return;
 	}
 

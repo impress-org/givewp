@@ -20,7 +20,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	 * @cover give_decode_email_tags
 	 */
 	public function test_give_decode_email_tags() {
-		$message = "Decode {donation}";
+		$message = 'Decode {donation}';
 		$payment = Give_Helper_Payment::create_simple_payment();
 
 		Give()->emails->tag_args = array( 'payment_id' => $payment );

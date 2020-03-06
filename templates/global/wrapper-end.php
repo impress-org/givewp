@@ -16,50 +16,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 $template = get_option( 'template' );
 
 switch ( $template ) {
-	case 'twentyeleven' :
+	case 'twentyeleven':
 		echo '</div></div>';
 		break;
-	case 'twentytwelve' :
+	case 'twentytwelve':
 		echo '</div></div>';
 		break;
-	case 'twentythirteen' :
+	case 'twentythirteen':
 		echo '</div></div>';
 		break;
-	case 'twentyfourteen' :
+	case 'twentyfourteen':
 		echo '</div></div></div>';
 		get_sidebar( 'content' );
 		break;
-	case 'twentyfifteen' :
+	case 'twentyfifteen':
 		echo '</div></div>';
 		break;
-	case 'twentynineteen' :
+	case 'twentynineteen':
 		echo '</div></div></div>';
 		break;
-	case 'x' :
+	case 'x':
 		echo '</div></div></div></div>';
 		break;
-	case 'salient' :
+	case 'salient':
 		echo '</div></div></div>';
 		break;
-	case 'jupiter' :
+	case 'jupiter':
 		echo '</div></div></div>';
 		break;
-	case 'philanthropy-parent' :
+	case 'philanthropy-parent':
 		echo '</div></div></div></div>';
 		break;
-	case 'zerif-lite' :
+	case 'zerif-lite':
 		echo '</main></article></div></div></div>';
 		break;
-	case 'customizr' :
+	case 'customizr':
 		echo '</div>';
 		break;
-	case 'catch-evolution' :
+	case 'catch-evolution':
 		echo '</div>';
 		break;
-	case 'twentyseventeen' :
+	case 'twentyseventeen':
 		echo '</div>';
 		break;
-	default :
+	default:
 		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
 		break;
 }

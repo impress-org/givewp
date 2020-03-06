@@ -3,6 +3,7 @@
  * Give Welcome Page Class
  *
  * Displays on plugin activation
+ *
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2016, GiveWP
@@ -53,7 +54,7 @@ class Give_Welcome {
 
 		// About Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'Welcome to GiveWP %s', 'give' ), $display_version ),
 			esc_html__( 'Welcome to Give', 'give' ),
 			$this->minimum_capability,
@@ -72,7 +73,7 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'GiveWP %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
@@ -82,7 +83,7 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'GiveWP %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
@@ -150,32 +151,36 @@ class Give_Welcome {
 		?>
 		<div class="wrap about-wrap">
 
-			<?php $this->get_welcome_header() ?>
+			<?php $this->get_welcome_header(); ?>
 
-			<p class="about-text"><?php
+			<p class="about-text">
+			<?php
 				printf(
-				/* translators: %s: http://docs.givewp.com/docs */
+					/* translators: %s: http://docs.givewp.com/docs */
 					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
 					esc_url( 'http://docs.givewp.com/docs' )
 				);
-				?></p>
+			?>
+				</p>
 
 			<?php give_get_newsletter(); ?>
 
-			<div class="give-badge"><?php
+			<div class="give-badge">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
-				?></div>
+			?>
+				</div>
 
 			<?php $this->tabs(); ?>
 
 			<div class="feature-section clearfix introduction">
 
 				<div class="video feature-section-item">
-					<img src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-photo-mashup.png' ?>"
+					<img src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-photo-mashup.png'; ?>"
 						 alt="<?php esc_attr_e( 'Give', 'give' ); ?>">
 				</div>
 
@@ -215,7 +220,7 @@ class Give_Welcome {
 				</div>
 
 				<div class="content  feature-section-item last-feature">
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/give-form-mockup.png' ?>"
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/give-form-mockup.png'; ?>"
 						 alt="<?php esc_attr_e( 'A GiveWP donation form', 'give' ); ?>">
 				</div>
 
@@ -240,20 +245,24 @@ class Give_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php echo get_admin_page_title(); ?></h1>
 
-			<p class="about-text"><?php
+			<p class="about-text">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Thank you for updating to the latest version! GiveWP %s is ready to make your online store faster, safer, and better!', 'give' ),
 					$display_version
 				);
-				?></p>
-			<div class="give-badge"><?php
+			?>
+				</p>
+			<div class="give-badge">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
-				?></div>
+			?>
+				</div>
 
 			<?php $this->tabs(); ?>
 
@@ -266,10 +275,21 @@ class Give_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array(
-					'post_type' => 'give_forms',
-					'page'      => 'give-settings'
-				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'GiveWP Settings', 'give' ); ?></a>
+				<a href="
+				<?php
+				echo esc_url(
+					admin_url(
+						add_query_arg(
+							array(
+								'post_type' => 'give_forms',
+								'page'      => 'give-settings',
+							),
+							'edit.php'
+						)
+					)
+				);
+				?>
+				"><?php esc_html_e( 'GiveWP Settings', 'give' ); ?></a>
 			</div>
 		</div>
 		<?php
@@ -287,19 +307,21 @@ class Give_Welcome {
 		?>
 		<div class="wrap about-wrap get-started">
 
-			<?php $this->get_welcome_header() ?>
+			<?php $this->get_welcome_header(); ?>
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
 			<?php give_get_newsletter(); ?>
 
-			<div class="give-badge"><?php
+			<div class="give-badge">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
-				?></div>
+			?>
+				</div>
 
 			<?php $this->tabs(); ?>
 
@@ -387,29 +409,33 @@ class Give_Welcome {
 		?>
 		<div class="wrap about-wrap">
 
-			<?php $this->get_welcome_header() ?>
+			<?php $this->get_welcome_header(); ?>
 
 			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
 
 			<?php give_get_newsletter(); ?>
 
-			<div class="give-badge"><?php
+			<div class="give-badge">
+			<?php
 				printf(
-				/* translators: %s: Give version */
+					/* translators: %s: Give version */
 					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
-				?></div>
+			?>
+				</div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php
+			<p class="about-description">
+			<?php
 				printf(
-				/* translators: %s: https://github.com/impress-org/give */
+					/* translators: %s: https://github.com/impress-org/give */
 					__( 'GiveWP is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
-				?></p>
+			?>
+				</p>
 
 			<?php echo $this->contributors(); ?>
 		</div>
@@ -590,7 +616,8 @@ class Give_Welcome {
 			});
 
 		</script>
-	<?php }
+		<?php
+	}
 
 
 	/**
@@ -598,7 +625,8 @@ class Give_Welcome {
 	 *
 	 * Various social media elements to Give
 	 */
-	public function social_media_elements() { ?>
+	public function social_media_elements() {
+		?>
 
 		<div class="social-items-wrap">
 
@@ -606,13 +634,15 @@ class Give_Welcome {
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
 					allowTransparency="true"></iframe>
 
-			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">
+			<?php
 				printf(
-				/* translators: %s: Give twitter user @givewp */
+					/* translators: %s: Give twitter user @givewp */
 					esc_html_e( 'Follow %s', 'give' ),
 					'@givewp'
 				);
-				?></a>
+			?>
+				</a>
 			<script>!function (d, s, id) {
 					var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
 					if (!d.getElementById(id)) {

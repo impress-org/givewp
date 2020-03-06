@@ -8,9 +8,9 @@ $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 
 // Sanity check - ensure form has pass all condition to show goal.
 if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
-     || empty( $form->ID )
-     || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
-     || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal ) {
+	 || empty( $form->ID )
+	 || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
+	 || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal ) {
 	return false;
 }
 
@@ -57,7 +57,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 ?>
 <div class="give-goal-progress">
 	<?php if ( ! empty( $show_text ) ) : ?>
-        <div class="raised">
+		<div class="raised">
 			<?php
 			if ( 'amount' === $goal_format ) :
 
@@ -73,22 +73,30 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				 *
 				 * @since 1.8.17
 				 */
-				$income_format_args = apply_filters( 'give_goal_income_format_args', array(
-					'sanitize' => false,
-					'currency' => $form_currency,
-					'decimal'  => false,
-				), $form_id );
+				$income_format_args = apply_filters(
+					'give_goal_income_format_args',
+					array(
+						'sanitize' => false,
+						'currency' => $form_currency,
+						'decimal'  => false,
+					),
+					$form_id
+				);
 
 				/**
 				 * Filter the goal formatting arguments.
 				 *
 				 * @since 1.8.17
 				 */
-				$goal_format_args = apply_filters( 'give_goal_amount_format_args', array(
-					'sanitize' => false,
-					'currency' => $form_currency,
-					'decimal'  => false,
-				), $form_id );
+				$goal_format_args = apply_filters(
+					'give_goal_amount_format_args',
+					array(
+						'sanitize' => false,
+						'currency' => $form_currency,
+						'decimal'  => false,
+					),
+					$form_id
+				);
 
 				/**
 				 * This filter will be used to convert the goal amounts to different currencies.
@@ -150,14 +158,14 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 					esc_attr( $formatted_goal )
 				);
 
-            elseif ( 'percentage' === $goal_format ) :
+			elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
 					round( $progress )
 				);
 
-            elseif ( 'donation' === $goal_format ) :
+			elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					_n(
@@ -170,7 +178,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 					give_format_amount( $goal, array( 'decimal' => false ) )
 				);
 
-            elseif ( 'donors' === $goal_format ) :
+			elseif ( 'donors' === $goal_format ) :
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
@@ -185,17 +193,21 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 			endif;
 			?>
-        </div>
+		</div>
 	<?php endif; ?>
 
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
-        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-             aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
-			<span style="width: <?php echo esc_attr( $progress_bar_value ); ?>%;<?php if ( ! empty( $color ) ) {
-				echo 'background-color:' . $color;
-			} ?>"></span>
-        </div><!-- /.give-progress-bar -->
+		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+			 aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
+			<span style="width: <?php echo esc_attr( $progress_bar_value ); ?>%;
+										   <?php
+											if ( ! empty( $color ) ) {
+												echo 'background-color:' . $color;
+											}
+											?>
+			"></span>
+		</div><!-- /.give-progress-bar -->
 	<?php endif; ?>
 
 </div><!-- /.goal-progress -->

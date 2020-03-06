@@ -87,7 +87,6 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-donations.php';
 		$this->assertTrue( class_exists( 'Give_Import_Donations' ) );
 
-
 		$this->importer_class = Give_Import_Donations::get_instance();
 
 		// sample CSV file
@@ -186,10 +185,12 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		if ( ! empty( $import_setting['dry_run'] ) ) {
 			$import_setting['csv_raw_data'] = $raw_data;
 
-			$import_setting['donors_list'] = Give()->donors->get_donors( array(
-				'number' => - 1,
-				'fields' => array( 'id', 'user_id', 'email' ),
-			) );
+			$import_setting['donors_list'] = Give()->donors->get_donors(
+				array(
+					'number' => - 1,
+					'fields' => array( 'id', 'user_id', 'email' ),
+				)
+			);
 		}
 
 		$current_key = 1;
@@ -339,7 +340,6 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$donor_data = new Give_Donor( 'echicchelli8@thetimes.co.uk' );
 		$this->assertTrue( ! empty( $donor_data->id ) );
 
-
 		$donor_data = new Give_Donor( 'nodonorexists@thetimes.co.uk' );
 		$this->assertTrue( empty( $donor_data->id ) );
 	}
@@ -358,20 +358,19 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$form = get_page_by_title( 'Make a wish Foundation', OBJECT, 'give_forms' );
 		$this->assertTrue( ! empty( $form->ID ) );
 		$form = new Give_Donate_Form( $form->ID );
-		$id = $form->get_ID();
+		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
-
 
 		$form = get_page_by_title( 'Save the Trees', OBJECT, 'give_forms' );
 		$this->assertTrue( ! empty( $form->ID ) );
 		$form = new Give_Donate_Form( $form->ID );
-		$id = $form->get_ID();
+		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
 
 		$form = get_page_by_title( 'Help a Child', OBJECT, 'give_forms' );
 		$this->assertTrue( ! empty( $form->ID ) );
 		$form = new Give_Donate_Form( $form->ID );
-		$id = $form->get_ID();
+		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
 
 		$form = get_page_by_title( 'No Donation Form', OBJECT, 'give_forms' );
@@ -391,9 +390,10 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		/* Give get all donation */
 		$payments = new Give_Payments_Query(
-			array( 'number' => - 1,
-			'meta_key'   => 'donation_imported',
-			'meta_value' => 'yes',
+			array(
+				'number'     => - 1,
+				'meta_key'   => 'donation_imported',
+				'meta_value' => 'yes',
 			)
 		);
 		$payments = $payments->get_payments();
@@ -401,7 +401,12 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		$donor_data = new Give_Donor( 'mvarga3@google.es' );
 		/* Give get all donation */
-		$payments = new Give_Payments_Query( array( 'number' => - 1, 'donor' => $donor_data->id ) );
+		$payments = new Give_Payments_Query(
+			array(
+				'number' => - 1,
+				'donor'  => $donor_data->id,
+			)
+		);
 		$payments = $payments->get_payments();
 		foreach ( $payments as $payment ) {
 			$this->assertEquals( 105, absint( $payment->total ) );
@@ -424,7 +429,12 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		$donor_data = new Give_Donor( 'kselwin7@bandcamp.com' );
 		/* Give get all donation */
-		$payments = new Give_Payments_Query( array( 'number' => - 1, 'donor' => $donor_data->id ) );
+		$payments = new Give_Payments_Query(
+			array(
+				'number' => - 1,
+				'donor'  => $donor_data->id,
+			)
+		);
 		$payments = $payments->get_payments();
 		foreach ( $payments as $payment ) {
 			$this->assertEquals( 226, absint( $payment->total ) );

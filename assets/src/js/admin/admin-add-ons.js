@@ -62,7 +62,7 @@
 								give_addon_var.notices.download_file.substring( 0, give_addon_var.notices.download_file.indexOf( '.' ) + 1 );
 
 							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( msg, 'success' ) );
-							$licensesContainer.parent().parent().removeClass('give-hidden');
+							$licensesContainer.parent().parent().removeClass( 'give-hidden' );
 							$licensesContainer.html( response.data.html );
 						} else {
 							$noticeContainer.html( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
@@ -111,7 +111,7 @@
 				$noticeContainer
 					.addClass( 'give-addon-notice-shown' )
 					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
-			} else{
+			} else {
 				$.ajax( {
 					url: ajaxurl,
 					method: 'POST',
@@ -127,9 +127,9 @@
 					},
 					success: function( response ) {
 						if ( true === response.success ) {
-							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+							if ( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
 								$licensesContainer.html( response.data.html );
-							} else{
+							} else {
 								$container.replaceWith( response.data.html );
 							}
 							return;
@@ -144,11 +144,11 @@
 				} );
 			}
 
-			$licensesContainer.on('click', '.notice-dismiss', function () {
-				$noticeContainer.slideUp(150, function () {
-					$noticeContainer.removeClass('give-addon-notice-shown');
-				});
-			});
+			$licensesContainer.on( 'click', '.notice-dismiss', function() {
+				$noticeContainer.slideUp( 150, function() {
+					$noticeContainer.removeClass( 'give-addon-notice-shown' );
+				} );
+			} );
 		} );
 
 		/**
@@ -205,10 +205,10 @@
 							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.msg, 'success' ) );
 
 						// Hide license container if not any licens eexists.
-						if( ! $licensesContainer.html().trim().length ){
-							$licensesContainer.parent().parent().addClass('give-hidden');
+						if ( ! $licensesContainer.html().trim().length ) {
+							$licensesContainer.parent().parent().addClass( 'give-hidden' );
 						}
-					} else{
+					} else {
 						$noticeContainer
 							.addClass( 'give-addon-notice-shown' )
 							.prepend( Give.notice.fn.getAdminNoticeHTML( response.data.errorMsg, 'error' ) );
@@ -222,11 +222,11 @@
 				}
 			} );
 
-			$licensesContainer.on('click', '.notice-dismiss', function () {
-				$noticeContainer.slideUp(150, function () {
-					$noticeContainer.removeClass('give-addon-notice-shown');
-				});
-			});
+			$licensesContainer.on( 'click', '.notice-dismiss', function() {
+				$noticeContainer.slideUp( 150, function() {
+					$noticeContainer.removeClass( 'give-addon-notice-shown' );
+				} );
+			} );
 		} );
 
 		/**
@@ -236,7 +236,7 @@
 			e.preventDefault();
 
 			const $this = $( this ),
-				  license = $this.attr('data-license').trim(),
+				  license = $this.attr( 'data-license' ).trim(),
 				  index = $( '.give-addon-wrap' ).index( $container ); // Preserve select position to reset $container selector after replace it with new HTML;;
 
 			let $container = $this.parents( '.give-addon-wrap' ),
@@ -253,7 +253,7 @@
 				$noticeContainer
 					.addClass( 'give-addon-notice-shown' )
 					.prepend( Give.notice.fn.getAdminNoticeHTML( give_addon_var.notices.invalid_license, 'error' ) );
-			} else{
+			} else {
 				$.ajax( {
 					url: ajaxurl,
 					method: 'POST',
@@ -270,18 +270,18 @@
 					},
 					success: function( response ) {
 						if ( true === response.success ) {
-							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+							if ( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
 								$licensesContainer.html( response.data.html );
-							} else{
+							} else {
 								$container.replaceWith( response.data.html );
 							}
 							return;
 						}
 
-						if( response.data.hasOwnProperty( 'html' ) && response.data.html.length ){
-							if( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
+						if ( response.data.hasOwnProperty( 'html' ) && response.data.html.length ) {
+							if ( response.data.hasOwnProperty( 'is_all_access_pass' ) && response.data.is_all_access_pass ) {
 								$licensesContainer.html( response.data.html );
-							} else{
+							} else {
 								$container.replaceWith( response.data.html );
 							}
 						}
@@ -299,11 +299,11 @@
 				} );
 			}
 
-			$licensesContainer.on('click', '.notice-dismiss', function () {
-				$noticeContainer.slideUp(150, function () {
-					$noticeContainer.removeClass('give-addon-notice-shown');
-				});
-			});
+			$licensesContainer.on( 'click', '.notice-dismiss', function() {
+				$noticeContainer.slideUp( 150, function() {
+					$noticeContainer.removeClass( 'give-addon-notice-shown' );
+				} );
+			} );
 		} );
 
 		/**

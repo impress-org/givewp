@@ -48,7 +48,7 @@ function give_set_error( $error_id, $error_message, $notice_args = array() ) {
 		$errors = array();
 	}
 
-	if( is_array( $notice_args ) && ! empty( $notice_args ) ) {
+	if ( is_array( $notice_args ) && ! empty( $notice_args ) ) {
 		$errors[ $error_id ] = array(
 			'message'     => $error_message,
 			'notice_args' => $notice_args,

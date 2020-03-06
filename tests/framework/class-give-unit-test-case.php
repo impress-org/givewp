@@ -32,7 +32,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		$_SERVER['SERVER_NAME']     = '';
 		$PHP_SELF                   = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
 
-		if( ! defined( 'GIVE_USE_PHP_SESSIONS' ) ) {
+		if ( ! defined( 'GIVE_USE_PHP_SESSIONS' ) ) {
 			define( 'GIVE_USE_PHP_SESSIONS', false );
 		}
 
@@ -86,7 +86,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 *
 	 * @since  1.0
 	 * @param  $condition
-	 * @param  string $message
+	 * @param  string    $message
 	 * @return mixed
 	 */
 	public static function assertNotFalse( $condition, $message = '' ) {

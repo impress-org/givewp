@@ -43,7 +43,6 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 
 		$this->assertFalse( $output );
 
-
 		/*
 		 * Check 2
 		 *
@@ -52,7 +51,6 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		$output = give_validate_username( 'devin' );
 
 		$this->assertTrue( $output );
-
 
 		/*
 		 * Check 3
@@ -65,7 +63,6 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		$output = give_validate_username( '', $this->_simple_form->ID );
 
 		$this->assertFalse( $output );
-
 
 		/*
 		 * Check 4

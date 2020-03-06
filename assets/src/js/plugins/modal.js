@@ -65,12 +65,12 @@ class GiveModal {
 					${ ( 'form' === this.config.type ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }">${ this.config.modalContent.link_text }</a>` : '' }
 
 					<button class="give-button give-button--secondary give-popup-close-button">
-						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar('cancel') : Give.fn.getGlobalVar('close') ) }
+						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar( 'cancel' ) : Give.fn.getGlobalVar( 'close' ) ) }
 					</button>
 
 					${ ( 'confirm' !== this.config.type && 'form' !== this.config.type ) ? '' : `<button class="give-button give-button--primary give-popup-${ this.config.type }-button">
 
-						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : Give.fn.getGlobalVar('confirm') }
+						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : Give.fn.getGlobalVar( 'confirm' ) }
 					</button>` }
 				</div>
 				
@@ -113,7 +113,7 @@ class GiveModal {
 	 * @private
 	 */
 	popupConfig() {
-		if ('magnificPopup' === this.config.externalPlugin) {
+		if ( 'magnificPopup' === this.config.externalPlugin ) {
 			this.config.items = this.config.items || {
 				src: this.config.template,
 				type: 'inline',
@@ -174,58 +174,58 @@ class GiveModal {
 	 * @since 2.5.0
 	 * @private
 	 */
-	static __ajaxModalHandle( event ){
+	static __ajaxModalHandle( event ) {
 		let $this = jQuery( event.target ),
 			cache = $this.attr( 'data-cache' );
 
 		event.preventDefault();
 
 		// Load result from cache if any.
-		if( 'undefined' !== typeof cache ){
+		if ( 'undefined' !== typeof cache ) {
 			cache = decodeURI( cache );
 
-			new Give.modal.GiveSuccessAlert({
-				modalContent:{
-					title: $this.attr('title'),
+			new Give.modal.GiveSuccessAlert( {
+				modalContent: {
+					title: $this.attr( 'title' ),
 					desc: cache,
 				},
 				closeOnBgClick: true,
-			}).render();
+			} ).render();
 
 			return;
 		}
 
-		jQuery.ajax({
-			url: $this.attr('href'),
+		jQuery.ajax( {
+			url: $this.attr( 'href' ),
 			method: 'GET',
-			beforeSend: function(){
-				new Give.modal.GiveSuccessAlert({
-					modalContent:{
+			beforeSend: function() {
+				new Give.modal.GiveSuccessAlert( {
+					modalContent: {
 						desc: Give.fn.loader( {}, { show: null, loadingText: Give.fn.getGlobalVar( 'loader_translation' ).loading } ),
 					},
 					closeOnBgClick: true,
-				}).render();
+				} ).render();
 			},
-			success: function( response ){
-				if( response.length ) {
+			success: function( response ) {
+				if ( response.length ) {
 					$this.attr( 'data-cache', encodeURI( response ) );
 				}
 
 				// Do not re-open modal after successfully ajax response if modal already closed.
-				if( ! jQuery('.mfp-wrap').length ){
+				if ( ! jQuery( '.mfp-wrap' ).length ) {
 					return;
 				}
 
-				new Give.modal.GiveSuccessAlert({
-					modalContent:{
-						title: $this.attr('title'),
+				new Give.modal.GiveSuccessAlert( {
+					modalContent: {
+						title: $this.attr( 'title' ),
 						desc: response,
 
 					},
 					closeOnBgClick: true,
-				}).render();
-			}
-		});
+				} ).render();
+			},
+		} );
 	}
 }
 
@@ -299,7 +299,7 @@ class GiveConfirmModal extends GiveModal {
 		obj.type = 'confirm';
 		super( obj );
 
-		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
+		if ( 'undefined' !== typeof ( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
 		}
 
@@ -334,7 +334,7 @@ class GiveFormModal extends GiveModal {
 		obj.type = 'form';
 		super( obj );
 
-		if ( 'undefined' !== typeof( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
+		if ( 'undefined' !== typeof ( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
 		}
 

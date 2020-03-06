@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  * @since 1.0
- *
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
@@ -43,7 +42,6 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 		 * @param mixed $payment_data Payment meta data.
 		 *
 		 * @since 1.0
-		 *
 		 */
 		do_action( 'give_new-donation_email_notification', $payment_id, give_get_payment_meta( $payment_id ) );
 	}
@@ -56,7 +54,6 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
  *
  * @return void
  * @since 1.0
- *
  */
 function give_admin_email_notice( $payment_id ) {
 	/**
@@ -68,7 +65,6 @@ function give_admin_email_notice( $payment_id ) {
 	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
-	 *
 	 */
 	do_action( 'give_new-donation_email_notification', $payment_id );
 }
@@ -86,7 +82,7 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
  */
 function give_get_default_donation_notification_email() {
 
-	$default_email_body = __( 'Hi there,', 'give' ) . "\n\n";
+	$default_email_body  = __( 'Hi there,', 'give' ) . "\n\n";
 	$default_email_body .= __( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' {site_url}' . ".\n\n";
 	$default_email_body .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
@@ -109,7 +105,7 @@ function give_get_default_donation_notification_email() {
  */
 function give_get_default_donation_receipt_email() {
 
-	$default_email_body = __( 'Dear', 'give' ) . " {name},\n\n";
+	$default_email_body  = __( 'Dear', 'give' ) . " {name},\n\n";
 	$default_email_body .= __( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
 	$default_email_body .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
@@ -133,7 +129,6 @@ function give_get_default_donation_receipt_email() {
  *
  * @return array $email_names
  * @since 1.0
- *
  */
 function give_get_email_names( $user_info, $payment = false ) {
 	$email_names = array();

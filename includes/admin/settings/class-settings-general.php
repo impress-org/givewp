@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					);
 					break;
 
-				case 'currency-settings' :
+				case 'currency-settings':
 					$currency_position_before = __( 'Before - %s&#x200e;10', 'give' );
 					$currency_position_after  = __( 'After - 10%s&#x200f;', 'give' );
 
@@ -151,16 +151,16 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_2',
 						),
 						array(
-							'name'    => __( 'Currency', 'give' ),
-							'desc'    => __( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
-							'id'      => 'currency',
-							'class'   => 'give-select-chosen',
-							'type'    => 'select',
-							'options' => give_get_currencies(),
-							'default' => 'USD',
+							'name'       => __( 'Currency', 'give' ),
+							'desc'       => __( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
+							'id'         => 'currency',
+							'class'      => 'give-select-chosen',
+							'type'       => 'select',
+							'options'    => give_get_currencies(),
+							'default'    => 'USD',
 							'attributes' => array(
-								'data-formatting-setting' => esc_js( wp_json_encode( give_get_currencies_list() ))
-							)
+								'data-formatting-setting' => esc_js( wp_json_encode( give_get_currencies_list() ) ),
+							),
 						),
 						array(
 							'name'       => __( 'Currency Position', 'give' ),
@@ -208,7 +208,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'desc'    => __( 'A preview of the formatted currency. This preview cannot be edited directly as it is generated from the settings above.', 'give' ),
 							'id'      => 'currency_preview',
 							'type'    => 'give_currency_preview',
-							'default' => give_format_amount( 123456.12345,
+							'default' => give_format_amount(
+								123456.12345,
 								array(
 									'sanitize' => false,
 									'currency' => give_get_option( 'currency' ),
@@ -249,7 +250,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						$label = $states_label[ $country ];
 					}
 
-
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -269,14 +269,16 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'         => 'success_page',
 							'class'      => 'give-select give-select-chosen',
 							'type'       => 'select',
-							'options'    => give_cmb2_get_post_options( array(
-								'post_type'   => 'page',
-								'numberposts' => 30,
-							) ),
+							'options'    => give_cmb2_get_post_options(
+								array(
+									'post_type'   => 'page',
+									'numberposts' => 30,
+								)
+							),
 							'attributes' => array(
 								'data-search-type' => 'pages',
-								'data-placeholder' => esc_html__('Choose a page', 'give'),
-							)
+								'data-placeholder' => esc_html__( 'Choose a page', 'give' ),
+							),
 						),
 						array(
 							'name'       => __( 'Failed Donation Page', 'give' ),
@@ -284,14 +286,16 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'class'      => 'give-select give-select-chosen',
 							'id'         => 'failure_page',
 							'type'       => 'select',
-							'options'    => give_cmb2_get_post_options( array(
-								'post_type'   => 'page',
-								'numberposts' => 30,
-							) ),
+							'options'    => give_cmb2_get_post_options(
+								array(
+									'post_type'   => 'page',
+									'numberposts' => 30,
+								)
+							),
 							'attributes' => array(
 								'data-search-type' => 'pages',
-								'data-placeholder' => esc_html__('Choose a page', 'give'),
-							)
+								'data-placeholder' => esc_html__( 'Choose a page', 'give' ),
+							),
 						),
 						array(
 							'name'       => __( 'Donation History Page', 'give' ),
@@ -300,14 +304,16 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'         => 'history_page',
 							'class'      => 'give-select give-select-chosen',
 							'type'       => 'select',
-							'options'    => give_cmb2_get_post_options( array(
-								'post_type'   => 'page',
-								'numberposts' => 30,
-							) ),
+							'options'    => give_cmb2_get_post_options(
+								array(
+									'post_type'   => 'page',
+									'numberposts' => 30,
+								)
+							),
 							'attributes' => array(
 								'data-search-type' => 'pages',
-								'data-placeholder' => esc_html__('Choose a page', 'give'),
-							)
+								'data-placeholder' => esc_html__( 'Choose a page', 'give' ),
+							),
 						),
 						array(
 							'name'       => __( 'Base Country', 'give' ),
@@ -317,7 +323,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options'    => give_get_country_list(),
 							'class'      => 'give-select give-select-chosen',
 							'attributes' => array(
-								'data-search-type' => 'no_ajax'
+								'data-search-type' => 'no_ajax',
 							),
 							'default'    => $country,
 						),
@@ -360,7 +366,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 						array(
 							'id'   => 'give_title_general_settings_4',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Sequential Ordering', 'give' ),
@@ -370,8 +376,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default' => 'disabled',
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' )
-							)
+								'disabled' => __( 'Disabled', 'give' ),
+							),
 						),
 						array(
 							'name' => __( 'Next Donation Number', 'give' ),
@@ -404,7 +410,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name'    => __( 'Number Padding', 'give' ),
 							'id'      => "{$current_section}_number_padding",
 							'desc'    => sprintf(
-								__( 'The minimum number of digits in the sequential donation number. Enter %s to display %s as %s.', 'give' ),
+								__( 'The minimum number of digits in the sequential donation number. Enter %1$s to display %2$s as %3$s.', 'give' ),
 								'<code>4</code>',
 								'<code>1</code>',
 								'<code>0001</code>'
@@ -427,8 +433,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 			}
 
@@ -513,10 +519,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function _render_give_sequential_donation_code_preview( $field ) {
 			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label
-						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
 				</th>
 				<td class="give-forminp">
 					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled>
@@ -537,17 +543,17 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return void
 		 */
 		public function _render_give_currency_preview( $field, $value ) {
-			$currency          = give_get_currency();
-			$currency_position = give_get_currency_position();
-			$currency_symbol   = give_currency_symbol( $currency, false );
+			$currency           = give_get_currency();
+			$currency_position  = give_get_currency_position();
+			$currency_symbol    = give_currency_symbol( $currency, false );
 			$formatted_currency = ( 'before' === $currency_position )
 				? sprintf( '%1$s%2$s', esc_html( $currency_symbol ), esc_html( $field['default'] ) )
 				: sprintf( '%1$s%2$s', esc_html( $field['default'] ), esc_html( $currency_symbol ) );
 			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label
-						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
 				</th>
 				<td class="give-forminp">
 					<input id="<?php echo esc_attr( $field['id'] ); ?>" class="give-input-field" type="text" disabled value="<?php echo esc_attr( $formatted_currency ); ?>">
@@ -567,14 +573,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function _render_give_unlock_all_settings( $field ) {
 			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : '' ?>>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label
-						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ) ?></label>
+						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
 				</th>
 				<td class="give-forminp">
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
-					<a href="" id="<?php echo $field['id']; ?>" data-message="<?php echo $field['confirmation_msg'] ?>"><?php echo __( 'Unlock all settings', 'give' ); ?></a>
+					<a href="" id="<?php echo $field['id']; ?>" data-message="<?php echo $field['confirmation_msg']; ?>"><?php echo __( 'Unlock all settings', 'give' ); ?></a>
 				</td>
 			</tr>
 			<?php

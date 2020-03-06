@@ -24,7 +24,6 @@ function _give_bc_offline_donation_instruction_notification_status( $notificatio
 			: 'global';
 	}
 
-
 	return $notification_status;
 }
 

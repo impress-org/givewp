@@ -21,28 +21,28 @@ class RecentDonations extends Endpoint {
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new \WP_REST_Response(
-				[
+				array(
 					'data' => $cached_report,
-				]
+				)
 			);
 		}
 
 		// Setup donation query args (get sanitized start/end date from request)
-		$args = [
+		$args = array(
 			'number'     => 50,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $request['start'],
 			'end_date'   => $request['end'],
-		];
+		);
 
 		// Get array of 50 recent donations
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$data = [];
+		$data = array();
 		foreach ( $donations as $donation ) {
 
 			$donation = new \Give_Payment( $donation->ID );
@@ -62,19 +62,19 @@ class RecentDonations extends Endpoint {
 			}
 			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
 
-			$data[] = [
+			$data[] = array(
 				'type'     => 'donation',
 				'donation' => $donation,
 				'status'   => $status,
 				'amount'   => $amount,
 				'url'      => $url,
 				'time'     => $donation->date,
-				'donor'    => [
+				'donor'    => array(
 					'name' => "{$donation->first_name} {$donation->last_name}",
 					'id'   => $donation->donor_id,
-				],
+				),
 				'source'   => $donation->form_title,
-			];
+			);
 		}
 
 		// Cache the report data
@@ -83,10 +83,10 @@ class RecentDonations extends Endpoint {
 
 		// Return $list of donations for RESTList component
 		return new \WP_REST_Response(
-			[
+			array(
 				'data'   => $data,
 				'status' => $status,
-			]
+			)
 		);
 	}
 }

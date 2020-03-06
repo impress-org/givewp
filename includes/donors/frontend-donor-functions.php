@@ -33,7 +33,8 @@ function give_get_donor_avatar( $donor, $size = 60 ) {
 		} else {
 			// No gravatar = output initials.
 			echo $donor->get_donor_initals();
-		} ?>
+		}
+		?>
 	</div>
 	<?php
 
@@ -52,7 +53,7 @@ function give_get_donor_avatar( $donor, $size = 60 ) {
  */
 function give_validate_gravatar( $id_or_email ) {
 
-	//id or email code borrowed from wp-includes/pluggable.php
+	// id or email code borrowed from wp-includes/pluggable.php
 	$email = '';
 	if ( is_numeric( $id_or_email ) ) {
 		$id   = (int) $id_or_email;
@@ -80,12 +81,10 @@ function give_validate_gravatar( $id_or_email ) {
 		$email = $id_or_email;
 	}
 
-
 	$hashkey   = md5( strtolower( trim( $email ) ) );
 	$cache_key = Give_Cache::get_key( 'give_valid_gravatars' );
 	$data      = Give_Cache::get( $cache_key );
 	$data      = ! empty( $data ) ? $data : array();
-
 
 	if ( ! array_key_exists( $hashkey, $data ) ) {
 		$uri = "http://www.gravatar.com/avatar/{$hashkey}?d=404";
@@ -119,12 +118,12 @@ function give_validate_gravatar( $id_or_email ) {
  */
 function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comment_args = array() ) {
 	// Backward compatibility.
-	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+	if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
 		$comment_args = wp_parse_args(
 			$comment_args,
 			array(
 				'comment_approved' => 0,
-				'comment_parent'   => give_get_payment_form_id( $donation_id )
+				'comment_parent'   => give_get_payment_form_id( $donation_id ),
 			)
 		);
 
@@ -166,7 +165,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  */
 function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
 	// Backward compatibility.
-	if( ! give_has_upgrade_completed('v230_move_donation_note' ) ) {
+	if ( ! give_has_upgrade_completed( 'v230_move_donation_note' ) ) {
 
 		$comments = Give_Comment::get(
 			$donation_id,
@@ -176,9 +175,9 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 				'meta_query' => array(
 					array(
 						'key'   => '_give_donor_id',
-						'value' => $donor_id
-					)
-				)
+						'value' => $donor_id,
+					),
+				),
 			),
 			$search
 		);
@@ -188,11 +187,13 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 		return $comment;
 	}
 
-	$comments = Give()->comment->db->get_comments( array(
-		'number'         => 1,
-		'comment_parent' => $donation_id,
-		'comment_type'   => 'donor_donation',
-	) );
+	$comments = Give()->comment->db->get_comments(
+		array(
+			'number'         => 1,
+			'comment_parent' => $donation_id,
+			'comment_type'   => 'donor_donation',
+		)
+	);
 
 	return ( ! empty( $comments ) ? current( $comments ) : array() );
 }

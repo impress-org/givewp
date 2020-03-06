@@ -438,7 +438,7 @@ function give_refresh_all_licenses_handler() {
 	}
 
 	// Update time.
-	$data['time'] = current_time( 'timestamp', 1 );
+	$data['time'] = time();
 
 	++ $data['count'];
 

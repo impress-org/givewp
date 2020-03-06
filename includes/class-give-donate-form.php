@@ -374,7 +374,6 @@ class Give_Donate_Form {
 			return false;
 		}
 
-
 		Give_Forms_Query::update_meta_cache( array( $donation_form->ID ) );
 
 		foreach ( $donation_form as $key => $value ) {
@@ -500,7 +499,6 @@ class Give_Donate_Form {
 			if ( ! $this->price ) {
 				$this->price = 0;
 			}
-
 		}
 
 		/**
@@ -536,7 +534,6 @@ class Give_Donate_Form {
 			if ( ! $this->is_custom_price_mode() ) {
 				$this->minimum_price = give_get_lowest_price_option( $this->ID );
 			}
-
 		}
 
 		return apply_filters( 'give_get_set_minimum_price', $this->minimum_price, $this->ID );
@@ -636,7 +633,7 @@ class Give_Donate_Form {
 
 			$goal_format = give_get_form_goal_format( $this->ID );
 
-			if( ! $this->has_goal() ) {
+			if ( ! $this->has_goal() ) {
 				$this->goal = '';
 
 			} elseif ( 'donation' === $goal_format ) {
@@ -645,7 +642,7 @@ class Give_Donate_Form {
 			} elseif ( 'donors' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
 
-			} elseif( in_array( $goal_format, array( 'amount', 'percentage' ) ) ) {
+			} elseif ( in_array( $goal_format, array( 'amount', 'percentage' ) ) ) {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
 		}
@@ -732,7 +729,6 @@ class Give_Donate_Form {
 				if ( $amount !== $this->get_price() ) {
 					$result = true;
 				}
-
 			} elseif ( 'multi' === $this->get_type() ) {
 				$level_amounts = array_map( 'give_maybe_sanitize_amount', wp_list_pluck( $this->get_prices(), '_give_amount' ) );
 				$result        = ! in_array( $amount, $level_amounts );
@@ -797,7 +793,6 @@ class Give_Donate_Form {
 			if ( empty( $this->type ) ) {
 				$this->type = 'set';
 			}
-
 		}
 
 		return apply_filters( 'give_get_form_type', $this->type, $this->ID );
@@ -822,12 +817,17 @@ class Give_Donate_Form {
 			? 'float-labels-enabled'
 			: '';
 
-		$form_classes_array = apply_filters( 'give_form_classes', array(
-			'give-form',
-			'give-form-' . $this->ID,
-			'give-form-type-' . $this->get_type(),
-			$float_labels_option,
-		), $this->ID, $args );
+		$form_classes_array = apply_filters(
+			'give_form_classes',
+			array(
+				'give-form',
+				'give-form-' . $this->ID,
+				'give-form-type-' . $this->get_type(),
+				$float_labels_option,
+			),
+			$this->ID,
+			$args
+		);
 
 		// Remove empty class names.
 		$form_classes_array = array_filter( $form_classes_array );
@@ -867,14 +867,12 @@ class Give_Donate_Form {
 			}
 		}
 
-
 		/**
 		 * Filter the donation form classes.
 		 *
 		 * @since 1.0
 		 */
 		$form_wrap_classes_array = (array) apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
-
 
 		return implode( ' ', $form_wrap_classes_array );
 
@@ -931,7 +929,6 @@ class Give_Donate_Form {
 				// Never let sales be less than zero.
 				$this->sales = 0;
 			}
-
 		}
 
 		return $this->sales;
@@ -992,7 +989,6 @@ class Give_Donate_Form {
 				return $sales;
 
 			}
-
 		}
 
 		return false;
@@ -1021,7 +1017,6 @@ class Give_Donate_Form {
 				// Never let earnings be less than zero
 				$this->earnings = 0;
 			}
-
 		}
 
 		return $this->earnings;
@@ -1037,13 +1032,13 @@ class Give_Donate_Form {
 	 * @access public
 	 *
 	 * @param  int $amount     Amount of donation. Default is 0.
-	 * @param int  $payment_id Donation ID.
+	 * @param int $payment_id Donation ID.
 	 *
 	 * @return float|false
 	 */
 	public function increase_earnings( $amount = 0, $payment_id = 0 ) {
 
-		$earnings   = give_get_form_earnings_stats( $this->ID );
+		$earnings = give_get_form_earnings_stats( $this->ID );
 
 		/**
 		 * Modify the earning amount when increasing.
@@ -1077,7 +1072,7 @@ class Give_Donate_Form {
 	 * @access public
 	 *
 	 * @param  int $amount     Amount of donation.
-	 * @param int  $payment_id Donation ID.
+	 * @param int $payment_id Donation ID.
 	 *
 	 * @return float|false
 	 */
@@ -1106,7 +1101,6 @@ class Give_Donate_Form {
 
 				return $this->earnings;
 			}
-
 		}
 
 		return false;
@@ -1227,7 +1221,7 @@ class Give_Donate_Form {
 					case 'donors':
 						$closed = $form->get_goal() <= give_get_form_donor_count( $this->ID );
 						break;
-					default :
+					default:
 						$closed = $form->get_goal() <= $form->get_earnings();
 						break;
 				}
@@ -1235,7 +1229,6 @@ class Give_Donate_Form {
 				if ( $closed ) {
 					$close_form = true;
 				}
-
 			}
 		}
 

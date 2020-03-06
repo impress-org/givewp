@@ -8,28 +8,28 @@
 
 namespace Give\Views;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Manages Admin Views
  */
 class Admin {
 
-    /**
-     * Initialize Admin views
-     */
-    public function init() {
+	/**
+	 * Initialize Admin views
+	 */
+	public function init() {
 
-        // Load dashboard widgets
+		// Load dashboard widgets
 		$this->load_dashboard_widgets();
 
 		// Load pages
 		$this->load_pages();
 
-    }
+	}
 
-    public function __construct() {
-        //Do nothing
+	public function __construct() {
+		// Do nothing
 	}
 
 	public function load_dashboard_widgets() {

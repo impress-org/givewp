@@ -20,10 +20,10 @@ class PaymentStatuses extends Endpoint {
 		$end   = date_create( $request['end'] );
 
 		// Setup args for give_count_payments
-		$args = [
+		$args = array(
 			'start-date' => $start->format( 'Y-m-d H:i:s' ),
 			'end-date'   => $end->format( 'Y-m-d H:i:s' ),
-		];
+		);
 
 		// Use give_count_payments logic to get payments
 		$payments  = give_count_payments( $args );
@@ -32,10 +32,10 @@ class PaymentStatuses extends Endpoint {
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			[
+			array(
 				'status' => $status,
-				'data'   => [
-					'labels'   => [
+				'data'   => array(
+					'labels'   => array(
 						'Completed',
 						'Pending',
 						'Refunded',
@@ -58,37 +58,37 @@ class PaymentStatuses extends Endpoint {
 									'title'  => $completed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Completed', 'give' ),
 									'footer' => '',
-								],
-								[
+								),
+								array(
 									'title'  => $payments->pending . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Pending', 'give' ),
 									'footer' => '',
-								],
-								[
+								),
+								array(
 									'title'  => $payments->refunded . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Refunded', 'give' ),
 									'footer' => '',
-								],
-								[
+								),
+								array(
 									'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Abandoned', 'give' ),
 									'footer' => '',
-								],
-								[
+								),
+								array(
 									'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Cancelled', 'give' ),
 									'footer' => '',
-								],
-								[
+								),
+								array(
 									'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Failed', 'give' ),
 									'footer' => '',
-								],
-							],
-						],
-					],
-				],
-			]
+								),
+							),
+						),
+					),
+				),
+			)
 		);
 	}
 }

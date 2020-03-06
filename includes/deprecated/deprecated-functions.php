@@ -698,8 +698,8 @@ function give_currency_decimal_filter() {
 
 	switch ( $currency ) {
 		// case 'RIAL' :
-		case 'JPY' :
-		case 'KRW' :
+		case 'JPY':
+		case 'KRW':
 			// case 'TWD' :
 			// case 'HUF' :
 
@@ -772,7 +772,7 @@ function give_get_payment_amount( $payment_id ) {
  *
  * @deprecated 1.8.17
  *
- * @param int $form_id
+ * @param int    $form_id
  * @param     $amount
  *
  * @return bool|int
@@ -971,13 +971,13 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 				'related' => 'AND',
 				array(
 					'key'   => '_give_donor_id',
-					'value' => $donor_id
+					'value' => $donor_id,
 				),
 				array(
 					'key'   => '_give_anonymous_donation',
-					'value' => 0
-				)
-			)
+					'value' => 0,
+				),
+			),
 		);
 
 		// Get donor donation comment for specific form.

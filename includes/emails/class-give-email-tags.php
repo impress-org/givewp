@@ -265,9 +265,9 @@ function give_get_emails_tags_list() {
 				<span class="give_<?php echo $email_tag['tag']; ?>_tag">
 					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
 				</span>
-            <?php endforeach; ?>
+			<?php endforeach; ?>
 		</div>
-	<?php
+		<?php
 	endif;
 
 	// Return the list.
@@ -748,8 +748,8 @@ function give_email_tag_billing_address( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$donation_address = give_get_donation_address( $tag_args['payment_id'] );
 
-			$billing_address                   = array();
-			$billing_address['street_address'] = '';
+			$billing_address                    = array();
+			$billing_address['street_address']  = '';
 			$billing_address['street_address'] .= $donation_address['line1'];
 
 			if ( ! empty( $donation_address['line2'] ) ) {
@@ -1210,12 +1210,12 @@ function give_email_tag_donation_history_link( $tag_args ) {
 	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
-		
-	    case ! empty( $tag_args['payment_id'] ):
+
+		case ! empty( $tag_args['payment_id'] ):
 			$donor_id = Give()->payment_meta->get_meta( $tag_args['payment_id'], '_give_payment_donor_id', true );
 			$donor    = Give()->donors->get_by( 'id', $donor_id );
 			break;
-		
+
 		case ! empty( $tag_args['donor_id'] ):
 			$donor_id = $tag_args['donor_id'];
 			$donor    = Give()->donors->get_by( 'id', $tag_args['donor_id'] );
@@ -1244,11 +1244,11 @@ function give_email_tag_donation_history_link( $tag_args ) {
 		$tag_args['donor_id'] = $donor_id;
 
 		$access_url = add_query_arg(
-            array(
-                'give_nl' => $verify_key,
-            ),
-            give_get_history_page_uri()
-        );
+			array(
+				'give_nl' => $verify_key,
+			),
+			give_get_history_page_uri()
+		);
 
 		// Add donation id to email access url, if it exists.
 		$donation_id = give_clean( filter_input( INPUT_GET, 'donation_id' ) );
@@ -1456,13 +1456,13 @@ function give_email_tag_donor_note( $tag_args ) {
 
 		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 			// Backward compatibility.
-			$comment = get_comment( $note_id );
+			$comment    = get_comment( $note_id );
 			$donor_note = $comment instanceof WP_Comment ? $comment->comment_content : '';
 
 		} else {
 
 			$comments = Give_Comment::get( array( 'comment_ID' => $note_id ) );
-			$comment = is_array( $comments ) && count( $comments ) ? current( $comments ) : array();
+			$comment  = is_array( $comments ) && count( $comments ) ? current( $comments ) : array();
 
 			$donor_note = $comment instanceof stdClass ? $comment->comment_content : '';
 		}
@@ -1508,7 +1508,8 @@ function give_get_reset_password_url( $user_id ) {
 					'action' => 'rp',
 					'key'    => get_password_reset_key( $user ),
 					'login'  => $user->user_login,
-				), wp_login_url()
+				),
+				wp_login_url()
 			)
 		);
 	}

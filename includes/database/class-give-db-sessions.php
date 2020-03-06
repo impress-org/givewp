@@ -235,7 +235,6 @@ class Give_DB_Sessions extends Give_DB {
 
 		wp_cache_set( $data['session_key'], $data['session_value'], $this->cache_group, $data['session_expiry'] - time() );
 
-
 		// @codingStandardsIgnoreStart
 		$wpdb->replace(
 			$table_name,

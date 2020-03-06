@@ -29,7 +29,7 @@
 		<p class="give-blank-slate__message"><?php esc_html_e( $content['message'] ); ?></p>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $content['cta_text']) && ! empty( $content['cta_link'] ) ) : ?>
+	<?php if ( ! empty( $content['cta_text'] ) && ! empty( $content['cta_link'] ) ) : ?>
 		<a class="give-blank-slate__cta button button-primary" href="<?php echo esc_url( $content['cta_link'] ); ?>"><?php esc_html_e( $content['cta_text'] ); ?></a>
 	<?php endif; ?>
 

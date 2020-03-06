@@ -175,7 +175,7 @@ class Give_Addon_Activation_Banner {
 					update_option( $option_key, $this->user_id, false );
 
 					// Update global cache.
-					$GLOBALS['give_addon_activated_by_user'][$option_key] = $this->user_id;
+					$GLOBALS['give_addon_activated_by_user'][ $option_key ] = $this->user_id;
 				}
 			}
 		}
@@ -198,7 +198,7 @@ class Give_Addon_Activation_Banner {
 
 			if ( ! empty( $admin_notice_callbacks ) ) {
 				foreach ( $admin_notice_callbacks as $key ) {
-					//If the key is found in your string, set $found to true
+					// If the key is found in your string, set $found to true
 					if ( false !== strpos( $key, 'addon_activation_banner_notices' ) ) {
 						$notice_already_hooked = true;
 					}
@@ -309,12 +309,14 @@ class Give_Addon_Activation_Banner {
 			$notice_html = ob_get_clean();
 
 			// Register notice.
-			Give()->notices->register_notice( array(
-				'id'               => 'give_add_on_activation_notice',
-				'type'             => 'updated',
-				'description_html' => $notice_html,
-				'show'             => true,
-			) );
+			Give()->notices->register_notice(
+				array(
+					'id'               => 'give_add_on_activation_notice',
+					'type'             => 'updated',
+					'description_html' => $notice_html,
+					'show'             => true,
+				)
+			);
 		}
 	}
 
@@ -375,7 +377,7 @@ class Give_Addon_Activation_Banner {
 			</a>
 			<div class="alert-actions">
 				<?php
-				//Point them to your settings page.
+				// Point them to your settings page.
 				if ( ! empty( $plugin_data['Description'] ) ) {
 					?>
 					<span class="give-addon-description">
@@ -402,7 +404,7 @@ class Give_Addon_Activation_Banner {
 					);
 				}
 
-				//Let them signup for plugin updates
+				// Let them signup for plugin updates
 				if ( isset( $banner_arr['support_url'] ) ) {
 					printf(
 						'<a href="%s" target="_blank"><span class="dashicons dashicons-sos"></span>%s</a>',

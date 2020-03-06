@@ -18,11 +18,13 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		parent::setUp();
 
 		// Create a Donation Form
-		$this->_post_id = $this->factory->post->create( array(
-			'post_title'  => 'Test Form',
-			'post_type'   => 'give_forms',
-			'post_status' => 'publish',
-		) );
+		$this->_post_id = $this->factory->post->create(
+			array(
+				'post_title'  => 'Test Form',
+				'post_type'   => 'give_forms',
+				'post_status' => 'publish',
+			)
+		);
 
 		$_multi_level_donations = array(
 			array(
@@ -60,11 +62,13 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		}
 
 		// Generate Donations
-		$this->_user_id = $this->factory->user->create( array(
-			'role'       => 'administrator',
-			'first_name' => 'Admin',
-			'last_name'  => 'User',
-		) );
+		$this->_user_id = $this->factory->user->create(
+			array(
+				'role'       => 'administrator',
+				'first_name' => 'Admin',
+				'last_name'  => 'User',
+			)
+		);
 		$user           = get_userdata( $this->_user_id );
 
 		$user_info = array(
@@ -152,14 +156,16 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		$test_email = 'testaccount2@domain.com';
 
 		$donor    = new Give_Donor( $test_email );
-		$donor_id = $donor->create( array(
-			'email' => $test_email,
-		) );
+		$donor_id = $donor->create(
+			array(
+				'email' => $test_email,
+			)
+		);
 		$this->assertEquals( $donor_id, $donor->id );
 
 		$data_to_update = array(
 			'email' => 'testaccountupdated@domain.com',
-			'name' => 'Test Account',
+			'name'  => 'Test Account',
 		);
 		$donor->update( $data_to_update );
 		$this->assertEquals( 'testaccountupdated@domain.com', $donor->email );
@@ -206,7 +212,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	public function test_attach_duplicate_payment() {
 
 		// Verify that if we pass a payment that's already attached we do not change stats.
-		$donor = new Give_Donor( 'testadmin@domain.com' );
+		$donor    = new Give_Donor( 'testadmin@domain.com' );
 		$payments = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 		$expected_purchase_count = $donor->purchase_count;
@@ -523,7 +529,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		// Create a donor.
 		$donor = new Give_Donor();
-		$args = array(
+		$args  = array(
 			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);
@@ -543,7 +549,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	public function test_get_last_name() {
 
 		$donor = new Give_Donor();
-		$args = array(
+		$args  = array(
 			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);
@@ -563,7 +569,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	public function test_split_donor_name() {
 
 		$donor = new Give_Donor();
-		$args = array(
+		$args  = array(
 			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);

@@ -58,7 +58,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @since 2.3.0
 	 */
-	public function ajax_handler(){
+	public function ajax_handler() {
 		add_action( 'wp_ajax_give_shortcode', array( $this, 'shortcode_ajax' ) );
 	}
 
@@ -176,7 +176,8 @@ final class Give_Shortcode_Button {
 				printf(
 					'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
 					$shortcode,
-					sprintf( '%s %s %s',
+					sprintf(
+						'%s %s %s',
 						$img,
 						__( 'Insert', 'give' ),
 						self::$shortcodes[ $shortcode ]['label']
@@ -198,6 +199,7 @@ final class Give_Shortcode_Button {
 
 	/**
 	 * Load the shortcode dialog fields via AJAX
+	 *
 	 * @todo: handle error
 	 *
 	 * @return void
@@ -205,7 +207,7 @@ final class Give_Shortcode_Button {
 	 * @since 1.0
 	 */
 	public function shortcode_ajax() {
-		if( ! current_user_can( 'edit_give_forms' ) ) {
+		if ( ! current_user_can( 'edit_give_forms' ) ) {
 			wp_die();
 		}
 
@@ -245,13 +247,16 @@ final class Give_Shortcode_Button {
 	private function is_add_button() {
 		global $pagenow;
 
-		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
-			'post.php',
-			'page.php',
-			'post-new.php',
-			'post-edit.php',
-			'edit.php',
-		) );
+		$shortcode_button_pages = apply_filters(
+			'give_shortcode_button_pages',
+			array(
+				'post.php',
+				'page.php',
+				'post-new.php',
+				'post-edit.php',
+				'edit.php',
+			)
+		);
 
 		$exclude_post_types = array( 'give_forms' );
 
@@ -269,7 +274,6 @@ final class Give_Shortcode_Button {
 			 * Use this filter to show Give Shortcode button on custom pages
 			 *
 			 * @since 1.0
-			 *
 			 */
 			|| ! apply_filters( 'give_shortcode_button_condition', true )
 			|| empty( self::$shortcodes )
@@ -281,4 +285,4 @@ final class Give_Shortcode_Button {
 	}
 }
 
-new Give_Shortcode_Button;
+new Give_Shortcode_Button();
