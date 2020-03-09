@@ -68,7 +68,12 @@ class ThemeLoader {
 	 * Initialize form theme
 	 */
 	public function init() {
-		$entryFilePath = $this->getThemePath() . 'functions.php';
+		// Exit.
+		if ( ! ( $entryFilePath = $this->getThemePath() ) ) {
+			return;
+		}
+
+		$entryFilePath = "{$entryFilePath}functions.php";
 
 		// Exit.
 		if ( ! file_exists( $entryFilePath ) ) {
@@ -85,6 +90,6 @@ class ThemeLoader {
 	 * @return string
 	 */
 	private function getThemePath() {
-		return $this->themeConfig['entry'];
+		return array_key_exists( 'entry', $this->themeConfig ) ? $this->themeConfig['entry'] : '';
 	}
 }
