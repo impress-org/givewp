@@ -555,7 +555,7 @@ class Give_Scripts {
 
 	/**
 	 * Localize / PHP to AJAX vars.
-	 */st
+	 */
 	public function public_localize_scripts() {
 		$localize_give_vars = apply_filters( 'give_global_script_vars', $this->get_public_data() );
 
