@@ -153,7 +153,7 @@ class Theme {
 	 * @throws InvalidArgumentException
 	 */
 	private function validateArguments() {
-		$requiredParams = array( 'id', 'name', 'options', 'image' );
+		$requiredParams = array( 'id', 'name', 'options', 'image', 'entry' );
 
 		if ( array_diff( $requiredParams, array_keys( $this->data ) ) ) {
 			throw new InvalidArgumentException(
