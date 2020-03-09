@@ -647,7 +647,7 @@ class Give_Scripts {
 	 *
 	 * @return mixed|void
 	 */
-	private function get_public_data() {
+	public function get_public_data() {
 		/**
 		 * Filter to modify access mail send notice
 		 *
