@@ -52,7 +52,9 @@ class Themes {
 			$configFile = trailingslashit( $themePath ) . 'config.php';
 
 			if ( file_exists( $configFile ) ) {
-				$config = require $configFile;
+				$config          = require $configFile;
+				$config['entry'] = $themePath;
+
 				$this->set( new Theme( $config ) );
 			}
 		}

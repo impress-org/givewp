@@ -3,7 +3,6 @@ return [
 	'id'      => 'sequoia',
 	'name'    => __( 'Sequoia - Multi-Step Form', 'give' ),
 	'image'   => '',
-	'entry'   => GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Sequoia',
 	'options' => [
 		'introduction' => [
 			'name'   => __( 'Introduction', 'give' ),
