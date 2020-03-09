@@ -90,6 +90,15 @@ class Theme {
 	}
 
 	/**
+	 * Get form theme path
+	 *
+	 * @return string
+	 */
+	public function getThemePath() {
+		return $this->data['entry'];
+	}
+
+	/**
 	 * return theme options.
 	 *
 	 * @since 2.7.0
