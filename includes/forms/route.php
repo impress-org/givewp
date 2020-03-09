@@ -47,7 +47,7 @@ function give_form_styles_routes() {
 			}
 		} else {
 			$post = get_post( get_query_var( 'give_form_id' ) );
-			require_once 'view/embed-form.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
 		}
 
 		exit();
