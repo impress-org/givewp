@@ -63,9 +63,6 @@ class Give_Scripts {
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
-
-			add_action( 'give_embed_head', array( $this, 'embed_page_styles' ) );
-			add_action( 'give_embed_footer', array( $this, 'embed_page_scripts' ) );
 		}
 	}
 
@@ -473,57 +470,6 @@ class Give_Scripts {
 		$this->public_localize_scripts();
 	}
 
-
-	/**
-	 * Print styles on embed page
-	 *
-	 * @todo: add script & style version
-	 */
-	public function embed_page_styles() {
-		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
-		echo $this->get_style_tag( GIVE_PLUGIN_URL . 'assets/dist/css/give-elegent-theme.css' );
-		echo $this->get_style_tag( 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap' );
-
-		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
-	}
-
-	/**
-	 * Print scripts on embed page
-	 *
-	 * @todo: add script & style version
-	 */
-	public function embed_page_scripts() {
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
-		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
-
-		// @todo: move js code to own file.
-		?>
-		<script>
-			var iFrameResizer = {
-				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
-				onReady: function(){
-					window.parentIFrame.sendMessage( 'giveEmbedFormContentLoaded' );
-				},
-				onMessage: function( message ) {
-					console.log( message );
-
-					if ('currentPage' in message) {
-						let $field = document.getElementsByName( 'give-current-url' );
-						if( $field.length ) {
-							$field[0].setAttribute('value', message.currentPage);
-						}
-					}
-				}
-			}
-		</script>
-		<?php
-		echo $this->get_script_tag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-elegent-theme.js' );
-
-		$this->stripe_frontend_scripts();
-	}
-
 	/**
 	 * Load Frontend javascript
 	 *
@@ -531,7 +477,7 @@ class Give_Scripts {
 	 *
 	 * @return void
 	 */
-	private function stripe_frontend_scripts() {
+	public static function stripe_frontend_scripts() {
 
 		// Get publishable key.
 		$publishable_key = give_stripe_get_publishable_key();
@@ -609,7 +555,7 @@ class Give_Scripts {
 
 	/**
 	 * Localize / PHP to AJAX vars.
-	 */
+	 */st
 	public function public_localize_scripts() {
 		$localize_give_vars = apply_filters( 'give_global_script_vars', $this->get_public_data() );
 
@@ -695,59 +641,6 @@ class Give_Scripts {
 		);
 
 	}
-
-	/**
-	 * Get script tag
-	 *
-	 * @param string $url
-	 * @param array  $args
-	 *
-	 * @return string
-	 */
-	private function get_script_tag( $url, $args = [] ) {
-		return sprintf(
-			'<script src="%1$s" type="text/javascript"></script>',
-			add_query_arg( array( 'ver' => GIVE_VERSION ), $url )
-		);
-	}
-
-
-	/**
-	 * Get style tag
-	 *
-	 * @param string $url
-	 * @param array  $args
-	 *
-	 * @return string
-	 */
-	private function get_style_tag( $url, $args = [] ) {
-		$args = wp_parse_args(
-			$args,
-			[ 'media' => 'all' ]
-		);
-		return sprintf(
-			'<link rel="stylesheet" href="%1$s" media="%2$s"/>',
-			add_query_arg( array( 'ver' => GIVE_VERSION ), $url ),
-			$args['media']
-		);
-	}
-
-	/**
-	 * Get localize script
-	 *
-	 * @param string $name
-	 * @param array  $data
-	 *
-	 * @return string
-	 */
-	private function get_localized_script( $name, $data ) {
-		return sprintf(
-			'<script> var %1$s = %2$s </script>',
-			$name,
-			wp_json_encode( $data )
-		);
-	}
-
 
 	/**
 	 * Get public data which will be accessible by global constant.
