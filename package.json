@@ -88,6 +88,7 @@
         "flot-orderbars": "^1.0.0",
         "gravatar": "^1.8.0",
         "hint.css": "^2.5.1",
+        "iframe-resizer": "^4.2.10",
         "jquery-chosen": "latest",
         "jquery.payment": "latest",
         "magnific-popup": "latest",
