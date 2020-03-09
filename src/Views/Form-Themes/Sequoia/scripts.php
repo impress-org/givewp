@@ -21,8 +21,5 @@ function give_ft_sequoia_page_styles() {
  * Load form theme scripts
  */
 function give_ft_sequoia_page_scripts() {
-	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
-	echo getScripTag( includes_url( 'js/jquery/jquery.js' ) );
-	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
 	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-theme.js' );
 }

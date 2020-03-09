@@ -2,6 +2,7 @@
 use Give\Form\ThemeLoader;
 use function Give\Helpers\Script\getLocalizedScript;
 use function Give\Helpers\Script\getStyleTag;
+use function Give\Helpers\Script\getScripTag;
 
 global $post;
 
@@ -30,6 +31,11 @@ $atts = array( 'display_style' => 'onpage' );
 		<?php
 		// Fetch the Give Form.
 		give_get_donation_form( array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) ) );
+
+		echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
+		echo getScripTag( includes_url( 'js/jquery/jquery.js' ) );
+		echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
+
 		/**
 		 * Fire the action hook in footer
 		 */
