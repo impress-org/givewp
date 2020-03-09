@@ -508,67 +508,6 @@ class Give_MetaBox_Form_Data {
 			),
 
 			/**
-			 * Content Field
-			 */
-			'form_content_options'  => apply_filters(
-				'give_forms_content_options',
-				array(
-					'id'        => 'form_content_options',
-					'title'     => __( 'Form Content', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-edit"></span>',
-					'fields'    => apply_filters(
-						'give_forms_content_options_metabox_fields',
-						array(
-
-							// Donation content.
-							array(
-								'name'        => __( 'Display Content', 'give' ),
-								'description' => __( 'Do you want to add custom content to this form?', 'give' ),
-								'id'          => $prefix . 'display_content',
-								'type'        => 'radio_inline',
-								'options'     => array(
-									'enabled'  => __( 'Enabled', 'give' ),
-									'disabled' => __( 'Disabled', 'give' ),
-								),
-								'default'     => 'disabled',
-							),
-
-							// Content placement.
-							array(
-								'name'          => __( 'Content Placement', 'give' ),
-								'description'   => __( 'This option controls where the content appears within the donation form.', 'give' ),
-								'id'            => $prefix . 'content_placement',
-								'type'          => 'radio_inline',
-								'options'       => apply_filters(
-									'give_forms_content_options_select',
-									array(
-										'give_pre_form'  => __( 'Above fields', 'give' ),
-										'give_post_form' => __( 'Below fields', 'give' ),
-									)
-								),
-								'default'       => 'give_pre_form',
-								'wrapper_class' => 'give-hidden',
-							),
-							array(
-								'name'          => __( 'Content', 'give' ),
-								'description'   => __( 'This content will display on the single give form page.', 'give' ),
-								'id'            => $prefix . 'form_content',
-								'type'          => 'wysiwyg',
-								'wrapper_class' => 'give-hidden',
-							),
-							array(
-								'name'  => 'form_content_docs',
-								'type'  => 'docs_link',
-								'url'   => 'http://docs.givewp.com/form-content',
-								'title' => __( 'Form Content', 'give' ),
-							),
-						),
-						$post_id
-					),
-				)
-			),
-
-			/**
 			 * Terms & Conditions
 			 */
 			'form_terms_options'    => apply_filters(

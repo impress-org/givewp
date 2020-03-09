@@ -144,6 +144,39 @@ return [
 					],
 					'default' => 'global',
 				],
+				[
+					'name'        => __( 'Display Content', 'give' ),
+					'description' => __( 'Do you want to add custom content to this form?', 'give' ),
+					'id'          => 'legacy_display_content',
+					'type'        => 'radio_inline',
+					'options'     => array(
+						'enabled'  => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
+					),
+					'default'     => 'disabled',
+				],
+				[
+					'name'          => __( 'Content Placement', 'give' ),
+					'description'   => __( 'This option controls where the content appears within the donation form.', 'give' ),
+					'id'            => 'legacy_content_placement',
+					'type'          => 'radio_inline',
+					'options'       => apply_filters(
+						'give_forms_content_options_select',
+						[
+							'give_pre_form'  => __( 'Above fields', 'give' ),
+							'give_post_form' => __( 'Below fields', 'give' ),
+						]
+					),
+					'default'       => 'give_pre_form',
+					'wrapper_class' => 'give-hidden',
+				],
+				[
+					'name'          => __( 'Content', 'give' ),
+					'description'   => __( 'This content will display on the single give form page.', 'give' ),
+					'id'            => 'legacy_form_content',
+					'type'          => 'wysiwyg',
+					'wrapper_class' => 'give-hidden',
+				],
 			],
 		],
 	],
