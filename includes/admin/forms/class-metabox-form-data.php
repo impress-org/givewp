@@ -277,24 +277,11 @@ class Give_MetaBox_Form_Data {
 				'give_form_display_options',
 				array(
 					'id'        => 'form_display_options',
-					'title'     => __( 'Form Display', 'give' ),
+					'title'     => __( 'Form Fields', 'give' ),
 					'icon-html' => '<span class="give-icon give-icon-display"></span>',
 					'fields'    => apply_filters(
 						'give_forms_display_options_metabox_fields',
 						array(
-							array(
-								'name'    => __( 'Display Options', 'give' ),
-								'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
-								'id'      => $prefix . 'payment_display',
-								'type'    => 'radio_inline',
-								'options' => array(
-									'onpage' => __( 'All Fields', 'give' ),
-									'modal'  => __( 'Modal', 'give' ),
-									'reveal' => __( 'Reveal', 'give' ),
-									'button' => __( 'Button', 'give' ),
-								),
-								'default' => 'onpage',
-							),
 							array(
 								'id'            => $prefix . 'reveal_label',
 								'name'          => __( 'Continue Button', 'give' ),
@@ -304,15 +291,6 @@ class Give_MetaBox_Form_Data {
 									'placeholder' => __( 'Donate Now', 'give' ),
 								),
 								'wrapper_class' => 'give-hidden',
-							),
-							array(
-								'id'         => $prefix . 'checkout_label',
-								'name'       => __( 'Submit Button', 'give' ),
-								'desc'       => __( 'The button label for completing a donation.', 'give' ),
-								'type'       => 'text_small',
-								'attributes' => array(
-									'placeholder' => __( 'Donate Now', 'give' ),
-								),
 							),
 							array(
 								'name' => __( 'Default Gateway', 'give' ),
@@ -404,19 +382,6 @@ class Give_MetaBox_Form_Data {
 									'both'         => __( 'Registration + Login', 'give' ),
 								),
 								'default' => 'none',
-							),
-							array(
-								'name'    => __( 'Floating Labels', 'give' ),
-								/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
-								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
-								'id'      => $prefix . 'form_floating_labels',
-								'type'    => 'radio_inline',
-								'options' => array(
-									'global'   => __( 'Global Option', 'give' ),
-									'enabled'  => __( 'Enabled', 'give' ),
-									'disabled' => __( 'Disabled', 'give' ),
-								),
-								'default' => 'global',
 							),
 							array(
 								'name'  => 'form_display_docs',
