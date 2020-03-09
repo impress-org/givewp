@@ -1,5 +1,8 @@
 <?php
 
+use function Give\Helpers\Script\getLocalizedScript;
+use function Give\Helpers\Script\getScripTag;
+
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -532,24 +535,24 @@ class Give_Scripts {
 
 		// Load third-party stripe js when required gateways are active.
 		if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
-			echo $this->get_script_tag( 'https://js.stripe.com/v3/' );
-			echo $this->get_localized_script( 'give_stripe_vars', $stripe_vars );
+			echo getScripTag( 'https://js.stripe.com/v3/' );
+			echo getLocalizedScript( 'give_stripe_vars', $stripe_vars );
 		}
 
 		// Load legacy Stripe checkout when the checkout type is `modal`.
 		if ( 'modal' === give_stripe_get_checkout_type() ) {
 
 			// Stripe checkout js.
-			echo $this->get_script_tag( 'https://checkout.stripe.com/checkout.js' );
+			echo getScripTag( 'https://checkout.stripe.com/checkout.js' );
 
 			// Give Stripe Checkout JS.
-			echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js' );
-			$this->get_localized_script( 'give_stripe_vars', $stripe_vars );
+			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js' );
+			getLocalizedScript( 'give_stripe_vars', $stripe_vars );
 		}
 
 		// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
 		if ( give_is_gateway_active( 'stripe' ) ) {
-			echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js' );
+			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js' );
 		}
 	}
 
