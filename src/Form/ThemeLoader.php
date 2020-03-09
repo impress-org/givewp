@@ -30,9 +30,9 @@ class ThemeLoader {
 	/**
 	 * Form theme config.
 	 *
-	 * @var array
+	 * @var Theme
 	 */
-	private $themeConfig = [];
+	private $theme;
 
 	/**
 	 * Activate form theme id.
@@ -60,7 +60,7 @@ class ThemeLoader {
 
 		$this->activeThemeID = getActiveID( $this->formID );
 		$this->themeSettings = getThemeSettings( $this->formID );
-		$this->themeConfig   = Give()->themes->getTheme( $this->activeThemeID );
+		$this->theme         = Give()->themes->getTheme( $this->activeThemeID );
 	}
 
 
@@ -69,7 +69,7 @@ class ThemeLoader {
 	 */
 	public function init() {
 		// Exit.
-		if ( ! ( $entryFilePath = $this->getThemePath() ) ) {
+		if ( ! ( $entryFilePath = $this->theme->getThemePath() ) ) {
 			return;
 		}
 
@@ -81,15 +81,5 @@ class ThemeLoader {
 		}
 
 		require_once $entryFilePath;
-	}
-
-
-	/**
-	 * Get form theme path
-	 *
-	 * @return string
-	 */
-	private function getThemePath() {
-		return array_key_exists( 'entry', $this->themeConfig ) ? $this->themeConfig['entry'] : '';
 	}
 }
