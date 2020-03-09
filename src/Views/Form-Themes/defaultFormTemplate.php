@@ -30,26 +30,6 @@ $atts = array( 'display_style' => 'onpage' );
 		<?php
 		// Fetch the Give Form.
 		give_get_donation_form( array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) ) );
-		?>
-		<script>
-			var iFrameResizer = {
-				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
-				onReady: function(){
-					window.parentIFrame.sendMessage( 'giveEmbedFormContentLoaded' );
-				},
-				onMessage: function( message ) {
-					console.log( message );
-
-					if ('currentPage' in message) {
-						let $field = document.getElementsByName( 'give-current-url' );
-						if( $field.length ) {
-							$field[0].setAttribute('value', message.currentPage);
-						}
-					}
-				}
-			}
-		</script>
-		<?php
 		/**
 		 * Fire the action hook in footer
 		 */
