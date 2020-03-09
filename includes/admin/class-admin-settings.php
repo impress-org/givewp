@@ -609,6 +609,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				case 'select':
 				case 'multiselect':
 					$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+					$setting_name = esc_attr( $value['id'] ) . ( 'multiselect' === $value['type'] ? '[]' : '' );
 
 					/**
 					 * Insert page in option if missing.
@@ -630,13 +631,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 					</th>
 					<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ); ?>">
-						<select
-								name="<?php echo esc_attr( $value['id'] ); ?>
-												 <?php
-													if ( 'multiselect' === $value['type'] ) {
-														echo '[]';}
-													?>
-								"
+						<select name="<?php echo $setting_name; ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"
 								style="<?php echo esc_attr( $value['css'] ); ?>"
 								class="<?php echo esc_attr( $value['class'] ); ?>"
@@ -648,7 +643,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							if ( ! empty( $value['options'] ) ) {
 								foreach ( $value['options'] as $key => $val ) {
 									?>
-									<option value="<?php echo esc_attr( $key ); ?>" 
+									<option value="<?php echo esc_attr( $key ); ?>"
 															  <?php
 
 																if ( is_array( $option_value ) ) {
