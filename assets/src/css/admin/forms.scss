@@ -397,38 +397,67 @@ Shortcode Copy & Paste
 			display: grid;
 			grid-gap: 10px;
 			grid-template-columns: 1fr 1fr;
-			padding: 25px 0;
+			padding: 8px 0 24px 0;
 
 			.image-placeholder {
 				height: 150px;
-				background-color: #d8d8d8;
+				background-color: #fff;
 			}
 
 			.action {
 				display: flex;
 				align-items: center;
-
-				background-color: #eee;
-				padding: 6px;
+				background-color: #fafafa;
+				border-top: 1px solid #eee;
+				padding: 10px;
 
 				strong {
+					font-weight: 500;
 					flex-grow: 1;
+					padding-left: 6px;
 				}
 
 				.badge {
 					display: none;
 					padding: 2px 9px;
-					background-color: #08c508;
+					background-color: #7ad03a;
 					color: #fff;
 					font-style: normal;
 					border-radius: 5px;
 					margin-left: 10px;
+					text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 				}
 			}
 		}
 
 		.form-theme-introduction {
 			padding-bottom: 25px;
+
+			p {
+				font-size: 18px;
+				margin: 0 0 14px 0;
+				padding: 0;
+			}
+
+			p.form-theme-description {
+				color: #9c9c9c;
+				font-size: 16px;
+			}
+
+			.form-theme-notice {
+				padding: 16px 10px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 24px;
+
+				p {
+					max-width: 60%;
+					margin: 0;
+					font-size: 16px;
+					color: #555;
+				}
+			}
 		}
 
 		.theme-options {
@@ -448,6 +477,12 @@ Shortcode Copy & Paste
 			.form-theme-options-introduction {
 				display: none;
 				padding-bottom: 25px;
+			}
+
+			.theme-info {
+				background: #fafafa;
+				border: 1px solid #ccd0d4;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
 			}
 
 			&.has-activated-theme {
