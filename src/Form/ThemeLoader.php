@@ -21,11 +21,18 @@ defined( 'ABSPATH' ) || exit;
  */
 class ThemeLoader {
 	/**
+	 * Default form theme ID.
+	 *
+	 * @var string
+	 */
+	private $defaultThemeID = 'legacy';
+
+	/**
 	 * Saved form theme settings
 	 *
 	 * @var array
 	 */
-	private $themeSettings = [];
+	private $themeSettings;
 
 	/**
 	 * Form theme config.
@@ -59,6 +66,8 @@ class ThemeLoader {
 		$this->formID = $formID ?: $post->ID;
 
 		$this->activeThemeID = getActiveID( $this->formID );
+		$this->activeThemeID = $this->activeThemeID ?: $this->defaultThemeID;
+
 		$this->themeSettings = getThemeSettings( $this->formID );
 		$this->theme         = Give()->themes->getTheme( $this->activeThemeID );
 	}
