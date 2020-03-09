@@ -29,11 +29,7 @@ $atts = array( 'display_style' => 'onpage' );
 	<body>
 		<?php
 		// Fetch the Give Form.
-		ob_start();
-
 		give_get_donation_form( array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) ) );
-
-		echo ob_get_clean();
 		?>
 		<script>
 			var iFrameResizer = {
