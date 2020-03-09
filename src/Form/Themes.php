@@ -81,7 +81,7 @@ class Themes {
 	 * @since 2.7.0
 	 */
 	public function getTheme( $themeID ) {
-		return $this->themes[ $themeID ];
+		return isset( $this->themes[ $themeID ] ) ? $this->themes[ $themeID ] : [];
 	}
 
 	/**
