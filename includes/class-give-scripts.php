@@ -477,7 +477,7 @@ class Give_Scripts {
 	 *
 	 * @return void
 	 */
-	public static function stripe_frontend_scripts() {
+	public function stripe_frontend_scripts() {
 
 		// Get publishable key.
 		$publishable_key = give_stripe_get_publishable_key();
