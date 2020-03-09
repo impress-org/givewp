@@ -23,7 +23,6 @@ function give_ft_sequoia_page_styles() {
 function give_ft_sequoia_page_scripts() {
 	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
 	echo getScripTag( includes_url( 'js/jquery/jquery.js' ) );
-	echo getScripTag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
 	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
 	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-theme.js' );
 }
