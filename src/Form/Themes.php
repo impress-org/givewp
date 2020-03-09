@@ -49,7 +49,8 @@ class Themes {
 		}
 
 		foreach ( $allThemes as $themePath ) {
-			$configFile = trailingslashit( $themePath ) . 'config.php';
+			$themePath  = trailingslashit( $themePath );
+			$configFile = $themePath . 'config.php';
 
 			if ( file_exists( $configFile ) ) {
 				$config          = require $configFile;
