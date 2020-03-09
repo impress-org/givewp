@@ -13,7 +13,7 @@ add_action( 'give_embed_footer', 'give_ft_sequoia_page_scripts' );
  */
 function give_ft_sequoia_page_styles() {
 	echo getStyleTag( Give()->scripts->get_frontend_stylesheet_uri() );
-	echo getStyleTag( GIVE_PLUGIN_URL . 'assets/dist/css/give-elegent-theme.css' );
+	echo getStyleTag( GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-theme.css' );
 	echo getStyleTag( 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap' );
 
 	echo getLocalizedScript( 'give_global_vars', Give()->scripts->get_public_data() );
@@ -50,7 +50,7 @@ function give_ft_sequoia_page_scripts() {
 	<?php
 	echo getScripTag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
 	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
-	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-elegent-theme.js' );
+	echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-theme.js' );
 
 	Give()->scripts->stripe_frontend_scripts();
 }
