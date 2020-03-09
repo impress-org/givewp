@@ -468,8 +468,6 @@ class Give_Scripts {
 			);
 		}
 
-		wp_enqueue_script( 'iframeResizer', 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.min.js', array( 'jquery' ), '4.2.9', self::$scripts_footer );
-
 		wp_enqueue_script( 'give' );
 
 		$this->public_localize_scripts();
