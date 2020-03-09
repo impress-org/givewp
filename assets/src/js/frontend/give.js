@@ -16,7 +16,9 @@ import './give-donations';
 import './give-ajax';
 import './give-misc';
 import './give-donor-wall';
-import './give-embed-form';
+import iFrameResizer from './form-theme/iframe-content';
+import './form-theme/parent-page';
 
 const { init, fn, form, notice, cache, donor, util } = GiveAPI;
 window.Give = { init, fn, form, notice, cache, donor, util };
+window.iFrameResizer = iFrameResizer;
