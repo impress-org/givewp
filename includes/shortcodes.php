@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use function Give\Helpers\Form\Theme\getActiveID;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -137,11 +139,12 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
+	$activeTheme        = ! empty( $atts['form_theme'] ) ? $atts['form_theme'] : getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( ! empty( $atts['embed'] ) ) {
+	if ( ! empty( $atts['embed'] ) && 'legacy' !== $activeTheme ) {
 		unset( $atts['embed'] );
 
 		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
