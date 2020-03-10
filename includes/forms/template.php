@@ -1537,12 +1537,6 @@ function give_get_login_fields( $form_id ) {
 					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 				<?php endif; ?>
 			</div>
-			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
-				 <span class="give-forgot-password ">
-					 <a href="<?php echo wp_lostpassword_url(); ?>"
-						target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
-				 </span>
-			</div>
 		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
