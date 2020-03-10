@@ -409,6 +409,8 @@ Shortcode Copy & Paste
 
 			.image-placeholder {
 				height: 150px;
+				object-fit: cover;
+				width: 100%;
 				background-color: #fff;
 			}
 
