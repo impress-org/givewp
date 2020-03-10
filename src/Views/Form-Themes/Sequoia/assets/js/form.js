@@ -28,4 +28,63 @@
 			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
 		}
 	} );
+
+	// Move personal information section when document load.
+	giveMoveFieldsUnderPaymentGateway( true );
+
+	// Move personal information section when gateway updated.
+	$( document ).on( 'give_gateway_loaded', function() {
+		giveMoveFieldsUnderPaymentGateway( true );
+	} );
+	$( document ).on( 'Give:onPreGatewayLoad', function() {
+		giveMoveFieldsUnderPaymentGateway( false );
+	} );
+
+	/**
+	 * Move form field under payment gateway
+	 *
+	 * @todo: refactor this code
+	 *
+	 * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
+	 */
+	function giveMoveFieldsUnderPaymentGateway( $refresh = false ) {
+		// This function will run only for embed donation form.
+		if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
+			return;
+		}
+
+		if ( ! $refresh ) {
+			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
+			element.slideUp( 'slow', function() {
+				element.remove();
+			} );
+
+			return;
+		}
+
+		new Promise( function( res ) {
+			const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
+			let showFields = false;
+
+			jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
+
+			jQuery.each( fields, function( index, $item ) {
+				$item = jQuery( $item );
+				jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
+
+				showFields = ! showFields ? !! $item.html().trim() : showFields;
+
+				$item.remove();
+			} );
+
+			if ( ! showFields ) {
+				jQuery( '.give_purchase_form_wrap-clone' ).remove();
+			}
+
+			return res( showFields );
+		} ).then( function( showFields ) {
+			// eslint-disable-next-line no-unused-expressions
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+		} );
+	}
 }( jQuery ) );

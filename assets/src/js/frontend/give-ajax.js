@@ -52,8 +52,6 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	giveMoveFieldsUnderPaymentGateway( true );
-
 	// Show the login form in the checkout when the user clicks the "Login" link
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
 		const $this = $( this );
@@ -347,7 +345,8 @@ function give_load_gateway( form_object, payment_mode ) {
 
 	//Post via AJAX to Give
 	new Promise( function( res ) {
-		giveMoveFieldsUnderPaymentGateway( false );
+		// trigger an event on before payment gateway loads.
+		jQuery( document ).trigger( 'Give:onPreGatewayLoad' );
 
 		jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
 			action: 'give_load_gateway',
@@ -363,64 +362,14 @@ function give_load_gateway( form_object, payment_mode ) {
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
 
-			// trigger an event on success for hooks
-			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
-
-			// Unblock form.
-			jQuery( form_object ).unblock();
-
-			return res();
+			return res( response );
 		}
 		);
-	} ).then( function() {
-		giveMoveFieldsUnderPaymentGateway( true );
-	} );
-}
+	} ).then( function( response ) {
+		// trigger an event on success for hooks
+		jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
 
-/**
- * Move form field under payment gateway
- *
- * @todo: refactor this code
- *
- * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
- */
-function giveMoveFieldsUnderPaymentGateway( $refresh = false ) {
-	// This function will run only for embed donation form.
-	if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
-		return;
-	}
-
-	if ( ! $refresh ) {
-		const element = jQuery( 'li.give_purchase_form_wrap-clone' );
-		element.slideUp( 'slow', function() {
-			element.remove();
-		} );
-
-		return;
-	}
-
-	new Promise( function( res ) {
-		const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
-		let showFields = false;
-
-		jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
-
-		jQuery.each( fields, function( index, $item ) {
-			$item = jQuery( $item );
-			jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
-
-			showFields = ! showFields ? !! $item.html().trim() : showFields;
-
-			$item.remove();
-		} );
-
-		if ( ! showFields ) {
-			jQuery( '.give_purchase_form_wrap-clone' ).remove();
-		}
-
-		return res( showFields );
-	} ).then( function( showFields ) {
-		// eslint-disable-next-line no-unused-expressions
-		showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+		// Unblock form.
+		jQuery( form_object ).unblock();
 	} );
 }
