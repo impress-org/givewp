@@ -2,7 +2,7 @@
 return [
 	'id'      => 'sequoia',
 	'name'    => __( 'Sequoia - Multi-Step Form', 'give' ),
-	'image'   => '',
+	'image'   => 'https://images.unsplash.com/photo-1448387473223-5c37445527e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=100',
 	'options' => [
 		'introduction'        => [
 			'name'   => __( 'Introduction', 'give' ),
@@ -52,7 +52,7 @@ return [
 			'desc'   => __( 'Step descruiption will show up here if any', 'give' ),
 			'fields' => [
 				[
-					'id'         => 'sequoia_reveal_label',
+					'id'         => 'reveal_label',
 					'name'       => __( 'Continue Button', 'give' ),
 					'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
 					'type'       => 'text_medium',
@@ -67,7 +67,7 @@ return [
 			'desc'   => __( 'Step description will show up here if any', 'give' ),
 			'fields' => [
 				[
-					'id'         => 'sequoia_checkout_label',
+					'id'         => 'checkout_label',
 					'name'       => __( 'Submit Button', 'give' ),
 					'desc'       => __( 'The button label for completing a donation.', 'give' ),
 					'type'       => 'text_medium',
