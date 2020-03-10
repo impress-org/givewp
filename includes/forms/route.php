@@ -59,7 +59,7 @@ function give_form_styles_routes() {
 		give_is_viewing_embed_form_receipt()
 		|| give_is_viewing_embed_form_failed_transaction_page()
 	) {
-		require_once 'view/receipt.php';
+		require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormReceiptTemplate.php';
 		exit();
 	}
 }
