@@ -385,11 +385,19 @@ add_action( 'give_donation-receipt_email_notification', 'give_set_email_access_p
 function give_load_form_theme_on_request() {
 	if (
 		defined( 'DOING_AJAX' ) &&
-		isset( $_REQUEST['action'], $_REQUEST['give_form_id'] ) &&
+		isset( $_REQUEST['action'] ) &&
 		0 === strpos( $_REQUEST['action'], 'give_' )
 	) {
 		global $post;
-		$formID = absint( $_REQUEST['give_form_id'] );
+
+		// Get form ID.
+		if ( isset( $_REQUEST['give_form_id'] ) ) {
+			$formID = absint( $_REQUEST['give_form_id'] );
+		} elseif ( isset( $_REQUEST['form_id'] ) ) {
+			$formID = absint( $_REQUEST['form_id'] );
+		} else {
+			return;
+		}
 
 		$post        = get_post( $formID );
 		$themeLoader = new ThemeLoader();
