@@ -2,26 +2,32 @@
 ( function( $ ) {
 	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
 		e.preventDefault();
-		const $container = $( '.give-embed-form' ),
-			  $form = $( 'form', $container ),
-			  $paymentGateways = $( '[id="give-payment-mode-wrap"] li:not(.give_purchase_form_wrap-clone)', $form );
+		const $parent = $( this ).parent(),
+			  $container = $( '.give-embed-form' ),
+			  $form = $( 'form', $container );
 
-		// Add flex class in case of more then one payment gateway active.
-		if ( 1 < parseInt( $paymentGateways.length ) ) {
-			$.each( $paymentGateways, function( index, $item ) {
-				$( $item ).addClass( 'give-flex' );
-			} );
-		}
+		if ( $parent.hasClass( 'give-showing__introduction-section' ) ) {
+			// Hide introduction section.
+			$( '> *:not(.give_error):not(form):not(.give-show-form)', $container ).hide();
 
-		$( '> *:not(.give_error):not(form)', $container ).hide();
+			// Show choose amount section
+			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
+			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
+			$( '.give-section.choose-amount', $form ).show();
 
-		$( '.give-donation-levels-wrap', $form ).addClass( 'give-grid' );
-		$( '.give-total-wrap', $form ).addClass( 'give-flex' );
-		$form.slideDown();
+			$parent.removeClass( 'give-showing__introduction-section' ).addClass( 'give-showing_choose-amount-section' );
+		} else if ( $parent.hasClass( 'give-showing_choose-amount-section' ) ) {
+			// Hide choose amount section.
+			$( '.give-total-wrap', $container ).removeClass( 'give-flex' );
+			$( '.give-section.choose-amount', $form ).hide();
 
-		// Hide payment gateway option in case on one gateway is active.
-		if ( 1 === parseInt( $paymentGateways.length ) ) {
-			$paymentGateways.hide();
+			// Hide paginate button.
+			$( '.give-show-form', $container ).hide();
+
+			// Show remain form options.
+			$( 'form > *:not(.give-section.choose-amount)', $container ).show();
+
+			$parent.removeClass( 'give-showing_choose-amount-section' ).addClass( 'give-showing__personal-section' );
 		}
 
 		if ( 'parentIFrame' in window ) {
