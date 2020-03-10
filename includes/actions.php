@@ -10,8 +10,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Form\ThemeLoader;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -375,33 +373,3 @@ function give_set_email_access_property() {
 }
 add_action( 'give_email_links', 'give_set_email_access_property', -1 );
 add_action( 'give_donation-receipt_email_notification', 'give_set_email_access_property', -1 );
-
-
-/**
- * Load form theme on ajax request
- *
- * @since 2.7.0
- */
-function give_load_form_theme_on_request() {
-	if (
-		defined( 'DOING_AJAX' ) &&
-		isset( $_REQUEST['action'] ) &&
-		0 === strpos( $_REQUEST['action'], 'give_' )
-	) {
-		global $post;
-
-		// Get form ID.
-		if ( isset( $_REQUEST['give_form_id'] ) ) {
-			$formID = absint( $_REQUEST['give_form_id'] );
-		} elseif ( isset( $_REQUEST['form_id'] ) ) {
-			$formID = absint( $_REQUEST['form_id'] );
-		} else {
-			return;
-		}
-
-		$post        = get_post( $formID );
-		$themeLoader = new ThemeLoader();
-		$themeLoader->init();
-	}
-}
-add_action( 'init', 'give_load_form_theme_on_request' );
