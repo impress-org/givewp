@@ -258,7 +258,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_theme_options',
 					'title'     => __( 'Form Theme', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-display"></span>',
+					'icon-html' => '<span class="dashicons dashicons-art"></span>',
 					'fields'    => array(
 						array(
 							'id'      => $prefix . 'form_theme',
@@ -278,7 +278,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_display_options',
 					'title'     => __( 'Form Fields', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-display"></span>',
+					'icon-html' => '<span class="dashicons dashicons-editor-alignleft"></span>',
 					'fields'    => apply_filters(
 						'give_forms_display_options_metabox_fields',
 						array(
