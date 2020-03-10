@@ -18,7 +18,7 @@ Many of our add-ons are in public repositories, however, the majority are privat
 
 * [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users.
 * [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
-* [GiveWP Documentation](https://givewp.com/docs/) - for all **admins**. 
+* [GiveWP Documentation](https://givewp.com/documentation/) - for all **admins**. 
  
 ## 🌱 Getting Started 
 
