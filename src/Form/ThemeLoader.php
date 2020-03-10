@@ -58,15 +58,16 @@ class ThemeLoader {
 	/**
 	 * Form Theme loading handler
 	 *
-	 * @param int $formID
+	 * @param int    $formID
+	 * @param string $formTheme Theme ID. Add form_theme shortcode argument to load selective form theme.
 	 */
-	public function __construct( $formID = 0 ) {
+	public function __construct( $formID = 0, $formTheme = '' ) {
 		global $post;
 
 		$this->formID = $formID ?: $post->ID;
 
 		$this->activeThemeID = getActiveID( $this->formID );
-		$this->activeThemeID = $this->activeThemeID ?: $this->defaultThemeID;
+		$this->activeThemeID = $formTheme ?: ( $this->activeThemeID ?: $this->defaultThemeID );
 
 		$this->themeSettings = getThemeSettings( $this->formID );
 		$this->theme         = Give()->themes->getTheme( $this->activeThemeID );

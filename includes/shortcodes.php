@@ -144,7 +144,7 @@ function give_form_shortcode( $atts ) {
 	if ( ! empty( $atts['embed'] ) ) {
 		unset( $atts['embed'] );
 
-		$query_string     = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
 
@@ -160,11 +160,7 @@ function give_form_shortcode( $atts ) {
 
 		// Build iframe url.
 		$iframe_url = add_query_arg(
-			array(
-				$query_string,
-				array( 'iframe' => true ),
-				$atts,
-			),
+			array_merge( $query_string, $atts, array( 'iframe' => true ) ),
 			give_embed_form_get_url( $atts['id'] )
 		);
 
