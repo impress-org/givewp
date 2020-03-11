@@ -720,7 +720,7 @@ class Give_MetaBox_Form_Data {
 								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
 									<?php echo $form_data_tab['icon-html']; ?>
 								<?php else : ?>
-									<span class="give-icon give-icon-default"></span>
+									<i class="fas fa-angle-right"></i>
 								<?php endif; ?>
 								<span class="give-label"><?php echo $form_data_tab['label']; ?></span>
 							</a>
@@ -733,7 +733,7 @@ class Give_MetaBox_Form_Data {
 												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
 													<?php echo $sub_tab['icon-html']; ?>
 												<?php else : ?>
-													<span class="give-icon give-icon-default"></span>
+													<i class="fas fa-angle-right"></i>
 												<?php endif; ?>
 												<span class="give-label"><?php echo $sub_tab['label']; ?></span>
 											</a>
