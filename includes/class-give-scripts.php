@@ -1,8 +1,5 @@
 <?php
 
-use function Give\Helpers\Script\getLocalizedScript;
-use function Give\Helpers\Script\getScripTag;
-
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -474,93 +471,79 @@ class Give_Scripts {
 	}
 
 	/**
-	 * Load Frontend javascript
-	 *
-	 * @since 2.5.0
-	 *
-	 * @return void
-	 */
-	public function stripe_frontend_scripts() {
-
-		// Get publishable key.
-		$publishable_key = give_stripe_get_publishable_key();
-
-		// Checkout options.
-		// @TODO: convert checkboxes to radios.
-		$zip_option      = give_is_setting_enabled( give_get_option( 'stripe_checkout_zip_verify' ) );
-		$remember_option = give_is_setting_enabled( give_get_option( 'stripe_checkout_remember_me' ) );
-
-		$stripe_card_update = false;
-		$get_data           = give_clean( filter_input_array( INPUT_GET ) );
-
-		if ( isset( $get_data['action'] ) &&
-			 'update' === $get_data['action'] &&
-			 isset( $get_data['subscription_id'] ) &&
-			 is_numeric( $get_data['subscription_id'] )
-		) {
-			$stripe_card_update = true;
-		}
-
-		// Set vars for AJAX.
-		$stripe_vars = array(
-			'zero_based_currency'          => give_is_zero_based_currency(),
-			'zero_based_currencies_list'   => give_get_zero_based_currencies(),
-			'sitename'                     => give_get_option( 'stripe_checkout_name' ),
-			'publishable_key'              => $publishable_key,
-			'checkout_image'               => give_get_option( 'stripe_checkout_image' ),
-			'checkout_address'             => give_get_option( 'stripe_collect_billing' ),
-			'checkout_processing_text'     => give_get_option( 'stripe_checkout_processing_text', __( 'Donation Processing...', 'give' ) ),
-			'zipcode_option'               => $zip_option,
-			'remember_option'              => $remember_option,
-			'give_version'                 => get_option( 'give_version' ),
-			'cc_fields_format'             => give_get_option( 'stripe_cc_fields_format', 'multi' ),
-			'card_number_placeholder_text' => __( 'Card Number', 'give' ),
-			'card_cvc_placeholder_text'    => __( 'CVC', 'give' ),
-			'donate_button_text'           => __( 'Donate Now', 'give' ),
-			'element_font_styles'          => give_stripe_get_element_font_styles(),
-			'element_base_styles'          => give_stripe_get_element_base_styles(),
-			'element_complete_styles'      => give_stripe_get_element_complete_styles(),
-			'element_empty_styles'         => give_stripe_get_element_empty_styles(),
-			'element_invalid_styles'       => give_stripe_get_element_invalid_styles(),
-			'float_labels'                 => give_is_float_labels_enabled(
-				array(
-					'form_id' => get_the_ID(),
-				)
-			),
-			'base_country'                 => give_get_option( 'base_country' ),
-			'stripe_card_update'           => $stripe_card_update,
-			'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
-			'preferred_locale'             => give_stripe_get_preferred_locale(),
-		);
-
-		// Load third-party stripe js when required gateways are active.
-		if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
-			echo getScripTag( 'https://js.stripe.com/v3/' );
-			echo getLocalizedScript( 'give_stripe_vars', $stripe_vars );
-		}
-
-		// Load legacy Stripe checkout when the checkout type is `modal`.
-		if ( 'modal' === give_stripe_get_checkout_type() ) {
-
-			// Stripe checkout js.
-			echo getScripTag( 'https://checkout.stripe.com/checkout.js' );
-
-			// Give Stripe Checkout JS.
-			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js' );
-			getLocalizedScript( 'give_stripe_vars', $stripe_vars );
-		}
-
-		// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
-		if ( give_is_gateway_active( 'stripe' ) ) {
-			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js' );
-		}
-	}
-
-	/**
 	 * Localize / PHP to AJAX vars.
 	 */
 	public function public_localize_scripts() {
-		$localize_give_vars = apply_filters( 'give_global_script_vars', $this->get_public_data() );
+
+		/**
+		 * Filter to modify access mail send notice
+		 *
+		 * @param string Send notice message for email access.
+		 *
+		 * @return  string $message Send notice message for email access.
+		 * @since 2.1.3
+		 */
+		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+
+		$localize_give_vars = apply_filters(
+			'give_global_script_vars',
+			array(
+				'ajaxurl'                     => give_get_ajax_url(),
+				'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
+				// Do not use this nonce. Its deprecated.
+				'currency'                    => give_get_currency(),
+				'currency_sign'               => give_currency_filter( '' ),
+				'currency_pos'                => give_get_currency_position(),
+				'thousands_separator'         => give_get_price_thousand_separator(),
+				'decimal_separator'           => give_get_price_decimal_separator(),
+				'no_gateway'                  => __( 'Please select a payment method.', 'give' ),
+				'bad_minimum'                 => __( 'The minimum custom donation amount for this form is', 'give' ),
+				'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
+				'general_loading'             => __( 'Loading...', 'give' ),
+				'purchase_loading'            => __( 'Please Wait...', 'give' ),
+				'number_decimals'             => give_get_price_decimals(),
+				'give_version'                => GIVE_VERSION,
+				'magnific_options'            => apply_filters(
+					'give_magnific_options',
+					array(
+						'main_class'        => 'give-modal',
+						'close_on_bg_click' => false,
+					)
+				),
+				'form_translation'            => apply_filters(
+					'give_form_translation_js',
+					array(
+						// Field name               Validation message.
+						'payment-mode'           => __( 'Please select payment mode.', 'give' ),
+						'give_first'             => __( 'Please enter your first name.', 'give' ),
+						'give_email'             => __( 'Please enter a valid email address.', 'give' ),
+						'give_user_login'        => __( 'Invalid email address or username.', 'give' ),
+						'give_user_pass'         => __( 'Enter a password.', 'give' ),
+						'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
+						'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
+					)
+				),
+				'confirm_email_sent_message'  => $message,
+				'ajax_vars'                   => apply_filters(
+					'give_global_ajax_vars',
+					array(
+						'ajaxurl'         => give_get_ajax_url(),
+						'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
+						'loading'         => __( 'Loading', 'give' ),
+						// General loading message.
+						'select_option'   => __( 'Please select an option', 'give' ),
+						// Variable pricing error with multi-donation option enabled.
+						'default_gateway' => give_get_default_gateway( null ),
+						'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
+						'number_decimals' => give_get_price_decimals(),
+					)
+				),
+				'cookie_hash'                 => COOKIEHASH,
+				'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
+				'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
+				'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
+			)
+		);
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
 	}
@@ -645,83 +628,4 @@ class Give_Scripts {
 
 	}
 
-	/**
-	 * Get public data which will be accessible by global constant.
-	 *
-	 * @return mixed|void
-	 */
-	public function get_public_data() {
-		/**
-		 * Filter to modify access mail send notice
-		 *
-		 * @param string Send notice message for email access.
-		 *
-		 * @return  string $message Send notice message for email access.
-		 * @since 2.1.3
-		 */
-		$message = (string) apply_filters(
-			'give_email_access_mail_send_notice',
-			__( 'Please check your email and click on the link to access your complete donation history.', 'give' )
-		);
-
-		return apply_filters(
-			'give_global_script_vars',
-			array(
-				'ajaxurl'                     => give_get_ajax_url(),
-				'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
-				// Do not use this nonce. Its deprecated.
-				'currency'                    => give_get_currency(),
-				'currency_sign'               => give_currency_filter( '' ),
-				'currency_pos'                => give_get_currency_position(),
-				'thousands_separator'         => give_get_price_thousand_separator(),
-				'decimal_separator'           => give_get_price_decimal_separator(),
-				'no_gateway'                  => __( 'Please select a payment method.', 'give' ),
-				'bad_minimum'                 => __( 'The minimum custom donation amount for this form is', 'give' ),
-				'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
-				'general_loading'             => __( 'Loading...', 'give' ),
-				'purchase_loading'            => __( 'Please Wait...', 'give' ),
-				'number_decimals'             => give_get_price_decimals(),
-				'give_version'                => GIVE_VERSION,
-				'magnific_options'            => apply_filters(
-					'give_magnific_options',
-					array(
-						'main_class'        => 'give-modal',
-						'close_on_bg_click' => false,
-					)
-				),
-				'form_translation'            => apply_filters(
-					'give_form_translation_js',
-					array(
-						// Field name               Validation message.
-						'payment-mode'           => __( 'Please select payment mode.', 'give' ),
-						'give_first'             => __( 'Please enter your first name.', 'give' ),
-						'give_email'             => __( 'Please enter a valid email address.', 'give' ),
-						'give_user_login'        => __( 'Invalid email address or username.', 'give' ),
-						'give_user_pass'         => __( 'Enter a password.', 'give' ),
-						'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
-						'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
-					)
-				),
-				'confirm_email_sent_message'  => $message,
-				'ajax_vars'                   => apply_filters(
-					'give_global_ajax_vars',
-					array(
-						'ajaxurl'         => give_get_ajax_url(),
-						'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
-						'loading'         => __( 'Loading', 'give' ),
-						// General loading message.
-						'select_option'   => __( 'Please select an option', 'give' ),
-						// Variable pricing error with multi-donation option enabled.
-						'default_gateway' => give_get_default_gateway( null ),
-						'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
-						'number_decimals' => give_get_price_decimals(),
-					)
-				),
-				'cookie_hash'                 => COOKIEHASH,
-				'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
-				'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
-				'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
-			)
-		);
-	}
 }
