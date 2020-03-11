@@ -836,10 +836,11 @@ function give_colorpicker( $field ) {
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 	<input
-			type="<?php echo esc_attr( $field['type'] ); ?>"
-			style="<?php echo esc_attr( $field['style'] ); ?>"
-			name="<?php echo give_get_field_name( $field ); ?>"
-			id="' . esc_attr( $field['id'] ) . '" value="<?php echo esc_attr( $field['value'] ); ?>"
+		type="<?php echo esc_attr( $field['type'] ); ?>"
+		style="<?php echo esc_attr( $field['style'] ); ?>"
+		name="<?php echo give_get_field_name( $field ); ?>"
+		id="<?php echo esc_attr( $field['id'] ); ?>"
+		value="<?php echo esc_attr( $field['value'] ); ?>"
 		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php
