@@ -9,6 +9,8 @@
 
 namespace Give\Route;
 
+use Give\Controller\Form as Controller;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -23,20 +25,31 @@ class Form {
 	 * @since 2.7.0
 	 * @var string
 	 */
-	private $base = 'give';
+	private $base = 'give-embed';
 
 	/**
-	 * Initialize
+	 * Form constructor.
+	 *
+	 * @param Controller $controller
+	 */
+	public function __construct( $controller ) {
+		$controller->init();
+
+		add_action( 'init', array( $this, 'AddRule' ) );
+	}
+
+
+	/**
+	 * Add rewrite rule
 	 *
 	 * @since 2.7.0
 	 */
-	public function init() {
+	public function addRule() {
 		global $wp;
 
-		// Add query var and rewrite rule.
 		$wp->add_query_var( 'give_form_id' );
 		add_rewrite_rule(
-			"{$this->base}/([a-z]+)/?$",
+			"{$this->base}/([0-9]+)/?$",
 			'index.php?name=give-embed&give_form_id=$matches[1]',
 			'top'
 		);
