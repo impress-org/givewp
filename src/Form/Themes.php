@@ -30,17 +30,34 @@ class Themes {
 	 * @since 2.7.0
 	 */
 	public function loadThemes() {
-		$coreFormThemes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
+		$coreFormThemes = [
+			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
+			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Sequoia',
+		];
 
 		/**
 		 * Filter list of form theme
 		 *
 		 * @since 2.7.0
 		 */
-		$themes = apply_filters( 'give_form_themes', $coreFormThemes );
+		$thirdPartyThemes = apply_filters( 'give_register_form_theme', [] );
 
-		foreach ( $themes as $theme ) {
-			$this->set( new Theme( $theme ) );
+		$allThemes = $coreFormThemes;
+
+		if ( $thirdPartyThemes ) {
+			$allThemes = array_unique( array_merge( $allThemes, array_filter( $thirdPartyThemes ) ) );
+		}
+
+		foreach ( $allThemes as $themePath ) {
+			$themePath  = trailingslashit( $themePath );
+			$configFile = $themePath . 'config.php';
+
+			if ( file_exists( $configFile ) ) {
+				$config          = require_once $configFile;
+				$config['entry'] = $themePath;
+
+				$this->set( new Theme( $config ) );
+			}
 		}
 	}
 
@@ -64,7 +81,7 @@ class Themes {
 	 * @since 2.7.0
 	 */
 	public function getTheme( $themeID ) {
-		return $this->themes[ $themeID ];
+		return isset( $this->themes[ $themeID ] ) ? $this->themes[ $themeID ] : [];
 	}
 
 	/**

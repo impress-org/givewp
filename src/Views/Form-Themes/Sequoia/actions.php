@@ -70,6 +70,24 @@ function give_elegent_add_personal_information_section_text( $form_id ) {
 }
 
 /**
+ * Start choose amount section
+ *
+ * @since 2.7.0
+ */
+function give_start_choose_amount_section() {
+	echo '<div class="give-section choose-amount">';
+}
+
+/**
+ * Close choose amount section
+ *
+ * @since 2.7.0
+ */
+function give_end_choose_amount_section() {
+	echo '</div>';
+}
+
+/**
  * Setup hooks in-favor of elegent form style
  *
  * @param int              $form_id
@@ -90,6 +108,8 @@ function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	add_action( 'give_pre_form', 'give_elegent_add_form_stats_section', 13, 3 );
 	add_action( 'give_pre_form', 'give_elegent_add_progress_bar_section', 14, 3 );
 	add_action( 'give_post_form', 'give_elegent_add_next_button', 13, 3 );
+	add_action( 'give_donation_form_top', 'give_start_choose_amount_section', 0 );
+	add_action( 'give_donation_form_top', 'give_end_choose_amount_section', 99998 );
 	add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 	add_action( 'give_donation_form_before_personal_info', 'give_elegent_add_personal_information_section_text' );
 
