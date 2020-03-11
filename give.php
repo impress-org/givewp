@@ -38,7 +38,8 @@
  */
 
 use Give\Form\Themes;
-use Give\Route\Form;
+use Give\Route\Form as FormRoute;
+use Give\Controller\Form as FormRouteController;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -302,6 +303,13 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		protected $themes;
 
+		/**
+		 * @var FormRoute
+		 *
+		 * @since 2.7.0
+		 */
+		protected $routeform;
+
 
 		/**
 		 * Array of singleton objects
@@ -410,6 +418,9 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
+
+			// Setup form route and store into singleton cache.
+			$this->singletonsCache[ FormRoute::class ] = new FormRoute( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
@@ -777,12 +788,7 @@ if ( ! class_exists( 'Give' ) ) :
 					return $this->singletonsCache[ Themes::class ];
 
 				case 'routeForm':
-					if ( ! isset( $this->singletonsCache[ Form::class ] ) ) {
-						$this->singletonsCache[ Form::class ] = new Form();
-						$this->singletonsCache[ Form::class ]->init();
-					}
-
-					return $this->singletonsCache[ Form::class ];
+					return $this->singletonsCache[ FormRoute::class ];
 			}
 		}
 
