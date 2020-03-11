@@ -54,18 +54,16 @@ return [
 					'default' => 'global',
 				],
 				[
-					'name'        => __( 'Display Content', 'give' ),
-					'description' => __( 'Do you want to add custom content to this form?', 'give' ),
-					'id'          => 'display_content',
-					'type'        => 'radio_inline',
-					'options'     => [
+					'name'          => __( 'Display Content', 'give' ),
+					'description'   => __( 'Do you want to add custom content to this form?', 'give' ),
+					'id'            => 'display_content',
+					'type'          => 'radio_inline',
+					'options'       => [
 						'enabled'  => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
 					],
-					'classes'     => [
-						'_give_display_content_field',
-					],
-					'default'     => 'disabled',
+					'wrapper_class' => '_give_display_content_field',
+					'default'       => 'disabled',
 				],
 				[
 					'name'          => __( 'Content Placement', 'give' ),
@@ -79,21 +77,15 @@ return [
 							'give_post_form' => __( 'Below fields', 'give' ),
 						]
 					),
-					'classes'       => [
-						'_give_content_placement_field',
-					],
+					'wrapper_class' => '_give_content_placement_field give-hidden',
 					'default'       => 'give_pre_form',
-					'wrapper_class' => 'give-hidden',
 				],
 				[
 					'name'          => __( 'Content', 'give' ),
 					'description'   => __( 'This content will display on the single give form page.', 'give' ),
 					'id'            => 'form_content',
 					'type'          => 'wysiwyg',
-					'wrapper_class' => 'give-hidden',
-					'classes'       => [
-						'_give_form_content_field',
-					],
+					'wrapper_class' => '_give_form_content_field give-hidden',
 				],
 			],
 		],
