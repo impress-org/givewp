@@ -9,7 +9,7 @@ return [
 			'desc'   => __( 'Step description will show up here if any', 'give' ),
 			'fields' => [
 				[
-					'id'         => 'intro_headline',
+					'id'         => 'headline',
 					'name'       => __( 'Headline', 'give' ),
 					'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
 					'type'       => 'text',
@@ -18,7 +18,7 @@ return [
 					],
 				],
 				[
-					'id'         => 'intro_description',
+					'id'         => 'description',
 					'name'       => __( 'Description', 'give' ),
 					'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
 					'type'       => 'textarea_small',
@@ -27,7 +27,7 @@ return [
 					],
 				],
 				[
-					'id'         => 'intro_image',
+					'id'         => 'image',
 					'name'       => __( 'Image', 'give' ),
 					'desc'       => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
 					'type'       => 'file',
@@ -40,7 +40,7 @@ return [
 					],
 				],
 				[
-					'id'   => 'intro_primary_color',
+					'id'   => 'primary_color',
 					'name' => __( 'Primary Color', 'give' ),
 					'desc' => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
 					'type' => 'colorpicker',
@@ -82,7 +82,7 @@ return [
 			'desc'   => __( 'Step description will show up here if any', 'give' ),
 			'fields' => [
 				[
-					'id'         => 'thank_you_headline',
+					'id'         => 'headline',
 					'name'       => __( 'Headline', 'give' ),
 					'desc'       => __( 'This message should be short and sweet. Make the donor feel good about their donation so they continue to give in the future. This text is required and you may use any of the available template tags within this message.', 'give' ),
 					'type'       => 'text',
@@ -91,7 +91,7 @@ return [
 					],
 				],
 				[
-					'id'         => 'thank_you_description',
+					'id'         => 'description',
 					'name'       => __( 'Description', 'give' ),
 					'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences for best performance. You may use any of the available template tags within this message.', 'give' ),
 					'type'       => 'textarea',
@@ -100,7 +100,7 @@ return [
 					],
 				],
 				[
-					'id'         => 'thank_you_image',
+					'id'         => 'image',
 					'name'       => __( 'Image', 'give' ),
 					'desc'       => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
 					'type'       => 'file',
