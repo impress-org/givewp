@@ -19,7 +19,10 @@
 @import '../plugins/button';
 @import '../plugins/notice';
 
-@import 'fonts';
+// Icons
+@import '../icons/fa/fontawesome';
+@import '../icons/fa/regular';
+
 @import 'grids';
 @import 'forms';
 @import 'reports';
