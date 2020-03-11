@@ -126,10 +126,21 @@ class ThemeLoader {
 	 */
 	private function getListOFScriptsToDequeue( $scripts ) {
 		$list = [];
+		$skip = [];
 
 		/* @var _WP_Dependency $data */
 		foreach ( $scripts as $handle => $data ) {
-			if ( 0 === strpos( $handle, 'give-' ) || false !== strpos( $data->src, '\give-' ) ) {
+			// Do not unset dependency.
+			if ( in_array( $handle, $skip, true ) ) {
+				continue;
+			}
+
+			if (
+				0 === strpos( $handle, 'give-' ) ||
+				false !== strpos( $data->src, '\give-' )
+			) {
+				// Store dependencies to skip.
+				$skip = array_merge( $skip, $data->deps );
 				continue;
 			}
 
