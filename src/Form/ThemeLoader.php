@@ -9,6 +9,8 @@
 
 namespace Give\Form;
 
+use _WP_Dependency;
+use WP_Scripts;
 use function Give\Helpers\Form\Theme\get as getThemeSettings;
 use function Give\Helpers\Form\Theme\getActiveID;
 
@@ -91,5 +93,49 @@ class ThemeLoader {
 		}
 
 		require_once $entryFilePath;
+
+		// Script loading handler.
+		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 1 );
+		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
+		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
+	}
+
+
+	/**
+	 * Handle enqueue script
+	 *
+	 * @since 2.7.0
+	 */
+	public function enqueue_scripts() {
+		global $wp_scripts, $wp_styles;
+		wp_enqueue_scripts();
+
+		$wp_styles->dequeue( $this->getListOFScriptsToDequeue( $wp_styles->registered ) );
+		$wp_scripts->dequeue( $this->getListOFScriptsToDequeue( $wp_scripts->registered ) );
+	}
+
+
+	/**
+	 * Get filter list to dequeue scripts and style
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array $scripts
+	 *
+	 * @return array
+	 */
+	private function getListOFScriptsToDequeue( $scripts ) {
+		$list = [];
+
+		/* @var _WP_Dependency $data */
+		foreach ( $scripts as $handle => $data ) {
+			if ( 0 === strpos( $handle, 'give-' ) || false !== strpos( $data->src, '\give-' ) ) {
+				continue;
+			}
+
+			$list[] = $handle;
+		}
+
+		return $list;
 	}
 }
