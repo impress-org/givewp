@@ -407,7 +407,7 @@ Shortcode Copy & Paste
 			grid-template-columns: 1fr 1fr;
 			padding: 8px 0 24px 0;
 
-			.image-placeholder {
+			.theme-image {
 				height: 150px;
 				object-fit: cover;
 				width: 100%;
@@ -500,7 +500,7 @@ Shortcode Copy & Paste
 				.themes-list {
 					grid-template-columns: 1fr !important;
 
-					.image-placeholder {
+					.theme-image {
 						display: none;
 					}
 

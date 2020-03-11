@@ -17,7 +17,7 @@ $registeredThemes = Give()->themes->get();
 
 			printf(
 				'<div class="theme-info %1$s" data-id="%2$s">
-							<img class="image-placeholder" src="%3$s"/>
+							<img class="theme-image" src="%3$s"/>
 							<div class="action">
 								<strong>%4$s <span class="badge">%5$s</span></strong>
 								<button class="button %7$s">%6$s</button>
