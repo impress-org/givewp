@@ -1,13 +1,11 @@
 const iFrameResizer = {
-	targetOrigin: location.origin,
+	targetOrigin: window.location.origin,
 
 	onReady: function() {
 		window.parentIFrame.sendMessage( 'giveEmbedFormContentLoaded' );
 	},
 
 	onMessage: function( message ) {
-		console.log( message );
-
 		if ( 'currentPage' in message ) {
 			const $field = document.getElementsByName( 'give-current-url' );
 			if ( $field.length ) {
