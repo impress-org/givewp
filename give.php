@@ -38,6 +38,7 @@
  */
 
 use Give\Form\Themes;
+use Give\Route\Form;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -52,6 +53,7 @@ if ( ! class_exists( 'Give' ) ) :
 	 * @since 1.0
 	 *
 	 * @property-read Themes $themes
+	 * @property-read Form $routeForm
 	 */
 	final class Give {
 
@@ -767,13 +769,22 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return mixed
 		 */
 		function __get( $propertyName ) {
-			if ( 'themes' === $propertyName ) {
-				if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
-					$this->singletonsCache[ Themes::class ] = new Themes();
-					$this->singletonsCache[ Themes::class ]->loadThemes();
-				}
+			switch ( $propertyName ) {
+				case 'themes':
+					if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
+						$this->singletonsCache[ Themes::class ] = new Themes();
+						$this->singletonsCache[ Themes::class ]->loadThemes();
+					}
 
-				return $this->singletonsCache[ Themes::class ];
+					return $this->singletonsCache[ Themes::class ];
+
+				case 'routeForm':
+					if ( ! isset( $this->singletonsCache[ Form::class ] ) ) {
+						$this->singletonsCache[ Form::class ] = new Form();
+						$this->singletonsCache[ Form::class ]->init();
+					}
+
+					return $this->singletonsCache[ Form::class ];
 			}
 		}
 

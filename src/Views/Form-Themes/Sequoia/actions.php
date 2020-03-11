@@ -1,4 +1,7 @@
 <?php
+
+use function Give\Helpers\Form\Utils\isViewingForm;
+
 /**
  * Add introduction form section
  *
@@ -96,7 +99,7 @@ function give_end_choose_amount_section() {
  */
 function give_elegent_setup_hooks( $form_id, $args, $form ) {
 	// early exit.
-	if ( ! give_is_viewing_embed_form() ) {
+	if ( ! isViewingForm() ) {
 		return;
 	}
 
@@ -135,7 +138,7 @@ add_action( 'give_pre_form_output', 'give_elegent_setup_hooks', 1, 3 );
  */
 function give_elegent_setup_hooks_on_ajax( $form_id, $args ) {
 	// Early exit.
-	if ( ! give_is_viewing_embed_form() ) {
+	if ( ! isViewingForm() ) {
 		return;
 	}
 

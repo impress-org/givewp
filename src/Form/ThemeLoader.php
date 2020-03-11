@@ -11,6 +11,7 @@ namespace Give\Form;
 
 use function Give\Helpers\Form\Theme\get as getThemeSettings;
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -71,6 +72,9 @@ class ThemeLoader {
 
 		$this->themeSettings = getThemeSettings( $this->formID );
 		$this->theme         = Give()->themes->getTheme( $this->activeThemeID );
+
+		add_filter( 'give_form_wrap_classes', array( $this, 'addClasses' ) );
+		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
 	}
 
 
@@ -91,5 +95,44 @@ class ThemeLoader {
 		}
 
 		require_once $entryFilePath;
+	}
+
+
+	/**
+	 * Add custom classes
+	 *
+	 * @since 2.7.0
+	 * @param array $classes
+	 *
+	 * @return array
+	 */
+	public function addClasses( $classes ) {
+		if ( isViewingForm() ) {
+			$classes[] = 'give-embed-form';
+
+			if ( ! empty( $_GET['iframe'] ) ) {
+				$classes[] = 'give-viewing-form-in-iframe';
+			}
+		}
+
+		return $classes;
+	}
+
+	/**
+	 * Add hidden field
+	 *
+	 * @since 2.7.0
+	 * @param array $classes
+	 */
+	public function addHiddenField( $classes ) {
+		if ( ! isViewingForm() ) {
+			return;
+		}
+
+		printf(
+			'<input type="hidden" name="%1$s" value="%2$s">',
+			'give_embed_form',
+			'1'
+		);
 	}
 }
