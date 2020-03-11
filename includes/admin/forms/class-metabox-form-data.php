@@ -107,7 +107,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_field_options',
 					'title'     => __( 'Donation Options', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-heart"></span>',
+					'icon-html' => '<i class="fas fa-heart"></i>',
 					'fields'    => apply_filters(
 						'give_forms_donation_form_metabox_fields',
 						array(
@@ -258,7 +258,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_theme_options',
 					'title'     => __( 'Form Theme', 'give' ),
-					'icon-html' => '<span class="dashicons dashicons-art"></span>',
+					'icon-html' => '<i class="fas fa-palette"></i>',
 					'fields'    => array(
 						array(
 							'id'      => $prefix . 'form_theme',
@@ -278,7 +278,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_display_options',
 					'title'     => __( 'Form Fields', 'give' ),
-					'icon-html' => '<span class="dashicons dashicons-editor-alignleft"></span>',
+					'icon-html' => '<i class="fas fa-stream"></i>',
 					'fields'    => apply_filters(
 						'give_forms_display_options_metabox_fields',
 						array(
@@ -403,7 +403,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'donation_goal_options',
 					'title'     => __( 'Donation Goal', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-target"></span>',
+					'icon-html' => '<i class="fas fa-bullseye"></i>',
 					'fields'    => apply_filters(
 						'give_forms_donation_goal_metabox_fields',
 						array(
@@ -515,7 +515,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'form_terms_options',
 					'title'     => __( 'Terms & Conditions', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-checklist"></span>',
+					'icon-html' => '<i class="far fa-check-square"></i>',
 					'fields'    => apply_filters(
 						'give_forms_terms_options_metabox_fields',
 						array(
@@ -1332,7 +1332,7 @@ class Give_MetaBox_Form_Data {
 				array(
 					'id'        => 'offline_donations_options',
 					'title'     => __( 'Offline Donations', 'give' ),
-					'icon-html' => '<span class="give-icon give-icon-purse"></span>',
+					'icon-html' => '<i class="fas fa-wallet"></i>',
 					'fields'    => apply_filters( 'give_forms_offline_donations_metabox_fields', array() ),
 				)
 			);
