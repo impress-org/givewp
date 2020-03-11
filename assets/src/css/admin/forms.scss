@@ -595,6 +595,9 @@ Shortcode Copy & Paste
 
 			a {
 				border-bottom-color: #e5e5e5;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 			}
 		}
 
