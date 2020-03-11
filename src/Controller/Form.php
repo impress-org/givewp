@@ -171,7 +171,7 @@ class Form {
 			</head>
 			<body>
 				<p style="text-align: center">Processing...</p>
-				<a style="font-size: 0" id="link" href="<?php echo esc_js( $url ); ?>" target="_parent">Link</a>
+				<a style="font-size: 0" id="link" href="<?php echo esc_js( $location ); ?>" target="_parent">Link</a>
 				<script>
 					document.getElementById( 'link' ).click();
 				</script>
