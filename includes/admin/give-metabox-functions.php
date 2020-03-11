@@ -191,7 +191,7 @@ function give_render_field( $field ) {
 		case 'give_default_radio_inline':
 			$field['type']    = 'radio';
 			$field['options'] = array(
-				'default' => __( 'Default' ),
+				'default' => __( 'Default', 'give' ),
 			);
 			break;
 
