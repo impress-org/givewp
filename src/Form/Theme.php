@@ -42,7 +42,22 @@ class Theme {
 	 */
 	public function __construct( array $args ) {
 		$this->data = $args;
+		$this->validateThemeConfig();
+	}
+
+
+	/**
+	 * Validate theme config only in WP-Backed
+	 *
+	 * @since 2.7.0
+	 */
+	private function validateThemeConfig() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$this->validateArguments();
+		$this->validateRemoteImage();
 	}
 
 	/**
@@ -154,12 +169,58 @@ class Theme {
 	 */
 	private function validateArguments() {
 		$requiredParams = array( 'id', 'name', 'options', 'image', 'entry' );
+		$error          = (bool) array_diff( $requiredParams, array_keys( $this->data ) );
 
-		if ( array_diff( $requiredParams, array_keys( $this->data ) ) ) {
+		// Required param must not be empty.
+		if ( ! $error ) {
+			foreach ( $requiredParams as $param ) {
+				if ( empty( $this->data[ $param ] ) ) {
+					$error = true;
+					break;
+				}
+			}
+		}
+
+		if ( $error ) {
 			throw new InvalidArgumentException(
 				sprintf(
 					'%1$s<pre>%2$s</pre>',
 					__( 'To register a form theme id, name, options and image is required.', 'give' ),
+					print_r( $this->data, true )
+				)
+			);
+		}
+	}
+
+
+	/**
+	 * Validate image
+	 *
+	 * @sice 2.7.0
+	 */
+	private function validateRemoteImage() {
+		$allowed = [
+			'image/gif',
+			'image/jpeg',
+			'image/png',
+		];
+
+		$response = wp_remote_head( $this->getImage() );
+		$error    = is_wp_error( $response );
+
+		if ( ! $error ) {
+			/* @var  \Requests_Utility_CaseInsensitiveDictionary $header */
+			$header = $response['headers'];
+
+			$error = 200 !== wp_remote_retrieve_response_code( $response ) ||
+					  ! in_array( $header->getAll()['content-type'], $allowed, true );
+		}
+
+		if ( $error ) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'%1$s<pre>%2$s</pre>',
+					__( 'To register a form theme add a valid image url.', 'give' ),
 					print_r( $this->data, true )
 				)
 			);
