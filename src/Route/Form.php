@@ -25,7 +25,7 @@ class Form {
 	 * @since 2.7.0
 	 * @var string
 	 */
-	private $optionName = 'form_page_base_slug';
+	private $optionName = 'form_page_url_prefix';
 
 	/**
 	 * Route base
