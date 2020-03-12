@@ -36,7 +36,6 @@
         },
         "files": [
             "src/Helpers/Form/Theme.php",
-            "src/Helpers/Script.php",
             "src/Helpers/Form/Utils.php"
         ]
     }
