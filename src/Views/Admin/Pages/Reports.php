@@ -114,8 +114,6 @@ class Reports {
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
-		$earliest = isset( $donations[0] ) ? $donations[0]->date : $start->format( 'Y-m-d H:i:s' );
-
-		return $earliest;
+		return isset( $donations[0] ) ? $donations[0]->date : $start->format( 'Y-m-d H:i:s' );
 	}
 }
