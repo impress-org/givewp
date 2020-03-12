@@ -26,68 +26,69 @@ class PaymentStatuses extends Endpoint {
 		);
 
 		// Use give_count_payments logic to get payments
-		$payments = give_count_payments( $args );
+		$payments  = give_count_payments( $args );
+		$completed = property_exists( $payments, 'give_subscription' ) ? $payments->publish + $payments->give_subscription : $payments->publish;
 
 		$status = $this->get_give_status();
 
 		return new \WP_REST_Response(
-			array(
+			[
 				'status' => $status,
-				'data'   => array(
-					'labels'   => array(
+				'data'   => [
+					'labels'   => [
 						'Completed',
 						'Pending',
 						'Refunded',
 						'Abandoned',
 						'Cancelled',
 						'Failed',
-					),
-					'datasets' => array(
-						array(
-							'data'     => array(
-								$payments->publish + $payments->give_subscription,
+					],
+					'datasets' => [
+						[
+							'data'     => [
+								$completed,
 								$payments->pending,
 								$payments->refunded,
 								$payments->abandoned,
 								$payments->cancelled,
 								$payments->failed,
-							),
-							'tooltips' => array(
-								array(
-									'title'  => $payments->publish + $payments->give_subscription . ' ' . __( 'Payments', 'give' ),
+							],
+							'tooltips' => [
+								[
+									'title'  => $completed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Completed', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->pending . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Pending', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->refunded . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Refunded', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Abandoned', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Cancelled', 'give' ),
 									'footer' => '',
-								),
-								array(
+								],
+								[
 									'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
 									'body'   => __( 'Failed', 'give' ),
 									'footer' => '',
-								),
-							),
-						),
-					),
-				),
-			)
+								],
+							],
+						],
+					],
+				],
+			]
 		);
 	}
 }

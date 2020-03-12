@@ -111,10 +111,10 @@ class Theme {
 
 		$saveOptions = getTheme( $post->ID, $this->getID() );
 
-		foreach ( $this->data['options'] as $groupdID => $option ) {
+		foreach ( $this->data['options'] as $groupID => $option ) {
 			printf(
 				'<div class="give-row %1$s">',
-				$groupdID
+				$groupID
 			);
 
 			printf(
@@ -129,11 +129,11 @@ class Theme {
 
 			echo '<div class="give-row-body">';
 			foreach ( $option['fields'] as $field ) {
-				if ( isset( $saveOptions[ $groupdID ][ $field['id'] ] ) ) {
-					$field['attributes']['value'] = $saveOptions[ $groupdID ][ $field['id'] ];
+				if ( isset( $saveOptions[ $groupID ][ $field['id'] ] ) ) {
+					$field['attributes']['value'] = $saveOptions[ $groupID ][ $field['id'] ];
 				}
 
-				$field['id'] = "{$this->data['id']}[{$groupdID}][{$field['id']}]";
+				$field['id'] = "{$this->data['id']}[{$groupID}][{$field['id']}]";
 
 				give_render_field( $field );
 			}

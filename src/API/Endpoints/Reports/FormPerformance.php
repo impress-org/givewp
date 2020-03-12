@@ -120,19 +120,16 @@ class FormPerformance extends Endpoint {
 
 		}
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'forms'    => $allForms,
-			'datasets' => array(
-				array(
+		// Create data object to be returned, with 'highlights' object containing total and average figures to display
+		return [
+			'datasets' => [
+				[
 					'data'     => $forms,
 					'tooltips' => $tooltips,
 					'labels'   => $labels,
-				),
-			),
-		);
-
-		return $data;
+				],
+			],
+		];
 
 	}
 }
