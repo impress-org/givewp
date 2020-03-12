@@ -9,9 +9,11 @@ namespace Give\Helpers\Form\Utils;
  * @return bool
  */
 function isViewingForm() {
+	$base = Give()->routeForm->getBase();
+
 	return (
-		'give-embed' === get_query_var( 'name' ) ||
-		( wp_doing_ajax() && false !== strpos( wp_get_referer(), '/give-embed/' ) ) // for ajax
+		$base === get_query_var( 'name' ) ||
+		( wp_doing_ajax() && false !== strpos( wp_get_referer(), "/{$base}/" ) ) // for ajax
 	);
 }
 

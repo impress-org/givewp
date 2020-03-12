@@ -35,7 +35,7 @@ class Form {
 	public function __construct( $controller ) {
 		$controller->init();
 
-		add_action( 'init', array( $this, 'AddRule' ) );
+		add_action( 'query_vars', array( $this, 'addQueryVar' ) );
 	}
 
 
@@ -45,14 +45,29 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function addRule() {
-		global $wp;
-
-		$wp->add_query_var( 'give_form_id' );
 		add_rewrite_rule(
-			"{$this->base}/([0-9]+)/?$",
-			'index.php?name=give-embed&give_form_id=$matches[1]',
+			"{$this->base}/(.+?)/?$",
+			sprintf(
+				'index.php?name=%1$s&give_form_id=$matches[1]',
+				$this->base
+			),
 			'top'
 		);
+	}
+
+
+	/**
+	 * Add query var
+	 *
+	 * @since 2.7.0
+	 * @param array $queryVars
+	 *
+	 * @return array
+	 */
+	public function addQueryVar( $queryVars ) {
+		$queryVars[] = 'give_form_id';
+
+		return $queryVars;
 	}
 
 	/**
@@ -65,5 +80,16 @@ class Form {
 	 */
 	public function getURL( $form_id ) {
 		return home_url( "/{$this->base}/{$form_id}" );
+	}
+
+
+	/**
+	 * Get url base.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getBase() {
+		return $this->base;
 	}
 }
