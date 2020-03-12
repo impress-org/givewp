@@ -420,7 +420,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session                = Give_Session::get_instance();
 
 			// Setup form route and store into singleton cache.
-			$this->singletonsCache[ FormRoute::class ] = new FormRoute( new FormRouteController() );
+			$this->routeform = new FormRoute( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
