@@ -31,8 +31,8 @@ class Themes {
 	 */
 	public function loadThemes() {
 		$coreFormThemes = [
-			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
 			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Sequoia',
+			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
 		];
 
 		/**

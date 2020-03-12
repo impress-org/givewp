@@ -7,6 +7,8 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+/* stylelint-disable no-duplicate-selectors, no-descending-specificity  */
+
 .give_options_panel {
 	input[type='text'],
 	input[type='email'] {
@@ -137,7 +139,7 @@ Shortcode Copy & Paste
 -------------------------------------*/
 
 .js-give-shortcode-button {
-	font-weight: normal;
+	font-weight: 500;
 	cursor: help;
 
 	&::after {
@@ -170,7 +172,6 @@ Shortcode Copy & Paste
 	margin: 0 3px;
 	padding: 0;
 	font-size: 14px;
-	@include easing-transition();
 	color: transparentize($dark, 0.5);
 	position: relative;
 	top: 1px;
@@ -187,6 +188,14 @@ Shortcode Copy & Paste
 	.inside {
 		margin: 0;
 		padding: 0;
+	}
+
+	.give-upload-button {
+		height: 36px;
+	}
+
+	.give-colorpicker {
+		margin-right: 6px !important;
 	}
 
 	.give-metabox-panel-wrap {
@@ -271,13 +280,13 @@ Shortcode Copy & Paste
 
 			.give-repeatable-fields-section-wrapper {
 				width: 100%;
-				background-color: white;
+				background-color: #fff;
 				border-collapse: collapse;
 			}
 
 			.give-row {
 				border-bottom: 15px solid #f5f5f5;
-				background-color: white;
+				background-color: #fff;
 			}
 
 			.give-template {
@@ -315,8 +324,8 @@ Shortcode Copy & Paste
 			}
 
 			.give-remove:hover {
-				background-color: red;
-				color: white;
+				background-color: #f00;
+				color: #fff;
 				width: 22px;
 				height: 22px;
 				border-radius: 30px;
@@ -396,38 +405,70 @@ Shortcode Copy & Paste
 			display: grid;
 			grid-gap: 10px;
 			grid-template-columns: 1fr 1fr;
-			padding: 25px 0;
+			padding: 8px 0 24px 0;
 
-			.image-placeholder {
+			.theme-image {
 				height: 150px;
-				background-color: #d8d8d8;
+				object-fit: cover;
+				width: 100%;
+				background-color: #fff;
 			}
 
 			.action {
 				display: flex;
 				align-items: center;
-
-				background-color: #eee;
-				padding: 6px;
+				background-color: #fafafa;
+				border-top: 1px solid #eee;
+				padding: 10px;
 
 				strong {
+					font-weight: 500;
 					flex-grow: 1;
+					padding-left: 6px;
 				}
 
 				.badge {
 					display: none;
 					padding: 2px 9px;
-					background-color: #08c508;
-					color: white;
+					line-height: 1.4;
+					background-color: #7ad03a;
+					color: #fff;
 					font-style: normal;
 					border-radius: 5px;
 					margin-left: 10px;
+					text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 				}
 			}
 		}
 
 		.form-theme-introduction {
 			padding-bottom: 25px;
+
+			p {
+				font-size: 18px;
+				margin: 0 0 14px 0;
+				padding: 0;
+			}
+
+			p.form-theme-description {
+				color: #9c9c9c;
+				font-size: 16px;
+			}
+
+			.form-theme-notice {
+				padding: 16px 10px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 24px;
+
+				p {
+					max-width: 60%;
+					margin: 0;
+					font-size: 16px;
+					color: #555;
+				}
+			}
 		}
 
 		.theme-options {
@@ -449,11 +490,18 @@ Shortcode Copy & Paste
 				padding-bottom: 25px;
 			}
 
+			.theme-info {
+				background: #fafafa;
+				border: 1px solid #ccd0d4;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+				line-height: 0;
+			}
+
 			&.has-activated-theme {
 				.themes-list {
 					grid-template-columns: 1fr !important;
 
-					.image-placeholder {
+					.theme-image {
 						display: none;
 					}
 
@@ -482,10 +530,14 @@ Shortcode Copy & Paste
 	}
 }
 
+/* stylelint-disable selector-id-pattern  */
+
 // Hide first row remove button for multi-level.
 #_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
 	display: none !important;
 }
+
+/* stylelint-enable selector-id-pattern  */
 
 //-------------------------------------
 // Metabox Tabs
@@ -495,7 +547,7 @@ Shortcode Copy & Paste
 		margin: 0;
 		max-width: 170px;
 		float: left;
-		line-height: 1em;
+		line-height: 1;
 		padding: 0 0 10px;
 		position: relative;
 		background-color: #fafafa;
@@ -532,6 +584,7 @@ Shortcode Copy & Paste
 
 				span.give-label {
 					width: 122px;
+					padding-left: 2px;
 					display: inline-block;
 				}
 			}
@@ -542,6 +595,9 @@ Shortcode Copy & Paste
 
 			a {
 				border-bottom-color: #e5e5e5;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 			}
 		}
 
@@ -695,3 +751,5 @@ ref: https://github.com/impress-org/givewp/pull/4315
 		padding: 8.5px 10px 8.5px;
 	}
 }
+
+/* stylelint-enable no-duplicate-selectors, no-descending-specificity */
