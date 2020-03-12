@@ -56,6 +56,7 @@ class Form {
 					wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
 				}
 			} else {
+				$form = get_query_var( 'give_form_id' );
 				// Get post.
 				$post = current(
 					get_posts(
@@ -67,9 +68,11 @@ class Form {
 					)
 				);
 
-				if ( null !== $post ) {
-					require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
+				if ( ! $form || null === $post ) {
+					wp_die( __( 'Donation form does not exist', 'give' ) );
 				}
+
+				require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
 			}
 
 			exit();
