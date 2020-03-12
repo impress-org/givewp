@@ -1,5 +1,8 @@
 <?php
 
+use function Give\Helpers\Script\getLocalizedScript;
+use function Give\Helpers\Script\getScripTag;
+
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -63,9 +66,6 @@ class Give_Scripts {
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
-
-			add_action( 'give_embed_head', array( $this, 'embed_page_styles' ) );
-			add_action( 'give_embed_footer', array( $this, 'embed_page_scripts' ) );
 		}
 	}
 
@@ -150,7 +150,7 @@ class Give_Scripts {
 		);
 
 		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery', 'iframeResizer' ), GIVE_VERSION, self::$scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, self::$scripts_footer );
 	}
 
 	/**
@@ -468,62 +468,9 @@ class Give_Scripts {
 			);
 		}
 
-		wp_enqueue_script( 'iframeResizer', 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.min.js', array( 'jquery' ), '4.2.9', self::$scripts_footer );
-
 		wp_enqueue_script( 'give' );
 
 		$this->public_localize_scripts();
-	}
-
-
-	/**
-	 * Print styles on embed page
-	 *
-	 * @todo: add script & style version
-	 */
-	public function embed_page_styles() {
-		echo $this->get_style_tag( $this->get_frontend_stylesheet_uri() );
-		echo $this->get_style_tag( GIVE_PLUGIN_URL . 'assets/dist/css/give-elegent-theme.css' );
-		echo $this->get_style_tag( 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap' );
-
-		echo $this->get_localized_script( 'give_global_vars', $this->get_public_data() );
-	}
-
-	/**
-	 * Print scripts on embed page
-	 *
-	 * @todo: add script & style version
-	 */
-	public function embed_page_scripts() {
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js' );
-		echo $this->get_script_tag( includes_url( 'js/jquery/jquery.js' ) );
-
-		// @todo: move js code to own file.
-		?>
-		<script>
-			var iFrameResizer = {
-				targetOrigin: '<?php echo esc_js( home_url() ); ?>',
-				onReady: function(){
-					window.parentIFrame.sendMessage( 'giveEmbedFormContentLoaded' );
-				},
-				onMessage: function( message ) {
-					console.log( message );
-
-					if ('currentPage' in message) {
-						let $field = document.getElementsByName( 'give-current-url' );
-						if( $field.length ) {
-							$field[0].setAttribute('value', message.currentPage);
-						}
-					}
-				}
-			}
-		</script>
-		<?php
-		echo $this->get_script_tag( 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.9/iframeResizer.contentWindow.min.js' );
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give.js' );
-		echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-elegent-theme.js' );
-
-		$this->stripe_frontend_scripts();
 	}
 
 	/**
@@ -533,7 +480,7 @@ class Give_Scripts {
 	 *
 	 * @return void
 	 */
-	private function stripe_frontend_scripts() {
+	public function stripe_frontend_scripts() {
 
 		// Get publishable key.
 		$publishable_key = give_stripe_get_publishable_key();
@@ -588,24 +535,24 @@ class Give_Scripts {
 
 		// Load third-party stripe js when required gateways are active.
 		if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
-			echo $this->get_script_tag( 'https://js.stripe.com/v3/' );
-			echo $this->get_localized_script( 'give_stripe_vars', $stripe_vars );
+			echo getScripTag( 'https://js.stripe.com/v3/' );
+			echo getLocalizedScript( 'give_stripe_vars', $stripe_vars );
 		}
 
 		// Load legacy Stripe checkout when the checkout type is `modal`.
 		if ( 'modal' === give_stripe_get_checkout_type() ) {
 
 			// Stripe checkout js.
-			echo $this->get_script_tag( 'https://checkout.stripe.com/checkout.js' );
+			echo getScripTag( 'https://checkout.stripe.com/checkout.js' );
 
 			// Give Stripe Checkout JS.
-			echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js' );
-			$this->get_localized_script( 'give_stripe_vars', $stripe_vars );
+			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js' );
+			getLocalizedScript( 'give_stripe_vars', $stripe_vars );
 		}
 
 		// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
 		if ( give_is_gateway_active( 'stripe' ) ) {
-			echo $this->get_script_tag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js' );
+			echo getScripTag( GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js' );
 		}
 	}
 
@@ -699,64 +646,11 @@ class Give_Scripts {
 	}
 
 	/**
-	 * Get script tag
-	 *
-	 * @param string $url
-	 * @param array  $args
-	 *
-	 * @return string
-	 */
-	private function get_script_tag( $url, $args = [] ) {
-		return sprintf(
-			'<script src="%1$s" type="text/javascript"></script>',
-			add_query_arg( array( 'ver' => GIVE_VERSION ), $url )
-		);
-	}
-
-
-	/**
-	 * Get style tag
-	 *
-	 * @param string $url
-	 * @param array  $args
-	 *
-	 * @return string
-	 */
-	private function get_style_tag( $url, $args = [] ) {
-		$args = wp_parse_args(
-			$args,
-			[ 'media' => 'all' ]
-		);
-		return sprintf(
-			'<link rel="stylesheet" href="%1$s" media="%2$s"/>',
-			add_query_arg( array( 'ver' => GIVE_VERSION ), $url ),
-			$args['media']
-		);
-	}
-
-	/**
-	 * Get localize script
-	 *
-	 * @param string $name
-	 * @param array  $data
-	 *
-	 * @return string
-	 */
-	private function get_localized_script( $name, $data ) {
-		return sprintf(
-			'<script> var %1$s = %2$s </script>',
-			$name,
-			wp_json_encode( $data )
-		);
-	}
-
-
-	/**
 	 * Get public data which will be accessible by global constant.
 	 *
 	 * @return mixed|void
 	 */
-	private function get_public_data() {
+	public function get_public_data() {
 		/**
 		 * Filter to modify access mail send notice
 		 *

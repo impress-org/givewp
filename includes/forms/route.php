@@ -1,4 +1,6 @@
 <?php
+use Give\Form\ThemeLoader;
+
 /**
  * Create a custom url to render give form
  */
@@ -47,7 +49,7 @@ function give_form_styles_routes() {
 			}
 		} else {
 			$post = get_post( get_query_var( 'give_form_id' ) );
-			require_once 'view/embed-form.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
 		}
 
 		exit();
@@ -57,7 +59,7 @@ function give_form_styles_routes() {
 		give_is_viewing_embed_form_receipt()
 		|| give_is_viewing_embed_form_failed_transaction_page()
 	) {
-		require_once 'view/receipt.php';
+		require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormReceiptTemplate.php';
 		exit();
 	}
 }
@@ -151,6 +153,35 @@ function give_embed_send_back_to_checkout( $redirect ) {
 	return implode( '?', $url );
 }
 add_filter( 'give_send_back_to_checkout', 'give_embed_send_back_to_checkout' );
+
+/**
+ * Load form theme on ajax request
+ *
+ * @since 2.7.0
+ */
+function give_load_form_theme_on_request() {
+	if (
+		defined( 'DOING_AJAX' ) &&
+		isset( $_REQUEST['action'] ) &&
+		0 === strpos( $_REQUEST['action'], 'give_' )
+	) {
+		global $post;
+
+		// Get form ID.
+		if ( isset( $_REQUEST['give_form_id'] ) ) {
+			$formID = absint( $_REQUEST['give_form_id'] );
+		} elseif ( isset( $_REQUEST['form_id'] ) ) {
+			$formID = absint( $_REQUEST['form_id'] );
+		} else {
+			return;
+		}
+
+		$post        = get_post( $formID );
+		$themeLoader = new ThemeLoader();
+		$themeLoader->init();
+	}
+}
+add_action( 'init', 'give_load_form_theme_on_request' );
 
 
 // @todo: use slug to render donation form

@@ -30,7 +30,7 @@ const config = {
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 		'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		'admin-add-ons': [ './assets/src/js/admin/admin-add-ons.js' ],
-		'give-elegent-theme': [ './templates/form-styles/elegent/assets/css/form.scss', './templates/form-styles/elegent/assets/js/form.js' ],
+		'give-sequoia-theme': [ './src/Views/Form-Themes/Sequoia/assets/css/form.scss', './src/Views/Form-Themes/Sequoia//assets/js/form.js' ],
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 	},
