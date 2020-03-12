@@ -20,12 +20,28 @@ defined( 'ABSPATH' ) || exit;
  */
 class Form {
 	/**
+	 * Option name
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	private $optionName = 'form_page_base_slug';
+
+	/**
 	 * Route base
 	 *
 	 * @since 2.7.0
 	 * @var string
 	 */
-	private $base = 'give';
+	private $defaultBase = 'give';
+
+	/**
+	 * Route base
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	private $base;
 
 	/**
 	 * Form constructor.
@@ -33,9 +49,12 @@ class Form {
 	 * @param Controller $controller
 	 */
 	public function __construct( $controller ) {
+		$this->base = give_get_option( $this->optionName ) ?: $this->defaultBase;
+
 		$controller->init();
 
 		add_action( 'query_vars', array( $this, 'addQueryVar' ) );
+		add_action( 'give-settings_save_advanced', array( $this, 'updateRule' ), 11 );
 	}
 
 
@@ -91,5 +110,36 @@ class Form {
 	 */
 	public function getBase() {
 		return $this->base;
+	}
+
+	/**
+	 * Get url base.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getOptionName() {
+		return $this->optionName;
+	}
+
+
+	/**
+	 * Update route rule
+	 *
+	 * @since 2.7.0
+	 */
+	public function updateRule() {
+		global $wp_rewrite;
+
+		$updateBase = give_get_option( $this->optionName, $this->defaultBase );
+
+		if ( $updateBase !== $this->base ) {
+			$this->base = $updateBase;
+
+			// Save rewrite rule manually.
+			$this->addRule();
+			flush_rewrite_rules();
+			$wp_rewrite->wp_rewrite_rules();
+		}
 	}
 }
