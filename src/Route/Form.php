@@ -25,7 +25,7 @@ class Form {
 	 * @since 2.7.0
 	 * @var string
 	 */
-	private $base = 'give-embed';
+	private $base = 'give';
 
 	/**
 	 * Form constructor.

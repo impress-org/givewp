@@ -788,6 +788,10 @@ if ( ! class_exists( 'Give' ) ) :
 					return $this->singletonsCache[ Themes::class ];
 
 				case 'routeForm':
+					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
+						$this->singletonsCache[ FormRoute::class ] = new FormRoute( new FormRouteController() );
+					}
+
 					return $this->singletonsCache[ FormRoute::class ];
 			}
 		}
