@@ -56,8 +56,20 @@ class Form {
 					wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
 				}
 			} else {
-				$post = get_post( get_query_var( 'give_form_id' ) );
-				require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
+				// Get post.
+				$post = current(
+					get_posts(
+						[
+							'post_type'   => 'give_forms',
+							'name'        => get_query_var( 'give_form_id' ),
+							'numberposts' => 1,
+						]
+					)
+				);
+
+				if ( null !== $post ) {
+					require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
+				}
 			}
 
 			exit();
