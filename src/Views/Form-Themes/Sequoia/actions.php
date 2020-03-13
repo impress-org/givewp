@@ -36,11 +36,34 @@ function give_elegent_add_progress_bar_section( $form_id, $args, $form ) {
 /**
  * Add load next sections button
  */
-function give_elegent_add_next_button() {
-	// @todo: make button text customizable.
+function give_elegent_add_next_button( $form_id ) {
+
+	// Get Theme options
+	$theme_options = give_get_meta( $form_id, '_give_sequoia_form_theme_settings', true, null );
+
+	// Get reveal button text
+	$continue_label = $theme_options['introduction']['continue_label'];
+
 	printf(
 		'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
-		__( 'Next', 'give' )
+		$continue_label
+	);
+}
+
+/**
+ * Add load next sections button
+ */
+function give_elegent_continue_button( $form_id ) {
+
+	// Get Theme options
+	$theme_options = give_get_meta( $form_id, '_give_sequoia_form_theme_settings', true, null );
+
+	// Get reveal button text
+	$continue_label = $theme_options['introduction']['continue_label'];
+
+	printf(
+		'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
+		$continue_label
 	);
 }
 
