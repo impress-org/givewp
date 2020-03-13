@@ -10,6 +10,7 @@
 namespace Give\Controller;
 
 use Give\Form\LoadTheme;
+use WP_Post;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -41,49 +42,90 @@ class Form {
 	 * Load view
 	 *
 	 * @since 2.7.0
+	 * @global WP_Post $post
 	 */
 	public function load() {
 		global $post;
 
-		if ( isViewingForm() ) {
-			nocache_headers();
-			header( 'HTTP/1.1 200 OK' );
+		$isViewingForm    = isViewingForm();
+		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
 
-			if ( ! empty( $_REQUEST['giveDonationAction'] ) ) {
-				if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-					wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
-				} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-					wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
-				}
-			} else {
-				$form = get_query_var( 'give_form_id' );
-				// Get post.
-				$post = current(
-					get_posts(
-						[
-							'post_type'   => 'give_forms',
-							'name'        => get_query_var( 'give_form_id' ),
-							'numberposts' => 1,
-						]
-					)
-				);
+		// Exit: we are not on embed form's main page or receipt page.
+		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
+			return;
+		}
 
-				if ( ! $form || null === $post ) {
-					wp_die( __( 'Donation form does not exist', 'give' ) );
-				}
-
-				require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+		// Exit: redirect donor to receipt or fail transaction page.
+		if ( ! empty( $_REQUEST['giveDonationAction'] ) && $isViewingForm ) {
+			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
+				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
+			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
+				wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
 			}
 
 			exit();
 		}
 
-		if (
-			isViewingFormReceipt()
-			|| isViewingFormFailedTransactionPage()
-		) {
+		// Set header.
+		nocache_headers();
+		header( 'HTTP/1.1 200 OK' );
+
+		if ( $isViewingForm ) {
+			$queryString   = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
+			$shortcodeArgs = array_intersect_key( $queryString, give_get_default_form_shortcode_args() );
+			$formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
+
+			$this->setupGlobalPost();
+
+			$this->loadTheme( $formTheme );
+			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+
+			exit();
+		}
+
+		if ( $isViewingReceipt ) {
+			$this->loadTheme();
 			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
 			exit();
+		}
+	}
+
+
+	/**
+	 * Load form theme
+	 *
+	 * @since 2.7.0
+	 * @param string $formTheme
+	 */
+	private function loadTheme( $formTheme = '' ) {
+		$themeLoader = new LoadTheme( $formTheme );
+		$themeLoader->init();
+	}
+
+
+	/**
+	 * Setup global $post
+	 *
+	 * @global WP_Post $post
+	 */
+	private function setupGlobalPost() {
+		global $post;
+
+		$form = get_query_var( 'give_form_id' );
+
+		// Get post.
+		$post = current(
+			get_posts(
+				[
+					'post_type'   => 'give_forms',
+					'name'        => get_query_var( 'give_form_id' ),
+					'numberposts' => 1,
+				]
+			)
+		);
+
+		if ( ! $form || null === $post ) {
+			wp_die( __( 'Donation form does not exist', 'give' ) );
 		}
 	}
 

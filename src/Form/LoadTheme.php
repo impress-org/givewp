@@ -4,7 +4,7 @@
  * Handle Theme Loading Handler
  *
  * @package Give
- * @since 2.7.0
+ * @since   2.7.0
  */
 
 namespace Give\Form;
@@ -41,15 +41,12 @@ class LoadTheme {
 	/**
 	 * Form Theme loading handler
 	 *
-	 * @global WP_Post $post
-	 *
-	 * @param int    $formID
 	 * @param string $formTheme Theme ID. Add form_theme shortcode argument to load selective form theme.
+	 *
+	 * @global WP_Post $post
 	 */
-	public function __construct( $formID = 0, $formTheme = '' ) {
-		global $post;
-
-		$formID = $formID ?: $post->ID;
+	public function __construct( $formTheme = '' ) {
+		$formID = (int) $this->getFormId();
 
 		$themeID = getActiveID( $formID );
 		$themeID = $formTheme ?: ( $themeID ?: $this->defaultThemeID );
@@ -62,6 +59,11 @@ class LoadTheme {
 	 * Initialize form theme
 	 */
 	public function init() {
+		// Exit is theme is not valid.
+		if ( ! ( $this->theme instanceof Theme ) ) {
+			return;
+		}
+
 		// Load theme hooks.
 		if ( $this->theme instanceof Hookable ) {
 			$this->theme->loadHooks();
@@ -98,15 +100,52 @@ class LoadTheme {
 		$wp_scripts->dequeue( $this->getListOfScriptsToDequeue( $wp_scripts->registered ) );
 	}
 
+	/**
+	 * Add custom classes
+	 *
+	 * @param array $classes
+	 *
+	 * @return array
+	 * @since 2.7.0
+	 */
+	public function addClasses( $classes ) {
+		if ( isViewingForm() ) {
+			$classes[] = 'give-embed-form';
+
+			if ( ! empty( $_GET['iframe'] ) ) {
+				$classes[] = 'give-viewing-form-in-iframe';
+			}
+		}
+
+		return $classes;
+	}
+
+	/**
+	 * Add hidden field
+	 *
+	 * @param array $classes
+	 *
+	 * @since 2.7.0
+	 */
+	public function addHiddenField( $classes ) {
+		if ( ! isViewingForm() ) {
+			return;
+		}
+
+		printf(
+			'<input type="hidden" name="%1$s" value="%2$s">',
+			'give_embed_form',
+			'1'
+		);
+	}
 
 	/**
 	 * Get filter list to dequeue scripts and style
 	 *
-	 * @since 2.7.0
-	 *
 	 * @param array $scripts
 	 *
 	 * @return array
+	 * @since 2.7.0
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
 		$list = [];
@@ -136,40 +175,26 @@ class LoadTheme {
 
 
 	/**
-	 * Add custom classes
+	 * Get form ID.
 	 *
+	 * @global WP_Post $post
+	 * @return int|null
 	 * @since 2.7.0
-	 * @param array $classes
-	 *
-	 * @return array
 	 */
-	public function addClasses( $classes ) {
-		if ( isViewingForm() ) {
-			$classes[] = 'give-embed-form';
+	private function getFormId() {
+		global $post;
+		$donorSession = give_get_purchase_session();
 
-			if ( ! empty( $_GET['iframe'] ) ) {
-				$classes[] = 'give-viewing-form-in-iframe';
-			}
+		$formId = ! empty( $donorSession['post_data']['give-form-id'] ) ? absint( $donorSession['post_data']['give-form-id'] ) : null;
+
+		if ( $formId ) {
+			return $formId;
 		}
 
-		return $classes;
-	}
-
-	/**
-	 * Add hidden field
-	 *
-	 * @since 2.7.0
-	 * @param array $classes
-	 */
-	public function addHiddenField( $classes ) {
-		if ( ! isViewingForm() ) {
-			return;
+		if ( 'give_forms' === get_post_type( $post ) ) {
+			return $post->ID;
 		}
 
-		printf(
-			'<input type="hidden" name="%1$s" value="%2$s">',
-			'give_embed_form',
-			'1'
-		);
+		return null;
 	}
 }
