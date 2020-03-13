@@ -50,13 +50,10 @@ class Actions {
 	/**
 	 * Setup common hooks
 	 *
-	 * @param int              $form_id
-	 * @param array            $args
-	 * @param Give_Donate_Form $form
+	 * @param int   $form_id
+	 * @param array $args
 	 */
-	public function loadCommonHooks( $form_id, $args, $form ) {
-		$form = $form instanceof Give_Donate_Form ? $form : new Give_Donate_Form( $form_id );
-
+	public function loadCommonHooks( $form_id, $args ) {
 		remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 	}
 
