@@ -159,8 +159,8 @@ class LoadTheme {
 			}
 
 			if (
-				0 === strpos( $handle, 'give-' ) ||
-				false !== strpos( $data->src, '\give-' )
+				0 === strpos( $handle, 'give' ) ||
+				false !== strpos( $data->src, '\give' )
 			) {
 				// Store dependencies to skip.
 				$skip = array_merge( $skip, $data->deps );
