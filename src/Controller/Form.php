@@ -45,8 +45,6 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function load() {
-		global $post;
-
 		$isViewingForm    = isViewingForm();
 		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
 
