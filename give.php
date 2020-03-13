@@ -419,8 +419,9 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
 
-			// Setup form route and store into singleton cache.
-			$this->routeform = new FormRoute( new FormRouteController() );
+			// Load routes.
+			$this->singletonsCache[ FormRoute::class ] = new FormRoute();
+			$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
@@ -789,7 +790,8 @@ if ( ! class_exists( 'Give' ) ) :
 
 				case 'routeForm':
 					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
-						$this->singletonsCache[ FormRoute::class ] = new FormRoute( new FormRouteController() );
+						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
+						$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
 					}
 
 					return $this->singletonsCache[ FormRoute::class ];

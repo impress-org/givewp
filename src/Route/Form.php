@@ -48,7 +48,7 @@ class Form {
 	 *
 	 * @param Controller $controller
 	 */
-	public function __construct( $controller ) {
+	public function init( $controller ) {
 		$this->base = give_get_option( $this->optionName ) ?: $this->defaultBase;
 
 		$controller->init();
