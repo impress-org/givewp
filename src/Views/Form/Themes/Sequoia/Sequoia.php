@@ -52,7 +52,7 @@ class Sequoia extends Theme implements Theme\Themeable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getOptionsConfig() {
+	public function getOptions() {
 		return require 'optionConfig.php';
 	}
 }

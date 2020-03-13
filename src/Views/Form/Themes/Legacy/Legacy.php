@@ -29,7 +29,7 @@ class Legacy extends Theme {
 	/**
 	 * @inheritDoc
 	 */
-	public function getOptionsConfig() {
+	public function getOptions() {
 		return require 'optionConfig.php';
 	}
 }
