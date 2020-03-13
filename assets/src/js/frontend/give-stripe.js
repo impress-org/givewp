@@ -30,6 +30,11 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const form_element = formWrap.querySelector( '.give-form' );
 
+		// Bailout, if `form_element` is null.
+		if ( null === form_element ) {
+			return;
+		}
+
 		let elements = stripe.elements( {
 			locale: preferredLocale,
 		} );

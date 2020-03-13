@@ -10,6 +10,12 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		let tokenCreated = false;
 		const form_element = formWrap.querySelector( '.give-form' );
+
+		// Bailout, if `form_element` is null.
+		if ( null === form_element ) {
+			return false;
+		}
+
 		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
 		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
 		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';
