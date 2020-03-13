@@ -84,20 +84,6 @@ class LoadTheme {
 	 * Initialize form theme
 	 */
 	public function init() {
-		// Exit.
-		if ( ! ( $entryFilePath = $this->theme->getThemePath() ) ) {
-			return;
-		}
-
-		$entryFilePath = "{$entryFilePath}functions.php";
-
-		// Exit.
-		if ( ! file_exists( $entryFilePath ) ) {
-			return;
-		}
-
-		require_once $entryFilePath;
-
 		// Script loading handler.
 		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 1 );
 		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
