@@ -41,6 +41,15 @@ return [
 				'desc' => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
 				'type' => 'colorpicker',
 			],
+			[
+				'id'         => 'next_label',
+				'name'       => __( 'Continue Button', 'give' ),
+				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
+				'type'       => 'text_medium',
+				'attributes' => [
+					'placeholder' => __( 'Continue', 'give' ),
+				],
+			],
 		],
 	],
 	'donation_amount'     => [
