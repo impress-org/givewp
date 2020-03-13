@@ -9,6 +9,7 @@
 
 namespace Give\Form;
 
+use Give\Views\Form\Themes\Legacy;
 use Give\Views\Form\Themes\Sequoia;
 
 defined( 'ABSPATH' ) || exit;
@@ -22,9 +23,9 @@ class RegisterThemes {
 	/**
 	 * Themes
 	 *
-	 * @var array
+	 * @var Theme[]
 	 */
-	private $themes = array();
+	private $themes;
 
 	/**
 	 * Load themes
@@ -32,35 +33,23 @@ class RegisterThemes {
 	 * @since 2.7.0
 	 */
 	public function load() {
-		$coreFormThemes = [
-			new Sequoia(),
-			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
-		];
-
 		/**
 		 * Filter list of form theme
 		 *
 		 * @since 2.7.0
+		 *
+		 * @param Theme[]
 		 */
-		$thirdPartyThemes = apply_filters( 'give_register_form_theme', [] );
+		$this->themes = apply_filters(
+			'give_register_form_theme',
+			[
+				new Sequoia(),
+				new Legacy(),
+			]
+		);
 
-		$allThemes = $coreFormThemes;
-
-		if ( $thirdPartyThemes ) {
-			$allThemes = array_unique( array_merge( $allThemes, array_filter( $thirdPartyThemes ) ) );
-		}
-
-		foreach ( $allThemes as $themePath ) {
-			$themePath  = trailingslashit( $themePath );
-			$configFile = $themePath . 'config.php';
-
-			if ( file_exists( $configFile ) ) {
-				$config          = require_once $configFile;
-				$config['entry'] = $themePath;
-
-				// $this->set( new Theme( $config ) );
-			}
-		}
+		// On Give\Form\Theme class object is valid.
+		$this->themes = array_filter( $this->themes, array( $this, 'isValidTheme' ) );
 	}
 
 
@@ -79,11 +68,11 @@ class RegisterThemes {
 	 *
 	 * @param string $themeID
 	 *
-	 * @return Theme
+	 * @return Theme|null
 	 * @since 2.7.0
 	 */
 	public function getTheme( $themeID ) {
-		return isset( $this->themes[ $themeID ] ) ? $this->themes[ $themeID ] : [];
+		return isset( $this->themes[ $themeID ] ) ? $this->themes[ $themeID ] : null;
 	}
 
 	/**
@@ -93,5 +82,17 @@ class RegisterThemes {
 	 */
 	public function set( Theme $registerTheme ) {
 		$this->themes[ $registerTheme->getID() ] = $registerTheme;
+	}
+
+	/**
+	 * Check if theme is valid or not
+	 *
+	 * @since 2.7.0
+	 * @param $theme
+	 *
+	 * @return bool
+	 */
+	private function isValidTheme( $theme ) {
+		return $theme instanceof Theme;
 	}
 }
