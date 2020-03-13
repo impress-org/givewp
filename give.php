@@ -37,7 +37,7 @@
  * - The GiveWP Team
  */
 
-use Give\Form\Themes;
+use Give\Form\RegisterThemes;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 
@@ -53,8 +53,8 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @since 1.0
 	 *
-	 * @property-read Themes $themes
-	 * @property-read Form $routeForm
+	 * @property-read RegisterThemes $themes
+	 * @property-read FormRoute           $routeForm
 	 */
 	final class Give {
 
@@ -297,7 +297,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 * @var Themes
+		 * @var RegisterThemes
 		 *
 		 * @since 2.7.0
 		 */
@@ -780,12 +780,12 @@ if ( ! class_exists( 'Give' ) ) :
 		function __get( $propertyName ) {
 			switch ( $propertyName ) {
 				case 'themes':
-					if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
-						$this->singletonsCache[ Themes::class ] = new Themes();
-						$this->singletonsCache[ Themes::class ]->loadThemes();
+					if ( ! isset( $this->singletonsCache[ RegisterThemes::class ] ) ) {
+						$this->singletonsCache[ RegisterThemes::class ] = new RegisterThemes();
+						$this->singletonsCache[ RegisterThemes::class ]->loadThemes();
 					}
 
-					return $this->singletonsCache[ Themes::class ];
+					return $this->singletonsCache[ RegisterThemes::class ];
 
 				case 'routeForm':
 					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
