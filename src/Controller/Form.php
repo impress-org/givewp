@@ -72,7 +72,7 @@ class Form {
 					wp_die( __( 'Donation form does not exist', 'give' ) );
 				}
 
-				require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormTemplate.php';
+				require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
 			}
 
 			exit();
@@ -82,7 +82,7 @@ class Form {
 			isViewingFormReceipt()
 			|| isViewingFormFailedTransactionPage()
 		) {
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/defaultFormReceiptTemplate.php';
+			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
 			exit();
 		}
 	}
