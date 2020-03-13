@@ -183,16 +183,20 @@ class LoadTheme {
 	 */
 	private function getFormId() {
 		global $post;
-		$donorSession = give_get_purchase_session();
 
-		$formId = ! empty( $donorSession['post_data']['give-form-id'] ) ? absint( $donorSession['post_data']['give-form-id'] ) : null;
+		// Get form id from current page
+		if ( 'give_forms' === get_post_type( $post ) ) {
+			return $post->ID;
+		}
+
+		// Get form id from donor purchase session.
+		$donorSession = give_get_purchase_session();
+		$formId       = ! empty( $donorSession['post_data']['give-form-id'] ) ?
+			absint( $donorSession['post_data']['give-form-id'] ) :
+			null;
 
 		if ( $formId ) {
 			return $formId;
-		}
-
-		if ( 'give_forms' === get_post_type( $post ) ) {
-			return $post->ID;
 		}
 
 		return null;
