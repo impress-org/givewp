@@ -13,7 +13,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 
 		// Bailout, if `form_element` is null.
 		if ( null === form_element ) {
-			return false;
+			return;
 		}
 
 		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
