@@ -48,7 +48,7 @@ class RegisterThemes {
 			]
 		);
 
-		// On Give\Form\Theme class object is valid.
+		// Validate: Only Give\Form\Theme class object is valid and Store themes.
 		$this->themes = array_filter( $this->themes, array( $this, 'isValidTheme' ) );
 	}
 
