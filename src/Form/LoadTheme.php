@@ -13,7 +13,6 @@ use _WP_Dependency;
 use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
 use WP_Post;
-use function Give\Helpers\Form\Theme\get as getThemeSettings;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
