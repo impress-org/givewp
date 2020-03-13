@@ -9,7 +9,7 @@
 
 namespace Give\Controller;
 
-use Give\Form\ThemeLoader;
+use Give\Form\LoadTheme;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -111,7 +111,7 @@ class Form {
 			}
 
 			$post        = get_post( $formID );
-			$themeLoader = new ThemeLoader();
+			$themeLoader = new LoadTheme();
 			$themeLoader->init();
 		}
 	}

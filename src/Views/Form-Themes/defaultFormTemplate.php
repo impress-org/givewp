@@ -1,5 +1,5 @@
 <?php
-use Give\Form\ThemeLoader;
+use Give\Form\LoadTheme;
 
 global $post;
 
@@ -8,7 +8,7 @@ $shortcodeArgs = array_intersect_key( $queryString, give_get_default_form_shortc
 $formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
 
 // Load form theme.
-$themeLoader = new ThemeLoader( $post->ID, $formTheme );
+$themeLoader = new LoadTheme( $post->ID, $formTheme );
 $themeLoader->init();
 ?>
 <!DOCTYPE html>

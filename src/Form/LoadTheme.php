@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7.0
  */
-class ThemeLoader {
+class LoadTheme {
 	/**
 	 * Default form theme ID.
 	 *
