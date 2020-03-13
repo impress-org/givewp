@@ -21,7 +21,7 @@ return [
 					'id'         => 'description',
 					'name'       => __( 'Description', 'give' ),
 					'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
-					'type'       => 'textarea_small',
+					'type'       => 'textarea',
 					'attributes' => [
 						'placeholder' => __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 					],
@@ -44,6 +44,15 @@ return [
 					'name' => __( 'Primary Color', 'give' ),
 					'desc' => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
 					'type' => 'colorpicker',
+				],
+				[
+					'id'         => 'continue_label',
+					'name'       => __( 'Continue Button', 'give' ),
+					'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
+					'type'       => 'text_medium',
+					'attributes' => [
+						'placeholder' => __( 'Add Payment Information', 'give' ),
+					],
 				],
 			],
 		],
