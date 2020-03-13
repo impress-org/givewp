@@ -45,7 +45,7 @@ abstract class Theme {
 	abstract public function getImage();
 
 	/**
-	 * Gt options config
+	 * Get options config
 	 *
 	 * @since 2.7.0
 	 *
