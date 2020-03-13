@@ -35,7 +35,7 @@ class Form {
 		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
 		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
 		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
-		add_filter( 'wp_redirect', array( $this, 'handleOffSiteCheckoutRedirect' ) );
+		// add_filter( 'wp_redirect', array( $this, 'handleOffSiteCheckoutRedirect' ) );
 	}
 
 	/**
