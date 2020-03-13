@@ -100,7 +100,7 @@ function give_add_add_ons_option_link() {
 	}
 
 	// Add-ons
-	$submenu['edit.php?post_type=give_forms'][] = array(
+	$submenu['edit.php?post_type=give_forms'][] = [
 		esc_html__( 'Add-ons', 'give' ),
 		'install_plugins',
 
@@ -110,7 +110,7 @@ function give_add_add_ons_option_link() {
 		 * @since 2.6.0
 		 */
 		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://go.givewp.com/addons-menu-link' ) ),
-	);
+	];
 
 }
 add_action( 'admin_menu', 'give_add_add_ons_option_link', 999999 );
