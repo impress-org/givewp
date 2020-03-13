@@ -782,7 +782,7 @@ if ( ! class_exists( 'Give' ) ) :
 				case 'themes':
 					if ( ! isset( $this->singletonsCache[ RegisterThemes::class ] ) ) {
 						$this->singletonsCache[ RegisterThemes::class ] = new RegisterThemes();
-						$this->singletonsCache[ RegisterThemes::class ]->loadThemes();
+						$this->singletonsCache[ RegisterThemes::class ]->load();
 					}
 
 					return $this->singletonsCache[ RegisterThemes::class ];

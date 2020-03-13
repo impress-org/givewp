@@ -29,7 +29,7 @@ class RegisterThemes {
 	 *
 	 * @since 2.7.0
 	 */
-	public function loadThemes() {
+	public function load() {
 		$coreFormThemes = [
 			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Sequoia',
 			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
