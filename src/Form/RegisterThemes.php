@@ -9,6 +9,8 @@
 
 namespace Give\Form;
 
+use Give\Views\Form\Themes\Sequoia;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -31,7 +33,7 @@ class RegisterThemes {
 	 */
 	public function load() {
 		$coreFormThemes = [
-			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Sequoia',
+			new Sequoia(),
 			GIVE_PLUGIN_DIR . 'src/Views/Form-Themes/Legacy',
 		];
 
@@ -56,7 +58,7 @@ class RegisterThemes {
 				$config          = require_once $configFile;
 				$config['entry'] = $themePath;
 
-				$this->set( new Theme( $config ) );
+				// $this->set( new Theme( $config ) );
 			}
 		}
 	}

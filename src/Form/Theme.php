@@ -9,6 +9,7 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\ThemeOptions;
 use InvalidArgumentException;
 use function Give\Helpers\Form\Theme\get as getTheme;
 
@@ -19,32 +20,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7.0
  */
-class Theme {
-	/**
-	 * Theme data
-	 *
-	 * @var array
-	 */
-	private $data;
-
-	/**
-	 * RegisterTheme constructor.
-	 *
-	 * @param array $args    {
-	 *
-	 * @type string $id      Theme ID
-	 * @type string $name    Theme name
-	 * @type string $image   Theme image
-	 * @type string $title   Theme title (optional). Can be contain whitelisted HTML tags: strong, a.
-	 * @type array  $options Array representation of setting.
-	 *
-	 * }
-	 */
-	public function __construct( array $args ) {
-		$this->data = $args;
-		$this->validateArguments();
-	}
-
+abstract class Theme {
 	/**
 	 * return theme ID.
 	 *
@@ -52,50 +28,43 @@ class Theme {
 	 *
 	 * @return string
 	 */
-	public function getID() {
-		return $this->data['id'];
-	}
+	abstract  public function getID();
 
 	/**
-	 * return theme name.
+	 * Get theme name.
 	 *
 	 * @since 2.7.0
 	 *
 	 * @return string
 	 */
-	public function geName() {
-		return $this->data['name'];
-	}
+	abstract public function geName();
 
 	/**
-	 * return theme image.
+	 * Get theme image.
 	 *
 	 * @since 2.7.0
 	 *
 	 * @return string
 	 */
-	public function getImage() {
-		return $this->data['image'];
-	}
+	abstract public function getImage();
+
+	/**
+	 * Gt options config
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	abstract public function getOptionsConfig();
 
 	/**
 	 * return theme options.
 	 *
+	 * @return ThemeOptions
 	 * @since 2.7.0
-	 *
-	 * @return array
 	 */
 	public function getOptions() {
-		return $this->data['options'];
-	}
-
-	/**
-	 * Get form theme path
-	 *
-	 * @return string
-	 */
-	public function getThemePath() {
-		return $this->data['entry'];
+		return new ThemeOptions( $this->getOptionsConfig() );
 	}
 
 	/**
@@ -111,7 +80,7 @@ class Theme {
 
 		$saveOptions = getTheme( $post->ID, $this->getID() );
 
-		foreach ( $this->data['options'] as $groupID => $option ) {
+		foreach ( $this->getOptions() as $groupID => $option ) {
 			printf(
 				'<div class="give-row %1$s">',
 				$groupID
@@ -133,7 +102,7 @@ class Theme {
 					$field['attributes']['value'] = $saveOptions[ $groupID ][ $field['id'] ];
 				}
 
-				$field['id'] = "{$this->data['id']}[{$groupID}][{$field['id']}]";
+				$field['id'] = "{$this->getID()}[{$groupID}][{$field['id']}]";
 
 				give_render_field( $field );
 			}
@@ -142,38 +111,5 @@ class Theme {
 		}
 
 		return ob_get_clean();
-	}
-
-
-	/**
-	 * Validate theme arguments
-	 *
-	 * @since 2.7.0
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	private function validateArguments() {
-		$requiredParams = array( 'id', 'name', 'options', 'image', 'entry' );
-		$error          = (bool) array_diff( $requiredParams, array_keys( $this->data ) );
-
-		// Required param must not be empty.
-		if ( ! $error ) {
-			foreach ( $requiredParams as $param ) {
-				if ( empty( $this->data[ $param ] ) ) {
-					$error = true;
-					break;
-				}
-			}
-		}
-
-		if ( $error ) {
-			throw new InvalidArgumentException(
-				sprintf(
-					'%1$s<pre>%2$s</pre>',
-					__( 'To register a form theme id, name, options and image is required.', 'give' ),
-					print_r( $this->data, true )
-				)
-			);
-		}
 	}
 }
