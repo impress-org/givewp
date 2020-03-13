@@ -95,8 +95,8 @@ class LoadTheme {
 		global $wp_scripts, $wp_styles;
 		wp_enqueue_scripts();
 
-		$wp_styles->dequeue( $this->getListOFScriptsToDequeue( $wp_styles->registered ) );
-		$wp_scripts->dequeue( $this->getListOFScriptsToDequeue( $wp_scripts->registered ) );
+		$wp_styles->dequeue( $this->getListOfScriptsToDequeue( $wp_styles->registered ) );
+		$wp_scripts->dequeue( $this->getListOfScriptsToDequeue( $wp_scripts->registered ) );
 	}
 
 
@@ -109,7 +109,7 @@ class LoadTheme {
 	 *
 	 * @return array
 	 */
-	private function getListOFScriptsToDequeue( $scripts ) {
+	private function getListOfScriptsToDequeue( $scripts ) {
 		$list = [];
 		$skip = [];
 
