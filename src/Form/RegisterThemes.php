@@ -82,15 +82,6 @@ class RegisterThemes {
 	}
 
 	/**
-	 * Themes constructor.
-	 *
-	 * @param Theme $registerTheme
-	 */
-	public function set( Theme $registerTheme ) {
-		$this->themes[ $registerTheme->getID() ] = $registerTheme;
-	}
-
-	/**
 	 * Check if theme is valid or not
 	 *
 	 * @since 2.7.0
