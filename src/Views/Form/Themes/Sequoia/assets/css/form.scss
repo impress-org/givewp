@@ -1,0 +1,329 @@
+/* stylelint-disable */
+@import 'mixins';
+@import 'util';
+
+html {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	margin: 10px 0;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.text {
+	color: #555;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+textarea {
+	font-size: 14px;
+	padding: 10px 10px !important;
+}
+
+.give-section.introduction {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	text-align: center;
+
+	h2,
+	p {
+		margin: 0;
+	}
+
+	.headline {
+		width: 25%;
+		border: 2px solid #2bc253;
+		border-radius: 10px;
+	}
+
+	img {
+		width: 100%;
+		margin-bottom: 0;
+	}
+
+	> * {
+		margin-bottom: 14px;
+	}
+}
+
+.give-section.form-stats {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+
+	background-color: #f9f9f9;
+
+	.number {
+		font-weight: bold;
+	}
+
+	> div {
+		display: flex;
+		flex: 1 1 0%;
+		flex-direction: column;
+		align-items: center;
+
+		border-left: 1px solid #e1e1e1;
+		border-bottom: 1px solid #e1e1e1;
+
+		padding: 10px;
+	}
+}
+
+.give-section.progress-bar {
+	padding: 19px 10px;
+	border-bottom: 1px solid #e1e1e1;
+}
+
+.give-section.personal-information-text {
+	text-align: center;
+	padding: 20px 0;
+	@include background-lightgray;
+
+	.subheading {
+		font-size: 12px;
+		color: #555;
+	}
+}
+
+.give-section.personal-information-text + [id='give_checkout_user_info'] {
+	margin: 0;
+}
+
+/**
+ * Override style
+ */
+.give-embed-form {
+	max-width: 480px;
+	margin: auto;
+	border-radius: 6px;
+	color: #696969;
+	background-color: #fbfbfb;
+	-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+		0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	width: 100%;
+
+	.give_notice,
+	.give_error {
+		@include before-after-content-none;
+	}
+
+	.give-show-form {
+		@include section-padding;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		button {
+			background-color: #2bc253;
+			color: white;
+			padding: 16px;
+
+			width: 55%;
+		}
+	}
+
+	&.give-form-wrap {
+		.give_error:first-child {
+			margin-top: 0;
+		}
+	}
+
+	.give-total-wrap {
+		justify-content: center;
+		align-items: center;
+		padding-top: 17px;
+		margin-bottom: 20px;
+
+		div.give-donation-amount {
+			border: 1px solid #e1e1e1;
+			border-radius: 6px !important;
+			background-color: white;
+
+			&::before {
+				content: none;
+			}
+		}
+
+		span.give-currency-symbol {
+			background-color: transparent !important;
+			border: 0 !important;
+			position: relative;
+			z-index: 3;
+			padding: 10px 12px !important;
+			border-radius: 6px !important;
+		}
+
+		input[type='tel'] {
+			position: relative;
+			left: -35px;
+			width: 170px !important;
+			border-radius: 6px !important;
+			padding: 25px 20px 25px 42px !important;
+			border: 0 !important;
+			text-align: center;
+			font-size: 25px !important;
+			font-weight: 400 !important;
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		.give-donation-amount {
+			@include before-after-content-none;
+		}
+	}
+
+	.give-donation-levels-wrap {
+		grid-gap: 15px;
+		grid-template-columns: repeat(3, 1fr);
+		padding: 0 5% !important;
+
+		&::before,
+		&::after {
+			content: none !important;
+		}
+
+		li {
+			margin: 0 !important;
+		}
+
+		li:last-child {
+			grid-column: 1 / span 3;
+
+			button {
+				padding: 9px 23px !important;
+			}
+		}
+	}
+
+	.give-donation-level-btn {
+		@include section-padding;
+
+		background: white;
+		color: black;
+		border-radius: 30px;
+		width: 100%;
+
+		&:hover {
+			border-color: #2bc253;
+			color: #2bc253;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	[id^='give-checkout-login-register-'],
+	[id='give_checkout_user_info'] {
+		@include section-padding;
+		@include background-lightgray;
+
+		margin: 19px 0;
+
+		fieldset[id='give_checkout_user_info'] {
+			padding: 0;
+			margin: 0;
+		}
+
+		legend {
+			display: none;
+		}
+	}
+
+	.give-user-login-fields-container {
+		display: flex;
+
+		div {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+
+			@include before-after-content-none;
+		}
+	}
+
+	[id='give-payment-mode-select'] {
+		@include section-padding;
+
+		legend {
+			display: none;
+		}
+
+		ul {
+			display: grid;
+			grid-gap: 10px;
+			grid-template-rows: 1fr;
+
+			@include before-after-content-none;
+
+			> li:not(.give_purchase_form_wrap-clone) {
+				@include background-lightgray;
+
+				margin: 0 !important;
+				padding: 14px 20px !important;
+
+				justify-content: flex-start;
+				align-items: center;
+
+				label {
+					padding-left: 3px;
+					flex-grow: 1;
+				}
+			}
+
+			> li.give_purchase_form_wrap-clone {
+				background-color: transparent;
+			}
+		}
+	}
+
+	[id='give_purchase_form_wrap'] {
+		@include section-padding;
+
+		> *:not(.give-donation-submit) {
+			display: none;
+		}
+
+		fieldset.give-donation-submit {
+			> *:not(.give-submit-button-wrap) {
+				display: none;
+			}
+
+			.give-submit-button-wrap {
+				@include before-after-content-none;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+
+				.give-submit {
+					background-color: #2bc253;
+					color: white;
+					width: 100%;
+
+					padding: 16px !important;
+				}
+			}
+		}
+	}
+
+	form > * {
+		display: none;
+	}
+}
+/* stylelint-enable */

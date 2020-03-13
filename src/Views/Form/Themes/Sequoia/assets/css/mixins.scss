@@ -1,0 +1,24 @@
+/* stylelint-disable */
+@mixin background-lightgray {
+	background-color: #f1f1f1;
+}
+
+@mixin before-after-content-none {
+	&::before,
+	&::after {
+		content: none !important;
+	}
+}
+
+@mixin section-padding {
+	padding: 15px 23px;
+}
+
+@mixin display-flex {
+	display: flex !important;
+}
+
+@mixin display-grid {
+	display: grid !important;
+}
+/* stylelint-enable */
