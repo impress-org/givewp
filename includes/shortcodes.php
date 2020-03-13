@@ -164,7 +164,7 @@ function give_form_shortcode( $atts ) {
 		// Build iframe url.
 		$iframe_url = add_query_arg(
 			array_merge( $query_string, $atts, array( 'iframe' => true ) ),
-			Give()->routeForm->getURL( $atts['id'] )
+			Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) )
 		);
 
 		printf(
