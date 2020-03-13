@@ -9,8 +9,8 @@
 
 namespace Give\Form;
 
-use Give\Views\Form\Themes\Legacy;
-use Give\Views\Form\Themes\Sequoia;
+use Give\Views\Form\Themes\Legacy\Legacy;
+use Give\Views\Form\Themes\Sequoia\Sequoia;
 
 defined( 'ABSPATH' ) || exit;
 

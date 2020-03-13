@@ -1,5 +1,5 @@
 <?php
-namespace Give\Views\Form\Themes;
+namespace Give\Views\Form\Themes\Sequoia;
 
 use Give\Form\Theme;
 use Give\Form\Themes\Sequoia\Actions;

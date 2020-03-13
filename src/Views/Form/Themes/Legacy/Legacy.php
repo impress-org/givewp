@@ -1,5 +1,5 @@
 <?php
-namespace Give\Views\Form\Themes;
+namespace Give\Views\Form\Themes\Legacy;
 
 use Give\Form\Theme;
 
