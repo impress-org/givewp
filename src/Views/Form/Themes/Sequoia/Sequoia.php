@@ -2,10 +2,7 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give\Form\Theme;
-use Give\Form\Theme\Themeable as Themeable;
-use Give\Views\Form\Themes\Sequoia\Actions;
-use Give\Views\Form\Themes\Sequoia\Scripts;
-
+use Give\Form\Theme\Themeable;
 
 /**
  * Class Sequoia
