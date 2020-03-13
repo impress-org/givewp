@@ -17,7 +17,7 @@ return [
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
 				'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
-				'type'       => 'textarea_small',
+				'type'       => 'textarea',
 				'attributes' => [
 					'placeholder' => __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 				],
