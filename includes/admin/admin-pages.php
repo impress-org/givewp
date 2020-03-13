@@ -94,6 +94,11 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
 function give_add_add_ons_option_link() {
 	global $submenu;
 
+	// Show menu only if user has permission.
+	if ( ! current_user_can( 'edit_give_payments' ) ) {
+		return;
+	}
+
 	// Add-ons
 	$submenu['edit.php?post_type=give_forms'][] = array(
 		esc_html__( 'Add-ons', 'give' ),
