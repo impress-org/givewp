@@ -27,7 +27,7 @@ $registeredThemes = Give()->themes->get();
 				$theme->getID() . ( $isActive ? ' active' : '' ),
 				$theme->getID(),
 				$theme->getImage(),
-				$theme->geName(),
+				$theme->getName(),
 				__( 'active', 'give' ),
 				$isActive ? __( 'Deactivate', 'give' ) : __( 'Activate', 'give' ),
 				$isActive ? 'js-theme--deactivate' : 'js-theme--activate'

@@ -39,7 +39,7 @@ class Sequoia extends Theme implements Themeable {
 	/**
 	 * @inheritDoc
 	 */
-	public function geName() {
+	public function getName() {
 		return __( 'Sequoia - Multi-Step Form', 'give' );
 	}
 

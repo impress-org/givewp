@@ -15,7 +15,7 @@ class Legacy extends Theme {
 	/**
 	 * @inheritDoc
 	 */
-	public function geName() {
+	public function getName() {
 		return __( 'Legacy - Standard Form', 'give' );
 	}
 

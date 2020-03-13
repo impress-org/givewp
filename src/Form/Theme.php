@@ -33,7 +33,7 @@ abstract class Theme {
 	 *
 	 * @return string
 	 */
-	abstract public function geName();
+	abstract public function getName();
 
 	/**
 	 * Get theme image.
