@@ -2,14 +2,15 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give\Form\Theme;
-use Give\Form\Theme\Themeable;
+use Give\Form\Theme\Hookable;
+use Give\Form\Theme\Scriptable;
 
 /**
  * Class Sequoia
  *
  * @package Give\Form\Theme
  */
-class Sequoia extends Theme implements Themeable {
+class Sequoia extends Theme implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
