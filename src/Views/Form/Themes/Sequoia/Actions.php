@@ -132,10 +132,18 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 */
-	public function getNextButton() {
+	public function getNextButton( $id ) {
+
+		// Get Theme options
+		$theme_options = give_get_meta( $id, '_give_sequoia_form_theme_settings', true, null );
+
+		$label = isset( $theme_options['introduction']['next_label'] ) ? $theme_options['introduction']['next_label'] : __( 'Next', 'give' );
+		$color = isset( $theme_options['introduction']['primary_color'] ) ? $theme_options['introduction']['primary_color'] : __( 'Next', 'give' );
+
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
-			__( 'Next', 'give' )
+			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
+			$color,
+			$label
 		);
 	}
 
