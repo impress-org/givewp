@@ -52,21 +52,6 @@ return [
 			],
 		],
 	],
-	'donation_amount'     => [
-		'name'   => __( 'Donation Amount', 'give' ),
-		'desc'   => __( 'Step descruiption will show up here if any', 'give' ),
-		'fields' => [
-			[
-				'id'         => 'reveal_label',
-				'name'       => __( 'Continue Button', 'give' ),
-				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
-				'type'       => 'text_medium',
-				'attributes' => [
-					'placeholder' => __( 'Add Payment Information', 'give' ),
-				],
-			],
-		],
-	],
 	'payment_information' => [
 		'name'   => __( 'Payment Information', 'give' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
