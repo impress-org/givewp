@@ -54,7 +54,7 @@ if ( ! class_exists( 'Give' ) ) :
 	 * @since 1.0
 	 *
 	 * @property-read RegisterThemes $themes
-	 * @property-read FormRoute           $routeForm
+	 * @property-read FormRoute      $routeForm
 	 */
 	final class Give {
 
