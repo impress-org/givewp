@@ -72,7 +72,13 @@ class RegisterThemes {
 	 * @since 2.7.0
 	 */
 	public function getTheme( $themeID ) {
-		return isset( $this->themes[ $themeID ] ) ? $this->themes[ $themeID ] : null;
+		foreach ( $this->themes as $theme ) {
+			if ( $themeID === $theme->getID() ) {
+				return $theme;
+			}
+		}
+
+		return null;
 	}
 
 	/**
