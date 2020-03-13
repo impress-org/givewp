@@ -2,8 +2,9 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give\Form\Theme;
-use Give\Form\Themes\Sequoia\Actions;
-use Give\Form\Themes\Sequoia\Scripts;
+use Give\Form\Theme\Themeable as Themeable;
+use Give\Views\Form\Themes\Sequoia\Actions;
+use Give\Views\Form\Themes\Sequoia\Scripts;
 
 
 /**
@@ -11,7 +12,7 @@ use Give\Form\Themes\Sequoia\Scripts;
  *
  * @package Give\Form\Theme
  */
-class Sequoia extends Theme implements Theme\Themeable {
+class Sequoia extends Theme implements Themeable {
 
 	/**
 	 * @inheritDoc

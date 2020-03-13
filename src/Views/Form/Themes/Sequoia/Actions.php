@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Form\Themes\Sequoia;
+namespace Give\Views\Form\Themes\Sequoia;
 
 use Give_Donate_Form;
 use function Give\Helpers\Form\Utils\isViewingForm;

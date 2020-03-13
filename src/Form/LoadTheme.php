@@ -10,7 +10,9 @@
 namespace Give\Form;
 
 use _WP_Dependency;
-use WP_Scripts;
+use Give\Form\Theme\Hookable;
+use Give\Form\Theme\Scriptable;
+use WP_Post;
 use function Give\Helpers\Form\Theme\get as getThemeSettings;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Utils\isViewingForm;
@@ -31,13 +33,6 @@ class LoadTheme {
 	private $defaultThemeID = 'legacy';
 
 	/**
-	 * Saved form theme settings
-	 *
-	 * @var array
-	 */
-	private $themeSettings;
-
-	/**
 	 * Form theme config.
 	 *
 	 * @var Theme
@@ -45,21 +40,9 @@ class LoadTheme {
 	private $theme;
 
 	/**
-	 * Activate form theme id.
-	 *
-	 * @var string
-	 */
-	private $activeThemeID;
-
-	/**
-	 * Form ID.
-	 *
-	 * @var string
-	 */
-	private $formID;
-
-	/**
 	 * Form Theme loading handler
+	 *
+	 * @global WP_Post $post
 	 *
 	 * @param int    $formID
 	 * @param string $formTheme Theme ID. Add form_theme shortcode argument to load selective form theme.
@@ -67,16 +50,12 @@ class LoadTheme {
 	public function __construct( $formID = 0, $formTheme = '' ) {
 		global $post;
 
-		$this->formID = $formID ?: $post->ID;
+		$formID = $formID ?: $post->ID;
 
-		$this->activeThemeID = getActiveID( $this->formID );
-		$this->activeThemeID = $formTheme ?: ( $this->activeThemeID ?: $this->defaultThemeID );
+		$themeID = getActiveID( $formID );
+		$themeID = $formTheme ?: ( $themeID ?: $this->defaultThemeID );
 
-		$this->themeSettings = getThemeSettings( $this->formID );
-		$this->theme         = Give()->themes->getTheme( $this->activeThemeID );
-
-		add_filter( 'give_form_wrap_classes', array( $this, 'addClasses' ) );
-		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
+		$this->theme = Give()->themes->getTheme( $themeID );
 	}
 
 
@@ -84,10 +63,24 @@ class LoadTheme {
 	 * Initialize form theme
 	 */
 	public function init() {
+		// Load theme hooks.
+		if ( $this->theme instanceof Hookable ) {
+			$this->theme->loadHooks();
+		}
+
+		// Load theme scripts.
+		if ( $this->theme instanceof Scriptable ) {
+			$this->theme->loadScripts();
+		}
+
 		// Script loading handler.
 		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 1 );
 		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
+
+		// Update form DOM.
+		add_filter( 'give_form_wrap_classes', array( $this, 'addClasses' ) );
+		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
 	}
 
 

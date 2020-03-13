@@ -1,5 +1,5 @@
 <?php
-namespace Give\Form\Themes\Sequoia;
+namespace Give\Views\Form\Themes\Sequoia;
 
 /**
  * Class Scripts
