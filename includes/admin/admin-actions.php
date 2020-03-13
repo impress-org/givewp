@@ -1587,7 +1587,7 @@ add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_
  * @since 2.7.0
  */
 function give_render_form_theme_setting_panel() {
-	require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form-Theme/Metabox-Settings.php';
+	require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form/Metabox-Settings.php';
 }
 add_action( 'give_post_form_theme_options_settings', 'give_render_form_theme_setting_panel' );
 

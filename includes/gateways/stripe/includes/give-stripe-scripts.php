@@ -92,7 +92,7 @@ function give_stripe_frontend_scripts() {
 
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
 	if ( give_is_gateway_active( 'stripe' ) || $stripe_card_update ) {
-		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js', 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}
 }

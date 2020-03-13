@@ -1044,7 +1044,13 @@ class Give_MetaBox_Form_Data {
 		}
 
 		/* @var Theme $theme */
-		$theme        = Give()->themes->getTheme( $new_theme );
+		$theme = Give()->themes->getTheme( $new_theme );
+
+		// If selected theme is not registered then do not save it's options.
+		if ( null === $theme ) {
+			return;
+		}
+
 		$themeOptions = $theme->getOptions();
 		$saveOptions  = getTheme( $formID );
 

@@ -9,6 +9,10 @@
  * @since       1.0
  */
 
+use function Give\Helpers\Form\Utils\getFailedTransactionPageURL;
+use function Give\Helpers\Form\Utils\getSuccessPageURL;
+use function Give\Helpers\Form\Utils\isProcessingForm;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -66,7 +70,7 @@ function give_process_paypal_payment( $payment_data ) {
 	}
 
 	// Redirect to PayPal.
-	give_embed_form_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
+	wp_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
 }
 
 add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
@@ -625,8 +629,8 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
 		),
-		give_is_processing_embed_form()
-			? give_embed_form_success_page_url()
+		isProcessingForm()
+			? getSuccessPageURL()
 			: give_get_success_page_uri()
 	);
 
@@ -653,8 +657,8 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		'custom'        => $payment_id,
 		'rm'            => '2',
 		'return'        => $return_url,
-		'cancel_return' => give_is_processing_embed_form()
-			? give_embed_form_failed_transaction_page_url( array( 'payment-id' => $payment_id ) )
+		'cancel_return' => isProcessingForm()
+			? getFailedTransactionPageURL( array( 'payment-id' => $payment_id ) )
 			: give_get_failed_transaction_uri(),
 		'notify_url'    => $listener_url,
 		'page_style'    => give_get_paypal_page_style(),

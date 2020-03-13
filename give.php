@@ -37,7 +37,9 @@
  * - The GiveWP Team
  */
 
-use Give\Form\Themes;
+use Give\Form\RegisterThemes;
+use Give\Route\Form as FormRoute;
+use Give\Controller\Form as FormRouteController;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -51,7 +53,8 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @since 1.0
 	 *
-	 * @property-read Themes $themes
+	 * @property-read RegisterThemes $themes
+	 * @property-read FormRoute      $routeForm
 	 */
 	final class Give {
 
@@ -294,11 +297,18 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 * @var Themes
+		 * @var RegisterThemes
 		 *
 		 * @since 2.7.0
 		 */
 		protected $themes;
+
+		/**
+		 * @var FormRoute
+		 *
+		 * @since 2.7.0
+		 */
+		protected $routeform;
 
 
 		/**
@@ -408,6 +418,10 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
+
+			// Load routes.
+			$this->singletonsCache[ FormRoute::class ] = new FormRoute();
+			$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
@@ -582,8 +596,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
-
-			require_once GIVE_PLUGIN_DIR . 'includes/forms/route.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
@@ -767,13 +779,22 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return mixed
 		 */
 		function __get( $propertyName ) {
-			if ( 'themes' === $propertyName ) {
-				if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
-					$this->singletonsCache[ Themes::class ] = new Themes();
-					$this->singletonsCache[ Themes::class ]->loadThemes();
-				}
+			switch ( $propertyName ) {
+				case 'themes':
+					if ( ! isset( $this->singletonsCache[ RegisterThemes::class ] ) ) {
+						$this->singletonsCache[ RegisterThemes::class ] = new RegisterThemes();
+						$this->singletonsCache[ RegisterThemes::class ]->load();
+					}
 
-				return $this->singletonsCache[ Themes::class ];
+					return $this->singletonsCache[ RegisterThemes::class ];
+
+				case 'routeForm':
+					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
+						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
+						$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
+					}
+
+					return $this->singletonsCache[ FormRoute::class ];
 			}
 		}
 

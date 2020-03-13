@@ -2,6 +2,7 @@
 global $post;
 
 use Give\Form\Theme;
+use Give\Form\Theme\Options;
 use function Give\Helpers\Form\Theme\getActiveID;
 
 $activatedTheme   = getActiveID( $post->ID );
@@ -61,11 +62,13 @@ $registeredThemes = Give()->themes->get();
 		<?php
 		/* @var Theme $theme */
 		foreach ( $registeredThemes as $theme ) {
+			$themeOptions = new Options( $theme );
+
 			printf(
 				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
 				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),
 				$theme->getID(),
-				$theme->renderOptions()
+				$themeOptions->render()
 			);
 		}
 		?>
