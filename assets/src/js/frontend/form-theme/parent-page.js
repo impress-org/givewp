@@ -72,4 +72,16 @@ jQuery( function( $ ) {
 			}
 		} );
 	} );
+
+	$.each( $( '.give-embed-form-popup-button' ), function( index, button ) {
+		button = $( button );
+
+		button.magnificPopup( {
+			fixedContentPos: true,
+			fixedBgPos: true,
+			closeBtnInside: true,
+			midClick: true,
+			removalDelay: 300,
+		} );
+	} );
 } );

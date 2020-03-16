@@ -167,8 +167,23 @@ function give_form_shortcode( $atts ) {
 			Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) )
 		);
 
+		$uniqueId         = uniqid( 'give-' );
+		$buttonModeActive = 'button' === $atts['display_style'];
+
+		if ( $buttonModeActive ) {
+			printf(
+				'<div>
+						<a
+						class="give-embed-form-popup-button"
+						href="%1$s">%2$s</a>
+					</div>',
+				"#{$uniqueId}",
+				__( 'Click to donate', 'give' )
+			);
+		}
+
 		printf(
-			'<div class="give-embed-form-wrapper give-loader-type-img">
+			'<div class="give-embed-form-wrapper give-loader-type-img%4$s" id="%3$s">
 						<iframe
 						name="give-embed-form"
 						src="%1$s"
@@ -176,7 +191,9 @@ function give_form_shortcode( $atts ) {
 						style="border: 0; visibility: hidden"></iframe>
 					</div>',
 			$iframe_url,
-			$isAutoScroll
+			$isAutoScroll,
+			$uniqueId,
+			$buttonModeActive ? ' is-hide' : ''
 		);
 	} else {
 		give_get_donation_form( $atts );

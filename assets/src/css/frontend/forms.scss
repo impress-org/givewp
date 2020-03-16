@@ -909,4 +909,21 @@ Embed Form aka IFrame Form
 	&.give-loader-type-img {
 		@include give-img-type-loader;
 	}
+	&.is-hide {
+		position: fixed;
+		top: -999px;
+	}
+}
+
+.mfp-wrap {
+	.give-embed-form-wrapper {
+		&.is-hide {
+			position: relative;
+			top: 0;
+		}
+
+		iframe {
+			margin: 0 auto;
+		}
+	}
 }
