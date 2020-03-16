@@ -51,5 +51,5 @@ abstract class Theme {
 	 *
 	 * @return array
 	 */
-	abstract public function getOptions();
+	abstract public function getOptionsConfig();
 }

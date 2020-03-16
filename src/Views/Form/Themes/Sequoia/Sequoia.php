@@ -53,7 +53,7 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getOptions() {
+	public function getOptionsConfig() {
 		return require 'optionConfig.php';
 	}
 }

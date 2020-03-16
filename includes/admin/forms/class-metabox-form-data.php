@@ -1051,7 +1051,7 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
-		$themeOptions = $theme->getOptions();
+		$themeOptions = $theme->getOptionsConfig();
 		$saveOptions  = getTheme( $formID );
 
 		foreach ( $themeOptions as $groupID => $group ) {

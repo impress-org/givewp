@@ -43,7 +43,7 @@ class Options {
 
 		$saveOptions = getTheme( $post->ID, $this->theme->getID() );
 
-		foreach ( $this->theme->getOptions() as $groupID => $option ) {
+		foreach ( $this->theme->getOptionsConfig() as $groupID => $option ) {
 			printf(
 				'<div class="give-row %1$s">',
 				$groupID
