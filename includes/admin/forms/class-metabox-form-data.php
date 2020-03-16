@@ -1086,9 +1086,6 @@ class Give_MetaBox_Form_Data {
 							$group_of_values = array();
 
 							foreach ( $subFields as $field_id => $field_value ) {
-								/* @var Field $field */
-								$field = $themeOptions->groups[ $group->id ]->fields[ $field->id ];
-
 								switch ( $field->getFormMetaboxFieldArguments()['fields'][ $field_id ]['type'] ) {
 									case 'wysiwyg':
 										$group_of_values[ $field_id ] = wp_kses_post( $field_value );
