@@ -23,9 +23,17 @@ class RegisterThemes {
 	/**
 	 * Themes
 	 *
+	 * @var array
+	 */
+	private $themes = [];
+
+
+	/**
+	 * Themes Objects
+	 *
 	 * @var Theme[]
 	 */
-	private $themes;
+	private $themeObjs = [];
 
 	/**
 	 * Load themes
@@ -43,42 +51,55 @@ class RegisterThemes {
 		$this->themes = apply_filters(
 			'give_register_form_theme',
 			[
-				new Sequoia(),
-				new Legacy(),
+				Sequoia::class,
+				Legacy::class,
 			]
 		);
 
-		// Validate: Only Give\Form\Theme class object is valid and Store themes.
-		$this->themes = array_filter( $this->themes, array( $this, 'isValidTheme' ) );
+		$this->themeObjs = array_map( array( $this, 'getThemeObject' ), $this->themes );
 	}
-
 
 	/**
 	 * Get Registered themes
 	 *
-	 * @return array
+	 * @return Theme[]
 	 * @since 2.7.0
 	 */
-	public function get() {
-		return $this->themes;
+	public function getThemes() {
+		return $this->themeObjs;
 	}
 
 	/**
 	 * Get Registered theme
 	 *
-	 * @param string $themeID
+	 * @param string $themeId
 	 *
 	 * @return Theme|null
 	 * @since 2.7.0
 	 */
-	public function getTheme( $themeID ) {
-		foreach ( $this->themes as $theme ) {
-			if ( $themeID === $theme->getID() ) {
+	public function getTheme( $themeId ) {
+		foreach ( $this->themeObjs as $theme ) {
+			if ( $themeId === $theme->getID() ) {
 				return $theme;
 			}
 		}
 
 		return null;
+
+	}
+
+	/**
+	 * Get class object.
+	 *
+	 * @since 2.7.0
+	 * @param string $className
+	 *
+	 * @return Theme
+	 */
+	private function getThemeObject( $className ) {
+		$obj = class_exists( $className ) ? new $className() : null;
+
+		return $this->isValidTheme( $obj ) ? $obj : null;
 	}
 
 	/**
