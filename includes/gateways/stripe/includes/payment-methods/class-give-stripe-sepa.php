@@ -1,0 +1,269 @@
+<?php
+/**
+ * Give - Stripe SEPA Direct Debit
+ *
+ * @package    Give
+ * @subpackage Stripe Core
+ * @copyright  Copyright (c) 2019, GiveWP
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Check for Give_Stripe_Checkout existence.
+ *
+ * @since 2.6.1
+ */
+if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
+
+	/**
+	 * Class Give_Stripe_Sepa.
+	 *
+	 * @since 2.6.1
+	 */
+	class Give_Stripe_Sepa extends Give_Stripe_Gateway {
+
+
+		/**
+		 * Give_Stripe_Sepa constructor.
+		 *
+		 * @since  2.6.1
+		 * @access public
+		 */
+		public function __construct() {
+
+			$this->id = 'stripe_sepa';
+
+			parent::__construct();
+
+			// Remove CC fieldset.
+			add_action( 'give_stripe_sepa_cc_form', '__return_false' );
+
+			add_action( 'give_stripe_sepa_cc_form', [ $this, 'add_mandate_form' ], 10, 3 );
+		}
+
+
+		/**
+		 * Stripe SEPA uses it's own mandate form.
+		 *
+		 * We don't want the name attributes to be present on the fields in order to
+		 * prevent them from getting posted to the server.
+		 *
+		 * @param int  $form_id Donation Form ID.
+		 * @param int  $args    Donation Form Arguments.
+		 * @param bool $echo    Status to display or not.
+		 *
+		 * @access public
+		 * @since  2.6.1
+		 *
+		 * @return string $form
+		 */
+		public function add_mandate_form( $form_id, $args, $echo = true ) {
+
+			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
+			$publishable_key = give_stripe_get_publishable_key();
+			$secret_key      = give_stripe_get_secret_key();
+
+			ob_start();
+
+			do_action( 'give_before_cc_fields', $form_id ); ?>
+
+			<fieldset id="give_cc_fields" class="give-do-validate">
+				<legend>
+					<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
+				</legend>
+
+				<?php
+				if ( is_ssl() ) {
+					?>
+					<div id="give_secure_site_wrapper">
+						<span class="give-icon padlock"></span>
+						<span>
+					<?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?>
+				</span>
+					</div>
+					<?php
+				}
+
+				if (
+					! is_ssl() &&
+					! give_is_test_mode() &&
+					(
+						empty( $publishable_key ) ||
+						empty( $secret_key )
+					)
+				) {
+					Give()->notices->print_frontend_notice(
+						sprintf(
+							'<strong>%1$s</strong> %2$s',
+							esc_html__( 'Notice:', 'give' ),
+							esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
+						)
+					);
+				} elseif (
+					empty( $publishable_key ) ||
+					empty( $secret_key )
+				) {
+					Give()->notices->print_frontend_notice(
+						sprintf(
+							'<strong>%1$s</strong> %2$s',
+							esc_html__( 'Notice:', 'give' ),
+							esc_html__( 'Mandate form fields are disabled because Stripe is not connected.', 'give' )
+						)
+					);
+				} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
+					Give()->notices->print_frontend_notice(
+						sprintf(
+							'<strong>%1$s</strong> %2$s',
+							esc_html__( 'Notice:', 'give' ),
+							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
+						)
+					);
+				} else {
+					// Display the stripe container which can be occupied by Stripe SEPA.
+					echo '<div id="give-stripe-sepa-fields-' . esc_html( $id_prefix ) . '" class="give-stripe-sepa-field-wrap"></div>';
+
+					/**
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * Note: Kept this hook as it is.
+					 *
+					 * @since 2.5.0
+					 *
+					 * @param int   $form_id Donation Form ID.
+					 * @param array $args    List of additional arguments.
+					 */
+					do_action( 'give_after_cc_expiration', $form_id, $args );
+
+					/**
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * @since 2.5.0
+					 *
+					 * @param int   $form_id Donation Form ID.
+					 * @param array $args    List of additional arguments.
+					 */
+					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
+				}
+				?>
+			</fieldset>
+			<?php
+			// Remove Address Fields if user has option enabled.
+			$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
+			if ( ! $billing_fields_enabled ) {
+				remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
+			}
+
+			do_action( 'give_after_cc_fields', $form_id, $args );
+
+			$form = ob_get_clean();
+
+			if ( false !== $echo ) {
+				echo $form;
+			}
+
+			return $form;
+		}
+
+		/**
+		 * This function will be used for donation processing.
+		 *
+		 * @param array $donation_data List of donation data.
+		 *
+		 * @since  2.6.1
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function process_payment( $donation_data ) {
+
+			// Bailout, if the current gateway and the posted gateway mismatched.
+			if ( $this->id !== $donation_data['post_data']['give-gateway'] ) {
+				return;
+			}
+
+			// Make sure we don't have any left over errors present.
+			give_clear_errors();
+
+			// Any errors?
+			$errors = give_get_errors();
+
+			// No errors, proceed.
+			if ( ! $errors ) {
+
+				$form_id          = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
+				$price_id         = ! empty( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : 0;
+				$donor_email      = ! empty( $donation_data['post_data']['give_email'] ) ? $donation_data['post_data']['give_email'] : 0;
+				$payment_method   = ! empty( $donation_data['post_data']['give_stripe_payment_method'] ) ? $donation_data['post_data']['give_stripe_payment_method'] : 0;
+				$donation_summary = give_payment_gateway_donation_summary( $donation_data, false );
+
+				// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
+				$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $payment_method );
+				$stripe_customer_id   = $give_stripe_customer->get_id();
+				$payment_method       = ! empty( $give_stripe_customer->attached_payment_method ) ?
+					$give_stripe_customer->attached_payment_method->id :
+					$payment_method;
+
+				// We have a Stripe customer, charge them.
+				if ( $stripe_customer_id ) {
+
+					// Setup the payment details.
+					$payment_data = array(
+						'price'           => $donation_data['price'],
+						'give_form_title' => $donation_data['post_data']['give-form-title'],
+						'give_form_id'    => $form_id,
+						'give_price_id'   => $price_id,
+						'date'            => $donation_data['date'],
+						'user_email'      => $donation_data['user_email'],
+						'purchase_key'    => $donation_data['purchase_key'],
+						'currency'        => give_get_currency( $form_id ),
+						'user_info'       => $donation_data['user_info'],
+						'status'          => 'pending',
+						'gateway'         => $this->id,
+					);
+
+					// Record the pending payment in Give.
+					$donation_id = give_insert_payment( $payment_data );
+
+					// Return error, if donation id doesn't exists.
+					if ( ! $donation_id ) {
+						give_record_gateway_error(
+							__( 'Donation creating error', 'give' ),
+							sprintf(
+								/* translators: %s Donation Data */
+								__( 'Unable to create a pending donation. Details: %s', 'give' ),
+								wp_json_encode( $donation_data )
+							)
+						);
+						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while creating a pending donation.', 'give' ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						return;
+					}
+
+					// Assign required data to array of donation data for future reference.
+					$donation_data['donation_id'] = $donation_id;
+					$donation_data['description'] = $donation_summary;
+					$donation_data['customer_id'] = $stripe_customer_id;
+					$donation_data['source_id']   = $payment_method;
+
+					// Save Stripe Customer ID to Donation note, Donor and Donation for future reference.
+					give_insert_payment_note( $donation_id, 'Stripe Customer ID: ' . $stripe_customer_id );
+					$this->save_stripe_customer_id( $stripe_customer_id, $donation_id );
+					give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
+
+					// Process actual SEPA payment.
+
+					// Don't execute code further.
+					give_die();
+				}
+			}
+
+		}
+	}
+}
+
+new Give_Stripe_Sepa();
