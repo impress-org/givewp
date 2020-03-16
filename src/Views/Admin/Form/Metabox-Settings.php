@@ -6,7 +6,7 @@ use Give\Form\Theme\Options;
 use function Give\Helpers\Form\Theme\getActiveID;
 
 $activatedTheme   = getActiveID( $post->ID );
-$registeredThemes = Give()->themes->get();
+$registeredThemes = Give()->themes->getThemes();
 ?>
 <div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
 	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
