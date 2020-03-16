@@ -283,16 +283,6 @@ class Give_MetaBox_Form_Data {
 						'give_forms_display_options_metabox_fields',
 						array(
 							array(
-								'id'            => $prefix . 'reveal_label',
-								'name'          => __( 'Continue Button', 'give' ),
-								'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
-								'type'          => 'text_small',
-								'attributes'    => array(
-									'placeholder' => __( 'Donate Now', 'give' ),
-								),
-								'wrapper_class' => 'give-hidden',
-							),
-							array(
 								'name' => __( 'Default Gateway', 'give' ),
 								'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under GiveWP > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
 								'id'   => $prefix . 'default_gateway',
