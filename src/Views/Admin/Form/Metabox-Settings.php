@@ -62,13 +62,11 @@ $registeredThemes = Give()->themes->getThemes();
 		<?php
 		/* @var Theme $theme */
 		foreach ( $registeredThemes as $theme ) {
-			$themeOptions = new Options( $theme );
-
 			printf(
 				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
 				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),
 				$theme->getID(),
-				$themeOptions->render()
+				$theme->render()
 			);
 		}
 		?>

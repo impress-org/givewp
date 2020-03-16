@@ -9,6 +9,12 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\Options;
+use Give\FormAPI\Field;
+use Give\FormAPI\Group;
+use WP_Post;
+use function Give\Helpers\Form\Theme\get as getTheme;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -52,4 +58,67 @@ abstract class Theme {
 	 * @return array
 	 */
 	abstract public function getOptionsConfig();
+
+
+	/**
+	 * Get theme options
+	 *
+	 * @return Options
+	 */
+	final public function getOptions() {
+		return Options::fromArray( $this->getOptionsConfig() );
+	}
+
+	/**
+	 * return theme options.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @global WP_Post $post
+	 * @return string
+	 */
+	final public function render() {
+		global $post;
+
+		ob_start();
+
+		$saveOptions = getTheme( $post->ID, $this->getID() );
+
+		/* @var Group $option */
+		foreach ( $this->getOptions()->groups as $group ) {
+			printf(
+				'<div class="give-row %1$s">',
+				$group->id
+			);
+
+			printf(
+				'<div class="give-row-head">
+							<button type="button" class="handlediv" aria-expanded="true">
+								<span class="toggle-indicator"/>
+							</button>
+							<h2 class="hndle"><span>%1$s</span></h2>
+						</div>',
+				$group->name
+			);
+
+			echo '<div class="give-row-body">';
+
+			/* @var Field $field */
+			foreach ( $group->fields as $field ) {
+				$field = $field->getFormMetaboxFieldArguments();
+				if ( isset( $saveOptions[ $group->id ][ $field['id'] ] ) ) {
+					$field['attributes']['value'] = $saveOptions[ $group->id ][ $field['id'] ];
+				}
+
+				$field['id'] = "{$this->getID()}[{$group->id}][{$field['id']}]";
+
+				give_render_field( $field );
+			}
+
+			echo '</div></div>';
+		}
+
+		return ob_get_clean();
+	}
+
 }
