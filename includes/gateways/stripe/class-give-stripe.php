@@ -204,6 +204,12 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 				'checkout_label' => __( 'Credit Card', 'give' ),
 			);
 
+			// Stripe - SEPA Direct Debit.
+			$gateways['stripe_sepa'] = array(
+				'admin_label'    => __( 'Stripe - SEPA Direct Debit', 'give' ),
+				'checkout_label' => __( 'SEPA Direct Debit', 'give' ),
+			);
+
 			return $gateways;
 		}
 	}
