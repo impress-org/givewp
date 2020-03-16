@@ -15,7 +15,9 @@ use Give\Views\Form\Themes\Sequoia\Sequoia;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Themes class
+ * Class RegisterThemes
+ *
+ * @package Give\Form
  *
  * @since 2.7.0
  */
