@@ -85,6 +85,9 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
+
+		// Override checkout button
+		add_filter( 'give_donation_form_submit_button', array( $this, 'getCheckoutButton' ) );
 	}
 
 	/**
@@ -138,13 +141,35 @@ class Actions {
 		$theme_options = give_get_meta( $id, '_give_sequoia_form_theme_settings', true, null );
 
 		$label = isset( $theme_options['introduction']['next_label'] ) ? $theme_options['introduction']['next_label'] : __( 'Next', 'give' );
-		$color = isset( $theme_options['introduction']['primary_color'] ) ? $theme_options['introduction']['primary_color'] : __( 'Next', 'give' );
+		$color = isset( $theme_options['introduction']['primary_color'] ) ? $theme_options['introduction']['primary_color'] : '#2bc253';
 
 		printf(
 			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
 			$color,
 			$label
 		);
+	}
+
+	/**
+	 * Add checkout button
+	 *
+	 * @since 2.7.0
+	 */
+	public function getCheckoutButton() {
+		$session = give_get_purchase_session();
+		$payment = new \Give_Payment( $session['donation_id'] );
+
+		// Get Theme options
+		$theme_options = give_get_meta( $payment->form_id, '_give_sequoia_form_theme_settings', true, null );
+
+		$label = isset( $theme_options['payment_information']['checkout_label'] ) ? $theme_options['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
+		$color = isset( $theme_options['introduction']['primary_color'] ) ? $theme_options['introduction']['primary_color'] : '#2bc253';
+
+		$button = '<div class="give-submit-button-wrap give-clearfix">
+			<input type="submit" class="give-submit give-btn" style="background: ' . $color . '" id="give-purchase-button" name="give-purchase" value="' . $label . '" data-before-validation-label="Donate Now">
+			<span class="give-loading-animation"></span>
+		</div>';
+		return $button;
 	}
 
 	/**
