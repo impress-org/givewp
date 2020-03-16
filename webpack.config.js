@@ -19,19 +19,20 @@ const config = {
 	mode,
 
 	entry: {
-		'give': [ './assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js' ],
+		give: [ './assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js' ],
 		'give-stripe': [ './assets/src/js/frontend/give-stripe.js' ],
 		'give-stripe-checkout': [ './assets/src/js/frontend/give-stripe-checkout.js' ],
-		'admin': [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
+		'give-stripe-sepa': [ './assets/src/js/frontend/give-stripe-sepa.js' ],
+		admin: [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
 		'admin-global': [ './assets/src/css/admin/give-admin-global.scss' ],
 		'babel-polyfill': '@babel/polyfill',
-		'gutenberg': './blocks/load.js',
+		gutenberg: './blocks/load.js',
 		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
 		'admin-shortcodes': './includes/admin/shortcodes/admin-shortcodes.js',
 		'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		'admin-add-ons': [ './assets/src/js/admin/admin-add-ons.js' ],
-		'admin-reports': ['./assets/src/js/admin/reports/app.js'],
-		'admin-reports-widget': ['./assets/src/js/admin/reports/widget.js']
+		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
+		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
@@ -72,7 +73,7 @@ const config = {
 				use: [
 					//MiniCSSExtractPlugin.loader,
 					'style-loader',
-					'css-loader'
+					'css-loader',
 				],
 			},
 
