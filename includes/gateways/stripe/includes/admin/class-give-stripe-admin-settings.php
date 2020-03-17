@@ -111,6 +111,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				'general'     => __( 'General Settings', 'give' ),
 				'credit-card' => __( 'Credit Card On Site', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
+				'sepa'        => __( 'SEPA Direct Debit', 'give' ),
 			);
 
 			return apply_filters( 'give_stripe_register_groups', $groups );
@@ -388,6 +389,63 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type' => 'sectionend',
 					);
 
+					// SEPA Direct Debit.
+					$settings['sepa'][] = array(
+						'id'   => 'give_title_stripe_sepa',
+						'type' => 'title',
+					);
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Hide Icon', 'give' ),
+						'desc'          => __( 'This option allows you to hide the icon from the IBAN element of SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_hide_icon',
+						'wrapper_class' => 'stripe-hide-icon',
+						'type'          => 'radio_inline',
+						'default'       => 'disabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Icon Style', 'give' ),
+						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_icon_style',
+						'wrapper_class' => 'stripe-icon-style',
+						'type'          => 'radio_inline',
+						'default'       => 'default',
+						'options'       => array(
+							'default' => __( 'Default', 'give' ),
+							'solid'   => __( 'Solid', 'give' ),
+						),
+					);
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Mandate Acceptance Text', 'give' ),
+						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_mandate_acceptance_text',
+						'wrapper_class' => 'stripe-mandate-acceptance-text',
+						'type'          => 'textarea',
+						'default'       => sprintf(
+							__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
+							get_bloginfo( 'sitename' )
+						),
+					);
+
+					/**
+					 * This filter is used to add setting fields after sepa fields.
+					 *
+					 * @since 2.6.1
+					 */
+					$settings = apply_filters( 'give_stripe_after_sepa_fields', $settings );
+
+					// Stripe Admin Settings - Footer.
+					$settings['sepa'][] = array(
+						'id'   => 'give_title_stripe_sepa',
+						'type' => 'sectionend',
+					);
+
 					/**
 					 * This filter is used to add setting fields for additional groups.
 					 *
@@ -653,7 +711,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 							?>
 							<p>
-								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
+								<strong><?php esc_html_e( 'Last webhook received on', 'give' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
 							</p>
 							<?php
 						}
