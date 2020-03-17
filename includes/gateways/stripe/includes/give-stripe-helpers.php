@@ -1144,3 +1144,32 @@ function give_stripe_is_update_payment_method_screen() {
 
 	return $is_update_screen;
 }
+
+/**
+ * This function will return the default mandate acceptance text.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_default_mandate_acceptance_text() {
+	return sprintf(
+		__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
+		get_bloginfo( 'sitename' )
+	);
+}
+
+/**
+ * This function is used to get mandate acceptance text which is saved in admin.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_mandate_acceptance_text() {
+
+	$default_text = give_stripe_get_default_mandate_acceptance_text();
+	$text         = give_get_option( 'stripe_mandate_acceptance_text', $default_text );
+
+	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
+}

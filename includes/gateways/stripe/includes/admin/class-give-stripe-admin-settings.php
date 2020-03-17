@@ -427,10 +427,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'id'            => 'stripe_mandate_acceptance_text',
 						'wrapper_class' => 'stripe-mandate-acceptance-text',
 						'type'          => 'textarea',
-						'default'       => sprintf(
-							__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
-							get_bloginfo( 'sitename' )
-						),
+						'default'       => give_stripe_get_default_mandate_acceptance_text(),
 					);
 
 					/**
