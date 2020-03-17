@@ -10,7 +10,7 @@
 namespace Give\Form;
 
 use Give\Form\Theme\Options;
-use Give\FormAPI\Field;
+use Give\FormAPI\Form\Field;
 use Give\FormAPI\Group;
 use WP_Post;
 use function Give\Helpers\Form\Theme\get as getTheme;
@@ -105,7 +105,7 @@ abstract class Theme {
 
 			/* @var Field $field */
 			foreach ( $group->fields as $field ) {
-				$field = $field->getFormMetaboxFieldArguments();
+				$field = $field->toArray();
 				if ( isset( $saveOptions[ $group->id ][ $field['id'] ] ) ) {
 					$field['attributes']['value'] = $saveOptions[ $group->id ][ $field['id'] ];
 				}
