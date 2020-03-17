@@ -179,6 +179,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				style: elementStyles,
 				classes: elementClasses,
 				supportedCountries: [ 'SEPA' ],
+				hideIcon: ( 'disabled' !== give_stripe_vars.sepa_hide_icon ),
+				iconStyle: give_stripe_vars.sepa_icon_style,
 			}
 		);
 
