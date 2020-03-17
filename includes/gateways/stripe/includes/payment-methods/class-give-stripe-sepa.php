@@ -208,7 +208,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 				// Get an existing Stripe customer or create a new Stripe Customer and attach the source to customer.
 				$give_stripe_customer = new Give_Stripe_Customer( $donor_email, $payment_method );
 				$stripe_customer_id   = $give_stripe_customer->get_id();
-				$payment_method       = ! empty( $give_stripe_customer->attached_payment_method ) ?
+				$payment_method_id    = ! empty( $give_stripe_customer->attached_payment_method ) ?
 					$give_stripe_customer->attached_payment_method->id :
 					$payment_method;
 
@@ -259,7 +259,68 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					$this->save_stripe_customer_id( $stripe_customer_id, $donation_id );
 					give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
 
-					// Process actual SEPA payment.
+					// Save Source ID to donation note and DB.
+					give_insert_payment_note( $donation_id, 'Stripe Source/Payment Method ID: ' . $payment_method_id );
+					give_update_meta( $donation_id, '_give_stripe_source_id', $payment_method_id );
+					give_update_meta( $donation_id, '_give_stripe_payment_method_id', $payment_method_id );
+
+					// Save donation summary to donation.
+					give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
+
+					/**
+					 * This filter hook is used to update the payment intent arguments.
+					 *
+					 * @since 2.5.0
+					 */
+					$intent_args = apply_filters(
+						'give_stripe_sepa_create_intent_args',
+						array(
+							'amount'               => $this->format_amount( $donation_data['price'] ),
+							'currency'             => give_get_currency( $form_id ),
+							'payment_method_types' => [ 'sepa_debit' ],
+							'statement_descriptor' => give_stripe_get_statement_descriptor(),
+							'description'          => give_payment_gateway_donation_summary( $donation_data ),
+							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'customer'             => $stripe_customer_id,
+							'payment_method'       => $payment_method_id,
+							'confirm'              => true,
+							'setup_future_usage'   => 'off_session',
+							'mandate_data'         => [
+								'customer_acceptance' => [
+									'type'   => 'online',
+									'online' => [
+										'ip_address' => give_get_ip(),
+										'user_agent' => give_get_user_agent(),
+									],
+								],
+							],
+							'return_url'           => give_get_success_page_uri(),
+						)
+					);
+
+					// Send Stripe Receipt emails when enabled.
+					if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+						$intent_args['receipt_email'] = $donation_data['user_email'];
+					}
+
+					$intent = $this->payment_intent->create( $intent_args );
+
+					if ( ! empty( $intent->status ) && 'processing' === $intent->status ) {
+
+						// Save Payment Intent Client Secret to donation note and DB.
+						give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+						give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
+						// Set Payment Intent ID as transaction ID for the donation.
+						give_set_payment_transaction_id( $donation_id, $intent->id );
+						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+						// Success. Send user to success page.
+						give_send_to_success_page();
+					} else {
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						return;
+					}
 
 					// Don't execute code further.
 					give_die();
