@@ -55,8 +55,6 @@ class Text extends Field {
 
 	/**
 	 * @inheritDoc
-	 *
-	 * @return array
 	 */
 	public function toArray() {
 		return array_merge(
