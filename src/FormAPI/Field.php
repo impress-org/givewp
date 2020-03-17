@@ -1,6 +1,7 @@
 <?php
 namespace Give\FormAPI;
 
+use Give\FormAPI\Form\File;
 use InvalidArgumentException;
 
 class Field {
@@ -16,46 +17,32 @@ class Field {
 		$field = new static();
 		$field->validate( $array );
 
-		return $field->parse( $array );
-	}
+		$fieldClasses = require 'config/field-type-class-mapping.php';
 
-
-	/**
-	 * Parse field argument and return object
-	 *
-	 * @since 2.7.0
-	 * @param array $array
-	 * @return Form\Field
-	 */
-	private function parse( $array ) {
 		/**
-		 * Field type can contain multiple words join with underscore.
-		 * First word will give actual type for field and other will be modifier.
-		 * For example text_small where text is actual field type and small is a modifier.
+		 * Filter the field classes
+		 *
+		 * @since 2.7.0
+		 * @param Form\Field[]
 		 */
-		$type = $array['type'];
+		$fieldClasses = apply_filters( 'give_form_api_field_classes', $fieldClasses );
 
-		/* @var Form\Field $class */
-		$class = 'Give\FormAPI\Form\\' . $this->getFieldClassName( $type );
+		/* @var Form\Field $fieldClass */
+		$fieldClass = $fieldClasses[ $field->getFieldType( $array['type'] ) ];
 
-		if ( ! class_exists( $class ) ) {
-			throw new InvalidArgumentException( __( "{$type} field type is not supported by field API.", 'give' ) );
-		}
-
-		return $class::fromArray( $array );
+		return $fieldClass::fromArray( $array );
 	}
 
 	/**
 	 * Get field class name.
+	 * Note: field name create with {fieldType_modifier} logic. Use underscore in field type only if you want to add a modifier. For example: text_small, radio_inline etc.
 	 *
 	 * @since 2.7.0
 	 * @param $type
 	 *
 	 * @return string
 	 */
-	private function getFieldClassName( $type ) {
-		$type = ucwords( $type );
-
+	private function getFieldType( $type ) {
 		if ( false !== strpos( $type, '_' ) ) {
 			$type = current( explode( '_', $type, 2 ) );
 		}
