@@ -125,12 +125,19 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					);
 				} else {
 
-					echo sprintf(
-						'<div class="give-stripe-sepa-fields-wrap"><div id="%1$s" class="give-stripe-sepa-iban-field"></div><p class="give-stripe-sepa-mandate-acceptance-text">%2$s</p></div>',
-						'give-stripe-sepa-fields-' . esc_html( $id_prefix ),
-						give_stripe_get_mandate_acceptance_text()
-					);
-
+					?>
+					<div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
+						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
+							<?php echo __( 'IBAN', 'give' ); ?>
+							<span class="give-required-indicator">*</span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+						</label>
+						<div id="give-stripe-sepa-fields-<?php echo $id_prefix; ?>" class="give-stripe-sepa-iban-field give-stripe-cc-field"></div>
+					</div>
+					<div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
+						<?php echo give_stripe_get_mandate_acceptance_text(); ?>
+					</div>
+					<?php
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
 					 *
