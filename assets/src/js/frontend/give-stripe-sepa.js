@@ -95,7 +95,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
 		if ( 'stripe_sepa' === $form.find( 'input.give-gateway:checked' ).val() ) {
-			give_stripe_process_card( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
+			give_stripe_process_iban( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
 	} );
@@ -207,25 +207,28 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * Stripe Process CC
 	 *
 	 * @param {object} $form Form Object.
-	 * @param {object} card  Card Object.
+	 * @param {object} $iban IBAN Object.
 	 *
 	 * @returns {boolean} True or False.
 	 */
-	function give_stripe_process_card( $form, card ) {
+	function give_stripe_process_iban( $form, $iban ) {
 		const additionalData = {
-			billing_details: {},
+			billing_details: {
+				name: '',
+				email: '',
+			},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const $firstName = $form.find( 'input[name="give_first"]' ).val();
+		const $lastName = $form.find( 'input[name="give_last"]' ).val();
+		const $email = $form.find( 'input[name="give_email"]' ).val();
 		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
-		const card_name = $form.find( '.card-name' ).val();
 
-		// disable the submit button to prevent repeated clicks.
+		// Disable the submit button to prevent repeated clicks.
 		$form.find( '[id^=give-purchase-button]' ).attr( 'disabled', 'disabled' );
 
-		// Set Card Name to Source.
-		if ( 'multi' === give_stripe_vars.cc_fields_format && '' !== card_name ) {
-			additionalData.billing_details.name = card_name;
-		}
+		additionalData.billing_details.name = $firstName + ' ' + $lastName;
+		additionalData.billing_details.email = $email;
 
 		// Gather additional customer data we may have collected in our form.
 		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
@@ -247,7 +250,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+		stripe.createPaymentMethod( 'sepa_debit', $iban, additionalData ).then( function( result ) {
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 
