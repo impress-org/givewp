@@ -62,8 +62,6 @@ function give_stripe_frontend_scripts() {
 		'stripe_card_update'           => $stripe_card_update,
 		'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
 		'preferred_locale'             => give_stripe_get_preferred_locale(),
-		'sepa_hide_icon'               => give_stripe_hide_iban_icon(),
-		'sepa_icon_style'              => give_stripe_get_iban_icon_style(),
 	);
 
 	// Load third-party stripe js when required gateways are active.
