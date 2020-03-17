@@ -70,6 +70,14 @@ abstract class Field {
 	public $defaultValue = null;
 
 	/**
+	 * Field attribues.
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	public $attributes = [];
+
+	/**
 	 * Parse field arguments
 	 *
 	 * @since 2.7.0
@@ -85,6 +93,7 @@ abstract class Field {
 		$this->wrapperClass = isset( $array['wrapper_class'] ) ? $array['wrapper_class'] : '';
 		$this->defaultValue = isset( $array['default'] ) ? $array['default'] : null;
 		$this->value        = isset( $array['value'] ) ? $array['value'] : null;
+		$this->attributes   = isset( $array['attributes'] ) ? $array['attributes'] : [];
 	}
 
 
