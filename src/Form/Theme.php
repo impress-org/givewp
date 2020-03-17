@@ -61,6 +61,26 @@ abstract class Theme {
 
 
 	/**
+	 * Theme template manager get template according to view.
+	 * Note: Do not forget to call this function before close bracket in overridden getTemplate method
+	 *
+	 * @since 2.7.0
+	 * @param string $template
+	 *
+	 * @return string
+	 */
+	public function getTemplate( $template ) {
+		switch ( $template ) {
+			case 'donationForm':
+				return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+
+			case 'receipt':
+				return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
+		}
+	}
+
+
+	/**
 	 * Get theme options
 	 *
 	 * @return Options
