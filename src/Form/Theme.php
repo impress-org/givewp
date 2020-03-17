@@ -24,6 +24,17 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Theme {
 	/**
+	 * view vs class array
+	 *
+	 * @since 2.7.0
+	 * @var array
+	 */
+	public $view = [
+		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
+		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+	];
+
+	/**
 	 * return theme ID.
 	 *
 	 * @since 2.7.0
@@ -64,29 +75,13 @@ abstract class Theme {
 	 * Theme template manager get template according to view.
 	 * Note: Do not forget to call this function before close bracket in overridden getTemplate method
 	 *
-	 * public function getTemplate( $template ) {
-	 *     switch ( $template ) {
-	 *        case 'receipt':
-	 *           return __DIR__ . '/receipt.php';
-	 *
-	 *     }
-	 *
-	 *     return parent::getTemplate( $template );
-	 * }
-	 *
 	 * @param string $template
 	 *
 	 * @return string
 	 * @since 2.7.0
 	 */
 	public function getTemplate( $template ) {
-		switch ( $template ) {
-			case 'donationForm':
-				return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
-
-			case 'receipt':
-				return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
-		}
+		return $this->view[ $template ];
 	}
 
 
