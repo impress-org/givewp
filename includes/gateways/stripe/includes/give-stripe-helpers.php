@@ -1179,13 +1179,13 @@ function give_stripe_get_mandate_acceptance_text() {
  *
  * @since 2.6.1
  *
- * @return bool
+ * @return string
  */
 function give_stripe_hide_iban_icon() {
 
-	$hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon', 'disabled' ) );
+	$hide_icon = give_get_option( 'stripe_hide_icon', 'disabled' );
 
-	return (bool) apply_filters( 'give_stripe_hide_iban_icon', $hide_icon );
+	return apply_filters( 'give_stripe_hide_iban_icon', $hide_icon );
 }
 
 /**
