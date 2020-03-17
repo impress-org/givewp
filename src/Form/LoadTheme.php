@@ -201,4 +201,14 @@ class LoadTheme {
 
 		return null;
 	}
+
+	/**
+	 * Get theme.
+	 *
+	 * @since 2.7.0
+	 * @return Theme
+	 */
+	public function getTheme() {
+		return $this->theme;
+	}
 }
