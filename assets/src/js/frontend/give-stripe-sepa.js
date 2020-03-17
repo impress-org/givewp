@@ -159,6 +159,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const completeStyles = give_stripe_vars.element_complete_styles;
 		const emptyStyles = give_stripe_vars.element_empty_styles;
 		const invalidStyles = give_stripe_vars.element_invalid_styles;
+		const hideIcon = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix ).getAttribute( 'data-hide_icon' );
+		const iconStyle = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix ).getAttribute( 'data-icon_style' );
 
 		const elementStyles = {
 			base: baseStyles,
@@ -179,8 +181,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				style: elementStyles,
 				classes: elementClasses,
 				supportedCountries: [ 'SEPA' ],
-				hideIcon: ( 'disabled' !== give_stripe_vars.sepa_hide_icon ),
-				iconStyle: give_stripe_vars.sepa_icon_style,
+				hideIcon: ( 'disabled' !== hideIcon ),
+				iconStyle: iconStyle,
 			}
 		);
 
