@@ -43,6 +43,8 @@ class Text extends Field {
 	 * @inheritDoc
 	 */
 	public function parse( $array ) {
+		parent::parse( $array );
+
 		$this->beforeField = isset( $array['before_field'] ) ? $array['before_field'] : '';
 		$this->afterField  = isset( $array['after_field'] ) ? $array['after_field'] : '';
 		$this->dataType    = isset( $array['data_type'] ) ? $array['data_type'] : '';
