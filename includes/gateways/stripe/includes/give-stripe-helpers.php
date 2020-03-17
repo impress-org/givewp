@@ -1177,27 +1177,31 @@ function give_stripe_get_mandate_acceptance_text() {
 /**
  * This helper function is used get stored value of whether we need to hide icon for IBAN element or not.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_hide_iban_icon() {
+function give_stripe_hide_iban_icon( $form_id ) {
 
 	$hide_icon = give_get_option( 'stripe_hide_icon', 'disabled' );
 
-	return apply_filters( 'give_stripe_hide_iban_icon', $hide_icon );
+	return apply_filters( 'give_stripe_hide_iban_icon', $hide_icon, $form_id );
 }
 
 /**
  * This helper function is used get IBAN element icon style.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_get_iban_icon_style() {
+function give_stripe_get_iban_icon_style( $form_id ) {
 
 	$icon_style = give_get_option( 'stripe_icon_style', 'default' );
 
-	return apply_filters( 'give_stripe_get_iban_icon_style', $icon_style );
+	return apply_filters( 'give_stripe_get_iban_icon_style', $icon_style, $form_id );
 }
