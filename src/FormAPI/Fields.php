@@ -55,12 +55,14 @@ class Fields {
 
 	/**
 	 * Get field class name.
-	 * Note: field name create with {fieldType_modifier} logic. Use underscore in field type only if you want to add a modifier. For example: text_small, radio_inline etc.
+	 * Note:
+	 *  1. Field name create with {fieldType_modifier} logic. Use underscore in field type only if you want to add a modifier. For example: text_small, radio_inline etc.
+	 *  2. This function exist for backward compatibility and can be remove in future
 	 *
-	 * @since 2.7.0
 	 * @param $type
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	private function getFieldType( $type ) {
 		if ( false !== strpos( $type, '_' ) ) {
