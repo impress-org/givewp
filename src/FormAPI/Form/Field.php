@@ -147,6 +147,7 @@ abstract class Field {
 			'wrapper_class' => $this->wrapperClass,
 			'value'         => $this->value,
 			'default'       => $this->defaultValue,
+			'attributes'    => $this->attributes,
 		];
 	}
 }
