@@ -3,8 +3,30 @@ namespace Give\FormAPI;
 
 use Give\FormAPI\Form\File;
 use InvalidArgumentException;
+use Give\FormAPI\Form\Colorpicker;
+use Give\FormAPI\Form\Media;
+use Give\FormAPI\Form\Radio;
+use Give\FormAPI\Form\Text;
+use Give\FormAPI\Form\Textarea;
+use Give\FormAPI\Form\Wysiwyg;
 
 class Field {
+	/**
+	 * Field vs class name mapping array
+	 *
+	 * @since 2.7.0
+	 * @var array
+	 */
+	private $fieldClasses = [
+		'text'        => Text::class,
+		'textarea'    => Textarea::class,
+		'file'        => File::class,
+		'media'       => Media::class,
+		'radio'       => Radio::class,
+		'wysiwyg'     => Wysiwyg::class,
+		'colorpicker' => Colorpicker::class,
+	];
+
 	/**
 	 * Get field object.
 	 *
@@ -17,18 +39,16 @@ class Field {
 		$field = new static();
 		$field->validate( $array );
 
-		$fieldClasses = require 'config/field-type-class-mapping.php';
-
 		/**
 		 * Filter the field classes
 		 *
 		 * @since 2.7.0
 		 * @param Form\Field[]
 		 */
-		$fieldClasses = apply_filters( 'give_form_api_field_classes', $fieldClasses );
+		$field->fieldClasses = apply_filters( 'give_form_api_field_classes', $field->fieldClasses );
 
 		/* @var Form\Field $fieldClass */
-		$fieldClass = $fieldClasses[ $field->getFieldType( $array['type'] ) ];
+		$fieldClass = $field->fieldClasses[ $field->getFieldType( $array['type'] ) ];
 
 		return $fieldClass::fromArray( $array );
 	}
