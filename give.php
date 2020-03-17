@@ -295,22 +295,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public $stripe;
 
-
-		/**
-		 * @var Themes
-		 *
-		 * @since 2.7.0
-		 */
-		protected $themes;
-
-		/**
-		 * @var FormRoute
-		 *
-		 * @since 2.7.0
-		 */
-		protected $routeform;
-
-
 		/**
 		 * Array of singleton objects
 		 *
@@ -420,8 +404,10 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session                = Give_Session::get_instance();
 
 			// Load routes.
-			$this->singletonsCache[ FormRoute::class ] = new FormRoute();
-			$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
+			$this->routeForm->init( new FormRouteController() );
+
+			// Load form template
+			$this->themes->load();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -783,7 +769,6 @@ if ( ! class_exists( 'Give' ) ) :
 				case 'themes':
 					if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
 						$this->singletonsCache[ Themes::class ] = new Themes();
-						$this->singletonsCache[ Themes::class ]->load();
 					}
 
 					return $this->singletonsCache[ Themes::class ];
@@ -791,7 +776,6 @@ if ( ! class_exists( 'Give' ) ) :
 				case 'routeForm':
 					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
 						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
-						$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
 					}
 
 					return $this->singletonsCache[ FormRoute::class ];
