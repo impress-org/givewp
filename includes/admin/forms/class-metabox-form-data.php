@@ -12,7 +12,7 @@
  */
 
 use Give\Form\Theme;
-use Give\FormAPI\Field;
+use Give\FormAPI\Fields;
 use Give\FormAPI\Group;
 use function Give\Helpers\Form\Theme\get as getTheme;
 use function Give\Helpers\Form\Theme\set as SetTheme;
@@ -1059,7 +1059,7 @@ class Give_MetaBox_Form_Data {
 
 		/* @var Group $group */
 		foreach ( $themeOptions->groups as $group ) {
-			/* @var Field $field */
+			/* @var Fields $field */
 			foreach ( $group->fields as $field ) {
 				if ( ! isset( $options[ $group->id ][ $field->id ] ) ) {
 					continue;

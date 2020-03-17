@@ -10,7 +10,7 @@ use Give\FormAPI\Form\Text;
 use Give\FormAPI\Form\Textarea;
 use Give\FormAPI\Form\Wysiwyg;
 
-class Field {
+class Fields {
 	/**
 	 * Field vs class name mapping array
 	 *
