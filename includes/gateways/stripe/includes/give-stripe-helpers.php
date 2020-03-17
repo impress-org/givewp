@@ -1173,3 +1173,31 @@ function give_stripe_get_mandate_acceptance_text() {
 
 	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
 }
+
+/**
+ * This helper function is used get stored value of whether we need to hide icon for IBAN element or not.
+ *
+ * @since 2.6.1
+ *
+ * @return bool
+ */
+function give_stripe_hide_iban_icon() {
+
+	$hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon', 'disabled' ) );
+
+	return (bool) apply_filters( 'give_stripe_hide_iban_icon', $hide_icon );
+}
+
+/**
+ * This helper function is used get IBAN element icon style.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_iban_icon_style() {
+
+	$icon_style = give_get_option( 'stripe_icon_style', 'default' );
+
+	return apply_filters( 'give_stripe_get_iban_icon_style', $icon_style );
+}
