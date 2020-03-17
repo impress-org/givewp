@@ -3,9 +3,10 @@ global $post;
 
 use Give\Form\Theme;
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\renderMetaboxSettings;
 
 $activatedTheme   = getActiveID( $post->ID );
-$registeredThemes = Give()->themes->get();
+$registeredThemes = Give()->themes->getThemes();
 ?>
 <div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
 	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
@@ -26,7 +27,7 @@ $registeredThemes = Give()->themes->get();
 				$theme->getID() . ( $isActive ? ' active' : '' ),
 				$theme->getID(),
 				$theme->getImage(),
-				$theme->geName(),
+				$theme->getName(),
 				__( 'active', 'give' ),
 				$isActive ? __( 'Deactivate', 'give' ) : __( 'Activate', 'give' ),
 				$isActive ? 'js-theme--deactivate' : 'js-theme--activate'
@@ -65,7 +66,7 @@ $registeredThemes = Give()->themes->get();
 				'<div class="theme-options %1$s" data-id="%2$s">%3$s</div>',
 				$theme->getID() . ( $activatedTheme === $theme->getID() ? ' active' : '' ),
 				$theme->getID(),
-				$theme->renderOptions()
+				renderMetaboxSettings( $theme )
 			);
 		}
 		?>

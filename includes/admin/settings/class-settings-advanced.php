@@ -143,6 +143,16 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Form Page URL Prefix', 'give' ),
+							'desc'    => sprintf(
+								__( 'This slug will be used as a base for all form pages which will be rendered in an iframe when  <code>embed=true</code> and `form_theme` is set to other than `legacy` in `give_form` shortcode. All URLs will look like %1$s. This will add a rewrite rule that transforms a URL structure to a set of query vars. This can cause of 404 error on URLs which contains a similar URL format, so choose a unique URL prefix to prevent conflict.', 'give' ),
+								'<code>' . trailingslashit( home_url() ) . Give()->routeForm->getBase() . '/{form-slug}</code>'
+							),
+							'id'      => Give()->routeForm->getOptionName(),
+							'type'    => 'text',
+							'default' => Give()->routeForm->getBase(),
+						),
+						array(
 							'name'        => 'GiveWP Cache',
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),

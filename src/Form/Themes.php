@@ -9,12 +9,17 @@
 
 namespace Give\Form;
 
+use Give\Views\Form\Themes\Legacy\Legacy;
+use Give\Views\Form\Themes\Sequoia\Sequoia;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Themes class
+ * Class RegisterThemes
  *
- * @since 2.7.0
+ * @package Give\Form
+ *
+ * @since   2.7.0
  */
 class Themes {
 	/**
@@ -22,57 +27,85 @@ class Themes {
 	 *
 	 * @var array
 	 */
-	private $themes = array();
+	private $themes = [];
+
+
+	/**
+	 * Themes Objects
+	 *
+	 * @var Theme[]
+	 */
+	private $themeObjs = [];
 
 	/**
 	 * Load themes
 	 *
 	 * @since 2.7.0
 	 */
-	public function loadThemes() {
-		$coreFormThemes = require GIVE_PLUGIN_DIR . 'src/Form/Config/Themes/Load.php';
-
+	public function load() {
 		/**
 		 * Filter list of form theme
 		 *
+		 * @param Theme[]
+		 *
 		 * @since 2.7.0
 		 */
-		$themes = apply_filters( 'give_form_themes', $coreFormThemes );
-
-		foreach ( $themes as $theme ) {
-			$this->set( new Theme( $theme ) );
-		}
+		$this->themes = apply_filters(
+			'give_register_form_theme',
+			[
+				'sequoia' => Sequoia::class,
+				'legacy'  => Legacy::class,
+			]
+		);
 	}
-
 
 	/**
 	 * Get Registered themes
 	 *
-	 * @return array
+	 * @return Theme[]
 	 * @since 2.7.0
 	 */
-	public function get() {
-		return $this->themes;
+	public function getThemes() {
+		// Check if all themes have there object or not.
+		$remainingObjs = array_diff( array_keys( $this->themes ), array_keys( $this->themeObjs ) );
+
+		// Get object if any remaining
+		if ( $remainingObjs ) {
+			foreach ( $remainingObjs as $themeId ) {
+				$this->themeObjs[ $themeId ] = $this->getThemeObject( $themeId );
+			}
+		}
+
+		return $this->themeObjs;
 	}
 
 	/**
 	 * Get Registered theme
 	 *
-	 * @param string $themeID
+	 * @param string $themeId
 	 *
 	 * @return Theme
 	 * @since 2.7.0
 	 */
-	public function getTheme( $themeID ) {
-		return $this->themes[ $themeID ];
+	public function getTheme( $themeId ) {
+		if ( isset( $this->themeObjs[ $themeId ] ) ) {
+			return $this->themeObjs[ $themeId ];
+		}
+
+		$this->themeObjs[ $themeId ] = $this->getThemeObject( $themeId );
+
+		return $this->getThemeObject( $themeId );
 	}
 
 	/**
-	 * Themes constructor.
+	 * Get class object.
 	 *
-	 * @param Theme $registerTheme
+	 * @param string $themeId
+	 *
+	 * @return Theme
+	 * @since 2.7.0
 	 */
-	public function set( Theme $registerTheme ) {
-		$this->themes[ $registerTheme->getID() ] = $registerTheme;
+	private function getThemeObject( $themeId ) {
+		return new $this->themes[ $themeId ]();
 	}
 }

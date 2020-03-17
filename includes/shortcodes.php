@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use function Give\Helpers\Form\Theme\getActiveID;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -137,14 +139,15 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
+	$activeTheme        = ! empty( $atts['form_theme'] ) ? $atts['form_theme'] : getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( ! empty( $atts['embed'] ) ) {
+	if ( ! empty( $atts['embed'] ) && 'legacy' !== $activeTheme ) {
 		unset( $atts['embed'] );
 
-		$query_string     = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
 
@@ -160,12 +163,8 @@ function give_form_shortcode( $atts ) {
 
 		// Build iframe url.
 		$iframe_url = add_query_arg(
-			array(
-				$query_string,
-				array( 'iframe' => true ),
-				$atts,
-			),
-			give_embed_form_get_url( $atts['id'] )
+			array_merge( $query_string, $atts, array( 'iframe' => true ) ),
+			Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) )
 		);
 
 		printf(
