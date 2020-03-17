@@ -42,7 +42,7 @@ class Group {
 	 * Array fo fields
 	 *
 	 * @since 2.7.0
-	 * @var Field[]
+	 * @var Fields[]
 	 */
 	public $fields = [];
 
@@ -66,7 +66,7 @@ class Group {
 		$group->desc = isset( $array['desc'] ) ? $array['desc'] : null;
 
 		foreach ( $array['fields'] as $field ) {
-			$group->fields[] = Field::fromArray( $field );
+			$group->fields[] = Fields::fromArray( $field );
 		}
 
 		return $group;
