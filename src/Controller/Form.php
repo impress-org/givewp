@@ -94,10 +94,14 @@ class Form {
 	 *
 	 * @since 2.7.0
 	 * @param string $formTheme
+	 *
+	 * @return LoadTheme
 	 */
 	private function loadTheme( $formTheme = '' ) {
 		$themeLoader = new LoadTheme( $formTheme );
 		$themeLoader->init();
+
+		return $themeLoader;
 	}
 
 
