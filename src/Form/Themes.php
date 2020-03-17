@@ -99,7 +99,7 @@ class Themes {
 	 * @return Theme
 	 */
 	private function getThemeObject( $className ) {
-		$obj = class_exists( $className ) ? new $className() : null;
+		$obj = new $className();
 
 		return $this->isValidTheme( $obj ) ? $obj : null;
 	}
