@@ -124,8 +124,12 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						)
 					);
 				} else {
-					// Display the stripe container which can be occupied by Stripe SEPA.
-					echo '<div id="give-stripe-sepa-fields-' . esc_html( $id_prefix ) . '" class="give-stripe-sepa-field-wrap"></div>';
+
+					echo sprintf(
+						'<div class="give-stripe-sepa-fields-wrap"><div id="%1$s" class="give-stripe-sepa-iban-field"></div><p class="give-stripe-sepa-mandate-acceptance-text">%2$s</p></div>',
+						'give-stripe-sepa-fields-' . esc_html( $id_prefix ),
+						give_stripe_get_mandate_acceptance_text()
+					);
 
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
