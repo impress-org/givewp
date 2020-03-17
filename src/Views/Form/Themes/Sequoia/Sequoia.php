@@ -2,17 +2,15 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give\Form\Theme;
-use Give\Form\Theme\Themeable as Themeable;
-use Give\Views\Form\Themes\Sequoia\Actions;
-use Give\Views\Form\Themes\Sequoia\Scripts;
-
+use Give\Form\Theme\Hookable;
+use Give\Form\Theme\Scriptable;
 
 /**
  * Class Sequoia
  *
  * @package Give\Form\Theme
  */
-class Sequoia extends Theme implements Themeable {
+class Sequoia extends Theme implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
@@ -26,7 +24,9 @@ class Sequoia extends Theme implements Themeable {
 	 * @inheritDoc
 	 */
 	public function loadScripts() {
-		add_action( 'wp_enqueue_scripts', array( new Scripts(), 'init' ) );
+		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', array(), GIVE_VERSION );
+		wp_enqueue_style( 'give-sequoia-theme-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-theme.css', array( 'give-styles' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-sequoia-theme-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-theme.js', array( 'give' ), GIVE_VERSION, true );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Sequoia extends Theme implements Themeable {
 	/**
 	 * @inheritDoc
 	 */
-	public function geName() {
+	public function getName() {
 		return __( 'Sequoia - Multi-Step Form', 'give' );
 	}
 
@@ -53,7 +53,7 @@ class Sequoia extends Theme implements Themeable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getOptions() {
+	public function getOptionsConfig() {
 		return require 'optionConfig.php';
 	}
 }

@@ -9,6 +9,8 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\Options;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -33,7 +35,7 @@ abstract class Theme {
 	 *
 	 * @return string
 	 */
-	abstract public function geName();
+	abstract public function getName();
 
 	/**
 	 * Get theme image.
@@ -45,11 +47,21 @@ abstract class Theme {
 	abstract public function getImage();
 
 	/**
-	 * Gt options config
+	 * Get options config
 	 *
 	 * @since 2.7.0
 	 *
 	 * @return array
 	 */
-	abstract public function getOptions();
+	abstract public function getOptionsConfig();
+
+
+	/**
+	 * Get theme options
+	 *
+	 * @return Options
+	 */
+	public function getOptions() {
+		return Options::fromArray( $this->getOptionsConfig() );
+	}
 }

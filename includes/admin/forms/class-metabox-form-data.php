@@ -12,6 +12,8 @@
  */
 
 use Give\Form\Theme;
+use Give\FormAPI\Fields;
+use Give\FormAPI\Group;
 use function Give\Helpers\Form\Theme\get as getTheme;
 use function Give\Helpers\Form\Theme\set as SetTheme;
 
@@ -1041,27 +1043,30 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
+		/* @var Theme\Options $themeOptions */
 		$themeOptions = $theme->getOptions();
 		$saveOptions  = getTheme( $formID );
 
-		foreach ( $themeOptions as $groupID => $group ) {
-			foreach ( $group['fields'] as $field ) {
-				if ( ! isset( $options[ $groupID ][ $field['id'] ] ) ) {
+		/* @var Group $group */
+		foreach ( $themeOptions->groups as $group ) {
+			/* @var Fields $field */
+			foreach ( $group->fields as $field ) {
+				if ( ! isset( $options[ $group->id ][ $field->id ] ) ) {
 					continue;
 				}
 
-				switch ( $field['type'] ) {
+				switch ( $field->type ) {
 					case 'textarea':
 					case 'wysiwyg':
-						$value = wp_kses_post( $options[ $groupID ][ $field['id'] ] );
+						$value = wp_kses_post( $options[ $group->id ][ $field->id ] );
 						break;
 
 					case 'donation_limit':
-						$value = $options[ $groupID ][ $field['id'] ];
+						$value = $options[ $group->id ][ $field->id ];
 						break;
 
 					case 'group':
-						foreach ( $options[ $groupID ][ $field['id'] ] as $index => $subFields ) {
+						foreach ( $options[ $group->id ][ $field->id ] as $index => $subFields ) {
 
 							// Do not save template input field values.
 							if ( '{{row-count-placeholder}}' === $index ) {
@@ -1071,7 +1076,7 @@ class Give_MetaBox_Form_Data {
 							$group_of_values = array();
 
 							foreach ( $subFields as $field_id => $field_value ) {
-								switch ( $themeOptions[ $groupID ][ $field['id'] ]['fields'][ $field_id ]['type'] ) {
+								switch ( $field->getFormMetaboxFieldArguments()['fields'][ $field_id ]['type'] ) {
 									case 'wysiwyg':
 										$group_of_values[ $field_id ] = wp_kses_post( $field_value );
 										break;
@@ -1091,10 +1096,10 @@ class Give_MetaBox_Form_Data {
 						break;
 
 					default:
-						$value = give_clean( $options[ $groupID ][ $field['id'] ] );
+						$value = give_clean( $options[ $group->id ][ $field->id ] );
 				}// End switch().
 
-				$saveOptions[ $groupID ][ $field['id'] ] = $value;
+				$saveOptions[ $group->id ][ $field->id ] = $value;
 			}
 		}
 

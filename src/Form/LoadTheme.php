@@ -20,6 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * ThemeLoader class.
+ * This class is responsible to load necessary hooks and run required functions which help to render form theme (in different style).
  *
  * @since 2.7.0
  */
@@ -71,7 +72,7 @@ class LoadTheme {
 
 		// Load theme scripts.
 		if ( $this->theme instanceof Scriptable ) {
-			$this->theme->loadScripts();
+			add_action( 'wp_enqueue_scripts', array( $this->theme, 'loadScripts' ) );
 		}
 
 		// Script loading handler.

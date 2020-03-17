@@ -1,9 +1,7 @@
 <?php
 namespace Give\Form\Theme;
 
-use Give\Form\Theme;
-use WP_Post;
-use function Give\Helpers\Form\Theme\get as getTheme;
+use Give\FormAPI\Group;
 
 /**
  * Class Options
@@ -13,66 +11,29 @@ use function Give\Helpers\Form\Theme\get as getTheme;
  */
 class Options {
 	/**
+	 * Theme Options
+	 *
 	 * @since 2.7.0
-	 * @var Theme $theme
+	 * @var array
 	 */
-	private $theme;
+	public $groups = [];
 
 	/**
 	 * ThemeOptions constructor.
 	 *
 	 * @since 2.7.0
-	 * @param Theme $theme
-	 */
-	public function __construct( $theme ) {
-		$this->theme = $theme;
-	}
-
-	/**
-	 * return theme options.
+	 * @param $array
 	 *
-	 * @since 2.7.0
-	 *
-	 * @global WP_Post $post
-	 * @return string
+	 * @return Options
 	 */
-	public function render() {
-		global $post;
+	public static function fromArray( $array ) {
+		$options = new static();
 
-		ob_start();
-
-		$saveOptions = getTheme( $post->ID, $this->theme->getID() );
-
-		foreach ( $this->theme->getOptions() as $groupID => $option ) {
-			printf(
-				'<div class="give-row %1$s">',
-				$groupID
-			);
-
-			printf(
-				'<div class="give-row-head">
-							<button type="button" class="handlediv" aria-expanded="true">
-								<span class="toggle-indicator"/>
-							</button>
-							<h2 class="hndle"><span>%1$s</span></h2>
-						</div>',
-				$option['name']
-			);
-
-			echo '<div class="give-row-body">';
-			foreach ( $option['fields'] as $field ) {
-				if ( isset( $saveOptions[ $groupID ][ $field['id'] ] ) ) {
-					$field['attributes']['value'] = $saveOptions[ $groupID ][ $field['id'] ];
-				}
-
-				$field['id'] = "{$this->theme->getID()}[{$groupID}][{$field['id']}]";
-
-				give_render_field( $field );
-			}
-
-			echo '</div></div>';
+		foreach ( $array as $id => $group ) {
+			$group['id']       = $id;
+			$options->groups[] = Group::fromArray( $group );
 		}
 
-		return ob_get_clean();
+		return $options;
 	}
 }

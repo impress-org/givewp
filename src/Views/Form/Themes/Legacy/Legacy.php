@@ -15,7 +15,7 @@ class Legacy extends Theme {
 	/**
 	 * @inheritDoc
 	 */
-	public function geName() {
+	public function getName() {
 		return __( 'Legacy - Standard Form', 'give' );
 	}
 
@@ -29,7 +29,7 @@ class Legacy extends Theme {
 	/**
 	 * @inheritDoc
 	 */
-	public function getOptions() {
+	public function getOptionsConfig() {
 		return require 'optionConfig.php';
 	}
 }
