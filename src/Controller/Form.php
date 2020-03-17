@@ -75,15 +75,17 @@ class Form {
 
 			$this->setupGlobalPost();
 
-			$this->loadTheme( $formTheme );
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+			require_once $this->loadTheme( $formTheme )
+							  ->getTheme()
+							  ->getTemplate( 'donationForm' );
 
 			exit();
 		}
 
 		if ( $isViewingReceipt ) {
-			$this->loadTheme();
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
+			require_once $this->loadTheme()
+							  ->getTheme()
+							  ->getTemplate( 'receipt' );
 			exit();
 		}
 	}
