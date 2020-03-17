@@ -132,7 +132,12 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 							<span class="give-required-indicator">*</span>
 							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
 						</label>
-						<div id="give-stripe-sepa-fields-<?php echo $id_prefix; ?>" class="give-stripe-sepa-iban-field give-stripe-cc-field"></div>
+						<div
+							id="give-stripe-sepa-fields-<?php echo $id_prefix; ?>"
+							class="give-stripe-sepa-iban-field give-stripe-cc-field"
+							data-hide_icon="<?php echo give_stripe_hide_iban_icon( $form_id ); ?>"
+							data-icon_style="<?php echo give_stripe_get_iban_icon_style( $form_id ); ?>"
+						></div>
 					</div>
 					<div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
 						<?php echo give_stripe_get_mandate_acceptance_text(); ?>
