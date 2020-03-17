@@ -35,7 +35,6 @@ class Form {
 		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
 		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
 		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
-		// add_filter( 'wp_redirect', array( $this, 'handleOffSiteCheckoutRedirect' ) );
 	}
 
 	/**
@@ -200,40 +199,5 @@ class Form {
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
-	}
-
-
-	/**
-	 * Handle offsite payment checkout
-	 *
-	 * @since 2.7.0
-	 * @param string $location
-	 *
-	 * @return mixed
-	 */
-	public function handleOffSiteCheckoutRedirect( $location ) {
-		if ( ! isProcessingForm() ) {
-			return $location;
-		}
-		?>
-		<!doctype html>
-		<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-				<meta http-equiv="X-UA-Compatible" content="ie=edge">
-				<title>Donation Processing...</title>
-			</head>
-			<body>
-				<p style="text-align: center">Processing...</p>
-				<a style="font-size: 0" id="link" href="<?php echo esc_js( $location ); ?>" target="_parent">Link</a>
-				<script>
-					document.getElementById( 'link' ).click();
-				</script>
-			</body>
-		</html>
-		<?php
-
-		exit();
 	}
 }
