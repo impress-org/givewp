@@ -5,7 +5,7 @@
 
 	$style = "width:{$goal_stats['progress']}%;";
 	if ( ! empty( $color ) ) {
-		$style .= ";background-color:{$color};";
+		$style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
 	}
 	?>
 	<div class="give-section progress-bar">
