@@ -185,16 +185,21 @@ function give_form_shortcode( $atts ) {
 
 		printf(
 			'<div class="give-embed-form-wrapper give-loader-type-img%4$s" id="%3$s">
-						<iframe
-						name="give-embed-form"
-						src="%1$s"
-						data-autoScroll="%2$s"
-						style="border: 0; visibility: hidden"></iframe>
+						<div class="modal-inner-wrap">
+							<div class="modal-content">
+								<iframe
+								name="give-embed-form"
+								src="%1$s"
+								data-autoScroll="%2$s"
+								style="border: 0; visibility: hidden"></iframe>
+								<button class="close-btn">&times;</button>
+							</div>
+						</div>
 					</div>',
 			$iframe_url,
 			$isAutoScroll,
 			$uniqueId,
-			$buttonModeActive ? ' is-hide' : ''
+			$buttonModeActive ? ' is-hide-false modal' : ''
 		);
 	} else {
 		give_get_donation_form( $atts );
