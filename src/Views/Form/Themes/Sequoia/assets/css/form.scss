@@ -177,10 +177,16 @@ textarea {
 
 		button {
 			background-color: #2bc253;
-			color: white;
 			padding: 16px;
-
 			width: 55%;
+			border-radius: 4px;
+			border: none;
+			font-size: 16px;
+			line-height: 20px;
+			color: #fff;
+			font-weight: 500;
+			text-align: center;
+			margin-bottom: 30px;
 		}
 	}
 
@@ -363,10 +369,16 @@ textarea {
 
 				.give-submit {
 					background-color: #2bc253;
-					color: white;
-					width: 100%;
-
 					padding: 16px !important;
+					width: 55%;
+					border-radius: 4px;
+					border: none;
+					font-size: 16px;
+					line-height: 20px;
+					color: #fff;
+					font-weight: 500;
+					text-align: center;
+					margin-bottom: 30px;
 				}
 			}
 		}
