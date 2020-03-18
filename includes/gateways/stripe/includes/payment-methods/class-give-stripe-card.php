@@ -152,7 +152,13 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
 				? $donation_data['post_data']['give_stripe_payment_method']
-				: $this->check_for_source( $donation_data );
+				: false;
+
+			// Send donor back to checkout page, if no payment method id exists.
+			if ( empty( $payment_method_id ) ) {
+				give_set_error( 'no-payment-method-id', __( 'Unable to generate Payment Method ID. Please try again.', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+			}
 
 			// Any errors?
 			$errors = give_get_errors();
