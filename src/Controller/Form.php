@@ -76,7 +76,7 @@ class Form {
 
 			require_once $this->loadTheme( $formTheme )
 							  ->getTheme()
-							  ->getTemplate( 'donationForm' );
+							  ->getTemplate( 'form' );
 
 			exit();
 		}
