@@ -78,11 +78,21 @@ jQuery( function( $ ) {
 	 *
 	 * @since 2.7.0
 	 */
-	$( document ).on( 'click', '.js-give-embed-form-modal-opener', function() {
-		$( $( this ).attr( 'data-form-id' ) ).toggleClass( 'modal is-hide' );
+	document.querySelectorAll( '.js-give-embed-form-modal-opener' ).forEach( function( button ) {
+		button.addEventListener( 'click', function() {
+			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
+
+			iframeContainer.classList.add( 'modal' );
+			iframeContainer.classList.remove( 'is-hide' );
+		} );
 	} );
 
-	$( document ).on( 'click', '.js-give-embed-form-modal-closer', function() {
-		$( this ).closest( '.give-embed-form-wrapper' ).toggleClass( 'modal is-hide' );
+	document.querySelectorAll( '.js-give-embed-form-modal-closer' ).forEach( function( button ) {
+		button.addEventListener( 'click', function() {
+			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
+
+			iframeContainer.classList.remove( 'modal' );
+			iframeContainer.classList.add( 'is-hide' );
+		} );
 	} );
 } );

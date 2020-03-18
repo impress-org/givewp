@@ -190,7 +190,7 @@ function give_form_shortcode( $atts ) {
 						class="js-give-embed-form-modal-opener"
 						data-form-id="%1$s">%2$s</button>
 					</div>',
-				"#{$uniqueId}",
+				$uniqueId,
 				__( 'Click to donate', 'give' )
 			);
 
@@ -200,12 +200,13 @@ function give_form_shortcode( $atts ) {
 						<div class="modal-inner-wrap">
 							<div class="modal-content">
 								%1$s
-								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%2$s">&times;</button>
+								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%2$s" data-form-id="%3$s">&times;</button>
 							</div>
 						</div>
 						',
 				$iframe,
-				__( 'Close modal', 'give' )
+				__( 'Close modal', 'give' ),
+				$uniqueId
 			);
 		}
 
