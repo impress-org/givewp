@@ -81,7 +81,19 @@ textarea {
 
 .give-section.progress-bar {
 	padding: 19px 10px;
-	border-bottom: 1px solid #e1e1e1;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+.give-progress-bar {
+	height: 20px;
+	border-radius: 20px;
+	background: #f1f1f1;
+	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
+
+	> span {
+		border-radius: 20px;
+		background: linear-gradient(180deg, #ffdb00 0%, #ffa200 100%);
+	}
 }
 
 .give-section.personal-information-text {
