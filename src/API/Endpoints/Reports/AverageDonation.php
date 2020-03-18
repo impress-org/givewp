@@ -174,7 +174,7 @@ class AverageDonation extends Endpoint {
 
 		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
-		return $average;
+		return round( $average, 2 );
 	}
 
 	public function get_prev_average_donation( $startStr, $endStr ) {
@@ -186,6 +186,6 @@ class AverageDonation extends Endpoint {
 
 		$average = $sales > 0 ? $earnings / $sales : 0;
 
-		return $average;
+		return round( $average, 2 );
 	}
 }
