@@ -35,9 +35,6 @@ class API {
 	 * Initialize Reports and Pages, register hooks
 	 */
 	public function init() {
-		// To prevent conflict on we are loading autoload.php when need for now. In future we can loaded it globally.
-		require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-
 		// Load endpoints
 		$this->load_endpoints();
 

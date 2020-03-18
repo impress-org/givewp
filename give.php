@@ -37,6 +37,8 @@
  * - The GiveWP Team
  */
 
+require GIVE_PLUGIN_DIR . 'vendor/autoload.php';
+
 use Give\API as API;
 use Give\Views as Views;
 
