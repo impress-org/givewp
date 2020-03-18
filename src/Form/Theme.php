@@ -20,6 +20,17 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Theme {
 	/**
+	 * template vs class array
+	 *
+	 * @since 2.7.0
+	 * @var array
+	 */
+	public $templates = [
+		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
+		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+	];
+
+	/**
 	 * return theme ID.
 	 *
 	 * @since 2.7.0
@@ -54,6 +65,20 @@ abstract class Theme {
 	 * @return array
 	 */
 	abstract public function getOptionsConfig();
+
+
+	/**
+	 * Theme template manager get template according to view.
+	 * Note: Do not forget to call this function before close bracket in overridden getTemplate method
+	 *
+	 * @param string $template
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public function getTemplate( $template ) {
+		return $this->templates[ $template ];
+	}
 
 
 	/**
