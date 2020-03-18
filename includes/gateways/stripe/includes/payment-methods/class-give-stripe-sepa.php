@@ -74,7 +74,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 
 			<fieldset id="give_cc_fields" class="give-do-validate">
 				<legend>
-					<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
+					<?php esc_attr_e( 'IBAN Info', 'give' ); ?>
 				</legend>
 
 				<?php
