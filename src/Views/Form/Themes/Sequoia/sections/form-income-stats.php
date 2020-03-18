@@ -18,7 +18,7 @@
 	$count = $form->get_sales();
 
 	// Setup default count label
-	$countLabel = __( 'donations', 'give' );
+	$countLabel = _n( 'donation', 'donations', $count, 'give' );
 
 	// Setup default goal value
 	$goal = give_currency_filter(
@@ -44,7 +44,7 @@
 		}
 		case 'donors': {
 			$count      = $goal_stats['actual'];
-			$countLabel = __( 'donors', 'give' );
+			$countLabel = _n( 'donor', 'donors', $count, 'give' );
 			$goal       = $goal_stats['goal'];
 			break;
 		}
