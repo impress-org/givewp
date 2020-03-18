@@ -73,30 +73,30 @@ jQuery( function( $ ) {
 		} );
 	} );
 
-	$.each( $( '.give-embed-form-popup-button' ), function( index, button ) {
-		const buttonEl = $( button );
-
-		// Add magnificPopup to iframe container.
-		buttonEl.magnificPopup( {
-			items: [
-				{
-					src: $( buttonEl.attr( 'data-form-id' ) ),
-					type: 'inline',
-				},
-			],
-			fixedContentPos: true,
-			fixedBgPos: true,
-			closeBtnInside: true,
-			closeOnBgClick: false,
-			midClick: true,
-			removalDelay: 300,
-			mainClass: 'give-embed-form-modal',
-			callbacks: {
-				close: function() {
-					// Remove mfp-hide class which creates conflict with magnificPopup.
-					buttonEl.parent().next().removeClass( 'mfp-hide' );
-				},
-			},
-		} );
-	} );
+	// $.each( $( '.give-embed-form-popup-button' ), function( index, button ) {
+	// 	const buttonEl = $( button );
+	//
+	// 	// Add magnificPopup to iframe container.
+	// 	buttonEl.magnificPopup( {
+	// 		items: [
+	// 			{
+	// 				src: $( buttonEl.attr( 'data-form-id' ) ),
+	// 				type: 'inline',
+	// 			},
+	// 		],
+	// 		fixedContentPos: true,
+	// 		fixedBgPos: true,
+	// 		closeBtnInside: true,
+	// 		closeOnBgClick: false,
+	// 		midClick: true,
+	// 		removalDelay: 300,
+	// 		mainClass: 'give-embed-form-modal',
+	// 		callbacks: {
+	// 			close: function() {
+	// 				// Remove mfp-hide class which creates conflict with magnificPopup.
+	// 				buttonEl.parent().next().removeClass( 'mfp-hide' );
+	// 			},
+	// 		},
+	// 	} );
+	// } );
 } );

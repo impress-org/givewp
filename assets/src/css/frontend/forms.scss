@@ -913,6 +913,54 @@ Embed Form aka IFrame Form
 		position: fixed;
 		top: -999px;
 	}
+
+	&.modal {
+		position: fixed;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		overflow: hidden auto;
+
+		iframe {
+			position: absolute;
+			top: 25px;
+			z-index: 1001;
+		}
+
+		.close-btn {
+			background: black;
+			color: white !important;
+			border-radius: 24px;
+			width: 26px;
+			height: 26px;
+			font-size: 24px;
+			line-height: initial;
+			text-decoration: none;
+			z-index: 1002;
+
+			&:hover {
+				background: red;
+			}
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background-color: rgba(0, 0, 0, 0.8);
+			z-index: 1000;
+			overflow: hidden;
+		}
+	}
 }
 
 .mfp-wrap {
