@@ -1,5 +1,5 @@
-<?php
-
+<?php if ( $form->has_goal() ) : ?>
+	<?php
 	$goal_stats = give_goal_progress_stats( $form_id );
 
 	// Setup default raised value
@@ -62,12 +62,11 @@
 		</div>
 		<div class="text"><?php echo $countLabel; ?></div>
 	</div>
-	<?php if ( $form->has_goal() ) : ?>
-		<div class="goal">
-			<div class="number">
-			<?php echo $goal; ?>
-			</div>
-			<div class="text">goal</div>
+	<div class="goal">
+		<div class="number">
+		<?php echo $goal; ?>
 		</div>
-	<?php endif; ?>
+		<div class="text">goal</div>
+	</div>
 </div>
+<?php endif; ?>
