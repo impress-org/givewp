@@ -266,9 +266,13 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Process additional steps for SCA or 3D secure.
 					give_stripe_process_additional_authentication( $donation_id, $intent );
 
-					// Send them to success page.
-					give_send_to_success_page();
-
+					if ( ! empty( $intent ) && 'succeeded' === $intent ) {
+						// Process to success page, only if intent is successful.
+						give_send_to_success_page();
+					} else {
+						// Show error message instead of confirmation page.
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+					}
 				} else {
 
 					// No customer, failed.
