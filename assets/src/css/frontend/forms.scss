@@ -926,14 +926,14 @@ Embed Form aka IFrame Form
 		margin: 0 !important;
 		overflow: hidden auto;
 
-		.modal-inner-wrap{
+		.modal-inner-wrap {
 			position: absolute;
 			top: 0;
 			z-index: 1001;
 			width: 100%;
 		}
 
-		.modal-content{
+		.modal-content {
 			position: relative;
 			margin: 0 auto;
 			max-width: 520px;
@@ -974,47 +974,6 @@ Embed Form aka IFrame Form
 			background-color: rgba(0, 0, 0, 0.8);
 			z-index: 1000;
 			overflow: hidden;
-		}
-	}
-}
-
-.mfp-wrap {
-	.give-embed-form-wrapper {
-		&.is-hide {
-			position: relative;
-			top: 0;
-		}
-
-		iframe {
-			margin: 0 auto;
-		}
-	}
-}
-
-.give-embed-form-modal {
-	.mfp-content {
-		box-shadow: 0 15px 10px -5px rgba(0, 0, 0, 0.15);
-		position: relative;
-		border-top: 5px solid rgba(0, 0, 0, 0);
-		line-height: 1.5;
-		margin: 25px auto;
-		width: 100%;
-		max-width: 500px;
-	}
-
-	button.mfp-close {
-		background: black;
-		opacity: 1;
-		color: white !important;
-		border-radius: 24px;
-		width: 26px;
-		height: 26px;
-		font-size: 24px;
-		line-height: initial;
-		text-decoration: none;
-
-		&:hover {
-			background: red;
 		}
 	}
 }
