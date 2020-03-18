@@ -20,12 +20,12 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Theme {
 	/**
-	 * view vs class array
+	 * template vs class array
 	 *
 	 * @since 2.7.0
 	 * @var array
 	 */
-	public $view = [
+	public $templates = [
 		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
 		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
 	];
@@ -77,7 +77,7 @@ abstract class Theme {
 	 * @since 2.7.0
 	 */
 	public function getTemplate( $template ) {
-		return $this->view[ $template ];
+		return $this->templates[ $template ];
 	}
 
 
