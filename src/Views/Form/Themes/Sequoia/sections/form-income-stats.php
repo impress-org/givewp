@@ -1,7 +1,6 @@
 <?php
 
 	$goal_stats = give_goal_progress_stats( $form_id );
-	echo '<h1>' . $goal_stats['format'] . '</h1>';
 
 	// Setup default raised value
 	$raised = give_currency_filter(
