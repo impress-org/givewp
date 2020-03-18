@@ -173,9 +173,10 @@ function give_form_shortcode( $atts ) {
 		if ( $buttonModeActive ) {
 			printf(
 				'<div>
-						<a
+						<button
+						type="button"
 						class="give-embed-form-popup-button"
-						href="%1$s">%2$s</a>
+						data-form-id="%1$s">%2$s</button>
 					</div>',
 				"#{$uniqueId}",
 				__( 'Click to donate', 'give' )

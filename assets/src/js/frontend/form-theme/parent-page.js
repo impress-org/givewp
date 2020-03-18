@@ -74,9 +74,16 @@ jQuery( function( $ ) {
 	} );
 
 	$.each( $( '.give-embed-form-popup-button' ), function( index, button ) {
-		button = $( button );
+		const buttonEl = $( button );
 
-		button.magnificPopup( {
+		// Add magnificPopup to iframe container.
+		buttonEl.magnificPopup( {
+			items: [
+				{
+					src: $( buttonEl.attr( 'data-form-id' ) ),
+					type: 'inline',
+				},
+			],
 			fixedContentPos: true,
 			fixedBgPos: true,
 			closeBtnInside: true,
@@ -87,7 +94,7 @@ jQuery( function( $ ) {
 			callbacks: {
 				close: function() {
 					// Remove mfp-hide class which creates conflict with magnificPopup.
-					button.parent().next().removeClass( 'mfp-hide' );
+					buttonEl.parent().next().removeClass( 'mfp-hide' );
 				},
 			},
 		} );
