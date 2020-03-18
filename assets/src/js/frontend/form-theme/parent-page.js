@@ -80,6 +80,7 @@ jQuery( function( $ ) {
 			fixedContentPos: true,
 			fixedBgPos: true,
 			closeBtnInside: true,
+			closeOnBgClick: false,
 			midClick: true,
 			removalDelay: 300,
 			mainClass: 'give-embed-form-modal',
