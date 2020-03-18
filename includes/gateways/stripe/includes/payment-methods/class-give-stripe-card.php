@@ -156,7 +156,11 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			// Send donor back to checkout page, if no payment method id exists.
 			if ( empty( $payment_method_id ) ) {
-				give_set_error( 'no-payment-method-id', __( 'Unable to generate Payment Method ID. Please try again.', 'give' ) );
+				give_record_gateway_error(
+					__( 'Stripe Payment Method Error', 'give' ),
+					__( 'The payment method failed to generate during a donation. This is usually caused by a JavaScript error on the page preventing Stripe’s JavaScript from running correctly. Reach out to GiveWP support for assistance.', 'give' )
+				);
+				give_set_error( 'no-payment-method-id', __( 'Unable to generate Payment Method ID. Please contact a site administrator for assistance.', 'give' ) );
 				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 			}
 
