@@ -37,7 +37,7 @@
  * - The GiveWP Team
  */
 
-use Give\Form\RegisterThemes;
+use Give\Form\Themes;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 
@@ -53,8 +53,8 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @since 1.0
 	 *
-	 * @property-read RegisterThemes $themes
-	 * @property-read FormRoute      $routeForm
+	 * @property-read Themes    $themes
+	 * @property-read FormRoute $routeForm
 	 */
 	final class Give {
 
@@ -295,22 +295,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public $stripe;
 
-
-		/**
-		 * @var RegisterThemes
-		 *
-		 * @since 2.7.0
-		 */
-		protected $themes;
-
-		/**
-		 * @var FormRoute
-		 *
-		 * @since 2.7.0
-		 */
-		protected $routeform;
-
-
 		/**
 		 * Array of singleton objects
 		 *
@@ -420,8 +404,10 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session                = Give_Session::get_instance();
 
 			// Load routes.
-			$this->singletonsCache[ FormRoute::class ] = new FormRoute();
-			$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
+			$this->routeForm->init( new FormRouteController() );
+
+			// Load form template
+			$this->themes->load();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -781,17 +767,15 @@ if ( ! class_exists( 'Give' ) ) :
 		function __get( $propertyName ) {
 			switch ( $propertyName ) {
 				case 'themes':
-					if ( ! isset( $this->singletonsCache[ RegisterThemes::class ] ) ) {
-						$this->singletonsCache[ RegisterThemes::class ] = new RegisterThemes();
-						$this->singletonsCache[ RegisterThemes::class ]->load();
+					if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
+						$this->singletonsCache[ Themes::class ] = new Themes();
 					}
 
-					return $this->singletonsCache[ RegisterThemes::class ];
+					return $this->singletonsCache[ Themes::class ];
 
 				case 'routeForm':
 					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
 						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
-						$this->singletonsCache[ FormRoute::class ]->init( new FormRouteController() );
 					}
 
 					return $this->singletonsCache[ FormRoute::class ];

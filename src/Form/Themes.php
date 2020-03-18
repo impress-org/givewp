@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Give\Form
  *
- * @since 2.7.0
+ * @since   2.7.0
  */
-class RegisterThemes {
+class Themes {
 	/**
 	 * Themes
 	 *
@@ -46,19 +46,17 @@ class RegisterThemes {
 		/**
 		 * Filter list of form theme
 		 *
-		 * @since 2.7.0
-		 *
 		 * @param Theme[]
+		 *
+		 * @since 2.7.0
 		 */
 		$this->themes = apply_filters(
 			'give_register_form_theme',
 			[
-				Sequoia::class,
-				Legacy::class,
+				'sequoia' => Sequoia::class,
+				'legacy'  => Legacy::class,
 			]
 		);
-
-		$this->themeObjs = array_map( array( $this, 'getThemeObject' ), $this->themes );
 	}
 
 	/**
@@ -68,6 +66,16 @@ class RegisterThemes {
 	 * @since 2.7.0
 	 */
 	public function getThemes() {
+		// Check if all themes have there object or not.
+		$remainingObjs = array_diff( array_keys( $this->themes ), array_keys( $this->themeObjs ) );
+
+		// Get object if any remaining
+		if ( $remainingObjs ) {
+			foreach ( $remainingObjs as $themeId ) {
+				$this->themeObjs[ $themeId ] = $this->getThemeObject( $themeId );
+			}
+		}
+
 		return $this->themeObjs;
 	}
 
@@ -76,43 +84,28 @@ class RegisterThemes {
 	 *
 	 * @param string $themeId
 	 *
-	 * @return Theme|null
+	 * @return Theme
 	 * @since 2.7.0
 	 */
 	public function getTheme( $themeId ) {
-		foreach ( $this->themeObjs as $theme ) {
-			if ( $themeId === $theme->getID() ) {
-				return $theme;
-			}
+		if ( isset( $this->themeObjs[ $themeId ] ) ) {
+			return $this->themeObjs[ $themeId ];
 		}
 
-		return null;
+		$this->themeObjs[ $themeId ] = $this->getThemeObject( $themeId );
 
+		return $this->getThemeObject( $themeId );
 	}
 
 	/**
 	 * Get class object.
 	 *
-	 * @since 2.7.0
-	 * @param string $className
+	 * @param string $themeId
 	 *
 	 * @return Theme
-	 */
-	private function getThemeObject( $className ) {
-		$obj = class_exists( $className ) ? new $className() : null;
-
-		return $this->isValidTheme( $obj ) ? $obj : null;
-	}
-
-	/**
-	 * Check if theme is valid or not
-	 *
 	 * @since 2.7.0
-	 * @param $theme
-	 *
-	 * @return bool
 	 */
-	private function isValidTheme( $theme ) {
-		return $theme instanceof Theme;
+	private function getThemeObject( $themeId ) {
+		return new $this->themes[ $themeId ]();
 	}
 }
