@@ -82,6 +82,8 @@ jQuery( function( $ ) {
 		button.addEventListener( 'click', function() {
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
 
+			document.documentElement.style.overflow = 'hidden';
+
 			iframeContainer.classList.add( 'modal' );
 			iframeContainer.classList.remove( 'is-hide' );
 		} );
@@ -90,6 +92,8 @@ jQuery( function( $ ) {
 	document.querySelectorAll( '.js-give-embed-form-modal-closer' ).forEach( function( button ) {
 		button.addEventListener( 'click', function() {
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
+
+			document.documentElement.style.overflow = '';
 
 			iframeContainer.classList.remove( 'modal' );
 			iframeContainer.classList.add( 'is-hide' );
