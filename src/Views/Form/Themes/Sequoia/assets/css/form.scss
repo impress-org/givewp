@@ -59,8 +59,7 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
-
-	background-color: #f9f9f9;
+	background-color: #fbfbfb;
 
 	.number {
 		font-weight: bold;
@@ -71,11 +70,16 @@ textarea {
 		flex: 1 1 0%;
 		flex-direction: column;
 		align-items: center;
-
-		border-left: 1px solid #e1e1e1;
-		border-bottom: 1px solid #e1e1e1;
-
+		border: 1px solid #f2f2f2;
 		padding: 10px;
+
+		&:first-of-type {
+			border-left: 0;
+		}
+
+		&:last-of-type {
+			border-right: 0;
+		}
 	}
 }
 
