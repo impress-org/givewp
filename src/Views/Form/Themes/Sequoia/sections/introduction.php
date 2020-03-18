@@ -13,6 +13,7 @@ $image       = $theme_options['introduction']['image'];
 	<div class="heading">
 		<h2 class="give-form-title"><?php echo $headline; ?></h2>
 	</div>
+	<div class="seperator"></div>
 	<div class="subheading text">
 		<p><?php echo $description; ?></p>
 	</div>
