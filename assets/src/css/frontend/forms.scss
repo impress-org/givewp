@@ -927,3 +927,31 @@ Embed Form aka IFrame Form
 		}
 	}
 }
+
+.give-embed-form-modal {
+	.mfp-content {
+		box-shadow: 0 15px 10px -5px rgba(0, 0, 0, 0.15);
+		position: relative;
+		border-top: 5px solid rgba(0, 0, 0, 0);
+		line-height: 1.5;
+		margin: 25px auto;
+		width: 100%;
+		max-width: 500px;
+	}
+
+	button.mfp-close {
+		background: black;
+		opacity: 1;
+		color: white !important;
+		border-radius: 24px;
+		width: 26px;
+		height: 26px;
+		font-size: 24px;
+		line-height: initial;
+		text-decoration: none;
+
+		&:hover {
+			background: red;
+		}
+	}
+}

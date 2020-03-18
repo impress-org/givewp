@@ -82,6 +82,7 @@ jQuery( function( $ ) {
 			closeBtnInside: true,
 			midClick: true,
 			removalDelay: 300,
+			mainClass: 'give-embed-form-modal',
 		} );
 	} );
 } );
