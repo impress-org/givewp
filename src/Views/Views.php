@@ -37,5 +37,3 @@ class Views {
 	}
 
 }
-$views = new Views();
-$views->init();

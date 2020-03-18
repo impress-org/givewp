@@ -55,5 +55,3 @@ class API {
 	}
 
 }
-$api = new API();
-$api->init();

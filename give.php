@@ -37,6 +37,9 @@
  * - The GiveWP Team
  */
 
+use Give\API as API;
+use Give\Views as Views;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -387,6 +390,12 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
 
+			$api = new API();
+			$api->init();
+
+			$views = new Views();
+			$views->init();
+
 			/**
 			 * Fire the action after Give core loads.
 			 *
@@ -590,12 +599,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
 			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
-
-			// Include API
-			require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
-
-			// Include Views
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
