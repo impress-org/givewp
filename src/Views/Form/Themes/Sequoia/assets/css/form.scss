@@ -30,23 +30,52 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-
 	text-align: center;
 
-	h2,
-	p {
+	h2 {
+		font-weight: 600;
+		font-size: 26px;
+		line-height: 30px;
+		color: #333;
+		margin: 30px 0 20px 0;
+		max-width: 75%;
+	}
+
+	.seperator {
+		width: 90px;
+		height: 4px;
+		background: #28c77b;
+		border-radius: 4px;
 		margin: 0;
 	}
 
-	.headline {
-		width: 25%;
-		border: 2px solid #2bc253;
-		border-radius: 10px;
+	p {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 24px;
+		color: #555;
+		margin: 20px 0 30px 0;
+		max-width: 66%;
 	}
 
-	img {
+	.image-container {
+		display: block;
 		width: 100%;
-		margin-bottom: 0;
+		height: auto;
+		position: relative;
+		overflow: hidden;
+		padding: 56.24% 0 0 0;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
 	}
 
 	> * {
