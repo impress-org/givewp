@@ -83,6 +83,12 @@ jQuery( function( $ ) {
 			midClick: true,
 			removalDelay: 300,
 			mainClass: 'give-embed-form-modal',
+			callbacks: {
+				close: function() {
+					// Remove mfp-hide class which creates conflict with magnificPopup.
+					button.parent().next().removeClass( 'mfp-hide' );
+				},
+			},
 		} );
 	} );
 } );
