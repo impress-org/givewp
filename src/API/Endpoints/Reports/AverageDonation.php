@@ -174,6 +174,7 @@ class AverageDonation extends Endpoint {
 
 		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
+		// Return rounded average (avoid displaying figures with many decimal places)
 		return round( $average, 2 );
 	}
 
@@ -186,6 +187,7 @@ class AverageDonation extends Endpoint {
 
 		$average = $sales > 0 ? $earnings / $sales : 0;
 
+		// Return rounded average (avoid displaying figures with many decimal places)
 		return round( $average, 2 );
 	}
 }
