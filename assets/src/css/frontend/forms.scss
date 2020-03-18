@@ -941,7 +941,7 @@ Embed Form aka IFrame Form
 		}
 
 		iframe {
-			margin-top: 25px;
+			margin-top: 15px;
 		}
 
 		.close-btn {
@@ -957,6 +957,7 @@ Embed Form aka IFrame Form
 			line-height: initial;
 			text-decoration: none;
 			z-index: 1002;
+			outline: none;
 
 			&:hover {
 				background: red;
