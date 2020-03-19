@@ -14,7 +14,7 @@ use function Give\Helpers\Form\Utils\isViewingForm;
  */
 class Actions {
 
-	protected $theme_options;
+	protected $themeOptions;
 
 	/**
 	 * Initialize
@@ -29,7 +29,7 @@ class Actions {
 
 		// Get Theme options
 		global $post;
-		$this->theme_options = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
+		$this->themeOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
@@ -143,8 +143,8 @@ class Actions {
 	 */
 	public function getNextButton( $id ) {
 
-		$label = isset( $this->theme_options['introduction']['next_label'] ) ? $this->theme_options['introduction']['next_label'] : __( 'Next', 'give' );
-		$color = isset( $this->theme_options['introduction']['primary_color'] ) ? $this->theme_options['introduction']['primary_color'] : '#2bc253';
+		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
 		printf(
 			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
@@ -160,8 +160,8 @@ class Actions {
 	 */
 	public function getCheckoutButton() {
 
-		$label = isset( $this->theme_options['payment_information']['checkout_label'] ) ? $this->theme_options['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
-		$color = isset( $this->theme_options['introduction']['primary_color'] ) ? $this->theme_options['introduction']['primary_color'] : '#2bc253';
+		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
 		$button = '<div class="give-submit-button-wrap give-clearfix">
 			<input type="submit" class="give-submit give-btn" style="background: ' . $color . '" id="give-purchase-button" name="give-purchase" value="' . $label . '" data-before-validation-label="Donate Now">

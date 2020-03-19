@@ -1,9 +1,9 @@
 <?php
 
 // Get headline and description
-$headline    = $this->theme_options['introduction']['headline'];
-$description = $this->theme_options['introduction']['description'];
-$image       = $this->theme_options['introduction']['image'];
+$headline    = $this->themeOptions['introduction']['headline'];
+$description = $this->themeOptions['introduction']['description'];
+$image       = $this->themeOptions['introduction']['image'];
 ?>
 
 <div class="give-section introduction">
