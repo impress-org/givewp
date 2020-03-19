@@ -2,7 +2,7 @@
 import { iframeResize } from 'iframe-resizer';
 
 jQuery( function( $ ) {
-	const $allIframes = document.querySelectorAll( 'iframe[name="give-embed-form"]' ),
+	const $allIframes = document.querySelectorAll( 'iframe[name="give-embed-form"]:not([data-src])' ),
 		  iframeCount = parseInt( $allIframes.length );
 	let iframeCounter = 0;
 
@@ -18,40 +18,7 @@ jQuery( function( $ ) {
 
 	if ( iframeCount ) {
 		$allIframes.forEach( function( iframe ) {
-			new iframeResize(
-				{
-					log: true,
-					sizeWidth: true,
-					heightCalculationMethod: 'documentElementOffset',
-					widthCalculationMethod: 'documentElementOffset',
-					onMessage: function( messageData ) {
-						const iframe = messageData.iframe;
-
-						switch ( messageData.message ) {
-							case 'giveEmbedFormContentLoaded':
-								iframe.parentElement.classList.remove( 'give-loader-type-img' );
-								iframe.style.visibility = 'visible';
-
-								// Check if all iframe loaded. if yes, then trigger custom action.
-								iframeCounter++;
-								if ( iframeCounter === iframeCount ) {
-									document.dispatchEvent( new CustomEvent( 'Give.iframesLoaded', { detail: { give: { iframes: $allIframes } } } ) );
-								}
-								break;
-
-							case 'giveEmbedShowingForm':
-								scrollToIframe( iframe );
-								break;
-						}
-					},
-					onInit: function( iframe ) {
-						iframe.iFrameResizer.sendMessage( {
-							currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
-						} );
-					},
-				},
-				iframe
-			);
+			initializeIframeResize( iframe );
 		} );
 	}
 
@@ -80,7 +47,17 @@ jQuery( function( $ ) {
 	 */
 	document.querySelectorAll( '.js-give-embed-form-modal-opener' ).forEach( function( button ) {
 		button.addEventListener( 'click', function() {
-			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
+			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) ),
+				  iframe = iframeContainer.getElementsByTagName( 'iframe' ).item( 0 ),
+				  iframeURL = iframe.getAttribute( 'data-src' );
+
+			// Load iframe.
+			if ( iframeURL ) {
+				iframe.setAttribute( 'src', iframeURL );
+				iframe.setAttribute( 'data-src', '' );
+
+				initializeIframeResize( iframe );
+			}
 
 			document.documentElement.style.overflow = 'hidden';
 
@@ -99,4 +76,49 @@ jQuery( function( $ ) {
 			iframeContainer.classList.add( 'is-hide' );
 		} );
 	} );
+
+	/**
+	 * Intialize iframeresizer on iframe.
+	 *
+	 * @since 2.7.0
+	 * @param {object} iframe
+	 */
+	function initializeIframeResize( iframe ) {
+		console.log( iframe );
+
+		new iframeResize(
+			{
+				log: true,
+				sizeWidth: true,
+				heightCalculationMethod: 'documentElementOffset',
+				widthCalculationMethod: 'documentElementOffset',
+				onMessage: function( messageData ) {
+					const iframe = messageData.iframe;
+
+					switch ( messageData.message ) {
+						case 'giveEmbedFormContentLoaded':
+							iframe.parentElement.classList.remove( 'give-loader-type-img' );
+							iframe.style.visibility = 'visible';
+
+							// Check if all iframe loaded. if yes, then trigger custom action.
+							iframeCounter++;
+							if ( iframeCounter === iframeCount ) {
+								document.dispatchEvent( new CustomEvent( 'Give.iframesLoaded', { detail: { give: { iframes: $allIframes } } } ) );
+							}
+							break;
+
+						case 'giveEmbedShowingForm':
+							scrollToIframe( iframe );
+							break;
+					}
+				},
+				onInit: function( iframe ) {
+					iframe.iFrameResizer.sendMessage( {
+						currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
+					} );
+				},
+			},
+			iframe
+		);
+	}
 } );

@@ -199,12 +199,17 @@ function give_form_shortcode( $atts ) {
 				'
 						<div class="modal-inner-wrap">
 							<div class="modal-content">
-								%1$s
-								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%2$s" data-form-id="%3$s">&times;</button>
+								<iframe
+									name="give-embed-form"
+										data-src="%1$s"
+										data-autoScroll="%2$s"
+										style="border: 0; visibility: hidden"></iframe>
+								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
 							</div>
 						</div>
 						',
-				$iframe,
+				$iframe_url,
+				$buttonModeActive ? 0 : $isAutoScroll,
 				__( 'Close modal', 'give' ),
 				$uniqueId
 			);
