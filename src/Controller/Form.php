@@ -11,7 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
-use function Give\Helpers\Form\Utils\getShortcodeArgs;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
