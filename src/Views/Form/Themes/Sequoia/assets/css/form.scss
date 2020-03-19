@@ -263,6 +263,10 @@ textarea {
 			&::before {
 				content: none;
 			}
+
+			input {
+				font-family: 'Montserrat', sans-serif;
+			}
 		}
 
 		span.give-currency-symbol {
@@ -315,7 +319,7 @@ textarea {
 				background: #2bc253;
 				border: 2px solid #2bc253;
 				border-radius: 4px;
-				font-weight: 500;
+				font-weight: 400;
 				font-size: 26px;
 				line-height: 30px;
 				text-align: center;
@@ -323,6 +327,11 @@ textarea {
 				padding: 0 10px;
 				min-height: 62px;
 				font-family: 'Montserrat', sans-serif;
+
+				> .currency {
+					font-size: 14px;
+					margin: 0 4px 6px 0;
+				}
 
 				&.give-btn-level-custom {
 					font-size: 18px;

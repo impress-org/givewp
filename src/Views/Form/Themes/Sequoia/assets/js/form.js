@@ -44,6 +44,17 @@
 
 			// Show choose amount section
 			$( advanceButton ).text( nextLabel );
+
+			$( '.give-donation-level-btn' ).each( function() {
+				const value = $( this ).attr( 'value' );
+				const text = $( this ).text();
+				if ( value !== 'custom' ) {
+					const wrap = `<span class="give-tooltip hint--top hint--small hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
+					const html = `<div class="currency">$</div>${ value }`;
+					$( this ).html( html );
+					$( this ).wrap( wrap );
+				}
+			} );
 			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
 			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
 			$( '.give-section.choose-amount', $form ).show();
