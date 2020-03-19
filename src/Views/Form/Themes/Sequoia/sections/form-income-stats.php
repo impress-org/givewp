@@ -66,7 +66,7 @@
 		<div class="number">
 		<?php echo $goal; ?>
 		</div>
-		<div class="text">goal</div>
+		<div class="text"><?php _e( 'goal', 'give' ); ?></div>
 	</div>
 </div>
 <?php endif; ?>
