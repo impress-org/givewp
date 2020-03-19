@@ -74,15 +74,17 @@ class Form {
 
 			$this->setupGlobalPost();
 
-			$this->loadTheme( $formTheme );
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+			require_once $this->loadTheme( $formTheme )
+							  ->getTheme()
+							  ->getTemplate( 'form' );
 
 			exit();
 		}
 
 		if ( $isViewingReceipt ) {
-			$this->loadTheme();
-			require_once GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
+			require_once $this->loadTheme()
+							  ->getTheme()
+							  ->getTemplate( 'receipt' );
 			exit();
 		}
 	}
@@ -93,10 +95,14 @@ class Form {
 	 *
 	 * @since 2.7.0
 	 * @param string $formTheme
+	 *
+	 * @return LoadTheme
 	 */
 	private function loadTheme( $formTheme = '' ) {
 		$themeLoader = new LoadTheme( $formTheme );
 		$themeLoader->init();
+
+		return $themeLoader;
 	}
 
 
