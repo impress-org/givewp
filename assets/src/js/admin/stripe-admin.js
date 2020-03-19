@@ -15,12 +15,26 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
+	const hideIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_hide_icon"]' ) );
+	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== hideIconElements ) {
+		hideIconElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'disabled' === e.target.value ) {
+					iconStyleElement.classList.remove( 'give-hidden' );
+				} else {
+					iconStyleElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
 
 	if ( null !== checkoutTypes ) {
 		checkoutTypes.forEach( ( checkoutType ) => {
