@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @import 'mixins';
 @import 'util';
 
@@ -58,8 +59,7 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
-
-	background-color: #f9f9f9;
+	background-color: #fbfbfb;
 
 	.number {
 		font-weight: bold;
@@ -70,17 +70,39 @@ textarea {
 		flex: 1 1 0%;
 		flex-direction: column;
 		align-items: center;
-
-		border-left: 1px solid #e1e1e1;
-		border-bottom: 1px solid #e1e1e1;
-
+		border: 1px solid #f2f2f2;
 		padding: 10px;
+
+		&:first-of-type {
+			border-left: 0;
+		}
+
+		&:last-of-type {
+			border-right: 0;
+		}
 	}
 }
 
 .give-section.progress-bar {
 	padding: 19px 10px;
-	border-bottom: 1px solid #e1e1e1;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+.give-progress-bar {
+	height: 20px;
+	position: relative;
+	border-radius: 20px;
+	overflow: hidden;
+	background: #f1f1f1;
+	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
+
+	> span {
+		border-radius: 20px;
+		background: linear-gradient(180deg, #2bc253 0%, #2bc253 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
+		background-blend-mode: multiply;
+		position: relative;
+		overflow: hidden;
+	}
 }
 
 .give-section.personal-information-text {
@@ -325,3 +347,4 @@ textarea {
 		display: none;
 	}
 }
+/* stylelint-enable */

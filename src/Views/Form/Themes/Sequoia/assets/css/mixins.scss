@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @mixin background-lightgray {
 	background-color: #f1f1f1;
 }
@@ -20,3 +21,4 @@
 @mixin display-grid {
 	display: grid !important;
 }
+/* stylelint-enable */

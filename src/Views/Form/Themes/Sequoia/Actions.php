@@ -14,6 +14,8 @@ use function Give\Helpers\Form\Utils\isViewingForm;
  */
 class Actions {
 
+	protected $themeOptions;
+
 	/**
 	 * Initialize
 	 *
@@ -24,6 +26,10 @@ class Actions {
 		if ( ! isViewingForm() ) {
 			return;
 		}
+
+		// Get Theme options
+		global $post;
+		$this->themeOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
@@ -50,21 +56,21 @@ class Actions {
 	/**
 	 * Setup common hooks
 	 *
-	 * @param int   $form_id
+	 * @param int   $formId
 	 * @param array $args
 	 */
-	public function loadCommonHooks( $form_id, $args ) {
+	public function loadCommonHooks( $formId, $args ) {
 		remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 	}
 
 	/**
 	 * Setup hooks
 	 *
-	 * @param int              $form_id
+	 * @param int              $formId
 	 * @param array            $args
 	 * @param Give_Donate_Form $form
 	 */
-	public function loadHooks( $form_id, $args, $form ) {
+	public function loadHooks( $formId, $args, $form ) {
 		/**
 		 * Add hooks
 		 */
@@ -85,6 +91,9 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
+
+		// Override checkout button
+		add_filter( 'give_donation_form_submit_button', array( $this, 'getCheckoutButton' ) );
 	}
 
 	/**
@@ -92,11 +101,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getIntroductionSection( $form_id, $args, $form ) {
+	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
 	}
 
@@ -105,11 +114,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getStatsSection( $form_id, $args, $form ) {
+	public function getStatsSection( $formId, $args, $form ) {
 		include 'sections/form-income-stats.php';
 	}
 
@@ -118,11 +127,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getProgressBarSection( $form_id, $args, $form ) {
+	public function getProgressBarSection( $formId, $args, $form ) {
 		include 'sections/progress-bar.php';
 	}
 
@@ -132,10 +141,35 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 */
-	public function getNextButton() {
+	public function getNextButton( $id ) {
+
+		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
+
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
-			__( 'Next', 'give' )
+			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
+			$color,
+			$label
+		);
+	}
+
+	/**
+	 * Add checkout button
+	 *
+	 * @since 2.7.0
+	 */
+	public function getCheckoutButton() {
+
+		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
+
+		return sprintf(
+			'<div class="give-submit-button-wrap give-clearfix">
+				<input type="submit" class="give-submit give-btn" style="background: %1$s" id="give-purchase-button" name="give-purchase" value="%2$s" data-before-validation-label="Donate Now">
+				<span class="give-loading-animation"></span>
+			</div>',
+			$color,
+			$label
 		);
 	}
 
@@ -144,9 +178,9 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param int $form_id
+	 * @param int $formId
 	 */
-	public function getIntroductionSectionTextSubSection( $form_id ) {
+	public function getIntroductionSectionTextSubSection( $formId ) {
 		printf(
 			'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 			__( 'Tell us a bit amount yourself', 'give' ),
