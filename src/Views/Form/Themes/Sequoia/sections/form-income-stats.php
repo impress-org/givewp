@@ -1,4 +1,8 @@
-<?php if ( $form->has_goal() ) : ?>
+<?php
+/**
+ * @var int $formId
+ */
+if ( $form->has_goal() ) : ?>
 	<?php
 	$goalStats = give_goal_progress_stats( $formId );
 
