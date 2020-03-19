@@ -281,31 +281,34 @@ textarea {
 			}
 
 			label {
-				display: inline-block;
+				display: inline-flex !important;
+				align-items: center;
+				justify-content: center;
 				width: 100%;
 				background: #3398db;
-				border: 1px solid #3398db;
+				border: 2px solid #3398db;
 				border-radius: 4px;
 				font-weight: 500;
 				font-size: 26px;
 				line-height: 30px;
 				text-align: center;
 				color: #fff;
-				padding: 26px 0;
+				padding: 0;
+				min-height: 62px;
+
+				&[for='give-radio-level-custom'] {
+					font-size: 18px;
+					font-weight: 400;
+					line-height: 1.2;
+					padding: 0;
+				}
 			}
 
 			input[type='radio']:checked + label {
 				background: #fff;
 				border: 2px solid #3398db;
 				color: #3398db;
-				padding: 25px 0;
-			}
-
-			&:last-of-type {
-				label {
-					font-size: 18px;
-					font-weight: 400;
-				}
+				padding: 0;
 			}
 		}
 	}
