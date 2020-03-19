@@ -9,9 +9,9 @@ use function Give\Helpers\Form\Theme\get as getTheme;
 use function Give\Helpers\Form\Utils\getFormId;
 
 /**
- * Return active form theme ID
+ * This function will return selected form template for a specific form.
  *
- * @param int $formId
+ * @param int $formId Form id. Default value: check explanation in ./Utils.php:103
  *
  * @return string
  * @since 2.7.0
