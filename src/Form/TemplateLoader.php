@@ -74,7 +74,7 @@ class TemplateLoader {
 
 		// Load theme scripts.
 		if ( $this->theme instanceof Scriptable ) {
-			$this->theme->loadScripts();
+			add_action( 'wp_enqueue_scripts', array( $this, 'loadScripts' ) );
 		}
 
 		$this->setUpFrontendHooks();
