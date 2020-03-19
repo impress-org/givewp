@@ -1,4 +1,8 @@
-<?php if ( $form->has_goal() ) : ?>
+<?php
+/**
+ * @var int $formId
+ */
+if ( $form->has_goal() ) : ?>
 	<?php
 	$color     = give_get_meta( $formId, '_give_goal_color', true );
 	$goalStats = give_goal_progress_stats( $formId );
