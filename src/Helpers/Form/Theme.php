@@ -11,45 +11,45 @@ use function Give\Helpers\Form\Utils\getFormId;
 /**
  * Return active form theme ID
  *
- * @param int $formID
+ * @param int $formId
  *
  * @return string
  * @since 2.7.0
  */
-function getActiveID( $formID = null ) {
-	return Give()->form_meta->get_meta( $formID ?: getFormId(), '_give_form_theme', true );
+function getActiveID( $formId = null ) {
+	return Give()->form_meta->get_meta( $formId ?: getFormId(), '_give_form_theme', true );
 }
 
 
 /**
  * Return saved form theme settings
  *
- * @param int    $formID
- * @param string $themeID
+ * @param int    $formId
+ * @param string $themeId
  *
  * @return array
  * @since 2.7.0
  */
-function get( $formID = null, $themeID = '' ) {
-	$formID = $formID ?: getFormId();
-	$theme  = $themeID ?: Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
+function get( $formId = null, $themeId = '' ) {
+	$formId = $formId ?: getFormId();
+	$theme  = $themeId ?: Give()->form_meta->get_meta( $formId, '_give_form_theme', true );
 
-	return (array) Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
+	return (array) Give()->form_meta->get_meta( $formId, "_give_{$theme}_form_theme_settings", true );
 }
 
 /**
  * Save settings
  *
  * @sinxe 2.7.0
- * @param $formID
+ * @param $formId
  * @param $settings
  *
  * @return mixed
  */
-function set( $formID, $settings ) {
-	$theme = Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
+function set( $formId, $settings ) {
+	$theme = Give()->form_meta->get_meta( $formId, '_give_form_theme', true );
 
-	return Give()->form_meta->update_meta( $formID, "_give_{$theme}_form_theme_settings", $settings );
+	return Give()->form_meta->update_meta( $formId, "_give_{$theme}_form_theme_settings", $settings );
 }
 
 /**
