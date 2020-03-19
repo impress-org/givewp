@@ -4,14 +4,13 @@
 $headline    = $this->themeOptions['introduction']['headline'];
 $description = $this->themeOptions['introduction']['description'];
 $image       = $this->themeOptions['introduction']['image'];
-$color       = $this->themeOptions['introduction']['primary_color'];
 ?>
 
 <div class="give-section introduction">
 	<h2>
 		<?php echo $headline; ?>
 	</h2>
-	<div class="seperator" style="background: <?php echo $color; ?>"></div>
+	<div class="seperator"></div>
 	<p>
 		<?php echo $description; ?>
 	</p>

@@ -27,7 +27,6 @@ class Actions {
 			return;
 		}
 
-		// Get Theme options
 		global $post;
 		$this->themeOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
 
@@ -144,11 +143,9 @@ class Actions {
 	public function getNextButton( $id ) {
 
 		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
-		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
-			$color,
+			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
 			$label
 		);
 	}
@@ -161,14 +158,12 @@ class Actions {
 	public function getCheckoutButton() {
 
 		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
-		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
 		return sprintf(
 			'<div class="give-submit-button-wrap give-clearfix">
-				<input type="submit" class="give-submit give-btn" style="background: %1$s" id="give-purchase-button" name="give-purchase" value="%2$s" data-before-validation-label="Donate Now">
+				<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
 			</div>',
-			$color,
 			$label
 		);
 	}
