@@ -59,6 +59,9 @@
 
 			// Show remain form options.
 			$( 'form > *:not(.give-section.choose-amount)', $container ).show();
+			$( '.give-label' ).html( '' );
+			$( 'label[for=give-first]' ).text( 'n' );
+			$( 'label[for=give-email]' ).text( 'e' );
 
 			$parent.removeClass( 'give-showing_choose-amount-section' ).addClass( 'give-showing__personal-section' );
 		}
