@@ -13,7 +13,7 @@ use _WP_Dependency;
 use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
 use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Utils\getFormId;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;

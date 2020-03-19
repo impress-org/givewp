@@ -3,7 +3,7 @@ global $post;
 
 use Give\Form\Theme;
 use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\renderMetaboxSettings;
+use function Give\Helpers\Form\Theme\Utils\Admin\renderMetaboxSettings;
 
 $activatedTheme   = getActiveID( $post->ID );
 $registeredThemes = Give()->themes->getThemes();
