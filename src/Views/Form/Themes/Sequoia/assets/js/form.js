@@ -1,10 +1,37 @@
 /* globals jQuery, Give */
 ( function( $ ) {
+	// Setup custom styles stylesheet
+	const sheet = ( function() {
+		// Create the <style> tag
+		const style = document.createElement( 'style' );
+
+		// Add a media (and/or media query) here if you'd like!
+		// style.setAttribute("media", "screen")
+		// style.setAttribute("media", "only screen and (max-width : 1024px)")
+
+		// WebKit hack :(
+		style.appendChild( document.createTextNode( '' ) );
+
+		// Add the <style> element to the page
+		document.head.appendChild( style );
+
+		return style.sheet;
+	}() );
+
+	const templateOptions = window.sequoiaTemplateOptions;
+	const primaryColor = templateOptions.introduction.primary_color;
+
+	// Insert rules to custom stylesheet
+	sheet.insertRule( `.seperator { background: ${ primaryColor }!important;}` );
+	sheet.insertRule( `.give-btn { background: ${ primaryColor }!important;}` );
+	sheet.insertRule( `.give-donation-level-btn { border: 2px solid ${ primaryColor }!important;}` );
+	sheet.insertRule( `.give-donation-level-btn.give-default-level { color: ${ primaryColor }!important; background: #fff!important;}` );
+
 	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
 		e.preventDefault();
 		const $parent = $( this ).parent(),
-			  $container = $( '.give-embed-form' ),
-			  $form = $( 'form', $container );
+			$container = $( '.give-embed-form' ),
+			$form = $( 'form', $container );
 
 		if ( $parent.hasClass( 'give-showing__introduction-section' ) ) {
 			// Hide introduction section.
@@ -99,6 +126,9 @@
 	 * Refresh personal information section
 	 *
 	 * @since 2.7.0
+	 * @param {boolean} ev Event object
+	 * @param {object} response Response object
+	 * @param {number} formID Form ID
 	 */
 	function refreshPersonalInformationSection( ev, response, formID ) {
 		const $form = $( `#${ formID }` );
@@ -112,13 +142,13 @@
 			};
 
 			// AJAX get the payment fields.
-			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( response ) {
-				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( response.fields ) );
+			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( postResponse ) {
+				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( postResponse.fields ) );
 				$form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
 				$form.find( '.give-submit-button-wrap' ).show();
 			} ).done( function() {
 				// Trigger float-labels
-				give_fl_trigger();
+				window.give_fl_trigger();
 			} );
 		}
 	}
