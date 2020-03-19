@@ -163,11 +163,14 @@ class Actions {
 		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
 		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
-		$button = '<div class="give-submit-button-wrap give-clearfix">
-			<input type="submit" class="give-submit give-btn" style="background: ' . $color . '" id="give-purchase-button" name="give-purchase" value="' . $label . '" data-before-validation-label="Donate Now">
-			<span class="give-loading-animation"></span>
-		</div>';
-		return $button;
+		return sprintf(
+			'<div class="give-submit-button-wrap give-clearfix">
+				<input type="submit" class="give-submit give-btn" style="background: %1$s" id="give-purchase-button" name="give-purchase" value="%2$s" data-before-validation-label="Donate Now">
+				<span class="give-loading-animation"></span>
+			</div>',
+			$color,
+			$label
+		);
 	}
 
 	/**
