@@ -408,11 +408,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
+					$is_hide_icon = give_is_setting_enabled( Give()->give_settings::get_option( 'give_settings', 'stripe_hide_icon' ) );
+
 					$settings['sepa'][] = array(
 						'name'          => __( 'Icon Style', 'give' ),
 						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_icon_style',
-						'wrapper_class' => 'stripe-icon-style',
+						'wrapper_class' => ! $is_hide_icon ? 'stripe-icon-style' : 'stripe-icon-style give-hidden',
 						'type'          => 'radio_inline',
 						'default'       => 'default',
 						'options'       => array(
