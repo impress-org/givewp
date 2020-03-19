@@ -1,12 +1,14 @@
 <?php
 namespace Give\Helpers\Form\Utils;
 
-use WP_Post;/**
-			 * Get result if we are viewing embed form or not
-			 *
-			 * @return bool
-			 * @since 2.7.0
-			 */
+use WP_Post;
+
+/**
+ * Get result if we are viewing embed form or not
+ *
+ * @return bool
+ * @since 2.7.0
+ */
 function isViewingForm() {
 	$base = Give()->routeForm->getBase();
 
