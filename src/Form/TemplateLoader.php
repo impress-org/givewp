@@ -87,7 +87,7 @@ class TemplateLoader {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		if ( ! is_admin() ) {
+		if ( is_admin() ) {
 			return false;
 		}
 
