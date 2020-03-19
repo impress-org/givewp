@@ -49,8 +49,7 @@ class TemplateLoader {
 	private function setUpTemplate( $formTemplate ) {
 		$formID = (int) $this->getFormId();
 
-		$themeID = getActiveID( $formID );
-		$themeID = $formTemplate ?: ( $themeID ?: $this->defaultTemplateID );
+		$themeID = $formTemplate ?: ( getActiveID( $formID ) ?: $this->defaultTemplateID );
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
