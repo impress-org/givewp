@@ -99,8 +99,8 @@ class Form {
 	 * @since 2.7.0
 	 */
 	private function loadTheme( $formTheme = '' ) {
-		$themeLoader = new TemplateLoader( $formTheme );
-		$themeLoader->init();
+		$themeLoader = new TemplateLoader();
+		$themeLoader->init( $formTheme );
 
 		return $themeLoader;
 	}

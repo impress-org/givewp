@@ -30,7 +30,7 @@ class TemplateLoader {
 	 *
 	 * @var string
 	 */
-	private $defaultThemeID = 'legacy';
+	private $defaultTemplateID = 'legacy';
 
 	/**
 	 * Form theme config.
@@ -39,27 +39,31 @@ class TemplateLoader {
 	 */
 	private $theme;
 
+
 	/**
-	 * Form Theme loading handler
+	 * setup form template
 	 *
-	 * @param string $formTheme Theme ID. Add form_theme shortcode argument to load selective form theme.
-	 *
-	 * @global WP_Post $post
+	 * @since 2.7.0
+	 * @param $formTemplate
 	 */
-	public function __construct( $formTheme = '' ) {
+	private function setUpTemplate( $formTemplate ) {
 		$formID = (int) $this->getFormId();
 
 		$themeID = getActiveID( $formID );
-		$themeID = $formTheme ?: ( $themeID ?: $this->defaultThemeID );
+		$themeID = $formTemplate ?: ( $themeID ?: $this->defaultTemplateID );
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
 
 
 	/**
-	 * Initialize form theme
+	 * Initialize form template
+	 *
+	 * @param string $formTemplate
 	 */
-	public function init() {
+	public function init( $formTemplate = '' ) {
+		$this->setUpTemplate( $formTemplate );
+
 		// Exit is theme is not valid.
 		if ( ! ( $this->theme instanceof Theme ) ) {
 			return;
