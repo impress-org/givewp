@@ -23,11 +23,6 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		// Exit: donor is not on embed form page
-		if ( ! isViewingForm() ) {
-			return;
-		}
-
 		// Get Theme options
 		$this->themeOptions = get();
 
