@@ -9,7 +9,7 @@
 
 namespace Give\Controller;
 
-use Give\Form\TemplateLoader;
+use Give\Form\LoadTheme;
 use WP_Post;
 use function Give\Helpers\Form\Utils\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isProcessingForm;
@@ -95,11 +95,11 @@ class Form {
 	 *
 	 * @param string $formTheme
 	 *
-	 * @return TemplateLoader
+	 * @return LoadTheme
 	 * @since 2.7.0
 	 */
 	private function loadTheme( $formTheme = '' ) {
-		$themeLoader = new TemplateLoader();
+		$themeLoader = new LoadTheme();
 		$themeLoader->init( $formTheme );
 
 		return $themeLoader;
@@ -156,7 +156,7 @@ class Form {
 			}
 
 			$post        = get_post( $formID );
-			$themeLoader = new TemplateLoader();
+			$themeLoader = new LoadTheme();
 			$themeLoader->init();
 		}
 	}

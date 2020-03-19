@@ -19,12 +19,12 @@ use function Give\Helpers\Form\Utils\isViewingForm;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * ThemeLoader class.
+ * LoadTheme class.
  * This class is responsible to load necessary hooks and run required functions which help to render form theme (in different style).
  *
  * @since 2.7.0
  */
-class TemplateLoader {
+class LoadTheme {
 	/**
 	 * Default form theme ID.
 	 *
