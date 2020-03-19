@@ -56,21 +56,21 @@ class Actions {
 	/**
 	 * Setup common hooks
 	 *
-	 * @param int   $form_id
+	 * @param int   $formId
 	 * @param array $args
 	 */
-	public function loadCommonHooks( $form_id, $args ) {
+	public function loadCommonHooks( $formId, $args ) {
 		remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 	}
 
 	/**
 	 * Setup hooks
 	 *
-	 * @param int              $form_id
+	 * @param int              $formId
 	 * @param array            $args
 	 * @param Give_Donate_Form $form
 	 */
-	public function loadHooks( $form_id, $args, $form ) {
+	public function loadHooks( $formId, $args, $form ) {
 		/**
 		 * Add hooks
 		 */
@@ -101,11 +101,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getIntroductionSection( $form_id, $args, $form ) {
+	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
 	}
 
@@ -114,11 +114,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getStatsSection( $form_id, $args, $form ) {
+	public function getStatsSection( $formId, $args, $form ) {
 		include 'sections/form-income-stats.php';
 	}
 
@@ -127,11 +127,11 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param $form_id
+	 * @param $formId
 	 * @param $args
 	 * @param $form
 	 */
-	public function getProgressBarSection( $form_id, $args, $form ) {
+	public function getProgressBarSection( $formId, $args, $form ) {
 		include 'sections/progress-bar.php';
 	}
 
@@ -175,9 +175,9 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param int $form_id
+	 * @param int $formId
 	 */
-	public function getIntroductionSectionTextSubSection( $form_id ) {
+	public function getIntroductionSectionTextSubSection( $formId ) {
 		printf(
 			'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 			__( 'Tell us a bit amount yourself', 'give' ),
