@@ -49,7 +49,7 @@
 				const value = $( this ).attr( 'value' );
 				const text = $( this ).text();
 				if ( value !== 'custom' ) {
-					const wrap = `<span class="give-tooltip hint--top hint--small hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
+					const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
 					const html = `<div class="currency">$</div>${ value }`;
 					$( this ).html( html );
 					$( this ).wrap( wrap );
