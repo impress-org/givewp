@@ -213,13 +213,19 @@ textarea {
 	.give-total-wrap {
 		justify-content: center;
 		align-items: center;
-		padding-top: 17px;
-		margin-bottom: 20px;
+		padding-top: 16px;
+		margin: 30px 0 20px 0;
 
 		div.give-donation-amount {
-			border: 1px solid #e1e1e1;
-			border-radius: 6px !important;
-			background-color: white;
+			border: 1px solid #979797;
+			background-color: #fff;
+			box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.22);
+			border-radius: 4px !important;
+			display: flex;
+			align-items: center;
+			width: 45%;
+			overflow: hidden;
+			padding: 16px;
 
 			&::before {
 				content: none;
@@ -231,20 +237,19 @@ textarea {
 			border: 0 !important;
 			position: relative;
 			z-index: 3;
-			padding: 10px 12px !important;
-			border-radius: 6px !important;
+			padding: 0 !important;
 		}
 
 		input[type='tel'] {
 			position: relative;
-			left: -35px;
-			width: 170px !important;
-			border-radius: 6px !important;
-			padding: 25px 20px 25px 42px !important;
+			width: auto !important;
+			padding: 20px 0 !important;
 			border: 0 !important;
 			text-align: center;
-			font-size: 25px !important;
-			font-weight: 400 !important;
+			font-weight: 500 !important;
+			font-size: 42px !important;
+			line-height: 48px !important;
+			color: #333;
 
 			&:focus {
 				outline: none;
@@ -257,7 +262,7 @@ textarea {
 	}
 
 	.give-donation-levels-wrap {
-		grid-gap: 15px;
+		grid-gap: 10px;
 		grid-template-columns: repeat(3, 1fr);
 		padding: 0 5% !important;
 
@@ -268,13 +273,39 @@ textarea {
 
 		li {
 			margin: 0 !important;
-		}
 
-		li:last-child {
-			grid-column: 1 / span 3;
+			input[type='radio'] {
+				opacity: 0;
+				position: fixed;
+				width: 0;
+			}
 
-			button {
-				padding: 9px 23px !important;
+			label {
+				display: inline-block;
+				width: 100%;
+				background: #3398db;
+				border: 1px solid #3398db;
+				border-radius: 4px;
+				font-weight: 500;
+				font-size: 26px;
+				line-height: 30px;
+				text-align: center;
+				color: #fff;
+				padding: 26px 0;
+			}
+
+			input[type='radio']:checked + label {
+				background: #fff;
+				border: 2px solid #3398db;
+				color: #3398db;
+				padding: 25px 0;
+			}
+
+			&:last-of-type {
+				label {
+					font-size: 18px;
+					font-weight: 400;
+				}
 			}
 		}
 	}
