@@ -30,8 +30,9 @@ function getActiveID( $formID = null ) {
  * @return array
  * @since 2.7.0
  */
-function get( $formID, $themeID = '' ) {
-	$theme = $themeID ?: Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
+function get( $formID = null, $themeID = '' ) {
+	$formID = $formID ?: getFormId();
+	$theme  = $themeID ?: Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
 
 	return (array) Give()->form_meta->get_meta( $formID, "_give_{$theme}_form_theme_settings", true );
 }
