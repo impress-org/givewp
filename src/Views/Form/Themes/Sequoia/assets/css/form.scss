@@ -294,13 +294,13 @@ textarea {
 				text-align: center;
 				color: #fff;
 				padding: 0;
+				padding: 0 10px;
 				min-height: 62px;
 
 				&[for='give-radio-level-custom'] {
 					font-size: 18px;
 					font-weight: 400;
 					line-height: 1.2;
-					padding: 0;
 				}
 			}
 
@@ -309,6 +309,37 @@ textarea {
 				border: 2px solid #2bc253;
 				color: #2bc253;
 				padding: 0;
+			}
+
+			.give-donation-level-btn {
+				display: inline-flex !important;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				background: #2bc253;
+				border: 2px solid #2bc253;
+				border-radius: 4px;
+				font-weight: 500;
+				font-size: 26px;
+				line-height: 30px;
+				text-align: center;
+				color: #fff;
+				padding: 0 10px;
+				min-height: 62px;
+				font-family: 'Montserrat', sans-serif;
+
+				&.give-btn-level-custom {
+					font-size: 18px;
+					font-weight: 400;
+					line-height: 1.2;
+				}
+
+				&.give-default-level {
+					background: #fff;
+					border: 2px solid #2bc253;
+					color: #2bc253;
+					padding: 0;
+				}
 			}
 		}
 	}
