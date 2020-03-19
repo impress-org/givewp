@@ -3,6 +3,7 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give_Donate_Form;
+use function Give\Helpers\Form\Theme\get;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
 
@@ -28,8 +29,7 @@ class Actions {
 		}
 
 		// Get Theme options
-		global $post;
-		$this->themeOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
+		$this->themeOptions = get();
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
