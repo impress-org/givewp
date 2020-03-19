@@ -35,6 +35,21 @@ return [
 				'type' => 'colorpicker',
 			],
 			[
+				'id'         => 'donate_label',
+				'name'       => __( 'Donate Button', 'give' ),
+				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
+				'type'       => 'text_medium',
+				'attributes' => [
+					'placeholder' => __( 'Donate Now', 'give' ),
+				],
+			],
+		],
+	],
+	'payment_amount'      => [
+		'name'   => __( 'Payment Amount', 'give' ),
+		'desc'   => __( 'Step description will show up here if any', 'give' ),
+		'fields' => [
+			[
 				'id'         => 'next_label',
 				'name'       => __( 'Continue Button', 'give' ),
 				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
