@@ -98,7 +98,7 @@ class LoadTheme {
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 
 		// Update form DOM.
-		add_filter( 'give_form_wrap_classes', array( $this, 'addClasses' ) );
+		add_filter( 'give_form_wrap_classes', array( $this, 'editClassList' ), 999 );
 		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
 	}
 
@@ -117,20 +117,26 @@ class LoadTheme {
 	}
 
 	/**
-	 * Add custom classes
+	 * Edit donation form wrapper class list.
 	 *
 	 * @param array $classes
 	 *
 	 * @return array
 	 * @since 2.7.0
 	 */
-	public function addClasses( $classes ) {
-		if ( isViewingForm() ) {
-			$classes[] = 'give-embed-form';
-
-			if ( ! empty( $_GET['iframe'] ) ) {
-				$classes[] = 'give-viewing-form-in-iframe';
+	public function editClassList( $classes ) {
+		// Remove display_style related classes because they (except onpage ) creates style conflict with form template.
+		$classes = array_filter(
+			$classes,
+			static function ( $class ) {
+				return false === strpos( $class, 'give-display-' );
 			}
+		);
+
+		$classes[] = 'give-embed-form';
+
+		if ( ! empty( $_GET['iframe'] ) ) {
+			$classes[] = 'give-viewing-form-in-iframe';
 		}
 
 		return $classes;
