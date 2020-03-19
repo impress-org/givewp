@@ -1,9 +1,0 @@
-@import 'mixins';
-
-.give-flex {
-	@include display-flex;
-}
-
-.give-grid {
-	@include display-grid;
-}

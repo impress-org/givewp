@@ -1,6 +1,10 @@
-<?php if ( $form->has_goal() ) : ?>
+<?php
+/**
+ * @var int $formId
+ */
+if ( $form->has_goal() ) : ?>
 	<?php
-	$goal_stats = give_goal_progress_stats( $form_id );
+	$goalStats = give_goal_progress_stats( $formId );
 
 	// Setup default raised value
 	$raised = give_currency_filter(
@@ -31,20 +35,20 @@
 	);
 
 	// Change values and labels based on goal format
-	switch ( $goal_stats['format'] ) {
+	switch ( $goalStats['format'] ) {
 		case 'percentage': {
-			$raised = "{$goal_stats['progress']}%";
+			$raised = "{$goalStats['progress']}%";
 			break;
 		}
 		case 'donation': {
-			$count = $goal_stats['actual'];
-			$goal  = $goal_stats['goal'];
+			$count = $goalStats['actual'];
+			$goal  = $goalStats['goal'];
 			break;
 		}
 		case 'donors': {
-			$count      = $goal_stats['actual'];
+			$count      = $goalStats['actual'];
 			$countLabel = _n( 'donor', 'donors', $count, 'give' );
-			$goal       = $goal_stats['goal'];
+			$goal       = $goalStats['goal'];
 			break;
 		}
 	}
@@ -66,7 +70,7 @@
 		<div class="number">
 		<?php echo $goal; ?>
 		</div>
-		<div class="text">goal</div>
+		<div class="text"><?php _e( 'goal', 'give' ); ?></div>
 	</div>
 </div>
 <?php endif; ?>

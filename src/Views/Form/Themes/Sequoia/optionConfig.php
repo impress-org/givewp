@@ -23,17 +23,10 @@ return [
 				],
 			],
 			[
-				'id'         => 'image',
-				'name'       => __( 'Image', 'give' ),
-				'desc'       => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
-				'type'       => 'file',
-				'query_args' => [
-					'type' => [
-						'image/gif',
-						'image/jpeg',
-						'image/png',
-					],
-				],
+				'id'   => 'image',
+				'name' => __( 'Image', 'give' ),
+				'desc' => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
+				'type' => 'file',
 			],
 			[
 				'id'   => 'primary_color',
@@ -90,17 +83,10 @@ return [
 				],
 			],
 			[
-				'id'         => 'image',
-				'name'       => __( 'Image', 'give' ),
-				'desc'       => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
-				'type'       => 'file',
-				'query_args' => [
-					'type' => [
-						'image/gif',
-						'image/jpeg',
-						'image/png',
-					],
-				],
+				'id'   => 'image',
+				'name' => __( 'Image', 'give' ),
+				'desc' => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
+				'type' => 'file',
 			],
 		],
 	],

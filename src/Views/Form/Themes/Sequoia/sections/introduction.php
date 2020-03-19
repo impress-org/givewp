@@ -1,13 +1,10 @@
 <?php
 
-// Get Theme options
-$theme_options = give_get_meta( $form->ID, '_give_sequoia_form_theme_settings', true, null );
-
 // Get headline and description
-$headline    = $theme_options['introduction']['headline'];
-$description = $theme_options['introduction']['description'];
-$image       = $theme_options['introduction']['image'];
-$color       = $theme_options['introduction']['primary_color'];
+$headline    = $this->theme_options['introduction']['headline'];
+$description = $this->theme_options['introduction']['description'];
+$image       = $this->theme_options['introduction']['image'];
+$color       = $this->theme_options['introduction']['primary_color'];
 ?>
 
 <div class="give-section introduction">
