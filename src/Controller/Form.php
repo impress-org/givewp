@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\TemplateLoader;
 use WP_Post;
+use function Give\Helpers\Form\Utils\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -68,8 +69,7 @@ class Form {
 		header( 'HTTP/1.1 200 OK' );
 
 		if ( $isViewingForm ) {
-			$queryString   = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-			$shortcodeArgs = array_intersect_key( $queryString, give_get_default_form_shortcode_args() );
+			$shortcodeArgs = getShortcodeArgs();
 			$formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
 
 			$this->setupGlobalPost();
