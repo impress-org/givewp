@@ -86,6 +86,7 @@ function getFailedTransactionPageURL( $args = array() ) {
 
 /**
  * Get shortcode argument.
+ * Note: This function will be useful to get donation form shortcode argument on donation form view.
  *
  * @since 2.7.0
  */
