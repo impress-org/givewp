@@ -1,16 +1,17 @@
 <?php
-$form_title = sprintf(
-	'<h2 class="give-form-title">%1$s</h2>',
-	get_the_title( $form->ID )
-);
+
+// Get headline and description
+$headline    = $this->themeOptions['introduction']['headline'];
+$description = $this->themeOptions['introduction']['description'];
+$image       = $this->themeOptions['introduction']['image'];
 ?>
+
 <div class="give-section introduction">
+	<img src="<?php echo $image; ?>" />
 	<div class="heading">
-		<strong><?php echo $form_title; ?></strong>
+		<h2 class="give-form-title"><?php echo $headline; ?></h2>
 	</div>
-	<div class="headline"></div>
 	<div class="subheading text">
-		<p><?php echo get_the_excerpt( $form ); ?></p>
+		<p><?php echo $description; ?></p>
 	</div>
-	<img src="<?php echo get_the_post_thumbnail_url( $form ); ?>" alt="">
 </div>

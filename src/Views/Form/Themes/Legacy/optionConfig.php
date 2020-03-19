@@ -5,17 +5,18 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
-				'name'    => __( 'Display Options', 'give' ),
-				'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
-				'id'      => 'payment_display',
-				'type'    => 'radio_inline',
-				'options' => [
+				'name'          => __( 'Display Options', 'give' ),
+				'desc'          => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
+				'id'            => 'payment_display',
+				'type'          => 'radio_inline',
+				'options'       => [
 					'onpage' => __( 'All Fields', 'give' ),
 					'modal'  => __( 'Modal', 'give' ),
 					'reveal' => __( 'Reveal', 'give' ),
 					'button' => __( 'Button', 'give' ),
 				],
-				'default' => 'onpage',
+				'wrapper_class' => '_give_payment_display_field',
+				'default'       => 'onpage',
 			],
 			[
 				'id'            => 'reveal_label',
@@ -25,7 +26,7 @@ return [
 				'attributes'    => [
 					'placeholder' => __( 'Donate Now', 'give' ),
 				],
-				'wrapper_class' => 'give-hidden',
+				'wrapper_class' => '_give_reveal_label_field give-hidden',
 			],
 			[
 				'id'         => 'checkout_label',

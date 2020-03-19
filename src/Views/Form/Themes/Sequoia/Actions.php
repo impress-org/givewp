@@ -14,6 +14,8 @@ use function Give\Helpers\Form\Utils\isViewingForm;
  */
 class Actions {
 
+	protected $themeOptions;
+
 	/**
 	 * Initialize
 	 *
@@ -24,6 +26,10 @@ class Actions {
 		if ( ! isViewingForm() ) {
 			return;
 		}
+
+		// Get Theme options
+		global $post;
+		$this->themeOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
@@ -85,6 +91,9 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
+
+		// Override checkout button
+		add_filter( 'give_donation_form_submit_button', array( $this, 'getCheckoutButton' ) );
 	}
 
 	/**
@@ -132,11 +141,33 @@ class Actions {
 	 *
 	 * @since 2.7.0
 	 */
-	public function getNextButton() {
+	public function getNextButton( $id ) {
+
+		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
+
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
-			__( 'Next', 'give' )
+			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
+			$color,
+			$label
 		);
+	}
+
+	/**
+	 * Add checkout button
+	 *
+	 * @since 2.7.0
+	 */
+	public function getCheckoutButton() {
+
+		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
+		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
+
+		$button = '<div class="give-submit-button-wrap give-clearfix">
+			<input type="submit" class="give-submit give-btn" style="background: ' . $color . '" id="give-purchase-button" name="give-purchase" value="' . $label . '" data-before-validation-label="Donate Now">
+			<span class="give-loading-animation"></span>
+		</div>';
+		return $button;
 	}
 
 	/**
