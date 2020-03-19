@@ -6,17 +6,18 @@ use Give\FormAPI\Form\Field;
 use Give\FormAPI\Group;
 use WP_Post;
 use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Utils\getFormId;
 
 /**
  * Return active form theme ID
  *
  * @param int $formID
  *
- * @return mixed
+ * @return string
  * @since 2.7.0
  */
-function getActiveID( $formID ) {
-	return Give()->form_meta->get_meta( $formID, '_give_form_theme', true );
+function getActiveID( $formID = null ) {
+	return Give()->form_meta->get_meta( $formID ?: getFormId(), '_give_form_theme', true );
 }
 
 
