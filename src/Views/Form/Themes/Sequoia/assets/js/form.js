@@ -20,6 +20,8 @@
 
 	const templateOptions = window.sequoiaTemplateOptions;
 	const primaryColor = templateOptions.introduction.primary_color;
+	const donateLabel = templateOptions.introduction.donate_label;
+	const nextLabel = templateOptions.payment_amount.next_label;
 
 	// Insert rules to custom stylesheet
 	sheet.insertRule( `.seperator { background: ${ primaryColor }!important;}` );
@@ -27,7 +29,10 @@
 	sheet.insertRule( `.give-donation-level-btn { border: 2px solid ${ primaryColor }!important;}` );
 	sheet.insertRule( `.give-donation-level-btn.give-default-level { color: ${ primaryColor }!important; background: #fff!important;}` );
 
-	$( '.give-show-form button', '.give-embed-form' ).on( 'click', function( e ) {
+	const advanceButton = $( '.give-show-form button', '.give-embed-form' );
+	$( advanceButton ).text( donateLabel );
+
+	$( advanceButton ).on( 'click', function( e ) {
 		e.preventDefault();
 		const $parent = $( this ).parent(),
 			$container = $( '.give-embed-form' ),
@@ -38,6 +43,7 @@
 			$( '> *:not(.give_error):not(form):not(.give-show-form)', $container ).hide();
 
 			// Show choose amount section
+			$( advanceButton ).text( nextLabel );
 			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
 			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
 			$( '.give-section.choose-amount', $form ).show();
