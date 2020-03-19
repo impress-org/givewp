@@ -75,10 +75,23 @@ class TemplateLoader {
 
 		// Load theme scripts.
 		if ( $this->theme instanceof Scriptable ) {
-			add_action( 'wp_enqueue_scripts', array( $this->theme, 'loadScripts' ) );
+			$this->theme->loadScripts();
 		}
 
-		// Script loading handler.
+		$this->setUpFrontendHooks();
+	}
+
+
+	/**
+	 * Setup frontend hooks
+	 *
+	 * @since 2.7.0
+	 */
+	private function setUpFrontendHooks() {
+		if ( ! is_admin() ) {
+			return false;
+		}
+
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
 		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
