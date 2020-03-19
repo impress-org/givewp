@@ -9,7 +9,7 @@
 
 namespace Give\Controller;
 
-use Give\Form\LoadTheme;
+use Give\Form\TemplateLoader;
 use WP_Post;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
@@ -93,13 +93,13 @@ class Form {
 	/**
 	 * Load form theme
 	 *
-	 * @since 2.7.0
 	 * @param string $formTheme
 	 *
-	 * @return LoadTheme
+	 * @return TemplateLoader
+	 * @since 2.7.0
 	 */
 	private function loadTheme( $formTheme = '' ) {
-		$themeLoader = new LoadTheme( $formTheme );
+		$themeLoader = new TemplateLoader( $formTheme );
 		$themeLoader->init();
 
 		return $themeLoader;
@@ -156,7 +156,7 @@ class Form {
 			}
 
 			$post        = get_post( $formID );
-			$themeLoader = new LoadTheme();
+			$themeLoader = new TemplateLoader();
 			$themeLoader->init();
 		}
 	}

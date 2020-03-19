@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7.0
  */
-class LoadTheme {
+class TemplateLoader {
 	/**
 	 * Default form theme ID.
 	 *
