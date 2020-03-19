@@ -12,8 +12,8 @@ namespace Give\Form;
 use _WP_Dependency;
 use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
-use WP_Post;
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\getFormId;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;
@@ -39,21 +39,20 @@ class TemplateLoader {
 	 */
 	private $theme;
 
-
 	/**
 	 * setup form template
 	 *
 	 * @since 2.7.0
-	 * @param $formTemplate
+	 * @param string $formTemplate
+	 * @param int    $formId
 	 */
-	private function setUpTemplate( $formTemplate ) {
-		$formID = (int) $this->getFormId();
+	private function setUpTemplate( $formTemplate, $formId = null ) {
+		$formID = (int) ( $formId ?: getFormId() );
 
 		$themeID = $formTemplate ?: ( getActiveID( $formID ) ?: $this->defaultTemplateID );
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
-
 
 	/**
 	 * Initialize form template
@@ -188,35 +187,6 @@ class TemplateLoader {
 		}
 
 		return $list;
-	}
-
-
-	/**
-	 * Get form ID.
-	 *
-	 * @global WP_Post $post
-	 * @return int|null
-	 * @since 2.7.0
-	 */
-	private function getFormId() {
-		global $post;
-
-		// Get form id from current page
-		if ( 'give_forms' === get_post_type( $post ) ) {
-			return $post->ID;
-		}
-
-		// Get form id from donor purchase session.
-		$donorSession = give_get_purchase_session();
-		$formId       = ! empty( $donorSession['post_data']['give-form-id'] ) ?
-			absint( $donorSession['post_data']['give-form-id'] ) :
-			null;
-
-		if ( $formId ) {
-			return $formId;
-		}
-
-		return null;
 	}
 
 	/**
