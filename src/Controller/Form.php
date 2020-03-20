@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
@@ -45,8 +46,10 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function load() {
-		$isViewingForm    = isViewingForm();
-		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
+		$isViewingForm     = isViewingForm();
+		$isViewingReceipt  = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
+		$formId            = (int) getFormId();
+		$formShortcodeArgs = (int) getShortcodeArgs();
 
 		// Exit: we are not on embed form's main page or receipt page.
 		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
@@ -54,7 +57,11 @@ class Form {
 		}
 
 		// Exit: redirect donor to receipt or fail transaction page.
-		if ( ! empty( $_REQUEST['giveDonationAction'] ) && $isViewingForm ) {
+		if (
+			! empty( $_REQUEST['giveDonationAction'] ) &&
+			$formShortcodeArgs['id'] === $formId &&
+			$isViewingForm
+		) {
 			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
 			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
