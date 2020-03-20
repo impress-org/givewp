@@ -11,8 +11,6 @@ jQuery( function( $ ) {
 
 	// Check if all iframe loaded. if yes, then trigger custom action.
 	document.onreadystatechange = () => {
-		console.log( 'all content loaded ', document.readyState );
-
 		if ( document.readyState !== 'complete' ) {
 			return false;
 		}
