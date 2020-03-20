@@ -150,10 +150,6 @@ class LoadTheme {
 	 * @since 2.7.0
 	 */
 	public function addHiddenField( $classes ) {
-		if ( ! isViewingForm() ) {
-			return;
-		}
-
 		printf(
 			'<input type="hidden" name="%1$s" value="%2$s">',
 			'give_embed_form',
