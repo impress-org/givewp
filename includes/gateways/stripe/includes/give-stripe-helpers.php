@@ -1205,3 +1205,14 @@ function give_stripe_get_iban_icon_style( $form_id ) {
 
 	return apply_filters( 'give_stripe_get_iban_icon_style', $icon_style, $form_id );
 }
+
+/**
+ * This function will be used to set placeholder country for IBAN element.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_iban_placeholder_country() {
+	return apply_filters( 'give_stripe_get_iban_placeholder_country', 'DE' );
+}

@@ -137,6 +137,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 							class="give-stripe-sepa-iban-field give-stripe-cc-field"
 							data-hide_icon="<?php echo give_stripe_hide_iban_icon( $form_id ); ?>"
 							data-icon_style="<?php echo give_stripe_get_iban_icon_style( $form_id ); ?>"
+							data-placeholder_country="<?php echo give_stripe_get_iban_placeholder_country(); ?>"
 						></div>
 					</div>
 					<div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">

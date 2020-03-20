@@ -159,8 +159,10 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const completeStyles = give_stripe_vars.element_complete_styles;
 		const emptyStyles = give_stripe_vars.element_empty_styles;
 		const invalidStyles = give_stripe_vars.element_invalid_styles;
-		const hideIcon = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix ).getAttribute( 'data-hide_icon' );
-		const iconStyle = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix ).getAttribute( 'data-icon_style' );
+		const sepaIbanElement = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix );
+		const hideIcon = sepaIbanElement.getAttribute( 'data-hide_icon' );
+		const iconStyle = sepaIbanElement.getAttribute( 'data-icon_style' );
+		const placeholderCountry = sepaIbanElement.getAttribute( 'data-placeholder_country' );
 
 		const elementStyles = {
 			base: baseStyles,
@@ -183,6 +185,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				supportedCountries: [ 'SEPA' ],
 				hideIcon: ( 'disabled' !== hideIcon ),
 				iconStyle: iconStyle,
+				placeholderCountry: placeholderCountry,
 			}
 		);
 
