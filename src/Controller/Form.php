@@ -46,10 +46,9 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function load() {
-		$isViewingForm     = isViewingForm();
-		$isViewingReceipt  = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
-		$formId            = (int) getFormId();
-		$formShortcodeArgs = (int) getShortcodeArgs();
+		$isViewingForm    = isViewingForm();
+		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
+		$action           = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
 
 		// Exit: we are not on embed form's main page or receipt page.
 		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
@@ -59,8 +58,9 @@ class Form {
 		// Exit: redirect donor to receipt or fail transaction page.
 		if (
 			! empty( $_REQUEST['giveDonationAction'] ) &&
-			$formShortcodeArgs['id'] === $formId &&
-			$isViewingForm
+			$isViewingForm &&
+			$action &&
+			in_array( $action, [ 'showReceipt', 'failedDonation' ] )
 		) {
 			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
