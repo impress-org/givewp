@@ -1,3 +1,4 @@
+// this script is only for parent page
 const iFrameResizer = {
 	targetOrigin: window.location.origin,
 

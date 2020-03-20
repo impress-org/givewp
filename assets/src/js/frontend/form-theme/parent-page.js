@@ -1,15 +1,44 @@
-/* globals jQuery, Give */
+/* globals jQuery, Give, CustomEvent */
 import { iframeResize } from 'iframe-resizer';
 
 jQuery( function( $ ) {
+	// This script is only for parent page.
+	if ( document.querySelector( 'body.give-form-templates' ) ) {
+		return false;
+	}
+
 	initializeIframeResize( 'iframe[name="give-embed-form"]:not([data-src])' );
+
+	// Check if all iframe loaded. if yes, then trigger custom action.
+	document.onreadystatechange = () => {
+		console.log( 'all content loaded ', document.readyState );
+
+		if ( document.readyState !== 'complete' ) {
+			return false;
+		}
+
+		document.dispatchEvent(
+			new CustomEvent(
+				'Give:iframesLoaded',
+				{
+					detail:
+						{
+							give:
+								{
+									iframes: document.querySelectorAll( 'iframe[name="give-embed-form"]:not([data-src])' ),
+								},
+						},
+				}
+			)
+		);
+	};
 
 	/**
 	 * Auto scroll to donor's donation form
 	 *
 	 * @since 2.7
 	 */
-	document.addEventListener( 'Give.iframesLoaded', function( e ) {
+	document.addEventListener( 'Give:iframesLoaded', function( e ) {
 		const { iframes } = e.detail.give;
 
 		Array.from( iframes ).forEach( function( iframe ) {
@@ -30,7 +59,7 @@ jQuery( function( $ ) {
 	document.querySelectorAll( '.js-give-embed-form-modal-opener' ).forEach( function( button ) {
 		button.addEventListener( 'click', function() {
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) ),
-				  iframe = iframeContainer.getElementsByTagName( 'iframe' ).item( 0 ),
+				  iframe = iframeContainer.querySelector( 'iframe[name="give-embed-form"]' ),
 				  iframeURL = iframe.getAttribute( 'data-src' );
 
 			// Load iframe.
@@ -70,15 +99,20 @@ jQuery( function( $ ) {
 	function initializeIframeResize( iframe ) {
 		return new iframeResize(
 			{
-				log: true,
+				log: false,
 				sizeWidth: true,
 				heightCalculationMethod: 'documentElementOffset',
 				widthCalculationMethod: 'documentElementOffset',
 				onMessage: function( messageData ) {
-					// const iframe = messageData.iframe;
-					//
-					// switch ( messageData.message ) {
-					// }
+					const iframe = messageData.iframe;
+
+					switch ( messageData.message ) {
+						case 'giveEmbedFormContentLoaded':
+							iframe.parentElement.classList.remove( 'give-loader-type-img' );
+							iframe.style.visibility = 'visible';
+
+							break;
+					}
 				},
 				onInit: function( iframe ) {
 					iframe.iFrameResizer.sendMessage( {
