@@ -2,15 +2,7 @@
 import { iframeResize } from 'iframe-resizer';
 
 jQuery( function( $ ) {
-	const $allIframes = document.querySelectorAll( 'iframe[name="give-embed-form"]:not([data-src])' ),
-		  iframeCount = parseInt( $allIframes.length );
-	let iframeCounter = 0;
-
-	if ( iframeCount ) {
-		$allIframes.forEach( function( iframe ) {
-			initializeIframeResize( iframe );
-		} );
-	}
+	initializeIframeResize( 'iframe[name="give-embed-form"]:not([data-src])' );
 
 	/**
 	 * Auto scroll to donor's donation form
@@ -83,24 +75,10 @@ jQuery( function( $ ) {
 				heightCalculationMethod: 'documentElementOffset',
 				widthCalculationMethod: 'documentElementOffset',
 				onMessage: function( messageData ) {
-					const iframe = messageData.iframe;
-
-					switch ( messageData.message ) {
-						case 'giveEmbedFormContentLoaded':
-							iframe.parentElement.classList.remove( 'give-loader-type-img' );
-							iframe.style.visibility = 'visible';
-
-							// Check if all iframe loaded. if yes, then trigger custom action.
-							iframeCounter++;
-							if ( iframeCounter === iframeCount ) {
-								document.dispatchEvent( new CustomEvent( 'Give.iframesLoaded', { detail: { give: { iframes: $allIframes } } } ) );
-							}
-							break;
-
-						case 'giveEmbedShowingForm':
-							scrollToIframe( iframe );
-							break;
-					}
+					// const iframe = messageData.iframe;
+					//
+					// switch ( messageData.message ) {
+					// }
 				},
 				onInit: function( iframe ) {
 					iframe.iFrameResizer.sendMessage( {
