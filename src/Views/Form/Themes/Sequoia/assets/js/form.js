@@ -31,7 +31,7 @@
 		}
 
 		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
+			window.parentIFrame.scrollToOffset( 0, 0 );
 		}
 	} );
 
@@ -91,7 +91,14 @@
 			return res( showFields );
 		} ).then( function( showFields ) {
 			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow', function() {
+				// scroll parent page to selected payment gateway.
+				const $gateway = document.querySelector( 'li.give-gateway-option-selected' );
+
+				if ( $gateway ) {
+					window.parentIFrame.scrollToOffset( 0, parseInt( $gateway.offsetTop ) - 20 );
+				}
+			} );
 		} );
 	}
 

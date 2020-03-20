@@ -40,8 +40,8 @@ jQuery( function( $ ) {
 		const { iframes } = e.detail.give;
 
 		Array.from( iframes ).forEach( function( iframe ) {
-			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) ) {
-				scrollToIframe( iframe );
+			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) && ! iframe.classList.contains( 'in-modal' ) ) {
+				scrollToIframe( 0, iframe.offsetTop );
 
 				// Exit function.
 				return false;
@@ -112,6 +112,11 @@ jQuery( function( $ ) {
 							break;
 					}
 				},
+				onScroll: ( { x, y } ) => {
+					scrollToIframe( x, y );
+
+					return false;
+				},
 				onInit: function( iframe ) {
 					iframe.iFrameResizer.sendMessage( {
 						currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
@@ -126,14 +131,8 @@ jQuery( function( $ ) {
 	 * Scroll to iframe
 	 *
 	 * @since 2.7
-	 * @param {object} iframe
 	 */
-	function scrollToIframe( iframe ) {
-		// Do not scroll if iframe is in modal.
-		if ( iframe.classList.contains( 'in-modal' ) ) {
-			return false;
-		}
-
-		$( 'html, body' ).animate( { scrollTop: iframe.offsetTop } );
+	function scrollToIframe( x, y ) {
+		$( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
 	}
 } );
