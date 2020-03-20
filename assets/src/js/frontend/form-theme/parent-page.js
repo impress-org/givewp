@@ -6,16 +6,6 @@ jQuery( function( $ ) {
 		  iframeCount = parseInt( $allIframes.length );
 	let iframeCounter = 0;
 
-	/**
-	 * Scroll to iframe
-	 *
-	 * @since 2.7
-	 * @param {object} iframe
-	 */
-	function scrollToIframe( iframe ) {
-		$( 'html, body' ).animate( { scrollTop: iframe.offsetTop } );
-	}
-
 	if ( iframeCount ) {
 		$allIframes.forEach( function( iframe ) {
 			initializeIframeResize( iframe );
@@ -82,11 +72,11 @@ jQuery( function( $ ) {
 	 *
 	 * @since 2.7.0
 	 * @param {object} iframe
+	 *
+	 * @return {object}
 	 */
 	function initializeIframeResize( iframe ) {
-		console.log( iframe );
-
-		new iframeResize(
+		return new iframeResize(
 			{
 				log: true,
 				sizeWidth: true,
@@ -120,5 +110,20 @@ jQuery( function( $ ) {
 			},
 			iframe
 		);
+	}
+
+	/**
+	 * Scroll to iframe
+	 *
+	 * @since 2.7
+	 * @param {object} iframe
+	 */
+	function scrollToIframe( iframe ) {
+		// Do not scroll if iframe is in modal.
+		if ( iframe.classList.contains( 'in-modal' ) ) {
+			return false;
+		}
+
+		$( 'html, body' ).animate( { scrollTop: iframe.offsetTop } );
 	}
 } );
