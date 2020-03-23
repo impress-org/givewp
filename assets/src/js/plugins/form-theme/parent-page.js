@@ -7,8 +7,6 @@ jQuery( function( $ ) {
 		return false;
 	}
 
-	initializeIframeResize( 'iframe[name="give-embed-form"]:not([data-src])' );
-
 	// Check if all iframe loaded. if yes, then trigger custom action.
 	document.onreadystatechange = () => {
 		if ( document.readyState !== 'complete' ) {
