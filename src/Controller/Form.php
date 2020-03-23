@@ -77,7 +77,7 @@ class Form {
 
 		if ( $isViewingForm ) {
 			$shortcodeArgs = getShortcodeArgs();
-			$formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
+			$formTheme     = ! empty( $shortcodeArgs['form_template'] ) ? $shortcodeArgs['form_template'] : '';
 
 			$this->setupGlobalPost();
 
