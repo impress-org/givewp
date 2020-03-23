@@ -25,11 +25,26 @@ class Actions {
 		// Get Theme options
 		$this->themeOptions = getTheme();
 
+		// Handle personal section html template.
+		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'handleCheckoutField' ), 9 );
+
 		// Handle common hooks.
 		add_action( 'give_donation_form', array( $this, 'loadCommonHooks' ), 9, 2 );
 
 		// Setup hooks.
 		add_action( 'give_pre_form_output', array( $this, 'loadHooks' ), 1, 3 );
+	}
+
+	/**
+	 * Load Checkout Fields
+	 *
+	 * @since 2.7.0
+	 * @return void
+	 */
+	public function handleCheckoutField() {
+		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSection' ) );
 	}
 
 	/**
