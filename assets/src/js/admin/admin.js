@@ -12,7 +12,7 @@ import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
 import '../plugins/notice';
 import GiveAPI from '../plugins/give-api/api';
-import { initializeIframeResize } from '../plugins/form-theme/utils';
+import { initializeIframeResize } from '../plugins/form-template/utils';
 
 import * as Modals from '../plugins/modal.js';
 
