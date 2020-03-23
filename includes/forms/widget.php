@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Form\Theme;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -78,9 +80,10 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	public function widget( $args, $instance ) {
-		$title   = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		$title   = apply_filters( 'widget_title', $title, $instance, $this->id_base );
-		$form_id = (int) $instance['id'];
+		$title             = ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$title             = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$form_id           = (int) $instance['id'];
+		$instance['embed'] = filter_var( $instance['embed'], FILTER_VALIDATE_BOOLEAN );
 
 		echo $args['before_widget']; // XSS ok.
 
@@ -95,7 +98,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
 
-		give_get_donation_form( $instance );
+		echo give_form_shortcode( $instance );
 
 		echo $args['after_widget']; // XSS ok.
 
@@ -122,6 +125,8 @@ class Give_Forms_Widget extends WP_Widget {
 			'display_style'         => 'modal',
 			'show_content'          => 'none',
 			'continue_button_title' => '',
+			'embed'                 => 'true',
+			'form_template'         => '',
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -204,6 +209,30 @@ class Give_Forms_Widget extends WP_Widget {
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="above" <?php checked( $instance['show_content'], 'above' ); ?>> <?php echo esc_html__( 'Above', 'give' ); ?></label>
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
 				<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this GiveWP form.', 'give' ); ?></small>
+			</p>
+
+			<?php // Widget: Embed. ?>
+			<p>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'embed' ) ); ?>"><?php esc_html_e( 'Embed (optional):', 'give' ); ?></label><br>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'embed' ) ); ?>-enabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'embed' ) ); ?>-enabled" name="<?php echo esc_attr( $this->get_field_name( 'embed' ) ); ?>" value="true" <?php checked( $instance['embed'], 'true' ); ?>> <?php echo esc_html__( 'Enabled', 'give' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'embed' ) ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'embed' ) ); ?>-disabled" name="<?php echo esc_attr( $this->get_field_name( 'embed' ) ); ?>" value="false" <?php checked( $instance['embed'], 'false' ); ?>> <?php echo esc_html__( 'Disabled', 'give' ); ?></label><br>
+				<small class="give-field-description"><?php esc_html_e( 'Select form display mode.', 'give' ); ?></small>
+			</p>
+
+			<?php // Widget: Form Template. ?>
+			<p>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'form_template' ) ); ?>"><?php esc_html_e( 'Form template:', 'give' ); ?></label>
+				<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'form_template' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'form_template' ) ); ?>">
+					<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
+					<?php
+					/* @var Theme $template */
+					foreach ( Give()->themes->getThemes() as $templateId => $template ) :
+						?>
+						<option <?php selected( $instance['form_template'], $templateId ); ?> value="<?php echo $templateId; ?>"><?php echo esc_html( $template->getName() ); ?></option>
+					<?php endforeach; ?>
+				</select><br>
+				<small class="give-field-description"><?php esc_html_e( 'Select a GiveWP Form template.', 'give' ); ?></small>
+			</p>
 		</div>
 		<?php
 	}
