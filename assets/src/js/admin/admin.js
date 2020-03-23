@@ -12,6 +12,7 @@ import '../plugins/repeatable-fields';
 import '../plugins/give-hint.css';
 import '../plugins/notice';
 import GiveAPI from '../plugins/give-api/api';
+import { initializeIframeResize } from '../plugins/form-theme/utils';
 
 import * as Modals from '../plugins/modal.js';
 
@@ -29,4 +30,4 @@ import './stripe-admin';
 
 GiveAPI.modal = Modals;
 const { init, fn, cache, modal, notice } = GiveAPI;
-window.Give = { init, fn, cache, modal, notice };
+window.Give = { init, fn, cache, modal, notice, initializeIframeResize };
