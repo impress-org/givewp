@@ -2,6 +2,11 @@
 @import 'mixins';
 @import 'util';
 
+// Icons
+@import './icons/fontawesome';
+@import './icons/regular';
+@import './icons/solid';
+
 html {
 	margin: 0;
 	padding: 0;
