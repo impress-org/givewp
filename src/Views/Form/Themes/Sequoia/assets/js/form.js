@@ -1,110 +1,169 @@
 /* globals jQuery, Give */
 ( function( $ ) {
-	// Setup custom styles stylesheet
-	const sheet = ( function() {
-		// Create the <style> tag
-		const style = document.createElement( 'style' );
-
-		// Add a media (and/or media query) here if you'd like!
-		// style.setAttribute("media", "screen")
-		// style.setAttribute("media", "only screen and (max-width : 1024px)")
-
-		// WebKit hack :(
-		style.appendChild( document.createTextNode( '' ) );
-
-		// Add the <style> element to the page
-		document.head.appendChild( style );
-
-		return style.sheet;
-	}() );
-
 	const templateOptions = window.sequoiaTemplateOptions;
-	const primaryColor = templateOptions.introduction.primary_color;
-	const donateLabel = templateOptions.introduction.donate_label;
-	const nextLabel = templateOptions.payment_amount.next_label;
 
-	// Insert rules to custom stylesheet
-	sheet.insertRule( `.seperator {
-		background: ${ primaryColor }!important;
-	}` );
-	sheet.insertRule( `.give-btn {
-		background: ${ primaryColor }!important;
-		transition: box-shadow 0.2s ease;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0),
-			0 3px 1px -2px rgba(0, 0, 0, 0),
-			0 1px 5px 0 rgba(0, 0, 0, 0)
-			!important;
-		border: 2px solid ${ primaryColor }!important;
-	}` );
-	sheet.insertRule( `.give-btn:hover {
-		background: ${ primaryColor }!important;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-			0 3px 1px -2px rgba(0, 0, 0, 0.2),
-			0 1px 5px 0 rgba(0, 0, 0, 0.12)
-			!important;
-	}` );
-	sheet.insertRule( `.give-donation-level-btn {
-		border: 2px solid ${ primaryColor }!important;
-	}` );
-	sheet.insertRule( `.give-donation-level-btn.give-default-level {
-		color: ${ primaryColor }!important; background: #fff!important;
-		transition: background 0.2s ease, color 0.2s ease;
-	}` );
-	sheet.insertRule( `.give-donation-level-btn.give-default-level:hover {
-		color: ${ primaryColor }!important; background: #fff!important;
-	}` );
+	const $parent = $( this ).parent();
+	const $container = $( '.give-embed-form' );
+	const $advanceButton = $( '.give-show-form button', $container );
+	const $backButton = $( '.back-btn' );
+	const $navigatorTitle = $( '.give-form-navigator .title' );
 
-	const advanceButton = $( '.give-show-form button', '.give-embed-form' );
-	$( advanceButton ).text( donateLabel );
+	const navigator = {
+		currentStep: null,
+		animating: false,
+		goToStep: ( step ) => {
+			$advanceButton.text( steps[ step ].label );
+			$navigatorTitle.text( steps[ step ].title );
 
-	$( advanceButton ).on( 'click', function( e ) {
-		e.preventDefault();
-		const $parent = $( this ).parent(),
-			$container = $( '.give-embed-form' ),
-			$form = $( 'form', $container );
+			const removeClasses = steps.reduce( ( list, obj, index ) => {
+				if ( index === step ) {
+					return list;
+				}
+				return list + 'give-showing__' + obj.id + '-section ';
+			}, '' );
+			const addClass = 'give-showing__' + steps[ step ].id + '-section';
 
-		if ( $parent.hasClass( 'give-showing__introduction-section' ) ) {
-			// Hide introduction section.
-			$( '> *:not(.give_error):not(form):not(.give-show-form)', $container ).hide();
-
-			// Show choose amount section
-			$( advanceButton ).text( nextLabel );
-
-			$( '.give-donation-level-btn' ).each( function() {
-				const value = $( this ).attr( 'value' );
-				const text = $( this ).text();
-				if ( value !== 'custom' ) {
-					const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
-					const html = `<div class="currency">$</div>${ value }`;
-					$( this ).html( html );
-					$( this ).wrap( wrap );
+			const hide = steps.map( ( obj, index ) => {
+				if ( index !== step ) {
+					return '.give-section.' + obj.id;
 				}
 			} );
-			$( '.give-total-wrap', $container ).addClass( 'give-flex' );
-			$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
-			$( '.give-section.choose-amount', $form ).show();
+			const show = '.give-section.' + steps[ step ].id;
 
-			$parent.removeClass( 'give-showing__introduction-section' ).addClass( 'give-showing_choose-amount-section' );
-		} else if ( $parent.hasClass( 'give-showing_choose-amount-section' ) ) {
-			// Hide choose amount section.
-			$( '.give-total-wrap', $container ).removeClass( 'give-flex' );
-			$( '.give-section.choose-amount', $form ).hide();
+			$parent.removeClass( removeClasses ).addClass( addClass );
 
-			// Hide paginate button.
-			$( '.give-show-form', $container ).hide();
+			const hideSelector = hide.filter( Boolean ).join( ', ' );
+			$( hideSelector ).hide();
+			$( show ).show();
 
-			// Show remain form options.
-			$( 'form > *:not(.give-section.choose-amount)', $container ).show();
-			$( '.give-label' ).html( '' );
-			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
-			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+			steps[ step ].setup();
+			navigator.currentStep = step;
+		},
+		back: () => {
+			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
+			navigator.goToStep( prevStep );
+			navigator.currentStep = prevStep;
+		},
+		forward: () => {
+			const nextStep = navigator.currentStep !== null ? navigator.currentStep + 1 : 1;
+			navigator.goToStep( nextStep );
+			navigator.currentStep = nextStep;
+		},
+	};
 
-			$parent.removeClass( 'give-showing_choose-amount-section' ).addClass( 'give-showing__personal-section' );
-		}
+	const steps = [
+		{
+			id: 'introduction',
+			title: 'Intro',
+			label: templateOptions.introduction.donate_label,
+			setup: () => {
+				$( '.give-form-navigator', $container ).hide();
+			},
+		},
+		{
+			id: 'choose-amount',
+			title: 'Choose Amount',
+			label: templateOptions.payment_amount.next_label,
+			setup: () => {
+				$( '.give-form-navigator', $container ).show();
 
+				$( '.give-donation-level-btn' ).each( function() {
+					const value = $( this ).attr( 'value' );
+					const text = $( this ).text();
+					if ( value !== 'custom' ) {
+						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
+						const html = `<div class="currency">$</div>${ value }`;
+						$( this ).html( html );
+						$( this ).wrap( wrap );
+					}
+				} );
+				$( '.give-total-wrap', $container ).addClass( 'give-flex' );
+				$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
+			},
+		},
+		{
+			id: 'personal',
+			title: 'Add Your Information',
+			label: 'Process Donation',
+			setup: () => {
+				// Hide choose amount section.
+				$( '.give-total-wrap', $container ).removeClass( 'give-flex' );
+
+				// Hide paginate button.
+				$( '.give-show-form', $container ).hide();
+
+				// Show remain form options.
+				$( 'form > *:not(.give-section.choose-amount)', $container ).show();
+				$( '.give-label' ).html( '' );
+				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
+				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+			},
+		},
+	];
+
+	const styles = {
+		setup: () => {
+			// Setup custom styles stylesheet
+			const sheet = ( function() {
+				// Create the <style> tag
+				const style = document.createElement( 'style' );
+
+				// WebKit hack :(
+				style.appendChild( document.createTextNode( '' ) );
+
+				// Add the <style> element to the page
+				document.head.appendChild( style );
+
+				return style.sheet;
+			}() );
+
+			const primaryColor = templateOptions.introduction.primary_color;
+
+			// Insert rules to custom stylesheet
+			sheet.insertRule( `.seperator {
+				background: ${ primaryColor }!important;
+			}` );
+			sheet.insertRule( `.give-btn {
+				background: ${ primaryColor }!important;
+				transition: box-shadow 0.2s ease;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0),
+					0 3px 1px -2px rgba(0, 0, 0, 0),
+					0 1px 5px 0 rgba(0, 0, 0, 0)
+					!important;
+				border: 2px solid ${ primaryColor }!important;
+			}` );
+			sheet.insertRule( `.give-btn:hover {
+				background: ${ primaryColor }!important;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+					0 3px 1px -2px rgba(0, 0, 0, 0.2),
+					0 1px 5px 0 rgba(0, 0, 0, 0.12)
+					!important;
+			}` );
+			sheet.insertRule( `.give-donation-level-btn {
+				border: 2px solid ${ primaryColor }!important;
+			}` );
+			sheet.insertRule( `.give-donation-level-btn.give-default-level {
+				color: ${ primaryColor }!important; background: #fff!important;
+				transition: background 0.2s ease, color 0.2s ease;
+			}` );
+			sheet.insertRule( `.give-donation-level-btn.give-default-level:hover {
+				color: ${ primaryColor }!important; background: #fff!important;
+			}` );
+		},
+	};
+
+	styles.setup();
+	navigator.goToStep( 0 );
+	$advanceButton.on( 'click', function( e ) {
+		e.preventDefault();
+		navigator.forward();
 		if ( 'parentIFrame' in window ) {
 			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
 		}
+	} );
+	$backButton.on( 'click', function( e ) {
+		e.preventDefault();
+		navigator.back();
 	} );
 
 	// Move personal information section when document load.
