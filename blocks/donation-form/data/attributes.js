@@ -36,6 +36,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
+	formTemplate: {
+		type: 'string',
+		default: 'legacy',
+	},
 };
 
 export default blockAttributes;

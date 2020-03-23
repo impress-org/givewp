@@ -125,6 +125,10 @@ class Give_Donation_Form_Block {
 						'type'    => 'boolean',
 						'default' => false,
 					),
+					'formTemplate'        => array(
+						'type'    => 'string',
+						'default' => false,
+					),
 				),
 			)
 		);
@@ -153,6 +157,7 @@ class Give_Donation_Form_Block {
 		$parameters['display_style']         = $attributes['displayStyle'];
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 		$parameters['embed']                 = (bool) $attributes['embed'];
+		$parameters['form_template']         = $attributes['formTemplate'];
 
 		return give_form_shortcode( $parameters );
 	}

@@ -1,3 +1,4 @@
+/* globals Give */
 /**
  * WordPress dependencies
 */
@@ -21,5 +22,8 @@ giveFormOptions.contentPosition = [
 	{ value: 'above', label: __( 'Above' ) },
 	{ value: 'below', label: __( 'Below' ) },
 ];
+
+// Form content Position
+giveFormOptions.formTemplates = Give.fn.getGlobalVar( 'formTemplate' );
 
 export default giveFormOptions;

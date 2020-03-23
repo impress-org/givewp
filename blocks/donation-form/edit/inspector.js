@@ -46,6 +46,7 @@ class Inspector extends Component {
 			showContent,
 			contentDisplay,
 			embed,
+			formTemplate,
 		} = this.props.attributes;
 
 		return (
@@ -89,6 +90,16 @@ class Inspector extends Component {
 						name="embed"
 						checked={ !! embed }
 						onChange={ ( value ) => this.saveSetting( 'embed', value ) } />
+					{
+						embed && (
+							<SelectControl
+								label={ __( 'Form Template' ) }
+								name="formTemplate"
+								value={ formTemplate }
+								options={ giveFormOptions.formTemplates }
+								onChange={ ( value ) => this.saveSetting( 'formTemplate', value ) } />
+						)
+					}
 					{
 						contentDisplay && (
 							<SelectControl
