@@ -22,6 +22,33 @@ body {
 	color: #555;
 }
 
+.give-form-navigator {
+	display: flex;
+	align-items: center;
+	background: #fbfbfb;
+	border-bottom: 1px solid #f2f2f2;
+	height: 60px;
+	position: relative;
+
+	> .back-btn {
+		padding: 0 20px;
+		height: 100%;
+		background: none;
+		border: none;
+		color: #424242;
+		font-size: 14px;
+		position: absolute;
+	}
+
+	> .title {
+		flex: 1;
+		text-align: center;
+		font-size: 18px;
+		font-weight: 500;
+		color: #424242;
+	}
+}
+
 input[type='text'],
 input[type='email'],
 input[type='password'],
