@@ -221,7 +221,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 			<?php // Widget: Form Template. ?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'form_template' ) ); ?>"><?php esc_html_e( 'Form template:', 'give' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'form_template' ) ); ?>"><?php esc_html_e( 'Form Template:', 'give' ); ?></label>
 				<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'form_template' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'form_template' ) ); ?>">
 					<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 					<?php
