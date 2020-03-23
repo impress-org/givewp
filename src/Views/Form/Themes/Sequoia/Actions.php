@@ -26,9 +26,9 @@ class Actions {
 		$this->themeOptions = getTheme();
 
 		// Handle personal section html template.
-		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'handleCheckoutField' ), 9 );
+		add_action( 'wp_ajax_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
 
 		// Handle common hooks.
 		add_action( 'give_donation_form', array( $this, 'loadCommonHooks' ), 9, 2 );
@@ -38,13 +38,13 @@ class Actions {
 	}
 
 	/**
-	 * Load Checkout Fields
+	 * Hanlde cancel login and checkout register ajax request.
 	 *
 	 * @since 2.7.0
 	 * @return void
 	 */
-	public function handleCheckoutField() {
-		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSection' ) );
+	public function cancelLoginAjaxHanleder() {
+		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSectionTextSubSection' ) );
 	}
 
 	/**
