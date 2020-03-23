@@ -68,7 +68,7 @@ class Give_Cache {
 	 */
 	public function setup() {
 		// Currently enable cache only for backend.
-		self::$instance->is_cache = ( defined( 'GIVE_CACHE' ) ? GIVE_CACHE : give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ) && is_admin();
+		self::$instance->is_cache = defined( 'GIVE_CACHE' ) ? GIVE_CACHE : $this->is_cache_enabled();
 
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
@@ -82,6 +82,16 @@ class Give_Cache {
 
 		add_action( 'wp', array( __CLASS__, 'prevent_caching' ) );
 		add_action( 'admin_notices', array( $this, '__notices' ) );
+	}
+
+	/**
+	 * Get result if cache enabled or not.
+	 *
+	 * @return bool
+	 * @since 2.6.1
+	 */
+	private function is_cache_enabled() {
+		return give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && ( is_admin() || false !== strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() . '/give-api/' ) );
 	}
 
 	/**
