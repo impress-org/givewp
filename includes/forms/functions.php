@@ -1577,7 +1577,7 @@ function give_get_default_form_shortcode_args() {
 		'display_style'         => '',
 		'continue_button_title' => '',
 		'embed'                 => false,
-		'form_theme'            => '',
+		'form_template'         => '',
 	);
 
 	/**
