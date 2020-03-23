@@ -176,6 +176,7 @@ function give_form_shortcode( $atts ) {
 						name="give-embed-form"
 						src="%1$s"
 						data-autoScroll="%2$s"
+						onload="Give.initializeIframeResize(this)"
 						style="border: 0; visibility: hidden"></iframe>',
 			$iframe_url,
 			$buttonModeActive ? 0 : $isAutoScroll
