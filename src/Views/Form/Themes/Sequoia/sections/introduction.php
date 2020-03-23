@@ -17,4 +17,8 @@ $image       = $this->themeOptions['introduction']['image'];
 	<div class="image-container">
 		<img src="<?php echo $image; ?>" />
 	</div>
+
+	<?php require require './progress-bar.php'; ?>
+	<?php require require './income-stats.php'; ?>
+
 </div>

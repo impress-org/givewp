@@ -73,9 +73,8 @@ class Actions {
 		/**
 		 * Add hooks
 		 */
+		add_action( 'give_pre_form', array( $this, 'getNavigator' ), 12, 3 );
 		add_action( 'give_pre_form', array( $this, 'getIntroductionSection' ), 12, 3 );
-		add_action( 'give_pre_form', array( $this, 'getStatsSection' ), 13, 3 );
-		add_action( 'give_pre_form', array( $this, 'getProgressBarSection' ), 14, 3 );
 		add_action( 'give_post_form', array( $this, 'getNextButton' ), 13, 3 );
 		add_action( 'give_donation_form_top', array( $this, 'getStartWrapperHTMLForAmountSection' ), 0 );
 		add_action( 'give_donation_form_top', array( $this, 'getCloseWrapperHTMLForAmountSection' ), 99998 );
@@ -96,6 +95,19 @@ class Actions {
 	}
 
 	/**
+	 * Add form navigator / header
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param $formId
+	 * @param $args
+	 * @param $form
+	 */
+	public function getNavigator( $formId, $args, $form ) {
+		include 'sections/form-navigator.php';
+	}
+
+	/**
 	 * Add introduction form section
 	 *
 	 * @since 2.7.0
@@ -107,33 +119,6 @@ class Actions {
 	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
 	}
-
-	/**
-	 * Add form stats form section
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param $formId
-	 * @param $args
-	 * @param $form
-	 */
-	public function getStatsSection( $formId, $args, $form ) {
-		include 'sections/form-income-stats.php';
-	}
-
-	/**
-	 * Add progress bar form section
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param $formId
-	 * @param $args
-	 * @param $form
-	 */
-	public function getProgressBarSection( $formId, $args, $form ) {
-		include 'sections/progress-bar.php';
-	}
-
 
 	/**
 	 * Add load next sections button
@@ -177,7 +162,7 @@ class Actions {
 	 */
 	public function getIntroductionSectionTextSubSection( $formId ) {
 		printf(
-			'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
+			'<div class="give-section personal"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
 			__( 'Tell us a bit amount yourself', 'give' ),
 			__( 'We\'ll never share this information with anyone', 'give' )
 		);
