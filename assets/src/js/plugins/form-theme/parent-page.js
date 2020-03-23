@@ -1,5 +1,5 @@
-/* globals jQuery, Give, CustomEvent */
-import { iframeResize } from 'iframe-resizer';
+/* globals CustomEvent */
+import { initializeIframeResize } from './utils';
 
 jQuery( function( $ ) {
 	// This script is only for parent page.
@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 
 		Array.from( iframes ).forEach( function( iframe ) {
 			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) && ! iframe.classList.contains( 'in-modal' ) ) {
-				scrollToIframe( 0, iframe.offsetTop );
+				$( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
 
 				// Exit function.
 				return false;
@@ -85,54 +85,4 @@ jQuery( function( $ ) {
 			iframeContainer.classList.add( 'is-hide' );
 		} );
 	} );
-
-	/**
-	 * Intialize iframeresizer on iframe.
-	 *
-	 * @since 2.7.0
-	 * @param {object} iframe
-	 *
-	 * @return {object}
-	 */
-	function initializeIframeResize( iframe ) {
-		return new iframeResize(
-			{
-				log: false,
-				sizeWidth: true,
-				heightCalculationMethod: 'documentElementOffset',
-				widthCalculationMethod: 'documentElementOffset',
-				onMessage: function( messageData ) {
-					const iframe = messageData.iframe;
-
-					switch ( messageData.message ) {
-						case 'giveEmbedFormContentLoaded':
-							iframe.parentElement.classList.remove( 'give-loader-type-img' );
-							iframe.style.visibility = 'visible';
-
-							break;
-					}
-				},
-				onScroll: ( { x, y } ) => {
-					scrollToIframe( x, y );
-
-					return false;
-				},
-				onInit: function( iframe ) {
-					iframe.iFrameResizer.sendMessage( {
-						currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
-					} );
-				},
-			},
-			iframe
-		);
-	}
-
-	/**
-	 * Scroll to iframe
-	 *
-	 * @since 2.7
-	 */
-	function scrollToIframe( x, y ) {
-		$( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
-	}
 } );
