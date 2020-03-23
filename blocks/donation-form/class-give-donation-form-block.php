@@ -121,6 +121,10 @@ class Give_Donation_Form_Block {
 						'type'    => 'string',
 						'default' => 'above',
 					),
+					'embed'               => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
 				),
 			)
 		);
@@ -142,12 +146,13 @@ class Give_Donation_Form_Block {
 
 		$parameters = array();
 
-		$parameters['id']                    = $attributes['id'];
+		$parameters['id']                    = absint( $attributes['id'] );
 		$parameters['show_title']            = $attributes['showTitle'];
 		$parameters['show_goal']             = $attributes['showGoal'];
 		$parameters['show_content']          = ! empty( $attributes['contentDisplay'] ) ? $attributes['showContent'] : 'none';
 		$parameters['display_style']         = $attributes['displayStyle'];
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
+		$parameters['embed']                 = (bool) $attributes['embed'];
 
 		return give_form_shortcode( $parameters );
 	}

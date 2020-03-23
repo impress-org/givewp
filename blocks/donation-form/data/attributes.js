@@ -32,6 +32,10 @@ const blockAttributes = {
 		type: 'string',
 		default: 'above',
 	},
+	embed: {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default blockAttributes;
