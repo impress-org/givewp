@@ -139,7 +139,7 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
-	$activeTheme        = ! empty( $atts['form_theme'] ) ? $atts['form_theme'] : getActiveID( $atts['id'] );
+	$activeTheme        = ! empty( $atts['form_template'] ) ? $atts['form_template'] : getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
