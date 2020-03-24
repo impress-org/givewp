@@ -87,15 +87,13 @@ class LoadTheme {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		if ( is_admin() ) {
-			return false;
+		if ( ! is_admin() ) {
+			add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
+			add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 2 );
+			add_action( 'give_embed_head', 'wp_print_styles', 8 );
+			add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
+			add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 		}
-
-		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 2 );
-		add_action( 'give_embed_head', 'wp_print_styles', 8 );
-		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
-		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 
 		// Update form DOM.
 		add_filter( 'give_form_wrap_classes', array( $this, 'editClassList' ), 999 );
