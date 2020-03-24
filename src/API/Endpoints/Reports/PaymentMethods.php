@@ -25,8 +25,8 @@ class PaymentMethods extends Endpoint {
 		foreach ( $gateways as $gateway_id => $gateway ) {
 			$gatewaysArr[] = array(
 				'admin_label' => $gateway['admin_label'],
-				'count'       => $stats->get_sales( 0, date( $request['start'] ), date( $request['end'] ), $gateway_id ),
-				'amount'      => $stats->get_earnings( 0, date( $request['start'] ), date( $request['end'] ), $gateway_id ),
+				'count'       => $stats->get_sales( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
+				'amount'      => $stats->get_earnings( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
 			);
 		}
 		$sorted = usort(

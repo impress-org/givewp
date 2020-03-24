@@ -15,26 +15,14 @@ class RecentDonations extends Endpoint {
 	}
 
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				array(
-					'data' => $cached_report,
-				)
-			);
-		}
-
 		// Setup donation query args (get sanitized start/end date from request)
 		$args = array(
 			'number'     => 50,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
-			'start_date' => $request['start'],
-			'end_date'   => $request['end'],
+			'start_date' => $request->get_param( 'start' ),
+			'end_date'   => $request->get_param( 'end' ),
 		);
 
 		// Get array of 50 recent donations
@@ -78,7 +66,7 @@ class RecentDonations extends Endpoint {
 		}
 
 		// Cache the report data
-		$result = $this->cache_report( $request, $data );
+
 		$status = $this->get_give_status();
 
 		// Return $list of donations for RESTList component
