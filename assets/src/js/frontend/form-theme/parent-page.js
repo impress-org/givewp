@@ -10,7 +10,7 @@ jQuery( function() {
 		$allIframes.forEach( function( el ) {
 			new iframeResize(
 				{
-					log: true,
+					log: false,
 					sizeWidth: true,
 					heightCalculationMethod: 'documentElementOffset',
 					widthCalculationMethod: 'documentElementOffset',
