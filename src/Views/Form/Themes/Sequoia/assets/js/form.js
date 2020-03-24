@@ -7,7 +7,7 @@
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 
 	const navigator = {
-		currentStep: null,
+		currentStep: 0,
 		animating: false,
 		goToStep: ( step ) => {
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
@@ -26,14 +26,21 @@
 			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
-				if ( index !== step ) {
-					return obj.selector;
+				if ( index === step || index === navigator.currentStep ) {
+					return null;
 				}
+				return obj.selector;
 			} );
 			const hideSelector = hide.filter( Boolean ).join( ', ' );
 
 			$( hideSelector ).hide();
-			$( steps[ step ].selector ).show();
+
+			$( steps[ navigator.currentStep ].selector ).on( 'transitionend webkitTransitionEnd oTransitionEnd', function() {
+				// Transition end
+			} );
+
+			$( steps[ navigator.currentStep ].selector ).removeClass( 'slide-in-right' ).addClass( 'slide-out-left' );
+			$( steps[ step ].selector ).show().removeClass( 'slide-out-left' ).addClass( 'slide-in-right' );
 
 			if ( step === steps.length - 1 ) {
 				$advanceButton.hide();

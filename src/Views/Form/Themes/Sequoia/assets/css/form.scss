@@ -57,6 +57,66 @@ body {
 	}
 }
 
+.slide-in-right {
+	animation-name: slideInRight;
+	animation-duration: 5s;
+	animation-fill-mode: forwards;
+}
+
+.slide-out-right {
+	animation-name: slideOutRight;
+	animation-duration: 5s;
+	animation-fill-mode: forwards;
+}
+
+.slide-in-left {
+	animation-name: slideInLeft;
+	animation-duration: 5s;
+	animation-fill-mode: forwards;
+}
+
+.slide-out-left {
+	animation-name: slideOutLeft;
+	animation-duration: 5s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translate3d(480px, 0, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes slideOutRight {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(480px, 0, 0);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		transform: translate3d(-480px, 0, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes slideOutLeft {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-480px, 0, 0);
+	}
+}
+
 input[type='text'],
 input[type='email'],
 input[type='password'],
@@ -259,8 +319,10 @@ textarea {
  */
 .give-embed-form {
 	max-width: 480px;
+	overflow: hidden;
 	margin: auto;
 	border-radius: 6px;
+	position: absolute;
 	color: #696969;
 	display: flex;
 	flex-direction: column;
@@ -281,6 +343,7 @@ textarea {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		z-index: 999;
 
 		button {
 			background-color: #2bc253;
