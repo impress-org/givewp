@@ -23,16 +23,7 @@ class TopDonors extends Endpoint {
 
 		$data = $this->get_data( $start, $end );
 
-		// Cache the report data
-
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			array(
-				'data'   => $data,
-				'status' => $status,
-			)
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end ) {

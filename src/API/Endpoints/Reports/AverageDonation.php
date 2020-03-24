@@ -27,7 +27,7 @@ class AverageDonation extends Endpoint {
 	 *
 	 * @param WP_REST_Request $request
 	 *
-	 * @return WP_REST_Response
+	 * @return array
 	 */
 	public function get_report( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
@@ -52,16 +52,7 @@ class AverageDonation extends Endpoint {
 				break;
 		}
 
-		// Cache the report data
-
-		$status = $this->get_give_status();
-
-		return new WP_REST_Response(
-			array(
-				'data'   => $data,
-				'status' => $status,
-			)
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $intervalStr ) {

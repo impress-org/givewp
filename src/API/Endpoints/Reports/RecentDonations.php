@@ -65,16 +65,7 @@ class RecentDonations extends Endpoint {
 			);
 		}
 
-		// Cache the report data
-
-		$status = $this->get_give_status();
-
 		// Return $list of donations for RESTList component
-		return new \WP_REST_Response(
-			array(
-				'data'   => $data,
-				'status' => $status,
-			)
-		);
+		return $data;
 	}
 }
