@@ -163,8 +163,8 @@ class Form {
 			}
 
 			$post        = get_post( $formID );
-			$themeLoader = new LoadTheme();
-			$themeLoader->init();
+
+			$this->loadTheme();
 		}
 	}
 
