@@ -10,6 +10,18 @@
 		currentStep: null,
 		animating: false,
 		goToStep: ( step ) => {
+			if ( templateOptions.introduction.enabled === 'disabled' ) {
+				step = step > 0 ? step : 1;
+				if ( step === 1 ) {
+					$( '.give-form-navigator', $container ).hide();
+				} else {
+					$( '.give-form-navigator', $container ).show();
+				}
+			} else if ( step === 0 ) {
+				$( '.give-form-navigator', $container ).hide();
+			} else {
+				$( '.give-form-navigator', $container ).show();
+			}
 			$advanceButton.text( steps[ step ].label );
 			$navigatorTitle.text( steps[ step ].title );
 
@@ -51,7 +63,7 @@
 			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
 			setup: () => {
-				$( '.give-form-navigator', $container ).hide();
+
 			},
 		},
 		{
@@ -60,9 +72,12 @@
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
 			setup: () => {
-				$( '.give-form-navigator', $container ).show();
-
 				$( '.give-donation-level-btn' ).each( function() {
+					const hasTooltip = $( this ).attr( 'has-tooltip' );
+					if ( hasTooltip ) {
+						return;
+					}
+
 					const value = $( this ).attr( 'value' );
 					const text = $( this ).text();
 					if ( value !== 'custom' ) {
@@ -70,6 +85,7 @@
 						const html = `<div class="currency">$</div>${ value }`;
 						$( this ).html( html );
 						$( this ).wrap( wrap );
+						$( this ).attr( 'has-tooltip', true );
 					}
 				} );
 				$( '.give-total-wrap', $container ).addClass( 'give-flex' );

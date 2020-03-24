@@ -5,6 +5,17 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'name'    => __( 'Include Introduction', 'give' ),
+				'desc'    => sprintf( __( 'Should this form include an introduction section?', 'give' ), '#' ),
+				'id'      => 'enabled',
+				'type'    => 'radio_inline',
+				'options' => [
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				],
+				'default' => 'enabled',
+			],
+			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
 				'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
