@@ -38,10 +38,13 @@ body {
 		color: #424242;
 		font-size: 14px;
 		position: absolute;
+		border-radius: 6px 0 0 0;
+		overflow: hidden;
 
 		&:focus {
 			outline: none;
-			background: rgba(0, 0, 0, 0.05);
+			background: rgba(0, 0, 0, 0.04);
+			box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
 		}
 	}
 
