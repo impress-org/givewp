@@ -144,9 +144,7 @@ function give_form_shortcode( $atts ) {
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( ! empty( $atts['embed'] ) && 'legacy' !== $activeTheme ) {
-		unset( $atts['embed'] );
-
+	if ( 'legacy' !== $activeTheme ) {
 		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
