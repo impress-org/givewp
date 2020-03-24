@@ -10,8 +10,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Form\Theme;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
