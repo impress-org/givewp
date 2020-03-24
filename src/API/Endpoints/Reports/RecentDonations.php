@@ -50,7 +50,7 @@ class RecentDonations extends Endpoint {
 			}
 			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
 
-			$data[] = array(
+			$data[] = [
 				'type'     => 'donation',
 				'donation' => $donation,
 				'status'   => $status,
@@ -62,7 +62,7 @@ class RecentDonations extends Endpoint {
 					'id'   => $donation->donor_id,
 				),
 				'source'   => $donation->form_title,
-			);
+			];
 		}
 
 		// Return $list of donations for RESTList component

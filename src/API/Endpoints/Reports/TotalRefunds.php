@@ -8,6 +8,8 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use DateInterval;
+
 class TotalRefunds extends Endpoint {
 
 	protected $payments;
@@ -21,7 +23,7 @@ class TotalRefunds extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -49,7 +51,7 @@ class TotalRefunds extends Endpoint {
 		$tooltips = array();
 		$refunds  = array();
 
-		$interval = new \DateInterval( $intervalStr );
+		$interval = new DateInterval( $intervalStr );
 
 		$periodStart = clone $start;
 		$periodEnd   = clone $start;

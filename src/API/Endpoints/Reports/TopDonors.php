@@ -17,13 +17,8 @@ class TopDonors extends Endpoint {
 	public function get_report( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
-		$diff  = date_diff( $start, $end );
 
-		$dataset = array();
-
-		$data = $this->get_data( $start, $end );
-
-		return $data;
+		return $this->get_data( $start, $end );
 	}
 
 	public function get_data( $start, $end ) {
