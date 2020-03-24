@@ -52,11 +52,7 @@ class DonationsVsIncome extends Endpoint {
 				break;
 		}
 
-		return new \WP_REST_Response(
-			array(
-				'data' => $data,
-			)
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $interval, $format ) {
