@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -139,12 +140,12 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
-	$activeTheme        = ! empty( $atts['form_template'] ) ? $atts['form_template'] : getActiveID( $atts['id'] );
+	$activeTheme        = getActiveID( $atts['id'] ?: getFormId() );
 
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( 'legacy' !== $activeTheme ) {
+	if ( $activeTheme && 'legacy' !== $activeTheme ) {
 		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
