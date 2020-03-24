@@ -29,8 +29,6 @@ class PaymentStatuses extends Endpoint {
 		$payments  = give_count_payments( $args );
 		$completed = property_exists( $payments, 'give_subscription' ) ? $payments->publish + $payments->give_subscription : $payments->publish;
 
-		$status = $this->get_give_status();
-
 		return [
 			'labels'   => [
 				'Completed',

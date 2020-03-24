@@ -55,7 +55,7 @@ class PaymentMethods extends Endpoint {
 				);
 			}
 		}
-		$status = $this->get_give_status();
+
 
 		return array(
 			'labels'   => $labels,
