@@ -57,19 +57,14 @@ class PaymentMethods extends Endpoint {
 		}
 		$status = $this->get_give_status();
 
-		return new \WP_REST_Response(
-			array(
-				'data'   => array(
-					'labels'   => $labels,
-					'datasets' => array(
-						array(
-							'data'     => $data,
-							'tooltips' => $tooltips,
-						),
-					),
+		return array(
+			'labels'   => $labels,
+			'datasets' => array(
+				array(
+					'data'     => $data,
+					'tooltips' => $tooltips,
 				),
-				'status' => $status,
-			)
+			),
 		);
 	}
 }
