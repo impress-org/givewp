@@ -409,26 +409,6 @@ class Give_Scripts {
 			),
 		);
 
-		if ( $current_screen->is_block_editor() ) {
-			$formTemplates = Give()->themes->getThemes();
-			$options       = [];
-
-			/* @var Theme $template */
-			foreach ( $formTemplates as $templateId => $template ) {
-				$options[] = array(
-					'value' => $templateId,
-					'label' => $template->getName(),
-				);
-			}
-
-			$localized_data = array_merge(
-				$localized_data,
-				array(
-					'formTemplate' => $options,
-				)
-			);
-		}
-
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
 	}
 

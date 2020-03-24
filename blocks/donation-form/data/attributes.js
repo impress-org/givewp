@@ -32,14 +32,6 @@ const blockAttributes = {
 		type: 'string',
 		default: 'above',
 	},
-	embed: {
-		type: 'boolean',
-		default: false,
-	},
-	formTemplate: {
-		type: 'string',
-		default: 'legacy',
-	},
 };
 
 export default blockAttributes;
