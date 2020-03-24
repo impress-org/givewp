@@ -33,8 +33,8 @@ class RecentDonations extends Endpoint {
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
-			'start_date' => $request['start'],
-			'end_date'   => $request['end'],
+			'start_date' => $request->get_param( 'start' ),
+			'end_date'   => $request->get_param( 'end' ),
 		);
 
 		// Get array of 50 recent donations

@@ -29,8 +29,8 @@ class IncomeBreakdown extends Endpoint {
 			);
 		}
 
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
 		$dataset = array();

@@ -16,8 +16,8 @@ class PaymentStatuses extends Endpoint {
 
 	public function get_report( $request ) {
 
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 
 		// Setup args for give_count_payments
 		$args = array(
