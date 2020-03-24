@@ -8,6 +8,8 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use DateInterval;
+use DateTime;
 use \Give_Cache;
 use Give_Payment;
 use WP_REST_Request;
@@ -15,6 +17,30 @@ use WP_REST_Response;
 
 abstract class Endpoint {
 
+	/**
+	 * @since 2.6.1
+	 * @var WP_REST_Request
+	 */
+	protected $request;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $startDate;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $endDate;
+
+	/**
+	 * @var DateInterval
+	 */
+	protected $dateDiff;
+
+	/**
+	 * @var string
+	 */
 	protected $endpoint;
 
 	public function init() {
@@ -73,11 +99,26 @@ abstract class Endpoint {
 			);
 		}
 
+		$this->setupProperties( $request );
+
 		$result = $this->get_report( $request );
 
 		$this->cache_report( $request, $result->get_data() );
 
 		return $result;
+	}
+
+	/**
+	 * Setup properties
+	 *
+	 * @since 2.6.1
+	 * @param WP_REST_Request $request
+	 */
+	private function setupProperties( $request ) {
+		$this->request   = $request;
+		$this->startDate = date_create( $request->get_param( 'start' ) );
+		$this->endDate   = date_create( $request->get_param( 'end' ) );
+		$this->dateDiff  = date_diff( $this->startDate, $this->endDate );
 	}
 
 	public function validate_date( $param, $request, $key ) {
