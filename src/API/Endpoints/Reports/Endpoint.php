@@ -175,15 +175,15 @@ abstract class Endpoint {
 	 * Get report callback
 	 *
 	 * @param WP_REST_Request $request Current request.
+	 *
+	 * @return array
 	 */
 	public function get_report( $request ) {
-		return new WP_REST_Response(
-			array(
-				'data' => array(
-					'labels' => array( 'a', 'b', 'c' ),
-					'data'   => array( '1', '4', '3' ),
-				),
-			)
+		return array(
+			'data' => array(
+				'labels' => array( 'a', 'b', 'c' ),
+				'data'   => array( '1', '4', '3' ),
+			),
 		);
 	}
 
