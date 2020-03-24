@@ -30,18 +30,6 @@ class AverageDonation extends Endpoint {
 	 * @return WP_REST_Response
 	 */
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new WP_REST_Response(
-				array(
-					'data' => $cached_report,
-				)
-			);
-		}
-
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );

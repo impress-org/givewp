@@ -11,6 +11,7 @@ namespace Give\API\Endpoints\Reports;
 use \Give_Cache;
 use Give_Payment;
 use WP_REST_Request;
+use WP_REST_Response;
 
 abstract class Endpoint {
 
@@ -29,7 +30,7 @@ abstract class Endpoint {
 				// Here we register the readable endpoint
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( $this, 'get_report' ),
+					'callback'            => array( $this, 'handle_request' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => array(
 						'start' => array(
@@ -50,6 +51,29 @@ abstract class Endpoint {
 				'schema' => array( $this, 'get_report_schema' ),
 			)
 		);
+	}
+
+	/**
+	 * Handle rest request.
+	 *
+	 * @since 2.6.1
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function handle_request( $request ) {
+		// Check if a cached version exists
+		$cached_report = $this->get_cached_report( $request );
+		if ( $cached_report !== null ) {
+			// Bail and return the cached version
+			return new WP_REST_Response(
+				array(
+					'data' => $cached_report,
+				)
+			);
+		}
+
+		return $this->get_report( $request );
 	}
 
 	public function validate_date( $param, $request, $key ) {
@@ -98,7 +122,7 @@ abstract class Endpoint {
 	 * @param WP_REST_Request $request Current request.
 	 */
 	public function get_report( $request ) {
-		return new \WP_REST_Response(
+		return new WP_REST_Response(
 			array(
 				'data' => array(
 					'labels' => array( 'a', 'b', 'c' ),
