@@ -88,34 +88,23 @@ abstract class Endpoint {
 	 * @return WP_REST_Response
 	 */
 	public function handle_request( $request ) {
-
-		// Get give status
-		$status = $this->get_give_status();
-
 		// Check if a cached version exists
 		$cached_report = $this->get_cached_report( $request );
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
-			return new WP_REST_Response(
-				array(
-					'status' => $status,
-					'data'   => $cached_report,
-				)
-			);
+			return new WP_REST_Response( $cached_report );
 		}
 
 		$this->setupProperties( $request );
 
-		$report = $this->get_report( $request );
-
-		$this->cache_report( $request, $report );
-
-		return new WP_REST_Response(
-			array(
-				'status' => $status,
-				'data'   => $report,
-			)
+		$responseData = array(
+			'status' => $this->get_give_status(),
+			'data'   => $this->get_report( $request ),
 		);
+
+		$this->cache_report( $request, $responseData );
+
+		return new WP_REST_Response( $responseData );
 	}
 
 	/**
