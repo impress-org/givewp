@@ -23,6 +23,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'Campaign Heading', 'give' ),
 				],
+				'default'    => __( 'Campaign Heading', 'give' ),
 			],
 			[
 				'id'         => 'description',
@@ -32,6 +33,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 				],
+				'default'    => __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 			],
 			[
 				'id'   => 'image',
@@ -40,10 +42,11 @@ return [
 				'type' => 'file',
 			],
 			[
-				'id'   => 'primary_color',
-				'name' => __( 'Primary Color', 'give' ),
-				'desc' => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
-				'type' => 'colorpicker',
+				'id'      => 'primary_color',
+				'name'    => __( 'Primary Color', 'give' ),
+				'desc'    => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'type'    => 'colorpicker',
+				'default' => '#28C77B',
 			],
 			[
 				'id'         => 'donate_label',
