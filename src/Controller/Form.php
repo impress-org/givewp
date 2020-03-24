@@ -77,11 +77,9 @@ class Form {
 
 		if ( $isViewingForm ) {
 			$shortcodeArgs = getShortcodeArgs();
-			$formTheme     = ! empty( $shortcodeArgs['form_template'] ) ? $shortcodeArgs['form_template'] : '';
-
 			$this->setupGlobalPost();
 
-			require_once $this->loadTheme( $formTheme )
+			require_once $this->loadTheme()
 							  ->getTheme()
 							  ->getTemplate( 'form' );
 
@@ -100,14 +98,12 @@ class Form {
 	/**
 	 * Load form theme
 	 *
-	 * @param string $formTheme
-	 *
 	 * @return LoadTheme
 	 * @since 2.7.0
 	 */
-	private function loadTheme( $formTheme = '' ) {
+	private function loadTheme() {
 		$themeLoader = new LoadTheme();
-		$themeLoader->init( $formTheme );
+		$themeLoader->init();
 
 		return $themeLoader;
 	}

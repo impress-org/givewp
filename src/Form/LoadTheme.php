@@ -43,24 +43,21 @@ class LoadTheme {
 	 * setup form template
 	 *
 	 * @since 2.7.0
-	 * @param string $formTemplate Form template id.
-	 * @param int    $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
+	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
 	 */
-	private function setUpTemplate( $formTemplate, $formId = null ) {
+	private function setUpTemplate( $formId = null ) {
 		$formID = (int) ( $formId ?: getFormId() );
 
-		$themeID = $formTemplate ?: ( getActiveID( $formID ) ?: $this->defaultTemplateID );
+		$themeID = getActiveID( $formID ) ?: $this->defaultTemplateID;
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
 
 	/**
 	 * Initialize form template
-	 *
-	 * @param string $formTemplate
 	 */
-	public function init( $formTemplate = '' ) {
-		$this->setUpTemplate( $formTemplate );
+	public function init() {
+		$this->setUpTemplate();
 
 		// Exit is theme is not valid.
 		if ( ! ( $this->theme instanceof Theme ) ) {
