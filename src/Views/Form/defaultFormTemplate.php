@@ -1,4 +1,8 @@
-<?php global $post; ?>
+<?php
+/**
+ * @var array $shortcodeArgs Array of form shortcode arguments.
+ */
+global $post; ?>
 <!DOCTYPE html>
 <html lang="en" class="give-form-styles" style="margin-top: 0 !important;">
 	<head>

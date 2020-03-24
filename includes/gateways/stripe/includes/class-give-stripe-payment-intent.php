@@ -36,7 +36,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		 * @since  2.5.0
 		 * @access public
 		 *
-		 * @return \Stripe\PaymentIntent
+		 * @return bool|\Stripe\PaymentIntent
 		 */
 		public function create( $args ) {
 
@@ -65,6 +65,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 				);
 
 				give_set_error( 'stripe_payment_intent_error', __( 'Error creating payment intent with Stripe. Please try again.', 'give' ) );
+				return false;
 			} // End try().
 		}
 
