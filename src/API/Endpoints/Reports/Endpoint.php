@@ -73,7 +73,11 @@ abstract class Endpoint {
 			);
 		}
 
-		return $this->get_report( $request );
+		$result = $this->get_report( $request );
+
+		$this->cache_report( $request, $result->get_data() );
+
+		return $result;
 	}
 
 	public function validate_date( $param, $request, $key ) {
