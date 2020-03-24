@@ -1,7 +1,5 @@
 <?php
 
-use Give\Form\Theme;
-
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -255,8 +253,6 @@ class Give_Scripts {
 	public function admin_localize_scripts() {
 
 		global $post;
-		/* @var WP_Screen $current_scrren */
-		$current_screen = get_current_screen();
 
 		$give_options = give_get_settings();
 
