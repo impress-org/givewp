@@ -49,12 +49,20 @@ class Form {
 	 * @param Controller $controller
 	 */
 	public function init( $controller ) {
-		$this->base = give_get_option( $this->optionName ) ?: $this->defaultBase;
-
+		$this->setBasePrefix();
 		$controller->init();
 
 		add_action( 'query_vars', array( $this, 'addQueryVar' ) );
 		add_action( 'give-settings_save_advanced', array( $this, 'updateRule' ), 11 );
+	}
+
+	/**
+	 * Setup base prefix
+	 *
+	 * @since 2.7.0
+	 */
+	public function setBasePrefix() {
+		$this->base = give_get_option( $this->optionName ) ?: $this->defaultBase;
 	}
 
 
