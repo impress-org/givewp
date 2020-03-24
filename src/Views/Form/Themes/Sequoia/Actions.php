@@ -73,7 +73,7 @@ class Actions {
 		/**
 		 * Add hooks
 		 */
-		add_action( 'give_pre_form', array( $this, 'getNavigator' ), 12, 3 );
+		add_action( 'give_pre_form', array( $this, 'getNavigator' ), 11, 3 );
 		add_action( 'give_pre_form', array( $this, 'getIntroductionSection' ), 12, 3 );
 		add_action( 'give_post_form', array( $this, 'getNextButton' ), 13, 3 );
 		add_action( 'give_donation_form_top', array( $this, 'getStartWrapperHTMLForAmountSection' ), 0 );
@@ -118,6 +118,8 @@ class Actions {
 	 */
 	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
+		include 'sections/income-stats.php';
+		include 'sections/progress-bar.php';
 	}
 
 	/**
@@ -130,7 +132,7 @@ class Actions {
 		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
 
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn">%1$s</button></div>',
+			'<div class="give-show-form"><button class="give-btn">%1$s</button></div>',
 			$label
 		);
 	}
