@@ -1,8 +1,6 @@
 /* globals jQuery, Give */
 ( function( $ ) {
 	const templateOptions = window.sequoiaTemplateOptions;
-
-	const $parent = $( this ).parent();
 	const $container = $( '.give-embed-form' );
 	const $advanceButton = $( '.give-show-form button', $container );
 	const $backButton = $( '.back-btn' );
@@ -15,26 +13,21 @@
 			$advanceButton.text( steps[ step ].label );
 			$navigatorTitle.text( steps[ step ].title );
 
-			const removeClasses = steps.reduce( ( list, obj, index ) => {
-				if ( index === step ) {
-					return list;
-				}
-				return list + 'give-showing__' + obj.id + '-section ';
-			}, '' );
-			const addClass = 'give-showing__' + steps[ step ].id + '-section';
-
 			const hide = steps.map( ( obj, index ) => {
 				if ( index !== step ) {
-					return '.give-section.' + obj.id;
+					return obj.selector;
 				}
 			} );
-			const show = '.give-section.' + steps[ step ].id;
-
-			$parent.removeClass( removeClasses ).addClass( addClass );
-
 			const hideSelector = hide.filter( Boolean ).join( ', ' );
+
 			$( hideSelector ).hide();
-			$( show ).show();
+			$( steps[ step ].selector ).show();
+
+			if ( step === steps.length - 1 ) {
+				$advanceButton.hide();
+			} else {
+				$advanceButton.show();
+			}
 
 			steps[ step ].setup();
 			navigator.currentStep = step;
@@ -54,7 +47,8 @@
 	const steps = [
 		{
 			id: 'introduction',
-			title: 'Intro',
+			title: 'Introduction',
+			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
 			setup: () => {
 				$( '.give-form-navigator', $container ).hide();
@@ -63,6 +57,7 @@
 		{
 			id: 'choose-amount',
 			title: 'Choose Amount',
+			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
 			setup: () => {
 				$( '.give-form-navigator', $container ).show();
@@ -85,15 +80,9 @@
 			id: 'personal',
 			title: 'Add Your Information',
 			label: 'Process Donation',
+			selector: '.give-section.personal, #give_checkout_user_info, #give-payment-mode-select, #give_purchase_form_wrap',
 			setup: () => {
-				// Hide choose amount section.
-				$( '.give-total-wrap', $container ).removeClass( 'give-flex' );
-
-				// Hide paginate button.
-				$( '.give-show-form', $container ).hide();
-
 				// Show remain form options.
-				$( 'form > *:not(.give-section.choose-amount)', $container ).show();
 				$( '.give-label' ).html( '' );
 				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
 				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
