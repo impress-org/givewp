@@ -124,7 +124,7 @@ class Actions {
 	 */
 	public function getNextButton( $id ) {
 
-		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
+		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
 		printf(
 			'<div class="give-show-form"><button class="give-btn">%1$s</button></div>',
