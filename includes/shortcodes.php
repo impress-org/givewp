@@ -170,11 +170,13 @@ function give_form_shortcode( $atts ) {
 		printf(
 			'<div class="give-embed-form-wrapper give-loader-type-img">
 				<iframe
-				name="give-embed-form"
-				src="%1$s"
-				style="border: 0; visibility: hidden"></iframe>
+					name="give-embed-form"
+					src="%1$s"
+					data-autoScroll="%2$s"
+					style="border: 0; visibility: hidden"></iframe>
 			</div>',
 			$iframe_url,
+			$isAutoScroll
 		);
 	} else {
 		give_get_donation_form( $atts );
