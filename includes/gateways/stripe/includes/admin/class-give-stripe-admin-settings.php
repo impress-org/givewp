@@ -396,12 +396,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					);
 
 					$settings['sepa'][] = array(
-						'name'          => __( 'Hide Icon', 'give' ),
-						'desc'          => __( 'This option allows you to hide the icon from the IBAN element of SEPA Direct Debit.', 'give' ),
+						'name'          => __( 'Display Icon', 'give' ),
+						'desc'          => __( 'This option allows you to display the icon in the IBAN element of SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_hide_icon',
 						'wrapper_class' => 'stripe-hide-icon',
 						'type'          => 'radio_inline',
-						'default'       => 'disabled',
+						'default'       => 'enabled',
 						'options'       => array(
 							'enabled'  => __( 'Enabled', 'give' ),
 							'disabled' => __( 'Disabled', 'give' ),
@@ -414,7 +414,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name'          => __( 'Icon Style', 'give' ),
 						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_icon_style',
-						'wrapper_class' => ! $is_hide_icon ? 'stripe-icon-style' : 'stripe-icon-style give-hidden',
+						'wrapper_class' => $is_hide_icon ? 'stripe-icon-style' : 'stripe-icon-style give-hidden',
 						'type'          => 'radio_inline',
 						'default'       => 'default',
 						'options'       => array(

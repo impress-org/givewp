@@ -27,7 +27,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	if ( null !== hideIconElements ) {
 		hideIconElements.forEach( ( hideIconElement ) => {
 			hideIconElement.addEventListener( 'change', ( e ) => {
-				if ( 'disabled' === e.target.value ) {
+				if ( 'enabled' === e.target.value ) {
 					iconStyleElement.classList.remove( 'give-hidden' );
 				} else {
 					iconStyleElement.classList.add( 'give-hidden' );
