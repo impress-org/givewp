@@ -169,11 +169,11 @@ function give_form_shortcode( $atts ) {
 
 		printf(
 			'<div class="give-embed-form-wrapper give-loader-type-img">
-						<iframe
-						name="give-embed-form"
-						src="%1$s"
-						style="border: 0; visibility: hidden"></iframe>
-					</div>',
+				<iframe
+				name="give-embed-form"
+				src="%1$s"
+				style="border: 0; visibility: hidden"></iframe>
+			</div>',
 			$iframe_url,
 		);
 	} else {
