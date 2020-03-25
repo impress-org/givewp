@@ -160,6 +160,10 @@ function give_run_install() {
 		return;
 	}
 
+	// Setup rewrite URL.
+	Give()->routeForm->setBasePrefix();
+	Give()->routeForm->addRule();
+
 	// Flush rewrite rules.
 	flush_rewrite_rules();
 
