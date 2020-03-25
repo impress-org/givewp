@@ -17,6 +17,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
 	const hideIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_hide_icon"]' ) );
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
+	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
+	const mandateElement = document.querySelector( '.stripe-mandate-acceptance-text' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
@@ -31,6 +33,17 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					iconStyleElement.classList.remove( 'give-hidden' );
 				} else {
 					iconStyleElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+	if ( null !== hideMandateElements ) {
+		hideMandateElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					mandateElement.classList.remove( 'give-hidden' );
+				} else {
+					mandateElement.classList.add( 'give-hidden' );
 				}
 			} );
 		} );
