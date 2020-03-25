@@ -36,7 +36,9 @@ export function getFormOptions( forms ) {
 }
 
 /**
- * Convert forms object in option
+ * Return boolean value which helps to show or hide old setting (for legacy form template).
+ *
+ * Note: if selected form has legacy form template or empty (old forms) then it will return true otherwise false.
  *
  * @since 2.7.0
  *
