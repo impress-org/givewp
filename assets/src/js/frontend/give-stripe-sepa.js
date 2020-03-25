@@ -49,8 +49,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const idPrefix = formElement.getAttribute( 'data-id' );
 		const donateButton = formElement.querySelector( '.give-submit' );
 
-		// Create Card Elements for each form.
-		ibanElements = giveStripePrepareCardElements( formElement, elements, idPrefix );
+		// Create IBAN Elements for each form.
+		ibanElements = giveStripePrepareIbanElements( formElement, elements, idPrefix );
 
 		ibanElementSelectors = [ '#give-stripe-sepa-fields-' ];
 
@@ -153,22 +153,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 *
 	 * @return {array} elements
 	 */
-	function giveStripePrepareCardElements( formElement, elements, idPrefix ) {
+	function giveStripePrepareIbanElements( formElement, elements, idPrefix ) {
 		const prepareCardElements = [];
 		const baseStyles = give_stripe_vars.element_base_styles;
 		const completeStyles = give_stripe_vars.element_complete_styles;
 		const emptyStyles = give_stripe_vars.element_empty_styles;
 		const invalidStyles = give_stripe_vars.element_invalid_styles;
 		const sepaIbanElement = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix );
-
-		// Bailout, if SEPA IBAN Element doesn't exist.
-		if ( null === sepaIbanElement ) {
-			return [];
-		}
-
-		const hideIcon = sepaIbanElement.getAttribute( 'data-hide_icon' );
-		const iconStyle = sepaIbanElement.getAttribute( 'data-icon_style' );
-		const placeholderCountry = sepaIbanElement.getAttribute( 'data-placeholder_country' );
 
 		const elementStyles = {
 			base: baseStyles,
@@ -183,16 +174,26 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			invalid: 'invalid',
 		};
 
+		const ibanCreateArgs = {
+			style: elementStyles,
+			classes: elementClasses,
+			supportedCountries: [ 'SEPA' ],
+		};
+
+		if ( 'stripe_sepa' === defaultGateway ) {
+			const hideIcon = sepaIbanElement.getAttribute( 'data-hide_icon' );
+			const iconStyle = sepaIbanElement.getAttribute( 'data-icon_style' );
+			const placeholderCountry = sepaIbanElement.getAttribute( 'data-placeholder_country' );
+
+			ibanCreateArgs.iconStyle = iconStyle;
+			ibanCreateArgs.hideIcon = ( 'disabled' !== hideIcon );
+			ibanCreateArgs.placeholderCountry = placeholderCountry;
+
+		}
+
 		const ibanElement = elements.create(
 			'iban',
-			{
-				style: elementStyles,
-				classes: elementClasses,
-				supportedCountries: [ 'SEPA' ],
-				hideIcon: ( 'disabled' !== hideIcon ),
-				iconStyle: iconStyle,
-				placeholderCountry: placeholderCountry,
-			}
+			ibanCreateArgs
 		);
 
 		prepareCardElements.push( ibanElement );
