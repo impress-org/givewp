@@ -1,20 +1,25 @@
 <?php
+global $post;
 
 // Get headline and description
-$headline    = $this->themeOptions['introduction']['headline'];
-$description = $this->themeOptions['introduction']['description'];
-$image       = $this->themeOptions['introduction']['image'];
+$headline    = ! empty( $this->themeOptions['introduction']['headline'] ) ? $this->themeOptions['introduction']['headline'] : $post->post_title;
+$description = ! empty( $this->themeOptions['introduction']['description'] ) ? $this->themeOptions['introduction']['description'] : $post->post_excerpt;
+$image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->themeOptions['introduction']['image'] : $post->post_thumbnail;
 ?>
 
 <div class="give-section introduction">
 	<h2>
 		<?php echo $headline; ?>
 	</h2>
-	<div class="seperator"></div>
-	<p>
-		<?php echo $description; ?>
-	</p>
-	<div class="image-container">
-		<img src="<?php echo $image; ?>" />
-	</div>
+	<?php if ( ! empty( $description ) ) { ?>
+		<div class="seperator"></div>
+		<p>
+			<?php echo $description; ?>
+		</p>
+	<?php } ?>
+	<?php if ( ! empty( $image ) ) { ?>
+		<div class="image-container">
+			<img src="<?php echo $image; ?>" />
+		</div>
+	<?php }; ?>
 </div>
