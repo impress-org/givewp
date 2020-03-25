@@ -47,7 +47,7 @@ export function getFormOptions( forms ) {
  *
  * @return {boolean}
  */
-export function isShowOldSettings( forms, SelectedFormId ) {
+export function isLegacyForm( forms, SelectedFormId ) {
 	if ( forms ) {
 		const data = forms.find( form => parseInt( form.id ) === parseInt( SelectedFormId ) );
 

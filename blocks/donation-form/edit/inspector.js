@@ -11,7 +11,7 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
-import { isShowOldSettings } from '../../utils';
+import { isLegacyForm } from '../../utils';
 
 /**
  * Render Inspector Controls
@@ -60,7 +60,7 @@ class Inspector extends Component {
 					</Button>
 				</PanelBody>
 				{
-					isShowOldSettings( forms, id ) && (
+					isLegacyForm( forms, id ) && (
 						<div>
 							<PanelBody title={ __( 'Display' ) }>
 								<SelectControl
