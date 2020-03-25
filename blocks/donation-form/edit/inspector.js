@@ -1,14 +1,9 @@
 /**
- * External dependencies
- */
-import ChosenSelect from '../../components/chosen-select';
-
-/**
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
+const { Dashicon, Button, PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
 const { Component } = wp.element;
 const { withSelect } = wp.data;
 
@@ -16,7 +11,7 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
-import { getFormOptions, isShowOldSettings } from '../../utils';
+import { isShowOldSettings } from '../../utils';
 
 /**
  * Render Inspector Controls
@@ -60,13 +55,9 @@ class Inspector extends Component {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Form settings' ) }>
-					<ChosenSelect
-						className="give-blank-slate__select"
-						name="id"
-						value={ id }
-						options={ getFormOptions( forms ) }
-						onChange={ ( value ) => this.saveSetting( 'id', value ) }
-					/>
+					<Button isLink onClick={ () => this.saveSetting( 'id', 0 ) }>
+						<Dashicon icon="edit" /> { __( 'Change Form' ) }
+					</Button>
 				</PanelBody>
 				{
 					isShowOldSettings( forms, id ) && (
