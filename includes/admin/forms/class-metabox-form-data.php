@@ -113,20 +113,6 @@ class Give_MetaBox_Form_Data {
 					'fields'    => apply_filters(
 						'give_forms_donation_form_metabox_fields',
 						array(
-							// Display Style.
-							array(
-								'name'          => __( 'Display Style', 'give' ),
-								'description'   => __( 'Set how the donations levels will display on the form.', 'give' ),
-								'id'            => $prefix . 'display_style',
-								'type'          => 'radio_inline',
-								'default'       => 'buttons',
-								'options'       => array(
-									'buttons'  => __( 'Buttons', 'give' ),
-									'radios'   => __( 'Radios', 'give' ),
-									'dropdown' => __( 'Dropdown', 'give' ),
-								),
-								'wrapper_class' => 'give-hidden',
-							),
 							// Custom Amount.
 							array(
 								'name'        => __( 'Custom Amount', 'give' ),
