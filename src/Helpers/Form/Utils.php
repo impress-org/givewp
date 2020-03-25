@@ -94,6 +94,8 @@ function getFailedTransactionPageURL( $args = array() ) {
  * @since 2.7.0
  */
 function isLegacyForm( $formID = null ) {
-	return 'legacy' === getActiveID( $formID );
+	$formTemplate = getActiveID( $formID );
+
+	return ! $formTemplate || 'legacy' === getActiveID( $formID );
 }
 
