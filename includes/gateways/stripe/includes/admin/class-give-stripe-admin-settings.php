@@ -425,7 +425,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['sepa'][] = array(
 						'name'          => __( 'Mandate Acceptance Text', 'give' ),
-						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'desc'          => __( 'This text displays below the IBAN field and provides clarity to your donors on how this payment option works. If you would not like this text to display then you can remove the default text.', 'give' ),
 						'id'            => 'stripe_mandate_acceptance_text',
 						'wrapper_class' => 'stripe-mandate-acceptance-text',
 						'type'          => 'textarea',
