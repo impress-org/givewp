@@ -113,32 +113,6 @@ class Give_MetaBox_Form_Data {
 					'fields'    => apply_filters(
 						'give_forms_donation_form_metabox_fields',
 						array(
-							// Donation Option.
-							array(
-								'name'        => __( 'Donation Option', 'give' ),
-								'description' => __( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
-								'id'          => $prefix . 'price_option',
-								'type'        => 'radio_inline',
-								'default'     => 'multi',
-								'options'     => apply_filters(
-									'give_forms_price_options',
-									array(
-										'multi' => __( 'Multi-level Donation', 'give' ),
-										'set'   => __( 'Set Donation', 'give' ),
-									)
-								),
-							),
-							array(
-								'name'        => __( 'Set Donation', 'give' ),
-								'description' => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
-								'id'          => $prefix . 'set_price',
-								'type'        => 'text_small',
-								'data_type'   => 'price',
-								'attributes'  => array(
-									'placeholder' => $price_placeholder,
-									'class'       => 'give-money-field',
-								),
-							),
 							// Display Style.
 							array(
 								'name'          => __( 'Display Style', 'give' ),
