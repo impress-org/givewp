@@ -26,7 +26,7 @@ const GiveBlankSlate = ( props ) => {
 
 	const blockLoaded = (
 		<div className="block-loaded">
-			{ !! title && ( <h2 className="give-blank-slate__heading">{ title }</h2> ) }
+			{ !! title && ( <h3 className="give-blank-slate__heading">{ title }</h3> ) }
 			{ !! description && ( <p className="give-blank-slate__message">{ description }</p> ) }
 			{ children }
 			{ !! helpLink && ( <GiveHelpLink /> ) }

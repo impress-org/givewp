@@ -61,5 +61,16 @@
 .wp-block {
 	.give-blank-slate {
 		background-color: #f1f1f1;
+
+		.give-blank-slate__heading {
+			font-weight: 700;
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+
+		a {
+			color: #32373c;
+			text-decoration: none;
+		}
 	}
 }
