@@ -1,9 +1,4 @@
 /**
- * External depedencies
- */
-import { isUndefined } from 'lodash';
-
-/**
  * getSiteUrl from API root
  * @returns {string} siteurl
  */
@@ -23,7 +18,7 @@ export function getSiteUrl() {
 export function getFormOptions( forms ) {
 	let formOptions = [];
 
-	if ( ! isUndefined( forms ) ) {
+	if ( forms ) {
 		formOptions = forms.map(
 			( { id, title: { rendered: title } } ) => {
 				return {
