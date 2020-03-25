@@ -26,9 +26,9 @@ class Actions {
 		$this->themeOptions = getTheme();
 
 		// Handle personal section html template.
-		add_action( 'wp_ajax_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'handleCheckoutField' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'handleCheckoutField' ), 9 );
+		add_action( 'wp_ajax_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
 
 		// Handle common hooks.
 		add_action( 'give_donation_form', array( $this, 'loadCommonHooks' ), 9, 2 );
@@ -38,13 +38,13 @@ class Actions {
 	}
 
 	/**
-	 * Load Checkout Fields
+	 * Hanlde cancel login and checkout register ajax request.
 	 *
 	 * @since 2.7.0
 	 * @return void
 	 */
-	public function handleCheckoutField() {
-		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSection' ) );
+	public function cancelLoginAjaxHanleder() {
+		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSectionTextSubSection' ) );
 	}
 
 	/**
@@ -82,6 +82,9 @@ class Actions {
 		 */
 		// Remove goal.
 		remove_action( 'give_pre_form', 'give_show_goal_progress', 10 );
+
+		// Remove intermediate continue button which appear when display style set to other then onpage.
+		remove_action( 'give_after_donation_levels', 'give_display_checkout_button', 10 );
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );

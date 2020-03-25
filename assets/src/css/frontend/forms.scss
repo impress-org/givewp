@@ -905,4 +905,72 @@ Embed Form aka IFrame Form
 	&.give-loader-type-img {
 		@include give-img-type-loader;
 	}
+	&.is-hide {
+		position: fixed;
+		left: -999px;
+	}
+
+	&.modal {
+		position: fixed;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		overflow: hidden auto;
+
+		.modal-inner-wrap {
+			position: absolute;
+			top: 0;
+			z-index: 1001;
+			width: 100%;
+		}
+
+		.modal-content {
+			position: relative;
+			margin: 0 auto;
+			max-width: 520px;
+			width: 100%;
+		}
+
+		iframe {
+			margin-top: 15px;
+		}
+
+		.close-btn {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 6px 12px;
+
+			background: black;
+			color: white !important;
+			border-radius: 24px;
+			font-size: 24px;
+			line-height: initial;
+			text-decoration: none;
+			z-index: 1002;
+			outline: none;
+
+			&:hover {
+				background: red;
+			}
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background-color: rgba(0, 0, 0, 0.8);
+			z-index: 1000;
+			overflow: hidden;
+		}
+	}
 }

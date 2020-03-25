@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -139,14 +140,12 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
-	$activeTheme        = ! empty( $atts['form_theme'] ) ? $atts['form_theme'] : getActiveID( $atts['id'] );
+	$activeTheme        = getActiveID( $atts['id'] ?: getFormId() );
 
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( ! empty( $atts['embed'] ) && 'legacy' !== $activeTheme ) {
-		unset( $atts['embed'] );
-
+	if ( $activeTheme && 'legacy' !== $activeTheme ) {
 		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
@@ -167,17 +166,65 @@ function give_form_shortcode( $atts ) {
 			Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) )
 		);
 
-		printf(
-			'<div class="give-embed-form-wrapper give-loader-type-img">
-						<iframe
+		$uniqueId         = uniqid( 'give-' );
+		$buttonModeActive = 'button' === $atts['display_style'];
+
+		// Set iframe.
+		$iframe = sprintf(
+			'<iframe
 						name="give-embed-form"
 						src="%1$s"
 						data-autoScroll="%2$s"
-						style="border: 0; visibility: hidden"></iframe>
-					</div>',
+						onload="Give.initializeIframeResize(this)"
+						style="border: 0; visibility: hidden"></iframe>',
 			$iframe_url,
-			$isAutoScroll
+			$buttonModeActive ? 0 : $isAutoScroll
 		);
+
+		// Show button in button mode and hide Iframe.
+		if ( $buttonModeActive ) {
+			printf(
+				'<div>
+						<button
+						type="button"
+						class="js-give-embed-form-modal-opener"
+						data-form-id="%1$s">%2$s</button>
+					</div>',
+				$uniqueId,
+				__( 'Click to donate', 'give' )
+			);
+
+			// Insert iframe inside modal HTML.
+			$iframe = sprintf(
+				'
+						<div class="modal-inner-wrap">
+							<div class="modal-content">
+								<iframe
+									name="give-embed-form"
+									class="in-modal"
+									data-src="%1$s"
+									data-autoScroll="%2$s"
+									style="border: 0; visibility: hidden"></iframe>
+								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
+							</div>
+						</div>
+						',
+				$iframe_url,
+				$buttonModeActive ? 0 : $isAutoScroll,
+				__( 'Close modal', 'give' ),
+				$uniqueId
+			);
+		}
+
+		printf(
+			'<div class="give-embed-form-wrapper give-loader-type-img%3$s" id="%2$s">
+						%1$s
+					</div>',
+			$iframe,
+			$uniqueId,
+			$buttonModeActive ? ' is-hide' : ''
+		);
+
 	} else {
 		give_get_donation_form( $atts );
 	}

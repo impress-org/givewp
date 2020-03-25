@@ -1,3 +1,4 @@
+/* globals Give */
 /**
  * WordPress dependencies
 */

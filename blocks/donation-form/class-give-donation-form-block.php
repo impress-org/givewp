@@ -142,7 +142,7 @@ class Give_Donation_Form_Block {
 
 		$parameters = array();
 
-		$parameters['id']                    = $attributes['id'];
+		$parameters['id']                    = absint( $attributes['id'] );
 		$parameters['show_title']            = $attributes['showTitle'];
 		$parameters['show_goal']             = $attributes['showGoal'];
 		$parameters['show_content']          = ! empty( $attributes['contentDisplay'] ) ? $attributes['showContent'] : 'none';

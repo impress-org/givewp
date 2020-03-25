@@ -43,24 +43,21 @@ class LoadTheme {
 	 * setup form template
 	 *
 	 * @since 2.7.0
-	 * @param string $formTemplate Form template id.
-	 * @param int    $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
+	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
 	 */
-	private function setUpTemplate( $formTemplate, $formId = null ) {
+	private function setUpTemplate( $formId = null ) {
 		$formID = (int) ( $formId ?: getFormId() );
 
-		$themeID = $formTemplate ?: ( getActiveID( $formID ) ?: $this->defaultTemplateID );
+		$themeID = getActiveID( $formID ) ?: $this->defaultTemplateID;
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
 
 	/**
 	 * Initialize form template
-	 *
-	 * @param string $formTemplate
 	 */
-	public function init( $formTemplate = '' ) {
-		$this->setUpTemplate( $formTemplate );
+	public function init() {
+		$this->setUpTemplate();
 
 		// Exit is theme is not valid.
 		if ( ! ( $this->theme instanceof Theme ) ) {
@@ -98,7 +95,7 @@ class LoadTheme {
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 
 		// Update form DOM.
-		add_filter( 'give_form_wrap_classes', array( $this, 'addClasses' ) );
+		add_filter( 'give_form_wrap_classes', array( $this, 'editClassList' ), 999 );
 		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
 	}
 
@@ -117,20 +114,26 @@ class LoadTheme {
 	}
 
 	/**
-	 * Add custom classes
+	 * Edit donation form wrapper class list.
 	 *
 	 * @param array $classes
 	 *
 	 * @return array
 	 * @since 2.7.0
 	 */
-	public function addClasses( $classes ) {
-		if ( isViewingForm() ) {
-			$classes[] = 'give-embed-form';
-
-			if ( ! empty( $_GET['iframe'] ) ) {
-				$classes[] = 'give-viewing-form-in-iframe';
+	public function editClassList( $classes ) {
+		// Remove display_style related classes because they (except onpage ) creates style conflict with form template.
+		$classes = array_filter(
+			$classes,
+			static function ( $class ) {
+				return false === strpos( $class, 'give-display-' );
 			}
+		);
+
+		$classes[] = 'give-embed-form';
+
+		if ( ! empty( $_GET['iframe'] ) ) {
+			$classes[] = 'give-viewing-form-in-iframe';
 		}
 
 		return $classes;
@@ -144,10 +147,6 @@ class LoadTheme {
 	 * @since 2.7.0
 	 */
 	public function addHiddenField( $classes ) {
-		if ( ! isViewingForm() ) {
-			return;
-		}
-
 		printf(
 			'<input type="hidden" name="%1$s" value="%2$s">',
 			'give_embed_form',

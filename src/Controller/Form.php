@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
@@ -47,6 +48,7 @@ class Form {
 	public function load() {
 		$isViewingForm    = isViewingForm();
 		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
+		$action           = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
 
 		// Exit: we are not on embed form's main page or receipt page.
 		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
@@ -54,7 +56,12 @@ class Form {
 		}
 
 		// Exit: redirect donor to receipt or fail transaction page.
-		if ( ! empty( $_REQUEST['giveDonationAction'] ) && $isViewingForm ) {
+		if (
+			! empty( $_REQUEST['giveDonationAction'] ) &&
+			$isViewingForm &&
+			$action &&
+			in_array( $action, [ 'showReceipt', 'failedDonation' ] )
+		) {
 			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
 			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
@@ -70,11 +77,9 @@ class Form {
 
 		if ( $isViewingForm ) {
 			$shortcodeArgs = getShortcodeArgs();
-			$formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
-
 			$this->setupGlobalPost();
 
-			require_once $this->loadTheme( $formTheme )
+			require_once $this->loadTheme()
 							  ->getTheme()
 							  ->getTemplate( 'form' );
 
@@ -93,14 +98,12 @@ class Form {
 	/**
 	 * Load form theme
 	 *
-	 * @param string $formTheme
-	 *
 	 * @return LoadTheme
 	 * @since 2.7.0
 	 */
-	private function loadTheme( $formTheme = '' ) {
+	private function loadTheme() {
 		$themeLoader = new LoadTheme();
-		$themeLoader->init( $formTheme );
+		$themeLoader->init();
 
 		return $themeLoader;
 	}

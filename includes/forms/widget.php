@@ -95,7 +95,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
 
-		give_get_donation_form( $instance );
+		echo give_form_shortcode( $instance );
 
 		echo $args['after_widget']; // XSS ok.
 
@@ -204,6 +204,7 @@ class Give_Forms_Widget extends WP_Widget {
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="above" <?php checked( $instance['show_content'], 'above' ); ?>> <?php echo esc_html__( 'Above', 'give' ); ?></label>
 				&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
 				<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this GiveWP form.', 'give' ); ?></small>
+			</p>
 		</div>
 		<?php
 	}
