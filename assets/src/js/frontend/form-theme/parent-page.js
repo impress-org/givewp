@@ -1,26 +1,16 @@
 /* globals jQuery, Give */
 import { iframeResize } from 'iframe-resizer';
 
-jQuery( function( $ ) {
+jQuery( function() {
 	const $allIframes = document.querySelectorAll( 'iframe[name="give-embed-form"]' ),
-		  iframeCount = parseInt( $allIframes.length );
+		iframeCount = parseInt( $allIframes.length );
 	let iframeCounter = 0;
 
-	/**
-	 * Scroll to iframe
-	 *
-	 * @since 2.7
-	 * @param {object} iframe
-	 */
-	function scrollToIframe( iframe ) {
-		$( 'html, body' ).animate( { scrollTop: iframe.offsetTop } );
-	}
-
 	if ( iframeCount ) {
-		$allIframes.forEach( function( iframe ) {
+		$allIframes.forEach( function( el ) {
 			new iframeResize(
 				{
-					log: true,
+					log: false,
 					sizeWidth: true,
 					heightCalculationMethod: 'documentElementOffset',
 					widthCalculationMethod: 'documentElementOffset',
@@ -35,12 +25,8 @@ jQuery( function( $ ) {
 								// Check if all iframe loaded. if yes, then trigger custom action.
 								iframeCounter++;
 								if ( iframeCounter === iframeCount ) {
-									document.dispatchEvent( new CustomEvent( 'Give.iframesLoaded', { detail: { give: { iframes: $allIframes } } } ) );
+									document.dispatchEvent( new window.CustomEvent( 'Give.iframesLoaded', { detail: { give: { iframes: $allIframes } } } ) );
 								}
-								break;
-
-							case 'giveEmbedShowingForm':
-								scrollToIframe( iframe );
 								break;
 						}
 					},
@@ -50,26 +36,8 @@ jQuery( function( $ ) {
 						} );
 					},
 				},
-				iframe
+				el
 			);
 		} );
 	}
-
-	/**
-	 * Auto scroll to donor's donation form
-	 *
-	 * @since 2.7
-	 */
-	document.addEventListener( 'Give.iframesLoaded', function( e ) {
-		const { iframes } = e.detail.give;
-
-		Array.from( iframes ).forEach( function( iframe ) {
-			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) ) {
-				scrollToIframe( iframe );
-
-				// Exit function.
-				return false;
-			}
-		} );
-	} );
 } );

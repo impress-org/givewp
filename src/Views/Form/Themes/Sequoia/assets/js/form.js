@@ -129,7 +129,7 @@
 				return style.sheet;
 			}() );
 
-			const primaryColor = templateOptions.introduction.primary_color;
+			const primaryColor = templateOptions.introduction.primary_color ? templateOptions.introduction.primary_color : '#28C77B';
 
 			// Insert rules to custom stylesheet
 			sheet.insertRule( `.seperator {

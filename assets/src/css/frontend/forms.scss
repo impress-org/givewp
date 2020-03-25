@@ -405,11 +405,7 @@ form[id*='give-form'] {
 	}
 }
 
-.give-display-button-only > *:not(form) {
-	display: none;
-}
-
-.give-display-button-only form[id*='give-form'] > *:not(.give-btn-modal) {
+.give-display-button-only > *:not(.give-btn-modal) {
 	display: none;
 }
 
@@ -906,7 +902,11 @@ Button with Loader
 Embed Form aka IFrame Form
 -----------------------------------*/
 .give-embed-form-wrapper {
+	width: 100% !important;
 	&.give-loader-type-img {
 		@include give-img-type-loader;
+	}
+	iframe {
+		width: 100% !important;
 	}
 }

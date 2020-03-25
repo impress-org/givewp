@@ -407,11 +407,21 @@ Shortcode Copy & Paste
 			grid-template-columns: 1fr 1fr;
 			padding: 8px 0 24px 0;
 
-			.theme-image {
-				height: 150px;
-				object-fit: cover;
+			.theme-image-container {
 				width: 100%;
-				background-color: #fff;
+				height: auto;
+				position: relative;
+				padding-top: 56.25%;
+
+				.theme-image {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+					position: absolute;
+					top: 0;
+					left: 0;
+					background-color: #fff;
+				}
 			}
 
 			.action {
@@ -421,7 +431,7 @@ Shortcode Copy & Paste
 				border-top: 1px solid #eee;
 				padding: 10px;
 
-				strong {
+				.template-name {
 					font-weight: 500;
 					flex-grow: 1;
 					padding-left: 6px;
@@ -501,7 +511,7 @@ Shortcode Copy & Paste
 				.themes-list {
 					grid-template-columns: 1fr !important;
 
-					.theme-image {
+					.theme-image-container {
 						display: none;
 					}
 

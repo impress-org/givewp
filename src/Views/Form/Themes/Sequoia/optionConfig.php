@@ -1,4 +1,5 @@
 <?php
+global $post;
 return [
 	'introduction'        => [
 		'name'   => __( 'Introduction', 'give' ),
@@ -21,8 +22,9 @@ return [
 				'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => __( 'Campaign Heading', 'give' ),
+					'placeholder' => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
 				],
+				'default'    => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
 			],
 			[
 				'id'         => 'description',
@@ -30,8 +32,9 @@ return [
 				'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
+					'placeholder' => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 				],
+				'default'    => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
 			],
 			[
 				'id'   => 'image',
@@ -40,10 +43,11 @@ return [
 				'type' => 'file',
 			],
 			[
-				'id'   => 'primary_color',
-				'name' => __( 'Primary Color', 'give' ),
-				'desc' => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
-				'type' => 'colorpicker',
+				'id'      => 'primary_color',
+				'name'    => __( 'Primary Color', 'give' ),
+				'desc'    => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'type'    => 'colorpicker',
+				'default' => '#28C77B',
 			],
 			[
 				'id'         => 'donate_label',
@@ -53,6 +57,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'Donate Now', 'give' ),
 				],
+				'default'    => __( 'Donate Now', 'give' ),
 			],
 		],
 	],
@@ -68,6 +73,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'Continue', 'give' ),
 				],
+				'default'    => __( 'Continue', 'give' ),
 			],
 		],
 	],
@@ -83,6 +89,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'Donate Now', 'give' ),
 				],
+				'default'    => __( 'Donate Now', 'give' ),
 			],
 		],
 	],

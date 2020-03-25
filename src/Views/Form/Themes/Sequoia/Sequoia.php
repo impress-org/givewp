@@ -30,8 +30,17 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 
 		// Localize Theme options
 		global $post;
-		$templateOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
-		wp_localize_script( 'give-sequoia-theme-js', 'sequoiaTemplateOptions', $templateOptions );
+
+		if ( $post->post_type === 'give_forms' ) {
+			$templateOptions = give_get_meta( $post->ID, '_give_sequoia_form_theme_settings', true, null );
+
+			// Set defaults
+			$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
+			$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
+			$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
+
+			wp_localize_script( 'give-sequoia-theme-js', 'sequoiaTemplateOptions', $templateOptions );
+		}
 	}
 
 	/**

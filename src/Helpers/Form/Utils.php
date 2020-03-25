@@ -4,9 +4,8 @@ namespace Give\Helpers\Form\Utils;
 /**
  * Get result if we are viewing embed form or not
  *
- * @since 2.7.0
- *
  * @return bool
+ * @since 2.7.0
  */
 function isViewingForm() {
 	$base = Give()->routeForm->getBase();
