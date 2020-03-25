@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { isUndefined } from 'lodash';
+
+/**
  * Wordpress dependencies
  */
 const { Component } = wp.element;
@@ -10,8 +15,6 @@ const { BaseControl } = wp.components;
 class ChosenSelect extends Component {
 	constructor( props ) {
 		super( props );
-
-		this.state = {};
 
 		this.saveSetting = this.saveSetting.bind( this );
 		this.saveState = this.saveState.bind( this );
@@ -30,7 +33,11 @@ class ChosenSelect extends Component {
 	}
 
 	componentDidMount() {
+		const { value } = this.props;
+
 		this.$el = jQuery( this.el );
+		this.$el.val( ! isUndefined( value ) ? value : 0 );
+
 		this.$input = this.$el.chosen( {
 			width: '100%',
 		} ).data( 'chosen' );
