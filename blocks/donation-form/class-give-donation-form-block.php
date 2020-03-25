@@ -82,6 +82,11 @@ class Give_Donation_Form_Block {
 	 * @return WP_REST_Response
 	 */
 	public function addExtraDataToResponse( $response, $form ) {
+		// Return extra data only if query in edit context.
+		if ( empty( $_REQUEST['context'] ) || $_REQUEST['context'] !== 'edit' ) {
+			return $response;
+		}
+
 		$data                 = $response->get_data();
 		$data['formTemplate'] = Give()->form_meta->get_meta( $form->ID, '_give_form_theme', true );
 		$response->set_data( $data );
