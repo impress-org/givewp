@@ -54,9 +54,9 @@ class Inspector extends Component {
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'Form settings' ) }>
-					<Button isLink onClick={ () => this.saveSetting( 'id', 0 ) }>
-						<Dashicon icon="edit" /> { __( 'Change Form' ) }
+				<PanelBody title={ __( 'Donation Form Settings' ) }>
+					<Button isDefault onClick={ () => this.saveSetting( 'id', 0 ) } className={ 'give-change-donation-form-btn' }>
+						<Dashicon icon="edit" /> { __( 'Change Donation Form' ) }
 					</Button>
 				</PanelBody>
 				{
