@@ -8,13 +8,12 @@ import { isUndefined } from 'lodash';
  */
 const { __ } = wp.i18n;
 const { withSelect } = wp.data;
-const { Button, Placeholder, Spinner } = wp.components;
+const { Placeholder, Spinner } = wp.components;
 
 /**
  * Internal dependencies
  */
 import './index.scss';
-import { getSiteUrl } from '../../utils';
 import GiveBlankSlate from '../blank-slate';
 import NoForms from '../no-form';
 import ChosenSelect from '../chosen-select';
@@ -24,7 +23,7 @@ import ChosenSelect from '../chosen-select';
  */
 const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
 
-const SelectForm = ( { forms, attributes, setAttributes } ) => {
+const SelectForm = ( { forms, setAttributes } ) => {
 	// Event(s)
 	const getFormOptions = () => {
 		// Add API Data To Select Options
