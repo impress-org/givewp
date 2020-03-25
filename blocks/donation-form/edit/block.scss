@@ -1,0 +1,19 @@
+.wp-block-give-donation-form {
+	position: relative;
+
+	.give-form-wrap,
+	.give-embed-form-wrapper {
+		transition: transform 0.3s ease, opacity 0.3s ease;
+	}
+
+	&:hover .give-form-wrap,
+	&:hover .give-embed-form-wrapper {
+		transition: transform 0.3s ease, opacity 0.3s ease;
+		opacity: 0.3;
+		transform: scale(0.9);
+	}
+
+	form[id*='give-form'] #give-gateway-radio-list > li input[type='radio'] {
+		display: inline-block;
+	}
+}
