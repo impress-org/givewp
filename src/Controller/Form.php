@@ -13,6 +13,7 @@ use Give\Form\LoadTheme;
 use WP_Post;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
+use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -37,6 +38,7 @@ class Form {
 		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
 		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
 		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
+		add_action( 'give_before_single_form', [ $this, 'handleLegacyDonationFormSidebar' ], 9 );
 	}
 
 	/**
@@ -208,5 +210,29 @@ class Form {
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
+	}
+
+	/**
+	 * Handle legacy donation form sidebar
+	 *
+	 * @since 2.7.0
+	 */
+	public function handleLegacyDonationFormSidebar() {
+		// Exit if current for is not legacy
+		if ( isLegacyForm() ) {
+			return;
+		}
+
+		add_action( 'give_get_option_form_sidebar', [ $this, 'disableLegacyDonationFormSidebar' ] );
+	}
+
+	/**
+	 * Return 'disabled' as donation form sidebar status.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function disableLegacyDonationFormSidebar() {
+		return 'disabled';
 	}
 }
