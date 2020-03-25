@@ -38,7 +38,7 @@ class Form {
 		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
 		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
 		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
-		add_action( 'give_before_single_form', [ $this, 'handleLegacyDonationFormSidebar' ], 9 );
+		add_action( 'give_before_single_form', [ $this, 'handleLegacyDonationFormTemplate' ], 9 );
 	}
 
 	/**
@@ -217,13 +217,22 @@ class Form {
 	 *
 	 * @since 2.7.0
 	 */
-	public function handleLegacyDonationFormSidebar() {
+	public function handleLegacyDonationFormTemplate() {
 		// Exit if current for is not legacy
 		if ( isLegacyForm() ) {
 			return;
 		}
 
+		// Disable sidebar.
 		add_action( 'give_get_option_form_sidebar', [ $this, 'disableLegacyDonationFormSidebar' ] );
+
+		// Remove title.
+		remove_action( 'give_single_form_summary', 'give_template_single_title', 5 );
+
+		// Remove donation form renderer.
+		remove_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
+
+		add_action( 'give_single_form_summary', [ $this, 'renderFormOnSingleDonationFormPage' ], 10 );
 	}
 
 	/**
@@ -234,5 +243,17 @@ class Form {
 	 */
 	public function disableLegacyDonationFormSidebar() {
 		return 'disabled';
+	}
+
+
+	/**
+	 * This function handle donation form style for single donation page.
+	 *
+	 * Note: it will render style on basis on selected form template.
+	 *
+	 * @since 2.7.0
+	 */
+	public function renderFormOnSingleDonationFormPage() {
+		echo give_form_shortcode( [] );
 	}
 }
