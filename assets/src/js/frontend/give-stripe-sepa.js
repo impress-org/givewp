@@ -160,6 +160,12 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const emptyStyles = give_stripe_vars.element_empty_styles;
 		const invalidStyles = give_stripe_vars.element_invalid_styles;
 		const sepaIbanElement = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix );
+
+		// Bailout, if SEPA IBAN Element doesn't exist.
+		if ( null === sepaIbanElement ) {
+			return [];
+		}
+
 		const hideIcon = sepaIbanElement.getAttribute( 'data-hide_icon' );
 		const iconStyle = sepaIbanElement.getAttribute( 'data-icon_style' );
 		const placeholderCountry = sepaIbanElement.getAttribute( 'data-placeholder_country' );
