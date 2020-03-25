@@ -34,3 +34,27 @@ export function getFormOptions( forms ) {
 
 	return formOptions;
 }
+
+/**
+ * Convert forms object in option
+ *
+ * @since 2.7.0
+ *
+ * @param {object} forms
+ * @param {number} SelectedFormId
+ *
+ * @return {boolean}
+ */
+export function isShowOldSettings( forms, SelectedFormId ) {
+	if ( forms ) {
+		const data = forms.find(
+			( form ) => {
+				return parseInt( form.id ) === parseInt( SelectedFormId );
+			}
+		);
+
+		return data && ( ! data.formTemplate || data.formTemplate === 'legacy' );
+	}
+
+	return false;
+}
