@@ -15,7 +15,6 @@ Layout
 }
 
 [id*='give-form'] {
-
 	.give-hidden {
 		display: none;
 	}
@@ -81,12 +80,14 @@ Layout
 		}
 	}
 
-	&.give-display-reveal, &.give-display-modal {
+	&.give-display-reveal,
+	&.give-display-modal {
 		.give-btn {
 			margin: 0 0 15px;
 		}
 
-		#give-payment-mode-select, #give_purchase_form_wrap {
+		#give-payment-mode-select,
+		#give_purchase_form_wrap {
 			display: none;
 		}
 	}
@@ -101,22 +102,19 @@ Single Forms
 --------------------------------------*/
 
 .single-give_forms {
-
-	&.et_right_sidebar #main-content .container:before {
+	&.et_right_sidebar #main-content .container::before {
 		display: none; //hide Divi sidebar sep on single give forms
 	}
 
 	.give_forms {
 		@include clearfix;
 	}
-
 }
 
 /*------------------------------------
 Gravatar List
 --------------------------------------*/
 #give-purchase-gravatars {
-
 	.give-gravatars-title {
 		margin: 0 0 15px;
 	}
@@ -132,7 +130,6 @@ Gravatar List
 			margin: 0 5px 0 0;
 			padding: 0;
 		}
-
 	}
 }
 
@@ -152,7 +149,6 @@ form.give-form {
 
 	@media (min-width: 481px) {
 		.give-title-prefix-wrap {
-
 			.form-row-first,
 			.form-row-last {
 				float: left;
@@ -163,7 +159,6 @@ form.give-form {
 				float: left;
 				width: 15%;
 			}
-
 		}
 	}
 
@@ -187,7 +182,7 @@ form.give-form {
 		font-weight: bold;
 		margin: 10px 0 15px;
 		padding: 0 0 5px;
-		border-bottom: 1px solid rgba(0, 0, 0, .1);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		width: 100%;
 
 		span.sub-text {
@@ -218,25 +213,24 @@ form.give-form {
 			&.checkbox {
 				display: inline;
 			}
-
 		}
 
 		select,
 		textarea,
-		input[type="text"],
-		input[type="tel"],
-		input[type="email"],
-		input[type="password"],
-		input[type="url"] {
+		input[type='text'],
+		input[type='tel'],
+		input[type='email'],
+		input[type='password'],
+		input[type='url'] {
 			@include box-sizing(border-box);
 			width: 100%;
 			border-radius: 0;
 			outline: none;
 			color: $dark;
-			background-color: #FDFDFD;
+			background-color: #fdfdfd;
 			border: 1px solid $borders;
 			margin: 0;
-			padding: .5em;
+			padding: 0.5em;
 
 			&:focus {
 				background-color: #fff;
@@ -245,9 +239,7 @@ form.give-form {
 			&.required {
 				color: $dark;
 			}
-
 		}
-
 	}
 
 	.form-row-title,
@@ -317,10 +309,10 @@ form.give-form {
 		select.card-expiry-year {
 			float: right;
 		}
-
 	}
 
-	.give-disabled, [disabled] {
+	.give-disabled,
+	[disabled] {
 		cursor: not-allowed;
 	}
 }
@@ -330,7 +322,6 @@ Form Price & Amount
 -----------------------------------*/
 
 form[id*='give-form'] {
-
 	.give-donation-amount {
 		margin: 0 0 15px;
 
@@ -347,7 +338,6 @@ form[id*='give-form'] {
 				border-left: none;
 				border-right: 1px solid $borders;
 			}
-
 		}
 
 		#give-amount,
@@ -359,7 +349,6 @@ form[id*='give-form'] {
 			&.invalid-amount {
 				border: 1px solid red;
 			}
-
 		}
 
 		input.give-amount-top {
@@ -369,14 +358,12 @@ form[id*='give-form'] {
 		span.give-final-total-amount {
 			@include give-input();
 			cursor: not-allowed;
-			background: #FFF;
+			background: #fff;
 			float: left;
 		}
-
 	}
 
 	#give_terms_agreement {
-
 		legend {
 			display: none;
 		}
@@ -384,7 +371,6 @@ form[id*='give-form'] {
 		label {
 			display: inline-block;
 		}
-
 	}
 
 	#give-final-total-wrap {
@@ -416,16 +402,10 @@ form[id*='give-form'] {
 				float: none;
 			}
 		}
-
 	}
-
 }
 
-.give-display-button-only > *:not(form) {
-	display: none;
-}
-
-.give-display-button-only form[id*=give-form] > *:not(.give-btn-modal) {
+.give-display-button-only > *:not(.give-btn-modal) {
 	display: none;
 }
 
@@ -433,8 +413,8 @@ form[id*='give-form'] {
 Radio Lists
 -----------------------------------*/
 form[id*='give-form'] {
-	input[type="radio"] {
-		margin: 0 .5em 0 0;
+	input[type='radio'] {
+		margin: 0 0.5em 0 0;
 	}
 
 	#give-donation-level-radio-list {
@@ -456,8 +436,8 @@ form[id*='give-form'] {
 				margin: 0;
 			}
 
-			input[type="radio"] {
-				margin: 0 .5em 0 0;
+			input[type='radio'] {
+				margin: 0 0.5em 0 0;
 				outline: none;
 				width: auto;
 			}
@@ -489,15 +469,13 @@ form[id*='give-form'] {
 				margin: 0;
 			}
 
-			input[type="radio"] {
-				margin: 0 .25em 0 0;
+			input[type='radio'] {
+				margin: 0 0.25em 0 0;
 				outline: none;
 				width: auto;
 				display: inline;
 			}
-
 		}
-
 	}
 }
 
@@ -505,8 +483,8 @@ form[id*='give-form'] {
 Checkboxes
 -----------------------------------*/
 form[id*='give-form'] {
-	input[type="checkbox"] {
-		margin: 0 .25em 0 0;
+	input[type='checkbox'] {
+		margin: 0 0.25em 0 0;
 	}
 }
 
@@ -523,8 +501,8 @@ form[id*='give-form'] {
 		display: block;
 		clear: both;
 		color: $dark;
-		background-color: #FDFDFD;
-		padding: .5em;
+		background-color: #fdfdfd;
+		padding: 0.5em;
 		max-width: 100%;
 	}
 }
@@ -546,7 +524,6 @@ Buttons
 		float: left;
 		margin: 0 5px 5px 0;
 	}
-
 }
 
 .give_terms_links {
@@ -568,7 +545,7 @@ CC Validation
 		font-size: 16px;
 		line-height: 20px;
 
-		:before {
+		::before {
 			display: inline-block;
 		}
 	}
@@ -698,8 +675,7 @@ form[id*='give-form'] {
 		@extend .fa-spin;
 	}
 
-	.give-payment-mode-label
-	.give-loading-text {
+	.give-payment-mode-label .give-loading-text {
 		float: right;
 	}
 }
@@ -726,11 +702,11 @@ User Login
 		.give-loading-text {
 			position: absolute;
 			right: 0;
-			top: .25em;
+			top: 0.25em;
 		}
 	}
 
-	fieldset[id^="give-login-fields"] {
+	fieldset[id^='give-login-fields'] {
 		margin: 0 0 15px;
 	}
 
@@ -746,13 +722,12 @@ User Login
 
 [id^='give-user-login-submit'],
 .give-submit-button-wrap {
-
 	input.give-cancel-login {
 		margin-left: 5px;
 	}
 
 	span.give-loading-animation {
-		margin: 0 0 0 .5em;
+		margin: 0 0 0 0.5em;
 		display: none;
 	}
 
@@ -762,7 +737,7 @@ User Login
 }
 
 .give-user-login-fields-container {
-	&:after {
+	&::after {
 		display: block;
 		content: '';
 		clear: both;
@@ -772,7 +747,8 @@ User Login
 /* Login Shortcode Form */
 #give-login-form,
 #give-register-form {
-	legend, div.give-login {
+	legend,
+	div.give-login {
 		line-height: 2;
 		margin-bottom: 15px;
 	}
@@ -795,7 +771,9 @@ div.give-form-wrap.mfp-hide {
 div.mfp-content {
 	//Basic Styles
 	fieldset {
-		p, ol, ul {
+		p,
+		ol,
+		ul {
 			margin-bottom: 1.2em;
 			line-height: 1.4;
 		}
@@ -822,7 +800,6 @@ Basic Button Style
 	&:hover {
 		background: #dbdbdb;
 	}
-
 }
 
 /*---------------------------------
@@ -841,7 +818,8 @@ Email Access Form
 -----------------------------------*/
 
 form#give-email-access-form {
-	div.g-recaptcha, input#give-email {
+	div.g-recaptcha,
+	input#give-email {
 		margin: 0 0 15px;
 	}
 
@@ -856,7 +834,8 @@ Responsiveness
 @media (max-width: 768px) {
 	// Multi-column layout for single forms.
 	[id*='give-form'] {
-		div.images, div.summary {
+		div.images,
+		div.summary {
 			width: 100%;
 			float: none;
 		}
@@ -912,7 +891,6 @@ Button with Loader
 		@extend .fa-spin;
 	}
 }
-
 
 .give-active {
 	span.give-loading-animation {

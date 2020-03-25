@@ -16,8 +16,8 @@ class PaymentStatuses extends Endpoint {
 
 	public function get_report( $request ) {
 
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 
 		// Setup args for give_count_payments
 		$args = array(
@@ -29,66 +29,59 @@ class PaymentStatuses extends Endpoint {
 		$payments  = give_count_payments( $args );
 		$completed = property_exists( $payments, 'give_subscription' ) ? $payments->publish + $payments->give_subscription : $payments->publish;
 
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			[
-				'status' => $status,
-				'data'   => [
-					'labels'   => [
-						'Completed',
-						'Pending',
-						'Refunded',
-						'Abandoned',
-						'Cancelled',
-						'Failed',
+		return [
+			'labels'   => [
+				'Completed',
+				'Pending',
+				'Refunded',
+				'Abandoned',
+				'Cancelled',
+				'Failed',
+			],
+			'datasets' => [
+				[
+					'data'     => [
+						$completed,
+						$payments->pending,
+						$payments->refunded,
+						$payments->abandoned,
+						$payments->cancelled,
+						$payments->failed,
 					],
-					'datasets' => [
+					'tooltips' => [
 						[
-							'data'     => [
-								$completed,
-								$payments->pending,
-								$payments->refunded,
-								$payments->abandoned,
-								$payments->cancelled,
-								$payments->failed,
-							],
-							'tooltips' => [
-								[
-									'title'  => $completed . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Completed', 'give' ),
-									'footer' => '',
-								],
-								[
-									'title'  => $payments->pending . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Pending', 'give' ),
-									'footer' => '',
-								],
-								[
-									'title'  => $payments->refunded . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Refunded', 'give' ),
-									'footer' => '',
-								],
-								[
-									'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Abandoned', 'give' ),
-									'footer' => '',
-								],
-								[
-									'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Cancelled', 'give' ),
-									'footer' => '',
-								],
-								[
-									'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
-									'body'   => __( 'Failed', 'give' ),
-									'footer' => '',
-								],
-							],
+							'title'  => $completed . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Completed', 'give' ),
+							'footer' => '',
+						],
+						[
+							'title'  => $payments->pending . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Pending', 'give' ),
+							'footer' => '',
+						],
+						[
+							'title'  => $payments->refunded . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Refunded', 'give' ),
+							'footer' => '',
+						],
+						[
+							'title'  => $payments->abandoned . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Abandoned', 'give' ),
+							'footer' => '',
+						],
+						[
+							'title'  => $payments->cancelled . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Cancelled', 'give' ),
+							'footer' => '',
+						],
+						[
+							'title'  => $payments->failed . ' ' . __( 'Payments', 'give' ),
+							'body'   => __( 'Failed', 'give' ),
+							'footer' => '',
 						],
 					],
 				],
-			]
-		);
+			],
+		];
 	}
 }

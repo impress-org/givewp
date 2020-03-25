@@ -8,6 +8,9 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use WP_REST_Request;
+use WP_REST_Response;
+
 class AverageDonation extends Endpoint {
 
 	protected $payments;
@@ -16,21 +19,19 @@ class AverageDonation extends Endpoint {
 		$this->endpoint = 'average-donation';
 	}
 
+
+	/**
+	 * Handle rest request.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 */
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				array(
-					'data' => $cached_report,
-				)
-			);
-		}
-
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
 		$data = array();
@@ -51,16 +52,7 @@ class AverageDonation extends Endpoint {
 				break;
 		}
 
-		// Cache the report data
-		$result = $this->cache_report( $request, $data );
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			array(
-				'data'   => $data,
-				'status' => $status,
-			)
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $intervalStr ) {
@@ -174,7 +166,8 @@ class AverageDonation extends Endpoint {
 
 		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
-		return $average;
+		// Return rounded average (avoid displaying figures with many decimal places)
+		return round( $average, 2 );
 	}
 
 	public function get_prev_average_donation( $startStr, $endStr ) {
@@ -186,6 +179,7 @@ class AverageDonation extends Endpoint {
 
 		$average = $sales > 0 ? $earnings / $sales : 0;
 
-		return $average;
+		// Return rounded average (avoid displaying figures with many decimal places)
+		return round( $average, 2 );
 	}
 }
