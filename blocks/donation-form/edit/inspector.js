@@ -1,15 +1,24 @@
 /**
+ * External dependencies
+ */
+import ChosenSelect from '../../components/chosen-select';
+
+
+/**
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
 const { Component } = wp.element;
+const { withSelect } = wp.data;
+
 
 /**
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
+import {getFormOptions} from '../../utils';
 
 /**
  * Render Inspector Controls
@@ -39,7 +48,10 @@ class Inspector extends Component {
 	}
 
 	render() {
+		const {forms} = this.props;
+
 		const {
+			id,
 			displayStyle,
 			showTitle,
 			showGoal,
@@ -49,6 +61,15 @@ class Inspector extends Component {
 
 		return (
 			<InspectorControls key="inspector">
+				<PanelBody title={ __( 'Form settings' ) }>
+					<ChosenSelect
+						className="give-blank-slate__select"
+						name="id"
+						value={ id }
+						options={ getFormOptions(forms) }
+						onChange={ ( value ) => this.saveSetting( 'id', value ) }
+					/>
+				</PanelBody>
 				<PanelBody title={ __( 'Display' ) }>
 					<SelectControl
 						label={ __( 'Form Format' ) }
@@ -99,4 +120,11 @@ class Inspector extends Component {
 	}
 }
 
-export default Inspector;
+/**
+ * Export with forms data
+ */
+export default withSelect( ( select ) => {
+	return {
+		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms', { per_page: 30 } ),
+	};
+} )( Inspector );
