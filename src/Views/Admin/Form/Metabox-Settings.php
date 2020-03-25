@@ -18,9 +18,11 @@ $registeredThemes = Give()->themes->getThemes();
 
 			printf(
 				'<div class="theme-info %1$s" data-id="%2$s">
-							<img class="theme-image" src="%3$s"/>
+							<div class="theme-image-container">
+								<img class="theme-image" src="%3$s"/>
+							</div>
 							<div class="action">
-								<strong>%4$s <span class="badge">%5$s</span></strong>
+								<div class="template-name">%4$s <span class="badge">%5$s</span></div>
 								<button class="button %7$s">%6$s</button>
 							</div>
 						</div>',
