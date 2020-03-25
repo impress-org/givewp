@@ -142,10 +142,6 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.11', '<' ):
 			give_v2511_upgrades();
 			$did_upgrade = true;
-
-		case version_compare( $give_version, '2.7.0', '<' ):
-			Give()->routeForm->addRule();
-			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
