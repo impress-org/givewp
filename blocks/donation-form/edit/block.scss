@@ -16,4 +16,15 @@
 	form[id*='give-form'] #give-gateway-radio-list > li input[type='radio'] {
 		display: inline-block;
 	}
+
+	/* Add transparent overlay on form to prevent admin interaction with form*/
+	&:hover::after {
+		position: absolute;
+		background: transparent;
+		display: block;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		content: '';
+	}
 }
