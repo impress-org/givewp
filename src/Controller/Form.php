@@ -218,7 +218,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function handleLegacyDonationFormTemplate() {
-		// Exit if current for is not legacy
+		// Exit if current form is legacy
 		if ( isLegacyForm() ) {
 			return;
 		}
