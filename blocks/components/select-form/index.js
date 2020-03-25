@@ -17,36 +17,9 @@ import './index.scss';
 import GiveBlankSlate from '../blank-slate';
 import NoForms from '../no-form';
 import ChosenSelect from '../chosen-select';
-
-/**
- * Render form select UI
- */
-const giveFormOptionsDefault = { value: '0', label: __( '-- Select Form --' ) };
+import { getFormOptions } from '../../utils';
 
 const SelectForm = ( { forms, setAttributes } ) => {
-	// Event(s)
-	const getFormOptions = () => {
-		// Add API Data To Select Options
-
-		let formOptions = [];
-
-		if ( ! isUndefined( forms ) ) {
-			formOptions = forms.map(
-				( { id, title: { rendered: title } } ) => {
-					return {
-						value: id,
-						label: title === '' ? `${ id } : ${ __( 'No form title' ) }` : title,
-					};
-				}
-			);
-		}
-
-		// Add Default option
-		formOptions.unshift( giveFormOptionsDefault );
-
-		return formOptions;
-	};
-
 	const setFormIdTo = id => {
 		setAttributes( { id: Number( id ) } );
 	};
@@ -63,8 +36,9 @@ const SelectForm = ( { forms, setAttributes } ) => {
 			<GiveBlankSlate title={ __( 'Donation Form' ) }>
 				<ChosenSelect
 					className="give-blank-slate__select"
-					options={ getFormOptions() }
+					options={ getFormOptions( forms ) }
 					onChange={ setFormIdTo }
+					value={ 0 }
 				/>
 			</GiveBlankSlate>
 		);
