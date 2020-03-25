@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isUndefined } from 'lodash';
-
-/**
  * Wordpress dependencies
  */
 const { Component } = wp.element;
@@ -36,7 +31,7 @@ class ChosenSelect extends Component {
 		const { value } = this.props;
 
 		this.$el = jQuery( this.el );
-		this.$el.val( ! isUndefined( value ) ? value : 0 );
+		this.$el.val( value );
 
 		this.$input = this.$el.chosen( {
 			width: '100%',
