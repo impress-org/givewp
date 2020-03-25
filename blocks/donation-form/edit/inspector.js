@@ -3,7 +3,6 @@
  */
 import ChosenSelect from '../../components/chosen-select';
 
-
 /**
  * Wordpress dependencies
  */
@@ -13,12 +12,11 @@ const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
 const { Component } = wp.element;
 const { withSelect } = wp.data;
 
-
 /**
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
-import {getFormOptions} from '../../utils';
+import { getFormOptions, isShowOldSettings } from '../../utils';
 
 /**
  * Render Inspector Controls
@@ -48,7 +46,7 @@ class Inspector extends Component {
 	}
 
 	render() {
-		const {forms} = this.props;
+		const { forms } = this.props;
 
 		const {
 			id,
@@ -66,55 +64,60 @@ class Inspector extends Component {
 						className="give-blank-slate__select"
 						name="id"
 						value={ id }
-						options={ getFormOptions(forms) }
+						options={ getFormOptions( forms ) }
 						onChange={ ( value ) => this.saveSetting( 'id', value ) }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Display' ) }>
-					<SelectControl
-						label={ __( 'Form Format' ) }
-						name="displayStyle"
-						value={ displayStyle }
-						options={ giveFormOptions.displayStyles }
-						onChange={ ( value ) => this.saveSetting( 'displayStyle', value ) } />
-					{
-						'reveal' === displayStyle && (
-							<TextControl
-								name="continueButtonTitle"
-								label={ __( 'Continue Button Title' ) }
-								value={ this.state.continueButtonTitle }
-								onChange={ ( value ) => this.saveState( 'continueButtonTitle', value ) }
-								onBlur={ ( event ) => this.saveSetting( 'continueButtonTitle', event.target.value ) } />
-						)
-					}
-				</PanelBody>
-				<PanelBody title={ __( 'Settings' ) }>
-					<ToggleControl
-						label={ __( 'Title' ) }
-						name="showTitle"
-						checked={ !! showTitle }
-						onChange={ ( value ) => this.saveSetting( 'showTitle', value ) } />
-					<ToggleControl
-						label={ __( 'Goal' ) }
-						name="showGoal"
-						checked={ !! showGoal }
-						onChange={ ( value ) => this.saveSetting( 'showGoal', value ) } />
-					<ToggleControl
-						label={ __( 'Content' ) }
-						name="contentDisplay"
-						checked={ !! contentDisplay }
-						onChange={ ( value ) => this.saveSetting( 'contentDisplay', value ) } />
-					{
-						contentDisplay && (
-							<SelectControl
-								label={ __( 'Content Position' ) }
-								name="showContent"
-								value={ showContent }
-								options={ giveFormOptions.contentPosition }
-								onChange={ ( value ) => this.saveSetting( 'showContent', value ) } />
-						)
-					}
-				</PanelBody>
+				{
+					isShowOldSettings( forms, id ) && (
+						<div>
+							<PanelBody title={ __( 'Display' ) }>
+								<SelectControl
+									label={ __( 'Form Format' ) }
+									name="displayStyle"
+									value={ displayStyle }
+									options={ giveFormOptions.displayStyles }
+									onChange={ ( value ) => this.saveSetting( 'displayStyle', value ) } />
+								{
+									'reveal' === displayStyle && (
+										<TextControl
+											name="continueButtonTitle"
+											label={ __( 'Continue Button Title' ) }
+											value={ this.state.continueButtonTitle }
+											onChange={ ( value ) => this.saveState( 'continueButtonTitle', value ) }
+											onBlur={ ( event ) => this.saveSetting( 'continueButtonTitle', event.target.value ) } />
+									)
+								}
+							</PanelBody>
+							<PanelBody title={ __( 'Settings' ) }>
+								<ToggleControl
+									label={ __( 'Title' ) }
+									name="showTitle"
+									checked={ !! showTitle }
+									onChange={ ( value ) => this.saveSetting( 'showTitle', value ) } />
+								<ToggleControl
+									label={ __( 'Goal' ) }
+									name="showGoal"
+									checked={ !! showGoal }
+									onChange={ ( value ) => this.saveSetting( 'showGoal', value ) } />
+								<ToggleControl
+									label={ __( 'Content' ) }
+									name="contentDisplay"
+									checked={ !! contentDisplay }
+									onChange={ ( value ) => this.saveSetting( 'contentDisplay', value ) } />
+								{
+									contentDisplay && (
+										<SelectControl
+											label={ __( 'Content Position' ) }
+											name="showContent"
+											value={ showContent }
+											options={ giveFormOptions.contentPosition }
+											onChange={ ( value ) => this.saveSetting( 'showContent', value ) } />
+									)
+								}
+							</PanelBody>
+						</div>
+					) }
 			</InspectorControls>
 		);
 	}
