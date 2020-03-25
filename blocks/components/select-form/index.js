@@ -8,7 +8,7 @@ import { isUndefined } from 'lodash';
  */
 const { __ } = wp.i18n;
 const { withSelect } = wp.data;
-const { SelectControl, Button, Placeholder, Spinner } = wp.components;
+const { Button, Placeholder, Spinner } = wp.components;
 
 /**
  * Internal dependencies

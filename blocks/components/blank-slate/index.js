@@ -6,7 +6,6 @@ const { __ } = wp.i18n;
 /**
 * Internal dependencies
 */
-import { getSiteUrl } from '../../utils';
 import GiveHelpLink from '../help-link';
 import PlaceholderAnimation from '../placeholder-animation';
 import GiveLogo from '../logo';
