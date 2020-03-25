@@ -1,3 +1,5 @@
+const { __ } = wp.i18n;
+
 /**
  * getSiteUrl from API root
  * @returns {string} siteurl
