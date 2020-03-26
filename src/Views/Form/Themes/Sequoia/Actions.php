@@ -116,8 +116,6 @@ class Actions {
 	 */
 	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
-		include 'sections/income-stats.php';
-		include 'sections/progress-bar.php';
 	}
 
 	/**

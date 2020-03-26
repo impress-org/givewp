@@ -22,4 +22,10 @@ $image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->
 			<img src="<?php echo $image; ?>" />
 		</div>
 	<?php }; ?>
+
+	<?php
+		require 'income-stats.php';
+		require 'progress-bar.php';
+	?>
+
 </div>
