@@ -221,11 +221,14 @@
 			}
 
 			return res( showFields );
-		} ).then( function() {
+		} ).then( function( showFields ) {
 			$( '.give-label' ).html( '' );
 			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
 			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
 			$( 'label[for=billing_country]' ).html( '<i class="fas fa-globe-americas"></i>' );
+
+			// eslint-disable-next-line no-unused-expressions
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
 		} );
 	}
 
