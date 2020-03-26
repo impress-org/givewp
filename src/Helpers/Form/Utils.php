@@ -62,9 +62,9 @@ function isViewingFormFailedTransactionPage() {
  * @return string
  * @since 2.7.0
  */
-function getSuccessPageURL( $args = array() ) {
+function getSuccessPageURL( $args = [] ) {
 	return add_query_arg(
-		array_merge( array( 'giveDonationAction' => 'showReceipt' ), $args ),
+		array_merge( [ 'giveDonationAction' => 'showReceipt' ], $args ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
 }
@@ -77,9 +77,9 @@ function getSuccessPageURL( $args = array() ) {
  * @return string
  * @since 2.7
  */
-function getFailedTransactionPageURL( $args = array() ) {
+function getFailedTransactionPageURL( $args = [] ) {
 	return add_query_arg(
-		array_merge( array( 'giveDonationAction' => 'failedDonation' ), $args ),
+		array_merge( [ 'giveDonationAction' => 'failedDonation' ], $args ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
 }

@@ -8,6 +8,9 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use WP_REST_Request;
+use WP_REST_Response;
+
 class AverageDonation extends Endpoint {
 
 	protected $payments;
@@ -16,24 +19,21 @@ class AverageDonation extends Endpoint {
 		$this->endpoint = 'average-donation';
 	}
 
+	/**
+	 * Handle rest request.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 */
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				array(
-					'data' => $cached_report,
-				)
-			);
-		}
-
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -51,24 +51,15 @@ class AverageDonation extends Endpoint {
 				break;
 		}
 
-		// Cache the report data
-		$result = $this->cache_report( $request, $data );
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			array(
-				'data'   => $data,
-				'status' => $status,
-			)
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $intervalStr ) {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$income   = array();
-		$tooltips = array();
+		$income   = [];
+		$tooltips = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -88,16 +79,16 @@ class AverageDonation extends Endpoint {
 				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $averageForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $averageForPeriod ), array( 'decode_currency' => true ) ),
+			$tooltips[] = [
+				'title'  => give_currency_filter( give_format_amount( $averageForPeriod ), [ 'decode_currency' => true ] ),
 				'body'   => __( 'Avg Donation', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -111,17 +102,18 @@ class AverageDonation extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'      => $income,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), array( 'decode_currency' => true ) ),
-				),
-			),
-		);
+					'highlight' => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), [ 'decode_currency' => true ] ),
+
+				],
+			],
+		];
 
 		return $data;
 

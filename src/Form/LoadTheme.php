@@ -71,7 +71,7 @@ class LoadTheme {
 
 		// Load theme scripts.
 		if ( $this->theme instanceof Scriptable ) {
-			add_action( 'wp_enqueue_scripts', array( $this->theme, 'loadScripts' ) );
+			add_action( 'wp_enqueue_scripts', [ $this->theme, 'loadScripts' ] );
 		}
 
 		$this->setUpFrontendHooks();
@@ -89,14 +89,14 @@ class LoadTheme {
 		}
 
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 2 );
+		add_action( 'give_embed_head', [ $this, 'enqueue_scripts' ], 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
 		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 
 		// Update form DOM.
-		add_filter( 'give_form_wrap_classes', array( $this, 'editClassList' ), 999 );
-		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
+		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
+		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
 	}
 
 

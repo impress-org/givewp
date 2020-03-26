@@ -16,8 +16,8 @@ class DonationsVsIncome extends Endpoint {
 
 	public function get_report( $request ) {
 
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
 		$data = [];
@@ -52,11 +52,7 @@ class DonationsVsIncome extends Endpoint {
 				break;
 		}
 
-		return new \WP_REST_Response(
-			[
-				'data' => $data,
-			]
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $interval, $format ) {

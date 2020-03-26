@@ -79,7 +79,7 @@ class Group {
 	 * @param $array
 	 */
 	private function validate( $array ) {
-		$required = array( 'id', 'name', 'fields' );
+		$required = [ 'id', 'name', 'fields' ];
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException( __( 'To create a group object, please provide id, name and fields.', 'give' ) );
