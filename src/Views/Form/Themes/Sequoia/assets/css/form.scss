@@ -227,8 +227,8 @@ textarea {
 	}
 }
 
-#give_checkout_user_info {
-	> p {
+fieldset {
+	.form-row {
 		position: relative;
 		border-radius: 4px;
 		overflow: hidden;
@@ -236,20 +236,30 @@ textarea {
 		border: 1px solid #8d8e8e;
 		box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289);
 		display: flex;
+		padding: 0 10px !important;
 		align-items: center;
+		min-height: 40px;
+	}
 
-		.give-label {
-			font-size: 14px;
-			padding: 0 0 0 10px;
-			margin: 0;
-		}
+	.give-label {
+		font-size: 14px;
+		margin: 0 !important;
+		line-height: 1;
 
-		.give-input {
-			color: #828382;
-			font-size: 14px;
-			font-family: 'Montserrat', sans-serif;
-			border: none;
+		> i {
+			padding-right: 10px;
 		}
+	}
+
+	.give-input,
+	.give-select {
+		border: none !important;
+		border-radius: 4px !important;
+		overflow: hidden !important;
+		color: #828382 !important;
+		font-size: 14px;
+		padding: 0 !important;
+		font-family: 'Montserrat', sans-serif;
 	}
 }
 
