@@ -26,15 +26,15 @@ class Actions {
 		$this->themeOptions = getTheme();
 
 		// Handle personal section html template.
-		add_action( 'wp_ajax_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
-		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
+		add_action( 'wp_ajax_nopriv_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
+		add_action( 'wp_ajax_nopriv_give_checkout_register', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
 
 		// Handle common hooks.
-		add_action( 'give_donation_form', array( $this, 'loadCommonHooks' ), 9, 2 );
+		add_action( 'give_donation_form', [ $this, 'loadCommonHooks' ], 9, 2 );
 
 		// Setup hooks.
-		add_action( 'give_pre_form_output', array( $this, 'loadHooks' ), 1, 3 );
+		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Actions {
 	 * @return void
 	 */
 	public function cancelLoginAjaxHanleder() {
-		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSectionTextSubSection' ) );
+		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 	}
 
 	/**
@@ -68,14 +68,14 @@ class Actions {
 		/**
 		 * Add hooks
 		 */
-		add_action( 'give_pre_form', array( $this, 'getIntroductionSection' ), 12, 3 );
-		add_action( 'give_pre_form', array( $this, 'getStatsSection' ), 13, 3 );
-		add_action( 'give_pre_form', array( $this, 'getProgressBarSection' ), 14, 3 );
-		add_action( 'give_post_form', array( $this, 'getNextButton' ), 13, 3 );
-		add_action( 'give_donation_form_top', array( $this, 'getStartWrapperHTMLForAmountSection' ), 0 );
-		add_action( 'give_donation_form_top', array( $this, 'getCloseWrapperHTMLForAmountSection' ), 99998 );
+		add_action( 'give_pre_form', [ $this, 'getIntroductionSection' ], 12, 3 );
+		add_action( 'give_pre_form', [ $this, 'getStatsSection' ], 13, 3 );
+		add_action( 'give_pre_form', [ $this, 'getProgressBarSection' ], 14, 3 );
+		add_action( 'give_post_form', [ $this, 'getNextButton' ], 13, 3 );
+		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
+		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
-		add_action( 'give_donation_form_before_personal_info', array( $this, 'getIntroductionSectionTextSubSection' ) );
+		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 
 		/**
 		 * Remove actions
@@ -90,7 +90,7 @@ class Actions {
 		add_filter( 'give_form_title', '__return_empty_string' );
 
 		// Override checkout button
-		add_filter( 'give_donation_form_submit_button', array( $this, 'getCheckoutButton' ) );
+		add_filter( 'give_donation_form_submit_button', [ $this, 'getCheckoutButton' ] );
 	}
 
 	/**
