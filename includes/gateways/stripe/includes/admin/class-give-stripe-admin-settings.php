@@ -565,9 +565,25 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				<td class="give-forminp give-forminp-api_key">
 					<?php
 					if ( give_stripe_is_connected() ) :
-						$stripe_user_id = give_get_option( 'give_stripe_user_id' );
+						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
+						$modal_title         = __( 'Connected! <strong>Important: Now please configure the stripe webhook to finalize the setup.</strong>', 'give' );
+						$modal_first_detail  = sprintf(
+							'%1$s %2$s',
+							__( 'In order for Stripe to function properly, you must configure your Stripe webhooks. You can visit your Stripe Account Dashboard to add a new webhook endpoint for the following URL:', 'give' ),
+							'https://give.test/?give-listener=stripe'
+						);
+						$modal_second_detail = __( 'Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' );
 						?>
-						<span id="give-stripe-connect" class="stripe-btn-disabled"><span>Connected</span></span>
+						<span
+							id="give-stripe-connect"
+							class="stripe-btn-disabled"
+							data-status="connected"
+							data-title="<?php echo $modal_title; ?>"
+							data-first-detail="<?php echo $modal_first_detail; ?>"
+							data-second-detail="<?php echo $modal_second_detail; ?>"
+						>
+							<span>Connected</span>
+						</span>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-yes" style="color:#25802d;"></span>
 							<?php
@@ -653,7 +669,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 							?>
 							<p>
-								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
+								<strong><?php esc_html_e( 'Last webhook received on', 'give' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
 							</p>
 							<?php
 						}
