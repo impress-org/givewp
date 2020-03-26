@@ -69,8 +69,8 @@ class Actions {
 		 * Add hooks
 		 */
 		add_action( 'give_pre_form', [ $this, 'getNavigator' ], 0, 3 );
-		add_action( 'give_pre_form', [ $this, 'getIntroductionSection' ], 12, 3 );
 		add_action( 'give_post_form', [ $this, 'getNextButton' ], 13, 3 );
+		add_action( 'give_donation_form_top', [ $this, 'getIntroductionSection' ], 0, 3 );
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
