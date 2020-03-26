@@ -86,7 +86,6 @@ textarea {
 .give-section.introduction {
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	flex-direction: column;
 	text-align: center;
 
@@ -95,8 +94,8 @@ textarea {
 		font-size: 26px;
 		line-height: 30px;
 		color: #333;
-		margin: 30px 0 20px 0;
 		max-width: 75%;
+		margin: 30px auto 20px auto;
 	}
 
 	.seperator {
@@ -104,7 +103,7 @@ textarea {
 		height: 4px;
 		background: #28c77b;
 		border-radius: 4px;
-		margin: 0;
+		margin: 0 auto;
 	}
 
 	p {
@@ -112,8 +111,8 @@ textarea {
 		font-size: 16px;
 		line-height: 24px;
 		color: #555;
-		margin: 20px 0 30px 0;
 		max-width: 66%;
+		margin: 20px auto 30px auto;
 	}
 
 	.image-container {
