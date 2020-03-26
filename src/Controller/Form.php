@@ -38,7 +38,7 @@ class Form {
 		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
-		add_action( 'give_before_single_form', [ $this, 'handleLegacyDonationFormTemplate' ], 9 );
+		add_action( 'give_before_single_form_summary', [ $this, 'handleLegacyDonationFormTemplate' ], 0 );
 	}
 
 	/**
