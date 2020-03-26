@@ -221,16 +221,11 @@
 			}
 
 			return res( showFields );
-		} ).then( function( showFields ) {
-			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow', function() {
-				// scroll parent page to selected payment gateway.
-				const $gateway = document.querySelector( 'li.give-gateway-option-selected' );
-
-				if ( $gateway ) {
-					window.parentIFrame.scrollToOffset( 0, parseInt( $gateway.offsetTop ) - 20 );
-				}
-			} );
+		} ).then( function() {
+			$( '.give-label' ).html( '' );
+			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
+			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+			$( 'label[for=billing_country]' ).html( '<i class="fas fa-globe-americas"></i>' );
 		} );
 	}
 
