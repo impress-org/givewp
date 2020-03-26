@@ -28,23 +28,28 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 	if ( null !== stripeConnectedElement ) {
 		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
+		const redirectUrl = stripeConnectedElement.getAttribute( 'data-redirect-url' );
+		const canDisplay = stripeConnectedElement.getAttribute( 'data-display' );
 		const modalTitle = stripeConnectedElement.getAttribute( 'data-title' );
 		const modalFirstDetail = stripeConnectedElement.getAttribute( 'data-first-detail' );
 		const modalSecondDetail = stripeConnectedElement.getAttribute( 'data-second-detail' );
 
-		if ( 'connected' === stripeStatus ) {
+		if ( 'connected' === stripeStatus && '0' === canDisplay ) {
 			new GiveConfirmModal(
 				{
-					modalWrapper: 'give-stripe-connected-modal',
+					modalWrapper: 'give-stripe-connected-modal give-modal--success',
 					modalContent: {
 						title: modalTitle,
-						desc: modalFirstDetail +'<br/><span class="give-field-description">' + modalSecondDetail + '</span>',
+						desc: '<span>' + modalFirstDetail + '</span>' + '<span class="give-field-description">' + modalSecondDetail + '</span>',
 					},
 					successConfirm: function( args ) {
-
+						window.location.href = redirectUrl;
 					},
 				}
 			).render();
+
+			stripeConnectedElement.setAttribute( 'data-display', '1' );
+			history.pushState( { urlPath: redirectUrl }, '', redirectUrl );
 		}
 	}
 
