@@ -33,10 +33,10 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		add_action( 'template_redirect', array( $this, 'load' ), 0 );
-		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
-		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
-		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
+		add_action( 'template_redirect', [ $this, 'load' ], 0 );
+		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
+		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
+		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Form {
 			return;
 		}
 
-		add_filter( 'give_get_success_page_uri', array( $this, 'addQueryParamsToSuccessURI' ) );
+		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
 	}
 
 
@@ -188,7 +188,7 @@ class Form {
 	 * @return string
 	 */
 	public function addQueryParamsToSuccessURI( $successPage ) {
-		return add_query_arg( array( 'giveDonationAction' => 'showReceipt' ), $successPage );
+		return add_query_arg( [ 'giveDonationAction' => 'showReceipt' ], $successPage );
 	}
 
 	/**

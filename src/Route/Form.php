@@ -52,9 +52,9 @@ class Form {
 		$this->setBasePrefix();
 		$controller->init();
 
-		add_action( 'init', array( $this, 'addRule' ) );
-		add_action( 'query_vars', array( $this, 'addQueryVar' ) );
-		add_action( 'give-settings_save_advanced', array( $this, 'updateRule' ), 11 );
+		add_action( 'init', [ $this, 'addRule' ] );
+		add_action( 'query_vars', [ $this, 'addQueryVar' ] );
+		add_action( 'give-settings_save_advanced', [ $this, 'updateRule' ], 11 );
 	}
 
 	/**

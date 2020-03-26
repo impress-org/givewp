@@ -10,10 +10,10 @@ if ( $form->has_goal() ) : ?>
 	$raised = give_currency_filter(
 		give_format_amount(
 			$form->get_earnings(),
-			array(
+			[
 				'sanitize' => false,
 				'decimal'  => false,
-			)
+			]
 		)
 	);
 
@@ -27,10 +27,10 @@ if ( $form->has_goal() ) : ?>
 	$goal = give_currency_filter(
 		give_format_amount(
 			$form->get_goal(),
-			array(
+			[
 				'sanitize' => false,
 				'decimal'  => false,
-			)
+			]
 		)
 	);
 

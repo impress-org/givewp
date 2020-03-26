@@ -82,7 +82,7 @@ class Fields {
 	 * @throws InvalidArgumentException
 	 */
 	private function validate( $array ) {
-		$required = array( 'id', 'name', 'type' );
+		$required = [ 'id', 'name', 'type' ];
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {

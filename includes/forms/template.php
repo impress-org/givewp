@@ -785,7 +785,7 @@ function give_user_info_fields( $form_id ) {
 					<?php echo Give()->tooltips->render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
 				</label>
 				<select
-					class="give-input required"
+					class="give-input"
 					type="text"
 					name="give_title"
 					id="give-title"
