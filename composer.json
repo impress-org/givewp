@@ -38,7 +38,8 @@
             "src/Helpers/Form/Theme/Theme.php",
             "src/Helpers/Form/Theme/Utils/Admin.php",
             "src/Helpers/Form/Theme/Utils/Frontend.php",
-            "src/Helpers/Form/Utils.php"
+            "src/Helpers/Form/Utils.php",
+            "src/Helpers/Frontend/Shortcode.php"
         ]
     }
 }
