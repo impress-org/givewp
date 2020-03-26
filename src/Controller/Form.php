@@ -13,6 +13,7 @@ use Give\Form\LoadTheme;
 use WP_Post;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
+use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -37,6 +38,7 @@ class Form {
 		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
 	/**
@@ -208,5 +210,50 @@ class Form {
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
+	}
+
+	/**
+	 * Handle single donation form page.
+	 *
+	 * @since 2.7.0
+	 */
+	public function handleSingleDonationFormPage() {
+		// Exit if current form is legacy
+		if ( isLegacyForm() ) {
+			return;
+		}
+
+		// Disable sidebar.
+		add_action( 'give_get_option_form_sidebar', [ $this, 'disableLegacyDonationFormSidebar' ] );
+
+		// Remove title.
+		remove_action( 'give_single_form_summary', 'give_template_single_title', 5 );
+
+		// Remove donation form renderer.
+		remove_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
+
+		add_action( 'give_single_form_summary', [ $this, 'renderFormOnSingleDonationFormPage' ], 10 );
+	}
+
+	/**
+	 * Return 'disabled' as donation form sidebar status.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function disableLegacyDonationFormSidebar() {
+		return 'disabled';
+	}
+
+
+	/**
+	 * This function handle donation form style for single donation page.
+	 *
+	 * Note: it will render style on basis on selected form template.
+	 *
+	 * @since 2.7.0
+	 */
+	public function renderFormOnSingleDonationFormPage() {
+		echo give_form_shortcode( [] );
 	}
 }
