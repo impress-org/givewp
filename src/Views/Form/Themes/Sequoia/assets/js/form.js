@@ -10,6 +10,12 @@
 		currentStep: null,
 		animating: false,
 		goToStep: ( step ) => {
+			if ( steps[ step ].showErrors === true ) {
+				$( '.give_error, .give_warning, .give_success' ).show();
+			} else {
+				$( '.give_error, .give_warning, .give_success' ).hide();
+			}
+
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
@@ -62,6 +68,7 @@
 			title: 'Introduction',
 			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
+			showErrors: false,
 			setup: () => {
 
 			},
@@ -71,6 +78,7 @@
 			title: 'Choose Amount',
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
+			showErrors: false,
 			setup: () => {
 				$( '.give-donation-level-btn' ).each( function() {
 					const hasTooltip = $( this ).attr( 'has-tooltip' );
@@ -97,6 +105,7 @@
 			title: 'Add Your Information',
 			label: 'Process Donation',
 			selector: '.give-section.personal, #give_checkout_user_info, #give-payment-mode-select, #give_purchase_form_wrap',
+			showErrors: true,
 			setup: () => {
 				// Show remain form options.
 				$( '.give-label' ).html( '' );
