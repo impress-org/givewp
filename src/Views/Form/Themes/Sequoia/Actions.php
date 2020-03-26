@@ -70,6 +70,7 @@ class Actions {
 		 */
 		add_action( 'give_pre_form', [ $this, 'getNavigator' ], 0, 3 );
 		add_action( 'give_post_form', [ $this, 'getNextButton' ], 13, 3 );
+		add_action( 'give_post_form', [ $this, 'getFooterSection' ], 99998, 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getIntroductionSection' ], 0, 3 );
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
@@ -116,6 +117,15 @@ class Actions {
 	 */
 	public function getIntroductionSection( $formId, $args, $form ) {
 		include 'sections/introduction.php';
+	}
+
+	/**
+	 * Add form footer
+	 *
+	 * @since 2.7.0
+	 */
+	public function getFooterSection() {
+		include 'sections/footer.php';
 	}
 
 	/**

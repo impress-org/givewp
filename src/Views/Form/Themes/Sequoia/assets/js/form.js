@@ -16,6 +16,9 @@
 				$( '.give_error, .give_warning, .give_success' ).hide();
 			}
 
+			$( '.step-tracker' ).removeClass( 'current' );
+			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
+
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
@@ -165,6 +168,10 @@
 	$backButton.on( 'click', function( e ) {
 		e.preventDefault();
 		navigator.back();
+	} );
+	$( '.step-tracker' ).on( 'click', function( e ) {
+		e.preventDefault();
+		navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 	} );
 
 	// Move personal information section when document load.
