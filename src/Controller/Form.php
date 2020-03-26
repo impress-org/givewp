@@ -38,7 +38,7 @@ class Form {
 		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
-		add_action( 'give_before_single_form_summary', [ $this, 'handleLegacyDonationFormTemplate' ], 0 );
+		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
 	/**
@@ -213,11 +213,11 @@ class Form {
 	}
 
 	/**
-	 * Handle legacy donation form sidebar
+	 * Handle single donation form page.
 	 *
 	 * @since 2.7.0
 	 */
-	public function handleLegacyDonationFormTemplate() {
+	public function handleSingleDonationFormPage() {
 		// Exit if current form is legacy
 		if ( isLegacyForm() ) {
 			return;
