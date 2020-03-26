@@ -1,13 +1,5 @@
-.float-right {
-	float: right;
-}
-
 .gutenberg__editor .give-blank-slate__image {
 	max-width: 96px;
-}
-
-.components-button {
-	margin: 15px 0 0 0;
 }
 
 .give-chosen-base-control {
@@ -18,5 +10,7 @@
 	ul.chosen-results {
 		margin: 0 !important;
 		text-align: left !important;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+			'Helvetica Neue', sans-serif;
 	}
 }

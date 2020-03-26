@@ -8,14 +8,43 @@
 
 namespace Give\API\Endpoints\Reports;
 
+use DateInterval;
+use DateTime;
 use \Give_Cache;
+use Give_Payment;
+use WP_REST_Request;
+use WP_REST_Response;
 
 abstract class Endpoint {
 
+	/**
+	 * @since 2.6.1
+	 * @var WP_REST_Request
+	 */
+	protected $request;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $startDate;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $endDate;
+
+	/**
+	 * @var DateInterval
+	 */
+	protected $dateDiff;
+
+	/**
+	 * @var string
+	 */
 	protected $endpoint;
 
 	public function init() {
-		add_action( 'rest_api_init', array( $this, 'register_route' ) );
+		add_action( 'rest_api_init', [ $this, 'register_route' ] );
 	}
 
 	// Register our routes.
@@ -23,31 +52,72 @@ abstract class Endpoint {
 		register_rest_route(
 			'give-api/v2',
 			'/reports/' . $this->endpoint,
-			array(
+			[
 				// Here we register the readable endpoint
-				array(
+				[
 					'methods'             => 'GET',
-					'callback'            => array( $this, 'get_report' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => array(
-						'start' => array(
+					'callback'            => [ $this, 'get_report' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => [
+						'start' => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_date' ),
-							'sanitize_callback' => array( $this, 'sanitize_date' ),
-						),
-						'end'   => array(
+							'validate_callback' => [ $this, 'validate_date' ],
+							'sanitize_callback' => [ $this, 'sanitize_date' ],
+						],
+						'end'   => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_date' ),
-							'sanitize_callback' => array( $this, 'sanitize_date' ),
-						),
-					),
-				),
+							'validate_callback' => [ $this, 'validate_date' ],
+							'sanitize_callback' => [ $this, 'sanitize_date' ],
+						],
+					],
+				],
 				// Register our schema callback.
-				'schema' => array( $this, 'get_report_schema' ),
-			)
+				'schema' => [ $this, 'get_report_schema' ],
+			]
 		);
+	}
+
+	/**
+	 * Handle rest request.
+	 *
+	 * @since 2.6.1
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function handle_request( $request ) {
+		// Check if a cached version exists
+		$cached_report = $this->get_cached_report( $request );
+		if ( $cached_report !== null ) {
+			// Bail and return the cached version
+			return new WP_REST_Response( $cached_report );
+		}
+
+		$this->setupProperties( $request );
+
+		$responseData = [
+			'status' => $this->get_give_status(),
+			'data'   => $this->get_report( $request ),
+		];
+
+		$this->cache_report( $request, $responseData );
+
+		return new WP_REST_Response( $responseData );
+	}
+
+	/**
+	 * Setup properties
+	 *
+	 * @since 2.6.1
+	 * @param WP_REST_Request $request
+	 */
+	private function setupProperties( $request ) {
+		$this->request   = $request;
+		$this->startDate = date_create( $request->get_param( 'start' ) );
+		$this->endDate   = date_create( $request->get_param( 'end' ) );
+		$this->dateDiff  = date_diff( $this->startDate, $this->endDate );
 	}
 
 	public function validate_date( $param, $request, $key ) {
@@ -57,8 +127,8 @@ abstract class Endpoint {
 
 		// If checking end date, check that it is after start date
 		if ( $key === 'end' ) {
-			$start = date_create( $request['start'] );
-			$end   = date_create( $request['end'] );
+			$start = date_create( $request->get_param( 'start' ) );
+			$end   = date_create( $request->get_param( 'end' ) );
 			$valid = $start <= $end ? $valid : false;
 		}
 
@@ -82,9 +152,7 @@ abstract class Endpoint {
 			return new \WP_Error(
 				'rest_forbidden',
 				esc_html__( 'You cannot view the reports resource.', 'give' ),
-				array(
-					'status' => $this->authorization_status_code(),
-				)
+				[ 'status' => $this->authorization_status_code() ]
 			);
 		}
 		return true;
@@ -94,16 +162,16 @@ abstract class Endpoint {
 	 * Get report callback
 	 *
 	 * @param WP_REST_Request $request Current request.
+	 *
+	 * @return array
 	 */
 	public function get_report( $request ) {
-		return new \WP_REST_Response(
-			array(
-				'data' => array(
-					'labels' => array( 'a', 'b', 'c' ),
-					'data'   => array( '1', '4', '3' ),
-				),
-			)
-		);
+		return [
+			'data' => [
+				'labels' => [ 'a', 'b', 'c' ],
+				'data'   => [ '1', '4', '3' ],
+			],
+		];
 	}
 
 	/**
@@ -118,20 +186,20 @@ abstract class Endpoint {
 			return $this->schema;
 		}
 
-		$this->schema = array(
+		$this->schema = [
 			// This tells the spec of JSON Schema we are using which is draft 4.
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			// The title property marks the identity of the resource.
 			'title'      => 'report',
 			'type'       => 'object',
 			// In JSON Schema you can specify object properties in the properties attribute.
-			'properties' => array(
-				'data' => array(
+			'properties' => [
+				'data' => [
 					'description' => esc_html__( 'The data for the report.', 'give' ),
 					'type'        => 'object',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $this->schema;
 	}
@@ -152,124 +220,106 @@ abstract class Endpoint {
 	 * Get cached report
 	 *
 	 * @param WP_REST_Request $request Current request.
+	 *
+	 * @return mixed
 	 */
 	public function get_cached_report( $request ) {
-
-		$start = date_create( $request['start'] );
-		$end   = date_create();
-
-		// Do not get cached report for period less than a week
-		$diff = date_diff( $start, $end );
-		if ( $diff->days < 2 ) {
-			return null;
-		}
-
-		$query_args = array(
-			'start' => $request['start'],
-			'end'   => $request['end'],
-		);
-
-		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $request->get_params() );
 
 		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;
-		} else {
-			return null;
 		}
+
+		return null;
+
 	}
 
 	/**
 	 * Cache report
 	 *
 	 * @param WP_REST_Request $request Current request.
+	 * @param array           $report
+	 *
+	 * @return bool
 	 */
 	public function cache_report( $request, $report ) {
+		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $request->get_params() );
 
-		$query_args = array(
-			'start' => $request['start'],
-			'end'   => $request['end'],
-		);
-
-		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $query_args );
-
-		$result = Give_Cache::set_db_query( $cache_key, $report );
-
-		return $result;
+		return Give_Cache::set_db_query( $cache_key, $report );
 
 	}
 
-		/**
-		 * Cache report
-		 *
-		 * @param WP_REST_Request $request Current request.
-		 */
-	public function cache_payments( $startStr, $endStr, $orderBy, $number, $payments ) {
+	/**
+	 * Cache report
+	 *
+	 * @param  array          $args Query arguments.
+	 * @param  Give_Payment[] $payments Payments.
+	 *
+	 * @return bool
+	 */
+	private function cache_payments( $args, $payments ) {
+		$cache_key = Give_Cache::get_key( 'api_report_payments', $args );
 
-		$query_args = array(
-			'start'   => $startStr,
-			'end'     => $endStr,
-			'orderby' => $orderBy,
-			'number'  => $number,
-		);
-
-		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
-
-		$result = Give_Cache::set_db_query( $cache_key, $payments );
-
-		return $result;
+		return Give_Cache::set_db_query( $cache_key, $payments );
 
 	}
 
 	/**
 	 * Get cached report
 	 *
-	 * @param WP_REST_Request $request Current request.
+	 * @param  array $args Query arguments.
+	 * @return mixed
 	 */
-	public function get_cached_payments( $startStr, $endStr, $orderBy, $number ) {
+	private function get_cached_payments( $args ) {
 
-		$query_args = array(
-			'start'   => $startStr,
-			'end'     => $endStr,
-			'orderby' => $orderBy,
-			'number'  => $number,
-		);
-
-		$cache_key = Give_Cache::get_key( 'api_report_payments', $query_args );
+		$cache_key = Give_Cache::get_key( 'api_report_payments', $args );
 
 		$cached = Give_Cache::get_db_query( $cache_key );
 
 		if ( $cached ) {
 			return $cached;
-		} else {
-			return null;
 		}
+
+		return null;
+
 	}
 
+
+	/**
+	 * Get payment.
+	 *
+	 * @param  string $startStr
+	 * @param   string $endStr
+	 * @param string $orderBy
+	 * @param int    $number
+	 *
+	 * @return mixed
+	 */
 	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
-
-		// Check if a cached payments exists
-		$cached_payments = $this->get_cached_payments( $startStr, $endStr, $orderBy, $number );
-		if ( $cached_payments !== null ) {
-			// Bail and return the cached payments
-			return $cached_payments;
-		}
-
-		$args = array(
+		$args = [
 			'number'     => $number,
 			'paged'      => 1,
 			'orderby'    => $orderBy,
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
-		);
+		];
+
+		// Check if a cached payments exists
+		$cached_payments = $this->get_cached_payments( $args );
+
+		if ( $cached_payments !== null ) {
+			// Bail and return the cached payments
+			return $cached_payments;
+		}
 
 		$payments = new \Give_Payments_Query( $args );
 		$payments = $payments->get_payments();
 
 		// Cache the report data
-		$result = $this->cache_payments( $startStr, $endStr, $orderBy, $number, $payments );
+		$this->cache_payments( $args, $payments );
 
 		return $payments;
 
@@ -278,11 +328,11 @@ abstract class Endpoint {
 	public function get_give_status() {
 
 		$donations = get_posts(
-			array(
-				'post_type'   => array( 'give_payment' ),
+			[
+				'post_type'   => [ 'give_payment' ],
 				'post_status' => 'publish',
 				'numberposts' => 1,
-			)
+			]
 		);
 
 		if ( count( $donations ) > 0 ) {

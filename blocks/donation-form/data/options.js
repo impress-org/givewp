@@ -23,7 +23,4 @@ giveFormOptions.contentPosition = [
 	{ value: 'below', label: __( 'Below' ) },
 ];
 
-// Form content Position
-giveFormOptions.formTemplates = Give.fn.getGlobalVar( 'formTemplate' );
-
 export default giveFormOptions;

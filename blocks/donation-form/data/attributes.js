@@ -4,6 +4,7 @@
 const blockAttributes = {
 	id: {
 		type: 'number',
+		default: 0,
 	},
 	prevId: {
 		type: 'number',
@@ -31,14 +32,6 @@ const blockAttributes = {
 	showContent: {
 		type: 'string',
 		default: 'above',
-	},
-	embed: {
-		type: 'boolean',
-		default: false,
-	},
-	formTemplate: {
-		type: 'string',
-		default: 'legacy',
 	},
 };
 

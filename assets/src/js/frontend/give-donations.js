@@ -56,8 +56,6 @@ jQuery( function( $ ) {
 						new_state_field = $( new_state_field );
 					}
 
-					console.log( new_state_field );
-
 					// No float labels.
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
 						if (

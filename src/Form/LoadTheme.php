@@ -43,24 +43,21 @@ class LoadTheme {
 	 * setup form template
 	 *
 	 * @since 2.7.0
-	 * @param string $formTemplate Form template id.
-	 * @param int    $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
+	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
 	 */
-	private function setUpTemplate( $formTemplate, $formId = null ) {
+	private function setUpTemplate( $formId = null ) {
 		$formID = (int) ( $formId ?: getFormId() );
 
-		$themeID = $formTemplate ?: ( getActiveID( $formID ) ?: $this->defaultTemplateID );
+		$themeID = getActiveID( $formID ) ?: $this->defaultTemplateID;
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
 
 	/**
 	 * Initialize form template
-	 *
-	 * @param string $formTemplate
 	 */
-	public function init( $formTemplate = '' ) {
-		$this->setUpTemplate( $formTemplate );
+	public function init() {
+		$this->setUpTemplate();
 
 		// Exit is theme is not valid.
 		if ( ! ( $this->theme instanceof Theme ) ) {
@@ -74,7 +71,7 @@ class LoadTheme {
 
 		// Load theme scripts.
 		if ( $this->theme instanceof Scriptable ) {
-			add_action( 'wp_enqueue_scripts', array( $this->theme, 'loadScripts' ) );
+			add_action( 'wp_enqueue_scripts', [ $this->theme, 'loadScripts' ] );
 		}
 
 		$this->setUpFrontendHooks();
@@ -89,15 +86,15 @@ class LoadTheme {
 	private function setUpFrontendHooks() {
 		if ( ! is_admin() ) {
 			add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-			add_action( 'give_embed_head', array( $this, 'enqueue_scripts' ), 2 );
+			add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
 			add_action( 'give_embed_head', 'wp_print_styles', 8 );
 			add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
 			add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 		}
 
 		// Update form DOM.
-		add_filter( 'give_form_wrap_classes', array( $this, 'editClassList' ), 999 );
-		add_action( 'give_hidden_fields_after', array( $this, 'addHiddenField' ) );
+		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
+		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
 	}
 
 
@@ -106,7 +103,7 @@ class LoadTheme {
 	 *
 	 * @since 2.7.0
 	 */
-	public function enqueue_scripts() {
+	public function handleEnqueueScripts() {
 		global $wp_scripts, $wp_styles;
 		wp_enqueue_scripts();
 

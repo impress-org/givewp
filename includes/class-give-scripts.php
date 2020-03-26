@@ -1,7 +1,5 @@
 <?php
 
-use Give\Form\Theme;
-
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -255,8 +253,6 @@ class Give_Scripts {
 	public function admin_localize_scripts() {
 
 		global $post;
-		/* @var WP_Screen $current_scrren */
-		$current_screen = get_current_screen();
 
 		$give_options = give_get_settings();
 
@@ -408,26 +404,6 @@ class Give_Scripts {
 				'activating' => __( 'Activating...', 'give' ),
 			),
 		);
-
-		if ( $current_screen->is_block_editor() ) {
-			$formTemplates = Give()->themes->getThemes();
-			$options       = [];
-
-			/* @var Theme $template */
-			foreach ( $formTemplates as $templateId => $template ) {
-				$options[] = array(
-					'value' => $templateId,
-					'label' => $template->getName(),
-				);
-			}
-
-			$localized_data = array_merge(
-				$localized_data,
-				array(
-					'formTemplate' => $options,
-				)
-			);
-		}
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
 	}
