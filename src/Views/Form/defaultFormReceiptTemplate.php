@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="give-form-styles" style="margin-top: 0 !important;">
+<html lang="en" style="margin-top: 0 !important;">
 	<head>
 		<meta charset="utf-8">
 		<title><?php _e( 'Donation Receipt', 'give' ); ?></title>
@@ -11,7 +11,7 @@
 		do_action( 'give_embed_head' );
 		?>
 	</head>
-	<body>
+	<body class="give-form-templates">
 		<?php
 		global $post;
 		// Fetch the Give Form.

@@ -252,7 +252,8 @@ class Give_Scripts {
 	 */
 	public function admin_localize_scripts() {
 
-		global $post, $pagenow;
+		global $post;
+
 		$give_options = give_get_settings();
 
 		// Price Separators.
@@ -614,6 +615,7 @@ class Give_Scripts {
 				'wp-components',
 				'wp-api',
 				'wp-editor',
+				'give-admin-scripts',
 			),
 			GIVE_VERSION
 		);
