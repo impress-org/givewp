@@ -93,7 +93,9 @@
 					const text = $( this ).text();
 					if ( value !== 'custom' ) {
 						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
-						const html = `<div class="currency">$</div>${ value }`;
+						const symbol = $( '.give-currency-symbol' ).text();
+						const position = $( '.give-currency-symbol' ).hasClass( 'give-currency-position-before' ) ? 'before' : 'after';
+						const html = position === 'before ' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
 						$( this ).html( html );
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
