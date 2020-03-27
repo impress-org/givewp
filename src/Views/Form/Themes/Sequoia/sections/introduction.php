@@ -11,17 +11,17 @@ $image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->
 	<h2>
 		<?php echo $headline; ?>
 	</h2>
-	<?php if ( ! empty( $description ) ) { ?>
+	<?php if ( ! empty( $description ) ) : ?>
 		<div class="seperator"></div>
 		<p>
 			<?php echo $description; ?>
 		</p>
-	<?php } ?>
-	<?php if ( ! empty( $image ) ) { ?>
+	<?php endif; ?>
+	<?php if ( ! empty( $image ) ) : ?>
 		<div class="image-container">
 			<img src="<?php echo $image; ?>" />
 		</div>
-	<?php }; ?>
+	<?php endif; ?>
 
 	<?php
 		require 'income-stats.php';
