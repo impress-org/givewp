@@ -1,5 +1,10 @@
 <?php
 global $post;
+
+// Setup dynamic defaults
+$introHeadline    = $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' );
+$introDescription = $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' );
+
 return [
 	'introduction'        => [
 		'name'   => __( 'Introduction', 'give' ),
@@ -22,9 +27,9 @@ return [
 				'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
+					'placeholder' => $introHeadline,
 				],
-				'default'    => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
+				'default'    => $introHeadline,
 			],
 			[
 				'id'         => 'description',
@@ -32,9 +37,9 @@ return [
 				'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
+					'placeholder' => $introDescription,
 				],
-				'default'    => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
+				'default'    => $introDescription,
 			],
 			[
 				'id'   => 'image',
