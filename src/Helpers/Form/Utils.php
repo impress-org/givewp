@@ -68,6 +68,20 @@ function isFailedTransactionPageURL( $url ) {
 	return 0 === strpos( $url, $failedPageURL );
 }
 
+/**
+ * This function check whether or not given url is of success page.
+ *
+ * @param string $url
+ *
+ * @return string
+ * @since 2.7.0
+ */
+function isSuccessPageURL( $url ) {
+	$failedPageURL = trailingslashit( get_permalink( give_get_option( 'success_page', 0 ) ) );
+
+	return 0 === strpos( $url, $failedPageURL );
+}
+
 
 /**
  * Returns whether or not the given form uses the legacy form template

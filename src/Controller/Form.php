@@ -11,8 +11,10 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Utils\isFailedTransactionPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
+use function Give\Helpers\Form\Utils\isSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
@@ -186,7 +188,6 @@ class Form {
 
 		add_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
-		add_filter( 'give_success_page_redirect', [ $this, 'handleDonationSuccessPageRedirect' ], 99 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
 		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 	}
@@ -230,10 +231,30 @@ class Form {
 	 * @return string
 	 * @since 2.7.0
 	 */
-	public function handleDonationSuccessPageRedirect( $url ) {
+	private function getSuccessPageRedirect( $url ) {
 		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
 		$successPageUrl = give_get_success_page_uri();
+		$tmp            = explode( '?', $url, 2 );
+		$tmp[0]         = $successPageUrl;
+
+		$url = implode( '?', $tmp );
+
+		return $url;
+	}
+
+	/**
+	 * Return donor failed page url.
+	 *
+	 * @param string $url Success page URL.
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 */
+	private function getFailedPageRedirect( $url ) {
+		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
+
+		$successPageUrl = give_get_failed_transaction_uri();
 		$tmp            = explode( '?', $url, 2 );
 		$tmp[0]         = $successPageUrl;
 
@@ -272,6 +293,14 @@ class Form {
 	public function handleOffSiteCheckoutRedirect( $location ) {
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
+			if ( isSuccessPageURL( $location ) ) {
+				return $this->getSuccessPageRedirect( $location );
+			}
+
+			if ( isFailedTransactionPageURL( $location ) ) {
+				return $this->getFailedPageRedirect( $location );
+			}
+
 			return $location;
 		}
 
