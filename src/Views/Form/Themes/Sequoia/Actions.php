@@ -3,7 +3,10 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give_Donate_Form;
+use Give_Notices;
 use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\isViewingForm;
 
 
 /**
@@ -76,6 +79,7 @@ class Actions {
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 
 		/**
 		 * Remove actions
@@ -183,6 +187,26 @@ class Actions {
 			__( 'Tell us a bit amount yourself', 'give' ),
 			__( 'We\'ll never share this information with anyone', 'give' )
 		);
+	}
+
+
+	/**
+	 * Show failed transaction error on donation form.
+	 *
+	 * @since 2.7.0
+	 */
+	public function setFailedTransactionError() {
+		if (
+			! empty( $_GET['giveDonationAction'] ) &&
+			'failedDonation' === $_GET['giveDonationAction'] &&
+			isViewingForm()
+		) {
+			Give_Notices::print_frontend_notice(
+				Give()->themes->getTheme( getActiveID() )->getFailedDonationMessage(),
+				true,
+				'error'
+			);
+		}
 	}
 
 	/**
