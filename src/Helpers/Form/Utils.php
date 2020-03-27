@@ -27,7 +27,10 @@ function isViewingForm() {
  * @return bool
  */
 function isProcessingForm() {
-	return ! empty( $_REQUEST['give_embed_form'] );
+	$base = Give()->routeForm->getBase();
+
+	return ! empty( $_REQUEST['give_embed_form'] ) ||
+		   false !== strpos( wp_get_referer(), "/{$base}/" );
 }
 
 
