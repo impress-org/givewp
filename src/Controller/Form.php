@@ -36,9 +36,7 @@ class Form {
 	public function init() {
 		add_action( 'template_redirect', [ $this, 'load' ], 0 );
 		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
-		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
-		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
-		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
+		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1, 3 );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
@@ -173,12 +171,14 @@ class Form {
 	 *
 	 * @since 2.7.0
 	 */
-	public function embedFormSuccessURIHandler() {
+	public function embedFormRedirectURIHandler() {
 		if ( ! isProcessingForm() ) {
 			return;
 		}
 
 		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
+		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 	}
 
 
@@ -203,10 +203,6 @@ class Form {
 	 * @return string
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
-		if ( ! isProcessingForm() ) {
-			return $redirect;
-		}
-
 		$url    = explode( '?', $redirect );
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
@@ -222,10 +218,6 @@ class Form {
 	 * @return mixed
 	 */
 	public function handleOffSiteCheckoutRedirect( $location ) {
-		if ( ! isProcessingForm() ) {
-			return $location;
-		}
-
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
 			return $location;
