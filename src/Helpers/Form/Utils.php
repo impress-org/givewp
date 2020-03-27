@@ -60,21 +60,6 @@ function isViewingFormFailedTransactionPage() {
  * @param array $args
  *
  * @return string
- * @since 2.7.0
- */
-function getSuccessPageURL( $args = [] ) {
-	return add_query_arg(
-		array_merge( [ 'giveDonationAction' => 'showReceipt' ], $args ),
-		give_clean( $_REQUEST['give-current-url'] )
-	);
-}
-
-/**
- * Get success page url.
- *
- * @param array $args
- *
- * @return string
  * @since 2.7
  */
 function getFailedTransactionPageURL( $args = [] ) {

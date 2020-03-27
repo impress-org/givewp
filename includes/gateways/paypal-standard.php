@@ -10,7 +10,6 @@
  */
 
 use function Give\Helpers\Form\Utils\getFailedTransactionPageURL;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -629,9 +628,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
 		),
-		isProcessingForm()
-			? getSuccessPageURL()
-			: give_get_success_page_uri()
+		give_get_success_page_uri()
 	);
 
 	// Get the PayPal redirect uri.

@@ -10,7 +10,6 @@
 
 // Exit if accessed directly.
 use function Give\Helpers\Form\Utils\getFailedTransactionPageURL;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -287,9 +286,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					'statement_descriptor' => give_stripe_get_statement_descriptor(),
 				],
 				'submit_type'                => 'donate',
-				'success_url'                => isProcessingForm()
-					? getSuccessPageURL()
-					: give_get_success_page_uri(),
+				'success_url'                => give_get_success_page_uri(),
 				'cancel_url'                 => isProcessingForm()
 					? getFailedTransactionPageURL()
 					: give_get_failed_transaction_uri(),
