@@ -84,15 +84,13 @@ class LoadTheme {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		if ( is_admin() ) {
-			return false;
+		if ( ! is_admin() ) {
+			add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
+			add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
+			add_action( 'give_embed_head', 'wp_print_styles', 8 );
+			add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
+			add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 		}
-
-		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', [ $this, 'enqueue_scripts' ], 2 );
-		add_action( 'give_embed_head', 'wp_print_styles', 8 );
-		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
-		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 
 		// Update form DOM.
 		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
@@ -105,7 +103,7 @@ class LoadTheme {
 	 *
 	 * @since 2.7.0
 	 */
-	public function enqueue_scripts() {
+	public function handleEnqueueScripts() {
 		global $wp_scripts, $wp_styles;
 		wp_enqueue_scripts();
 
@@ -142,11 +140,9 @@ class LoadTheme {
 	/**
 	 * Add hidden field
 	 *
-	 * @param array $classes
-	 *
 	 * @since 2.7.0
 	 */
-	public function addHiddenField( $classes ) {
+	public function addHiddenField() {
 		printf(
 			'<input type="hidden" name="%1$s" value="%2$s">',
 			'give_embed_form',

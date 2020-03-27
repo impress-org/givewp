@@ -38,6 +38,7 @@ class Form {
 		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
@@ -160,9 +161,9 @@ class Form {
 				return;
 			}
 
-			$post        = get_post( $formID );
-			$themeLoader = new LoadTheme();
-			$themeLoader->init();
+			$post = get_post( $formID );
+
+			$this->loadTheme();
 		}
 	}
 
@@ -210,6 +211,28 @@ class Form {
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
+	}
+
+	/**
+	 * Handle offsite payment checkout
+	 *
+	 * @since 2.7.0
+	 * @param string $location
+	 *
+	 * @return mixed
+	 */
+	public function handleOffSiteCheckoutRedirect( $location ) {
+		if ( ! isProcessingForm() ) {
+			return $location;
+		}
+
+		// Exit if redirect is on same website.
+		if ( 0 === strpos( $location, home_url() ) ) {
+			return $location;
+		}
+
+		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
+		exit();
 	}
 
 	/**
