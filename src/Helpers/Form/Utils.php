@@ -2,6 +2,7 @@
 namespace Give\Helpers\Form\Utils;
 
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\getQueryParamFromURL;
 
 /**
  * Get result if we are viewing embed form or not
@@ -61,9 +62,9 @@ function isViewingFormFailedTransactionPage() {
  * @since 2.7.0
  */
 function isFailedTransactionPageURL( $url ) {
-	$failedPageURL = trailingslashit( get_permalink( give_get_option( 'failure_page', 0 ) ) );
+	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
 
-	return 0 === strpos( $url, $failedPageURL );
+	return $action && 'failedDonation' === $action;
 }
 
 /**
@@ -75,9 +76,9 @@ function isFailedTransactionPageURL( $url ) {
  * @since 2.7.0
  */
 function isSuccessPageURL( $url ) {
-	$failedPageURL = trailingslashit( get_permalink( give_get_option( 'success_page', 0 ) ) );
+	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
 
-	return 0 === strpos( $url, $failedPageURL );
+	return $action && 'showReceipt' === $action;
 }
 
 
