@@ -397,7 +397,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['sepa'][] = array(
 						'name'          => __( 'Display Icon', 'give' ),
-						'desc'          => __( 'This option allows you to display the icon in the IBAN element of SEPA Direct Debit.', 'give' ),
+						'desc'          => __( 'This option allows you to display a bank building icon within the IBAN input field for SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_hide_icon',
 						'wrapper_class' => 'stripe-hide-icon',
 						'type'          => 'radio_inline',
@@ -408,7 +408,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
-					$is_hide_icon = give_is_setting_enabled( Give()->give_settings::get_option( 'give_settings', 'stripe_hide_icon' ) );
+					$is_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon' ) );
 
 					$settings['sepa'][] = array(
 						'name'          => __( 'Icon Style', 'give' ),
@@ -423,11 +423,28 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Display Mandate Acceptance', 'give' ),
+						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
+						'id'            => 'stripe_mandate_acceptance_option',
+						'wrapper_class' => 'stripe-mandate-acceptance-option',
+						'type'          => 'radio_inline',
+						'default'       => 'enabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option' ) );
+
 					$settings['sepa'][] = array(
 						'name'          => __( 'Mandate Acceptance Text', 'give' ),
-						'desc'          => __( 'This text displays below the IBAN field and provides clarity to your donors on how this payment option works. If you would not like this text to display then you can remove the default text.', 'give' ),
+						'desc'          => __( 'This text displays below the IBAN field and should provide clarity to your donors on how this payment option works.', 'give' ),
 						'id'            => 'stripe_mandate_acceptance_text',
-						'wrapper_class' => 'stripe-mandate-acceptance-text',
+						'wrapper_class' => $is_hide_mandate ? 'stripe-mandate-acceptance-text' : 'stripe-mandate-acceptance-text give-hidden',
+
 						'type'          => 'textarea',
 						'default'       => give_stripe_get_default_mandate_acceptance_text(),
 					);

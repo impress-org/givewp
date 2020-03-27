@@ -58,9 +58,9 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @param bool $echo    Status to display or not.
 		 *
 		 * @access public
+		 * @return string $form
 		 * @since  2.6.1
 		 *
-		 * @return string $form
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
 
@@ -82,9 +82,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					?>
 					<div id="give_secure_site_wrapper">
 						<span class="give-icon padlock"></span>
-						<span>
-					<?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?>
-				</span>
+						<span><?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 					</div>
 					<?php
 				}
@@ -123,9 +121,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
 						)
 					);
-				} else {
-
-					?>
+				} else { ?>
 					<div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php echo __( 'IBAN', 'give' ); ?>
@@ -141,7 +137,10 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						></div>
 					</div>
 					<div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
-						<?php echo give_stripe_get_mandate_acceptance_text(); ?>
+						<?php
+						if ( give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) ) ) {
+							echo give_stripe_get_mandate_acceptance_text();
+						} ?>
 					</div>
 					<?php
 					/**
@@ -149,20 +148,22 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					 *
 					 * Note: Kept this hook as it is.
 					 *
-					 * @since 2.5.0
-					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
+					 *
+					 * @since 2.5.0
+					 *
 					 */
 					do_action( 'give_after_cc_expiration', $form_id, $args );
 
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
 					 *
-					 * @since 2.5.0
-					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
+					 *
+					 * @since 2.5.0
+					 *
 					 */
 					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 				}
@@ -191,10 +192,10 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 *
 		 * @param array $donation_data List of donation data.
 		 *
+		 * @return void
 		 * @since  2.6.1
 		 * @access public
 		 *
-		 * @return void
 		 */
 		public function process_payment( $donation_data ) {
 
@@ -251,13 +252,14 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						give_record_gateway_error(
 							__( 'Donation creating error', 'give' ),
 							sprintf(
-								/* translators: %s Donation Data */
+							/* translators: %s Donation Data */
 								__( 'Unable to create a pending donation. Details: %s', 'give' ),
 								wp_json_encode( $donation_data )
 							)
 						);
 						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while creating a pending donation.', 'give' ) );
 						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+
 						return;
 					}
 
@@ -332,6 +334,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						give_send_to_success_page();
 					} else {
 						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+
 						return;
 					}
 
