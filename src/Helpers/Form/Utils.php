@@ -38,8 +38,7 @@ function isProcessingForm() {
  */
 function isViewingFormReceipt() {
 	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] )
-		   && give_is_success_page();
+		   && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] );
 }
 
 /**
@@ -50,8 +49,7 @@ function isViewingFormReceipt() {
  */
 function isViewingFormFailedTransactionPage() {
 	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] )
-		   && give_is_failed_transaction_page();
+		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] );
 }
 
 /**
