@@ -4,6 +4,8 @@ namespace Give\Views\Form\Themes\Sequoia;
 use Give\Form\Theme;
 use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 /**
  * Class Sequoia
@@ -55,5 +57,12 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	 */
 	public function getOptionsConfig() {
 		return require 'optionConfig.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getFailedTransactionPageURL() {
+		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', getFormId() ) ) );
 	}
 }
