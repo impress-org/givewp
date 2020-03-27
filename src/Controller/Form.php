@@ -50,8 +50,7 @@ class Form {
 		$isViewingForm       = isViewingForm();
 		$isViewingReceipt    = isViewingFormReceipt();
 		$isViewingFailedPage = isViewingFormFailedTransactionPage();
-		$canWeOverwrite      = $isViewingForm || $isViewingReceipt || $isViewingFailedPage;
-		$action              = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
+		$canWeOverwrite      = ! empty( $_GET['iframe'] ) && ( $isViewingForm || $isViewingReceipt || $isViewingFailedPage );
 
 		// Exit: we are not on embed form's main page. receipt page, failed page.
 		if ( ! $canWeOverwrite ) {
@@ -61,45 +60,23 @@ class Form {
 		// Load form template.
 		$loadTheme = $this->loadTheme();
 
-		// Exit: redirect donor to receipt or fail transaction page.
-		if (
-			! empty( $_REQUEST['giveDonationAction'] ) &&
-			$isViewingForm &&
-			$action &&
-			in_array( $action, [ 'showReceipt', 'failedDonation' ] )
-		) {
-			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
-			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-				wp_redirect( $loadTheme->getTheme()->getFailedTransactionPageURL() );
-			}
-
-			exit();
-		}
-
 		// Set header.
 		nocache_headers();
 		header( 'HTTP/1.1 200 OK' );
 
 		if ( $isViewingForm ) {
 			$this->setupGlobalPost();
+			require_once $loadTheme->getTheme()->getTemplate( 'form' );
 
-			require_once $loadTheme->getTheme()
-							  ->getTemplate( 'form' );
+		} elseif ( $isViewingReceipt ) {
+			require_once $loadTheme->getTheme()->getTemplate( 'receipt' );
 
-			exit();
-		}
-
-		if ( $isViewingReceipt ) {
-			require_once $loadTheme->getTheme()
-							  ->getTemplate( 'receipt' );
-			exit();
-		}
-
-		if ( $isViewingFailedPage ) {
+		} elseif ( $isViewingFailedPage ) {
 			include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormFailedTransactionPage.php';
-			exit();
 		}
+
+		exit();
+
 	}
 
 
