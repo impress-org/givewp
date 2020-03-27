@@ -195,7 +195,11 @@ class Form {
 	 * @return string
 	 */
 	public function addQueryParamsToSuccessURI() {
-		return give_clean( $_REQUEST['give-current-url'] );
+		return add_query_arg(
+			[ 'giveDonationAction' => 'showReceipt' ],
+			give_clean( $_REQUEST['give-current-url'] )
+		);
+
 	}
 
 
