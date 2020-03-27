@@ -182,7 +182,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		$content    = $this->themeOptions['payment_amount']['content'];
+		$content = $this->themeOptions['payment_amount']['content'];
 		echo "<div class='give-section choose-amount'><div class='content'>{$content}</div>";
 
 	}
