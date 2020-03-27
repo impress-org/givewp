@@ -167,7 +167,11 @@ class Form {
 
 
 	/**
-	 * Add filter to success page url.
+	 * Handle donor redirect when process donations.
+	 *
+	 * This function handle donor redirect when process donation with offsite checkout and on-site checkout.
+	 * Donor will immediately redirect to success page aka receipt page for on-site payment process. That means success page remain same (as set in admin settings).
+	 * For offsite checkout donor will redirect to embed form parent page. A query parameter will be add to url giveDonationAction=showReceipt to handle further cases.
 	 *
 	 * @since 2.7.0
 	 */
@@ -177,40 +181,65 @@ class Form {
 		}
 
 		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
+		add_filter( 'give_success_page_redirect', [ $this, 'handleDonationSuccessPageRedirect' ], 99 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
 		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 	}
 
 
 	/**
-	 * Add query param to success page
+	 * Return current page aka embed form parent url as success page.
 	 *
 	 * @since 2.7.0
-	 * @param string $successPage
 	 *
 	 * @return string
 	 */
-	public function addQueryParamsToSuccessURI( $successPage ) {
-		return add_query_arg( [ 'giveDonationAction' => 'showReceipt' ], $successPage );
+	public function addQueryParamsToSuccessURI() {
+		return give_clean( $_REQUEST['give-current-url'] );
+	}
+
+
+	/**
+	 * Return donor success page url.
+	 *
+	 * @param string $url Success page URL.
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public function handleDonationSuccessPageRedirect( $url ) {
+		remove_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
+
+		$successPageUrl = give_get_success_page_uri();
+		$tmp            = explode( '?', $url, 2 );
+		$tmp[0]         = $successPageUrl;
+
+		$url = implode( '?', $tmp );
+
+		return $url;
 	}
 
 	/**
 	 * Handle pre payment processing redirect.
 	 *
-	 * @since 2.7.0
+	 * These redirects mainly happen when donation form data is not valid.
+	 *
 	 * @param string $redirect
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
-		$url    = explode( '?', $redirect );
+		$url    = explode( '?', $redirect, 2 );
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
 	}
 
 	/**
-	 * Handle offsite payment checkout
+	 * Handle offsite payment checkout.
+	 *
+	 * In case of offsite checkout, this function will load a intermediate template to redirect embed parent page.
 	 *
 	 * @since 2.7.0
 	 * @param string $location
