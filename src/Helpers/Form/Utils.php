@@ -97,3 +97,23 @@ function isLegacyForm( $formID = null ) {
 	return ! $formTemplate || 'legacy' === getActiveID( $formID );
 }
 
+
+/**
+ * This function will create failed transaction page URL.
+ *
+ * @since 2.7.0
+ * @param array       $args
+ * @param string|null $url
+ *
+ * @return string
+ */
+function createFailedPageURL( $url = null, $args = [] ) {
+	$url  = $url ?: give_get_failed_transaction_uri( $args );
+	$args = array_merge( $args, [ 'giveDonationAction' => 'failedDonation' ] );
+
+	return add_query_arg(
+		$args,
+		$url
+	);
+}
+
