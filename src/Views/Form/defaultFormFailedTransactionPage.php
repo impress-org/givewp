@@ -1,6 +1,6 @@
 <?php
 
-use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
+use Give\Form\LoadTheme;
 global $post;
 ?>
 <!DOCTYPE html>
@@ -17,7 +17,10 @@ global $post;
 	</head>
 	<body class="give-form-templates">
 		<?php
-		echo apply_filters( 'the_content', $post->post_content );
+		/**
+		 * @var LoadTheme $loadTheme
+		 */
+		echo $loadTheme->getTheme()->getFailedDonationMessage();
 
 		/**
 		 * Fire the action hook in footer
