@@ -6,34 +6,6 @@ return [
 		'name'   => __( 'Form Display', 'give' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
-			// Donation Option.
-			[
-				'name'          => __( 'Donation Option', 'give' ),
-				'description'   => __( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
-				'id'            => 'price_option',
-				'type'          => 'radio_inline',
-				'default'       => 'multi',
-				'options'       => apply_filters(
-					'give_forms_price_options',
-					[
-						'multi' => __( 'Multi-level Donation', 'give' ),
-						'set'   => __( 'Set Donation', 'give' ),
-					]
-				),
-				'wrapper_class' => '_give_price_option_field',
-			],
-			[
-				'name'          => __( 'Set Donation', 'give' ),
-				'description'   => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
-				'id'            => 'set_price',
-				'type'          => 'text_small',
-				'data_type'     => 'price',
-				'attributes'    => [
-					'placeholder' => $price_placeholder,
-					'class'       => 'give-money-field',
-				],
-				'wrapper_class' => 'give-hidden _give_set_price_field',
-			],
 			// Display Style.
 			array(
 				'name'          => __( 'Display Style', 'give' ),
