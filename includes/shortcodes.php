@@ -141,22 +141,28 @@ function give_form_shortcode( $atts ) {
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
-	$activeTheme        = getActiveID( $atts['id'] ?: getFormId() );
+
+	// Set form id.
+	$atts['id'] = $atts['id'] ?: getFormId();
+
+	// Get active theme
+	$activeTheme = getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
 
 	if ( $activeTheme && 'legacy' !== $activeTheme ) {
-		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-		$donation_history = give_get_purchase_session();
-		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
-		$hasAction        = ! empty( $query_string['giveDonationAction'] );
+		$query_string           = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
+		$donation_history       = give_get_purchase_session();
+		$isAutoScroll           = absint( isset( $query_string['giveDonationAction'] ) );
+		$hasAction              = ! empty( $query_string['giveDonationAction'] );
+		$donationFormHasSession = $atts['id'] !== absint( $donation_history['post_data'] ['give-form-id'] );
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
 			$hasAction &&
 			! empty( $donation_history ) &&
-			$atts['id'] !== $donation_history['post_data'] ['give-form-id']
+			$donationFormHasSession
 		) {
 			unset( $query_string['giveDonationAction'] );
 			$isAutoScroll = 0;
