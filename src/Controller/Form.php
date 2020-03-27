@@ -58,6 +58,9 @@ class Form {
 			return;
 		}
 
+		// Load form template.
+		$loadTheme = $this->loadTheme();
+
 		// Exit: redirect donor to receipt or fail transaction page.
 		if (
 			! empty( $_REQUEST['giveDonationAction'] ) &&
@@ -68,7 +71,7 @@ class Form {
 			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
 			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-				wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
+				wp_redirect( $loadTheme->getTheme()->getFailedTransactionPageURL() );
 			}
 
 			exit();
@@ -77,8 +80,6 @@ class Form {
 		// Set header.
 		nocache_headers();
 		header( 'HTTP/1.1 200 OK' );
-
-		$loadTheme = $this->loadTheme();
 
 		if ( $isViewingForm ) {
 			$this->setupGlobalPost();
