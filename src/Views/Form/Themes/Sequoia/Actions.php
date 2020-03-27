@@ -169,11 +169,16 @@ class Actions {
 	 * @param int $formId
 	 */
 	public function getIntroductionSectionTextSubSection( $formId ) {
-		printf(
-			'<div class="give-section personal"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
-			__( 'Tell us a bit amount yourself', 'give' ),
-			__( 'We\'ll never share this information with anyone', 'give' )
-		);
+		$headline    = $this->themeOptions['payment_information']['headline'];
+		$description = $this->themeOptions['payment_information']['description'];
+
+		if ( ! empty( $headline ) || ! empty( $description ) ) {
+			printf(
+				'<div class="give-section personal"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
+				$headline,
+				$description
+			);
+		}
 	}
 
 	/**
