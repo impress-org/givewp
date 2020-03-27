@@ -12,6 +12,7 @@
 // Exit if accessed directly.
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -62,7 +63,7 @@ function give_donation_history( $atts, $content = false ) {
 	) {
 		ob_start();
 
-		echo give_receipt_shortcode( array() );
+		echo do_shortcode( getReceiptShortcodeFromConfirmationPage( 'give_receipt' ) );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
