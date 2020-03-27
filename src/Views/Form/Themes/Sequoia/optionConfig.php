@@ -97,6 +97,26 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'id'         => 'headline',
+				'name'       => __( 'Headline', 'give' ),
+				'desc'       => __( 'Do you want to customize the headline for the checkout step? We recommend keeping it to no more than 8 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Tell us a bit about yourself. ', 'give' ),
+				],
+				'default'    => __( 'Tell us a bit about yourself. ', 'give' ),
+			],
+			[
+				'id'         => 'description',
+				'name'       => __( 'Description', 'give' ),
+				'desc'       => __( 'Do you want to customize the description for the checkout step? The description displays below the headline. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'textarea',
+				'attributes' => [
+					'placeholder' => __( 'We’ll never share this information with anyone.', 'give' ),
+				],
+				'default'    => __( 'We’ll never share this information with anyone.', 'give' ),
+			],
+			[
 				'id'         => 'checkout_label',
 				'name'       => __( 'Submit Button', 'give' ),
 				'desc'       => __( 'The button label for completing a donation.', 'give' ),
