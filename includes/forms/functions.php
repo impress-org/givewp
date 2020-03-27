@@ -139,14 +139,13 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-
 	$redirect = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['give-gateway'] ) ? $_REQUEST['give-gateway'] : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
 
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
@@ -225,9 +224,7 @@ function give_send_back_to_checkout( $args = array() ) {
  * @return      string
  */
 function give_get_success_page_url( $query_string = null ) {
-
-	$success_page = give_get_option( 'success_page', 0 );
-	$success_page = get_permalink( $success_page );
+	$success_page = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$success_page .= $query_string;
