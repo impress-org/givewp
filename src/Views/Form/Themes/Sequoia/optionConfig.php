@@ -103,6 +103,12 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'id'   => 'image',
+				'name' => __( 'Image', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. It should be something that reaffirms successful donation like a checkmark or heart. We recommend keeping it square in size at 120x120 pixels for best results.', 'give' ),
+				'type' => 'file',
+			],
+			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
 				'desc'       => __( 'This message should be short and sweet. Make the donor feel good about their donation so they continue to give in the future. This text is required and you may use any of the available template tags within this message.', 'give' ),
@@ -121,12 +127,6 @@ return [
 					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
 				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
-			],
-			[
-				'id'   => 'image',
-				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
-				'type' => 'file',
 			],
 		],
 	],
