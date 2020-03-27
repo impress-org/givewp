@@ -110,6 +110,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'A great big thank you!', 'give' ),
 				],
+				'default'    => __( 'A great big thank you!', 'give' ),
 			],
 			[
 				'id'         => 'description',
@@ -119,6 +120,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
+				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 			[
 				'id'   => 'image',
