@@ -3,7 +3,7 @@ global $post;
 
 // Setup dynamic defaults
 $introHeadline    = $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' );
-$introDescription = $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' );
+$introDescription = $post->post_excerpt ? $post->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
 	'introduction'        => [
