@@ -50,7 +50,8 @@ class Form {
 		$isViewingForm       = isViewingForm();
 		$isViewingReceipt    = isViewingFormReceipt();
 		$isViewingFailedPage = isViewingFormFailedTransactionPage();
-		$canWeOverwrite      = ! empty( $_GET['iframe'] ) && ( $isViewingForm || $isViewingReceipt || $isViewingFailedPage );
+		$canWeOverwrite      = ( ! empty( $_GET['iframe'] ) || isProcessingForm() ) &&
+							   ( $isViewingForm || $isViewingReceipt || $isViewingFailedPage );
 
 		// Exit: we are not on embed form's main page. receipt page, failed page.
 		if ( ! $canWeOverwrite ) {
