@@ -147,18 +147,14 @@ function give_form_shortcode( $atts ) {
 	ob_start();
 
 	if ( $activeTheme && 'legacy' !== $activeTheme ) {
-		$query_string = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-		$query_string = wp_parse_args(
-			$query_string,
-			[ 'giveDonationAction' => '' ]
-		);
-
+		$query_string     = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history = give_get_purchase_session();
 		$isAutoScroll     = absint( isset( $query_string['giveDonationAction'] ) );
+		$hasAction        = ! empty( $query_string['giveDonationAction'] );
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
-			! empty( $query_string['giveDonationAction'] ) &&
+			$hasAction &&
 			! empty( $donation_history ) &&
 			$atts['id'] !== $donation_history['post_data'] ['give-form-id']
 		) {
@@ -168,14 +164,16 @@ function give_form_shortcode( $atts ) {
 
 		// Build iframe url.
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) );
-		switch ( $query_string['giveDonationAction'] ) {
-			case 'showReceipt':
-				$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL();
-				break;
+		if ( $hasAction ) {
+			switch ( $query_string['giveDonationAction'] ) {
+				case 'showReceipt':
+					$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL();
+					break;
 
-			case 'failedDonation':
-				$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL();
-				break;
+				case 'failedDonation':
+					$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL();
+					break;
+			}
 		}
 		$iframe_url = add_query_arg(
 			array_merge( $query_string, [ 'shortcodeAttributes' => base64_encode( serialize( $atts ) ) ], [ 'iframe' => true ] ),
