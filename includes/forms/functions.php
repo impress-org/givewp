@@ -292,13 +292,11 @@ function give_is_failed_transaction_page() {
  * @return bool
  */
 function give_listen_for_failed_payments() {
-
-	$failed_page = give_get_option( 'failure_page', 0 );
-	$payment_id  = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
-	$nonce       = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
+	$payment_id = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
+	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
 
 	// Bailout.
-	if ( ! $failed_page || ! is_page( $failed_page ) || ! $payment_id || ! $nonce ) {
+	if ( ! give_is_failed_transaction_page() || ! $payment_id || ! $nonce ) {
 		return false;
 	}
 
