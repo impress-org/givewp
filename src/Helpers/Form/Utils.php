@@ -55,18 +55,17 @@ function isViewingFormFailedTransactionPage() {
 }
 
 /**
- * Get success page url.
+ * This function check whether or not given url is of failed page.
  *
- * @param array $args
+ * @param string $url
  *
  * @return string
- * @since 2.7
+ * @since 2.7.0
  */
-function getFailedTransactionPageURL( $args = [] ) {
-	return add_query_arg(
-		array_merge( [ 'giveDonationAction' => 'failedDonation' ], $args ),
-		give_clean( $_REQUEST['give-current-url'] )
-	);
+function isFailedTransactionPageURL( $url ) {
+	$failedPageURL = trailingslashit( get_permalink( give_get_option( 'failure_page', 0 ) ) );
+
+	return 0 === strpos( $url, $failedPageURL );
 }
 
 
