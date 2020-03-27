@@ -40,7 +40,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					modalWrapper: 'give-stripe-connected-modal give-modal--success',
 					modalContent: {
 						title: modalTitle,
-						desc: '<span>' + modalFirstDetail + '</span>' + '<span class="give-field-description">' + modalSecondDetail + '</span>',
+						desc: `<span>${modalFirstDetail}</span><span class="give-field-description">${modalSecondDetail}</span>`,
 					},
 					successConfirm: function( args ) {
 						window.location.href = redirectUrl;
