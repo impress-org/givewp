@@ -39,7 +39,7 @@ jQuery( function( $ ) {
 
 		Array.from( iframes ).forEach( function( iframe ) {
 			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) && ! iframe.classList.contains( 'in-modal' ) ) {
-				$( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
+				$( 'html, body' ).animate( { scrollTop: iframe.offsetTop, scrollLeft: iframe.offsetLeft } );
 
 				// Exit function.
 				return false;
