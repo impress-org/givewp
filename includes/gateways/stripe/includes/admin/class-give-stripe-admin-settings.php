@@ -565,12 +565,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				<td class="give-forminp give-forminp-api_key">
 					<?php
 					if ( give_stripe_is_connected() ) :
+						$site_url            = get_site_url();
 						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
 						$modal_title         = __( 'Connected! <strong>Important: Now please configure the stripe webhook to finalize the setup.</strong>', 'give' );
 						$modal_first_detail  = sprintf(
 							'%1$s %2$s',
 							__( 'In order for Stripe to function properly, you must configure your Stripe webhooks. You can visit your Stripe Account Dashboard to add a new webhook endpoint for the following URL:', 'give' ),
-							'<strong>https://give.test/?give-listener=stripe</strong>'
+							"<strong>{$site_url}?give-listener=stripe</strong>"
 						);
 						$modal_second_detail = __( 'Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' );
 						$can_display = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
@@ -585,7 +586,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							data-display="<?php echo $can_display; ?>"
 							data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
 						>
-							<span>Connected</span>
+							<span><?php echo __( 'Connected', 'give' ); ?></span>
 						</span>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-yes" style="color:#25802d;"></span>
