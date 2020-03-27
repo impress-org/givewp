@@ -10,9 +10,11 @@ use WP_Post;
  * @since 2.7.0
  */
 function getShortcodeArgs() {
-	$queryString = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
+	$queryString = wp_parse_args( $_SERVER['QUERY_STRING'] );
+	$attributes  = base64_decode( give_clean( $queryString['shortcodeAttributes'] ) );
+	$attributes  = unserialize( $attributes );
 
-	return array_intersect_key( $queryString, give_get_default_form_shortcode_args() );
+	return array_intersect_key( $attributes, give_get_default_form_shortcode_args() );
 }
 
 /**
