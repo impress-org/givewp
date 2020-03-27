@@ -110,4 +110,14 @@ abstract class Theme {
 	public function getFailedTransactionPageURL() {
 		return give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' );
 	}
+
+	/**
+	 * Get success page URL.
+	 *
+	 * @since 2.7.0
+	 * @return mixed
+	 */
+	public function getSuccessPageURL() {
+		return give_get_success_page_url( '?giveDonationAction=showReceipt' );
+	}
 }
