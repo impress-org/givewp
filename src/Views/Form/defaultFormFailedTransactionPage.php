@@ -1,14 +1,13 @@
 <?php
 
-use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
-
+use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 global $post;
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>  style="margin-top: 0 !important;">
 	<head>
 		<meta charset="utf-8">
-		<title><?php echo esc_html( $post->post_title ); ?></title>
+		<title><?php _e( 'Donation Receipt', 'give' ); ?></title>
 		<?php
 		/**
 		 * Fire the action hook in header
@@ -18,9 +17,7 @@ global $post;
 	</head>
 	<body class="give-form-templates">
 		<?php
-
-		// Fetch the Give Form.
-		give_get_donation_form( getShortcodeArgs() );
+		echo apply_filters( 'the_content', $post->post_content );
 
 		/**
 		 * Fire the action hook in footer

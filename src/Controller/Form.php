@@ -11,8 +11,6 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
@@ -47,12 +45,14 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function load() {
-		$isViewingForm    = isViewingForm();
-		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
-		$action           = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
+		$isViewingForm       = isViewingForm();
+		$isViewingReceipt    = isViewingFormReceipt();
+		$isViewingFailedPage = isViewingFormFailedTransactionPage();
+		$canWeOverwrite      = $isViewingForm || $isViewingReceipt || $isViewingFailedPage;
+		$action              = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
 
-		// Exit: we are not on embed form's main page or receipt page.
-		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
+		// Exit: we are not on embed form's main page. receipt page, failed page.
+		if ( ! $canWeOverwrite ) {
 			return;
 		}
 
@@ -76,21 +76,25 @@ class Form {
 		nocache_headers();
 		header( 'HTTP/1.1 200 OK' );
 
+		$loadTheme = $this->loadTheme();
+
 		if ( $isViewingForm ) {
-			$shortcodeArgs = getShortcodeArgs();
 			$this->setupGlobalPost();
 
-			require_once $this->loadTheme()
-							  ->getTheme()
+			require_once $loadTheme->getTheme()
 							  ->getTemplate( 'form' );
 
 			exit();
 		}
 
 		if ( $isViewingReceipt ) {
-			require_once $this->loadTheme()
-							  ->getTheme()
+			require_once $loadTheme->getTheme()
 							  ->getTemplate( 'receipt' );
+			exit();
+		}
+
+		if ( $isViewingFailedPage ) {
+			include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormFailedTransactionPage.php';
 			exit();
 		}
 	}
@@ -180,7 +184,8 @@ class Form {
 			return;
 		}
 
-		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
+		add_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
+		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
 		add_filter( 'give_success_page_redirect', [ $this, 'handleDonationSuccessPageRedirect' ], 99 );
 		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
 		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
@@ -194,12 +199,26 @@ class Form {
 	 *
 	 * @return string
 	 */
-	public function addQueryParamsToSuccessURI() {
+	public function editSuccessPageURI() {
 		return add_query_arg(
 			[ 'giveDonationAction' => 'showReceipt' ],
 			give_clean( $_REQUEST['give-current-url'] )
 		);
 
+	}
+
+	/**
+	 * Return current page aka embed form parent url as failed page.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function editFailedPageURI() {
+		return add_query_arg(
+			[ 'giveDonationAction' => 'failedDonation' ],
+			give_clean( $_REQUEST['give-current-url'] )
+		);
 	}
 
 
@@ -212,7 +231,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function handleDonationSuccessPageRedirect( $url ) {
-		remove_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
+		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
 		$successPageUrl = give_get_success_page_uri();
 		$tmp            = explode( '?', $url, 2 );
