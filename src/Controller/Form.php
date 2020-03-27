@@ -212,14 +212,38 @@ class Form {
 	 * Return current page aka embed form parent url as failed page.
 	 *
 	 * @since 2.7.0
+	 * @param string $url
 	 *
 	 * @return string
 	 */
-	public function editFailedPageURI() {
+	public function editFailedPageURI( $url ) {
 		return add_query_arg(
 			[ 'giveDonationAction' => 'failedDonation' ],
-			give_clean( $_REQUEST['give-current-url'] )
+			$this->switchRequestedURL(
+				$url,
+				give_clean( $_REQUEST['give-current-url'] )
+			)
 		);
+	}
+
+
+	/**
+	 * This function will change request url with other url.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param string $location Requested URL.
+	 * @param string $url URL.
+	 *
+	 * @return string
+	 */
+	private function switchRequestedURL( $location, $url ) {
+		$tmp    = explode( '?', $location, 2 );
+		$tmp[0] = $url;
+
+		$location = implode( '?', $tmp );
+
+		return $location;
 	}
 
 
@@ -234,11 +258,10 @@ class Form {
 	private function getSuccessPageRedirect( $url ) {
 		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
-		$successPageUrl = give_get_success_page_uri();
-		$tmp            = explode( '?', $url, 2 );
-		$tmp[0]         = $successPageUrl;
-
-		$url = implode( '?', $tmp );
+		$url = $this->switchRequestedURL(
+			$url,
+			give_get_success_page_uri()
+		);
 
 		return $url;
 	}
@@ -254,11 +277,10 @@ class Form {
 	private function getFailedPageRedirect( $url ) {
 		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
 
-		$successPageUrl = give_get_failed_transaction_uri();
-		$tmp            = explode( '?', $url, 2 );
-		$tmp[0]         = $successPageUrl;
-
-		$url = implode( '?', $tmp );
+		$url = $url = $this->switchRequestedURL(
+			$url,
+			give_get_failed_transaction_uri()
+		);
 
 		return $url;
 	}
