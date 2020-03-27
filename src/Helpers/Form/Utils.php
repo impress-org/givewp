@@ -115,3 +115,22 @@ function createFailedPageURL( $url = null, $args = [] ) {
 	);
 }
 
+/**
+ * This function will create success page URL.
+ *
+ * @since 2.7.0
+ * @param array       $args
+ * @param string|null $url
+ *
+ * @return string
+ */
+function createSuccessPageURL( $url = null, $args = [] ) {
+	$url  = $url ?: give_get_failed_transaction_uri( $args );
+	$args = array_merge( $args, [ 'giveDonationAction' => 'ShowReceipt' ] );
+
+	return add_query_arg(
+		$args,
+		$url
+	);
+}
+

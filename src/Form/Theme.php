@@ -10,6 +10,8 @@
 namespace Give\Form;
 
 use Give\Form\Theme\Options;
+use function Give\Helpers\Form\Utils\createFailedPageURL;
+use function Give\Helpers\Form\Utils\createSuccessPageURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -108,7 +110,7 @@ abstract class Theme {
 	 * @return mixed
 	 */
 	public function getFailedTransactionPageURL() {
-		return give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' );
+		return createFailedPageURL();
 	}
 
 	/**
@@ -118,6 +120,6 @@ abstract class Theme {
 	 * @return mixed
 	 */
 	public function getSuccessPageURL() {
-		return give_get_success_page_url( '?giveDonationAction=showReceipt' );
+		return createSuccessPageURL();
 	}
 }
