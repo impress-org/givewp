@@ -54,6 +54,14 @@ class Form {
 	private $templateLoader;
 
 	/**
+	 * Route base
+	 *
+	 * @since 2.7.0
+	 * @var Theme
+	 */
+	private $template;
+
+	/**
 	 * Form constructor.
 	 *
 	 * @param Controller $controller
@@ -172,6 +180,6 @@ class Form {
 	 * @return Theme
 	 */
 	public function getTheme() {
-		return $this->templateLoader->getTheme();
+		return $this->template instanceof Theme ? $this->template : $this->templateLoader->setUpTemplate();
 	}
 }
