@@ -95,7 +95,7 @@
 						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
 						const symbol = $( '.give-currency-symbol' ).text();
 						const position = $( '.give-currency-symbol' ).hasClass( 'give-currency-position-before' ) ? 'before' : 'after';
-						const html = position === 'before ' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
+						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
 						$( this ).html( html );
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
