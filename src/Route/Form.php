@@ -10,6 +10,8 @@
 namespace Give\Route;
 
 use Give\Controller\Form as Controller;
+use Give\Form\LoadTheme;
+use Give\Form\Theme;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,13 +46,23 @@ class Form {
 	private $base;
 
 	/**
+	 * Route base
+	 *
+	 * @since 2.7.0
+	 * @var LoadTheme
+	 */
+	private $templateLoader;
+
+	/**
 	 * Form constructor.
 	 *
 	 * @param Controller $controller
 	 */
 	public function init( $controller ) {
+		$this->templateLoader = $controller;
+
 		$this->setBasePrefix();
-		$controller->init();
+		$this->templateLoader->init();
 
 		add_action( 'init', [ $this, 'addRule' ] );
 		add_action( 'query_vars', [ $this, 'addQueryVar' ] );
@@ -150,5 +162,16 @@ class Form {
 			flush_rewrite_rules();
 			$wp_rewrite->wp_rewrite_rules();
 		}
+	}
+
+
+	/**
+	 * Get active form template.
+	 *
+	 * @since 2.7.0
+	 * @return Theme
+	 */
+	public function getTheme() {
+		return $this->templateLoader->getTheme();
 	}
 }
