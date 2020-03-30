@@ -61,7 +61,7 @@ p {
 // Buttons
 
 .give-btn {
-	background-color: #2bc253;
+	background-color: #28c77b;
 	font-family: 'Montserrat', sans-serif;
 	color: #fff;
 	font-weight: 500;
@@ -301,7 +301,7 @@ p {
 
 	> span {
 		border-radius: 20px;
-		background: linear-gradient(180deg, #2bc253 0%, #2bc253 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
+		background: linear-gradient(180deg, #28c77b 0%, #28c77b 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
 		background-blend-mode: multiply;
 		position: relative;
 		overflow: hidden;
@@ -377,8 +377,8 @@ p {
 			align-items: center;
 			justify-content: center;
 			width: 100%;
-			background: #2bc253;
-			border: 2px solid #2bc253;
+			background: #28c77b;
+			border: 2px solid #28c77b;
 			line-height: 1;
 			text-align: center;
 			color: #fff;
@@ -397,8 +397,8 @@ p {
 
 			&.give-default-level {
 				background: #fff;
-				border: 2px solid #2bc253;
-				color: #2bc253;
+				border: 2px solid #28c77b;
+				color: #28c77b;
 			}
 		}
 	}
