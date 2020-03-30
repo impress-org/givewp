@@ -44,17 +44,19 @@
 
 			$( hideSelector ).hide();
 
-			$( steps[ navigator.currentStep ].selector ).on( 'transitionend webkitTransitionEnd oTransitionEnd', function() {
-				// Transition end
-			} );
-
 			$( steps[ navigator.currentStep ].selector ).removeClass( 'slide-in-right' ).addClass( 'slide-out-left' );
 			$( steps[ step ].selector ).show().removeClass( 'slide-out-left' ).addClass( 'slide-in-right' );
 
+			const stepHeight = $( steps[ step ].selector ).height();
+
 			if ( step === steps.length - 1 ) {
 				$advanceButton.hide();
+				$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
+				$advanceButton.css( 'margin-top', '' );
 			} else {
 				$advanceButton.show();
+				$advanceButton.css( 'margin-top', `${ stepHeight }px` );
+				$( '.form-footer' ).css( 'margin-top', '' );
 			}
 
 			steps[ step ].setup();

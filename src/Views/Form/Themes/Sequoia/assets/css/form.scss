@@ -23,6 +23,7 @@ body {
 
 form {
 	margin: 0 !important;
+	position: relative;
 }
 
 // Typography
@@ -70,6 +71,7 @@ p {
 	font-size: 30px;
 	padding-top: 15px;
 	padding-bottom: 15px;
+	transition: margin-top 0.5s ease;
 
 	&:focus {
 		outline: none;
@@ -551,27 +553,35 @@ fieldset {
 
 // Slide Animation Styles
 
+.slide-in-right,
+.slide-in-left,
+.slide-out-right,
+.slide-out-left {
+	position: absolute;
+	width: 100%;
+}
+
 .slide-in-right {
 	animation-name: slideInRight;
-	animation-duration: 5s;
+	animation-duration: 0.5s;
 	animation-fill-mode: forwards;
 }
 
 .slide-out-right {
 	animation-name: slideOutRight;
-	animation-duration: 5s;
+	animation-duration: 0.5s;
 	animation-fill-mode: forwards;
 }
 
 .slide-in-left {
 	animation-name: slideInLeft;
-	animation-duration: 5s;
+	animation-duration: 0.5s;
 	animation-fill-mode: forwards;
 }
 
 .slide-out-left {
 	animation-name: slideOutLeft;
-	animation-duration: 5s;
+	animation-duration: 0.5s;
 	animation-fill-mode: forwards;
 }
 
