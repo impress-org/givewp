@@ -19,12 +19,39 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
 	const stripeConnectedElement = document.getElementById( 'give-stripe-connect' );
+	const hideIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_hide_icon"]' ) );
+	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
+	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
+	const mandateElement = document.querySelector( '.stripe-mandate-acceptance-text' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== hideIconElements ) {
+		hideIconElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					iconStyleElement.classList.remove( 'give-hidden' );
+				} else {
+					iconStyleElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+	if ( null !== hideMandateElements ) {
+		hideMandateElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					mandateElement.classList.remove( 'give-hidden' );
+				} else {
+					mandateElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
 
 	if ( null !== stripeConnectedElement ) {
 		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
