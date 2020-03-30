@@ -75,7 +75,8 @@ class Actions {
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
-		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		add_action( 'give_donation_form_before_personal_info', [ $this, 'getStartWrapperHTMLForPaymentSection' ] );
+		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ] );
 
 		/**
 		 * Remove actions
@@ -138,7 +139,7 @@ class Actions {
 		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
 		printf(
-			'<div class="give-show-form"><button class="give-btn">%1$s</button></div>',
+			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
 			$label
 		);
 	}
@@ -162,23 +163,32 @@ class Actions {
 	}
 
 	/**
-	 * Add introduction text to personal information section
+	 * Add wrapper and introduction text to payment information section
 	 *
 	 * @since 2.7.0
 	 *
 	 * @param int $formId
 	 */
-	public function getIntroductionSectionTextSubSection( $formId ) {
+	public function getStartWrapperHTMLForPaymentSection( $formId ) {
 		$headline    = $this->themeOptions['payment_information']['headline'];
 		$description = $this->themeOptions['payment_information']['description'];
 
 		if ( ! empty( $headline ) || ! empty( $description ) ) {
 			printf(
-				'<div class="give-section personal"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
+				'<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
 				$headline,
 				$description
 			);
 		}
+	}
+
+	/**
+	 * Close wrapper for payment information section
+	 *
+	 * @since 2.7.0
+	 */
+	public function getCloseWrapperHTMLForPaymentSection() {
+		echo '</div>';
 	}
 
 	/**
