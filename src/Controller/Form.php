@@ -331,7 +331,7 @@ class Form {
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
 			$templateLoader = new LoadTheme();
-			$template       = $templateLoader->getTheme();
+			$template       = $templateLoader->setUpTemplate();
 
 			if ( isSuccessPageURL( $location ) ) {
 				$location = $this->getSuccessPageRedirect( $location );
