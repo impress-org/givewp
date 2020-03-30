@@ -64,6 +64,10 @@ class Form {
 			return;
 		}
 
+		// Set header.
+		nocache_headers();
+		header( 'HTTP/1.1 200 OK' );
+
 		$this->setupGlobalPost();
 
 		$loadTheme = $this->loadTheme();
