@@ -154,8 +154,8 @@ function give_form_shortcode( $atts ) {
 	if ( $activeTheme && 'legacy' !== $activeTheme ) {
 		$query_string           = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
 		$donation_history       = give_get_purchase_session();
-		$isAutoScroll           = absint( isset( $query_string['giveDonationAction'] ) );
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
+		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $atts['id'] !== absint( $donation_history['post_data'] ['give-form-id'] );
 
 		// Do not pass donation acton by query param if does not belong to current form.
