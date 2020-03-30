@@ -51,7 +51,7 @@ function isViewingFormReceipt() {
  * @return bool
  * @since 2.7.0
  */
-function isViewingFormFailedTransactionPage() {
+function isViewingFormFailedPage() {
 	return ! empty( $_REQUEST['giveDonationAction'] )
 		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] );
 }
@@ -64,7 +64,7 @@ function isViewingFormFailedTransactionPage() {
  * @return string
  * @since 2.7.0
  */
-function isFailedTransactionPageURL( $url ) {
+function isFailedPageURL( $url ) {
 	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
 
 	return $action && 'failedDonation' === $action;

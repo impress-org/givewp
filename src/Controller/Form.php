@@ -11,12 +11,12 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
-use function Give\Helpers\Form\Utils\isFailedTransactionPageURL;
+use function Give\Helpers\Form\Utils\isFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingForm;
-use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
+use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
 defined( 'ABSPATH' ) || exit;
@@ -49,7 +49,7 @@ class Form {
 	public function load() {
 		$isViewingForm       = isViewingForm();
 		$isViewingReceipt    = isViewingFormReceipt();
-		$isViewingFailedPage = isViewingFormFailedTransactionPage();
+		$isViewingFailedPage = isViewingFormFailedPage();
 		$canWeOverwrite      = ( ! empty( $_GET['iframe'] ) || isProcessingForm() ) &&
 							   ( $isViewingForm || $isViewingReceipt || $isViewingFailedPage );
 
@@ -300,7 +300,7 @@ class Form {
 				return $this->getSuccessPageRedirect( $location );
 			}
 
-			if ( isFailedTransactionPageURL( $location ) ) {
+			if ( isFailedPageURL( $location ) ) {
 				return $this->getFailedPageRedirect( $location );
 			}
 
