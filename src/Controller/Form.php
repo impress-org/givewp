@@ -64,29 +64,31 @@ class Form {
 
 		$loadTheme = $this->loadTheme();
 
-		// Set header.
-		nocache_headers();
-		header( 'HTTP/1.1 200 OK' );
-
+		// Handle donation form.
 		if ( $isViewingForm ) {
 			include $loadTheme->getTheme()->getTemplate( 'form' );
 			exit();
-
 		}
 
+		// Handle success page.
 		if ( $isViewingReceipt ) {
 
 			if ( $loadTheme->getTheme()->openSuccessPageInIframe || inIframe() ) {
+				// Render receipt with in iframe.
 				include $loadTheme->getTheme()->getTemplate( 'receipt' );
 				exit();
 			}
 
+			// Render receipt on success page in iframe.
 			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ] );
 		}
 
+		// Handle failed page.
 		if ( $isViewingFailedPage ) {
-			include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormFailedTransactionPage.php';
-			exit();
+			if ( $loadTheme->getTheme()->openSuccessPageInIframe || inIframe() ) {
+				include $loadTheme->getTheme()->getTemplate( 'receipt' );
+				exit();
+			}
 		}
 	}
 
