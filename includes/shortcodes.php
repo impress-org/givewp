@@ -157,13 +157,13 @@ function give_form_shortcode( $atts ) {
 		$donation_history       = give_get_purchase_session();
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
-		$donationFormHasSession = $atts['id'] !== absint( $donation_history['post_data'] ['give-form-id'] );
+		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
 			$hasAction &&
 			! empty( $donation_history ) &&
-			$donationFormHasSession
+			! $donationFormHasSession
 		) {
 			unset( $query_string['giveDonationAction'] );
 			$hasAction    = false;
