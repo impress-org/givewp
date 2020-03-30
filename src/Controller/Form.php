@@ -35,7 +35,7 @@ class Form {
 	 */
 	public function init() {
 		add_action( 'template_redirect', [ $this, 'load' ], 0 );
-		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
+		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1, 3 );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
@@ -129,8 +129,8 @@ class Form {
 	 */
 	public function loadThemeOnAjaxRequest() {
 		if (
-			defined( 'DOING_AJAX' ) &&
 			isset( $_REQUEST['action'] ) &&
+			wp_doing_ajax() &&
 			0 === strpos( $_REQUEST['action'], 'give_' )
 		) {
 			global $post;
