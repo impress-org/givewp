@@ -1,9 +1,4 @@
-<?php
-
-use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
-
-global $post;
-?>
+<?php global $post; ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>  style="margin-top: 0 !important;">
 	<head>
@@ -20,7 +15,7 @@ global $post;
 		<?php
 
 		// Fetch the Give Form.
-		give_get_donation_form( getShortcodeArgs() );
+		give_get_donation_form();
 
 		/**
 		 * Fire the action hook in footer

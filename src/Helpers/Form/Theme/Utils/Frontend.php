@@ -4,20 +4,6 @@ namespace Give\Helpers\Form\Theme\Utils\Frontend;
 use WP_Post;
 
 /**
- * Get shortcode argument.
- * Note: This function will be useful to get donation form shortcode argument on donation form view.
- *
- * @since 2.7.0
- */
-function getShortcodeArgs() {
-	$queryString = wp_parse_args( $_SERVER['QUERY_STRING'] );
-	$attributes  = base64_decode( give_clean( $queryString['shortcodeAttributes'] ) );
-	$attributes  = unserialize( $attributes );
-
-	return array_intersect_key( $attributes, give_get_default_form_shortcode_args() );
-}
-
-/**
  * This function will return form id.
  *
  * There are two ways to auto detect form id:
