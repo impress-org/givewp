@@ -31,7 +31,7 @@
 			} else {
 				$( '.give-form-navigator', $container ).show();
 			}
-			$advanceButton.text( steps[ step ].label );
+			$advanceButton.html( steps[ step ].label + '<i class="fas fa-chevron-right"></i>' );
 			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
