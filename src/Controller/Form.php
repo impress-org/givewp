@@ -285,7 +285,7 @@ class Form {
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
 		$url    = explode( '?', $redirect, 2 );
-		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
+		$url[0] = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $_REQUEST['give-form-id'] ) ) );
 
 		return implode( '?', $url );
 	}
