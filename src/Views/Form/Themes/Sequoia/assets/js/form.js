@@ -2,7 +2,7 @@
 ( function( $ ) {
 	const templateOptions = window.sequoiaTemplateOptions;
 	const $container = $( '.give-embed-form' );
-	const $advanceButton = $( '.give-show-form button', $container );
+	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 
@@ -106,10 +106,10 @@
 			},
 		},
 		{
-			id: 'personal',
+			id: 'payment',
 			title: 'Add Your Information',
 			label: 'Process Donation',
-			selector: '.give-section.personal, #give_checkout_user_info, #give-payment-mode-select, #give_purchase_form_wrap',
+			selector: '.give-section.payment',
 			showErrors: true,
 			setup: () => {
 				// Show remain form options.
@@ -144,6 +144,10 @@
 			}` );
 			sheet.insertRule( `.give-btn {
 				border: 2px solid ${ primaryColor }!important;
+				background: ${ primaryColor }!important;
+			}` );
+			sheet.insertRule( `.give-btn:hover {
+				background: ${ primaryColor }!important;
 			}` );
 			sheet.insertRule( `.give-donation-level-btn {
 				border: 2px solid ${ primaryColor }!important;
@@ -176,10 +180,10 @@
 		navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 	} );
 
-	// Move personal information section when document load.
+	// Move payment information section when document load.
 	moveFieldsUnderPaymentGateway( true );
 
-	// Move personal information section when gateway updated.
+	// Move payment information section when gateway updated.
 	$( document ).on( 'give_gateway_loaded', function() {
 		moveFieldsUnderPaymentGateway( true );
 	} );
@@ -187,8 +191,8 @@
 		moveFieldsUnderPaymentGateway( false );
 	} );
 
-	// Refresh personal information section.
-	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
+	// Refresh payment information section.
+	$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 
 	/**
 	 * Move form field under payment gateway
@@ -242,18 +246,18 @@
 	}
 
 	/**
-	 * Refresh personal information section
+	 * Refresh payment information section
 	 *
 	 * @since 2.7.0
 	 * @param {boolean} ev Event object
 	 * @param {object} response Response object
 	 * @param {number} formID Form ID
 	 */
-	function refreshPersonalInformationSection( ev, response, formID ) {
+	function refreshPaymentInformationSection( ev, response, formID ) {
 		const $form = $( `#${ formID }` );
 
 		// This function will run only for embed donation form.
-		// Show personal information section fields.
+		// Show payment information section fields.
 		if ( $form.parent().hasClass( 'give-embed-form' ) ) {
 			const data = {
 				action: 'give_cancel_login',
