@@ -106,20 +106,24 @@ abstract class Theme {
 	/**
 	 * Get failed transaction page URL.
 	 *
+	 * @param int $formId
+	 *
 	 * @since 2.7.0
 	 * @return mixed
 	 */
-	public function getFailedTransactionPageURL() {
+	public function getFailedTransactionPageURL( $formId ) {
 		return createFailedPageURL();
 	}
 
 	/**
 	 * Get success page URL.
 	 *
+	 * @param int $formId
+	 *
 	 * @since 2.7.0
 	 * @return mixed
 	 */
-	public function getSuccessPageURL() {
+	public function getSuccessPageURL( $formId ) {
 		return createSuccessPageURL();
 	}
 }
