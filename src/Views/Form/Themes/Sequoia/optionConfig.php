@@ -1,5 +1,10 @@
 <?php
 global $post;
+
+// Setup dynamic defaults
+$introHeadline    = $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' );
+$introDescription = $post->post_excerpt ? $post->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
+
 return [
 	'introduction'        => [
 		'name'   => __( 'Introduction', 'give' ),
@@ -22,9 +27,9 @@ return [
 				'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
+					'placeholder' => $introHeadline,
 				],
-				'default'    => $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' ),
+				'default'    => $introHeadline,
 			],
 			[
 				'id'         => 'description',
@@ -32,9 +37,9 @@ return [
 				'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
+					'placeholder' => $introDescription,
 				],
-				'default'    => $post->post_excerpt ? $post->post_excerpt : __( 'Help provide education, care, and community development. It couldn’t happen without you.', 'give' ),
+				'default'    => $introDescription,
 			],
 			[
 				'id'   => 'image',
@@ -66,6 +71,26 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'id'         => 'header_label',
+				'name'       => __( 'Header Label', 'give' ),
+				'desc'       => __( 'Do you want to customize the header label for the payment amount step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Choose Amount', 'give' ),
+				],
+				'default'    => __( 'Choose Amount', 'give' ),
+			],
+			[
+				'id'         => 'content',
+				'name'       => __( 'Content', 'give' ),
+				'desc'       => __( 'Do you want to customize the content that appears before amount options? The content displays above the amount option buttons during the second step. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'textarea',
+				'attributes' => [
+					'placeholder' => __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' ),
+				],
+				'default'    => __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' ),
+			],
+			[
 				'id'         => 'next_label',
 				'name'       => __( 'Continue Button', 'give' ),
 				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
@@ -81,6 +106,36 @@ return [
 		'name'   => __( 'Payment Information', 'give' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
+			[
+				'id'         => 'header_label',
+				'name'       => __( 'Header Label', 'give' ),
+				'desc'       => __( 'Do you want to customize the header label for the payment information step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Add Your Information', 'give' ),
+				],
+				'default'    => __( 'Add Your Information', 'give' ),
+			],
+			[
+				'id'         => 'headline',
+				'name'       => __( 'Headline', 'give' ),
+				'desc'       => __( 'Do you want to customize the headline for the checkout step? We recommend keeping it to no more than 8 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Tell us a bit about yourself.', 'give' ),
+				],
+				'default'    => __( 'Tell us a bit about yourself.', 'give' ),
+			],
+			[
+				'id'         => 'description',
+				'name'       => __( 'Description', 'give' ),
+				'desc'       => __( 'Do you want to customize the description for the checkout step? The description displays below the headline. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'textarea',
+				'attributes' => [
+					'placeholder' => __( 'We’ll never share this information with anyone.', 'give' ),
+				],
+				'default'    => __( 'We’ll never share this information with anyone.', 'give' ),
+			],
 			[
 				'id'         => 'checkout_label',
 				'name'       => __( 'Submit Button', 'give' ),
@@ -98,6 +153,12 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'id'   => 'image',
+				'name' => __( 'Image', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. It should be something that reaffirms successful donation like a checkmark or heart. We recommend keeping it square in size at 120x120 pixels for best results.', 'give' ),
+				'type' => 'file',
+			],
+			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
 				'desc'       => __( 'This message should be short and sweet. Make the donor feel good about their donation so they continue to give in the future. This text is required and you may use any of the available template tags within this message.', 'give' ),
@@ -105,6 +166,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( 'A great big thank you!', 'give' ),
 				],
+				'default'    => __( 'A great big thank you!', 'give' ),
 			],
 			[
 				'id'         => 'description',
@@ -114,12 +176,7 @@ return [
 				'attributes' => [
 					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
-			],
-			[
-				'id'   => 'image',
-				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
-				'type' => 'file',
+				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 		],
 	],

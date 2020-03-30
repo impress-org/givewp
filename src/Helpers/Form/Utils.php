@@ -1,6 +1,8 @@
 <?php
 namespace Give\Helpers\Form\Utils;
 
+use function Give\Helpers\Form\Theme\getActiveID;
+
 /**
  * Get result if we are viewing embed form or not
  *
@@ -60,9 +62,9 @@ function isViewingFormFailedTransactionPage() {
  * @return string
  * @since 2.7.0
  */
-function getSuccessPageURL( $args = array() ) {
+function getSuccessPageURL( $args = [] ) {
 	return add_query_arg(
-		array_merge( array( 'giveDonationAction' => 'showReceipt' ), $args ),
+		array_merge( [ 'giveDonationAction' => 'showReceipt' ], $args ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
 }
@@ -75,10 +77,25 @@ function getSuccessPageURL( $args = array() ) {
  * @return string
  * @since 2.7
  */
-function getFailedTransactionPageURL( $args = array() ) {
+function getFailedTransactionPageURL( $args = [] ) {
 	return add_query_arg(
-		array_merge( array( 'giveDonationAction' => 'failedDonation' ), $args ),
+		array_merge( [ 'giveDonationAction' => 'failedDonation' ], $args ),
 		give_clean( $_REQUEST['give-current-url'] )
 	);
+}
+
+
+/**
+ * Returns whether or not the given form uses the legacy form template
+ *
+ * @param int|null $formID
+ *
+ * @return bool
+ * @since 2.7.0
+ */
+function isLegacyForm( $formID = null ) {
+	$formTemplate = getActiveID( $formID );
+
+	return ! $formTemplate || 'legacy' === getActiveID( $formID );
 }
 

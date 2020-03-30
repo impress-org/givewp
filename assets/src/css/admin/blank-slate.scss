@@ -10,7 +10,7 @@
 .give-blank-slate {
 	background: white;
 	border: 1px solid #e5e5e5;
-	box-shadow: 0 1px 1px rgba( 0,0,0,0.04 );
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	margin: 0 auto;
 	padding: 40px;
 	text-align: center;
@@ -54,5 +54,24 @@
 	font-size: 1.2em;
 	height: auto;
 	margin: 0 0 10px;
-	padding: .75em 1.5em;
+	padding: 0.75em 1.5em;
+}
+
+// Gutenberg related css.
+.wp-block {
+	.give-blank-slate {
+		background-color: #f1f1f1;
+
+		.give-blank-slate__heading {
+			font-weight: 700;
+			font-size: 20px;
+			margin-bottom: 10px;
+			margin-top: 20px;
+		}
+
+		a {
+			color: #32373c;
+			text-decoration: none;
+		}
+	}
 }

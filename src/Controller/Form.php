@@ -11,7 +11,9 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
+use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
@@ -32,10 +34,11 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		add_action( 'template_redirect', array( $this, 'load' ), 0 );
-		add_action( 'init', array( $this, 'loadThemeOnAjaxRequest' ) );
-		add_action( 'init', array( $this, 'embedFormSuccessURIHandler' ), 1, 3 );
-		add_filter( 'give_send_back_to_checkout', array( $this, 'handlePrePaymentProcessingErrorRedirect' ) );
+		add_action( 'template_redirect', [ $this, 'load' ], 0 );
+		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
+		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
+		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
 	/**
@@ -47,6 +50,7 @@ class Form {
 	public function load() {
 		$isViewingForm    = isViewingForm();
 		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
+		$action           = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
 
 		// Exit: we are not on embed form's main page or receipt page.
 		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
@@ -54,7 +58,12 @@ class Form {
 		}
 
 		// Exit: redirect donor to receipt or fail transaction page.
-		if ( ! empty( $_REQUEST['giveDonationAction'] ) && $isViewingForm ) {
+		if (
+			! empty( $_REQUEST['giveDonationAction'] ) &&
+			$isViewingForm &&
+			$action &&
+			in_array( $action, [ 'showReceipt', 'failedDonation' ] )
+		) {
 			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
 			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
@@ -70,11 +79,9 @@ class Form {
 
 		if ( $isViewingForm ) {
 			$shortcodeArgs = getShortcodeArgs();
-			$formTheme     = ! empty( $shortcodeArgs['form_theme'] ) ? $shortcodeArgs['form_theme'] : '';
-
 			$this->setupGlobalPost();
 
-			require_once $this->loadTheme( $formTheme )
+			require_once $this->loadTheme()
 							  ->getTheme()
 							  ->getTemplate( 'form' );
 
@@ -93,14 +100,12 @@ class Form {
 	/**
 	 * Load form theme
 	 *
-	 * @param string $formTheme
-	 *
 	 * @return LoadTheme
 	 * @since 2.7.0
 	 */
-	private function loadTheme( $formTheme = '' ) {
+	private function loadTheme() {
 		$themeLoader = new LoadTheme();
-		$themeLoader->init( $formTheme );
+		$themeLoader->init();
 
 		return $themeLoader;
 	}
@@ -172,7 +177,7 @@ class Form {
 			return;
 		}
 
-		add_filter( 'give_get_success_page_uri', array( $this, 'addQueryParamsToSuccessURI' ) );
+		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
 	}
 
 
@@ -185,7 +190,7 @@ class Form {
 	 * @return string
 	 */
 	public function addQueryParamsToSuccessURI( $successPage ) {
-		return add_query_arg( array( 'giveDonationAction' => 'showReceipt' ), $successPage );
+		return add_query_arg( [ 'giveDonationAction' => 'showReceipt' ], $successPage );
 	}
 
 	/**
@@ -205,5 +210,50 @@ class Form {
 		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
 
 		return implode( '?', $url );
+	}
+
+	/**
+	 * Handle single donation form page.
+	 *
+	 * @since 2.7.0
+	 */
+	public function handleSingleDonationFormPage() {
+		// Exit if current form is legacy
+		if ( isLegacyForm() ) {
+			return;
+		}
+
+		// Disable sidebar.
+		add_action( 'give_get_option_form_sidebar', [ $this, 'disableLegacyDonationFormSidebar' ] );
+
+		// Remove title.
+		remove_action( 'give_single_form_summary', 'give_template_single_title', 5 );
+
+		// Remove donation form renderer.
+		remove_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
+
+		add_action( 'give_single_form_summary', [ $this, 'renderFormOnSingleDonationFormPage' ], 10 );
+	}
+
+	/**
+	 * Return 'disabled' as donation form sidebar status.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function disableLegacyDonationFormSidebar() {
+		return 'disabled';
+	}
+
+
+	/**
+	 * This function handle donation form style for single donation page.
+	 *
+	 * Note: it will render style on basis on selected form template.
+	 *
+	 * @since 2.7.0
+	 */
+	public function renderFormOnSingleDonationFormPage() {
+		echo give_form_shortcode( [] );
 	}
 }

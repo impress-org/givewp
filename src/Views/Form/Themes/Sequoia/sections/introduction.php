@@ -8,18 +8,24 @@ $image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->
 ?>
 
 <div class="give-section introduction">
-	<h2>
+	<h2 class="headline">
 		<?php echo $headline; ?>
 	</h2>
-	<?php if ( ! empty( $description ) ) { ?>
+	<?php if ( ! empty( $description ) ) : ?>
 		<div class="seperator"></div>
-		<p>
+		<p class="description">
 			<?php echo $description; ?>
 		</p>
-	<?php } ?>
-	<?php if ( ! empty( $image ) ) { ?>
-		<div class="image-container">
+	<?php endif; ?>
+	<?php if ( ! empty( $image ) ) : ?>
+		<div class="image">
 			<img src="<?php echo $image; ?>" />
 		</div>
-	<?php }; ?>
+	<?php endif; ?>
+
+	<?php
+		require 'income-stats.php';
+		require 'progress-bar.php';
+	?>
+
 </div>

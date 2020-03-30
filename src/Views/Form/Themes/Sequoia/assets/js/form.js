@@ -2,7 +2,7 @@
 ( function( $ ) {
 	const templateOptions = window.sequoiaTemplateOptions;
 	const $container = $( '.give-embed-form' );
-	const $advanceButton = $( '.give-show-form button', $container );
+	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 
@@ -10,6 +10,15 @@
 		currentStep: 0,
 		animating: false,
 		goToStep: ( step ) => {
+			if ( steps[ step ].showErrors === true ) {
+				$( '.give_error, .give_warning, .give_success' ).show();
+			} else {
+				$( '.give_error, .give_warning, .give_success' ).hide();
+			}
+
+			$( '.step-tracker' ).removeClass( 'current' );
+			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
+
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
@@ -22,7 +31,7 @@
 			} else {
 				$( '.give-form-navigator', $container ).show();
 			}
-			$advanceButton.text( steps[ step ].label );
+			$advanceButton.html( steps[ step ].label + '<i class="fas fa-chevron-right"></i>' );
 			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
@@ -66,18 +75,20 @@
 	const steps = [
 		{
 			id: 'introduction',
-			title: 'Introduction',
+			title: null,
 			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
+			showErrors: false,
 			setup: () => {
 
 			},
 		},
 		{
 			id: 'choose-amount',
-			title: 'Choose Amount',
+			title: templateOptions.payment_amount.header_label,
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
+			showErrors: false,
 			setup: () => {
 				$( '.give-donation-level-btn' ).each( function() {
 					const hasTooltip = $( this ).attr( 'has-tooltip' );
@@ -89,7 +100,9 @@
 					const text = $( this ).text();
 					if ( value !== 'custom' ) {
 						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
-						const html = `<div class="currency">$</div>${ value }`;
+						const symbol = $( '.give-currency-symbol' ).text();
+						const position = $( '.give-currency-symbol' ).hasClass( 'give-currency-position-before' ) ? 'before' : 'after';
+						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
 						$( this ).html( html );
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
@@ -100,12 +113,12 @@
 			},
 		},
 		{
-			id: 'personal',
-			title: 'Add Your Information',
-			label: 'Process Donation',
-			selector: '.give-section.personal, #give_checkout_user_info, #give-payment-mode-select, #give_purchase_form_wrap',
+			id: 'payment',
+			title: templateOptions.payment_information.header_label,
+			label: templateOptions.payment_information.checkout_label,
+			selector: '.give-section.payment',
+			showErrors: true,
 			setup: () => {
-				// Show remain form options.
 				$( '.give-label' ).html( '' );
 				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
 				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
@@ -136,20 +149,11 @@
 				background: ${ primaryColor }!important;
 			}` );
 			sheet.insertRule( `.give-btn {
-				background: ${ primaryColor }!important;
-				transition: box-shadow 0.2s ease;
-				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0),
-					0 3px 1px -2px rgba(0, 0, 0, 0),
-					0 1px 5px 0 rgba(0, 0, 0, 0)
-					!important;
 				border: 2px solid ${ primaryColor }!important;
+				background: ${ primaryColor }!important;
 			}` );
 			sheet.insertRule( `.give-btn:hover {
 				background: ${ primaryColor }!important;
-				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-					0 3px 1px -2px rgba(0, 0, 0, 0.2),
-					0 1px 5px 0 rgba(0, 0, 0, 0.12)
-					!important;
 			}` );
 			sheet.insertRule( `.give-donation-level-btn {
 				border: 2px solid ${ primaryColor }!important;
@@ -170,18 +174,22 @@
 		e.preventDefault();
 		navigator.forward();
 		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( 'giveEmbedShowingForm' );
+			window.parentIFrame.scrollToOffset( 0, 0 );
 		}
 	} );
 	$backButton.on( 'click', function( e ) {
 		e.preventDefault();
 		navigator.back();
 	} );
+	$( '.step-tracker' ).on( 'click', function( e ) {
+		e.preventDefault();
+		navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
+	} );
 
-	// Move personal information section when document load.
+	// Move payment information section when document load.
 	moveFieldsUnderPaymentGateway( true );
 
-	// Move personal information section when gateway updated.
+	// Move payment information section when gateway updated.
 	$( document ).on( 'give_gateway_loaded', function() {
 		moveFieldsUnderPaymentGateway( true );
 	} );
@@ -189,8 +197,8 @@
 		moveFieldsUnderPaymentGateway( false );
 	} );
 
-	// Refresh personal information section.
-	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
+	// Refresh payment information section.
+	$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 
 	/**
 	 * Move form field under payment gateway
@@ -233,24 +241,29 @@
 
 			return res( showFields );
 		} ).then( function( showFields ) {
+			$( '.give-label' ).html( '' );
+			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
+			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+			$( 'label[for=billing_country]' ).html( '<i class="fas fa-globe-americas"></i>' );
+
 			// eslint-disable-next-line no-unused-expressions
 			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
 		} );
 	}
 
 	/**
-	 * Refresh personal information section
+	 * Refresh payment information section
 	 *
 	 * @since 2.7.0
 	 * @param {boolean} ev Event object
 	 * @param {object} response Response object
 	 * @param {number} formID Form ID
 	 */
-	function refreshPersonalInformationSection( ev, response, formID ) {
+	function refreshPaymentInformationSection( ev, response, formID ) {
 		const $form = $( `#${ formID }` );
 
 		// This function will run only for embed donation form.
-		// Show personal information section fields.
+		// Show payment information section fields.
 		if ( $form.parent().hasClass( 'give-embed-form' ) ) {
 			const data = {
 				action: 'give_cancel_login',

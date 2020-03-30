@@ -400,20 +400,20 @@ Shortcode Copy & Paste
 		}
 	}
 
-	#form_theme_options {
-		.themes-list {
+	#form_template_options {
+		.templates-list {
 			display: grid;
 			grid-gap: 10px;
 			grid-template-columns: 1fr 1fr;
 			padding: 8px 0 24px 0;
 
-			.theme-image-container {
+			.template-image-container {
 				width: 100%;
 				height: auto;
 				position: relative;
 				padding-top: 56.25%;
 
-				.theme-image {
+				.template-image {
 					height: 100%;
 					width: 100%;
 					object-fit: cover;
@@ -451,7 +451,7 @@ Shortcode Copy & Paste
 			}
 		}
 
-		.form-theme-introduction {
+		.form-template-introduction {
 			padding-bottom: 25px;
 
 			p {
@@ -460,12 +460,12 @@ Shortcode Copy & Paste
 				padding: 0;
 			}
 
-			p.form-theme-description {
+			p.form-template-description {
 				color: #9c9c9c;
 				font-size: 16px;
 			}
 
-			.form-theme-notice {
+			.form-template-notice {
 				padding: 16px 10px;
 				display: flex;
 				justify-content: space-between;
@@ -495,7 +495,7 @@ Shortcode Copy & Paste
 		}
 
 		.inner-panel {
-			.form-theme-options-introduction {
+			.form-template-options-introduction {
 				display: none;
 				padding-bottom: 25px;
 			}
@@ -508,10 +508,10 @@ Shortcode Copy & Paste
 			}
 
 			&.has-activated-theme {
-				.themes-list {
+				.templates-list {
 					grid-template-columns: 1fr !important;
 
-					.theme-image-container {
+					.template-image-container {
 						display: none;
 					}
 
@@ -526,12 +526,12 @@ Shortcode Copy & Paste
 					}
 				}
 
-				.form-theme-introduction,
-				.themes-list-heading {
+				.form-template-introduction,
+				.templates-list-heading {
 					display: none;
 				}
 
-				.form-theme-options-introduction,
+				.form-template-options-introduction,
 				.theme-options.active {
 					display: block;
 				}

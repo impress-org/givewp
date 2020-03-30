@@ -20,14 +20,14 @@ class PaymentMethods extends Endpoint {
 		$gateways = give_get_payment_gateways();
 		$stats    = new \Give_Payment_Stats();
 
-		$gatewaysArr = array();
+		$gatewaysArr = [];
 
 		foreach ( $gateways as $gateway_id => $gateway ) {
-			$gatewaysArr[] = array(
+			$gatewaysArr[] = [
 				'admin_label' => $gateway['admin_label'],
-				'count'       => $stats->get_sales( 0, date( $request['start'] ), date( $request['end'] ), $gateway_id ),
-				'amount'      => $stats->get_earnings( 0, date( $request['start'] ), date( $request['end'] ), $gateway_id ),
-			);
+				'count'       => $stats->get_sales( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
+				'amount'      => $stats->get_earnings( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
+			];
 		}
 		$sorted = usort(
 			$gatewaysArr,
@@ -39,37 +39,31 @@ class PaymentMethods extends Endpoint {
 			}
 		);
 
-		$labels   = array();
-		$data     = array();
-		$tooltips = array();
+		$labels   = [];
+		$data     = [];
+		$tooltips = [];
 
 		if ( $sorted == true ) {
 			$gatewaysArr = array_slice( $gatewaysArr, 0, 5 );
 			foreach ( $gatewaysArr as $gateway ) {
 				$labels[]   = $gateway['admin_label'];
 				$data[]     = $gateway['amount'];
-				$tooltips[] = array(
-					'title'  => give_currency_filter( give_format_amount( $gateway['amount'] ), array( 'decode_currency' => true ) ),
+				$tooltips[] = [
+					'title'  => give_currency_filter( give_format_amount( $gateway['amount'] ), [ 'decode_currency' => true ] ),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),
 					'footer' => $gateway['admin_label'],
-				);
+				];
 			}
 		}
-		$status = $this->get_give_status();
 
-		return new \WP_REST_Response(
-			array(
-				'data'   => array(
-					'labels'   => $labels,
-					'datasets' => array(
-						array(
-							'data'     => $data,
-							'tooltips' => $tooltips,
-						),
-					),
-				),
-				'status' => $status,
-			)
-		);
+		return [
+			'labels'   => $labels,
+			'datasets' => [
+				[
+					'data'     => $data,
+					'tooltips' => $tooltips,
+				],
+			],
+		];
 	}
 }
