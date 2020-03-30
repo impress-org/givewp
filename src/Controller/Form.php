@@ -340,8 +340,7 @@ class Form {
 	public function handleOffSiteCheckoutRedirect( $location ) {
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
-			$templateLoader = new LoadTheme();
-			$template       = $templateLoader->setUpTemplate();
+			$template = Give()->themes->getTheme( getActiveID() );
 
 			if ( isSuccessPageURL( $location ) ) {
 				$location = $this->getSuccessPageRedirect( $location );

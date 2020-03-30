@@ -46,31 +46,13 @@ class Form {
 	private $base;
 
 	/**
-	 * Route base
-	 *
-	 * @since 2.7.0
-	 * @var LoadTheme
-	 */
-	private $templateLoader;
-
-	/**
-	 * Route base
-	 *
-	 * @since 2.7.0
-	 * @var Theme
-	 */
-	private $template;
-
-	/**
 	 * Form constructor.
 	 *
 	 * @param Controller $controller
 	 */
 	public function init( $controller ) {
-		$this->templateLoader = $controller;
-
 		$this->setBasePrefix();
-		$this->templateLoader->init();
+		$controller->init();
 
 		add_action( 'init', [ $this, 'addRule' ] );
 		add_action( 'query_vars', [ $this, 'addQueryVar' ] );
@@ -170,16 +152,5 @@ class Form {
 			flush_rewrite_rules();
 			$wp_rewrite->wp_rewrite_rules();
 		}
-	}
-
-
-	/**
-	 * Get active form template.
-	 *
-	 * @since 2.7.0
-	 * @return Theme
-	 */
-	public function getTheme() {
-		return $this->template instanceof Theme ? $this->template : $this->templateLoader->setUpTemplate();
 	}
 }

@@ -44,17 +44,13 @@ class LoadTheme {
 	 *
 	 * @since 2.7.0
 	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
-	 *
-	 * @return Theme
 	 */
-	public function setUpTemplate( $formId = null ) {
+	private function setUpTemplate( $formId = null ) {
 		$formID = (int) ( $formId ?: getFormId() );
 
 		$themeID = getActiveID( $formID ) ?: $this->defaultTemplateID;
 
 		$this->theme = Give()->themes->getTheme( $themeID );
-
-		return $this->theme;
 	}
 
 	/**
