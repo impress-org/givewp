@@ -170,8 +170,8 @@ class Actions {
 	 * @param int $formId
 	 */
 	public function getStartWrapperHTMLForPaymentSection( $formId ) {
-		$headline    = $this->themeOptions['payment_information']['headline'];
-		$description = $this->themeOptions['payment_information']['description'];
+		$headline    = isset( $this->themeOptions['payment_information']['headline'] ) ? $this->themeOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
+		$description = isset( $this->themeOptions['payment_information']['description'] ) ? $this->themeOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
 
 		if ( ! empty( $headline ) || ! empty( $description ) ) {
 			printf(
@@ -197,7 +197,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		$content = $this->themeOptions['payment_amount']['content'];
+		$content = isset( $this->themeOptions['payment_amount']['content'] ) ? $this->themeOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
 		if ( ! empty( $content ) ) {
 			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
 		} else {
