@@ -62,7 +62,7 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getFailedTransactionPageURL() {
-		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', getFormId() ) ) );
+	public function getFailedTransactionPageURL( $formId ) {
+		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
 }
