@@ -122,9 +122,9 @@ return [
 				'desc'       => __( 'Do you want to customize the headline for the checkout step? We recommend keeping it to no more than 8 words as a best practive.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => __( 'Tell us a bit about yourself. ', 'give' ),
+					'placeholder' => __( 'Tell us a bit about yourself.', 'give' ),
 				],
-				'default'    => __( 'Tell us a bit about yourself. ', 'give' ),
+				'default'    => __( 'Tell us a bit about yourself.', 'give' ),
 			],
 			[
 				'id'         => 'description',
