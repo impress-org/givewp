@@ -138,3 +138,12 @@ function createSuccessPageURL( $url = null, $args = [] ) {
 	);
 }
 
+
+/**
+ * Return if current URL loading in iframe or not.
+ * @since 2.7.0
+ * @return bool
+ */
+function inIframe(){
+	return ! empty( give_clean( $_GET['iframe'] ) );
+}
