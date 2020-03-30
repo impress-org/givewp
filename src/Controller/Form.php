@@ -10,7 +10,9 @@
 namespace Give\Controller;
 
 use Give\Form\LoadTheme;
+use Give_Notices;
 use WP_Post;
+use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
@@ -66,6 +68,11 @@ class Form {
 
 		$loadTheme = $this->loadTheme();
 
+		// Handle failed donation error.
+		if ( $isViewingFailedPage ) {
+			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
+		}
+
 		// Handle donation form.
 		if ( $isViewingForm ) {
 			include $loadTheme->getTheme()->getTemplate( 'form' );
@@ -84,14 +91,19 @@ class Form {
 			// Render receipt on success page in iframe.
 			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ] );
 		}
+	}
 
-		// Handle failed page.
-		if ( $isViewingFailedPage ) {
-			if ( $loadTheme->getTheme()->openSuccessPageInIframe || inIframe() ) {
-				include $loadTheme->getTheme()->getTemplate( 'receipt' );
-				exit();
-			}
-		}
+	/**
+	 * Show failed transaction error on donation form.
+	 *
+	 * @since 2.7.0
+	 */
+	public function setFailedTransactionError() {
+		Give_Notices::print_frontend_notice(
+			Give()->themes->getTheme( getActiveID() )->getFailedDonationMessage(),
+			true,
+			'error'
+		);
 	}
 
 	/**

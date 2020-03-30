@@ -122,7 +122,8 @@ abstract class Theme {
 	 * @return mixed
 	 */
 	public function getFailedTransactionPageURL( $formId ) {
-		return createFailedPageURL();
+		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+
 	}
 
 	/**
