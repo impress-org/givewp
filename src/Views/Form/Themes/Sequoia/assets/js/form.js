@@ -68,7 +68,7 @@
 	const steps = [
 		{
 			id: 'introduction',
-			title: 'Introduction',
+			title: null,
 			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
@@ -78,7 +78,7 @@
 		},
 		{
 			id: 'choose-amount',
-			title: 'Choose Amount',
+			title: templateOptions.payment_amount.header_label,
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
@@ -107,8 +107,8 @@
 		},
 		{
 			id: 'payment',
-			title: 'Add Your Information',
-			label: templateOptions.payment_amount.checkout_label,
+			title: templateOptions.payment_information.header_label,
+			label: templateOptions.payment_information.checkout_label,
 			selector: '.give-section.payment',
 			showErrors: true,
 			setup: () => {

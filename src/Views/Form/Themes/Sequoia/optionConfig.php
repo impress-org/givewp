@@ -71,6 +71,16 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
+				'id'         => 'header_label',
+				'name'       => __( 'Header Label', 'give' ),
+				'desc'       => __( 'Do you want to customize the header label for the payment amount step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Choose Amount', 'give' ),
+				],
+				'default'    => __( 'Choose Amount', 'give' ),
+			],
+			[
 				'id'         => 'content',
 				'name'       => __( 'Content', 'give' ),
 				'desc'       => __( 'Do you want to customize the content that appears before amount options? The content displays above the amount option buttons during the second step. We recommend keeping it to 1-2 short sentences.', 'give' ),
@@ -96,6 +106,16 @@ return [
 		'name'   => __( 'Payment Information', 'give' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
+			[
+				'id'         => 'header_label',
+				'name'       => __( 'Header Label', 'give' ),
+				'desc'       => __( 'Do you want to customize the header label for the payment information step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Add Your Information', 'give' ),
+				],
+				'default'    => __( 'Add Your Information', 'give' ),
+			],
 			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
