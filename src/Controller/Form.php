@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
@@ -18,6 +19,7 @@ use function Give\Helpers\Form\Utils\isSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
+use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -67,17 +69,40 @@ class Form {
 		header( 'HTTP/1.1 200 OK' );
 
 		if ( $isViewingForm ) {
-			require_once $loadTheme->getTheme()->getTemplate( 'form' );
+			include $loadTheme->getTheme()->getTemplate( 'form' );
+			exit();
 
-		} elseif ( $isViewingReceipt ) {
-			require_once $loadTheme->getTheme()->getTemplate( 'receipt' );
-
-		} elseif ( $isViewingFailedPage ) {
-			include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormFailedTransactionPage.php';
 		}
 
-		exit();
+		if ( $isViewingReceipt ) {
 
+			if ( $loadTheme->getTheme()->openSuccessPageInIframe || inIframe() ) {
+				include $loadTheme->getTheme()->getTemplate( 'receipt' );
+				exit();
+			}
+
+			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ] );
+		}
+
+		if ( $isViewingFailedPage ) {
+			include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormFailedTransactionPage.php';
+			exit();
+		}
+	}
+
+	/**
+	 * Handle receipt shortcode on success page
+	 *
+	 * @since 2.7.0
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	public function showReceiptInIframeOnSuccessPage( $content ) {
+		$receiptShortcode = getReceiptShortcodeFromConfirmationPage();
+		$content          = str_replace( $receiptShortcode, give_form_shortcode( [] ), $content );
+
+		return $content;
 	}
 
 
