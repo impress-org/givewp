@@ -145,5 +145,5 @@ function createSuccessPageURL( $url = null, $args = [] ) {
  * @return bool
  */
 function inIframe() {
-	return ! empty( give_clean( $_GET['iframe'] ) );
+	return ! empty( $_GET['iframe'] );
 }
