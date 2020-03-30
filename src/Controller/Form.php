@@ -58,7 +58,8 @@ class Form {
 			return;
 		}
 
-		// Load form template.
+		$this->setupGlobalPost();
+
 		$loadTheme = $this->loadTheme();
 
 		// Set header.
@@ -66,7 +67,6 @@ class Form {
 		header( 'HTTP/1.1 200 OK' );
 
 		if ( $isViewingForm ) {
-			$this->setupGlobalPost();
 			require_once $loadTheme->getTheme()->getTemplate( 'form' );
 
 		} elseif ( $isViewingReceipt ) {
@@ -103,6 +103,11 @@ class Form {
 	private function setupGlobalPost() {
 		global $post;
 
+		// Setup global $post only if we are viewing donation form.
+		if ( ! isViewingForm() ) {
+			return;
+		}
+
 		$form = get_query_var( 'give_form_id' );
 
 		// Get post.
@@ -110,11 +115,13 @@ class Form {
 			get_posts(
 				[
 					'post_type'   => 'give_forms',
-					'name'        => get_query_var( 'give_form_id' ),
+					'name'        => $form,
 					'numberposts' => 1,
 				]
 			)
 		);
+
+		setup_postdata( $post );
 
 		if ( ! $form || null === $post ) {
 			wp_die( __( 'Donation form does not exist', 'give' ) );
