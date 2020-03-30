@@ -108,11 +108,10 @@
 		{
 			id: 'payment',
 			title: 'Add Your Information',
-			label: 'Process Donation',
+			label: templateOptions.payment_amount.checkout_label,
 			selector: '.give-section.payment',
 			showErrors: true,
 			setup: () => {
-				// Show remain form options.
 				$( '.give-label' ).html( '' );
 				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
 				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
