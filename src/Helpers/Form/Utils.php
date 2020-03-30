@@ -129,7 +129,7 @@ function createFailedPageURL( $url = null, $args = [] ) {
  * @return string
  */
 function createSuccessPageURL( $url = null, $args = [] ) {
-	$url  = $url ?: give_get_failed_transaction_uri( $args );
+	$url  = $url ?: give_get_success_page_uri();
 	$args = array_merge( $args, [ 'giveDonationAction' => 'ShowReceipt' ] );
 
 	return add_query_arg(
