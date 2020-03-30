@@ -144,6 +144,7 @@ function give_form_shortcode( $atts ) {
 
 	// Set form id.
 	$atts['id'] = $atts['id'] ?: getFormId();
+	$formId     = absint( $atts['id'] );
 
 	// Get active theme
 	$activeTheme = getActiveID( $atts['id'] );
@@ -169,15 +170,15 @@ function give_form_shortcode( $atts ) {
 		}
 
 		// Build iframe url.
-		$url = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $atts['id'] ) ) );
+		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
 		if ( $hasAction ) {
 			switch ( $query_string['giveDonationAction'] ) {
 				case 'showReceipt':
-					$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL();
+					$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL( $formId );
 					break;
 
 				case 'failedDonation':
-					$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL();
+					$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL( $formId );
 					break;
 			}
 		}
