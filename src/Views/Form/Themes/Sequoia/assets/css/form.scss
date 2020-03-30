@@ -377,6 +377,10 @@ p {
 		padding: 0;
 		margin: 15px 20px !important;
 
+		li {
+			margin: 0 !important;
+		}
+
 		.give-donation-level-btn {
 			display: inline-flex !important;
 			align-items: center;
@@ -527,16 +531,20 @@ fieldset {
 
 // Tooltip Styles
 
-[class*='hint--']::after {
-	background: #383838;
-	color: #fff;
-	padding: 12px 18px;
-	font-size: 16px;
-	font-family: 'Montserrat', sans-serif;
-	border-radius: 4px;
-	line-height: 12px;
-	text-align: center;
-	white-space: nowrap;
-	text-shadow: 0 -1px 0 #000;
-	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+.give-tooltip {
+	margin: 0 !important;
+
+	&::after {
+		background: #383838;
+		color: #fff;
+		padding: 12px 18px;
+		font-size: 16px;
+		font-family: 'Montserrat', sans-serif;
+		border-radius: 4px;
+		line-height: 12px;
+		text-align: center;
+		white-space: nowrap;
+		text-shadow: 0 -1px 0 #000;
+		box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+	}
 }
