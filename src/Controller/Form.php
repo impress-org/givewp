@@ -338,6 +338,7 @@ class Form {
 
 				// Open link in window?
 				if ( ! $template->openSuccessPageInIframe ) {
+					$location = add_query_arg( [ 'giveDonationAction' => false ], $location );
 					$this->openLinkInWindow( $location );
 				}
 
@@ -349,6 +350,7 @@ class Form {
 
 				// Open link in window?
 				if ( ! $template->openFailedPageInIframe ) {
+					$location = add_query_arg( [ 'giveDonationAction' => false ], $location );
 					$this->openLinkInWindow( $location );
 				}
 
