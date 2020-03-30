@@ -166,6 +166,7 @@ function give_form_shortcode( $atts ) {
 			$donationFormHasSession
 		) {
 			unset( $query_string['giveDonationAction'] );
+			$hasAction    = false;
 			$isAutoScroll = 0;
 		}
 
