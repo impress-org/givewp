@@ -38,6 +38,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			new GiveConfirmModal(
 				{
 					modalWrapper: 'give-stripe-connected-modal give-modal--success',
+					type: 'confirm',
 					modalContent: {
 						title: modalTitle,
 						desc: `<span>${modalFirstDetail}</span><span class="give-field-description">${modalSecondDetail}</span>`,
