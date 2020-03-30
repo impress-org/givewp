@@ -3,6 +3,9 @@
  *
  * @since 2.5.0
  */
+
+import { GiveConfirmModal } from '../plugins/modal';
+
 window.addEventListener( 'DOMContentLoaded', function() {
 	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
 	const stripeFonts = document.querySelectorAll( 'input[name="stripe_fonts"]' );
@@ -15,6 +18,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
+	const stripeConnectedElement = document.getElementById( 'give-stripe-connect' );
 	const hideIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_hide_icon"]' ) );
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
@@ -47,6 +51,34 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				}
 			} );
 		} );
+	}
+
+	if ( null !== stripeConnectedElement ) {
+		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
+		const redirectUrl = stripeConnectedElement.getAttribute( 'data-redirect-url' );
+		const canDisplay = stripeConnectedElement.getAttribute( 'data-display' );
+		const modalTitle = stripeConnectedElement.getAttribute( 'data-title' );
+		const modalFirstDetail = stripeConnectedElement.getAttribute( 'data-first-detail' );
+		const modalSecondDetail = stripeConnectedElement.getAttribute( 'data-second-detail' );
+
+		if ( 'connected' === stripeStatus && '0' === canDisplay ) {
+			new GiveConfirmModal(
+				{
+					modalWrapper: 'give-stripe-connected-modal give-modal--success',
+					type: 'confirm',
+					modalContent: {
+						title: modalTitle,
+						desc: `<span>${modalFirstDetail}</span><span class="give-field-description">${modalSecondDetail}</span>`,
+					},
+					successConfirm: function( args ) {
+						window.location.href = redirectUrl;
+					},
+				}
+			).render();
+
+			stripeConnectedElement.setAttribute( 'data-display', '1' );
+			history.pushState( { urlPath: redirectUrl }, '', redirectUrl );
+		}
 	}
 
 	if ( null !== checkoutTypes ) {

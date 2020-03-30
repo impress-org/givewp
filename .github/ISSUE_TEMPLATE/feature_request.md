@@ -10,6 +10,7 @@ about: Suggest an idea for this project
 <!-- Required. -->
 As a ________, I want ________ so that ________.
 
+## Details
 <!-- Expand on the user story if necessary. -->
 
 ## Visuals

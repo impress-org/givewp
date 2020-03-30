@@ -639,9 +639,29 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				<td class="give-forminp give-forminp-api_key">
 					<?php
 					if ( give_stripe_is_connected() ) :
-						$stripe_user_id = give_get_option( 'give_stripe_user_id' );
+						$site_url            = get_site_url();
+						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
+						$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+						$modal_first_detail  = sprintf(
+							'%1$s %2$s',
+							__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
+							"<strong>{$site_url}?give-listener=stripe</strong>"
+						);
+						$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
+						$can_display = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
 						?>
-						<span id="give-stripe-connect" class="stripe-btn-disabled"><span>Connected</span></span>
+						<span
+							id="give-stripe-connect"
+							class="stripe-btn-disabled"
+							data-status="connected"
+							data-title="<?php echo $modal_title; ?>"
+							data-first-detail="<?php echo $modal_first_detail; ?>"
+							data-second-detail="<?php echo $modal_second_detail; ?>"
+							data-display="<?php echo $can_display; ?>"
+							data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
+						>
+							<span><?php echo __( 'Connected', 'give' ); ?></span>
+						</span>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-yes" style="color:#25802d;"></span>
 							<?php
