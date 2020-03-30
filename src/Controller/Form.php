@@ -303,17 +303,45 @@ class Form {
 	public function handleOffSiteCheckoutRedirect( $location ) {
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
+			$templateLoader = new LoadTheme();
+			$template       = $templateLoader->getTheme();
+
 			if ( isSuccessPageURL( $location ) ) {
-				return $this->getSuccessPageRedirect( $location );
+				$location = $this->getSuccessPageRedirect( $location );
+
+				// Open link in window?
+				if ( ! $template->openSuccessPageInIframe ) {
+					$this->openLinkInWindow( $location );
+				}
+
+				return $location;
 			}
 
 			if ( isFailedPageURL( $location ) ) {
-				return $this->getFailedPageRedirect( $location );
+				$location = $this->getFailedPageRedirect( $location );
+
+				// Open link in window?
+				if ( ! $template->openFailedPageInIframe ) {
+					$this->openLinkInWindow( $location );
+				}
+
+				return $location;
 			}
 
 			return $location;
 		}
 
+		$this->openLinkInWindow( $location );
+	}
+
+
+	/**
+	 * Handle link opening in window instead of iframe.
+	 *
+	 * @since 2.7.0
+	 * @param string $location
+	 */
+	private function openLinkInWindow( $location ) {
 		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
 		exit();
 	}
