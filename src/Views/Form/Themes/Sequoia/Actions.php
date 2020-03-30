@@ -199,7 +199,7 @@ class Actions {
 	public function getStartWrapperHTMLForAmountSection() {
 		$content = $this->themeOptions['payment_amount']['content'];
 		if ( ! empty( $content ) ) {
-			echo "<div class='give-section choose-amount'><div class='content'>{$content}</div>";
+			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
 		} else {
 			echo "<div class='give-section choose-amount'>";
 		}
