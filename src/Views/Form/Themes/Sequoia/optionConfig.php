@@ -12,7 +12,7 @@ return [
 		'fields' => [
 			[
 				'name'    => __( 'Include Introduction', 'give' ),
-				'desc'    => sprintf( __( 'Should this form include an introduction section?', 'give' ), '#' ),
+				'desc'    => __( 'Should this form include an introduction section?', 'give' ),
 				'id'      => 'enabled',
 				'type'    => 'radio_inline',
 				'options' => [
