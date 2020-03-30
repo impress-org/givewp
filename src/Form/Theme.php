@@ -22,6 +22,16 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Theme {
 	/**
+	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
+	 */
+	public $openSuccessPageInIframe = true;
+
+	/**
+	 * @var bool $openFailedPageInIframe If set to false then failed page will open in window instead of iframe.
+	 */
+	public $openFailedPageInIframe = true;
+
+	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
