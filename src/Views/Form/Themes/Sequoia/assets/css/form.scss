@@ -143,7 +143,7 @@ p {
 	align-items: center;
 	background: #fbfbfb;
 	border-bottom: 1px solid #f2f2f2;
-	height: 60px;
+	height: 50px;
 	position: relative;
 
 	> .back-btn {
@@ -152,7 +152,7 @@ p {
 		background: none;
 		border: none;
 		color: #424242;
-		font-size: 14px;
+		font-size: 12px;
 		position: absolute;
 		border-radius: 6px 0 0 0;
 		overflow: hidden;
@@ -167,7 +167,7 @@ p {
 	> .title {
 		flex: 1;
 		text-align: center;
-		font-size: 18px;
+		font-size: 15px;
 		font-weight: 500;
 		color: #424242;
 	}
@@ -202,7 +202,6 @@ p {
 
 	.secure-notice {
 		margin-top: 15px;
-		cursor: none;
 		color: #989898;
 		display: flex;
 		align-items: center;
@@ -417,7 +416,7 @@ p {
 
 	.heading {
 		padding: 30px 0 3px 0;
-		font-size: 15px;
+		font-size: 18px;
 		font-weight: 500;
 		color: #6b6b6b;
 	}
@@ -425,7 +424,7 @@ p {
 	.subheading {
 		padding: 3px 0 30px 0;
 		font-style: italic;
-		font-size: 14px;
+		font-size: 15px;
 		color: #767676;
 	}
 
@@ -472,6 +471,13 @@ p {
 		.give-submit-button-wrap {
 			display: flex;
 			justify-content: center;
+			position: relative;
+
+			.give-loading-animation {
+				position: absolute;
+				top: 0;
+				left: 50%;
+			}
 		}
 	}
 }
