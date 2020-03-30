@@ -41,8 +41,7 @@ function isProcessingForm() {
  * @since 2.7.0
  */
 function isViewingFormReceipt() {
-	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] );
+	return give_is_success_page();
 }
 
 /**
@@ -141,9 +140,10 @@ function createSuccessPageURL( $url = null, $args = [] ) {
 
 /**
  * Return if current URL loading in iframe or not.
+ *
  * @since 2.7.0
  * @return bool
  */
-function inIframe(){
+function inIframe() {
 	return ! empty( give_clean( $_GET['iframe'] ) );
 }
