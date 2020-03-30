@@ -146,7 +146,9 @@ class Form {
 
 			$post = get_post( $formID );
 
-			$this->loadTheme();
+			if ( ! isLegacyForm( $post->ID ) ) {
+				$this->loadTheme();
+			}
 		}
 	}
 
