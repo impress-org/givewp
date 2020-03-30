@@ -174,20 +174,14 @@ function give_form_shortcode( $atts ) {
 
 		// Build iframe url.
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
-		if (
-			( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) ||
-			isViewingFormReceipt()
-		) {
+
+		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
 			$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL( $formId );
-			$url = add_query_arg( [ 'giveDonationAction' => false ], $url );
+			unset( $query_string['giveDonationAction'] );
 
-		} elseif (
-			( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ||
-			isViewingFormFailedPage()
-		) {
-
+		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) || isViewingFormFailedPage() ) {
 			$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL( $formId );
-			$url = add_query_arg( [ 'giveDonationAction' => false ], $url );
+			unset( $query_string['giveDonationAction'] );
 		}
 
 		$iframe_url = add_query_arg(
