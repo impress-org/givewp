@@ -16,7 +16,7 @@ use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 	</head>
 	<body class="give-form-templates">
 		<?php
-		echo do_shortcode( getReceiptShortcodeFromConfirmationPage( 'give_receipt' ) );
+		echo do_shortcode( getReceiptShortcodeFromConfirmationPage() );
 
 		/**
 		 * Fire the action hook in footer

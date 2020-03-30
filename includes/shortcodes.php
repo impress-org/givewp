@@ -63,7 +63,7 @@ function give_donation_history( $atts, $content = false ) {
 	) {
 		ob_start();
 
-		echo do_shortcode( getReceiptShortcodeFromConfirmationPage( 'give_receipt' ) );
+		echo do_shortcode( getReceiptShortcodeFromConfirmationPage() );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
