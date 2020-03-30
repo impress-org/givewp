@@ -11,6 +11,8 @@ namespace Give\Controller;
 
 use Give\Form\LoadTheme;
 use WP_Post;
+use function Give\Helpers\Form\Utils\createFailedPageURL;
+use function Give\Helpers\Form\Utils\createSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
@@ -216,10 +218,7 @@ class Form {
 	 * @return string
 	 */
 	public function editSuccessPageURI() {
-		return add_query_arg(
-			[ 'giveDonationAction' => 'showReceipt' ],
-			give_clean( $_REQUEST['give-current-url'] )
-		);
+		return createSuccessPageURL( give_clean( $_REQUEST['give-current-url'] ) );
 
 	}
 
@@ -232,8 +231,7 @@ class Form {
 	 * @return string
 	 */
 	public function editFailedPageURI( $url ) {
-		return add_query_arg(
-			[ 'giveDonationAction' => 'failedDonation' ],
+		return createFailedPageURL(
 			$this->switchRequestedURL(
 				$url,
 				give_clean( $_REQUEST['give-current-url'] )

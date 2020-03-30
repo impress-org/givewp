@@ -58,11 +58,4 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	public function getOptionsConfig() {
 		return require 'optionConfig.php';
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getFailedTransactionPageURL( $formId ) {
-		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
-	}
 }
