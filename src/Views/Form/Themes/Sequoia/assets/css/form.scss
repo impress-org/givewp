@@ -331,7 +331,7 @@ p {
 		max-width: 80%;
 		text-align: center;
 		margin-top: 20px;
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 	}
 
 	// Amount Total
@@ -357,6 +357,7 @@ p {
 			margin: 0;
 
 			input {
+				height: auto !important;
 				width: auto !important;
 				text-align: center;
 				font-weight: 500 !important;
