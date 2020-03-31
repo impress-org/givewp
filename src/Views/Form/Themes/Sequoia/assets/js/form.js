@@ -20,6 +20,9 @@
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
+				if ( $( '.step-tracker' ).length === 3 ) {
+					$( '.step-tracker:first-of-type' ).remove();
+				}
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
 					$( '.back-btn', $container ).hide();
@@ -193,7 +196,7 @@
 		} ).then( function( showFields ) {
 			// eslint-disable-next-line no-unused-expressions
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
-
+			// eslint-disable-next-line no-unused-expressions
 			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
 		} );
 	}
