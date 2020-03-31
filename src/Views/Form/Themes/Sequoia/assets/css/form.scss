@@ -265,9 +265,13 @@ p {
 		align-items: center;
 		flex-direction: row;
 		background-color: #fbfbfb;
+		color: #767676;
+		font-weight: 500;
+		font-size: 14px;
 
 		.number {
-			font-weight: 500;
+			color: #4c4c4c;
+			font-size: 18px;
 		}
 
 		> div {
