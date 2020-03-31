@@ -196,6 +196,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function editSuccessPageURI( $url ) {
+		// Prevent filter loop.
 		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
 		return createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
@@ -210,11 +211,10 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function editFailedPageURI( $url ) {
+		// Prevent filter loop.
 		remove_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
 
-		$url = ! Give()->themes->getTheme( getActiveID() )->openFailedPageInIframe ? $url : createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
-
-		return $url;
+		return createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
 	}
 
 
