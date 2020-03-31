@@ -104,16 +104,23 @@ p {
 	@include before-after-content-none;
 	position: relative;
 	margin: 20px 20px 0 20px;
-	padding: 1em 1.5em 1em 2em;
+	padding: 10px 15px;
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	font-weight: 400;
-	border-radius: 4px;
-	font-size: 16px;
-	line-height: 24px;
 	display: flex;
 	align-items: center;
-	color: #555;
+	border-width: 0 0 0 5px;
+
+	> p {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+		color: #555 !important;
+
+		> strong {
+			font-weight: 500 !important;
+		}
+	}
 }
 
 // Images
