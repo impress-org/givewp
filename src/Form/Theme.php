@@ -114,14 +114,14 @@ abstract class Theme {
 
 
 	/**
-	 * Get failed transaction page URL.
+	 * Get failed donation page URL.
 	 *
 	 * @param int $formId
 	 *
 	 * @since 2.7.0
 	 * @return mixed
 	 */
-	public function getFailedTransactionPageURL( $formId ) {
+	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
 
