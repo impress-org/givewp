@@ -132,7 +132,7 @@ function createFailedPageURL( $url = null, $args = [] ) {
  */
 function createSuccessPageURL( $url = null, $args = [] ) {
 	$url  = $url ?: give_get_success_page_uri();
-	$args = array_merge( $args, [ 'giveDonationAction' => 'ShowReceipt' ] );
+	$args = array_merge( $args, [ 'giveDonationAction' => 'showReceipt' ] );
 
 	return add_query_arg(
 		$args,
@@ -149,4 +149,17 @@ function createSuccessPageURL( $url = null, $args = [] ) {
  */
 function inIframe() {
 	return ! empty( $_GET['iframe'] );
+}
+
+
+/**
+ * Return success page url.
+ *
+ * Wrapper function for give_get_success_page_uri
+ *
+ * @since 2.7.0
+ * @return string
+ */
+function getSuccessPageURL() {
+	return give_get_success_page_uri();
 }
