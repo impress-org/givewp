@@ -46,16 +46,16 @@
 
 			$( hideSelector ).hide();
 
-			const directionClasses = 'slide-in-right slide-in-left slide-out-right slide-out-left';
+			if ( navigator.currentStep !== step ) {
+				const directionClasses = 'slide-in-right slide-in-left slide-out-right slide-out-left';
+				const outDirection = navigator.currentStep < step ? 'left' : 'right';
+				const inDirection = navigator.currentStep < step ? 'right' : 'left';
+				$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
+				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 
-			const outDirection = navigator.currentStep < step ? 'left' : 'right';
-			const inDirection = navigator.currentStep < step ? 'right' : 'left';
-			$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
-			$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
-
-			const stepHeight = $( steps[ step ].selector ).height();
-
-			$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
+				const stepHeight = $( steps[ step ].selector ).height();
+				$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
+			}
 
 			steps[ step ].setup();
 			navigator.currentStep = step;
