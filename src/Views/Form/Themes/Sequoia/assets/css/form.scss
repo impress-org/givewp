@@ -104,16 +104,23 @@ p {
 	@include before-after-content-none;
 	position: relative;
 	margin: 20px 20px 0 20px;
-	padding: 1em 1.5em 1em 2em;
+	padding: 10px 15px;
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	font-weight: 400;
-	border-radius: 4px;
-	font-size: 16px;
-	line-height: 24px;
 	display: flex;
 	align-items: center;
-	color: #555;
+	border-width: 0 0 0 5px;
+
+	> p {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+		color: #555 !important;
+
+		> strong {
+			font-weight: 500 !important;
+		}
+	}
 }
 
 // Images
@@ -187,7 +194,7 @@ p {
 	.navigator-tracker {
 		display: flex;
 		align-items: center;
-		margin: 15px auto;
+		margin: 5px auto 15px auto;
 
 		.step-tracker {
 			background-color: #e4e4e4;
@@ -331,8 +338,8 @@ p {
 	.content {
 		max-width: 80%;
 		text-align: center;
-		margin-top: 20px;
-		margin-bottom: 20px;
+		margin-top: 30px;
+		margin-bottom: 25px;
 	}
 
 	// Amount Total
@@ -431,13 +438,12 @@ p {
 // Payment Section
 
 .payment {
-	text-align: center;
-
 	.heading {
 		padding: 30px 0 3px 0;
 		font-size: 18px;
 		font-weight: 500;
 		color: #6b6b6b;
+		text-align: center;
 	}
 
 	.subheading {
@@ -445,6 +451,7 @@ p {
 		font-style: italic;
 		font-size: 15px;
 		color: #767676;
+		text-align: center;
 	}
 
 	fieldset {
