@@ -29,9 +29,10 @@ function isViewingForm() {
  */
 function isProcessingForm() {
 	$base = Give()->routeForm->getBase();
+	$formName = get_post_field( 'post_name', getFormId() );
 
 	return ! empty( $_REQUEST['give_embed_form'] ) ||
-		   false !== strpos( wp_get_referer(), "/{$base}/" );
+		   false !== strpos( wp_get_referer(), "/{$base}/{$formName}/?giveDonationFormInIframe=1" );
 }
 
 
