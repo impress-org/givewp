@@ -11,6 +11,7 @@ namespace Give\Form;
 
 use Give\Views\Form\Themes\Legacy\Legacy;
 use Give\Views\Form\Themes\Sequoia\Sequoia;
+use function Give\Helpers\Form\Theme\getActiveID;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -82,12 +83,14 @@ class Themes {
 	/**
 	 * Get Registered theme
 	 *
-	 * @param string $themeId
+	 * @param string $themeId Theme Id. Default to active form template.
 	 *
 	 * @return Theme
 	 * @since 2.7.0
 	 */
-	public function getTheme( $themeId ) {
+	public function getTheme( $themeId = null ) {
+		$themeId = $themeId ?: getActiveID();
+
 		if ( isset( $this->themeObjs[ $themeId ] ) ) {
 			return $this->themeObjs[ $themeId ];
 		}
