@@ -12,9 +12,11 @@
 // Exit if accessed directly.
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
+use function Give\Helpers\removeDonationAction;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -176,13 +178,10 @@ function give_form_shortcode( $atts ) {
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
 
 		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
-			$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL( $formId );
-			unset( $query_string['giveDonationAction'] );
+			$url = getSuccessPageURL();
 
 		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
-			$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL( $formId );
-			unset( $query_string['giveDonationAction'] );
-
+			$url                                     = Give()->themes->getTheme( $activeTheme )->getFailedPageURL( $formId );
 			$query_string['showFailedDonationError'] = 1;
 		}
 
@@ -190,6 +189,8 @@ function give_form_shortcode( $atts ) {
 			array_merge( $query_string, [ 'iframe' => true ] ),
 			$url
 		);
+
+		$iframe_url = removeDonationAction( $iframe_url );
 
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];
