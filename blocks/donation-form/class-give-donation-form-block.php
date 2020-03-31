@@ -88,7 +88,7 @@ class Give_Donation_Form_Block {
 		}
 
 		$data                 = $response->get_data();
-		$data['formTemplate'] = Give()->form_meta->get_meta( $form->ID, '_give_form_theme', true );
+		$data['formTemplate'] = Give()->form_meta->get_meta( $form->ID, '_give_form_template', true );
 		$response->set_data( $data );
 
 		return $response;
