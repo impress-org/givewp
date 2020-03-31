@@ -7,7 +7,7 @@
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 
 	const navigator = {
-		currentStep: 0,
+		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
 			if ( steps[ step ].showErrors === true ) {
