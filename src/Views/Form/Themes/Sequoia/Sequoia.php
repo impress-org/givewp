@@ -4,8 +4,6 @@ namespace Give\Views\Form\Themes\Sequoia;
 use Give\Form\Theme;
 use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 /**
  * Class Sequoia
