@@ -119,49 +119,6 @@
 		},
 	];
 
-	const styles = {
-		setup: () => {
-			// Setup custom styles stylesheet
-			const sheet = ( function() {
-				// Create the <style> tag
-				const style = document.createElement( 'style' );
-
-				// WebKit hack :(
-				style.appendChild( document.createTextNode( '' ) );
-
-				// Add the <style> element to the page
-				document.head.appendChild( style );
-
-				return style.sheet;
-			}() );
-
-			const primaryColor = templateOptions.introduction.primary_color ? templateOptions.introduction.primary_color : '#28C77B';
-
-			// Insert rules to custom stylesheet
-			sheet.insertRule( `.seperator {
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-btn {
-				border: 2px solid ${ primaryColor }!important;
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-btn:hover {
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn {
-				border: 2px solid ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn.give-default-level {
-				color: ${ primaryColor }!important; background: #fff!important;
-				transition: background 0.2s ease, color 0.2s ease;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn.give-default-level:hover {
-				color: ${ primaryColor }!important; background: #fff!important;
-			}` );
-		},
-	};
-
-	styles.setup();
 	navigator.goToStep( 0 );
 	$advanceButton.on( 'click', function( e ) {
 		e.preventDefault();
