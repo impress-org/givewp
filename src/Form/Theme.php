@@ -11,7 +11,6 @@ namespace Give\Form;
 
 use Give\Form\Theme\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
-use function Give\Helpers\Form\Utils\createSuccessPageURL;
 
 defined( 'ABSPATH' ) || exit;
 
