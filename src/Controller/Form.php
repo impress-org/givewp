@@ -20,10 +20,10 @@ use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
-use function Give\Helpers\Form\Utils\isFailedPageURL;
+use function Give\Helpers\Form\Utils\isIframeParentFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
-use function Give\Helpers\Form\Utils\isSuccessPageURL;
+use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
@@ -250,7 +250,7 @@ class Form {
 			/* @var Theme $template */
 			$template = Give()->themes->getTheme( getActiveID() );
 
-			if ( isSuccessPageURL( $location ) ) {
+			if ( isIframeParentSuccessPageURL( $location ) ) {
 				// Backward compatibility: redirect donor to success page if set to open in window.
 				remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 				$location = getSuccessPageURL();
@@ -264,7 +264,7 @@ class Form {
 				return $location;
 			}
 
-			if ( isFailedPageURL( $location ) ) {
+			if ( isIframeParentFailedPageURL( $location ) ) {
 				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( getFormId() ) );
 				$location = removeDonationAction( $location );
 

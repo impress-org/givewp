@@ -56,28 +56,28 @@ function canShowFailedDonationError() {
 }
 
 /**
- * This function check whether or not given url is of failed page.
+ * This function check whether or not given url is of iframe parent failed page.
  *
  * @param string $url
  *
  * @return string
  * @since 2.7.0
  */
-function isFailedPageURL( $url ) {
+function isIframeParentFailedPageURL( $url ) {
 	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
 
 	return $action && 'failedDonation' === $action;
 }
 
 /**
- * This function check whether or not given url is of success page.
+ * This function check whether or not given url is of iframe parent success page.
  *
  * @param string $url
  *
  * @return string
  * @since 2.7.0
  */
-function isSuccessPageURL( $url ) {
+function isIframeParentSuccessPageURL( $url ) {
 	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
 
 	return $action && 'showReceipt' === $action;
