@@ -33,7 +33,7 @@ function isProcessingForm() {
 	$formName = get_post_field( 'post_name', getFormId() );
 
 	return ! empty( $_REQUEST['give_embed_form'] ) ||
-		   false !== strpos( wp_get_referer(), "/{$base}/{$formName}/?giveDonationFormInIframe=1" );
+		   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" );
 }
 
 
