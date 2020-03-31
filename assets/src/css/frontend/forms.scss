@@ -902,9 +902,16 @@ Button with Loader
 Embed Form aka IFrame Form
 -----------------------------------*/
 .give-embed-form-wrapper {
+	width: 100% !important;
+
 	&.give-loader-type-img {
 		@include give-img-type-loader;
 	}
+
+	iframe {
+		width: 100% !important;
+	}
+
 	&.is-hide {
 		position: fixed;
 		left: -999px;
