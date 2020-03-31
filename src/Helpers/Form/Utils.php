@@ -2,6 +2,7 @@
 namespace Give\Helpers\Form\Utils;
 
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\getQueryParamFromURL;
 
 /**
@@ -92,6 +93,7 @@ function isSuccessPageURL( $url ) {
  * @since 2.7.0
  */
 function isLegacyForm( $formID = null ) {
+	$formID       = $formID ?: getFormId();
 	$formTemplate = getActiveID( $formID );
 
 	return ! $formTemplate || 'legacy' === getActiveID( $formID );
