@@ -112,9 +112,9 @@
 			selector: '.give-section.payment',
 			showErrors: true,
 			setup: () => {
-				$( '.give-label' ).html( '' );
-				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
-				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+				// Setup payment information screen
+				setupInputIcon( '#give-first-name-wrap', 'user' );
+				setupInputIcon( '#give-email-wrap', 'envelope' );
 			},
 		},
 	];
@@ -191,12 +191,9 @@
 
 			return res( showFields );
 		} ).then( function( showFields ) {
-			$( '.give-label' ).html( '' );
-			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
-			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
-			$( 'label[for=billing_country]' ).html( '<i class="fas fa-globe-americas"></i>' );
-
 			// eslint-disable-next-line no-unused-expressions
+			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
+
 			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
 		} );
 	}
@@ -230,5 +227,10 @@
 				window.give_fl_trigger();
 			} );
 		}
+	}
+
+	function setupInputIcon( selector, icon ) {
+		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
+		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
 	}
 }( jQuery ) );

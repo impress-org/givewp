@@ -62,6 +62,9 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 			.give-donation-level-btn.give-default-level:hover {
 				color: {$primaryColor}!important; background: #fff!important;
 			}
+			.give-input:focus, .give-select:focus {
+				border: 1px solid {$primaryColor}!important;
+			}
 		";
 		wp_add_inline_style( 'give-sequoia-theme-css', $dynamic_css );
 
