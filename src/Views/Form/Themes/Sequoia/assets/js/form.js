@@ -22,9 +22,9 @@
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
-					$( '.give-form-navigator', $container ).hide();
+					$( '.back-btn', $container ).hide();
 				} else {
-					$( '.give-form-navigator', $container ).show();
+					$( '.back-btn', $container ).show();
 				}
 			} else if ( step === 0 ) {
 				$( '.give-form-navigator', $container ).hide();
