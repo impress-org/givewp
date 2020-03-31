@@ -123,7 +123,6 @@ abstract class Theme {
 	 */
 	public function getFailedTransactionPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
-
 	}
 
 	/**
