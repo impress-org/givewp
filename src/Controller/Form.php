@@ -196,10 +196,9 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function editSuccessPageURI( $url ) {
-		$url = ! Give()->themes->getTheme( getActiveID() )->openSuccessPageInIframe ? $url : createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
+		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
-		return $url;
-
+		return createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
 	}
 
 	/**
@@ -211,6 +210,8 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function editFailedPageURI( $url ) {
+		remove_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
+
 		$url = ! Give()->themes->getTheme( getActiveID() )->openFailedPageInIframe ? $url : createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
 
 		return $url;
