@@ -17,3 +17,22 @@ function getQueryParamFromURL( $url, $queryParamName, $default = '' ) {
 
 	return isset( $queryArgs[ $queryParamName ] ) ? give_clean( $queryArgs[ $queryParamName ] ) : $default;
 }
+
+/**
+ * This function will change request url with other url.
+ *
+ * @since 2.7.0
+ *
+ * @param string $location Requested URL.
+ * @param string $url URL.
+ *
+ * @return string
+ */
+function switchRequestedURL( $location, $url ) {
+	$tmp    = explode( '?', $location, 2 );
+	$tmp[0] = $url;
+
+	$location = implode( '?', $tmp );
+
+	return $location;
+}

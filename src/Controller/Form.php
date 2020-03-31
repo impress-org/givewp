@@ -24,6 +24,7 @@ use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
+use function Give\Helpers\switchRequestedURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -248,33 +249,12 @@ class Form {
 	 */
 	public function editFailedPageURI( $url ) {
 		return createFailedPageURL(
-			$this->switchRequestedURL(
+			switchRequestedURL(
 				$url,
 				give_clean( $_REQUEST['give-current-url'] )
 			)
 		);
 	}
-
-
-	/**
-	 * This function will change request url with other url.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param string $location Requested URL.
-	 * @param string $url URL.
-	 *
-	 * @return string
-	 */
-	private function switchRequestedURL( $location, $url ) {
-		$tmp    = explode( '?', $location, 2 );
-		$tmp[0] = $url;
-
-		$location = implode( '?', $tmp );
-
-		return $location;
-	}
-
 
 	/**
 	 * Return donor success page url.
@@ -287,7 +267,7 @@ class Form {
 	private function getSuccessPageRedirect( $url ) {
 		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 
-		$url = $this->switchRequestedURL(
+		$url = switchRequestedURL(
 			$url,
 			give_get_success_page_uri()
 		);
@@ -306,7 +286,7 @@ class Form {
 	private function getFailedPageRedirect( $url ) {
 		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
 
-		$url = $url = $this->switchRequestedURL(
+		$url = $url = switchRequestedURL(
 			$url,
 			give_get_failed_transaction_uri()
 		);
