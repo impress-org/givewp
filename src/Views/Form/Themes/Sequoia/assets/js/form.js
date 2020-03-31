@@ -20,11 +20,14 @@
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
+				if ( $( '.step-tracker' ).length === 3 ) {
+					$( '.step-tracker:first-of-type' ).remove();
+				}
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
-					$( '.give-form-navigator', $container ).hide();
+					$( '.back-btn', $container ).hide();
 				} else {
-					$( '.give-form-navigator', $container ).show();
+					$( '.back-btn', $container ).show();
 				}
 			} else if ( step === 0 ) {
 				$( '.give-form-navigator', $container ).hide();
@@ -121,56 +124,13 @@
 			selector: '.give-section.payment',
 			showErrors: true,
 			setup: () => {
-				$( '.give-label' ).html( '' );
-				$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
-				$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
+				// Setup payment information screen
+				setupInputIcon( '#give-first-name-wrap', 'user' );
+				setupInputIcon( '#give-email-wrap', 'envelope' );
 			},
 		},
 	];
 
-	const styles = {
-		setup: () => {
-			// Setup custom styles stylesheet
-			const sheet = ( function() {
-				// Create the <style> tag
-				const style = document.createElement( 'style' );
-
-				// WebKit hack :(
-				style.appendChild( document.createTextNode( '' ) );
-
-				// Add the <style> element to the page
-				document.head.appendChild( style );
-
-				return style.sheet;
-			}() );
-
-			const primaryColor = templateOptions.introduction.primary_color ? templateOptions.introduction.primary_color : '#28C77B';
-
-			// Insert rules to custom stylesheet
-			sheet.insertRule( `.seperator {
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-btn {
-				border: 2px solid ${ primaryColor }!important;
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-btn:hover {
-				background: ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn {
-				border: 2px solid ${ primaryColor }!important;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn.give-default-level {
-				color: ${ primaryColor }!important; background: #fff!important;
-				transition: background 0.2s ease, color 0.2s ease;
-			}` );
-			sheet.insertRule( `.give-donation-level-btn.give-default-level:hover {
-				color: ${ primaryColor }!important; background: #fff!important;
-			}` );
-		},
-	};
-
-	styles.setup();
 	navigator.goToStep( 0 );
 	$advanceButton.on( 'click', function( e ) {
 		e.preventDefault();
@@ -243,11 +203,8 @@
 
 			return res( showFields );
 		} ).then( function( showFields ) {
-			$( '.give-label' ).html( '' );
-			$( 'label[for=give-first]' ).html( '<i class="fas fa-user"></i>' );
-			$( 'label[for=give-email]' ).html( '<i class="fas fa-envelope"></i>' );
-			$( 'label[for=billing_country]' ).html( '<i class="fas fa-globe-americas"></i>' );
-
+			// eslint-disable-next-line no-unused-expressions
+			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
 			// eslint-disable-next-line no-unused-expressions
 			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
 		} );
@@ -282,5 +239,10 @@
 				window.give_fl_trigger();
 			} );
 		}
+	}
+
+	function setupInputIcon( selector, icon ) {
+		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
+		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
 	}
 }( jQuery ) );
