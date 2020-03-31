@@ -1,6 +1,7 @@
 <?php
 namespace Give\Helpers\Form\Utils;
 
+use Give\Controller\Form;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\getQueryParamFromURL;
@@ -156,11 +157,35 @@ function inIframe() {
 /**
  * Return success page url.
  *
- * Wrapper function for give_get_success_page_uri
+ * Wrapper function for give_get_success_page_uri and without embed form filter.
  *
  * @since 2.7.0
  * @return string
  */
 function getSuccessPageURL() {
-	return give_get_success_page_uri();
+	$controller = new Form();
+
+	remove_filter( 'give_get_success_page_uri', [ $controller, 'editSuccessPageURI' ] );
+	$url = give_get_success_page_uri();
+	add_filter( 'give_get_success_page_uri', [ $controller, 'editSuccessPageURI' ] );
+
+	return $url;
+}
+
+/**
+ * Return legacy failed page url.
+ *
+ * Wrapper function for give_get_failed_transaction_uri and without embed form filter
+ *
+ * @since 2.7.0
+ * @return string
+ */
+function getLegacyFailedPageURL() {
+	$controller = new Form();
+
+	remove_filter( 'give_get_failed_transaction_uri', [ $controller, 'editFailedPageURI' ] );
+	$url = give_get_failed_transaction_uri();
+	add_filter( 'give_get_failed_transaction_uri', [ $controller, 'editFailedPageURI' ] );
+
+	return $url;
 }
