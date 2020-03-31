@@ -14,6 +14,7 @@ use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;
@@ -126,7 +127,7 @@ class LoadTheme {
 
 		$classes[] = 'give-embed-form';
 
-		if ( ! empty( $_GET['giveDonationFormInIframe'] ) ) {
+		if ( inIframe() ) {
 			$classes[] = 'give-viewing-form-in-iframe';
 		}
 
