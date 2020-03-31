@@ -69,7 +69,6 @@ class Actions {
 		 * Add hooks
 		 */
 		add_action( 'give_pre_form', [ $this, 'getNavigator' ], 0, 3 );
-		add_action( 'give_post_form', [ $this, 'getNextButton' ], 13, 3 );
 		add_action( 'give_post_form', [ $this, 'getFooterSection' ], 99998, 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getIntroductionSection' ], 0, 3 );
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
@@ -130,21 +129,6 @@ class Actions {
 	}
 
 	/**
-	 * Add load next sections button
-	 *
-	 * @since 2.7.0
-	 */
-	public function getNextButton( $id ) {
-
-		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-
-		printf(
-			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
-			$label
-		);
-	}
-
-	/**
 	 * Add checkout button
 	 *
 	 * @since 2.7.0
@@ -198,6 +182,9 @@ class Actions {
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
 		$content = isset( $this->themeOptions['payment_amount']['content'] ) ? $this->themeOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
+
+		echo '<button class="give-btn advance-btn">Test</button></div>';
+
 		if ( ! empty( $content ) ) {
 			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
 		} else {
@@ -211,7 +198,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getCloseWrapperHTMLForAmountSection() {
-		echo '</div>';
+		echo '<button class="give-btn advance-btn">Test</button></div>';
 	}
 
 }

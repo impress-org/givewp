@@ -27,5 +27,3 @@ $image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->
 		require 'income-stats.php';
 		require 'progress-bar.php';
 	?>
-
-</div>
