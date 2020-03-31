@@ -186,8 +186,8 @@ function give_form_shortcode( $atts ) {
 		}
 
 		$iframe_url = add_query_arg(
-			array_merge( $query_string, [ 'giveDonationFormInIframe' => true ] ),
-			$url
+			array_merge( [ 'giveDonationFormInIframe' => 1 ], $query_string ),
+			trailingslashit( $url )
 		);
 
 		$iframe_url = removeDonationAction( $iframe_url );
