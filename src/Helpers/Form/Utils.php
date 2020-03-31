@@ -163,11 +163,9 @@ function inIframe() {
  * @return string
  */
 function getSuccessPageURL() {
-	$controller = new Form();
-
-	remove_filter( 'give_get_success_page_uri', [ $controller, 'editSuccessPageURI' ] );
+	remove_filter( 'give_get_success_page_uri', [ Form::class, 'editSuccessPageURI' ] );
 	$url = give_get_success_page_uri();
-	add_filter( 'give_get_success_page_uri', [ $controller, 'editSuccessPageURI' ] );
+	add_filter( 'give_get_success_page_uri', [ Form::class, 'editSuccessPageURI' ] );
 
 	return $url;
 }
@@ -181,11 +179,9 @@ function getSuccessPageURL() {
  * @return string
  */
 function getLegacyFailedPageURL() {
-	$controller = new Form();
-
-	remove_filter( 'give_get_failed_transaction_uri', [ $controller, 'editFailedPageURI' ] );
+	remove_filter( 'give_get_failed_transaction_uri', [ Form::class, 'editFailedPageURI' ] );
 	$url = give_get_failed_transaction_uri();
-	add_filter( 'give_get_failed_transaction_uri', [ $controller, 'editFailedPageURI' ] );
+	add_filter( 'give_get_failed_transaction_uri', [ Form::class, 'editFailedPageURI' ] );
 
 	return $url;
 }

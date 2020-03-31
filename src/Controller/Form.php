@@ -18,6 +18,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
+use function Give\Helpers\Form\Utils\getLegacyFailedPageURL;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isIframeParentFailedPageURL;
@@ -47,8 +48,7 @@ class Form {
 	public function init() {
 		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
 		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
-		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1, 3 );
-		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
+		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
 	}
 
 	/**
@@ -57,10 +57,16 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnFrontend() {
-		if ( inIframe() || isProcessingForm() ) {
+		$inIframe = inIframe();
+
+		if ( $inIframe || isProcessingForm() ) {
 			$this->loadTheme();
 
-			add_action( 'template_redirect', [ $this, 'load' ], 0 );
+			if ( $inIframe ) {
+				add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
+			}
+
+			add_action( 'template_redirect', [ $this, 'loadView' ], 0 );
 		}
 	}
 
@@ -70,7 +76,7 @@ class Form {
 	 * @since 2.7.0
 	 * @global WP_Post $post
 	 */
-	public function load() {
+	public function loadView() {
 		/* @var Theme $formTemplate */
 		$formTemplate = Give()->themes->getTheme();
 
@@ -176,14 +182,12 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function embedFormRedirectURIHandler() {
-		if ( ! isProcessingForm() ) {
-			return;
+		if ( isProcessingForm() ) {
+			add_filter( 'give_get_success_page_uri', [ self::class, 'editSuccessPageURI' ] );
+			add_filter( 'give_get_failed_transaction_uri', [ self::class, 'editFailedPageURI' ] );
+			add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+			add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 		}
-
-		add_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
-		add_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
-		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
-		add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 	}
 
 
@@ -195,11 +199,13 @@ class Form {
 	 * @return string
 	 * @since 2.7.0
 	 */
-	public function editSuccessPageURI( $url ) {
-		// Prevent filter loop.
-		remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
+	public static function editSuccessPageURI( $url ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme();
 
-		return createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
+		return $template->openSuccessPageInIframe ?
+			createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) ) :
+			$url;
 	}
 
 	/**
@@ -210,11 +216,13 @@ class Form {
 	 * @return string
 	 * @since 2.7.0
 	 */
-	public function editFailedPageURI( $url ) {
-		// Prevent filter loop.
-		remove_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
+	public static function editFailedPageURI( $url ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme( getActiveID() );
 
-		return createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) );
+		return $template->openFailedPageInIframe ?
+			createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) ) :
+			$url;
 	}
 
 
@@ -246,14 +254,12 @@ class Form {
 	 * @return mixed
 	 */
 	public function handleOffSiteCheckoutRedirect( $location ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme();
+
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
-			/* @var Theme $template */
-			$template = Give()->themes->getTheme( getActiveID() );
-
 			if ( isIframeParentSuccessPageURL( $location ) ) {
-				// Backward compatibility: redirect donor to success page if set to open in window.
-				remove_filter( 'give_get_success_page_uri', [ $this, 'editSuccessPageURI' ] );
 				$location = getSuccessPageURL();
 				$location = removeDonationAction( $location );
 
@@ -271,13 +277,18 @@ class Form {
 
 				// Open link in window?
 				if ( ! $template->openFailedPageInIframe ) {
-					// Backward compatibility: redirect donor to failed page if set to open in window.
-					remove_filter( 'give_get_failed_transaction_uri', [ $this, 'editFailedPageURI' ] );
-
-					$this->openLinkInWindow( give_get_failed_transaction_uri() );
+					$this->openLinkInWindow( getLegacyFailedPageURL() );
 				}
 
 				return $location;
+			}
+
+			// Add comment here.
+			if (
+				( ! $template->openSuccessPageInIframe && 0 === strpos( $location, getSuccessPageURL() ) ) ||
+				( ! $template->openFailedPageInIframe && 0 === strpos( $location, getLegacyFailedPageURL() ) )
+			) {
+				$this->openLinkInWindow( $location );
 			}
 
 			return $location;
