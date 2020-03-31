@@ -24,6 +24,20 @@ function getFormId() {
 		return $post->ID;
 	}
 
+	if ( $formId = get_query_var( 'give_form_id' ) ) {
+		$form = current(
+			get_posts(
+				[
+					'name'        => $formId,
+					'numberposts' => 1,
+					'post_type'   => 'give_forms',
+				]
+			)
+		);
+
+		return $form->ID;
+	}
+
 	// Get form Id on ajax request.
 	if ( isset( $_REQUEST['give_form_id'] ) && ( $formId = absint( $_REQUEST['give_form_id'] ) ) ) {
 		return $formId;
