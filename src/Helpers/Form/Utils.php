@@ -102,6 +102,8 @@ function isLegacyForm( $formID = null ) {
 /**
  * This function will create failed transaction page URL.
  *
+ * Note: this function is use to get failed page url for parent page when perform donation with off-site checkout.
+ *
  * @since 2.7.0
  * @param array       $args
  * @param string|null $url
@@ -120,6 +122,8 @@ function createFailedPageURL( $url = null, $args = [] ) {
 
 /**
  * This function will create success page URL.
+ *
+ * Note: this function is use to get success page url for parent page when perform donation with off-site checkout.
  *
  * @since 2.7.0
  * @param array       $args
