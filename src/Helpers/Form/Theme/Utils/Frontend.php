@@ -24,10 +24,13 @@ function getFormId() {
 		return $post->ID;
 	}
 
-	if (
-		isset( $_REQUEST['give-form-id'] ) &&
-		( $formId = absint( $_REQUEST['give-form-id'] ) )
-	) {
+	// Get form Id on ajax request.
+	if ( isset( $_REQUEST['give_form_id'] ) && ( $formId = absint( $_REQUEST['give_form_id'] ) ) ) {
+		return $formId;
+	}
+
+	// Get form Id on ajax request.
+	if ( isset( $_REQUEST['form_id'] ) && ( $formId = absint( $_REQUEST['form_id'] ) ) ) {
 		return $formId;
 	}
 
