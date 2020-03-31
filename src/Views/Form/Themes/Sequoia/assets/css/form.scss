@@ -433,7 +433,6 @@ p {
 
 .payment {
 	text-align: center;
-	padding: 0 20px;
 
 	.heading {
 		padding: 30px 0 3px 0;
@@ -447,6 +446,10 @@ p {
 		font-style: italic;
 		font-size: 15px;
 		color: #767676;
+	}
+
+	fieldset {
+		padding: 0 20px;
 	}
 
 	#give_checkout_user_info {
