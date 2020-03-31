@@ -403,11 +403,11 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
 
-			// Load routes.
-			$this->routeForm->init( new FormRouteController() );
-
 			// Load form template
 			$this->themes->load();
+
+			// Load routes.
+			$this->routeForm->init( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
