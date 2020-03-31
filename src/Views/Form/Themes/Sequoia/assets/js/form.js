@@ -34,7 +34,6 @@
 			} else {
 				$( '.give-form-navigator', $container ).show();
 			}
-			$advanceButton.html( steps[ step ].label + '<i class="fas fa-chevron-right"></i>' );
 			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
@@ -47,20 +46,16 @@
 
 			$( hideSelector ).hide();
 
-			$( steps[ navigator.currentStep ].selector ).removeClass( 'slide-in-right' ).addClass( 'slide-out-left' );
-			$( steps[ step ].selector ).show().removeClass( 'slide-out-left' ).addClass( 'slide-in-right' );
+			const directionClasses = 'slide-in-right slide-in-left slide-out-right slide-out-left';
+
+			const outDirection = navigator.currentStep < step ? 'left' : 'right';
+			const inDirection = navigator.currentStep < step ? 'right' : 'left';
+			$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
+			$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 
 			const stepHeight = $( steps[ step ].selector ).height();
 
-			if ( step === steps.length - 1 ) {
-				$advanceButton.hide();
-				$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
-				$advanceButton.css( 'margin-top', '' );
-			} else {
-				$advanceButton.show();
-				$advanceButton.css( 'margin-top', `${ stepHeight }px` );
-				$( '.form-footer' ).css( 'margin-top', '' );
-			}
+			$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
 
 			steps[ step ].setup();
 			navigator.currentStep = step;
