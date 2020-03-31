@@ -430,7 +430,6 @@ p {
 // Payment Section
 
 .payment {
-	text-align: center;
 	padding: 0 20px;
 
 	.heading {
@@ -438,6 +437,7 @@ p {
 		font-size: 18px;
 		font-weight: 500;
 		color: #6b6b6b;
+		text-align: center;
 	}
 
 	.subheading {
@@ -445,6 +445,7 @@ p {
 		font-style: italic;
 		font-size: 15px;
 		color: #767676;
+		text-align: center;
 	}
 
 	#give_checkout_user_info {
