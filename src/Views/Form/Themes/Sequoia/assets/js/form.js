@@ -200,8 +200,12 @@
 		} ).then( function( showFields ) {
 			// eslint-disable-next-line no-unused-expressions
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
+
 			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow', function() {
+				const height = $( '.payment' ).height();
+				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
+			} );
 		} );
 	}
 
