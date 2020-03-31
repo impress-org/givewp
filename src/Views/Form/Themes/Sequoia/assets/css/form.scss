@@ -186,7 +186,7 @@ p {
 	.navigator-tracker {
 		display: flex;
 		align-items: center;
-		margin: 0 auto;
+		margin: 15px auto;
 
 		.step-tracker {
 			background-color: #e4e4e4;
@@ -194,7 +194,7 @@ p {
 			overflow: hidden;
 			height: 12px;
 			width: 12px;
-			margin: 7px;
+			margin: 7.5px;
 			cursor: pointer;
 			transition: background-color 0.2s ease;
 
