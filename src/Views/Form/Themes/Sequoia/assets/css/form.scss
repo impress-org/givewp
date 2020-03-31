@@ -71,8 +71,6 @@ p {
 	font-size: 30px;
 	padding-top: 15px;
 	padding-bottom: 15px;
-	transition: margin-top 0.5s ease;
-
 	&:focus {
 		outline: none;
 	}
@@ -184,6 +182,7 @@ p {
 .form-footer {
 	display: flex;
 	flex-direction: column;
+	transition: margin-top 0.2s ease;
 
 	.navigator-tracker {
 		display: flex;
@@ -606,25 +605,25 @@ fieldset {
 
 .slide-in-right {
 	animation-name: slideInRight;
-	animation-duration: 0.5s;
+	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
 }
 
 .slide-out-right {
 	animation-name: slideOutRight;
-	animation-duration: 0.5s;
+	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
 }
 
 .slide-in-left {
 	animation-name: slideInLeft;
-	animation-duration: 0.5s;
+	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
 }
 
 .slide-out-left {
 	animation-name: slideOutLeft;
-	animation-duration: 0.5s;
+	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
 }
 
