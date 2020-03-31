@@ -182,8 +182,9 @@ class Actions {
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
 		$content = isset( $this->themeOptions['payment_amount']['content'] ) ? $this->themeOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
+		$label   = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
-		echo '<button class="give-btn advance-btn">Test</button></div>';
+		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
 
 		if ( ! empty( $content ) ) {
 			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
@@ -198,7 +199,8 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getCloseWrapperHTMLForAmountSection() {
-		echo '<button class="give-btn advance-btn">Test</button></div>';
+		$label = isset( $this->themeOptions['payment_amount']['next_label'] ) ? $this->themeOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
+		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
 	}
 
 }
