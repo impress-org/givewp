@@ -244,8 +244,8 @@ function give_form_shortcode( $atts ) {
 
 		printf(
 			'<div class="give-embed-form-wrapper give-loader-type-img%3$s" id="%2$s">
-						%1$s
-					</div>',
+				%1$s
+			</div>',
 			$iframe,
 			$uniqueId,
 			$buttonModeActive ? ' is-hide' : ''

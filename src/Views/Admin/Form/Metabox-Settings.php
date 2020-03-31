@@ -8,9 +8,9 @@ use function Give\Helpers\Form\Theme\Utils\Admin\renderMetaboxSettings;
 $activatedTheme   = getActiveID( $post->ID );
 $registeredThemes = Give()->themes->getThemes();
 ?>
-<div class="form_theme_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
-	<strong class="themes-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
-	<div class="themes-list">
+<div class="form_template_options_wrap inner-panel<?php echo $activatedTheme ? ' has-activated-theme' : ''; ?>">
+	<strong class="templates-list-heading"><?php _e( 'Available Form Themes', 'give' ); ?></strong>
+	<div class="templates-list">
 		<?php
 		/* @var Theme $theme */
 		foreach ( $registeredThemes as $theme ) {
@@ -18,9 +18,11 @@ $registeredThemes = Give()->themes->getThemes();
 
 			printf(
 				'<div class="theme-info %1$s" data-id="%2$s">
-							<img class="theme-image" src="%3$s"/>
+							<div class="template-image-container">
+								<img class="template-image" src="%3$s"/>
+							</div>
 							<div class="action">
-								<strong>%4$s <span class="badge">%5$s</span></strong>
+								<div class="template-name">%4$s <span class="badge">%5$s</span></div>
 								<button class="button %7$s">%6$s</button>
 							</div>
 						</div>',
@@ -36,13 +38,13 @@ $registeredThemes = Give()->themes->getThemes();
 		?>
 	</div>
 
-	<div class="form-theme-introduction">
+	<div class="form-template-introduction">
 		<p>
 			<?php _e( 'What is a Form Theme?', 'give' ); ?>
 		</p>
-		<p class="give-field-description form-theme-description"><?php _e( 'In GiveWP, a form theme is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the theme chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
+		<p class="give-field-description form-template-description"><?php _e( 'In GiveWP, a form theme is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the theme chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
 
-		<div class="form-theme-notice give-notice notice notice-success inline">
+		<div class="form-template-notice give-notice notice notice-success inline">
 			<p>
 				<?php _e( 'More themes are coming soon!', 'give' ); ?><br>
 				<?php _e( 'Let us know what you want to see next', 'give' ); ?>
@@ -51,14 +53,14 @@ $registeredThemes = Give()->themes->getThemes();
 		</div>
 	</div>
 
-	<div class="form-theme-options-introduction">
+	<div class="form-template-options-introduction">
 		<strong>
 			<?php _e( 'Form Theme Options', 'give' ); ?>
 		</strong>
 		<p class="give-field-description"><?php _e( 'Customize the appearance of your form theme by modifying the options below. You can preview your changes using "Preview button at anytime."', 'give' ); ?></p>
 	</div>
 
-	<div class="form-theme-options">
+	<div class="form-template-options">
 		<?php
 		/* @var Theme $theme */
 		foreach ( $registeredThemes as $theme ) {

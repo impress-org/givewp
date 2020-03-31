@@ -1,17 +1,31 @@
 <?php
+global $post;
 
 // Get headline and description
-$headline    = $this->themeOptions['introduction']['headline'];
-$description = $this->themeOptions['introduction']['description'];
-$image       = $this->themeOptions['introduction']['image'];
+$headline    = ! empty( $this->themeOptions['introduction']['headline'] ) ? $this->themeOptions['introduction']['headline'] : $post->post_title;
+$description = ! empty( $this->themeOptions['introduction']['description'] ) ? $this->themeOptions['introduction']['description'] : $post->post_excerpt;
+$image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->themeOptions['introduction']['image'] : $post->post_thumbnail;
 ?>
 
 <div class="give-section introduction">
-	<img src="<?php echo $image; ?>" />
-	<div class="heading">
-		<h2 class="give-form-title"><?php echo $headline; ?></h2>
-	</div>
-	<div class="subheading text">
-		<p><?php echo $description; ?></p>
-	</div>
+	<h2 class="headline">
+		<?php echo $headline; ?>
+	</h2>
+	<?php if ( ! empty( $description ) ) : ?>
+		<div class="seperator"></div>
+		<p class="description">
+			<?php echo $description; ?>
+		</p>
+	<?php endif; ?>
+	<?php if ( ! empty( $image ) ) : ?>
+		<div class="image">
+			<img src="<?php echo $image; ?>" />
+		</div>
+	<?php endif; ?>
+
+	<?php
+		require 'income-stats.php';
+		require 'progress-bar.php';
+	?>
+
 </div>

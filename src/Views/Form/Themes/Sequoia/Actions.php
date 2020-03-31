@@ -71,14 +71,15 @@ class Actions {
 		/**
 		 * Add hooks
 		 */
-		add_action( 'give_pre_form', [ $this, 'getIntroductionSection' ], 12, 3 );
-		add_action( 'give_pre_form', [ $this, 'getStatsSection' ], 13, 3 );
-		add_action( 'give_pre_form', [ $this, 'getProgressBarSection' ], 14, 3 );
+		add_action( 'give_pre_form', [ $this, 'getNavigator' ], 0, 3 );
 		add_action( 'give_post_form', [ $this, 'getNextButton' ], 13, 3 );
+		add_action( 'give_post_form', [ $this, 'getFooterSection' ], 99998, 0 );
+		add_action( 'give_donation_form_top', [ $this, 'getIntroductionSection' ], 0, 3 );
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
-		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		add_action( 'give_donation_form_before_personal_info', [ $this, 'getStartWrapperHTMLForPaymentSection' ] );
+		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ] );
 
 		/**
 		 * Remove actions
@@ -97,6 +98,19 @@ class Actions {
 	}
 
 	/**
+	 * Add form navigator / header
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param $formId
+	 * @param $args
+	 * @param $form
+	 */
+	public function getNavigator( $formId, $args, $form ) {
+		include 'sections/form-navigator.php';
+	}
+
+	/**
 	 * Add introduction form section
 	 *
 	 * @since 2.7.0
@@ -110,31 +124,13 @@ class Actions {
 	}
 
 	/**
-	 * Add form stats form section
+	 * Add form footer
 	 *
 	 * @since 2.7.0
-	 *
-	 * @param $formId
-	 * @param $args
-	 * @param $form
 	 */
-	public function getStatsSection( $formId, $args, $form ) {
-		include 'sections/form-income-stats.php';
+	public function getFooterSection() {
+		include 'sections/footer.php';
 	}
-
-	/**
-	 * Add progress bar form section
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param $formId
-	 * @param $args
-	 * @param $form
-	 */
-	public function getProgressBarSection( $formId, $args, $form ) {
-		include 'sections/progress-bar.php';
-	}
-
 
 	/**
 	 * Add load next sections button
@@ -143,12 +139,10 @@ class Actions {
 	 */
 	public function getNextButton( $id ) {
 
-		$label = isset( $this->themeOptions['introduction']['next_label'] ) ? $this->themeOptions['introduction']['next_label'] : __( 'Next', 'give' );
-		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
+		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
 		printf(
-			'<div class="give-show-form give-showing__introduction-section"><button class="give-btn" style="background: %1$s">%2$s</button></div>',
-			$color,
+			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
 			$label
 		);
 	}
@@ -161,31 +155,43 @@ class Actions {
 	public function getCheckoutButton() {
 
 		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
-		$color = isset( $this->themeOptions['introduction']['primary_color'] ) ? $this->themeOptions['introduction']['primary_color'] : '#2bc253';
 
 		return sprintf(
 			'<div class="give-submit-button-wrap give-clearfix">
-				<input type="submit" class="give-submit give-btn" style="background: %1$s" id="give-purchase-button" name="give-purchase" value="%2$s" data-before-validation-label="Donate Now">
+				<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
 			</div>',
-			$color,
 			$label
 		);
 	}
 
 	/**
-	 * Add introduction text to personal information section
+	 * Add wrapper and introduction text to payment information section
 	 *
 	 * @since 2.7.0
 	 *
 	 * @param int $formId
 	 */
-	public function getIntroductionSectionTextSubSection( $formId ) {
-		printf(
-			'<div class="give-section personal-information-text"><div class="heading">%1$s</div><div class="subheading">%2$s</div></div>',
-			__( 'Tell us a bit amount yourself', 'give' ),
-			__( 'We\'ll never share this information with anyone', 'give' )
-		);
+	public function getStartWrapperHTMLForPaymentSection( $formId ) {
+		$headline    = isset( $this->themeOptions['payment_information']['headline'] ) ? $this->themeOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
+		$description = isset( $this->themeOptions['payment_information']['description'] ) ? $this->themeOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
+
+		if ( ! empty( $headline ) || ! empty( $description ) ) {
+			printf(
+				'<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
+				$headline,
+				$description
+			);
+		}
+	}
+
+	/**
+	 * Close wrapper for payment information section
+	 *
+	 * @since 2.7.0
+	 */
+	public function getCloseWrapperHTMLForPaymentSection() {
+		echo '</div>';
 	}
 
 	/**
@@ -194,7 +200,12 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		echo '<div class="give-section choose-amount">';
+		$content = isset( $this->themeOptions['payment_amount']['content'] ) ? $this->themeOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
+		if ( ! empty( $content ) ) {
+			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
+		} else {
+			echo "<div class='give-section choose-amount'>";
+		}
 	}
 
 	/**

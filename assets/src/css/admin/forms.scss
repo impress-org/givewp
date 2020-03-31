@@ -400,18 +400,28 @@ Shortcode Copy & Paste
 		}
 	}
 
-	#form_theme_options {
-		.themes-list {
+	#form_template_options {
+		.templates-list {
 			display: grid;
 			grid-gap: 10px;
 			grid-template-columns: 1fr 1fr;
 			padding: 8px 0 24px 0;
 
-			.theme-image {
-				height: 150px;
-				object-fit: cover;
+			.template-image-container {
 				width: 100%;
-				background-color: #fff;
+				height: auto;
+				position: relative;
+				padding-top: 56.25%;
+
+				.template-image {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+					position: absolute;
+					top: 0;
+					left: 0;
+					background-color: #fff;
+				}
 			}
 
 			.action {
@@ -421,7 +431,7 @@ Shortcode Copy & Paste
 				border-top: 1px solid #eee;
 				padding: 10px;
 
-				strong {
+				.template-name {
 					font-weight: 500;
 					flex-grow: 1;
 					padding-left: 6px;
@@ -441,7 +451,7 @@ Shortcode Copy & Paste
 			}
 		}
 
-		.form-theme-introduction {
+		.form-template-introduction {
 			padding-bottom: 25px;
 
 			p {
@@ -450,12 +460,12 @@ Shortcode Copy & Paste
 				padding: 0;
 			}
 
-			p.form-theme-description {
+			p.form-template-description {
 				color: #9c9c9c;
 				font-size: 16px;
 			}
 
-			.form-theme-notice {
+			.form-template-notice {
 				padding: 16px 10px;
 				display: flex;
 				justify-content: space-between;
@@ -485,7 +495,7 @@ Shortcode Copy & Paste
 		}
 
 		.inner-panel {
-			.form-theme-options-introduction {
+			.form-template-options-introduction {
 				display: none;
 				padding-bottom: 25px;
 			}
@@ -498,10 +508,10 @@ Shortcode Copy & Paste
 			}
 
 			&.has-activated-theme {
-				.themes-list {
+				.templates-list {
 					grid-template-columns: 1fr !important;
 
-					.theme-image {
+					.template-image-container {
 						display: none;
 					}
 
@@ -516,12 +526,12 @@ Shortcode Copy & Paste
 					}
 				}
 
-				.form-theme-introduction,
-				.themes-list-heading {
+				.form-template-introduction,
+				.templates-list-heading {
 					display: none;
 				}
 
-				.form-theme-options-introduction,
+				.form-template-options-introduction,
 				.theme-options.active {
 					display: block;
 				}

@@ -310,10 +310,10 @@
 	 * @since: 2.7.0
 	 */
 	const handleFormThemeActivation = function() {
-		$( '#form_theme_options' ).on( 'click', '.js-theme--activate', function( ev ) {
+		$( '#form_template_options' ).on( 'click', '.js-theme--activate', function( ev ) {
 			ev.preventDefault();
 
-			const $themesList = $( this ).parents( '.themes-list' ),
+			const $themesList = $( this ).parents( '.templates-list' ),
 				  $innerContainer = $themesList.parent(),
 				  $parent = $( this ).parents( '.theme-info' ),
 				  activatedThemeID = $parent.attr( 'data-id' );
@@ -331,7 +331,7 @@
 			$( this ).parents( '.theme-info' ).addClass( 'active' );
 			$innerContainer.addClass( 'has-activated-theme' );
 
-			$innerContainer.prev( 'input[name=_give_form_theme]' ).val( activatedThemeID );
+			$innerContainer.prev( 'input[name=_give_form_template]' ).val( activatedThemeID );
 		} );
 	};
 
@@ -340,10 +340,10 @@
 	 * @since: 2.7.0
 	 */
 	const handleFormThemeDeactivation = function() {
-		$( '#form_theme_options' ).on( 'click', '.js-theme--deactivate', function( ev ) {
+		$( '#form_template_options' ).on( 'click', '.js-theme--deactivate', function( ev ) {
 			ev.preventDefault();
 
-			const $themesList = $( this ).parents( '.themes-list' ),
+			const $themesList = $( this ).parents( '.templates-list' ),
 				  $innerContainer = $themesList.parent(),
 				  $parent = $( this ).parents( '.theme-info' ),
 				  activatedThemeID = $parent.attr( 'data-id' );
@@ -360,7 +360,7 @@
 
 			$innerContainer.removeClass( 'has-activated-theme' );
 
-			$innerContainer.prev( 'input[name=_give_form_theme]' ).val( '' );
+			$innerContainer.prev( 'input[name=_give_form_template]' ).val( '' );
 		} );
 	};
 
@@ -371,19 +371,19 @@
 	 */
 	const saveFormSettingOnlyIfFormThemeSelected = function() {
 		$( '.post-type-give_forms' ).on( 'click', '#publishing-action input[type=submit]', function() {
-			const activatedTheme = $( 'input[name=_give_form_theme]', '#form_theme_options' ).val();
+			const activatedTheme = $( 'input[name=_give_form_theme]', '#form_template_options' ).val();
 
 			if ( ! activatedTheme ) {
 				new Give.modal.GiveNoticeAlert( {
 					type: 'warning',
 					modalContent: {
-						desc: Give.fn.getGlobalVar( 'form_theme_required' ),
+						desc: Give.fn.getGlobalVar( 'form_template_required' ),
 					},
 				} ).render();
 
 				// Open form theme settings.
-				if ( 'form_theme_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
-					$( 'a[href="#form_theme_options"]' ).trigger( 'click' );
+				if ( 'form_template_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
+					$( 'a[href="#form_template_options"]' ).trigger( 'click' );
 				}
 
 				return false;

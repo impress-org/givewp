@@ -53,7 +53,7 @@ if ( $form->has_goal() ) : ?>
 		}
 	}
 	?>
-<div class="give-section form-stats">
+<div class="income-stats">
 	<div class="raised">
 		<div class="number">
 			<?php echo $raised; ?>
