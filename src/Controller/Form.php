@@ -57,7 +57,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnFrontend() {
-		if ( ! empty( $_GET['iframe'] ) || isProcessingForm() ) {
+		if ( ! empty( $_GET['giveDonationFormInIframe'] ) || isProcessingForm() ) {
 			$this->loadTheme();
 
 			add_action( 'template_redirect', [ $this, 'load' ], 0 );

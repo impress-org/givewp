@@ -150,7 +150,7 @@ function createSuccessPageURL( $url = null, $args = [] ) {
  * @return bool
  */
 function inIframe() {
-	return ! empty( $_GET['iframe'] );
+	return ! empty( $_GET['giveDonationFormInIframe'] );
 }
 
 

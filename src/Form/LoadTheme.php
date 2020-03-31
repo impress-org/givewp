@@ -126,7 +126,7 @@ class LoadTheme {
 
 		$classes[] = 'give-embed-form';
 
-		if ( ! empty( $_GET['iframe'] ) ) {
+		if ( ! empty( $_GET['giveDonationFormInIframe'] ) ) {
 			$classes[] = 'give-viewing-form-in-iframe';
 		}
 
