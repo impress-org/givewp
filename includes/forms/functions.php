@@ -309,7 +309,7 @@ function give_listen_for_failed_payments() {
 	give_update_payment_status( $payment_id, 'failed' );
 }
 
-add_action( 'template_redirect', 'give_listen_for_failed_payments' );
+add_action( 'template_redirect', 'give_listen_for_failed_payments', 0 );
 
 /**
  * Retrieve the Donation History page URI

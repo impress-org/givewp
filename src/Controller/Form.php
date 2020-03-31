@@ -66,7 +66,7 @@ class Form {
 				add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 			}
 
-			add_action( 'template_redirect', [ $this, 'loadView' ], 0 );
+			add_action( 'template_redirect', [ $this, 'loadView' ], 1 );
 		}
 	}
 
