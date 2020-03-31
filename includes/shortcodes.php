@@ -179,9 +179,11 @@ function give_form_shortcode( $atts ) {
 			$url = Give()->themes->getTheme( $activeTheme )->getSuccessPageURL( $formId );
 			unset( $query_string['giveDonationAction'] );
 
-		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) || isViewingFormFailedPage() ) {
+		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
 			$url = Give()->themes->getTheme( $activeTheme )->getFailedTransactionPageURL( $formId );
 			unset( $query_string['giveDonationAction'] );
+
+			$query_string['showFailedDonationError'] = 1;
 		}
 
 		$iframe_url = add_query_arg(

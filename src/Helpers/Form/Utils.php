@@ -45,14 +45,13 @@ function isViewingFormReceipt() {
 }
 
 /**
- * Get result if we are viewing embed form receipt or not
+ * Get result whether or not show failed transaction error.
  *
  * @return bool
  * @since 2.7.0
  */
-function isViewingFormFailedPage() {
-	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] );
+function canShowFailedDonationError() {
+	return ! empty( $_REQUEST['showFailedDonationError'] );
 }
 
 /**

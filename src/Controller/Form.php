@@ -13,6 +13,7 @@ use Give\Form\LoadTheme;
 use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
@@ -54,11 +55,10 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function load() {
-		$isViewingForm       = isViewingForm();
-		$isViewingReceipt    = isViewingFormReceipt();
-		$isViewingFailedPage = isViewingFormFailedPage();
-		$canWeOverwrite      = ( ! empty( $_GET['iframe'] ) || isProcessingForm() ) &&
-							   ( $isViewingForm || $isViewingReceipt || $isViewingFailedPage );
+		$isViewingForm                 = isViewingForm();
+		$isViewingReceipt              = isViewingFormReceipt();
+		$canShowFailedTransactionError = canShowFailedDonationError();
+		$canWeOverwrite                = ( ! empty( $_GET['iframe'] ) || isProcessingForm() ) && ( $isViewingForm || $isViewingReceipt || $canShowFailedTransactionError );
 
 		// Exit: we are not on embed form's main page. receipt page, failed page.
 		if ( ! $canWeOverwrite ) {
@@ -74,7 +74,7 @@ class Form {
 		$loadTheme = $this->loadTheme();
 
 		// Handle failed donation error.
-		if ( $isViewingFailedPage ) {
+		if ( $canShowFailedTransactionError ) {
 			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
 
