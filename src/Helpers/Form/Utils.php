@@ -28,7 +28,7 @@ function isViewingForm() {
  * @return bool
  */
 function isProcessingForm() {
-	$base = Give()->routeForm->getBase();
+	$base     = Give()->routeForm->getBase();
 	$formName = get_post_field( 'post_name', getFormId() );
 
 	return ! empty( $_REQUEST['give_embed_form'] ) ||
@@ -112,8 +112,7 @@ function isLegacyForm( $formID = null ) {
  *
  * @return string
  */
-function createFailedPageURL( $url = null, $args = [] ) {
-	$url  = $url ?: give_get_failed_transaction_uri( $args );
+function createFailedPageURL( $url, $args = [] ) {
 	$args = array_merge( $args, [ 'giveDonationAction' => 'failedDonation' ] );
 
 	return add_query_arg(
@@ -133,8 +132,7 @@ function createFailedPageURL( $url = null, $args = [] ) {
  *
  * @return string
  */
-function createSuccessPageURL( $url = null, $args = [] ) {
-	$url  = $url ?: give_get_success_page_uri();
+function createSuccessPageURL( $url, $args = [] ) {
 	$args = array_merge( $args, [ 'giveDonationAction' => 'showReceipt' ] );
 
 	return add_query_arg(
