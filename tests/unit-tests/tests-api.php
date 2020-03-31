@@ -77,11 +77,13 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->_query   = $wp_query;
 
 		// Create a Donation Form.
-		$post_id = $this->factory->post->create( array(
-			'post_title'  => 'Test Form',
-			'post_type'   => 'give_forms',
-			'post_status' => 'publish',
-		) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'  => 'Test Form',
+				'post_type'   => 'give_forms',
+				'post_status' => 'publish',
+			)
+		);
 
 		$_multi_level_donations = array(
 			array(

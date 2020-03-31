@@ -50,10 +50,10 @@ function give_register_default_donor_tabs( $tabs ) {
 
 	$default_tabs = array(
 		'overview' => array(
-			'title'    => __( 'Donor Profile', 'give' )
+			'title' => __( 'Donor Profile', 'give' ),
 		),
 		'notes'    => array(
-			'title'    => __( 'Donor Notes', 'give' )
+			'title' => __( 'Donor Notes', 'give' ),
 		),
 	);
 
@@ -74,7 +74,7 @@ add_filter( 'give_donor_tabs', 'give_register_default_donor_tabs', 1, 1 );
 function give_register_delete_donor_tab( $tabs ) {
 
 	$tabs['delete'] = array(
-		'title'    => __( 'Delete Donor', 'give' )
+		'title' => __( 'Delete Donor', 'give' ),
 	);
 
 	return $tabs;
@@ -97,7 +97,7 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
  */
 function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
-	$donor_id         = $donor->id;
+	$donor_id = $donor->id;
 
 	/**
 	 * Fires before editing a donor.
@@ -182,7 +182,7 @@ function give_delete_donor_and_related_donation( $donor, $args = array() ) {
 		$donor_deleted = Give()->donors->delete( $donor->id );
 
 		// Fetch linked donations of a particular donor.
-		$donation_ids  = explode( ',', $donor->payment_ids );
+		$donation_ids = explode( ',', $donor->payment_ids );
 
 		// Proceed to delete related donation, if user opted and donor is deleted successfully.
 		if ( $donor_deleted && $args['delete_donation'] ) {

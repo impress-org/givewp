@@ -158,7 +158,6 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Update a donor.
 	 *
-	 *
 	 * @param int    $row_id
 	 * @param array  $data
 	 * @param string $where
@@ -425,7 +424,6 @@ class Give_DB_Donors extends Give_DB {
 			if ( $value < 1 ) {
 				return false;
 			}
-
 		} elseif ( 'email' === $field ) {
 
 			if ( ! is_email( $value ) ) {
@@ -479,7 +477,7 @@ class Give_DB_Donors extends Give_DB {
 
 		$donor = current( $donor );
 
-		isset( $donor->id ) && Give_Donors_Query::update_meta_cache( array( $donor->id  ) );
+		isset( $donor->id ) && Give_Donors_Query::update_meta_cache( array( $donor->id ) );
 
 		return $donor;
 	}
@@ -561,7 +559,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function create_table() {
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		$sql = "CREATE TABLE {$this->table_name} (
 		id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -598,7 +596,7 @@ class Give_DB_Donors extends Give_DB {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_customers" ) )
+			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) )
 		) {
 			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
 		}
@@ -641,7 +639,6 @@ class Give_DB_Donors extends Give_DB {
 				if ( ! empty( $args['date']['end'] ) ) {
 					$args['date_query']['before'] = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
 				}
-
 			} else {
 
 				$args['date_query']['year']  = date( 'Y', strtotime( $args['date'] ) );

@@ -54,4 +54,4 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Register;
+new Give_Shortcode_Register();

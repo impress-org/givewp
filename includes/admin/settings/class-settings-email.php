@@ -49,13 +49,13 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
-				case 'email-settings' :
+				case 'email-settings':
 					$settings = array(
 
 						// Section 1: Email Sender Setting
 						array(
-							'id'    => 'give_title_email_settings_1',
-							'type'  => 'title',
+							'id'   => 'give_title_email_settings_1',
+							'type' => 'title',
 						),
 						array(
 							'id'      => 'email_template',
@@ -98,7 +98,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 					);
 					break;
 
-				case 'donor-email' :
+				case 'donor-email':
 					$settings = array(
 
 						// Section 1: Donor Email Notification Listing.
@@ -119,7 +119,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 					);
 					break;
 
-				case 'admin-email' :
+				case 'admin-email':
 					$settings = array(
 
 						// Section 1: Admin Email Notification Listing.
@@ -145,11 +145,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 						array(
 							'id'   => 'give_title_general_settings_5',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Admin Email Address', 'give' ),
-							'id'      => "contact_admin_email",
+							'id'      => 'contact_admin_email',
 							'desc'    => sprintf( '%1$s <code>{admin_email}</code> %2$s', __( 'By default, the', 'give' ), __( 'tag will use your WordPress admin email. If you would like to customize this address you can do so in the field above.', 'give' ) ),
 							'type'    => 'text',
 							'default' => give_email_admin_email(),
@@ -157,15 +157,15 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						),
 						array(
 							'name'    => __( 'Offline Mailing Address', 'give' ),
-							'id'      => "contact_offline_mailing_address",
+							'id'      => 'contact_offline_mailing_address',
 							'desc'    => sprintf( '%1$s <code>{offline_mailing_address}</code> %2$s', __( 'Set the mailing address to where you would like your donors to send their offline donations. This will customize the', 'give' ), __( 'email tag for the Offline Donations payment gateway.', 'give' ) ),
 							'type'    => 'wysiwyg',
 							'default' => '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . get_bloginfo( 'sitename' ) . '</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>111 Not A Real St.</em><br>&nbsp;&nbsp;&nbsp;&nbsp;<em>Anytown, CA 12345 </em><br>',
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 
 					break;

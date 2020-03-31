@@ -16,14 +16,14 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		parent::setUp();
 
 		// Create multilevel donation form.
-		$this->_multi_form  = Give_Helper_Form::create_multilevel_form();
+		$this->_multi_form = Give_Helper_Form::create_multilevel_form();
 
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		//Delete form.
+		// Delete form.
 		Give_Helper_Form::delete_form( $this->_multi_form->ID );
 	}
 
@@ -128,7 +128,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 * @since 2.0
 	 * @access private
 	 */
-	public function give_meta_helpers_provider(){
+	public function give_meta_helpers_provider() {
 		return array(
 			array( Give_Helper_Payment::create_simple_payment() ),
 			array( Give_Helper_Form::create_simple_form()->id ),
@@ -227,11 +227,13 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	public function test_give_is_name_title_prefix_enabled() {
 
 		// Create Simple Donation Form with global as option.
-		$donation_form_1 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'global',
-			),
-		) );
+		$donation_form_1 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'global',
+				),
+			)
+		);
 
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ) );
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'required' );
@@ -252,33 +254,39 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_1->id ), 'optional' );
 
 		// Create Simple Donation Form with required as option.
-		$donation_form_2 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'required',
-			),
-		) );
+		$donation_form_2 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'required',
+				),
+			)
+		);
 
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ) );
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ), 'required' );
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_2->id ), 'optional' );
 
 		// Create Simple Donation Form with optional as option.
-		$donation_form_3 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'optional',
-			),
-		) );
+		$donation_form_3 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'optional',
+				),
+			)
+		);
 
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ) );
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ), 'required' );
 		$this->assertTrue( give_is_name_title_prefix_enabled( $donation_form_3->id ), 'optional' );
 
 		// Create Simple Donation Form with disabled as option.
-		$donation_form_4 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'disabled',
-			),
-		) );
+		$donation_form_4 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'disabled',
+				),
+			)
+		);
 
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_4->id ) );
 		$this->assertFalse( give_is_name_title_prefix_enabled( $donation_form_4->id ), 'required' );
@@ -297,11 +305,13 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	public function test_give_is_name_title_prefix_required() {
 
 		// Create Simple Donation Form with global as option.
-		$donation_form_1 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'global',
-			),
-		) );
+		$donation_form_1 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'global',
+				),
+			)
+		);
 
 		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_1->id ) );
 
@@ -316,34 +326,40 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_1->id ) );
 
 		// Create Simple Donation Form with required as option.
-		$donation_form_2 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'required',
-			),
-		) );
+		$donation_form_2 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'required',
+				),
+			)
+		);
 
 		$this->assertTrue( give_is_name_title_prefix_required( $donation_form_2->id ) );
 
 		// Create Simple Donation Form with optional as option.
-		$donation_form_3 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'optional',
-			),
-		) );
+		$donation_form_3 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'optional',
+				),
+			)
+		);
 
 		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_3->id ) );
 
 		// Create Simple Donation Form with disabled as option.
-		$donation_form_4 = Give_Helper_Form::create_simple_form( array(
-			'meta' => array(
-				'_give_name_title_prefix' => 'disabled',
-			),
-		) );
+		$donation_form_4 = Give_Helper_Form::create_simple_form(
+			array(
+				'meta' => array(
+					'_give_name_title_prefix' => 'disabled',
+				),
+			)
+		);
 
 		$this->assertFalse( give_is_name_title_prefix_required( $donation_form_4->id ) );
 
 	}
-	
+
 	/**
 	 * Check if the give_get_receipt_url() generates proper URL.
 	 *
@@ -354,15 +370,15 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 */
 	public function test_give_get_receipt_url() {
 		$payment = Give_Helper_Payment::create_simple_payment();
-		
+
 		$receipt_link_url = give_get_receipt_url( $payment );
-		
+
 		$this->assertRegExp(
 			'/donation_id=/',
 			$receipt_link_url
 		);
 	}
-	
+
 	/**
 	 * Check if the give_get_receipt_link() generates proper link.
 	 *
@@ -373,14 +389,14 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 */
 	public function test_give_get_receipt_link() {
 		$payment = Give_Helper_Payment::create_simple_payment();
-		
+
 		$receipt_link_url = give_get_receipt_link( $payment );
-		
+
 		$this->assertRegExp(
 			'/donation_id=/',
 			$receipt_link_url
 		);
-		
+
 		$this->assertRegExp(
 			'/<a href=".+?\?donation_id=/',
 			$receipt_link_url
@@ -399,40 +415,40 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	public function test_give_verify_minimum_price() {
 
 		// Test minimum donation
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = '10';
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = '10';
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$verified_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$verified_min = give_verify_minimum_price( 'minimum' );
 
 		// Test less-than minimum donation
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = '5';
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = '5';
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$unverified_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$unverified_min = give_verify_minimum_price( 'minimum' );
 
 		// Test maximum donation
-		//Set post superglobal keys to values match maximum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = '100';
+		// Set post superglobal keys to values match maximum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = '100';
 		$_POST['give-price-id'] = '4';
 
-		//Verify that $_POST object represents maximum possible donation
-		$verified_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents maximum possible donation
+		$verified_max = give_verify_minimum_price( 'maximum' );
 
 		// Test greater-than maximum donation
-		//Set post superglobal keys to values match maximum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = '150';
+		// Set post superglobal keys to values match maximum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = '150';
 		$_POST['give-price-id'] = '4';
 
-		//Verify that $_POST object represents maximum possible donation
-		$unverified_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents maximum possible donation
+		$unverified_max = give_verify_minimum_price( 'maximum' );
 
 		// Test and enable custom amounts
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount', 'enabled' );
@@ -441,85 +457,85 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_range_maximum', 150 );
 		give_update_meta( $this->_multi_form->ID, '_give_custom_amount_maximum', 150 );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 5;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 5;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$verified_custom_range_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$verified_custom_range_min = give_verify_minimum_price( 'minimum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 1;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 1;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$unverified_custom_range_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$unverified_custom_range_min = give_verify_minimum_price( 'minimum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 150;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 150;
 		$_POST['give-price-id'] = '4';
 
-		//Verify that $_POST object represents minimum possible donation
-		$verified_custom_range_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents minimum possible donation
+		$verified_custom_range_max = give_verify_minimum_price( 'maximum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 250;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 250;
 		$_POST['give-price-id'] = '4';
 
-		//Verify that $_POST object represents minimum possible donation
-		$unverified_custom_range_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents minimum possible donation
+		$unverified_custom_range_max = give_verify_minimum_price( 'maximum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 5;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 5;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$verified_custom_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$verified_custom_min = give_verify_minimum_price( 'minimum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 1;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 1;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$unverified_custom_min = give_verify_minimum_price('minimum');
+		// Verify that $_POST object represents minimum possible donation
+		$unverified_custom_min = give_verify_minimum_price( 'minimum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 150;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 150;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$verified_custom_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents minimum possible donation
+		$verified_custom_max = give_verify_minimum_price( 'maximum' );
 
-		//Set post superglobal keys to values match minimum possible donation
-		$_POST['give-form-id'] = $this->_multi_form->ID;
-		$_POST['give-amount'] = 250;
+		// Set post superglobal keys to values match minimum possible donation
+		$_POST['give-form-id']  = $this->_multi_form->ID;
+		$_POST['give-amount']   = 250;
 		$_POST['give-price-id'] = '1';
 
-		//Verify that $_POST object represents minimum possible donation
-		$unverified_custom_max = give_verify_minimum_price('maximum');
+		// Verify that $_POST object represents minimum possible donation
+		$unverified_custom_max = give_verify_minimum_price( 'maximum' );
 
 		// Check verified status
-		$this->assertTrue($verified_custom_range_min);
-		$this->assertTrue($verified_custom_min);
-		$this->assertTrue($verified_custom_range_max);
-		$this->assertTrue($verified_custom_max);
-		$this->assertTrue($verified_min);
-		$this->assertTrue($verified_max);
+		$this->assertTrue( $verified_custom_range_min );
+		$this->assertTrue( $verified_custom_min );
+		$this->assertTrue( $verified_custom_range_max );
+		$this->assertTrue( $verified_custom_max );
+		$this->assertTrue( $verified_min );
+		$this->assertTrue( $verified_max );
 
 		// Check unverified status
-		$this->assertFalse($unverified_custom_range_min);
-		$this->assertFalse($unverified_custom_min);
-		$this->assertFalse($unverified_custom_range_max);
-		$this->assertFalse($unverified_custom_max);
-		$this->assertFalse($unverified_min);
-		$this->assertFalse($unverified_max);
+		$this->assertFalse( $unverified_custom_range_min );
+		$this->assertFalse( $unverified_custom_min );
+		$this->assertFalse( $unverified_custom_range_max );
+		$this->assertFalse( $unverified_custom_max );
+		$this->assertFalse( $unverified_min );
+		$this->assertFalse( $unverified_max );
 
 	}
 }

@@ -27,7 +27,7 @@ $status_label    = give_get_payment_status( $donation_id, true );
 $company_name    = give_get_payment_meta( $donation_id, '_give_donation_company', true );
 
 // Update donor name, if title prefix is set.
-$full_name       = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['first_name']} {$user['last_name']}" );
+$full_name = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['first_name']} {$user['last_name']}" );
 
 /**
  * Generate Donation Receipt Arguments.
@@ -67,7 +67,14 @@ $give_receipt_args['donation_receipt']['date'] = array(
 
 $give_receipt_args['donation_receipt']['total_donation'] = array(
 	'name'    => __( 'Total Donation', 'give' ),
-	'value'   => give_donation_amount( $donation_id, array( 'currency' => true, 'amount' => true, 'type' => 'receipt' ) ),
+	'value'   => give_donation_amount(
+		$donation_id,
+		array(
+			'currency' => true,
+			'amount'   => true,
+			'type'     => 'receipt',
+		)
+	),
 	'display' => $give_receipt_args['price'],
 );
 
@@ -241,7 +248,7 @@ do_action( 'give_payment_receipt_before_table', $donation, $give_receipt_args );
 	?>
 	<tr>
 		<th scope="colgroup" colspan="2">
-			<span class="give-receipt-thead-text"><?php esc_html_e( 'Donation Receipt', 'give' ) ?></span>
+			<span class="give-receipt-thead-text"><?php esc_html_e( 'Donation Receipt', 'give' ); ?></span>
 		</th>
 	</tr>
 	<?php

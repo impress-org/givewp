@@ -72,7 +72,7 @@ abstract class Give_DB {
 	 * @access public
 	 */
 	public function __construct() {
-		if( is_multisite() ) {
+		if ( is_multisite() ) {
 			add_action( 'switch_blog', array( $this, 'handle_switch_blog' ), 10, 2 );
 		}
 	}
@@ -171,12 +171,12 @@ abstract class Give_DB {
 		$column_args = wp_parse_args(
 			$column_args,
 			array(
-				'relation' => 'AND'
+				'relation' => 'AND',
 			)
 		);
 
 		$relation = $column_args['relation'];
-		unset($column_args['relation']);
+		unset( $column_args['relation'] );
 
 		$where = array();
 		foreach ( $column_args as $column_name => $column_value ) {
@@ -403,10 +403,14 @@ abstract class Give_DB {
 
 		global $wpdb;
 
-		$column = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
-			DB_NAME, $this->table_name, $column_name
-		) );
+		$column = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
+				DB_NAME,
+				$this->table_name,
+				$column_name
+			)
+		);
 
 		if ( ! empty( $column ) ) {
 			return true;
@@ -497,7 +501,6 @@ abstract class Give_DB {
 		if ( $new_blog_id === $prev_blog_id ) {
 			return;
 		}
-
 
 		$this->table_name = str_replace(
 			1 != $prev_blog_id ? $wpdb->get_blog_prefix( $prev_blog_id ) : $wpdb->base_prefix,

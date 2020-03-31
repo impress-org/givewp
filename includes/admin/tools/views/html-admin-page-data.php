@@ -66,19 +66,23 @@ do_action( 'give_tools_recount_stats_before' );
 
 					<span class="tools-date-dropdown tools-date-dropdown-delete-donations" style="display: none">
 						<?php
-						echo Give()->html->date_field( array(
-							'id'           => 'give_delete_donations_start_date',
-							'name'         => 'delete_donations_start_date',
-							'placeholder'  => esc_attr__( 'Start date', 'give' ),
-							'autocomplete' => 'off',
-						) );
+						echo Give()->html->date_field(
+							array(
+								'id'           => 'give_delete_donations_start_date',
+								'name'         => 'delete_donations_start_date',
+								'placeholder'  => esc_attr__( 'Start date', 'give' ),
+								'autocomplete' => 'off',
+							)
+						);
 
-						echo Give()->html->date_field( array(
-							'id'           => 'give_delete_donations_end_date',
-							'name'         => 'delete_donations_end_date',
-							'placeholder'  => esc_attr__( 'End date', 'give' ),
-							'autocomplete' => 'off',
-						) );
+						echo Give()->html->date_field(
+							array(
+								'id'           => 'give_delete_donations_end_date',
+								'name'         => 'delete_donations_end_date',
+								'placeholder'  => esc_attr__( 'End date', 'give' ),
+								'autocomplete' => 'off',
+							)
+						);
 						?>
 					</span>
 

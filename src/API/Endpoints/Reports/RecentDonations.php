@@ -15,34 +15,22 @@ class RecentDonations extends Endpoint {
 	}
 
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
-
 		// Setup donation query args (get sanitized start/end date from request)
-		$args = [
+		$args = array(
 			'number'     => 50,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
-			'start_date' => $request['start'],
-			'end_date'   => $request['end'],
-		];
+			'start_date' => $request->get_param( 'start' ),
+			'end_date'   => $request->get_param( 'end' ),
+		);
 
 		// Get array of 50 recent donations
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$data = [];
+		$data = array();
 		foreach ( $donations as $donation ) {
 
 			$donation = new \Give_Payment( $donation->ID );
@@ -52,7 +40,7 @@ class RecentDonations extends Endpoint {
 			switch ( $donation->status ) {
 				case 'publish':
 					$meta   = $donation->payment_meta;
-					$status = $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
+					$status = isset( $meta['_give_is_donation_recurring'] ) && $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
 					break;
 				case 'give_subscription':
 					$status = 'renewal';
@@ -69,24 +57,15 @@ class RecentDonations extends Endpoint {
 				'amount'   => $amount,
 				'url'      => $url,
 				'time'     => $donation->date,
-				'donor'    => [
+				'donor'    => array(
 					'name' => "{$donation->first_name} {$donation->last_name}",
 					'id'   => $donation->donor_id,
-				],
+				),
 				'source'   => $donation->form_title,
 			];
 		}
 
-		// Cache the report data
-		$result = $this->cache_report( $request, $data );
-		$status = $this->get_give_status();
-
 		// Return $list of donations for RESTList component
-		return new \WP_REST_Response(
-			[
-				'data'   => $data,
-				'status' => $status,
-			]
-		);
+		return $data;
 	}
 }

@@ -124,7 +124,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		$meta = wp_parse_args(
 			( ! empty( $args['meta'] ) ? $args['meta'] : array() ),
 			array(
-				'_give_set_price'       => '0.00', //Multi-level Pricing; not set
+				'_give_set_price'       => '0.00', // Multi-level Pricing; not set
 				'_give_display_style'   => 'buttons',
 				'_give_donation_levels' => array_values( $_multi_level_donations ),
 				'_give_form_earnings'   => 120,

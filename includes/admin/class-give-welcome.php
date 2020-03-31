@@ -63,7 +63,7 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'GiveWP %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
@@ -73,7 +73,7 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-		/* translators: %s: Give version */
+			/* translators: %s: Give version */
 			sprintf( esc_html__( 'GiveWP %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
@@ -156,7 +156,7 @@ class Give_Welcome {
 			case 'give-credits':
 				$title   = sprintf( __( 'GitHub Contributors', 'give' ) );
 				$content = sprintf(
-				/* translators: %s: https://github.com/impress-org/give */
+					/* translators: %s: https://github.com/impress-org/give */
 					__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
@@ -186,7 +186,7 @@ class Give_Welcome {
 				<div class="give-badge">
 					<?php
 					printf(
-					/* translators: %s: Give version */
+						/* translators: %s: Give version */
 						esc_html__( 'Version %s', 'give' ),
 						$display_version
 					);
@@ -415,7 +415,7 @@ class Give_Welcome {
 
 					<?php
 					printf(
-					/* translators: %s: https://github.com/impress-org/give */
+						/* translators: %s: https://github.com/impress-org/give */
 						__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
 						esc_url( 'https://github.com/impress-org/give' )
 					);
@@ -540,7 +540,7 @@ class Give_Welcome {
 			<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">
 				<?php
 				printf(
-				/* translators: %s: Give twitter user @givewp */
+					/* translators: %s: Give twitter user @givewp */
 					esc_html_e( 'Follow %s', 'give' ),
 					'@givewp'
 				);

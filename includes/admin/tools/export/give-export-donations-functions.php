@@ -12,7 +12,7 @@
 function give_export_donations_get_custom_fields() {
 	global $wpdb;
 
-	if( ! current_user_can( 'export_give_reports' ) ){
+	if ( ! current_user_can( 'export_give_reports' ) ) {
 		wp_send_json_error();
 	}
 
@@ -80,39 +80,40 @@ function give_export_donations_get_custom_fields() {
 	 *
 	 * @return array $ignore_hidden_keys Hidden keys that are going to be ignore
 	 * @since 2.1
-	 *
 	 */
-	$ignore_hidden_keys = apply_filters( 'give_export_donations_ignore_hidden_keys', array(
-		'_give_payment_meta',
-		'_give_payment_gateway',
-		'_give_payment_mode',
-		'_give_payment_form_title',
-		'_give_payment_form_id',
-		'_give_payment_price_id',
-		'_give_payment_user_id',
-		'_give_payment_user_email',
-		'_give_payment_user_ip',
-		'_give_payment_customer_id',
-		'_give_payment_total',
-		'_give_completed_date',
-		'_give_donation_company',
-		'_give_donor_billing_first_name',
-		'_give_donor_billing_last_name',
-		'_give_payment_donor_email',
-		'_give_payment_donor_id',
-		'_give_payment_date',
-		'_give_donor_billing_address1',
-		'_give_donor_billing_address2',
-		'_give_donor_billing_city',
-		'_give_donor_billing_zip',
-		'_give_donor_billing_state',
-		'_give_donor_billing_country',
-		'_give_payment_import',
-		'_give_payment_currency',
-		'_give_payment_import_id',
-		'_give_payment_donor_ip',
-		'_give_payment_donor_title_prefix',
-	),
+	$ignore_hidden_keys = apply_filters(
+		'give_export_donations_ignore_hidden_keys',
+		array(
+			'_give_payment_meta',
+			'_give_payment_gateway',
+			'_give_payment_mode',
+			'_give_payment_form_title',
+			'_give_payment_form_id',
+			'_give_payment_price_id',
+			'_give_payment_user_id',
+			'_give_payment_user_email',
+			'_give_payment_user_ip',
+			'_give_payment_customer_id',
+			'_give_payment_total',
+			'_give_completed_date',
+			'_give_donation_company',
+			'_give_donor_billing_first_name',
+			'_give_donor_billing_last_name',
+			'_give_payment_donor_email',
+			'_give_payment_donor_id',
+			'_give_payment_date',
+			'_give_donor_billing_address1',
+			'_give_donor_billing_address2',
+			'_give_donor_billing_city',
+			'_give_donor_billing_zip',
+			'_give_donor_billing_state',
+			'_give_donor_billing_country',
+			'_give_payment_import',
+			'_give_payment_currency',
+			'_give_payment_import_id',
+			'_give_payment_donor_ip',
+			'_give_payment_donor_title_prefix',
+		),
 		$form_id
 	);
 
@@ -135,7 +136,6 @@ function give_export_donations_get_custom_fields() {
 	 *
 	 * @return array $responses
 	 * @since 2.1
-	 *
 	 */
 	wp_send_json( (array) apply_filters( 'give_export_donations_get_custom_fields', $responses, $form_id ) );
 
@@ -252,8 +252,8 @@ function give_export_donation_standard_fields() {
 							<li class="give-export-option-start">
 								<label for="give-export-donation-id">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donation_id]"
-									       id="give-export-donation-id"><?php _e( 'Donation ID', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_id]"
+										   id="give-export-donation-id"><?php _e( 'Donation ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -263,8 +263,8 @@ function give_export_donation_standard_fields() {
 								<li>
 									<label for="give-export-seq-id">
 										<input type="checkbox" checked
-										       name="give_give_donations_export_option[seq_id]"
-										       id="give-export-seq-id"><?php _e( 'Donation Number', 'give' ); ?>
+											   name="give_give_donations_export_option[seq_id]"
+											   id="give-export-seq-id"><?php _e( 'Donation Number', 'give' ); ?>
 									</label>
 								</li>
 								<?php
@@ -274,80 +274,80 @@ function give_export_donation_standard_fields() {
 							<li>
 								<label for="give-export-donation-sum">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donation_total]"
-									       id="give-export-donation-sum"><?php _e( 'Donation Total', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_total]"
+										   id="give-export-donation-sum"><?php _e( 'Donation Total', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-currency_code">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[currency_code]"
-									       id="give-export-donation-currency_code"><?php _e( 'Currency Code', 'give' ); ?>
+										   name="give_give_donations_export_option[currency_code]"
+										   id="give-export-donation-currency_code"><?php _e( 'Currency Code', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-currency_symbol">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[currency_symbol]"
-									       id="give-export-donation-currency_symbol"><?php _e( 'Currency Symbol', 'give' ); ?>
+										   name="give_give_donations_export_option[currency_symbol]"
+										   id="give-export-donation-currency_symbol"><?php _e( 'Currency Symbol', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-status">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donation_status]"
-									       id="give-export-donation-status"><?php _e( 'Donation Status', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_status]"
+										   id="give-export-donation-status"><?php _e( 'Donation Status', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-date">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donation_date]"
-									       id="give-export-donation-date"><?php _e( 'Donation Date', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_date]"
+										   id="give-export-donation-date"><?php _e( 'Donation Date', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-time">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donation_time]"
-									       id="give-export-donation-time"><?php _e( 'Donation Time', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_time]"
+										   id="give-export-donation-time"><?php _e( 'Donation Time', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-payment-gateway">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[payment_gateway]"
-									       id="give-export-payment-gateway"><?php _e( 'Payment Gateway', 'give' ); ?>
+										   name="give_give_donations_export_option[payment_gateway]"
+										   id="give-export-payment-gateway"><?php _e( 'Payment Gateway', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-payment-mode">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[payment_mode]"
-									       id="give-export-payment-mode"><?php _e( 'Payment Mode', 'give' ); ?>
+										   name="give_give_donations_export_option[payment_mode]"
+										   id="give-export-payment-mode"><?php _e( 'Payment Mode', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-note-private">
 									<input type="checkbox"
-									       name="give_give_donations_export_option[donation_note_private]"
-									       id="give-export-donation-note-private"><?php _e( 'Donation Note (private)', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_note_private]"
+										   id="give-export-donation-note-private"><?php _e( 'Donation Note (private)', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-note-to-donor">
 									<input type="checkbox"
-									       name="give_give_donations_export_option[donation_note_to_donor]"
-									       id="give-export-donation-note-to-donor"><?php _e( 'Donation Note (to donor)', 'give' ); ?>
+										   name="give_give_donations_export_option[donation_note_to_donor]"
+										   id="give-export-donation-note-to-donor"><?php _e( 'Donation Note (to donor)', 'give' ); ?>
 								</label>
 							</li>
 
@@ -375,32 +375,32 @@ function give_export_donation_standard_fields() {
 							<li class="give-export-option-start">
 								<label for="give-export-donation-form-id">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[form_id]"
-									       id="give-export-donation-form-id"><?php _e( 'Donation Form ID', 'give' ); ?>
+										   name="give_give_donations_export_option[form_id]"
+										   id="give-export-donation-form-id"><?php _e( 'Donation Form ID', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-form-title">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[form_title]"
-									       id="give-export-donation-form-title"><?php _e( 'Donation Form Title', 'give' ); ?>
+										   name="give_give_donations_export_option[form_title]"
+										   id="give-export-donation-form-title"><?php _e( 'Donation Form Title', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-form-level-id">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[form_level_id]"
-									       id="give-export-donation-form-level-id"><?php _e( 'Donation Form Level ID', 'give' ); ?>
+										   name="give_give_donations_export_option[form_level_id]"
+										   id="give-export-donation-form-level-id"><?php _e( 'Donation Form Level ID', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donation-form-level-title">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[form_level_title]"
-									       id="give-export-donation-form-level-title"><?php _e( 'Donation Form Level Title', 'give' ); ?>
+										   name="give_give_donations_export_option[form_level_title]"
+										   id="give-export-donation-form-level-title"><?php _e( 'Donation Form Level Title', 'give' ); ?>
 								</label>
 							</li>
 
@@ -435,72 +435,72 @@ function give_export_donation_standard_fields() {
 							<li class="give-export-option-start">
 								<label for="give-export-first-name">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[first_name]"
-									       id="give-export-first-name"><?php _e( 'Donor\'s First Name', 'give' ); ?>
+										   name="give_give_donations_export_option[first_name]"
+										   id="give-export-first-name"><?php _e( 'Donor\'s First Name', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-last-name">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[last_name]"
-									       id="give-export-last-name"><?php _e( 'Donor\'s Last Name', 'give' ); ?>
+										   name="give_give_donations_export_option[last_name]"
+										   id="give-export-last-name"><?php _e( 'Donor\'s Last Name', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-email">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[email]"
-									       id="give-export-email"><?php _e( 'Donor\'s Email', 'give' ); ?>
+										   name="give_give_donations_export_option[email]"
+										   id="give-export-email"><?php _e( 'Donor\'s Email', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-company">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[company]"
-									       id="give-export-company"><?php _e( 'Company Name', 'give' ); ?>
+										   name="give_give_donations_export_option[company]"
+										   id="give-export-company"><?php _e( 'Company Name', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-address">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[address]"
-									       id="give-export-address"><?php _e( 'Donor\'s Billing Address', 'give' ); ?>
+										   name="give_give_donations_export_option[address]"
+										   id="give-export-address"><?php _e( 'Donor\'s Billing Address', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-comment">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[comment]"
-									       id="give-export-comment"><?php _e( 'Donor\'s Comment', 'give' ); ?>
+										   name="give_give_donations_export_option[comment]"
+										   id="give-export-comment"><?php _e( 'Donor\'s Comment', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-userid">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[userid]"
-									       id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
+										   name="give_give_donations_export_option[userid]"
+										   id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donorid">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donorid]"
-									       id="give-export-donorid"><?php _e( 'Donor ID', 'give' ); ?>
+										   name="give_give_donations_export_option[donorid]"
+										   id="give-export-donorid"><?php _e( 'Donor ID', 'give' ); ?>
 								</label>
 							</li>
 
 							<li>
 								<label for="give-export-donor-ip">
 									<input type="checkbox" checked
-									       name="give_give_donations_export_option[donor_ip]"
-									       id="give-export-donor-ip"><?php _e( 'Donor IP Address', 'give' ); ?>
+										   name="give_give_donations_export_option[donor_ip]"
+										   id="give-export-donor-ip"><?php _e( 'Donor IP Address', 'give' ); ?>
 								</label>
 							</li>
 

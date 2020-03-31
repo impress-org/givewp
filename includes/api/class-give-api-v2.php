@@ -41,7 +41,7 @@ class Give_API_V2 {
 	 *
 	 * @var Give_API_V2
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -88,26 +88,39 @@ class Give_API_V2 {
 	/**
 	 * Register API routes
 	 * Note: only for internal purpose.
+	 *
 	 * @todo   : prevent cross domain api request
 	 *
 	 * @since  2.1
 	 * @access private
 	 */
 	public function register_routes() {
-		register_rest_route( $this->rest_base, '/form/(?P<id>[\d]+)', array(
-			'methods'  => 'GET',
-			'callback' => array( $this, 'get_forms_data' ),
-		) );
+		register_rest_route(
+			$this->rest_base,
+			'/form/(?P<id>[\d]+)',
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_forms_data' ),
+			)
+		);
 
-		register_rest_route( $this->rest_base, '/form-grid', array(
-			'methods'  => 'GET',
-			'callback' => array( $this, 'get_donation_grid' ),
-		) );
+		register_rest_route(
+			$this->rest_base,
+			'/form-grid',
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_donation_grid' ),
+			)
+		);
 
-		register_rest_route( $this->rest_base, '/donor-wall', array(
-			'methods'  => 'GET',
-			'callback' => array( $this, 'get_donor_wall' ),
-		) );
+		register_rest_route(
+			$this->rest_base,
+			'/donor-wall',
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_donor_wall' ),
+			)
+		);
 	}
 
 	/**
@@ -118,8 +131,8 @@ class Give_API_V2 {
 	 */
 	public function localize_script() {
 		$data = array(
-			'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
-			'rest_base' => $this->rest_base
+			'root'      => esc_url_raw( self::get_rest_api() ),
+			'rest_base' => $this->rest_base,
 		);
 
 		if ( is_admin() ) {

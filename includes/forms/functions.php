@@ -198,7 +198,7 @@ function give_send_back_to_checkout( $args = array() ) {
 	$redirect = add_query_arg( $args, $url );
 
 	// Precaution: don't allow any CC info.
-	$redirect = remove_query_arg( [ 'card_number', 'card_cvc' ], $redirect );
+	$redirect = remove_query_arg( array( 'card_number', 'card_cvc' ), $redirect );
 
 	// Redirect them.
 	$redirect .= "#give-form-{$form_id}-wrap";

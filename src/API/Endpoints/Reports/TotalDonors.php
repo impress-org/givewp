@@ -17,23 +17,11 @@ class TotalDonors extends Endpoint {
 	}
 
 	public function get_report( $request ) {
-
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
-
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = [];
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -51,24 +39,15 @@ class TotalDonors extends Endpoint {
 				break;
 		}
 
-		// Cache the report data
-		$result = $this->cache_report( $request, $data );
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			[
-				'data'   => $data,
-				'status' => $status,
-			]
-		);
+		return $data;
 	}
 
 	public function get_data( $start, $end, $intervalStr ) {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = [];
-		$donors   = [];
+		$tooltips = array();
+		$donors   = array();
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -96,16 +75,16 @@ class TotalDonors extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$donors[] = [
+			$donors[] = array(
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $donorsForPeriod,
-			];
+			);
 
-			$tooltips[] = [
+			$tooltips[] = array(
 				'title'  => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'body'   => __( 'Total Donors', 'give' ),
 				'footer' => $periodLabel,
-			];
+			);
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -119,17 +98,17 @@ class TotalDonors extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
+		$data = array(
+			'datasets' => array(
+				array(
 					'data'      => $donors,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
 					'highlight' => $totalDonorsForPeriod,
-				],
-			],
-		];
+				),
+			),
+		);
 
 		return $data;
 
@@ -168,7 +147,7 @@ class TotalDonors extends Endpoint {
 
 	public function get_donors( $startStr, $endStr ) {
 
-		$donors = [];
+		$donors = array();
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
@@ -186,19 +165,19 @@ class TotalDonors extends Endpoint {
 
 	public function get_prev_donors( $startStr, $endStr ) {
 
-		$args = [
+		$args = array(
 			'number'     => -1,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
-		];
+		);
 
 		$prevPayments = new \Give_Payments_Query( $args );
 		$prevPayments = $prevPayments->get_payments();
 
-		$donors = [];
+		$donors = array();
 		foreach ( $prevPayments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
 				$donors[] = $payment->donor_id;

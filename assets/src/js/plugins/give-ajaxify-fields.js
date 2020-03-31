@@ -4,9 +4,9 @@
 ( function( $ ) {
 	'use strict';
 
-	$.extend({
+	$.extend( {
 		giveAjaxifyFields: function( customSettings ) {
-			var $countryField,
+			let $countryField,
 				$parentWrapper,
 				defaultSettings = {
 
@@ -18,18 +18,18 @@
 					countryFieldName: 'country',
 					stateFieldName: 'state',
 					stateFieldWrapper: '.give-field-wrap',
-					chosenState: true
+					chosenState: true,
 				};
 
-			var settings = $.extend( {}, defaultSettings, ( customSettings || {} ) );
+			const settings = $.extend( {}, defaultSettings, ( customSettings || {} ) );
 
 			switch ( settings.type ) {
 				case 'country_state':
-					$countryField = $( 'select[name="' + settings.countryFieldName +  '"]' );
+					$countryField = $( 'select[name="' + settings.countryFieldName + '"]' );
 					$parentWrapper = $countryField.closest( settings.parentWrapper );
 
 					// Bailout.
-					if(
+					if (
 						! $countryField.length ||
 						'Country_state' === $countryField.data( 'give-ajaxify-field' )
 					) {
@@ -41,49 +41,48 @@
 
 					// Update base state field based on selected base country
 					$countryField.change( function() {
-						var $this              = $(this),
-							$stateField        = $this.closest( settings.parentWrapper )
+						let $this = $( this ),
+							$stateField = $this.closest( settings.parentWrapper )
 								.find( '[name="' + settings.stateFieldName + '"]' ),
-							$stateFieldWrapper = $stateField.closest(settings.stateFieldWrapper),
-							$stateFieldLabel   = $( 'label', $stateFieldWrapper );
+							$stateFieldWrapper = $stateField.closest( settings.stateFieldWrapper ),
+							$stateFieldLabel = $( 'label', $stateFieldWrapper );
 
 						// If state does not has wrapper then find it's label
-						if( ! settings.stateFieldWrapper ) {
-							$stateFieldLabel   = $( 'label[for="' + settings.stateFieldName + '"]', $parentWrapper );
+						if ( ! settings.stateFieldWrapper ) {
+							$stateFieldLabel = $( 'label[for="' + settings.stateFieldName + '"]', $parentWrapper );
 							$stateFieldWrapper = $stateField.parent();
 						}
 
-						var data = {
+						const data = {
 							action: 'give_get_states',
 							country: $this.val(),
-							field_name: settings.stateFieldName
+							field_name: settings.stateFieldName,
 						};
 
-						$.post( ajaxurl, data, function ( response ) {
-
+						$.post( ajaxurl, data, function( response ) {
 							// Bailout.
 							if ( ! response.show_field ) {
-								if( settings.stateFieldWrapper ) {
-									$stateFieldWrapper.addClass('give-hidden');
-								} else{
-									$stateField.addClass('give-hidden');
+								if ( settings.stateFieldWrapper ) {
+									$stateFieldWrapper.addClass( 'give-hidden' );
+								} else {
+									$stateField.addClass( 'give-hidden' );
 								}
 								return;
 							}
 
-							if( $stateFieldLabel.length ){
+							if ( $stateFieldLabel.length ) {
 								$stateFieldLabel.text( response.states_label );
 							}
 
-							if( settings.chosenState ) {
+							if ( settings.chosenState ) {
 								$stateField.chosen( 'destroy' );
 							}
 
 							// Show field.
-							if( settings.stateFieldWrapper ) {
-								$stateFieldWrapper.removeClass('give-hidden');
-							} else{
-								$stateField.removeClass('give-hidden');
+							if ( settings.stateFieldWrapper ) {
+								$stateFieldWrapper.removeClass( 'give-hidden' );
+							} else {
+								$stateField.removeClass( 'give-hidden' );
 							}
 
 							if (
@@ -91,29 +90,28 @@
 								true === response.states_found
 							) {
 								// Update html.
-								$stateField.replaceWith(response.data);
+								$stateField.replaceWith( response.data );
 
 								// Update selector.
-								$stateField = $('[name="' + settings.stateFieldName + '"]', $stateFieldWrapper );
+								$stateField = $( '[name="' + settings.stateFieldName + '"]', $stateFieldWrapper );
 
 								// Reset chosenState
-								if( settings.chosenState ) {
+								if ( settings.chosenState ) {
 									$stateField.chosen();
 								}
-
 							} else {
-								$stateField.replaceWith('<input type="text" name="' + settings.stateFieldName + '" value="' + response.default_state + '" class="medium-text"/>');
+								$stateField.replaceWith( '<input type="text" name="' + settings.stateFieldName + '" value="' + response.default_state + '" class="medium-text"/>' );
 
 								// Update selector.
-								$stateField = $('[name="' + settings.stateFieldName + '"]', $stateFieldWrapper );
+								$stateField = $( '[name="' + settings.stateFieldName + '"]', $stateFieldWrapper );
 							}
-						});
-					});
+						} );
+					} );
 
 					break;
 			}
 
 			return this;
-		}
-	});
-})( jQuery );
+		},
+	} );
+}( jQuery ) );

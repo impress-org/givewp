@@ -15,49 +15,23 @@ class TopDonors extends Endpoint {
 	}
 
 	public function get_report( $request ) {
+		$start = date_create( $request->get_param( 'start' ) );
+		$end   = date_create( $request->get_param( 'end' ) );
 
-		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
-		if ( $cached_report !== null ) {
-			// Bail and return the cached version
-			return new \WP_REST_Response(
-				[
-					'data' => $cached_report,
-				]
-			);
-		}
-
-		$start = date_create( $request['start'] );
-		$end   = date_create( $request['end'] );
-		$diff  = date_diff( $start, $end );
-
-		$dataset = [];
-
-		$data = $this->get_data( $start, $end );
-
-		// Cache the report data
-		$result = $this->cache_report( $request, $data );
-		$status = $this->get_give_status();
-
-		return new \WP_REST_Response(
-			[
-				'data'   => $data,
-				'status' => $status,
-			]
-		);
+		return $this->get_data( $start, $end );
 	}
 
 	public function get_data( $start, $end ) {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
 
-		$donors = [];
+		$donors = array();
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
 				$donors[ $payment->donor_id ]['type']      = 'donor';
 				$donors[ $payment->donor_id ]['earnings']  = isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : $payment->total;
-				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), [ 'decode_currency' => true ] );
+				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), array( 'decode_currency' => true ) );
 				$donors[ $payment->donor_id ]['donations'] = isset( $donors[ $payment->donor_id ]['donations'] ) ? $donors[ $payment->donor_id ]['donations'] += 1 : 1;
 				$countLabel                                = _n( 'Donation', 'Donations', $donors[ $payment->donor_id ]['donations'], 'give' );
 				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;

@@ -41,7 +41,7 @@ class Give_Donor_Wall_Widget extends WP_Widget {
 		$control_ops = array(
 			'width'   => 250,
 			'height'  => 350,
-			'id_base' => 'give_gravatars_widget'
+			'id_base' => 'give_gravatars_widget',
 		);
 
 		// Create the widget
@@ -69,7 +69,7 @@ class Give_Donor_Wall_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		//@TODO: Don't extract it!!!
+		// @TODO: Don't extract it!!!
 		extract( $args );
 
 		if ( ! is_singular( 'give_forms' ) ) {
@@ -140,7 +140,7 @@ class Give_Donor_Wall_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 		</p>
 
@@ -152,7 +152,7 @@ class Give_Donor_Wall_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function widget_init(){
+	function widget_init() {
 		register_widget( $this->self );
 	}
 

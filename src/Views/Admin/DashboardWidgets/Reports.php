@@ -19,8 +19,8 @@ class Reports {
 	 * Initialize Reports Dashboard Widget
 	 */
 	public function init() {
-		add_action( 'wp_dashboard_setup', [ $this, 'add_dashboard_widget' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	public function __construct() {
@@ -37,7 +37,7 @@ class Reports {
 			wp_add_dashboard_widget(
 				'givewp_reports_widget',
 				$reportsStr,
-				[ $this, 'render_template' ]
+				array( $this, 'render_template' )
 			);
 		}
 	}
@@ -51,23 +51,23 @@ class Reports {
 		wp_enqueue_style(
 			'give-admin-reports-widget-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports-widget.css',
-			[],
+			array(),
 			'0.0.1'
 		);
 		wp_enqueue_script(
 			'give-admin-reports-widget-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
-			[ 'wp-element', 'wp-api', 'wp-i18n' ],
+			array( 'wp-element', 'wp-api', 'wp-i18n' ),
 			'0.0.1',
 			true
 		);
 		wp_localize_script(
 			'give-admin-reports-widget-js',
 			'giveReportsData',
-			[
+			array(
 				'newFormUrl'   => admin_url( '/post-new.php?post_type=give_forms' ),
 				'allTimeStart' => $this->get_all_time_start(),
-			]
+			)
 		);
 
 	}
@@ -82,21 +82,19 @@ class Reports {
 		$end   = date_create();
 
 		// Setup donation query args (get sanitized start/end date from request)
-		$args = [
+		$args = array(
 			'number'     => 1,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'ASC',
 			'start_date' => $start->format( 'Y-m-d H:i:s' ),
 			'end_date'   => $end->format( 'Y-m-d H:i:s' ),
-		];
+		);
 
 		// Get array of 50 recent donations
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
-		$earliest = $donations[0]->date;
-
-		return $earliest;
+		return isset( $donations[0] ) ? $donations[0]->date : $start->format( 'Y-m-d H:i:s' );
 	}
 }

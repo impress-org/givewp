@@ -48,7 +48,8 @@ if ( is_user_logged_in() ) {
 				$value
 			);
 
-			give_set_error( 'give-limited-throttle',
+			give_set_error(
+				'give-limited-throttle',
 				$message
 			);
 		}
@@ -109,9 +110,11 @@ if ( $donations ) : ?>
 				?>
 			</tr>
 			</thead>
-			<?php foreach ( $donations as $post ) :
+			<?php
+			foreach ( $donations as $post ) :
 				setup_postdata( $post );
-				$donation_data = give_get_payment_meta( $post->ID ); ?>
+				$donation_data = give_get_payment_meta( $post->ID );
+				?>
 				<tr class="give-donation-row">
 					<?php
 					/**
@@ -129,21 +132,24 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-id"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_payment_number( $post->ID ), esc_html( $table_headings['id'] )
+							give_get_payment_number( $post->ID ),
+							esc_html( $table_headings['id'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-date"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ), esc_html( $table_headings['date'] )
+							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ),
+							esc_html( $table_headings['date'] )
 						);
 					endif;
 
 					if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-donor"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_donor_name_by( $post->ID ), $table_headings['donor']
+							give_get_donor_name_by( $post->ID ),
+							$table_headings['donor']
 						);
 					endif;
 					?>
@@ -254,16 +260,19 @@ if ( $donations ) : ?>
 		<div id="give-donation-history-pagination" class="give_pagination navigation">
 			<?php
 			$big = 999999;
-			echo paginate_links( array(
-				'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-				'format'  => '?paged=%#%',
-				'current' => max( 1, get_query_var( 'paged' ) ),
-				'total'   => ceil( give_count_donations_of_donor() / 20 ), // 20 items per page
-			) );
+			echo paginate_links(
+				array(
+					'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+					'format'  => '?paged=%#%',
+					'current' => max( 1, get_query_var( 'paged' ) ),
+					'total'   => ceil( give_count_donations_of_donor() / 20 ), // 20 items per page
+				)
+			);
 			?>
 		</div>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
 	<?php Give_Notices::print_frontend_notice( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
-<?php endif;
+	<?php
+endif;

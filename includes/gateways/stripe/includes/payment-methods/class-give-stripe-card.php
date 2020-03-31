@@ -66,9 +66,11 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					try {
 
-						$source = \Stripe\Source::create( array(
-							'card' => $card_data,
-						) );
+						$source    = \Stripe\Source::create(
+							array(
+								'card' => $card_data,
+							)
+						);
 						$source_id = $source->id;
 
 					} catch ( \Stripe\Error\Base $e ) {
@@ -150,7 +152,17 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 			$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
 				? $donation_data['post_data']['give_stripe_payment_method']
-				: $this->check_for_source( $donation_data );
+				: false;
+
+			// Send donor back to checkout page, if no payment method id exists.
+			if ( empty( $payment_method_id ) ) {
+				give_record_gateway_error(
+					__( 'Stripe Payment Method Error', 'give' ),
+					__( 'The payment method failed to generate during a donation. This is usually caused by a JavaScript error on the page preventing Stripe’s JavaScript from running correctly. Reach out to GiveWP support for assistance.', 'give' )
+				);
+				give_set_error( 'no-payment-method-id', __( 'Unable to generate Payment Method ID. Please contact a site administrator for assistance.', 'give' ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+			}
 
 			// Any errors?
 			$errors = give_get_errors();
@@ -235,7 +247,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						array(
 							'amount'               => $this->format_amount( $donation_data['price'] ),
 							'currency'             => give_get_currency( $form_id ),
-							'payment_method_types' => [ 'card' ],
+							'payment_method_types' => array( 'card' ),
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
 							'metadata'             => $this->prepare_metadata( $donation_id ),
@@ -264,10 +276,13 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Process additional steps for SCA or 3D secure.
 					give_stripe_process_additional_authentication( $donation_id, $intent );
 
-					// Send them to success page.
-					give_send_to_success_page();
-
-
+					if ( ! empty( $intent ) && 'succeeded' === $intent ) {
+						// Process to success page, only if intent is successful.
+						give_send_to_success_page();
+					} else {
+						// Show error message instead of confirmation page.
+						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+					}
 				} else {
 
 					// No customer, failed.

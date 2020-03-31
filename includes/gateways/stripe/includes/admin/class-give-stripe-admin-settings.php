@@ -111,6 +111,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				'general'     => __( 'General Settings', 'give' ),
 				'credit-card' => __( 'Credit Card On Site', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
+				'sepa'        => __( 'SEPA Direct Debit', 'give' ),
 			);
 
 			return apply_filters( 'give_stripe_register_groups', $groups );
@@ -302,10 +303,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type' => 'title',
 					);
 
-
 					$settings['checkout'][] = array(
 						'name'          => __( 'Checkout Type', 'give' ),
-						'desc'          => sprintf(__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout'),
+						'desc'          => sprintf( __( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%1$s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%2$s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout' ),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
 						'type'          => 'radio_inline',
@@ -341,11 +341,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					);
 
 					$settings['checkout'][] = array(
-						'name'          => __( 'Processing Text', 'give' ),
-						'desc'          => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
-						'id'            => 'stripe_checkout_processing_text',
-						'default'       => __( 'Donation Processing...', 'give' ),
-						'type'          => 'text',
+						'name'    => __( 'Processing Text', 'give' ),
+						'desc'    => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
+						'id'      => 'stripe_checkout_processing_text',
+						'default' => __( 'Donation Processing...', 'give' ),
+						'type'    => 'text',
 					);
 
 					$settings['checkout'][] = array(
@@ -386,6 +386,79 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					// Stripe Admin Settings - Footer.
 					$settings['checkout'][] = array(
 						'id'   => 'give_title_stripe_checkout',
+						'type' => 'sectionend',
+					);
+
+					// SEPA Direct Debit.
+					$settings['sepa'][] = array(
+						'id'   => 'give_title_stripe_sepa',
+						'type' => 'title',
+					);
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Display Icon', 'give' ),
+						'desc'          => __( 'This option allows you to display a bank building icon within the IBAN input field for SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_hide_icon',
+						'wrapper_class' => 'stripe-hide-icon',
+						'type'          => 'radio_inline',
+						'default'       => 'enabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$is_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon' ) );
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Icon Style', 'give' ),
+						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_icon_style',
+						'wrapper_class' => $is_hide_icon ? 'stripe-icon-style' : 'stripe-icon-style give-hidden',
+						'type'          => 'radio_inline',
+						'default'       => 'default',
+						'options'       => array(
+							'default' => __( 'Default', 'give' ),
+							'solid'   => __( 'Solid', 'give' ),
+						),
+					);
+
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Display Mandate Acceptance', 'give' ),
+						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
+						'id'            => 'stripe_mandate_acceptance_option',
+						'wrapper_class' => 'stripe-mandate-acceptance-option',
+						'type'          => 'radio_inline',
+						'default'       => 'enabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option' ) );
+
+					$settings['sepa'][] = array(
+						'name'          => __( 'Mandate Acceptance Text', 'give' ),
+						'desc'          => __( 'This text displays below the IBAN field and should provide clarity to your donors on how this payment option works.', 'give' ),
+						'id'            => 'stripe_mandate_acceptance_text',
+						'wrapper_class' => $is_hide_mandate ? 'stripe-mandate-acceptance-text' : 'stripe-mandate-acceptance-text give-hidden',
+
+						'type'          => 'textarea',
+						'default'       => give_stripe_get_default_mandate_acceptance_text(),
+					);
+
+					/**
+					 * This filter is used to add setting fields after sepa fields.
+					 *
+					 * @since 2.6.1
+					 */
+					$settings = apply_filters( 'give_stripe_after_sepa_fields', $settings );
+
+					// Stripe Admin Settings - Footer.
+					$settings['sepa'][] = array(
+						'id'   => 'give_title_stripe_sepa',
 						'type' => 'sectionend',
 					);
 
@@ -566,9 +639,29 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				<td class="give-forminp give-forminp-api_key">
 					<?php
 					if ( give_stripe_is_connected() ) :
-						$stripe_user_id = give_get_option( 'give_stripe_user_id' );
+						$site_url            = get_site_url();
+						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
+						$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+						$modal_first_detail  = sprintf(
+							'%1$s %2$s',
+							__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
+							"<strong>{$site_url}?give-listener=stripe</strong>"
+						);
+						$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
+						$can_display = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
 						?>
-						<span id="give-stripe-connect" class="stripe-btn-disabled"><span>Connected</span></span>
+						<span
+							id="give-stripe-connect"
+							class="stripe-btn-disabled"
+							data-status="connected"
+							data-title="<?php echo $modal_title; ?>"
+							data-first-detail="<?php echo $modal_first_detail; ?>"
+							data-second-detail="<?php echo $modal_second_detail; ?>"
+							data-display="<?php echo $can_display; ?>"
+							data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
+						>
+							<span><?php echo __( 'Connected', 'give' ); ?></span>
+						</span>
 						<p class="give-field-description">
 							<span class="dashicons dashicons-yes" style="color:#25802d;"></span>
 							<?php
@@ -613,7 +706,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					?>
 				</td>
 			</tr>
-		<?php
+			<?php
 		}
 
 		/**
@@ -654,7 +747,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 							?>
 							<p>
-								<strong><?php esc_html_e( 'Last webhook received on' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
+								<strong><?php esc_html_e( 'Last webhook received on', 'give' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
 							</p>
 							<?php
 						}
@@ -675,7 +768,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					</p>
 				</td>
 			</tr>
-		<?php
+			<?php
 		}
 
 		/**
@@ -686,7 +779,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function stripe_styles_field( $field_options, $option_value ) {
 

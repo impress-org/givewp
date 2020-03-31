@@ -18,8 +18,8 @@ class Reports {
 	 * Initialize Reports Admin page
 	 */
 	public function init() {
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	public function __construct() {
@@ -52,13 +52,13 @@ class Reports {
 		wp_enqueue_style(
 			'give-admin-reports-v3-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports.css',
-			[],
+			array(),
 			'0.0.1'
 		);
 		wp_enqueue_script(
 			'give-admin-reports-v3-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
-			[ 'wp-element', 'wp-api', 'wp-i18n' ],
+			array( 'wp-element', 'wp-api', 'wp-i18n' ),
 			'0.0.1',
 			true
 		);
@@ -66,19 +66,19 @@ class Reports {
 		wp_localize_script(
 			'give-admin-reports-v3-js',
 			'giveReportsData',
-			[
+			array(
 				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-reports&legacy=true' ),
 				'allTimeStart'     => $this->get_all_time_start(),
-			]
+			)
 		);
 
 	}
 
 	// Add Reports submenu page to admin menu
 	public function add_page() {
-		$render = [ $this, 'render_template' ];
+		$render = array( $this, 'render_template' );
 		if ( isset( $_GET['legacy'] ) ) {
-			$render = [ Give()->give_settings, 'output' ];
+			$render = array( Give()->give_settings, 'output' );
 		}
 
 		add_submenu_page(
@@ -101,21 +101,19 @@ class Reports {
 		$end   = date_create();
 
 		// Setup donation query args (get sanitized start/end date from request)
-		$args = [
+		$args = array(
 			'number'     => 1,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'ASC',
 			'start_date' => $start->format( 'Y-m-d H:i:s' ),
 			'end_date'   => $end->format( 'Y-m-d H:i:s' ),
-		];
+		);
 
 		// Get array of 50 recent donations
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
-		$earliest = $donations[0]->date;
-
-		return $earliest;
+		return isset( $donations[0] ) ? $donations[0]->date : $start->format( 'Y-m-d H:i:s' );
 	}
 }

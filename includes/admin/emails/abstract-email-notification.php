@@ -133,7 +133,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Set email content type
 			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array(
-				$this->config['content_type'], array(
+				$this->config['content_type'],
+				array(
 					'text/html',
 					'text/plain',
 				)
@@ -968,7 +969,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
 			// Get valid emails.
 			$new_form_meta_value = array_filter(
-				$form_meta_value, function ( $value ) {
+				$form_meta_value,
+				function ( $value ) {
 					return ! empty( $value['email'] ) && is_email( $value['email'] );
 				}
 			);

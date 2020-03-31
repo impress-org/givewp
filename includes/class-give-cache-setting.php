@@ -27,7 +27,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var Give_Cache_Setting
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Cache key.
@@ -93,7 +93,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	static private $all_option_ids;
+	private static $all_option_ids;
 
 	/**
 	 * Singleton pattern.
@@ -158,7 +158,6 @@ class Give_Cache_Setting {
 		 * Thus filter can be removed in future.
 		 *
 		 * @since 2.4.1
-		 *
 		 */
 		if ( ! apply_filters( 'give_disable_setting_cache', false ) ) {
 			$cache = wp_cache_get( $this->cache_key, $this->cache_group );
@@ -265,7 +264,7 @@ class Give_Cache_Setting {
 	 * @access public
 	 *
 	 * @param      $option_name
-	 * @param bool $default
+	 * @param bool        $default
 	 *
 	 * @return mixed
 	 */

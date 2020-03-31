@@ -50,15 +50,20 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			parent::__construct();
 
 			// Will display html of the import donation.
-			add_action( 'give_admin_field_tools_import', array(
-				'Give_Settings_Import',
-				'render_import_field',
-			), 10, 2 );
+			add_action(
+				'give_admin_field_tools_import',
+				array(
+					'Give_Settings_Import',
+					'render_import_field',
+				),
+				10,
+				2
+			);
 
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
-				add_action( "give-tools_open_form", '__return_empty_string' );
-				add_action( "give-tools_close_form", '__return_empty_string' );
+				add_action( 'give-tools_open_form', '__return_empty_string' );
+				add_action( 'give-tools_close_form', '__return_empty_string' );
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-donations.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-core-settings.php';

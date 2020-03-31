@@ -37,7 +37,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * @since 1.8.17
 		 */
-		static private $instance;
+		private static $instance;
 
 		/**
 		 * Importing donation per page.
@@ -109,7 +109,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			}
 
 			// Do not render main import tools page.
-			remove_action( 'give_admin_field_tools_import', array( 'Give_Settings_Import', 'render_import_field', ) );
+			remove_action( 'give_admin_field_tools_import', array( 'Give_Settings_Import', 'render_import_field' ) );
 
 			// Render donation import page
 			add_action( 'give_admin_field_tools_import', array( $this, 'render_page' ) );
@@ -200,8 +200,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public function import_success() {
 			// Imported successfully
 
-			$success = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false );
-			$undo = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false );
+			$success           = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false );
+			$undo              = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false );
 			$query_arg_setting = array(
 				'post_type' => 'give_forms',
 				'page'      => 'give-settings',
@@ -212,20 +212,20 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			}
 
 			$query_arg_success = array(
-				'post_type' => 'give_forms',
-				'page'      => 'give-tools',
-				'tab'      => 'import',
-				'importer-type'      => 'import_core_setting',
-				'step'      => '1',
-				'undo'      => 'true',
+				'post_type'     => 'give_forms',
+				'page'          => 'give-tools',
+				'tab'           => 'import',
+				'importer-type' => 'import_core_setting',
+				'step'          => '1',
+				'undo'          => 'true',
 			);
 
 			$title = __( 'Settings Import Complete!', 'give' );
 			if ( $success ) {
-				$query_arg_success['undo'] = '1';
-				$query_arg_success['step'] = '3';
+				$query_arg_success['undo']    = '1';
+				$query_arg_success['step']    = '3';
 				$query_arg_success['success'] = '1';
-				$text = __( 'Undo Importing', 'give' );
+				$text                         = __( 'Undo Importing', 'give' );
 			} else {
 				if ( $undo ) {
 					$host_give_options = get_option( 'give_settings_old', array() );
@@ -262,8 +262,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'Your settings are now being imported...', 'give' ) ?></p>
+					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ); ?></h2>
+					<p class="give-field-description"><?php esc_html_e( 'Your settings are now being imported...', 'give' ); ?></p>
 				</th>
 			</tr>
 
@@ -350,21 +350,21 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			?>
 			<tr valign="top">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php esc_html_e( 'Import Core Settings from a JSON file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import GiveWP settings from another GiveWP installation. Settings imported contain data from GiveWP core as well as any of our Premium Add-ons.', 'give' ) ?></p>
+					<h2 id="give-import-title"><?php esc_html_e( 'Import Core Settings from a JSON file', 'give' ); ?></h2>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import GiveWP settings from another GiveWP installation. Settings imported contain data from GiveWP core as well as any of our Premium Add-ons.', 'give' ); ?></p>
 				</th>
 			</tr>
 
 			<tr valign="top">
 				<th scope="row" class="titledesc">
-					<label for="json"><?php esc_html_e( 'Choose a JSON file:', 'give' ) ?></label>
+					<label for="json"><?php esc_html_e( 'Choose a JSON file:', 'give' ); ?></label>
 				</th>
 				<td class="give-forminp">
 					<div class="give-field-wrap">
 						<label for="json">
 							<input type="file" name="json" class="give-upload-json-file" value="<?php echo $json; ?>"
-							       accept=".json">
-							<p class="give-field-description"><?php esc_html_e( 'The file type must be JSON.', 'give' )?></p>
+								   accept=".json">
+							<p class="give-field-description"><?php esc_html_e( 'The file type must be JSON.', 'give' ); ?></p>
 						</label>
 					</div>
 				</td>
@@ -393,9 +393,9 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					<th></th>
 					<th>
 						<input type="submit"
-						       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
-						       id="recount-stats-submit"
-						       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
+							   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+							   id="recount-stats-submit"
+							   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
 					</th>
 				</tr>
 				<?php
@@ -425,13 +425,17 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				} else {
 					$file_path = explode( '/', $core_settings['file'] );
 					$count     = ( count( $file_path ) - 1 );
-					$url       = give_import_page_url( (array) apply_filters( 'give_import_core_settings_importing_url', array(
-						'step'          => '2',
-						'importer-type' => $this->importer_type,
-						'type'          => $type,
-						'file_name'     => $file_path[ $count ],
-					) ) );
-
+					$url       = give_import_page_url(
+						(array) apply_filters(
+							'give_import_core_settings_importing_url',
+							array(
+								'step'          => '2',
+								'importer-type' => $this->importer_type,
+								'type'          => $type,
+								'file_name'     => $file_path[ $count ],
+							)
+						)
+					);
 
 					$this->is_json_valid = $url;
 				}
@@ -450,6 +454,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 		/**
 		 * Upload JSON file
+		 *
 		 * @return boolean
 		 */
 		public static function upload_widget_settings_file() {
@@ -496,13 +501,13 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public static function filetype_mod(  $check, $file, $filename, $mimes ) {
+		public static function filetype_mod( $check, $file, $filename, $mimes ) {
 			if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
 				$finfo     = finfo_open( FILEINFO_MIME_TYPE );
 				$real_mime = finfo_file( $finfo, $file );
 				finfo_close( $finfo );
 
-				if( in_array( $real_mime, array( 'text/plain', 'text/html' ) ) ) {
+				if ( in_array( $real_mime, array( 'text/plain', 'text/html' ) ) ) {
 					remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ) );
 
 					// Allow JSON uploads

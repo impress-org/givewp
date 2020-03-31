@@ -77,7 +77,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type'    => 'radio_inline',
 							'options' => array(
 								'donation' => __( 'Donation', 'give' ),
-								'standard' => __( 'Standard Transaction', 'give' )
+								'standard' => __( 'Standard Transaction', 'give' ),
 							),
 							'default' => 'donation',
 						),
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'PayPal IPN Verification', 'give' ),
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'id'      => 'paypal_invoice_prefix',
@@ -120,11 +120,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_2',
-						)
+						),
 					);
 					break;
 
-				case 'offline-donations' :
+				case 'offline-donations':
 					$settings = array(
 						// Section 3: Offline gateway.
 						array(
@@ -139,8 +139,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'default' => 'disabled',
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' )
-							)
+								'disabled' => __( 'Disabled', 'give' ),
+							),
 						),
 						array(
 							'name'    => __( 'Offline Donation Instructions', 'give' ),
@@ -150,7 +150,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type'    => 'wysiwyg',
 							'options' => array(
 								'textarea_rows' => 6,
-							)
+							),
 						),
 						array(
 							'name'  => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
@@ -162,7 +162,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_3',
-						)
+						),
 					);
 					break;
 
@@ -171,7 +171,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						// Section 1: Gateways.
 						array(
 							'id'   => 'give_title_gateway_settings_1',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'id'   => 'gateway_notice',
@@ -186,13 +186,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
 							'desc' => __( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
 							'id'   => 'gateways',
-							'type' => 'enabled_gateways'
+							'type' => 'enabled_gateways',
 						),
 
 						/**
@@ -205,7 +205,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'name' => __( 'Gateways Label', 'give' ),
 							'desc' => '',
 							'id'   => 'gateways_label',
-							'type' => 'gateways_label_hidden'
+							'type' => 'gateways_label_hidden',
 						),
 
 						/**
@@ -218,7 +218,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
-							'type' => 'default_gateway_hidden'
+							'type' => 'default_gateway_hidden',
 						),
 
 						array(
@@ -230,7 +230,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'id'   => 'give_title_gateway_settings_1',
-							'type' => 'sectionend'
+							'type' => 'sectionend',
 						),
 					);
 					break;
@@ -265,7 +265,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			$sections = array(
 				'gateways-settings' => __( 'Gateways', 'give' ),
 				'paypal-standard'   => __( 'PayPal Standard', 'give' ),
-				'offline-donations' => __( 'Offline Donations', 'give' )
+				'offline-donations' => __( 'Offline Donations', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

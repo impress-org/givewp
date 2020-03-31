@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 			$default_tab = '';
 
 			// Set default tab to first setting tab.
-			if( $sections = array_keys( $this->get_sections() ) ) {
+			if ( $sections = array_keys( $this->get_sections() ) ) {
 				$default_tab = current( $sections );
 			}
 			return $default_tab;
@@ -59,7 +59,7 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 			$sections = $this->get_sections();
 
 			// Bailout: Do not add addons setting tab if it does not contain any setting fields.
-			if( ! empty( $sections ) ) {
+			if ( ! empty( $sections ) ) {
 				$pages[ $this->id ] = $this->label;
 			}
 

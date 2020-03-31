@@ -43,7 +43,7 @@ function give_generate_pdf( $data ) {
 
 	$daterange = utf8_decode(
 		sprintf(
-		/* translators: 1: start date 2: end date */
+			/* translators: 1: start date 2: end date */
 			__( '%1$s to %2$s', 'give' ),
 			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
 			date_i18n( give_date_format() )
@@ -126,16 +126,18 @@ function give_generate_pdf( $data ) {
 	// Object for getting stats.
 	$donation_stats = new Give_Payment_Stats();
 
-	$give_forms = get_posts( array(
-		'post_type'        => 'give_forms',
-		'posts_per_page'   => - 1,
-		'suppress_filters' => false,
-	) );
+	$give_forms = get_posts(
+		array(
+			'post_type'        => 'give_forms',
+			'posts_per_page'   => - 1,
+			'suppress_filters' => false,
+		)
+	);
 
 	if ( $give_forms ) {
 		$pdf->SetWidths( array( 50, 50, 45, 45, 45, 45 ) );
 
-		foreach ( $give_forms as $form ):
+		foreach ( $give_forms as $form ) :
 			$pdf->SetFillColor( 255, 255, 255 );
 
 			$title = $form->post_title;
@@ -161,7 +163,7 @@ function give_generate_pdf( $data ) {
 			}
 
 			$sales    = $donation_stats->get_sales( $form->ID, 'this_year' );
-			$earnings = give_currency_filter( give_format_amount( $donation_stats->get_earnings( $form->ID, 'this_year' ), array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
+			$earnings = give_currency_filter( give_format_amount( $donation_stats->get_earnings( $form->ID, 'this_year' ), array( 'sanitize' => false ) ), array( 'decode_currency' => true ) );
 
 			// This will help filter data before appending it to PDF Receipt.
 			$prepare_pdf_data   = array();
@@ -240,17 +242,17 @@ function give_draw_chart_image() {
 	$chart = new GoogleChart( 'lc', 900, 330 );
 
 	$i        = 1;
-	$earnings = "";
-	$sales    = "";
+	$earnings = '';
+	$sales    = '';
 
 	while ( $i <= 12 ) :
-		$earnings .= give_get_earnings_by_date( null, $i, date( 'Y' ) ) . ",";
-		$sales    .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ",";
+		$earnings .= give_get_earnings_by_date( null, $i, date( 'Y' ) ) . ',';
+		$sales    .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ',';
 		$i ++;
 	endwhile;
 
-	$earnings_array = explode( ",", $earnings );
-	$sales_array    = explode( ",", $sales );
+	$earnings_array = explode( ',', $earnings );
+	$sales_array    = explode( ',', $sales );
 
 	$i = 0;
 	while ( $i <= 11 ) {
@@ -264,20 +266,22 @@ function give_draw_chart_image() {
 	$max_earnings   = max( $earnings_array );
 	$earnings_scale = round( $max_earnings, - 1 );
 
-	$data = new GoogleChartData( array(
-		$earnings_array[0],
-		$earnings_array[1],
-		$earnings_array[2],
-		$earnings_array[3],
-		$earnings_array[4],
-		$earnings_array[5],
-		$earnings_array[6],
-		$earnings_array[7],
-		$earnings_array[8],
-		$earnings_array[9],
-		$earnings_array[10],
-		$earnings_array[11],
-	) );
+	$data = new GoogleChartData(
+		array(
+			$earnings_array[0],
+			$earnings_array[1],
+			$earnings_array[2],
+			$earnings_array[3],
+			$earnings_array[4],
+			$earnings_array[5],
+			$earnings_array[6],
+			$earnings_array[7],
+			$earnings_array[8],
+			$earnings_array[9],
+			$earnings_array[10],
+			$earnings_array[11],
+		)
+	);
 
 	$data->setLegend( __( 'Income', 'give' ) );
 	$data->setColor( '1b58a3' );
@@ -295,20 +299,22 @@ function give_draw_chart_image() {
 	$value_marker->setData( $data );
 	$chart->addMarker( $value_marker );
 
-	$data = new GoogleChartData( array(
-		$sales_array[0],
-		$sales_array[1],
-		$sales_array[2],
-		$sales_array[3],
-		$sales_array[4],
-		$sales_array[5],
-		$sales_array[6],
-		$sales_array[7],
-		$sales_array[8],
-		$sales_array[9],
-		$sales_array[10],
-		$sales_array[11],
-	) );
+	$data = new GoogleChartData(
+		array(
+			$sales_array[0],
+			$sales_array[1],
+			$sales_array[2],
+			$sales_array[3],
+			$sales_array[4],
+			$sales_array[5],
+			$sales_array[6],
+			$sales_array[7],
+			$sales_array[8],
+			$sales_array[9],
+			$sales_array[10],
+			$sales_array[11],
+		)
+	);
 	$data->setLegend( __( 'Donations', 'give' ) );
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
@@ -323,20 +329,22 @@ function give_draw_chart_image() {
 
 	$x_axis = new GoogleChartAxis( 'x' );
 	$x_axis->setTickMarks( 5 );
-	$x_axis->setLabels( array(
-		__( 'Jan', 'give' ),
-		__( 'Feb', 'give' ),
-		__( 'Mar', 'give' ),
-		__( 'Apr', 'give' ),
-		__( 'May', 'give' ),
-		__( 'June', 'give' ),
-		__( 'July', 'give' ),
-		__( 'Aug', 'give' ),
-		__( 'Sept', 'give' ),
-		__( 'Oct', 'give' ),
-		__( 'Nov', 'give' ),
-		__( 'Dec', 'give' ),
-	) );
+	$x_axis->setLabels(
+		array(
+			__( 'Jan', 'give' ),
+			__( 'Feb', 'give' ),
+			__( 'Mar', 'give' ),
+			__( 'Apr', 'give' ),
+			__( 'May', 'give' ),
+			__( 'June', 'give' ),
+			__( 'July', 'give' ),
+			__( 'Aug', 'give' ),
+			__( 'Sept', 'give' ),
+			__( 'Oct', 'give' ),
+			__( 'Nov', 'give' ),
+			__( 'Dec', 'give' ),
+		)
+	);
 	$chart->addAxis( $x_axis );
 
 	$shape_marker = new GoogleChartShapeMarker( GoogleChartShapeMarker::CIRCLE );

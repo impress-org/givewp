@@ -23,14 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function give_stripe_supported_payment_methods() {
-	return array(
+	return [
 		'stripe',
 		'stripe_ach',
 		'stripe_ideal',
 		'stripe_google_pay',
 		'stripe_apple_pay',
 		'stripe_checkout',
-	);
+		'stripe_sepa',
+	];
 }
 
 /**
@@ -157,7 +158,7 @@ function give_stripe_connect_button() {
 	return sprintf(
 		'<a href="%1$s" id="give-stripe-connect"><span>%2$s</span></a>',
 		esc_url( $link ),
-        esc_html__( 'Connect with Stripe', 'give' )
+		esc_html__( 'Connect with Stripe', 'give' )
 	);
 }
 

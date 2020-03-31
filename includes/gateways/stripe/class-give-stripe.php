@@ -78,10 +78,10 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 					// If `get_plugin_data` fn not exists then include the file.
 					if ( ! function_exists( 'get_plugin_data' ) ) {
-						require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
 					}
 
-					$recurring_plugin_data = get_plugin_data($recurring_file_path);
+					$recurring_plugin_data = get_plugin_data( $recurring_file_path );
 
 					// Avoid fatal error for smooth update for customers.
 					if (
@@ -95,22 +95,25 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						// Include frontend files.
 						$this->include_frontend_files();
 
-						add_action('admin_notices', function() {
+						add_action(
+							'admin_notices',
+							function() {
 
-							// Register error notice.
-							Give()->notices->register_notice(
-								array(
-									'id'          => 'give-recurring-fatal-error',
-									'type'        => 'error',
-									'description' => sprintf(
-										__( '<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href="%s" target="_blank">WP Rollback</a> plugin and <a href="%s" target="_blank">contact support</a> for prompt assistance.', 'give'),
-										'https://wordpress.org/plugins/wp-rollback/',
-										'https://givewp.com/support/'
-									),
-									'show'        => true,
-								)
-							);
-						});
+								// Register error notice.
+								Give()->notices->register_notice(
+									array(
+										'id'          => 'give-recurring-fatal-error',
+										'type'        => 'error',
+										'description' => sprintf(
+											__( '<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href="%1$s" target="_blank">WP Rollback</a> plugin and <a href="%2$s" target="_blank">contact support</a> for prompt assistance.', 'give' ),
+											'https://wordpress.org/plugins/wp-rollback/',
+											'https://givewp.com/support/'
+										),
+										'show'        => true,
+									)
+								);
+							}
+						);
 					}
 				}
 
@@ -171,6 +174,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Payment Methods.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php';
 
 			// Deprecations.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';
@@ -199,6 +203,12 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			$gateways['stripe_checkout'] = array(
 				'admin_label'    => __( 'Stripe - Checkout', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
+			);
+
+			// Stripe - SEPA Direct Debit.
+			$gateways['stripe_sepa'] = array(
+				'admin_label'    => __( 'Stripe - SEPA Direct Debit', 'give' ),
+				'checkout_label' => __( 'SEPA Direct Debit', 'give' ),
 			);
 
 			return $gateways;

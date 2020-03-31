@@ -127,7 +127,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 						give_record_gateway_error(
 							__( 'Donation creating error', 'give' ),
 							sprintf(
-							/* translators: %s Donation Data */
+								/* translators: %s Donation Data */
 								__( 'Unable to create a pending donation. Details: %s', 'give' ),
 								wp_json_encode( $donation_data )
 							)
@@ -275,12 +275,12 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 						'quantity'    => 1,
 					),
 				),
-				'payment_intent_data'        => [
-					'capture_method'         => 'automatic',
-					'description'            => $donation_summary,
-					'metadata'               => $this->prepare_metadata( $donation_id ),
-					'statement_descriptor'   => give_stripe_get_statement_descriptor(),
-				],
+				'payment_intent_data'        => array(
+					'capture_method'       => 'automatic',
+					'description'          => $donation_summary,
+					'metadata'             => $this->prepare_metadata( $donation_id ),
+					'statement_descriptor' => give_stripe_get_statement_descriptor(),
+				),
 				'submit_type'                => 'donate',
 				'success_url'                => give_get_success_page_uri(),
 				'cancel_url'                 => give_get_failed_transaction_uri(),
@@ -306,13 +306,15 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
 			// Redirect to show loading area to trigger redirectToCheckout client side.
-			wp_safe_redirect( add_query_arg(
-				array(
-					'action'  => 'checkout_processing',
-					'session' => $session_id,
-				),
-				$redirect_to_url
-			) );
+			wp_safe_redirect(
+				add_query_arg(
+					array(
+						'action'  => 'checkout_processing',
+						'session' => $session_id,
+					),
+					$redirect_to_url
+				)
+			);
 
 			// Don't execute code further.
 			give_die();

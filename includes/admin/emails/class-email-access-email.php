@@ -2,7 +2,6 @@
 /**
  * Email access notification
  *
- *
  * @package     Give
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, GiveWP
@@ -31,27 +30,29 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @since  2.0
 		 */
 		public function init() {
-			$this->load( array(
-				'id'                           => 'email-access',
-				'label'                        => __( 'Email access', 'give' ),
-				'description'                  => __( 'Sent when donors request access to their donation history using only their email as verification. (See Settings > General > Access Control)', 'give' ),
-				'notification_status'          => give_get_option( 'email_access', 'disabled' ),
-				'form_metabox_setting'         => false,
-				'notification_status_editable' => false,
-				'email_tag_context'            => 'donor',
-				'recipient_group_name'         => __( 'Donor', 'give' ),
-				'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
-				'default_email_message'        => $this->get_default_email_message(),
-				'default_email_header'         => __( 'Confirm Email', 'give' ),
-				'notices' => array(
-					'non-notification-status-editable' => sprintf(
-						'%1$s <a href="%2$s">%3$s &raquo;</a>',
-						__( 'This notification is automatically toggled based on whether the email access is enabled or not.', 'give' ),
-						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=general&section=access-control') ),
-						__( 'Edit Setting', 'give' )
-					)
-				),
-			) );
+			$this->load(
+				array(
+					'id'                           => 'email-access',
+					'label'                        => __( 'Email access', 'give' ),
+					'description'                  => __( 'Sent when donors request access to their donation history using only their email as verification. (See Settings > General > Access Control)', 'give' ),
+					'notification_status'          => give_get_option( 'email_access', 'disabled' ),
+					'form_metabox_setting'         => false,
+					'notification_status_editable' => false,
+					'email_tag_context'            => 'donor',
+					'recipient_group_name'         => __( 'Donor', 'give' ),
+					'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
+					'default_email_message'        => $this->get_default_email_message(),
+					'default_email_header'         => __( 'Confirm Email', 'give' ),
+					'notices'                      => array(
+						'non-notification-status-editable' => sprintf(
+							'%1$s <a href="%2$s">%3$s &raquo;</a>',
+							__( 'This notification is automatically toggled based on whether the email access is enabled or not.', 'give' ),
+							esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=access-control' ) ),
+							__( 'Edit Setting', 'give' )
+						),
+					),
+				)
+			);
 
 			add_filter( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
@@ -174,7 +175,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_message() {
-			$message = __( 'Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}.', 'give' ) . "\n\n";
+			$message  = __( 'Please click the link to access your donation history on {site_url}. If you did not request this email, please contact {admin_email}.', 'give' ) . "\n\n";
 			$message .= '{email_access_link}' . "\n\n";
 			$message .= "\n\n";
 			$message .= __( 'Sincerely,', 'give' ) . "\n";
@@ -209,9 +210,9 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$subject  =  apply_filters( 'give_email_access_token_heading', $subject );
+			$subject = apply_filters( 'give_email_access_token_heading', $subject );
 
-			return  $subject;
+			return $subject;
 		}
 
 
@@ -265,9 +266,13 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			$donor = Give()->donors->get_donor_by( 'email', $email );
 
 			if ( ! $donor->id ) {
-				wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
-					'response' => 400,
-				) );
+				wp_die(
+					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
+					esc_html__( 'Error', 'give' ),
+					array(
+						'response' => 400,
+					)
+				);
 			}
 
 			$this->recipient_email = $email;
@@ -279,7 +284,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			return $this->send_email_notification(
 				array(
 					'donor_id' => $donor_id,
-					'user_id'  => $donor->user_id
+					'user_id'  => $donor->user_id,
 				)
 			);
 		}
@@ -320,7 +325,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function email_preview_header( $email_preview_header, $email ) {
-			if( $this->config['id'] === $email->config['id'] ) {
+			if ( $this->config['id'] === $email->config['id'] ) {
 				$email_preview_header = '';
 			}
 

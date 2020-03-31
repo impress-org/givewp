@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.1.4
  */
-class Give_Readme_Parser{
+class Give_Readme_Parser {
 	/**
 	 * Readme file url
 	 *
@@ -47,11 +47,11 @@ class Give_Readme_Parser{
 	 */
 	public function requires_at_least() {
 		// Regex to extract Give core minimum version from the readme.txt file.
-		preg_match('|Requires Give:(.*)|i', $this->file_content, $_requires_at_least );
+		preg_match( '|Requires Give:(.*)|i', $this->file_content, $_requires_at_least );
 
-		if( is_array( $_requires_at_least ) && 1 < count( $_requires_at_least ) ) {
+		if ( is_array( $_requires_at_least ) && 1 < count( $_requires_at_least ) ) {
 			$_requires_at_least = trim( $_requires_at_least[1] );
-		}else{
+		} else {
 			$_requires_at_least = null;
 		}
 

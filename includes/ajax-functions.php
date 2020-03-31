@@ -172,10 +172,12 @@ function give_load_checkout_fields() {
 
 	$fields = ob_get_clean();
 
-	wp_send_json( array(
-		'fields' => wp_json_encode( $fields ),
-		'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
-	) );
+	wp_send_json(
+		array(
+			'fields' => wp_json_encode( $fields ),
+			'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
+		)
+	);
 }
 
 add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields' );
@@ -218,7 +220,7 @@ function give_ajax_get_states_field() {
 
 	$states = give_get_states( $country );
 	if ( ! empty( $states ) ) {
-		$args = array(
+		$args         = array(
 			'name'             => $field_name,
 			'id'               => $field_name,
 			'class'            => $field_name . '  give-select',
@@ -465,10 +467,13 @@ function give_ajax_categories_search() {
 	 *
 	 * @return array $args argument for get_terms
 	 */
-	$args = (array) apply_filters( 'give_forms_categories_dropdown_args', array(
-		'number'     => 30,
-		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
-	) );
+	$args = (array) apply_filters(
+		'give_forms_categories_dropdown_args',
+		array(
+			'number'     => 30,
+			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
+		)
+	);
 
 	$categories = get_terms( 'give_forms_category', $args );
 
@@ -514,10 +519,13 @@ function give_ajax_tags_search() {
 	 *
 	 * @return array $args argument for get_terms
 	 */
-	$args = (array) apply_filters( 'give_forms_tags_dropdown_args', array(
-		'number'     => 30,
-		'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) )
-	) );
+	$args = (array) apply_filters(
+		'give_forms_tags_dropdown_args',
+		array(
+			'number'     => 30,
+			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
+		)
+	);
 
 	$categories = get_terms( 'give_forms_tag', $args );
 
@@ -676,7 +684,7 @@ function give_confirm_email_for_donation_access() {
 		$return     = array();
 		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
-		$return['status']  = 'success';
+		$return['status'] = 'success';
 
 		if ( ! $email_sent ) {
 			$return['status']  = 'error';
@@ -704,10 +712,9 @@ function give_confirm_email_for_donation_access() {
 			'success'
 		);
 
-
 	} else {
-		$value             = Give()->email_access->verify_throttle / 60;
-		$return['status']  = 'error';
+		$value            = Give()->email_access->verify_throttle / 60;
+		$return['status'] = 'error';
 
 		/**
 		 * Filter to modify email access exceed notices message.
@@ -747,11 +754,11 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  *
  * @since 2.2.0
  */
-function __give_get_receipt(){
-	
+function __give_get_receipt() {
+
 	$get_data = give_clean( filter_input_array( INPUT_GET ) );
-	
-	if( ! isset( $get_data['shortcode_atts'] ) ) {
+
+	if ( ! isset( $get_data['shortcode_atts'] ) ) {
 		give_die();
 	}
 
@@ -788,11 +795,11 @@ function give_modal_ajax_url( $args = array() ) {
 /**
  * Return content from url
  * Note: only for internal use
+ *
  * @todo use get_version endpoint to read changelog or cache add-ons infro from update_plugins option
  *
  * @return string
  * @since 2.5.0
- *
  */
 function give_get_content_by_ajax_handler() {
 	check_admin_referer( 'give_get_content_by_ajax' );
@@ -802,7 +809,7 @@ function give_get_content_by_ajax_handler() {
 	}
 
 	// Handle changelog render request.
-	if(
+	if (
 		! empty( $_GET['show_changelog'] )
 		&& (int) give_clean( $_GET['show_changelog'] )
 	) {
@@ -812,14 +819,13 @@ function give_get_content_by_ajax_handler() {
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
-			echo "$msg<br><br><code>Error: {$response->get_error_message()}</code>" ;
+			echo "$msg<br><br><code>Error: {$response->get_error_message()}</code>";
 			exit;
 		}
 
 		$response = wp_remote_retrieve_body( $response );
 
-
-		if( false === strpos( $response,  '== Changelog ==' ) ) {
+		if ( false === strpos( $response, '== Changelog ==' ) ) {
 			echo $msg;
 			exit;
 		}

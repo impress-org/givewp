@@ -1,9 +1,9 @@
 <?php
 /**
  * Single Give Form Title
- * 
+ *
  * Displays the main title for the single donation form - Override this template by copying it to yourtheme/give/single-give-form/title.php
- * 
+ *
  * @package     Give
  * @subpackage  templates/single-give-form
  * @copyright   Copyright (c) 2016, GiveWP

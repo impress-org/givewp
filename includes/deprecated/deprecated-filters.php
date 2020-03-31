@@ -57,7 +57,7 @@ function give_deprecated_filters() {
 		'give_decrease_donors_donation_count_on_refunded'  => 'give_decrease_customer_purchase_count_on_refund',
 		'give_should_process_refunded'                     => 'give_should_process_refund',
 		'give_settings_export_excludes'                    => 'settings_export_excludes',
-		'give_ajax_form_search_response'                   => 'give_ajax_form_search_responce'
+		'give_ajax_form_search_response'                   => 'give_ajax_form_search_responce',
 	);
 
 	return $give_deprecated_filters;
@@ -82,8 +82,14 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			$data = apply_filters( $give_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				_give_deprecated_function( sprintf( /* translators: %s: filter name */
-					__( 'The %s filter' ), $give_map_deprecated_filters[ $filter ] ), '1.7', $filter );
+				_give_deprecated_function(
+					sprintf( /* translators: %s: filter name */
+						__( 'The %s filter' ),
+						$give_map_deprecated_filters[ $filter ]
+					),
+					'1.7',
+					$filter
+				);
 			}
 		}
 	}

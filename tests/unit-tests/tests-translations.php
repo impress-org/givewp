@@ -35,7 +35,6 @@ class Tests_Translations extends Give_Unit_Test_Case {
 		$this->assertTrue( $error instanceof WP_Error );
 		$this->assertTrue( array_key_exists( 'EMPTY_TEXT', $error->errors ) );
 
-
 		/**
 		 * Text without id
 		 */
@@ -48,7 +47,6 @@ class Tests_Translations extends Give_Unit_Test_Case {
 
 		$this->assertTrue( $error instanceof WP_Error );
 		$this->assertTrue( array_key_exists( 'EMPTY_ID', $error->errors ) );
-
 
 		/**
 		 * Text in group
@@ -84,7 +82,6 @@ class Tests_Translations extends Give_Unit_Test_Case {
 
 		$this->assertTrue( $error instanceof WP_Error );
 		$this->assertTrue( array_key_exists( 'TEXT_ID_WITHIN_GROUP_ALREADY_EXIST', $error->errors ) );
-
 
 		/**
 		 * Text without group

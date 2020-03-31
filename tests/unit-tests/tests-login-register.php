@@ -48,10 +48,12 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_login_form_incorrect_username() {
 
-		give_process_login_form( array(
-			'give_login_nonce' => wp_create_nonce( 'give-login-nonce' ),
-			'give_user_login'  => 'wrong_username',
-		) );
+		give_process_login_form(
+			array(
+				'give_login_nonce' => wp_create_nonce( 'give-login-nonce' ),
+				'give_user_login'  => 'wrong_username',
+			)
+		);
 
 		$this->assertArrayHasKey( 'username_incorrect', give_get_errors() );
 		$this->assertContains( 'The username you entered does not exist.', give_get_errors() );
@@ -68,11 +70,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_login_form_correct_username_invalid_pass() {
 
-		give_process_login_form( array(
-			'give_login_nonce' => wp_create_nonce( 'give-login-nonce' ),
-			'give_user_login'  => 'admin@example.org',
-			'give_user_pass'   => 'falsepass',
-		) );
+		give_process_login_form(
+			array(
+				'give_login_nonce' => wp_create_nonce( 'give-login-nonce' ),
+				'give_user_login'  => 'admin@example.org',
+				'give_user_pass'   => 'falsepass',
+			)
+		);
 
 		$this->assertArrayHasKey( 'password_incorrect', give_get_errors() );
 		$this->assertContains( 'The password you entered is incorrect.', give_get_errors() );
@@ -91,12 +95,14 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 
 		ob_start();
 
-		give_process_login_form( array(
-			'give_login_nonce'    => wp_create_nonce( 'give-login-nonce' ),
-			'give_user_login'     => 'admin@example.org',
-			'give_user_pass'      => 'password',
-			'give_login_redirect' => 'https://examplesite.org/',
-		) );
+		give_process_login_form(
+			array(
+				'give_login_nonce'    => wp_create_nonce( 'give-login-nonce' ),
+				'give_user_login'     => 'admin@example.org',
+				'give_user_pass'      => 'password',
+				'give_login_redirect' => 'https://examplesite.org/',
+			)
+		);
 
 		ob_get_contents();
 		ob_end_clean();
@@ -137,7 +143,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$current_user = wp_set_current_user( 1 );
 
 		$_POST['give_register_submit'] = '';
-		$this->assertFalse( give_process_register_form( array( 'give_redirect' => '', ) ) );
+		$this->assertFalse( give_process_register_form( array( 'give_redirect' => '' ) ) );
 
 		// Reset to origin
 		$current_user = $origin_user;
@@ -152,9 +158,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	public function test_process_register_form_return_submit() {
 
 		$_POST['give_register_submit'] = '';
-		$this->assertFalse( give_process_register_form( array(
-			'give_register_submit' => '',
-		) ) );
+		$this->assertFalse(
+			give_process_register_form(
+				array(
+					'give_register_submit' => '',
+				)
+			)
+		);
 
 	}
 
@@ -169,11 +179,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$_POST['give_user_pass']       = '';
 		$_POST['give_user_pass2']      = '';
 
-		give_process_register_form( array(
-			'give_register_submit' => 1,
-			'give_user_login'      => '',
-			'give_user_email'      => '',
-		) );
+		give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_user_login'      => '',
+				'give_user_email'      => '',
+			)
+		);
 
 		$errors = give_get_errors();
 		$this->assertArrayHasKey( 'empty_username', $errors );
@@ -197,11 +209,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$_POST['give_user_pass']       = 'password';
 		$_POST['give_user_pass2']      = 'other-password';
 
-		give_process_register_form( array(
-			'give_register_submit' => 1,
-			'give_user_login'      => 'admin',
-			'give_user_email'      => null,
-		) );
+		give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_user_login'      => 'admin',
+				'give_user_email'      => null,
+			)
+		);
 		$this->assertArrayHasKey( 'username_unavailable', give_get_errors() );
 		$this->assertArrayHasKey( 'password_mismatch', give_get_errors() );
 
@@ -219,11 +233,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$_POST['give_register_submit'] = 1;
 		$_POST['give_user_pass']       = 'password';
 		$_POST['give_user_pass2']      = 'other-password';
-		give_process_register_form( array(
-			'give_register_submit' => 1,
-			'give_user_login'      => 'admin#!@*&',
-			'give_user_email'      => null,
-		) );
+		give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_user_login'      => 'admin#!@*&',
+				'give_user_email'      => null,
+			)
+		);
 		$this->assertArrayHasKey( 'username_invalid', give_get_errors() );
 
 		// Clear errors for other test
@@ -241,12 +257,14 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$_POST['give_register_submit'] = 1;
 		$_POST['give_user_pass']       = '';
 		$_POST['give_user_pass2']      = '';
-		give_process_register_form( array(
-			'give_register_submit' => 1,
-			'give_user_login'      => 'random_username',
-			'give_user_email'      => 'admin@example.org',
-			'give_payment_email'   => 'someotheradminexample.org',
-		) );
+		give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_user_login'      => 'random_username',
+				'give_user_email'      => 'admin@example.org',
+				'give_payment_email'   => 'someotheradminexample.org',
+			)
+		);
 		$this->assertArrayHasKey( 'email_unavailable', give_get_errors() );
 		$this->assertArrayHasKey( 'payment_email_invalid', give_get_errors() );
 
@@ -285,8 +303,8 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$user = new WP_User( 0, 'random_username' );
 
 		$this->assertEquals( $args['give_payment_email'], $user->user_email );
-		$this->assertEquals( $args['give_user_login'],  $user->display_name );
-		$this->assertEquals( $args['give_user_login'],  $user->user_login );
+		$this->assertEquals( $args['give_user_login'], $user->display_name );
+		$this->assertEquals( $args['give_user_login'], $user->user_login );
 		$this->assertTrue( is_user_logged_in() );
 
 		// Clear errors for other test.

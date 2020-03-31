@@ -32,10 +32,15 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			$this->default_tab = 'advanced-options';
 
 			if ( $this->id === give_get_current_setting_tab() ) {
-				add_action( 'give_admin_field_remove_cache_button', array(
-					$this,
-					'render_remove_cache_button'
-				), 10, 1 );
+				add_action(
+					'give_admin_field_remove_cache_button',
+					array(
+						$this,
+						'render_remove_cache_button',
+					),
+					10,
+					1
+				);
 				add_action( 'give_save_settings_give_settings', array( $this, 'validate_settngs' ) );
 			}
 
@@ -239,7 +244,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 * @param array $settings
 			 *
 			 * @since  1.8
-			 *
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
@@ -270,7 +274,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 *
 		 * @since  2.1
 		 * @access public
-		 *
 		 */
 		public function render_remove_cache_button( $field ) {
 			?>
@@ -281,7 +284,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				</th>
 				<td class="give-forminp">
 					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
-					        class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
+							class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
 				</td>
 			</tr>
@@ -296,7 +299,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 *
 		 * @since  2.2.0
 		 * @access public
-		 *
 		 */
 		public function validate_settngs( $options ) {
 			// Sanitize data.

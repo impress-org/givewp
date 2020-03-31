@@ -7,7 +7,7 @@
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
-*/
+ */
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @access      private
  * @since       1.0
  * @return      void
-*/
+ */
 function give_payment_history_page() {
 	if ( isset( $_GET['view'] ) && 'view-payment-details' == $_GET['view'] ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
@@ -30,7 +30,7 @@ function give_payment_history_page() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/class-payments-table.php';
 		$payments_table = new Give_Payment_History_Table();
 		$payments_table->prepare_items();
-	?>
+		?>
 	<div class="wrap">
 
 		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
@@ -48,7 +48,7 @@ function give_payment_history_page() {
 		<form id="give-payments-advanced-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
-			<?php $payments_table->views() ?>
+			<?php $payments_table->views(); ?>
 			<?php $payments_table->advanced_filters(); ?>
 		</form>
 
@@ -74,7 +74,7 @@ function give_payment_history_page() {
 		?>
 
 	</div>
-<?php
+		<?php
 	}
 }
 
@@ -93,20 +93,20 @@ function give_view_donation_details_title( $admin_title, $title ) {
 		return $admin_title;
 	}
 
-	if( ! isset( $_GET['give-action'] ) ) {
+	if ( ! isset( $_GET['give-action'] ) ) {
 		return $admin_title;
 	}
 
-	switch( $_GET['give-action'] ) :
+	switch ( $_GET['give-action'] ) :
 
-		case 'view-payment-details' :
+		case 'view-payment-details':
 			$title = sprintf(
 				/* translators: %s: admin title */
 				esc_html__( 'View Donation Details - %s', 'give' ),
 				$admin_title
 			);
 			break;
-		case 'edit-payment' :
+		case 'edit-payment':
 			$title = sprintf(
 				/* translators: %s: admin title */
 				esc_html__( 'Edit Donation - %s', 'give' ),
@@ -136,11 +136,11 @@ function give_override_edit_post_for_payment_link( $url, $post_id = 0, $context 
 
 	$post = get_post( $post_id );
 
-	if( ! $post ) {
+	if ( ! $post ) {
 		return $url;
 	}
 
-	if( 'give_payment' != $post->post_type ) {
+	if ( 'give_payment' != $post->post_type ) {
 		return $url;
 	}
 

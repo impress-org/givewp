@@ -25,6 +25,7 @@ class Give_Earnings_Export extends Give_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.0
 	 */
@@ -43,7 +44,7 @@ class Give_Earnings_Export extends Give_Export {
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_earnings_export_filename', 'give-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.csv' );
-		header( "Expires: 0" );
+		header( 'Expires: 0' );
 
 	}
 
@@ -60,7 +61,7 @@ class Give_Earnings_Export extends Give_Export {
 			'date'      => __( 'Date', 'give' ),
 			'donations' => __( 'Donations', 'give' ),
 			/* translators: %s: currency */
-			'earnings'  => sprintf( __( 'Income (%s)', 'give' ), give_currency_symbol('', true) )
+			'earnings'  => sprintf( __( 'Income (%s)', 'give' ), give_currency_symbol( '', true ) ),
 		);
 
 		return $cols;
@@ -82,7 +83,7 @@ class Give_Earnings_Export extends Give_Export {
 
 		$data  = array();
 		$year  = $start_year;
-		$stats = new Give_Payment_Stats;
+		$stats = new Give_Payment_Stats();
 
 		while ( $year <= $end_year ) {
 
@@ -122,7 +123,6 @@ class Give_Earnings_Export extends Give_Export {
 				$m1 ++;
 
 			}
-
 
 			$year ++;
 

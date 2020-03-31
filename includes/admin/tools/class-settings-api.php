@@ -47,23 +47,26 @@ if ( ! class_exists( 'Give_Settings_API' ) ) :
 		 */
 		public function get_settings() {
 			// Get settings.
-			$settings = apply_filters( 'give_settings_api', array(
+			$settings = apply_filters(
+				'give_settings_api',
 				array(
-					'id'   => 'give_tools_api',
-					'type' => 'title',
-					'table_html' => false
-				),
-				array(
-					'id'   => 'api',
-					'name' => esc_html__( 'API', 'give' ),
-					'type' => 'api',
-				),
-				array(
-					'id'   => 'give_tools_api',
-					'type' => 'sectionend',
-					'table_html' => false
+					array(
+						'id'         => 'give_tools_api',
+						'type'       => 'title',
+						'table_html' => false,
+					),
+					array(
+						'id'   => 'api',
+						'name' => esc_html__( 'API', 'give' ),
+						'type' => 'api',
+					),
+					array(
+						'id'         => 'give_tools_api',
+						'type'       => 'sectionend',
+						'table_html' => false,
+					),
 				)
-			));
+			);
 
 			/**
 			 * Filter the settings.

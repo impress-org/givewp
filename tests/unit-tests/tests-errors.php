@@ -52,7 +52,7 @@ class Tests_Errors extends Give_Unit_Test_Case {
 		$errors = Give()->session->get( 'give_errors' );
 
 		$expected = array(
-			'invalid_user' => 'The user information is invalid.',
+			'invalid_user'       => 'The user information is invalid.',
 			'username_incorrect' => 'The username you entered does not exist.',
 			'password_incorrect' => 'The password you entered is incorrect.',
 		);

@@ -915,7 +915,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 					array(
 						'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
 						'currency'             => give_get_currency( $form_id ),
-						'payment_method_types' => [ 'card' ],
+						'payment_method_types' => array( 'card' ),
 						'statement_descriptor' => give_stripe_get_statement_descriptor(),
 						'description'          => give_payment_gateway_donation_summary( $donation_data ),
 						'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
@@ -1143,4 +1143,76 @@ function give_stripe_is_update_payment_method_screen() {
 	}
 
 	return $is_update_screen;
+}
+
+/**
+ * This function will return the default mandate acceptance text.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_default_mandate_acceptance_text() {
+	return sprintf(
+		__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
+		get_bloginfo( 'sitename' )
+	);
+}
+
+/**
+ * This function is used to get mandate acceptance text which is saved in admin.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_mandate_acceptance_text() {
+
+	$default_text = give_stripe_get_default_mandate_acceptance_text();
+	$text         = give_get_option( 'stripe_mandate_acceptance_text', $default_text );
+
+	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
+}
+
+/**
+ * This helper function is used get stored value of whether we need to hide icon for IBAN element or not.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_hide_iban_icon( $form_id ) {
+
+	$hide_icon = give_get_option( 'stripe_hide_icon', 'enabled' );
+
+	return apply_filters( 'give_stripe_hide_iban_icon', $hide_icon, $form_id );
+}
+
+/**
+ * This helper function is used get IBAN element icon style.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_iban_icon_style( $form_id ) {
+
+	$icon_style = give_get_option( 'stripe_icon_style', 'default' );
+
+	return apply_filters( 'give_stripe_get_iban_icon_style', $icon_style, $form_id );
+}
+
+/**
+ * This function will be used to set placeholder country for IBAN element.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_iban_placeholder_country() {
+	return apply_filters( 'give_stripe_get_iban_placeholder_country', 'DE' );
 }

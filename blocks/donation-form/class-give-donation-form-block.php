@@ -29,7 +29,7 @@ class Give_Donation_Form_Block {
 	 * @access private
 	 * @var Give_Donation_Form_Block
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Singleton pattern.
@@ -87,7 +87,8 @@ class Give_Donation_Form_Block {
 
 		// Register block.
 		register_block_type(
-			'give/donation-form', array(
+			'give/donation-form',
+			array(
 				'render_callback' => array( $this, 'render_donation_form' ),
 				'attributes'      => array(
 					'id'                  => array(

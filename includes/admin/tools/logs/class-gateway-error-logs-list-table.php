@@ -44,11 +44,13 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		// Set parent defaults.
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
-			'ajax'     => false,// Does this table support ajax?.
-		) );
+		parent::__construct(
+			array(
+				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
+				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
+				'ajax'     => false, // Does this table support ajax?.
+			)
+		);
 	}
 
 	/**
@@ -65,13 +67,13 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 
 		switch ( $column_name ) {
-			case 'ID' :
+			case 'ID':
 				return $item['ID_label'];
-			case 'payment_id' :
+			case 'payment_id':
 				return empty( $item['payment_id'] ) ? esc_html__( 'n/a', 'give' ) : sprintf( "<a href=\"%s\" target=\"_blank\">{$item['payment_id']}</a>", get_edit_post_link( $item['payment_id'] ) );
-			case 'gateway' :
+			case 'gateway':
 				return empty( $item['gateway'] ) ? esc_html__( 'n/a', 'give' ) : $item['gateway'];
-			case 'error' :
+			case 'error':
 				return esc_html( $item['log_title'] );
 			default:
 				return $item[ $column_name ];
@@ -91,14 +93,16 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function column_message( $item ) {
 		?>
 		<?php
-		echo Give()->tooltips->render_link( array(
-			'label'       => __( 'View Log Message', 'give' ),
-			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
-			'link'        => "#TB_inline?width=640&amp;inlineId=log-message-{$item['ID']}",
-			'attributes'  => array(
-				'class' => 'thickbox give-error-log-details-link button button-small',
-			),
-		) );
+		echo Give()->tooltips->render_link(
+			array(
+				'label'       => __( 'View Log Message', 'give' ),
+				'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+				'link'        => "#TB_inline?width=640&amp;inlineId=log-message-{$item['ID']}",
+				'attributes'  => array(
+					'class' => 'thickbox give-error-log-details-link button button-small',
+				),
+			)
+		);
 		?>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
@@ -262,7 +266,8 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$this->items           = $this->get_logs();
 		$total_items           = Give()->logs->get_log_count( 0, 'gateway_error' );
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(
+			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
 				'total_pages' => ceil( $total_items / $this->per_page ),

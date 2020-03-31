@@ -95,6 +95,12 @@ function give_stripe_frontend_scripts() {
 		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}
+
+	// Load Stripe SEPA Direct Debit JS when the gateway is active.
+	if ( give_is_gateway_active( 'stripe_sepa' ) ) {
+		Give_Scripts::register_script( 'give-stripe-sepa', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-sepa.js', array( 'give-stripe-js' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-stripe-sepa' );
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'give_stripe_frontend_scripts' );

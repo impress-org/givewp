@@ -77,11 +77,10 @@ function give_update_payment_details( $data ) {
 	 */
 	do_action( 'give_update_edited_donation', $payment_id );
 
-	$payment->date = $date;
+	$payment->date      = $date;
 	$payment->anonymous = isset( $data['give_anonymous_donation'] ) ? absint( $data['give_anonymous_donation'] ) : 0;
 
-
-	$updated       = $payment->save();
+	$updated = $payment->save();
 
 	if ( 0 === $updated ) {
 		wp_die( __( 'Error Updating Donation.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
@@ -102,8 +101,11 @@ function give_update_payment_details( $data ) {
 
 		$donor = new Give_Donor( $email );
 		if ( empty( $donor->id ) ) {
-			$donor_data = array( 'name' => $names, 'email' => $email );
-			$user_id       = email_exists( $email );
+			$donor_data = array(
+				'name'  => $names,
+				'email' => $email,
+			);
+			$user_id    = email_exists( $email );
 			if ( false !== $user_id ) {
 				$donor_data['user_id'] = $user_id;
 			}
@@ -129,8 +131,8 @@ function give_update_payment_details( $data ) {
 	} elseif ( $curr_donor_id !== $new_donor_id ) {
 
 		$donor = new Give_Donor( $new_donor_id );
-		$email    = $donor->email;
-		$names    = $donor->name;
+		$email = $donor->email;
+		$names = $donor->name;
 
 		$previous_donor = new Give_Donor( $curr_donor_id );
 
@@ -138,8 +140,8 @@ function give_update_payment_details( $data ) {
 
 	} else {
 		$donor = new Give_Donor( $curr_donor_id );
-		$email    = $donor->email;
-		$names    = $donor->name;
+		$email = $donor->email;
+		$names = $donor->name;
 	}
 
 	if ( $donor_changed ) {
@@ -176,10 +178,10 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Set new meta values.
-	$payment->user_id    = $donor->user_id;
-	$payment->email      = $donor->email;
-	$payment->address    = $address;
-	$payment->total      = $new_total;
+	$payment->user_id = $donor->user_id;
+	$payment->email   = $donor->email;
+	$payment->address = $address;
+	$payment->total   = $new_total;
 
 	// Check for payment notes.
 	if ( ! empty( $data['give-payment-note'] ) ) {
@@ -253,10 +255,12 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 
 		// Update form id in payment logs.
-		Give()->async_process->data( array(
-			'data' => array( $new_form_id, $payment_id ),
-			'hook' => 'give_update_log_form_id',
-		) )->dispatch();
+		Give()->async_process->data(
+			array(
+				'data' => array( $new_form_id, $payment_id ),
+				'hook' => 'give_update_log_form_id',
+			)
+		)->dispatch();
 	}
 
 	// Update price id if current form is variable form.
@@ -269,12 +273,12 @@ function give_update_payment_details( $data ) {
 		$payment_meta = $payment->get_meta();
 
 		$price_info = array();
-		$price_id = '';
+		$price_id   = '';
 
 		// Get price info
-		if( 0 <= $data['give-variable-price'] ) {
+		if ( 0 <= $data['give-variable-price'] ) {
 			foreach ( $form->prices as $variable_price ) {
-				if( $new_total === give_maybe_sanitize_amount( $variable_price['_give_amount'] ) ) {
+				if ( $new_total === give_maybe_sanitize_amount( $variable_price['_give_amount'] ) ) {
 					$price_info = $variable_price;
 					break;
 				}
@@ -282,15 +286,14 @@ function give_update_payment_details( $data ) {
 		}
 
 		// Set price id.
-		if( ! empty( $price_info ) ) {
+		if ( ! empty( $price_info ) ) {
 			$price_id = $data['give-variable-price'];
 
-			if( $data['give-variable-price'] !== $price_info['_give_id']['level_id'] ) {
+			if ( $data['give-variable-price'] !== $price_info['_give_id']['level_id'] ) {
 				// Set price id to amount match.
 				$price_id = $price_info['_give_id']['level_id'];
 			}
-
-		} elseif( $form->is_custom_price_mode() ){
+		} elseif ( $form->is_custom_price_mode() ) {
 			$price_id = 'custom';
 		}
 
@@ -305,7 +308,7 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
-	$comment_id                   = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
+	$comment_id                  = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
 	$has_anonymous_setting_field = give_is_anonymous_donation_field_enabled( $payment->form_id );
 
 	if ( $has_anonymous_setting_field ) {
@@ -324,7 +327,7 @@ function give_update_payment_details( $data ) {
 
 		} else {
 			$comment_args = array(
-				'comment_author_email' => $payment->email
+				'comment_author_email' => $payment->email,
 			);
 
 			if ( $comment_id ) {
@@ -417,11 +420,11 @@ function give_ajax_store_payment_note() {
 		);
 	}
 
-	if( $note_id && $note_type ) {
+	if ( $note_id && $note_type ) {
 
-		if( ! give_has_upgrade_completed('v230_move_donor_note' ) ) {
+		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 			add_comment_meta( $note_id, 'note_type', $note_type, true );
-		} else{
+		} else {
 			Give()->comment->db_meta->update_meta( $note_id, 'note_type', $note_type );
 		}
 
