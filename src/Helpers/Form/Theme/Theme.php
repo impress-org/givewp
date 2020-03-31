@@ -12,7 +12,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
  * @since 2.7.0
  */
 function getActiveID( $formId = null ) {
-	return Give()->form_meta->get_meta( $formId ?: getFormId(), '_give_form_theme', true );
+	return Give()->form_meta->get_meta( $formId ?: getFormId(), '_give_form_template', true );
 }
 
 
@@ -27,7 +27,7 @@ function getActiveID( $formId = null ) {
  */
 function get( $formId = null, $themeId = '' ) {
 	$formId = $formId ?: getFormId();
-	$theme  = $themeId ?: Give()->form_meta->get_meta( $formId, '_give_form_theme', true );
+	$theme  = $themeId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
 	return (array) Give()->form_meta->get_meta( $formId, "_give_{$theme}_form_theme_settings", true );
 }
@@ -42,7 +42,7 @@ function get( $formId = null, $themeId = '' ) {
  * @return mixed
  */
 function set( $formId, $settings ) {
-	$theme = Give()->form_meta->get_meta( $formId, '_give_form_theme', true );
+	$theme = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
 	return Give()->form_meta->update_meta( $formId, "_give_{$theme}_form_theme_settings", $settings );
 }

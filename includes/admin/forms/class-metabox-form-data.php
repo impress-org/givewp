@@ -63,7 +63,7 @@ class Give_MetaBox_Form_Data {
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
-		add_action( 'give_save__give_form_theme', array( $this, 'save_form_theme_settings' ), 10, 3 );
+		add_action( 'give_save__give_form_template', array( $this, 'save_form_theme_settings' ), 10, 3 );
 
 		// cmb2 old setting loaders.
 		// add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
@@ -250,8 +250,8 @@ class Give_MetaBox_Form_Data {
 					'icon-html' => '<i class="fas fa-palette"></i>',
 					'fields'    => array(
 						array(
-							'id'      => $prefix . 'form_theme',
-							'name'    => 'form_theme',
+							'id'      => $prefix . 'form_template',
+							'name'    => 'form_template',
 							'type'    => 'hidden',
 							'default' => '',
 						),
