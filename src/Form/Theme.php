@@ -124,16 +124,4 @@ abstract class Theme {
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
-
-	/**
-	 * Get success page URL.
-	 *
-	 * @param int $formId
-	 *
-	 * @since 2.7.0
-	 * @return mixed
-	 */
-	public function getSuccessPageURL( $formId ) {
-		return createSuccessPageURL();
-	}
 }
