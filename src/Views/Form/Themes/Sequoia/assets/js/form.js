@@ -108,8 +108,6 @@
 						$( this ).attr( 'has-tooltip', true );
 					}
 				} );
-				$( '.give-total-wrap', $container ).addClass( 'give-flex' );
-				$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
 			},
 		},
 		{

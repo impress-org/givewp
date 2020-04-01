@@ -392,6 +392,7 @@ p {
 	// Amount Buttons
 	.give-donation-levels-wrap {
 		@include before-after-content-none;
+		display: grid !important;
 		grid-gap: 8px;
 		grid-template-columns: repeat(3, 1fr);
 		padding: 0;
