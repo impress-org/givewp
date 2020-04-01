@@ -35,10 +35,10 @@
 						Tell the world about your generosity and help spread the word!
 					</p>
 					<div class="btn-row">
-						<button class="give-btn social-btn">
+						<button class="give-btn social-btn facebook-btn">
 							Share on Facebook<i class="fab fa-facebook"></i>
 						</button>
-						<button class="give-btn social-btn">
+						<button class="give-btn social-btn twitter-btn">
 							Share on Twitter<i class="fab fa-twitter"></i>
 						</button>
 					</div>

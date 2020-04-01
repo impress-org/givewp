@@ -584,11 +584,20 @@ p {
 			display: flex;
 			align-items: center;
 			font-size: 16px;
-			padding: 14px 16px;
+			padding: 15px 17px;
 			margin: 0 10px;
+			border: none !important;
 
 			> i {
 				margin-left: 8px;
+			}
+
+			&.facebook-btn {
+				background: #3b5998 !important;
+			}
+
+			&.twitter-btn {
+				background: #00acee !important;
 			}
 
 			&:first-of-type {
