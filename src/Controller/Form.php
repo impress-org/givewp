@@ -25,6 +25,7 @@ use function Give\Helpers\Form\Utils\isIframeParentFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
 use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
+use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
@@ -160,14 +161,8 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadThemeOnAjaxRequest() {
-		if (
-			isset( $_REQUEST['action'] ) &&
-			wp_doing_ajax() &&
-			0 === strpos( $_REQUEST['action'], 'give_' )
-		) {
-			if ( ! isLegacyForm() ) {
-				$this->loadTheme();
-			}
+		if (isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
+			$this->loadTheme();
 		}
 	}
 

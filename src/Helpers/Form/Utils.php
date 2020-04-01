@@ -24,16 +24,30 @@ function isViewingForm() {
 /**
  * Get result if we are processing embed form or not
  *
+ * @return bool
  * @since 2.7.0
  *
- * @return bool
  */
 function isProcessingForm() {
 	$base     = Give()->routeForm->getBase();
 	$formName = get_post_field( 'post_name', getFormId() );
 
 	return ! empty( $_REQUEST['give_embed_form'] ) ||
-		   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" );
+	       false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
+	       inIframe();
+}
+
+
+/**
+ * Get result whether or not performing Give core action on ajax or not.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function isProcessingGiveActionOnAjax(){
+	return isset( $_REQUEST['action'] ) &&
+	       wp_doing_ajax() &&
+	       0 === strpos( $_REQUEST['action'], 'give_' );
 }
 
 
