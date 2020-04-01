@@ -75,6 +75,9 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 			.give-input:focus, .give-select:focus {
 				border: 1px solid {$primaryColor}!important;
 			}
+			.checkmark {
+				border: 8px solid {$primaryColor}!important;
+				color: {$primaryColor}!important;
 		";
 		wp_add_inline_style( 'give-sequoia-theme-css', $dynamic_css );
 
