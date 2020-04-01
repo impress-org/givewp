@@ -37,8 +37,9 @@ abstract class Theme {
 	 * @var array
 	 */
 	public $templates = [
-		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+		'form'                => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
+		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
 	];
 
 	/**
