@@ -52,7 +52,7 @@ class Form {
 		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
 		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
-		add_action( 'template_redirect', [ $this, 'loadView' ], 1 );
+		add_action( 'template_redirect', [ $this, 'loadReceiptView' ], 1 );
 	}
 
 	/**
@@ -69,21 +69,22 @@ class Form {
 			if ( $inIframe ) {
 				add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 			}
+
+			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
 		}
 	}
 
 	/**
-	 * Load view
+	 * Load receipt view.
 	 *
 	 * @since 2.7.0
-	 * @global WP_Post $post
 	 */
-	public function loadView() {
-		/* @var Theme $formTemplate */
-		$formTemplate = Give()->themes->getTheme();
-
+	public function loadReceiptView() {
 		// Handle success page.
 		if ( isViewingFormReceipt() && ! isLegacyForm() ) {
+			/* @var Theme $formTemplate */
+			$formTemplate = Give()->themes->getTheme();
+
 			if ( $formTemplate->openSuccessPageInIframe || inIframe() ) {
 				// Set header.
 				nocache_headers();
@@ -103,8 +104,19 @@ class Form {
 			// Render receipt on success page in iframe.
 			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ], 1 );
 		}
+	}
 
-			// Handle failed donation error.
+	/**
+	 * Load donation form view.
+	 *
+	 * @since 2.7.0
+	 * @global WP_Post $post
+	 */
+	public function loadDonationFormView() {
+		/* @var Theme $formTemplate */
+		$formTemplate = Give()->themes->getTheme();
+
+		// Handle failed donation error.
 		if ( canShowFailedDonationError() ) {
 			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
