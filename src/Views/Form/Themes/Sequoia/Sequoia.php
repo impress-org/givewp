@@ -20,7 +20,7 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	 */
 	public $templates = [
 		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/formReceiptTemplate.php',
+		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/receiptTemplate.php',
 	];
 
 	/**
