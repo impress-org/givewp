@@ -199,3 +199,15 @@ function getLegacyFailedPageURL() {
 
 	return $url;
 }
+
+
+/**
+ * Get Iframe parent page URL.
+ *
+ * Note: must be use only inside iframe logic.
+ *
+ * @since 2.7.0
+ */
+function getIframeParentURL(){
+	return isset( $_REQUEST['give-current-url']) ? give_clean( $_REQUEST['give-current-url'] ) : '';
+}
