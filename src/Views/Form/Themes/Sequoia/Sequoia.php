@@ -12,6 +12,16 @@ use function Give\Helpers\Form\Theme\get as getThemeOptions;
  * @package Give\Form\Theme
  */
 class Sequoia extends Theme implements Hookable, Scriptable {
+	/**
+	 * template vs file array
+	 *
+	 * @since 2.7.0
+	 * @var array
+	 */
+	public $templates = [
+		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
+		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/formReceiptTemplate.php',
+	];
 
 	/**
 	 * @inheritDoc
