@@ -15,6 +15,7 @@ use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\isConfirmingDonation;
 use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
@@ -51,6 +52,7 @@ class Form {
 		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
 		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
+		add_action( 'template_redirect', [ $this, 'loadView' ], 1 );
 	}
 
 	/**
@@ -67,8 +69,6 @@ class Form {
 			if ( $inIframe ) {
 				add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 			}
-
-			add_action( 'template_redirect', [ $this, 'loadView' ], 1 );
 		}
 	}
 
@@ -90,7 +90,7 @@ class Form {
 				header( 'HTTP/1.1 200 OK' );
 
 				// Show donation processing template
-				if ( isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) ) ) {
+				if ( isConfirmingDonation() ) {
 					include $formTemplate->getTemplate( 'donation-processing' );
 					exit();
 				}
@@ -101,15 +101,15 @@ class Form {
 			}
 
 			// Render receipt on success page in iframe.
-			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ] );
+			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ], 1 );
 		}
 
-		// Handle failed donation error.
+			// Handle failed donation error.
 		if ( canShowFailedDonationError() ) {
 			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
 
-		// Handle donation form.
+			// Handle donation form.
 		if ( isViewingForm() ) {
 			// Set header.
 			nocache_headers();
