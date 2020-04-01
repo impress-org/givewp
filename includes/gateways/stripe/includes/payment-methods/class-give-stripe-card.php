@@ -276,7 +276,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					// Process additional steps for SCA or 3D secure.
 					give_stripe_process_additional_authentication( $donation_id, $intent );
 
-					if ( ! empty( $intent ) && 'succeeded' === $intent ) {
+					if ( ! empty( $intent->status ) && 'succeeded' === $intent->status ) {
 						// Process to success page, only if intent is successful.
 						give_send_to_success_page();
 					} else {

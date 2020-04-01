@@ -176,10 +176,8 @@ abstract class Endpoint {
 
 	/**
 	 * Get our sample schema for a report
-	 *
-	 * @param WP_REST_Request $request Current request.
 	 */
-	public function get_report_schema( $request ) {
+	public function get_report_schema() {
 
 		if ( $this->schema ) {
 			// Since WordPress 5.3, the schema can be cached in the $schema property.

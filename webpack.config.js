@@ -22,6 +22,7 @@ const config = {
 		give: [ './assets/src/css/frontend/give-frontend.scss', './assets/src/js/frontend/give.js' ],
 		'give-stripe': [ './assets/src/js/frontend/give-stripe.js' ],
 		'give-stripe-checkout': [ './assets/src/js/frontend/give-stripe-checkout.js' ],
+		'give-stripe-sepa': [ './assets/src/js/frontend/give-stripe-sepa.js' ],
 		admin: [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
 		'admin-global': [ './assets/src/css/admin/give-admin-global.scss' ],
 		'babel-polyfill': '@babel/polyfill',

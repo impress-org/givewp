@@ -174,6 +174,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Payment Methods.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-card.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/payment-methods/class-give-stripe-sepa.php';
 
 			// Deprecations.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/deprecated/deprecated-functions.php';
@@ -202,6 +203,12 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			$gateways['stripe_checkout'] = array(
 				'admin_label'    => __( 'Stripe - Checkout', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
+			);
+
+			// Stripe - SEPA Direct Debit.
+			$gateways['stripe_sepa'] = array(
+				'admin_label'    => __( 'Stripe - SEPA Direct Debit', 'give' ),
+				'checkout_label' => __( 'SEPA Direct Debit', 'give' ),
 			);
 
 			return $gateways;
