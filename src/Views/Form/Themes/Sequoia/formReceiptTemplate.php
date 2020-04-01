@@ -16,7 +16,7 @@
 		global $post;
 		?>
 
-		<div class="give-form-wrap give-embed-form">
+		<div class="give-receipt-wrap give-embed-receipt">
 			<div class="give-section receipt">
 				<!-- <div class="image">
 					<img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F1.bp.blogspot.com%2F-aGWHh48vcl8%2FVNCI0Tz1OUI%2FAAAAAAAAAzM%2FREde4vFtO98%2Fs1600%2Fcheckbook-clipart-check-mark-hi.png&f=1&nofb=1" />
