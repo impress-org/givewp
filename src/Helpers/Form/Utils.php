@@ -212,3 +212,13 @@ function getLegacyFailedPageURL() {
 function getIframeParentURL() {
 	return isset( $_REQUEST['give-current-url'] ) ? give_clean( $_REQUEST['give-current-url'] ) : '';
 }
+
+/**
+ * Return whether or not we are confirming donation or not.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function isConfirmingDonation() {
+	return isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) );
+}
