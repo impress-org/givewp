@@ -371,7 +371,7 @@
 	 */
 	const saveFormSettingOnlyIfFormThemeSelected = function() {
 		$( '.post-type-give_forms' ).on( 'click', '#publishing-action input[type=submit]', function() {
-			const activatedTheme = $( 'input[name=_give_form_theme]', '#form_template_options' ).val();
+			const activatedTheme = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
 
 			if ( ! activatedTheme ) {
 				new Give.modal.GiveNoticeAlert( {

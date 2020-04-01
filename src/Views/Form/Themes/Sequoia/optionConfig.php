@@ -1,9 +1,11 @@
 <?php
-global $post;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+
+$formInfo = get_post( getFormId() );
 
 // Setup dynamic defaults
-$introHeadline    = $post->post_title ? $post->post_title : __( 'Campaign Heading', 'give' );
-$introDescription = $post->post_excerpt ? $post->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
+$introHeadline    = $formInfo->post_title ? $formInfo->post_title : __( 'Campaign Heading', 'give' );
+$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
 	'introduction'        => [

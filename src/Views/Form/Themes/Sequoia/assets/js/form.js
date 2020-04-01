@@ -11,9 +11,9 @@
 		animating: false,
 		goToStep: ( step ) => {
 			if ( steps[ step ].showErrors === true ) {
-				$( '.give_error, .give_warning, .give_success' ).show();
+				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
 			} else {
-				$( '.give_error, .give_warning, .give_success' ).hide();
+				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).hide();
 			}
 
 			$( '.step-tracker' ).removeClass( 'current' );

@@ -44,7 +44,7 @@ class Actions {
 	 * @return void
 	 */
 	public function cancelLoginAjaxHanleder() {
-		add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		//add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 	}
 
 	/**

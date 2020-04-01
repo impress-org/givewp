@@ -1,10 +1,13 @@
 <?php
-global $post;
+
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+
+$formInfo = get_post( getFormId() );
 
 // Get headline and description
-$headline    = ! empty( $this->themeOptions['introduction']['headline'] ) ? $this->themeOptions['introduction']['headline'] : $post->post_title;
-$description = ! empty( $this->themeOptions['introduction']['description'] ) ? $this->themeOptions['introduction']['description'] : $post->post_excerpt;
-$image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->themeOptions['introduction']['image'] : $post->post_thumbnail;
+$headline    = ! empty( $this->themeOptions['introduction']['headline'] ) ? $this->themeOptions['introduction']['headline'] : $formInfo->post_title;
+$description = ! empty( $this->themeOptions['introduction']['description'] ) ? $this->themeOptions['introduction']['description'] : $formInfo->post_excerpt;
+$image       = ! empty( $this->themeOptions['introduction']['image'] ) ? $this->themeOptions['introduction']['image'] : $formInfo->post_thumbnail;
 ?>
 
 <div class="give-section introduction">
