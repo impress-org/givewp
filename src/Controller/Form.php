@@ -18,6 +18,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
+use function Give\Helpers\Form\Utils\getIframeParentURL;
 use function Give\Helpers\Form\Utils\getLegacyFailedPageURL;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
@@ -89,7 +90,7 @@ class Form {
 				header( 'HTTP/1.1 200 OK' );
 
 				// Show donation processing template
-				if( isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) ) ) {
+				if ( isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) ) ) {
 					include $formTemplate->getTemplate( 'donation-processing' );
 					exit();
 				}
@@ -167,7 +168,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadThemeOnAjaxRequest() {
-		if (isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
+		if ( isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
 			$this->loadTheme();
 		}
 	}
@@ -205,7 +206,7 @@ class Form {
 		$template = Give()->themes->getTheme();
 
 		return $template->openSuccessPageInIframe ?
-			createSuccessPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) ) :
+			createSuccessPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
 			$url;
 	}
 
@@ -222,7 +223,7 @@ class Form {
 		$template = Give()->themes->getTheme( getActiveID() );
 
 		return $template->openFailedPageInIframe ?
-			createFailedPageURL( switchRequestedURL( $url, give_clean( $_REQUEST['give-current-url'] ) ) ) :
+			createFailedPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
 			$url;
 	}
 
