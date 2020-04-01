@@ -56,9 +56,15 @@
 				const stepHeight = $( steps[ step ].selector ).height();
 				$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
 			}
-
-			steps[ step ].setup();
 			navigator.currentStep = step;
+		},
+		init: () => {
+			steps.forEach( ( step ) => {
+				if ( step.setup !== undefined ) {
+					step.setup();
+				}
+			} );
+			navigator.goToStep( 0 );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -79,9 +85,6 @@
 			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
-			setup: () => {
-
-			},
 		},
 		{
 			id: 'choose-amount',
@@ -124,7 +127,7 @@
 		},
 	];
 
-	navigator.goToStep( 0 );
+	navigator.init();
 	$advanceButton.on( 'click', function( e ) {
 		e.preventDefault();
 		navigator.forward();
