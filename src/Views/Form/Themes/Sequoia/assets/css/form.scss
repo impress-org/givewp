@@ -79,7 +79,8 @@ p {
 }
 
 .advance-btn,
-.give-submit {
+.give-submit,
+.download-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -94,6 +95,17 @@ p {
 
 	> i {
 		font-size: 13px;
+		margin-left: 15px;
+	}
+}
+
+.download-btn {
+	font-size: 16px;
+	line-height: 20px;
+	padding: 16px 22px !important;
+
+	> i {
+		font-size: 16px;
 		margin-left: 15px;
 	}
 }

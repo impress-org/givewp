@@ -117,7 +117,7 @@
 				</div>
 
 				<!-- Download Receipt -->
-				<button class="give-btn advance-btn">
+				<button class="give-btn download-btn">
 					Download Receipt <i class="fas fa-file-pdf"></i>
 				</button>
 			</div>
