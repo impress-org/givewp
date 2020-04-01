@@ -88,6 +88,12 @@ class Form {
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
 
+				// Show donation processing template
+				if( isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) ) ) {
+					include $formTemplate->getTemplate( 'donation-processing' );
+					exit();
+				}
+
 				// Render receipt with in iframe.
 				include $formTemplate->getTemplate( 'receipt' );
 				exit();
