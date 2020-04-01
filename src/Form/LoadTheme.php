@@ -157,7 +157,7 @@ class LoadTheme {
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
 		$list = [];
-		$skip = [];
+		$skip = ['babel-polyfill'];
 
 		/* @var _WP_Dependency $data */
 		foreach ( $scripts as $handle => $data ) {
