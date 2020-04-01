@@ -26,15 +26,16 @@ function isViewingForm() {
  *
  * @return bool
  * @since 2.7.0
- *
  */
 function isProcessingForm() {
 	$base     = Give()->routeForm->getBase();
 	$formName = get_post_field( 'post_name', getFormId() );
+	$referer  = trailingslashit( wp_get_referer() );
 
 	return ! empty( $_REQUEST['give_embed_form'] ) ||
-	       false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
-	       inIframe();
+		   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
+		   inIframe() ||
+		   false !== strpos( $referer, 'giveDonationFormInIframe' );
 }
 
 
@@ -44,10 +45,10 @@ function isProcessingForm() {
  * @since 2.7.0
  * @return bool
  */
-function isProcessingGiveActionOnAjax(){
+function isProcessingGiveActionOnAjax() {
 	return isset( $_REQUEST['action'] ) &&
-	       wp_doing_ajax() &&
-	       0 === strpos( $_REQUEST['action'], 'give_' );
+		   wp_doing_ajax() &&
+		   0 === strpos( $_REQUEST['action'], 'give_' );
 }
 
 
@@ -208,6 +209,6 @@ function getLegacyFailedPageURL() {
  *
  * @since 2.7.0
  */
-function getIframeParentURL(){
-	return isset( $_REQUEST['give-current-url']) ? give_clean( $_REQUEST['give-current-url'] ) : '';
+function getIframeParentURL() {
+	return isset( $_REQUEST['give-current-url'] ) ? give_clean( $_REQUEST['give-current-url'] ) : '';
 }
