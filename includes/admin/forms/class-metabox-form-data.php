@@ -192,20 +192,19 @@ class Give_MetaBox_Form_Data {
 								),
 								'default'       => array(
 									array(
-										'_give_id'      =>
+										'_give_id'     =>
 											array(
 												'level_id' => 0,
 											),
-										'_give_amount'  => '10.000000',
-										'_give_text'    => '',
-										'_give_default' => 'default',
+										'_give_amount' => '10.000000',
+										'_give_text'   => '',
 									),
 									array(
 										'_give_id'     =>
 											array(
 												'level_id' => 1,
 											),
-										'_give_amount' => '20.000000',
+										'_give_amount' => '25.000000',
 										'_give_text'   => '',
 									),
 									array(
@@ -217,12 +216,13 @@ class Give_MetaBox_Form_Data {
 										'_give_text'   => '',
 									),
 									array(
-										'_give_id'     =>
+										'_give_id'      =>
 											array(
 												'level_id' => 3,
 											),
-										'_give_amount' => '100.000000',
-										'_give_text'   => '',
+										'_give_amount'  => '100.000000',
+										'_give_text'    => '',
+										'_give_default' => 'default',
 									),
 									array(
 										'_give_id'     =>
