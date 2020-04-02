@@ -321,3 +321,42 @@ function give_stripe_show_connect_banner() {
 }
 
 add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
+
+/**
+ * Register Currency related admin notices.
+ *
+ * @since 2.6.1
+ *
+ * @return void
+ */
+function give_stripe_show_currency_notice() {
+
+	// Bailout, if not admin.
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	// Show Currency notice when Stripe SEPA Payment Gateway is selected.
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_gateway_active( 'stripe_sepa' ) &&
+		'EUR' !== give_get_currency() &&
+		! class_exists( 'Give_Currency_Switcher' ) // Disable Notice, if Currency Switcher add-on is enabled.
+	) {
+		Give()->notices->register_notice(
+			array(
+				'id'          => 'give-stripe-currency-notice',
+				'type'        => 'error',
+				'dismissible' => false,
+				'description' => sprintf(
+					__( 'The currency must be set as "Euro (&euro;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - SEPA Direct Debit Payment Gateway.', 'give' ),
+					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
+				),
+				'show'        => true,
+			)
+		);
+	}
+
+}
+
+add_action( 'admin_notices', 'give_stripe_show_currency_notice' );

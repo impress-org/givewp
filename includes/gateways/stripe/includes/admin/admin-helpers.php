@@ -23,14 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function give_stripe_supported_payment_methods() {
-	return array(
+	return [
 		'stripe',
 		'stripe_ach',
 		'stripe_ideal',
 		'stripe_google_pay',
 		'stripe_apple_pay',
 		'stripe_checkout',
-	);
+		'stripe_sepa',
+	];
 }
 
 /**

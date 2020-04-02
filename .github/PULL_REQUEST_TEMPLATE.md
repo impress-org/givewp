@@ -1,18 +1,14 @@
 ## Description
 <!-- Please describe your changes -->
 
-## How Has This Been Tested?
-<!-- Please describe in detail how you tested your changes. -->
-<!-- Include details of your testing environment, tests ran to see how -->
-<!-- your change affects other areas of the code, etc. -->
+## Affects
+<!-- Provide a list of areas in the code base affected by this. Not file by file, just descriptively. -->
 
-## Screenshots (jpeg or gifs if applicable):
+## What to test
+<!-- Provide a comprehensive list of what should be tested to confirm this works and not break anything. -->
 
-## Types of changes
-<!-- What types of changes does your code introduce?  -->
-<!-- Bug fix (non-breaking change which fixes an issue) -->
-<!-- New feature (non-breaking change which adds functionality) -->
-<!-- Breaking change (fix or feature that would cause existing functionality to not work as expected) -->
+## Screenshots:
+<!-- Optional. Any screenshots or animated gifs that may help others understand the changes -->
 
 ## Checklist:
 - [ ] My code is tested.
