@@ -197,7 +197,6 @@ class Give_MetaBox_Form_Data {
 												'level_id' => 0,
 											),
 										'_give_amount' => '10.000000',
-										'_give_text'   => '',
 									),
 									array(
 										'_give_id'     =>
@@ -205,7 +204,6 @@ class Give_MetaBox_Form_Data {
 												'level_id' => 1,
 											),
 										'_give_amount' => '25.000000',
-										'_give_text'   => '',
 									),
 									array(
 										'_give_id'     =>
@@ -213,7 +211,6 @@ class Give_MetaBox_Form_Data {
 												'level_id' => 2,
 											),
 										'_give_amount' => '50.000000',
-										'_give_text'   => '',
 									),
 									array(
 										'_give_id'      =>
@@ -221,7 +218,6 @@ class Give_MetaBox_Form_Data {
 												'level_id' => 3,
 											),
 										'_give_amount'  => '100.000000',
-										'_give_text'    => '',
 										'_give_default' => 'default',
 									),
 									array(
@@ -230,7 +226,6 @@ class Give_MetaBox_Form_Data {
 												'level_id' => 5,
 											),
 										'_give_amount' => '250.000000',
-										'_give_text'   => '',
 									),
 								),
 								'wrapper_class' => 'give-hidden',
