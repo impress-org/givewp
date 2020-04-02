@@ -101,7 +101,6 @@ p {
 .give_error,
 .give_success,
 .give_warning {
-	display: none !important;
 	@include before-after-content-none;
 	position: relative;
 	margin: 20px 20px 0 20px;
