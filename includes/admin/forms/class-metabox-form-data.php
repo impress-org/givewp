@@ -174,6 +174,7 @@ class Give_MetaBox_Form_Data {
 								'description'   => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
 								'id'            => $prefix . 'custom_amount_text',
 								'type'          => 'text_medium',
+								'default'       => __( 'Custom Amount', 'give' ),
 								'attributes'    => array(
 									'rows'        => 3,
 									'placeholder' => __( 'Give a Custom Amount', 'give' ),
