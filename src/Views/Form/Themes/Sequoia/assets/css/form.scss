@@ -46,7 +46,7 @@ p {
 
 .give-embed-form,
 .give-embed-receipt {
-	max-width: 480px;
+	max-width: 552px;
 	margin: auto;
 	border-radius: 6px;
 	color: #696969;
@@ -84,17 +84,17 @@ p {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 18px 26px !important;
+	padding: 20px 28px !important;
 	border-radius: 4px;
 	border: none;
 	font-size: 22px;
 	line-height: 20px;
-	margin-top: 30px;
-	margin-bottom: 15px;
+	margin-top: 48px;
+	margin-bottom: 16px;
 	min-width: 236px;
 
 	> i {
-		font-size: 13px;
+		font-size: 15px;
 		margin-left: 15px;
 	}
 }
@@ -145,7 +145,7 @@ p {
 	height: auto;
 	position: relative;
 	overflow: hidden;
-	padding: 56.24% 0 0 0;
+	padding: 55.4% 0 0 0;
 	margin: 0;
 
 	img {
@@ -231,7 +231,7 @@ p {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 45px;
+		height: 60px;
 		justify-content: center;
 		background: #fbfbfb;
 		border-top: 1px solid #f2f2f2;
@@ -239,7 +239,7 @@ p {
 
 		> i {
 			padding: 8px;
-			font-size: 10px;
+			font-size: 12px;
 		}
 	}
 }
@@ -265,8 +265,8 @@ p {
 
 	.headline {
 		max-width: 75%;
-		margin-bottom: 20px;
-		margin-top: 28px;
+		margin-bottom: 18px;
+		margin-top: 30px;
 	}
 
 	.seperator {
@@ -277,9 +277,9 @@ p {
 	}
 
 	.description {
-		max-width: 66%;
-		margin-bottom: 26px;
-		margin-top: 16px;
+		font-size: 16px;
+		font-weight: 500;
+		margin: 18px 70px 29px 70px;
 	}
 
 	.income-stats {
@@ -349,10 +349,9 @@ p {
 
 .choose-amount {
 	.content {
-		max-width: 80%;
 		text-align: center;
-		margin-top: 30px;
-		margin-bottom: 25px;
+		margin: 24px 30px 22px 30px;
+		font-size: 15px;
 	}
 
 	// Amount Total
@@ -366,15 +365,15 @@ p {
 
 		.give-donation-amount {
 			@include before-after-content-none;
-			width: 45%;
 			display: flex;
+			width: 207px;
 			align-items: center;
 			background-color: #fff;
 			box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.22);
 			border: 1px solid #979797;
 			border-radius: 4px !important;
 			overflow: hidden;
-			padding: 15px;
+			padding: 18px 24px;
 			margin: 0;
 
 			input {
@@ -405,10 +404,10 @@ p {
 	// Amount Buttons
 	.give-donation-levels-wrap {
 		@include before-after-content-none;
-		grid-gap: 8px;
+		grid-gap: 10px;
 		grid-template-columns: repeat(3, 1fr);
 		padding: 0;
-		margin: 15px 20px !important;
+		margin: 24px 30px 0 30px !important;
 
 		li {
 			margin: 0 !important;
@@ -424,19 +423,19 @@ p {
 			line-height: 1;
 			text-align: center;
 			color: #fff;
-			padding-top: 18px;
-			padding-bottom: 18px;
+			padding-top: 24px;
+			padding-bottom: 24px;
 
 			> .currency {
 				font-size: 14px;
-				margin: 0 4px 11px 0;
+				margin: 0 6px 11px 0;
 			}
 
 			&.give-btn-level-custom {
 				height: 100%;
 				font-size: 18px;
 				line-height: 1.2;
-				padding: 0;
+				padding: 10px;
 			}
 
 			&.give-default-level {
@@ -451,35 +450,30 @@ p {
 // Payment Section
 
 .payment {
-	padding: 0 20px;
-
+	padding: 0 30px;
 	.heading {
-		padding: 30px 0 3px 0;
-		font-size: 18px;
+		padding: 39px 3px 0;
+		font-size: 16px;
 		font-weight: 500;
 		color: #6b6b6b;
 		text-align: center;
 	}
-
 	.subheading {
-		padding: 3px 0 30px 0;
+		padding: 5px 0 34px 0;
 		font-style: italic;
-		font-size: 15px;
+		font-size: 12px;
 		color: #767676;
 		text-align: center;
 	}
-
 	#give_checkout_user_info {
 		legend {
 			display: none;
 		}
 	}
-
 	#give-payment-mode-select {
 		legend {
 			display: none;
 		}
-
 		ul {
 			@include before-after-content-none;
 			display: grid;
@@ -510,7 +504,6 @@ p {
 			}
 		}
 	}
-
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
@@ -662,8 +655,8 @@ fieldset {
 	}
 	i {
 		position: absolute;
-		top: 14px;
-		left: 13px;
+		top: 18px;
+		left: 16px;
 		font-size: 12px;
 		color: #989898;
 	}
@@ -674,6 +667,7 @@ fieldset {
 }
 
 .give-input {
+	font-family: 'Montserrat', sans-serif;
 	background: #fff;
 	border: 1px solid #b8b8b8;
 	box-sizing: border-box;
@@ -683,10 +677,11 @@ fieldset {
 	font-size: 14px;
 	line-height: 1;
 	color: #8d8e8e;
-	padding: 10px !important;
+	padding: 14px !important;
 }
 
 .give-select {
+	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
 	color: #333;
