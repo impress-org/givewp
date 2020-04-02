@@ -131,9 +131,6 @@
 	$advanceButton.on( 'click', function( e ) {
 		e.preventDefault();
 		navigator.forward();
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.scrollToOffset( 0, 0 );
-		}
 	} );
 	$backButton.on( 'click', function( e ) {
 		e.preventDefault();
