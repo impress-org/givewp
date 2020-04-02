@@ -101,6 +101,7 @@ p {
 .give_error,
 .give_success,
 .give_warning {
+	display: none !important;
 	@include before-after-content-none;
 	position: relative;
 	margin: 20px 20px 0 20px;
@@ -436,35 +437,30 @@ p {
 // Payment Section
 
 .payment {
-	padding: 0 20px;
-
+	padding: 0 30px;
 	.heading {
-		padding: 30px 0 3px 0;
-		font-size: 18px;
+		padding: 39px 3px 0;
+		font-size: 16px;
 		font-weight: 500;
 		color: #6b6b6b;
 		text-align: center;
 	}
-
 	.subheading {
-		padding: 3px 0 30px 0;
+		padding: 5px 0 34px 0;
 		font-style: italic;
-		font-size: 15px;
+		font-size: 12px;
 		color: #767676;
 		text-align: center;
 	}
-
 	#give_checkout_user_info {
 		legend {
 			display: none;
 		}
 	}
-
 	#give-payment-mode-select {
 		legend {
 			display: none;
 		}
-
 		ul {
 			@include before-after-content-none;
 			display: grid;
@@ -495,7 +491,6 @@ p {
 			}
 		}
 	}
-
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
@@ -526,8 +521,8 @@ fieldset {
 	}
 	i {
 		position: absolute;
-		top: 14px;
-		left: 13px;
+		top: 18px;
+		left: 16px;
 		font-size: 12px;
 		color: #989898;
 	}
@@ -538,6 +533,7 @@ fieldset {
 }
 
 .give-input {
+	font-family: 'Montserrat', sans-serif;
 	background: #fff;
 	border: 1px solid #b8b8b8;
 	box-sizing: border-box;
@@ -547,10 +543,11 @@ fieldset {
 	font-size: 14px;
 	line-height: 1;
 	color: #8d8e8e;
-	padding: 10px !important;
+	padding: 14px !important;
 }
 
 .give-select {
+	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
 	color: #333;
