@@ -146,7 +146,7 @@ class Give_MetaBox_Form_Data {
 								'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
 								'id'          => $prefix . 'custom_amount',
 								'type'        => 'radio_inline',
-								'default'     => 'disabled',
+								'default'     => 'enabled',
 								'options'     => array(
 									'enabled'  => __( 'Enabled', 'give' ),
 									'disabled' => __( 'Disabled', 'give' ),
@@ -174,9 +174,9 @@ class Give_MetaBox_Form_Data {
 								'description'   => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
 								'id'            => $prefix . 'custom_amount_text',
 								'type'          => 'text_medium',
+								'default'       => __( 'Custom Amount', 'give' ),
 								'attributes'    => array(
-									'rows'        => 3,
-									'placeholder' => __( 'Give a Custom Amount', 'give' ),
+									'rows' => 3,
 								),
 								'wrapper_class' => 'give-hidden',
 							),
@@ -188,6 +188,44 @@ class Give_MetaBox_Form_Data {
 									'add_button'    => __( 'Add Level', 'give' ),
 									'header_title'  => __( 'Donation Level', 'give' ),
 									'remove_button' => '<span class="dashicons dashicons-no"></span>',
+								),
+								'default'       => array(
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 0,
+											),
+										'_give_amount' => '10.000000',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 1,
+											),
+										'_give_amount' => '25.000000',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 2,
+											),
+										'_give_amount' => '50.000000',
+									),
+									array(
+										'_give_id'      =>
+											array(
+												'level_id' => 3,
+											),
+										'_give_amount'  => '100.000000',
+										'_give_default' => 'default',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 5,
+											),
+										'_give_amount' => '250.000000',
+									),
 								),
 								'wrapper_class' => 'give-hidden',
 								// Fields array works the same, except id's only need to be unique for this group.

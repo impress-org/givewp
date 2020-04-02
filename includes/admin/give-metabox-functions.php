@@ -1251,9 +1251,15 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
+			// Get value.
 			$repeater_field_values = ! empty( $fields['attributes']['value'] )
 				? $fields['attributes']['value']
 				: give_get_meta( $thepostid, $fields['id'], true );
+
+			// Setup default value.
+			if ( empty( $repeater_field_values ) && ! empty( $fields['default'] ) ) {
+				$repeater_field_values = $fields['default'];
+			}
 
 			$header_title = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
