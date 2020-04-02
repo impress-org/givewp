@@ -99,7 +99,6 @@ function give_can_checkout() {
  *
  * @access      public
  * @since       1.0
- * @since       2.7.0 Return current url when in iframe
  *
  * @return      string
  */
@@ -140,14 +139,13 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-
 	$redirect = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['give-gateway'] ) ? $_REQUEST['give-gateway'] : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
 
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
@@ -226,9 +224,7 @@ function give_send_back_to_checkout( $args = array() ) {
  * @return      string
  */
 function give_get_success_page_url( $query_string = null ) {
-
-	$success_page = give_get_option( 'success_page', 0 );
-	$success_page = get_permalink( $success_page );
+	$success_page = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$success_page .= $query_string;
@@ -296,13 +292,11 @@ function give_is_failed_transaction_page() {
  * @return bool
  */
 function give_listen_for_failed_payments() {
-
-	$failed_page = give_get_option( 'failure_page', 0 );
-	$payment_id  = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
-	$nonce       = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
+	$payment_id = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
+	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
 
 	// Bailout.
-	if ( ! $failed_page || ! is_page( $failed_page ) || ! $payment_id || ! $nonce ) {
+	if ( ! give_is_failed_transaction_page() || ! $payment_id || ! $nonce ) {
 		return false;
 	}
 
@@ -315,7 +309,7 @@ function give_listen_for_failed_payments() {
 	give_update_payment_status( $payment_id, 'failed' );
 }
 
-add_action( 'template_redirect', 'give_listen_for_failed_payments' );
+add_action( 'template_redirect', 'give_listen_for_failed_payments', 0 );
 
 /**
  * Retrieve the Donation History page URI

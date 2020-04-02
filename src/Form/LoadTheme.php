@@ -14,6 +14,7 @@ use Give\Form\Theme\Hookable;
 use Give\Form\Theme\Scriptable;
 use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;
@@ -46,9 +47,9 @@ class LoadTheme {
 	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
 	 */
 	private function setUpTemplate( $formId = null ) {
-		$formID = (int) ( $formId ?: getFormId() );
+		$formId = (int) ( $formId ?: getFormId() );
 
-		$themeID = getActiveID( $formID ) ?: $this->defaultTemplateID;
+		$themeID = getActiveID( $formId ) ?: $this->defaultTemplateID;
 
 		$this->theme = Give()->themes->getTheme( $themeID );
 	}
@@ -84,17 +85,25 @@ class LoadTheme {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		if ( is_admin() ) {
-			return false;
-		}
+		add_action( 'give_embed_head', 'rel_canonical' );
+		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
+		add_action( 'give_embed_head', 'wp_resource_hints', 2 );
+		add_action( 'give_embed_head', 'feed_links', 2 );
+		add_action( 'give_embed_head', 'feed_links_extra', 3 );
+		add_action( 'give_embed_head', 'rsd_link' );
+		add_action( 'give_embed_head', 'wlwmanifest_link' );
+		add_action( 'give_embed_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+		add_action( 'give_embed_head', 'noindex', 1 );
+		add_action( 'give_embed_head', 'wp_generator' );
+		add_action( 'give_embed_head', 'rel_canonical' );
+		add_action( 'give_embed_head', 'wp_shortlink_wp_head', 10, 0 );
+		add_action( 'give_embed_head', 'wp_site_icon', 99 );
 
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', [ $this, 'enqueue_scripts' ], 2 );
+		add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
 		add_action( 'give_embed_head', 'wp_print_head_scripts', 9 );
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
-
-		// Update form DOM.
 		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
 		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
 	}
@@ -105,7 +114,7 @@ class LoadTheme {
 	 *
 	 * @since 2.7.0
 	 */
-	public function enqueue_scripts() {
+	public function handleEnqueueScripts() {
 		global $wp_scripts, $wp_styles;
 		wp_enqueue_scripts();
 
@@ -132,7 +141,7 @@ class LoadTheme {
 
 		$classes[] = 'give-embed-form';
 
-		if ( ! empty( $_GET['iframe'] ) ) {
+		if ( inIframe() ) {
 			$classes[] = 'give-viewing-form-in-iframe';
 		}
 
@@ -142,11 +151,9 @@ class LoadTheme {
 	/**
 	 * Add hidden field
 	 *
-	 * @param array $classes
-	 *
 	 * @since 2.7.0
 	 */
-	public function addHiddenField( $classes ) {
+	public function addHiddenField() {
 		printf(
 			'<input type="hidden" name="%1$s" value="%2$s">',
 			'give_embed_form',
@@ -164,7 +171,7 @@ class LoadTheme {
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
 		$list = [];
-		$skip = [];
+		$skip = [ 'babel-polyfill' ];
 
 		/* @var _WP_Dependency $data */
 		foreach ( $scripts as $handle => $data ) {

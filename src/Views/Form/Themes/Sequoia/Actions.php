@@ -3,7 +3,10 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give_Donate_Form;
+use Give_Notices;
 use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\isViewingForm;
 
 
 /**
