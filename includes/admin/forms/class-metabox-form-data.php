@@ -189,6 +189,49 @@ class Give_MetaBox_Form_Data {
 									'header_title'  => __( 'Donation Level', 'give' ),
 									'remove_button' => '<span class="dashicons dashicons-no"></span>',
 								),
+								'default'       => array(
+									array(
+										'_give_id'      =>
+											array(
+												'level_id' => 0,
+											),
+										'_give_amount'  => '10.000000',
+										'_give_text'    => '',
+										'_give_default' => 'default',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 1,
+											),
+										'_give_amount' => '20.000000',
+										'_give_text'   => '',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 2,
+											),
+										'_give_amount' => '50.000000',
+										'_give_text'   => '',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 3,
+											),
+										'_give_amount' => '100.000000',
+										'_give_text'   => '',
+									),
+									array(
+										'_give_id'     =>
+											array(
+												'level_id' => 5,
+											),
+										'_give_amount' => '250.000000',
+										'_give_text'   => '',
+									),
+								),
 								'wrapper_class' => 'give-hidden',
 								// Fields array works the same, except id's only need to be unique for this group.
 								// Prefix is not needed.
