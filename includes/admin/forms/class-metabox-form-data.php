@@ -146,7 +146,7 @@ class Give_MetaBox_Form_Data {
 								'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
 								'id'          => $prefix . 'custom_amount',
 								'type'        => 'radio_inline',
-								'default'     => 'disabled',
+								'default'     => 'enabled',
 								'options'     => array(
 									'enabled'  => __( 'Enabled', 'give' ),
 									'disabled' => __( 'Disabled', 'give' ),
