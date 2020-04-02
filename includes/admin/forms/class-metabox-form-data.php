@@ -176,8 +176,7 @@ class Give_MetaBox_Form_Data {
 								'type'          => 'text_medium',
 								'default'       => __( 'Custom Amount', 'give' ),
 								'attributes'    => array(
-									'rows'        => 3,
-									'placeholder' => __( 'Give a Custom Amount', 'give' ),
+									'rows' => 3,
 								),
 								'wrapper_class' => 'give-hidden',
 							),
