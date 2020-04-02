@@ -52,10 +52,13 @@
 				const inDirection = navigator.currentStep < step ? 'right' : 'left';
 				$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
-
-				const stepHeight = $( steps[ step ].selector ).height();
-				$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
+			} else {
+				$( steps[ navigator.currentStep ].selector ).css( 'position', 'absolute' );
 			}
+
+			const stepHeight = $( steps[ step ].selector ).height();
+			$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
+
 			navigator.currentStep = step;
 		},
 		init: () => {
@@ -82,7 +85,7 @@
 		{
 			id: 'introduction',
 			title: null,
-			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
+			selector: '.give-section.introduction',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
 		},
