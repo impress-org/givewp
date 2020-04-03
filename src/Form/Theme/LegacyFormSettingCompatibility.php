@@ -77,7 +77,7 @@ class LegacyFormSettingCompatibility {
 						continue;
 					}
 
-					Give()->form_meta->update( $formId, $legacySettingMetaKey, $settings[ $groupId ][ $fieldId ] );
+					Give()->form_meta->update_meta( $formId, $legacySettingMetaKey, $settings[ $groupId ][ $fieldId ] );
 					$alreadySavedLegacySettings[] = $legacySettingMetaKey;
 				}
 			}
