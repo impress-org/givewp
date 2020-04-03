@@ -176,7 +176,7 @@
 
 		if ( ! $refresh ) {
 			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
-			element.slideUp( 'slow', function() {
+			element.slideUp( 300, function() {
 				element.remove();
 			} );
 
@@ -208,7 +208,7 @@
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
 
 			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow', function() {
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
 				const height = $( '.payment' ).height();
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
