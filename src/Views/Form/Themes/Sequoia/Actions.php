@@ -47,7 +47,7 @@ class Actions {
 	/**
 	 * Set zero as number of decimals in currency formatting setting.
 	 *
-	 * As per design requirement we want to donation amount with zero decimal whether or not number of decimal admin setting set  to zero.
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
 	 *
 	 * @since 2.7.0
 	 * @param array $currencyFormattingSettings
@@ -62,7 +62,7 @@ class Actions {
 	/**
 	 * Return zero as number of decimals setting value or currency formatting value.
 	 *
-	 * As per design requirement we want to donation amount with zero decimal whether or not number of decimal admin setting set  to zero.
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
 	 *
 	 * @since 2.7.0
 	 * @return int|array
