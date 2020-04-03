@@ -41,13 +41,13 @@ class Actions {
 	}
 
 	/**
-	 * Hanlde cancel login and checkout register ajax request.
+	 * Handle cancel login and checkout register ajax request.
 	 *
 	 * @since 2.7.0
 	 * @return void
 	 */
 	public function cancelLoginAjaxHanleder() {
-		//add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		// add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 	}
 
 	/**
@@ -92,9 +92,6 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
-
-		// Override checkout button
-		add_filter( 'give_donation_form_submit_button', [ $this, 'getCheckoutButton' ] );
 	}
 
 	/**
@@ -143,24 +140,6 @@ class Actions {
 
 		printf(
 			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
-			$label
-		);
-	}
-
-	/**
-	 * Add checkout button
-	 *
-	 * @since 2.7.0
-	 */
-	public function getCheckoutButton() {
-
-		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
-
-		return sprintf(
-			'<div class="give-submit-button-wrap give-clearfix">
-				<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
-				<span class="give-loading-animation"></span>
-			</div>',
 			$label
 		);
 	}
