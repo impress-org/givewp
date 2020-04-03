@@ -53,6 +53,7 @@ class Form {
 		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
 		add_action( 'template_redirect', [ $this, 'loadReceiptView' ], 1 );
+		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
 	/**
@@ -65,10 +66,6 @@ class Form {
 
 		if ( $inIframe || isProcessingForm() ) {
 			$this->loadTheme();
-
-			if ( $inIframe ) {
-				add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
-			}
 
 			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
 		}
