@@ -523,7 +523,7 @@ function give_output_levels( $form_id ) {
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 
 	if ( empty( $custom_amount_text ) ) {
-		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
+		$custom_amount_text = esc_html__( 'Custom Amount', 'give' );
 	}
 
 	$output = '';

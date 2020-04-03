@@ -181,7 +181,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		// If new form is created.
 		if ( ! empty( $new_form ) ) {
 			$new_form = array(
-				'_give_custom_amount_text'          => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'custom' ),
+				'_give_custom_amount_text'          => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : __( 'Custom Amount', 'give' ) ),
 				'_give_logged_in_only'              => 'enabled',
 				'_give_custom_amount'               => 'enabled',
 				'_give_payment_import'              => true,

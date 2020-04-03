@@ -1,7 +1,10 @@
 <?php
 namespace Give\Helpers\Form\Utils;
 
+use Give\Controller\Form;
 use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\getQueryParamFromURL;
 
 /**
  * Get result if we are viewing embed form or not
@@ -21,12 +24,31 @@ function isViewingForm() {
 /**
  * Get result if we are processing embed form or not
  *
- * @since 2.7.0
- *
  * @return bool
+ * @since 2.7.0
  */
 function isProcessingForm() {
-	return ! empty( $_REQUEST['give_embed_form'] );
+	$base     = Give()->routeForm->getBase();
+	$formName = get_post_field( 'post_name', getFormId() );
+	$referer  = trailingslashit( wp_get_referer() );
+
+	return ! empty( $_REQUEST['give_embed_form'] ) ||
+		   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
+		   inIframe() ||
+		   false !== strpos( $referer, 'giveDonationFormInIframe' );
+}
+
+
+/**
+ * Get result whether or not performing Give core action on ajax or not.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function isProcessingGiveActionOnAjax() {
+	return isset( $_REQUEST['action'] ) &&
+		   wp_doing_ajax() &&
+		   0 === strpos( $_REQUEST['action'], 'give_' );
 }
 
 
@@ -37,51 +59,45 @@ function isProcessingForm() {
  * @since 2.7.0
  */
 function isViewingFormReceipt() {
-	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] )
-		   && give_is_success_page();
+	return give_is_success_page();
 }
 
 /**
- * Get result if we are viewing embed form receipt or not
+ * Get result whether or not show failed transaction error.
  *
  * @return bool
  * @since 2.7.0
  */
-function isViewingFormFailedTransactionPage() {
-	return ! empty( $_REQUEST['giveDonationAction'] )
-		   && 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] )
-		   && give_is_failed_transaction_page();
+function canShowFailedDonationError() {
+	return ! empty( $_REQUEST['showFailedDonationError'] );
 }
 
 /**
- * Get success page url.
+ * This function check whether or not given url is of iframe parent failed page.
  *
- * @param array $args
+ * @param string $url
  *
  * @return string
  * @since 2.7.0
  */
-function getSuccessPageURL( $args = [] ) {
-	return add_query_arg(
-		array_merge( [ 'giveDonationAction' => 'showReceipt' ], $args ),
-		give_clean( $_REQUEST['give-current-url'] )
-	);
+function isIframeParentFailedPageURL( $url ) {
+	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
+
+	return $action && 'failedDonation' === $action;
 }
 
 /**
- * Get success page url.
+ * This function check whether or not given url is of iframe parent success page.
  *
- * @param array $args
+ * @param string $url
  *
  * @return string
- * @since 2.7
+ * @since 2.7.0
  */
-function getFailedTransactionPageURL( $args = [] ) {
-	return add_query_arg(
-		array_merge( [ 'giveDonationAction' => 'failedDonation' ], $args ),
-		give_clean( $_REQUEST['give-current-url'] )
-	);
+function isIframeParentSuccessPageURL( $url ) {
+	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
+
+	return $action && 'showReceipt' === $action;
 }
 
 
@@ -94,8 +110,115 @@ function getFailedTransactionPageURL( $args = [] ) {
  * @since 2.7.0
  */
 function isLegacyForm( $formID = null ) {
+	$formID       = $formID ?: getFormId();
 	$formTemplate = getActiveID( $formID );
 
 	return ! $formTemplate || 'legacy' === getActiveID( $formID );
 }
 
+
+/**
+ * This function will create failed transaction page URL.
+ *
+ * Note: this function is use to get failed page url for parent page when perform donation with off-site checkout.
+ *
+ * @since 2.7.0
+ * @param array       $args
+ * @param string|null $url
+ *
+ * @return string
+ */
+function createFailedPageURL( $url, $args = [] ) {
+	$args = array_merge( $args, [ 'giveDonationAction' => 'failedDonation' ] );
+
+	return add_query_arg(
+		$args,
+		$url
+	);
+}
+
+/**
+ * This function will create success page URL.
+ *
+ * Note: this function is use to get success page url for parent page when perform donation with off-site checkout.
+ *
+ * @since 2.7.0
+ * @param array       $args
+ * @param string|null $url
+ *
+ * @return string
+ */
+function createSuccessPageURL( $url, $args = [] ) {
+	$args = array_merge( $args, [ 'giveDonationAction' => 'showReceipt' ] );
+
+	return add_query_arg(
+		$args,
+		$url
+	);
+}
+
+
+/**
+ * Return if current URL loading in iframe or not.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function inIframe() {
+	return ! empty( $_GET['giveDonationFormInIframe'] );
+}
+
+
+/**
+ * Return success page url.
+ *
+ * Wrapper function for give_get_success_page_uri and without embed form filter.
+ *
+ * @since 2.7.0
+ * @return string
+ */
+function getSuccessPageURL() {
+	remove_filter( 'give_get_success_page_uri', [ Form::class, 'editSuccessPageURI' ] );
+	$url = give_get_success_page_uri();
+	add_filter( 'give_get_success_page_uri', [ Form::class, 'editSuccessPageURI' ] );
+
+	return $url;
+}
+
+/**
+ * Return legacy failed page url.
+ *
+ * Wrapper function for give_get_failed_transaction_uri and without embed form filter
+ *
+ * @since 2.7.0
+ * @return string
+ */
+function getLegacyFailedPageURL() {
+	remove_filter( 'give_get_failed_transaction_uri', [ Form::class, 'editFailedPageURI' ] );
+	$url = give_get_failed_transaction_uri();
+	add_filter( 'give_get_failed_transaction_uri', [ Form::class, 'editFailedPageURI' ] );
+
+	return $url;
+}
+
+
+/**
+ * Get Iframe parent page URL.
+ *
+ * Note: must be use only inside iframe logic.
+ *
+ * @since 2.7.0
+ */
+function getIframeParentURL() {
+	return isset( $_REQUEST['give-current-url'] ) ? give_clean( $_REQUEST['give-current-url'] ) : '';
+}
+
+/**
+ * Return whether or not we are confirming donation or not.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function isConfirmingDonation() {
+	return isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) );
+}
