@@ -130,7 +130,7 @@ use Give_Payment as Payment;
 							</div>
 							<div class="value">
 								<?php
-								$fees = $payment->fees ? $payment->fees : 0;
+								$fees = $payment->total - $payment->subtotal;
 								echo filterCurrency(
 									sanitizeAmount( $fees ),
 									[
