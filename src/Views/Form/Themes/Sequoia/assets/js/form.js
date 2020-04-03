@@ -1,4 +1,4 @@
-/* globals jQuery */
+/* globals jQuery, Give */
 ( function( $ ) {
 	const templateOptions = window.sequoiaTemplateOptions;
 	const $container = $( '.give-embed-form' );
@@ -76,7 +76,12 @@
 				e.preventDefault();
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
-			setupHeightChangeCallback( function( height ) {
+			setupHeightChangeCallback( function( height, diff ) {
+				if ( diff > 10 ) {
+					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
+				} else {
+					$( '.form-footer' ).css( 'transition', '' );
+				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
 			navigator.goToStep( 0 );
@@ -144,6 +149,103 @@
 
 	navigator.init();
 
+	// Move payment information section when document load.
+	moveFieldsUnderPaymentGateway( true );
+
+	// Move payment information section when gateway updated.
+	$( document ).on( 'give_gateway_loaded', function() {
+		moveFieldsUnderPaymentGateway( true );
+	} );
+	$( document ).on( 'Give:onPreGatewayLoad', function() {
+		moveFieldsUnderPaymentGateway( false );
+	} );
+
+	// Refresh payment information section.
+	$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+
+	/**
+	 * Move form field under payment gateway
+	 * @since 2.7.0
+	 * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
+	 */
+	function moveFieldsUnderPaymentGateway( $refresh = false ) {
+		// This function will run only for embed donation form.
+		if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
+			return;
+		}
+
+		if ( ! $refresh ) {
+			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
+			element.slideUp( 'slow', function() {
+				element.remove();
+			} );
+
+			return;
+		}
+
+		new Promise( function( res ) {
+			const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
+			let showFields = false;
+
+			jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
+
+			jQuery.each( fields, function( index, $item ) {
+				$item = jQuery( $item );
+				jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
+
+				showFields = ! showFields ? !! $item.html().trim() : showFields;
+
+				$item.remove();
+			} );
+
+			if ( ! showFields ) {
+				jQuery( '.give_purchase_form_wrap-clone' ).remove();
+			}
+
+			return res( showFields );
+		} ).then( function( showFields ) {
+			// eslint-disable-next-line no-unused-expressions
+			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
+
+			// eslint-disable-next-line no-unused-expressions
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow', function() {
+				const height = $( '.payment' ).height();
+				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
+			} );
+		} );
+	}
+
+	/**
+	 * Refresh payment information section
+	 *
+	 * @since 2.7.0
+	 * @param {boolean} ev Event object
+	 * @param {object} response Response object
+	 * @param {number} formID Form ID
+	 */
+	function refreshPaymentInformationSection( ev, response, formID ) {
+		const $form = $( `#${ formID }` );
+
+		// This function will run only for embed donation form.
+		// Show payment information section fields.
+		if ( $form.parent().hasClass( 'give-embed-form' ) ) {
+			const data = {
+				action: 'give_cancel_login',
+				form_id: $form.find( '[name="give-form-id"]' ).val(),
+			};
+
+			// AJAX get the payment fields.
+			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( postResponse ) {
+				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( postResponse.fields ) );
+				$form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
+				$form.find( '.give-submit-button-wrap' ).show();
+			} ).done( function() {
+				// Trigger float-labels
+				window.give_fl_trigger();
+			} );
+		}
+	}
+
 	function setupInputIcon( selector, icon ) {
 		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
@@ -155,7 +257,8 @@
 			const selector = $( steps[ navigator.currentStep ].selector );
 			const changed = lastHeight !== $( selector ).height();
 			if ( changed ) {
-				callback( $( selector ).height() );
+				const diff = lastHeight > $( selector ).height() ? lastHeight - $( selector ).height() : $( selector ).height() - lastHeight;
+				callback( $( selector ).height(), diff );
 				lastHeight = $( selector ).height();
 			}
 			window.requestAnimationFrame( checkHeightChange );
