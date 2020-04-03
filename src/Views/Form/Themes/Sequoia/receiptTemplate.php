@@ -1,6 +1,11 @@
 <?php
 
-use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPaymentInfo;
+use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentId as getPaymentId;
+use function give_get_gateway_admin_label as getGatewayLabel;
+use function give_currency_filter as filterCurrency;
+use function give_sanitize_amount as sanitizeAmount;
+
+use Give_Payment as Payment;
 
 ?>
 
@@ -19,7 +24,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 	</head>
 	<body class="give-form-templates">
 		<?php
-		$info = getPaymentInfo();
+		$payment = new Payment( getPaymentId() );
 		?>
 
 		<div class="give-receipt-wrap give-embed-receipt">
@@ -34,7 +39,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 					A great big thank you!
 				</h2>
 				<p class="message">
-					Your donation will go directly to saving the whales of our precious oceans. We’ve sent your donation receipt to <?php echo $info['email_address']; ?>
+					Your donation will go directly to saving the whales of our precious oceans. We’ve sent your donation receipt to <?php echo $payment->email; ?>
 				</p>
 				<div class="social-sharing">
 					<p class="instruction">
@@ -60,7 +65,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Donor Name
 							</div>
 							<div class="value">
-								<?php echo $info['donor_name']; ?>
+								<?php echo "{$payment->first_name} {$payment->last_name}"; ?>
 							</div>
 						</div>
 						<div class="details-row">
@@ -69,20 +74,27 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Email Address
 							</div>
 							<div class="value">
-							<?php echo $info['email_address']; ?>
+							<?php echo $payment->email; ?>
 							</div>
 						</div>
+						<?php if ( ! empty( $payment->address['line1'] ) ) : ?>
 						<div class="details-row">
 							<i class="fas fa-envelope"></i>
 							<div class="detail">
 								Billing Address
 							</div>
 							<div class="value">
-								<?php echo $info['billing_address'][0]; ?> <br>
-								<?php echo $info['billing_address'][2]; ?>, <?php echo $info['billing_address'][3]; ?> <?php echo $info['billing_address'][4]; ?> <br>
-								USA
+								<?php echo $payment->address['line1']; ?> <br>
+								<?php
+								if ( ! empty( $payment->address['line2'] ) ) {
+									echo $payment->address['line1'];
+								}
+								?>
+								<?php echo $payment->address['city']; ?>, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
+								<?php echo $payment->address['country']; ?>
 							</div>
 						</div>
+						<?php endif; ?>
 					</div>
 
 					<!-- Payment Details -->
@@ -92,7 +104,7 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Payment Method
 							</div>
 							<div class="value">
-								<?php echo $info['payment_method']; ?>
+								<?php echo getGatewayLabel( $payment->gateway ); ?>
 							</div>
 						</div>
 						<div class="details-row">
@@ -100,7 +112,16 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Donation Amount
 							</div>
 							<div class="value">
-								<?php echo $info['donation_amount']; ?>
+								<?php
+								echo filterCurrency(
+									sanitizeAmount( $payment->subtotal ),
+									[
+										'currency_code'   => $payment->currency,
+										'decode_currency' => true,
+										'form_id'         => $payment->form_id,
+									]
+								);
+								?>
 							</div>
 						</div>
 						<div class="details-row">
@@ -108,7 +129,17 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Processing Fees
 							</div>
 							<div class="value">
-								$5
+								<?php
+								$fees = $payment->fees ? $payment->fees : 0;
+								echo filterCurrency(
+									sanitizeAmount( $fees ),
+									[
+										'currency_code'   => $payment->currency,
+										'decode_currency' => true,
+										'form_id'         => $payment->form_id,
+									]
+								);
+								?>
 							</div>
 						</div>
 						<div class="details-row total">
@@ -116,7 +147,16 @@ use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentInfo as getPayment
 								Donation Total
 							</div>
 							<div class="value">
-								$55
+								<?php
+								echo filterCurrency(
+									sanitizeAmount( $payment->total ),
+									[
+										'currency_code'   => $payment->currency,
+										'decode_currency' => true,
+										'form_id'         => $payment->form_id,
+									]
+								);
+								?>
 							</div>
 						</div>
 					</div>

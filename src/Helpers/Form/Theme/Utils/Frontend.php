@@ -61,24 +61,8 @@ function getFormId() {
 	return null;
 }
 
-function getPaymentInfo() {
+function getPaymentId() {
 	$session = give_get_purchase_session();
-
-	$info = [
-		'donor_name'      => $session['post_data']['give_first'] . ' ' . $session['post_data']['give_last'],
-		'email_address'   => $session['post_data']['give_email'],
-		'billing_address' => [
-			$session['card_info']['card_address'],
-			$session['card_info']['card_address_2'],
-			$session['card_info']['card_city'],
-			$session['card_info']['card_start'],
-			$session['card_info']['card_zip'],
-		],
-		'donation_amount' => $session['post_data']['give_amount'],
-		'payment_method'  => $session['gateway'],
-
-	];
-
-	return $info;
+	return $session['donation_id'];
 }
 
