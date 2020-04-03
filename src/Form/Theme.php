@@ -32,13 +32,13 @@ abstract class Theme {
 	public $openFailedPageInIframe = true;
 
 	/**
-	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property desciption.
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property description.
 	 * @var array $defaultSettings Form settings default values for form template.
 	 */
 	protected $defaultLegacySettingValues = [];
 
 	/**
-	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property desciption.
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property description.
 	 * @var array $mapToLegacySetting
 	 */
 	protected $mapToLegacySetting = [];
