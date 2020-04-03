@@ -44,6 +44,7 @@ $options = getThemeOptions();
 				<p class="message">
 					<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $payment->ID ] ); ?>
 				</p>
+				<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
 				<div class="social-sharing">
 					<p class="instruction">
 						Tell the world about your generosity and help spread the word!
@@ -57,6 +58,7 @@ $options = getThemeOptions();
 						</button>
 					</div>
 				</div>
+				<?php endif; ?>
 				<div class="details">
 					<h3 class="headline"><?php _e( 'Donation Details', 'give' ); ?></h3>
 
