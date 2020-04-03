@@ -107,8 +107,6 @@ p {
 	padding: 10px 15px;
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	display: flex;
-	align-items: center;
 	border-width: 0 0 0 5px;
 
 	> p {
@@ -454,6 +452,12 @@ p {
 	}
 
 	fieldset {
+		.give_error,
+		.give_success,
+		.give_warning {
+			margin: 0;
+		}
+
 		padding: 0 20px;
 	}
 
