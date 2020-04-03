@@ -56,10 +56,6 @@
 			} else {
 				$( steps[ navigator.currentStep ].selector ).css( 'position', 'absolute' );
 			}
-
-			const stepHeight = $( steps[ step ].selector ).height();
-			$( '.form-footer' ).css( 'margin-top', `${ stepHeight }px` );
-
 			navigator.currentStep = step;
 		},
 		init: () => {
@@ -67,6 +63,21 @@
 				if ( step.setup !== undefined ) {
 					step.setup();
 				}
+			} );
+			$advanceButton.on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.forward();
+			} );
+			$backButton.on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.back();
+			} );
+			$( '.step-tracker' ).on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
+			} );
+			setupHeightChangeCallback( function( height ) {
+				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
 			navigator.goToStep( 0 );
 		},
@@ -132,21 +143,23 @@
 	];
 
 	navigator.init();
-	$advanceButton.on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.forward();
-	} );
-	$backButton.on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.back();
-	} );
-	$( '.step-tracker' ).on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
-	} );
 
 	function setupInputIcon( selector, icon ) {
 		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+	}
+
+	function setupHeightChangeCallback( callback ) {
+		let lastHeight = 0;
+		function checkHeightChange() {
+			const selector = $( steps[ navigator.currentStep ].selector );
+			const changed = lastHeight !== $( selector ).height();
+			if ( changed ) {
+				callback( $( selector ).height() );
+				lastHeight = $( selector ).height();
+			}
+			window.requestAnimationFrame( checkHeightChange );
+		}
+		window.requestAnimationFrame( checkHeightChange );
 	}
 }( jQuery ) );
