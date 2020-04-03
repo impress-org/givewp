@@ -56,7 +56,7 @@ function set( $formId, $settings ) {
 	 */
 	/* @var LegacyFormSettingCompatibility $legacySettingHandler */
 	$legacySettingHandler = Give()->themes->getTheme( $theme )->getLegacySettingHandler();
-	if ( $isUpdated && $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
+	if ( $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
 		$legacySettingHandler->save( $formId, $settings );
 	}
 
