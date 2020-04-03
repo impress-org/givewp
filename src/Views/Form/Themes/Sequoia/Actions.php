@@ -28,6 +28,10 @@ class Actions {
 		// Get Theme options
 		$this->themeOptions = getTheme();
 
+		// Set zero number of decimal.
+		add_filter( 'give_sanitize_amount_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+		add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
 		add_action( 'wp_ajax_nopriv_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
@@ -38,6 +42,19 @@ class Actions {
 
 		// Setup hooks.
 		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
+	}
+
+
+	/**
+	 * Return zero as number of decimals setting value or currency formatting value.
+	 *
+	 * As per design requirement we want to donation amount with zero decimal whether or not number of decimal admin setting set  to zero.
+	 *
+	 * @since 2.7.0
+	 * @return int
+	 */
+	public function setupZeroNumberOfDecimal() {
+		return 0;
 	}
 
 	/**
