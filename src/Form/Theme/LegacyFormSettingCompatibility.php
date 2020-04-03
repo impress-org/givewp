@@ -12,7 +12,7 @@ class LegacyFormSettingCompatibility {
 	 * @var array $defaultSettings Form settings default values for form template.
 	 */
 	private $defaultLegacySettingValues = [
-		'_give_display_style'        => 'button',
+		'_give_display_style'        => 'buttons',
 		'_give_payment_display'      => 'onpage',
 		'_give_form_floating_labels' => 'disabled',
 		'_give_display_content'      => 'disabled',
