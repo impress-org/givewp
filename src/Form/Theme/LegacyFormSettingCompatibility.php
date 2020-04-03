@@ -75,8 +75,8 @@ class LegacyFormSettingCompatibility {
 		}
 
 		if ( $remainingSettings = array_diff( array_keys( $this->defaultLegacySettingValues ), $alreadySavedLegacySettings ) ) {
-			foreach ( $remainingSettings as $metaKey => $metaValue ) {
-				Give()->form_meta->update( $formId, $metaKey, $metaKey );
+			foreach ( $remainingSettings as $metaKey ) {
+				Give()->form_meta->update_meta( $formId, $metaKey, $this->defaultLegacySettingValues[ $metaKey ] );
 			}
 		}
 	}
