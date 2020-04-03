@@ -47,22 +47,22 @@ use Give_Payment as Payment;
 					</p>
 					<div class="btn-row">
 						<button class="give-btn social-btn facebook-btn">
-							Share on Facebook<i class="fab fa-facebook"></i>
+							<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 						</button>
 						<button class="give-btn social-btn twitter-btn">
-							Share on Twitter<i class="fab fa-twitter"></i>
+						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 						</button>
 					</div>
 				</div>
 				<div class="details">
-					<h3 class="headline">Donation Details</h3>
+					<h3 class="headline"><?php _e( 'Donation Details', 'give' ); ?></h3>
 
 					<!-- Donor Details -->
 					<div class="details-table">
 						<div class="details-row">
 							<i class="fas fa-user"></i>
 							<div class="detail">
-								Donor Name
+							<?php _e( 'Donor Name', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php echo "{$payment->first_name} {$payment->last_name}"; ?>
@@ -71,7 +71,7 @@ use Give_Payment as Payment;
 						<div class="details-row">
 							<i class="fas fa-envelope"></i>
 							<div class="detail">
-								Email Address
+							<?php _e( 'Email Address', 'give' ); ?>
 							</div>
 							<div class="value">
 							<?php echo $payment->email; ?>
@@ -81,7 +81,7 @@ use Give_Payment as Payment;
 						<div class="details-row">
 							<i class="fas fa-envelope"></i>
 							<div class="detail">
-								Billing Address
+								<?php _e( 'Billing Address', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php echo $payment->address['line1']; ?> <br>
@@ -101,7 +101,7 @@ use Give_Payment as Payment;
 					<div class="details-table">
 						<div class="details-row">
 							<div class="detail">
-								Payment Method
+								<?php _e( 'Payment Method', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php echo getGatewayLabel( $payment->gateway ); ?>
@@ -109,7 +109,7 @@ use Give_Payment as Payment;
 						</div>
 						<div class="details-row">
 							<div class="detail">
-								Donation Amount
+								<?php _e( 'Donation Amount', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php
@@ -126,7 +126,7 @@ use Give_Payment as Payment;
 						</div>
 						<div class="details-row">
 							<div class="detail">
-								Processing Fees
+								<?php _e( 'Processing Fees', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php
@@ -144,7 +144,7 @@ use Give_Payment as Payment;
 						</div>
 						<div class="details-row total">
 							<div class="detail">
-								Donation Total
+								<?php _e( 'Donation Total', 'give' ); ?>
 							</div>
 							<div class="value">
 								<?php
@@ -164,7 +164,7 @@ use Give_Payment as Payment;
 
 				<!-- Download Receipt -->
 				<button class="give-btn download-btn">
-					Download Receipt <i class="fas fa-file-pdf"></i>
+					<?php _e( 'Donation Receipt', 'give' ); ?> <i class="fas fa-file-pdf"></i>
 				</button>
 			</div>
 			<div class="form-footer">
