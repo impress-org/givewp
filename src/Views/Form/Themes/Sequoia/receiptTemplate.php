@@ -1,11 +1,15 @@
 <?php
 
+use function Give\Helpers\Form\Theme\get as getThemeOptions;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentId as getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
-
+use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
+
+$payment = new Payment( getPaymentId() );
+$options = getThemeOptions();
 
 ?>
 
@@ -23,10 +27,6 @@ use Give_Payment as Payment;
 		?>
 	</head>
 	<body class="give-form-templates">
-		<?php
-		$payment = new Payment( getPaymentId() );
-		?>
-
 		<div class="give-receipt-wrap give-embed-receipt">
 			<div class="give-section receipt">
 				<!-- <div class="image">
@@ -36,10 +36,10 @@ use Give_Payment as Payment;
 					<i class="fas fa-check"></i>
 				</div>
 				<h2 class="headline">
-					A great big thank you!
+					<?php echo $options['thank-you']['headline']; ?>
 				</h2>
 				<p class="message">
-					Your donation will go directly to saving the whales of our precious oceans. We’ve sent your donation receipt to <?php echo $payment->email; ?>
+					<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $payment->ID ] ); ?>
 				</p>
 				<div class="social-sharing">
 					<p class="instruction">
