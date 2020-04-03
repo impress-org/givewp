@@ -32,6 +32,18 @@ abstract class Theme {
 	public $openFailedPageInIframe = true;
 
 	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property desciption.
+	 * @var array $defaultSettings Form settings default values for form template.
+	 */
+	protected $defaultLegacySettingValues = [];
+
+	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property desciption.
+	 * @var array $mapToLegacySetting
+	 */
+	protected $mapToLegacySetting = [];
+
+	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
@@ -134,9 +146,11 @@ abstract class Theme {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @return LegacyFormSettingCompatibility
+	 * @return LegacyFormSettingCompatibility|null
 	 */
 	public function getLegacySettingHandler() {
-		return new LegacyFormSettingCompatibility();
+		return $this->mapToLegacySetting || $this->defaultLegacySettingValues ?
+			new LegacyFormSettingCompatibility( $this->mapToLegacySetting, $this->defaultLegacySettingValues ) :
+			null;
 	}
 }

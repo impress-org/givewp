@@ -18,7 +18,7 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	private $mapToLegacySetting = [
+	protected $mapToLegacySetting = [
 		'payment_information' => [
 			'checkout_label' => '_give_checkout_label',
 		],
@@ -109,12 +109,5 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	 */
 	public function getOptionsConfig() {
 		return require 'optionConfig.php';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getLegacySettingHandler() {
-		return new Theme\LegacyFormSettingCompatibility( $this->mapToLegacySetting );
 	}
 }

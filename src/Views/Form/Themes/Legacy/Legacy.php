@@ -5,12 +5,11 @@ use Give\Form\Theme;
 
 class Legacy extends Theme {
 	/**
-	 * Map form template settings to legacy form settings.
-	 *
+	 * @inheritDoc
 	 * @since 2.7.0
 	 * @var array
 	 */
-	private $mapToLegacySetting = [
+	protected $mapToLegacySetting = [
 		'display_settings' => [
 			'display_style'        => '_give_display_style',
 			'payment_display'      => '_give_payment_display',
@@ -49,12 +48,5 @@ class Legacy extends Theme {
 	 */
 	public function getOptionsConfig() {
 		return require 'optionConfig.php';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getLegacySettingHandler() {
-		return new Theme\LegacyFormSettingCompatibility( $this->mapToLegacySetting );
 	}
 }
