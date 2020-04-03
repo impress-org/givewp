@@ -9,6 +9,7 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\LegacyFormSettingCompatibility;
 use Give\Form\Theme\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
@@ -123,5 +124,19 @@ abstract class Theme {
 	 */
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+	}
+
+
+	/**
+	 * Returns LegacyFormSettingCompatibility object.
+	 *
+	 * This will help to maintain backward compatibility with legacy form settings.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return LegacyFormSettingCompatibility
+	 */
+	public function getLegacySettingHandler() {
+		return new LegacyFormSettingCompatibility();
 	}
 }

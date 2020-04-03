@@ -7,7 +7,7 @@ namespace Give\Form\Theme;
  * @since 2.7.0
  * @package Give\Form\Theme
  */
-abstract class LegacyFormSettingCompatibility {
+class LegacyFormSettingCompatibility {
 	/**
 	 * @var array $defaultSettings Form settings default values for form template.
 	 */
@@ -33,8 +33,20 @@ abstract class LegacyFormSettingCompatibility {
 	 *
 	 * @var array $mapToLegacySetting
 	 */
-	private $mapToLegacySetting = [];
+	private $mapToLegacySetting;
 
+	/**
+	 * LegacyFormSettingCompatibility constructor.
+	 *
+	 * @param array $mapToLegacySetting
+	 * @param array $defaultLegacySettingValues
+	 *
+	 * @since 2.7.0
+	 */
+	public function __construct( $mapToLegacySetting = [], $defaultLegacySettingValues = [] ) {
+		$this->mapToLegacySetting         = $mapToLegacySetting;
+		$this->defaultLegacySettingValues = array_merge( $this->defaultLegacySettingValues, $defaultLegacySettingValues );
+	}
 
 	/**
 	 * Save legacy settings.
@@ -45,7 +57,7 @@ abstract class LegacyFormSettingCompatibility {
 	 * @param array $settings
 	 * @since 2.7.0
 	 */
-	public function saveLegacySettings( $formId, $settings ) {
+	public function save( $formId, $settings ) {
 		$alreadySavedLegacySettings = [];
 
 		if ( $this->mapToLegacySetting ) {

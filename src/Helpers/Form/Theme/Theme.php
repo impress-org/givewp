@@ -54,9 +54,10 @@ function set( $formId, $settings ) {
 	 *
 	 * Note: We can remove legacy setting compatibility by not extending LegacyFormSettingCompatibility class in Theme.
 	 */
-	/* @var Theme $themeObj */
-	if ( $isUpdated && ( ( $themeObj = Give()->themes->getTheme( $theme ) ) instanceof LegacyFormSettingCompatibility ) ) {
-		$themeObj->saveLegacySettings( $formId, $settings );
+	/* @var LegacyFormSettingCompatibility $legacySettingHandler */
+	$legacySettingHandler = Give()->themes->getTheme( $theme )->getLegacySettingHandler();
+	if ( $isUpdated && $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
+		$legacySettingHandler->save( $formId, $settings );
 	}
 
 	return $isUpdated;
