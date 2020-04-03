@@ -10,12 +10,18 @@ namespace Give\Form\Theme;
 class LegacyFormSettingCompatibility {
 	/**
 	 * @var array $defaultSettings Form settings default values for form template.
+	 *
+	 * These form setting is moved to Legacy form template but legacy form needs them to render donation form HTML.
 	 */
 	private $defaultLegacySettingValues = [
 		'_give_display_style'        => 'buttons',
 		'_give_payment_display'      => 'onpage',
 		'_give_form_floating_labels' => 'disabled',
+		'_give_reveal_label'         => '',
+		'_give_checkout_label'       => '',
 		'_give_display_content'      => 'disabled',
+		'_give_content_placement'    => 'give_pre_form',
+		'_give_form_content'         => '',
 	];
 
 	/**
@@ -44,6 +50,9 @@ class LegacyFormSettingCompatibility {
 	 * @since 2.7.0
 	 */
 	public function __construct( $mapToLegacySetting = [], $defaultLegacySettingValues = [] ) {
+		$this->defaultLegacySettingValues['_give_reveal_label']   = __( 'Donate Now', 'give' );
+		$this->defaultLegacySettingValues['_give_checkout_label'] = __( 'Donate Now', 'give' );
+
 		$this->mapToLegacySetting         = $mapToLegacySetting;
 		$this->defaultLegacySettingValues = array_merge( $this->defaultLegacySettingValues, $defaultLegacySettingValues );
 	}
