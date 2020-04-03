@@ -41,12 +41,12 @@ abstract class LegacyFormSettingCompatibility {
 	 *
 	 * Note: This function must be called when saving donation form in WP Backed.
 	 *
+	 * @param int   $formId
 	 * @param array $settings
 	 * @since 2.7.0
 	 */
-	public function saveLegacySettings( $settings ) {
+	public function saveLegacySettings( $formId, $settings ) {
 		$alreadySavedLegacySettings = [];
-		$formId                     = absint( $_GET['post_ID'] );
 
 		if ( $this->mapToLegacySetting ) {
 			foreach ( $this->mapToLegacySetting as $groupId => $group ) {
