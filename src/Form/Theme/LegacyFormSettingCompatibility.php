@@ -11,7 +11,7 @@ class LegacyFormSettingCompatibility {
 	/**
 	 * @var array $defaultSettings Form settings default values for form template.
 	 *
-	 * These form setting is moved to Legacy form template but legacy form needs them to render donation form HTML.
+	 * These form settings moved to Legacy form template but legacy form needs them to render donation form HTML.
 	 */
 	private $defaultLegacySettingValues = [
 		'_give_display_style'        => 'buttons',
@@ -27,7 +27,7 @@ class LegacyFormSettingCompatibility {
 	/**
 	 * Map form template setting to form setting.
 	 *
-	 * Note: either this array will be empty of contain field id as key and legacy setting key as value grouped by group id.
+	 * Note: either this array will be empty or contain field id as key and legacy setting key as value grouped by group id.
 	 * For example:
 	 * [
 	 *    'introduction' => [
@@ -60,8 +60,9 @@ class LegacyFormSettingCompatibility {
 	/**
 	 * Save legacy settings.
 	 *
-	 * Note: This function must be called when saving donation form in WP Backed.
+	 * Note: we are using function internally to store legacy form settings when save form template setting.
 	 *
+	 * @see src/Helpers/Form/Theme/Theme.php:46  we are using this function in set function.
 	 * @param int   $formId
 	 * @param array $settings
 	 * @since 2.7.0

@@ -41,7 +41,7 @@ class Actions {
 	}
 
 	/**
-	 * Hanlde cancel login and checkout register ajax request.
+	 * Handle cancel login and checkout register ajax request.
 	 *
 	 * @since 2.7.0
 	 * @return void

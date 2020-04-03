@@ -130,7 +130,7 @@ abstract class Theme {
 	/**
 	 * Returns LegacyFormSettingCompatibility object.
 	 *
-	 * This will help to maintain backward compatibility with legacy form settings.
+	 * This function helps to maintain backward compatibility with legacy form settings.
 	 *
 	 * @since 2.7.0
 	 *
