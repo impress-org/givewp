@@ -16,13 +16,14 @@ html {
 }
 
 body {
-	margin: 10px 0;
+	margin: 10px;
 	font-family: 'Montserrat', sans-serif;
 	color: #555;
 }
 
 form {
 	margin: 0 !important;
+	position: relative;
 }
 
 // Typography
@@ -70,7 +71,6 @@ p {
 	font-size: 30px;
 	padding-top: 15px;
 	padding-bottom: 15px;
-
 	&:focus {
 		outline: none;
 	}
@@ -107,8 +107,6 @@ p {
 	padding: 10px 15px;
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	display: flex;
-	align-items: center;
 	border-width: 0 0 0 5px;
 
 	> p {
@@ -390,6 +388,7 @@ p {
 	// Amount Buttons
 	.give-donation-levels-wrap {
 		@include before-after-content-none;
+		display: grid !important;
 		grid-gap: 10px;
 		grid-template-columns: repeat(3, 1fr);
 		padding: 0;
@@ -436,7 +435,6 @@ p {
 // Payment Section
 
 .payment {
-	padding: 0 30px;
 	.heading {
 		padding: 39px 3px 0;
 		font-size: 16px;
@@ -451,6 +449,11 @@ p {
 		color: #767676;
 		text-align: center;
 	}
+
+	fieldset {
+		padding: 0 20px;
+	}
+
 	#give_checkout_user_info {
 		legend {
 			display: none;
@@ -515,6 +518,9 @@ p {
 // Fieldsets and Inputs
 
 fieldset {
+	legend {
+		display: none;
+	}
 	p {
 		position: relative;
 	}
@@ -524,6 +530,11 @@ fieldset {
 		left: 16px;
 		font-size: 12px;
 		color: #989898;
+	}
+	.give_error,
+	.give_success,
+	.give_warning {
+		margin: 20px 0;
 	}
 }
 
@@ -589,5 +600,75 @@ fieldset {
 		white-space: nowrap;
 		text-shadow: 0 -1px 0 #000;
 		box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+	}
+}
+
+// Slide Animation Styles
+
+.slide-in-right,
+.slide-in-left,
+.slide-out-right,
+.slide-out-left {
+	position: absolute;
+	width: 100%;
+}
+
+.slide-in-right {
+	animation-name: slideInRight;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+.slide-out-right {
+	animation-name: slideOutRight;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+.slide-in-left {
+	animation-name: slideInLeft;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+.slide-out-left {
+	animation-name: slideOutLeft;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translate3d(100%, 0, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes slideOutRight {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(100%, 0, 0);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		transform: translate3d(-100%, 0, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes slideOutLeft {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-100%, 0, 0);
 	}
 }
