@@ -535,7 +535,7 @@ p {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 48px auto 30px auto;
+		margin: 48px auto 20px auto;
 		height: 66px;
 		width: 66px;
 		border-radius: 50%;
@@ -544,6 +544,7 @@ p {
 		font-size: 46px;
 	}
 	.headline {
+		margin-top: 30px;
 		margin-bottom: 10px;
 	}
 
