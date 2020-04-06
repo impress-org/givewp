@@ -645,6 +645,14 @@ p {
 					text-align: right;
 					color: #555;
 				}
+
+				&.total {
+					background: #fbfbfb;
+					border-top: 1px solid #f2f2f2;
+					font-weight: 600;
+					padding: 8px 16px 10px 16px;
+					margin: 0 -16px -16px -16px;
+				}
 			}
 		}
 	}
