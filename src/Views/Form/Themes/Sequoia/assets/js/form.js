@@ -7,7 +7,7 @@
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 
 	const navigator = {
-		currentStep: null,
+		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
 			if ( steps[ step ].showErrors === true ) {
@@ -34,27 +34,57 @@
 			} else {
 				$( '.give-form-navigator', $container ).show();
 			}
-			$advanceButton.html( steps[ step ].label + '<i class="fas fa-chevron-right"></i>' );
+
 			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
-				if ( index !== step ) {
-					return obj.selector;
+				if ( index === step || index === navigator.currentStep ) {
+					return null;
 				}
+				return obj.selector;
 			} );
 			const hideSelector = hide.filter( Boolean ).join( ', ' );
 
 			$( hideSelector ).hide();
-			$( steps[ step ].selector ).show();
 
-			if ( step === steps.length - 1 ) {
-				$advanceButton.hide();
+			if ( navigator.currentStep !== step ) {
+				const directionClasses = 'slide-in-right slide-in-left slide-out-right slide-out-left';
+				const outDirection = navigator.currentStep < step ? 'left' : 'right';
+				const inDirection = navigator.currentStep < step ? 'right' : 'left';
+				$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
+				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 			} else {
-				$advanceButton.show();
+				$( steps[ navigator.currentStep ].selector ).css( 'position', 'absolute' );
 			}
-
-			steps[ step ].setup();
 			navigator.currentStep = step;
+		},
+		init: () => {
+			steps.forEach( ( step ) => {
+				if ( step.setup !== undefined ) {
+					step.setup();
+				}
+			} );
+			$advanceButton.on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.forward();
+			} );
+			$backButton.on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.back();
+			} );
+			$( '.step-tracker' ).on( 'click', function( e ) {
+				e.preventDefault();
+				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
+			} );
+			setupHeightChangeCallback( function( height, diff ) {
+				if ( diff > 10 ) {
+					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
+				} else {
+					$( '.form-footer' ).css( 'transition', '' );
+				}
+				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
+			} );
+			navigator.goToStep( 0 );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -72,12 +102,9 @@
 		{
 			id: 'introduction',
 			title: null,
-			selector: '.give-section.introduction, .give-section.income-stats, .give-section.progress-bar',
+			selector: '.give-section.introduction',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
-			setup: () => {
-
-			},
 		},
 		{
 			id: 'choose-amount',
@@ -104,8 +131,6 @@
 						$( this ).attr( 'has-tooltip', true );
 					}
 				} );
-				$( '.give-total-wrap', $container ).addClass( 'give-flex' );
-				$( '.give-donation-levels-wrap', $container ).addClass( 'give-grid' );
 			},
 		},
 		{
@@ -122,22 +147,7 @@
 		},
 	];
 
-	navigator.goToStep( 0 );
-	$advanceButton.on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.forward();
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.scrollToOffset( 0, 0 );
-		}
-	} );
-	$backButton.on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.back();
-	} );
-	$( '.step-tracker' ).on( 'click', function( e ) {
-		e.preventDefault();
-		navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
-	} );
+	navigator.init();
 
 	// Move payment information section when document load.
 	moveFieldsUnderPaymentGateway( true );
@@ -166,7 +176,7 @@
 
 		if ( ! $refresh ) {
 			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
-			element.slideUp( 'slow', function() {
+			element.slideUp( 300, function() {
 				element.remove();
 			} );
 
@@ -196,8 +206,12 @@
 		} ).then( function( showFields ) {
 			// eslint-disable-next-line no-unused-expressions
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
+
 			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 'slow' );
+			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
+				const height = $( '.payment' ).height();
+				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
+			} );
 		} );
 	}
 
@@ -235,5 +249,20 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+	}
+
+	function setupHeightChangeCallback( callback ) {
+		let lastHeight = 0;
+		function checkHeightChange() {
+			const selector = $( steps[ navigator.currentStep ].selector );
+			const changed = lastHeight !== $( selector ).height();
+			if ( changed ) {
+				const diff = lastHeight > $( selector ).height() ? lastHeight - $( selector ).height() : $( selector ).height() - lastHeight;
+				callback( $( selector ).height(), diff );
+				lastHeight = $( selector ).height();
+			}
+			window.requestAnimationFrame( checkHeightChange );
+		}
+		window.requestAnimationFrame( checkHeightChange );
 	}
 }( jQuery ) );

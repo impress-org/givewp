@@ -1,6 +1,8 @@
 <?php
 namespace Give\Helpers\Form\Theme;
 
+use Give\Form\Theme;
+use Give\Form\Theme\LegacyFormSettingCompatibility;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
 
 /**
@@ -44,5 +46,19 @@ function get( $formId = null, $themeId = '' ) {
 function set( $formId, $settings ) {
 	$theme = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
-	return Give()->form_meta->update_meta( $formId, "_give_{$theme}_form_theme_settings", $settings );
+	$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$theme}_form_theme_settings", $settings );
+
+	/*
+	 * Below code save legacy setting which connected/mapped to form template setting.
+	 * Existing form render on basis of these settings if missed then required output will not generate from give_form_shortcode -> give_get_donation_form function.
+	 *
+	 * Note: We can remove legacy setting compatibility by returning anything except LegacyFormSettingCompatibility class object.
+	 */
+	/* @var LegacyFormSettingCompatibility $legacySettingHandler */
+	$legacySettingHandler = Give()->themes->getTheme( $theme )->getLegacySettingHandler();
+	if ( $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
+		$legacySettingHandler->save( $formId, $settings );
+	}
+
+	return $isUpdated;
 }

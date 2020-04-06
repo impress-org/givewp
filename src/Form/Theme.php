@@ -9,6 +9,7 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\LegacyFormSettingCompatibility;
 use Give\Form\Theme\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
@@ -29,6 +30,18 @@ abstract class Theme {
 	 * @var bool $openFailedPageInIframe If set to false then failed page will open in window instead of iframe.
 	 */
 	public $openFailedPageInIframe = true;
+
+	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property description.
+	 * @var array $defaultSettings Form settings default values for form template.
+	 */
+	protected $defaultLegacySettingValues = [];
+
+	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property description.
+	 * @var array $mapToLegacySetting
+	 */
+	protected $mapToLegacySetting = [];
 
 	/**
 	 * template vs file array
@@ -123,5 +136,21 @@ abstract class Theme {
 	 */
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+	}
+
+
+	/**
+	 * Returns LegacyFormSettingCompatibility object.
+	 *
+	 * This function helps to maintain backward compatibility with legacy form settings.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return LegacyFormSettingCompatibility|null
+	 */
+	public function getLegacySettingHandler() {
+		return $this->mapToLegacySetting || $this->defaultLegacySettingValues ?
+			new LegacyFormSettingCompatibility( $this->mapToLegacySetting, $this->defaultLegacySettingValues ) :
+			null;
 	}
 }
