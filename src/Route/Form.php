@@ -10,6 +10,8 @@
 namespace Give\Route;
 
 use Give\Controller\Form as Controller;
+use Give\Form\LoadTheme;
+use Give\Form\Theme;
 
 defined( 'ABSPATH' ) || exit;
 

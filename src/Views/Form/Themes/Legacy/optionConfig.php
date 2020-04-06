@@ -7,19 +7,19 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			// Display Style.
-			array(
+			[
 				'name'          => __( 'Display Style', 'give' ),
 				'description'   => __( 'Set how the donations levels will display on the form.', 'give' ),
 				'id'            => 'display_style',
 				'type'          => 'radio_inline',
 				'default'       => 'buttons',
-				'options'       => array(
+				'options'       => [
 					'buttons'  => __( 'Buttons', 'give' ),
 					'radios'   => __( 'Radios', 'give' ),
 					'dropdown' => __( 'Dropdown', 'give' ),
-				),
+				],
 				'wrapper_class' => 'give-hidden _give_display_style_field',
-			),
+			],
 			[
 				'name'          => __( 'Display Options', 'give' ),
 				'desc'          => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),

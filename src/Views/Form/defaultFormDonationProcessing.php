@@ -1,13 +1,8 @@
-<?php
-use function \Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
-
-$formId = getFormId();
-?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>  style="margin-top: 0 !important;">
 	<head>
 		<meta charset="utf-8">
-		<title><?php echo apply_filters( 'the_title', get_post_field( 'post_title', $formId ) ); ?></title>
+		<title><?php _e( 'Donation Processing', 'give' ); ?></title>
 		<?php
 		/**
 		 * Fire the action hook in header
@@ -17,9 +12,7 @@ $formId = getFormId();
 	</head>
 	<body class="give-form-templates">
 		<?php
-
-		// Fetch the Give Form.
-		give_get_donation_form( [ 'id' => $formId ] );
+		echo apply_filters( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ), '' );
 
 		/**
 		 * Fire the action hook in footer

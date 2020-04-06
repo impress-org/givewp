@@ -9,10 +9,6 @@
  * @since       1.0
  */
 
-use function Give\Helpers\Form\Utils\getFailedTransactionPageURL;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isProcessingForm;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -629,9 +625,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
 		),
-		isProcessingForm()
-			? getSuccessPageURL()
-			: give_get_success_page_uri()
+		give_get_success_page_uri()
 	);
 
 	// Get the PayPal redirect uri.
@@ -657,9 +651,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		'custom'        => $payment_id,
 		'rm'            => '2',
 		'return'        => $return_url,
-		'cancel_return' => isProcessingForm()
-			? getFailedTransactionPageURL( array( 'payment-id' => $payment_id ) )
-			: give_get_failed_transaction_uri(),
+		'cancel_return' => give_get_failed_transaction_uri(),
 		'notify_url'    => $listener_url,
 		'page_style'    => give_get_paypal_page_style(),
 		'cbt'           => get_bloginfo( 'name' ),

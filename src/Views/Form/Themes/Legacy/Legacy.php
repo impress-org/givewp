@@ -4,6 +4,23 @@ namespace Give\Views\Form\Themes\Legacy;
 use Give\Form\Theme;
 
 class Legacy extends Theme {
+	/**
+	 * @inheritDoc
+	 * @since 2.7.0
+	 * @var array
+	 */
+	protected $mapToLegacySetting = [
+		'display_settings' => [
+			'display_style'        => '_give_display_style',
+			'payment_display'      => '_give_payment_display',
+			'reveal_label'         => '_give_reveal_label',
+			'checkout_label'       => '_give_checkout_label',
+			'form_floating_labels' => '_give_form_floating_labels',
+			'display_content'      => '_give_display_content',
+			'content_placement'    => '_give_content_placement',
+			'form_content'         => '_give_form_content',
+		],
+	];
 
 	/**
 	 * @inheritDoc

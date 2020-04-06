@@ -3,7 +3,10 @@
 namespace Give\Views\Form\Themes\Sequoia;
 
 use Give_Donate_Form;
+use Give_Notices;
 use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Theme\getActiveID;
+use function Give\Helpers\Form\Utils\isViewingForm;
 
 
 /**
@@ -38,13 +41,13 @@ class Actions {
 	}
 
 	/**
-	 * Hanlde cancel login and checkout register ajax request.
+	 * Handle cancel login and checkout register ajax request.
 	 *
 	 * @since 2.7.0
 	 * @return void
 	 */
 	public function cancelLoginAjaxHanleder() {
-		//add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
+		// add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 	}
 
 	/**
@@ -88,9 +91,6 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
-
-		// Override checkout button
-		add_filter( 'give_donation_form_submit_button', [ $this, 'getCheckoutButton' ] );
 	}
 
 	/**
@@ -138,10 +138,25 @@ class Actions {
 		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
 
 		return sprintf(
-			'<div class="give-submit-button-wrap give-clearfix">
-				<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
+		  '<div class="give-submit-button-wrap give-clearfix">
+		    <input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
-			</div>',
+		  </div>',
+      $label
+    );
+  }
+  
+  /**
+	 * Add load next sections button
+	 *
+	 * @since 2.7.0
+	 */
+	public function getNextButton( $id ) {
+
+		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
+
+		printf(
+			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
 			$label
 		);
 	}

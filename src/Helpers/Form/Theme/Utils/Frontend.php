@@ -4,18 +4,6 @@ namespace Give\Helpers\Form\Theme\Utils\Frontend;
 use WP_Post;
 
 /**
- * Get shortcode argument.
- * Note: This function will be useful to get donation form shortcode argument on donation form view.
- *
- * @since 2.7.0
- */
-function getShortcodeArgs() {
-	$queryString = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-
-	return array_intersect_key( $queryString, give_get_default_form_shortcode_args() );
-}
-
-/**
  * This function will return form id.
  *
  * There are two ways to auto detect form id:
@@ -36,10 +24,27 @@ function getFormId() {
 		return $post->ID;
 	}
 
-	if (
-		isset( $_REQUEST['give-form-id'] ) &&
-		( $formId = absint( $_REQUEST['give-form-id'] ) )
-	) {
+	if ( $formId = get_query_var( 'give_form_id' ) ) {
+		$form = current(
+			get_posts(
+				[
+					'name'        => $formId,
+					'numberposts' => 1,
+					'post_type'   => 'give_forms',
+				]
+			)
+		);
+
+		return $form->ID;
+	}
+
+	// Get form Id on ajax request.
+	if ( isset( $_REQUEST['give_form_id'] ) && ( $formId = absint( $_REQUEST['give_form_id'] ) ) ) {
+		return $formId;
+	}
+
+	// Get form Id on ajax request.
+	if ( isset( $_REQUEST['form_id'] ) && ( $formId = absint( $_REQUEST['form_id'] ) ) ) {
 		return $formId;
 	}
 

@@ -9,7 +9,9 @@
 
 namespace Give\Form;
 
+use Give\Form\Theme\LegacyFormSettingCompatibility;
 use Give\Form\Theme\Options;
+use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,14 +22,37 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Theme {
 	/**
+	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
+	 */
+	public $openSuccessPageInIframe = true;
+
+	/**
+	 * @var bool $openFailedPageInIframe If set to false then failed page will open in window instead of iframe.
+	 */
+	public $openFailedPageInIframe = true;
+
+	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property description.
+	 * @var array $defaultSettings Form settings default values for form template.
+	 */
+	protected $defaultLegacySettingValues = [];
+
+	/**
+	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property description.
+	 * @var array $mapToLegacySetting
+	 */
+	protected $mapToLegacySetting = [];
+
+	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
 	 * @var array
 	 */
 	public $templates = [
-		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+		'form'                => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
+		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
+		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
 	];
 
 	/**
@@ -88,5 +113,44 @@ abstract class Theme {
 	 */
 	public function getOptions() {
 		return Options::fromArray( $this->getOptionsConfig() );
+	}
+
+	/**
+	 * Get failed/cancelled donation message.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getFailedDonationMessage() {
+		return esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' );
+	}
+
+
+	/**
+	 * Get failed donation page URL.
+	 *
+	 * @param int $formId
+	 *
+	 * @since 2.7.0
+	 * @return mixed
+	 */
+	public function getFailedPageURL( $formId ) {
+		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+	}
+
+
+	/**
+	 * Returns LegacyFormSettingCompatibility object.
+	 *
+	 * This function helps to maintain backward compatibility with legacy form settings.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return LegacyFormSettingCompatibility|null
+	 */
+	public function getLegacySettingHandler() {
+		return $this->mapToLegacySetting || $this->defaultLegacySettingValues ?
+			new LegacyFormSettingCompatibility( $this->mapToLegacySetting, $this->defaultLegacySettingValues ) :
+			null;
 	}
 }

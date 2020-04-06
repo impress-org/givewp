@@ -10,14 +10,29 @@
 namespace Give\Controller;
 
 use Give\Form\LoadTheme;
+use Give\Form\Theme;
+use Give_Notices;
 use WP_Post;
+use function Give\Helpers\Form\Theme\getActiveID;
 use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getShortcodeArgs;
+use function Give\Helpers\Form\Utils\isConfirmingDonation;
+use function Give\Helpers\Form\Utils\canShowFailedDonationError;
+use function Give\Helpers\Form\Utils\createFailedPageURL;
+use function Give\Helpers\Form\Utils\createSuccessPageURL;
+use function Give\Helpers\Form\Utils\getIframeParentURL;
+use function Give\Helpers\Form\Utils\getLegacyFailedPageURL;
+use function Give\Helpers\Form\Utils\getSuccessPageURL;
+use function Give\Helpers\Form\Utils\inIframe;
+use function Give\Helpers\Form\Utils\isIframeParentFailedPageURL;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Form\Utils\isProcessingForm;
+use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
+use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
 use function Give\Helpers\Form\Utils\isViewingForm;
-use function Give\Helpers\Form\Utils\isViewingFormFailedTransactionPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
+use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
+use function Give\Helpers\removeDonationAction;
+use function Give\Helpers\switchRequestedURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,66 +49,112 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		add_action( 'template_redirect', [ $this, 'load' ], 0 );
-		add_action( 'init', [ $this, 'loadThemeOnAjaxRequest' ] );
-		add_action( 'init', [ $this, 'embedFormSuccessURIHandler' ], 1, 3 );
-		add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
+		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
+		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
+		add_action( 'template_redirect', [ $this, 'loadReceiptView' ], 1 );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
 	}
 
 	/**
-	 * Load view
+	 * Load form template on frontend.
+	 *
+	 * @since 2.7.0
+	 */
+	public function loadTemplateOnFrontend() {
+		$inIframe = inIframe();
+
+		if ( $inIframe || isProcessingForm() ) {
+			$this->loadTheme();
+
+			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
+		}
+	}
+
+	/**
+	 * Load receipt view.
+	 *
+	 * @since 2.7.0
+	 */
+	public function loadReceiptView() {
+		// Handle success page.
+		if ( isViewingFormReceipt() && ! isLegacyForm() ) {
+			/* @var Theme $formTemplate */
+			$formTemplate = Give()->themes->getTheme();
+
+			if ( $formTemplate->openSuccessPageInIframe || inIframe() ) {
+				// Set header.
+				nocache_headers();
+				header( 'HTTP/1.1 200 OK' );
+
+				// Show donation processing template
+				if ( isConfirmingDonation() ) {
+					include $formTemplate->getTemplate( 'donation-processing' );
+					exit();
+				}
+
+				// Render receipt with in iframe.
+				include $formTemplate->getTemplate( 'receipt' );
+				exit();
+			}
+
+			// Render receipt on success page in iframe.
+			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ], 1 );
+		}
+	}
+
+	/**
+	 * Load donation form view.
 	 *
 	 * @since 2.7.0
 	 * @global WP_Post $post
 	 */
-	public function load() {
-		$isViewingForm    = isViewingForm();
-		$isViewingReceipt = isViewingFormReceipt() || isViewingFormFailedTransactionPage();
-		$action           = ! empty( $_REQUEST['giveDonationAction'] ) ? give_clean( $_REQUEST['giveDonationAction'] ) : '';
+	public function loadDonationFormView() {
+		/* @var Theme $formTemplate */
+		$formTemplate = Give()->themes->getTheme();
 
-		// Exit: we are not on embed form's main page or receipt page.
-		if ( ! ( $isViewingForm || $isViewingReceipt ) ) {
-			return;
+		// Handle failed donation error.
+		if ( canShowFailedDonationError() ) {
+			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
 
-		// Exit: redirect donor to receipt or fail transaction page.
-		if (
-			! empty( $_REQUEST['giveDonationAction'] ) &&
-			$isViewingForm &&
-			$action &&
-			in_array( $action, [ 'showReceipt', 'failedDonation' ] )
-		) {
-			if ( 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-				wp_redirect( give_get_success_page_url( '?giveDonationAction=showReceipt' ) );
-			} elseif ( 'failedDonation' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
-				wp_redirect( give_get_failed_transaction_uri( '?giveDonationAction=failedDonation' ) );
-			}
+			// Handle donation form.
+		if ( isViewingForm() ) {
+			// Set header.
+			nocache_headers();
+			header( 'HTTP/1.1 200 OK' );
 
+			include $formTemplate->getTemplate( 'form' );
 			exit();
 		}
+	}
 
-		// Set header.
-		nocache_headers();
-		header( 'HTTP/1.1 200 OK' );
+	/**
+	 * Show failed transaction error on donation form.
+	 *
+	 * @since 2.7.0
+	 */
+	public function setFailedTransactionError() {
+		Give_Notices::print_frontend_notice(
+			Give()->themes->getTheme( getActiveID() )->getFailedDonationMessage(),
+			true,
+			'error'
+		);
+	}
 
-		if ( $isViewingForm ) {
-			$shortcodeArgs = getShortcodeArgs();
-			$this->setupGlobalPost();
+	/**
+	 * Handle receipt shortcode on success page
+	 *
+	 * @since 2.7.0
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	public function showReceiptInIframeOnSuccessPage( $content ) {
+		$receiptShortcode = getReceiptShortcodeFromConfirmationPage();
+		$content          = str_replace( $receiptShortcode, give_form_shortcode( [] ), $content );
 
-			require_once $this->loadTheme()
-							  ->getTheme()
-							  ->getTemplate( 'form' );
-
-			exit();
-		}
-
-		if ( $isViewingReceipt ) {
-			require_once $this->loadTheme()
-							  ->getTheme()
-							  ->getTemplate( 'receipt' );
-			exit();
-		}
+		return $content;
 	}
 
 
@@ -110,106 +171,153 @@ class Form {
 		return $themeLoader;
 	}
 
-
-	/**
-	 * Setup global $post
-	 *
-	 * @global WP_Post $post
-	 */
-	private function setupGlobalPost() {
-		global $post;
-
-		$form = get_query_var( 'give_form_id' );
-
-		// Get post.
-		$post = current(
-			get_posts(
-				[
-					'post_type'   => 'give_forms',
-					'name'        => get_query_var( 'give_form_id' ),
-					'numberposts' => 1,
-				]
-			)
-		);
-
-		if ( ! $form || null === $post ) {
-			wp_die( __( 'Donation form does not exist', 'give' ) );
-		}
-	}
-
-
 	/**
 	 * Load theme on ajax request.
 	 *
 	 * @since 2.7.0
 	 */
 	public function loadThemeOnAjaxRequest() {
-		if (
-			defined( 'DOING_AJAX' ) &&
-			isset( $_REQUEST['action'] ) &&
-			0 === strpos( $_REQUEST['action'], 'give_' )
-		) {
-			global $post;
-
-			// Get form ID.
-			if ( isset( $_REQUEST['give_form_id'] ) ) {
-				$formID = absint( $_REQUEST['give_form_id'] );
-			} elseif ( isset( $_REQUEST['form_id'] ) ) {
-				$formID = absint( $_REQUEST['form_id'] );
-			} else {
-				return;
-			}
-
-			$post        = get_post( $formID );
-			$themeLoader = new LoadTheme();
-			$themeLoader->init();
+		if ( isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
+			$this->loadTheme();
 		}
 	}
 
 
 	/**
-	 * Add filter to success page url.
+	 * Handle donor redirect when process donations.
+	 *
+	 * This function handle donor redirect when process donation with offsite checkout and on-site checkout.
+	 * Donor will immediately redirect to success page aka receipt page for on-site payment process. That means success page remain same (as set in admin settings).
+	 * For offsite checkout donor will redirect to embed form parent page. A query parameter will be add to url giveDonationAction=showReceipt to handle further cases.
 	 *
 	 * @since 2.7.0
 	 */
-	public function embedFormSuccessURIHandler() {
-		if ( ! isProcessingForm() ) {
-			return;
+	public function embedFormRedirectURIHandler() {
+		if ( isProcessingForm() ) {
+			add_filter( 'give_get_success_page_uri', [ self::class, 'editSuccessPageURI' ] );
+			add_filter( 'give_get_failed_transaction_uri', [ self::class, 'editFailedPageURI' ] );
+			add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
+			add_filter( 'wp_redirect', [ $this, 'handleOffSiteCheckoutRedirect' ] );
 		}
-
-		add_filter( 'give_get_success_page_uri', [ $this, 'addQueryParamsToSuccessURI' ] );
 	}
 
 
 	/**
-	 * Add query param to success page
+	 * Return current page aka embed form parent url as success page.
 	 *
-	 * @since 2.7.0
-	 * @param string $successPage
+	 * @param string $url
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
-	public function addQueryParamsToSuccessURI( $successPage ) {
-		return add_query_arg( [ 'giveDonationAction' => 'showReceipt' ], $successPage );
+	public static function editSuccessPageURI( $url ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme();
+
+		return $template->openSuccessPageInIframe ?
+			createSuccessPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
+			$url;
 	}
+
+	/**
+	 * Return current page aka embed form parent url as failed page.
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public static function editFailedPageURI( $url ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme( getActiveID() );
+
+		return $template->openFailedPageInIframe ?
+			createFailedPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
+			$url;
+	}
+
 
 	/**
 	 * Handle pre payment processing redirect.
 	 *
-	 * @since 2.7.0
+	 * These redirects mainly happen when donation form data is not valid.
+	 *
 	 * @param string $redirect
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
-		if ( ! isProcessingForm() ) {
-			return $redirect;
-		}
-
-		$url    = explode( '?', $redirect );
-		$url[0] = Give()->routeForm->getURL( absint( $_REQUEST['give-form-id'] ) );
+		$url    = explode( '?', $redirect, 2 );
+		$url[0] = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $_REQUEST['give-form-id'] ) ) );
 
 		return implode( '?', $url );
+	}
+
+	/**
+	 * Handle offsite payment checkout.
+	 *
+	 * In case of offsite checkout, this function will load a intermediate template to redirect embed parent page.
+	 *
+	 * @since 2.7.0
+	 * @param string $location
+	 *
+	 * @return mixed
+	 */
+	public function handleOffSiteCheckoutRedirect( $location ) {
+		/* @var Theme $template */
+		$template = Give()->themes->getTheme();
+
+		// Exit if redirect is on same website.
+		if ( 0 === strpos( $location, home_url() ) ) {
+			if ( isIframeParentSuccessPageURL( $location ) ) {
+				$location = getSuccessPageURL();
+				$location = removeDonationAction( $location );
+
+				// Open link in window?
+				if ( ! $template->openSuccessPageInIframe ) {
+					$this->openLinkInWindow( $location );
+				}
+
+				return $location;
+			}
+
+			if ( isIframeParentFailedPageURL( $location ) ) {
+				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( getFormId() ) );
+				$location = removeDonationAction( $location );
+
+				// Open link in window?
+				if ( ! $template->openFailedPageInIframe ) {
+					$this->openLinkInWindow( getLegacyFailedPageURL() );
+				}
+
+				return $location;
+			}
+
+			// Add comment here.
+			if (
+				( ! $template->openSuccessPageInIframe && 0 === strpos( $location, getSuccessPageURL() ) ) ||
+				( ! $template->openFailedPageInIframe && 0 === strpos( $location, getLegacyFailedPageURL() ) )
+			) {
+				$this->openLinkInWindow( $location );
+			}
+
+			return $location;
+		}
+
+		$this->openLinkInWindow( $location );
+	}
+
+
+	/**
+	 * Handle link opening in window instead of iframe.
+	 *
+	 * @since 2.7.0
+	 * @param string $location
+	 */
+	private function openLinkInWindow( $location ) {
+		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
+		exit();
 	}
 
 	/**
