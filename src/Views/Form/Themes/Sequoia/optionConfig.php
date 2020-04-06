@@ -189,7 +189,7 @@ return [
 					'enabled'  => __( 'Enabled', 'give' ),
 					'disabled' => __( 'Disabled', 'give' ),
 				],
-				'default' => 'enabled',
+				'default' => 'disabled',
 			],
 		],
 	],
