@@ -68,7 +68,8 @@ import setupChosen from './utils/setupChosen';
 	 */
 	$( function() {
 		// Trigger events.
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		// $( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		$( '.give-select-chosen' ).trigger( 'change' );
 	} );
 
 	/**
@@ -90,10 +91,11 @@ import setupChosen from './utils/setupChosen';
 		}
 
 		// Trigger events.
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		// $( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
 
 		// Setup chosen.
 		setupChosen( $el );
 		$el.next().css( { width: '100%' } );
+		$el.trigger( 'change' );
 	} );
 }( jQuery ) );
