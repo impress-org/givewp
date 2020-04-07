@@ -217,11 +217,29 @@ class Give_Forms_Widget extends WP_Widget {
 			<fieldset class="js-new-form-template-settings give-hidden">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
+				<?php
+				// Widget: Display Style.
+
+				$displayStyleFieldId = esc_attr( $this->get_field_id( 'display_style' ) ) . uniqid();
+				?>
+				<p class="give_forms_display_style_setting_row">
+					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
+					<label for="<?php echo $displayStyleFieldId; ?>-onpage"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
+					<label for="<?php echo $displayStyleFieldId; ?>-button"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
+				</p>
+
 				<?php // Widget: Introduction Text. ?>
 				<p class="give_forms_introduction_text_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>"><?php esc_html_e( 'Widget Text:', 'give' ); ?></label>
-					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'introduction_text' ) ); ?>" value="<?php echo esc_attr( $instance['introduction_text'] ); ?>" /><br>
-					<small class="give-field-description"><?php esc_html_e( 'The button label for displaying the additional payment fields.', 'give' ); ?></small>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>"><?php esc_html_e( 'Widget Text:', 'give' ); ?></label><br>
+					<textarea id="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'introduction_text' ) ); ?>" class="widefat"><?php echo esc_textarea( $instance['introduction_text'] ); ?></textarea><br>
+					<small class="give-field-description"><?php esc_html_e( 'Provide an introduction text to invite the visitor to become a donor. Leave this blank to not display any text.', 'give' ); ?></small>
+				</p>
+
+				<?php // Widget: Continue Button Text. ?>
+				<p class="give_forms_button_text_setting_row">
+					<label for="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_text' ) ); ?>" value="<?php echo esc_attr( $instance['button_text'] ); ?>" /><br>
+					<small class="give-field-description"><?php esc_html_e( 'This label will appear on button.', 'give' ); ?></small>
 				</p>
 			</fieldset>
 
