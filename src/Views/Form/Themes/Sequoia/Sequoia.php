@@ -12,17 +12,6 @@ use function Give\Helpers\Form\Theme\get as getThemeOptions;
  * @package Give\Form\Theme
  */
 class Sequoia extends Theme implements Hookable, Scriptable {
-	
-	/**
-	 * Sequoia templates
-	 *
-	 * @since 2.7.0
-	 * @var array
-	 */
-	public $templates = [
-		'form'    => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt' => GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/receiptTemplate.php',
-	];
 
 	/**
 	 * Map form template settings to legacy form settings.
@@ -35,6 +24,13 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 			'checkout_label' => '_give_checkout_label',
 		],
 	];
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getReceiptView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/receiptTemplate.php';
+	}
 
 	/**
 	 * @inheritDoc
