@@ -147,16 +147,19 @@ class Give_Forms_Widget extends WP_Widget {
 
 			<?php // Widget: Give Form. ?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php esc_html_e( 'GiveWP Form:', 'give' ); ?></label>
-				<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
-					<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
-					<?php foreach ( $give_forms as $give_form ) { ?>
-						<?php /* translators: %s: Title */ ?>
-						<?php $form_title = empty( $give_form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $give_form->ID ) : $give_form->post_title; ?>
-						<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo esc_html( $form_title ); ?></option>
-					<?php } ?>
-				</select><br>
-				<small class="give-field-description"><?php esc_html_e( 'Select a GiveWP Form to embed in this widget.', 'give' ); ?></small>
+				<?php
+				echo Give()->html->forms_dropdown(
+					[
+						'selected'    => $instance['id'],
+						'chosen'      => true,
+						'number'      => 2,
+						'placeholder' => esc_attr__( '- Select Form -', 'give' ),
+						'query_tags'  => [
+							'post_status' => 'publish',
+						],
+					]
+				);
+				?>
 			</p>
 
 			<?php // Widget: Display Style. ?>
