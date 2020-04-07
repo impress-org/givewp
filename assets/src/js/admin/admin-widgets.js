@@ -1,3 +1,4 @@
+/* globals jQuery, Give*/
 /*!
  * Give Admin Widgets JS
  *
@@ -7,6 +8,8 @@
  * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+
+import setupChosen from './utils/setupChosen';
 
 ( function( $ ) {
 	/**
@@ -35,5 +38,22 @@
 	$( document ).ajaxSuccess( function( e, xhr, settings ) {
 		continue_button_setting_js();
 		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+	} );
+
+	$( document ).ajaxComplete( function( event, request, settings ) {
+		const action = Give.fn.getParameterByName( 'action', settings.data ),
+			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
+			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data );
+
+		// Exit if not saving widget.
+		if ( 'save-widget' !== action ) {
+			return false;
+		}
+
+		const $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
+			  $el = $( '.give-select-chosen', $widget );
+
+		setupChosen( $el );
+		$el.next().css( { width: '100%' } );
 	} );
 }( jQuery ) );
