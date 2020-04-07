@@ -147,7 +147,7 @@ class Give_Forms_Widget extends WP_Widget {
 				printf(
 					'<label for="%1$s">%2$s</label>',
 					$selectFieldId,
-					esc_html__( 'GiveWP Form:', 'give' )
+					esc_html__( 'Donation Form:', 'give' )
 				);
 
 				echo Give()->html->forms_dropdown(
@@ -221,11 +221,14 @@ class Give_Forms_Widget extends WP_Widget {
 				// Widget: Display Style.
 
 				$displayStyleFieldId = esc_attr( $this->get_field_id( 'display_style' ) ) . uniqid();
+
+				// Set default value for form template other then legacy.
+				$instance['display_style'] = ! in_array( [ 'button', 'onpage' ], $instance['display_style'] ) ? 'button' : $instance['display_style'];
 				?>
 				<p class="give_forms_display_style_setting_row">
 					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
-					<label for="<?php echo $displayStyleFieldId; ?>-onpage"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
-					<label for="<?php echo $displayStyleFieldId; ?>-button"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
+					<label for="<?php echo $displayStyleFieldId; ?>-button"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
+					<label for="<?php echo $displayStyleFieldId; ?>-onpage"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
 				</p>
 
 				<?php // Widget: Introduction Text. ?>
