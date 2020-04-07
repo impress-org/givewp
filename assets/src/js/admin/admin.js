@@ -20,7 +20,6 @@ import * as Modals from '../plugins/modal.js';
 import './admin-forms';
 import './admin-settings';
 import './admin-export';
-import './admin-widgets';
 import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
