@@ -56,7 +56,7 @@ class Give_Forms_Widget extends WP_Widget {
 	public function admin_widget_scripts( $hook ) {
 
 		// Directories of assets.
-		$js_dir = GIVE_PLUGIN_URL . 'assets/src/js/admin/';
+		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/js/';
 
 		// Use minified libraries if SCRIPT_DEBUG is turned off.
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
