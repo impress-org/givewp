@@ -75,6 +75,6 @@ function getFormId() {
  */
 function getPaymentId() {
 	$session = give_get_purchase_session();
-	return $session['donation_id'];
+	return isset( $session['donation_id'] ) ? intval( $session['donation_id'] ) : null;
 }
 
