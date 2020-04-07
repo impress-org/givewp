@@ -34,6 +34,7 @@ const config = {
 		'give-sequoia-theme': [ './src/Views/Form/Themes/Sequoia/assets/css/form.scss', './src/Views/Form/Themes/Sequoia/assets/js/form.js' ],
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
+		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
