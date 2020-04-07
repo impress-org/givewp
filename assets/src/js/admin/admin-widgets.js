@@ -1,4 +1,4 @@
-/* globals jQuery, Give*/
+/* globals jQuery, Give, ajaxurl */
 /*!
  * Give Admin Widgets JS
  *
@@ -55,5 +55,26 @@ import setupChosen from './utils/setupChosen';
 
 		setupChosen( $el );
 		$el.next().css( { width: '100%' } );
+	} );
+
+	jQuery( document ).on( 'change', 'select.give-select-chosen', function() {
+		const $this = $( this );
+
+		jQuery.post(
+			ajaxurl,
+			{
+				action: 'give_get_form_template_id',
+				formId: $this.val(),
+				savewidgets: $( '#_wpnonce_widgets' ).val(),
+			},
+			function( response ) {
+				// Exit if result is not successful.
+				if ( true !== response.success ) {
+					return false;
+				}
+
+				console.log( response );
+			}
+		);
 	} );
 }( jQuery ) );
