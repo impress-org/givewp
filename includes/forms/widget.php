@@ -126,17 +126,8 @@ class Give_Forms_Widget extends WP_Widget {
 
 		// Backward compatibility: Set float labels as default if, it was set as empty previous.
 		$instance['float_labels'] = empty( $instance['float_labels'] ) ? 'global' : $instance['float_labels'];
-
-		// Query Give Forms.
-		$args = array(
-			'post_type'      => 'give_forms',
-			'posts_per_page' => - 1,
-			'post_status'    => 'publish',
-		);
-
-		$give_forms = get_posts( $args );
 		?>
-		<div class="give_forms_widget_container">
+		<div class="give_forms_widget_container"
 
 			<?php // Widget: widget Title. ?>
 			<p>
@@ -148,12 +139,22 @@ class Give_Forms_Widget extends WP_Widget {
 			<?php // Widget: Give Form. ?>
 			<p>
 				<?php
+				$selectFieldName = esc_attr( $this->get_field_name( 'id' ) );
+				$selectFieldId   = esc_attr( sanitize_key( str_replace( '-', '_', esc_attr( $this->get_field_id( 'id' ) ) ) ) );
+				printf(
+					'<label for="%1$s">%2$s</label>',
+					$selectFieldId,
+					esc_html__( 'GiveWP Form:', 'give' )
+				);
+
 				echo Give()->html->forms_dropdown(
 					[
 						'selected'    => $instance['id'],
+						'id'          => $selectFieldId,
+						'name'        => $selectFieldName,
 						'chosen'      => true,
 						'number'      => 2,
-						'placeholder' => esc_attr__( '- Select Form -', 'give' ),
+						'placeholder' => esc_attr__( '- Select -', 'give' ),
 						'query_tags'  => [
 							'post_status' => 'publish',
 						],
