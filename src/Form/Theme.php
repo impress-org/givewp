@@ -114,21 +114,6 @@ abstract class Theme {
 	 */
 	abstract public function getOptionsConfig();
 
-
-	/**
-	 * Theme template manager get template according to view.
-	 * Note: Do not forget to call this function before close bracket in overridden getTemplate method
-	 *
-	 * @param string $template
-	 *
-	 * @return string
-	 * @since 2.7.0
-	 */
-	public function getTemplate( $template ) {
-		return $this->templates[ $template ];
-	}
-
-
 	/**
 	 * Get theme options
 	 *
