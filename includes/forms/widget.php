@@ -119,7 +119,7 @@ class Give_Forms_Widget extends WP_Widget {
 			'float_labels'          => 'global',
 			'display_style'         => 'modal',
 			'show_content'          => 'none',
-			'continue_button_title' => '',
+			'continue_button_title' => __( 'Continue', 'give' ),
 			'introduction_text'     => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
 			'button_text'           => __( 'Donate Now', 'give' ),
 			'button_color'          => '',
@@ -167,7 +167,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</p>
 
 			<fieldset class="js-legacy-form-template-settings give-hidden">
-				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ' ); ?></legend>
+				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
 					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
@@ -215,7 +215,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</fieldset>
 
 			<fieldset class="js-new-form-template-settings give-hidden">
-				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ' ); ?></legend>
+				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
 				<?php // Widget: Introduction Text. ?>
 				<p class="give_forms_introduction_text_setting_row">
