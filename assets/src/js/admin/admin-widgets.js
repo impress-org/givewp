@@ -13,52 +13,21 @@ import setupChosen from './utils/setupChosen';
 
 ( function( $ ) {
 	/**
-	 * Show/Hide continue button tile setting on basis of display setting for Give Form widget.
+	 * Add events
 	 */
-	const continue_button_setting_js = function() {
-		$( '.widget-liquid-right' ).on( 'change', '.give_forms_display_style_setting_row input', function() {
-			const $parent = $( this ).parents( 'p' ),
-				$continue_button_title = $parent.next();
 
-			if ( 'onpage' === $( 'input:checked', $parent ).val() ) {
-				$continue_button_title.hide();
-			} else {
-				$continue_button_title.show();
-			}
-		} );
-	};
-
-	//On DOM Ready
-	$( function() {
-		continue_button_setting_js();
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
-	} );
-
-	//Function to Refresh jQuery toggles for Yelp Widget Pro upon saving specific widget
-	$( document ).ajaxSuccess( function( e, xhr, settings ) {
-		continue_button_setting_js();
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
-	} );
-
-	$( document ).ajaxComplete( function( event, request, settings ) {
-		const action = Give.fn.getParameterByName( 'action', settings.data ),
-			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
-			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data );
-
-		// Exit if not saving widget.
-		if ( 'save-widget' !== action ) {
-			return false;
-		}
-
-		const $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
-			  $el = $( '.give-select-chosen', $widget );
-
-		setupChosen( $el );
-		$el.next().css( { width: '100%' } );
-	} );
-
+	/* Form change handler. */
 	jQuery( document ).on( 'change', 'select.give-select-chosen', function() {
-		const $this = $( this );
+		const $this = jQuery( this ),
+			$container = jQuery( this ).closest( '.give_forms_widget_container' ),
+			$loader = jQuery( '.js-loader', $container ),
+			$oldSettings = jQuery( '.js-legacy-form-template-settings', $container ),
+			$newSettings = jQuery( '.js-new-form-template-settings', $container );
+
+		$oldSettings.addClass( 'give-hidden' );
+		$newSettings.addClass( 'give-hidden' );
+
+		$loader.removeClass( 'give-hidden' );
 
 		jQuery.post(
 			ajaxurl,
@@ -68,13 +37,63 @@ import setupChosen from './utils/setupChosen';
 				savewidgets: $( '#_wpnonce_widgets' ).val(),
 			},
 			function( response ) {
-				// Exit if result is not successful.
-				if ( true !== response.success ) {
-					return false;
-				}
+				$loader.addClass( 'give-hidden' );
 
-				console.log( response );
+				// Exit if result is not successful.
+				if ( true === response.success ) {
+					if ( 'legacy' === response.data ) {
+						$oldSettings.removeClass( 'give-hidden' );
+					} else {
+						$newSettings.removeClass( 'give-hidden' );
+					}
+				}
 			}
 		);
+	} );
+
+	/* Display style change handler. */
+	jQuery( '.widget-liquid-right' ).on( 'change', '.give_forms_display_style_setting_row input', function() {
+		const $parent = $( this ).parents( 'p' ),
+			  $continue_button_title = $parent.next();
+
+		if ( 'onpage' === $( 'input:checked', $parent ).val() ) {
+			$continue_button_title.hide();
+		} else {
+			$continue_button_title.show();
+		}
+	} );
+
+	/**
+	 * On DOM Ready
+	 */
+	$( function() {
+		// Trigger events.
+		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+	} );
+
+	/**
+	 * When widget save successfully.
+	 */
+	$( document ).ajaxSuccess( function( e, xhr, settings ) {
+		/**
+		 * Setup chosen field.
+		 */
+		const action = Give.fn.getParameterByName( 'action', settings.data ),
+			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
+			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
+			  $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
+			  $el = $( '.give-select-chosen', $widget );
+
+		// Exit if not saving widget.
+		if ( 'save-widget' !== action ) {
+			return false;
+		}
+
+		// Trigger events.
+		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+
+		// Setup chosen.
+		setupChosen( $el );
+		$el.next().css( { width: '100%' } );
 	} );
 }( jQuery ) );
