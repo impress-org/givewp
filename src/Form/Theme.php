@@ -44,16 +44,39 @@ abstract class Theme {
 	protected $mapToLegacySetting = [];
 
 	/**
-	 * template vs file array
+	 * Get form view filepath
 	 *
 	 * @since 2.7.0
-	 * @var array
+	 *
+	 * @return string
 	 */
-	public $templates = [
-		'form'                => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
-		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
-	];
+	public function getFormView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+	}
+
+	/**
+	 * Get receipt view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getReceiptView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
+	}
+
+	/**
+	 * Get donation processing view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getDonationProcessingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
+	}
+
+
 
 	/**
 	 * return theme ID.
