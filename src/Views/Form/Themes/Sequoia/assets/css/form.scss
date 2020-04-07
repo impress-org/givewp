@@ -545,7 +545,7 @@ p {
 	}
 	.headline {
 		margin-top: 30px;
-		margin-bottom: 10px;
+		margin-bottom: 6px;
 	}
 
 	.message {
@@ -615,6 +615,7 @@ p {
 		margin: 0 20px;
 
 		.headline {
+			margin-top: 16px !important;
 			font-weight: 500;
 			font-size: 16px;
 			line-height: 20px;
