@@ -33,6 +33,13 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
+	public function getFormView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/views/form.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getReceiptView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/views/receipt.php';
 	}
