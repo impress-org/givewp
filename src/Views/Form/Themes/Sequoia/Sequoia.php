@@ -33,6 +33,13 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
+	public function getReceiptView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/receiptTemplate.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function loadHooks() {
 		$actions = new Actions();
 		$actions->init();
@@ -82,6 +89,9 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 			.give-input:focus, .give-select:focus {
 				border: 1px solid {$primaryColor}!important;
 			}
+			.checkmark {
+				border-color: {$primaryColor}!important;
+				color: {$primaryColor}!important;
 		";
 		wp_add_inline_style( 'give-sequoia-theme-css', $dynamic_css );
 

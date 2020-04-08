@@ -180,6 +180,17 @@ return [
 				],
 				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
+			[
+				'name'    => __( 'Enable Social Sharing', 'give' ),
+				'desc'    => __( 'Should the thank you page include a social sharing section?', 'give' ),
+				'id'      => 'sharing',
+				'type'    => 'radio_inline',
+				'options' => [
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				],
+				'default' => 'disabled',
+			],
 		],
 	],
 ];
