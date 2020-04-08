@@ -1,5 +1,5 @@
 <?php
-namespace Give\Form\Theme;
+namespace Give\Form\Template;
 
 use Give\FormAPI\Group;
 
@@ -7,7 +7,7 @@ use Give\FormAPI\Group;
  * Class Options
  *
  * @since 2.7.0
- * @package Give\Form\Theme
+ * @package Give\Form\Template
  */
 class Options {
 	/**

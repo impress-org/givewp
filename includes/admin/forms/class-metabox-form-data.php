@@ -11,11 +11,11 @@
  * @since       1.8
  */
 
-use Give\Form\Theme;
+use Give\Form\Template;
 use Give\FormAPI\Fields;
 use Give\FormAPI\Group;
-use function Give\Helpers\Form\Theme\get as getTheme;
-use function Give\Helpers\Form\Theme\set as SetTheme;
+use function Give\Helpers\Form\Template\get as getTheme;
+use function Give\Helpers\Form\Template\set as SetTheme;
 
 /**
  * Give_Meta_Box_Form_Data Class.
@@ -63,7 +63,7 @@ class Give_MetaBox_Form_Data {
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
-		add_action( 'give_save__give_form_template', array( $this, 'save_form_theme_settings' ), 10, 3 );
+		add_action( 'give_save__give_form_template', array( $this, 'save_form_template_settings' ), 10, 3 );
 
 		// cmb2 old setting loaders.
 		// add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
@@ -1046,13 +1046,13 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
-	 * Save form theme setting handler
+	 * Save form template setting handler
 	 *
 	 * @param string $meta_key
 	 * @param string $new_theme
 	 * @param int    $formID
 	 */
-	public function save_form_theme_settings( $meta_key, $new_theme, $formID ) {
+	public function save_form_template_settings( $meta_key, $new_theme, $formID ) {
 		$options = $_POST[ $new_theme ];
 
 		// Exit
@@ -1060,15 +1060,15 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
-		/* @var Theme $theme */
-		$theme = Give()->themes->getTheme( $new_theme );
+		/* @var Template $theme */
+		$theme = Give()->templates->getTemplate( $new_theme );
 
 		// If selected theme is not registered then do not save it's options.
 		if ( null === $theme ) {
 			return;
 		}
 
-		/* @var Theme\Options $themeOptions */
+		/* @var Template\Options $themeOptions */
 		$themeOptions = $theme->getOptions();
 		$saveOptions  = getTheme( $formID );
 

@@ -2,8 +2,8 @@
 namespace Give\Helpers\Form\Utils;
 
 use Give\Controller\Form;
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\getQueryParamFromURL;
 
 /**
