@@ -17,8 +17,7 @@ import setupChosen from './utils/setupChosen';
 	 */
 	jQuery( function() {
 		const $sidebarContainer = jQuery( '.widget-liquid-right' ),
-			  $els = jQuery( '.give-select', '.widget-liquid-right' ),
-			  $colorPickerFields = jQuery( '.give_forms_button_color_setting_row input', '.widget-liquid-right' );
+			  $els = jQuery( '.give-select', '.widget-liquid-right' );
 		/**
 		 * Add events
 		 */
@@ -105,12 +104,18 @@ import setupChosen from './utils/setupChosen';
 	 * @param {Array} $els
 	 */
 	function initiateColorPicker( $els ) {
+		let colorPickerTimer;
+
 		$els.each( function() {
 			const $this = $( this );
 
 			$this.wpColorPicker( {
 				change: () => {
-					$this.trigger( 'change' );
+					window.clearTimeout( colorPickerTimer );
+
+					colorPickerTimer = window.setTimeout( function() {
+						$this.trigger( 'change' );
+					}, 100 );
 				},
 			} );
 		} );
