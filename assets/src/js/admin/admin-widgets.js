@@ -21,7 +21,7 @@ import setupChosen from './utils/setupChosen';
 		 */
 
 		/* Form change handler. */
-		jQuery( document ).on( 'change', 'select.give-select-chosen', function() {
+		jQuery( document ).on( 'change', 'select.give-select', function() {
 			const $this = jQuery( this ),
 				  $container = jQuery( this ).closest( '.give_forms_widget_container' ),
 				  $loader = jQuery( '.js-loader', $container ),
@@ -81,7 +81,11 @@ import setupChosen from './utils/setupChosen';
 
 		// Trigger events.
 		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
-		$( '.give-select-chosen' ).trigger( 'change' );
+
+		// Setup shosen field.
+		const $els = jQuery( '.give-select', '.widget-liquid-right' );
+		initiateChosenField( $els );
+		$els.trigger( 'change' );
 	} );
 
 	/**
@@ -92,22 +96,42 @@ import setupChosen from './utils/setupChosen';
 		 * Setup chosen field.
 		 */
 		const action = Give.fn.getParameterByName( 'action', settings.data ),
+			  isDeletingWidget = Give.fn.getParameterByName( 'delete_widget', settings.data ),
 			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
 			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
 			  $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
-			  $el = $( '.give-select-chosen', $widget );
+			  $el = $( '.give-select', $widget );
 
 		// Exit if not saving widget.
-		if ( 'save-widget' !== action ) {
+		if ( isDeletingWidget || 'save-widget' !== action ) {
 			return false;
 		}
 
 		// Trigger events.
 		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
 
-		// Setup chosen.
-		setupChosen( $el );
-		$el.next().css( { width: '100%' } );
-		$el.trigger( 'change' );
+		initiateChosenField( $el );
 	} );
+
+	/**
+	 * Initiate chosen field
+	 *
+	 * @param {object} $els
+	 * @since 2.7.0
+	 */
+	function initiateChosenField( $els ) {
+		Promise.all( [
+			setupChosen( $els ),
+
+		] ).then( () => {
+			$els.each( function() {
+				const chosenContainer = $( this ).next();
+
+				chosenContainer.css( 'width', '100%' );
+				jQuery( 'ul.chosen-results', chosenContainer ).css( 'width', '100%' );
+			} );
+
+			$els.trigger( 'change' );
+		} );
+	}
 }( jQuery ) );

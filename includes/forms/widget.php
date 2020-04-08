@@ -115,7 +115,7 @@ class Give_Forms_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$defaults = array(
 			'title'                 => '',
-			'id'                    => '',
+			'id'                    => 0,
 			'float_labels'          => 'global',
 			'display_style'         => 'modal',
 			'show_content'          => 'none',
@@ -152,15 +152,14 @@ class Give_Forms_Widget extends WP_Widget {
 
 				echo Give()->html->forms_dropdown(
 					[
-						'selected'    => $instance['id'],
+						'selected'    => $instance['id'] ?: false,
 						'id'          => $selectFieldId,
 						'name'        => $selectFieldName,
-						'chosen'      => true,
-						'number'      => 2,
 						'placeholder' => esc_attr__( '- Select -', 'give' ),
-						'query_tags'  => [
+						'query_args'  => [
 							'post_status' => 'publish',
 						],
+						'select_atts' => 'style="width: 100%"',
 					]
 				);
 				?>
@@ -247,7 +246,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</fieldset>
 
 			<div class="js-loader give-hidden">
-				<p><?php _e( 'Please wait...', 'give' ); ?></p>
+				<p><?php _e( 'Loading settings...', 'give' ); ?></p>
 			</div>
 		</div>
 		<?php
