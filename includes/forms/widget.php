@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use function Give\Helpers\Form\Utils\isLegacyForm;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -80,6 +82,14 @@ class Give_Forms_Widget extends WP_Widget {
 		$title   = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 		$form_id = (int) $instance['id'];
 
+		// Use alias setting to set display setting when form template other then Legacy.
+		if ( ! isLegacyForm( $form_id ) ) {
+			$instance['display_style']         = $instance['tmp_display_style'];
+			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
+
+			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
+		}
+
 		echo $args['before_widget']; // XSS ok.
 
 		/**
@@ -114,18 +124,19 @@ class Give_Forms_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$defaults = array(
-			'title'                 => '',
-			'id'                    => 0,
-			'float_labels'          => 'global',
-			'display_style'         => 'modal',
-			'show_content'          => 'none',
-			'continue_button_title' => __( 'Continue', 'give' ),
-			'introduction_text'     => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
-			'button_text'           => __( 'Donate Now', 'give' ),
-			'button_color'          => '#007cba',
+			'title'                     => '',
+			'id'                        => 0,
+			'float_labels'              => 'global',
+			'display_style'             => 'modal',
+			'show_content'              => 'none',
+			'continue_button_title'     => __( 'Continue', 'give' ),
+			'introduction_text'         => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
+			'button_text'               => __( 'Donate Now', 'give' ),
+			'button_color'              => '#007cba',
 
-			// This setting is alias for display_style which prevent conflict when saving and showing setting.
-			'tmp_display_style'     => 'button',
+			// These settings are aliases for shortcode setting which prevent conflict when saving and showing setting. Later we will use them to set original settings.
+			'tmp_display_style'         => 'button',
+			'tmp_continue_button_title' => __( 'Continue', 'give' ),
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -235,8 +246,8 @@ class Give_Forms_Widget extends WP_Widget {
 
 				<?php // Widget: Continue Button Text. ?>
 				<p class="give_forms_button_text_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
-					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_text' ) ); ?>" value="<?php echo esc_attr( $instance['button_text'] ); ?>" /><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tmp_continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['tmp_continue_button_title'] ); ?>" /><br>
 					<small class="give-field-description"><?php esc_html_e( 'This label will appear on button.', 'give' ); ?></small>
 				</p>
 
