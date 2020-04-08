@@ -267,7 +267,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</fieldset>
 
 			<div class="js-loader">
-				<p><?php _e( 'Loading settings...', 'give' ); ?></p>
+				<p><span class="give-spinner spinner is-active"></span>&nbsp;&nbsp;<i><?php _e( 'Loading settings...', 'give' ); ?></i></p>
 			</div>
 		</div>
 		<?php
