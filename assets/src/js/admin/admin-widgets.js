@@ -39,9 +39,22 @@ import setupChosen from './utils/setupChosen';
 	 *
 	 * Note: use `widget-updated` instead
 	 */
-	jQuery( document ).on( 'widget-updated', function( e, $widget ) {
-		const $el = jQuery( '.give-select', $widget ),
+	jQuery( document ).ajaxSuccess( function( e, xhr, settings ) {
+		/**
+		 * Setup chosen field.
+		 */
+		const action = Give.fn.getParameterByName( 'action', settings.data ),
+			  isDeletingWidget = Give.fn.getParameterByName( 'delete_widget', settings.data ),
+			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
+			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
+			  $widget = jQuery( `#${ sidebarId } [id*="${ widgetId }"]` ),
+			  $el = jQuery( '.give-select', $widget ),
 			  isDonationFormSelected = !! parseInt( $el.val() );
+
+		// Exit if not saving widget.
+		if ( isDeletingWidget || 'save-widget' !== action ) {
+			return false;
+		}
 
 		// Setup chosen field.
 		Promise.all( [
@@ -57,7 +70,7 @@ import setupChosen from './utils/setupChosen';
 	/**
 	 * Initiate chosen field
 	 *
-	 * @param {Array} $els
+	 * @param {object} $els
 	 * @since 2.7.0
 	 */
 	function initiateChosenField( $els ) {
