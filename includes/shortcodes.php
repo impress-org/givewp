@@ -214,10 +214,11 @@ function give_form_shortcode( $atts ) {
 						<button
 						type="button"
 						class="js-give-embed-form-modal-opener"
-						data-form-id="%1$s">%2$s</button>
+						data-form-id="%1$s"%3$s>%2$s</button>
 					</div>',
 				$uniqueId,
-				! empty( $atts['continue_button_title'] ) ? $atts['continue_button_title'] : __( 'Click to donate', 'give' )
+				! empty( $atts['continue_button_title'] ) ? $atts['continue_button_title'] : __( 'Click to donate', 'give' ),
+				! empty( $atts['button_color'] ) ? " style=\"background-color: {$atts['button_color']}\"" : ''
 			);
 
 			// Insert iframe inside modal HTML.
