@@ -36,8 +36,6 @@ import setupChosen from './utils/setupChosen';
 
 	/**
 	 * When widget save successfully.
-	 *
-	 * Note: use `widget-updated` instead
 	 */
 	jQuery( document ).ajaxSuccess( function( e, xhr, settings ) {
 		/**
