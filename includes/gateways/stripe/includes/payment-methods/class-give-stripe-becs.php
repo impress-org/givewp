@@ -136,10 +136,10 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 							data-icon_style="<?php echo give_stripe_get_becs_icon_style( $form_id ); ?>"
 						></div>
 					</div>
-					<div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
+					<div class="form-row form-row-responsive give-stripe-becs-mandate-acceptance-text">
 						<?php
-						if ( give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) ) ) {
-							echo give_stripe_get_mandate_acceptance_text();
+						if ( give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) ) ) {
+							echo give_stripe_get_mandate_acceptance_text( 'becs' );
 						}
 						?>
 					</div>
