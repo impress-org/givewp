@@ -142,13 +142,13 @@
 			setup: () => {
 				// Setup payment information screen
 
-				//Override submit loader with Sequoia loader
+				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
-				$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
 
 				// Show Sequoia loader on click/touchend
 				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
-					$( '.sequoia-loader' ).addClass( 'spinning' );
+					//Override submit loader with Sequoia loader
+					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
 				} );
 
 				//Setup input icons
