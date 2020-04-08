@@ -12,6 +12,12 @@ use function Give\Helpers\Form\Theme\get as getThemeOptions;
  * @package Give\Form\Theme
  */
 class Sequoia extends Theme implements Hookable, Scriptable {
+
+	/**
+	 * @inheritDoc
+	 */
+	public $useCustomLoader = true;
+
 	/**
 	 * Map form template settings to legacy form settings.
 	 *
