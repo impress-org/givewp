@@ -133,7 +133,7 @@ class Give_Forms_Widget extends WP_Widget {
 		// Backward compatibility: Set float labels as default if, it was set as empty previous.
 		$instance['float_labels'] = empty( $instance['float_labels'] ) ? 'global' : $instance['float_labels'];
 		?>
-		<div class="give_forms_widget_container"
+		<div class="give_forms_widget_container">
 
 			<?php // Widget: widget Title. ?>
 			<p>
