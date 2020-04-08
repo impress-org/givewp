@@ -123,6 +123,9 @@ class Give_Forms_Widget extends WP_Widget {
 			'introduction_text'     => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
 			'button_text'           => __( 'Donate Now', 'give' ),
 			'button_color'          => '',
+
+			// This setting is alias for display_style which prevent conflict when saving and showing setting.
+			'tmp_display_style'     => 'button',
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -216,18 +219,11 @@ class Give_Forms_Widget extends WP_Widget {
 			<fieldset class="js-new-form-template-settings give-hidden">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
-				<?php
-				// Widget: Display Style.
-
-				$displayStyleFieldId = esc_attr( $this->get_field_id( 'display_style' ) ) . uniqid();
-
-				// Set default value for form template other then legacy.
-				$instance['display_style'] = ! in_array( [ 'button', 'onpage' ], $instance['display_style'] ) ? 'button' : $instance['display_style'];
-				?>
+				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
-					<label for="<?php echo $displayStyleFieldId; ?>-button"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
-					<label for="<?php echo $displayStyleFieldId; ?>-onpage"><input type="radio" class="widefat" id="<?php echo $displayStyleFieldId; ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="button" <?php checked( $instance['tmp_display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="onpage" <?php checked( $instance['tmp_display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
 				</p>
 
 				<?php // Widget: Introduction Text. ?>
