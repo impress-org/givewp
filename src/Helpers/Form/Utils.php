@@ -46,9 +46,9 @@ function isProcessingForm() {
  * @return bool
  */
 function isProcessingGiveActionOnAjax() {
-	return isset( $_REQUEST['action'] ) &&
-		   wp_doing_ajax() &&
-		   0 === strpos( $_REQUEST['action'], 'give_' );
+	$action            = isset( $_REQUEST['action'] ) ? give_clean( $_REQUEST['action'] ) : '';
+	$whiteListedAction = [ 'get_receipt' ];
+	return $action && wp_doing_ajax() && ( 0 === strpos( $action, 'give_' ) || in_array( $action, $whiteListedAction, true ) );
 }
 
 

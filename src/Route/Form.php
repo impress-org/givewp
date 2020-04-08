@@ -10,13 +10,11 @@
 namespace Give\Route;
 
 use Give\Controller\Form as Controller;
-use Give\Form\LoadTemplate;
-use Give\Form\Template;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Theme class.
+ * Template class.
  *
  * @since 2.7.0
  */
