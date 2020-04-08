@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 abstract class Theme {
 
 	/** @var bool $useCustomLoader If set to true, then show iframe on load and do not render default loader markup */
-	protected $useCustomLoader = false;
+	public $useCustomLoader = false;
 
 	/**
 	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
