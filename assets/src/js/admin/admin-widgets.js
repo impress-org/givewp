@@ -15,7 +15,7 @@ import setupChosen from './utils/setupChosen';
 	/**
 	 * On DOM Ready
 	 */
-	$( function() {
+	jQuery( function() {
 		const $sidebarContainer = jQuery( '.widget-liquid-right' );
 		/**
 		 * Add events
@@ -39,7 +39,7 @@ import setupChosen from './utils/setupChosen';
 				{
 					action: 'give_get_form_template_id',
 					formId: $this.val(),
-					savewidgets: $( '#_wpnonce_widgets' ).val(),
+					savewidgets: jQuery( '#_wpnonce_widgets' ).val(),
 				},
 				function( response ) {
 					$loader.addClass( 'give-hidden' );
@@ -58,21 +58,21 @@ import setupChosen from './utils/setupChosen';
 
 		/* Display style change handler. */
 		$sidebarContainer.on( 'change', '.give_forms_display_style_setting_row input', function() {
-			const $fieldset = $( this ).closest( 'fieldset' ),
-				  $parent = $( this ).parents( 'p' ),
+			const $fieldset = jQuery( this ).closest( 'fieldset' ),
+				  $parent = jQuery( this ).parents( 'p' ),
 				isFormHasNewTemplate = $fieldset.hasClass( 'js-new-form-template-settings' ),
 				isFormHasLegacyTemplate = $fieldset.hasClass( 'js-legacy-form-template-settings' );
 
 			if ( isFormHasLegacyTemplate ) {
 				const $continue_button_title = $parent.next();
 
-				if ( 'onpage' === $( 'input:checked', $parent ).val() ) {
+				if ( 'onpage' === jQuery( 'input:checked', $parent ).val() ) {
 					$continue_button_title.hide();
 				} else {
 					$continue_button_title.show();
 				}
 			} else if ( isFormHasNewTemplate ) {
-				if ( 'button' === $( 'input:checked', $parent ).val() ) {
+				if ( 'button' === jQuery( 'input:checked', $parent ).val() ) {
 					$fieldset.find( 'p' ).not( $parent ).removeClass( 'give-hidden' );
 				} else {
 					$fieldset.find( 'p' ).not( $parent ).addClass( 'give-hidden' );
@@ -80,32 +80,23 @@ import setupChosen from './utils/setupChosen';
 			}
 		} );
 
-		/* Setup button color field. */
-		$sidebarContainer.on( 'change', '.give_forms_button_color_setting_row input', function() {
-			const $this = jQuery( this );
-
-			$this.wpColorPicker( {
-				change: () => {
-					const $widget = $this.closest( '.widget' );
-					jQuery( 'input[name="savewidget"]', $widget ).prop( 'disabled', false ).val( wpWidgets.l10n.save );
-				},
-			} );
-		} );
-
 		// Trigger events.
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
-		$( '.give_forms_button_color_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		jQuery( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
 
 		// Setup chosen field.
 		const $els = jQuery( '.give-select', '.widget-liquid-right' );
 		initiateChosenField( $els );
 		$els.trigger( 'change' );
+
+		initiateColorPicker( jQuery( '.give_forms_button_color_setting_row input', '.widget-liquid-right' ) );
 	} );
 
 	/**
 	 * When widget save successfully.
+	 *
+	 * Note: use `widget-updated` instead
 	 */
-	$( document ).ajaxSuccess( function( e, xhr, settings ) {
+	jQuery( document ).ajaxSuccess( function( e, xhr, settings ) {
 		/**
 		 * Setup chosen field.
 		 */
@@ -113,8 +104,8 @@ import setupChosen from './utils/setupChosen';
 			  isDeletingWidget = Give.fn.getParameterByName( 'delete_widget', settings.data ),
 			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
 			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
-			  $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
-			  $el = $( '.give-select', $widget );
+			  $widget = jQuery( `#${ sidebarId } [id*="${ widgetId }"]` ),
+			  $el = jQuery( '.give-select', $widget );
 
 		// Exit if not saving widget.
 		if ( isDeletingWidget || 'save-widget' !== action ) {
@@ -129,12 +120,12 @@ import setupChosen from './utils/setupChosen';
 			if ( ! parseInt( $el.val() ) ) {
 				jQuery( '.js-loader', $widget ).addClass( 'give-hidden' );
 			}
-			$el.parent().removeClass( 'give-hidden' );
 		} );
 
+		initiateColorPicker( jQuery( '.give_forms_button_color_setting_row input', $widget ) );
+
 		// Trigger events.
-		$( '.give_forms_display_style_setting_row input', $widget ).trigger( 'change' );
-		$( '.give_forms_button_color_setting_row input', $widget ).trigger( 'change' );
+		jQuery( '.give_forms_display_style_setting_row input', $widget ).trigger( 'change' );
 	} );
 
 	/**
@@ -149,16 +140,33 @@ import setupChosen from './utils/setupChosen';
 
 		] ).then( () => {
 			$els.each( function() {
-				const chosenContainer = $( this ).next();
+				const chosenContainer = jQuery( this ).next();
 
 				chosenContainer.css( 'width', '100%' );
 				jQuery( 'ul.chosen-results', chosenContainer ).css( 'width', '100%' );
 
 				// Trigger change event on select field only if valid donation for selected.
-				if ( parseInt( $( this ).val() ) ) {
-					$( this ).trigger( 'change' );
+				if ( parseInt( jQuery( this ).val() ) ) {
+					jQuery( this ).trigger( 'change' );
 				}
+
+				// Show field.
+				jQuery( this ).parent().removeClass( 'give-hidden' );
 			} );
+		} );
+	}
+
+	/**
+	 * Initiate colorpicker field.
+	 *
+	 * @since 2.7.0
+	 * @param {object} $el
+	 */
+	function initiateColorPicker( $el ) {
+		$el.wpColorPicker( {
+			change: () => {
+				$el.trigger( 'change' );
+			},
 		} );
 	}
 }( jQuery ) );
