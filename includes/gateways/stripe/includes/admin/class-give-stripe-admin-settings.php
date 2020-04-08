@@ -515,7 +515,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name'          => __( 'Mandate Acceptance Text', 'give' ),
 						'desc'          => __( 'This text displays below the Bank Account fields and should provide clarity to your donors on how this payment option works.', 'give' ),
 						'id'            => 'stripe_becs_mandate_acceptance_text',
-						'wrapper_class' => $is_hide_mandate ? 'stripe-mandate-acceptance-text' : 'stripe-mandate-acceptance-text give-hidden',
+						'wrapper_class' => $is_hide_mandate ? 'stripe-becs-mandate-acceptance-text' : 'stripe-becs-mandate-acceptance-text give-hidden',
 						'type'          => 'textarea',
 						'default'       => give_stripe_get_default_mandate_acceptance_text( 'becs' ),
 					);
