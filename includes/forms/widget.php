@@ -122,7 +122,7 @@ class Give_Forms_Widget extends WP_Widget {
 			'continue_button_title' => __( 'Continue', 'give' ),
 			'introduction_text'     => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
 			'button_text'           => __( 'Donate Now', 'give' ),
-			'button_color'          => '',
+			'button_color'          => '#007cba',
 
 			// This setting is alias for display_style which prevent conflict when saving and showing setting.
 			'tmp_display_style'     => 'button',
