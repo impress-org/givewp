@@ -535,17 +535,17 @@ p {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 48px auto 20px auto;
-		height: 66px;
-		width: 66px;
+		margin: 50px auto 0 auto;
+		height: 60px;
+		width: 60px;
 		border-radius: 50%;
-		border: 8px solid rgb(36, 179, 71);
+		border: 7px solid rgb(36, 179, 71);
 		color: rgb(36, 179, 71);
-		font-size: 46px;
+		font-size: 42px;
 	}
 	.headline {
 		margin-top: 30px;
-		margin-bottom: 6px;
+		margin-bottom: 10px;
 	}
 
 	.message {
@@ -560,12 +560,13 @@ p {
 		background: #fbfbfb;
 		border-top: 1px solid #f2f2f2;
 		border-bottom: 1px solid #f2f2f2;
-		padding: 20px 20px 24px 20px;
+		padding: 24px 20px 26px 20px;
 		margin-left: 0;
 		margin-right: 0;
+		margin-top: 28px;
 
 		.instruction {
-			margin: 0 0 10px 0;
+			margin: 0 0 14px 0;
 			line-height: 1;
 			grid-column: span 2;
 			font-size: 13px;
@@ -574,7 +575,7 @@ p {
 		}
 
 		.btn-row {
-			margin-top: 10px;
+			margin-top: 9px;
 			display: flex;
 			align-items: center;
 			margin-right: auto;
@@ -585,12 +586,13 @@ p {
 			display: flex;
 			align-items: center;
 			font-size: 16px;
-			padding: 15px 17px;
-			margin: 0 10px;
+			padding: 14px 27px;
+			margin: 0 14px;
 			border: none !important;
 
 			> i {
-				margin-left: 8px;
+				margin-left: 12px;
+				font-size: 22px;
 			}
 
 			&.facebook-btn {
@@ -612,30 +614,33 @@ p {
 	}
 
 	.details {
-		margin: 0 20px;
+		margin: 0 24px;
 
 		.headline {
-			margin-top: 16px !important;
+			margin-top: 24px !important;
+			margin-bottom: 18px !important;
 			font-weight: 500;
 			font-size: 16px;
 			line-height: 20px;
 			text-align: center;
 			color: #555;
+			font-weight: 400;
 		}
 		.details-table {
 			display: flex;
 			flex-direction: column;
 			border: 1px solid #f2f2f2;
 			border-radius: 6px;
-			padding: 16px;
-			margin: 10px 0;
+			padding: 8px 16px;
+			margin: 10px 0 24px 0;
 
 			.details-row {
 				display: flex;
 				align-items: flex-start;
 				font-size: 14px;
 				line-height: 17px;
-				margin: 6px 0;
+				margin: 10px 0;
+				font-weight: 300;
 
 				> i {
 					color: #989898;
@@ -655,11 +660,18 @@ p {
 
 				&.total {
 					background: #fbfbfb;
-					border-top: 1px solid #f2f2f2;
 					font-weight: 600;
 					padding: 8px 16px 10px 16px;
-					margin: 0 -16px -16px -16px;
+					margin: 0 -16px -8px -16px;
+					border-top: 1px solid #f2f2f2;
+					.value {
+						color: #333;
+					}
 				}
+			}
+
+			&.payment-details {
+				border-bottom: 2px solid #f2f2f2;
 			}
 		}
 	}

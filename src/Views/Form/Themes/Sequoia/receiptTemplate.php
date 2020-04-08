@@ -103,7 +103,7 @@ $options = getThemeOptions();
 					</div>
 
 					<!-- Payment Details -->
-					<div class="details-table">
+					<div class="details-table payment-details">
 						<div class="details-row">
 							<div class="detail">
 								<?php _e( 'Payment Method', 'give' ); ?>
