@@ -33,7 +33,6 @@ import setupChosen from './utils/setupChosen';
 		} );
 
 		initiateChosenField( $els );
-		initiateColorPicker( $colorPickerFields );
 	} );
 
 	/**
@@ -67,9 +66,6 @@ import setupChosen from './utils/setupChosen';
 				jQuery( '.js-loader', $widget ).addClass( 'give-hidden' );
 			}
 		} );
-
-		// Perform action only valid donation form selected.
-		initiateColorPicker( jQuery( '.give_forms_button_color_setting_row input', $widget ) );
 	} );
 
 	/**
@@ -93,9 +89,7 @@ import setupChosen from './utils/setupChosen';
 				jQuery( this ).parent().removeClass( 'give-hidden' );
 
 				if ( parseInt( jQuery( this ).val() ) ) {
-					// Show settings
 					showConditionalFieldWhenEditDonationFormSetting( jQuery( this ) );
-					showConditionalFieldWhenEditDisplayStyleSetting( jQuery( this ) );
 				} else {
 					// Hide loader.
 					jQuery( '.js-loader', jQuery( this ).closest( '.widget-content' ) ).addClass( 'give-hidden' );
@@ -130,8 +124,9 @@ import setupChosen from './utils/setupChosen';
 	 */
 	function showConditionalFieldWhenEditDisplayStyleSetting( $els ) {
 		$els.each( function() {
-			const $fieldset = jQuery( this ).closest( 'fieldset' ),
-				  $parent = jQuery( this ).parents( 'p' ),
+			const $container = jQuery( this ).closest( '.give_forms_widget_container' ),
+				  $fieldset = jQuery( 'fieldset.active', $container ),
+				  $parent = jQuery( 'p.give_forms_display_style_setting_row', $fieldset ),
 				  isFormHasNewTemplate = $fieldset.hasClass( 'js-new-form-template-settings' ),
 				  isFormHasLegacyTemplate = $fieldset.hasClass( 'js-legacy-form-template-settings' );
 
@@ -167,8 +162,8 @@ import setupChosen from './utils/setupChosen';
 				  $oldSettings = jQuery( '.js-legacy-form-template-settings', $container ),
 				  $newSettings = jQuery( '.js-new-form-template-settings', $container );
 
-			$oldSettings.addClass( 'give-hidden' );
-			$newSettings.addClass( 'give-hidden' );
+			$oldSettings.addClass( 'give-hidden' ).removeClass( 'active' );
+			$newSettings.addClass( 'give-hidden' ).removeClass( 'active' );
 
 			$loader.removeClass( 'give-hidden' );
 
@@ -185,11 +180,14 @@ import setupChosen from './utils/setupChosen';
 					// Exit if result is not successful.
 					if ( true === response.success ) {
 						if ( 'legacy' === response.data ) {
-							$oldSettings.removeClass( 'give-hidden' );
+							$oldSettings.removeClass( 'give-hidden' ).addClass( 'active' );
 						} else {
-							$newSettings.removeClass( 'give-hidden' );
+							$newSettings.removeClass( 'give-hidden' ).addClass( 'active' );
 						}
 					}
+
+					showConditionalFieldWhenEditDisplayStyleSetting( $this );
+					initiateColorPicker( jQuery( '.give_forms_button_color_setting_row input', $container ) );
 				}
 			);
 		} );
