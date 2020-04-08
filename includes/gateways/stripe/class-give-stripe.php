@@ -211,6 +211,12 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 				'checkout_label' => __( 'SEPA Direct Debit', 'give' ),
 			);
 
+			// Stripe - BECS Direct Debit.
+			$gateways['stripe_becs'] = array(
+				'admin_label'    => __( 'Stripe - BECS Direct Debit', 'give' ),
+				'checkout_label' => __( 'BECS Direct Debit', 'give' ),
+			);
+
 			return $gateways;
 		}
 	}
