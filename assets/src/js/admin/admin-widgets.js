@@ -122,7 +122,15 @@ import setupChosen from './utils/setupChosen';
 		}
 
 		// Setup chosen field.
-		initiateChosenField( $el );
+		Promise.all( [
+			initiateChosenField( $el ),
+		] ).then( ()=>{
+			// Hide loader only if performing widget saving when donation form is not selected.
+			if ( ! parseInt( $el.val() ) ) {
+				jQuery( '.js-loader', $widget ).addClass( 'give-hidden' );
+			}
+			$el.parent().removeClass( 'give-hidden' );
+		} );
 
 		// Trigger events.
 		$( '.give_forms_display_style_setting_row input', $widget ).trigger( 'change' );
