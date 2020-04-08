@@ -103,6 +103,13 @@ class Give_Forms_Widget extends WP_Widget {
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
 
+		if ( ! empty( $instance['introduction_text'] ) ) {
+			printf(
+				'<p>%1$s</p>',
+				$instance['introduction_text']
+			);
+		}
+
 		echo give_form_shortcode( $instance );
 
 		echo $args['after_widget']; // XSS ok.
