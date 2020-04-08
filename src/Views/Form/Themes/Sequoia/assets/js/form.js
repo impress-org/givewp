@@ -144,7 +144,7 @@
 
 				//Override submit loader with Sequoia loader
 				window.give_global_vars.purchase_loading = '';
-				$( '.give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
+				$( '.give-submit-button-wrap .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
 
 				// Show Sequoia loader on click/touchend
 				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
