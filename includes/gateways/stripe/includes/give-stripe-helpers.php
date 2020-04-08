@@ -1148,15 +1148,30 @@ function give_stripe_is_update_payment_method_screen() {
 /**
  * This function will return the default mandate acceptance text.
  *
+ * @param string $method Type of Direct Debit Method.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_get_default_mandate_acceptance_text() {
-	return sprintf(
+function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
+
+	// For SEPA Direct Debit.
+	$mandate_acceptance_text = sprintf(
 		__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
 		get_bloginfo( 'sitename' )
 	);
+
+	if ( 'becs' === $method ) {
+		// For BECS Direct Debit.
+		$mandate_acceptance_text = sprintf(
+			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.', 'give' ),
+			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
+			get_bloginfo( 'sitename' )
+		);
+	}
+
+	return $mandate_acceptance_text;
 }
 
 /**
