@@ -28,6 +28,10 @@ class Actions {
 		// Get Theme options
 		$this->themeOptions = getTheme();
 
+		// Set zero number of decimal.
+		add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
+		add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
 		add_action( 'wp_ajax_nopriv_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
@@ -38,6 +42,33 @@ class Actions {
 
 		// Setup hooks.
 		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
+	}
+
+	/**
+	 * Set zero as number of decimals in currency formatting setting.
+	 *
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
+	 *
+	 * @since 2.7.0
+	 * @param array $currencyFormattingSettings
+	 * @return array
+	 */
+	public function setupZeroNumberOfDecimalInCurrencyFormattingSetting( $currencyFormattingSettings ) {
+		$currencyFormattingSettings['number_decimals'] = 0;
+		return $currencyFormattingSettings;
+	}
+
+
+	/**
+	 * Return zero as number of decimals setting value or currency formatting value.
+	 *
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
+	 *
+	 * @since 2.7.0
+	 * @return int|array
+	 */
+	public function setupZeroNumberOfDecimal() {
+		return 0;
 	}
 
 	/**
