@@ -167,7 +167,7 @@ $options = getThemeOptions();
 					</div>
 				</div>
 
-				<!-- Download Receipt -->
+				<!-- Download Receipt TODO: make this conditional on presence of pdf receipts addon -->
 				<button class="give-btn download-btn">
 					<?php _e( 'Donation Receipt', 'give' ); ?> <i class="fas fa-file-pdf"></i>
 				</button>
