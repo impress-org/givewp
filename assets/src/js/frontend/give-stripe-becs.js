@@ -184,8 +184,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			const iconStyle = becsElement.getAttribute( 'data-icon_style' );
 
 			bankAccountCreateArgs.iconStyle = iconStyle;
-			bankAccountCreateArgs.hideIcon = ( 'disabled' !== hideIcon );
-
+			bankAccountCreateArgs.hideIcon = ( 'disabled' === hideIcon );
 		}
 
 		const bankAccountElement = elements.create(
