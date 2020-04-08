@@ -161,7 +161,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</p>
 
 			<?php // Widget: Give Form. ?>
-			<p class="donation-form give-hidden" style="margin-bottom: 0">
+			<p class="donation-form give-hidden">
 				<?php
 				$selectFieldName = esc_attr( $this->get_field_name( 'id' ) );
 				$selectFieldId   = esc_attr( sanitize_key( str_replace( '-', '_', esc_attr( $this->get_field_id( 'id' ) ) ) ) );
@@ -187,7 +187,7 @@ class Give_Forms_Widget extends WP_Widget {
 				<small class="give-field-description"><?php esc_html_e( 'Select a donation form to use for this widget.', 'give' ); ?></small>
 			</p>
 
-			<fieldset class="js-legacy-form-template-settings give-hidden">
+			<fieldset class="js-legacy-form-template-settings give-hidden" style="margin-top: -1em">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
@@ -233,7 +233,7 @@ class Give_Forms_Widget extends WP_Widget {
 				</p>
 			</fieldset>
 
-			<fieldset class="js-new-form-template-settings give-hidden">
+			<fieldset class="js-new-form-template-settings give-hidden" style="margin-top: -1em">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
 				<?php // Widget: Display Style. ?>
