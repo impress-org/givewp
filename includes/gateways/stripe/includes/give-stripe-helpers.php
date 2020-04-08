@@ -1216,3 +1216,35 @@ function give_stripe_get_iban_icon_style( $form_id ) {
 function give_stripe_get_iban_placeholder_country() {
 	return apply_filters( 'give_stripe_get_iban_placeholder_country', 'DE' );
 }
+
+/**
+ * This helper function is used get stored value of whether we need to hide icon for Bank Account element or not.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_becs_hide_icon( $form_id ) {
+
+	$hide_icon = give_get_option( 'stripe_becs_hide_icon', 'enabled' );
+
+	return apply_filters( 'give_stripe_becs_hide_icon', $hide_icon, $form_id );
+}
+
+/**
+ * This helper function is used get IBAN element icon style.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_becs_icon_style( $form_id ) {
+
+	$icon_style = give_get_option( 'stripe_becs_icon_style', 'default' );
+
+	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
+}
