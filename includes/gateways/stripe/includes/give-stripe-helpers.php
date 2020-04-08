@@ -1177,14 +1177,21 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 /**
  * This function is used to get mandate acceptance text which is saved in admin.
  *
+ * @param string $method Type of Direct Debit method.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_get_mandate_acceptance_text() {
+function give_stripe_get_mandate_acceptance_text( $method = 'sepa' ) {
 
 	$default_text = give_stripe_get_default_mandate_acceptance_text();
 	$text         = give_get_option( 'stripe_mandate_acceptance_text', $default_text );
+
+	if ( 'becs' === $method ) {
+		$default_text = give_stripe_get_default_mandate_acceptance_text( 'becs' );
+		$text         = give_get_option( 'stripe_becs_mandate_acceptance_text', $default_text );
+	}
 
 	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
 }
