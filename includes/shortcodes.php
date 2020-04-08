@@ -217,7 +217,7 @@ function give_form_shortcode( $atts ) {
 						data-form-id="%1$s">%2$s</button>
 					</div>',
 				$uniqueId,
-				__( 'Click to donate', 'give' )
+				! empty( $atts['continue_button_title'] ) ? $atts['continue_button_title'] : __( 'Click to donate', 'give' )
 			);
 
 			// Insert iframe inside modal HTML.
