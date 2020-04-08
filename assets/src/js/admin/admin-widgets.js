@@ -114,20 +114,19 @@ import setupChosen from './utils/setupChosen';
 			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
 			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
 			  $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
-			  $el = $( '.give-select', $widget ),
-		      widgetDataKey = `widget-${ Give.fn.getParameterByName( 'id_base', settings.data ) }[${ Give.fn.getParameterByName( 'multi_number', settings.data ) }]`,
-			  formId = parseInt( Give.fn.getParameterByName( `${ widgetDataKey }[id]`, settings.data ) );
+			  $el = $( '.give-select', $widget );
 
 		// Exit if not saving widget.
-		if ( isDeletingWidget || ! formId || ! widgetDataKey || 'save-widget' !== action ) {
+		if ( isDeletingWidget || 'save-widget' !== action ) {
 			return false;
 		}
+
+		// Setup chosen field.
+		initiateChosenField( $el );
 
 		// Trigger events.
 		$( '.give_forms_display_style_setting_row input', $widget ).trigger( 'change' );
 		$( '.give_forms_button_color_setting_row input', $widget ).trigger( 'change' );
-
-		initiateChosenField( $el );
 	} );
 
 	/**
@@ -146,9 +145,12 @@ import setupChosen from './utils/setupChosen';
 
 				chosenContainer.css( 'width', '100%' );
 				jQuery( 'ul.chosen-results', chosenContainer ).css( 'width', '100%' );
-			} );
 
-			$els.trigger( 'change' );
+				// Trigger change event on select field only if valid donation for selected.
+				if ( parseInt( $( this ).val() ) ) {
+					$( this ).trigger( 'change' );
+				}
+			} );
 		} );
 	}
 }( jQuery ) );
