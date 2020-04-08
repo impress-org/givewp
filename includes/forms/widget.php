@@ -239,6 +239,13 @@ class Give_Forms_Widget extends WP_Widget {
 					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_text' ) ); ?>" value="<?php echo esc_attr( $instance['button_text'] ); ?>" /><br>
 					<small class="give-field-description"><?php esc_html_e( 'This label will appear on button.', 'give' ); ?></small>
 				</p>
+
+				<?php // Widget: Continue Button Color. ?>
+				<p class="give_forms_button_color_setting_row">
+					<label for="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>"><?php esc_html_e( 'Button Color:', 'give' ); ?></label><br>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_color' ) ); ?>" value="<?php echo esc_attr( $instance['button_color'] ); ?>" /><br>
+					<small class="give-field-description"><?php esc_html_e( 'Set the color of button.', 'give' ); ?></small>
+				</p>
 			</fieldset>
 
 			<div class="js-loader give-hidden">

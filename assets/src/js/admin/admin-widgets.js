@@ -1,4 +1,4 @@
-/* globals jQuery, Give, ajaxurl */
+/* globals jQuery, Give, ajaxurl, wpWidgets */
 /*!
  * Give Admin Widgets JS
  *
@@ -16,6 +16,7 @@ import setupChosen from './utils/setupChosen';
 	 * On DOM Ready
 	 */
 	$( function() {
+		const $sidebarContainer = jQuery( '.widget-liquid-right' );
 		/**
 		 * Add events
 		 */
@@ -56,7 +57,7 @@ import setupChosen from './utils/setupChosen';
 		} );
 
 		/* Display style change handler. */
-		jQuery( '.widget-liquid-right' ).on( 'change', '.give_forms_display_style_setting_row input', function() {
+		$sidebarContainer.on( 'change', '.give_forms_display_style_setting_row input', function() {
 			const $fieldset = $( this ).closest( 'fieldset' ),
 				  $parent = $( this ).parents( 'p' ),
 				isFormHasNewTemplate = $fieldset.hasClass( 'js-new-form-template-settings' ),
@@ -79,10 +80,23 @@ import setupChosen from './utils/setupChosen';
 			}
 		} );
 
+		/* Setup button color field. */
+		$sidebarContainer.on( 'change', '.give_forms_button_color_setting_row input', function() {
+			const $this = jQuery( this );
+
+			$this.wpColorPicker( {
+				change: () => {
+					const $widget = $this.closest( '.widget' );
+					jQuery( 'input[name="savewidget"]', $widget ).prop( 'disabled', false ).val( wpWidgets.l10n.save );
+				},
+			} );
+		} );
+
 		// Trigger events.
 		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		$( '.give_forms_button_color_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
 
-		// Setup shosen field.
+		// Setup chosen field.
 		const $els = jQuery( '.give-select', '.widget-liquid-right' );
 		initiateChosenField( $els );
 		$els.trigger( 'change' );
@@ -100,15 +114,18 @@ import setupChosen from './utils/setupChosen';
 			  widgetId = Give.fn.getParameterByName( 'widget-id', settings.data ),
 			  sidebarId = Give.fn.getParameterByName( 'sidebar', settings.data ),
 			  $widget = $( `#${ sidebarId } [id*="${ widgetId }"]` ),
-			  $el = $( '.give-select', $widget );
+			  $el = $( '.give-select', $widget ),
+		      widgetDataKey = `widget-${ Give.fn.getParameterByName( 'id_base', settings.data ) }[${ Give.fn.getParameterByName( 'multi_number', settings.data ) }]`,
+			  formId = parseInt( Give.fn.getParameterByName( `${ widgetDataKey }[id]`, settings.data ) );
 
 		// Exit if not saving widget.
-		if ( isDeletingWidget || 'save-widget' !== action ) {
+		if ( isDeletingWidget || ! formId || ! widgetDataKey || 'save-widget' !== action ) {
 			return false;
 		}
 
 		// Trigger events.
-		$( '.give_forms_display_style_setting_row input', '.widget-liquid-right' ).trigger( 'change' );
+		$( '.give_forms_display_style_setting_row input', $widget ).trigger( 'change' );
+		$( '.give_forms_button_color_setting_row input', $widget ).trigger( 'change' );
 
 		initiateChosenField( $el );
 	} );
