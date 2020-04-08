@@ -148,7 +148,6 @@
 
 				// Show Sequoia loader on click/touchend
 				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
-					$( 'form.give-form input[name="give-purchase"].give-submit' ).css( 'color', templateOptions.introduction.primary_color );
 					$( '.sequoia-loader' ).addClass( 'spinning' );
 				} );
 
