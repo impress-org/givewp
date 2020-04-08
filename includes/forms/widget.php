@@ -143,7 +143,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</p>
 
 			<?php // Widget: Give Form. ?>
-			<p>
+			<p class="donation-form give-hidden">
 				<?php
 				$selectFieldName = esc_attr( $this->get_field_name( 'id' ) );
 				$selectFieldId   = esc_attr( sanitize_key( str_replace( '-', '_', esc_attr( $this->get_field_id( 'id' ) ) ) ) );
@@ -248,7 +248,7 @@ class Give_Forms_Widget extends WP_Widget {
 				</p>
 			</fieldset>
 
-			<div class="js-loader give-hidden">
+			<div class="js-loader">
 				<p><?php _e( 'Loading settings...', 'give' ); ?></p>
 			</div>
 		</div>
