@@ -93,6 +93,7 @@ class IframeView {
 	 * @since 2.7.0
 	 */
 	public function render() {
+		ob_start();
 		?>
 		<!DOCTYPE html>
 		<html <?php language_attributes(); ?>>
@@ -118,5 +119,6 @@ class IframeView {
 			</body>
 		</html>
 		<?php
+		return ob_get_clean();
 	}
 }
