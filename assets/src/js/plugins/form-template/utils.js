@@ -22,7 +22,7 @@ export const initializeIframeResize = function( iframe ) {
 					case 'giveEmbedFormContentLoaded':
 						const timer = setTimeout( function() {
 							revealIframe();
-						}, 600 );
+						}, 400 );
 
 						function revealIframe() {
 							clearTimeout( timer );
