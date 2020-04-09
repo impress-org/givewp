@@ -33,6 +33,21 @@ class Sequoia extends Theme implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
+	public function getFormStartingHeight() {
+		$templateOptions = getThemeOptions();
+		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
+			return 748;
+		}
+		if ( empty( $templateOptions['introduction']['image'] ) ) {
+			return 448;
+		} else {
+			return 754;
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLoadingView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/views/loading.php';
 	}
