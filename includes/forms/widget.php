@@ -188,7 +188,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 			<?php // Widget: widget Title. ?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label><br>
 				<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" /><br>
 				<small class="give-field-description"><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
 			</p>
@@ -234,7 +234,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 				<?php // Widget: Continue Button Title. ?>
 				<p class="give_forms_continue_button_title_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label><br>
 					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['continue_button_title'] ); ?>" /><br>
 					<small class="give-field-description"><?php esc_html_e( 'The button label for displaying the additional payment fields.', 'give' ); ?></small>
 				</p>
@@ -286,7 +286,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 				<?php // Widget: Continue Button Text. ?>
 				<p class="give_forms_button_text_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label><br>
 					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tmp_continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['tmp_continue_button_title'] ); ?>" /><br>
 					<small class="give-field-description"><?php esc_html_e( 'This label will appear on button.', 'give' ); ?></small>
 				</p>
