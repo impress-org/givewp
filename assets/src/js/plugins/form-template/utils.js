@@ -1,4 +1,4 @@
-/*globals jQuery*/
+/*globals Give, jQuery*/
 
 import { iframeResize } from 'iframe-resizer';
 
@@ -20,14 +20,19 @@ export const initializeIframeResize = function( iframe ) {
 			onMessage: function( messageData ) {
 				switch ( messageData.message ) {
 					case 'giveEmbedFormContentLoaded':
-						let parent = iframe.parentElement;
-						if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-							parent = parent.parentElement.parentElement;
+						const timer = setTimeout( function() {
+							revealIframe();
+						}, 600 );
+
+						function revealIframe() {
+							clearTimeout( timer );
+							let parent = iframe.parentElement;
+							if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
+								parent = parent.parentElement.parentElement;
+							}
+							parent.querySelector( '.iframe-loader' ).remove();
+							iframe.style.visibility = 'visible';
 						}
-
-						parent.classList.remove( 'give-loader-type-img' );
-						iframe.style.visibility = 'visible';
-
 						break;
 				}
 			},
@@ -41,7 +46,7 @@ export const initializeIframeResize = function( iframe ) {
 
 				return false;
 			},
-			onInit: function( iframe ) {
+			onInit: function( ) {
 				iframe.iFrameResizer.sendMessage( {
 					currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
 				} );
