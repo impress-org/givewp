@@ -85,7 +85,10 @@ class TemplateSkinManager {
 
 
 	/**
-	 * Render view
+	 * Render view.
+	 *
+	 * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
+	 * We use these hooks to manipulated donation form related actions.
 	 *
 	 * @since 2.7.0
 	 */
