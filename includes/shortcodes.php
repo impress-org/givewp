@@ -162,7 +162,6 @@ function give_form_shortcode( $atts ) {
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
-		$useCustomLoader        = Give()->themes->getTheme( $activeTheme )->useCustomLoader;
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
@@ -196,9 +195,6 @@ function give_form_shortcode( $atts ) {
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];
 
-		// If theme uses a custom loader, then show iframe immediately
-		$visibility = $useCustomLoader ? 'visible' : 'hidden';
-
 		// Set iframe.
 		$iframe = sprintf(
 			'<iframe
@@ -206,10 +202,9 @@ function give_form_shortcode( $atts ) {
 						src="%1$s"
 						data-autoScroll="%2$s"
 						onload="Give.initializeIframeResize(this)"
-						style="border: 0; visibility: %3$s"></iframe>',
+						style="border: 0; visibility: hidden"></iframe>',
 			$iframe_url,
 			$buttonModeActive ? 0 : $isAutoScroll,
-			$visibility
 		);
 
 		// Show button in button mode and hide Iframe.
@@ -235,28 +230,22 @@ function give_form_shortcode( $atts ) {
 									class="in-modal"
 									data-src="%1$s"
 									data-autoScroll="%2$s"
-									style="border: 0; visibility: %3$s"></iframe>
-								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%4$s" data-form-id="%5$s">&times;</button>
+									style="border: 0; visibility: hidden"></iframe>
+								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
 							</div>
 						</div>
 						',
 				$iframe_url,
 				$buttonModeActive ? 0 : $isAutoScroll,
-				$visibility,
 				__( 'Close modal', 'give' ),
 				$uniqueId
 			);
 		}
 
-		printf(
-			'<div class="give-embed-form-wrapper %3$s%4$s" id="%2$s">
-				%1$s
-			</div>',
-			$iframe,
-			$uniqueId,
-			$useCustomLoader ? '' : ' give-loader-type-img',
-			$buttonModeActive ? ' is-hide' : ''
-		);
+		$isHidden = $buttonModeActive ? ' is-hide' : '';
+		echo "<div class='give-embed-form-wrapper{$isHidden}' id='{$uniqueId}'>{$iframe}<div class='iframe-loader'>";
+		include Give()->themes->getTheme( $activeTheme )->getLoadingView();
+		echo '</div></div>';
 
 	} else {
 		give_get_donation_form( $atts );
