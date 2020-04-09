@@ -1,11 +1,11 @@
 <?php
-namespace Give\Form\Theme;
+namespace Give\Form\Template;
 
 /**
  * Class LegacyFormSettingCompatibility
  *
  * @since 2.7.0
- * @package Give\Form\Theme
+ * @package Give\Form\Template
  */
 class LegacyFormSettingCompatibility {
 	/**

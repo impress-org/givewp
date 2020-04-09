@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handle Theme registration
+ * Handle basic setup of form template
  *
  * @package Give
  * @since 2.7.0
@@ -9,19 +9,18 @@
 
 namespace Give\Form;
 
-use Give\Form\Theme\LegacyFormSettingCompatibility;
-use Give\Form\Theme\Options;
+use Give\Form\Template\LegacyFormSettingCompatibility;
+use Give\Form\Template\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Theme class.
+ * Template class.
  *
  * @since 2.7.0
  */
-abstract class Theme {
-
+abstract class Template {
 	/**
 	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
 	 */
@@ -33,13 +32,13 @@ abstract class Theme {
 	public $openFailedPageInIframe = true;
 
 	/**
-	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:16 Check property description.
+	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:16 Check property description.
 	 * @var array $defaultSettings Form settings default values for form template.
 	 */
 	protected $defaultLegacySettingValues = [];
 
 	/**
-	 * @see src/Form/Theme/LegacyFormSettingCompatibility.php:18 Check property description.
+	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:18 Check property description.
 	 * @var array $mapToLegacySetting
 	 */
 	protected $mapToLegacySetting = [];
@@ -103,7 +102,7 @@ abstract class Theme {
 
 
 	/**
-	 * return theme ID.
+	 * return form template ID.
 	 *
 	 * @since 2.7.0
 	 *
@@ -112,7 +111,7 @@ abstract class Theme {
 	abstract  public function getID();
 
 	/**
-	 * Get theme name.
+	 * Get form template name.
 	 *
 	 * @since 2.7.0
 	 *
@@ -121,7 +120,7 @@ abstract class Theme {
 	abstract public function getName();
 
 	/**
-	 * Get theme image.
+	 * Get form template image.
 	 *
 	 * @since 2.7.0
 	 *
@@ -139,7 +138,7 @@ abstract class Theme {
 	abstract public function getOptionsConfig();
 
 	/**
-	 * Get theme options
+	 * Get form template options
 	 *
 	 * @return Options
 	 */

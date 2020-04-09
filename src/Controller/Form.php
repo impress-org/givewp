@@ -3,18 +3,18 @@
 /**
  * Handle Embed Donation Form Route
  *
- * @package Give
+ * @package Give/Coontroller
  * @since 2.7.0
  */
 
 namespace Give\Controller;
 
-use Give\Form\LoadTheme;
-use Give\Form\Theme;
+use Give\Form\LoadTemplate;
+use Give\Form\Template;
 use Give_Notices;
 use WP_Post;
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isConfirmingDonation;
 use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
@@ -37,7 +37,7 @@ use function Give\Helpers\switchRequestedURL;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Theme class.
+ * Form class.
  *
  * @since 2.7.0
  */
@@ -50,7 +50,7 @@ class Form {
 	 */
 	public function init() {
 		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
-		add_action( 'admin_init', [ $this, 'loadThemeOnAjaxRequest' ] );
+		add_action( 'admin_init', [ $this, 'loadTemplateOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
 		add_action( 'template_redirect', [ $this, 'loadReceiptView' ], 1 );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
@@ -65,7 +65,7 @@ class Form {
 		$inIframe = inIframe();
 
 		if ( $inIframe || isProcessingForm() ) {
-			$this->loadTheme();
+			$this->loadTemplate();
 
 			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
 		}
@@ -79,8 +79,8 @@ class Form {
 	public function loadReceiptView() {
 		// Handle success page.
 		if ( isViewingFormReceipt() && ! isLegacyForm() ) {
-			/* @var Theme $formTemplate */
-			$formTemplate = Give()->themes->getTheme();
+			/* @var Template $formTemplate */
+			$formTemplate = Give()->templates->getTemplate();
 
 			if ( $formTemplate->openSuccessPageInIframe || inIframe() ) {
 				// Set header.
@@ -110,8 +110,8 @@ class Form {
 	 * @global WP_Post $post
 	 */
 	public function loadDonationFormView() {
-		/* @var Theme $formTemplate */
-		$formTemplate = Give()->themes->getTheme();
+		/* @var Template $formTemplate */
+		$formTemplate = Give()->templates->getTemplate();
 
 		// Handle failed donation error.
 		if ( canShowFailedDonationError() ) {
@@ -136,7 +136,7 @@ class Form {
 	 */
 	public function setFailedTransactionError() {
 		Give_Notices::print_frontend_notice(
-			Give()->themes->getTheme( getActiveID() )->getFailedDonationMessage(),
+			Give()->templates->getTemplate( getActiveID() )->getFailedDonationMessage(),
 			true,
 			'error'
 		);
@@ -159,26 +159,26 @@ class Form {
 
 
 	/**
-	 * Load form theme
+	 * Load form template
 	 *
-	 * @return LoadTheme
+	 * @return LoadTemplate
 	 * @since 2.7.0
 	 */
-	private function loadTheme() {
-		$themeLoader = new LoadTheme();
-		$themeLoader->init();
+	private function loadTemplate() {
+		$templateLoader = new LoadTemplate();
+		$templateLoader->init();
 
-		return $themeLoader;
+		return $templateLoader;
 	}
 
 	/**
-	 * Load theme on ajax request.
+	 * Load form template on ajax request.
 	 *
 	 * @since 2.7.0
 	 */
-	public function loadThemeOnAjaxRequest() {
+	public function loadTemplateOnAjaxRequest() {
 		if ( isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
-			$this->loadTheme();
+			$this->loadTemplate();
 		}
 	}
 
@@ -211,8 +211,8 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public static function editSuccessPageURI( $url ) {
-		/* @var Theme $template */
-		$template = Give()->themes->getTheme();
+		/* @var Template $template */
+		$template = Give()->templates->getTemplate();
 
 		return $template->openSuccessPageInIframe ?
 			createSuccessPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
@@ -228,8 +228,8 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public static function editFailedPageURI( $url ) {
-		/* @var Theme $template */
-		$template = Give()->themes->getTheme( getActiveID() );
+		/* @var Template $template */
+		$template = Give()->templates->getTemplate( getActiveID() );
 
 		return $template->openFailedPageInIframe ?
 			createFailedPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
@@ -265,8 +265,8 @@ class Form {
 	 * @return mixed
 	 */
 	public function handleOffSiteCheckoutRedirect( $location ) {
-		/* @var Theme $template */
-		$template = Give()->themes->getTheme();
+		/* @var Template $template */
+		$template = Give()->templates->getTemplate();
 
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {

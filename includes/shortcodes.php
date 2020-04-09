@@ -10,8 +10,8 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
@@ -182,7 +182,7 @@ function give_form_shortcode( $atts ) {
 			$url = getSuccessPageURL();
 
 		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
-			$url                                     = Give()->themes->getTheme( $activeTheme )->getFailedPageURL( $formId );
+			$url                                     = Give()->templates->getTemplate( $activeTheme )->getFailedPageURL( $formId );
 			$query_string['showFailedDonationError'] = 1;
 		}
 

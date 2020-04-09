@@ -1,5 +1,5 @@
 <?php
-use function \Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 $formId = getFormId();
 ?>
