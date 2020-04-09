@@ -481,7 +481,7 @@ Shortcode Copy & Paste
 			}
 		}
 
-		.theme-options {
+		.template-options {
 			display: none;
 
 			> .give-row {
@@ -500,14 +500,14 @@ Shortcode Copy & Paste
 				padding-bottom: 25px;
 			}
 
-			.theme-info {
+			.template-info {
 				background: #fafafa;
 				border: 1px solid #ccd0d4;
 				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
 				line-height: 0;
 			}
 
-			&.has-activated-theme {
+			&.has-activated-template {
 				.templates-list {
 					grid-template-columns: 1fr !important;
 
@@ -515,11 +515,11 @@ Shortcode Copy & Paste
 						display: none;
 					}
 
-					.theme-info:not(.active) {
+					.template-info:not(.active) {
 						display: none;
 					}
 
-					.theme-info.active {
+					.template-info.active {
 						.badge {
 							display: inline-block;
 						}
@@ -532,7 +532,7 @@ Shortcode Copy & Paste
 				}
 
 				.form-template-options-introduction,
-				.theme-options.active {
+				.template-options.active {
 					display: block;
 				}
 			}

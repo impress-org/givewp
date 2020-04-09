@@ -37,7 +37,7 @@
  * - The GiveWP Team
  */
 
-use Give\Form\Themes;
+use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 
@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @since 1.0
 	 *
-	 * @property-read Themes    $themes
+	 * @property-read Templates $templates
 	 * @property-read FormRoute $routeForm
 	 */
 	final class Give {
@@ -404,7 +404,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->session                = Give_Session::get_instance();
 
 			// Load form template
-			$this->themes->load();
+			$this->templates->load();
 
 			// Load routes.
 			$this->routeForm->init( new FormRouteController() );
@@ -766,12 +766,12 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		function __get( $propertyName ) {
 			switch ( $propertyName ) {
-				case 'themes':
-					if ( ! isset( $this->singletonsCache[ Themes::class ] ) ) {
-						$this->singletonsCache[ Themes::class ] = new Themes();
+				case 'templates':
+					if ( ! isset( $this->singletonsCache[ Templates::class ] ) ) {
+						$this->singletonsCache[ Templates::class ] = new Templates();
 					}
 
-					return $this->singletonsCache[ Themes::class ];
+					return $this->singletonsCache[ Templates::class ];
 
 				case 'routeForm':
 					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {

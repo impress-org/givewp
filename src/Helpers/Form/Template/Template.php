@@ -1,9 +1,9 @@
 <?php
-namespace Give\Helpers\Form\Theme;
+namespace Give\Helpers\Form\Template;
 
-use Give\Form\Theme;
-use Give\Form\Theme\LegacyFormSettingCompatibility;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use Give\Form\Template;
+use Give\Form\Template\LegacyFormSettingCompatibility;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 /**
  * This function will return selected form template for a specific form.
@@ -19,19 +19,19 @@ function getActiveID( $formId = null ) {
 
 
 /**
- * Return saved form theme settings
+ * Return saved form template settings
  *
  * @param int    $formId
- * @param string $themeId
+ * @param string $templateId
  *
  * @return array
  * @since 2.7.0
  */
-function get( $formId = null, $themeId = '' ) {
-	$formId = $formId ?: getFormId();
-	$theme  = $themeId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
+function get( $formId = null, $templateId = '' ) {
+	$formId   = $formId ?: getFormId();
+	$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
-	return (array) Give()->form_meta->get_meta( $formId, "_give_{$theme}_form_theme_settings", true );
+	return (array) Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
 }
 
 /**
@@ -44,9 +44,9 @@ function get( $formId = null, $themeId = '' ) {
  * @return mixed
  */
 function set( $formId, $settings ) {
-	$theme = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
+	$template = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
-	$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$theme}_form_theme_settings", $settings );
+	$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$template}_form_template_settings", $settings );
 
 	/*
 	 * Below code save legacy setting which connected/mapped to form template setting.
@@ -55,7 +55,7 @@ function set( $formId, $settings ) {
 	 * Note: We can remove legacy setting compatibility by returning anything except LegacyFormSettingCompatibility class object.
 	 */
 	/* @var LegacyFormSettingCompatibility $legacySettingHandler */
-	$legacySettingHandler = Give()->themes->getTheme( $theme )->getLegacySettingHandler();
+	$legacySettingHandler = Give()->templates->getTemplate( $template )->getLegacySettingHandler();
 	if ( $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
 		$legacySettingHandler->save( $formId, $settings );
 	}

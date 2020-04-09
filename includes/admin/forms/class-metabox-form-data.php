@@ -11,11 +11,11 @@
  * @since       1.8
  */
 
-use Give\Form\Theme;
+use Give\Form\Template;
 use Give\FormAPI\Fields;
 use Give\FormAPI\Group;
-use function Give\Helpers\Form\Theme\get as getTheme;
-use function Give\Helpers\Form\Theme\set as SetTheme;
+use function Give\Helpers\Form\Template\get as getTemplateSettings;
+use function Give\Helpers\Form\Template\set as SaveTemplateSettings;
 
 /**
  * Give_Meta_Box_Form_Data Class.
@@ -63,7 +63,7 @@ class Give_MetaBox_Form_Data {
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
-		add_action( 'give_save__give_form_template', array( $this, 'save_form_theme_settings' ), 10, 3 );
+		add_action( 'give_save__give_form_template', array( $this, 'save_form_template_settings' ), 10, 3 );
 
 		// cmb2 old setting loaders.
 		// add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
@@ -284,7 +284,7 @@ class Give_MetaBox_Form_Data {
 				'give_form_template_options',
 				array(
 					'id'        => 'form_template_options',
-					'title'     => __( 'Form Theme', 'give' ),
+					'title'     => __( 'Form Template', 'give' ),
 					'icon-html' => '<i class="fas fa-palette"></i>',
 					'fields'    => array(
 						array(
@@ -1046,34 +1046,34 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
-	 * Save form theme setting handler
+	 * Save form template setting handler
 	 *
 	 * @param string $meta_key
-	 * @param string $new_theme
+	 * @param string $new_template
 	 * @param int    $formID
 	 */
-	public function save_form_theme_settings( $meta_key, $new_theme, $formID ) {
-		$options = $_POST[ $new_theme ];
+	public function save_form_template_settings( $meta_key, $new_template, $formID ) {
+		$options = $_POST[ $new_template ];
 
 		// Exit
 		if ( empty( $options ) ) {
 			return;
 		}
 
-		/* @var Theme $theme */
-		$theme = Give()->themes->getTheme( $new_theme );
+		/* @var Template $template */
+		$template = Give()->templates->getTemplate( $new_template );
 
 		// If selected theme is not registered then do not save it's options.
-		if ( null === $theme ) {
+		if ( null === $template ) {
 			return;
 		}
 
-		/* @var Theme\Options $themeOptions */
-		$themeOptions = $theme->getOptions();
-		$saveOptions  = getTheme( $formID );
+		/* @var Template\Options $templateOptions */
+		$templateOptions = $template->getOptions();
+		$saveOptions     = getTemplateSettings( $formID );
 
 		/* @var Group $group */
-		foreach ( $themeOptions->groups as $group ) {
+		foreach ( $templateOptions->groups as $group ) {
 			/* @var Fields $field */
 			foreach ( $group->fields as $field ) {
 				if ( ! isset( $options[ $group->id ][ $field->id ] ) ) {
@@ -1128,7 +1128,7 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		setTheme( $formID, $saveOptions );
+		SaveTemplateSettings( $formID, $saveOptions );
 	}
 
 

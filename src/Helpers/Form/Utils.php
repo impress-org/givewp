@@ -2,8 +2,8 @@
 namespace Give\Helpers\Form\Utils;
 
 use Give\Controller\Form;
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\getQueryParamFromURL;
 
 /**
@@ -46,9 +46,9 @@ function isProcessingForm() {
  * @return bool
  */
 function isProcessingGiveActionOnAjax() {
-	return isset( $_REQUEST['action'] ) &&
-		   wp_doing_ajax() &&
-		   0 === strpos( $_REQUEST['action'], 'give_' );
+	$action            = isset( $_REQUEST['action'] ) ? give_clean( $_REQUEST['action'] ) : '';
+	$whiteListedAction = [ 'get_receipt' ];
+	return $action && wp_doing_ajax() && ( 0 === strpos( $action, 'give_' ) || in_array( $action, $whiteListedAction, true ) );
 }
 
 

@@ -1,23 +1,20 @@
 <?php
 
-namespace Give\Views\Form\Themes\Sequoia;
+namespace Give\Views\Form\Templates\Sequoia;
 
 use Give_Donate_Form;
-use Give_Notices;
-use function Give\Helpers\Form\Theme\get as getTheme;
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Utils\isViewingForm;
+use function Give\Helpers\Form\Template\get as getTheme;
 
 
 /**
  * Class Actions
  *
  * @since 2.7.0
- * @package Give\Form\Themes\Sequoia
+ * @package Give\Views\Form\Templates\Sequoia
  */
 class Actions {
 
-	protected $themeOptions;
+	protected $templateOptions;
 
 	/**
 	 * Initialize
@@ -25,8 +22,12 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		// Get Theme options
-		$this->themeOptions = getTheme();
+		// Get Template options
+		$this->templateOptions = getTheme();
+
+		// Set zero number of decimal.
+		add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
+		add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
@@ -38,6 +39,33 @@ class Actions {
 
 		// Setup hooks.
 		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
+	}
+
+	/**
+	 * Set zero as number of decimals in currency formatting setting.
+	 *
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
+	 *
+	 * @since 2.7.0
+	 * @param array $currencyFormattingSettings
+	 * @return array
+	 */
+	public function setupZeroNumberOfDecimalInCurrencyFormattingSetting( $currencyFormattingSettings ) {
+		$currencyFormattingSettings['number_decimals'] = 0;
+		return $currencyFormattingSettings;
+	}
+
+
+	/**
+	 * Return zero as number of decimals setting value or currency formatting value.
+	 *
+	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
+	 *
+	 * @since 2.7.0
+	 * @return int|array
+	 */
+	public function setupZeroNumberOfDecimal() {
+		return 0;
 	}
 
 	/**
@@ -135,25 +163,25 @@ class Actions {
 	 */
 	public function getCheckoutButton() {
 
-		$label = isset( $this->themeOptions['payment_information']['checkout_label'] ) ? $this->themeOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
+		$label = isset( $this->templateOptions['payment_information']['checkout_label'] ) ? $this->templateOptions['payment_information']['checkout_label'] : __( 'Donate Now', 'give' );
 
 		return sprintf(
-		  '<div class="give-submit-button-wrap give-clearfix">
+			'<div class="give-submit-button-wrap give-clearfix">
 		    <input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
 		  </div>',
-      $label
-    );
-  }
-  
-  /**
+			$label
+		);
+	}
+
+	/**
 	 * Add load next sections button
 	 *
 	 * @since 2.7.0
 	 */
 	public function getNextButton( $id ) {
 
-		$label = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
+		$label = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
 		printf(
 			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
@@ -169,8 +197,8 @@ class Actions {
 	 * @param int $formId
 	 */
 	public function getStartWrapperHTMLForPaymentSection( $formId ) {
-		$headline    = isset( $this->themeOptions['payment_information']['headline'] ) ? $this->themeOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
-		$description = isset( $this->themeOptions['payment_information']['description'] ) ? $this->themeOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
+		$headline    = isset( $this->templateOptions['payment_information']['headline'] ) ? $this->templateOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
+		$description = isset( $this->templateOptions['payment_information']['description'] ) ? $this->templateOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
 
 		if ( ! empty( $headline ) || ! empty( $description ) ) {
 			printf(
@@ -196,8 +224,8 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		$content = isset( $this->themeOptions['payment_amount']['content'] ) ? $this->themeOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
-		$label   = ! empty( $this->themeOptions['introduction']['donate_label'] ) ? $this->themeOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
+		$content = isset( $this->templateOptions['payment_amount']['content'] ) ? $this->templateOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
+		$label   = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
 		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
 
@@ -214,7 +242,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getCloseWrapperHTMLForAmountSection() {
-		$label = isset( $this->themeOptions['payment_amount']['next_label'] ) ? $this->themeOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
+		$label = isset( $this->templateOptions['payment_amount']['next_label'] ) ? $this->templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
 		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
 	}
 
