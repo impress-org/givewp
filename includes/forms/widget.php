@@ -56,6 +56,10 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function admin_widget_scripts( $hook ) {
+		// Load script only on widgets.php page.
+		if ( $hook !== 'widgets.php' ) {
+			return;
+		}
 
 		// Directories of assets.
 		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/js/';
@@ -63,11 +67,7 @@ class Give_Forms_Widget extends WP_Widget {
 		// Use minified libraries if SCRIPT_DEBUG is turned off.
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		// Widget Script.
-		if ( 'widgets.php' === $hook ) {
-
-			wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		}
+		wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'give-admin-scripts' ), GIVE_VERSION, false );
 	}
 
 	/**
