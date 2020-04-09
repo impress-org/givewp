@@ -75,8 +75,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			}
 		} );
 
-		// Mount Card Elements, if default gateway is Stripe SEPA.
-		if ( 'stripe_becs' === defaultGateway ) {
+		// Mount Card Elements, if default gateway is Stripe BECS.
+		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_card_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 
@@ -94,7 +94,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $form = jQuery( this );
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() ) {
+		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_card_update  ) {
 			give_stripe_process_becs_bank_account( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
