@@ -175,7 +175,7 @@ import setupChosen from './utils/setupChosen';
 				{
 					action: 'give_get_form_template_id',
 					formId: $this.val(),
-					savewidgets: jQuery( '#_wpnonce_widgets' ).val(),
+					security: jQuery( 'input[name="_wpnonce"]', $container ).val(),
 				},
 				function( response ) {
 					$loader.addClass( 'give-hidden' );
