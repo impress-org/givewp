@@ -187,7 +187,7 @@ class Give_Forms_Widget extends WP_Widget {
 				<small class="give-field-description"><?php esc_html_e( 'Select a donation form to use for this widget.', 'give' ); ?></small>
 			</p>
 
-			<fieldset class="js-legacy-form-template-settings give-hidden" style="margin-top: -1em">
+			<div class="js-legacy-form-template-settings js-form-template-settings give-hidden" style="margin-top: -1em">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
@@ -231,9 +231,9 @@ class Give_Forms_Widget extends WP_Widget {
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
 					<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this GiveWP form.', 'give' ); ?></small>
 				</p>
-			</fieldset>
+			</div>
 
-			<fieldset class="js-new-form-template-settings give-hidden" style="margin-top: -1em">
+			<div class="js-new-form-template-settings js-form-template-settings give-hidden" style="margin-top: -1em">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
 				<?php // Widget: Display Style. ?>
@@ -264,7 +264,7 @@ class Give_Forms_Widget extends WP_Widget {
 					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_color' ) ); ?>" value="<?php echo esc_attr( $instance['button_color'] ); ?>" /><br>
 					<small class="give-field-description"><?php esc_html_e( 'Set the color of button.', 'give' ); ?></small>
 				</p>
-			</fieldset>
+			</div>
 
 			<div class="js-loader">
 				<p><span class="give-spinner spinner is-show"></span>&nbsp;&nbsp;<i><?php _e( 'Loading settings...', 'give' ); ?></i></p>
