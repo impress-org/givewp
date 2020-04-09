@@ -1,16 +1,23 @@
-<!doctype html>
-<html <?php language_attributes(); ?> >
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title><?php _e( 'Donation Processing...', 'give' ); ?></title>
-	</head>
-	<body>
-		<p style="text-align: center"><?php _e( 'Processing...', 'give' ); ?></p>
-		<a style="font-size: 0" id="link" href="<?php echo esc_js( $location ); ?>" target="_parent"><?php _e( 'Link', 'give' ); ?></a>
+<?php
+/**
+ * Offsite payment gateway Iframe redirect handler view.
+ *
+ * @since 2.7.0
+ */
+use Give\TemplateSkinManager;
+
+$bodyContent = sprintf(
+	'<p style="text-align: center">%1$s/p>
+		<a style="font-size: 0" id="link" href="%3$s" target="_parent">%2$s</a>
 		<script>
-			document.getElementById( 'link' ).click();
-		</script>
-	</body>
-</html>
+			document.getElementById( \'link\' ).click();
+		</script>',
+	__( 'Processing...', 'give' ),
+	__( 'Link', 'give' ),
+	esc_js( $location )
+);
+
+$tm = new TemplateSkinManager();
+$tm->setTitle( __( 'Donation Processing...', 'give' ) )
+   ->setBody( $bodyContent )
+   ->render();
