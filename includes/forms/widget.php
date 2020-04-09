@@ -269,6 +269,7 @@ class Give_Forms_Widget extends WP_Widget {
 			<div class="js-loader">
 				<p><span class="give-spinner spinner is-active"></span>&nbsp;&nbsp;<i><?php _e( 'Loading settings...', 'give' ); ?></i></p>
 			</div>
+			<?php wp_nonce_field( 'give-donation-form-widget', '_wpnonce', false ); ?>
 		</div>
 		<?php
 	}
