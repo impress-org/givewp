@@ -1,30 +1,30 @@
 <?php
-namespace Give\Helpers\Form\Theme\Utils\Admin;
+namespace Give\Helpers\Form\Template\Utils\Admin;
 
-use Give\Form\Theme;
+use Give\Form\Template;
 use Give\FormAPI\Form\Field;
 use Give\FormAPI\Group;
 use WP_Post;
-use function Give\Helpers\Form\Theme\get as getTheme;
+use function Give\Helpers\Form\Template\get as getTheme;
 
 /**
- * Render theme setting in form metabox.
+ * Render template setting in form metabox.
  *
  * @since 2.7.0
  *
  * @global WP_Post $post
- * @param Theme $theme
+ * @param Template $template
  * @return string
  */
-function renderMetaboxSettings( $theme ) {
+function renderMetaboxSettings( $template ) {
 	global $post;
 
 	ob_start();
 
-	$saveOptions = getTheme( $post->ID, $theme->getID() );
+	$saveOptions = getTheme( $post->ID, $template->getID() );
 
 	/* @var Group $option */
-	foreach ( $theme->getOptions()->groups as $group ) {
+	foreach ( $template->getOptions()->groups as $group ) {
 		printf(
 			'<div class="give-row %1$s">',
 			$group->id
@@ -49,7 +49,7 @@ function renderMetaboxSettings( $theme ) {
 				$field['attributes']['value'] = $saveOptions[ $group->id ][ $field['id'] ];
 			}
 
-			$field['id'] = "{$theme->getID()}[{$group->id}][{$field['id']}]";
+			$field['id'] = "{$template->getID()}[{$group->id}][{$field['id']}]";
 
 			give_render_field( $field );
 		}

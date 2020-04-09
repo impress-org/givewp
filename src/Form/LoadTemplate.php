@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handle Theme Loading Handler
+ * Handle Template Loading Handler
  *
  * @package Give
  * @since   2.7.0
@@ -10,35 +10,34 @@
 namespace Give\Form;
 
 use _WP_Dependency;
-use Give\Form\Theme\Hookable;
-use Give\Form\Theme\Scriptable;
-use function Give\Helpers\Form\Theme\getActiveID;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use Give\Form\Template\Hookable;
+use Give\Form\Template\Scriptable;
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\inIframe;
-use function Give\Helpers\Form\Utils\isViewingForm;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * LoadTheme class.
- * This class is responsible to load necessary hooks and run required functions which help to render form theme (in different style).
+ * LoadTemplate class.
+ * This class is responsible to load necessary hooks and run required functions which help to render form template (in different style).
  *
  * @since 2.7.0
  */
-class LoadTheme {
+class LoadTemplate {
 	/**
-	 * Default form theme ID.
+	 * Default form template ID.
 	 *
 	 * @var string
 	 */
 	private $defaultTemplateID = 'legacy';
 
 	/**
-	 * Form theme config.
+	 * Form template config.
 	 *
-	 * @var Theme
+	 * @var Template
 	 */
-	private $theme;
+	private $template;
 
 	/**
 	 * setup form template
@@ -49,9 +48,9 @@ class LoadTheme {
 	private function setUpTemplate( $formId = null ) {
 		$formId = (int) ( $formId ?: getFormId() );
 
-		$themeID = getActiveID( $formId ) ?: $this->defaultTemplateID;
+		$templateID = getActiveID( $formId ) ?: $this->defaultTemplateID;
 
-		$this->theme = Give()->themes->getTheme( $themeID );
+		$this->template = Give()->templates->getTemplate( $templateID );
 	}
 
 	/**
@@ -60,19 +59,19 @@ class LoadTheme {
 	public function init() {
 		$this->setUpTemplate();
 
-		// Exit is theme is not valid.
-		if ( ! ( $this->theme instanceof Theme ) ) {
+		// Exit is template is not valid.
+		if ( ! ( $this->template instanceof Template ) ) {
 			return;
 		}
 
-		// Load theme hooks.
-		if ( $this->theme instanceof Hookable ) {
-			$this->theme->loadHooks();
+		// Load template hooks.
+		if ( $this->template instanceof Hookable ) {
+			$this->template->loadHooks();
 		}
 
-		// Load theme scripts.
-		if ( $this->theme instanceof Scriptable ) {
-			add_action( 'wp_enqueue_scripts', [ $this->theme, 'loadScripts' ] );
+		// Load template scripts.
+		if ( $this->template instanceof Scriptable ) {
+			add_action( 'wp_enqueue_scripts', [ $this->template, 'loadScripts' ] );
 		}
 
 		$this->setUpFrontendHooks();
@@ -196,12 +195,12 @@ class LoadTheme {
 	}
 
 	/**
-	 * Get theme.
+	 * Get template.
 	 *
+	 * @return Template
 	 * @since 2.7.0
-	 * @return Theme
 	 */
 	public function getTheme() {
-		return $this->theme;
+		return $this->template;
 	}
 }
