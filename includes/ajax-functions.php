@@ -870,3 +870,4 @@ function give_get_form_template_id() {
 	wp_send_json_success( $templateID );
 }
 add_action( 'wp_ajax_give_get_form_template_id', 'give_get_form_template_id' );
+add_action( 'wp_ajax_no_priv_give_get_form_template_id', 'give_get_form_template_id' );

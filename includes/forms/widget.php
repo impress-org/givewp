@@ -22,6 +22,33 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_Forms_Widget extends WP_Widget {
+	/**
+	 * Script handle name.
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	private $scriptHandle = 'give-admin-widgets-scripts';
+
+	/**
+	 * Widget identifier.
+	 *
+	 * We will use this to assign unique id to widget setting container and to generate unique inline script.
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	private $widgetIdentifier = '';
+
+	/**
+	 * Widget id prefix.
+	 *
+	 * We will use this to assign unique id to widget setting container.
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	private $widgetIdPrefix = 'give_forms_widget_container-';
 
 	/**
 	 * The widget class name
@@ -35,7 +62,6 @@ class Give_Forms_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$this->self = get_class( $this );
-
 		parent::__construct(
 			strtolower( $this->self ),
 			esc_html__( 'GiveWP - Donation Form', 'give' ),
@@ -67,7 +93,7 @@ class Give_Forms_Widget extends WP_Widget {
 		// Use minified libraries if SCRIPT_DEBUG is turned off.
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'give-admin-scripts' ), GIVE_VERSION, false );
+		wp_enqueue_script( $this->scriptHandle, $js_dir . 'admin-widgets' . $suffix . '.js', array( 'give-admin-scripts' ), GIVE_VERSION, false );
 	}
 
 	/**
@@ -81,6 +107,11 @@ class Give_Forms_Widget extends WP_Widget {
 		$title   = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$title   = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 		$form_id = (int) $instance['id'];
+
+		// Do not output anything if donation form is not selected.
+		if ( ! $form_id ) {
+			return;
+		}
 
 		// Use alias setting to set display setting when form template other then Legacy.
 		if ( ! isLegacyForm( $form_id ) ) {
@@ -150,8 +181,10 @@ class Give_Forms_Widget extends WP_Widget {
 
 		// Backward compatibility: Set float labels as default if, it was set as empty previous.
 		$instance['float_labels'] = empty( $instance['float_labels'] ) ? 'global' : $instance['float_labels'];
+
+		$this->getScriptForBuilders();
 		?>
-		<div class="give_forms_widget_container">
+		<div id="<?php echo $this->widgetIdPrefix . $this->widgetIdentifier; ?>" class="give_forms_widget_container">
 
 			<?php // Widget: widget Title. ?>
 			<p>
@@ -304,6 +337,119 @@ class Give_Forms_Widget extends WP_Widget {
 	 */
 	public function flush_widget_cache() {
 		wp_cache_delete( $this->self, 'widget' );
+	}
+
+	/**
+	 * Get inline script for widget to add support for widget in page builder like Divi, Elementor and Beaver Builder.
+	 *
+	 * @since 2.7.0
+	 */
+	private function getScriptForBuilders() {
+		// Do not output inline script if admin widget script already printed.
+		if ( wp_script_is( $this->scriptHandle, 'done' ) ) {
+			return;
+		}
+
+		$this->widgetIdentifier = uniqid();
+		$containerId            = $this->widgetIdPrefix . $this->widgetIdentifier;
+		?>
+		<script>
+			/**
+			 * Display setting fields on basis of donation form setting.
+			 *
+			 * @since 2.7.0
+			 * @param {Array} $el
+			 */
+			function showConditionalFieldWhenEditDonationFormSetting<?php echo esc_js( $this->widgetIdentifier ); ?>( $el ) {
+				const $this        = $el,
+					  $container   = $this.closest( '.give_forms_widget_container' ),
+					  $loader      = jQuery( '.js-loader', $container ),
+					  $oldSettings = jQuery( '.js-legacy-form-template-settings', $container ),
+					  $newSettings = jQuery( '.js-new-form-template-settings', $container );
+
+				$oldSettings.hide().removeClass( 'active' );
+				$newSettings.hide().removeClass( 'active' );
+
+				$loader.show();
+
+				jQuery.post(
+					ajaxurl,
+					{
+						action: 'give_get_form_template_id',
+						formId: $this.val(),
+						security: jQuery( 'input[name="_wpnonce"]', $container ).val(),
+					},
+					function( response ) {
+						$loader.hide();
+
+						// Exit if result is not successful.
+						if (true === response.success) {
+							if ('legacy' === response.data) {
+								$oldSettings.show().addClass( 'active' );
+							} else {
+								$newSettings.show().addClass( 'active' );
+							}
+						}
+
+						showConditionalFieldWhenEditDisplayStyleSetting<?php echo esc_js( $this->widgetIdentifier ); ?>( $this );
+					},
+				);
+			}
+
+			/**
+			 * Display setting fields on basis of display_style setting.
+			 *
+			 * @since 2.7.0
+			 * @param {Array} $el
+			 */
+			function showConditionalFieldWhenEditDisplayStyleSetting<?php echo esc_js( $this->widgetIdentifier ); ?>( $el ) {
+				const $container              = $el.closest( '.give_forms_widget_container' ),
+					  $fieldset               = jQuery( '.js-form-template-settings.active', $container ),
+					  $parent                 = jQuery( 'p.give_forms_display_style_setting_row', $fieldset ),
+					  isFormHasNewTemplate    = $fieldset.hasClass( 'js-new-form-template-settings' ),
+					  isFormHasLegacyTemplate = $fieldset.hasClass( 'js-legacy-form-template-settings' );
+
+				if (isFormHasLegacyTemplate) {
+					const $continue_button_title = $parent.next();
+
+					if ('onpage' === jQuery( 'input:checked', $parent ).val()) {
+						$continue_button_title.hide();
+					} else {
+						$continue_button_title.show();
+					}
+				} else if (isFormHasNewTemplate) {
+					if ('button' === jQuery( 'input:checked', $parent ).val()) {
+						$fieldset.find( 'p' ).not( $parent ).show();
+					} else {
+						$fieldset.find( 'p' ).not( $parent ).hide();
+					}
+				}
+			}
+
+			/* Display style change handler. */
+			jQuery( document ).on( 'change', '#<?php echo esc_js( $containerId ); ?> .give_forms_display_style_setting_row input', function() {
+				showConditionalFieldWhenEditDisplayStyleSetting<?php echo esc_js( $this->widgetIdentifier ); ?>( jQuery( this ) );
+			} );
+
+			/* Donation form change handler. */
+			jQuery( document ).on( 'change', '#<?php echo esc_js( $containerId ); ?> select.give-select', function() {
+				const $container = jQuery(this).closest('.give_forms_widget_container'),
+					  $parent = jQuery( this ).parent();
+
+				$parent.removeClass('give-hidden');
+				jQuery('.js-loader', $container ).addClass('give-hidden');
+
+				// Render form template settings only if form selected.
+				if( parseInt(jQuery( this ).val()) ) {
+					showConditionalFieldWhenEditDonationFormSetting<?php echo esc_js( $this->widgetIdentifier ); ?>( jQuery( this ) );
+				} else{
+					jQuery( '#<?php echo esc_js( $containerId ); ?> .give-hidden' ).hide();
+				}
+			} );
+
+			jQuery( '#<?php echo esc_js( $containerId ); ?> select.give-select' ).trigger('change');
+		</script>
+		<?php
 	}
 }
 
