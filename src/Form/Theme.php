@@ -45,6 +45,18 @@ abstract class Theme {
 	protected $mapToLegacySetting = [];
 
 	/**
+	 * Get starting form height
+	 *
+	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
+	 * Implemented in includes/shortcodes.php:
+	 *
+	 * @return int
+	 **/
+	public function getFormStartingHeight() {
+		return 600;
+	}
+
+	/**
 	 * Get loading view filepath
 	 *
 	 * @since 2.7.0
