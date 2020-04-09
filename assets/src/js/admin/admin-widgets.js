@@ -1,4 +1,4 @@
-/* globals jQuery, Give, ajaxurl, wpWidgets */
+/* globals jQuery, Give, ajaxurl */
 /*!
  * Give Admin Widgets JS
  *
@@ -16,22 +16,11 @@ import setupChosen from './utils/setupChosen';
 	 * On DOM Ready
 	 */
 	jQuery( function() {
-		const $sidebarContainer = jQuery( '.widget-liquid-right' ),
-			  $els = jQuery( '.give-select', '.widget-liquid-right' );
-		/**
-		 * Add events
-		 */
-		/* Display style change handler. */
-		$sidebarContainer.on( 'change', '.give_forms_display_style_setting_row input', function() {
-			showConditionalFieldWhenEditDisplayStyleSetting( $( this ) );
-		} );
-
-		/* Donation form change handler. */
-		jQuery( document ).on( 'change', 'select.give-select', function() {
-			showConditionalFieldWhenEditDonationFormSetting( jQuery( this ) );
-		} );
-
-		initiateChosenField( $els );
+		// Setup widget fields on widget page.
+		const $container = jQuery( '.widget-liquid-right' );
+		if ( $container ) {
+			setUpWidgetFields( $container );
+		}
 	} );
 
 	/**
@@ -54,6 +43,8 @@ import setupChosen from './utils/setupChosen';
 			return false;
 		}
 
+		console.log( 'pass 1', $el );
+
 		// Setup chosen field.
 		Promise.all( [
 			initiateChosenField( $el ),
@@ -64,6 +55,65 @@ import setupChosen from './utils/setupChosen';
 			}
 		} );
 	} );
+
+	/**
+	 * When widget added in customizer successfully.
+	 */
+	jQuery( document ).on( 'widget-added', function( e, $widgetContainer ) {
+		const $el = jQuery( '.give-select', $widgetContainer ),
+			  isDonationFormSelected = !! parseInt( $el.val() );
+
+		console.log( 'pass 2', $widgetContainer );
+
+		// widget-added event also fires on widget page but we only want to run this on customizer page.
+		if ( ! jQuery( '.control-section-sidebar' ).length ) {
+			return;
+		}
+
+		// Setup chosen field.
+		Promise.all( [
+			initiateChosenField( $el ),
+		] ).then( ()=>{
+			// Hide loader only if performing widget saving when donation form is not selected.
+			if ( ! isDonationFormSelected ) {
+				jQuery( '.js-loader', $widgetContainer ).addClass( 'give-hidden' );
+			}
+
+			addEventListenerToWidgetFields( $widgetContainer );
+		} );
+	} );
+
+	/**
+	 * Setup widget fields
+	 *
+	 * @since 2.7.0
+	 * @param {object} $container
+	 */
+	function setUpWidgetFields( $container ) {
+		addEventListenerToWidgetFields( $container );
+		initiateChosenField( jQuery( '.give-select', $container ) );
+	}
+
+	/**
+	 * Add evvent on widget fields.
+	 *
+	 * @since 2.7.0
+	 * @param $container
+	 */
+	function addEventListenerToWidgetFields( $container ) {
+		/**
+		 * Add events
+		 */
+		/* Display style change handler. */
+		$container.on( 'change', '.give_forms_display_style_setting_row input', function() {
+			showConditionalFieldWhenEditDisplayStyleSetting( $( this ) );
+		} );
+
+		/* Donation form change handler. */
+		$container.on( 'change', 'select.give-select', function() {
+			showConditionalFieldWhenEditDonationFormSetting( jQuery( this ) );
+		} );
+	}
 
 	/**
 	 * Initiate chosen field
