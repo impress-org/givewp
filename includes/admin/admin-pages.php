@@ -234,6 +234,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					$give_donors_page,
 					$give_tools_page,
 					'widgets.php',
+					'customize.php',
 				)
 			);
 
