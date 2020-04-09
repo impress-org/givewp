@@ -903,12 +903,17 @@ Embed Form aka IFrame Form
 -----------------------------------*/
 .give-embed-form-wrapper {
 	width: 100% !important;
+	position: relative;
 
-	&.give-loader-type-img {
-		@include give-img-type-loader;
+	.iframe-loader {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top: 0;
 	}
 
 	iframe {
+		min-height: 600px;
 		width: 100% !important;
 	}
 
@@ -979,5 +984,15 @@ Embed Form aka IFrame Form
 			z-index: 1000;
 			overflow: hidden;
 		}
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotateZ(0deg);
+	}
+
+	to {
+		transform: rotateZ(180deg);
 	}
 }
