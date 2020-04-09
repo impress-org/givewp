@@ -5,9 +5,9 @@
  * @since 2.7.0
  */
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
-use Give\TemplateSkinManager;
+use Give\IframeView;
 
-$tm = new TemplateSkinManager();
+$tm = new IframeView();
 
 $tm->setTitle( __( 'Donation Receipt', 'give' ) )
    ->setBody( do_shortcode( getReceiptShortcodeFromConfirmationPage() ) )

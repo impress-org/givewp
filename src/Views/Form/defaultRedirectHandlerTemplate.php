@@ -4,7 +4,7 @@
  *
  * @since 2.7.0
  */
-use Give\TemplateSkinManager;
+use Give\IframeView;
 
 $bodyContent = sprintf(
 	'<p style="text-align: center">%1$s/p>
@@ -17,7 +17,7 @@ $bodyContent = sprintf(
 	esc_js( $location )
 );
 
-$tm = new TemplateSkinManager();
+$tm = new IframeView();
 $tm->setTitle( __( 'Donation Processing...', 'give' ) )
    ->setBody( $bodyContent )
    ->render();

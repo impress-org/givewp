@@ -8,12 +8,12 @@
 namespace Give;
 
 /**
- * Class TemplateSkinManager
+ * Class IframeView
  *
  * @since 2.7.0
  * @package Give
  */
-class TemplateSkinManager {
+class IframeView {
 	/**
 	 * Document page title.
 	 *
@@ -49,7 +49,7 @@ class TemplateSkinManager {
 	 *
 	 * @param string $title
 	 *
-	 * @return TemplateSkinManager $this
+	 * @return IframeView $this
 	 */
 	public function setTitle( $title ) {
 		$this->title = $title;
@@ -62,7 +62,7 @@ class TemplateSkinManager {
 	 *
 	 * @param string $body
 	 *
-	 * @return TemplateSkinManager $this
+	 * @return IframeView $this
 	 */
 	public function setBody( $body ) {
 		$this->body = $body;
@@ -75,7 +75,7 @@ class TemplateSkinManager {
 	 *
 	 * @param array $classes
 	 *
-	 * @return TemplateSkinManager $this
+	 * @return IframeView $this
 	 */
 	public function setBodyClasses( $classes ) {
 		$this->bodyClasses = array_merge( $this->bodyClasses, (array) $classes );

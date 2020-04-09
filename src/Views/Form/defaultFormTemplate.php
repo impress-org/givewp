@@ -4,11 +4,11 @@
  *
  * @since 2.7.0
  */
-use Give\TemplateSkinManager;
+use Give\IframeView;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 $formId = getFormId();
-$tm     = new TemplateSkinManager();
+$tm     = new IframeView();
 
 // Fetch the Give Form.
 ob_start();
