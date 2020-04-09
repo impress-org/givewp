@@ -51,13 +51,13 @@ class Give_Forms_Widget extends WP_Widget {
 	/**
 	 * Load widget assets only on the widget page
 	 *
-	 * @param string $hook Use it to target a specific admin page.
-	 *
 	 * @return void
 	 */
-	public function admin_widget_scripts( $hook ) {
+	public function admin_widget_scripts() {
+		global $pagenow;
+
 		// Load script only on widgets.php page.
-		if ( $hook !== 'widgets.php' ) {
+		if ( ! in_array( $pagenow, [ 'widgets.php', 'customize.php' ] ) ) {
 			return;
 		}
 
