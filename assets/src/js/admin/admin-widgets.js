@@ -178,7 +178,7 @@ import setupChosen from './utils/setupChosen';
 	function showConditionalFieldWhenEditDisplayStyleSetting( $els ) {
 		$els.each( function() {
 			const $container = jQuery( this ).closest( '.give_forms_widget_container' ),
-				  $fieldset = jQuery( 'fieldset.active', $container ),
+				  $fieldset = jQuery( '.js-form-template-settings.active', $container ),
 				  $parent = jQuery( 'p.give_forms_display_style_setting_row', $fieldset ),
 				  isFormHasNewTemplate = $fieldset.hasClass( 'js-new-form-template-settings' ),
 				  isFormHasLegacyTemplate = $fieldset.hasClass( 'js-legacy-form-template-settings' );
