@@ -5,7 +5,7 @@
  * @package Give
  */
 
-namespace Give;
+namespace Give\Views;
 
 /**
  * Class IframeView
