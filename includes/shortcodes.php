@@ -162,7 +162,7 @@ function give_form_shortcode( $atts ) {
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
-		$formStartingHeight     = Give()->themes->getTheme( $activeTheme )->getFormStartingHeight();
+		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight();
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
@@ -247,7 +247,7 @@ function give_form_shortcode( $atts ) {
 
 		$isHidden = $buttonModeActive ? ' is-hide' : '';
 		echo "<div class='give-embed-form-wrapper{$isHidden}' id='{$uniqueId}'>{$iframe}<div class='iframe-loader'>";
-		include Give()->themes->getTheme( $activeTheme )->getLoadingView();
+		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
 		echo '</div></div>';
 
 	} else {
