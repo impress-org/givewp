@@ -1,9 +1,9 @@
 <?php
-namespace Give\Views\Form\Themes\Legacy;
+namespace Give\Views\Form\Templates\Legacy;
 
-use Give\Form\Theme;
+use Give\Form\Template;
 
-class Legacy extends Theme {
+class Legacy extends Template {
 	/**
 	 * @inheritDoc
 	 * @since 2.7.0

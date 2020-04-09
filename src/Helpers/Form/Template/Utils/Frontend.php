@@ -1,5 +1,5 @@
 <?php
-namespace Give\Helpers\Form\Theme\Utils\Frontend;
+namespace Give\Helpers\Form\Template\Utils\Frontend;
 
 use WP_Post;
 

@@ -1,5 +1,5 @@
 <?php
-use function Give\Helpers\Form\Theme\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 $formInfo = get_post( getFormId() );
 
@@ -52,7 +52,7 @@ return [
 			[
 				'id'      => 'primary_color',
 				'name'    => __( 'Primary Color', 'give' ),
-				'desc'    => __( 'The primary color is used through the Form Theme for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'desc'    => __( 'The primary color is used through the Form Template for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
 				'type'    => 'colorpicker',
 				'default' => '#28C77B',
 			],

@@ -141,6 +141,17 @@
 			showErrors: true,
 			setup: () => {
 				// Setup payment information screen
+
+				// Remove purchase_loading text
+				window.give_global_vars.purchase_loading = '';
+
+				// Show Sequoia loader on click/touchend
+				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
+					//Override submit loader with Sequoia loader
+					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
+				} );
+
+				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
 			},
