@@ -1,7 +1,7 @@
 <?php
 
-use function Give\Helpers\Form\Theme\get as getThemeOptions;
-use function Give\Helpers\Form\Theme\Utils\Frontend\getPaymentId as getPaymentId;
+use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId as getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
@@ -9,7 +9,7 @@ use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
 $payment = new Payment( getPaymentId() );
-$options = getThemeOptions();
+$options = getTemplateOptions();
 
 ?>
 

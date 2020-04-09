@@ -4,7 +4,7 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use function Give\Helpers\Form\Template\get as getThemeOptions;
+use function Give\Helpers\Form\Template\get as getTemplateOptions;
 
 /**
  * Class Sequoia
@@ -28,7 +28,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/Themes/Sequoia/views/receipt.php';
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php';
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	public function loadScripts() {
 
 		// Localize Template options
-		$templateOptions = getThemeOptions();
+		$templateOptions = getTemplateOptions();
 
 		// Set defaults
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
