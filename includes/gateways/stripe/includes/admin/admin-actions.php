@@ -105,7 +105,7 @@ function give_stripe_opt_refund( $donation_id ) {
 	$processed_gateway = Give()->payment_meta->get_meta( $donation_id, '_give_payment_gateway', true );
 
 	// Bail out, if the donation is not processed with Stripe payment gateway.
-	if ( 'stripe' !== $processed_gateway ) {
+	if ( ! in_array( $processed_gateway, give_stripe_supported_payment_methods(), true ) ) {
 		return;
 	}
 	?>
@@ -121,7 +121,7 @@ function give_stripe_opt_refund( $donation_id ) {
 	<?php
 }
 
-add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund', 10, 1 );
+add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund', 11, 1 );
 
 /**
  * Process refund in Stripe.
@@ -171,11 +171,18 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
 	try {
 
-		$refund = \Stripe\Refund::create(
-			array(
-				'charge' => $charge_id,
-			)
-		);
+		$args = [
+			'charge' => $charge_id,
+		];
+
+		// If the donation is processed with payment intent then refund using payment intent.
+		if ( give_stripe_is_source_type( $charge_id, 'pi' ) ) {
+			$args = [
+				'payment_intent' => $charge_id,
+			];
+		}
+
+		$refund = \Stripe\Refund::create( $args );
 
 		if ( isset( $refund->id ) ) {
 			give_insert_payment_note(
