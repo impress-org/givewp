@@ -12,10 +12,10 @@
 		height: 100%;
 		width: 0;
 	}
-
 }
 
-.admin-color-fresh .give-progress div, .give-progress div {
+.admin-color-fresh .give-progress div,
+.give-progress div {
 	background: #0073aa;
 }
 
@@ -43,11 +43,10 @@
 	background: #dd823b;
 }
 
-
 /**
  * Spinner
  */
-.give-spinner-wrapper{
+.give-spinner-wrapper {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -57,11 +56,11 @@
 	z-index: 1;
 	display: none;
 
-	&.is-active{
+	&.is-active {
 		display: inline-block;
 	}
 
-	.aligncenter{
+	.aligncenter {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -70,9 +69,15 @@
 }
 
 .give-spinner {
-	&.spinner.is-active{
+	&.spinner.is-active {
 		margin: 0 0 0 2px;
 		float: none;
+	}
+	&.is-show {
+		margin: 0 0 0 2px;
+		float: none;
+
+		visibility: visible;
 	}
 }
 
@@ -81,8 +86,9 @@
  */
 
 // 1. Inline radio button
-ul.give-radio-inline{
-	li, input{
+ul.give-radio-inline {
+	li,
+	input {
 		display: inline-block !important;
 	}
 }
@@ -93,17 +99,16 @@ ul.give-radio-inline{
 	}
 }
 
-
-.give-width-25em{
+.give-width-25em {
 	width: 25em;
 }
 
 /**
  * Give loader
  */
-.give-spinner-wrap{
+.give-spinner-wrap {
 	position: relative;
-	.spinner{
+	.spinner {
 		float: none;
 		margin-top: 0;
 		margin-right: 0;
