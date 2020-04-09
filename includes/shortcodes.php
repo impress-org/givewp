@@ -162,6 +162,7 @@ function give_form_shortcode( $atts ) {
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
+		$formStartingHeight     = Give()->themes->getTheme( $activeTheme )->getFormStartingHeight();
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
@@ -202,9 +203,10 @@ function give_form_shortcode( $atts ) {
 						src="%1$s"
 						data-autoScroll="%2$s"
 						onload="Give.initializeIframeResize(this)"
-						style="border: 0; visibility: hidden"></iframe>',
+						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>',
 			$iframe_url,
 			$buttonModeActive ? 0 : $isAutoScroll,
+			$formStartingHeight,
 		);
 
 		// Show button in button mode and hide Iframe.
@@ -230,7 +232,7 @@ function give_form_shortcode( $atts ) {
 									class="in-modal"
 									data-src="%1$s"
 									data-autoScroll="%2$s"
-									style="border: 0; visibility: hidden"></iframe>
+									style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>
 								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
 							</div>
 						</div>
@@ -238,7 +240,8 @@ function give_form_shortcode( $atts ) {
 				$iframe_url,
 				$buttonModeActive ? 0 : $isAutoScroll,
 				__( 'Close modal', 'give' ),
-				$uniqueId
+				$uniqueId,
+				$formStartingHeight
 			);
 		}
 
