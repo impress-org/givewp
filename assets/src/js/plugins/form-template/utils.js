@@ -32,6 +32,7 @@ export const initializeIframeResize = function( iframe ) {
 							}
 							parent.querySelector( '.iframe-loader' ).remove();
 							iframe.style.visibility = 'visible';
+							iframe.style.minHeight = '';
 						}
 						break;
 				}
