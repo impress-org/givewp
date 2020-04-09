@@ -188,8 +188,8 @@ class Give_Forms_Widget extends WP_Widget {
 
 			<?php // Widget: widget Title. ?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label><br>
-				<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" /><br>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
+				<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 				<small class="give-field-description"><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
 			</p>
 
@@ -220,31 +220,31 @@ class Give_Forms_Widget extends WP_Widget {
 				<small class="give-field-description"><?php esc_html_e( 'Select a donation form to use for this widget.', 'give' ); ?></small>
 			</p>
 
-			<div class="js-legacy-form-template-settings js-form-template-settings give-hidden" style="margin-top: -1em">
+			<div class="js-legacy-form-template-settings js-form-template-settings give-hidden">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'All Fields', 'give' ); ?></label>
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-reveal" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-modal"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-modal" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label>
-					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Button', 'give' ); ?></label><br>
+					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Button', 'give' ); ?></label>
 					<small class="give-field-description"><?php echo esc_html__( 'Select a donation form style.', 'give' ); ?></small>
 				</p>
 
 				<?php // Widget: Continue Button Title. ?>
 				<p class="give_forms_continue_button_title_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label><br>
-					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['continue_button_title'] ); ?>" /><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['continue_button_title'] ); ?>" />
 					<small class="give-field-description"><?php esc_html_e( 'The button label for displaying the additional payment fields.', 'give' ); ?></small>
 				</p>
 
 				<?php // Widget: Floating Labels. ?>
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-global"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-global" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" value="global" <?php checked( $instance['float_labels'], 'global' ); ?>> <?php echo esc_html__( 'Global Option', 'give' ); ?></label>
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-enabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-enabled" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" value="enabled" <?php checked( $instance['float_labels'], 'enabled' ); ?>> <?php echo esc_html__( 'Enabled', 'give' ); ?></label>
-					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" value="disabled" <?php checked( $instance['float_labels'], 'disabled' ); ?>> <?php echo esc_html__( 'Disabled', 'give' ); ?></label><br>
+					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" value="disabled" <?php checked( $instance['float_labels'], 'disabled' ); ?>> <?php echo esc_html__( 'Disabled', 'give' ); ?></label>
 					<small class="give-field-description">
 						<?php
 						printf(
@@ -258,43 +258,43 @@ class Give_Forms_Widget extends WP_Widget {
 
 				<?php // Widget: Display Content. ?>
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_html_e( 'Display Content (optional):', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_html_e( 'Display Content (optional):', 'give' ); ?></label>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-none"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-none" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="none" <?php checked( $instance['show_content'], 'none' ); ?>> <?php echo esc_html__( 'None', 'give' ); ?></label>
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-above" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="above" <?php checked( $instance['show_content'], 'above' ); ?>> <?php echo esc_html__( 'Above', 'give' ); ?></label>
-					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
+					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>-below" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label>
 					<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this GiveWP form.', 'give' ); ?></small>
 				</p>
 			</div>
 
-			<div class="js-new-form-template-settings js-form-template-settings give-hidden" style="margin-top: -1em">
+			<div class="js-new-form-template-settings js-form-template-settings give-hidden">
 				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="button" <?php checked( $instance['tmp_display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label><br>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="onpage" <?php checked( $instance['tmp_display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="button" <?php checked( $instance['tmp_display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="onpage" <?php checked( $instance['tmp_display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
 					<small class="give-field-description"><?php echo esc_html__( 'Select a donation form style.', 'give' ); ?></small>
 				</p>
 
 				<?php // Widget: Introduction Text. ?>
 				<p class="give_forms_introduction_text_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>"><?php esc_html_e( 'Widget Text:', 'give' ); ?></label><br>
-					<textarea id="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'introduction_text' ) ); ?>" class="widefat"><?php echo esc_textarea( $instance['introduction_text'] ); ?></textarea><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>"><?php esc_html_e( 'Widget Text:', 'give' ); ?></label>
+					<textarea id="<?php echo esc_attr( $this->get_field_id( 'introduction_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'introduction_text' ) ); ?>" class="widefat"><?php echo esc_textarea( $instance['introduction_text'] ); ?></textarea>
 					<small class="give-field-description"><?php esc_html_e( 'Provide an introduction text to invite the visitor to become a donor. Leave this blank to not display any text.', 'give' ); ?></small>
 				</p>
 
 				<?php // Widget: Continue Button Text. ?>
 				<p class="give_forms_button_text_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label><br>
-					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tmp_continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['tmp_continue_button_title'] ); ?>" /><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>"><?php esc_html_e( 'Button Text:', 'give' ); ?></label>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_continue_button_title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tmp_continue_button_title' ) ); ?>" value="<?php echo esc_attr( $instance['tmp_continue_button_title'] ); ?>" />
 					<small class="give-field-description"><?php esc_html_e( 'This label will appear on button.', 'give' ); ?></small>
 				</p>
 
 				<?php // Widget: Continue Button Color. ?>
 				<p class="give_forms_button_color_setting_row">
-					<label for="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>"><?php esc_html_e( 'Button Color:', 'give' ); ?></label><br>
-					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_color' ) ); ?>" value="<?php echo esc_attr( $instance['button_color'] ); ?>" /><br>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>"><?php esc_html_e( 'Button Color:', 'give' ); ?></label>
+					<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'button_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button_color' ) ); ?>" value="<?php echo esc_attr( $instance['button_color'] ); ?>" />
 					<small class="give-field-description"><?php esc_html_e( 'Set the color of button.', 'give' ); ?></small>
 				</p>
 			</div>
@@ -353,6 +353,39 @@ class Give_Forms_Widget extends WP_Widget {
 		$this->widgetIdentifier = uniqid();
 		$containerId            = $this->widgetIdPrefix . $this->widgetIdentifier;
 		?>
+		<style>
+			.give_forms_widget_container label:not([for*='display_style']),
+			p.give_forms_display_style_setting_row > label:first-child{
+				display: block;
+				font-weight: 500;
+			}
+
+			.give_forms_widget_container input {
+				margin-left: 0 !important;
+				margin-bottom: 0 !important;
+			}
+
+			.give_forms_widget_container input[type="radio"]{
+				margin: 0! important;
+			}
+
+			.give_forms_widget_container .give-field-description {
+				color: #aaaaaa;
+				font-style: italic;
+				margin: 0;
+				padding-top: 8px;
+				display: block;
+			}
+
+			.give_forms_widget_container select,
+			.give_forms_widget_container textarea{
+				margin: 5px 10px 0 0;
+			}
+
+			.give_forms_widget_container .give_forms_display_style_setting_row label:not([for*="tmp_display_style"]){
+				display: inline
+			}
+		</style>
 		<script>
 			/**
 			 * Display setting fields on basis of donation form setting.
