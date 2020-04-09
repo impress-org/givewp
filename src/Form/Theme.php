@@ -45,6 +45,17 @@ abstract class Theme {
 	protected $mapToLegacySetting = [];
 
 	/**
+	 * Get loading view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getLoadingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultLoadingView.php';
+	}
+
+	/**
 	 * Get form view filepath
 	 *
 	 * @since 2.7.0
