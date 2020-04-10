@@ -30,8 +30,9 @@ function getActiveID( $formId = null ) {
 function get( $formId = null, $templateId = '' ) {
 	$formId   = $formId ?: getFormId();
 	$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
+	$settings = Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
 
-	return (array) Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
+	return  $settings ?: [];
 }
 
 /**
