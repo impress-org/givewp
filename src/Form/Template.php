@@ -4,7 +4,7 @@
  * Handle basic setup of form template
  *
  * @package Give
- * @since 2.7.0
+ * @since   2.7.0
  */
 
 namespace Give\Form;
@@ -22,26 +22,75 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Template {
 	/**
+	 * Flag to check whether or not open success page in iframe.
+	 *
 	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
 	 */
 	public $openSuccessPageInIframe = true;
 
 	/**
+	 * Flag to check whether or not open failed page in iframe.
+	 *
 	 * @var bool $openFailedPageInIframe If set to false then failed page will open in window instead of iframe.
 	 */
 	public $openFailedPageInIframe = true;
 
 	/**
-	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:16 Check property description.
-	 * @var array $defaultSettings Form settings default values for form template.
+	 * Donation level display style
+	 *
+	 * @var string $donationLevelsDisplayStyle
 	 */
-	protected $defaultLegacySettingValues = [];
+	protected $donationLevelsDisplayStyle = 'buttons';
 
 	/**
-	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:18 Check property description.
-	 * @var array $mapToLegacySetting
+	 * Donation form display style.
+	 *
+	 * @var string $donationFormDisplayStyle
 	 */
-	protected $mapToLegacySetting = [];
+	protected $donationFormDisplayStyle = 'onpage';
+
+	/**
+	 * Flag to check whether or not enable float label feature.
+	 *
+	 * @var string $enableFloatLabels
+	 */
+	protected $enableFloatLabels = 'disabled';
+
+	/**
+	 * Continue to donation form button label.
+	 *
+	 * @var string $continueToDonationFormLabel
+	 */
+	protected $continueToDonationFormLabel = '';
+
+	/**
+	 * Donation now button title.
+	 *
+	 * @var string $donateNowButtonLabel
+	 */
+	protected $donateNowButtonLabel = '';
+
+	/**
+	 * Flag to check whether or not show donation form introduction text.
+	 *
+	 * @var string $showDonationIntroductionContent
+	 */
+	protected $showDonationIntroductionContent = 'disabled';
+
+	/**
+	 * Donation introduction content position.
+	 *
+	 * @var string $donationIntroductionContentPosition
+	 */
+	protected $donationIntroductionContentPosition = '';
+
+
+	/**
+	 * Donation introduction content.
+	 *
+	 * @var string $donationIntroductionContent
+	 */
+	protected $donationIntroductionContent = '';
 
 	/**
 	 * template vs file array
@@ -58,36 +107,32 @@ abstract class Template {
 	/**
 	 * return form template ID.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
-	abstract  public function getID();
+	abstract public function getID();
 
 	/**
 	 * Get form template name.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	abstract public function getName();
 
 	/**
 	 * Get form template image.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	abstract public function getImage();
 
 	/**
 	 * Get options config
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return array
+	 * @since 2.7.0
 	 */
 	abstract public function getOptionsConfig();
 
