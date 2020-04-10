@@ -153,4 +153,27 @@ class Options {
 			'default' => 'global',
 		];
 	}
+
+	/**
+	 * Return array configuration for display content setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite display content feature then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getDisplayContentField() {
+		return [
+			'name'          => __( 'Display Content', 'give' ),
+			'description'   => __( 'Do you want to add custom content to this form?', 'give' ),
+			'id'            => 'display_content',
+			'type'          => 'radio_inline',
+			'options'       => [
+				'enabled'  => __( 'Enabled', 'give' ),
+				'disabled' => __( 'Disabled', 'give' ),
+			],
+			'wrapper_class' => '_give_display_content_field',
+			'default'       => 'disabled',
+		];
+	}
 }

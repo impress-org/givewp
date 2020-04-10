@@ -14,18 +14,7 @@ return [
 			Options::getContinueToDonationFormField(),
 			Options::getCheckoutLabelField(),
 			Options::getFloatLabelsField(),
-			[
-				'name'          => __( 'Display Content', 'give' ),
-				'description'   => __( 'Do you want to add custom content to this form?', 'give' ),
-				'id'            => 'display_content',
-				'type'          => 'radio_inline',
-				'options'       => [
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
-				],
-				'wrapper_class' => '_give_display_content_field',
-				'default'       => 'disabled',
-			],
+			Options::getDisplayContentField(),
 			[
 				'name'          => __( 'Content Placement', 'give' ),
 				'description'   => __( 'This option controls where the content appears within the donation form.', 'give' ),
