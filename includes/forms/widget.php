@@ -105,14 +105,15 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	public function widget( $args, $instance ) {
-		$title   = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		$title   = apply_filters( 'widget_title', $title, $instance, $this->id_base );
-		$form_id = (int) $instance['id'];
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
-		// Do not output anything if donation form is not selected.
-		if ( ! $form_id ) {
+		// Exit do not have valid for id.
+		if ( ! array_key_exists( 'id', $instance ) || empty( $instance['id'] ) ) {
 			return;
 		}
+
+		$form_id = (int) $instance['id'];
 
 		// Use alias setting to set display setting when form template other then Legacy.
 		if ( ! isLegacyForm( $form_id ) ) {
