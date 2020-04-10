@@ -58,4 +58,29 @@ class Options {
 			'mapToLegacySetting' => '_give_checkout_label',
 		];
 	}
+
+	/**
+	 * Return array configuration for display style setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite donation levels style then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getDonationLevelsDisplayStyleField() {
+		return [
+			'name'               => __( 'Display Style', 'give' ),
+			'description'        => __( 'Set how the donations levels will display on the form.', 'give' ),
+			'id'                 => 'display_style',
+			'type'               => 'radio_inline',
+			'default'            => 'buttons',
+			'options'            => [
+				'buttons'  => __( 'Buttons', 'give' ),
+				'radios'   => __( 'Radios', 'give' ),
+				'dropdown' => __( 'Dropdown', 'give' ),
+			],
+			'wrapper_class'      => 'give-hidden _give_display_style_field',
+			'mapToLegacySetting' => '_give_checkout_label',
+		];
+	}
 }
