@@ -31,7 +31,14 @@ function give_stripe_get_secret_key() {
 		$secret_key = trim( give_get_option( 'test_secret_key' ) );
 	}
 
-	return $secret_key;
+	/**
+	 * Filter to handle secret key for Stripe.
+	 *
+	 * @param string $publishable_key Secret Key.
+	 *
+	 * @since 2.6.3
+	 */
+	return apply_filters( 'give_stripe_get_secret_key', $secret_key );
 }
 
 /**
