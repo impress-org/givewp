@@ -84,7 +84,6 @@ abstract class Template {
 	 */
 	protected $donationIntroductionContentPosition = '';
 
-
 	/**
 	 * Donation introduction content.
 	 *
@@ -103,6 +102,14 @@ abstract class Template {
 		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
 		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
 	];
+
+	/**
+	 * Template constructor.
+	 */
+	public function __construct() {
+		$this->donateNowButtonLabel   = __( 'Donate Now', 'give' );
+		$this->continueToDonationFormLabel = __( 'Donate Now', 'give' );
+	}
 
 	/**
 	 * return form template ID.
