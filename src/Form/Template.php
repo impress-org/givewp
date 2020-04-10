@@ -131,26 +131,10 @@ abstract class Template {
 	 *
 	 * @param int $formId
 	 *
-	 * @since 2.7.0
 	 * @return mixed
+	 * @since 2.7.0
 	 */
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
-	}
-
-
-	/**
-	 * Returns LegacyFormSettingCompatibility object.
-	 *
-	 * This function helps to maintain backward compatibility with legacy form settings.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return LegacyFormSettingCompatibility|null
-	 */
-	public function getLegacySettingHandler() {
-		return $this->mapToLegacySetting || $this->defaultLegacySettingValues ?
-			new LegacyFormSettingCompatibility( $this->mapToLegacySetting, $this->defaultLegacySettingValues ) :
-			null;
 	}
 }
