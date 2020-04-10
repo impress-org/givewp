@@ -108,4 +108,25 @@ class Options {
 			'default'       => 'onpage',
 		];
 	}
+
+	/**
+	 * Return array configuration for continue to donation button label ( reveal label ) setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite reveal_label text then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getContinueToDonationFormField() {
+		return [
+			'id'            => 'reveal_label',
+			'name'          => __( 'Continue Button', 'give' ),
+			'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
+			'type'          => 'text_small',
+			'attributes'    => [
+				'placeholder' => __( 'Donate Now', 'give' ),
+			],
+			'wrapper_class' => '_give_reveal_label_field give-hidden',
+		];
+	}
 }

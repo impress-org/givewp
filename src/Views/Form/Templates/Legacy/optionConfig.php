@@ -11,16 +11,7 @@ return [
 		'fields' => [
 			Options::getDonationLevelsDisplayStyleField(),
 			Options::getDisplayOptionsField(),
-			[
-				'id'            => 'reveal_label',
-				'name'          => __( 'Continue Button', 'give' ),
-				'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
-				'type'          => 'text_small',
-				'attributes'    => [
-					'placeholder' => __( 'Donate Now', 'give' ),
-				],
-				'wrapper_class' => '_give_reveal_label_field give-hidden',
-			],
+			Options::getContinueToDonationFormField(),
 			Options::getCheckoutLabelField(),
 			[
 				'name'    => __( 'Floating Labels', 'give' ),
