@@ -176,4 +176,30 @@ class Options {
 			'default'       => 'disabled',
 		];
 	}
+
+	/**
+	 * Return array configuration for content placement setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite content placement feature then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getContentPlacementField() {
+		return [
+			'name'          => __( 'Content Placement', 'give' ),
+			'description'   => __( 'This option controls where the content appears within the donation form.', 'give' ),
+			'id'            => 'content_placement',
+			'type'          => 'radio_inline',
+			'options'       => apply_filters(
+				'give_forms_content_options_select',
+				[
+					'give_pre_form'  => __( 'Above fields', 'give' ),
+					'give_post_form' => __( 'Below fields', 'give' ),
+				]
+			),
+			'wrapper_class' => '_give_content_placement_field give-hidden',
+			'default'       => 'give_pre_form',
+		];
+	}
 }

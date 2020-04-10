@@ -11,8 +11,7 @@ class Legacy extends Template {
 	 */
 	protected $mapToLegacySetting = [
 		'display_settings' => [
-			'content_placement' => '_give_content_placement',
-			'form_content'      => '_give_form_content',
+			'form_content' => '_give_form_content',
 		],
 	];
 

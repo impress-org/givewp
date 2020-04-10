@@ -15,21 +15,7 @@ return [
 			Options::getCheckoutLabelField(),
 			Options::getFloatLabelsField(),
 			Options::getDisplayContentField(),
-			[
-				'name'          => __( 'Content Placement', 'give' ),
-				'description'   => __( 'This option controls where the content appears within the donation form.', 'give' ),
-				'id'            => 'content_placement',
-				'type'          => 'radio_inline',
-				'options'       => apply_filters(
-					'give_forms_content_options_select',
-					[
-						'give_pre_form'  => __( 'Above fields', 'give' ),
-						'give_post_form' => __( 'Below fields', 'give' ),
-					]
-				),
-				'wrapper_class' => '_give_content_placement_field give-hidden',
-				'default'       => 'give_pre_form',
-			],
+			Options::getContentPlacementField(),
 			[
 				'name'          => __( 'Content', 'give' ),
 				'description'   => __( 'This content will display on the single give form page.', 'give' ),
