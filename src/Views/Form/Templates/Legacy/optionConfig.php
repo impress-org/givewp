@@ -10,20 +10,7 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			Options::getDonationLevelsDisplayStyleField(),
-			[
-				'name'          => __( 'Display Options', 'give' ),
-				'desc'          => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
-				'id'            => 'payment_display',
-				'type'          => 'radio_inline',
-				'options'       => [
-					'onpage' => __( 'All Fields', 'give' ),
-					'modal'  => __( 'Modal', 'give' ),
-					'reveal' => __( 'Reveal', 'give' ),
-					'button' => __( 'Button', 'give' ),
-				],
-				'wrapper_class' => '_give_payment_display_field',
-				'default'       => 'onpage',
-			],
+			Options::getDisplayOptionsField(),
 			[
 				'id'            => 'reveal_label',
 				'name'          => __( 'Continue Button', 'give' ),
@@ -34,15 +21,7 @@ return [
 				],
 				'wrapper_class' => '_give_reveal_label_field give-hidden',
 			],
-			[
-				'id'         => 'checkout_label',
-				'name'       => __( 'Submit Button', 'give' ),
-				'desc'       => __( 'The button label for completing a donation.', 'give' ),
-				'type'       => 'text_small',
-				'attributes' => [
-					'placeholder' => __( 'Donate Now', 'give' ),
-				],
-			],
+			Options::getCheckoutLabelField(),
 			[
 				'name'    => __( 'Floating Labels', 'give' ),
 				/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
