@@ -272,8 +272,8 @@ class Give_Forms_Widget extends WP_Widget {
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
 					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="button" <?php checked( $instance['tmp_display_style'], 'button' ); ?>> <?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></label>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="onpage" <?php checked( $instance['tmp_display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button"><span><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-button" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="button" <?php checked( $instance['tmp_display_style'], 'button' ); ?>></span><span><?php echo esc_html__( 'Display a button and launch the donation form on click', 'give' ); ?></span></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage"><span><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tmp_display_style' ) ); ?>-onpage" name="<?php echo esc_attr( $this->get_field_name( 'tmp_display_style' ) ); ?>" value="onpage" <?php checked( $instance['tmp_display_style'], 'onpage' ); ?>></span><span><?php echo esc_html__( 'Display the entire donation form in the sidebar', 'give' ); ?></span></label>
 					<small class="give-field-description"><?php echo esc_html__( 'Select a donation form style.', 'give' ); ?></small>
 				</p>
 
@@ -354,10 +354,18 @@ class Give_Forms_Widget extends WP_Widget {
 		$containerId            = $this->widgetIdPrefix . $this->widgetIdentifier;
 		?>
 		<style>
-			.give_forms_widget_container label:not([for*='display_style']),
-			p.give_forms_display_style_setting_row > label:first-child{
+			.give_forms_widget_container label:not([for*='display_style']):not([for*='float_labels']):not([for*='show_content']),
+			p.give_forms_display_style_setting_row > label:first-child,
+			.give_forms_widget_container label[for$='float_labels'],
+			.give_forms_widget_container label[for$='show_content']{
 				display: block;
 				font-weight: 500;
+			}
+
+			p.give_forms_display_style_setting_row > label:first-child,
+			.give_forms_widget_container label[for$='float_labels'],
+			.give_forms_widget_container label[for$='show_content']{
+				margin-bottom: 8px;
 			}
 
 			.give_forms_widget_container input {
@@ -382,8 +390,17 @@ class Give_Forms_Widget extends WP_Widget {
 				margin: 5px 10px 0 0;
 			}
 
-			.give_forms_widget_container .give_forms_display_style_setting_row label:not([for*="tmp_display_style"]){
-				display: inline
+			.give_forms_widget_container .give_forms_display_style_setting_row label[for$="tmp_display_style"]{
+				display: flex;
+				align-items: center;
+			}
+
+			.give_forms_widget_container .give_forms_display_style_setting_row label[for*="tmp_display_style-"]{
+				display: flex;
+			}
+
+			.give_forms_widget_container .give_forms_display_style_setting_row label[for*="tmp_display_style-"] span:last-child{
+				margin-left: 5px;
 			}
 		</style>
 		<script>
