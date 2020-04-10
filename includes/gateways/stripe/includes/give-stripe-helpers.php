@@ -67,7 +67,14 @@ function give_stripe_get_publishable_key() {
 		$publishable_key = give_get_option( 'test_publishable_key' );
 	}
 
-	return $publishable_key;
+	/**
+	 * Filter to handle publishable key for Stripe.
+	 *
+	 * @param string $publishable_key Publishable Key.
+	 *
+	 * @since 2.6.3
+	 */
+	return apply_filters( 'give_stripe_get_publishable_key', $publishable_key );
 }
 
 /**
