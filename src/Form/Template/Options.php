@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Form\Template;
 
 use Give\FormAPI\Group;
@@ -6,7 +7,7 @@ use Give\FormAPI\Group;
 /**
  * Class Options
  *
- * @since 2.7.0
+ * @since   2.7.0
  * @package Give\Form\Template
  */
 class Options {
@@ -21,10 +22,10 @@ class Options {
 	/**
 	 * ThemeOptions constructor.
 	 *
-	 * @since 2.7.0
 	 * @param $array
 	 *
 	 * @return Options
+	 * @since 2.7.0
 	 */
 	public static function fromArray( $array ) {
 		$options = new static();
@@ -47,15 +48,15 @@ class Options {
 	 */
 	public static function getCheckoutLabelField() {
 		return [
-			'id'                 => 'checkout_label',
-			'name'               => __( 'Submit Button', 'give' ),
-			'desc'               => __( 'The button label for completing a donation.', 'give' ),
-			'type'               => 'text_medium',
-			'attributes'         => [
+			'id'                                 => 'checkout_label',
+			'name'                               => __( 'Submit Button', 'give' ),
+			'desc'                               => __( 'The button label for completing a donation.', 'give' ),
+			'type'                               => 'text_medium',
+			'attributes'                         => [
 				'placeholder' => __( 'Donate Now', 'give' ),
 			],
-			'default'            => __( 'Donate Now', 'give' ),
-			'mapToLegacySetting' => '_give_checkout_label',
+			'default'                            => __( 'Donate Now', 'give' ),
+			LegacyFormSettingCompatibility::$key => '_give_checkout_label',
 		];
 	}
 
@@ -69,18 +70,18 @@ class Options {
 	 */
 	public static function getDonationLevelsDisplayStyleField() {
 		return [
-			'name'               => __( 'Display Style', 'give' ),
-			'description'        => __( 'Set how the donations levels will display on the form.', 'give' ),
-			'id'                 => 'display_style',
-			'type'               => 'radio_inline',
-			'default'            => 'buttons',
-			'options'            => [
+			'name'                               => __( 'Display Style', 'give' ),
+			'description'                        => __( 'Set how the donations levels will display on the form.', 'give' ),
+			'id'                                 => 'display_style',
+			'type'                               => 'radio_inline',
+			'default'                            => 'buttons',
+			'options'                            => [
 				'buttons'  => __( 'Buttons', 'give' ),
 				'radios'   => __( 'Radios', 'give' ),
 				'dropdown' => __( 'Dropdown', 'give' ),
 			],
-			'wrapper_class'      => 'give-hidden _give_display_style_field',
-			'mapToLegacySetting' => '_give_display_style',
+			'wrapper_class'                      => 'give-hidden _give_display_style_field',
+			LegacyFormSettingCompatibility::$key => '_give_display_style',
 		];
 	}
 
@@ -94,19 +95,19 @@ class Options {
 	 */
 	public static function getDisplayOptionsField() {
 		return [
-			'name'               => __( 'Display Options', 'give' ),
-			'desc'               => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
-			'id'                 => 'payment_display',
-			'type'               => 'radio_inline',
-			'options'            => [
+			'name'                               => __( 'Display Options', 'give' ),
+			'desc'                               => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
+			'id'                                 => 'payment_display',
+			'type'                               => 'radio_inline',
+			'options'                            => [
 				'onpage' => __( 'All Fields', 'give' ),
 				'modal'  => __( 'Modal', 'give' ),
 				'reveal' => __( 'Reveal', 'give' ),
 				'button' => __( 'Button', 'give' ),
 			],
-			'wrapper_class'      => '_give_payment_display_field',
-			'default'            => 'onpage',
-			'mapToLegacySetting' => '_give_payment_display',
+			'wrapper_class'                      => '_give_payment_display_field',
+			'default'                            => 'onpage',
+			LegacyFormSettingCompatibility::$key => '_give_payment_display',
 		];
 	}
 
@@ -120,15 +121,15 @@ class Options {
 	 */
 	public static function getContinueToDonationFormField() {
 		return [
-			'id'                 => 'reveal_label',
-			'name'               => __( 'Continue Button', 'give' ),
-			'desc'               => __( 'The button label for displaying the additional payment fields.', 'give' ),
-			'type'               => 'text_small',
-			'attributes'         => [
+			'id'                                 => 'reveal_label',
+			'name'                               => __( 'Continue Button', 'give' ),
+			'desc'                               => __( 'The button label for displaying the additional payment fields.', 'give' ),
+			'type'                               => 'text_small',
+			'attributes'                         => [
 				'placeholder' => __( 'Donate Now', 'give' ),
 			],
-			'wrapper_class'      => '_give_reveal_label_field give-hidden',
-			'mapToLegacySetting' => '_give_reveal_label',
+			'wrapper_class'                      => '_give_reveal_label_field give-hidden',
+			LegacyFormSettingCompatibility::$key => '_give_reveal_label',
 		];
 	}
 
@@ -142,18 +143,18 @@ class Options {
 	 */
 	public static function getFloatLabelsField() {
 		return [
-			'name'               => __( 'Floating Labels', 'give' ),
+			'name'                               => __( 'Floating Labels', 'give' ),
 			/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
-			'desc'               => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
-			'id'                 => 'form_floating_labels',
-			'type'               => 'radio_inline',
-			'options'            => [
+			'desc'                               => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+			'id'                                 => 'form_floating_labels',
+			'type'                               => 'radio_inline',
+			'options'                            => [
 				'global'   => __( 'Global Option', 'give' ),
 				'enabled'  => __( 'Enabled', 'give' ),
 				'disabled' => __( 'Disabled', 'give' ),
 			],
-			'default'            => 'global',
-			'mapToLegacySetting' => '_give_form_floating_labels',
+			'default'                            => 'global',
+			LegacyFormSettingCompatibility::$key => '_give_form_floating_labels',
 		];
 	}
 
@@ -167,17 +168,17 @@ class Options {
 	 */
 	public static function getDisplayContentField() {
 		return [
-			'name'               => __( 'Display Content', 'give' ),
-			'description'        => __( 'Do you want to add custom content to this form?', 'give' ),
-			'id'                 => 'display_content',
-			'type'               => 'radio_inline',
-			'options'            => [
+			'name'                               => __( 'Display Content', 'give' ),
+			'description'                        => __( 'Do you want to add custom content to this form?', 'give' ),
+			'id'                                 => 'display_content',
+			'type'                               => 'radio_inline',
+			'options'                            => [
 				'enabled'  => __( 'Enabled', 'give' ),
 				'disabled' => __( 'Disabled', 'give' ),
 			],
-			'wrapper_class'      => '_give_display_content_field',
-			'default'            => 'disabled',
-			'mapToLegacySetting' => '_give_display_content',
+			'wrapper_class'                      => '_give_display_content_field',
+			'default'                            => 'disabled',
+			LegacyFormSettingCompatibility::$key => '_give_display_content',
 		];
 	}
 
@@ -191,20 +192,20 @@ class Options {
 	 */
 	public static function getContentPlacementField() {
 		return [
-			'name'               => __( 'Content Placement', 'give' ),
-			'description'        => __( 'This option controls where the content appears within the donation form.', 'give' ),
-			'id'                 => 'content_placement',
-			'type'               => 'radio_inline',
-			'options'            => apply_filters(
+			'name'                               => __( 'Content Placement', 'give' ),
+			'description'                        => __( 'This option controls where the content appears within the donation form.', 'give' ),
+			'id'                                 => 'content_placement',
+			'type'                               => 'radio_inline',
+			'options'                            => apply_filters(
 				'give_forms_content_options_select',
 				[
 					'give_pre_form'  => __( 'Above fields', 'give' ),
 					'give_post_form' => __( 'Below fields', 'give' ),
 				]
 			),
-			'wrapper_class'      => '_give_content_placement_field give-hidden',
-			'default'            => 'give_pre_form',
-			'mapToLegacySetting' => '_give_content_placement',
+			'wrapper_class'                      => '_give_content_placement_field give-hidden',
+			'default'                            => 'give_pre_form',
+			LegacyFormSettingCompatibility::$key => '_give_content_placement',
 		];
 	}
 
@@ -218,12 +219,12 @@ class Options {
 	 */
 	public static function getFormContentField() {
 		return [
-			'name'               => __( 'Content', 'give' ),
-			'description'        => __( 'This content will display on the single give form page.', 'give' ),
-			'id'                 => 'form_content',
-			'type'               => 'wysiwyg',
-			'wrapper_class'      => '_give_form_content_field give-hidden',
-			'mapToLegacySetting' => '_give_form_content',
+			'name'                               => __( 'Content', 'give' ),
+			'description'                        => __( 'This content will display on the single give form page.', 'give' ),
+			'id'                                 => 'form_content',
+			'type'                               => 'wysiwyg',
+			'wrapper_class'                      => '_give_form_content_field give-hidden',
+			LegacyFormSettingCompatibility::$key => '_give_form_content',
 		];
 	}
 }
