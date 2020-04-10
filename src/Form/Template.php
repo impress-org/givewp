@@ -118,8 +118,8 @@ abstract class Template {
 	/**
 	 * Get failed/cancelled donation message.
 	 *
-	 * @since 2.7.0
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function getFailedDonationMessage() {
 		return esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' );
