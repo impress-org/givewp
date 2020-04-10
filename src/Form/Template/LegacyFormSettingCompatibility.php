@@ -11,11 +11,15 @@ use Give\Form\Template;
  */
 class LegacyFormSettingCompatibility {
 	/**
+	 * Name of key which we are using in field description to connect template setting with legacy setting.
+	 *
 	 * @var string
 	 */
 	public static $key = 'mapToLegacySetting';
 
 	/**
+	 * Map legacy setting key name to template property
+	 *
 	 * @var array $mapToTemplateProperty Form settings default values for form template.
 	 */
 	private $mapToTemplateProperty = [
