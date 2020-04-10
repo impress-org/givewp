@@ -83,4 +83,29 @@ class Options {
 			'mapToLegacySetting' => '_give_checkout_label',
 		];
 	}
+
+	/**
+	 * Return array configuration for display options setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite donation form display style then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getDisplayOptionsField() {
+		return [
+			'name'          => __( 'Display Options', 'give' ),
+			'desc'          => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
+			'id'            => 'payment_display',
+			'type'          => 'radio_inline',
+			'options'       => [
+				'onpage' => __( 'All Fields', 'give' ),
+				'modal'  => __( 'Modal', 'give' ),
+				'reveal' => __( 'Reveal', 'give' ),
+				'button' => __( 'Button', 'give' ),
+			],
+			'wrapper_class' => '_give_payment_display_field',
+			'default'       => 'onpage',
+		];
+	}
 }
