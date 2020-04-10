@@ -151,6 +151,7 @@ const Give = {
 				url = window.location.href;
 			}
 
+			url = decodeURIComponent( url );
 			name = name.replace( /[\[\]]/g, '\\$&' );
 
 			const regex = new RegExp( '[?&]' + name + '(=([^&#]*)|&|#|$)' ),
