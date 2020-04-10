@@ -16,13 +16,7 @@ return [
 			Options::getFloatLabelsField(),
 			Options::getDisplayContentField(),
 			Options::getContentPlacementField(),
-			[
-				'name'          => __( 'Content', 'give' ),
-				'description'   => __( 'This content will display on the single give form page.', 'give' ),
-				'id'            => 'form_content',
-				'type'          => 'wysiwyg',
-				'wrapper_class' => '_give_form_content_field give-hidden',
-			],
+			Options::getFormContentField(),
 		],
 	],
 ];

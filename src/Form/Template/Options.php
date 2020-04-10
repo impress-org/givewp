@@ -202,4 +202,22 @@ class Options {
 			'default'       => 'give_pre_form',
 		];
 	}
+
+	/**
+	 * Return array configuration for form content setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite form content feature then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getFormContentField() {
+		return [
+			'name'          => __( 'Content', 'give' ),
+			'description'   => __( 'This content will display on the single give form page.', 'give' ),
+			'id'            => 'form_content',
+			'type'          => 'wysiwyg',
+			'wrapper_class' => '_give_form_content_field give-hidden',
+		];
+	}
 }

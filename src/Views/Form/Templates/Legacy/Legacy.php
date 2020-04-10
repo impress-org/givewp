@@ -6,17 +6,6 @@ use Give\Form\Template;
 class Legacy extends Template {
 	/**
 	 * @inheritDoc
-	 * @since 2.7.0
-	 * @var array
-	 */
-	protected $mapToLegacySetting = [
-		'display_settings' => [
-			'form_content' => '_give_form_content',
-		],
-	];
-
-	/**
-	 * @inheritDoc
 	 */
 	public function getID() {
 		return 'legacy';
