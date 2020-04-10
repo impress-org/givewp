@@ -9,7 +9,6 @@
 
 namespace Give\Form;
 
-use Give\Form\Template\LegacyFormSettingCompatibility;
 use Give\Form\Template\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
@@ -40,56 +39,56 @@ abstract class Template {
 	 *
 	 * @var string $donationLevelsDisplayStyle
 	 */
-	protected $donationLevelsDisplayStyle = 'buttons';
+	public $donationLevelsDisplayStyle = 'buttons';
 
 	/**
 	 * Donation form display style.
 	 *
 	 * @var string $donationFormDisplayStyle
 	 */
-	protected $donationFormDisplayStyle = 'onpage';
+	public $donationFormDisplayStyle = 'onpage';
 
 	/**
 	 * Flag to check whether or not enable float label feature.
 	 *
 	 * @var string $enableFloatLabels
 	 */
-	protected $enableFloatLabels = 'disabled';
+	public $enableFloatLabels = 'disabled';
 
 	/**
 	 * Continue to donation form button label.
 	 *
 	 * @var string $continueToDonationFormLabel
 	 */
-	protected $continueToDonationFormLabel = '';
+	public $continueToDonationFormLabel = '';
 
 	/**
 	 * Donation now button title.
 	 *
 	 * @var string $donateNowButtonLabel
 	 */
-	protected $donateNowButtonLabel = '';
+	public $donateNowButtonLabel = '';
 
 	/**
 	 * Flag to check whether or not show donation form introduction text.
 	 *
 	 * @var string $showDonationIntroductionContent
 	 */
-	protected $showDonationIntroductionContent = 'disabled';
+	public $showDonationIntroductionContent = 'disabled';
 
 	/**
 	 * Donation introduction content position.
 	 *
 	 * @var string $donationIntroductionContentPosition
 	 */
-	protected $donationIntroductionContentPosition = '';
+	public $donationIntroductionContentPosition = '';
 
 	/**
 	 * Donation introduction content.
 	 *
 	 * @var string $donationIntroductionContent
 	 */
-	protected $donationIntroductionContent = '';
+	public $donationIntroductionContent = '';
 
 	/**
 	 * template vs file array
@@ -107,7 +106,7 @@ abstract class Template {
 	 * Template constructor.
 	 */
 	public function __construct() {
-		$this->donateNowButtonLabel   = __( 'Donate Now', 'give' );
+		$this->donateNowButtonLabel        = __( 'Donate Now', 'give' );
 		$this->continueToDonationFormLabel = __( 'Donate Now', 'give' );
 	}
 
