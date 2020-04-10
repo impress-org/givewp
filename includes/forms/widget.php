@@ -88,12 +88,13 @@ class Give_Forms_Widget extends WP_Widget {
 		}
 
 		// Directories of assets.
-		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/js/';
+		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/';
 
 		// Use minified libraries if SCRIPT_DEBUG is turned off.
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_script( $this->scriptHandle, $js_dir . 'admin-widgets' . $suffix . '.js', array( 'give-admin-scripts' ), GIVE_VERSION, false );
+		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets' . $suffix . '.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
+		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets' . $suffix . '.css', [], GIVE_VERSION, false );
 	}
 
 	/**
@@ -345,8 +346,10 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @since 2.7.0
 	 */
 	private function getScriptForBuilders() {
+		global $pagenow;
+
 		// Do not output inline script if admin widget script already printed.
-		if ( wp_script_is( $this->scriptHandle, 'done' ) ) {
+		if ( wp_script_is( "{$this->scriptHandle}-js", 'done' ) || in_array( $pagenow, [ 'widgets.php', 'customize.php' ] ) ) {
 			return;
 		}
 
