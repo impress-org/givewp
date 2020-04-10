@@ -1,0 +1,28 @@
+.give_forms_widget_container {
+	label:not([for*='display_style']):not([for*='float_labels']):not([for*='show_content']),
+	p.give_forms_display_style_setting_row > label:first-child,
+	label[for$='float_labels'],
+	label[for$='show_content'] {
+		display: block;
+		font-weight: 500;
+	}
+
+	.give_forms_display_style_setting_row {
+		label[for$='tmp_display_style'] {
+			display: flex;
+			align-items: center;
+		}
+
+		label[for*='tmp_display_style-'] {
+			display: flex;
+
+			span:last-child {
+				margin-left: 5px;
+			}
+		}
+	}
+
+	.give-field-description {
+		display: block;
+	}
+}
