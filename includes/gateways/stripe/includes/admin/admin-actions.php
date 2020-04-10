@@ -364,6 +364,27 @@ function give_stripe_show_currency_notice() {
 		);
 	}
 
+	// Show Currency notice when Stripe BECS Payment Gateway is selected.
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_gateway_active( 'stripe_becs' ) &&
+		'AUD' !== give_get_currency() &&
+		! class_exists( 'Give_Currency_Switcher' ) // Disable Notice, if Currency Switcher add-on is enabled.
+	) {
+		Give()->notices->register_notice(
+			array(
+				'id'          => 'give-stripe-currency-notice',
+				'type'        => 'error',
+				'dismissible' => false,
+				'description' => sprintf(
+					__( 'The currency must be set as "AUD (&dollar;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - BECS Direct Debit Payment Gateway.', 'give' ),
+					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
+				),
+				'show'        => true,
+			)
+		);
+	}
+
 }
 
 add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
