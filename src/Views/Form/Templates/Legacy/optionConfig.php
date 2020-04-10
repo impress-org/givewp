@@ -10,7 +10,15 @@ return [
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			Options::getDonationLevelsDisplayStyleField(),
-			Options::getDisplayOptionsField(),
+			Options::getDisplayOptionsField(
+				[
+					'modal'  => __( 'Modal', 'give' ),
+					'reveal' => __(
+						'Reveal',
+						'give'
+					),
+				]
+			),
 			Options::getContinueToDonationFormField(),
 			Options::getCheckoutLabelField(),
 			Options::getFloatLabelsField(),

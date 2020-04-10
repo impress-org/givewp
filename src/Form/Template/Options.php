@@ -91,20 +91,22 @@ class Options {
 	 * Note: if you want to add an option in template to overwrite donation form display style then instead of define it manually in template options, developer can call this function.
 	 * This function help to maintain backward compatibility with legacy donation form renderer.
 	 *
+	 * @param array $displayType
 	 * @return array
 	 */
-	public static function getDisplayOptionsField() {
+	public static function getDisplayOptionsField( $displayType = [] ) {
 		return [
 			'name'                               => __( 'Display Options', 'give' ),
 			'desc'                               => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
 			'id'                                 => 'payment_display',
 			'type'                               => 'radio_inline',
-			'options'                            => [
-				'onpage' => __( 'All Fields', 'give' ),
-				'modal'  => __( 'Modal', 'give' ),
-				'reveal' => __( 'Reveal', 'give' ),
-				'button' => __( 'Button', 'give' ),
-			],
+			'options'                            => array_merge(
+				[
+					'onpage' => __( 'All Fields', 'give' ),
+					'button' => __( 'Button', 'give' ),
+				],
+				$displayType
+			),
 			'wrapper_class'                      => '_give_payment_display_field',
 			'default'                            => 'onpage',
 			LegacyFormSettingCompatibility::$key => '_give_payment_display',
