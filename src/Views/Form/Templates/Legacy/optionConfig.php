@@ -13,19 +13,7 @@ return [
 			Options::getDisplayOptionsField(),
 			Options::getContinueToDonationFormField(),
 			Options::getCheckoutLabelField(),
-			[
-				'name'    => __( 'Floating Labels', 'give' ),
-				/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
-				'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
-				'id'      => 'form_floating_labels',
-				'type'    => 'radio_inline',
-				'options' => [
-					'global'   => __( 'Global Option', 'give' ),
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
-				],
-				'default' => 'global',
-			],
+			Options::getFloatLabelsField(),
 			[
 				'name'          => __( 'Display Content', 'give' ),
 				'description'   => __( 'Do you want to add custom content to this form?', 'give' ),

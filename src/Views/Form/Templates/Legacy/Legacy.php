@@ -11,11 +11,9 @@ class Legacy extends Template {
 	 */
 	protected $mapToLegacySetting = [
 		'display_settings' => [
-			'checkout_label'       => '_give_checkout_label',
-			'form_floating_labels' => '_give_form_floating_labels',
-			'display_content'      => '_give_display_content',
-			'content_placement'    => '_give_content_placement',
-			'form_content'         => '_give_form_content',
+			'display_content'   => '_give_display_content',
+			'content_placement' => '_give_content_placement',
+			'form_content'      => '_give_form_content',
 		],
 	];
 

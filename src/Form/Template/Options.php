@@ -129,4 +129,28 @@ class Options {
 			'wrapper_class' => '_give_reveal_label_field give-hidden',
 		];
 	}
+
+	/**
+	 * Return array configuration for float labels setting field.
+	 *
+	 * Note: if you want to add an option in template to overwrite float labels feature then instead of define it manually in template options, developer can call this function.
+	 * This function help to maintain backward compatibility with legacy donation form renderer.
+	 *
+	 * @return array
+	 */
+	public static function getFloatLabelsField() {
+		return [
+			'name'    => __( 'Floating Labels', 'give' ),
+			/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
+			'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+			'id'      => 'form_floating_labels',
+			'type'    => 'radio_inline',
+			'options' => [
+				'global'   => __( 'Global Option', 'give' ),
+				'enabled'  => __( 'Enabled', 'give' ),
+				'disabled' => __( 'Disabled', 'give' ),
+			],
+			'default' => 'global',
+		];
+	}
 }
