@@ -23,12 +23,47 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
 	const mandateElement = document.querySelector( '.stripe-mandate-acceptance-text' );
+	const manualFields = Array.from( document.querySelectorAll( '.give-stripe-account-type-manual' ) );
+	const connectField = document.querySelector( '.give-stripe-account-type-connect' );
+	const connectionTypes = Array.from( document.querySelectorAll( 'input[name="stripe_connection_type"]' ) );
+	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== connectionTypes ) {
+		giveStripeConnectionTypeToggle( selectedConnectionType.value );
+
+		connectionTypes.forEach( ( connectionType ) => {
+			connectionType.addEventListener( 'change', ( e ) => {
+				giveStripeConnectionTypeToggle( e.target.value );
+			} );
+		} );
+	}
+
+	/**
+	 * Toggle for Stripe Connection Type.
+	 *
+	 * @param {string} $value
+	 *
+	 * @since 2.6.3
+	 */
+	function giveStripeConnectionTypeToggle( $value ) {
+		if ( 'connect' === $value ) {
+			manualFields.map( ( element ) => {
+				element.classList.add( 'give-hidden' );
+			} );
+			connectField.classList.remove( 'give-hidden' );
+		} else {
+			manualFields.map( ( element ) => {
+				element.classList.remove( 'give-hidden' );
+			} );
+			connectField.classList.add( 'give-hidden' );
+		}
+	}
 
 	if ( null !== hideIconElements ) {
 		hideIconElements.forEach( ( hideIconElement ) => {
@@ -68,7 +103,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					type: 'confirm',
 					modalContent: {
 						title: modalTitle,
-						desc: `<span>${modalFirstDetail}</span><span class="give-field-description">${modalSecondDetail}</span>`,
+						desc: `<span>${ modalFirstDetail }</span><span class="give-field-description">${ modalSecondDetail }</span>`,
 					},
 					successConfirm: function( args ) {
 						window.location.href = redirectUrl;
