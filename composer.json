@@ -40,7 +40,8 @@
             "src/Helpers/Form/Template/Utils/Frontend.php",
             "src/Helpers/Form/Utils.php",
             "src/Helpers/Frontend/Shortcode.php",
-            "src/Helpers/Utils.php"
+            "src/Helpers/Utils.php",
+            "src/Helpers/Donor/Donor.php"
         ]
     }
 }
