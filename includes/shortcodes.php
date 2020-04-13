@@ -206,7 +206,7 @@ function give_form_shortcode( $atts ) {
 						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>',
 			$iframe_url,
 			$buttonModeActive ? 0 : $isAutoScroll,
-			$formStartingHeight,
+			$formStartingHeight
 		);
 
 		// Show button in button mode and hide Iframe.
