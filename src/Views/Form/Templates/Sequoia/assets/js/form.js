@@ -84,7 +84,10 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-			navigator.goToStep( 0 );
+
+			const isDonorRedirectedOnDonationError = Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' );
+
+			navigator.goToStep( isDonorRedirectedOnDonationError ? 2 : 0 );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
