@@ -34,7 +34,7 @@ function storeDataIntoSession( $key, $data, $replace = true ) {
 		// Merge data.
 		$session[ $key ] = array_merge(
 			(array) $session[ $key ],
-			$data
+			(array) $data
 		);
 
 	} else {
