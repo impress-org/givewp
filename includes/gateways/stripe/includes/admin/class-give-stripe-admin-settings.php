@@ -77,6 +77,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
 			add_action( 'give_admin_field_stripe_connect', array( $this, 'stripe_connect_field' ), 10, 2 );
+			add_action( 'give_admin_field_stripe_account_manager', array( $this, 'stripe_account_manager_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', array( $this, 'stripe_styles_field' ), 10, 2 );
 		}
@@ -108,6 +109,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		public function register_groups() {
 
 			$groups = array(
+				'accounts'    => __( 'Manage Accounts', 'give' ),
 				'general'     => __( 'General Settings', 'give' ),
 				'credit-card' => __( 'Credit Card On Site', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
@@ -150,6 +152,25 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			switch ( $section ) {
 
 				case 'stripe-settings':
+					// Manage Accounts admin fields.
+					$settings['accounts'][] = array(
+						'id'   => 'give_title_stripe_accounts',
+						'type' => 'title',
+					);
+
+					$settings['accounts'][] = array(
+						'name'          => __( 'Stripe Connect', 'give' ),
+						'desc'          => '',
+						'wrapper_class' => 'give-stripe-account-manager-wrap',
+						'id'            => 'stripe_account_manager',
+						'type'          => 'stripe_account_manager',
+					);
+
+					$settings['accounts'][] = array(
+						'id'   => 'give_title_stripe_accounts',
+						'type' => 'sectionend',
+					);
+
 					// Stripe Admin Settings - Header.
 					$settings['general'][] = array(
 						'id'   => 'give_title_stripe_general',
@@ -423,7 +444,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
-
 					$settings['sepa'][] = array(
 						'name'          => __( 'Display Mandate Acceptance', 'give' ),
 						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
@@ -648,7 +668,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							"<strong>{$site_url}?give-listener=stripe</strong>"
 						);
 						$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
-						$can_display = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
+						$can_display         = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
 						?>
 						<span
 							id="give-stripe-connect"
@@ -705,6 +725,206 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					}
 					?>
 				</td>
+			</tr>
+			<?php
+		}
+
+		/**
+		 * Stripe Account Manager Field.
+		 *
+		 * @param array  $field        Field Arguments.
+		 * @param string $option_value Field Value.
+		 */
+		public function stripe_account_manager_field( $field, $option_value ) {
+
+			$stripe_accounts = give_get_option( '_give_stripe_get_all_accounts', [] );
+
+			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
+				if ( give_stripe_is_manual_api_keys_enabled() ) {
+					$stripe_accounts['Stripe Account'] = [
+						'type'                 => 'manual',
+						'access_token'         => give_get_option( 'live_secret_key' ),
+						'access_token_test'    => give_get_option( 'test_secret_key' ),
+						'publishable_key'      => give_get_option( 'live_publishable_key' ),
+						'publishable_key_test' => give_get_option( 'test_publishable_key' ),
+					];
+				} elseif ( give_stripe_is_connected() ) {
+					$stripe_accounts['Stripe Account']         = give_stripe_get_connect_settings();
+					$stripe_accounts['Stripe Account']['type'] = 'connect';
+
+				} else {
+					$stripe_accounts = [];
+				}
+			}
+			?>
+			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
+				<td class="give-forminp give-forminp-api_key">
+					<div class="give-stripe-account-manager-container">
+						<div class="give-stripe-account-manager-list">
+							<?php
+							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
+								foreach ( $stripe_accounts as $name => $details ) {
+									?>
+									<div class="give-stripe-account-manager-list-item">
+										<span class="give-stripe-account-name">
+											<?php echo $name; ?>
+										</span>
+										<span class="give-stripe-account-actions">
+										<span class="give-stripe-account-type">
+											<?php echo ucfirst( $details['type'] ); ?>
+										</span>
+										<?php
+										if ( count( $stripe_accounts ) === 1 ) {
+											?>
+											<span class="give-stripe-account-badge">
+												<?php echo __( 'Default', 'give' ); ?>
+											</span>
+											<?php
+										} else {
+											?>
+											<span class="give-stripe-account-badge">
+												<a href="">
+													<?php echo __( 'Set Default', 'give' ); ?>
+												</a>
+											</span>
+											<?php
+										}
+										?>
+										<span class="give-stripe-account-disconnect">
+											<a href="">
+												<?php echo __( 'Disconnect', 'give' ); ?>
+											</a>
+										</span>
+									</span>
+									</div>
+									<?php
+								}
+							} else {
+								?>
+								<div class="give-stripe-account-manager-list-item">
+									<span><?php echo __( 'No Stripe Accounts found.', 'give' ); ?></span>
+								</div>
+								<?php
+							}
+							?>
+						</div>
+						<div class="give-stripe-account-manager-add-section">
+							<h3><?php echo __( 'Add New Stripe Account', 'give' ); ?></h3>
+							<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
+								<tbody>
+									<tr valign="top" class="stripe-cc-field-format-settings">
+										<th scope="row" class="titledesc">
+											<label for="stripe_cc_fields_format">
+												<?php echo __( 'Account Name', 'give' ); ?>
+											</label>
+										</th>
+										<td class="give-forminp give-forminp-radio_inline give-radio-inline">
+											<fieldset>
+												<input type="text" name="stripe_account[account-name]" value="" />
+												<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+											</fieldset>
+										</td>
+									</tr>
+									<?php
+									if ( give_stripe_is_manual_api_keys_enabled() ) {
+										?>
+										<tr valign="top" class="stripe-cc-field-format-settings">
+											<th scope="row" class="titledesc">
+												<label for="stripe_cc_fields_format">
+													<?php echo __( 'Connection Type', 'give' ); ?>
+												</label>
+											</th>
+
+											<td class="give-forminp give-forminp-radio_inline give-radio-inline">
+												<fieldset>
+													<ul>
+														<li>
+															<label>
+																<input name="stripe_connection_type" value="connect" checked="checked" type="radio">
+																<?php echo __( 'Connect', 'give' ); ?>
+															</label>
+														</li>
+														<li>
+															<label>
+																<input name="stripe_connection_type" value="manual" type="radio">
+																<?php echo __( 'Manual', 'give' ); ?>
+															</label>
+														</li>
+														<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+													</ul>
+												</fieldset>
+											</td>
+										</tr>
+										<tr valign="top" class="give-stripe-account-type-manual">
+											<th scope="row" class="titledesc">
+												<label for="stripe_account_type_manual">
+													<?php echo __( 'Live Secret Key', 'give' ); ?>
+												</label>
+											</th>
+											<td class="give-forminp">
+												<fieldset>
+													<input type="text" name="stripe_account[live_secret_key]" value="" />
+													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+												</fieldset>
+											</td>
+										</tr>
+										<tr valign="top" class="give-stripe-account-type-manual">
+											<th scope="row" class="titledesc">
+												<label for="stripe_live_publishable_key">
+													<?php echo __( 'Live Publishable Key', 'give' ); ?>
+												</label>
+											</th>
+											<td class="give-forminp">
+												<fieldset>
+													<input type="text" name="stripe_account[live_publishable_key]" value="" />
+													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+												</fieldset>
+											</td>
+										</tr>
+										<tr valign="top" class="give-stripe-account-type-manual">
+											<th scope="row" class="titledesc">
+												<label for="stripe_test_secret_key">
+													<?php echo __( 'Test Secret Key', 'give' ); ?>
+												</label>
+											</th>
+											<td class="give-forminp">
+												<fieldset>
+													<input type="text" name="stripe_account[test_secret_key]" value="" />
+													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+												</fieldset>
+											</td>
+										</tr>
+										<tr valign="top" class="give-stripe-account-type-manual">
+											<th scope="row" class="titledesc">
+												<label for="stripe_test_publishable_key">
+													<?php echo __( 'Test Publishable Key', 'give' ); ?>
+												</label>
+											</th>
+											<td class="give-forminp">
+												<fieldset>
+													<input type="text" name="stripe_account[test_publishable_key]" value="" />
+													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
+												</fieldset>
+											</td>
+										</tr>
+										<?php
+									}
+									?>
+									<tr valign="top" class="give-stripe-account-type-connect">
+										<th scope="row" class="titledesc">
+											<label for="stripe_connect_button">
+												<?php echo __( 'Stripe Connection', 'give' ); ?>
+											</label>
+										</th>
+										<td class="give-forminp">
+											<?php echo give_stripe_connect_button(); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+									</td>
 			</tr>
 			<?php
 		}
