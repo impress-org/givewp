@@ -85,9 +85,7 @@
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
 
-			const isDonorRedirectedOnDonationError = Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' );
-
-			navigator.goToStep( isDonorRedirectedOnDonationError ? 2 : 0 );
+			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -278,5 +276,15 @@
 			window.requestAnimationFrame( checkHeightChange );
 		}
 		window.requestAnimationFrame( checkHeightChange );
+	}
+
+	/**
+	 * Get initial step to show donor.
+	 *
+	 * @since 2.7.0
+	 * @return {number}
+	 */
+	function getInitialStep() {
+		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
 	}
 }( jQuery ) );
