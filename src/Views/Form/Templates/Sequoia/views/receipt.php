@@ -1,7 +1,7 @@
 <?php
 
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
-use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId as getPaymentId;
+use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
