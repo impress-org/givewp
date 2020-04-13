@@ -86,7 +86,7 @@ class Fields {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'To create a TextField object, please provide valid id, name and type.', 'give' ) );
+			throw new InvalidArgumentException( __( 'To create a Field object, please provide valid id, name and type.', 'give' ) );
 		}
 	}
 }
