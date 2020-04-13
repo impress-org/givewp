@@ -9,6 +9,7 @@ use Give\FormAPI\Form\Radio;
 use Give\FormAPI\Form\Text;
 use Give\FormAPI\Form\Textarea;
 use Give\FormAPI\Form\Wysiwyg;
+use Give\FormAPI\Form\Group;
 
 class Fields {
 	/**
@@ -25,6 +26,7 @@ class Fields {
 		'radio'       => Radio::class,
 		'wysiwyg'     => Wysiwyg::class,
 		'colorpicker' => Colorpicker::class,
+		'group'       => Group::class,
 	];
 
 	/**
