@@ -7,46 +7,6 @@ jQuery( function( $ ) {
 		return false;
 	}
 
-	// Check if all iframe loaded. if yes, then trigger custom action.
-	document.onreadystatechange = () => {
-		if ( document.readyState !== 'complete' ) {
-			return false;
-		}
-
-		document.dispatchEvent(
-			new CustomEvent(
-				'Give:iframesLoaded',
-				{
-					detail:
-						{
-							give:
-								{
-									iframes: document.querySelectorAll( 'iframe[name="give-embed-form"]:not([data-src])' ),
-								},
-						},
-				}
-			)
-		);
-	};
-
-	/**
-	 * Auto scroll to donor's donation form
-	 *
-	 * @since 2.7
-	 */
-	document.addEventListener( 'Give:iframesLoaded', function( e ) {
-		const { iframes } = e.detail.give;
-
-		Array.from( iframes ).forEach( function( iframe ) {
-			if ( '1' === iframe.getAttribute( 'data-autoScroll' ) && ! iframe.classList.contains( 'in-modal' ) ) {
-				$( 'html, body' ).animate( { scrollTop: iframe.offsetTop, scrollLeft: iframe.offsetLeft } );
-
-				// Exit function.
-				return false;
-			}
-		} );
-	} );
-
 	/**
 	 * Show hide iframe modal.
 	 *
