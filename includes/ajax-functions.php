@@ -12,6 +12,8 @@
  */
 
 // Exit if accessed directly.
+use function Give\Helpers\Form\Template\getActiveID;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -844,3 +846,28 @@ function give_get_content_by_ajax_handler() {
 
 add_action( 'wp_ajax_give_get_content_by_ajax', 'give_get_content_by_ajax_handler' );
 
+
+/**
+ * Get form template for ajax request.
+ *
+ * Note: only for internal use
+ *
+ * @since 2.7.0
+ */
+function give_get_form_template_id() {
+	check_ajax_referer( 'give-donation-form-widget', 'security' );
+
+	$formId = isset( $_POST['formId'] ) ? absint( $_POST['formId'] ) : 0;
+
+	// Send error response if form id does not mentioned.
+	if ( ! $formId ) {
+		wp_send_json_error();
+	}
+
+	$templateID = getActiveID( $formId );
+	$templateID = $templateID ?: 'legacy';
+
+	wp_send_json_success( $templateID );
+}
+add_action( 'wp_ajax_give_get_form_template_id', 'give_get_form_template_id' );
+add_action( 'wp_ajax_no_priv_give_get_form_template_id', 'give_get_form_template_id' );
