@@ -1,30 +1,19 @@
 <?php
+/**
+ * Donation form view.
+ *
+ * @since 2.7.0
+ */
+use Give\Views\IframeView;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
-$formId = getFormId();
-?>
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>  style="margin-top: 0 !important;">
-	<head>
-		<meta charset="utf-8">
-		<title><?php echo apply_filters( 'the_title', get_post_field( 'post_title', $formId ) ); ?></title>
-		<?php
-		/**
-		 * Fire the action hook in header
-		 */
-		do_action( 'give_embed_head' );
-		?>
-	</head>
-	<body class="give-form-templates">
-		<?php
+$formId     = getFormId();
+$iframeView = new IframeView();
 
-		// Fetch the Give Form.
-		give_get_donation_form( [ 'id' => $formId ] );
+// Fetch the Give Form.
+ob_start();
+give_get_donation_form( [ 'id' => $formId ] );
 
-		/**
-		 * Fire the action hook in footer
-		 */
-		do_action( 'give_embed_footer' );
-		?>
-	</body>
-</html>
+echo $iframeView->setTitle( get_post_field( 'post_title', $formId ) )
+   ->setBody( ob_get_clean() )
+   ->render();
