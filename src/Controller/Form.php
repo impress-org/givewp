@@ -89,12 +89,12 @@ class Form {
 
 				// Show donation processing template
 				if ( isConfirmingDonation() ) {
-					include $formTemplate->getView( 'donation-processing' );
+					include $formTemplate->getDonationProcessingView();
 					exit();
 				}
 
 				// Render receipt with in iframe.
-				include $formTemplate->getView( 'receipt' );
+				include $formTemplate->getReceiptView();
 				exit();
 			}
 
@@ -124,7 +124,7 @@ class Form {
 			nocache_headers();
 			header( 'HTTP/1.1 200 OK' );
 
-			include $formTemplate->getView( 'form' );
+			include $formTemplate->getFormView();
 			exit();
 		}
 	}

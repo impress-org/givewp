@@ -80,16 +80,39 @@ abstract class Template {
 	public $showDonationIntroductionContent = false;
 
 	/**
-	 * template vs file array
+	 * Get form view filepath
 	 *
 	 * @since 2.7.0
-	 * @var array
+	 *
+	 * @return string
 	 */
-	public $templates = [
-		'form'                => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php',
-		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
-		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
-	];
+	public function getFormView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
+	}
+
+	/**
+	 * Get receipt view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getReceiptView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
+	}
+
+	/**
+	 * Get donation processing view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getDonationProcessingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
+	}
+
+
 
 	/**
 	 * return form template ID.
@@ -122,21 +145,6 @@ abstract class Template {
 	 * @since 2.7.0
 	 */
 	abstract public function getOptionsConfig();
-
-
-	/**
-	 * Template template manager get template according to view.
-	 * Note: Do not forget to call this function before close bracket in overridden getTemplate method
-	 *
-	 * @param string $template
-	 *
-	 * @return string
-	 * @since 2.7.0
-	 */
-	public function getView( $template ) {
-		return $this->templates[ $template ];
-	}
-
 
 	/**
 	 * Get form template options
