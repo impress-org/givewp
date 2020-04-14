@@ -151,6 +151,10 @@
 					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
 				} );
 
+				$( 'label.give-gateway-option' ).each( function() {
+					$( this ).prepend( 'Donate with ' );
+				} );
+
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
@@ -158,6 +162,7 @@
 				setupGatewayIcon( 'manual', 'fas fa-tools' );
 				setupGatewayIcon( 'offline', 'fas fa-wallet' );
 				setupGatewayIcon( 'paypal', 'gateway-icon paypal' );
+				setupGatewayIcon( 'stripe', 'far fa-credit-card' );
 			},
 		},
 	];
