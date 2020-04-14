@@ -154,6 +154,10 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
+
+				setupGatewayIcon( 'manual', 'fas fa-tools' );
+				setupGatewayIcon( 'offline', 'fas fa-wallet' );
+				setupGatewayIcon( 'paypal', 'gateway-icon paypal' );
 			},
 		},
 	];
@@ -260,6 +264,11 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+	}
+
+	function setupGatewayIcon( selector, icon ) {
+		//$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
+		$( `#give-gateway-option-${ selector }` ).parent().append( `<i class="${ icon }"></i>` );
 	}
 
 	function setupHeightChangeCallback( callback ) {
