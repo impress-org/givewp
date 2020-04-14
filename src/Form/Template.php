@@ -55,19 +55,6 @@ abstract class Template {
 	 */
 	public $enableFloatLabels = 'disabled';
 
-	/**
-	 * Continue to donation form button label.
-	 *
-	 * @var string $continueToDonationFormLabel
-	 */
-	public $continueToDonationFormLabel = '';
-
-	/**
-	 * Donation now button title.
-	 *
-	 * @var string $donateNowButtonLabel
-	 */
-	public $donateNowButtonLabel = '';
 
 	/**
 	 * Flag to check whether or not show donation form introduction text.
@@ -84,13 +71,6 @@ abstract class Template {
 	public $donationIntroductionContentPosition = '';
 
 	/**
-	 * Donation introduction content.
-	 *
-	 * @var string $donationIntroductionContent
-	 */
-	public $donationIntroductionContent = '';
-
-	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
@@ -101,14 +81,6 @@ abstract class Template {
 		'receipt'             => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php',
 		'donation-processing' => GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php',
 	];
-
-	/**
-	 * Template constructor.
-	 */
-	public function __construct() {
-		$this->donateNowButtonLabel        = __( 'Donate Now', 'give' );
-		$this->continueToDonationFormLabel = __( 'Donate Now', 'give' );
-	}
 
 	/**
 	 * return form template ID.
@@ -187,5 +159,63 @@ abstract class Template {
 	 */
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+	}
+
+	/**
+	 * Get translated strings.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return array
+	 */
+	public function getTranslatedStrings() {
+		return [
+			'donateNowButtonLabel'        => __( 'Donate Now', 'give' ),
+			'continueToDonationFormLabel' => __( 'Donate Now', 'give' ),
+		];
+	}
+
+
+	/**
+	 * Get translated string.
+	 *
+	 * @param string $id String Id.
+	 *
+	 * @return string
+	 */
+	public function getTranslatedString( $id ) {
+		$strings = $this->getTranslatedStrings();
+
+		return array_key_exists( $id, $strings ) ? $strings['$id'] : '';
+	}
+
+	/**
+	 * Get donate now button label text.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getDonateNowButtonLabel() {
+		return $this->getTranslatedString( 'donateNowButtonLabel' );
+	}
+
+	/**
+	 * Get continue to donation form button label text.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getContinueToDonationFormLabel() {
+		return $this->getTranslatedString( 'continueToDonationFormLabel' );
+	}
+
+	/**
+	 * Get donation introduction text.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getDonationIntroductionContent() {
+		return '';
 	}
 }
