@@ -28,7 +28,7 @@ ob_start();
 		<script type="text/javascript">
 			setTimeout( function() {
 				window.location = '<?php echo give_get_success_page_uri(); ?>';
-			}, 9000 );
+			}, 5000 );
 		</script>
 	</div>
 <?php
