@@ -18,19 +18,19 @@ class LegacyFormSettingCompatibility {
 	public static $key = 'mapToLegacySetting';
 
 	/**
-	 * Map legacy setting key name to template property
+	 * Map legacy setting key name to template function from which you will get donation form configuration about different features.
 	 *
 	 * @var array $mapToTemplateProperty Form settings default values for form template.
 	 */
 	private $mapToTemplateProperty = [
-		'_give_display_style'        => 'donationLevelsDisplayStyle',
-		'_give_payment_display'      => 'donationFormDisplayStyle',
-		'_give_form_floating_labels' => 'enableFloatLabels',
-		'_give_reveal_label'         => 'continueToDonationFormLabel',
-		'_give_checkout_label'       => 'donateNowButtonLabel',
-		'_give_display_content'      => 'showDonationIntroductionContent',
-		'_give_content_placement'    => 'donationIntroductionContentPosition',
-		'_give_form_content'         => 'donationIntroductionContent',
+		'_give_display_style'        => 'getDonationLevelsDisplayStyle',
+		'_give_payment_display'      => 'getDonationFormDisplayStyle',
+		'_give_form_floating_labels' => 'isShowFloatingLabels',
+		'_give_reveal_label'         => 'getContinueToDonationFormLabel',
+		'_give_checkout_label'       => 'getDonateNowButtonLabel',
+		'_give_display_content'      => 'isShowDonationIntroductionContent',
+		'_give_content_placement'    => 'getDonationIntroductionContentPosition',
+		'_give_form_content'         => 'getDonationIntroductionContent',
 	];
 
 	/**
@@ -60,6 +60,7 @@ class LegacyFormSettingCompatibility {
 	public function save( $formId, $settings ) {
 		$alreadySavedLegacySettings = [];
 		$templateOptions            = $this->template->getOptionsConfig();
+		$enableDisableValueSet      = [ 'disabled', 'enabled' ];
 
 		foreach ( $templateOptions as $groupId => $group ) {
 			foreach ( $group['fields'] as $field ) {
@@ -75,10 +76,17 @@ class LegacyFormSettingCompatibility {
 
 		if ( $remainingSettings = array_diff( array_keys( $this->mapToTemplateProperty ), $alreadySavedLegacySettings ) ) {
 			foreach ( $remainingSettings as $metaKey ) {
+				$value = $this->template->{$this->mapToTemplateProperty[ $metaKey ]}();
+
+				// Convert boolean value to enable and disabled.
+				if ( is_bool( $value ) ) {
+					$value = $enableDisableValueSet[ absint( $value ) ];
+				}
+
 				Give()->form_meta->update_meta(
 					$formId,
 					$metaKey,
-					$this->template->{$this->mapToTemplateProperty[ $metaKey ]}
+					$value
 				);
 			}
 		}
