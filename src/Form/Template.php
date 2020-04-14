@@ -205,8 +205,8 @@ abstract class Template {
 	/**
 	 * Return content position on donation form.
 	 *
-	 * Note: Even you are free to add you introduction content at any place on donation form
-	 *       But still this depends upon form template style and configuration on which places are allowed to show display introduction content.
+	 * Note: Even you are free to add introduction content at any place on donation form
+	 *       But still this depends upon form template style and configuration on which places you are allowed to show display introduction content.
 	 *
 	 * @return string
 	 * @since 2.7.0
