@@ -126,41 +126,13 @@ abstract class Template {
 	}
 
 	/**
-	 * Get translated strings.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return array
-	 */
-	public function getTranslatedStrings() {
-		return [
-			'donateNowButtonLabel'        => __( 'Donate Now', 'give' ),
-			'continueToDonationFormLabel' => __( 'Donate Now', 'give' ),
-		];
-	}
-
-
-	/**
-	 * Get translated string.
-	 *
-	 * @param string $id String Id.
-	 *
-	 * @return string
-	 */
-	public function getTranslatedString( $id ) {
-		$strings = $this->getTranslatedStrings();
-
-		return array_key_exists( $id, $strings ) ? $strings['$id'] : '';
-	}
-
-	/**
 	 * Get donate now button label text.
 	 *
 	 * @since 2.7.0
 	 * @return string
 	 */
 	public function getDonateNowButtonLabel() {
-		return $this->getTranslatedString( 'donateNowButtonLabel' );
+		return __( 'Donate Now', 'give' );
 	}
 
 	/**
@@ -170,7 +142,7 @@ abstract class Template {
 	 * @return string
 	 */
 	public function getContinueToDonationFormLabel() {
-		return $this->getTranslatedString( 'continueToDonationFormLabel' );
+		return __( 'Donate Now', 'give' );
 	}
 
 	/**
