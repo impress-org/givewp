@@ -294,6 +294,33 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	}
+
+	/**
+	 * Render template receipt by Ajax
+	 *
+	 * @since 2.7.0
+	 */
+	const embedReceiptContainer = $( '.give-embed-receipt' );
+	if ( embedReceiptContainer ) {
+		const data = {
+			action: 'give_get_template_receipt',
+		};
+
+		const cookie_name = Give.fn.getGlobalVar( 'session_cookie_name' );
+
+		// Set cookie.
+		data[ cookie_name ] = Give.fn.__getCookie( Give.fn.getGlobalVar( 'session_cookie_name' ) );
+
+		$.ajax( {
+			url: Give.fn.getGlobalVar( 'ajaxurl' ),
+			method: 'GET',
+			data: data,
+			success: function( response ) {
+				const receipt = $( response ).filter( '.give-embed-receipt' );
+				embedReceiptContainer.html( receipt );
+			},
+		} );
+	}
 } );
 
 /**
