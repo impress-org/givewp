@@ -35,42 +35,6 @@ abstract class Template {
 	public $openFailedPageInIframe = true;
 
 	/**
-	 * Donation level display style
-	 *
-	 * @var string $donationLevelsDisplayStyle
-	 */
-	public $donationLevelsDisplayStyle = 'buttons';
-
-	/**
-	 * Donation form display style.
-	 *
-	 * @var string $donationFormDisplayStyle
-	 */
-	public $donationFormDisplayStyle = 'onpage';
-
-	/**
-	 * Flag to check whether or not enable float label feature.
-	 *
-	 * @var string $enableFloatLabels
-	 */
-	public $enableFloatLabels = 'disabled';
-
-
-	/**
-	 * Flag to check whether or not show donation form introduction text.
-	 *
-	 * @var string $showDonationIntroductionContent
-	 */
-	public $showDonationIntroductionContent = 'disabled';
-
-	/**
-	 * Donation introduction content position.
-	 *
-	 * @var string $donationIntroductionContentPosition
-	 */
-	public $donationIntroductionContentPosition = '';
-
-	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
@@ -217,5 +181,61 @@ abstract class Template {
 	 */
 	public function getDonationIntroductionContent() {
 		return '';
+	}
+
+	/**
+	 * Return donation form display style.
+	 *
+	 * Note: only onpage or button value will be accepted.
+	 */
+	public function getDonationFormDisplayStyle() {
+		return 'button';
+	}
+
+	/**
+	 * Return donation form level display style.
+	 *
+	 * Note: only buttons, radio or dropdown value will ve accepted.
+	 */
+	public function getDonationLevelsDisplayStyle() {
+		return 'buttons';
+	}
+
+	/**
+	 * Return content position on donation form.
+	 *
+	 * Note: Even you are free to add you introduction content at any place on donation form
+	 *       But still this depends upon form template style and configuration on which places are allowed to show display introduction content.
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public function getDonationIntroductionContentPosition() {
+		return '';
+	}
+
+	/**
+	 * Return true or false to activate floating label on donation form.
+	 *
+	 * Note: This function returned value will decide to load float-label related style and script on donation form.
+	 *
+	 * @see https://pryley.github.io/float-labels.js/
+	 *
+	 * @since 2.7.0
+	 * @return bool
+	 */
+	public function isShowFloatingLabels() {
+		return false;
+	}
+
+	/**
+	 * Return true or false to show  or hide donation introduction content.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return bool
+	 */
+	public function isShowDonationIntroductionContent() {
+		return false;
 	}
 }
