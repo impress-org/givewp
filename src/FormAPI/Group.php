@@ -82,7 +82,7 @@ class Group {
 		$required = [ 'id', 'name', 'fields' ];
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'To create a group object, please provide id, name and fields.', 'give' ) );
+			throw new InvalidArgumentException( __( 'To create a Group object, please provide id, name and fields.', 'give' ) );
 		}
 	}
 }
