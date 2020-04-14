@@ -194,10 +194,10 @@ abstract class Template {
 	 * Get donation introduction text.
 	 *
 	 * @since 2.7.0
-	 * @return string
+	 * @return string|null
 	 */
 	public function getDonationIntroductionContent() {
-		return '';
+		return null;
 	}
 
 	/**
@@ -206,10 +206,10 @@ abstract class Template {
 	 * Note: Even you are free to add introduction content at any place on donation form
 	 *       But still this depends upon form template style and configuration on which places you are allowed to show display introduction content.
 	 *
-	 * @return string
+	 * @return string|null
 	 * @since 2.7.0
 	 */
 	public function getDonationIntroductionContentPosition() {
-		return '';
+		return null;
 	}
 }
