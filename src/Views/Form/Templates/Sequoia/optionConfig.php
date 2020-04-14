@@ -173,6 +173,27 @@ return [
 				],
 				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
+			[
+				'name'    => __( 'Enable Social Sharing', 'give' ),
+				'desc'    => __( 'Should the thank you page include a social sharing section?', 'give' ),
+				'id'      => 'sharing',
+				'type'    => 'radio_inline',
+				'options' => [
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				],
+				'default' => 'disabled',
+			],
+			[
+				'id'         => 'sharing_instruction',
+				'name'       => __( 'Sharing Instruction', 'give' ),
+				'desc'       => __( 'Do you want to customize the sharing instructions for this form? The instruction note displays above the social sharing buttons. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'textarea',
+				'attributes' => [
+					'placeholder' => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
+				],
+				'default'    => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
+			],
 		],
 	],
 ];

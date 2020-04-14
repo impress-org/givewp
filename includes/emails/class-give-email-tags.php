@@ -454,6 +454,12 @@ function give_setup_email_tags() {
 			'context' => 'donor',
 		),
 		array(
+			'tag'     => 'donor_email',
+			'desc'    => esc_html__( 'The donor\'s email address.', 'give' ),
+			'func'    => 'give_email_tag_user_email',
+			'context' => 'donor',
+		),
+		array(
 			'tag'     => 'email_access_link',
 			'desc'    => esc_html__( 'The donor\'s email access link.', 'give' ),
 			'func'    => 'give_email_tag_donation_history_link',

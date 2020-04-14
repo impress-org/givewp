@@ -8,6 +8,9 @@
 @import './icons/solid';
 @import './icons/brands';
 
+// Receipt Styles
+@import 'receipt';
+
 // Structure
 
 html {
@@ -45,7 +48,8 @@ p {
 
 // Container
 
-.give-embed-form {
+.give-embed-form,
+.give-embed-receipt {
 	max-width: 552px;
 	margin: auto;
 	border-radius: 6px;
@@ -78,7 +82,8 @@ p {
 }
 
 .advance-btn,
-.give-submit {
+.give-submit,
+.download-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -93,6 +98,19 @@ p {
 
 	> i {
 		font-size: 15px;
+		margin-left: 15px;
+	}
+}
+
+.download-btn {
+	font-size: 16px;
+	line-height: 20px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	padding: 16px 22px !important;
+
+	> i {
+		font-size: 16px;
 		margin-left: 15px;
 	}
 }
