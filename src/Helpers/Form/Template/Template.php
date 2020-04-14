@@ -30,8 +30,9 @@ function getActiveID( $formId = null ) {
 function get( $formId = null, $templateId = '' ) {
 	$formId   = $formId ?: getFormId();
 	$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
+	$settings = Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
 
-	return (array) Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
+	return $settings ?: [];
 }
 
 /**
@@ -44,9 +45,12 @@ function get( $formId = null, $templateId = '' ) {
  * @return mixed
  */
 function set( $formId, $settings ) {
-	$template = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
+	$templateId = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 
-	$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$template}_form_template_settings", $settings );
+	/* @var Template $template */
+	$template = Give()->templates->getTemplate( $templateId );
+
+	$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$templateId}_form_template_settings", $settings );
 
 	/*
 	 * Below code save legacy setting which connected/mapped to form template setting.
@@ -54,9 +58,9 @@ function set( $formId, $settings ) {
 	 *
 	 * Note: We can remove legacy setting compatibility by returning anything except LegacyFormSettingCompatibility class object.
 	 */
-	/* @var LegacyFormSettingCompatibility $legacySettingHandler */
-	$legacySettingHandler = Give()->templates->getTemplate( $template )->getLegacySettingHandler();
-	if ( $legacySettingHandler instanceof LegacyFormSettingCompatibility ) {
+	if ( $isUpdated ) {
+		/* @var LegacyFormSettingCompatibility $legacySettingHandler */
+		$legacySettingHandler = new LegacyFormSettingCompatibility( $template );
 		$legacySettingHandler->save( $formId, $settings );
 	}
 

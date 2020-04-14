@@ -84,7 +84,8 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-			navigator.goToStep( 0 );
+
+			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -154,6 +155,11 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
+
+				setupGatewayIcon( 'manual', 'fas fa-tools' );
+				setupGatewayIcon( 'offline', 'fas fa-wallet' );
+				setupGatewayIcon( 'paypal', 'gateway-icon paypal' );
+				setupGatewayIcon( 'stripe', 'far fa-credit-card' );
 			},
 		},
 	];
@@ -262,6 +268,10 @@
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
 	}
 
+	function setupGatewayIcon( selector, icon ) {
+		$( `#give-gateway-option-${ selector }` ).parent().append( `<i class="${ icon }"></i>` );
+	}
+
 	function setupHeightChangeCallback( callback ) {
 		let lastHeight = 0;
 		function checkHeightChange() {
@@ -275,5 +285,15 @@
 			window.requestAnimationFrame( checkHeightChange );
 		}
 		window.requestAnimationFrame( checkHeightChange );
+	}
+
+	/**
+	 * Get initial step to show donor.
+	 *
+	 * @since 2.7.0
+	 * @return {number}
+	 */
+	function getInitialStep() {
+		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
 	}
 }( jQuery ) );

@@ -251,7 +251,7 @@ class Form {
 		$url    = explode( '?', $redirect, 2 );
 		$url[0] = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $_REQUEST['give-form-id'] ) ) );
 
-		return implode( '?', $url );
+		return implode( '?showDonationProcessingError=1', $url );
 	}
 
 	/**
