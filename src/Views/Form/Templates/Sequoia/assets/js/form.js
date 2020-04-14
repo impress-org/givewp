@@ -269,7 +269,6 @@
 	}
 
 	function setupGatewayIcon( selector, icon ) {
-		//$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `#give-gateway-option-${ selector }` ).parent().append( `<i class="${ icon }"></i>` );
 	}
 
