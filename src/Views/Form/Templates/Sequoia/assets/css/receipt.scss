@@ -64,11 +64,21 @@
 			}
 
 			&.facebook-btn {
-				background: #3b5998 !important;
+				background-color: #3b5998 !important;
+				transition: background-color 0.2s ease;
+
+				&:hover {
+					background-color: #4668b1 !important;
+				}
 			}
 
 			&.twitter-btn {
-				background: #00acee !important;
+				background-color: #00acee !important;
+				transition: background-color 0.2s ease;
+
+				&:hover {
+					background-color: #00b7ff !important;
+				}
 			}
 
 			&:first-of-type {
