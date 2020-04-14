@@ -76,6 +76,9 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			.give-input:focus, .give-select:focus {
 				border: 1px solid {$primaryColor}!important;
 			}
+			input[type='radio']:checked + label::after {
+				background: {$primaryColor}!important;
+			}
 		";
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamic_css );
 
