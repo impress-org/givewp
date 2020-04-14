@@ -35,6 +35,51 @@ abstract class Template {
 	public $openFailedPageInIframe = true;
 
 	/**
+	 * Determines how the form is rendered to the page.
+	 *
+	 * Acceptable values:
+	 *   - button (show a button that displays the form when clicked)
+	 *   - onpage (render the form right on the page)
+	 *
+	 * @var string
+	 */
+	public $donationFormStyle = 'button';
+
+	/**
+	 * Determines how the form amount choices are rendered to the page.
+	 *
+	 * Acceptable values:
+	 *   - buttons  (render donation amount choices as button )
+	 *   - radio    (render donation amount choices as radio )
+	 *   - dropdown (render donation amount choices in dropdown (select) )
+	 *
+	 * @var string
+	 */
+	public $donationFormLevelsStyle = 'button';
+
+	/**
+	 * Determines how the form field labels render on the page.
+	 *
+	 * Acceptable values:
+	 *   - true   (render with floating label style)
+	 *   - false  (render as is)
+	 *
+	 * @var bool
+	 */
+	public $floatingLabelsStyle = false;
+
+	/**
+	 * Determines whether or not render form content on page.
+	 *
+	 * Acceptable values:
+	 *   - true  (render form content on page )
+	 *   - false (do not render form content on page)
+	 *
+	 * @var bool
+	 */
+	public $showDonationIntroductionContent = false;
+
+	/**
 	 * template vs file array
 	 *
 	 * @since 2.7.0
@@ -126,41 +171,13 @@ abstract class Template {
 	}
 
 	/**
-	 * Get translated strings.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return array
-	 */
-	public function getTranslatedStrings() {
-		return [
-			'donateNowButtonLabel'        => __( 'Donate Now', 'give' ),
-			'continueToDonationFormLabel' => __( 'Donate Now', 'give' ),
-		];
-	}
-
-
-	/**
-	 * Get translated string.
-	 *
-	 * @param string $id String Id.
-	 *
-	 * @return string
-	 */
-	public function getTranslatedString( $id ) {
-		$strings = $this->getTranslatedStrings();
-
-		return array_key_exists( $id, $strings ) ? $strings['$id'] : '';
-	}
-
-	/**
 	 * Get donate now button label text.
 	 *
 	 * @since 2.7.0
 	 * @return string
 	 */
 	public function getDonateNowButtonLabel() {
-		return $this->getTranslatedString( 'donateNowButtonLabel' );
+		return __( 'Donate Now', 'give' );
 	}
 
 	/**
@@ -170,36 +187,17 @@ abstract class Template {
 	 * @return string
 	 */
 	public function getContinueToDonationFormLabel() {
-		return $this->getTranslatedString( 'continueToDonationFormLabel' );
+		return __( 'Donate Now', 'give' );
 	}
 
 	/**
 	 * Get donation introduction text.
 	 *
 	 * @since 2.7.0
-	 * @return string
+	 * @return string|null
 	 */
 	public function getDonationIntroductionContent() {
-		return '';
-	}
-
-	/**
-	 * Return donation form display style.
-	 *
-	 * Note: only onpage or button value will be accepted.
-	 */
-	public function getDonationFormDisplayStyle() {
-		return 'button';
-	}
-
-	/**
-	 * Return donation form level display style.
-	 * Donation levels only exist if form is multiple donation type in which you have choice to choose between multiple amounts.
-	 *
-	 * Note: only buttons, radio or dropdown value will ve accepted.
-	 */
-	public function getDonationLevelsDisplayStyle() {
-		return 'buttons';
+		return null;
 	}
 
 	/**
@@ -208,35 +206,10 @@ abstract class Template {
 	 * Note: Even you are free to add introduction content at any place on donation form
 	 *       But still this depends upon form template style and configuration on which places you are allowed to show display introduction content.
 	 *
-	 * @return string
+	 * @return string|null
 	 * @since 2.7.0
 	 */
 	public function getDonationIntroductionContentPosition() {
-		return '';
-	}
-
-	/**
-	 * Return true or false to activate floating label on donation form.
-	 *
-	 * Note: This function returned value will decide to load float-label related style and script on donation form.
-	 *
-	 * @see https://pryley.github.io/float-labels.js/
-	 *
-	 * @since 2.7.0
-	 * @return bool
-	 */
-	public function isShowFloatingLabels() {
-		return false;
-	}
-
-	/**
-	 * Return true or false to show  or hide donation introduction content.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return bool
-	 */
-	public function isShowDonationIntroductionContent() {
-		return false;
+		return null;
 	}
 }

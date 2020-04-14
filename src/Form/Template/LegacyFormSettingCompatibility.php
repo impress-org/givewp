@@ -18,17 +18,17 @@ class LegacyFormSettingCompatibility {
 	public static $key = 'mapToLegacySetting';
 
 	/**
-	 * Map legacy setting key name to template function from which you will get donation form configuration about different features.
+	 * Map legacy setting key name to template function/property from which you will get donation form configuration about different features.
 	 *
 	 * @var array $mapToTemplateProperty Form settings default values for form template.
 	 */
 	private $mapToTemplateProperty = [
-		'_give_display_style'        => 'getDonationLevelsDisplayStyle',
-		'_give_payment_display'      => 'getDonationFormDisplayStyle',
-		'_give_form_floating_labels' => 'isShowFloatingLabels',
+		'_give_display_style'        => 'donationFormLevelsStyle',
+		'_give_payment_display'      => 'donationFormStyle',
+		'_give_form_floating_labels' => 'floatingLabelsStyle',
 		'_give_reveal_label'         => 'getContinueToDonationFormLabel',
 		'_give_checkout_label'       => 'getDonateNowButtonLabel',
-		'_give_display_content'      => 'isShowDonationIntroductionContent',
+		'_give_display_content'      => 'showDonationIntroductionContent',
 		'_give_content_placement'    => 'getDonationIntroductionContentPosition',
 		'_give_form_content'         => 'getDonationIntroductionContent',
 	];
@@ -76,7 +76,9 @@ class LegacyFormSettingCompatibility {
 
 		if ( $remainingSettings = array_diff( array_keys( $this->mapToTemplateProperty ), $alreadySavedLegacySettings ) ) {
 			foreach ( $remainingSettings as $metaKey ) {
-				$value = $this->template->{$this->mapToTemplateProperty[ $metaKey ]}();
+				$value = property_exists( $this->template, $this->mapToTemplateProperty[ $metaKey ] ) ?
+					$this->mapToTemplateProperty[ $metaKey ] : // Get value from property.
+					$this->template->{$this->mapToTemplateProperty[ $metaKey ]}(); // Get value from function
 
 				// Convert boolean value to enable and disabled.
 				if ( is_bool( $value ) ) {
