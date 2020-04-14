@@ -4,12 +4,11 @@
  * Handle basic setup of form template
  *
  * @package Give
- * @since 2.7.0
+ * @since   2.7.0
  */
 
 namespace Give\Form;
 
-use Give\Form\Template\LegacyFormSettingCompatibility;
 use Give\Form\Template\Options;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
@@ -22,26 +21,63 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Template {
 	/**
+	 * Flag to check whether or not open success page in iframe.
+	 *
 	 * @var bool $openSuccessPageInIframe If set to false then success page will open in window instead of iframe.
 	 */
 	public $openSuccessPageInIframe = true;
 
 	/**
+	 * Flag to check whether or not open failed page in iframe.
+	 *
 	 * @var bool $openFailedPageInIframe If set to false then failed page will open in window instead of iframe.
 	 */
 	public $openFailedPageInIframe = true;
 
 	/**
-	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:16 Check property description.
-	 * @var array $defaultSettings Form settings default values for form template.
+	 * Determines how the form is rendered to the page.
+	 *
+	 * Acceptable values:
+	 *   - button (show a button that displays the form when clicked)
+	 *   - onpage (render the form right on the page)
+	 *
+	 * @var string
 	 */
-	protected $defaultLegacySettingValues = [];
+	public $donationFormStyle = 'button';
 
 	/**
-	 * @see src/Form/Template/LegacyFormSettingCompatibility.php:18 Check property description.
-	 * @var array $mapToLegacySetting
+	 * Determines how the form amount choices are rendered to the page.
+	 *
+	 * Acceptable values:
+	 *   - buttons  (render donation amount choices as button )
+	 *   - radio    (render donation amount choices as radio )
+	 *   - dropdown (render donation amount choices in dropdown (select) )
+	 *
+	 * @var string
 	 */
-	protected $mapToLegacySetting = [];
+	public $donationFormLevelsStyle = 'button';
+
+	/**
+	 * Determines how the form field labels render on the page.
+	 *
+	 * Acceptable values:
+	 *   - true   (render with floating label style)
+	 *   - false  (render as is)
+	 *
+	 * @var bool
+	 */
+	public $floatingLabelsStyle = false;
+
+	/**
+	 * Determines whether or not render form content on page.
+	 *
+	 * Acceptable values:
+	 *   - true  (render form content on page )
+	 *   - false (do not render form content on page)
+	 *
+	 * @var bool
+	 */
+	public $showDonationIntroductionContent = false;
 
 	/**
 	 * template vs file array
@@ -58,36 +94,32 @@ abstract class Template {
 	/**
 	 * return form template ID.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
-	abstract  public function getID();
+	abstract public function getID();
 
 	/**
 	 * Get form template name.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	abstract public function getName();
 
 	/**
 	 * Get form template image.
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	abstract public function getImage();
 
 	/**
 	 * Get options config
 	 *
-	 * @since 2.7.0
-	 *
 	 * @return array
+	 * @since 2.7.0
 	 */
 	abstract public function getOptionsConfig();
 
@@ -118,8 +150,8 @@ abstract class Template {
 	/**
 	 * Get failed/cancelled donation message.
 	 *
-	 * @since 2.7.0
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function getFailedDonationMessage() {
 		return esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' );
@@ -131,26 +163,53 @@ abstract class Template {
 	 *
 	 * @param int $formId
 	 *
-	 * @since 2.7.0
 	 * @return mixed
+	 * @since 2.7.0
 	 */
 	public function getFailedPageURL( $formId ) {
 		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
 
-
 	/**
-	 * Returns LegacyFormSettingCompatibility object.
-	 *
-	 * This function helps to maintain backward compatibility with legacy form settings.
+	 * Get donate now button label text.
 	 *
 	 * @since 2.7.0
-	 *
-	 * @return LegacyFormSettingCompatibility|null
+	 * @return string
 	 */
-	public function getLegacySettingHandler() {
-		return $this->mapToLegacySetting || $this->defaultLegacySettingValues ?
-			new LegacyFormSettingCompatibility( $this->mapToLegacySetting, $this->defaultLegacySettingValues ) :
-			null;
+	public function getDonateNowButtonLabel() {
+		return __( 'Donate Now', 'give' );
+	}
+
+	/**
+	 * Get continue to donation form button label text.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getContinueToDonationFormLabel() {
+		return __( 'Donate Now', 'give' );
+	}
+
+	/**
+	 * Get donation introduction text.
+	 *
+	 * @since 2.7.0
+	 * @return string|null
+	 */
+	public function getDonationIntroductionContent() {
+		return null;
+	}
+
+	/**
+	 * Return content position on donation form.
+	 *
+	 * Note: Even you are free to add introduction content at any place on donation form
+	 *       But still this depends upon form template style and configuration on which places you are allowed to show display introduction content.
+	 *
+	 * @return string|null
+	 * @since 2.7.0
+	 */
+	public function getDonationIntroductionContentPosition() {
+		return null;
 	}
 }
