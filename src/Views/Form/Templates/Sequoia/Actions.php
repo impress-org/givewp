@@ -261,7 +261,10 @@ class Actions {
 	 */
 	public function modifyGatewayLabels( array $gateways ) {
 		foreach ( $gateways as $key => $value ) {
-			$gateways[ $key ]['checkout_label'] = __( "Donate with {$gateways[$key]['checkout_label']}", 'give' );
+			$gateways[ $key ]['checkout_label'] = sprintf(
+				__( 'Donate with %1$s', 'give' ),
+				$gateways[ $key ]['checkout_label']
+			);
 		}
 		return $gateways;
 	}
