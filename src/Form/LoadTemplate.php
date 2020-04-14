@@ -107,18 +107,16 @@ class LoadTemplate {
 		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
 
 		// Handle receipt screen template
-		add_action( 'wp_ajax_give_get_template_receipt', [ $this, 'handleReceiptAjax' ], 999999 );
-		add_action( 'wp_ajax_nopriv_give_get_template_receipt', [ $this, 'handleReceiptAjax' ], 999999 );
+		add_action( 'wp_ajax_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
+		add_action( 'wp_ajax_nopriv_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
 	}
 
 	/**
 	 * Render sequoia receipt by ajax
 	 *
-	 * @since 2.2.0
+	 * @since 2.7.0
 	 */
-	function handleReceiptAjax() {
-		$get_data = give_clean( filter_input_array( INPUT_GET ) );
-
+	public function handleReceiptAjax() {
 		ob_start();
 		include_once $this->template->getReceiptView();
 		$data = ob_get_clean();

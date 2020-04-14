@@ -28,7 +28,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php';
+		return wp_doing_ajax() ? GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php' : parent::getReceiptView();
 	}
 
 	/**
