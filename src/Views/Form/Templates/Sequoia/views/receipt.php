@@ -4,6 +4,7 @@ use Give\Views\IframeView;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
+use function give_get_payment_status as getDonationStatusLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
 use function give_do_email_tags as formatContent;
@@ -98,6 +99,14 @@ ob_start();
 						</div>
 						<div class="value">
 							<?php echo getGatewayLabel( $payment->gateway ); ?>
+						</div>
+					</div>
+					<div class="details-row">
+						<div class="detail">
+							<?php _e( 'Payment Status', 'give' ); ?>
+						</div>
+						<div class="value">
+							<?php echo getDonationStatusLabel( $payment->ID, true ); ?>
 						</div>
 					</div>
 					<div class="details-row">
