@@ -12,10 +12,10 @@ if ( give_stripe_vars.stripe_account_id ) {
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
 	let card = {};
-	let ibanElements = [];
+	let bankAccountElements = [];
 	let defaultGateway = '';
 	const globalIbanElements = [];
-	let ibanElementSelectors = [];
+	let bankAccountElementSelectors = [];
 	const fontStyles = [];
 	const preferredLocale = give_stripe_vars.preferred_locale;
 	const formWraps = document.querySelectorAll( '.give-form-wrap' );
@@ -42,7 +42,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			} );
 		}
 
-		if ( null !== formElement.querySelector( '.give-gateway:checked' ) ) {
+		if ( null !== formElement.querySelector( '.give-gateway:checked' ).value ) {
 			defaultGateway = formElement.querySelector( '.give-gateway:checked' ).value;
 		}
 
@@ -50,16 +50,16 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const donateButton = formElement.querySelector( '.give-submit' );
 
 		// Create IBAN Elements for each form.
-		ibanElements = giveStripePrepareIbanElements( formElement, elements, idPrefix );
+		bankAccountElements = giveStripePrepareIbanElements( formElement, elements, idPrefix );
 
-		ibanElementSelectors = [ '#give-stripe-sepa-fields-' ];
+		bankAccountElementSelectors = [ '#give-stripe-becs-fields-' ];
 
 		// Prepare Card Elements for each form on a single page.
 		globalIbanElements[ idPrefix ] = [];
 
-		Array.prototype.forEach.call( ibanElementSelectors, function( selector, index ) {
+		Array.prototype.forEach.call( bankAccountElementSelectors, function( selector, index ) {
 			globalIbanElements[ idPrefix ][ index ] = [];
-			globalIbanElements[ idPrefix ][ index ].item = ibanElements[ index ];
+			globalIbanElements[ idPrefix ][ index ].item = bankAccountElements[ index ];
 			globalIbanElements[ idPrefix ][ index ].selector = selector;
 			globalIbanElements[ idPrefix ][ index ].isCardMounted = false;
 		} );
@@ -69,14 +69,14 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			// Un-mount card elements when stripe is not the selected gateway.
 			giveStripeUnmountIbanElements( globalIbanElements[ idPrefix ] );
 
-			if ( formElement.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe_sepa' ) {
+			if ( formElement.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe_becs' ) {
 				// Mount card elements when stripe is the selected gateway.
 				giveStripeMountIbanElements( idPrefix, globalIbanElements[ idPrefix ] );
 			}
 		} );
 
-		// Mount Card Elements, if default gateway is Stripe SEPA.
-		if ( 'stripe_sepa' === defaultGateway ) {
+		// Mount Card Elements, if default gateway is Stripe BECS.
+		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_card_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 
@@ -85,7 +85,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			// Enable the donate button of the form after successful mounting of CC fields.
 			donateButton.removeAttribute( 'disabled' );
 		} else {
-			giveStripeUnmountIbanElements( ibanElements );
+			giveStripeUnmountIbanElements( bankAccountElements );
 		}
 	} );
 
@@ -94,8 +94,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $form = jQuery( this );
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_sepa' === $form.find( 'input.give-gateway:checked' ).val() ) {
-			give_stripe_process_iban( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
+		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_card_update  ) {
+			give_stripe_process_becs_bank_account( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
 	} );
@@ -104,20 +104,20 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * Mount Card Elements
 	 *
 	 * @param {string} idPrefix     ID Prefix.
-	 * @param {array}  ibanElements List of card elements to be mounted.
+	 * @param {array}  bankAccountElements List of card elements to be mounted.
 	 *
 	 * @since 1.6
 	 */
-	function giveStripeMountIbanElements( idPrefix, ibanElements = [] ) {
-		const ibanElementsLength = Object.keys( ibanElements ).length;
+	function giveStripeMountIbanElements( idPrefix, bankAccountElements = [] ) {
+		const bankAccountElementsLength = Object.keys( bankAccountElements ).length;
 
 		// Assign any card element to variable to create source.
-		if ( ibanElementsLength > 0 ) {
-			card = ibanElements[ 0 ].item;
+		if ( bankAccountElementsLength > 0 ) {
+			card = bankAccountElements[ 0 ].item;
 		}
 
 		// Mount required card elements.
-		Array.prototype.forEach.call( ibanElements, function( value, index ) {
+		Array.prototype.forEach.call( bankAccountElements, function( value, index ) {
 			if ( false === value.isCardMounted ) {
 				value.item.mount( value.selector + idPrefix );
 				value.isCardMounted = true;
@@ -128,13 +128,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	/**
 	 * Un-mount Card Elements
 	 *
-	 * @param {array} ibanElements List of card elements to be unmounted.
+	 * @param {array} bankAccountElements List of card elements to be unmounted.
 	 *
 	 * @since 1.6
 	 */
-	function giveStripeUnmountIbanElements( ibanElements = [] ) {
+	function giveStripeUnmountIbanElements( bankAccountElements = [] ) {
 		// Un-mount required card elements.
-		Array.prototype.forEach.call( ibanElements, function( value, index ) {
+		Array.prototype.forEach.call( bankAccountElements, function( value, index ) {
 			if ( true === value.isCardMounted ) {
 				value.item.unmount();
 				value.isCardMounted = false;
@@ -159,7 +159,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const completeStyles = give_stripe_vars.element_complete_styles;
 		const emptyStyles = give_stripe_vars.element_empty_styles;
 		const invalidStyles = give_stripe_vars.element_invalid_styles;
-		const sepaIbanElement = formElement.querySelector( '#give-stripe-sepa-fields-' + idPrefix );
+		const becsElement = formElement.querySelector( '#give-stripe-becs-fields-' + idPrefix );
 
 		const elementStyles = {
 			base: baseStyles,
@@ -174,28 +174,25 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			invalid: 'invalid',
 		};
 
-		const ibanCreateArgs = {
+		const bankAccountCreateArgs = {
 			style: elementStyles,
 			classes: elementClasses,
-			supportedCountries: [ 'SEPA' ],
 		};
 
-		if ( 'stripe_sepa' === defaultGateway ) {
-			const hideIcon = sepaIbanElement.getAttribute( 'data-hide_icon' );
-			const iconStyle = sepaIbanElement.getAttribute( 'data-icon_style' );
-			const placeholderCountry = sepaIbanElement.getAttribute( 'data-placeholder_country' );
+		if ( 'stripe_becs' === defaultGateway ) {
+			const hideIcon = becsElement.getAttribute( 'data-hide_icon' );
+			const iconStyle = becsElement.getAttribute( 'data-icon_style' );
 
-			ibanCreateArgs.iconStyle = iconStyle;
-			ibanCreateArgs.hideIcon = ( 'disabled' !== hideIcon );
-			ibanCreateArgs.placeholderCountry = placeholderCountry;
+			bankAccountCreateArgs.iconStyle = iconStyle;
+			bankAccountCreateArgs.hideIcon = ( 'disabled' === hideIcon );
 		}
 
-		const ibanElement = elements.create(
-			'iban',
-			ibanCreateArgs
+		const bankAccountElement = elements.create(
+			'auBankAccount',
+			bankAccountCreateArgs
 		);
 
-		prepareCardElements.push( ibanElement );
+		prepareCardElements.push( bankAccountElement );
 
 		return prepareCardElements;
 	}
@@ -224,7 +221,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 *
 	 * @returns {boolean} True or False.
 	 */
-	function give_stripe_process_iban( $form, $iban ) {
+	function give_stripe_process_becs_bank_account( $form, $iban ) {
 		const additionalData = {
 			billing_details: {
 				name: '',
@@ -263,7 +260,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'sepa_debit', $iban, additionalData ).then( function( result ) {
+		stripe.createPaymentMethod( 'au_becs_debit', $iban, additionalData ).then( function( result ) {
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 

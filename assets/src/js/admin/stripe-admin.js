@@ -23,6 +23,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
 	const mandateElement = document.querySelector( '.stripe-mandate-acceptance-text' );
+	const hideBecsIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_becs_hide_icon"]' ) );
+	const becsIconStyleElement = document.querySelector( '.stripe-becs-icon-style' );
+	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
+	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
@@ -48,6 +52,30 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					mandateElement.classList.remove( 'give-hidden' );
 				} else {
 					mandateElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+
+	// For BECS Direct Debit.
+	if ( null !== hideBecsIconElements ) {
+		hideBecsIconElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					becsIconStyleElement.classList.remove( 'give-hidden' );
+				} else {
+					becsIconStyleElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+	if ( null !== hideBecsMandateElements ) {
+		hideBecsMandateElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					mandateBecsElement.classList.remove( 'give-hidden' );
+				} else {
+					mandateBecsElement.classList.add( 'give-hidden' );
 				}
 			} );
 		} );

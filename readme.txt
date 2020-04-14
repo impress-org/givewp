@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.6.2: April 1st, 2020 =
+* Fix: Resolved an issue with Stripe in the latest release which prevented the donation form from properly redirecting to the donation receipt page upon successful donation. [#4605](https://github.com/impress-org/givewp/issues/4605)
+* Fix: Modified how we compare values in Stripe's gateway JavaScript to prevent a Payment Intent error from happening for certain configurations. [#4604](https://github.com/impress-org/givewp/issues/4604)
 
 = 2.6.1: March 30th, 2020 =
 * New: Stripe now has the SEPA Direct Debit gateway integrated. This is a popular payment option in Europe and can be used to accept one-time and recurring donations. [#4571](https://github.com/impress-org/givewp/issues/4571), [#4313](https://github.com/impress-org/givewp/issues/4313)

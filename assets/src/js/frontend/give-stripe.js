@@ -48,7 +48,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			} );
 		}
 
-		if ( null !== form_element.querySelector( '.give-gateway:checked' ).value ) {
+		if ( null !== form_element.querySelector( '.give-gateway:checked' ) ) {
 			defaultGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 		}
 
