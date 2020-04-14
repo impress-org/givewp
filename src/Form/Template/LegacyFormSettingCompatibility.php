@@ -18,7 +18,7 @@ class LegacyFormSettingCompatibility {
 	public static $key = 'mapToLegacySetting';
 
 	/**
-	 * Map legacy setting key name to template property
+	 * Map legacy setting key name to template function from which you will get donation form configuration about different features.
 	 *
 	 * @var array $mapToTemplateProperty Form settings default values for form template.
 	 */
