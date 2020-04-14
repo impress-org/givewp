@@ -194,6 +194,7 @@ abstract class Template {
 
 	/**
 	 * Return donation form level display style.
+	 * Donation levels only exist if form is multiple donation type in which you have choice to choose between multiple amounts.
 	 *
 	 * Note: only buttons, radio or dropdown value will ve accepted.
 	 */
