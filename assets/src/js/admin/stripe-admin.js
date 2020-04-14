@@ -23,6 +23,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
 	const mandateElement = document.querySelector( '.stripe-mandate-acceptance-text' );
+	const hideBecsIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_becs_hide_icon"]' ) );
+	const becsIconStyleElement = document.querySelector( '.stripe-becs-icon-style' );
+	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
+	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
@@ -53,6 +57,30 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	// For BECS Direct Debit.
+	if ( null !== hideBecsIconElements ) {
+		hideBecsIconElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					becsIconStyleElement.classList.remove( 'give-hidden' );
+				} else {
+					becsIconStyleElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+	if ( null !== hideBecsMandateElements ) {
+		hideBecsMandateElements.forEach( ( hideIconElement ) => {
+			hideIconElement.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					mandateBecsElement.classList.remove( 'give-hidden' );
+				} else {
+					mandateBecsElement.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
+
 	if ( null !== stripeConnectedElement ) {
 		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
 		const redirectUrl = stripeConnectedElement.getAttribute( 'data-redirect-url' );
@@ -68,7 +96,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					type: 'confirm',
 					modalContent: {
 						title: modalTitle,
-						desc: `<span>${modalFirstDetail}</span><span class="give-field-description">${modalSecondDetail}</span>`,
+						desc: `<span>${ modalFirstDetail }</span><span class="give-field-description">${ modalSecondDetail }</span>`,
 					},
 					successConfirm: function( args ) {
 						window.location.href = redirectUrl;
