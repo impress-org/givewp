@@ -13,18 +13,6 @@ use function Give\Helpers\Form\Template\get as getTemplateOptions;
  */
 class Sequoia extends Template implements Hookable, Scriptable {
 	/**
-	 * Map form template settings to legacy form settings.
-	 *
-	 * @since 2.7.0
-	 * @var array
-	 */
-	protected $mapToLegacySetting = [
-		'payment_information' => [
-			'checkout_label' => '_give_checkout_label',
-		],
-	];
-
-	/**
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
@@ -86,6 +74,10 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			.checkmark {
 				border-color: {$primaryColor}!important;
 				color: {$primaryColor}!important;
+			}
+			input[type='radio'] + label::after {
+				background: {$primaryColor}!important;
+			}
 		";
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamic_css );
 
