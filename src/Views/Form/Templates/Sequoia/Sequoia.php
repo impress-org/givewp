@@ -76,7 +76,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			.give-input:focus, .give-select:focus {
 				border: 1px solid {$primaryColor}!important;
 			}
-			input[type='radio']:checked + label::after {
+			input[type='radio'] + label::after {
 				background: {$primaryColor}!important;
 			}
 		";

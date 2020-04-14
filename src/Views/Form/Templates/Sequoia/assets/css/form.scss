@@ -516,6 +516,12 @@ p {
 			}
 
 			input[type='radio']:checked + label::after {
+				transform: scale3d(1, 1, 1);
+			}
+
+			input[type='radio'] + label::after {
+				transform: scale3d(0, 0, 0);
+				transition: transform 0.2s ease;
 				border-radius: 11px;
 				width: 8px;
 				height: 8px;
