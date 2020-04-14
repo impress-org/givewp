@@ -476,7 +476,6 @@ p {
 				margin: 0 !important;
 				padding: 14px 20px !important;
 				border-radius: 4px;
-				font-weight: 500;
 
 				position: relative;
 
@@ -485,8 +484,11 @@ p {
 				align-items: center;
 
 				label {
+					font-size: 14px;
 					text-align: left;
-					padding-left: 3px;
+					padding-left: 10px;
+					font-weight: 600;
+					color: #333;
 					flex-grow: 1;
 				}
 			}
