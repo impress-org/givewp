@@ -151,10 +151,6 @@
 					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
 				} );
 
-				$( 'label.give-gateway-option' ).each( function() {
-					$( this ).prepend( 'Donate with ' );
-				} );
-
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
