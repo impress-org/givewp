@@ -26,10 +26,10 @@ function getSession() {
 function storeDataIntoSession( $key, $data, $replace = true ) {
 	$session = getSession();
 
-	if( null === $data ) {
+	if ( null === $data ) {
 		unset( $session[ $key ] );
-		
-	}elseif ( $replace ) {
+
+	} elseif ( $replace ) {
 		// Replace data.
 		$session[ $key ] = $data;
 
@@ -53,7 +53,7 @@ function storeDataIntoSession( $key, $data, $replace = true ) {
  * @since 2.7.0
  * @param $key
  */
-function removeDataFromSession( $key ){
+function removeDataFromSession( $key ) {
 	storeDataIntoSession( $key, null );
 }
 
@@ -65,11 +65,27 @@ function removeDataFromSession( $key ){
  */
 function storePostedDataIntoSessionIfConfirmingDonation() {
 	if ( isConfirmingDonation() ) {
-		$paymentGatewayId = give_clean( $_GET['payment-confirmation'] );
-		storeDataIntoSession( $paymentGatewayId, array_map( 'give_clean', $_POST ) );
+		$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
+		storeDataIntoSession( "postDataFor{$paymentGatewayId}", array_map( 'give_clean', $_POST ) );
 
 		return true;
 	}
+
+	return false;
+}
+
+
+/**
+ * Remove posted data from donor session just before rendering payment confirmation view because beyond this view this data is not useful.
+ *
+ * Note: This function is only for internal use and can be used only on payment confirmation view.
+ *
+ * @since 2.7.0
+ * @return bool
+ */
+function removeDonationConfirmationPostedDataFromSession() {
+	$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
+	removeDataFromSession( "postDataFor{$paymentGatewayId}" );
 
 	return false;
 }
