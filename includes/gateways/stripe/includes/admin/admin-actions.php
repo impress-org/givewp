@@ -105,7 +105,7 @@ function give_stripe_opt_refund( $donation_id ) {
 	$processed_gateway = Give()->payment_meta->get_meta( $donation_id, '_give_payment_gateway', true );
 
 	// Bail out, if the donation is not processed with Stripe payment gateway.
-	if ( 'stripe' !== $processed_gateway ) {
+	if ( ! in_array( $processed_gateway, give_stripe_supported_payment_methods(), true ) ) {
 		return;
 	}
 	?>
@@ -121,7 +121,7 @@ function give_stripe_opt_refund( $donation_id ) {
 	<?php
 }
 
-add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund', 10, 1 );
+add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund', 11, 1 );
 
 /**
  * Process refund in Stripe.
@@ -171,11 +171,18 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
 	try {
 
-		$refund = \Stripe\Refund::create(
-			array(
-				'charge' => $charge_id,
-			)
-		);
+		$args = [
+			'charge' => $charge_id,
+		];
+
+		// If the donation is processed with payment intent then refund using payment intent.
+		if ( give_stripe_is_source_type( $charge_id, 'pi' ) ) {
+			$args = [
+				'payment_intent' => $charge_id,
+			];
+		}
+
+		$refund = \Stripe\Refund::create( $args );
 
 		if ( isset( $refund->id ) ) {
 			give_insert_payment_note(
@@ -350,6 +357,27 @@ function give_stripe_show_currency_notice() {
 				'dismissible' => false,
 				'description' => sprintf(
 					__( 'The currency must be set as "Euro (&euro;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - SEPA Direct Debit Payment Gateway.', 'give' ),
+					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
+				),
+				'show'        => true,
+			)
+		);
+	}
+
+	// Show Currency notice when Stripe BECS Payment Gateway is selected.
+	if (
+		current_user_can( 'manage_give_settings' ) &&
+		give_is_gateway_active( 'stripe_becs' ) &&
+		'AUD' !== give_get_currency() &&
+		! class_exists( 'Give_Currency_Switcher' ) // Disable Notice, if Currency Switcher add-on is enabled.
+	) {
+		Give()->notices->register_notice(
+			array(
+				'id'          => 'give-stripe-currency-notice',
+				'type'        => 'error',
+				'dismissible' => false,
+				'description' => sprintf(
+					__( 'The currency must be set as "AUD (&dollar;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - BECS Direct Debit Payment Gateway.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
 				'show'        => true,
