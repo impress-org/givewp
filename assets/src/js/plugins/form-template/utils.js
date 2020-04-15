@@ -73,7 +73,7 @@ export const initializeIframeResize = function( iframe ) {
 
 				return false;
 			},
-			onInit: function( ) {
+			onInit: function( iframe ) {
 				iframe.iFrameResizer.sendMessage( {
 					currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
 				} );
