@@ -1298,3 +1298,16 @@ function give_stripe_is_premium_active() {
 		defined( 'GIVE_STRIPE_VERSION' )
 	);
 }
+
+/**
+ * Get all Stripe accounts.
+ *
+ * @since 2.6.3
+ *
+ * @return array
+ */
+function give_stripe_get_all_accounts() {
+	return give_get_option( '_give_stripe_get_all_accounts', [] );
+}
+
+
