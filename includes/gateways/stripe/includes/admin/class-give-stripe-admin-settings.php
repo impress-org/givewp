@@ -809,7 +809,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 
-			$stripe_accounts = give_get_option( '_give_stripe_get_all_accounts', [] );
+			$stripe_accounts = give_stripe_get_all_accounts();
 
 			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
 				if (
@@ -839,10 +839,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<?php
 							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
 								foreach ( $stripe_accounts as $name => $details ) {
+									$stripe_account_id = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : $details['user_id'];
 									?>
 									<div class="give-stripe-account-manager-list-item">
 										<span class="give-stripe-account-name">
-											<?php echo $name; ?>
+											<?php echo $stripe_account_id; ?>
 										</span>
 										<span class="give-stripe-account-actions">
 										<span class="give-stripe-account-type">
@@ -866,7 +867,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										}
 										?>
 										<span class="give-stripe-account-disconnect">
-											<a href="">
+											<a class="give-stripe-disconnect-account-btn" data-account="<?php echo $stripe_account_id; ?>" href="#">
 												<?php echo __( 'Disconnect', 'give' ); ?>
 											</a>
 										</span>
