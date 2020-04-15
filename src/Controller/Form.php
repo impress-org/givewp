@@ -13,6 +13,7 @@ use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give_Notices;
 use WP_Post;
+use function Give\Helper\Donor\removeDonationConfirmationPostedDataFromSession;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isConfirmingDonation;
@@ -89,6 +90,8 @@ class Form {
 
 				// Show donation processing template
 				if ( isConfirmingDonation() ) {
+					removeDonationConfirmationPostedDataFromSession();
+
 					include $formTemplate->getDonationProcessingView();
 					exit();
 				}
