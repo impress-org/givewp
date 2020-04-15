@@ -41,16 +41,32 @@ function give_stripe_connect_save_options() {
 		return;
 	}
 
-	// Update keys.
-	give_update_option( 'give_stripe_connected', $get_vars['connected'] );
-	give_update_option( 'give_stripe_user_id', $get_vars['stripe_user_id'] );
-	give_update_option( 'live_secret_key', $get_vars['stripe_access_token'] );
-	give_update_option( 'test_secret_key', $get_vars['stripe_access_token_test'] );
-	give_update_option( 'live_publishable_key', $get_vars['stripe_publishable_key'] );
-	give_update_option( 'test_publishable_key', $get_vars['stripe_publishable_key_test'] );
+	$stripe_accounts = give_stripe_get_all_accounts();
 
+	if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
+		// Set the connect details of Stripe account as default Stripe account.
+		give_update_option( 'give_stripe_connected', $get_vars['connected'] );
+		give_update_option( 'give_stripe_user_id', $get_vars['stripe_user_id'] );
+		give_update_option( 'live_secret_key', $get_vars['stripe_access_token'] );
+		give_update_option( 'test_secret_key', $get_vars['stripe_access_token_test'] );
+		give_update_option( 'live_publishable_key', $get_vars['stripe_publishable_key'] );
+		give_update_option( 'test_publishable_key', $get_vars['stripe_publishable_key_test'] );
+	}
+
+	$stripe_accounts[] = [
+		'give_stripe_user_id'  => $get_vars['stripe_user_id'],
+		'live_secret_key'      => $get_vars['stripe_access_token'],
+		'test_secret_key'      => $get_vars['stripe_access_token_test'],
+		'live_publishable_key' => $get_vars['stripe_publishable_key'],
+		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
+	];
+
+	// Update Stripe accounts to global settings.
+	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+
+	give_stripe_get_back_to_settings_page();
 	// Delete option for user API key.
-	give_delete_option( 'stripe_user_api_keys' );
+//	give_delete_option( 'stripe_user_api_keys' );
 
 }
 add_action( 'admin_init', 'give_stripe_connect_save_options' );
