@@ -55,7 +55,7 @@ abstract class Template {
 	 *
 	 * @var string
 	 */
-	public $donationFormLevelsStyle = 'button';
+	public $donationFormLevelsStyle = 'buttons';
 
 	/**
 	 * Determines how the form field labels render on the page.
