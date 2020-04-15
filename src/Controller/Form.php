@@ -9,10 +9,12 @@
 
 namespace Give\Controller;
 
+use Give\Donation\Donation;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give_Notices;
 use WP_Post;
+use function Give\Helper\Session\Donation\getId as getDonationIdFromDonorSession;
 use function Give\Helper\Session\DonationConfirmation\removeDonationConfirmationPostedData;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
@@ -90,10 +92,15 @@ class Form {
 
 				// Show donation processing template.
 				if ( isConfirmingDonation() ) {
-					removeDonationConfirmationPostedData();
+					$donation = new Donation( getDonationIdFromDonorSession() );
 
-					include $formTemplate->getDonationProcessingView();
-					exit();
+					// Load payment processing video only if donation is in pending status.
+					if ( $donation->isPending() ) {
+						removeDonationConfirmationPostedData();
+
+						include $formTemplate->getDonationProcessingView();
+						exit();
+					}
 				}
 
 				// Render receipt with in iframe.
