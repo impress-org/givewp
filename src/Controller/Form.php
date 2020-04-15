@@ -96,8 +96,12 @@ class Form {
 
 					// Load payment processing video only if donation is in pending status.
 					if ( $donation->isPending() ) {
-						removeDonationConfirmationPostedData();
+						removePostedData();
 
+						/*
+						 * If developer want to verify payment before showing receipt then use `init` action hook to verify donation.
+						 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
+						 */
 						include $formTemplate->getDonationProcessingView();
 						exit();
 					}
