@@ -77,7 +77,7 @@ class LegacyFormSettingCompatibility {
 		if ( $remainingSettings = array_diff( array_keys( $this->mapToTemplateProperty ), $alreadySavedLegacySettings ) ) {
 			foreach ( $remainingSettings as $metaKey ) {
 				$value = property_exists( $this->template, $this->mapToTemplateProperty[ $metaKey ] ) ?
-					$this->mapToTemplateProperty[ $metaKey ] : // Get value from property.
+					$this->template->{$this->mapToTemplateProperty[ $metaKey ]} : // Get value from property.
 					$this->template->{$this->mapToTemplateProperty[ $metaKey ]}(); // Get value from function
 
 				// Convert boolean value to enable and disabled.
