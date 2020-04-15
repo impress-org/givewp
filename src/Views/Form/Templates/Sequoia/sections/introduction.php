@@ -7,7 +7,7 @@ $formInfo = get_post( getFormId() );
 // Get headline and description
 $headline    = ! empty( $this->templateOptions['introduction']['headline'] ) ? $this->templateOptions['introduction']['headline'] : $formInfo->post_title;
 $description = ! empty( $this->templateOptions['introduction']['description'] ) ? $this->templateOptions['introduction']['description'] : $formInfo->post_excerpt;
-$image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $this->templateOptions['introduction']['image'] : $formInfo->post_thumbnail;
+$image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $this->templateOptions['introduction']['image'] : get_the_post_thumbnail_url( getFormId() );
 ?>
 
 <div class="give-section introduction">

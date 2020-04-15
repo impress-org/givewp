@@ -80,6 +80,29 @@ abstract class Template {
 	public $showDonationIntroductionContent = false;
 
 	/**
+	 * Get starting form height
+	 *
+	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
+	 * Implemented in includes/shortcodes.php:
+	 *
+	 * @return int
+	 **/
+	public function getFormStartingHeight() {
+		return 600;
+	}
+
+	/**
+	 * Get loading view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getLoadingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultLoadingView.php';
+	}
+
+	/**
 	 * Get form view filepath
 	 *
 	 * @since 2.7.0

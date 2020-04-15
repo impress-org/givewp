@@ -1,4 +1,4 @@
-/*globals jQuery*/
+/*globals Give, jQuery*/
 
 import { iframeResize } from 'iframe-resizer';
 
@@ -20,6 +20,10 @@ export const initializeIframeResize = function( iframe ) {
 			onMessage: function( messageData ) {
 				switch ( messageData.message ) {
 					case 'giveEmbedFormContentLoaded':
+						const timer = setTimeout( function() {
+							revealIframe();
+						}, 400 );
+
 						let parent = iframe.parentElement;
 						const iframeToAutoScroll = document.querySelector( 'iframe[name="give-embed-form"][data-autoscroll="1"]:not(.in-modal)' );
 						if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
@@ -46,6 +50,16 @@ export const initializeIframeResize = function( iframe ) {
 							}
 						}
 
+						function revealIframe() {
+							clearTimeout( timer );
+							let parent = iframe.parentElement;
+							if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
+								parent = parent.parentElement.parentElement;
+							}
+							parent.querySelector( '.iframe-loader' ).remove();
+							iframe.style.visibility = 'visible';
+							iframe.style.minHeight = '';
+						}
 						break;
 				}
 			},
