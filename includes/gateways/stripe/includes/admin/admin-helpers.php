@@ -151,7 +151,7 @@ function give_stripe_connect_button() {
 			'mode'                  => give_is_test_mode() ? 'test' : 'live',
 			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 			'website_url'           => get_bloginfo( 'url' ),
-			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
+			'give_stripe_connected' => '0',//! empty( $connected ) ? '1' : '0',
 		),
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
@@ -166,18 +166,20 @@ function give_stripe_connect_button() {
 /**
  * Stripe Disconnect URL.
  *
+ * @param string $account_id Stripe Account ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_disconnect_url() {
+function give_stripe_disconnect_url( $account_id = '' ) {
 
 	// Prepare Stripe Disconnect URL.
 	$link = add_query_arg(
 		array(
 			'stripe_action'  => 'disconnect',
 			'mode'           => give_is_test_mode() ? 'test' : 'live',
-			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
+			'stripe_user_id' => ! empty( $account_id ) ? $account_id : give_get_option( 'give_stripe_user_id' ),
 			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 		),
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
