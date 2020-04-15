@@ -672,14 +672,16 @@ function give_output_levels( $form_id ) {
  * @since  1.0
  */
 function give_display_checkout_button( $form_id, $args ) {
-
 	$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
 		? $args['display_style']
 		: give_get_meta( $form_id, '_give_payment_display', true );
 
 	if ( 'button' === $display_option ) {
-		$display_option = 'modal';
-	} elseif ( $display_option === 'onpage' ) {
+		add_action( 'give_post_form', 'give_add_button_open_form', 10, 2 );
+		return '';
+	}
+
+	if ( $display_option === 'onpage' ) {
 		return '';
 	}
 
@@ -688,7 +690,14 @@ function give_display_checkout_button( $form_id, $args ) {
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
-	echo apply_filters( 'give_display_checkout_button', $output );
+	/**
+	 * filter the button html
+	 *
+	 * @param string $output Button HTML.
+	 * @param int $form_id Form ID.
+	 * @param array $args Shortcode argument
+	 */
+	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
 add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );
@@ -776,7 +785,7 @@ function give_user_info_fields( $form_id ) {
 					<?php echo Give()->tooltips->render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
 				</label>
 				<select
-					class="give-input required"
+					class="give-input"
 					type="text"
 					name="give_title"
 					id="give-title"
