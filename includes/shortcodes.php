@@ -247,7 +247,12 @@ function give_form_shortcode( $atts ) {
 		}
 
 		$isHidden = $buttonModeActive ? ' is-hide' : '';
-		echo "<div class='give-embed-form-wrapper{$isHidden}' id='{$uniqueId}'>{$iframe}<div class='iframe-loader'>";
+		printf(
+			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s<div class="iframe-loader">',
+			$isHidden,
+			$uniqueId,
+			$iframe
+		);
 		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
 		echo '</div></div>';
 
