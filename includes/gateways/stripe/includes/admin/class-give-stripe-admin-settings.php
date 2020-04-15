@@ -812,7 +812,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$stripe_accounts = give_get_option( '_give_stripe_get_all_accounts', [] );
 
 			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
-				if ( give_stripe_is_manual_api_keys_enabled() ) {
+				if (
+					give_stripe_is_premium_active() &&
+					give_stripe_is_manual_api_keys_enabled()
+				) {
 					$stripe_accounts['Stripe Account'] = [
 						'type'                 => 'manual',
 						'access_token'         => give_get_option( 'live_secret_key' ),
@@ -898,7 +901,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										</td>
 									</tr>
 									<?php
-									if ( give_stripe_is_manual_api_keys_enabled() ) {
+									if ( give_stripe_is_premium_active() ) {
 										?>
 										<tr valign="top" class="stripe-cc-field-format-settings">
 											<th scope="row" class="titledesc">
