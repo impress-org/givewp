@@ -18,7 +18,7 @@ function getSession() {
  *
  * @since 2.7.0
  * @param string $key
- * @param mixed  $data
+ * @param mixed  $data    Non null value. Key will be unset if value set to null
  * @param bool   $replace
  *
  * @return array|string
@@ -26,7 +26,10 @@ function getSession() {
 function storeDataIntoSession( $key, $data, $replace = true ) {
 	$session = getSession();
 
-	if ( $replace ) {
+	if( null === $data ) {
+		unset( $session[ $key ] );
+		
+	}elseif ( $replace ) {
 		// Replace data.
 		$session[ $key ] = $data;
 
@@ -42,6 +45,16 @@ function storeDataIntoSession( $key, $data, $replace = true ) {
 	}
 
 	return Give()->session->set( 'give_purchase', $session );
+}
+
+/**
+ * Remove data from donor session.
+ *
+ * @since 2.7.0
+ * @param $key
+ */
+function removeDataFromSession( $key ){
+	storeDataIntoSession( $key, null );
 }
 
 /**
