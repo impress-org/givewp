@@ -1080,6 +1080,9 @@ class Give_MetaBox_Form_Data {
 					continue;
 				}
 
+				// Initialize $value for every field to prevent value type conflict.
+				$value = null;
+
 				switch ( $field->type ) {
 					case 'textarea':
 					case 'wysiwyg':
@@ -1091,6 +1094,7 @@ class Give_MetaBox_Form_Data {
 						break;
 
 					case 'group':
+						/* @var \Give\FormAPI\Form\Group $field */
 						foreach ( $options[ $group->id ][ $field->id ] as $index => $subFields ) {
 
 							// Do not save template input field values.
@@ -1101,7 +1105,7 @@ class Give_MetaBox_Form_Data {
 							$group_of_values = array();
 
 							foreach ( $subFields as $field_id => $field_value ) {
-								switch ( $field->getFormMetaboxFieldArguments()['fields'][ $field_id ]['type'] ) {
+								switch ( $field->getFieldArguments( $field_id )['type'] ) {
 									case 'wysiwyg':
 										$group_of_values[ $field_id ] = wp_kses_post( $field_value );
 										break;
@@ -1117,7 +1121,7 @@ class Give_MetaBox_Form_Data {
 						}
 
 						// Arrange repeater field keys in order.
-						$value = array_values( $value );
+						$value = $value ? array_values( $value ) : [];
 						break;
 
 					default:

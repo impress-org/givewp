@@ -1,4 +1,6 @@
 <?php
+
+use Give\Form\Template\Options;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 $formInfo = get_post( getFormId() );
@@ -138,16 +140,7 @@ return [
 				],
 				'default'    => __( 'We’ll never share this information with anyone.', 'give' ),
 			],
-			[
-				'id'         => 'checkout_label',
-				'name'       => __( 'Submit Button', 'give' ),
-				'desc'       => __( 'The button label for completing a donation.', 'give' ),
-				'type'       => 'text_medium',
-				'attributes' => [
-					'placeholder' => __( 'Donate Now', 'give' ),
-				],
-				'default'    => __( 'Donate Now', 'give' ),
-			],
+			Options::getCheckoutLabelField(),
 		],
 	],
 	'thank-you'           => [
@@ -190,6 +183,16 @@ return [
 					'disabled' => __( 'Disabled', 'give' ),
 				],
 				'default' => 'disabled',
+			],
+			[
+				'id'         => 'sharing_instruction',
+				'name'       => __( 'Sharing Instruction', 'give' ),
+				'desc'       => __( 'Do you want to customize the sharing instructions for this form? The instruction note displays above the social sharing buttons. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'textarea',
+				'attributes' => [
+					'placeholder' => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
+				],
+				'default'    => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
 			],
 		],
 	],

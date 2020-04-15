@@ -119,6 +119,10 @@ class Actions {
 
 		// Hide title.
 		add_filter( 'give_form_title', '__return_empty_string' );
+
+		// Append "Donate with " to gateway labels
+		add_filter( 'give_enabled_payment_gateways', [ $this, 'modifyGatewayLabels' ] );
+
 	}
 
 	/**
@@ -244,6 +248,25 @@ class Actions {
 	public function getCloseWrapperHTMLForAmountSection() {
 		$label = isset( $this->templateOptions['payment_amount']['next_label'] ) ? $this->templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
 		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
+	}
+
+	/**
+	 * Append gateway labels with "Donate with "
+	 *
+	 * Modify gateways array returned give_get_enabled_payment_gateways, before printing
+	 *
+	 * @param array $gateways Array of enabled gateways
+	 *
+	 * @return array $gateways Array of modified enabled gateways
+	 */
+	public function modifyGatewayLabels( array $gateways ) {
+		foreach ( $gateways as $key => $value ) {
+			$gateways[ $key ]['checkout_label'] = sprintf(
+				__( 'Donate with %1$s', 'give' ),
+				$gateways[ $key ]['checkout_label']
+			);
+		}
+		return $gateways;
 	}
 
 }

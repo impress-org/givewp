@@ -13,18 +13,6 @@ use function Give\Helpers\Form\Template\get as getTemplateOptions;
  */
 class Sequoia extends Template implements Hookable, Scriptable {
 	/**
-	 * Map form template settings to legacy form settings.
-	 *
-	 * @since 2.7.0
-	 * @var array
-	 */
-	protected $mapToLegacySetting = [
-		'payment_information' => [
-			'checkout_label' => '_give_checkout_label',
-		],
-	];
-
-	/**
 	 * @inheritDoc
 	 */
 	public function getFormStartingHeight() {
@@ -50,7 +38,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php';
+		return wp_doing_ajax() ? GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php' : parent::getReceiptView();
 	}
 
 	/**
@@ -81,34 +69,40 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
-		$dynamic_css  = "
+		$dynamic_css  = sprintf(
+			'
 			.seperator {
-				background: {$primaryColor}!important;
+				background: %1$s!important;
 			}
 			.give-btn {
-				border: 2px solid {$primaryColor}!important;
-				background: {$primaryColor}!important;
+				border: 2px solid %1$s!important;
+				background: %1$s!important;
 			}
 			.give-btn:hover {
-				background: {$primaryColor}!important;
+				background: %1$s!important;
 			}
 			.give-donation-level-btn {
-				border: 2px solid {$primaryColor}!important;
+				border: 2px solid %1$s!important;
 			}
 			.give-donation-level-btn.give-default-level {
-				color: {$primaryColor}!important; background: #fff!important;
+				color: %1$s!important; background: #fff!important;
 				transition: background 0.2s ease, color 0.2s ease;
 			}
 			.give-donation-level-btn.give-default-level:hover {
-				color: {$primaryColor}!important; background: #fff!important;
+				color: %1$s!important; background: #fff!important;
 			}
 			.give-input:focus, .give-select:focus {
-				border: 1px solid {$primaryColor}!important;
+				border: 1px solid %1$s!important;
 			}
 			.checkmark {
-				border-color: {$primaryColor}!important;
-				color: {$primaryColor}!important;
-		";
+				border-color: %1$s!important;
+				color: %1$s!important;
+			}
+			input[type=\'radio\'] + label::after {
+				background: %1$s!important;
+			}',
+			$primaryColor
+		);
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamic_css );
 
 		wp_enqueue_script( 'give-sequoia-template-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js', [ 'give' ], GIVE_VERSION, true );

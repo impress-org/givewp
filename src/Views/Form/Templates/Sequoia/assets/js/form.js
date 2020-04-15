@@ -84,7 +84,8 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-			navigator.goToStep( 0 );
+
+			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -154,6 +155,9 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
+
+				// Setup gateway icons
+				setupGatewayIcons();
 			},
 		},
 	];
@@ -262,6 +266,42 @@
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
 	}
 
+	/**
+	 * Loop through gateway li elements and setup fontawesome icons
+	 *
+	 * @since 2.7.0
+	 */
+	function setupGatewayIcons() {
+		$( '#give-gateway-radio-list li' ).each( function() {
+			const value = $( 'input', this ).val();
+			let icon;
+			switch ( value ) {
+				case 'manual':
+					icon = 'fas fa-tools';
+					break;
+				case 'offline':
+					icon = 'fas fa-wallet';
+					break;
+				case 'paypal':
+					icon = 'fab fa-paypal';
+					break;
+				case 'stripe':
+					icon = 'far fa-credit-card';
+					break;
+				case 'stripe_checkout':
+					icon = 'far fa-credit-card';
+					break;
+				case 'stripe_sepa':
+					icon = 'fas fa-university';
+					break;
+				default:
+					icon = 'fas fa-hand-holding-heart';
+					break;
+			}
+			$( this ).append( `<i class="${ icon }"></i>` );
+		} );
+	}
+
 	function setupHeightChangeCallback( callback ) {
 		let lastHeight = 0;
 		function checkHeightChange() {
@@ -275,5 +315,15 @@
 			window.requestAnimationFrame( checkHeightChange );
 		}
 		window.requestAnimationFrame( checkHeightChange );
+	}
+
+	/**
+	 * Get initial step to show donor.
+	 *
+	 * @since 2.7.0
+	 * @returns {number} Step to start on
+	 */
+	function getInitialStep() {
+		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
 	}
 }( jQuery ) );
