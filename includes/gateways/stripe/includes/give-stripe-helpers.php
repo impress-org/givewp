@@ -1284,3 +1284,17 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 
 	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
 }
+
+/**
+ * This helper function will be used check whether Stripe Premium add-on is active or not.
+ *
+ * @since 2.6.3
+ *
+ * @return bool
+ */
+function give_stripe_is_premium_active() {
+	return (
+		is_plugin_active( 'give-stripe/give-stripe.php' ) &&
+		defined( 'GIVE_STRIPE_VERSION' )
+	);
+}
