@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helper\Donor\storePostedDataIntoSessionIfConfirmingDonation;
+use function Give\Helper\Session\DonationConfirmation\storePostedDataIntoSession;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
@@ -163,7 +163,7 @@ function give_form_shortcode( $atts ) {
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
 
-		storePostedDataIntoSessionIfConfirmingDonation();
+		storePostedDataIntoSession();
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
