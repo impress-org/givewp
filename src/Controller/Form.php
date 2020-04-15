@@ -88,7 +88,7 @@ class Form {
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
 
-				// Show donation processing template
+				// Show donation processing template.
 				if ( isConfirmingDonation() ) {
 					removeDonationConfirmationPostedDataFromSession();
 
