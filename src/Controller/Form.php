@@ -15,7 +15,7 @@ use Give\Form\Template;
 use Give_Notices;
 use WP_Post;
 use function Give\Helper\Session\Donation\getId as getDonationIdFromDonorSession;
-use function Give\Helper\Session\DonationConfirmation\removeDonationConfirmationPostedData;
+use function Give\Helper\Session\DonationConfirmation\removePostedData;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isConfirmingDonation;
