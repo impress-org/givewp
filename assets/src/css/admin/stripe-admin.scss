@@ -234,6 +234,11 @@ a.give-stripe-connect-temp-dismiss:active {
 			padding: 5px 10px;
 			border-radius: 3px;
 			color: #fff;
+
+			a {
+				text-decoration: none;
+				color: #ffffff;
+			}
 		}
 
 		.give-stripe-account-manager-list {
