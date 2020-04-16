@@ -70,8 +70,9 @@ function give_stripe_is_any_payment_method_active() {
 function give_stripe_get_connect_settings() {
 
 	$options = array(
+		'type'                 => 'connect',
 		'connected_status'     => give_get_option( 'give_stripe_connected' ),
-		'user_id'              => give_get_option( 'give_stripe_user_id' ),
+		'give_stripe_user_id'  => give_get_option( 'give_stripe_user_id' ),
 		'access_token'         => give_get_option( 'live_secret_key' ),
 		'access_token_test'    => give_get_option( 'test_secret_key' ),
 		'publishable_key'      => give_get_option( 'live_publishable_key' ),
