@@ -1332,3 +1332,14 @@ function give_stripe_get_back_to_settings_page() {
 	give_die();
 }
 
+/**
+ * Get Default Stripe Account.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_default_account() {
+	return give_get_option( '_give_stripe_default_account', '' );
+}
+
