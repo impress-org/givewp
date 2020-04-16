@@ -810,26 +810,41 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		public function stripe_account_manager_field( $field, $option_value ) {
 
 			$stripe_accounts = give_stripe_get_all_accounts();
+			$default_account = '';
 
+			// Process, only when there is no Stripe accounts stored.
 			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
 				if (
 					give_stripe_is_premium_active() &&
 					give_stripe_is_manual_api_keys_enabled()
 				) {
-					$stripe_accounts['Stripe Account'] = [
+					$stripe_accounts['account_1'] = [
 						'type'                 => 'manual',
 						'access_token'         => give_get_option( 'live_secret_key' ),
 						'access_token_test'    => give_get_option( 'test_secret_key' ),
 						'publishable_key'      => give_get_option( 'live_publishable_key' ),
 						'publishable_key_test' => give_get_option( 'test_publishable_key' ),
 					];
-				} elseif ( give_stripe_is_connected() ) {
-					$stripe_accounts['Stripe Account']         = give_stripe_get_connect_settings();
-					$stripe_accounts['Stripe Account']['type'] = 'connect';
 
+					// Set first Stripe account as default.
+					give_update_option( '_give_stripe_default_account', 'account_1' );
+					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+				} elseif ( give_stripe_is_connected() ) {
+					$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
+
+					// Set first Stripe account as default.
+					give_update_option( '_give_stripe_default_account', 'account_1' );
+					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 				} else {
 					$stripe_accounts = [];
 				}
+			}
+
+			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 1 ) {
+				$stripe_account_keys = array_keys( $stripe_accounts );
+				$default_account     = $stripe_account_keys[0];
+			} else {
+				$default_account = give_stripe_get_default_account();
 			}
 			?>
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
@@ -850,7 +865,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<?php echo ucfirst( $details['type'] ); ?>
 										</span>
 										<?php
-										if ( count( $stripe_accounts ) === 1 ) {
+										if ( $name === $default_account ) {
 											?>
 											<span class="give-stripe-account-badge">
 												<?php echo __( 'Default', 'give' ); ?>
@@ -858,7 +873,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<?php
 										} else {
 											?>
-											<span class="give-stripe-account-badge">
+											<span>
 												<a href="">
 													<?php echo __( 'Set Default', 'give' ); ?>
 												</a>
