@@ -871,14 +871,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										<?php
 										if ( $name === $default_account ) {
 											?>
-											<span class="give-stripe-account-badge">
+											<span class="give-stripe-account-default give-stripe-account-badge">
 												<?php echo __( 'Default', 'give' ); ?>
 											</span>
 											<?php
 										} else {
 											?>
-											<span>
-												<a href="">
+											<span class="give-stripe-account-default">
+												<a
+													data-account="<?php echo $name; ?>"
+													data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
+													class="give-stripe-account-set-default" href="#"
+												>
 													<?php echo __( 'Set Default', 'give' ); ?>
 												</a>
 											</span>
