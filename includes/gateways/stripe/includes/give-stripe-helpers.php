@@ -1311,6 +1311,25 @@ function give_stripe_get_all_accounts() {
 }
 
 /**
+ * This helper function will return admin settings page url.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_admin_settings_page_url() {
+	return add_query_arg(
+		[
+			'post_type' => 'give_forms',
+			'page'      => 'give-settings',
+			'tab'       => 'gateways',
+			'section'   => 'stripe-settings',
+		],
+		esc_url_raw( admin_url( 'edit.php' ) )
+	);
+}
+
+/**
  * Send user back to Stripe settings page.
  *
  * @since 2.6.3
