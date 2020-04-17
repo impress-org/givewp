@@ -51,9 +51,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
-	private function openLinkInWindow( $location ) {
+	public function getRedirectingView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/redirecting.php';
-		exit();
 	}
 
 	/**
