@@ -41,7 +41,10 @@ ob_start();
 		background-image: url(<?php echo $loaderBG; ?>);
 		animation: spin 0.6s linear infinite;
 		"></div>
-	<h3><?php _e( 'Verifying Payment...', 'give' ); ?></h3>
+	<h3 style="
+		position: absolute;
+		top: calc(50% + 55px);
+		"><?php _e( 'Verifying Payment...', 'give' ); ?></h3>
 </div>
 <script type="text/javascript">
 	setTimeout(function () {
