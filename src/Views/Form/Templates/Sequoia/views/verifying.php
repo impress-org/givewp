@@ -17,7 +17,7 @@ ob_start();
 ?>
 
 <div style="
-		height: calc(100% - 28px);
+		height: 949px;
 		width: 100%;
 		max-width: 552px;
 		margin: 10px auto 10px auto;
