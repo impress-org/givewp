@@ -18,7 +18,7 @@ export const initializeIframeResize = function( iframe ) {
 			heightCalculationMethod: 'documentElementOffset',
 			widthCalculationMethod: 'documentElementOffset',
 			onMessage: function( messageData ) {
-				switch ( messageData.message ) {
+				switch ( messageData.message.action ) {
 					case 'giveEmbedFormContentLoaded':
 						const timer = setTimeout( function() {
 							revealIframe();
@@ -60,6 +60,9 @@ export const initializeIframeResize = function( iframe ) {
 							iframe.style.visibility = 'visible';
 							iframe.style.minHeight = '';
 						}
+						break;
+					case 'setProcessingHeight':
+						iframe.style.minHeight = `${ messageData.message.payload }px`;
 						break;
 				}
 			},
