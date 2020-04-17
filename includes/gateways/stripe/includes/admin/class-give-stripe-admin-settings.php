@@ -911,19 +911,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<h3><?php echo __( 'Add New Stripe Account', 'give' ); ?></h3>
 							<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 								<tbody>
-									<tr valign="top" class="stripe-cc-field-format-settings">
-										<th scope="row" class="titledesc">
-											<label for="stripe_cc_fields_format">
-												<?php echo __( 'Account Name', 'give' ); ?>
-											</label>
-										</th>
-										<td class="give-forminp give-forminp-radio_inline give-radio-inline">
-											<fieldset>
-												<input type="text" name="stripe_account[account-name]" value="" />
-												<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-											</fieldset>
-										</td>
-									</tr>
 									<?php
 									if ( give_stripe_is_premium_active() ) {
 										?>
