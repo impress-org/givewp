@@ -316,7 +316,9 @@ class Form {
 	 * @param string $location
 	 */
 	private function openLinkInWindow( $location ) {
-		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
+		/* @var Template $template */
+		$template = Give()->templates->getTemplate();
+		include $template->getRedirectingView();
 		exit();
 	}
 
