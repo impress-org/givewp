@@ -43,8 +43,9 @@ function give_stripe_connect_save_options() {
 
 	$stripe_account_id = $get_vars['stripe_user_id'];
 	$stripe_accounts   = give_stripe_get_all_accounts();
-	$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) : 0;
-	$account_slug      = 'account_' . ( $accounts_count + 1 );
+	$all_account_slugs = array_keys( $stripe_accounts );
+	$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
+	$account_slug      = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
 
 	// If Stripe account is already exists, then don't save it.
 	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
@@ -414,3 +415,28 @@ function give_stripe_show_currency_notice() {
 }
 
 add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
+
+/**
+ * Disconnect Stripe Account.
+ *
+ * @since 2.6.3
+ *
+ * @return void
+ */
+function give_stripe_disconnect_stripe_account() {
+
+	$get_data = give_clean( $_GET );
+
+	if ( is_admin() && isset( $get_data['stripe_disconnected'] ) ) {
+		$account_name    = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
+		$stripe_accounts = give_stripe_get_all_accounts();
+
+		// Unset Account ID from the list.
+		unset( $stripe_accounts[ $account_name ] );
+
+		// Update Stripe accounts.
+		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+	}
+}
+
+add_action( 'admin_init', 'give_stripe_disconnect_stripe_account' );
